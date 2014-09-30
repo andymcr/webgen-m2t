@@ -1,0 +1,39 @@
+[comment encoding = UTF-8 /]
+[module topbar_loggedin(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+[template public generateTopbarLoggedIn(genModel : GenJsfModel)]
+[file(genModel.viewElementsDirectory().concat('/topbar_logged_in').concat(genModel.executableExtension()), false)]
+<nav id="[genModel.jsfModel.properties.topNavigationId/]">
+[if (genModel.topMenuItemsAuthenticated()->notEmpty() or genModel.isAuthenticated())]
+ <ul>
+[/if]
+[for (genPage : GenPage | genModel.topMenuItemsAuthenticated())]
+  <li><?php
+	echo HTML::anchor(
+		Route::get('[genPage.controllerName()/]')->uri(),
+		HTML::chars(__('[genPage.jsfPage.navigationLabel/]'))); ?></li>
+[/for]
+<li id="authentication"><?php
+	echo __('Logged in as ') . $user->username;
+	echo '&nbsp;';
+	echo HTML::anchor(
+		Route::get('[if (genModel.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
+TBC[elseif (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+[genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.controllerName()/][else]
+TBC[/if]')->uri(array(
+			'action' => 'logout',
+		)),
+		HTML::chars(__('[genModel.jsfModel.properties.authentication.logoutLabel/]')));
+?></li>
+[if (genModel.topMenuItemsAuthenticated()->notEmpty() or genModel.isAuthenticated())]
+ </ul>
+[/if]
+</nav>
+[/file]
+[/template]

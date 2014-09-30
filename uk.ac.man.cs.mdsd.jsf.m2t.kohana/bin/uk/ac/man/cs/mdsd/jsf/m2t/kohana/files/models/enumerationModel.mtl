@@ -1,0 +1,43 @@
+[comment encoding = UTF-8 /]
+[module enumerationModel(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateModel(dataType : DataType) ? (dataType.oclIsTypeOf(EnumerationType))]
+[let enumerationType : EnumerationType = dataType.oclAsType(EnumerationType)]
+[file(enumerationType.modelFilename(), false)]
+<?php
+class [enumerationType.modelClassName()/] {
+[for (literal : EnumerationLiteral | enumerationType.enumerations)]
+	const [literal.name()/] = [i/];
+[/for]
+
+	public static function options($required = FALSE) {
+		$options = array();
+		if (!$required) {
+			$options['['/][']'/] = '';
+		}
+[for (literal : EnumerationLiteral | enumerationType.enumerations)]
+		$options['['/]self::[literal.name()/][']'/] = '[literal.displayLabel()/]';
+[/for]
+
+		return $options;
+	}
+
+	public static function option($value = null, $default = '') {
+		$options = [enumerationType.modelClassName()/]::options();
+
+		if (array_key_exists($value, $options)) {
+			return $options['['/]$value[']'/];
+		}
+
+		return $default;
+	}
+
+}
+[/file]
+[/let]
+[/template]

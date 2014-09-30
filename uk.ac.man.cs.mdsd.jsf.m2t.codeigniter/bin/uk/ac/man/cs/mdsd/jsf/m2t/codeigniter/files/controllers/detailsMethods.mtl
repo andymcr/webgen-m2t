@@ -1,0 +1,43 @@
+[comment encoding = UTF-8 /]
+[module detailsMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::commonMethods/]
+
+
+[template public generateUnitVariables(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenDetailsUnit)) post(trim())]
+$this->[genUnit.instanceName()/] = new [genUnit.modelName()/]();
+[if (genUnit.hasDefaultValueFields())]
+[genUnit.generateDefaultUnitValues()/]
+[/if]
+if ($this->session->userdata('[genUnit.sessionKey()/]')) {
+	$this->[genUnit.instanceName()/]->get_by_id($this->session->userdata('[genUnit.sessionKey()/]'));
+	if (!$this->[genUnit.instanceName()/]->exists()) {
+		$this->[genUnit.instanceName()/]_error = 'Invalid [genUnit.modelName()/] identifier';
+	}
+}
+[/template]
+
+[template public generateUnitDisplay(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenDetailsUnit)) post(trim())]
+$data['['/]'[genUnit.instanceName()/]'[']'/] = $this->[genUnit.instanceName()/];
+[/template]
+
+
+[template public generateUnitMethods(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenDetailsUnit)) post(trim())]
+public function [genUnit.methodName()/]($id) {
+[if (genUnit.isAuthenticated())]
+	[genUnit.genDisplayedOn.oclAsType(GenPage).generateLoggedInCheck()/]
+
+[/if]
+	$this->session->set_userdata('[genUnit.sessionKey()/]', $id);
+	$this->[genUnit.instanceName()/]->get_by_id($id);
+	if (!$this->[genUnit.instanceName()/]->exists()) {
+		$this->[genUnit.instanceName()/]_error = 'Invalid [genUnit.modelName()/] identifier';
+	}
+	$this->displayPage();
+}
+[/template]

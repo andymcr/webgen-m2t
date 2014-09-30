@@ -1,0 +1,93 @@
+[comment encoding = UTF-8 /]
+[module createSitemap('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateCreateSitemap(genModel : GenJsfModel)]
+[file (genModel.sitemapClassesDirectory().concat('/Sitemap').concat(genModel.executableExtension()), false)]
+<?php defined('SYSPATH') OR die('No Direct Script Access');
+
+class Sitemap
+{
+
+	public static function create($deployed_url, $filename = 'sitemap.xml')
+	{
+		$sitemap = new DOMDocument();
+		$sitemap->formatOutput = TRUE;
+		$urlset = $sitemap->createElementNS('http://www.sitemaps.org/schemas/sitemap/0.9', 'urlset');
+		$sitemap->appendChild($urlset);
+		$attr = $sitemap->createAttribute('xmlns:xsi');
+		$urlset->appendChild($attr);
+		$attr->nodeValue = 'http://www.w3.org/2001/XMLSchema-instance';
+		$attr = $sitemap->createAttribute('xsi:schemaLocation');
+		$urlset->appendChild($attr);
+		$attr->nodeValue = 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd';
+		
+		$home_url = $sitemap->createElement('url');
+		$urlset->appendChild($home_url);
+		$loc = $sitemap->createElement('loc', $deployed_url);
+		$home_url->appendChild($loc);
+		$change_freq = $sitemap->createElement('changefreq', 'monthly');
+		$home_url->appendChild($change_freq);
+		$priority = $sitemap->createElement('priority', '0.9');
+		$home_url->appendChild($priority);
+		
+		[for (genPage : GenPage | genModel.topMenuItemsNonAuthenticated())]
+		[genPage.generatePageEntry(0.5)/]
+		[/for]
+		
+		$sitemap->save($filename);
+	}
+}
+[/file]
+[/template]
+
+[template private generatePageEntry(genPage : GenPage, priority : Real)]
+[genPage.generateSingleEntry(priority, '', null)/]
+[for (genUnit : GenContentUnit | genPage.genUnits)]
+	[if (genUnit.oclIsKindOf(GenIndexUnit))]
+	[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
+		[if (genIndexUnit.jsfUnit.defaultPaginationSize > 0)]
+$entries = ORM::factory('[genUnit.modelName()/]')->[if (if genIndexUnit.genSelection.oclIsUndefined() then true else genIndexUnit.genSelection.genFilter.oclIsUndefined() endif)]
+count_all()[else]
+[genIndexUnit.genSelection.countName()/]()[/if];
+$i = 1;
+while ($i < ($entries / [genIndexUnit.jsfUnit.defaultPaginationSize/]))
+{
+	$i++;
+	[genPage.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(genUnit.parameterName()).concat('\' => $i)'))/]
+}
+		[/if]
+	[/let]
+	[elseif (genUnit.oclIsTypeOf(GenDetailsUnit))]
+	[let genDetailsUnit : GenDetailsUnit = genUnit.oclAsType(GenDetailsUnit)]
+		[if (genDetailsUnit.genSelection.oclIsUndefined())]
+$entries = ORM::factory('[genUnit.modelName()/]')->find_all();
+foreach ($entries AS $entry)
+{
+	[genPage.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(genDetailsUnit.parameterName()).concat('\' => $entry->'.concat(genDetailsUnit.genService.keyName()).concat(')')))/]
+}
+		[/if]
+	[/let]
+	[/if]
+[/for]
+[for (genChildPage : GenPage | genPage.genChildPages)]
+[genChildPage.generatePageEntry((priority - 0.1).max(0.1))/]
+[/for]
+
+[/template]
+
+[template private generateSingleEntry(genPage : GenPage, priority : Real, routeParameter : String, queryString : String)]
+$url = $sitemap->createElement('url');
+$urlset->appendChild($url);
+$loc = $sitemap->createElement('loc', $deployed_url . Route::get('[genPage.controllerName()/]')->uri([routeParameter/])[if (not queryString.oclIsUndefined())]
+ . URL::query([queryString/])[/if]);
+$url->appendChild($loc);
+$change_freq = $sitemap->createElement('changefreq', 'monthly');
+$url->appendChild($change_freq);
+$priority = $sitemap->createElement('priority', '[priority/]');
+$url->appendChild($priority);
+[/template]

@@ -1,0 +1,48 @@
+[comment encoding = UTF-8 /]
+[module site(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::fileInformation/]
+
+
+[template public generatePage(genModel : GenJsfModel)]
+[file(genModel.viewsDirectory().concat('/site').concat(genModel.htmlExtension()).concat(genModel.twigExtension()), false)]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+[if (not genModel.jsfModel.properties.metaDescription.oclIsUndefined())]
+ <meta name="description" content="[genModel.jsfModel.properties.metaDescription/]">
+[/if]
+ <title>[genModel.jsfModel.properties.siteTitle/]: {{ title }}</title>
+ <link rel="stylesheet" type="text/css" href="{{ asset('css/default.css') }}"/>
+ <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}"/>
+ <link rel="stylesheet" type="text/css" media="not print" href="{{ asset('css/non-print.css') }}"/>
+ <link rel="stylesheet" type="text/css" media="print" href="{{ asset('css/print.css') }}"/>
+[if (not genModel.textEditorPath.oclIsUndefined())]
+ <script type="text/javascript" src="[genModel.textEditorPath/]"></script>
+[/if]
+</head>
+<body id="page" class="framed">
+<header>
+ <h1 id="banner">[genModel.jsfModel.properties.siteTitle/]</h1>
+</header>
+{% block topbar %}
+{% endblock %}
+<?php if (isset($sidebar)) echo $sidebar; ?>
+<main <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>id="content">
+<?php if (!empty($page_message)) { ?>
+ <p><?php echo __($page_message); ?></p>
+<?php } ?>
+{% block content %}
+{% endblock %}
+</main>
+<div class="clear"></div>
+<footer>
+ <p>[genModel.jsfModel.properties.copyrightText/]</p>
+</footer>
+</body>
+</html>
+[/file]
+[/template]

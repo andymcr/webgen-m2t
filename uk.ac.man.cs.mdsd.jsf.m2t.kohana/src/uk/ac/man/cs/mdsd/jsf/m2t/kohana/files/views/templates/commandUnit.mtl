@@ -1,0 +1,21 @@
+[comment encoding = UTF-8 /]
+[module commandUnit(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateUnitView(genUnit : GenCommandUnit)
+	? (genUnit.oclIsTypeOf(GenCommandUnit))]
+[let genCommandUnit : GenCommandUnit = genUnit.oclAsType(GenCommandUnit)]
+[file(genCommandUnit.viewFilename(), false)]
+ <section class="[genCommandUnit.styleClass()/]" id="[genCommandUnit.instanceName()/]">
+[if (not genCommandUnit.omitCaption())]
+  <h1 class="[genCommandUnit.captionClass()/]">[genCommandUnit.displayLabel()/]</h1>
+[/if]
+  <div class="[genCommandUnit.layoutClass()/]"></div>
+ </section>
+[/file]
+[/let]
+[/template]

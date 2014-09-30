@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/uk.ac.man.cs.mdsd.jsf.model/src" modelPluginID="uk.ac.man.cs.mdsd.jsf.model"
+    modelName="Jsf" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false" usedGenPackages="../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.genmodel#//criteria ../../uk.ac.man.cs.mdsd.orm.model/model/orm.genmodel#//orm">
+  <foreignModel>Jsf.ecore</foreignModel>
+  <genPackages prefix="Jsf" basePackage="uk.ac.man.cs.mdsd" disposableProviderFactory="true"
+      childCreationExtenders="true" ecorePackage="Jsf.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Jsf.ecore#//FrameworkTechnologies">
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/JSF"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/CakePHP"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/CodeIgniter"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Kohana"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Laravel"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Jsf.ecore#//PageTopMenuOptions">
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//PageTopMenuOptions/NeverInclude"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//PageTopMenuOptions/AlwaysInclude"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//PageTopMenuOptions/IncludeWhenAuthenticated"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Jsf.ecore#//CollectionDisplayOptions">
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//CollectionDisplayOptions/LineDirection"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//CollectionDisplayOptions/PageDirection"/>
+    </genEnums>
+    <genClasses ecoreClass="Jsf.ecore#//JsfModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/properties"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/persistence"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/services"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/pages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/menus"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//JsfProperties">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/siteName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/siteTitle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/webmasterEmail"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/copyrightText"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/metaDescription"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/frameworkTechnology"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfProperties/authentication"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/topNavigationId"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfProperties/sideMenu"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfProperties/staticUnitsEditable"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//Authentication">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Authentication/loginLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Authentication/logoutLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//LocalAuthenticationSystem">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/userService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/userAuthenticationKey"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/authenticationService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/loginAttemptService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/autoLoginService"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//LocalAuthenticationSystem/allowSelfRegistration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//LocalAuthenticationSystem/useEmailActivation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//LocalAuthenticationSystem/sendWelcomeEmail"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//LocalAuthenticationSystem/useCaptcha"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/registrationUnit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/loginUnit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LocalAuthenticationSystem/forgottenPasswordUnit"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//CasAuthentication"/>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//IncludedFeature">
+      <genFeatures createChild="false" propertyCategory="Interface" ecoreFeature="ecore:EAttribute Jsf.ecore#//IncludedFeature/displayLabel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//IncludedFeature/forcedValue"/>
+      <genFeatures createChild="false" propertyCategory="Interface" propertyDescription=""
+          ecoreFeature="ecore:EAttribute Jsf.ecore#//IncludedFeature/footer"/>
+      <genFeatures createChild="false" propertyCategory="Style" ecoreFeature="ecore:EAttribute Jsf.ecore#//IncludedFeature/headerClass"/>
+      <genFeatures createChild="false" propertyCategory="Style" propertyDescription=""
+          ecoreFeature="ecore:EAttribute Jsf.ecore#//IncludedFeature/inputClass"/>
+      <genFeatures createChild="false" propertyCategory="Style" propertyDescription=""
+          ecoreFeature="ecore:EAttribute Jsf.ecore#//IncludedFeature/displayClass"/>
+      <genFeatures createChild="false" propertyCategory="Style" ecoreFeature="ecore:EAttribute Jsf.ecore#//IncludedFeature/footerClass"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//IncludedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IncludedElement/obfuscateFormFields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//IncludedElement/defaultValue"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//IncludedAssociation"/>
+    <genClasses ecoreClass="Jsf.ecore#//Service">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/entities"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/daosUsed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Service/modelName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Service/view"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/displayLabels"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/selections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/features"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/accessedBy"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//ModelLabel">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//ModelLabel/labelFor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ModelLabel/format"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ModelLabel/features"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//Selection">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Selection/filter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Selection/ordering"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Selection/limit"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceFeature">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceFeature/includedBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceFeature/cardinality"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceFeature/dateFormat"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceEntityFeature"/>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceEntityElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceEntityElement/feature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceEntityElement/caseInsensitive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceEntityElement/encrypt"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceEntityElement/placeholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceEntityElement/validationPattern"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceAssociation"/>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceEntityAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceEntityAssociation/feature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceEntityAssociation/opposite"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//ServiceViewAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceViewAssociation/targetFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//Page">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//Page/partOf"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Page/parentPage"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Page/childPages"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Page/authenticated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Page/topMenuOption"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Page/topMenuRank"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Page/navigationLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Page/sideMenu"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Page/styleClass"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//Menu">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Menu/entries"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Menu/omitCaption"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Menu/captionClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Menu/styleClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Menu/layoutClass"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//MenuEntry">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//MenuEntry/partOf"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//StaticMenu"/>
+    <genClasses ecoreClass="Jsf.ecore#//FixedPageMenuEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//FixedPageMenuEntry/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//FixedActionMenuEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//FixedActionMenuEntry/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//FixedCommandMenuEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//FixedCommandMenuEntry/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//EditStaticTextMenuEntry"/>
+    <genClasses ecoreClass="Jsf.ecore#//DynamicMenu">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DynamicMenu/service"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DynamicMenu/selection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DynamicMenu/dynamicTitle"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//MenuIncludedFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//MenuIncludedFeature/displayLabel"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//MenuIncludedElement">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//MenuIncludedElement/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//MenuIncludedElement/feature"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//SelectTarget">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//SelectTarget/targettingActions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//UnitContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitContainer/units"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//UnitTitle"/>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ContentUnit">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//ContentUnit/displayedOn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ContentUnit/purposeSummary"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ContentUnit/omitCaption"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ContentUnit/captionClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ContentUnit/styleClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ContentUnit/layoutClass"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//StaticUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//StaticUnit/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//StaticUnit/content"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//CommandUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//CommandUnit/commands"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//Command">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//Command/partOf"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//UserCommand"/>
+    <genClasses ecoreClass="Jsf.ecore#//CreateSitemapUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//CreateSitemapUnit/deployedURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//CreateSitemapUnit/filename"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//DynamicUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DynamicUnit/service"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//DynamicUnit/displayFields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//DynamicUnit/supportActions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DynamicUnit/header"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DynamicUnit/footer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DynamicUnit/headerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DynamicUnit/controlClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DynamicUnit/footerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DynamicUnit/errorClass"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//UnitField">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//UnitField/displayedOn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitField/cardinality"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitField/dateFormat"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//UnitFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitFeature/onlyDisplayWhenNotEmpty"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitFeature/displayOption"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitFeature/linkedAction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitFeature/maximumDisplaySize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitFeature/autofocus"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//UnitElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitElement/serviceFeature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitElement/placeholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitElement/validationPattern"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//UnitAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitAssociation/serviceFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitAssociation/childFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitAssociation/selection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitAssociation/dynamicLabel"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//UnitChildFeature"/>
+    <genClasses ecoreClass="Jsf.ecore#//UnitChildElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitChildElement/serviceFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//UnitChildAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitChildAssociation/serviceFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//UnitChildAssociation/childFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//InterfaceField">
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//InterfaceField/defaultValue"/>
+      <genFeatures createChild="false" propertyCategory="Style" ecoreFeature="ecore:EAttribute Jsf.ecore#//InterfaceField/inputClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//InterfaceField/mustMatch"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//DataTypeField">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DataTypeField/dataType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DataTypeField/caseInsensitive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DataTypeField/obfuscateFormFields"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DataTypeField/encrypt"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//DateField">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DateField/details"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DateField/format"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//CaptchaField">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//CaptchaField/publicKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//CaptchaField/privateKey"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//UnitSupportAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//UnitSupportAction/confirmMessage"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//EditUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//EditUnit/confirmDestination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//EditUnit/confirmLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//EditUnit/cancelDestination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//EditUnit/cancelLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//CreateUnit"/>
+    <genClasses ecoreClass="Jsf.ecore#//CreateUpdateUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//CreateUpdateUnit/clearLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//MapUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//MapUnit/readOnly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//MapUnit/defaultZoomLevel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//MapUnit/location"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//MapUnit/placeName"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//UpdateUnit"/>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//DataUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DataUnit/selection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DataUnit/dynamicTitle"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//DetailsUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DetailsUnit/omitFieldLabels"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//IndexUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/omitColumnLabels"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/defaultPaginationSize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/nextPageLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/previousPageLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/useFirstLastPageLinks"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/firstPageLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/lastPageLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//IndexUnit/targettingSearches"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//IndexUnit/rowClasses"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//IndexGridUnit"/>
+    <genClasses ecoreClass="Jsf.ecore#//IndexPageDirectionUnit"/>
+    <genClasses ecoreClass="Jsf.ecore#//IndexLineDirectionUnit"/>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ControlUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ControlUnit/submitLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ControlUnit/cancelDestination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ControlUnit/cancelLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//SearchUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//SearchUnit/resultsDestination"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//ActionUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ActionUnit/omitFieldLabels"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//AuthenticationUnit"/>
+    <genClasses ecoreClass="Jsf.ecore#//RegistrationUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//RegistrationUnit/authenticationSystem"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//LoginUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LoginUnit/authenticationSystem"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LoginUnit/loginIdField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LoginUnit/passwordField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//LoginUnit/rememberMeField"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//ForgottenPasswordUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ForgottenPasswordUnit/authenticationSystem"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ForgottenPasswordUnit/loginIdField"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//InlineActionContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//InlineActionContainer/actions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//InlineAction">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//InlineAction/usedBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//InlineAction/header"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//InlineAction/footer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//InlineAction/headerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//InlineAction/footerClass"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//SelectAction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//SelectAction/target"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//DeleteAction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//DeleteAction/destination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//DeleteAction/confirmMessage"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//FeatureSupportAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//FeatureSupportAction/confirmMessage"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//ModelReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ModelReference/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//FeatureReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//FeatureReference/field"/>
+    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//CurrentUserReference"/>
+  </genPackages>
+</genmodel:GenModel>

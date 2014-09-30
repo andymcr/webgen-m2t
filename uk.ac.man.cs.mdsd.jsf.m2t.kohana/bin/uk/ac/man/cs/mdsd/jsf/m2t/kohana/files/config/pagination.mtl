@@ -1,0 +1,35 @@
+[comment encoding = UTF-8 /]
+[module pagination(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generatePagination(genModel : GenJsfModel)]
+[file (genModel.configDirectory().concat('/').concat('pagination').concat(genModel.executableExtension()), false)]
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+
+return array
+(
+	'default' => array(
+		'current_page' => array('source' => 'query_string', 'key' => 'page'), // source: "query_string" or "route"
+		'total_items' => 0,
+		'items_per_page' => 10,
+		'view' => 'pagination/basic',
+		'auto_hide' => TRUE,
+		'first_page_in_url' => FALSE,
+	),
+[for (genUnit : GenIndexUnit | genModel.indexUnits())]
+	'[genUnit.uniqueName()/]' => array(
+		'group' => 'default',
+		'current_page' => array('source' => 'query_string', 'key' => '[genUnit.parameterName()/]'),
+		'items_per_page' => [genUnit.jsfUnit.defaultPaginationSize/],
+		'view' => '[genUnit.controllerName()/]/[genUnit.instanceName()/]_pagination',
+	),
+[/for]
+);
+[/file]
+[/template]

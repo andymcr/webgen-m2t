@@ -1,0 +1,334 @@
+[comment encoding = UTF-8 /]
+[module dataUnit(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::views::elements::action/]
+
+
+[template public generateUnitView(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenIndexUnit))]
+[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
+[file(genIndexUnit.viewFilename(), false)]
+<div class="[genIndexUnit.styleClass()/]<?php
+	if (isset($[genIndexUnit.instanceName()/]_error)) {
+		echo ' [genIndexUnit.errorClass()/]';
+	}
+?>" id="[genIndexUnit.instanceName()/]">
+ [genIndexUnit.generateUnitViewContent(genIndexUnit.instanceName())/]
+[if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
+ <div class="[genIndexUnit.controlClass()/]"><?php
+	[if (genIndexUnit.jsfUnit.useFirstLastPageLinks)]
+		if ($[genIndexUnit.instanceName()/]->paged->has_previous) {
+			echo anchor('[genIndexUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]/[genIndexUnit.methodName()/]/1', '[genIndexUnit.jsfUnit.firstPageLabel/]');
+		} else {
+			echo htmlentities('[genIndexUnit.jsfUnit.firstPageLabel/]', ENT_COMPAT, 'UTF-8', FALSE);
+		}
+		echo nbs(1);
+	[/if]
+		if ($[genIndexUnit.instanceName()/]->paged->has_previous) {
+			echo anchor('[genUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]/[genIndexUnit.methodName()/]/' . $[genIndexUnit.instanceName()/]->paged->previous_page, '[genIndexUnit.jsfUnit.previousPageLabel/]');
+		} else {
+			echo htmlentities('[genIndexUnit.jsfUnit.previousPageLabel/]', ENT_COMPAT, 'UTF-8', FALSE);
+		}
+		echo nbs(1);
+		if ($[genIndexUnit.instanceName()/]->paged->has_next) {
+			echo anchor('[genIndexUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]/[genIndexUnit.methodName()/]/' . $[genIndexUnit.instanceName()/]->paged->next_page, '[genIndexUnit.jsfUnit.nextPageLabel/]');
+		} else {
+			echo htmlentities('[genIndexUnit.jsfUnit.nextPageLabel/]', ENT_COMPAT, 'UTF-8', FALSE);
+		}
+	[if (genIndexUnit.jsfUnit.useFirstLastPageLinks)]
+		echo nbs(1);
+		if ($[genIndexUnit.instanceName()/]->paged->has_next) {
+			echo anchor('[genIndexUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]/[genIndexUnit.methodName()/]/' . $[genIndexUnit.instanceName()/]->paged->total_pages, '[genIndexUnit.jsfUnit.lastPageLabel/]');
+		} else {
+			echo htmlentities('[genIndexUnit.jsfUnit.lastPageLabel/]', ENT_COMPAT, 'UTF-8', FALSE);
+		}
+	[/if]
+?>
+ </div>
+[/if]
+</div>
+[/file]
+[/let]
+[/template]
+
+[template public generateUnitViewContent(genUnit : GenContentUnit, instanceVariable : String)
+	? (genUnit.oclIsTypeOf(GenIndexUnit)) post(trim())]
+[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
+ <table class="[genIndexUnit.layoutClass()/]">
+[if (not genIndexUnit.omitCaption())]
+  <caption class="[genIndexUnit.captionClass()/]">[genIndexUnit.displayLabel()/]</caption>
+[/if]
+[if (not (genIndexUnit.jsfUnit.omitColumnLabels or genIndexUnit.displayOption <> IndexDisplayOptions::Grid))]
+  <thead class="[genIndexUnit.headerClass()/]">
+<?php if (isset($[genIndexUnit.instanceName()/]_error)) { ?>
+   <tr class="[genIndexUnit.errorClass()/]"><td colspan="2"><?php
+	echo $[genIndexUnit.instanceName()/]_error;
+?></td></tr>
+<?php } ?>
+   <tr>
+ 	[for (genDisplayField : GenUnitField | genIndexUnit.genDisplayFields)]
+    <th>[genDisplayField.displayLabel()/]</th>
+ 	[/for]
+	[if (genIndexUnit.genActions->notEmpty())]
+    <th>Actions</th>
+	[/if]
+   </tr>
+  </thead>
+[else]
+<?php if (isset($[genIndexUnit.instanceName()/]_error)) { ?>
+  <thead class="[genIndexUnit.headerClass()/]">
+   <tr class="[genIndexUnit.errorClass()/]"><td colspan="2"><?php
+	echo $[genIndexUnit.instanceName()/]_error;
+?></td></tr>
+  </thead>
+<?php } ?>
+[/if]
+[if (genIndexUnit.displayOption = IndexDisplayOptions::Grid)]
+[genIndexUnit.generateGridLayout(instanceVariable)/]
+[else]
+[genIndexUnit.generateListLayout(instanceVariable)/]
+[/if]
+ </table>
+[/let]
+[/template]
+
+[template protected generateGridLayout(genIndexUnit : GenIndexUnit, instanceVariable : String) post(trim())]
+  <tbody>
+<?php foreach ($[instanceVariable/] as $entry): ?>
+  <tr class="<?php echo alternator([for (class : String | genIndexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
+ [for (genDisplayField : GenUnitField | genIndexUnit.genDisplayFields)]
+   <td><?php
+	[if (genDisplayField.oclIsKindOf(GenIncludedSingletonAssociation))]
+		$entry->[genDisplayField.formFieldName()/]->get();
+	[elseif (genDisplayField.oclIsKindOf(GenIncludedCollectionAssociation))]
+		$entry->[genDisplayField.formFieldName()/]->get_iterated();
+	[/if]
+		[genDisplayField.generateDisplayField('entry')/]
+?></td>
+[/for]
+[if (genIndexUnit.genActions->notEmpty())]
+   <td class="actions"><?php
+	[for (genAction : GenInlineAction | genIndexUnit.genActions) separator ('\t\techo nbs(1);\n')]
+		[generateAction(genAction)/]
+	[/for]?></td>
+ [/if]
+  </tr>
+<?php endforeach ?>
+  </tbody>
+[/template]
+
+[template protected generateListLayout(genIndexUnit : GenIndexUnit, instanceVariable : String)]
+  <tbody>
+<?php foreach ($[instanceVariable/] as $entry): ?>
+   <tr class="<?php echo alternator([for (class : String | genIndexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
+    <td>
+     <table>
+ [for (genDisplayField : GenUnitField | genIndexUnit.genDisplayFields)]
+ 	[if (genDisplayField.conditionalDisplay())]
+		[if (genDisplayField.oclIsKindOf(GenIncludedElement))]
+ <?php if (!empty($entry->[genDisplayField.formFieldName()/])) { ?>
+		[else]
+ <?php if ($entry->[genDisplayField.formFieldName()/]->exists()) { ?>
+		[/if]
+	[/if]
+     <tr>
+	[if (not genIndexUnit.jsfUnit.omitColumnLabels)]
+       <td>[genDisplayField.displayLabel()/]</td>
+	[/if]
+       <td><?php
+	[if (genDisplayField.oclIsKindOf(GenIncludedSingletonAssociation))]
+		$entry->[genDisplayField.formFieldName()/]->get();
+	[elseif (genDisplayField.oclIsKindOf(GenIncludedCollectionAssociation))]
+		$entry->[genDisplayField.formFieldName()/]->get_iterated();
+	[/if]
+		[genDisplayField.generateDisplayField('entry')/] ?></td>
+      </tr>
+	[if (genDisplayField.conditionalDisplay())]
+  <?php } ?>
+	[/if]
+[/for]
+[if (genIndexUnit.genActions->notEmpty())]
+   <td class="actions"><?php
+	[for (genAction : GenInlineAction | genIndexUnit.genActions) separator ('\t\techo nbs(1);\n')]
+		[generateAction(genAction)/]
+	[/for]?></td>
+ [/if]
+     </table>
+    </td>
+   </tr>
+<?php endforeach ?>
+  </tbody>
+[/template]
+
+
+[template public generateUnitView(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenDetailsUnit))]
+[let genDetailsUnit : GenDetailsUnit = genUnit.oclAsType(GenDetailsUnit)]
+[file(genDetailsUnit.viewFilename(), false)]
+<div class="[genDetailsUnit.styleClass()/]<?php
+	if (isset($[genDetailsUnit.instanceName()/]_error)) {
+		echo ' [genDetailsUnit.errorClass()/]';
+	}
+?>" id="[genDetailsUnit.instanceName()/]">
+ <table class="[genDetailsUnit.layoutClass()/]">
+[if (not genDetailsUnit.omitCaption())]
+	[if (genDetailsUnit.genDynamicTitle.oclIsUndefined())]
+  <caption class="[genDetailsUnit.captionClass()/]">[genDetailsUnit.displayLabel()/]</caption>
+	[else]
+  <caption class="[genDetailsUnit.captionClass()/]"><?php echo $[genDetailsUnit.instanceName()/]->[genDetailsUnit.genDynamicTitle.columnName()/]; ?></caption>
+	[/if]
+[/if]
+<?php if (isset($[genDetailsUnit.instanceName()/]_error)) { ?>
+  <thead class="[genDetailsUnit.errorClass()/]">
+   <tr><td colspan="2"><?php
+	echo $[genDetailsUnit.instanceName()/]_error;
+?></td></tr>
+  </thead>
+<?php } ?>
+  <tbody>
+[for (genDisplayField : GenUnitField | genDetailsUnit.genDisplayFields)]
+	[if (genDisplayField.oclIsKindOf(GenIncludedSingletonAssociation))]
+ <?php $[genDetailsUnit.instanceName()/]->[genDisplayField.formFieldName()/]->get(); ?>
+	[elseif (genDisplayField.oclIsKindOf(GenIncludedCollectionAssociation))]
+		[if (genDisplayField.hasSelection())]
+ <?php $[genDetailsUnit.instanceName()/]->[genDisplayField.formFieldName()/]->[genDisplayField.selection().name/](); ?>
+		[else]
+ <?php $[genDetailsUnit.instanceName()/]->[genDisplayField.formFieldName()/]->get_iterated(); ?>
+		[/if]
+	[/if]
+	[if (genDisplayField.conditionalDisplay())]
+		[if (genDisplayField.oclIsKindOf(GenIncludedElement))]
+ <?php if (!empty($[genDetailsUnit.instanceName()/]->[genDisplayField.formFieldName()/])) { ?>
+		[else]
+ <?php if ($[genDetailsUnit.instanceName()/]->[genDisplayField.formFieldName()/]->exists()) { ?>
+		[/if]
+	[/if]
+   <tr>
+	[if (not genDetailsUnit.jsfUnit.omitFieldLabels)]
+    <td class="[genDetailsUnit.columnClassFirst()/]">[genDisplayField.displayLabel()/]:</td>
+	[/if]
+    <td class="[genDetailsUnit.columnClassSecond()/]"><?php
+		[genDisplayField.generateDisplayField(genDetailsUnit.instanceName())/] ?></td>
+   </tr>
+	[if (genDisplayField.conditionalDisplay())]
+  <?php } ?>
+	[/if]
+[/for]
+  </tbody>
+ </table>
+</div>
+[/file]
+[/let]
+[/template]
+
+
+[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
+	? (genField.isDataTypeSingletonElement())]
+[let genIncludedFeature : GenUnitIncludedSingletonElement
+	= genField.oclAsType(GenUnitIncludedSingletonElement)]
+[if (genField.genDisplayedOn.parentController().genPartOf.ormTechnology <> OrmTechnologies::GasORM)]
+if (empty($[instanceVariable/]->[genIncludedFeature.columnName()/])) {
+	echo nbs(1);
+} else {
+[/if]
+[if (genIncludedFeature.genActions->isEmpty())]
+	echo $[instanceVariable/]->[genIncludedFeature.columnName()/];
+[else]
+	echo anchor(
+		'[genIncludedFeature.genActions.destinationUri()/]' . $[instanceVariable/]->id,
+		$[instanceVariable/]->[genIncludedFeature.columnName()/],
+		array(
+			'title' => '[genIncludedFeature.genActions.displayLabel()/]'
+		));
+[/if]
+[if (genField.genDisplayedOn.parentController().genPartOf.ormTechnology <> OrmTechnologies::GasORM)]}[/if][/let]
+[/template]
+
+
+[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
+	? (genField.isEnumerationTypeSingletonElement())]
+[let enumerationType : EnumerationType
+	= genField.oclAsType(GenIncludedSingletonElement).genFeature.oclAsType(GenSingletonElement).genDataType.ormDataType.oclAsType(EnumerationType)]
+if (empty($[instanceVariable/]->[genField.oclAsType(GenIncludedSingletonElement).columnName()/])) {
+	echo nbs(1);
+} else {
+	echo [enumerationType.modelName()/]::option($[instanceVariable/]->[genField.oclAsType(GenIncludedSingletonElement).columnName()/]);
+}[/let]
+[/template]
+
+[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
+	? (genField.oclIsKindOf(GenUnitIncludedSingletonElement)
+		and genField.oclAsType(GenIncludedSingletonElement).genFeature.oclIsTypeOf(GenSingletonDate))]
+[let genIncludedFeature : GenUnitIncludedSingletonElement
+	= genField.oclAsType(GenUnitIncludedSingletonElement)]
+if (empty($[instanceVariable/]->[genIncludedFeature.columnName()/])) {
+	echo nbs(1);
+} else {
+[if (genIncludedFeature.jsfIncludedFeature.dateFormat.oclIsUndefined())]
+	echo $[instanceVariable/]->[genIncludedFeature.columnName()/];
+[else]
+	$date = new DateTime($[instanceVariable/]->[genIncludedFeature.columnName()/]);
+	echo $date->format('[genIncludedFeature.jsfIncludedFeature.dateFormat/]');
+[/if]
+}[/let]
+[/template]
+
+[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
+	? (genField.oclIsKindOf(GenUnitIncludedCollectionElement))]
+[let genIncludedFeature : GenUnitIncludedCollectionElement
+	= genField.oclAsType(GenUnitIncludedCollectionElement)]
+if (empty($[instanceVariable/]->[genIncludedFeature.columnName()/])) {
+	echo nbs(1);
+} else {
+	echo $[instanceVariable/]->[genIncludedFeature.columnName()/];
+}[/let]
+[/template]
+
+[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
+	? (genField.oclIsKindOf(GenUnitIncludedSingletonAssociation))]
+[let genIncludedFeature : GenUnitIncludedSingletonAssociation
+	= genField.oclAsType(GenUnitIncludedSingletonAssociation)]
+if (!$[instanceVariable/]->[genIncludedFeature.columnName()/]->exists()) {
+	echo nbs(1);
+} else {
+[if (genIncludedFeature.genActions->isEmpty())]
+	echo $[instanceVariable/]->[genIncludedFeature.columnName()/]->displayLabel();
+[else]
+	echo anchor(
+		'[genIncludedFeature.genActions.destinationUri()/]' . $[instanceVariable/]->[genIncludedFeature.columnName()/]->id,
+		$[instanceVariable/]->[genIncludedFeature.columnName()/]->displayLabel(),
+		array(
+			'title' => '[genIncludedFeature.genActions.displayLabel()/]'
+		));
+[/if]
+}[/let]
+[/template]
+
+[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
+	? (genField.oclIsKindOf(GenUnitIncludedCollectionAssociation))]
+[let genIncludedFeature : GenUnitIncludedCollectionAssociation
+	= genField.oclAsType(GenUnitIncludedCollectionAssociation)]
+if (!$[instanceVariable/]->[genIncludedFeature.columnName()/]->exists()) {
+	echo nbs(1);
+} else {
+[if (genIncludedFeature.genUnits->isEmpty())]
+	[if (genIncludedFeature.displayOption = CollectionDisplayFormat::PageDirection)]
+	foreach ($[instanceVariable/]->[genIncludedFeature.columnName()/] as $value) {
+		?><div><?php echo $value->displayLabel(); ?></div><?php
+	}
+	[else]
+	foreach ($[instanceVariable/]->[genIncludedFeature.columnName()/] as $value) {
+		echo $value->displayLabel();
+	}
+	[/if]
+[else]
+	?> [genIncludedFeature.genUnits.generateUnitViewContent(instanceVariable.concat('->').concat(genIncludedFeature.columnName()))/] <?php
+[/if]
+}[/let]
+[/template]

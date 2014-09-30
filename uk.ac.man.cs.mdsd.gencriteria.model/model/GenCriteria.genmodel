@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/uk.ac.man.cs.mdsd.gencriteria.model/src" modelPluginID="uk.ac.man.cs.mdsd.gencriteria.model"
+    modelName="GenCriteria" importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0"
+    copyrightFields="false" usedGenPackages="../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.genmodel#//criteria">
+  <foreignModel>GenCriteria.ecore</foreignModel>
+  <genPackages prefix="Gencriteria" basePackage="uk.ac.man.cs.mdsd" disposableProviderFactory="true"
+      extensibleProviderFactory="true" ecorePackage="GenCriteria.ecore#/">
+    <genClasses image="false" ecoreClass="GenCriteria.ecore#//GenExpression"/>
+    <genClasses image="false" ecoreClass="GenCriteria.ecore#//GenLiteral"/>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenNullLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenNullLiteral/criteriaLiteral"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenIntegerLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenIntegerLiteral/criteriaLiteral"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenStringLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenStringLiteral/criteriaLiteral"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenCurrentTime">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenCurrentTime/criteriaLiteral"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenFunction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenFunction/criteriaFunction"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="GenCriteria.ecore#//GenPath"/>
+    <genClasses image="false" ecoreClass="GenCriteria.ecore#//GenPredicate"/>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenPredicateBooleanOperator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateBooleanOperator/criteriaPredicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateBooleanOperator/genExpressions"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenPredicateEqualityOperator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateEqualityOperator/criteriaPredicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateEqualityOperator/genLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateEqualityOperator/genRight"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenPredicateComparisonOperator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateComparisonOperator/criteriaPredicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateComparisonOperator/genLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateComparisonOperator/genRight"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenOrder">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenOrder/criteriaOrder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenOrder/genPath"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenPredicateIsOperator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateIsOperator/criteriaPredicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateIsOperator/genLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateIsOperator/genRight"/>
+    </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenPredicateLikeOperator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateLikeOperator/criteriaPredicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateLikeOperator/genLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateLikeOperator/genRight"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

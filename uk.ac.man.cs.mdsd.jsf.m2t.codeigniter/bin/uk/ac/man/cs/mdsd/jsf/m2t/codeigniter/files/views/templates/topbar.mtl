@@ -1,0 +1,25 @@
+[comment encoding = UTF-8 /]
+[module topbar('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+
+
+[template public generateTopbar(genModel : GenJsfModel)]
+[file(genModel.templatesDirectory().concat('/topbar').concat(genModel.executableExtension()), false)]
+<div id="topbar">
+[if (genModel.genTopbarLinks->notEmpty())]
+	[for (genPage : GenPage | genModel.genTopbarLinks)]
+ <div class="[genModel.jsfModel.properties.toplinkClass/]"><?php echo anchor('[genPage.controllerName()/]', '[genPage.jsfPage.navigationLabel/]')?></div>
+	[/for]
+[/if]
+[if (not genModel.isAuthenticated())]
+ <div><?php echo nbs(1); ?></div>[else]
+ <div id="authentication"><?php echo anchor('[if (genModel.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
+TBC[elseif (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+[genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.asTargetUri()/][else]
+TBC[/if]', '[genModel.jsfModel.properties.authentication.loginLabel/]'); ?>[/if]</div>
+ <div class="clear"></div>
+</div>
+[/file]
+[/template]

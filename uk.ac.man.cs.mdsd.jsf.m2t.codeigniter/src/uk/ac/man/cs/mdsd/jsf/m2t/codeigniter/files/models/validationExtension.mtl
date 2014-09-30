@@ -1,0 +1,30 @@
+[comment encoding = UTF-8 /]
+[module validationExtension(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+
+
+[template public generateValidationExtension(genModel : GenJsfModel)]
+[file(genModel.validationExtensionFilename(), false)]
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+class Validation_Rules {
+
+	function __construct($options = array(), $object = NULL) {
+	}
+	
+	public function rule_encrypt($object, $field) {
+         if (!empty($object->{$field})) {
+             if (empty($object->salt)) {
+                $object->salt = md5(uniqid(rand(), true));
+            }
+            $object->{$field} = sha1($object->salt . $object->{$field});
+        }
+	}
+
+}
+[/file]
+[/template]

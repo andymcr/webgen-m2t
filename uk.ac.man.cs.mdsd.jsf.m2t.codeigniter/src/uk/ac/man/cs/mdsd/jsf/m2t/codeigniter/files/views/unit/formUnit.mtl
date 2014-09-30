@@ -1,0 +1,181 @@
+[comment encoding = UTF-8 /]
+[module formUnit(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::views::unit::dataUnit/]
+
+
+[template public generateUnitView(genUnit : GenContentUnit)
+	? (genUnit.oclIsKindOf(GenEditUnit) or genUnit.oclIsKindOf(GenControlUnit)) post(trim())]
+[let genDynamicUnit : GenDynamicUnit = genUnit.oclAsType(GenDynamicUnit)]
+[file(genDynamicUnit.viewFilename(), false)]
+<?php
+	echo form_open(
+		'[genDynamicUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]/[genDynamicUnit.instanceName()/]/submit',
+		array(
+			'class' => '[genDynamicUnit.styleClass()/]' . (isset($[genDynamicUnit.instanceName()/]_error) ? ' [genDynamicUnit.errorClass()/]' : ''),
+			'id' => '[genDynamicUnit.instanceName()/]'
+		));
+?>
+ <table class="[genDynamicUnit.layoutClass()/]">
+[if (not genDynamicUnit.omitCaption())]
+  <caption class="[genDynamicUnit.captionClass()/]">[genDynamicUnit.displayLabel()/]</caption>
+[/if]
+<?php if (isset($[genDynamicUnit.instanceName()/]_error)[if (genDynamicUnit.hasMessagesOnFormHead())] || !empty($[genDynamicUnit.instanceName()/]->error->all)[/if]) { ?>
+  <thead class="[genDynamicUnit.errorClass()/]">
+   <tr><td colspan="2"><?php
+	echo $[genDynamicUnit.instanceName()/]_error;
+?></td></tr>
+[if (genDynamicUnit.hasMessagesOnFormHead())]
+[generateFormErrors(genDynamicUnit)/]
+[/if]
+  </thead>
+<?php } ?>
+[if (genDynamicUnit.hasMessagesOnFormFoot())]
+<?php if (isset($[genDynamicUnit.instanceName()/]->error->all)) { ?>
+  <tfoot class="[genDynamicUnit.errorClass()/]">
+[generateFormErrors(genDynamicUnit)/]
+  </tfoot>
+<?php } ?>
+[/if]
+  <tbody>
+[for (genDisplayField : GenUnitField | genDynamicUnit.inputOrEmbeddedFields())]
+   <tr>
+    <td class="[genDynamicUnit.columnClassFirst()/][if (genDisplayField.isRequired() and not genUnit.oclIsKindOf(GenControlUnit))] required[/if]"><?php
+		echo form_label('[genDisplayField.displayLabel()/]', '[genDisplayField.genDisplayedOn.instanceName()/]_[genDisplayField.formFieldName()/]');
+	?></td>
+    <td class="[genDynamicUnit.columnClassSecond()/][if (genDynamicUnit.hasMessagesOnFeature())]<?php
+		if (isset($[genDynamicUnit.instanceName()/]->error->[genDisplayField.formFieldName()/])) {
+			echo ' [genDynamicUnit.errorClass()/]'; 
+		}
+	?>[/if]"><?php
+	[if (if not genDisplayField.oclIsKindOf(GenUnitIncludedAssociation) then true else genDisplayField.oclAsType(GenUnitIncludedAssociation).genUnits->isEmpty() endif)]
+		[genDisplayField.generateInput(genDynamicUnit.instanceName())/]
+	[else]
+		$[genDynamicUnit.instanceName()/]->[genDisplayField.formFieldName()/]->get_iterated();
+		?> [genDisplayField.oclAsType(GenUnitIncludedAssociation).genUnits.generateUnitViewContent(genDynamicUnit.instanceName().concat('->').concat(genDisplayField.formFieldName()))/] <?php
+	[/if]
+		[if (genDynamicUnit.hasMessagesOnFeature())]
+		if (isset($[genDynamicUnit.instanceName()/]->error->[genDisplayField.formFieldName()/])) {
+			echo $[genDynamicUnit.instanceName()/]->error->[genDisplayField.formFieldName()/];
+		}
+		[/if]
+	?></td>
+   </tr>
+[/for]
+  </tbody>
+ </table>
+ <div class="[genDynamicUnit.controlClass()/]">
+<?php
+	echo form_submit('[genDynamicUnit.instanceName()/]', '[genDynamicUnit.submitLabel()/]');
+[if (genDynamicUnit.oclIsKindOf(GenEditUnit))]
+[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
+	[if (not genEditUnit.genCancelDestination.oclIsUndefined())]
+	echo nbs(1);
+	echo form_submit('cancel', '[genDynamicUnit.cancelLabel()/]');
+	[/if]
+	[if (genEditUnit.oclIsTypeOf(GenCreateUpdateUnit))]
+	[let genCreateUpdateUnit : GenCreateUpdateUnit = genEditUnit.oclAsType(GenCreateUpdateUnit)]
+		[if (not genCreateUpdateUnit.jsfUnit.clearLabel.oclIsUndefined())]
+	echo nbs(1);
+	echo form_submit('clear', '[genCreateUpdateUnit.jsfUnit.clearLabel/]');
+		[/if]
+	[/let]
+	[/if]
+[/let]
+[/if]
+?>
+ </div>
+<?php
+	echo form_close();
+?>
+[/file]
+[/let]
+[/template]
+
+
+[template protected generateInput(genField : GenUnitField, instanceVariable : String)
+	? (genField.isDataTypeSingletonElement() or genField.oclIsTypeOf(GenInterfaceField)) post(trim())]
+[let genDataType : GenDataType = 
+	if genField.oclIsKindOf(GenIncludedSingletonElement) then
+		genField.oclAsType(GenIncludedSingletonElement).genFeature.oclAsType(GenSingletonElement).genDataType
+	else
+		genField.oclAsType(GenInterfaceField).genDataType
+	endif]
+[if (genDataType.ormDataType.name = 'Boolean')]
+echo form_checkbox(array(
+	'id' => '[genField.genDisplayedOn.instanceName()/]_[genField.formFieldName()/]',
+	'name' => '[genField.formFieldName()/]',
+	'value' => $[instanceVariable/]->[genField.formFieldName()/],
+	'class' => '[genField.inputClass()/]'));
+[elseif (genField.isObfuscated())]
+echo form_password(array(
+	'id' => '[genField.genDisplayedOn.instanceName()/]_[genField.formFieldName()/]',
+	'name' => '[genField.formFieldName()/]',
+	'value' => $[instanceVariable/]->[genField.formFieldName()/],
+	'class' => '[genField.inputClass()/]'));
+[else]
+echo form_input(array(
+	'id' => '[genField.genDisplayedOn.instanceName()/]_[genField.formFieldName()/]',
+	'name' => '[genField.formFieldName()/]',
+	'value' => $[instanceVariable/]->[genField.formFieldName()/],
+	'class' => '[genField.inputClass()/]'));
+[/if]
+[/let]
+[/template]
+
+[template protected generateInput(genField : GenUnitField, instanceVariable : String)
+	? (genField.isEnumerationTypeSingletonElement()) post(trim())]
+[let enumerationType : EnumerationType
+	= genField.oclAsType(GenIncludedSingletonElement).genFeature.oclAsType(GenSingletonElement).genDataType.ormDataType.oclAsType(EnumerationType)]
+echo form_dropdown(
+	'[genField.formFieldName()/]',
+	[enumerationType.modelName()/]::options([genField.isRequired()/]),
+	$[instanceVariable/]->[genField.formFieldName()/],
+	'id="[genField.genDisplayedOn.instanceName()/]_[genField.formFieldName()/]" class="[genField.inputClass()/]"');
+[/let]
+[/template]
+
+[template protected generateInput(genField : GenUnitField, instanceVariable : String)
+	? (genField.isDateSingletonElement()) post(trim())]
+echo form_input(array(
+	'id' => '[genField.genDisplayedOn.instanceName()/]_[genField.formFieldName()/]',
+	'name' => '[genField.formFieldName()/]',
+	'value' => $[instanceVariable/]->[genField.formFieldName()/],
+	'class' => '[genField.inputClass()/]'));
+[/template]
+
+[template protected generateInput(genField : GenUnitField, instanceVariable : String)
+	? (genField.oclIsTypeOf(GenUnitIncludedCollectionElement)) post(trim())]
+echo form_input('[genField.formFieldName()/]');
+[/template]
+
+[template protected generateInput(genField : GenUnitField, instanceVariable : String)
+	? (genField.oclIsTypeOf(GenUnitIncludedSingletonAssociation)) post(trim())]
+echo form_dropdown(
+	'[genField.formFieldName()/]',
+	$[genField.oclAsType(GenIncludedSingletonAssociation).optionsName()/],
+	$[genField.oclAsType(GenIncludedSingletonAssociation).valueName()/],
+	'id="[genField.genDisplayedOn.instanceName()/]_[genField.formFieldName()/]" class="[genField.inputClass()/]"');
+[/template]
+
+[template protected generateInput(genField : GenUnitField, instanceVariable : String)
+	? (genField.oclIsTypeOf(GenUnitIncludedCollectionAssociation)) post(trim())]
+echo form_multiselect(
+	'[genField.formFieldName()/]',
+	$[genField.oclAsType(GenIncludedCollectionAssociation).optionsName()/],
+	$[genField.oclAsType(GenIncludedCollectionAssociation).valueName()/],
+	'id="[genField.genDisplayedOn.instanceName()/]_[genField.formFieldName()/]" class="[genField.inputClass()/]"');
+[/template]
+
+
+[template protected generateFormErrors(genUnit : GenDynamicUnit) post(trim())]
+<?php foreach ($[genUnit.instanceName()/]->error->all as $error): ?>
+   <tr><td colspan="2"><?php echo $error; ?></td></tr>
+<?php endforeach ?>
+[/template]

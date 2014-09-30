@@ -1,0 +1,14 @@
+[comment encoding = UTF-8 /]
+[module footer('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+
+
+[template public generateFooter(genJsfModel : GenJsfModel)]
+[file(genJsfModel.templatesDirectory().concat('/footer').concat(genJsfModel.executableExtension()), false)]
+<div id="footer">
+ <script type="text/javascript">document.write("&#169; [genJsfModel.jsfModel.properties.siteTitle/] " + new Date().getFullYear());</script>
+</div>
+</body>
+</html>
+[/file]
+[/template]

@@ -1,0 +1,22 @@
+[comment encoding = UTF-8 /]
+[module generate(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::files::css::customCSS/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::files::css::defaultCSS/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::files::css::nonPrintCSS/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::files::css::printCSS/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::config::parametersYML/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::views::site/]
+
+
+[template public generateElement(genModel : GenJsfModel)]
+[comment @main/]
+[genModel.generateParametersYML()/]
+
+[genModel.generateDefaultCSS()/]
+[genModel.generateNonPrintCSS()/]
+[genModel.generatePrintCSS()/]
+[genModel.generateCustomCSS()/]
+[genModel.generatePage()/]
+[/template]

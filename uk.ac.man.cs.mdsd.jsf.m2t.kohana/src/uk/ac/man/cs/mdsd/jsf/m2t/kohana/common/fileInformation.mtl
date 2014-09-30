@@ -1,0 +1,188 @@
+[comment encoding = UTF-8 /]
+[module fileInformation(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[query public emailModuleName(eObject : EObject) : String
+	= 'email'
+/]
+
+[query public sitemapModuleName(eObject : EObject) : String
+	= 'sitemap'
+/]
+
+[query public webgenRootName(eObject : EObject) : String
+	= 'Webgen'
+/]
+
+[query public webgenAuthClassName(eObject : EObject) : String
+	= 'Auth_'.concat(eObject.webgenAuthName())
+/]
+
+[query public webgenAuthName(eObject : EObject) : String
+	= 'Webgen'
+/]
+
+
+[query public applicationDirectory(eObject : EObject) : String
+	= 'application'
+/]
+
+[query public captchaDirectory(eObject : EObject) : String
+	= eObject.classesDirectory().concat('/').concat('Captcha')
+/]
+
+[query public classesDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('classes')
+/]
+
+[query public configDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('config')
+/]
+
+[query public controllersDirectory(eObject : EObject) : String
+	= eObject.classesDirectory().concat('/').concat('Controller')
+/]
+
+[query public coreDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('core')
+/]
+
+[query public emailClassesDirectory(eObject : EObject) : String
+	= eObject.emailModuleDirectory().concat('/').concat('classes')
+/]
+
+[query public emailModuleDirectory(eObject : EObject) : String
+	= eObject.modulesDirectory().concat('/').concat(emailModuleName())
+/]
+
+[query public emailViewsDirectory(eObject : EObject) : String
+	= eObject.emailModuleDirectory().concat('/').concat('views')
+/]
+
+[query public helpersDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('helpers')
+/]
+
+[query public languageDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('language')
+/]
+
+[query public languageEnglishDirectory(eObject : EObject) : String
+	= eObject.languageDirectory().concat('/').concat('english')
+/]
+
+[query public librariesDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('libraries')
+/]
+
+[query public menuDirectory(eObject : EObject) : String
+	= eObject.viewDirectory().concat('/').concat('menu')
+/]
+
+[query public modelsDirectory(eObject : EObject) : String
+	= eObject.classesDirectory().concat('/').concat('Model')
+/]
+
+[query public modulesDirectory(eObject : EObject) : String
+	= 'modules'
+/]
+
+[query public recaptchaDirectory(eObject : EObject) : String
+	= eObject.vendorDirectory().concat('/').concat('recaptcha')
+/]
+
+[query public sitemapClassesDirectory(eObject : EObject) : String
+	= eObject.sitemapModuleDirectory().concat('/').concat('classes')
+/]
+
+[query public sitemapModuleDirectory(eObject : EObject) : String
+	= eObject.modulesDirectory().concat('/').concat(sitemapModuleName())
+/]
+
+[query public vendorDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('vendor')
+/]
+
+[query public viewDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('views')
+/]
+
+[query public viewElementsDirectory(eObject : EObject) : String
+	= eObject.viewDirectory().concat('/').concat('elements')
+/]
+
+[query public webgenAuthDirectory(eObject : EObject) : String
+	= eObject.classesDirectory().concat('/Auth')
+/]
+
+[query public webgenDirectory(eObject : EObject) : String
+	= eObject.classesDirectory().concat('/').concat(eObject.webgenRootName())
+/]
+
+
+[query public authenticationLanguageFilename(genAuthentication : GenLocalAuthenticationSystem) : String
+	= genAuthentication.languageEnglishDirectory().concat('/')
+		.concat('authentication_lang')
+		.concat(genAuthentication.executableExtension())
+/]
+
+[query public authenticationLibraryFilename(genAuthentication : GenLocalAuthenticationSystem) : String
+	= genAuthentication.librariesDirectory().concat('/')
+		.concat('authentication_lib')
+		.concat(genAuthentication.executableExtension())
+/]
+
+[query public controllerFilename(genPage : GenPage) : String
+	= genPage.controllersDirectory().concat('/')
+		.concat(genPage.controllerName().toUpperFirst())
+		.concat(genPage.executableExtension())
+/]
+
+[query public menuFilename(genMenu : GenMenu) : String
+	= genMenu.menuDirectory().concat('/')
+		.concat(genMenu.instanceName())
+		.concat(genMenu.executableExtension())
+/]
+
+[query public modelFilename(enumerationType : EnumerationType) : String
+	= enumerationType.modelsDirectory().concat('/')
+		.concat(enumerationType.modelName())
+		.concat(enumerationType.executableExtension())
+/]
+
+[query public modelFilename(genService : GenService) : String
+	= genService.modelsDirectory().concat('/')
+		.concat(genService.modelName())
+		.concat(genService.executableExtension())
+/]
+
+[query public modelLanguageFilename(genService : GenService) : String
+	= genService.languageEnglishDirectory().concat('/')
+		.concat('model_').concat(genService.modelName()).concat('_lang')
+		.concat(genService.executableExtension())
+/]
+
+[query public pageViewsDirectory(genPage : GenPage) : String
+	= genPage.viewDirectory().concat('/')
+		.concat(genPage.controllerName())
+/]
+
+[query public paginationViewFilename(genUnit : GenContentUnit) : String
+	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
+		.concat(genUnit.instanceName()).concat('_pagination')
+		.concat(genUnit.executableExtension())
+/]
+
+
+[query public viewFilename(genUnit : GenContentUnit) : String
+	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
+		.concat(genUnit.instanceName())
+		.concat(genUnit.executableExtension())
+/]
+
+

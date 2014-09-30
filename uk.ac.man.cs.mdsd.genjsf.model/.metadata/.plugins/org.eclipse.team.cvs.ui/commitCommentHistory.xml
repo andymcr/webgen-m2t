@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommitComments>	<CommitComment>Avoid extra lines in controller files when generating unit methods</CommitComment>
+	<CommitComment>Allow support actions on all dynamic units</CommitComment>
+	<CommitComment>Add ability to title units with labels as well as attributes</CommitComment>
+	<CommitComment>Introduce concept of command unit and commands</CommitComment>
+	<CommitComment>Allow access to nested field values</CommitComment>
+	<CommitComment>Refine implementation of service view references</CommitComment>
+	<CommitComment>Resolve some of the issues with view associations</CommitComment>
+	<CommitComment>Change cardinality of unit associations from structural property to attribute</CommitComment>
+	<CommitComment>Change cardinality of service feature from structural property to attribute</CommitComment>
+	<CommitComment>Add ability to have html5 placeholder and pattern attributes on inputs</CommitComment>
+</CommitComments>

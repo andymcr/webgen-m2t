@@ -1,0 +1,34 @@
+[comment encoding = UTF-8 /]
+[module email(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateEmailModule(genModel : GenJsfModel)]
+[file(genAuthentication.emailClassesDirectory().concat('/Email').concat(genAuthentication.executableExtension()), false)]
+<?php defined('SYSPATH') OR die('No Direct Script Access');
+
+class Email
+{
+
+	public function x ()
+	{
+		$siteTitle = $this->CI->config->item('site_title', 'site');
+		$webmasterEmail = $this->CI->config->item('webmaster_email', 'site');
+		$this->CI->load->library('email');
+		$this->CI->email->from($webmasterEmail, $siteTitle);
+		$this->CI->email->reply_to($webmasterEmail, $siteTitle);
+		$this->CI->email->to($usersEmail);
+		$this->CI->email->subject(sprintf($this->CI->lang->line('auth_subject_'.$type), $siteTitle));
+		$this->CI->email->message($this->CI->load->view('email/'.$type.'_html', $data, TRUE));
+		$this->CI->email->set_alt_message($this->CI->load->view('email/'.$type.'_text', $data, TRUE));
+		$this->CI->email->send();
+	}
+
+}
+[/file]
+[/template]

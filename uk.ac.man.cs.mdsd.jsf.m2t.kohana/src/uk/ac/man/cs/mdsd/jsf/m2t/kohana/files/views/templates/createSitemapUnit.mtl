@@ -1,0 +1,21 @@
+[comment encoding = UTF-8 /]
+[module createSitemapUnit(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateUnitView(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenCreateSitemapUnit))]
+[let genCreateSitemapUnit : GenCreateSitemapUnit = genUnit.oclAsType(GenCreateSitemapUnit)]
+[file(genCreateSitemapUnit.viewFilename(), false)]
+ <section class="[genCreateSitemapUnit.styleClass()/]" id="[genCreateSitemapUnit.instanceName()/]">
+[if (not genCreateSitemapUnit.omitCaption())]
+  <h1 class="[genCreateSitemapUnit.captionClass()/]">[genCreateSitemapUnit.displayLabel()/]</h1>
+[/if]
+  <div class="[genCreateSitemapUnit.layoutClass()/]">Sitemap created</div>
+ </section>
+[/file]
+[/let]
+[/template]

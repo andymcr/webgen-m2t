@@ -1,0 +1,805 @@
+-- @atlcompiler emftvm 
+--
+-- @path JSF=/uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore
+
+module CopyPartialJsf;
+create jsf : JSF from partailJsf : JSF;
+
+uses CopyCriteria;
+
+
+rule JsfModel {
+	from partialJsf : JSF!JsfModel
+	to jsf : JSF!JsfModel (
+		properties <- partialJsf.properties,
+		persistence <- partialJsf.persistence,
+		services <- partialJsf.services,
+		pages <- partialJsf.pages,
+		menus <- partialJsf.menus
+	)
+}
+
+rule JsfProperties {
+	from partialJsf : JSF!JsfProperties
+	to jsf : JSF!JsfProperties (
+		siteName <- partialJsf.siteName,
+		siteTitle <- partialJsf.siteTitle,
+		webmasterEmail <- partialJsf.webmasterEmail,
+		copyrightText <- partialJsf.copyrightText,
+		metaDescription <- partialJsf.metaDescription,
+		frameworkTechnology <- partialJsf.frameworkTechnology,
+		authentication <- partialJsf.authentication,
+		topNavigationId <- partialJsf.topNavigationId,
+		sideMenu <- partialJsf.sideMenu,
+		staticUnitsEditable <- partialJsf.staticUnitsEditable
+	)
+}
+
+
+abstract rule Authentication {
+	from partialJsf : JSF!Authentication
+	to jsf : JSF!Authentication (
+		loginLabel <- partialJsf.loginLabel,
+		logoutLabel <- partialJsf.logoutLabel
+	)
+}
+
+-- @extends Authentication
+rule LocalAuthenticationSystem {
+	from partialJsf : JSF!LocalAuthenticationSystem
+	to jsf : JSF!LocalAuthenticationSystem (
+		userService <- partialJsf.userService,
+		userAuthenticationKey <-partialJsf.userAuthenticationKey,
+		authenticationService <- partialJsf.authenticationService,
+		loginAttemptService <- partialJsf.loginAttemptService,
+		allowSelfRegistration <- partialJsf.allowSelfRegistration,
+		autoLoginService <- partialJsf.autoLoginService,
+		useEmailActivation <- partialJsf.useEmailActivation,
+		sendWelcomeEmail <- partialJsf.sendWelcomeEmail,
+		useCaptcha <- partialJsf.useCaptcha,
+		registrationUnit <- partialJsf.registrationUnit,
+		loginUnit <- partialJsf.loginUnit,
+		forgottenPasswordUnit <- partialJsf.forgottenPasswordUnit
+	)
+}
+
+-- @extends Authentication
+rule CasAuthentication {
+	from partialJsf : Website!CasAuthentication
+	to jsf : JSF!CasAuthentication (
+	)
+}
+
+abstract rule NamedElement {
+	from partialJsf : JSF!NamedElement
+	to jsf : JSF!NamedElement (
+		name <- partialJsf.name
+	)
+}
+
+-- @extends NamedElement
+abstract rule NamedDisplayElement {
+	from partialJsf : JSF!NamedDisplayElement
+	to jsf : JSF!NamedDisplayElement (
+		displayLabel <- partialJsf.displayLabel
+	)
+}
+
+
+abstract rule IncludedFeature {
+	from partialJsf : JSF!IncludedFeature
+	to jsf : JSF!IncludedFeature (
+		displayLabel <- partialJsf.displayLabel,
+		forcedValue <- partialJsf.forcedValue,
+		footer <- partialJsf.footer,
+		headerClass <- partialJsf.headerClass,
+		inputClass <- partialJsf.inputClass,
+		displayClass <- partialJsf.displayClass,
+		footerClass <- partialJsf.footerClass
+	)
+}
+
+-- @extends IncludedFeature
+abstract rule IncludedElement {
+	from partialJsf : JSF!IncludedElement
+	to jsf : JSF!IncludedElement (
+		obfuscateFormFields <- partialJsf.obfuscateFormFields,
+		defaultValue <- partialJsf.defaultValue
+	)
+}
+
+-- @extends IncludedFeature
+abstract rule IncludedAssociation {
+	from partialJsf : JSF!IncludedAssociation
+	to jsf : JSF!IncludedAssociation (
+	)
+}
+
+
+-- @extends NamedElement
+rule Service {
+	from partialJsf : JSF!Service
+	to jsf : JSF!Service (
+		modelName <- partialJsf.modelName,
+		view <- partialJsf.view,
+		entities <- partialJsf.entities,
+		daosUsed <- partialJsf.daosUsed,
+		displayLabels <- partialJsf.displayLabels,
+		selections <- partialJsf.selections,
+		features <- partialJsf.features
+	)
+} 
+
+-- @extends NamedElement
+rule ModelLabel {
+	from partialJsf : JSF!ModelLabel
+	to jsf : JSF!ModelLabel (
+		format <- partialJsf.format,
+		features <- partialJsf.features
+	)
+}
+
+-- @extends NamedElement
+rule Selection {
+	from partialJsf : JSF!Selection
+	to jsf : JSF!Selection (
+		filter <- partialJsf.filter,
+		ordering <- partialJsf.ordering,
+		limit <- partialJsf.limit
+	)
+}
+
+abstract rule ServiceFeature {
+	from partialJsf : JSF!ServiceFeature
+	to jsf : JSF!ServiceFeature (
+		cardinality <- partialJsf.cardinality,
+		dateFormat <- partialJsf.dateFormat
+	)
+}
+
+-- @extends ServiceFeature, IncludedFeature, NamedElement
+abstract rule ServiceEntityFeature {
+	from partialJsf : JSF!ServiceEntityFeature
+	to jsf : JSF!ServiceEntityFeature (
+	)
+}
+
+-- @extends ServiceEntityFeature, IncludedElement
+rule ServiceEntityElement {
+	from partialJsf : JSF!ServiceEntityElement
+	to jsf : JSF!ServiceEntityElement (
+		feature <- partialJsf.feature,
+		caseInsensitive <- partialJsf.caseInsensitive,
+		encrypt <- partialJsf.encrypt,
+		placeholder <- partialJsf.placeholder,
+		validationPattern <- partialJsf.validationPattern
+	)
+}
+
+-- @extends ServiceFeature
+abstract rule ServiceAssociation {
+	from partialJsf : JSF!ServiceAssociation
+	to jsf : JSF!ServiceAssociation (
+	)
+}
+
+-- @extends ServiceEntityFeature, ServiceAssociation, IncludedAssociation
+rule ServiceEntityAssociation {
+	from partialJsf : JSF!ServiceEntityAssociation
+	to jsf : JSF!ServiceEntityAssociation (
+		feature <- partialJsf.feature,
+		opposite <- partialJsf.opposite
+	)
+}
+
+-- @extends NamedDisplayElement, ServiceAssociation
+rule ServiceViewAssociation {
+	from partialJsf : JSF!ServiceViewAssociation
+	to jsf : JSF!ServiceViewAssociation (
+		targetFeature <- partialJsf.targetFeature
+	)
+}
+
+-- @extends NamedDisplayElement, UnitContainer
+rule Page {
+	from partialJsf : JSF!Page
+	to jsf : JSF!Page (
+		parentPage <- partialJsf.parentPage,
+		topMenuOption <- partialJsf.topMenuOption,
+		topMenuRank <- partialJsf.topMenuRank,
+		navigationLabel <- partialJsf.navigationLabel,
+		sideMenu <- partialJsf.sideMenu,
+		styleClass <- partialJsf.styleClass,
+		authenticated <- partialJsf.authenticated
+	)
+}
+
+
+-- @extends NamedDisplayElement
+abstract rule Menu {
+	from partialJsf : JSF!Menu
+	to jsf : JSF!Menu (
+		entries <- partialJsf.entries,
+		omitCaption <- partialJsf.omitCaption,
+		captionClass <- partialJsf.captionClass,
+		styleClass <- partialJsf.styleClass,
+		layoutClass <- partialJsf.layoutClass
+	)
+}
+
+abstract rule MenuEntry {
+	from partialJsf : JSF!MenuEntry
+	to jsf : JSF!MenuEntry (
+	)
+}
+
+-- @extends Menu
+rule StaticMenu {
+	from partialJsf : JSF!StaticMenu
+	to jsf : JSF!StaticMenu (
+	)
+}
+
+-- @extends MenuEntry, NamedDisplayElement
+rule FixedPageMenuEntry {
+	from partialJsf : JSF!FixedPageMenuEntry
+	to jsf : JSF!FixedPageMenuEntry (
+		destination <- partialJsf.destination
+	)
+}
+
+-- @extends MenuEntry, NamedDisplayElement
+rule FixedActionMenuEntry {
+	from partialJsf : JSF!FixedActionMenuEntry
+	to jsf : JSF!FixedActionMenuEntry (
+		destination <- partialJsf.destination
+	)
+}
+
+-- @extends MenuEntry, NamedDisplayElement
+rule FixedCommandMenuEntry {
+	from partialJsf : JSF!FixedCommandMenuEntry
+	to jsf : JSF!FixedCommandMenuEntry (
+		destination <- partialJsf.destination
+	)
+}
+
+-- @extends MenuEntry, NamedDisplayElement
+rule EditStaticTextMenuEntry {
+	from partialJsf : JSF!EditStaticTextMenuEntry
+	to jsf : JSF!EditStaticTextMenuEntry (
+	)
+}
+
+-- @extends Menu
+rule DynamicMenu {
+	from partialJsf : JSF!DynamicMenu
+	to jsf : JSF!DynamicMenu (
+		service <- partialJsf.service,
+		selection <- partialJsf.selection,
+		dynamicTitle <- partialJsf.dynamicTitle
+	)
+}
+
+-- @extends MenuEntry
+abstract rule MenuIncludedFeature {
+	from partialJsf : JSF!MenuIncludedFeature
+	to jsf : JSF!MenuIncludedFeature (
+	)
+}
+
+-- @extends MenuIncludedFeature
+rule MenuIncludedElement {
+	from partialJsf : JSF!MenuIncludedElement
+	to jsf : JSF!MenuIncludedElement (
+	)
+}
+
+abstract rule UnitContainer {
+	from partialJsf : JSF!UnitContainer
+	to jsf : JSF!UnitContainer (
+		units <- partialJsf.units
+	)
+}
+
+abstract rule ContentUnitFields {
+	from partialJsf : JSF!ContentUnit
+	to jsf : JSF!ContentUnit (
+		purposeSummary <- partialJsf.purposeSummary,
+		omitCaption <- partialJsf.omitCaption,
+		captionClass <- partialJsf.captionClass,
+		styleClass <- partialJsf.styleClass,
+		layoutClass <- partialJsf.layoutClass
+	)
+}
+
+-- @extends NamedDisplayElement, ContentUnitFields
+abstract rule ContentUnit {
+	from partialJsf : JSF!ContentUnit
+	to jsf : JSF!ContentUnit (
+	)
+}
+
+rule StaticUnitFields {
+	from partialJsf : JSF!StaticUnit
+	to jsf : JSF!StaticUnit (
+		service <- partialJsf.service,
+		content <- partialJsf.content
+	)
+}
+
+-- @extends ContentUnit, StaticUnitFields
+rule StaticUnit {
+	from partialJsf : JSF!StaticUnit
+	to jsf : JSF!StaticUnit (
+	)
+}
+
+rule CommandUnitFields {
+	from partialJsf : JSF!CommandUnit
+	to jsf : JSF!CommandUnit (
+		commands <- partialJsf.commands
+	)
+}
+
+-- @extends ContentUnit, CommandUnitFields
+rule CommandUnit {
+	from partialJsf : JSF!CommandUnit
+	to jsf : JSF!CommandUnit (
+	)
+}
+
+-- @extends NamedElement
+abstract rule Command {
+	from partialJsf : JSF!Command
+	to jsf : JSF!Command (
+	)
+}
+
+-- @extends Command
+rule UserCommand {
+	from partialJsf : JSF!UserCommand
+	to jsf : JSF!UserCommand (
+	)
+}
+
+rule CreateSitemapUnitFields {
+	from partialJsf : JSF!CreateSitemapUnit
+	to jsf : JSF!CreateSitemapUnit (
+		deployedURL <- partialJsf.deployedURL
+	)
+}
+
+-- @extends ContentUnit, CreateSitemapUnitFields
+rule CreateSitemapUnit {
+	from partialJsf : JSF!CreateSitemapUnit
+	to jsf : JSF!CreateSitemapUnit (
+	)
+}
+
+abstract rule DynamicUnitFields {
+	from partialJsf : JSF!ContentUnit
+	to jsf : JSF!ContentUnit (
+		service <- partialJsf.service,
+		displayFields <- partialJsf.displayFields,
+		supportActions <- partialJsf.supportActions,
+		header <- partialJsf.header,
+		footer <- partialJsf.footer,
+		headerClass <- partialJsf.headerClass,
+		controlClass <- partialJsf.controlClass,
+		footerClass <- partialJsf.footerClass,
+		errorClass <- partialJsf.errorClass
+	)
+}
+
+-- @extends ContentUnit, DynamicUnitFields
+abstract rule DynamicUnit {
+	from partialJsf : JSF!DynamicUnit
+	to jsf : JSF!DynamicUnit (
+	)
+}
+
+abstract rule UnitField {
+	from partialJsf : JSF!UnitField
+	to jsf : JSF!UnitField (
+		cardinality <- partialJsf.cardinality,
+		dateFormat <- partialJsf.dateFormat
+	)
+}
+
+-- @extends UnitField, IncludedFeature, InlineActionContainer
+abstract rule UnitFeature {
+	from partialJsf : JSF!UnitFeature
+	to jsf : JSF!UnitFeature (
+		name <- partialJsf.name,
+		onlyDisplayWhenNotEmpty <- partialJsf.onlyDisplayWhenNotEmpty,
+		displayOption <- partialJsf.displayOption,
+		linkedAction <- partialJsf.linkedAction,
+		maximumDisplaySize <- partialJsf.maximumDisplaySize,
+		autofocus <- partialJsf.autofocus
+	)
+}
+
+-- @extends UnitFeature, IncludedElement
+rule UnitElement {
+	from partialJsf : JSF!UnitElement
+	to jsf : JSF!UnitElement (
+		serviceFeature <- partialJsf.serviceFeature,
+		placeholder <- partialJsf.placeholder,
+		validationPattern <- partialJsf.validationPattern
+	)
+}
+
+-- @extends UnitFeature, IncludedAssociation, UnitContainer
+rule UnitAssociation {
+	from partialJsf : JSF!UnitAssociation
+	to jsf : JSF!UnitAssociation (
+		serviceFeature <- partialJsf.serviceFeature,
+		childFeature <- partialJsf.childFeature,
+		selection <- partialJsf.selection,
+		dynamicLabel <- partialJsf.dynamicLabel
+	)
+}
+
+abstract rule UnitChildFeature {
+	from partialJsf : JSF!UnitChildFeature
+	to jsf : JSF!UnitChildFeature (
+	)
+}
+
+-- @extends UnitChildFeature
+rule UnitChildElement {
+	from partialJsf : JSF!UnitChildElement
+	to jsf : JSF!UnitChildElement (
+		serviceFeature <- partialJsf.serviceFeature
+	)
+}
+
+-- @extends UnitChildFeature
+rule UnitChildAssocition {
+	from partialJsf : JSF!UnitChildAssociation
+	to jsf : JSF!UnitChildAssociation (
+		serviceFeature <- partialJsf.serviceFeature,
+		childFeature <- partialJsf.childFeature
+	)
+}
+
+-- @extends UnitField, NamedDisplayElement
+abstract rule InterfaceField {
+	from partialJsf : JSF!InterfaceField
+	to jsf : JSF!InterfaceField (
+		defaultValue <- partialJsf.defaultValue,
+		mustMatch <- partialJsf.mustMatch,
+		inputClass <- partialJsf.inputClass
+	)
+}
+
+-- @extends InterfaceField
+rule DataTypeField {
+	from partialJsf : JSF!DataTypeField
+	to jsf : JSF!DataTypeField (
+		dataType <- partialJsf.dataType,
+		obfuscateFormFields <- partialJsf.obfuscateFormFields,
+		caseInsensitive <- partialJsf.caseInsensitive,
+		encrypt <- partialJsf.encrypt
+	)
+}
+
+-- @extends InterfaceField
+rule DateField {
+	from partialJsf : JSF!DateField
+	to jsf : JSF!DateField (
+		details <- partialJsf.details,
+		format <- partialJsf.format
+	)
+}
+
+-- @extends UnitField, NamedDisplayElement
+rule CaptchaField {
+	from partialJsf : JSF!CaptchaField
+	to jsf : JSF!CaptchaField (
+		publicKey <- partialJsf.publicKey,
+		privateKey <- partialJsf.privateKey
+	)
+}
+
+
+-- @extends NamedDisplayElement
+rule UnitSupportAction {
+	from partialJsf : JSF!UnitSupportAction
+	to jsf : JSF!UnitSupportAction (
+		confirmMessage <- partialJsf.confirmMessage
+	)
+}
+
+
+abstract rule EditUnitFields {
+	from partialJsf : JSF!EditUnit
+	to jsf : JSF!EditUnit (
+		confirmDestination <- partialJsf.confirmDestination,
+		confirmLabel <- partialJsf.confirmLabel,
+		cancelDestination <- partialJsf.cancelDestination,
+		cancelLabel <- partialJsf.cancelLabel
+	)
+}
+
+-- @extends DynamicUnit, EditUnitFields
+abstract rule EditUnit {
+	from partialJsf : JSF!EditUnit
+	to jsf : JSF!EditUnit (
+	)
+}
+
+-- @extends EditUnit
+rule CreateUnit {
+	from partialJsf : JSF!CreateUnit
+	to jsf : JSF!CreateUnit (
+	)
+}
+
+abstract rule CreateUpdateUnitFields {
+	from partialJsf : JSF!CreateUpdateUnit
+	to jsf : JSF!CreateUpdateUnit (
+		clearLabel <- partialJsf.clearLabel
+	)
+}
+
+-- @extends EditUnit, CreateUpdateUnitFields
+rule CreateUpdateUnit {
+	from partialJsf : JSF!CreateUpdateUnit
+	to jsf : JSF!CreateUpdateUnit (
+	)
+}
+
+abstract rule MapUnitFields {
+	from partialJsf : JSF!MapUnit
+	to jsf : JSF!MapUnit (
+		readOnly <- partialJsf.readOnly,
+		defaultZoomLevel <- partialJsf.defaultZoomLevel,
+		location <- partialJsf.location,
+		placeName <- partialJsf.placeName
+	)
+}
+
+-- @extends EditUnit, MapUnitFields
+rule MapUnit {
+	from partialJsf : JSF!MapUnit
+	to jsf : JSF!MapUnit (
+	)
+}
+
+-- @extends EditUnit
+rule UpdateUnit {
+	from partialJsf : JSF!UpdateUnit
+	to jsf : JSF!UpdateUnit (
+	)
+}
+
+abstract rule DataUnitFields {
+	from partialJsf : JSF!DataUnit
+	to jsf : JSF!DataUnit (
+		selection <- partialJsf.selection,
+		dynamicTitle <- partialJsf.dynamicTitle
+	)
+}
+
+-- @extends DynamicUnit, DataUnitFields
+abstract rule DataUnit {
+	from partialJsf : JSF!DataUnit
+	to jsf : JSF!DataUnit (
+	)
+}
+
+abstract rule DetailsUnitFields {
+	from partialJsf : JSF!DataUnit
+	to jsf : JSF!DataUnit (
+		omitFieldLabels <- partialJsf.omitFieldLabels
+	)
+}
+
+-- @extends DataUnit, DetailsUnitFields
+rule DetailsUnit {
+	from partialJsf : JSF!DetailsUnit
+	to jsf : JSF!DetailsUnit (
+	)
+}
+
+-- @extends InlineActionContainer
+abstract rule IndexUnitFields {
+	from partialJsf : JSF!IndexUnit
+	to jsf : JSF!IndexUnit (
+		omitColumnLabels <- partialJsf.omitColumnLabels,
+		actions <- partialJsf.actions,
+		defaultPaginationSize <- partialJsf.defaultPaginationSize,
+		nextPageLabel <- partialJsf.nextPageLabel,
+		previousPageLabel <- partialJsf.previousPageLabel,
+		useFirstLastPageLinks <- partialJsf.useFirstLastPageLinks,
+		firstPageLabel <- partialJsf.firstPageLabel,
+		lastPageLabel <- partialJsf.lastPageLabel,
+		rowClasses <- partialJsf.rowClasses
+	)
+}
+
+-- @extends DataUnit, IndexUnitFields
+abstract rule IndexUnit {
+	from partialJsf : JSF!IndexUnit
+	to jsf : JSF!IndexUnit (
+	)
+}
+
+abstract rule IndexGridUnitFields {
+	from partialJsf : JSF!IndexGridUnit
+	to jsf : JSF!IndexGridUnit (
+	)
+}
+
+-- @extends IndexUnit, IndexGridUnitFields
+rule IndexGridUnit {
+	from partialJsf : JSF!IndexGridUnit
+	to jsf : JSF!IndexGridUnit (
+	)
+}
+
+abstract rule IndexPageDirectionUnitFields {
+	from partialJsf : JSF!IndexPageDirectionUnit
+	to jsf : JSF!IndexPageDirectionUnit (
+	)
+}
+
+-- @extends IndexUnit, IndexPageDirectionUnitFields
+rule IndexPageDirectionUnit {
+	from partialJsf : JSF!IndexPageDirectionUnit
+	to jsf : JSF!IndexPageDirectionUnit (
+	)
+}
+
+abstract rule IndexLineDirectionUnitFields {
+	from partialJsf : JSF!IndexLineDirectionUnit
+	to jsf : JSF!IndexLineDirectionUnit (
+	)
+}
+
+-- @extends IndexUnit, IndexLineDirectionUnitFields
+rule IndexLineDirectionUnit {
+	from partialJsf : JSF!IndexLineDirectionUnit
+	to jsf : JSF!IndexLineDirectionUnit (
+	)
+}
+
+abstract rule ControlUnitFields {
+	from partialJsf : JSF!ControlUnit
+	to jsf : JSF!ControlUnit (
+		submitLabel <- partialJsf.submitLabel,
+		cancelDestination <- partialJsf.cancelDestination,
+		cancelLabel <- partialJsf.cancelLabel
+	)
+}
+
+-- @extends DynamicUnit, ControlUnitFields
+abstract rule ControlUnit {
+	from partialJsf : JSF!ControlUnit
+	to jsf : JSF!ControlUnit (
+	)
+}
+
+abstract rule SearchUnitFields {
+	from partialJsf : JSF!SearchUnit
+	to jsf : JSF!SearchUnit (
+		resultsDestination <- partialJsf.resultsDestination
+	)
+}
+
+-- @extends ControlUnit, SearchUnitFields
+rule SearchUnit {
+	from partialJsf : JSF!SearchUnit
+	to jsf : JSF!SearchUnit (
+	)
+}
+
+abstract rule ActionUnitFields {
+	from partialJsf : JSF!ActionUnit
+	to jsf : JSF!ActionUnit (
+		omitFieldLabels <- partialJsf.omitFieldLabels
+	)
+}
+
+-- @extends ControlUnit, ActionUnitFields
+rule ActionUnit {
+	from partialJsf : JSF!ActionUnit
+	to jsf : JSF!ActionUnit (
+	)
+}
+
+-- @extends EditUnit
+rule RegistrationUnit {
+	from partialJsf : JSF!RegistrationUnit
+	to jsf : JSF!RegistrationUnit (
+	)
+}
+
+abstract rule LoginUnitFields {
+	from partialJsf : JSF!LoginUnit
+	to jsf : JSF!LoginUnit (
+		loginIdField <- partialJsf.loginIdField,
+		passwordField <- partialJsf.passwordField,
+		rememberMeField <- partialJsf.rememberMeField
+	)
+}
+
+-- @extends ControlUnit, LoginUnitFields
+rule LoginUnit {
+	from partialJsf : JSF!LoginUnit
+	to jsf : JSF!LoginUnit (
+	)
+}
+
+abstract rule ForgottenPasswordUnitFields {
+	from partialJsf : JSF!ForgottenPasswordUnit
+	to jsf : JSF!ForgottenPasswordUnit (
+		loginIdField <- partialJsf.loginIdField
+	)
+}
+
+-- @extends ControlUnit, ForgottenPasswordUnitFields
+rule ForgottenPasswordUnit {
+	from partialJsf : JSF!ForgottenPasswordUnit
+	to jsf : JSF!ForgottenPasswordUnit (
+	)
+}
+
+
+abstract rule InlineActionContainer {
+	from partialJsf : JSF!InlineActionContainer
+	to jsf : JSF!InlineActionContainer (
+		actions <- partialJsf.actions
+	)
+}
+
+-- @extends NamedDisplayElement
+abstract rule InlineAction {
+	from partialJsf : JSF!InlineAction
+	to jsf : JSF!InlineAction (
+		header <- partialJsf.header,
+		footer <- partialJsf.footer,
+		headerClass <- partialJsf.headerClass,
+		footerClass <- partialJsf.footerClass
+	)
+}
+
+-- @extends InlineAction
+rule SelectAction {
+	from partialJsf : JSF!SelectAction
+	to jsf : JSF!SelectAction (
+		target <- partialJsf.target
+	)
+}
+
+-- @extends InlineAction
+rule DeleteAction {
+	from partialJsf : JSF!DeleteAction 
+	to jsf : JSF!DeleteAction (
+		destination <- partialJsf.destination,
+		confirmMessage <- partialJsf.confirmMessage
+	)
+}
+
+
+rule ModelReference {
+	from partialJsf : JSF!ModelReference (partialJsf.isJsfContainer())
+	to jsf : JSF!ModelReference (
+		unit <- partialJsf.unit
+	)
+}
+
+rule FeatureReference {
+	from partialJsf : JSF!FeatureReference (partialJsf.isJsfContainer())
+	to jsf : JSF!FeatureReference (
+		field <- partialJsf.field
+	)
+}
+
+rule CurrentUserReference {
+	from partialJsf : JSF!CurrentUserReference (partialJsf.isJsfContainer())
+	to jsf : JSF!CurrentUserReference (
+	)
+}

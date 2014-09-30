@@ -1,0 +1,55 @@
+[comment encoding = UTF-8 /]
+[module controlMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
+
+
+[template public generateUnitVariables(genUnit : GenContentUnit)
+	? (genUnit.oclIsKindOf(GenControlUnit)) post(trim())]
+[let genControlUnit : GenControlUnit = genUnit.oclAsType(GenControlUnit)]
+$this->[genControlUnit.instanceName()/] = ORM::factory('[genControlUnit.modelName()/]');
+[if (genControlUnit.hasDefaultValueFields())]
+[genControlUnit.generateDefaultUnitValues()/]
+[/if]
+[/let]
+[/template]
+
+[template public generateUnitDisplay(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenActionUnit) or genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
+[let genControlUnit : GenControlUnit = genUnit.oclAsType(GenControlUnit)]
+$this->[genControlUnit.templateInstanceName()/]->bind('[genControlUnit.instanceName()/]', $this->[genControlUnit.instanceName()/]);
+if (isset($this->[genControlUnit.instanceName()/]_field_errors))
+	$this->[genControlUnit.templateInstanceName()/]->bind('[genControlUnit.instanceName()/]_field_errors', $this->[genControlUnit.instanceName()/]_field_errors);
+[for (genField : GenUnitAssociation | genControlUnit.associationFields())]
+[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
+$[genField.optionsName()/] = array([if (genField.isSingleton())]'' => __('Please select')[/if]);
+foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
+find_all()[else]
+[genAssociation.genSelection.instanceName()/](FALSE)[/if] AS $option)
+	$[genField.optionsName()/]['['/]$option->id[']'/] = $option->displayLabel();
+$this->[genControlUnit.templateInstanceName()/]->bind('[genField.optionsName()/]', $[genField.optionsName()/]);
+[/let]
+[/for]
+[/let]
+[/template]
+
+
+[template public generateHandleCancel(genUnit : GenDynamicUnit) post(trim())]
+[let cancelDestination : GenPage = 
+	if genUnit.oclIsKindOf(GenControlUnit) then
+		genUnit.oclAsType(GenControlUnit).genCancelDestination
+	else
+		genUnit.oclAsType(GenEditUnit).genCancelDestination
+	endif]
+if ($this->request->post('cancel'))
+	$this->redirect(Route::get('[cancelDestination.controllerName()/]')->uri());
+[/let]
+[/template]
+
+
+[template public generateValidateOnlyControlFields(genUnit : GenDynamicUnit) post(trim())]
+$this->[genUnit.instanceName()/]->control_fields(array([for (genField : GenUnitField | genUnit.genDisplayFields->select(f | f.oclIsKindOf(GenUnitFeature))) separator(', ')]
+'[genField.modelPropertyName()/]' => ''[/for]));
+[/template]

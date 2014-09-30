@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="genorm" nsURI="http://www.cs.man.ac.uk/mdsd/2010/GenOrm" nsPrefix="jsf">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EEnum" name="OrmTechnologies">
+    <eLiterals name="JPA2"/>
+    <eLiterals name="HBM"/>
+    <eLiterals name="DatamapperORM" value="2"/>
+    <eLiterals name="GasORM" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenOrmModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormModel" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//OrmModel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genCollectionTypes" upperBound="-1"
+        eType="#//GenCollectionType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDataTypes" upperBound="-1"
+        eType="#//GenDataType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genEntities" upperBound="-1"
+        eType="#//GenEntity" containment="true" eOpposite="#//GenEntity/genPartOf"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ormTechnology" ordered="false"
+        lowerBound="1" eType="#//OrmTechnologies" defaultValueLiteral="JPA2"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="basePackage" ordered="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainPackage" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="domain"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="includeXmlBindingAnnotations"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="daoPackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="dao"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="daoImplPackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="dao.hibernate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="databaseHost" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="localhost"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="databaseName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="databaseUsername" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="databasePassword" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="databasePrefix" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="localhost"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCollectionType" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormCollectionType" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//CollectionType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenClassifier" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDataType" eSuperTypes="#//GenClassifier">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormDataType" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//DataType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaType" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaDefaultValue" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="persistenceType" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenEntity" eSuperTypes="#//GenClassifier">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormEntity" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//Entity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPartOf" ordered="false"
+        lowerBound="1" eType="#//GenOrmModel" eOpposite="#//GenOrmModel/genEntities"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultTableName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tableName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFeatures" upperBound="-1"
+        eType="#//GenFeature" containment="true" eOpposite="#//GenFeature/genParentEntity"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlTransient" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlRootElement" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNamespace" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenFeature" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genParentEntity" ordered="false"
+        lowerBound="1" eType="#//GenEntity" eOpposite="#//GenEntity/genFeatures"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlTransient" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenAttribute" abstract="true" eSuperTypes="#//GenFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonAttribute" abstract="true"
+      eSuperTypes="#//GenAttribute">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDefaultValue" ordered="false"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCollectionAttribute" abstract="true"
+      eSuperTypes="#//GenAttribute">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tableName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonElement" eSuperTypes="#//GenSingletonAttribute">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//SingletonElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDataType" ordered="false"
+        lowerBound="1" eType="#//GenDataType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCollectionElement" eSuperTypes="#//GenCollectionAttribute">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//CollectionElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonDate" eSuperTypes="#//GenSingletonAttribute">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//SingletonDate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCollectionDate" eSuperTypes="#//GenCollectionAttribute">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//CollectionDate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonFile" eSuperTypes="#//GenSingletonAttribute">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//SingletonFile"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonLocation" eSuperTypes="#//GenSingletonAttribute">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//SingletonLocation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenAssociation" abstract="true" eSuperTypes="#//GenFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genOpposite" ordered="false"
+        lowerBound="1" eType="#//GenAssociation" eOpposite="#//GenAssociation/genOpposite"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonAssociation" eSuperTypes="#//GenAssociation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//SingletonAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCollectionAssociation" eSuperTypes="#//GenAssociation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//CollectionAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pivotTableName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pivotColumnName" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

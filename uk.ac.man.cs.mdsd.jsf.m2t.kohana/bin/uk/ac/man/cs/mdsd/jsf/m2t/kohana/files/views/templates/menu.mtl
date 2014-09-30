@@ -1,0 +1,78 @@
+[comment encoding = UTF-8 /]
+[module menu(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateMenu(genMenu : GenMenu)]
+[file(genMenu.menuFilename(), false)]
+<section  class="[genMenu.styleClass()/]" id="[genMenu.instanceName()/]">
+ [genMenu.generateMenuEntries()/]
+</section>
+[/file]
+[/template]
+
+
+[template private generateMenuEntries(genMenu : GenMenu)
+	? (genMenu.oclIsTypeOf(GenDynamicMenu)) post(trim())]
+[let genDynamicMenu : GenDynamicMenu = genMenu.oclAsType(GenDynamicMenu)]
+[if (genDynamicMenu.genDynamicTitle.oclIsUndefined())]
+<h1 class="[genDynamicMenu.jsfMenu.captionClass/][if (genDynamicMenu.jsfMenu.omitCaption)] hidden[/if]">[genDynamicMenu.jsfMenu.displayLabel/]</h1>
+[else]
+<h1 class="[genDynamicMenu.jsfMenu.captionClass/][if (genDynamicMenu.jsfMenu.omitCaption)] hidden[/if]"><?php echo $[genDynamicMenu.instanceName()/]->[genDynamicMenu.genDynamicTitle.modelPropertyName()/]; ?></h1>
+[/if]
+<ul class="[genDynamicMenu.jsfMenu.layoutClass/]">
+ [genMenu.genEntries.generateMenuEntry()/]
+</ul>
+[/let]
+[/template]
+
+[template private generateMenuEntries(genMenu : GenMenu)
+	? (genMenu.oclIsTypeOf(GenStaticMenu)) post(trim())]
+[let genStaticMenu : GenStaticMenu = genMenu.oclAsType(GenStaticMenu)]
+<h1 class="[genStaticMenu.jsfMenu.captionClass/][if (genStaticMenu.jsfMenu.omitCaption)] hidden[/if]">[genStaticMenu.jsfMenu.displayLabel/]</h1>
+<ul class="[genStaticMenu.jsfMenu.layoutClass/]">
+ [genMenu.genEntries.generateMenuEntry()/]
+</ul>
+[/let]
+[/template]
+
+
+[template private generateMenuEntry(genEntry : GenMenuEntry)
+	? (genEntry.oclIsTypeOf(GenFixedPageMenuEntry)) post(trim())]
+[let genFixedEntry : GenFixedPageMenuEntry = genEntry.oclAsType(GenFixedPageMenuEntry)]
+<li><?php
+	echo HTML::anchor(
+		Route::get('[genFixedEntry.genDestination.controllerName()/]')->uri(),
+		HTML::chars(__('[genFixedEntry.jsfMenuEntry.displayLabel/]')));
+?></li>
+[/let]
+[/template]
+
+[template private generateMenuEntry(genEntry : GenMenuEntry)
+	? (genEntry.oclIsTypeOf(GenFixedActionMenuEntry)) post(trim())]
+[let genFixedEntry : GenFixedActionMenuEntry = genEntry.oclAsType(GenFixedActionMenuEntry)]
+<li><?php
+	echo HTML::anchor(
+		Route::get('[genFixedEntry.genDestination.pageDisplayedOn().controllerName()/]')->uri(array(
+			'action' => '[genFixedEntry.genDestination.actionName()/]'
+		)),
+		HTML::chars(__('[genFixedEntry.jsfMenuEntry.displayLabel/]')));
+?></li>
+[/let]
+[/template]
+
+[template private generateMenuEntry(genEntry : GenMenuEntry)
+	? (genEntry.oclIsTypeOf(GenFixedCommandMenuEntry)) post(trim())]
+[let genFixedEntry : GenFixedCommandMenuEntry = genEntry.oclAsType(GenFixedCommandMenuEntry)]
+<li><?php
+	echo HTML::anchor(
+		Route::get('[genFixedEntry.genDestination.genPartOf.pageDisplayedOn().controllerName()/]')->uri(array(
+			'action' => '[genFixedEntry.genDestination.actionName()/]'
+		)),
+		HTML::chars(__('[genFixedEntry.jsfMenuEntry.displayLabel/]')));
+?></li>
+[/let]
+[/template]

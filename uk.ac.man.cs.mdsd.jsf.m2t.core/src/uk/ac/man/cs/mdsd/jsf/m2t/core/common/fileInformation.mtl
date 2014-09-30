@@ -1,0 +1,27 @@
+[comment encoding = UTF-8 /]
+[module fileInformation(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+
+
+[query public executableExtension(eObject : EObject) : String
+	= '.php'
+/]
+
+[query public htmlExtension(eObject : EObject) : String
+	= '.html'
+/]
+
+[query public twigExtension(eObject : EObject) : String
+	= '.twig'
+/]
+
+[query public xmlExtension(eObject : EObject) : String
+	= '.xml'
+/]
+
+
+[query public cssDirectory(eObject : EObject) : String
+	= 'css'
+/]

@@ -1,0 +1,45 @@
+[comment encoding = UTF-8 /]
+[module sslHelper(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+
+
+[template public generateSslHelper(genModel : GenJsfModel)]
+[file(genModel.helpersDirectory().concat('/ssl_helper').concat(genModel.executableExtension()), false)]
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+if (!function_exists('use_ssl')) {
+	function use_ssl() {
+		$CI =& get_instance();
+		$CI->config->config['['/]'base_url'[']'/] = str_replace('http://', 'https://', $CI->config->config['['/]'base_url'[']'/]);
+	}
+}
+
+if (!function_exists('use_nonssl')) {
+	function use_nonssl() {
+		$CI =& get_instance();
+		$CI->config->config['['/]'base_url'[']'/] = str_replace('https://', 'http://', $CI->config->config['['/]'base_url'[']'/]);
+	}
+}
+
+// http://ellislab.com/forums/viewthread/83154/
+
+if (!function_exists('force_ssl')) {
+	function force_ssl() {
+		use_ssl();
+		if ($_SERVER['['/]'SERVER_PORT'[']'/] != 443) {
+			redirect($CI->uri->uri_string());
+		}
+	}
+}
+
+if (!function_exists('remove_ssl')) {
+	function remove_ssl() {
+		use_nonssl();
+		if ($_SERVER['['/]'SERVER_PORT'[']'/] != 80) {
+			redirect($CI->uri->uri_string());
+		}
+	}
+}   
+[/file]
+[/template]

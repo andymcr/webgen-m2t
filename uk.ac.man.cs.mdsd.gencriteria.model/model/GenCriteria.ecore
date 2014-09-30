@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gencriteria" nsURI="http://www.cs.man.ac.uk/mdsd/2013/GenCriteria"
+    nsPrefix="gencriteria">
+  <eClassifiers xsi:type="ecore:EClass" name="GenExpression" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenLiteral" abstract="true" interface="true"
+      eSuperTypes="#//GenExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenNullLiteral" eSuperTypes="#//GenLiteral">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaLiteral" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//NullLiteral"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIntegerLiteral" eSuperTypes="#//GenLiteral">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaLiteral" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//IntegerLiteral"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenStringLiteral" eSuperTypes="#//GenLiteral">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaLiteral" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//StringLiteral"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCurrentTime" eSuperTypes="#//GenLiteral">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaLiteral" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//CurrentTime"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenFunction" eSuperTypes="#//GenExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaFunction" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//Function"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPath" abstract="true" interface="true"
+      eSuperTypes="#//GenExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPredicate" abstract="true" eSuperTypes="#//GenExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPredicateBooleanOperator" eSuperTypes="#//GenPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//PredicateBooleanOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genExpressions" ordered="false"
+        lowerBound="1" upperBound="-1" eType="#//GenPredicate" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPredicateEqualityOperator" eSuperTypes="#//GenPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//PredicateEqualityOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLeft" ordered="false"
+        lowerBound="1" eType="#//GenExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genRight" ordered="false"
+        lowerBound="1" eType="#//GenExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPredicateComparisonOperator" eSuperTypes="#//GenPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//PredicateComparisonOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLeft" lowerBound="1"
+        eType="#//GenExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genRight" lowerBound="1"
+        eType="#//GenExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenOrder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaOrder" ordered="false"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//Order"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPath" ordered="false"
+        eType="#//GenPath" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPredicateIsOperator" eSuperTypes="#//GenPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//PredicateIsOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLeft" lowerBound="1"
+        eType="#//GenExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genRight" lowerBound="1"
+        eType="#//GenExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPredicateLikeOperator" eSuperTypes="#//GenPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//PredicateLikeOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLeft" lowerBound="1"
+        eType="#//GenExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genRight" lowerBound="1"
+        eType="#//GenExpression" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

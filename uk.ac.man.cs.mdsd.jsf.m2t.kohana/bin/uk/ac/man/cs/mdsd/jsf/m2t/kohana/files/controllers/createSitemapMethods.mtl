@@ -1,0 +1,14 @@
+[comment encoding = UTF-8 /]
+[module createSitemapMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateUnitMethods(genUnit : GenCreateSitemapUnit) post(trim())]
+public function action_[genUnit.actionName()/]()
+{
+	[genUnit.sitemapModuleName()/]::create('[genUnit.jsfUnit.deployedURL/]');
+}
+
+[/template]

@@ -1,0 +1,37 @@
+[comment encoding = UTF-8 /]
+[module commandMethods(
+	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
+
+
+[template public generateUnitVariables(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenCommandUnit)) post(trim())]
+[let genCommandUnit : GenCommandUnit = genUnit.oclAsType(GenCommandUnit)]
+[/let]
+[/template]
+
+[template public generateUnitDisplay(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenCommandUnit)) post(trim())]
+[let genCommandUnit : GenCommandUnit = genUnit.oclAsType(GenCommandUnit)]
+[/let]
+[/template]
+
+
+[template public generateUnitMethods(genUnit : GenCommandUnit) post(trim())]
+[for (genCommand : GenCommand | genUnit.genCommands)]
+public function action_[genCommand.actionName()/]() {
+	[if (genCommand.oclIsTypeOf(GenUserCommand))]
+	/* [protected ('command.'.concat(genCommand.name))]
+	 */
+	/* [/protected]
+	 */
+	[/if]
+}
+
+[/for]
+[/template]

@@ -1,0 +1,42 @@
+[comment encoding = UTF-8 /]
+[module modelLanguage(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+
+
+[template public generateModelLanguage(genService : GenService)]
+[file(genService.modelLanguageFilename(), false)]
+<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+$lang['['/]'[genService.modelName().toLower()/]_id'[']'/] = 'id';
+[for (genEntity : GenEntity | genService.genEntities)]
+	[for (genFeature : GenFeature | genEntity.genFeatures)]
+		[if (genFeature.oclIsKindOf(GenSingletonElement))]
+		[let genSingletonElement : GenSingletonElement = genFeature.oclAsType(GenSingletonElement)]
+$lang['['/]'[genService.modelName().toLower()/]_[genSingletonElement.columnName/]'[']'/] = '[genSingletonElement.columnName/]';
+		[/let]
+		[elseif (genFeature.oclIsKindOf(GenCollectionElement))]
+		[let genCollectionElement : GenCollectionElement = genFeature.oclAsType(GenCollectionElement)]
+$lang['['/]'[genService.modelName().toLower()/]_[genCollectionElement.columnName/]'[']'/] = '[genCollectionElement.columnName/]';
+		[/let]
+		[elseif (genFeature.oclIsKindOf(GenSingletonAssociation))]
+		[let genSingletonAssociation : GenSingletonAssociation = genFeature.oclAsType(GenSingletonAssociation)]
+$lang['['/]'[genService.modelName().toLower()/]_[genSingletonAssociation.columnName/]_id'[']'/] = '[genSingletonAssociation.columnName()/]_id';
+		[/let]
+		[elseif (genFeature.oclIsKindOf(GenCollectionAssociation))]
+		[let genCollectionAssociation : GenCollectionAssociation = genFeature.oclAsType(GenCollectionAssociation)]
+$lang['['/]'[genService.modelName().toLower()/]_[genCollectionAssociation.name/]_id'[']'/] = '[genCollectionAssociation.columnName()/]_id';
+		[/let]
+		[else]
+// ???? [genFeature/]
+		[/if]
+	[/for]
+[/for]
+$lang['['/]'[genService.modelName().toLower()/]_created'[']'/] = 'created';
+$lang['['/]'[genService.modelName().toLower()/]_updated'[']'/] = 'updated';
+
+[/file]
+[/template]

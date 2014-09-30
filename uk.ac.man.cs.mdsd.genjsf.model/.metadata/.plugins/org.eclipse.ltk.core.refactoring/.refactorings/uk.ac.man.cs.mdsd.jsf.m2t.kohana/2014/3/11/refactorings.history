@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;searchMethods.mtl&apos; to &apos;uk.ac.man.cs.mdsd.jsf.m2t.kohana/src/uk.ac.man.cs.mdsd.jsf.m2t.kohana.files.controllers&apos;&#x0D;&#x0A;- Original project: &apos;uk.ac.man.cs.mdsd.jsf.m2t.kohana&apos;&#x0D;&#x0A;- Destination element: &apos;uk.ac.man.cs.mdsd.jsf.m2t.kohana/src/uk.ac.man.cs.mdsd.jsf.m2t.kohana.files.controllers&apos;&#x0D;&#x0A;- Original element: &apos;searchMethods.mtl&apos;" description="Copy file" destination="/src&lt;uk.ac.man.cs.mdsd.jsf.m2t.kohana.files.controllers" element1="src/uk/ac/man/cs/mdsd/jsf/m2t/kohana/files/controllers/searchMethods.mtl" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1394831600653" units="0" version="1.0"/>
+</session>

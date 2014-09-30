@@ -1,0 +1,1832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension point="org.eclipse.team.core.fileTypes" id="repo-ftype">
+      <?gmfgen generated="true"?>
+      <fileTypes type="text" extension="website_diagram"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser" id="resource-factory">
+      <?gmfgen generated="true"?>
+      <parser
+         type="website_diagram"
+         class="org.eclipse.gmf.runtime.emf.core.resources.GMFResourceFactory">
+      </parser>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors" id="gmf-editor">
+      <?gmfgen generated="true"?>
+      <editor
+         id="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID"
+         name="%editorName"
+         icon="icons/obj16/WebsiteDiagramFile.gif"
+         extensions="website_diagram"
+         default="true"
+         class="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditor"
+         matchingStrategy="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteMatchingStrategy"
+         contributorClass="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramActionBarContributor">
+      </editor>
+   </extension>
+   
+   <extension point="org.eclipse.ui.contexts" id="ui-context">
+      <?gmfgen generated="true"?>
+      <context
+         description="%context.description"
+         id="uk.ac.man.cs.mdsd.webgen.website.diagram.ui.diagramContext"
+         name="%context.name"
+         parentId="org.eclipse.gmf.runtime.diagram.ui.diagramContext">
+      </context>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
+      <?gmfgen generated="true"?>
+  	  <wizard
+  	     name="%newWizardName"
+  	     icon="icons/obj16/WebsiteDiagramFile.gif"
+  	     category="org.eclipse.ui.Examples"
+  	     class="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteCreationWizard"
+  	     id="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteCreationWizardID">
+  	  	 <description>%newWizardDesc</description>  
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
+      <?gmfgen generated="true"?>
+      <objectContribution
+            id="uk.ac.man.cs.mdsd.webgen.diagram.InitDiagram"
+            nameFilter="*.website"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               label="%initDiagramActionLabel"
+               class="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteInitDiagramFileAction"
+               menubarPath="additions"
+               enablesFor="1"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.InitDiagramAction">
+         </action>
+      </objectContribution>
+   </extension>
+	
+   <extension point="org.eclipse.gmf.runtime.common.ui.services.action.globalActionHandlerProviders" id="global-actions">
+      <?gmfgen generated="true"?>
+      <GlobalActionHandlerProvider
+         class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramGlobalActionHandlerProvider"
+         id="WebsitePresentation">
+         <Priority name="Lowest"/>
+         <ViewId id="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID">
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="delete"/>
+            </ElementType>
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart">
+               <GlobalActionId actionId="save"/>
+            </ElementType>
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="save">
+               </GlobalActionId>
+            </ElementType>        
+         </ViewId>
+      </GlobalActionHandlerProvider>
+      <GlobalActionHandlerProvider
+         class="org.eclipse.gmf.runtime.diagram.ui.printing.render.providers.DiagramWithPrintGlobalActionHandlerProvider"
+         id="WebsitePresentationPrint">
+         <Priority name="Lowest"/>
+         <ViewId id="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID">
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="print"/>
+            </ElementType>
+         </ViewId>
+      </GlobalActionHandlerProvider>
+      <GlobalActionHandlerProvider
+         class="org.eclipse.gmf.runtime.diagram.ui.providers.ide.providers.DiagramIDEGlobalActionHandlerProvider"
+         id="WebsitePresentationIDE">
+         <Priority name="Lowest"/>
+         <ViewId id="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID">
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="bookmark"/>
+            </ElementType>
+         </ViewId>
+      </GlobalActionHandlerProvider>
+      <GlobalActionHandlerProvider
+            class="org.eclipse.gmf.runtime.diagram.ui.render.providers.DiagramUIRenderGlobalActionHandlerProvider"
+            id="WebsiteRender">
+         <Priority name="Lowest"/>
+         <ViewId id="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID">
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="cut"/>
+               <GlobalActionId actionId="copy"/>
+               <GlobalActionId actionId="paste"/>
+            </ElementType>
+         </ViewId>
+      </GlobalActionHandlerProvider>
+   </extension>
+
+
+   
+      
+
+   
+   <extension point="org.eclipse.core.runtime.preferences" id="prefs">
+      <?gmfgen generated="true"?>
+      <initializer class="uk.ac.man.cs.mdsd.webgen.website.diagram.preferences.DiagramPreferenceInitializer"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.preferencePages" id="prefpages">
+      <?gmfgen generated="true"?>
+      <page
+            id="uk.ac.man.cs.mdsd.webgen.diagram.general"
+            name="%prefpage.uk.ac.man.cs.mdsd.webgen.diagram.general"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.preferences.DiagramGeneralPreferencePage">
+      </page>
+      <page
+            id="uk.ac.man.cs.mdsd.webgen.diagram.appearance"
+            name="%prefpage.uk.ac.man.cs.mdsd.webgen.diagram.appearance"
+            category="uk.ac.man.cs.mdsd.webgen.diagram.general"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.preferences.DiagramAppearancePreferencePage">
+      </page>
+      <page
+            id="uk.ac.man.cs.mdsd.webgen.diagram.connections"
+            name="%prefpage.uk.ac.man.cs.mdsd.webgen.diagram.connections"
+            category="uk.ac.man.cs.mdsd.webgen.diagram.general"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.preferences.DiagramConnectionsPreferencePage">
+      </page>
+      <page
+            id="uk.ac.man.cs.mdsd.webgen.diagram.printing"
+            name="%prefpage.uk.ac.man.cs.mdsd.webgen.diagram.printing"
+            category="uk.ac.man.cs.mdsd.webgen.diagram.general"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.preferences.DiagramPrintingPreferencePage">
+      </page>
+      <page
+            id="uk.ac.man.cs.mdsd.webgen.diagram.rulersAndGrid"
+            name="%prefpage.uk.ac.man.cs.mdsd.webgen.diagram.rulersAndGrid"
+            category="uk.ac.man.cs.mdsd.webgen.diagram.general"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.preferences.DiagramRulersAndGridPreferencePage">
+      </page>
+   </extension>
+
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
+      <?gmfgen generated="true"?>
+      <propertyContributor
+            contributorId="uk.ac.man.cs.mdsd.webgen.diagram"
+            labelProvider="uk.ac.man.cs.mdsd.webgen.website.diagram.sheet.WebsiteSheetLabelProvider">
+         <propertyCategory category="domain"/>
+         <propertyCategory category="visual"/>
+         <propertyCategory category="extra"/>
+      </propertyContributor>
+   </extension>
+
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertyTabs" id="proptabs">
+      <?gmfgen generated="true"?>   
+      <propertyTabs contributorId="uk.ac.man.cs.mdsd.webgen.diagram">
+         <propertyTab
+             category="visual"
+             id="property.tab.AppearancePropertySection"
+             label="%tab.appearance"/>
+          <propertyTab
+             category="visual"
+             id="property.tab.DiagramPropertySection"
+             label="%tab.diagram"/>
+          <propertyTab
+             category="domain"
+             id="property.tab.domain"
+             label="%tab.domain"/>
+      </propertyTabs>
+   </extension>
+
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertySections" id="propsections">
+      <?gmfgen generated="true"?>   
+      <propertySections contributorId="uk.ac.man.cs.mdsd.webgen.diagram">
+         <propertySection id="property.section.ConnectorAppearancePropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.ConnectionEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.ConnectionAppearancePropertySection" 
+            tab="property.tab.AppearancePropertySection">
+         </propertySection>
+         <propertySection id="property.section.ShapeColorAndFontPropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.ShapeEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.ShapeColorsAndFontsPropertySection" 
+            tab="property.tab.AppearancePropertySection">
+         </propertySection> 
+         <propertySection id="property.section.DiagramColorsAndFontsPropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.DiagramEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.DiagramColorsAndFontsPropertySection" 
+            tab="property.tab.AppearancePropertySection">
+         </propertySection>     
+         <propertySection id="property.section.RulerGridPropertySection" 
+            filter="org.eclipse.gmf.runtime.diagram.ui.properties.filters.DiagramEditPartPropertySectionFilter" 
+            class="org.eclipse.gmf.runtime.diagram.ui.properties.sections.grid.RulerGridPropertySection" 
+            tab="property.tab.DiagramPropertySection">
+         </propertySection>     
+         <propertySection
+            id="property.section.domain" 
+            tab="property.tab.domain"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.sheet.WebsitePropertySection">
+            <input type="org.eclipse.gmf.runtime.notation.View"/>
+            <input type="org.eclipse.gef.EditPart"/>
+            <input type="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem"/>
+         </propertySection>
+      </propertySections>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.diagram.core.viewProviders" id="view-provider">
+      <?gmfgen generated="true"?>
+      <viewProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteViewProvider">
+         <Priority name="Lowest"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Website"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2008,2006,2003,2005,2009,2004,3055,3029,3149,3028,3054,3014,3152,3230,3213,3169,3170,3201,3207,3232,3225,3226,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3158,3159,3231,3156,3167,3168,3166,3163,3150"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001,4002,4003"/>
+      </viewProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.diagram.ui.editpartProviders" id="ep-provider">
+      <?gmfgen generated="true"?>
+      <editpartProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteEditPartProvider">
+         <Priority name="Lowest"/>
+         <object class="org.eclipse.gmf.runtime.notation.Diagram" id="generated-diagram">
+            <method name="getType()" value="Website"/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
+            <method name="getType()" value="2001,2002,2008,2006,2003,2005,2009,2004,3055,3029,3149,3028,3054,3014,3152,3230,3213,3169,3170,3201,3207,3232,3225,3226,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3158,3159,3231,3156,3167,3168,3166,3163,3150"/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
+            <method name="getType()" value="4001,4002,4003"/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
+            <method name="getType()" value="5054,5002,5155,5032,5004,5014,5157,5005,5156,5033,5059,5018,5160,5237,5221,5176,5177,5208,5214,5239,5233,5232,5107,5178,5179,5209,5215,5108,5180,5199,5210,5216,5109,5181,5106,5184,5116,5182,5198,5117,5183,5112,5185,5123,5186,5191,5120,5187,5188,5133,5189,5190,5122,5192,5197,5125,5193,5194,5135,5195,5196,5138,5200,5201,5110,5105,5130,5211,5217,5240,5142,5202,5131,5203,5226,5204,5207,5149,5205,5206,5132,5212,5218,5150,5151,5235,5113,5222,5223,5213,5219,5114,5115,5227,5231,5230,5228,5229,5161,5162,5224,5225,5165,5166,5238,5164,5174,5175,5173,5170,5158"/>
+         </object>
+         <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
+            <method name="getType()" value="7007,7081,7016,7001,7002,7103,7104,7117,7042,7043,7044,7087,7105,7096,7106,7051,7097,7053,7045,7054,7086,7098,7056,7107,7066,7057,7058,7108,7068,7069,7070,7071,7109,7110,7112,7113,7076,7047,7049,7114,7115,7116,7084,7006,7085,7088"/>
+         </object>
+         <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
+      </editpartProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.emf.ui.modelingAssistantProviders" id="modelassist-provider">
+      <?gmfgen generated="true"?>
+      <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteModelingAssistantProvider">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.WebGenModelEditPart" id="WebGenModel_1000"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.WebsitePropertiesEditPart" id="WebsiteProperties_2001"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeEditPart" id="DataType_2002"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DynamicMenuEditPart" id="DynamicMenu_2008"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EnumerationTypeEditPart" id="EnumerationType_2006"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EntityEditPart" id="Entity_2003"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageEditPart" id="Page_2005"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticMenuEditPart" id="StaticMenu_2009"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEditPart" id="Service_2004"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CasAuthenticationEditPart" id="CasAuthentication_3055"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocalAuthenticationSystemEditPart" id="LocalAuthenticationSystem_3029"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MenuIncludedElementEditPart" id="MenuIncludedElement_3149"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EnumerationLiteralEditPart" id="EnumerationLiteral_3028"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeAttributeEditPart" id="DataTypeAttribute_3054"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateAttributeEditPart" id="DateAttribute_3014"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FileAttributeEditPart" id="FileAttribute_3152"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocationAttributeEditPart" id="LocationAttribute_3230"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ActionUnitEditPart" id="ActionUnit_3213"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElementEditPart" id="UnitElement_3169"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationEditPart" id="UnitAssociation_3170"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeFieldEditPart" id="DataTypeField_3201"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateFieldEditPart" id="DateField_3207"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitSupportActionEditPart" id="UnitSupportAction_3232"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CommandUnitEditPart" id="CommandUnit_3225"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UserCommandEditPart" id="UserCommand_3226"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUnitEditPart" id="CreateUnit_3103"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement2EditPart" id="UnitElement_3171"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation2EditPart" id="UnitAssociation_3172"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField2EditPart" id="DataTypeField_3202"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField2EditPart" id="DateField_3208"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnitEditPart" id="CreateUpdateUnit_3104"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement3EditPart" id="UnitElement_3173"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation3EditPart" id="UnitAssociation_3174"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField3EditPart" id="DataTypeField_3203"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField3EditPart" id="DateField_3209"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateSitemapUnitEditPart" id="CreateSitemapUnit_3157"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnitEditPart" id="DetailsUnit_3105"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement4EditPart" id="UnitElement_3175"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectActionEditPart" id="SelectAction_3102"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation4EditPart" id="UnitAssociation_3176"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit2EditPart" id="DetailsUnit_3112"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement5EditPart" id="UnitElement_3177"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation5EditPart" id="UnitAssociation_3180"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit3EditPart" id="DetailsUnit_3113"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement6EditPart" id="UnitElement_3178"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitEditPart" id="IndexUnit_3106"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement7EditPart" id="UnitElement_3179"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit2EditPart" id="IndexUnit_3114"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement8EditPart" id="UnitElement_3181"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation6EditPart" id="UnitAssociation_3182"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit4EditPart" id="DetailsUnit_3116"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement9EditPart" id="UnitElement_3183"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation7EditPart" id="UnitAssociation_3184"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit5EditPart" id="DetailsUnit_3129"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement10EditPart" id="UnitElement_3185"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation8EditPart" id="UnitAssociation_3186"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit3EditPart" id="IndexUnit_3118"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement11EditPart" id="UnitElement_3187"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation9EditPart" id="UnitAssociation_3188"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit4EditPart" id="IndexUnit_3120"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement12EditPart" id="UnitElement_3189"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation10EditPart" id="UnitAssociation_3190"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit6EditPart" id="DetailsUnit_3131"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement13EditPart" id="UnitElement_3191"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation11EditPart" id="UnitAssociation_3192"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit5EditPart" id="IndexUnit_3133"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement14EditPart" id="UnitElement_3193"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation12EditPart" id="UnitAssociation_3194"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction2EditPart" id="SelectAction_3107"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteActionEditPart" id="DeleteAction_3101"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction3EditPart" id="SelectAction_3126"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField4EditPart" id="DataTypeField_3204"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField4EditPart" id="DateField_3210"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitSupportAction2EditPart" id="UnitSupportAction_3233"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart" id="IndexUnit_3136"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement15EditPart" id="UnitElement_3195"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction4EditPart" id="SelectAction_3127"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation13EditPart" id="UnitAssociation_3196"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit7EditPart" id="DetailsUnit_3219"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement16EditPart" id="UnitElement_3197"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation14EditPart" id="UnitAssociation_3198"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit7EditPart" id="IndexUnit_3143"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement17EditPart" id="UnitElement_3199"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation15EditPart" id="UnitAssociation_3200"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction5EditPart" id="SelectAction_3128"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField5EditPart" id="DataTypeField_3205"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField5EditPart" id="DateField_3211"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction6EditPart" id="SelectAction_3146"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction2EditPart" id="DeleteAction_3147"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MapUnitEditPart" id="MapUnit_3228"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SearchUnitEditPart" id="SearchUnit_3109"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement18EditPart" id="UnitElement_3215"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation16EditPart" id="UnitAssociation_3216"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField6EditPart" id="DataTypeField_3206"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField6EditPart" id="DateField_3212"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticUnitEditPart" id="StaticUnit_3110"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitEditPart" id="UpdateUnit_3111"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement19EditPart" id="UnitElement_3220"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation17EditPart" id="UnitAssociation_3221"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit8EditPart" id="IndexUnit_3222"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement20EditPart" id="UnitElement_3223"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation18EditPart" id="UnitAssociation_3224"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction7EditPart" id="SelectAction_3153"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction3EditPart" id="DeleteAction_3154"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField7EditPart" id="DataTypeField_3217"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField7EditPart" id="DateField_3218"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedPageMenuEntryEditPart" id="FixedPageMenuEntry_3158"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedActionMenuEntryEditPart" id="FixedActionMenuEntry_3159"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedCommandMenuEntryEditPart" id="FixedCommandMenuEntry_3231"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EditStaticTextMenuEntryEditPart" id="EditStaticTextMenuEntry_3156"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityElementEditPart" id="ServiceEntityElement_3167"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityAssociationEditPart" id="ServiceEntityAssociation_3168"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceViewAssociationEditPart" id="ServiceViewAssociation_3166"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelEditPart" id="ModelLabel_3163"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionEditPart" id="Selection_3150"/>
+         <context elements="WebGenModel_1000,WebsiteProperties_2001,DataType_2002,DynamicMenu_2008,EnumerationType_2006,Entity_2003,Page_2005,StaticMenu_2009,Service_2004,CasAuthentication_3055,LocalAuthenticationSystem_3029,MenuIncludedElement_3149,EnumerationLiteral_3028,DataTypeAttribute_3054,DateAttribute_3014,FileAttribute_3152,LocationAttribute_3230,ActionUnit_3213,UnitElement_3169,UnitAssociation_3170,DataTypeField_3201,DateField_3207,UnitSupportAction_3232,CommandUnit_3225,UserCommand_3226,CreateUnit_3103,UnitElement_3171,UnitAssociation_3172,DataTypeField_3202,DateField_3208,CreateUpdateUnit_3104,UnitElement_3173,UnitAssociation_3174,DataTypeField_3203,DateField_3209,CreateSitemapUnit_3157,DetailsUnit_3105,UnitElement_3175,SelectAction_3102,UnitAssociation_3176,DetailsUnit_3112,UnitElement_3177,UnitAssociation_3180,DetailsUnit_3113,UnitElement_3178,IndexUnit_3106,UnitElement_3179,IndexUnit_3114,UnitElement_3181,UnitAssociation_3182,DetailsUnit_3116,UnitElement_3183,UnitAssociation_3184,DetailsUnit_3129,UnitElement_3185,UnitAssociation_3186,IndexUnit_3118,UnitElement_3187,UnitAssociation_3188,IndexUnit_3120,UnitElement_3189,UnitAssociation_3190,DetailsUnit_3131,UnitElement_3191,UnitAssociation_3192,IndexUnit_3133,UnitElement_3193,UnitAssociation_3194,SelectAction_3107,DeleteAction_3101,SelectAction_3126,DataTypeField_3204,DateField_3210,UnitSupportAction_3233,IndexUnit_3136,UnitElement_3195,SelectAction_3127,UnitAssociation_3196,DetailsUnit_3219,UnitElement_3197,UnitAssociation_3198,IndexUnit_3143,UnitElement_3199,UnitAssociation_3200,SelectAction_3128,DataTypeField_3205,DateField_3211,SelectAction_3146,DeleteAction_3147,MapUnit_3228,SearchUnit_3109,UnitElement_3215,UnitAssociation_3216,DataTypeField_3206,DateField_3212,StaticUnit_3110,UpdateUnit_3111,UnitElement_3220,UnitAssociation_3221,IndexUnit_3222,UnitElement_3223,UnitAssociation_3224,SelectAction_3153,DeleteAction_3154,DataTypeField_3217,DateField_3218,FixedPageMenuEntry_3158,FixedActionMenuEntry_3159,FixedCommandMenuEntry_3231,EditStaticTextMenuEntry_3156,ServiceEntityElement_3167,ServiceEntityAssociation_3168,ServiceViewAssociation_3166,ModelLabel_3163,Selection_3150"/>
+      </modelingAssistantProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.common.ui.services.iconProviders" id="icon-provider">
+      <?gmfgen generated="true"?>
+      <IconProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteIconProvider">
+         <Priority name="Low"/>
+      </IconProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.common.ui.services.parserProviders" id="parser-provider">
+      <?gmfgen generated="true"?>
+      <ParserProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteParserProvider">
+         <Priority name="Lowest"/>
+      </ParserProvider>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypes" id="element-types">
+      <?gmfgen generated="true"?>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.WebGenModel_1000"
+               name="%metatype.name.WebGenModel_1000"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="WebGenModel"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.WebGenModelEditHelper">
+            <param name="semanticHint" value="1000"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.WebsiteProperties_2001"
+               name="%metatype.name.WebsiteProperties_2001"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="WebsiteProperties"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.WebsitePropertiesEditHelper">
+            <param name="semanticHint" value="2001"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataType_2002"
+               name="%metatype.name.DataType_2002"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DataType"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DataTypeEditHelper">
+            <param name="semanticHint" value="2002"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DynamicMenu_2008"
+               name="%metatype.name.DynamicMenu_2008"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DynamicMenu"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DynamicMenuEditHelper">
+            <param name="semanticHint" value="2008"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.EnumerationType_2006"
+               name="%metatype.name.EnumerationType_2006"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="EnumerationType"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.EnumerationTypeEditHelper">
+            <param name="semanticHint" value="2006"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.Entity_2003"
+               name="%metatype.name.Entity_2003"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="Entity"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.EntityEditHelper">
+            <param name="semanticHint" value="2003"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.Page_2005"
+               name="%metatype.name.Page_2005"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="Page"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.PageEditHelper">
+            <param name="semanticHint" value="2005"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.StaticMenu_2009"
+               name="%metatype.name.StaticMenu_2009"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="StaticMenu"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.StaticMenuEditHelper">
+            <param name="semanticHint" value="2009"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.Service_2004"
+               name="%metatype.name.Service_2004"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="Service"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ServiceEditHelper">
+            <param name="semanticHint" value="2004"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.CasAuthentication_3055"
+               name="%metatype.name.CasAuthentication_3055"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="CasAuthentication"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CasAuthenticationEditHelper">
+            <param name="semanticHint" value="3055"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3029"
+               name="%metatype.name.LocalAuthenticationSystem_3029"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="LocalAuthenticationSystem"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.LocalAuthenticationSystemEditHelper">
+            <param name="semanticHint" value="3029"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.MenuIncludedElement_3149"
+               name="%metatype.name.MenuIncludedElement_3149"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="MenuIncludedElement"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.MenuIncludedElementEditHelper">
+            <param name="semanticHint" value="3149"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3028"
+               name="%metatype.name.EnumerationLiteral_3028"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="EnumerationLiteral"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.EnumerationLiteralEditHelper">
+            <param name="semanticHint" value="3028"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeAttribute_3054"
+               name="%metatype.name.DataTypeAttribute_3054"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DataTypeAttribute"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DataTypeAttributeEditHelper">
+            <param name="semanticHint" value="3054"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3014"
+               name="%metatype.name.DateAttribute_3014"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DateAttribute"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DateAttributeEditHelper">
+            <param name="semanticHint" value="3014"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.FileAttribute_3152"
+               name="%metatype.name.FileAttribute_3152"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="FileAttribute"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.FileAttributeEditHelper">
+            <param name="semanticHint" value="3152"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3230"
+               name="%metatype.name.LocationAttribute_3230"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="LocationAttribute"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.LocationAttributeEditHelper">
+            <param name="semanticHint" value="3230"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"
+               name="%metatype.name.ActionUnit_3213"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ActionUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ActionUnitEditHelper">
+            <param name="semanticHint" value="3213"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"
+               name="%metatype.name.UnitElement_3169"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="UnitElement"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.UnitElementEditHelper">
+            <param name="semanticHint" value="3169"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"
+               name="%metatype.name.UnitAssociation_3170"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="UnitAssociation"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.UnitAssociationEditHelper">
+            <param name="semanticHint" value="3170"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"
+               name="%metatype.name.DataTypeField_3201"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DataTypeField"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DataTypeFieldEditHelper">
+            <param name="semanticHint" value="3201"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"
+               name="%metatype.name.DateField_3207"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DateField"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DateFieldEditHelper">
+            <param name="semanticHint" value="3207"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"
+               name="%metatype.name.UnitSupportAction_3232"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="UnitSupportAction"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.UnitSupportActionEditHelper">
+            <param name="semanticHint" value="3232"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.CommandUnit_3225"
+               name="%metatype.name.CommandUnit_3225"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="CommandUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CommandUnitEditHelper">
+            <param name="semanticHint" value="3225"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UserCommand_3226"
+               name="%metatype.name.UserCommand_3226"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="UserCommand"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.UserCommandEditHelper">
+            <param name="semanticHint" value="3226"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"
+               name="%metatype.name.CreateUnit_3103"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="CreateUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CreateUnitEditHelper">
+            <param name="semanticHint" value="3103"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3171"
+               name="%metatype.name.UnitElement_3171"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3171"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3172"
+               name="%metatype.name.UnitAssociation_3172"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3172"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3202"
+               name="%metatype.name.DataTypeField_3202"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
+            <param name="semanticHint" value="3202"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3208"
+               name="%metatype.name.DateField_3208"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
+            <param name="semanticHint" value="3208"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"
+               name="%metatype.name.CreateUpdateUnit_3104"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="CreateUpdateUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CreateUpdateUnitEditHelper">
+            <param name="semanticHint" value="3104"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"
+               name="%metatype.name.UnitElement_3173"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3173"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"
+               name="%metatype.name.UnitAssociation_3174"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3174"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"
+               name="%metatype.name.DataTypeField_3203"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
+            <param name="semanticHint" value="3203"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3209"
+               name="%metatype.name.DateField_3209"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
+            <param name="semanticHint" value="3209"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.CreateSitemapUnit_3157"
+               name="%metatype.name.CreateSitemapUnit_3157"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="CreateSitemapUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CreateSitemapUnitEditHelper">
+            <param name="semanticHint" value="3157"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"
+               name="%metatype.name.DetailsUnit_3105"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DetailsUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DetailsUnitEditHelper">
+            <param name="semanticHint" value="3105"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"
+               name="%metatype.name.UnitElement_3175"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3175"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"
+               name="%metatype.name.SelectAction_3102"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="SelectAction"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.SelectActionEditHelper">
+            <param name="semanticHint" value="3102"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"
+               name="%metatype.name.UnitAssociation_3176"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3176"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3112"
+               name="%metatype.name.DetailsUnit_3112"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3112"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"
+               name="%metatype.name.UnitElement_3177"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3177"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"
+               name="%metatype.name.UnitAssociation_3180"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3180"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3113"
+               name="%metatype.name.DetailsUnit_3113"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3113"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"
+               name="%metatype.name.UnitElement_3178"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3178"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"
+               name="%metatype.name.IndexUnit_3106"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="IndexUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.IndexUnitEditHelper">
+            <param name="semanticHint" value="3106"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"
+               name="%metatype.name.UnitElement_3179"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3179"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3114"
+               name="%metatype.name.IndexUnit_3114"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3114"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3181"
+               name="%metatype.name.UnitElement_3181"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3181"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3182"
+               name="%metatype.name.UnitAssociation_3182"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3182"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"
+               name="%metatype.name.DetailsUnit_3116"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3116"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3183"
+               name="%metatype.name.UnitElement_3183"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3183"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3184"
+               name="%metatype.name.UnitAssociation_3184"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3184"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"
+               name="%metatype.name.DetailsUnit_3129"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3129"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3185"
+               name="%metatype.name.UnitElement_3185"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3185"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3186"
+               name="%metatype.name.UnitAssociation_3186"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3186"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3118"
+               name="%metatype.name.IndexUnit_3118"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3118"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3187"
+               name="%metatype.name.UnitElement_3187"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3187"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3188"
+               name="%metatype.name.UnitAssociation_3188"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3188"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3120"
+               name="%metatype.name.IndexUnit_3120"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3120"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3189"
+               name="%metatype.name.UnitElement_3189"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3189"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3190"
+               name="%metatype.name.UnitAssociation_3190"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3190"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"
+               name="%metatype.name.DetailsUnit_3131"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3131"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3191"
+               name="%metatype.name.UnitElement_3191"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3191"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3192"
+               name="%metatype.name.UnitAssociation_3192"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3192"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3133"
+               name="%metatype.name.IndexUnit_3133"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3133"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"
+               name="%metatype.name.UnitElement_3193"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3193"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"
+               name="%metatype.name.UnitAssociation_3194"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3194"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3107"
+               name="%metatype.name.SelectAction_3107"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
+            <param name="semanticHint" value="3107"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"
+               name="%metatype.name.DeleteAction_3101"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="DeleteAction"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.DeleteActionEditHelper">
+            <param name="semanticHint" value="3101"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3126"
+               name="%metatype.name.SelectAction_3126"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
+            <param name="semanticHint" value="3126"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"
+               name="%metatype.name.DataTypeField_3204"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
+            <param name="semanticHint" value="3204"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3210"
+               name="%metatype.name.DateField_3210"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
+            <param name="semanticHint" value="3210"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3233"
+               name="%metatype.name.UnitSupportAction_3233"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"/>
+            <param name="semanticHint" value="3233"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3136"
+               name="%metatype.name.IndexUnit_3136"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3136"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"
+               name="%metatype.name.UnitElement_3195"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3195"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3127"
+               name="%metatype.name.SelectAction_3127"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
+            <param name="semanticHint" value="3127"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"
+               name="%metatype.name.UnitAssociation_3196"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3196"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3219"
+               name="%metatype.name.DetailsUnit_3219"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3219"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3197"
+               name="%metatype.name.UnitElement_3197"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3197"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3198"
+               name="%metatype.name.UnitAssociation_3198"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3198"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3143"
+               name="%metatype.name.IndexUnit_3143"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3143"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"
+               name="%metatype.name.UnitElement_3199"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3199"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"
+               name="%metatype.name.UnitAssociation_3200"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3200"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3128"
+               name="%metatype.name.SelectAction_3128"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
+            <param name="semanticHint" value="3128"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"
+               name="%metatype.name.DataTypeField_3205"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
+            <param name="semanticHint" value="3205"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3211"
+               name="%metatype.name.DateField_3211"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
+            <param name="semanticHint" value="3211"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3146"
+               name="%metatype.name.SelectAction_3146"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
+            <param name="semanticHint" value="3146"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3147"
+               name="%metatype.name.DeleteAction_3147"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"/>
+            <param name="semanticHint" value="3147"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.MapUnit_3228"
+               name="%metatype.name.MapUnit_3228"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="MapUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.MapUnitEditHelper">
+            <param name="semanticHint" value="3228"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SearchUnit_3109"
+               name="%metatype.name.SearchUnit_3109"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="SearchUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.SearchUnitEditHelper">
+            <param name="semanticHint" value="3109"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"
+               name="%metatype.name.UnitElement_3215"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3215"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"
+               name="%metatype.name.UnitAssociation_3216"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3216"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"
+               name="%metatype.name.DataTypeField_3206"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
+            <param name="semanticHint" value="3206"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3212"
+               name="%metatype.name.DateField_3212"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
+            <param name="semanticHint" value="3212"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.StaticUnit_3110"
+               name="%metatype.name.StaticUnit_3110"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="StaticUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.StaticUnitEditHelper">
+            <param name="semanticHint" value="3110"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UpdateUnit_3111"
+               name="%metatype.name.UpdateUnit_3111"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="UpdateUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.UpdateUnitEditHelper">
+            <param name="semanticHint" value="3111"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3220"
+               name="%metatype.name.UnitElement_3220"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3220"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3221"
+               name="%metatype.name.UnitAssociation_3221"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3221"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3222"
+               name="%metatype.name.IndexUnit_3222"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3222"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3223"
+               name="%metatype.name.UnitElement_3223"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3223"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3224"
+               name="%metatype.name.UnitAssociation_3224"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3224"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3153"
+               name="%metatype.name.SelectAction_3153"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
+            <param name="semanticHint" value="3153"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3154"
+               name="%metatype.name.DeleteAction_3154"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"/>
+            <param name="semanticHint" value="3154"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3217"
+               name="%metatype.name.DataTypeField_3217"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
+            <param name="semanticHint" value="3217"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3218"
+               name="%metatype.name.DateField_3218"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
+            <param name="semanticHint" value="3218"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.FixedPageMenuEntry_3158"
+               name="%metatype.name.FixedPageMenuEntry_3158"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="FixedPageMenuEntry"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.FixedPageMenuEntryEditHelper">
+            <param name="semanticHint" value="3158"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.FixedActionMenuEntry_3159"
+               name="%metatype.name.FixedActionMenuEntry_3159"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="FixedActionMenuEntry"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.FixedActionMenuEntryEditHelper">
+            <param name="semanticHint" value="3159"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.FixedCommandMenuEntry_3231"
+               name="%metatype.name.FixedCommandMenuEntry_3231"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="FixedCommandMenuEntry"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.FixedCommandMenuEntryEditHelper">
+            <param name="semanticHint" value="3231"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"
+               name="%metatype.name.EditStaticTextMenuEntry_3156"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="EditStaticTextMenuEntry"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.EditStaticTextMenuEntryEditHelper">
+            <param name="semanticHint" value="3156"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityElement_3167"
+               name="%metatype.name.ServiceEntityElement_3167"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ServiceEntityElement"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ServiceEntityElementEditHelper">
+            <param name="semanticHint" value="3167"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityAssociation_3168"
+               name="%metatype.name.ServiceEntityAssociation_3168"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ServiceEntityAssociation"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ServiceEntityAssociationEditHelper">
+            <param name="semanticHint" value="3168"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.ServiceViewAssociation_3166"
+               name="%metatype.name.ServiceViewAssociation_3166"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ServiceViewAssociation"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ServiceViewAssociationEditHelper">
+            <param name="semanticHint" value="3166"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3163"
+               name="%metatype.name.ModelLabel_3163"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ModelLabel"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ModelLabelEditHelper">
+            <param name="semanticHint" value="3163"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.Selection_3150"
+               name="%metatype.name.Selection_3150"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="Selection"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.SelectionEditHelper">
+            <param name="semanticHint" value="3150"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithoutContainment_4001"
+               name="%metatype.name.AssociationWithoutContainment_4001"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="AssociationWithoutContainment"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.AssociationWithoutContainmentEditHelper">
+            <param name="semanticHint" value="4001"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithContainment_4002"
+               name="%metatype.name.AssociationWithContainment_4002"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="AssociationWithContainment"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.AssociationWithContainmentEditHelper">
+            <param name="semanticHint" value="4002"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.PageLink_4003"
+               name="%metatype.name.PageLink_4003"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="PageLink"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.PageLinkEditHelper">
+            <param name="semanticHint" value="4003"/>
+         </metamodelType>
+      </metamodel>
+   </extension>
+
+   <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypeBindings" id="element-types-bindings">
+      <?gmfgen generated="true"?>
+      <clientContext id="uk.ac.man.cs.mdsd.webgen.diagram.TypeContext">
+         <enablement>
+            <test
+               property="org.eclipse.gmf.runtime.emf.core.editingDomain"
+               value="uk.ac.man.cs.mdsd.webgen.diagram.EditingDomain"/>
+         </enablement>
+      </clientContext> 
+      <binding context="uk.ac.man.cs.mdsd.webgen.diagram.TypeContext">
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.WebGenModel_1000"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.WebsiteProperties_2001"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataType_2002"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DynamicMenu_2008"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EnumerationType_2006"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Entity_2003"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Page_2005"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.StaticMenu_2009"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Service_2004"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CasAuthentication_3055"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3029"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.MenuIncludedElement_3149"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3028"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeAttribute_3054"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3014"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.FileAttribute_3152"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3230"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CommandUnit_3225"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UserCommand_3226"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3171"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3172"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3202"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3208"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3209"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateSitemapUnit_3157"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3112"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3113"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3114"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3181"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3182"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3183"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3184"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3185"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3186"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3118"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3187"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3188"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3120"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3189"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3190"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3191"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3192"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3133"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3107"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3126"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3210"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3233"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3136"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3127"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3219"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3197"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3198"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3143"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3128"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3211"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3146"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3147"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.MapUnit_3228"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SearchUnit_3109"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3212"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.StaticUnit_3110"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UpdateUnit_3111"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3220"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3221"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3222"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3223"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3224"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3153"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3154"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3217"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3218"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.FixedPageMenuEntry_3158"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.FixedActionMenuEntry_3159"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.FixedCommandMenuEntry_3231"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityElement_3167"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityAssociation_3168"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ServiceViewAssociation_3166"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3163"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Selection_3150"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithoutContainment_4001"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithContainment_4002"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.PageLink_4003"/>
+         <advice ref="org.eclipse.gmf.runtime.diagram.core.advice.notationDepdendents"/>
+      </binding>
+   </extension>
+	   <extension point="org.eclipse.core.expressions.propertyTesters" id="navigator-proptest.isURIEditorInput">
+      <?gmfgen generated="true"?>
+       <propertyTester
+           id="uk.ac.man.cs.mdsd.webgen.diagram.URIEditorInputPropertyTester"
+           type="org.eclipse.emf.common.ui.URIEditorInput"
+           namespace="uk.ac.man.cs.mdsd.webgen.diagram"
+           properties="isURIEditorInput"
+           class="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteUriEditorInputTester">
+       </propertyTester>
+   </extension>
+
+	   <extension point="org.eclipse.ui.navigator.viewer" id="navigator-viewbinding">
+      <?gmfgen generated="true"?>
+      <viewerContentBinding viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <contentExtension pattern="uk.ac.man.cs.mdsd.webgen.diagram.resourceContent"/>
+			<contentExtension pattern="uk.ac.man.cs.mdsd.webgen.diagram.domainResourceContent"/>
+            <contentExtension pattern="uk.ac.man.cs.mdsd.webgen.diagram.navigatorLinkHelper"/>
+         </includes>
+      </viewerContentBinding>
+      <viewerActionBinding viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <actionExtension pattern="uk.ac.man.cs.mdsd.webgen.diagram.navigatorActionProvider"/>
+         </includes>
+      </viewerActionBinding>
+   </extension>
+
+   <extension point="org.eclipse.ui.navigator.navigatorContent" id="navigator-content">
+      <?gmfgen generated="true"?>
+      <navigatorContent
+            id="uk.ac.man.cs.mdsd.webgen.diagram.resourceContent" 
+            name="%navigatorContentName" 
+            priority="normal" 
+            contentProvider="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteNavigatorContentProvider" 
+            labelProvider="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteNavigatorLabelProvider"
+            icon="icons/obj16/WebsiteDiagramFile.gif"
+            activeByDefault="true">
+         <triggerPoints>
+            <or>
+	           <and>
+    	          <instanceof value="org.eclipse.core.resources.IFile"/>
+        	      <test property="org.eclipse.core.resources.extension" value="website_diagram"/>
+               </and>
+               <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem"/>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+            <or>
+         	   <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem"/>
+            </or>
+         </possibleChildren>
+         <commonSorter 
+               id="uk.ac.man.cs.mdsd.webgen.diagram.navigatorSorter" 
+               class="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteNavigatorSorter">
+            <parentExpression>
+               <or>
+	              <and>
+    	             <instanceof value="org.eclipse.core.resources.IFile"/>
+        	         <test property="org.eclipse.core.resources.extension" value="website_diagram"/>
+                  </and>
+                  <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem"/>
+               </or>
+            </parentExpression>
+         </commonSorter>
+      </navigatorContent>
+      <navigatorContent
+            id="uk.ac.man.cs.mdsd.webgen.diagram.domainResourceContent" 
+            name="%domainNavigatorContentName" 
+            priority="normal" 
+            contentProvider="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorContentProvider" 
+            labelProvider="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorLabelProvider"
+            icon="icons/obj16/WebsiteDiagramFile.gif"
+            activeByDefault="true">
+         <triggerPoints>
+            <or>
+	           <and>
+    	          <instanceof value="org.eclipse.core.resources.IFile"/>
+        	      <test property="org.eclipse.core.resources.extension" value="website"/>
+               </and>
+               <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem"/>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+            <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem"/>
+         </possibleChildren>
+      </navigatorContent>
+      <actionProvider
+            id="uk.ac.man.cs.mdsd.webgen.diagram.navigatorActionProvider"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteNavigatorActionProvider">
+         <enablement>
+            <or>
+               <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem"/>
+            </or>
+         </enablement>
+      </actionProvider>
+   </extension>
+   
+	   <extension point="org.eclipse.ui.navigator.linkHelper" id="navigator-linkhelper">
+      <?gmfgen generated="true"?>
+      <linkHelper
+            id="uk.ac.man.cs.mdsd.webgen.diagram.navigatorLinkHelper"
+            class="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteNavigatorLinkHelper">
+         <editorInputEnablement>
+            <and>
+               <instanceof value="org.eclipse.emf.common.ui.URIEditorInput"/>
+               <test property="uk.ac.man.cs.mdsd.webgen.diagram.isURIEditorInput"/>
+            </and>
+         </editorInputEnablement>
+         <selectionEnablement>
+            <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem"/>
+         </selectionEnablement>
+      </linkHelper>
+   </extension>
+   <extension point="org.eclipse.ui.commands" id="update-cmd">
+      <?gmfgen generated="true"?>
+      <command
+         categoryId="org.eclipse.ui.category.edit"
+         defaultHandler="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdateCommand"
+         description="%update.diagram.description"
+         id="uk.ac.man.cs.mdsd.webgen.website.diagram.updateDiagram"
+         name="%update.diagram.name"/>
+   </extension>
+   
+   <extension point="org.eclipse.ui.bindings" id="update-cmd-binding">
+      <?gmfgen generated="true"?>
+      <key 
+         commandId="uk.ac.man.cs.mdsd.webgen.website.diagram.updateDiagram"
+         contextId="uk.ac.man.cs.mdsd.webgen.website.diagram.ui.diagramContext"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="F5"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus" id="context-menus">
+      <?gmfgen generated="true"?>
+      <!-- menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=">
+      </menuContribution>
+      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=">
+      </menuContribution -->
+      <menuContribution locationURI="popup:org.eclipse.gmf.runtime.diagram.ui.DiagramEditorContextMenu">
+         <command commandId="uk.ac.man.cs.mdsd.webgen.diagram.LoadResourceAction">
+            <visibleWhen>
+               <and>
+                  <with variable="activePartId"><equals value="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID"/></with>
+                  <with variable="selection"><iterate ifEmpty="false"> 
+                     <instanceof value="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.WebGenModelEditPart"/>
+                  </iterate></with>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+   <extension point="org.eclipse.ui.commands" id="menu-commands">
+      <?gmfgen generated="true"?>
+      <category id="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID" name="%cmdcategory.name" description="%cmdcategory.desc"/>
+      <command id="uk.ac.man.cs.mdsd.webgen.diagram.LoadResourceAction"
+         name="Load Resource"
+         categoryId="uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorID"
+         defaultHandler="uk.ac.man.cs.mdsd.webgen.website.diagram.part.LoadResourceAction"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers" id="menu-handlers">
+      <?gmfgen generated="true"?>
+   </extension>
+<extension point="org.eclipse.gmf.runtime.common.ui.services.markerNavigationProviders" id="markers-navigation">
+      <?gmfgen generated="true"?>
+      <MarkerNavigationProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteMarkerNavigationProvider">
+         <MarkerType name="uk.ac.man.cs.mdsd.webgen.diagram.diagnostic"/>
+         <Priority name="Lowest"/>
+      </MarkerNavigationProvider>
+   </extension>
+
+<extension id="diagnostic" name="Website Plugin problems" point="org.eclipse.core.resources.markers">
+      <?gmfgen generated="true"?>
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <super type="org.eclipse.gmf.runtime.common.ui.services.marker"/>
+      <persistent value="true"/>
+   </extension><extension id="validationDecoratorProvider" name="ValidationDecorations" point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
+      <?gmfgen generated="true"?>
+      <decoratorProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteValidationDecoratorProvider">
+         <Priority name="Lowest"/>
+         <object class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)" id="PRIMARY_VIEW"/>
+         <context decoratorTargets="PRIMARY_VIEW"/>
+      </decoratorProvider>
+   </extension>
+
+
+   <!-- optionally, specify keybindings -->
+</plugin>

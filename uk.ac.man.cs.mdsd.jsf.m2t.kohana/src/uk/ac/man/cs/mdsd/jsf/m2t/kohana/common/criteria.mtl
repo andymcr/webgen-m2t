@@ -1,0 +1,153 @@
+[comment encoding = UTF-8 /]
+[module criteria(
+	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
+	'http://www.cs.man.ac.uk/mdsd/2013/Criteria')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenNullLiteral)) post(trim())]
+NULL
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenIntegerLiteral)) post(trim())]
+[let literal : GenIntegerLiteral = criteria.oclAsType(GenIntegerLiteral)]
+[literal.criteriaLiteral.value/]
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenStringLiteral)) post(trim())]
+[let literal : GenStringLiteral = criteria.oclAsType(GenStringLiteral)]
+'[literal.criteriaLiteral.value/]'
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenCurrentTime)) post(trim())]
+Time()
+[/template]
+
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenFunction)) post(trim())]
+[let function : GenFunction = criteria.oclAsType(GenFunction)]
+[function.criteriaFunction.name/]('Y-m-d H:i:s')
+[/let]
+[/template]
+
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenModelReference)) post(trim())]
+[let path : GenModelReference = criteria.oclAsType(GenModelReference)]
+$this->[path.genUnit.instanceName()/]->[path.genUnit.genService.keyName()/]
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenFeatureReference)) post(trim())]
+[let genPath : GenFeatureReference = criteria.oclAsType(GenFeatureReference)]
+[let isDate : Boolean
+	= if not genPath.genField.oclIsTypeOf(GenServiceEntityElement) then
+			false
+		else
+			genPath.genField.oclAsType(GenServiceEntityElement).genFeature.oclIsTypeOf(GenSingletonDate)
+		endif
+]
+[if (isDate)]
+new Database_Expression('UNIX_TIMESTAMP([genPath.genField.columnName()/])')
+[else]
+	[if (genPath.genField.oclIsKindOf(GenIncludedAssociation))]
+'[genPath.genField.columnName()/]'
+	[else]
+'[genPath.genField.modelPropertyName()/]'
+	[/if]
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenCurrentUserReference)) post(trim())]
+[let path : GenCurrentUserReference = criteria.oclAsType(GenCurrentUserReference)]
+Auth::instance()->get_actual_user()->id
+[/let]
+[/template]
+
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateBooleanOperator)) post(trim())]
+[let predicate : GenPredicateBooleanOperator = criteria.oclAsType(GenPredicateBooleanOperator)]
+[for (expression : GenExpression | predicate.genExpressions)]
+[expression.generateCriteria()/]
+[/for]
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateEqualityOperator)) post(trim())]
+[let predicate : GenPredicateEqualityOperator = criteria.oclAsType(GenPredicateEqualityOperator)]
+$this->where([predicate.genLeft.generateCriteria()/], [if (predicate.criteriaPredicate.negated)]'!='[else]'='[/if], [predicate.genRight.generateCriteria()/]);
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateComparisonOperator)) post(trim())]
+[let predicate : GenPredicateComparisonOperator = criteria.oclAsType(GenPredicateComparisonOperator)]
+$this->where([predicate.genLeft.generateCriteria()/], '[predicate.criteriaPredicate.operator.generateOperator()/]', [predicate.genRight.generateCriteria()/]);
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateIsOperator)) post(trim())]
+[let predicate : GenPredicateIsOperator = criteria.oclAsType(GenPredicateIsOperator)]
+$this->where([predicate.genLeft.generateCriteria()/], 'IS[if (predicate.criteriaPredicate.negated)] NOT[/if]', [predicate.genRight.generateCriteria()/]);
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateLikeOperator)) post(trim())]
+[let predicate : GenPredicateLikeOperator = criteria.oclAsType(GenPredicateLikeOperator)]
+$this->where([predicate.genLeft.generateCriteria()/], 'LIKE', [predicate.genRight.generateCriteria()/]);
+[/let]
+[/template]
+
+[query public generateOperator(operator : BooleanOperator) : String
+	= if operator = BooleanOperator::And then
+			'AND'
+		else if operator = BooleanOperator::Or then
+			'OR'
+		else
+			'?'
+		endif endif
+/]
+
+[query public generateOperator(operator : ComparisionOperator) : String
+	= if operator = ComparisionOperator::GreaterThan then
+			'>'
+		else if operator = ComparisionOperator::LessThan then
+			'<'
+		else
+			'?'
+		endif endif
+/]
+
+
+[template public generateOrderPath(genPath : GenPath)
+	? (genPath.oclIsTypeOf(GenModelReference)) post(trim())]
+[let genModelReference : GenModelReference = genPath.oclAsType(GenModelReference)]
+$this->[genModelReference.genUnit.instanceName()/]
+[/let]
+[/template]
+
+[template public generateOrderPath(genPath : GenExpression)
+	? (genPath.oclIsTypeOf(GenFeatureReference)) post(trim())]
+[let genFeatureReference : GenFeatureReference = genPath.oclAsType(GenFeatureReference)]
+[genFeatureReference.genField.columnName()/]
+[/let]
+[/template]
+

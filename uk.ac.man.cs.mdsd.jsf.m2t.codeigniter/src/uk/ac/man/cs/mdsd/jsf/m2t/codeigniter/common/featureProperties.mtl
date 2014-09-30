@@ -1,0 +1,926 @@
+[comment encoding = UTF-8 /]
+[module featureProperties(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+
+
+[query public escapeQuotes(string : String) : String
+	= string.replaceAll('(\')', '\\\\$1')
+/]
+
+
+[query public displayLabel(displayElement : NamedDisplayElement) : Feature
+	= displayElement.displayLabel
+/]
+
+
+[query public isAuthenticated(genJsfModel : GenJsfModel) : Boolean
+	= not genJsfModel.jsfModel.properties.authentication.oclIsUndefined()
+/]
+
+[query public homePage(genModel : GenJsfModel) : GenPage
+	= let topPage : GenPage = genModel.genTopLevelPages->first()
+		in if not topPage.oclIsUndefined() then
+			topPage
+		else
+			let page : GenPage = genModel.genPages->first()
+			in if not page.oclIsUndefined() then
+				page
+			else
+				null
+		endif endif
+/]
+
+[query public manyToManyAssociations(genModel : GenOrmModel) : Sequence(GenCollectionAssociation)
+	= genModel.genEntities
+		->collect(genFeatures)
+		->select(f | f.oclIsTypeOf(GenCollectionAssociation)).oclAsType(GenCollectionAssociation)
+		->select(f | f.ormFeature.sourceEnd and f.ormFeature.associationRelationship = CollectionAssociationRelationships::ManyToMany)
+/]
+
+
+[query public displayLabel(genPage : GenPage) : Feature
+	= genPage.jsfPage.displayLabel()
+/]
+
+[query public dynamicUnits(genPage : GenPage) : Sequence(GenDynamicUnit)
+	= genPage.genUnits->select(u | u.oclIsKindOf(GenDynamicUnit)).oclAsType(GenDynamicUnit)
+/]
+
+[query public hasAuthenticationUnit(genPage : GenPage) : Boolean
+	= genPage.genUnits->select(u | u.oclIsKindOf(GenAuthenticationUnit))->notEmpty()
+/]
+
+[query public hasForm(genPage : GenPage) : Boolean
+	= genPage.genUnits->select(u | u.oclIsKindOf(GenEditUnit) or u.oclIsKindOf(GenControlUnit))->notEmpty()
+/]
+
+[query public hasInputAssociations(genPage : GenPage) : Boolean
+	= genPage.inputAssociations()->notEmpty()
+/]
+
+[query public inputAssociations(genPage : GenPage) : Sequence(GenIncludedAssociation)
+	= genPage.dynamicUnits()
+		->select(u | u.oclIsKindOf(GenControlUnit) or u.oclIsKindOf(GenEditUnit))
+		->collect(u | u.inputFields())
+		->select(f | f.oclIsKindOf(GenIncludedAssociation)).oclAsType(GenIncludedAssociation)
+/]
+
+[query public isAuthenticated(genPage : GenPage) : Boolean
+	= genPage.jsfPage.authenticated and genPage.genPartOf.isAuthenticated()
+/]
+
+
+[query public isAuthenticated(genUnit : GenContentUnit) : Boolean
+	= if genUnit.genDisplayedOn.oclIsTypeOf(GenPage) then
+			genUnit.genDisplayedOn.oclAsType(GenPage).isAuthenticated()
+		else
+			genUnit.genDisplayedOn.oclAsType(GenUnitIncludedAssociation).genDisplayedOn.isAuthenticated()
+		endif
+/]
+
+[query public cancelLabel(genUnit : GenDynamicUnit) : String
+	= let unit : ContentUnit = genUnit.jsfUnit()
+		in if unit.oclIsUndefined() then
+				'unhandledUnit'
+			else if unit.oclIsKindOf(EditUnit) then
+				unit.oclAsType(EditUnit).cancelLabel
+			else if unit.oclIsKindOf(ControlUnit) then
+				unit.oclAsType(ControlUnit).cancelLabel
+			else
+				'unexpectedUnit'
+			endif endif endif
+/]
+
+[query public captionClass(genUnit : GenContentUnit) : String
+	= let unit : ContentUnit = genUnit.jsfUnit()
+		in if not unit.oclIsUndefined() then
+				unit.captionClass
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public columnClasses(genUnit : GenDynamicUnit) : Sequence(String)
+	= let unit : DynamicUnit = genUnit.jsfUnit().oclAsType(DynamicUnit)
+		in if not unit.oclIsUndefined() then
+				unit.columnClasses.tokenize(' ')
+			else
+				Sequence{'one', 'two'}
+			endif
+/]
+
+[query public columnClassFirst(genUnit : GenDynamicUnit) : String
+	= genUnit.columnClasses()->first()
+/]
+
+[query public columnClassSecond(genUnit : GenDynamicUnit) : String
+	= genUnit.columnClasses()->drop(1)->first()
+/]
+
+[query public controlClass(genUnit : GenDynamicUnit) : String
+	= let unit : DynamicUnit = genUnit.jsfUnit().oclAsType(DynamicUnit)
+		in if not unit.oclIsUndefined() then
+				unit.controlClass
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public deleteActions(genUnit : GenDynamicUnit) : Sequence(GenDeleteAction)
+	= genUnit.genDisplayFields->select(f | f.oclIsKindOf(GenUnitIncludedAssociation)).oclAsType(GenUnitIncludedAssociation)
+			->collect(f | f.genUnits.oclAsType(GenDynamicUnit).deleteActions())
+		->union(if genUnit.oclIsTypeOf(GenIndexUnit) then
+				genUnit.oclAsType(GenIndexUnit).genActions->select(a | a.oclIsTypeOf(GenDeleteAction)).oclAsType(GenDeleteAction)
+			else
+				Sequence{}
+			endif)
+/]
+
+[query public defaultValueFields(genUnit : GenDynamicUnit) : Set(GenUnitField)
+	= genUnit.genDisplayFields->select(f | f.hasDefaultValue())
+/]
+
+[query public deleteActions(genUnit : GenIndexUnit) : Sequence(GenDeleteAction)
+	= genUnit.genActions->select(a | a.oclIsTypeOf(GenDeleteAction)).oclAsType(GenDeleteAction)
+/]
+
+[query public displayLabel(genUnit : GenContentUnit) : String
+	= let unit : ContentUnit = genUnit.jsfUnit()
+		in if not unit.oclIsUndefined() then
+				unit.displayLabel()
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public encryptedFields(genUnit : GenDynamicUnit) : Set(GenUnitField)
+	= genUnit.genDisplayFields->select(f | f.isEncrypted())
+/]
+
+[query public errorClass(genUnit : GenDynamicUnit) : String
+	= let unit : DynamicUnit = genUnit.jsfUnit().oclAsType(DynamicUnit)
+		in if not unit.oclIsUndefined() then
+				unit.errorClass
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public forcedValueFeatures(genUnit : GenDynamicUnit) : OrderedSet(GenUnitField)
+	= genUnit.genDisplayFields->select(f | f.hasForcedValue())
+/]
+
+[query public hasDefaultValueFields(genUnit : GenDynamicUnit) : Boolean
+	= genUnit.defaultValueFields()->notEmpty()
+/]
+
+[query public hasEncryptedFields(genUnit : GenDynamicUnit) : Boolean
+	= genUnit.encryptedFields()->notEmpty()
+/]
+
+[query public hasForcedValueFeatures(genUnit : GenDynamicUnit) : Boolean
+	= genUnit.forcedValueFeatures()->notEmpty()
+/]
+
+[query public hasInputFields(genUnit : GenDynamicUnit) : Boolean
+	= genUnit.inputFields()->notEmpty()
+/]
+
+[query public hasInterfaceFields(genUnit : GenDynamicUnit) : Boolean
+	= genUnit.interfaceFields()->notEmpty()
+/]
+
+[query public hasMessagesOnFormHead(genUnit : GenDynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if genUnit.oclIsKindOf(GenEditUnit) then
+					genUnit.oclAsType(GenEditUnit).messagePlacementOption
+				else if genUnit.oclIsKindOf(GenControlUnit) then
+					genUnit.oclAsType(GenControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormHead
+				or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+				or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasMessagesOnFormFoot(genUnit : GenDynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if genUnit.oclIsKindOf(GenEditUnit) then
+					genUnit.oclAsType(GenEditUnit).messagePlacementOption
+				else if genUnit.oclIsKindOf(GenControlUnit) then
+					genUnit.oclAsType(GenControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormFoot
+			or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasMessagesOnFeature(genUnit : GenDynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if genUnit.oclIsKindOf(GenEditUnit) then
+					genUnit.oclAsType(GenEditUnit).messagePlacementOption
+				else if genUnit.oclIsKindOf(GenControlUnit) then
+					genUnit.oclAsType(GenControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::OnFeature
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public headerClass(genUnit : GenDynamicUnit) : String
+	= let unit : DynamicUnit = genUnit.jsfUnit().oclAsType(DynamicUnit)
+		in if not unit.oclIsUndefined() then
+				unit.headerClass
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public inputFields(genUnit : GenDynamicUnit) : OrderedSet(GenUnitField)
+	= genUnit.genDisplayFields->select(f |
+		if f.oclIsKindOf(GenIncludedFeature) then
+			f.oclAsType(GenIncludedFeature).isInput()
+		else
+			true
+		endif)
+/]
+
+[query public inputOrEmbeddedFields(genUnit : GenDynamicUnit) : OrderedSet(GenUnitField)
+	= genUnit.genDisplayFields->select(f |
+		if f.oclIsKindOf(GenIncludedFeature) then
+			f.oclAsType(GenIncludedFeature).isInputOrEmbedded()
+		else
+			true
+		endif)
+/]
+
+[query public interfaceFields(genUnit : GenDynamicUnit) : OrderedSet(GenInterfaceField)
+	= genUnit.genDisplayFields->select(f | f.oclIsTypeOf(GenInterfaceField))
+/]
+
+[query public jsfUnit(genUnit : GenContentUnit) : ContentUnit
+	= if genUnit.oclIsTypeOf(GenStaticUnit) then
+			genUnit.oclAsType(GenStaticUnit).jsfUnit
+
+		else if genUnit.oclIsTypeOf(GenCreateUnit) then
+			genUnit.oclAsType(GenCreateUnit).jsfUnit
+		else if genUnit.oclIsTypeOf(GenCreateUpdateUnit) then
+			genUnit.oclAsType(GenCreateUpdateUnit).jsfUnit
+		else if genUnit.oclIsTypeOf(GenUpdateUnit) then
+			genUnit.oclAsType(GenUpdateUnit).jsfUnit
+
+		else if genUnit.oclIsTypeOf(GenDetailsUnit) then
+			genUnit.oclAsType(GenDetailsUnit).jsfUnit
+		else if genUnit.oclIsTypeOf(GenIndexUnit) then
+			genUnit.oclAsType(GenIndexUnit).jsfUnit
+
+		else if genUnit.oclIsTypeOf(GenSearchUnit) then
+			genUnit.oclAsType(GenSearchUnit).jsfUnit
+
+		else if genUnit.oclIsTypeOf(GenForgottenPasswordUnit) then
+			genUnit.oclAsType(GenForgottenPasswordUnit).jsfUnit
+		else if genUnit.oclIsTypeOf(GenLoginUnit) then
+			genUnit.oclAsType(GenLoginUnit).jsfUnit
+		else if genUnit.oclIsTypeOf(GenRegistrationUnit) then
+			genUnit.oclAsType(GenRegistrationUnit).jsfUnit
+		else
+			null
+		endif endif endif endif endif endif endif endif endif endif
+/]
+
+[query public layoutClass(genUnit : GenDynamicUnit) : String
+	= let unit : DynamicUnit = genUnit.jsfUnit().oclAsType(DynamicUnit)
+		in if not unit.oclIsUndefined() then
+				unit.layoutClass
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public name(genUnit : GenContentUnit) : String
+	= let unit : ContentUnit = genUnit.jsfUnit()
+		in if not unit.oclIsUndefined() then
+				unit.name
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public omitCaption(genUnit : GenContentUnit) : Boolean
+	= let unit : ContentUnit = genUnit.jsfUnit()
+		in if not unit.oclIsUndefined() then
+				unit.omitCaption
+			else
+				false
+			endif
+/]
+
+[query public parentController(genUnit : GenDynamicUnit) : GenPage
+	= if genUnit.genDisplayedOn.oclIsTypeOf(GenPage) then
+			genUnit.genDisplayedOn.oclAsType(GenPage)
+		else
+			genUnit.genDisplayedOn.oclAsType(GenUnitIncludedFeature).genDisplayedOn.parentController()
+		endif
+/]
+
+[query public rowClasses(genUnit : GenIndexUnit) : Sequence(String)
+	= genUnit.jsfUnit.rowClasses.tokenize(' ')
+/]
+
+[query public searchFields(genUnit : GenIndexUnit) : Set(GenUnitField)
+	= genUnit->collect(genTargettingSearches.genDisplayFields).oclAsSet()
+/]
+
+[query public styleClass(genUnit : GenContentUnit) : String
+	= let unit : ContentUnit = genUnit.jsfUnit()
+		in if not unit.oclIsUndefined() then
+				unit.styleClass
+			else
+				'unhandledUnit'
+			endif
+/]
+
+[query public submitLabel(genUnit : GenDynamicUnit) : String
+	= let unit : ContentUnit = genUnit.jsfUnit()
+		in if unit.oclIsUndefined() then
+				'unhandledUnit'
+			else if unit.oclIsKindOf(EditUnit) then
+				unit.oclAsType(EditUnit).confirmLabel
+			else if unit.oclIsKindOf(ControlUnit) then
+				unit.oclAsType(ControlUnit).submitLabel
+			else
+				'unexpectedUnit'
+			endif endif endif
+/]
+
+
+[query public conditionalDisplay(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			false
+		else if genField.oclIsKindOf(GenIncludedSingletonElement) then
+			genField.oclAsType(GenIncludedSingletonElement).jsfIncludedFeature.oclAsType(UnitIncludedSingletonElement).onlyDisplayWhenNotEmpty
+		else if genField.oclIsKindOf(GenIncludedCollectionElement) then
+			genField.oclAsType(GenIncludedCollectionElement).jsfIncludedFeature.oclAsType(UnitIncludedCollectionElement).onlyDisplayWhenNotEmpty
+		else if genField.oclIsKindOf(GenIncludedSingletonAssociation) then
+			genField.oclAsType(GenIncludedSingletonAssociation).jsfIncludedFeature.oclAsType(UnitIncludedSingletonAssociation).onlyDisplayWhenNotEmpty
+		else
+			genField.oclAsType(GenIncludedCollectionAssociation).jsfIncludedFeature.oclAsType(UnitIncludedCollectionAssociation).onlyDisplayWhenNotEmpty
+		endif endif endif endif
+/]
+
+[query public displayLabel(genField : GenUnitField) : String
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			genField.oclAsType(GenInterfaceField).jsfInterfaceField.displayLabel()
+		else
+			genField.oclAsType(GenIncludedFeature).displayLabel()
+		endif
+/]
+
+[query public formFieldName(genField : GenUnitField) : String
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			genField.oclAsType(GenInterfaceField).jsfInterfaceField.name
+		else
+			genField.oclAsType(GenIncludedFeature).columnName()
+		endif
+/]
+
+[query public hasDefaultValue(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			not genField.oclAsType(GenInterfaceField).genDefaultValue.oclIsUndefined()
+		else
+			genField.oclAsType(GenIncludedFeature).hasDefaultValue()
+		endif
+/]
+
+[query public hasForcedValue(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			false
+		else
+			genField.oclAsType(GenIncludedFeature).hasForcedValue()
+		endif
+/]
+
+[query public hasSelection(genField : GenUnitField) : Boolean
+	= not genField.selection().oclIsUndefined()
+/]
+
+[query public inputClass(genField : GenUnitField) : String
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			genField.oclAsType(GenInterfaceField).jsfInterfaceField.inputClass
+		else
+			genField.oclAsType(GenIncludedFeature).inputClass()
+		endif
+/]
+
+[query public isCaseInsensitive(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			genField.oclAsType(GenInterfaceField).jsfInterfaceField.caseInsensitive
+		else
+			genField.oclAsType(GenIncludedFeature).isCaseInsensitive()
+		endif
+/]
+
+[query public isDataTypeSingletonElement(genField : GenUnitField) : Boolean
+	= if not genField.oclIsKindOf(GenIncludedSingletonElement) then
+			false
+		else let genIncludedFeature : GenIncludedSingletonElement = genField.oclAsType(GenIncludedSingletonElement)
+			in if not genIncludedFeature.genFeature.oclIsTypeOf(GenSingletonElement) then
+					false
+				else let genFeature : GenSingletonElement = genIncludedFeature.genFeature.oclAsType(GenSingletonElement)
+					in genFeature.genDataType.ormDataType.oclIsTypeOf(DataType)
+				endif
+		endif
+/]
+
+[query public isDateSingletonElement(genField : GenUnitField) : Boolean
+	= if not genField.oclIsKindOf(GenIncludedSingletonElement) then
+			false
+		else let genIncludedFeature : GenIncludedSingletonElement = genField.oclAsType(GenIncludedSingletonElement)
+			in genIncludedFeature.genFeature.oclIsTypeOf(GenSingletonDate)
+		endif
+/]
+
+[query public isEnumerationTypeSingletonElement(genField : GenUnitField) : Boolean
+	= if not genField.oclIsKindOf(GenIncludedSingletonElement) then
+			false
+		else let genIncludedFeature : GenIncludedSingletonElement = genField.oclAsType(GenIncludedSingletonElement)
+			in if not genIncludedFeature.genFeature.oclIsTypeOf(GenSingletonElement) then
+					false
+				else let genFeature : GenSingletonElement = genIncludedFeature.genFeature.oclAsType(GenSingletonElement)
+					in genFeature.genDataType.ormDataType.oclIsTypeOf(EnumerationType)
+				endif
+		endif
+/]
+
+[query public isEncrypted(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			genField.oclAsType(GenInterfaceField).jsfInterfaceField.encrypt
+		else
+			genField.oclAsType(GenIncludedFeature).isEncrypted()
+		endif
+/]
+
+[query public isObfuscated(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			genField.oclAsType(GenInterfaceField).jsfInterfaceField.obfuscateFormFields
+		else
+			genField.oclAsType(GenIncludedFeature).isObfuscated()
+		endif
+/]
+
+[query public isRequired(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			genField.oclAsType(GenInterfaceField).jsfInterfaceField.required
+		else
+			genField.oclAsType(GenIncludedFeature).isRequired()
+		endif
+/]
+
+[query public isUnique(genField : GenUnitField) : Boolean
+	= if genField.oclIsKindOf(GenInterfaceField) then
+			false
+		else
+			genField.oclAsType(GenIncludedFeature).isUnique()
+		endif
+/]
+
+[query public selection(genField : GenUnitField) : GenSelection
+	= if not genField.oclIsKindOf(GenUnitIncludedCollectionAssociation) then
+			null
+		else
+			let genIncludedFeature : GenUnitIncludedCollectionAssociation = genField.oclAsType(GenUnitIncludedCollectionAssociation)
+			in if genIncludedFeature.genUnits->isEmpty() then
+					null
+				else if genIncludedFeature.genUnits->first().oclIsTypeOf(GenIndexUnit) then
+					genIncludedFeature.genUnits->first().oclAsType(GenIndexUnit).genSelection
+				else
+					null
+			endif endif
+		endif
+/]
+
+
+[query public displayLabel(genAction : GenInlineAction) : Feature
+	= genAction.jsfAction.displayLabel()
+/]
+
+
+[query public associations(genService : GenService) : Sequence(GenIncludedAssociation)
+	= genService.genIncludedFeatures
+		->select(f | f.oclIsKindOf(GenIncludedAssociation))
+		.oclAsType(GenIncludedAssociation)
+/]
+
+[query public attributes(genService : GenService)
+	: Sequence(GenIncludedElement)
+	= genService.genIncludedFeatures
+		->select(f | f.oclIsKindOf(GenIncludedElement))
+		.oclAsType(GenIncludedElement)
+/]
+
+[query public defaultValueFeatures(genService : GenService) : Sequence(GenIncludedSingletonElement)
+	= genService.genIncludedFeatures->select(f | f.hasDefaultValue()).oclAsType(GenIncludedSingletonElement)
+/]
+
+[query public displayFeatures(genService : GenService) : Sequence(GenIncludedFeature)
+	= let displayFeatures : Sequence(Feature)
+			= genService.genEntities->collect(e | e.ormEntity.displayFeatures)
+		in displayFeatures->collect(f | genService.genIncludedFeatures->any(i | i.name() = f.name))
+/]
+
+[query public forcedValueFeatures(genService : GenService) : Set(GenIncludedFeature)
+	= genService.genIncludedFeatures->select(f | f.hasForcedValue())
+/]
+
+[query public hasAssociations(genService : GenService) : Boolean
+	= genService.associations()->notEmpty()
+/]
+
+[query public hasAttributes(genService : GenService) : Boolean
+	= genService.attributes()->notEmpty()
+/]
+
+[query public hasDefaultValueFeatures(genService : GenService) : Boolean
+	= genService.defaultValueFeatures()->notEmpty()
+/]
+
+[query public hasDisplayFeatures(genService : GenService) : Boolean
+	= genService.displayFeatures()->notEmpty()
+/]
+
+[query public hasForcedValueFeatures(genService : GenService) : Boolean
+	= genService.forcedValueFeatures()->notEmpty()
+/]
+
+[query public hasInputFeatures(genService : GenService) : Boolean
+	= genService.inputFeatures()->notEmpty()
+/]
+
+[query public hasModelAssociations(genService : GenService) : Boolean
+	= genService.modelAssociations()->notEmpty()
+/]
+
+[query public hasModelAttributes(genService : GenService) : Boolean
+	= genService.modelAttributes()->notEmpty()
+/]
+
+[query public hasModelCollectionAssociations(genService : GenService) : Boolean
+	= genService.modelCollectionAssociations()->notEmpty()
+/]
+
+[query public hasModelSingletonAssociations(genService : GenService) : Boolean
+	= genService.modelSingletonAssociations()->notEmpty()
+/]
+
+[query public hasNonInputRequiredFeatures(genService : GenService) : Boolean
+	= genService.nonInputRequiredFeatures()->notEmpty()
+/]
+
+[query public inputFeatures(genService : GenService) : OrderedSet(GenIncludedFeature)
+	= genService.genIncludedFeatures->select(f | f.isInput())
+/]
+
+[query public modelFeatures(genService : GenService) : Sequence(GenFeature)
+	= genService.genEntities->collect(genFeatures)
+/]
+
+[query public nonInputRequiredFeatures(genService : GenService) : OrderedSet(GenIncludedFeature)
+	= genService.genIncludedFeatures->select(f | not f.isInput() and f.isRequired())
+/]
+
+[query public modelAssociations(genService : GenService) : Sequence(GenAssociation)
+	= genService.modelFeatures()
+		->select(f | f.oclIsKindOf(GenAssociation))
+		.oclAsType(GenAssociation)
+/]
+
+[query public modelAttributes(genService : GenService) : Sequence(GenAttribute)
+	= genService.modelFeatures()
+		->select(f | f.oclIsKindOf(GenAttribute))
+		.oclAsType(GenAttribute)
+/]
+
+[query public modelCollectionAssociations(genService : GenService) : Sequence(GenCollectionAssociation)
+	= genService.modelFeatures()
+		->select(f | f.oclIsTypeOf(GenCollectionAssociation))
+		.oclAsType(GenCollectionAssociation)
+/]
+
+[query public modelSingletonAssociations(genService : GenService) : Sequence(GenSingletonAssociation)
+	= genService.modelFeatures()
+		->select(f | f.oclIsTypeOf(GenSingletonAssociation))
+		.oclAsType(GenSingletonAssociation)
+/]
+
+[query public tableName(genService : GenService) : String
+	= genService.genEntities->first().tableName()
+/]
+
+
+[query public columnName(genIncludedFeature : GenIncludedFeature) : String
+	= let name : String =
+			if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+				genIncludedFeature.oclAsType(GenIncludedSingletonElement).genFeature.columnName
+			else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionElement) then
+				genIncludedFeature.oclAsType(GenIncludedCollectionElement).genFeature.columnName
+			else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+				genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).genFeature.columnName()
+			else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionAssociation) then
+				genIncludedFeature.oclAsType(GenIncludedCollectionAssociation).genFeature.columnName()
+			else
+				genIncludedFeature.name()
+			endif endif endif endif
+		in name
+/]
+
+[query public displayLabel(genIncludedFeature : GenIncludedFeature) : String
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonElement).jsfIncludedFeature.displayLabel
+		else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionElement) then
+			genIncludedFeature.oclAsType(GenIncludedCollectionElement).jsfIncludedFeature.displayLabel
+		else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).jsfIncludedFeature.displayLabel
+		else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionAssociation) then
+			genIncludedFeature.oclAsType(GenIncludedCollectionAssociation).jsfIncludedFeature.displayLabel
+		else
+			'unhandledFeature'
+		endif endif endif endif
+/]
+
+[query public genFeatureX(genIncludedFeature : GenIncludedFeature) : GenFeature
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+		genIncludedFeature.oclAsType(GenIncludedSingletonElement).genFeature
+	else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionElement) then
+		genIncludedFeature.oclAsType(GenIncludedCollectionElement).genFeature
+	else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+		genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).genFeature
+	else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionAssociation) then
+		genIncludedFeature.oclAsType(GenIncludedCollectionAssociation).genFeature
+	else
+		null
+	endif endif endif endif
+/]
+
+[query public hasDefaultValue(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			not genIncludedFeature.oclAsType(GenIncludedSingletonElement).genDefaultValue.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public hasForcedValue(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			not genIncludedFeature.oclAsType(GenIncludedSingletonElement).genForcedValue.oclIsUndefined()
+		else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+			not genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).genForcedValue.oclIsUndefined()
+		else
+			false
+		endif endif
+/]
+
+[query public inputClass(genIncludedFeature : GenIncludedFeature) : String
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonElement).jsfFeature.inputClass
+		else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionElement) then
+			genIncludedFeature.oclAsType(GenIncludedCollectionElement).jsfFeature.inputClass
+		else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).jsfFeature.inputClass
+		else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionAssociation) then
+			genIncludedFeature.oclAsType(GenIncludedCollectionAssociation).jsfFeature.inputClass
+		else
+			'unhandledFeature'
+		endif endif endif endif
+/]
+
+[query public isAssociation(genIncludedFeature : GenIncludedFeature) : Boolean
+	= genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation)
+		or genIncludedFeature.oclIsKindOf(GenIncludedCollectionAssociation)
+/]
+
+[query public isCaseInsensitive(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenServiceEntitySingletonElement) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonElement)
+				.jsfIncludedFeature.oclAsType(ServiceIncludedSingletonElement).caseInsensitive
+		else
+			false
+		endif
+/]
+
+[query public isEncrypted(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenServiceIncludedSingletonElement) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonElement)
+				.jsfIncludedFeature.oclAsType(ServiceIncludedSingletonElement).encrypt
+		else
+			false
+		endif
+/]
+
+[query public isInput(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonElement).jsfIncludedFeature.feature.isInput()
+		else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionElement) then
+			genIncludedFeature.oclAsType(GenIncludedCollectionElement).jsfIncludedFeature.feature.isInput()
+		else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).jsfIncludedFeature.feature.isInput()
+		else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionAssociation) then
+			genIncludedFeature.oclAsType(GenIncludedCollectionAssociation).jsfIncludedFeature.feature.isInput()
+		else
+			false
+		endif endif endif endif
+/]
+
+[query public isInputOrEmbedded(genIncludedFeature : GenIncludedFeature) : Boolean
+	= genIncludedFeature.isInput() or
+		if not genIncludedFeature.oclIsKindOf(GenUnitIncludedAssociation) then
+			false
+		else
+			genIncludedFeature.oclAsType(GenUnitIncludedAssociation).genUnits->notEmpty()
+		endif
+/]
+
+[query public isObfuscated(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonElement).jsfIncludedFeature.obfuscateFormFields
+		else
+			false
+		endif
+/]
+
+[query public isRequired(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonElement).jsfIncludedFeature.required
+		else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+			genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).jsfIncludedFeature.required
+		else
+			false
+		endif endif
+/]
+
+[query public isUnique(genIncludedFeature : GenIncludedFeature) : Boolean
+	= if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+			let genIncludedSingleton : GenIncludedSingletonElement = genIncludedFeature.oclAsType(GenIncludedSingletonElement)
+			in if genIncludedSingleton.genFeature.oclIsTypeOf(GenSingletonElement) then
+					genIncludedSingleton.genFeature.oclAsType(GenSingletonElement).ormFeature.unique
+				else if genIncludedSingleton.genFeature.oclIsTypeOf(GenSingletonDate) then
+					genIncludedSingleton.genFeature.oclAsType(GenSingletonDate).ormFeature.unique
+				else
+					false
+				endif endif
+		else
+			false
+		endif
+/]
+
+[query public name(genIncludedFeature : GenIncludedFeature) : String
+	= let name : String =
+			if genIncludedFeature.oclIsKindOf(GenIncludedSingletonElement) then
+				genIncludedFeature.oclAsType(GenIncludedSingletonElement).name
+			else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionElement) then
+				genIncludedFeature.oclAsType(GenIncludedCollectionElement).name
+			else if genIncludedFeature.oclIsKindOf(GenIncludedSingletonAssociation) then
+				genIncludedFeature.oclAsType(GenIncludedSingletonAssociation).name
+			else if genIncludedFeature.oclIsKindOf(GenIncludedCollectionAssociation) then
+				genIncludedFeature.oclAsType(GenIncludedCollectionAssociation).name
+			else
+				'unhandledFeature'
+			endif endif endif endif
+		in name
+/]
+
+[query public ormFeatureX(genIncludedFeature : GenIncludedFeature) : Feature
+	= let genFeature : GenFeature = genIncludedFeature.genFeatureX()
+		in if not genFeature.oclIsUndefined() then
+			genFeature.ormFeatureX()
+		else
+			null
+		endif
+/]
+
+
+[query public tableColumns(genEntity : GenEntity) : OrderedSet(GenFeature)
+	= genEntity.genFeatures->select(f | f.hasColumn())
+/]
+
+[query public tableName(genEntity : GenEntity) : String
+	= let tableName : String = genEntity.tableName
+		in if tableName = genEntity.name.toLowerFirst().replaceAll('([A-Z])', '_$1').toLower() then
+			tableName.concat('s')
+		else
+			tableName
+		endif
+/]
+
+
+[query public ormFeatureX(genFeature : GenFeature) : Feature
+	= if genFeature.oclIsTypeOf(GenSingletonElement) then
+		genFeature.oclAsType(GenSingletonElement).ormFeature
+	else if genFeature.oclIsTypeOf(GenSingletonDate) then
+		genFeature.oclAsType(GenSingletonDate).ormFeature
+	else if genFeature.oclIsTypeOf(GenCollectionElement) then
+		genFeature.oclAsType(GenCollectionElement).ormFeature
+	else if genFeature.oclIsTypeOf(GenCollectionDate) then
+		genFeature.oclAsType(GenCollectionDate).ormFeature
+	else if genFeature.oclIsTypeOf(GenSingletonAssociation) then
+		genFeature.oclAsType(GenSingletonAssociation).ormFeature
+	else if genFeature.oclIsTypeOf(GenCollectionAssociation) then
+		genFeature.oclAsType(GenCollectionAssociation).ormFeature
+	else
+		null
+	endif endif endif endif endif endif
+/]
+
+[query public columnName(genFeature : GenFeature) : String
+	= if genFeature.oclIsKindOf(GenSingletonAttribute) then
+			genFeature.oclAsType(GenSingletonAttribute).columnName
+		else if genFeature.oclIsKindOf(GenCollectionAttribute) then
+			genFeature.oclAsType(GenCollectionAttribute).columnName
+		else if genFeature.oclIsKindOf(GenSingletonAssociation) then
+			genFeature.oclAsType(GenSingletonAssociation).columnName
+		else if genFeature.oclIsKindOf(GenCollectionAssociation) then
+			genFeature.oclAsType(GenCollectionAssociation).ormFeature.name.toLowerFirst().replaceAll('([A-Z])', '_$1').toLower()
+		else
+			'unhandledFeature'
+		endif endif endif endif
+/]
+
+[query public hasColumn(genFeature : GenFeature) : Boolean
+	= if genFeature.oclIsKindOf(GenSingletonAttribute) then
+			true
+		else if genFeature.oclIsTypeOf(GenSingletonAssociation) then
+			let genSingletonFeature : GenSingletonAssociation = genFeature.oclAsType(GenSingletonAssociation)
+			in if genSingletonFeature.genOpposite.oclIsTypeOf(GenSingletonAssociation) then
+					genSingletonFeature.ormFeature.sourceEnd
+				else
+					true
+				endif
+		else
+			false
+		endif endif
+/]
+
+[query public isDataTypeSingletonElement(genFeature : GenFeature) : Boolean
+	= if not genFeature.oclIsKindOf(GenSingletonElement) then
+			false
+		else let genSingletonFeature : GenSingletonElement = genFeature.oclAsType(GenSingletonElement)
+			in genSingletonFeature.genDataType.ormDataType.oclIsTypeOf(DataType)
+		endif
+/]
+
+[query public isEnumerationTypeSingletonElement(genFeature : GenFeature) : Boolean
+	= if not genFeature.oclIsKindOf(GenSingletonElement) then
+			false
+		else let genSingletonFeature : GenSingletonElement = genFeature.oclAsType(GenSingletonElement)
+			in genSingletonFeature.genDataType.ormDataType.oclIsTypeOf(EnumerationType)
+		endif
+/]
+
+[query public isSourceEnd(genFeature : GenCollectionAssociation) : Boolean
+	= genFeature.ormFeature.sourceEnd
+/]
+
+[query public isSourceEnd(genFeature : GenSingletonAssociation) : Boolean
+	= genFeature.ormFeature.sourceEnd
+/]
+
+
+[query public isInput(ormFeature : Feature) : Boolean
+	= if ormFeature.inputField.oclIsUndefined() then
+			false
+		else
+			ormFeature.inputField
+		endif
+/]
+
+[query public oppositeColumnName(genFeature : GenCollectionAssociation) : String
+	= genFeature.genOpposite.columnName()
+/]
+
+[query public oppositeColumnName(genFeature : GenSingletonAssociation) : String
+	= genFeature.genOpposite.columnName()
+/]
+
+
+[query public displayLabel(enumerationLiteral : EnumerationLiteral) : String
+	= enumerationLiteral.displayLabel
+/]
+

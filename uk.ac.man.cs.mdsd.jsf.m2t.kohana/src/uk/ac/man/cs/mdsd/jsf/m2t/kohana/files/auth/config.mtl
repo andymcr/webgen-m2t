@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module config(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+
+
+[template public generateAuthenticationConfig(genAuthentication : GenLocalAuthenticationSystem)]
+[file (genAuthentication.configDirectory().concat('/').concat('auth').concat(genAuthentication.executableExtension()), false)]
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+
+return array(
+	'driver'				=> '[genAuthentication.webgenAuthName()/]',
+	'hash_method'			=> 'sha256',
+	'hash_key'				=> 'slsklsklsklwaasu',
+	'lifetime'				=> 1209600,
+	'attempt_expiry_period'	=> 1800,
+	'maximum_attempts'		=> 3,
+	'session_type'			=> Session::$default,
+	'session_key'			=> 'auth_user',
+);
+[/file]
+[/template]

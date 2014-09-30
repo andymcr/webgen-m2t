@@ -1,0 +1,68 @@
+[comment encoding = UTF-8 /]
+[module database(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+
+
+[template public generateDatabase(genModel : GenJsfModel)]
+[file (genModel.configDirectory().concat('/').concat('database').concat(genModel.executableExtension()), false)]
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+
+return array
+(
+	'default' => array
+	(
+		'type'       => 'MySQL',
+		'connection' => array(
+			/**
+			 * The following options are available for MySQL:
+			 *
+			 * string   hostname     server hostname, or socket
+			 * string   database     database name
+			 * string   username     database username
+			 * string   password     database password
+			 * boolean  persistent   use persistent connections?
+			 * array    variables    system variables as "key => value" pairs
+			 *
+			 * Ports and sockets may be appended to the hostname.
+			 */
+			'hostname'   => '[genModel.databaseHost/]',
+			'database'   => '[genModel.databaseName/]',
+			'username'   => '[genModel.databaseUsername/]',
+			'password'   => '[genModel.databasePassword/]',
+			'persistent' => FALSE,
+		),
+		'table_prefix' => '[genModel.databasePrefix/]',
+		'charset'      => 'utf8',
+		'caching'      => FALSE,
+	),
+	'alternate' => array(
+		'type'       => 'PDO',
+		'connection' => array(
+			/**
+			 * The following options are available for PDO:
+			 *
+			 * string   dsn         Data Source Name
+			 * string   username    database username
+			 * string   password    database password
+			 * boolean  persistent  use persistent connections?
+			 */
+			'dsn'        => 'mysql:host=localhost;dbname=kohana',
+			'username'   => 'root',
+			'password'   => 'r00tdb',
+			'persistent' => FALSE,
+		),
+		/**
+		 * The following extra options are available for PDO:
+		 *
+		 * string   identifier  set the escaping identifier
+		 */
+		'table_prefix' => '',
+		'charset'      => 'utf8',
+		'caching'      => FALSE,
+	),
+);
+[/file]
+[/template]

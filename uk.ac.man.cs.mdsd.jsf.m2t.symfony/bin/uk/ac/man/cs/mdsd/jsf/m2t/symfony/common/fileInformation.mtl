@@ -1,0 +1,27 @@
+[comment encoding = UTF-8 /]
+[module fileInformation(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+
+
+[query public ymlExtension(eObject : EObject) : String
+	= '.yml'
+/]
+
+
+[query public applicationDirectory(eObject : EObject) : String
+	= 'app'
+/]
+
+[query public configDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('config')
+/]
+
+[query public resourcesDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('Resources')
+/]
+
+[query public viewsDirectory(eObject : EObject) : String
+	= eObject.resourcesDirectory().concat('/').concat('views')
+/]

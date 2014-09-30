@@ -1,0 +1,182 @@
+[comment encoding = UTF-8 /]
+[module editMethods(
+	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
+
+
+[template public generateUnitVariables(genUnit : GenContentUnit)
+	? (genUnit.oclIsKindOf(GenEditUnit)) post(trim())]
+[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
+$this->[genEditUnit.instanceName()/] = ORM::factory('[genEditUnit.modelName()/]');
+[if (genEditUnit.hasDefaultValueFields())]
+[genEditUnit.generateDefaultUnitValues()/]
+[/if]
+[if (genEditUnit.oclIsTypeOf(GenCreateUpdateUnit) or genEditUnit.oclIsTypeOf(GenUpdateUnit))]
+$[genEditUnit.instanceName()/] = $this->request->query('[genUnit.parameterName()/]');
+if (!empty($[genEditUnit.instanceName()/]))
+{
+	$this->[genEditUnit.instanceName()/]->where('[genEditUnit.genService.keyName()/]', '=', $[genEditUnit.instanceName()/])->find();
+	if (!$this->[genEditUnit.instanceName()/]->loaded())
+		$this->[genEditUnit.instanceName()/]_error = 'Invalid [genEditUnit.modelName()/] identifier';
+}
+[/if]
+[/let]
+[/template]
+
+[template public generateUnitDisplay(genUnit : GenContentUnit)
+	? (genUnit.oclIsKindOf(GenEditUnit)) post(trim())]
+[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
+$this->[genEditUnit.templateInstanceName()/]->bind('[genEditUnit.instanceName()/]', $this->[genEditUnit.instanceName()/]);
+if (isset($this->[genEditUnit.instanceName()/]_field_errors))
+	$this->[genEditUnit.templateInstanceName()/]->bind('[genEditUnit.instanceName()/]_field_errors', $this->[genEditUnit.instanceName()/]_field_errors);
+[for (genField : GenUnitField | genEditUnit.inputAssociations())]
+[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
+$[genAssociation.optionsName()/] = array([if (genAssociation.isSingleton())]'' => __('Please select')[/if]);
+foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
+find_all()[else]
+[genAssociation.genSelection.instanceName()/](FALSE)[/if] AS $option)
+	$[genAssociation.optionsName()/]['['/]$option->id[']'/] = $option->[if (genAssociation.genDynamicLabel.oclIsUndefined())]
+displayLabel()[else]
+[genAssociation.genDynamicLabel.name/]()[/if];
+$this->[genEditUnit.templateInstanceName()/]->bind('[genAssociation.optionsName()/]', $[genAssociation.optionsName()/]);
+[/let]
+[/for]
+[/let]
+[/template]
+
+
+[template public generateUnitMethods(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenCreateUnit)) post(trim())]
+[let genCreateUnit : GenCreateUnit = genUnit.oclAsType(GenCreateUnit)]
+[if (genCreateUnit.hasInterfaceFields())]
+		[genCreateUnit.generateUnitRules()/]
+[/if]
+public function action_[genCreateUnit.actionName()/]() {
+[if (not genCreateUnit.genCancelDestination.oclIsUndefined())]
+	[genCreateUnit.generateHandleCancel()/]
+
+[/if]
+	[genCreateUnit.oclAsType(GenCreateUnit).generateSaveCode()/]
+}
+
+[/let]
+[/template]
+
+[template public generateUnitMethods(genUnit : GenContentUnit)
+	? (genUnit.oclIsKindOf(GenCreateUpdateUnit) or genUnit.oclIsKindOf(GenUpdateUnit) or genUnit.oclIsKindOf(GenMapUnit)) post(trim())]
+[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
+[if (genEditUnit.hasInterfaceFields())]
+		[genEditUnit.generateUnitRules()/]
+[/if]
+public function action_[genEditUnit.actionName()/]()
+{
+[if (not genEditUnit.genCancelDestination.oclIsUndefined())]
+	[genEditUnit.generateHandleCancel()/]
+
+[/if]
+[if (genEditUnit.oclIsTypeOf(GenCreateUpdateUnit))]
+[let genCreateUpdateUnit : GenCreateUpdateUnit = genEditUnit.oclAsType(GenCreateUpdateUnit)]
+	[if (not genCreateUpdateUnit.jsfUnit.clearLabel.oclIsUndefined())]
+	if ($this->request->post('clear'))
+	{
+		$this->[genCreateUpdateUnit.instanceName()/]->clear();
+// default unit values?
+		[genEditUnit.generateRemoveParameter(genCreateUpdateUnit.parameterName())/]
+		return;
+	}
+
+	[/if]
+[/let]
+[/if]
+	$submit = $this->request->param('param');
+	if (isset($submit))
+	{
+		[genEditUnit.generateSaveCode()/]
+	}
+	else
+	{
+//		$this->[genEditUnit.instanceName()/]->validate();
+	}
+}
+
+[for (genAction : GenDeleteAction | genEditUnit.deleteActions())]
+[genAction.generateActionMethod('$this->'.concat(genEditUnit.instanceName()).concat('_error'))/]
+
+[/for]
+[/let]
+[/template]
+
+[template public generateUnitRules(genUnit : GenDynamicUnit) post(trim())]
+	private function unit_rules
+	{
+[for (genField : GenInterfaceField | genUnit.interfaceFields())]
+$this->[genUnit.instanceName()/]->validation['['/]'[genField.modelPropertyName()/]'[']'/] = array(
+		'label' => '[genField.displayLabel()/]',
+		'rules' => array([if (genField.isRequired())]
+'required', [/if]'trim'[if (genField.isCaseInsensitive())]
+, 'strtolower'[/if][if (genField.isEncrypted())]
+, 'encrypt'[/if][if (not genField.genMustMatch.oclIsUndefined())]
+, 'matches' => '[genField.genMustMatch.modelPropertyName()/]'[/if])
+	);
+[/for]
+	}
+
+[/template]
+
+
+
+[template private generateSaveCode(genUnit : GenEditUnit) post(trim())]
+try
+	{
+	[genUnit.generateValuesFromFormToModel()/]
+[if (genUnit.hasForcedValueFeatures())]
+	[genUnit.generateForcedFeatureValues()/]
+[/if]
+[if (genUnit.hasCaptchaFields())]
+	[genUnit.generateCaptchaCheck()/]
+[/if]
+[if (genUnit.hasInterfaceFields())]
+		[genUnit.generateInterfaceFieldValidation()/]
+[/if]
+	$this->[genUnit.instanceName()/]->save([if (genUnit.hasInterfaceFields())]$extra_validation[/if]);
+[if (not genUnit.oclAsType(GenEditUnit).genConfirmDestination.oclIsUndefined())]
+	$this->redirect(Route::get('[genUnit.oclAsType(GenEditUnit).genConfirmDestination.controllerName()/]')->uri());
+[else]
+	[if (genUnit.oclIsTypeOf(GenCreateUnit) or genUnit.hasClearLabel())]
+	$this->[genUnit.instanceName()/]->clear();
+		[if (genUnit.hasInterfaceFields())]
+	[genUnit.generateClearInterfaceFields()/]
+		[/if]
+	[genUnit.generateRemoveParameter(genUnit.parameterName())/]
+	[/if]
+[/if]
+}
+[if (genUnit.hasCaptchaFields())]
+		[genUnit.generateCatchCaptchaException()/]
+[/if]
+catch (ORM_Validation_Exception $e)
+{
+	$this->[genUnit.instanceName()/]_field_errors = $e->errors('');
+[if (genUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.developmentVersion)]
+	$unreported_field_errors = array_diff_key($this->[genUnit.instanceName()/]_field_errors, array([for
+	(genField : GenUnitField | genUnit.inputFields())
+		separator (', ')]'[genField.columnName()/]' => ''[/for][if (genUnit.hasInterfaceFields())], '_external' => ''[/if]));
+	if (!empty($unreported_field_errors))
+		$this->[genUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+[/if]
+[if (genUnit.hasEncryptedFeatures())]
+	[genUnit.generateClearEncryptedFeatures()/]
+[/if]
+}
+[/template]
+
+[template public generateClearInterfaceFields(genUnit : GenDynamicUnit) post(trim())]
+[for (genField : GenInterfaceField | genUnit.interfaceFields())]
+unset($this->[genUnit.instanceName()/]->[genField.modelPropertyName()/]);
+[/for]
+[/template]

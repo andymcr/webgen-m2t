@@ -1,0 +1,25 @@
+[comment encoding = UTF-8 /]
+[module page('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+
+
+[template public generatePage(genJsfModel : GenJsfModel)]
+[file(genJsfModel.templatesDirectory().concat('/page').concat(genJsfModel.executableExtension()), false)]
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+	$this->load->view('templates/header');
+	$this->load->view($topbar);	
+	$this->load->view('templates/sidemenu');
+?>
+<div id="content">
+<?php
+	foreach ($units as $unit) {
+		$this->load->view($unit);
+	}
+?>
+</div>
+<div class="clear"></div>
+<?php
+	$this->load->view('templates/footer');
+[/file]
+[/template]

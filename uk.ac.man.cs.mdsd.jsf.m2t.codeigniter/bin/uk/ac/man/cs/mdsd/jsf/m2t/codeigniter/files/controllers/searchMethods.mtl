@@ -1,0 +1,52 @@
+[comment encoding = UTF-8 /]
+[module searchMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::controlMethods/]
+
+
+[template public generateUnitVariables(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
+[let genSearchUnit : GenSearchUnit = genUnit.oclAsType(GenSearchUnit)]
+$this->[genSearchUnit.instanceName()/] = new [genSearchUnit.modelName()/]();
+[if (genUnit.hasDefaultValueFields())]
+[genUnit.generateDefaultUnitValues()/]
+[/if]
+[for (genField : GenUnitField | genSearchUnit.genDisplayFields)]
+if ($this->session->userdata('[genSearchUnit.genResultDestination.sessionKey()/]_[genField.formFieldName()/]')) {
+	$this->[genSearchUnit.instanceName()/]->[genField.formFieldName()/] = $this->session->userdata('[genSearchUnit.genResultDestination.sessionKey()/]_[genField.formFieldName()/]');
+}
+[/for]
+[/let]
+[/template]
+
+[template public generateUnitDisplay(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
+$data['['/]'[genUnit.instanceName()/]'[']'/] = $this->[genUnit.instanceName()/];
+[/template]
+
+[template public generateUnitMethods(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
+[let genSearchUnit : GenSearchUnit = genUnit.oclAsType(GenSearchUnit)]
+public function [genSearchUnit.methodName()/]() {
+[if (genUnit.isAuthenticated() or not genUnit.oclAsType(GenControlUnit).genCancelDestination.oclIsUndefined())]
+	[genSearchUnit.generateStartControlUnit()/]
+[/if]
+	[genUnit.generateValuesFromFormToModel()/]
+[for (genField : GenUnitField | genSearchUnit.genDisplayFields)]
+	if (!empty($this->[genUnit.instanceName()/]->[genField.formFieldName()/])) {
+		$this->session->set_userdata('[genSearchUnit.genResultDestination.sessionKey()/]_[genField.formFieldName()/]', $this->[genUnit.instanceName()/]->[genField.formFieldName()/]);
+	} else {
+		$this->session->unset_userdata('[genSearchUnit.genResultDestination.sessionKey()/]_[genField.formFieldName()/]');
+	}
+[/for]
+[if (genSearchUnit.genDisplayedOn = genSearchUnit.genResultDestination.genDisplayedOn)]
+	$this->displayPage();
+[else]
+	redirect('[genSearchUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]');
+[/if]
+}
+[/let]
+[/template]

@@ -1,0 +1,56 @@
+[comment encoding = UTF-8 /]
+[module baseController(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateBaseController(genModel : GenJsfModel)]
+[file(genModel.controllersDirectory().concat('/Template/Base').concat(genModel.executableExtension()), false)]
+<?php defined('SYSPATH') OR die('No Direct Script Access');
+
+class [genModel.baseControllerClassName()/] extends Controller_Template
+{
+
+	public $template = 'site';
+
+	public function before()
+	{
+		parent::before();
+
+		if ($this->auto_render === TRUE)
+		{
+			$this->template->title = '';
+			$this->template->metaTags =array();
+			$this->template->links = array();
+			$this->template->stylesheets = array();
+			$this->template->javascripts = array();
+			$this->template->js_custom = '';
+[if (not genModel.isAuthenticated())]
+			$topbar_template = View::factory('elements/topbar');
+[else]
+			if (Auth::instance()->logged_in()) 
+			{
+				$topbar_template = View::factory('elements/topbar_logged_in');
+				$topbar_template->user = Auth::instance()->get_user();
+			} else {
+				$topbar_template = View::factory('elements/topbar');
+			}
+[/if]
+			$this->template->topbar = $topbar_template->render();
+			$this->template->page_message = '';
+			$this->template->unitViews = array();
+		}
+	}
+
+	public function after()
+	{
+		parent::after();
+	}
+
+}
+[/file]
+[/template]

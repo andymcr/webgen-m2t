@@ -1,0 +1,92 @@
+[comment encoding = UTF-8 /]
+[module indexMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::commonMethods/]
+
+
+[template public generateUnitDisplay(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenIndexUnit)) post(trim())]
+[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
+[if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
+$page = 1;
+if ($this->session->userdata('[genUnit.sessionKey()/]_page')) {
+	$page = $this->session->userdata('[genUnit.sessionKey()/]_page');
+}
+[/if]
+[if (genIndexUnit.genSelection.oclIsUndefined())]
+	[if (genIndexUnit.genTargettingSearches->notEmpty())]
+		[for (genField : GenUnitField | genIndexUnit.searchFields())]
+if ($this->session->userdata('[genUnit.sessionKey()/]_[genField.formFieldName()/]')) {
+	$this->[genUnit.instanceName()/]->where('[genField.formFieldName()/]', $this->session->userdata('[genUnit.sessionKey()/]_[genField.formFieldName()/]'));
+}
+		[/for]
+	[/if]
+$data['['/]'[genUnit.instanceName()/]'[']'/] = [if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
+$this->[genUnit.instanceName()/]->get_paged_iterated($page, [genIndexUnit.jsfUnit.defaultPaginationSize/]);[else]
+$this->[genUnit.instanceName()/]->get_iterated();[/if]
+[else]
+	[if (genIndexUnit.isAuthenticated())]
+$this->[genUnit.instanceName()/]->loggedInUser = $this->getLoggedInUser();
+	[/if]
+	[for (genAction : GenSelectAction | genIndexUnit.genTargettingActions)]
+if ($this->session->userdata('[genUnit.sessionKey()/]_[genAction.name/]')) {
+	$this->[genUnit.instanceName()/]->[genAction.instanceName()/] = new [genAction.modelName()/]();
+	$this->[genUnit.instanceName()/]->[genAction.instanceName()/]->get_by_id($this->session->userdata('[genUnit.sessionKey()/]_[genAction.name/]'));
+}
+	[/for]
+$this->[genUnit.instanceName()/]->[genIndexUnit.genSelection.instanceName()/]([if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]TRUE, $page, [genIndexUnit.jsfUnit.defaultPaginationSize/][/if]);
+[/if]
+[/let]
+[/template]
+
+[template public generateUnitMethods(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenIndexUnit)) post(trim())]
+[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
+public function [genUnit.methodName()/]([if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]$page = 1[/if]) {
+[if (genUnit.isAuthenticated())]
+	[genUnit.genDisplayedOn.oclAsType(GenPage).generateLoggedInCheck()/]
+
+[/if]
+[if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
+	$this->session->set_userdata('[genUnit.sessionKey()/]_page', $page);
+[/if]
+	$this->displayPage();
+}
+
+[for (genAction : GenDeleteAction | genUnit.oclAsType(GenIndexUnit).deleteActions())]
+public function [genAction.methodName()/]($id = NULL) {
+[if (genUnit.isAuthenticated())]
+	[genUnit.genDisplayedOn.oclAsType(GenPage).generateLoggedInCheck()/]
+
+[/if]
+	$[genAction.instanceName()/] = new [genAction.modelName()/]();
+	$[genAction.instanceName()/]->get_by_id($id);
+	if (!$[genAction.instanceName()/]->exists()) {
+		$this->[genUnit.instanceName()/]_error = 'Invalid [genAction.modelName()/] identifier';
+[if (not genAction.genDestination.oclIsUndefined())]
+		$this->displayPage();
+[/if]
+	} else {
+		$[genAction.instanceName()/]->delete();
+[if (not genAction.genDestination.oclIsUndefined())]
+		redirect('[genAction.genDestination.controllerName()/]');
+[/if]
+	}
+[if (genAction.genDestination.oclIsUndefined())]
+	$this->displayPage();
+[/if]
+}
+
+[/for]
+[for (genAction : GenSelectAction | genIndexUnit.genTargettingActions)]
+public function [genUnit.methodName()/][genAction.name/]($id = NULL) {
+	$this->session->set_userdata('[genUnit.sessionKey()/]_[genAction.name/]', $id);
+	$this->displayPage();
+}
+
+[/for]
+[/let]
+[/template]

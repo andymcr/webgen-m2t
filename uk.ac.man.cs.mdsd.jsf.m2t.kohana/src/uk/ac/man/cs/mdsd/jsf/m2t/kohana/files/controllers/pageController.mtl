@@ -1,0 +1,137 @@
+[comment encoding = UTF-8 /]
+[module pageController(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::authenticationMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::createSitemapMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::actionMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commandMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::detailsMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::editMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::indexMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::searchMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::staticMethods/]
+
+
+[template public generateController(genPage : GenPage)]
+[file(genPage.controllerFilename(), false)]
+<?php defined('SYSPATH') OR die('No Direct Script Access');
+
+class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName()/]
+{
+
+	public function before()
+	{
+[if (genPage.isAuthenticated())]
+		[genPage.generateLoggedInCheck()/]
+
+[/if]
+		parent::before();
+
+[if (genPage.hasParameterisedUnits())]
+		$this->query_parameters = $this->request->query();
+
+[/if]
+		$this->template->title = '[genPage.displayLabel()/]';
+		$this->template->id = '[genPage.instanceName()/]';
+[if (not genPage.jsfPage.styleClass.oclIsUndefined())]
+		$this->template->style_class = '[genPage.jsfPage.styleClass/]';
+[/if]
+		$this->template->scripts = array();
+[if (genPage.hasMapUnits())]
+		$this->template->scripts['['/][']'/] = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places';
+[/if]
+
+[if (genPage.genPartOf.jsfModel.properties.staticUnitsEditable)]
+	[for (genUnit : GenContentUnit | genPage.genUnits)]
+		[genUnit.generateUnitVariables()/]
+	[/for]
+[else]
+	[for (genUnit : GenDynamicUnit | genPage.dynamicUnits()->select(u | not u.oclIsKindOf(GenIndexUnit)))]
+		[genUnit.generateUnitVariables()/]
+	[/for]
+[/if]
+	}
+
+	public function after()
+	{
+		if ($this->auto_render === TRUE)
+		{
+[if (not genPage.genSideMenu.oclIsUndefined())]
+			$this->template->sidebar = View::factory('menu/[genPage.genSideMenu.instanceName()/]');
+	[if (genPage.genSideMenu.oclIsTypeOf(GenDynamicMenu))]
+	[let genDynamicMenu : GenDynamicMenu = genPage.genSideMenu.oclAsType(GenDynamicMenu)]
+			$this->template->sidebar->[genPage.genSideMenu.instanceName()/] = ORM::factory('[genDynamicMenu.genService.modelName()/]')->[genDynamicMenu.genSelection.instanceName()/]();
+	[/let]
+	[/if]
+[/if]
+[for (genUnit : GenContentUnit | genPage.genUnits)]
+			$this->[genUnit.templateInstanceName()/] = View::factory('[genPage.controllerName()/]/[genUnit.instanceName()/]');
+			$this->template->unitViews['['/][']'/] = $this->[genUnit.templateInstanceName()/];
+	[if (genPage.hasParameterisedUnits())]
+			$this->[genUnit.templateInstanceName()/]->bind('query_parameters', $this->query_parameters);
+	[/if]
+	[if (not genUnit.oclIsTypeOf(GenStaticUnit))]
+			if (!empty($this->[genUnit.instanceName()/]_error))
+				$this->[genUnit.templateInstanceName()/]->bind('[genUnit.instanceName()/]_error', $this->[genUnit.instanceName()/]_error);
+	[/if]
+[/for]
+[if (genPage.genPartOf.jsfModel.properties.staticUnitsEditable)]
+	[for (genUnit : GenContentUnit | genPage.genUnits)]
+
+			[genUnit.generateUnitDisplay()/]
+	[/for]
+[else]
+	[for (genUnit : GenDynamicUnit | genPage.dynamicUnits())]
+
+			[genUnit.generateUnitDisplay()/]
+	[/for]
+[/if]
+		}
+
+		parent::after();
+	}
+
+	public function action_index()
+	{
+	}
+
+[for (genUnit : GenContentUnit | genPage.genUnits)]
+	[if (genUnit.hasUnitMethods())]
+	[genUnit.generateUnitMethods()/]
+
+	[/if]
+[/for]
+[for (genUnit : GenCommandUnit | genPage.commandUnits())]
+	[genUnit.generateUnitMethods()/]
+
+[/for]
+[if (genPage.hasSupportActions())]
+	[if (genPage.hasDataSupportActions())]
+	public function action_support()
+	{
+	[for (genAction : GenUnitSupportAction | genPage.dataSupportActions())]
+		if ($this->request->post('[genAction.name/]'))
+		{
+			/* [protected ('support.'.concat(genAction.name))]
+			 */
+			/* [/protected]
+			 */
+		}
+	[/for]
+	}
+
+	[/if]
+	/* [protected (genPage.instanceName().concat('.support.'))]
+	 */
+	/* [/protected]
+	 */
+[/if]
+}
+[/file]
+[/template]

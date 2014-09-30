@@ -1,0 +1,68 @@
+[comment encoding = UTF-8 /]
+[module searchMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
+
+
+[template public generateUnitMethods(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
+[let genSearchUnit : GenSearchUnit = genUnit.oclAsType(GenSearchUnit)]
+public function action_[genSearchUnit.actionName()/]()
+{
+	try
+		{
+		[genUnit.generateValuesFromFormToModel()/]
+	[if (genUnit.hasForcedValueFeatures())]
+		[genUnit.generateForcedFeatureValues()/]
+	[/if]
+	[if (genUnit.hasCaptchaFields())]
+		[genUnit.generateCaptchaCheck()/]
+	[/if]
+	[if (genUnit.hasInterfaceFields())]
+		[genUnit.generateInterfaceFieldValidation()/]
+	[/if]
+//validate?		$this->[genUnit.instanceName()/]->save([if (genUnit.hasInterfaceFields())]$extra_validation[/if]);
+		/* [protected ('action.'.concat(genSearchUnit.actionName()).concat('.x'))]
+		 */
+		/* [/protected]
+		 */
+	}
+[if (genUnit.hasCaptchaFields())]
+		[genUnit.generateCatchCaptchaException()/]
+[/if]
+	catch (ORM_Validation_Exception $e)
+	{
+		$this->[genUnit.instanceName()/]_field_errors = $e->errors('');
+	[if (genUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.developmentVersion)]
+		$unreported_field_errors = array_diff_key($this->[genUnit.instanceName()/]_field_errors, array([for
+		(genField : GenUnitField | genUnit.inputFields())
+			separator (', ')]'[genField.columnName()/]' => ''[/for][if (genUnit.hasInterfaceFields())], '_external' => ''[/if]));
+		if (!empty($unreported_field_errors))
+			$this->[genUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+	[/if]
+	[if (genUnit.hasEncryptedFeatures())]
+		[genUnit.generateClearEncryptedFeatures()/]
+	[/if]
+	}
+[if (genUnit.hasInterfaceFields())]
+		[genUnit.generateRememberInterfaceFields()/]
+[/if]
+[if (genUnit.isAuthenticated() or not genUnit.oclAsType(GenControlUnit).genCancelDestination.oclIsUndefined())]
+	[genSearchUnit.generateHandleCancel()/]
+[/if]
+	[genUnit.generateValuesFromFormToModel()/]
+[for (genField : GenUnitField | genSearchUnit.genDisplayFields)]
+//	if (!empty($this->[genUnit.instanceName()/]->[genField.modelPropertyName()/]))
+//		$this->session->set('[genSearchUnit.genResultDestination.uniqueName()/]_[genField.modelPropertyName()/]', $this->[genUnit.instanceName()/]->[genField.modelPropertyName()/]);
+//	else
+//		$this->session->delete('[genSearchUnit.genResultDestination.uniqueName()/]_[genField.modelPropertyName()/]');
+[/for]
+[if (genSearchUnit.genDisplayedOn <> genSearchUnit.genResultDestination.genDisplayedOn)]
+//	$this->redirect(Route::get('[genSearchUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]')->uri());
+[/if]
+}
+[/let]
+[/template]

@@ -1,0 +1,27 @@
+[comment encoding = UTF-8 /]
+[module topbar_loggedin('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+
+
+[template public generateTopbarLoggedIn(genModel : GenJsfModel)]
+[file(genModel.templatesDirectory().concat('/topbar_logged_in').concat(genModel.executableExtension()), false)]
+<div id="topbar">
+[if (genModel.genTopbarLinks->notEmpty())]
+	[for (genPage : GenPage | genModel.genTopbarLinks)]
+ <div class="[genModel.jsfModel.properties.toplinkClass/]"><?php echo anchor('[genPage.controllerName()/]', '[genPage.jsfPage.navigationLabel/]')?></div>
+	[/for]
+[/if]
+ <div id="authentication"><?php
+	echo 'Logged in as ' . $userId;
+	echo nbs(1);
+	echo anchor('[if (genModel.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
+TBC[elseif (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+[genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.logoutTargetUri()/][else]
+TBC[/if]', '[genModel.jsfModel.properties.authentication.logoutLabel/]');
+?></div>
+ <div class="clear"></div>
+</div>
+[/file]
+[/template]

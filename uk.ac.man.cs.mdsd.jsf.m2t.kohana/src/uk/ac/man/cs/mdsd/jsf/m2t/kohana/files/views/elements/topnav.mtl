@@ -1,0 +1,49 @@
+[comment encoding = UTF-8 /]
+[module topnav(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateTopNav(genModel : GenJsfModel)]
+[file(genModel.viewElementsDirectory().concat('/topbar').concat(genModel.executableExtension()), false)]
+<nav id="[genModel.jsfModel.properties.topNavigationId/]">
+[if (genModel.topMenuItemsNonAuthenticated()->notEmpty() or genModel.isAuthenticated())]
+ <ul>
+[/if]
+[for (genPage : GenPage | genModel.topMenuItemsNonAuthenticated())]
+  <li><?php
+	echo HTML::anchor(
+		Route::get('[genPage.controllerName()/]')->uri(),
+		HTML::chars(__('[genPage.jsfPage.navigationLabel/]'))); ?></li>
+[/for]
+[if (not genModel.genAuthentication.oclIsUndefined())]
+[if (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+[let genAuthentication : GenLocalAuthenticationSystem = genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
+	[if (genAuthentication.jsfAuthentication.allowSelfRegistration)]
+  <li id="authentication"><?php
+	echo HTML::anchor(
+		Route::get('[genAuthentication.genRegistrationUnit.controllerName()/]')->uri(),
+		HTML::chars(__('Register'))); ?></li>
+	[/if]
+[/let]
+[/if]
+[/if]
+[if (genModel.isAuthenticated())]
+  <li id="authentication"><?php
+	echo HTML::anchor(
+		Route::get('[if (genModel.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
+TBC[elseif (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+[genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.controllerName()/][else]
+TBC[/if]')->uri(),
+		HTML::chars(__('[genModel.jsfModel.properties.authentication.loginLabel/]'))); ?></li>
+[/if]
+[if (genModel.topMenuItemsNonAuthenticated()->notEmpty() or genModel.isAuthenticated())]
+ </ul>
+[/if]
+</nav>
+[/file]
+[/template]

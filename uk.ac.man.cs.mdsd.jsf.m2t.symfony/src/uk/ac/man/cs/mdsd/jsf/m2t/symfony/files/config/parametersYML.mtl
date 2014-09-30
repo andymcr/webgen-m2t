@@ -1,0 +1,31 @@
+[comment encoding = UTF-8 /]
+[module parametersYML(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::fileInformation/]
+
+
+[template public generateParametersYML(genModel : GenJsfModel)]
+[file (genModel.configDirectory().concat('/').concat('parameters').concat(genModel.ymlExtension()), false)]
+parameters:
+    database_driver: [if (genModel.ormModel.databaseTechnology = DatabaseTechnologies::MySql)]
+pdo_mysql[elseif (genModel.ormModel.databaseTechnology = DatabaseTechnologies::Oracle)]
+pdo_oci[/if]
+    database_host: [genModel.databaseHost/]
+    database_port: null
+    database_name: [genModel.databaseName/]
+    database_path: null
+    database_user: [genModel.databaseUsername/]
+    database_password: [genModel.databasePassword/]
+
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+
+    locale: en
+
+    secret: 1ec446a4907a8a138704482ea9b59521ac31883e
+[/file]
+[/template]

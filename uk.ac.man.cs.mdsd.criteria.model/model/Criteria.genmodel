@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/uk.ac.man.cs.mdsd.criteria.model/src" modelPluginID="uk.ac.man.cs.mdsd.criteria.model"
+    modelName="Criteria" importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0"
+    copyrightFields="false">
+  <foreignModel>Criteria.ecore</foreignModel>
+  <genPackages prefix="Criteria" basePackage="uk.ac.man.cs.mdsd" disposableProviderFactory="true"
+      extensibleProviderFactory="true" ecorePackage="Criteria.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Criteria.ecore#//BooleanOperator">
+      <genEnumLiterals ecoreEnumLiteral="Criteria.ecore#//BooleanOperator/And"/>
+      <genEnumLiterals ecoreEnumLiteral="Criteria.ecore#//BooleanOperator/Or"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Criteria.ecore#//ComparisionOperator">
+      <genEnumLiterals ecoreEnumLiteral="Criteria.ecore#//ComparisionOperator/GreaterThan"/>
+      <genEnumLiterals ecoreEnumLiteral="Criteria.ecore#//ComparisionOperator/LessThan"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="Criteria.ecore#//Expression"/>
+    <genClasses image="false" ecoreClass="Criteria.ecore#//Literal"/>
+    <genClasses ecoreClass="Criteria.ecore#//NullLiteral"/>
+    <genClasses ecoreClass="Criteria.ecore#//IntegerLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//IntegerLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//StringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//CurrentTime"/>
+    <genClasses ecoreClass="Criteria.ecore#//Function">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//Function/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Criteria.ecore#//Path"/>
+    <genClasses image="false" ecoreClass="Criteria.ecore#//Predicate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//Predicate/negated"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//PredicateBooleanOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateBooleanOperator/expressions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//PredicateBooleanOperator/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//PredicateEqualityOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateEqualityOperator/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateEqualityOperator/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//PredicateComparisonOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateComparisonOperator/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//PredicateComparisonOperator/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateComparisonOperator/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//PredicateIsOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateIsOperator/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateIsOperator/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//PredicateLikeOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateLikeOperator/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateLikeOperator/right"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Criteria.ecore#//Order">
+      <genFeatures property="None" children="true" createChild="true" propertyCategory=""
+          ecoreFeature="ecore:EReference Criteria.ecore#//Order/path"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//Asc"/>
+    <genClasses ecoreClass="Criteria.ecore#//Desc"/>
+  </genPackages>
+</genmodel:GenModel>

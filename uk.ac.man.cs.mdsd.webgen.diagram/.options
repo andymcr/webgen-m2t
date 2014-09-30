@@ -1,0 +1,7 @@
+# Tracing options for the uk.ac.man.cs.mdsd.webgen.diagram plug-in
+
+# Common issues
+uk.ac.man.cs.mdsd.webgen.diagram/debug=false
+
+# Visual IDs
+uk.ac.man.cs.mdsd.webgen.diagram/debug/visualID=false

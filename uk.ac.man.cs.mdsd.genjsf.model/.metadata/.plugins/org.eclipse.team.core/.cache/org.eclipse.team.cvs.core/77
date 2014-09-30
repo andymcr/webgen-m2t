@@ -1,0 +1,137 @@
+[comment encoding = UTF-8 /]
+[module commonMethods(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
+	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateLoggedInCheck(genPage : GenPage)
+	? (not genPage.genPartOf.genAuthentication.oclIsUndefined())
+	post(trim())]
+// Log::instance()->add(Log::DEBUG, '[genPage.name/] setting use of ssl ');
+// use_ssl();
+[if (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+[let genLocalAuthentication : GenLocalAuthenticationSystem
+	= genPage.genPartOf.genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
+if (!Auth::instance()->logged_in())
+{
+	Session::instance()->set('login_referrer', $this->request->uri());
+	$this->redirect(Route::get('[if (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
+TBC[elseif (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+[genPage.genPartOf.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.controllerName()/][else]
+TBC[/if]')->uri());
+}
+[/let]
+[elseif (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
+[let genCasAuthentication : GenCasAuthentication
+	= genPage.genPartOf.genAuthentication.oclAsType(GenCasAuthentication)]
+[/let]
+[/if]
+[/template]
+
+
+[template public generateValuesFromFormToModel(genUnit : GenDynamicUnit) post(trim())]
+$this->[genUnit.instanceName()/]->values($this->request->post(), array([for
+	(genField : GenUnitField | genUnit.nonFileInputFeatures())
+	separator (', ')][if (genField.isLocation())]'[genField.columnName()/]_latitude', '[genField.columnName()/]_longitude'[else]'[genField.columnName()/]'[/if][/for]));
+[/template]
+
+[template public generateDefaultUnitValues(genUnit : GenDynamicUnit) post(trim())]
+[for (genField : GenUnitField | genUnit.defaultValueFields())]
+[if (genField.oclIsTypeOf(GenUnitElement))]
+$this->[genUnit.instanceName()/]->[genField.modelPropertyName()/] = [genField.oclAsType(GenIncludedElement).genDefaultValue.generateCriteria()/];
+[else]
+$this->[genUnit.instanceName()/]->[genField.modelPropertyName()/] = [genField.oclAsType(GenInterfaceField).genDefaultValue.generateCriteria()/];
+[/if]
+[/for]
+[/template]
+
+
+[template public generateForcedFeatureValues(genUnit : GenDynamicUnit) post(trim())]
+[for (genFeature : GenUnitField | genUnit.forcedValueFeatures())]
+[let genValue : GenExpression = genFeature.oclAsType(GenUnitFeature).genForcedValue]
+$this->[genUnit.instanceName()/]->[genFeature.columnName()/] = [genValue.generateCriteria()/];
+[/let]
+[/for]
+[/template]
+
+[template public generateCaptchaCheck(genUnit : GenDynamicUnit) post(trim())]
+require_once(Kohana::find_file('vendor/recaptcha', 'recaptchalib'));
+$resp = recaptcha_check_answer ('[genUnit.captchaFields()->first().oclAsType(GenCaptchaField).jsfField.privateKey/]', $_SERVER['['/]'REMOTE_ADDR'[']'/],
+	$_POST['['/]'recaptcha_challenge_field'[']'/], $_POST['['/]'recaptcha_response_field'[']'/]
+);
+if (!$resp->is_valid)
+	throw new Captcha_Exception($resp->error);
+[/template]
+
+[template public generateCatchCaptchaException(genUnit : GenDynamicUnit) post(trim())]
+catch (Captcha_Exception $e)
+{
+	$this->[genUnit.instanceName()/]_field_errors = ['['/][']'/];
+[for (genField : GenUnitField | genUnit.captchaFields())]
+	$this->[genUnit.instanceName()/]_field_errors['['/]'[genField.modelPropertyName()/]'[']'/] = $e->message();
+[/for]
+[if (genUnit.hasEncryptedFeatures())]
+	[genUnit.generateClearEncryptedFeatures()/]
+[/if]
+[if (genUnit.hasInterfaceFields())]
+	[genUnit.generateRememberInterfaceFields()/]
+[/if]
+}
+[/template]
+
+[template public generateInterfaceFieldValidation(genUnit : GenDynamicUnit) post(trim())]
+$extra_validation = Validation::factory($_POST);
+[for (genField : GenInterfaceField | genUnit.interfaceFields())]
+	[if (genField.isRequired())]
+$extra_validation->rule('[genField.modelPropertyName()/]', 'not_empty');
+	[/if]
+	[if (genField.oclIsTypeOf(GenDateField))]
+$extra_validation->rule('[genField.modelPropertyName()/]', 'date');
+	[/if]
+	[if (not genField.genMustMatch.oclIsUndefined())]
+$extra_validation->rule('[genField.modelPropertyName()/]', 'matches', array(':validation', ':field', '[genField.genMustMatch.modelPropertyName()/]'));
+	[/if]
+[/for]
+[/template]
+
+
+[template public generateClearEncryptedFeatures(genUnit : GenDynamicUnit) post(trim())]
+[for (genField : GenUnitField | genUnit.encryptedFeatures())]
+$this->[genUnit.instanceName()/]->[genField.modelPropertyName()/] = '';
+[/for]
+[/template]
+
+[template public generateRememberInterfaceFields(genUnit : GenDynamicUnit) post(trim())]
+$this->[genUnit.instanceName()/]->unit_fields($this->request->post(), array([for
+	(genField : GenUnitField | genUnit.interfaceFields())
+	separator (', ')]'[genField.columnName()/]'[/for]));
+[/template]
+
+
+[template public generateActionMethod(genAction : GenDeleteAction, errorVariable : String) post(trim())]
+public function action_[genAction.actionName()/]()
+	{
+		$[genAction.instanceName()/] = ORM::factory('[genAction.modelName()/]', $this->request->param('param'));
+		if ($[genAction.instanceName()/]->loaded())
+		{
+			$[genAction.instanceName()/]->delete();
+[if (genAction.genDestination.oclIsUndefined())]
+			[genAction.generateRemoveParameter(genAction.parameterName())/]
+[else]
+			$this->redirect(Route::get('[genAction.genDestination.controllerName()/]')->uri());
+[/if]
+		}
+		else
+			[errorVariable/] = 'Invalid [genAction.modelName()/] identifier';
+	}
+[/template]
+
+
+[template public generateRemoveParameter(eObject : EObject, parameterName : String) post(trim())]
+unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
+[/template]

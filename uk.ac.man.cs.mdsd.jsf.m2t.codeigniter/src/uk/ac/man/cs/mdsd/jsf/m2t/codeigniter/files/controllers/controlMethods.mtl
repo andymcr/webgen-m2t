@@ -1,0 +1,30 @@
+[comment encoding = UTF-8 /]
+[module controlMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::commonMethods/]
+
+
+[template public generateStartControlUnit(genUnit : GenDynamicUnit) post(trim())]
+[if (genUnit.isAuthenticated())]
+[genUnit.genDisplayedOn.oclAsType(GenPage).generateLoggedInCheck()/]
+
+[/if]
+[if (not genUnit.oclAsType(GenControlUnit).genCancelDestination.oclIsUndefined())]
+if ($this->input->post('cancel')) {
+	redirect('[genUnit.oclAsType(GenControlUnit).genCancelDestination.controllerName()/]');
+	return;
+}
+[/if]
+[/template]
+
+[template public generateRemoveUniqueValidation(genUnit : GenDynamicUnit) post(trim())]
+[for (genField : GenUnitField | genUnit.genDisplayFields->select(f | f.isUnique()))]
+$this->[genUnit.instanceName()/]->validation['['/]'[genField.formFieldName()/]'[']'/]['['/]'rules'[']'/] = array_diff(
+		$this->[genUnit.instanceName()/]->validation['['/]'[genField.formFieldName()/]'[']'/]['['/]'rules'[']'/],
+		array('unique')
+	);
+[/for]
+[/template]
+

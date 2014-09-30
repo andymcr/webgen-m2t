@@ -1,0 +1,160 @@
+[comment encoding = UTF-8 /]
+[module nonPrintCSS(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+
+
+[template public generateNonPrintCSS(genModel : GenJsfModel)]
+[file (genModel.cssDirectory().concat('/').concat('non-print.css'), false)]
+@media only screen and (max-width: 60em) {
+	#page {
+		width: 100%;
+	}
+
+	.menu {
+		width: 100%;
+		float: none;
+		margin: 1em 0em 1em 1em;
+	}
+
+	#content {
+		width: 100%;
+		float: none;
+		margin: 1em 1em 1em 0em;
+	}
+
+}
+
+@media only screen and (min-width: 60em) {
+	#page {
+		width: 60em;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.menu {
+		width: 7em;
+		float: left;
+		margin: 1em 0em 1em 1em;
+	}
+
+	#content {
+		width: 50em;
+		float: right;
+		margin: 1em 1em 1em 0em;
+	}
+
+}
+
+#banner {
+	width: 100%;
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 0.5em;
+	color: white;
+	background-color: SteelBlue;
+}
+
+[if (not genModel.jsfModel.properties.topNavigationId.oclIsUndefined())]
+#[genModel.jsfModel.properties.topNavigationId/] {
+	width: 100%;
+	padding: 0.5em 0em 0.5em 0em;
+	color: white;
+	background-color: SteelBlue;
+}
+
+#[genModel.jsfModel.properties.topNavigationId/] ul {
+	list-style: none;
+	overflow: auto;
+}
+
+#[genModel.jsfModel.properties.topNavigationId/] ul li {
+	display: inline-block;
+	float: left;
+	text-align: center;
+}
+
+@media only screen and (min-width: 60em) {
+	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+		width: 10%;
+	}
+}
+
+@media only screen and (min-width: 40em) and (max-width: 60em) {
+	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+		width: 15%;
+	}
+}
+
+@media only screen and (min-width: 30em) and (max-width: 40em) {
+	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+		width: 25%;
+	}
+}
+
+@media only screen and (min-width: 20em) and (max-width: 30em) {
+	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+		width: 33%;
+	}
+}
+
+@media only screen and (min-width: 10em) and (max-width: 20em) {
+	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+		width: 50%;
+	}
+}
+
+
+#[genModel.jsfModel.properties.topNavigationId/] a {
+	text-decoration: none;
+	color: white;
+}
+
+#[genModel.jsfModel.properties.topNavigationId/] a:hover {
+	font-weight: bold;
+}
+
+#[genModel.jsfModel.properties.topNavigationId/] #authentication {
+	width: 20%;
+	display: inline-block;
+	float: right;
+	margin-right: 0.5em;
+	text-align: right;
+}
+
+[/if]
+.menu > h1.menu_caption {
+	color: SteelBlue;
+	background-color: #E8EEFF;
+	text-align: left;
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+}
+
+.menu ul {
+	list-style: none;
+	padding: 0em;
+	margin: 0em;
+}
+
+.menu ul ul {
+	margin-left: 1em;
+}
+
+.menu li {
+	padding-bottom: 0.5em;
+}
+
+.menu a {
+	text-decoration: none;
+	color: CadetBlue;
+}
+
+.menu a:hover {
+	font-weight: bold;
+	color: SteelBlue;
+}
+
+[/file]
+[/template]

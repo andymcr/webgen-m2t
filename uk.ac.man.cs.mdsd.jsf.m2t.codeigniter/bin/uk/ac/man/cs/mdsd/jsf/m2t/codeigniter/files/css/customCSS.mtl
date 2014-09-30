@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module customCSS('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+
+
+[template public generateCustomCSS(genModel : GenJsfModel)]
+[file (genModel.cssDirectory().concat('/').concat('custom.css'), false)]
+// [protected ('css.custom')]
+// [/protected]
+[/file]
+[/template]

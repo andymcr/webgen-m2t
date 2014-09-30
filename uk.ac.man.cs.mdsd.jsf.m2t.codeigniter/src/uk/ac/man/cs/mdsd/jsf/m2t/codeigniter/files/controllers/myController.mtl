@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module myController(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+
+
+[template public generateMyController(genModel : GenJsfModel)]
+[file(genModel.coreDirectory().concat('/MY_Controller').concat(genModel.executableExtension()), false)]
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+class MY_Controller extends CI_Controller {
+
+[if (genModel.isAuthenticated())]
+[let genAuthentication : GenAuthentication = genModel.genAuthentication]
+	protected function getLoggedInUser() {
+	[if (genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
+	[let genLocalAuthentication : GenLocalAuthenticationSystem = genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
+		$user = new [genLocalAuthentication.genUserService.modelName()/]();
+		$user->get_by_[genLocalAuthentication.genUserAuthenticationKey.columnName()/]($this->authentication_lib->getUsername());
+	[/let]
+	[/if]
+		return $user;
+	}
+
+[/let]
+[/if]
+}
+[/file]
+[/template]

@@ -1,0 +1,27 @@
+[comment encoding = UTF-8 /]
+[module captchaException(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+
+
+[template public generateCaptchaException(genModel : GenJsfModel)]
+[file(genAuthentication.captchaDirectory().concat('/Exception').concat(genAuthentication.executableExtension()), false)]
+<?php defined('SYSPATH') OR die('No Direct Script Access');
+
+class Captcha_Exception extends Exception {
+
+	protected $_message;
+
+	public function __construct($message)
+	{
+		$this->_message = $message;
+	}
+
+	public function message()
+	{
+		return $this->_message;
+	}
+}
+[/file]
+[/template]

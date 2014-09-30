@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="genjsf" nsURI="http://www.cs.man.ac.uk/mdsd/2010/GenJsf" nsPrefix="jsf">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EEnum" name="SelectOneofOptions">
+    <eLiterals name="Menu"/>
+    <eLiterals name="RadioHorizontal"/>
+    <eLiterals name="RadioVertical"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SelectManyOptions">
+    <eLiterals name="List"/>
+    <eLiterals name="CheckboxHorizontal"/>
+    <eLiterals name="CheckboxVertical"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="InputMessagePlacementOptions">
+    <eLiterals name="FormHead"/>
+    <eLiterals name="FormFoot"/>
+    <eLiterals name="OnFeature"/>
+    <eLiterals name="FormHeadAndFoot"/>
+    <eLiterals name="FormAndOnFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="InputMessageDisplayOptions">
+    <eLiterals name="Short"/>
+    <eLiterals name="Description"/>
+    <eLiterals name="ToolTip"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AjaxTechnologies">
+    <eLiterals name="None"/>
+    <eLiterals name="jQuery"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenJsfModel" eSuperTypes="../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenOrmModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfModel" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//JsfModel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genAuthentication" ordered="false"
+        eType="#//GenAuthentication" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genServices" upperBound="-1"
+        eType="#//GenService" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPages" upperBound="-1"
+        eType="#//GenPage" containment="true" eOpposite="#//GenPage/genPartOf"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genMenus" upperBound="-1"
+        eType="#//GenMenu" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="baseURL" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rewriteURLs" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="developmentVersion" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ajaxTechnology" ordered="false"
+        lowerBound="1" eType="#//AjaxTechnologies" defaultValueLiteral="None"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="textEditorPath" ordered="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backingPackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="backing"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="converterPackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="converter"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="validatorPackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="validator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="servicePackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="service"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="securityPackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="security"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uiPackage" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="ui"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenAuthentication" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCasAuthentication" eSuperTypes="#//GenAuthentication">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfAuthentication" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//CasAuthentication"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenLocalAuthenticationSystem" eSuperTypes="#//GenAuthentication">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfAuthentication" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//LocalAuthenticationSystem"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genUserService" ordered="false"
+        lowerBound="1" eType="#//GenService"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genUserAuthenticationKey"
+        ordered="false" lowerBound="1" eType="#//GenServiceEntityElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genAuthenticationService"
+        ordered="false" lowerBound="1" eType="#//GenService"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLoginAttemptService"
+        ordered="false" lowerBound="1" eType="#//GenService"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genAutoLoginService" ordered="false"
+        lowerBound="1" eType="#//GenService"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genRegistrationUnit" ordered="false"
+        eType="#//GenRegistrationUnit" eOpposite="#//GenRegistrationUnit/genAuthenticationSystem"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLoginUnit" ordered="false"
+        lowerBound="1" eType="#//GenLoginUnit" eOpposite="#//GenLoginUnit/genAuthenticationSystem"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genForgottenPasswordUnit"
+        ordered="false" eType="#//GenForgottenPasswordUnit" eOpposite="#//GenForgottenPasswordUnit/genAuthenticationSystem"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="loginMaximumAttempts" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="5"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="loginAttemptExpiryPeriod"
+        ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="3600"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="autologinCookieLifetime"
+        ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="2678400"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIncludedFeature" abstract="true"
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genForcedValue" ordered="false"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="messageDisplayOption" eType="#//InputMessageDisplayOptions"
+        defaultValueLiteral="Description"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIncludedElement" abstract="true"
+      interface="true" eSuperTypes="#//GenIncludedFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDefaultValue" ordered="false"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIncludedAssociation" abstract="true"
+      interface="true" eSuperTypes="#//GenIncludedFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenService" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfService" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//Service"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genEntities" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenEntity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDisplayLabels" upperBound="-1"
+        eType="#//GenModelLabel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genSelections" upperBound="-1"
+        eType="#//GenSelection" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFeatures" upperBound="-1"
+        eType="#//GenServiceFeature" containment="true" eOpposite="#//GenServiceFeature/genIncludedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genAccessedBy" upperBound="-1"
+        eType="#//GenDynamicUnit" eOpposite="#//GenDynamicUnit/genService"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultViewName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenModelLabel" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement #//GenUnitTitle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLabelFor" ordered="false"
+        lowerBound="1" eType="#//GenService"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfLabel" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ModelLabel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFeatures" lowerBound="1"
+        upperBound="-1" eType="#//GenServiceFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSelection" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfSelection" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//Selection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFilter" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenPredicate"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genOrdering" upperBound="-1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenOrder"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenServiceFeature" abstract="true" interface="true"
+      eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genIncludedBy" ordered="false"
+        lowerBound="1" eType="#//GenService" eOpposite="#//GenService/genFeatures"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenServiceEntityFeature" abstract="true"
+      eSuperTypes="#//GenIncludedFeature #//GenServiceFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenServiceEntityElement" eSuperTypes="#//GenServiceEntityFeature #//GenIncludedElement #//GenUnitTitle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ServiceEntityElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenAttribute"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenServiceAssociation" abstract="true"
+      interface="true" eSuperTypes="#//GenServiceFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenServiceEntityAssociation" eSuperTypes="#//GenServiceEntityFeature #//GenServiceAssociation #//GenIncludedAssociation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ServiceEntityAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenAssociation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenServiceViewAssociation" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement #//GenServiceAssociation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfTargetFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ServiceAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genTargetFeature" ordered="false"
+        lowerBound="1" eType="#//GenServiceAssociation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPage" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement #//GenUnitContainer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPartOf" eType="#//GenJsfModel"
+        eOpposite="#//GenJsfModel/genPages"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfPage" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//Page"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genParentPage" eType="#//GenPage"
+        eOpposite="#//GenPage/genChildPages"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genChildPages" upperBound="-1"
+        eType="#//GenPage" eOpposite="#//GenPage/genParentPage"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genSideMenu" ordered="false"
+        eType="#//GenMenu"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSelectTarget" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genTargettingActions" upperBound="-1"
+        eType="#//GenSelectAction" eOpposite="#//GenSelectAction/genTarget"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenMenu" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genEntries" upperBound="-1"
+        eType="#//GenMenuEntry" containment="true" eOpposite="#//GenMenuEntry/genPartOf"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenMenuEntry" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPartOf" ordered="false"
+        lowerBound="1" eType="#//GenMenu" eOpposite="#//GenMenu/genEntries"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenStaticMenu" eSuperTypes="#//GenMenu">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfMenu" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//StaticMenu"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenFixedPageMenuEntry" eSuperTypes="#//GenMenuEntry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfMenuEntry" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//FixedPageMenuEntry"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDestination" ordered="false"
+        lowerBound="1" eType="#//GenPage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenFixedActionMenuEntry" eSuperTypes="#//GenMenuEntry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfMenuEntry" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//FixedActionMenuEntry"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDestination" ordered="false"
+        lowerBound="1" eType="#//GenDynamicUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenFixedCommandMenuEntry" eSuperTypes="#//GenMenuEntry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfMenuEntry" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//FixedCommandMenuEntry"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDestination" ordered="false"
+        lowerBound="1" eType="#//GenCommand"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenEditStaticTextMenuEntry" eSuperTypes="#//GenMenuEntry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfMenuEntry" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//EditStaticTextMenuEntry"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDynamicMenu" eSuperTypes="#//GenMenu">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfMenu" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//DynamicMenu"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genService" ordered="false"
+        lowerBound="1" eType="#//GenService"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genSelection" ordered="false"
+        lowerBound="1" eType="#//GenSelection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDynamicTitle" ordered="false"
+        eType="#//GenServiceEntityElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenMenuIncludedFeature" abstract="true"
+      eSuperTypes="#//GenMenuEntry"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenMenuIncludedElement" eSuperTypes="#//GenMenuIncludedFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfMenuEntry" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//MenuIncludedElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitContainer" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genUnits" upperBound="-1"
+        eType="#//GenContentUnit" containment="true" eOpposite="#//GenContentUnit/genDisplayedOn"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitTitle" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenContentUnit" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDisplayedOn" eType="#//GenUnitContainer"
+        eOpposite="#//GenUnitContainer/genUnits"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCreateSitemapUnit" eSuperTypes="#//GenContentUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//CreateSitemapUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenStaticUnit" eSuperTypes="#//GenContentUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//StaticUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genService" eType="#//GenService"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCommandUnit" eSuperTypes="#//GenContentUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//CommandUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genCommands" upperBound="-1"
+        eType="#//GenCommand" containment="true" eOpposite="#//GenCommand/genPartOf"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCommand" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPartOf" lowerBound="1"
+        eType="#//GenCommandUnit" eOpposite="#//GenCommandUnit/genCommands"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUserCommand" eSuperTypes="#//GenCommand">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfCommand" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//Command"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDynamicUnit" abstract="true" eSuperTypes="#//GenContentUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genService" lowerBound="1"
+        eType="#//GenService" eOpposite="#//GenService/genAccessedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDisplayFields" upperBound="-1"
+        eType="#//GenUnitField" containment="true" eOpposite="#//GenUnitField/genDisplayedOn"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genSupportActions" upperBound="-1"
+        eType="#//GenUnitSupportAction" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitField" abstract="true" interface="true"
+      eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDisplayedOn" ordered="false"
+        lowerBound="1" eType="#//GenDynamicUnit" eOpposite="#//GenDynamicUnit/genDisplayFields"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitFeature" abstract="true" eSuperTypes="#//GenUnitField #//GenIncludedFeature #//GenInlineActionContainer"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitElement" eSuperTypes="#//GenUnitFeature #//GenIncludedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//UnitElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genServiceFeature" ordered="false"
+        lowerBound="1" eType="#//GenServiceEntityElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitAssociation" eSuperTypes="#//GenUnitFeature #//GenIncludedAssociation #//GenUnitContainer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//UnitAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genServiceFeature" ordered="false"
+        lowerBound="1" eType="#//GenServiceAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genChildFeature" eType="#//GenUnitChildFeature"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genSelection" ordered="false"
+        eType="#//GenSelection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDynamicLabel" ordered="false"
+        eType="#//GenModelLabel"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectOneOfOption" lowerBound="1"
+        eType="#//SelectOneofOptions" defaultValueLiteral="Menu"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectManyOption" lowerBound="1"
+        eType="#//SelectManyOptions" defaultValueLiteral="List"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitChildFeature" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitChildElement" eSuperTypes="#//GenUnitChildFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfChildFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//UnitChildElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genServiceFeature" ordered="false"
+        lowerBound="1" eType="#//GenServiceEntityElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitChildAssociation" eSuperTypes="#//GenUnitChildFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfChildFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//UnitChildAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genServiceFeature" ordered="false"
+        lowerBound="1" eType="#//GenServiceAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genChildFeature" eType="#//GenUnitChildFeature"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenInterfaceField" abstract="true" eSuperTypes="#//GenUnitField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genMustMatch" ordered="false"
+        eType="#//GenUnitField"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDefaultValue" ordered="false"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDataTypeField" eSuperTypes="#//GenInterfaceField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDataType" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenDataType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfField" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//DataTypeField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDateField" eSuperTypes="#//GenInterfaceField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfField" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//DateField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCaptchaField" eSuperTypes="#//GenUnitField">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfField" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//CaptchaField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUnitSupportAction" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfAction" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//UnitSupportAction"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenEditUnit" abstract="true" eSuperTypes="#//GenDynamicUnit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="messagePlacementOption"
+        ordered="false" lowerBound="1" eType="#//InputMessagePlacementOptions" defaultValueLiteral="OnFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="formMessageDisplayOption"
+        ordered="false" lowerBound="1" eType="#//InputMessageDisplayOptions" defaultValueLiteral="Description"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genConfirmDestination"
+        ordered="false" eType="#//GenPage"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genCancelDestination" ordered="false"
+        eType="#//GenPage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCreateUnit" eSuperTypes="#//GenEditUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//CreateUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCreateUpdateUnit" eSuperTypes="#//GenEditUnit #//GenSelectTarget">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//CreateUpdateUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenMapUnit" eSuperTypes="#//GenEditUnit #//GenSelectTarget">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//MapUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLocation" eType="#//GenServiceEntityElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPlaceName" eType="#//GenServiceEntityElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenUpdateUnit" eSuperTypes="#//GenEditUnit #//GenSelectTarget">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//UpdateUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDataUnit" abstract="true" eSuperTypes="#//GenDynamicUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genSelection" ordered="false"
+        eType="#//GenSelection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDynamicTitle" ordered="false"
+        eType="#//GenUnitTitle"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDetailsUnit" eSuperTypes="#//GenDataUnit #//GenSelectTarget">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//DetailsUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIndexUnit" abstract="true" eSuperTypes="#//GenDataUnit #//GenInlineActionContainer #//GenSelectTarget">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//IndexUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genTargettingSearches"
+        ordered="false" upperBound="-1" eType="#//GenSearchUnit" eOpposite="#//GenSearchUnit/genResultDestination"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIndexGridUnit" eSuperTypes="#//GenIndexUnit"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIndexPageDirectionUnit" eSuperTypes="#//GenIndexUnit"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenIndexLineDirectionUnit" eSuperTypes="#//GenIndexUnit"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenControlUnit" abstract="true" eSuperTypes="#//GenDynamicUnit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="messagePlacementOption"
+        ordered="false" lowerBound="1" eType="#//InputMessagePlacementOptions" defaultValueLiteral="OnFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genCancelDestination" ordered="false"
+        eType="#//GenPage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSearchUnit" eSuperTypes="#//GenControlUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//SearchUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genResultDestination" ordered="false"
+        lowerBound="1" eType="#//GenIndexUnit" eOpposite="#//GenIndexUnit/genTargettingSearches"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenActionUnit" eSuperTypes="#//GenControlUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ActionUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenAuthenticationUnit" abstract="true"
+      interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenRegistrationUnit" eSuperTypes="#//GenEditUnit #//GenAuthenticationUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//RegistrationUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genAuthenticationSystem"
+        ordered="false" eType="#//GenLocalAuthenticationSystem" eOpposite="#//GenLocalAuthenticationSystem/genRegistrationUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenLoginUnit" eSuperTypes="#//GenControlUnit #//GenAuthenticationUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//LoginUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genAuthenticationSystem"
+        ordered="false" eType="#//GenLocalAuthenticationSystem" eOpposite="#//GenLocalAuthenticationSystem/genLoginUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLoginIdField" ordered="false"
+        lowerBound="1" eType="#//GenUnitField"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genPasswordField" ordered="false"
+        lowerBound="1" eType="#//GenUnitField"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genRememberMeField" ordered="false"
+        eType="#//GenUnitField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenForgottenPasswordUnit" eSuperTypes="#//GenControlUnit #//GenAuthenticationUnit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfUnit" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ForgottenPasswordUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genAuthenticationSystem"
+        ordered="false" eType="#//GenLocalAuthenticationSystem" eOpposite="#//GenLocalAuthenticationSystem/genForgottenPasswordUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genLoginIdField" ordered="false"
+        lowerBound="1" eType="#//GenUnitField"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenInlineActionContainer" abstract="true"
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genActions" upperBound="-1"
+        eType="#//GenInlineAction" containment="true" eOpposite="#//GenInlineAction/genUsedBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenInlineAction" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfAction" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//InlineAction"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genUsedBy" lowerBound="1"
+        eType="#//GenInlineActionContainer" eOpposite="#//GenInlineActionContainer/genActions"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSelectAction" eSuperTypes="#//GenInlineAction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genTarget" ordered="false"
+        lowerBound="1" eType="#//GenSelectTarget" eOpposite="#//GenSelectTarget/genTargettingActions"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDeleteAction" eSuperTypes="#//GenInlineAction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genDestination" ordered="false"
+        eType="#//GenPage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenFeatureReference" eSuperTypes="../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenPath">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPath" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//FeatureReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genField" ordered="false"
+        lowerBound="1" eType="#//GenServiceEntityFeature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenModelReference" eSuperTypes="../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenPath">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPath" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ModelReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genUnit" ordered="false"
+        lowerBound="1" eType="#//GenDynamicUnit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenCurrentUserReference" eSuperTypes="../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenPath">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPath" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//CurrentUserReference"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module staticUnit(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+
+
+[template public generateUnitView(genUnit : GenContentUnit)
+	? (genUnit.oclIsTypeOf(GenStaticUnit))]
+[let genStaticUnit : GenStaticUnit = genUnit.oclAsType(GenStaticUnit)]
+[file(genStaticUnit.viewFilename(), false)]
+ <section class="[genStaticUnit.styleClass()/]" id="[genStaticUnit.instanceName()/]">
+[if (not genStaticUnit.omitCaption())]
+  <h1 class="[genStaticUnit.captionClass()/]">[genStaticUnit.displayLabel()/]</h1>
+[/if]
+[if (genStaticUnit.pageDisplayedOn().genPartOf.jsfModel.properties.staticUnitsEditable)]
+  <div class="[genStaticUnit.layoutClass()/]"><?php
+	if ($[genStaticUnit.instanceName()/]->loaded())
+		echo $[genStaticUnit.instanceName()/]->content;
+	else
+	{
+		?>[genStaticUnit.jsfUnit.content/]<?php
+	}
+?></div>
+[else]
+  <div class="[genStaticUnit.layoutClass()/]">[genStaticUnit.jsfUnit.content/]</div>
+[/if]
+ </section>
+[/file]
+[/let]
+[/template]

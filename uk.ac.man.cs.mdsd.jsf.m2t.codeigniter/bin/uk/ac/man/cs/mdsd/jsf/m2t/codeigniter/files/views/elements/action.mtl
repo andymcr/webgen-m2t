@@ -1,0 +1,25 @@
+[comment encoding = UTF-8 /]
+[module action(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+
+
+[template public generateAction(genAction : GenInlineAction)
+	? (genAction.oclIsTypeOf(GenSelectAction))]
+[let genSelectAction : GenSelectAction = genAction.oclAsType(GenSelectAction)]
+echo anchor('[genSelectAction.destinationUri()/]' . $entry->id, '[genSelectAction.displayLabel()/]');[/let]
+[/template]
+
+
+[template public generateAction(genAction : GenInlineAction)
+	? (genAction.oclIsTypeOf(GenDeleteAction))]
+[let genDeleteAction : GenDeleteAction = genAction.oclAsType(GenDeleteAction)]
+echo anchor(
+	'[genDeleteAction.destinationUri()/]' . $entry->id,
+	'[genAction.displayLabel()/]',
+	array(
+		'onclick' => 'return confirm(\'[genAction.jsfAction.oclAsType(DeleteAction).confirmMessage/]\');'
+	));[/let]
+[/template]

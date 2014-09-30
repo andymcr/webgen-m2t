@@ -1,0 +1,23 @@
+[comment encoding = UTF-8 /]
+[module header('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::fileInformation/]
+
+
+[template public generateHeader(genModel : GenJsfModel)]
+[file(genModel.templatesDirectory().concat('/header').concat(genModel.executableExtension()), false)]
+<?xml version="1.0" encoding="UTF-8"?>
+<?php echo doctype('xhtml11'); ?>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3.org/1999/xhtml
+						http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd">
+<head>
+ <title>[genModel.jsfModel.properties.siteTitle/]: <?php echo $title; ?></title>
+ <?php echo link_tag('css/default.css'); ?>
+ <?php echo link_tag('css/custom.css'); ?>
+</head>
+<body id="page">
+<div id="banner">[genModel.jsfModel.properties.siteTitle/]</div>
+[/file]
+[/template]

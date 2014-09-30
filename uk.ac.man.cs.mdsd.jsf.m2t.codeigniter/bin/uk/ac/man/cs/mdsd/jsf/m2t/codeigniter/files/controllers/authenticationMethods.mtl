@@ -1,0 +1,233 @@
+[comment encoding = UTF-8 /]
+[module authenticationMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::controlMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::codeigniter::files::controllers::editMethods/]
+
+
+[template protected generateAuthenticationStart(genUnit : GenDynamicUnit) post(trim())]
+[genUnit.generateStartControlUnit()/]
+if ($this->authentication_lib->isLoggedIn()) {
+	$this->page_message = $this->lang->line('authentication_already_logged_in');
+	redirect('');
+
+} else if (!$this->input->post('[genUnit.instanceName()/]')) {
+	$this->displayPage();
+[/template]
+
+
+[template public generateUnitVariables(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsKindOf(GenAuthenticationUnit)) post(trim())]
+$this->[genUnit.instanceName()/] = new [genUnit.modelName()/]();
+[if (genUnit.hasDefaultValueFields())]
+[genUnit.generateDefaultUnitValues()/]
+[/if]
+[/template]
+
+
+[template public generateUnitMethods(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenRegistrationUnit)) post(trim())]
+[let genAuthentication : GenLocalAuthenticationSystem = genUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
+public function [genUnit.methodName()/]() {
+[if (genUnit.isAuthenticated())]
+	[genUnit.genDisplayedOn.oclAsType(GenPage).generateLoggedInCheck()/]
+
+[/if]
+[if (not genUnit.oclAsType(GenEditUnit).genCancelDestination.oclIsUndefined())]
+	if ($this->input->post('cancel')) {
+		redirect('[genUnit.oclAsType(GenEditUnit).genCancelDestination.controllerName()/]');
+		return;
+	}
+
+[/if]
+	[genUnit.generateInterfaceFieldValidation()/]
+	$this->[genUnit.instanceName()/]->trans_start();
+	[genUnit.generateValuesFromFormToModel()/]
+	$this->[genUnit.instanceName()/]->activated = [if (genAuthentication.jsfAuthentication.useEmailActivation)]'0'[else]'1'[/if];
+	[genUnit.generateRememberEncryptedFields()/]
+[if (genAuthentication.jsfAuthentication.useEmailActivation)]
+	$this->[genUnit.instanceName()/]->new_email_key = md5(rand().microtime());
+[/if]
+	if ($this->[genUnit.instanceName()/]->save($related)) {
+	[if (genAuthentication.jsfAuthentication.useEmailActivation)]
+		$this->[genUnit.instanceName()/]->trans_commit();
+		$this->authentication_lib->sendEmail('activate', $this->[genUnit.instanceName()/]->email, array(
+			'site_name' => $this->config->item('site_title', 'site'),
+			'user_id' => $this->[genUnit.instanceName()/]->id,
+			'username' => $this->[genUnit.instanceName()/]->username,
+			'email' => $this->[genUnit.instanceName()/]->email,
+			'new_email_key' => $this->[genUnit.instanceName()/]->new_email_key,
+			'activation_period' => $this->config->item('email_activation_expire', 'tank_auth')));
+		$this->page_message = 'Activation email sent';
+	[else]
+		[let genLocalAuthentication : GenLocalAuthenticationSystem = genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
+		$this->user = new [genLocalAuthentication.genUserService.modelName()/]();
+		$this->user->[genLocalAuthentication.genUserAuthenticationKey.columnName()/] = $this->[genUnit.instanceName()/]->username;
+		if ($this->user->skip_validation()->authentication_save()) {
+			$this->[genUnit.instanceName()/]->trans_commit();
+		[if (genAuthentication.jsfAuthentication.sendWelcomeEmail)]
+			$this->authentication_lib->sendEmail('welcome', $this->[genUnit.instanceName()/]->email, array(
+				'site_name' => $this->config->item('site_title', 'site'),
+				'username' => $this->[genUnit.instanceName()/]->username,
+				'email' => $this->[genUnit.instanceName()/]->email));
+		[/if]
+		[/let]
+		[if (not genUnit.oclAsType(GenEditUnit).genConfirmDestination.oclIsUndefined())]
+			redirect('[genUnit.oclAsType(GenEditUnit).genConfirmDestination.controllerName()/]');
+		[else]
+			$this->[genUnit.instanceName()/]->clear();
+			[genUnit.generateClearInterfaceFields()/]
+		[/if]
+			$this->page_message = 'Registration completed';
+		} else {
+			$this->[genUnit.instanceName()/]->trans_rollback();
+			[genUnit.generateRestoreEncryptedFields()/]
+			log_message('error', 'creation of user failed');
+		[if (not genUnit.oclAsType(GenEditUnit).genConfirmDestination.oclIsUndefined())]
+			$this->displayPage();
+		[/if]
+		}
+	[/if]
+	} else {
+		$this->[genUnit.instanceName()/]->trans_rollback();
+		[genUnit.generateRestoreEncryptedFields()/]
+	[if (not genUnit.oclAsType(GenEditUnit).genConfirmDestination.oclIsUndefined())]
+		$this->displayPage();
+	[/if]
+	}
+	[if (genUnit.oclAsType(GenEditUnit).genConfirmDestination.oclIsUndefined())]
+	$this->displayPage();
+	[/if]
+
+//		$use_username = $this->config->item('use_username', 'tank_auth');
+//		if ($use_username) {
+//			$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean|min_length['['/]'.$this->config->item('username_min_length', 'tank_auth').'[']'/]|max_length['['/]'.$this->config->item('username_max_length', 'tank_auth').'[']'/]|alpha_dash');
+//		}
+//		$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
+//		$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|min_length['['/]'.$this->config->item('password_min_length', 'tank_auth').'[']'/]|max_length['['/]'.$this->config->item('password_max_length', 'tank_auth').'[']'/]|alpha_dash');
+//		$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches['['/]password[']'/]');
+//
+//		$captcha_registration	= $this->config->item('captcha_registration', 'tank_auth');
+//		$use_recaptcha			= $this->config->item('use_recaptcha', 'tank_auth');
+//		if ($captcha_registration) {
+//			if ($use_recaptcha) {
+//				$this->form_validation->set_rules('recaptcha_response_field', 'Confirmation Code', 'trim|xss_clean|required|callback__check_recaptcha');
+//			} else {
+//				$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|xss_clean|required|callback__check_captcha');
+//			}
+//		}
+//		if ($captcha_registration) {
+//			if ($use_recaptcha) {
+//				$data['['/]'recaptcha_html'[']'/] = $this->_create_recaptcha();
+//			} else {
+//				$data['['/]'captcha_html'[']'/] = $this->_create_captcha();
+//			}
+}
+[/let]
+[/template]
+
+[template public generateUnitMethods(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenLoginUnit)) post(trim())]
+[let genLoginUnit : GenLoginUnit = genUnit.oclAsType(GenLoginUnit)]
+public function [genUnit.methodName()/]() {
+	[genUnit.generateAuthenticationStart()/]
+
+	} else {
+[if (not genLoginUnit.genAuthenticationSystem.oclIsUndefined())]
+[let genLocalAuthentication : GenLocalAuthenticationSystem = genLoginUnit.genAuthenticationSystem]
+	[if (not genLocalAuthentication.genLoginAttemptService.oclIsUndefined())]
+		$loginExpiryPeriod = $this->config->item('login_attempt_expiry_period', 'authentication');
+		$loginMaximumAttempts = $this->config->item('login_maximum_attempts', 'authentication');
+		$loginAttempt = new [genLocalAuthentication.genLoginAttemptService.modelName()/]();
+	[/if]
+[/let]
+[/if]
+		[genUnit.generateValuesFromFormToModel()/]
+		if ($this->[genUnit.instanceName()/]->login()->exists()) {
+			[if (not genLoginUnit.genAuthenticationSystem.oclIsUndefined())]
+[let genLocalAuthentication : GenLocalAuthenticationSystem = genLoginUnit.genAuthenticationSystem]
+	[if (not genLocalAuthentication.genLoginAttemptService.oclIsUndefined())]
+			if ($loginAttempt->getAttemptCount($this->[genUnit.instanceName()/], $this->input->ip_address(), $loginExpiryPeriod ) >= $loginMaximumAttempts) {
+				$this->[genUnit.instanceName()/]_error = $this->lang->line('authentication_maximum_attempts_exceeded', 'authentication');
+				$this->displayPage();
+			} else[/if]
+[/let]
+[/if] if ($this->[genUnit.instanceName()/]->activated == '0') {
+				$this->[genUnit.instanceName()/]_error = $this->lang->line('authentication_not_activated', 'authentication');
+				$this->displayPage();
+			} else if ($this->[genUnit.instanceName()/]->banned == '1') {
+				$this->[genUnit.instanceName()/]_error = $this->lang->line('authentication_banned', 'authentication');
+				$this->displayPage();
+			} else {
+				$this->authentication_lib->setLoggedIn($this->[genUnit.instanceName()/]);
+				$this->[genUnit.instanceName()/]->updateLoginDetail($this->input->ip_address());
+[if (not genLoginUnit.genAuthenticationSystem.oclIsUndefined())]
+[let genLocalAuthentication : GenLocalAuthenticationSystem = genLoginUnit.genAuthenticationSystem]
+	[if (not genLocalAuthentication.genLoginAttemptService.oclIsUndefined())]
+				$loginAttempt->clearLoginAttempts($this->[genUnit.instanceName()/], $this->input->ip_address(), $loginExpiryPeriod);
+	[/if]
+	[if (not genLocalAuthentication.genAutoLoginService.oclIsUndefined())]
+				if (isset($_POST['['/]'rememberMe'[']'/])) {
+					$this->authentication_lib->createAutoLogin($this->[genUnit.instanceName()/]);
+				}
+	[/if]
+[/let]
+[/if]
+log_message('debug', 'XXXX [genUnit.genDisplayedOn.oclAsType(GenPage).name/] logged in, returning to '.$this->session->userdata('login_referrer'));
+				if ($this->session->userdata('login_referrer')) {
+					redirect($this->session->userdata('login_referrer'));
+					$this->session->unset_userdata('login_referrer');
+				} else {
+					redirect('');
+				}
+			}
+		} else {
+[if (not genLoginUnit.genAuthenticationSystem.oclIsUndefined())]
+[let genLocalAuthentication : GenLocalAuthenticationSystem = genLoginUnit.genAuthenticationSystem]
+	[if (not genLocalAuthentication.genLoginAttemptService.oclIsUndefined())]
+			if ($loginAttempt->getAttemptCount($this->[genUnit.instanceName()/], $this->input->ip_address(), $loginExpiryPeriod) < $loginMaximumAttempts) {
+				$loginAttempt->clear();
+				$loginAttempt->recordLoginAttempt($this->[genUnit.instanceName()/], $this->input->ip_address());
+			}
+	[/if]
+[/let]
+[/if]
+			if (empty($this->[genUnit.instanceName()/]->error->all)) {
+				$this->[genUnit.instanceName()/]_error = $this->lang->line('authentication_incorrect_login');
+			}
+			$this->displayPage();
+		}
+	}
+}
+
+public function logout() {
+	// based on code from tank_auth by Ilya Konyukhov (http://konyukhov.com/soft/tank_auth/)
+	$this->authentication_lib->logout();
+	redirect('');
+}
+[/let]
+[/template]
+
+[template public generateUnitMethods(genUnit : GenDynamicUnit)
+	? (genUnit.oclIsTypeOf(GenForgottenPasswordUnit)) post(trim())]
+public function [genUnit.methodName()/]() {
+	// based on code from tank_auth by Ilya Konyukhov (http://konyukhov.com/soft/tank_auth/)
+	[genUnit.generateAuthenticationStart()/]
+
+	} else {
+		[genUnit.generateValuesFromFormToModel()/]
+		$this->[genUnit.instanceName()/]->username = 'x';
+		$this->[genUnit.instanceName()/]->password = 'y';
+		$this->[genUnit.instanceName()/]->validate();
+		if (!$this->[genUnit.instanceName()/]->valid) {
+			$this->displayPage();
+		} else {
+$this->displayPage();
+		}
+	}
+}
+[/template]

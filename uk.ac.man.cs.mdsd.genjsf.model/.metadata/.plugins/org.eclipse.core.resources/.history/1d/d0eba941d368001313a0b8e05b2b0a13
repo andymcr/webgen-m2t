@@ -1,0 +1,3593 @@
+/**
+ * <copyright>
+ * </copyright>
+ *
+ * $Id: GenJsfPackageImpl.java,v 1.82 2013/12/18 17:21:53 andy Exp $
+ */
+package uk.ac.man.cs.mdsd.genjsf.impl;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import uk.ac.man.cs.mdsd.gencriteria.GencriteriaPackage;
+import uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies;
+import uk.ac.man.cs.mdsd.genjsf.CollectionDisplayFormat;
+import uk.ac.man.cs.mdsd.genjsf.GenAuthentication;
+import uk.ac.man.cs.mdsd.genjsf.GenAuthenticationUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenCasAuthentication;
+import uk.ac.man.cs.mdsd.genjsf.GenContentUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenControlUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenCreateUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenCreateUpdateUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenCurrentUserReference;
+import uk.ac.man.cs.mdsd.genjsf.GenDataUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenDeleteAction;
+import uk.ac.man.cs.mdsd.genjsf.GenDetailsUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenDynamicMenu;
+import uk.ac.man.cs.mdsd.genjsf.GenDynamicUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenEditUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenFieldReference;
+import uk.ac.man.cs.mdsd.genjsf.GenFixedMenuEntry;
+import uk.ac.man.cs.mdsd.genjsf.GenForgottenPasswordUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenIncludedAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenIncludedCollectionAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenIncludedCollectionElement;
+import uk.ac.man.cs.mdsd.genjsf.GenIncludedElement;
+import uk.ac.man.cs.mdsd.genjsf.GenIncludedFeature;
+import uk.ac.man.cs.mdsd.genjsf.GenIncludedSingletonAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenIncludedSingletonElement;
+import uk.ac.man.cs.mdsd.genjsf.GenIndexGridUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenIndexLineDirectionUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenIndexPageDirectionUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenIndexUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenInlineAction;
+import uk.ac.man.cs.mdsd.genjsf.GenInlineActionContainer;
+import uk.ac.man.cs.mdsd.genjsf.GenInterfaceField;
+import uk.ac.man.cs.mdsd.genjsf.GenJsfFactory;
+import uk.ac.man.cs.mdsd.genjsf.GenJsfModel;
+import uk.ac.man.cs.mdsd.genjsf.GenJsfPackage;
+import uk.ac.man.cs.mdsd.genjsf.GenLocalAuthenticationSystem;
+import uk.ac.man.cs.mdsd.genjsf.GenLoginUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenMenu;
+import uk.ac.man.cs.mdsd.genjsf.GenMenuEntry;
+import uk.ac.man.cs.mdsd.genjsf.GenMenuIncludedElement;
+import uk.ac.man.cs.mdsd.genjsf.GenMenuIncludedFeature;
+import uk.ac.man.cs.mdsd.genjsf.GenModelReference;
+import uk.ac.man.cs.mdsd.genjsf.GenPage;
+import uk.ac.man.cs.mdsd.genjsf.GenRegistrationUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenSearchUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenSelectAction;
+import uk.ac.man.cs.mdsd.genjsf.GenSelectTarget;
+import uk.ac.man.cs.mdsd.genjsf.GenSelection;
+import uk.ac.man.cs.mdsd.genjsf.GenService;
+import uk.ac.man.cs.mdsd.genjsf.GenServiceIncludedAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenServiceIncludedCollectionAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenServiceIncludedCollectionElement;
+import uk.ac.man.cs.mdsd.genjsf.GenServiceIncludedElement;
+import uk.ac.man.cs.mdsd.genjsf.GenServiceIncludedFeature;
+import uk.ac.man.cs.mdsd.genjsf.GenServiceIncludedSingletonAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenServiceIncludedSingletonElement;
+import uk.ac.man.cs.mdsd.genjsf.GenStaticMenu;
+import uk.ac.man.cs.mdsd.genjsf.GenStaticUnit;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitContainer;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitField;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitIncludedAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitIncludedCollectionAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitIncludedCollectionElement;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitIncludedElement;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitIncludedFeature;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitIncludedSingletonAssociation;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitIncludedSingletonElement;
+import uk.ac.man.cs.mdsd.genjsf.GenUpdateUnit;
+import uk.ac.man.cs.mdsd.genjsf.InputMessageDisplayOptions;
+import uk.ac.man.cs.mdsd.genjsf.InputMessagePlacementOptions;
+import uk.ac.man.cs.mdsd.genjsf.SelectManyOptions;
+import uk.ac.man.cs.mdsd.genjsf.SelectOneofOptions;
+
+import uk.ac.man.cs.mdsd.genorm.GenOrmPackage;
+
+import uk.ac.man.cs.mdsd.jsf.JsfPackage;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Package</b>.
+ * <!-- end-user-doc -->
+ * @generated
+ */
+public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genJsfModelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genAuthenticationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genCasAuthenticationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genLocalAuthenticationSystemEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceIncludedFeatureEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceIncludedElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceIncludedSingletonElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceIncludedCollectionElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceIncludedAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceIncludedSingletonAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genServiceIncludedCollectionAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genSelectionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIncludedFeatureEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIncludedElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIncludedSingletonElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIncludedCollectionElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIncludedAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIncludedSingletonAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIncludedCollectionAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genPageEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genSelectTargetEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genMenuEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genMenuEntryEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genStaticMenuEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genFixedMenuEntryEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genMenuIncludedFeatureEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genMenuIncludedElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genDynamicMenuEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitContainerEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genContentUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitFieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genInterfaceFieldEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitIncludedFeatureEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitIncludedElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitIncludedSingletonElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitIncludedCollectionElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitIncludedAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitIncludedSingletonAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUnitIncludedCollectionAssociationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genStaticUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genDynamicUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genEditUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genCreateUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genCreateUpdateUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genUpdateUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genDataUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genDetailsUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIndexUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIndexGridUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIndexPageDirectionUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genIndexLineDirectionUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genControlUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genSearchUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genAuthenticationUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genRegistrationUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genLoginUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genForgottenPasswordUnitEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genInlineActionContainerEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genInlineActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genSelectActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genDeleteActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genFieldReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genModelReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genCurrentUserReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum selectOneofOptionsEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum selectManyOptionsEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum inputMessagePlacementOptionsEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum inputMessageDisplayOptionsEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum collectionDisplayFormatEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum ajaxTechnologiesEEnum = null;
+
+	/**
+	 * Creates an instance of the model <b>Package</b>, registered with
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * <p>Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EPackage.Registry
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#eNS_URI
+	 * @see #init()
+	 * @generated
+	 */
+	private GenJsfPackageImpl() {
+		super(eNS_URI, GenJsfFactory.eINSTANCE);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static boolean isInited = false;
+
+	/**
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * 
+	 * <p>This method is used to initialize {@link GenJsfPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #eNS_URI
+	 * @see #createPackageContents()
+	 * @see #initializePackageContents()
+	 * @generated
+	 */
+	public static GenJsfPackage init() {
+		if (isInited) return (GenJsfPackage)EPackage.Registry.INSTANCE.getEPackage(GenJsfPackage.eNS_URI);
+
+		// Obtain or create and register package
+		GenJsfPackageImpl theGenJsfPackage = (GenJsfPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof GenJsfPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new GenJsfPackageImpl());
+
+		isInited = true;
+
+		// Initialize simple dependencies
+		GenOrmPackage.eINSTANCE.eClass();
+		JsfPackage.eINSTANCE.eClass();
+
+		// Create package meta-data objects
+		theGenJsfPackage.createPackageContents();
+
+		// Initialize created meta-data
+		theGenJsfPackage.initializePackageContents();
+
+		// Mark meta-data to indicate it can't be changed
+		theGenJsfPackage.freeze();
+
+  
+		// Update the registry and return the package
+		EPackage.Registry.INSTANCE.put(GenJsfPackage.eNS_URI, theGenJsfPackage);
+		return theGenJsfPackage;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenJsfModel() {
+		return genJsfModelEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenJsfModel_JsfModel() {
+		return (EReference)genJsfModelEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenJsfModel_GenAuthentication() {
+		return (EReference)genJsfModelEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenJsfModel_GenServices() {
+		return (EReference)genJsfModelEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenJsfModel_GenPages() {
+		return (EReference)genJsfModelEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenJsfModel_GenMenus() {
+		return (EReference)genJsfModelEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_BaseURL() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_DevelopmentVersion() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_AjaxTechnology() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_TextEditorPath() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_BackingPackage() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_ConverterPackage() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_ValidatorPackage() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_ServicePackage() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_SecurityPackage() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenJsfModel_UiPackage() {
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(14);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenAuthentication() {
+		return genAuthenticationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenCasAuthentication() {
+		return genCasAuthenticationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenCasAuthentication_JsfAuthentication() {
+		return (EReference)genCasAuthenticationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenLocalAuthenticationSystem() {
+		return genLocalAuthenticationSystemEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_JsfAuthentication() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenUserService() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenUserAuthenticationKey() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenAuthenticationService() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenLoginAttemptService() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenAutoLoginService() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenRegistrationUnit() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenLoginUnit() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLocalAuthenticationSystem_GenForgottenPasswordUnit() {
+		return (EReference)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenLocalAuthenticationSystem_LoginMaximumAttempts() {
+		return (EAttribute)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenLocalAuthenticationSystem_LoginAttemptExpiryPeriod() {
+		return (EAttribute)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenLocalAuthenticationSystem_AutologinCookieLifetime() {
+		return (EAttribute)genLocalAuthenticationSystemEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenService() {
+		return genServiceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenService_Name() {
+		return (EAttribute)genServiceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenService_JsfService() {
+		return (EReference)genServiceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenService_GenEntities() {
+		return (EReference)genServiceEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenService_GenIncludedFeatures() {
+		return (EReference)genServiceEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenService_GenSelections() {
+		return (EReference)genServiceEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenService_GenAccessedBy() {
+		return (EReference)genServiceEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenServiceIncludedFeature() {
+		return genServiceIncludedFeatureEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedFeature_GenIncludedBy() {
+		return (EReference)genServiceIncludedFeatureEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenServiceIncludedElement() {
+		return genServiceIncludedElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenServiceIncludedSingletonElement() {
+		return genServiceIncludedSingletonElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenServiceIncludedSingletonElement_Name() {
+		return (EAttribute)genServiceIncludedSingletonElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedSingletonElement_JsfIncludedFeature() {
+		return (EReference)genServiceIncludedSingletonElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedSingletonElement_GenFeature() {
+		return (EReference)genServiceIncludedSingletonElementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenServiceIncludedCollectionElement() {
+		return genServiceIncludedCollectionElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenServiceIncludedCollectionElement_Name() {
+		return (EAttribute)genServiceIncludedCollectionElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedCollectionElement_JsfIncludedFeature() {
+		return (EReference)genServiceIncludedCollectionElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedCollectionElement_GenFeature() {
+		return (EReference)genServiceIncludedCollectionElementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenServiceIncludedAssociation() {
+		return genServiceIncludedAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenServiceIncludedSingletonAssociation() {
+		return genServiceIncludedSingletonAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenServiceIncludedSingletonAssociation_Name() {
+		return (EAttribute)genServiceIncludedSingletonAssociationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedSingletonAssociation_JsfIncludedFeature() {
+		return (EReference)genServiceIncludedSingletonAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedSingletonAssociation_GenFeature() {
+		return (EReference)genServiceIncludedSingletonAssociationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenServiceIncludedCollectionAssociation() {
+		return genServiceIncludedCollectionAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenServiceIncludedCollectionAssociation_Name() {
+		return (EAttribute)genServiceIncludedCollectionAssociationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedCollectionAssociation_JsfIncludedFeature() {
+		return (EReference)genServiceIncludedCollectionAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenServiceIncludedCollectionAssociation_GenFeature() {
+		return (EReference)genServiceIncludedCollectionAssociationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenSelection() {
+		return genSelectionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenSelection_Name() {
+		return (EAttribute)genSelectionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSelection_JsfSelection() {
+		return (EReference)genSelectionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSelection_GenFilter() {
+		return (EReference)genSelectionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSelection_GenOrdering() {
+		return (EReference)genSelectionEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIncludedFeature() {
+		return genIncludedFeatureEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenIncludedFeature_MessageDisplayOption() {
+		return (EAttribute)genIncludedFeatureEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIncludedElement() {
+		return genIncludedElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIncludedSingletonElement() {
+		return genIncludedSingletonElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenIncludedSingletonElement_GenForcedValue() {
+		return (EReference)genIncludedSingletonElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenIncludedSingletonElement_GenDefaultValue() {
+		return (EReference)genIncludedSingletonElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIncludedCollectionElement() {
+		return genIncludedCollectionElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenIncludedCollectionElement_DisplayOption() {
+		return (EAttribute)genIncludedCollectionElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIncludedAssociation() {
+		return genIncludedAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIncludedSingletonAssociation() {
+		return genIncludedSingletonAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenIncludedSingletonAssociation_GenForcedValue() {
+		return (EReference)genIncludedSingletonAssociationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenIncludedSingletonAssociation_SelectOption() {
+		return (EAttribute)genIncludedSingletonAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIncludedCollectionAssociation() {
+		return genIncludedCollectionAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenIncludedCollectionAssociation_DisplayOption() {
+		return (EAttribute)genIncludedCollectionAssociationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenIncludedCollectionAssociation_SelectOption() {
+		return (EAttribute)genIncludedCollectionAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenPage() {
+		return genPageEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenPage_Name() {
+		return (EAttribute)genPageEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenPage_JsfPage() {
+		return (EReference)genPageEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenPage_GenPartOf() {
+		return (EReference)genPageEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenPage_GenParentPage() {
+		return (EReference)genPageEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenPage_GenChildPages() {
+		return (EReference)genPageEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenPage_GenSideMenu() {
+		return (EReference)genPageEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenSelectTarget() {
+		return genSelectTargetEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSelectTarget_GenTargettingActions() {
+		return (EReference)genSelectTargetEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenMenu() {
+		return genMenuEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenMenu_GenEntries() {
+		return (EReference)genMenuEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenMenuEntry() {
+		return genMenuEntryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenMenuEntry_GenPartOf() {
+		return (EReference)genMenuEntryEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenStaticMenu() {
+		return genStaticMenuEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenStaticMenu_Name() {
+		return (EAttribute)genStaticMenuEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenStaticMenu_JsfMenu() {
+		return (EReference)genStaticMenuEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenFixedMenuEntry() {
+		return genFixedMenuEntryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenFixedMenuEntry_Name() {
+		return (EAttribute)genFixedMenuEntryEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenFixedMenuEntry_JsfMenuEntry() {
+		return (EReference)genFixedMenuEntryEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenFixedMenuEntry_GenDestination() {
+		return (EReference)genFixedMenuEntryEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenMenuIncludedFeature() {
+		return genMenuIncludedFeatureEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenMenuIncludedElement() {
+		return genMenuIncludedElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenMenuIncludedElement_Name() {
+		return (EAttribute)genMenuIncludedElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenMenuIncludedElement_JsfMenuEntry() {
+		return (EReference)genMenuIncludedElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenDynamicMenu() {
+		return genDynamicMenuEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenDynamicMenu_Name() {
+		return (EAttribute)genDynamicMenuEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDynamicMenu_JsfMenu() {
+		return (EReference)genDynamicMenuEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDynamicMenu_GenService() {
+		return (EReference)genDynamicMenuEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDynamicMenu_GenSelection() {
+		return (EReference)genDynamicMenuEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDynamicMenu_GenDynamicTitle() {
+		return (EReference)genDynamicMenuEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitContainer() {
+		return genUnitContainerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitContainer_GenUnits() {
+		return (EReference)genUnitContainerEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenContentUnit() {
+		return genContentUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenContentUnit_GenDisplayedOn() {
+		return (EReference)genContentUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitField() {
+		return genUnitFieldEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitField_GenDisplayedOn() {
+		return (EReference)genUnitFieldEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenInterfaceField() {
+		return genInterfaceFieldEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenInterfaceField_Name() {
+		return (EAttribute)genInterfaceFieldEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenInterfaceField_JsfInterfaceField() {
+		return (EReference)genInterfaceFieldEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenInterfaceField_GenDataType() {
+		return (EReference)genInterfaceFieldEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenInterfaceField_GenMustMatch() {
+		return (EReference)genInterfaceFieldEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenInterfaceField_GenDefaultValue() {
+		return (EReference)genInterfaceFieldEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitIncludedFeature() {
+		return genUnitIncludedFeatureEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitIncludedElement() {
+		return genUnitIncludedElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitIncludedSingletonElement() {
+		return genUnitIncludedSingletonElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenUnitIncludedSingletonElement_Name() {
+		return (EAttribute)genUnitIncludedSingletonElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedSingletonElement_JsfIncludedFeature() {
+		return (EReference)genUnitIncludedSingletonElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedSingletonElement_GenServiceFeature() {
+		return (EReference)genUnitIncludedSingletonElementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitIncludedCollectionElement() {
+		return genUnitIncludedCollectionElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenUnitIncludedCollectionElement_Name() {
+		return (EAttribute)genUnitIncludedCollectionElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedCollectionElement_JsfIncludedFeature() {
+		return (EReference)genUnitIncludedCollectionElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedCollectionElement_GenServiceFeature() {
+		return (EReference)genUnitIncludedCollectionElementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitIncludedAssociation() {
+		return genUnitIncludedAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitIncludedSingletonAssociation() {
+		return genUnitIncludedSingletonAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenUnitIncludedSingletonAssociation_Name() {
+		return (EAttribute)genUnitIncludedSingletonAssociationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedSingletonAssociation_JsfIncludedFeature() {
+		return (EReference)genUnitIncludedSingletonAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedSingletonAssociation_GenServiceFeature() {
+		return (EReference)genUnitIncludedSingletonAssociationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUnitIncludedCollectionAssociation() {
+		return genUnitIncludedCollectionAssociationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenUnitIncludedCollectionAssociation_Name() {
+		return (EAttribute)genUnitIncludedCollectionAssociationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedCollectionAssociation_JsfIncludedFeature() {
+		return (EReference)genUnitIncludedCollectionAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUnitIncludedCollectionAssociation_GenServiceFeature() {
+		return (EReference)genUnitIncludedCollectionAssociationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenStaticUnit() {
+		return genStaticUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenStaticUnit_Name() {
+		return (EAttribute)genStaticUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenStaticUnit_JsfUnit() {
+		return (EReference)genStaticUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenStaticUnit_GenService() {
+		return (EReference)genStaticUnitEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenDynamicUnit() {
+		return genDynamicUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDynamicUnit_GenService() {
+		return (EReference)genDynamicUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDynamicUnit_GenDisplayFields() {
+		return (EReference)genDynamicUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenEditUnit() {
+		return genEditUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenEditUnit_MessagePlacementOption() {
+		return (EAttribute)genEditUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenEditUnit_FormMessageDisplayOption() {
+		return (EAttribute)genEditUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenEditUnit_GenConfirmDestination() {
+		return (EReference)genEditUnitEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenEditUnit_GenCancelDestination() {
+		return (EReference)genEditUnitEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenCreateUnit() {
+		return genCreateUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenCreateUnit_Name() {
+		return (EAttribute)genCreateUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenCreateUnit_JsfUnit() {
+		return (EReference)genCreateUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenCreateUpdateUnit() {
+		return genCreateUpdateUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenCreateUpdateUnit_Name() {
+		return (EAttribute)genCreateUpdateUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenCreateUpdateUnit_JsfUnit() {
+		return (EReference)genCreateUpdateUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenUpdateUnit() {
+		return genUpdateUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenUpdateUnit_Name() {
+		return (EAttribute)genUpdateUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenUpdateUnit_JsfUnit() {
+		return (EReference)genUpdateUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenDataUnit() {
+		return genDataUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDataUnit_GenSelection() {
+		return (EReference)genDataUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDataUnit_GenDynamicTitle() {
+		return (EReference)genDataUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenDetailsUnit() {
+		return genDetailsUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenDetailsUnit_Name() {
+		return (EAttribute)genDetailsUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDetailsUnit_JsfUnit() {
+		return (EReference)genDetailsUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIndexUnit() {
+		return genIndexUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenIndexUnit_Name() {
+		return (EAttribute)genIndexUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenIndexUnit_JsfUnit() {
+		return (EReference)genIndexUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenIndexUnit_GenTargettingSearches() {
+		return (EReference)genIndexUnitEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIndexGridUnit() {
+		return genIndexGridUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIndexPageDirectionUnit() {
+		return genIndexPageDirectionUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenIndexLineDirectionUnit() {
+		return genIndexLineDirectionUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenControlUnit() {
+		return genControlUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenControlUnit_MessagePlacementOption() {
+		return (EAttribute)genControlUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenControlUnit_GenCancelDestination() {
+		return (EReference)genControlUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenSearchUnit() {
+		return genSearchUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenSearchUnit_Name() {
+		return (EAttribute)genSearchUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSearchUnit_JsfUnit() {
+		return (EReference)genSearchUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSearchUnit_GenResultDestination() {
+		return (EReference)genSearchUnitEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenAuthenticationUnit() {
+		return genAuthenticationUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenRegistrationUnit() {
+		return genRegistrationUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenRegistrationUnit_Name() {
+		return (EAttribute)genRegistrationUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenRegistrationUnit_JsfUnit() {
+		return (EReference)genRegistrationUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenRegistrationUnit_GenAuthenticationSystem() {
+		return (EReference)genRegistrationUnitEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenLoginUnit() {
+		return genLoginUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenLoginUnit_Name() {
+		return (EAttribute)genLoginUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLoginUnit_JsfUnit() {
+		return (EReference)genLoginUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLoginUnit_GenAuthenticationSystem() {
+		return (EReference)genLoginUnitEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLoginUnit_GenLoginIdField() {
+		return (EReference)genLoginUnitEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLoginUnit_GenPasswordField() {
+		return (EReference)genLoginUnitEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenLoginUnit_GenRememberMeField() {
+		return (EReference)genLoginUnitEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenForgottenPasswordUnit() {
+		return genForgottenPasswordUnitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenForgottenPasswordUnit_Name() {
+		return (EAttribute)genForgottenPasswordUnitEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenForgottenPasswordUnit_JsfUnit() {
+		return (EReference)genForgottenPasswordUnitEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenForgottenPasswordUnit_GenAuthenticationSystem() {
+		return (EReference)genForgottenPasswordUnitEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenInlineActionContainer() {
+		return genInlineActionContainerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenInlineActionContainer_GenActions() {
+		return (EReference)genInlineActionContainerEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenInlineAction() {
+		return genInlineActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getGenInlineAction_Name() {
+		return (EAttribute)genInlineActionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenInlineAction_JsfAction() {
+		return (EReference)genInlineActionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenInlineAction_GenUsedBy() {
+		return (EReference)genInlineActionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenSelectAction() {
+		return genSelectActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSelectAction_GenTarget() {
+		return (EReference)genSelectActionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenDeleteAction() {
+		return genDeleteActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenDeleteAction_GenDestination() {
+		return (EReference)genDeleteActionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenFieldReference() {
+		return genFieldReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenFieldReference_CriteriaPath() {
+		return (EReference)genFieldReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenFieldReference_GenField() {
+		return (EReference)genFieldReferenceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenModelReference() {
+		return genModelReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenModelReference_CriteriaPath() {
+		return (EReference)genModelReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenModelReference_GenUnit() {
+		return (EReference)genModelReferenceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenCurrentUserReference() {
+		return genCurrentUserReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenCurrentUserReference_CriteriaPath() {
+		return (EReference)genCurrentUserReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getSelectOneofOptions() {
+		return selectOneofOptionsEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getSelectManyOptions() {
+		return selectManyOptionsEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getInputMessagePlacementOptions() {
+		return inputMessagePlacementOptionsEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getInputMessageDisplayOptions() {
+		return inputMessageDisplayOptionsEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getCollectionDisplayFormat() {
+		return collectionDisplayFormatEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getAjaxTechnologies() {
+		return ajaxTechnologiesEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GenJsfFactory getGenJsfFactory() {
+		return (GenJsfFactory)getEFactoryInstance();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private boolean isCreated = false;
+
+	/**
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void createPackageContents() {
+		if (isCreated) return;
+		isCreated = true;
+
+		// Create classes and their features
+		genJsfModelEClass = createEClass(GEN_JSF_MODEL);
+		createEReference(genJsfModelEClass, GEN_JSF_MODEL__JSF_MODEL);
+		createEReference(genJsfModelEClass, GEN_JSF_MODEL__GEN_AUTHENTICATION);
+		createEReference(genJsfModelEClass, GEN_JSF_MODEL__GEN_SERVICES);
+		createEReference(genJsfModelEClass, GEN_JSF_MODEL__GEN_PAGES);
+		createEReference(genJsfModelEClass, GEN_JSF_MODEL__GEN_MENUS);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__BASE_URL);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__DEVELOPMENT_VERSION);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__AJAX_TECHNOLOGY);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__TEXT_EDITOR_PATH);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__BACKING_PACKAGE);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__CONVERTER_PACKAGE);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__VALIDATOR_PACKAGE);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__SERVICE_PACKAGE);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__SECURITY_PACKAGE);
+		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__UI_PACKAGE);
+
+		genAuthenticationEClass = createEClass(GEN_AUTHENTICATION);
+
+		genCasAuthenticationEClass = createEClass(GEN_CAS_AUTHENTICATION);
+		createEReference(genCasAuthenticationEClass, GEN_CAS_AUTHENTICATION__JSF_AUTHENTICATION);
+
+		genLocalAuthenticationSystemEClass = createEClass(GEN_LOCAL_AUTHENTICATION_SYSTEM);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__JSF_AUTHENTICATION);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_USER_SERVICE);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_USER_AUTHENTICATION_KEY);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_AUTHENTICATION_SERVICE);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_LOGIN_ATTEMPT_SERVICE);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_AUTO_LOGIN_SERVICE);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_REGISTRATION_UNIT);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_LOGIN_UNIT);
+		createEReference(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__GEN_FORGOTTEN_PASSWORD_UNIT);
+		createEAttribute(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__LOGIN_MAXIMUM_ATTEMPTS);
+		createEAttribute(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__LOGIN_ATTEMPT_EXPIRY_PERIOD);
+		createEAttribute(genLocalAuthenticationSystemEClass, GEN_LOCAL_AUTHENTICATION_SYSTEM__AUTOLOGIN_COOKIE_LIFETIME);
+
+		genIncludedFeatureEClass = createEClass(GEN_INCLUDED_FEATURE);
+		createEAttribute(genIncludedFeatureEClass, GEN_INCLUDED_FEATURE__MESSAGE_DISPLAY_OPTION);
+
+		genIncludedElementEClass = createEClass(GEN_INCLUDED_ELEMENT);
+
+		genIncludedSingletonElementEClass = createEClass(GEN_INCLUDED_SINGLETON_ELEMENT);
+		createEReference(genIncludedSingletonElementEClass, GEN_INCLUDED_SINGLETON_ELEMENT__GEN_FORCED_VALUE);
+		createEReference(genIncludedSingletonElementEClass, GEN_INCLUDED_SINGLETON_ELEMENT__GEN_DEFAULT_VALUE);
+
+		genIncludedCollectionElementEClass = createEClass(GEN_INCLUDED_COLLECTION_ELEMENT);
+		createEAttribute(genIncludedCollectionElementEClass, GEN_INCLUDED_COLLECTION_ELEMENT__DISPLAY_OPTION);
+
+		genIncludedAssociationEClass = createEClass(GEN_INCLUDED_ASSOCIATION);
+
+		genIncludedSingletonAssociationEClass = createEClass(GEN_INCLUDED_SINGLETON_ASSOCIATION);
+		createEReference(genIncludedSingletonAssociationEClass, GEN_INCLUDED_SINGLETON_ASSOCIATION__GEN_FORCED_VALUE);
+		createEAttribute(genIncludedSingletonAssociationEClass, GEN_INCLUDED_SINGLETON_ASSOCIATION__SELECT_OPTION);
+
+		genIncludedCollectionAssociationEClass = createEClass(GEN_INCLUDED_COLLECTION_ASSOCIATION);
+		createEAttribute(genIncludedCollectionAssociationEClass, GEN_INCLUDED_COLLECTION_ASSOCIATION__DISPLAY_OPTION);
+		createEAttribute(genIncludedCollectionAssociationEClass, GEN_INCLUDED_COLLECTION_ASSOCIATION__SELECT_OPTION);
+
+		genServiceEClass = createEClass(GEN_SERVICE);
+		createEAttribute(genServiceEClass, GEN_SERVICE__NAME);
+		createEReference(genServiceEClass, GEN_SERVICE__JSF_SERVICE);
+		createEReference(genServiceEClass, GEN_SERVICE__GEN_ENTITIES);
+		createEReference(genServiceEClass, GEN_SERVICE__GEN_INCLUDED_FEATURES);
+		createEReference(genServiceEClass, GEN_SERVICE__GEN_SELECTIONS);
+		createEReference(genServiceEClass, GEN_SERVICE__GEN_ACCESSED_BY);
+
+		genServiceIncludedFeatureEClass = createEClass(GEN_SERVICE_INCLUDED_FEATURE);
+		createEReference(genServiceIncludedFeatureEClass, GEN_SERVICE_INCLUDED_FEATURE__GEN_INCLUDED_BY);
+
+		genServiceIncludedElementEClass = createEClass(GEN_SERVICE_INCLUDED_ELEMENT);
+
+		genServiceIncludedSingletonElementEClass = createEClass(GEN_SERVICE_INCLUDED_SINGLETON_ELEMENT);
+		createEAttribute(genServiceIncludedSingletonElementEClass, GEN_SERVICE_INCLUDED_SINGLETON_ELEMENT__NAME);
+		createEReference(genServiceIncludedSingletonElementEClass, GEN_SERVICE_INCLUDED_SINGLETON_ELEMENT__JSF_INCLUDED_FEATURE);
+		createEReference(genServiceIncludedSingletonElementEClass, GEN_SERVICE_INCLUDED_SINGLETON_ELEMENT__GEN_FEATURE);
+
+		genServiceIncludedCollectionElementEClass = createEClass(GEN_SERVICE_INCLUDED_COLLECTION_ELEMENT);
+		createEAttribute(genServiceIncludedCollectionElementEClass, GEN_SERVICE_INCLUDED_COLLECTION_ELEMENT__NAME);
+		createEReference(genServiceIncludedCollectionElementEClass, GEN_SERVICE_INCLUDED_COLLECTION_ELEMENT__JSF_INCLUDED_FEATURE);
+		createEReference(genServiceIncludedCollectionElementEClass, GEN_SERVICE_INCLUDED_COLLECTION_ELEMENT__GEN_FEATURE);
+
+		genServiceIncludedAssociationEClass = createEClass(GEN_SERVICE_INCLUDED_ASSOCIATION);
+
+		genServiceIncludedSingletonAssociationEClass = createEClass(GEN_SERVICE_INCLUDED_SINGLETON_ASSOCIATION);
+		createEAttribute(genServiceIncludedSingletonAssociationEClass, GEN_SERVICE_INCLUDED_SINGLETON_ASSOCIATION__NAME);
+		createEReference(genServiceIncludedSingletonAssociationEClass, GEN_SERVICE_INCLUDED_SINGLETON_ASSOCIATION__JSF_INCLUDED_FEATURE);
+		createEReference(genServiceIncludedSingletonAssociationEClass, GEN_SERVICE_INCLUDED_SINGLETON_ASSOCIATION__GEN_FEATURE);
+
+		genServiceIncludedCollectionAssociationEClass = createEClass(GEN_SERVICE_INCLUDED_COLLECTION_ASSOCIATION);
+		createEAttribute(genServiceIncludedCollectionAssociationEClass, GEN_SERVICE_INCLUDED_COLLECTION_ASSOCIATION__NAME);
+		createEReference(genServiceIncludedCollectionAssociationEClass, GEN_SERVICE_INCLUDED_COLLECTION_ASSOCIATION__JSF_INCLUDED_FEATURE);
+		createEReference(genServiceIncludedCollectionAssociationEClass, GEN_SERVICE_INCLUDED_COLLECTION_ASSOCIATION__GEN_FEATURE);
+
+		genSelectionEClass = createEClass(GEN_SELECTION);
+		createEAttribute(genSelectionEClass, GEN_SELECTION__NAME);
+		createEReference(genSelectionEClass, GEN_SELECTION__JSF_SELECTION);
+		createEReference(genSelectionEClass, GEN_SELECTION__GEN_FILTER);
+		createEReference(genSelectionEClass, GEN_SELECTION__GEN_ORDERING);
+
+		genPageEClass = createEClass(GEN_PAGE);
+		createEReference(genPageEClass, GEN_PAGE__GEN_PART_OF);
+		createEAttribute(genPageEClass, GEN_PAGE__NAME);
+		createEReference(genPageEClass, GEN_PAGE__JSF_PAGE);
+		createEReference(genPageEClass, GEN_PAGE__GEN_PARENT_PAGE);
+		createEReference(genPageEClass, GEN_PAGE__GEN_CHILD_PAGES);
+		createEReference(genPageEClass, GEN_PAGE__GEN_SIDE_MENU);
+
+		genSelectTargetEClass = createEClass(GEN_SELECT_TARGET);
+		createEReference(genSelectTargetEClass, GEN_SELECT_TARGET__GEN_TARGETTING_ACTIONS);
+
+		genMenuEClass = createEClass(GEN_MENU);
+		createEReference(genMenuEClass, GEN_MENU__GEN_ENTRIES);
+
+		genMenuEntryEClass = createEClass(GEN_MENU_ENTRY);
+		createEReference(genMenuEntryEClass, GEN_MENU_ENTRY__GEN_PART_OF);
+
+		genStaticMenuEClass = createEClass(GEN_STATIC_MENU);
+		createEAttribute(genStaticMenuEClass, GEN_STATIC_MENU__NAME);
+		createEReference(genStaticMenuEClass, GEN_STATIC_MENU__JSF_MENU);
+
+		genFixedMenuEntryEClass = createEClass(GEN_FIXED_MENU_ENTRY);
+		createEAttribute(genFixedMenuEntryEClass, GEN_FIXED_MENU_ENTRY__NAME);
+		createEReference(genFixedMenuEntryEClass, GEN_FIXED_MENU_ENTRY__JSF_MENU_ENTRY);
+		createEReference(genFixedMenuEntryEClass, GEN_FIXED_MENU_ENTRY__GEN_DESTINATION);
+
+		genDynamicMenuEClass = createEClass(GEN_DYNAMIC_MENU);
+		createEAttribute(genDynamicMenuEClass, GEN_DYNAMIC_MENU__NAME);
+		createEReference(genDynamicMenuEClass, GEN_DYNAMIC_MENU__JSF_MENU);
+		createEReference(genDynamicMenuEClass, GEN_DYNAMIC_MENU__GEN_SERVICE);
+		createEReference(genDynamicMenuEClass, GEN_DYNAMIC_MENU__GEN_SELECTION);
+		createEReference(genDynamicMenuEClass, GEN_DYNAMIC_MENU__GEN_DYNAMIC_TITLE);
+
+		genMenuIncludedFeatureEClass = createEClass(GEN_MENU_INCLUDED_FEATURE);
+
+		genMenuIncludedElementEClass = createEClass(GEN_MENU_INCLUDED_ELEMENT);
+		createEAttribute(genMenuIncludedElementEClass, GEN_MENU_INCLUDED_ELEMENT__NAME);
+		createEReference(genMenuIncludedElementEClass, GEN_MENU_INCLUDED_ELEMENT__JSF_MENU_ENTRY);
+
+		genUnitContainerEClass = createEClass(GEN_UNIT_CONTAINER);
+		createEReference(genUnitContainerEClass, GEN_UNIT_CONTAINER__GEN_UNITS);
+
+		genContentUnitEClass = createEClass(GEN_CONTENT_UNIT);
+		createEReference(genContentUnitEClass, GEN_CONTENT_UNIT__GEN_DISPLAYED_ON);
+
+		genStaticUnitEClass = createEClass(GEN_STATIC_UNIT);
+		createEAttribute(genStaticUnitEClass, GEN_STATIC_UNIT__NAME);
+		createEReference(genStaticUnitEClass, GEN_STATIC_UNIT__JSF_UNIT);
+		createEReference(genStaticUnitEClass, GEN_STATIC_UNIT__GEN_SERVICE);
+
+		genDynamicUnitEClass = createEClass(GEN_DYNAMIC_UNIT);
+		createEReference(genDynamicUnitEClass, GEN_DYNAMIC_UNIT__GEN_SERVICE);
+		createEReference(genDynamicUnitEClass, GEN_DYNAMIC_UNIT__GEN_DISPLAY_FIELDS);
+
+		genUnitFieldEClass = createEClass(GEN_UNIT_FIELD);
+		createEReference(genUnitFieldEClass, GEN_UNIT_FIELD__GEN_DISPLAYED_ON);
+
+		genInterfaceFieldEClass = createEClass(GEN_INTERFACE_FIELD);
+		createEAttribute(genInterfaceFieldEClass, GEN_INTERFACE_FIELD__NAME);
+		createEReference(genInterfaceFieldEClass, GEN_INTERFACE_FIELD__JSF_INTERFACE_FIELD);
+		createEReference(genInterfaceFieldEClass, GEN_INTERFACE_FIELD__GEN_DATA_TYPE);
+		createEReference(genInterfaceFieldEClass, GEN_INTERFACE_FIELD__GEN_MUST_MATCH);
+		createEReference(genInterfaceFieldEClass, GEN_INTERFACE_FIELD__GEN_DEFAULT_VALUE);
+
+		genUnitIncludedFeatureEClass = createEClass(GEN_UNIT_INCLUDED_FEATURE);
+
+		genUnitIncludedElementEClass = createEClass(GEN_UNIT_INCLUDED_ELEMENT);
+
+		genUnitIncludedSingletonElementEClass = createEClass(GEN_UNIT_INCLUDED_SINGLETON_ELEMENT);
+		createEAttribute(genUnitIncludedSingletonElementEClass, GEN_UNIT_INCLUDED_SINGLETON_ELEMENT__NAME);
+		createEReference(genUnitIncludedSingletonElementEClass, GEN_UNIT_INCLUDED_SINGLETON_ELEMENT__JSF_INCLUDED_FEATURE);
+		createEReference(genUnitIncludedSingletonElementEClass, GEN_UNIT_INCLUDED_SINGLETON_ELEMENT__GEN_SERVICE_FEATURE);
+
+		genUnitIncludedCollectionElementEClass = createEClass(GEN_UNIT_INCLUDED_COLLECTION_ELEMENT);
+		createEAttribute(genUnitIncludedCollectionElementEClass, GEN_UNIT_INCLUDED_COLLECTION_ELEMENT__NAME);
+		createEReference(genUnitIncludedCollectionElementEClass, GEN_UNIT_INCLUDED_COLLECTION_ELEMENT__JSF_INCLUDED_FEATURE);
+		createEReference(genUnitIncludedCollectionElementEClass, GEN_UNIT_INCLUDED_COLLECTION_ELEMENT__GEN_SERVICE_FEATURE);
+
+		genUnitIncludedAssociationEClass = createEClass(GEN_UNIT_INCLUDED_ASSOCIATION);
+
+		genUnitIncludedSingletonAssociationEClass = createEClass(GEN_UNIT_INCLUDED_SINGLETON_ASSOCIATION);
+		createEAttribute(genUnitIncludedSingletonAssociationEClass, GEN_UNIT_INCLUDED_SINGLETON_ASSOCIATION__NAME);
+		createEReference(genUnitIncludedSingletonAssociationEClass, GEN_UNIT_INCLUDED_SINGLETON_ASSOCIATION__JSF_INCLUDED_FEATURE);
+		createEReference(genUnitIncludedSingletonAssociationEClass, GEN_UNIT_INCLUDED_SINGLETON_ASSOCIATION__GEN_SERVICE_FEATURE);
+
+		genUnitIncludedCollectionAssociationEClass = createEClass(GEN_UNIT_INCLUDED_COLLECTION_ASSOCIATION);
+		createEAttribute(genUnitIncludedCollectionAssociationEClass, GEN_UNIT_INCLUDED_COLLECTION_ASSOCIATION__NAME);
+		createEReference(genUnitIncludedCollectionAssociationEClass, GEN_UNIT_INCLUDED_COLLECTION_ASSOCIATION__JSF_INCLUDED_FEATURE);
+		createEReference(genUnitIncludedCollectionAssociationEClass, GEN_UNIT_INCLUDED_COLLECTION_ASSOCIATION__GEN_SERVICE_FEATURE);
+
+		genEditUnitEClass = createEClass(GEN_EDIT_UNIT);
+		createEAttribute(genEditUnitEClass, GEN_EDIT_UNIT__MESSAGE_PLACEMENT_OPTION);
+		createEAttribute(genEditUnitEClass, GEN_EDIT_UNIT__FORM_MESSAGE_DISPLAY_OPTION);
+		createEReference(genEditUnitEClass, GEN_EDIT_UNIT__GEN_CONFIRM_DESTINATION);
+		createEReference(genEditUnitEClass, GEN_EDIT_UNIT__GEN_CANCEL_DESTINATION);
+
+		genCreateUnitEClass = createEClass(GEN_CREATE_UNIT);
+		createEAttribute(genCreateUnitEClass, GEN_CREATE_UNIT__NAME);
+		createEReference(genCreateUnitEClass, GEN_CREATE_UNIT__JSF_UNIT);
+
+		genCreateUpdateUnitEClass = createEClass(GEN_CREATE_UPDATE_UNIT);
+		createEAttribute(genCreateUpdateUnitEClass, GEN_CREATE_UPDATE_UNIT__NAME);
+		createEReference(genCreateUpdateUnitEClass, GEN_CREATE_UPDATE_UNIT__JSF_UNIT);
+
+		genUpdateUnitEClass = createEClass(GEN_UPDATE_UNIT);
+		createEAttribute(genUpdateUnitEClass, GEN_UPDATE_UNIT__NAME);
+		createEReference(genUpdateUnitEClass, GEN_UPDATE_UNIT__JSF_UNIT);
+
+		genDataUnitEClass = createEClass(GEN_DATA_UNIT);
+		createEReference(genDataUnitEClass, GEN_DATA_UNIT__GEN_SELECTION);
+		createEReference(genDataUnitEClass, GEN_DATA_UNIT__GEN_DYNAMIC_TITLE);
+
+		genDetailsUnitEClass = createEClass(GEN_DETAILS_UNIT);
+		createEAttribute(genDetailsUnitEClass, GEN_DETAILS_UNIT__NAME);
+		createEReference(genDetailsUnitEClass, GEN_DETAILS_UNIT__JSF_UNIT);
+
+		genIndexUnitEClass = createEClass(GEN_INDEX_UNIT);
+		createEAttribute(genIndexUnitEClass, GEN_INDEX_UNIT__NAME);
+		createEReference(genIndexUnitEClass, GEN_INDEX_UNIT__JSF_UNIT);
+		createEReference(genIndexUnitEClass, GEN_INDEX_UNIT__GEN_TARGETTING_SEARCHES);
+
+		genIndexGridUnitEClass = createEClass(GEN_INDEX_GRID_UNIT);
+
+		genIndexPageDirectionUnitEClass = createEClass(GEN_INDEX_PAGE_DIRECTION_UNIT);
+
+		genIndexLineDirectionUnitEClass = createEClass(GEN_INDEX_LINE_DIRECTION_UNIT);
+
+		genControlUnitEClass = createEClass(GEN_CONTROL_UNIT);
+		createEAttribute(genControlUnitEClass, GEN_CONTROL_UNIT__MESSAGE_PLACEMENT_OPTION);
+		createEReference(genControlUnitEClass, GEN_CONTROL_UNIT__GEN_CANCEL_DESTINATION);
+
+		genSearchUnitEClass = createEClass(GEN_SEARCH_UNIT);
+		createEAttribute(genSearchUnitEClass, GEN_SEARCH_UNIT__NAME);
+		createEReference(genSearchUnitEClass, GEN_SEARCH_UNIT__JSF_UNIT);
+		createEReference(genSearchUnitEClass, GEN_SEARCH_UNIT__GEN_RESULT_DESTINATION);
+
+		genAuthenticationUnitEClass = createEClass(GEN_AUTHENTICATION_UNIT);
+
+		genRegistrationUnitEClass = createEClass(GEN_REGISTRATION_UNIT);
+		createEAttribute(genRegistrationUnitEClass, GEN_REGISTRATION_UNIT__NAME);
+		createEReference(genRegistrationUnitEClass, GEN_REGISTRATION_UNIT__JSF_UNIT);
+		createEReference(genRegistrationUnitEClass, GEN_REGISTRATION_UNIT__GEN_AUTHENTICATION_SYSTEM);
+
+		genLoginUnitEClass = createEClass(GEN_LOGIN_UNIT);
+		createEAttribute(genLoginUnitEClass, GEN_LOGIN_UNIT__NAME);
+		createEReference(genLoginUnitEClass, GEN_LOGIN_UNIT__JSF_UNIT);
+		createEReference(genLoginUnitEClass, GEN_LOGIN_UNIT__GEN_AUTHENTICATION_SYSTEM);
+		createEReference(genLoginUnitEClass, GEN_LOGIN_UNIT__GEN_LOGIN_ID_FIELD);
+		createEReference(genLoginUnitEClass, GEN_LOGIN_UNIT__GEN_PASSWORD_FIELD);
+		createEReference(genLoginUnitEClass, GEN_LOGIN_UNIT__GEN_REMEMBER_ME_FIELD);
+
+		genForgottenPasswordUnitEClass = createEClass(GEN_FORGOTTEN_PASSWORD_UNIT);
+		createEAttribute(genForgottenPasswordUnitEClass, GEN_FORGOTTEN_PASSWORD_UNIT__NAME);
+		createEReference(genForgottenPasswordUnitEClass, GEN_FORGOTTEN_PASSWORD_UNIT__JSF_UNIT);
+		createEReference(genForgottenPasswordUnitEClass, GEN_FORGOTTEN_PASSWORD_UNIT__GEN_AUTHENTICATION_SYSTEM);
+
+		genInlineActionContainerEClass = createEClass(GEN_INLINE_ACTION_CONTAINER);
+		createEReference(genInlineActionContainerEClass, GEN_INLINE_ACTION_CONTAINER__GEN_ACTIONS);
+
+		genInlineActionEClass = createEClass(GEN_INLINE_ACTION);
+		createEAttribute(genInlineActionEClass, GEN_INLINE_ACTION__NAME);
+		createEReference(genInlineActionEClass, GEN_INLINE_ACTION__JSF_ACTION);
+		createEReference(genInlineActionEClass, GEN_INLINE_ACTION__GEN_USED_BY);
+
+		genSelectActionEClass = createEClass(GEN_SELECT_ACTION);
+		createEReference(genSelectActionEClass, GEN_SELECT_ACTION__GEN_TARGET);
+
+		genDeleteActionEClass = createEClass(GEN_DELETE_ACTION);
+		createEReference(genDeleteActionEClass, GEN_DELETE_ACTION__GEN_DESTINATION);
+
+		genFieldReferenceEClass = createEClass(GEN_FIELD_REFERENCE);
+		createEReference(genFieldReferenceEClass, GEN_FIELD_REFERENCE__CRITERIA_PATH);
+		createEReference(genFieldReferenceEClass, GEN_FIELD_REFERENCE__GEN_FIELD);
+
+		genModelReferenceEClass = createEClass(GEN_MODEL_REFERENCE);
+		createEReference(genModelReferenceEClass, GEN_MODEL_REFERENCE__CRITERIA_PATH);
+		createEReference(genModelReferenceEClass, GEN_MODEL_REFERENCE__GEN_UNIT);
+
+		genCurrentUserReferenceEClass = createEClass(GEN_CURRENT_USER_REFERENCE);
+		createEReference(genCurrentUserReferenceEClass, GEN_CURRENT_USER_REFERENCE__CRITERIA_PATH);
+
+		// Create enums
+		selectOneofOptionsEEnum = createEEnum(SELECT_ONEOF_OPTIONS);
+		selectManyOptionsEEnum = createEEnum(SELECT_MANY_OPTIONS);
+		inputMessagePlacementOptionsEEnum = createEEnum(INPUT_MESSAGE_PLACEMENT_OPTIONS);
+		inputMessageDisplayOptionsEEnum = createEEnum(INPUT_MESSAGE_DISPLAY_OPTIONS);
+		collectionDisplayFormatEEnum = createEEnum(COLLECTION_DISPLAY_FORMAT);
+		ajaxTechnologiesEEnum = createEEnum(AJAX_TECHNOLOGIES);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private boolean isInitialized = false;
+
+	/**
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void initializePackageContents() {
+		if (isInitialized) return;
+		isInitialized = true;
+
+		// Initialize package
+		setName(eNAME);
+		setNsPrefix(eNS_PREFIX);
+		setNsURI(eNS_URI);
+
+		// Obtain other dependent packages
+		GenOrmPackage theGenOrmPackage = (GenOrmPackage)EPackage.Registry.INSTANCE.getEPackage(GenOrmPackage.eNS_URI);
+		JsfPackage theJsfPackage = (JsfPackage)EPackage.Registry.INSTANCE.getEPackage(JsfPackage.eNS_URI);
+		GencriteriaPackage theGencriteriaPackage = (GencriteriaPackage)EPackage.Registry.INSTANCE.getEPackage(GencriteriaPackage.eNS_URI);
+
+		// Create type parameters
+
+		// Set bounds for type parameters
+
+		// Add supertypes to classes
+		genJsfModelEClass.getESuperTypes().add(theGenOrmPackage.getGenOrmModel());
+		genCasAuthenticationEClass.getESuperTypes().add(this.getGenAuthentication());
+		genLocalAuthenticationSystemEClass.getESuperTypes().add(this.getGenAuthentication());
+		genIncludedElementEClass.getESuperTypes().add(this.getGenIncludedFeature());
+		genIncludedSingletonElementEClass.getESuperTypes().add(this.getGenIncludedElement());
+		genIncludedCollectionElementEClass.getESuperTypes().add(this.getGenIncludedElement());
+		genIncludedAssociationEClass.getESuperTypes().add(this.getGenIncludedFeature());
+		genIncludedSingletonAssociationEClass.getESuperTypes().add(this.getGenIncludedAssociation());
+		genIncludedCollectionAssociationEClass.getESuperTypes().add(this.getGenIncludedAssociation());
+		genServiceIncludedFeatureEClass.getESuperTypes().add(this.getGenIncludedFeature());
+		genServiceIncludedElementEClass.getESuperTypes().add(this.getGenServiceIncludedFeature());
+		genServiceIncludedElementEClass.getESuperTypes().add(this.getGenIncludedElement());
+		genServiceIncludedSingletonElementEClass.getESuperTypes().add(this.getGenServiceIncludedElement());
+		genServiceIncludedSingletonElementEClass.getESuperTypes().add(this.getGenIncludedSingletonElement());
+		genServiceIncludedCollectionElementEClass.getESuperTypes().add(this.getGenServiceIncludedElement());
+		genServiceIncludedCollectionElementEClass.getESuperTypes().add(this.getGenIncludedCollectionElement());
+		genServiceIncludedAssociationEClass.getESuperTypes().add(this.getGenServiceIncludedFeature());
+		genServiceIncludedAssociationEClass.getESuperTypes().add(this.getGenIncludedAssociation());
+		genServiceIncludedSingletonAssociationEClass.getESuperTypes().add(this.getGenServiceIncludedAssociation());
+		genServiceIncludedSingletonAssociationEClass.getESuperTypes().add(this.getGenIncludedSingletonAssociation());
+		genServiceIncludedCollectionAssociationEClass.getESuperTypes().add(this.getGenServiceIncludedAssociation());
+		genServiceIncludedCollectionAssociationEClass.getESuperTypes().add(this.getGenIncludedCollectionAssociation());
+		genPageEClass.getESuperTypes().add(this.getGenUnitContainer());
+		genStaticMenuEClass.getESuperTypes().add(this.getGenMenu());
+		genFixedMenuEntryEClass.getESuperTypes().add(this.getGenMenuEntry());
+		genDynamicMenuEClass.getESuperTypes().add(this.getGenMenu());
+		genMenuIncludedFeatureEClass.getESuperTypes().add(this.getGenMenuEntry());
+		genMenuIncludedElementEClass.getESuperTypes().add(this.getGenMenuIncludedFeature());
+		genStaticUnitEClass.getESuperTypes().add(this.getGenContentUnit());
+		genDynamicUnitEClass.getESuperTypes().add(this.getGenContentUnit());
+		genInterfaceFieldEClass.getESuperTypes().add(this.getGenUnitField());
+		genUnitIncludedFeatureEClass.getESuperTypes().add(this.getGenUnitField());
+		genUnitIncludedFeatureEClass.getESuperTypes().add(this.getGenIncludedFeature());
+		genUnitIncludedElementEClass.getESuperTypes().add(this.getGenUnitIncludedFeature());
+		genUnitIncludedElementEClass.getESuperTypes().add(this.getGenIncludedElement());
+		genUnitIncludedSingletonElementEClass.getESuperTypes().add(this.getGenUnitIncludedElement());
+		genUnitIncludedSingletonElementEClass.getESuperTypes().add(this.getGenIncludedSingletonElement());
+		genUnitIncludedSingletonElementEClass.getESuperTypes().add(this.getGenInlineActionContainer());
+		genUnitIncludedCollectionElementEClass.getESuperTypes().add(this.getGenUnitIncludedElement());
+		genUnitIncludedCollectionElementEClass.getESuperTypes().add(this.getGenIncludedCollectionElement());
+		genUnitIncludedAssociationEClass.getESuperTypes().add(this.getGenUnitIncludedFeature());
+		genUnitIncludedAssociationEClass.getESuperTypes().add(this.getGenIncludedAssociation());
+		genUnitIncludedAssociationEClass.getESuperTypes().add(this.getGenUnitContainer());
+		genUnitIncludedSingletonAssociationEClass.getESuperTypes().add(this.getGenUnitIncludedAssociation());
+		genUnitIncludedSingletonAssociationEClass.getESuperTypes().add(this.getGenIncludedSingletonAssociation());
+		genUnitIncludedSingletonAssociationEClass.getESuperTypes().add(this.getGenInlineActionContainer());
+		genUnitIncludedCollectionAssociationEClass.getESuperTypes().add(this.getGenUnitIncludedAssociation());
+		genUnitIncludedCollectionAssociationEClass.getESuperTypes().add(this.getGenIncludedCollectionAssociation());
+		genEditUnitEClass.getESuperTypes().add(this.getGenDynamicUnit());
+		genCreateUnitEClass.getESuperTypes().add(this.getGenEditUnit());
+		genCreateUpdateUnitEClass.getESuperTypes().add(this.getGenEditUnit());
+		genCreateUpdateUnitEClass.getESuperTypes().add(this.getGenSelectTarget());
+		genUpdateUnitEClass.getESuperTypes().add(this.getGenEditUnit());
+		genUpdateUnitEClass.getESuperTypes().add(this.getGenSelectTarget());
+		genDataUnitEClass.getESuperTypes().add(this.getGenDynamicUnit());
+		genDetailsUnitEClass.getESuperTypes().add(this.getGenDataUnit());
+		genDetailsUnitEClass.getESuperTypes().add(this.getGenSelectTarget());
+		genIndexUnitEClass.getESuperTypes().add(this.getGenDataUnit());
+		genIndexUnitEClass.getESuperTypes().add(this.getGenInlineActionContainer());
+		genIndexUnitEClass.getESuperTypes().add(this.getGenSelectTarget());
+		genIndexGridUnitEClass.getESuperTypes().add(this.getGenIndexUnit());
+		genIndexPageDirectionUnitEClass.getESuperTypes().add(this.getGenIndexUnit());
+		genIndexLineDirectionUnitEClass.getESuperTypes().add(this.getGenIndexUnit());
+		genControlUnitEClass.getESuperTypes().add(this.getGenDynamicUnit());
+		genSearchUnitEClass.getESuperTypes().add(this.getGenControlUnit());
+		genRegistrationUnitEClass.getESuperTypes().add(this.getGenEditUnit());
+		genRegistrationUnitEClass.getESuperTypes().add(this.getGenAuthenticationUnit());
+		genLoginUnitEClass.getESuperTypes().add(this.getGenControlUnit());
+		genLoginUnitEClass.getESuperTypes().add(this.getGenAuthenticationUnit());
+		genForgottenPasswordUnitEClass.getESuperTypes().add(this.getGenControlUnit());
+		genForgottenPasswordUnitEClass.getESuperTypes().add(this.getGenAuthenticationUnit());
+		genSelectActionEClass.getESuperTypes().add(this.getGenInlineAction());
+		genDeleteActionEClass.getESuperTypes().add(this.getGenInlineAction());
+		genFieldReferenceEClass.getESuperTypes().add(theGencriteriaPackage.getGenPath());
+		genModelReferenceEClass.getESuperTypes().add(theGencriteriaPackage.getGenPath());
+		genCurrentUserReferenceEClass.getESuperTypes().add(theGencriteriaPackage.getGenPath());
+
+		// Initialize classes and features; add operations and parameters
+		initEClass(genJsfModelEClass, GenJsfModel.class, "GenJsfModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenJsfModel_JsfModel(), theJsfPackage.getJsfModel(), null, "jsfModel", null, 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenJsfModel_GenAuthentication(), this.getGenAuthentication(), null, "genAuthentication", null, 0, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenJsfModel_GenServices(), this.getGenService(), null, "genServices", null, 0, -1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenJsfModel_GenPages(), this.getGenPage(), this.getGenPage_GenPartOf(), "genPages", null, 0, -1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenJsfModel_GenMenus(), this.getGenMenu(), null, "genMenus", null, 0, -1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGenJsfModel_BaseURL(), ecorePackage.getEString(), "baseURL", null, 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_DevelopmentVersion(), ecorePackage.getEBoolean(), "developmentVersion", "true", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_AjaxTechnology(), this.getAjaxTechnologies(), "ajaxTechnology", "None", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_TextEditorPath(), ecorePackage.getEString(), "textEditorPath", null, 0, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_BackingPackage(), ecorePackage.getEString(), "backingPackage", "backing", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_ConverterPackage(), ecorePackage.getEString(), "converterPackage", "converter", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_ValidatorPackage(), ecorePackage.getEString(), "validatorPackage", "validator", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_ServicePackage(), ecorePackage.getEString(), "servicePackage", "service", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_SecurityPackage(), ecorePackage.getEString(), "securityPackage", "security", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenJsfModel_UiPackage(), ecorePackage.getEString(), "uiPackage", "ui", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genAuthenticationEClass, GenAuthentication.class, "GenAuthentication", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genCasAuthenticationEClass, GenCasAuthentication.class, "GenCasAuthentication", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenCasAuthentication_JsfAuthentication(), theJsfPackage.getCasAuthentication(), null, "jsfAuthentication", null, 1, 1, GenCasAuthentication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genLocalAuthenticationSystemEClass, GenLocalAuthenticationSystem.class, "GenLocalAuthenticationSystem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenLocalAuthenticationSystem_JsfAuthentication(), theJsfPackage.getLocalAuthenticationSystem(), null, "jsfAuthentication", null, 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenUserService(), this.getGenService(), null, "genUserService", null, 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenUserAuthenticationKey(), this.getGenServiceIncludedSingletonElement(), null, "genUserAuthenticationKey", null, 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenAuthenticationService(), this.getGenService(), null, "genAuthenticationService", null, 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenLoginAttemptService(), this.getGenService(), null, "genLoginAttemptService", null, 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenAutoLoginService(), this.getGenService(), null, "genAutoLoginService", null, 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenRegistrationUnit(), this.getGenRegistrationUnit(), this.getGenRegistrationUnit_GenAuthenticationSystem(), "genRegistrationUnit", null, 0, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenLoginUnit(), this.getGenLoginUnit(), this.getGenLoginUnit_GenAuthenticationSystem(), "genLoginUnit", null, 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLocalAuthenticationSystem_GenForgottenPasswordUnit(), this.getGenForgottenPasswordUnit(), this.getGenForgottenPasswordUnit_GenAuthenticationSystem(), "genForgottenPasswordUnit", null, 0, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenLocalAuthenticationSystem_LoginMaximumAttempts(), ecorePackage.getEInt(), "loginMaximumAttempts", "5", 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenLocalAuthenticationSystem_LoginAttemptExpiryPeriod(), ecorePackage.getEInt(), "loginAttemptExpiryPeriod", "3600", 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenLocalAuthenticationSystem_AutologinCookieLifetime(), ecorePackage.getEInt(), "autologinCookieLifetime", "2678400", 1, 1, GenLocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genIncludedFeatureEClass, GenIncludedFeature.class, "GenIncludedFeature", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenIncludedFeature_MessageDisplayOption(), this.getInputMessageDisplayOptions(), "messageDisplayOption", "Description", 0, 1, GenIncludedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genIncludedElementEClass, GenIncludedElement.class, "GenIncludedElement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genIncludedSingletonElementEClass, GenIncludedSingletonElement.class, "GenIncludedSingletonElement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenIncludedSingletonElement_GenForcedValue(), theGencriteriaPackage.getGenExpression(), null, "genForcedValue", null, 0, 1, GenIncludedSingletonElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenIncludedSingletonElement_GenDefaultValue(), theGencriteriaPackage.getGenExpression(), null, "genDefaultValue", null, 0, 1, GenIncludedSingletonElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genIncludedCollectionElementEClass, GenIncludedCollectionElement.class, "GenIncludedCollectionElement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenIncludedCollectionElement_DisplayOption(), this.getCollectionDisplayFormat(), "displayOption", "LineDirection", 1, 1, GenIncludedCollectionElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genIncludedAssociationEClass, GenIncludedAssociation.class, "GenIncludedAssociation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genIncludedSingletonAssociationEClass, GenIncludedSingletonAssociation.class, "GenIncludedSingletonAssociation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenIncludedSingletonAssociation_GenForcedValue(), theGencriteriaPackage.getGenExpression(), null, "genForcedValue", null, 0, 1, GenIncludedSingletonAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenIncludedSingletonAssociation_SelectOption(), this.getSelectOneofOptions(), "selectOption", "Menu", 1, 1, GenIncludedSingletonAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genIncludedCollectionAssociationEClass, GenIncludedCollectionAssociation.class, "GenIncludedCollectionAssociation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenIncludedCollectionAssociation_DisplayOption(), this.getCollectionDisplayFormat(), "displayOption", "PageDirection", 1, 1, GenIncludedCollectionAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGenIncludedCollectionAssociation_SelectOption(), this.getSelectManyOptions(), "selectOption", "List", 1, 1, GenIncludedCollectionAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genServiceEClass, GenService.class, "GenService", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenService_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenService.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenService_JsfService(), theJsfPackage.getService(), null, "jsfService", null, 1, 1, GenService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenService_GenEntities(), theGenOrmPackage.getGenEntity(), null, "genEntities", null, 1, -1, GenService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenService_GenIncludedFeatures(), this.getGenServiceIncludedFeature(), this.getGenServiceIncludedFeature_GenIncludedBy(), "genIncludedFeatures", null, 0, -1, GenService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenService_GenSelections(), this.getGenSelection(), null, "genSelections", null, 0, -1, GenService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenService_GenAccessedBy(), this.getGenDynamicUnit(), this.getGenDynamicUnit_GenService(), "genAccessedBy", null, 0, -1, GenService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genServiceIncludedFeatureEClass, GenServiceIncludedFeature.class, "GenServiceIncludedFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenServiceIncludedFeature_GenIncludedBy(), this.getGenService(), this.getGenService_GenIncludedFeatures(), "genIncludedBy", null, 1, 1, GenServiceIncludedFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genServiceIncludedElementEClass, GenServiceIncludedElement.class, "GenServiceIncludedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genServiceIncludedSingletonElementEClass, GenServiceIncludedSingletonElement.class, "GenServiceIncludedSingletonElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenServiceIncludedSingletonElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenServiceIncludedSingletonElement.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedSingletonElement_JsfIncludedFeature(), theJsfPackage.getServiceIncludedSingletonElement(), null, "jsfIncludedFeature", null, 1, 1, GenServiceIncludedSingletonElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedSingletonElement_GenFeature(), theGenOrmPackage.getGenSingletonAttribute(), null, "genFeature", null, 1, 1, GenServiceIncludedSingletonElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genServiceIncludedCollectionElementEClass, GenServiceIncludedCollectionElement.class, "GenServiceIncludedCollectionElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenServiceIncludedCollectionElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenServiceIncludedCollectionElement.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedCollectionElement_JsfIncludedFeature(), theJsfPackage.getServiceIncludedCollectionElement(), null, "jsfIncludedFeature", null, 1, 1, GenServiceIncludedCollectionElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedCollectionElement_GenFeature(), theGenOrmPackage.getGenCollectionAttribute(), null, "genFeature", null, 1, 1, GenServiceIncludedCollectionElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genServiceIncludedAssociationEClass, GenServiceIncludedAssociation.class, "GenServiceIncludedAssociation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genServiceIncludedSingletonAssociationEClass, GenServiceIncludedSingletonAssociation.class, "GenServiceIncludedSingletonAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenServiceIncludedSingletonAssociation_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenServiceIncludedSingletonAssociation.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedSingletonAssociation_JsfIncludedFeature(), theJsfPackage.getServiceIncludedSingletonAssociation(), null, "jsfIncludedFeature", null, 1, 1, GenServiceIncludedSingletonAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedSingletonAssociation_GenFeature(), theGenOrmPackage.getGenSingletonAssociation(), null, "genFeature", null, 1, 1, GenServiceIncludedSingletonAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genServiceIncludedCollectionAssociationEClass, GenServiceIncludedCollectionAssociation.class, "GenServiceIncludedCollectionAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenServiceIncludedCollectionAssociation_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenServiceIncludedCollectionAssociation.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedCollectionAssociation_JsfIncludedFeature(), theJsfPackage.getServiceIncludedCollectionAssociation(), null, "jsfIncludedFeature", null, 1, 1, GenServiceIncludedCollectionAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceIncludedCollectionAssociation_GenFeature(), theGenOrmPackage.getGenCollectionAssociation(), null, "genFeature", null, 1, 1, GenServiceIncludedCollectionAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genSelectionEClass, GenSelection.class, "GenSelection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenSelection_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenSelection.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenSelection_JsfSelection(), theJsfPackage.getSelection(), null, "jsfSelection", null, 1, 1, GenSelection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenSelection_GenFilter(), theGencriteriaPackage.getGenPredicate(), null, "genFilter", null, 0, 1, GenSelection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenSelection_GenOrdering(), theGencriteriaPackage.getGenOrder(), null, "genOrdering", null, 0, -1, GenSelection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genPageEClass, GenPage.class, "GenPage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenPage_GenPartOf(), this.getGenJsfModel(), this.getGenJsfModel_GenPages(), "genPartOf", null, 0, 1, GenPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGenPage_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenPage.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenPage_JsfPage(), theJsfPackage.getPage(), null, "jsfPage", null, 1, 1, GenPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenPage_GenParentPage(), this.getGenPage(), this.getGenPage_GenChildPages(), "genParentPage", null, 0, 1, GenPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenPage_GenChildPages(), this.getGenPage(), this.getGenPage_GenParentPage(), "genChildPages", null, 0, -1, GenPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenPage_GenSideMenu(), this.getGenMenu(), null, "genSideMenu", null, 0, 1, GenPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genSelectTargetEClass, GenSelectTarget.class, "GenSelectTarget", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenSelectTarget_GenTargettingActions(), this.getGenSelectAction(), this.getGenSelectAction_GenTarget(), "genTargettingActions", null, 0, -1, GenSelectTarget.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genMenuEClass, GenMenu.class, "GenMenu", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenMenu_GenEntries(), this.getGenMenuEntry(), this.getGenMenuEntry_GenPartOf(), "genEntries", null, 0, -1, GenMenu.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genMenuEntryEClass, GenMenuEntry.class, "GenMenuEntry", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenMenuEntry_GenPartOf(), this.getGenMenu(), this.getGenMenu_GenEntries(), "genPartOf", null, 1, 1, GenMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genStaticMenuEClass, GenStaticMenu.class, "GenStaticMenu", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenStaticMenu_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenStaticMenu.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenStaticMenu_JsfMenu(), theJsfPackage.getStaticMenu(), null, "jsfMenu", null, 1, 1, GenStaticMenu.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genFixedMenuEntryEClass, GenFixedMenuEntry.class, "GenFixedMenuEntry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenFixedMenuEntry_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenFixedMenuEntry.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenFixedMenuEntry_JsfMenuEntry(), theJsfPackage.getFixedMenuEntry(), null, "jsfMenuEntry", null, 1, 1, GenFixedMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenFixedMenuEntry_GenDestination(), this.getGenPage(), null, "genDestination", null, 1, 1, GenFixedMenuEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genDynamicMenuEClass, GenDynamicMenu.class, "GenDynamicMenu", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenDynamicMenu_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenDynamicMenu.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenDynamicMenu_JsfMenu(), theJsfPackage.getDynamicMenu(), null, "jsfMenu", null, 1, 1, GenDynamicMenu.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenDynamicMenu_GenService(), this.getGenService(), null, "genService", null, 1, 1, GenDynamicMenu.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenDynamicMenu_GenSelection(), this.getGenSelection(), null, "genSelection", null, 1, 1, GenDynamicMenu.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenDynamicMenu_GenDynamicTitle(), this.getGenServiceIncludedSingletonElement(), null, "genDynamicTitle", null, 0, 1, GenDynamicMenu.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genMenuIncludedFeatureEClass, GenMenuIncludedFeature.class, "GenMenuIncludedFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genMenuIncludedElementEClass, GenMenuIncludedElement.class, "GenMenuIncludedElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenMenuIncludedElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenMenuIncludedElement.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenMenuIncludedElement_JsfMenuEntry(), theJsfPackage.getMenuIncludedElement(), null, "jsfMenuEntry", null, 1, 1, GenMenuIncludedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genUnitContainerEClass, GenUnitContainer.class, "GenUnitContainer", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenUnitContainer_GenUnits(), this.getGenContentUnit(), this.getGenContentUnit_GenDisplayedOn(), "genUnits", null, 0, -1, GenUnitContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genContentUnitEClass, GenContentUnit.class, "GenContentUnit", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenContentUnit_GenDisplayedOn(), this.getGenUnitContainer(), this.getGenUnitContainer_GenUnits(), "genDisplayedOn", null, 0, 1, GenContentUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genStaticUnitEClass, GenStaticUnit.class, "GenStaticUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenStaticUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenStaticUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenStaticUnit_JsfUnit(), theJsfPackage.getStaticUnit(), null, "jsfUnit", null, 1, 1, GenStaticUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenStaticUnit_GenService(), this.getGenService(), null, "genService", null, 0, 1, GenStaticUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genDynamicUnitEClass, GenDynamicUnit.class, "GenDynamicUnit", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenDynamicUnit_GenService(), this.getGenService(), this.getGenService_GenAccessedBy(), "genService", null, 1, 1, GenDynamicUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenDynamicUnit_GenDisplayFields(), this.getGenUnitField(), this.getGenUnitField_GenDisplayedOn(), "genDisplayFields", null, 0, -1, GenDynamicUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genUnitFieldEClass, GenUnitField.class, "GenUnitField", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenUnitField_GenDisplayedOn(), this.getGenDynamicUnit(), this.getGenDynamicUnit_GenDisplayFields(), "genDisplayedOn", null, 1, 1, GenUnitField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genInterfaceFieldEClass, GenInterfaceField.class, "GenInterfaceField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenInterfaceField_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenInterfaceField.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenInterfaceField_JsfInterfaceField(), theJsfPackage.getInterfaceField(), null, "jsfInterfaceField", null, 1, 1, GenInterfaceField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenInterfaceField_GenDataType(), theGenOrmPackage.getGenDataType(), null, "genDataType", null, 1, 1, GenInterfaceField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenInterfaceField_GenMustMatch(), this.getGenUnitField(), null, "genMustMatch", null, 0, 1, GenInterfaceField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenInterfaceField_GenDefaultValue(), theGencriteriaPackage.getGenExpression(), null, "genDefaultValue", null, 0, 1, GenInterfaceField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genUnitIncludedFeatureEClass, GenUnitIncludedFeature.class, "GenUnitIncludedFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genUnitIncludedElementEClass, GenUnitIncludedElement.class, "GenUnitIncludedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genUnitIncludedSingletonElementEClass, GenUnitIncludedSingletonElement.class, "GenUnitIncludedSingletonElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenUnitIncludedSingletonElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenUnitIncludedSingletonElement.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedSingletonElement_JsfIncludedFeature(), theJsfPackage.getUnitIncludedSingletonElement(), null, "jsfIncludedFeature", null, 1, 1, GenUnitIncludedSingletonElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedSingletonElement_GenServiceFeature(), this.getGenServiceIncludedSingletonElement(), null, "genServiceFeature", null, 1, 1, GenUnitIncludedSingletonElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genUnitIncludedCollectionElementEClass, GenUnitIncludedCollectionElement.class, "GenUnitIncludedCollectionElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenUnitIncludedCollectionElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenUnitIncludedCollectionElement.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedCollectionElement_JsfIncludedFeature(), theJsfPackage.getUnitIncludedCollectionElement(), null, "jsfIncludedFeature", null, 1, 1, GenUnitIncludedCollectionElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedCollectionElement_GenServiceFeature(), this.getGenServiceIncludedCollectionElement(), null, "genServiceFeature", null, 1, 1, GenUnitIncludedCollectionElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genUnitIncludedAssociationEClass, GenUnitIncludedAssociation.class, "GenUnitIncludedAssociation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genUnitIncludedSingletonAssociationEClass, GenUnitIncludedSingletonAssociation.class, "GenUnitIncludedSingletonAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenUnitIncludedSingletonAssociation_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenUnitIncludedSingletonAssociation.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedSingletonAssociation_JsfIncludedFeature(), theJsfPackage.getUnitIncludedSingletonAssociation(), null, "jsfIncludedFeature", null, 1, 1, GenUnitIncludedSingletonAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedSingletonAssociation_GenServiceFeature(), this.getGenServiceIncludedSingletonAssociation(), null, "genServiceFeature", null, 1, 1, GenUnitIncludedSingletonAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genUnitIncludedCollectionAssociationEClass, GenUnitIncludedCollectionAssociation.class, "GenUnitIncludedCollectionAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenUnitIncludedCollectionAssociation_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenUnitIncludedCollectionAssociation.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedCollectionAssociation_JsfIncludedFeature(), theJsfPackage.getUnitIncludedCollectionAssociation(), null, "jsfIncludedFeature", null, 1, 1, GenUnitIncludedCollectionAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUnitIncludedCollectionAssociation_GenServiceFeature(), this.getGenServiceIncludedCollectionAssociation(), null, "genServiceFeature", null, 1, 1, GenUnitIncludedCollectionAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genEditUnitEClass, GenEditUnit.class, "GenEditUnit", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenEditUnit_MessagePlacementOption(), this.getInputMessagePlacementOptions(), "messagePlacementOption", "OnFeature", 1, 1, GenEditUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenEditUnit_FormMessageDisplayOption(), this.getInputMessageDisplayOptions(), "formMessageDisplayOption", "Description", 1, 1, GenEditUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenEditUnit_GenConfirmDestination(), this.getGenPage(), null, "genConfirmDestination", null, 0, 1, GenEditUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenEditUnit_GenCancelDestination(), this.getGenPage(), null, "genCancelDestination", null, 0, 1, GenEditUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genCreateUnitEClass, GenCreateUnit.class, "GenCreateUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenCreateUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenCreateUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenCreateUnit_JsfUnit(), theJsfPackage.getCreateUnit(), null, "jsfUnit", null, 1, 1, GenCreateUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genCreateUpdateUnitEClass, GenCreateUpdateUnit.class, "GenCreateUpdateUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenCreateUpdateUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenCreateUpdateUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenCreateUpdateUnit_JsfUnit(), theJsfPackage.getCreateUpdateUnit(), null, "jsfUnit", null, 1, 1, GenCreateUpdateUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genUpdateUnitEClass, GenUpdateUnit.class, "GenUpdateUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenUpdateUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenUpdateUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenUpdateUnit_JsfUnit(), theJsfPackage.getUpdateUnit(), null, "jsfUnit", null, 1, 1, GenUpdateUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genDataUnitEClass, GenDataUnit.class, "GenDataUnit", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenDataUnit_GenSelection(), this.getGenSelection(), null, "genSelection", null, 0, 1, GenDataUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenDataUnit_GenDynamicTitle(), this.getGenServiceIncludedSingletonElement(), null, "genDynamicTitle", null, 0, 1, GenDataUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genDetailsUnitEClass, GenDetailsUnit.class, "GenDetailsUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenDetailsUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenDetailsUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenDetailsUnit_JsfUnit(), theJsfPackage.getDetailsUnit(), null, "jsfUnit", null, 1, 1, GenDetailsUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genIndexUnitEClass, GenIndexUnit.class, "GenIndexUnit", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenIndexUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenIndexUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenIndexUnit_JsfUnit(), theJsfPackage.getIndexUnit(), null, "jsfUnit", null, 1, 1, GenIndexUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenIndexUnit_GenTargettingSearches(), this.getGenSearchUnit(), this.getGenSearchUnit_GenResultDestination(), "genTargettingSearches", null, 0, -1, GenIndexUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genIndexGridUnitEClass, GenIndexGridUnit.class, "GenIndexGridUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genIndexPageDirectionUnitEClass, GenIndexPageDirectionUnit.class, "GenIndexPageDirectionUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genIndexLineDirectionUnitEClass, GenIndexLineDirectionUnit.class, "GenIndexLineDirectionUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genControlUnitEClass, GenControlUnit.class, "GenControlUnit", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenControlUnit_MessagePlacementOption(), this.getInputMessagePlacementOptions(), "messagePlacementOption", "OnFeature", 1, 1, GenControlUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenControlUnit_GenCancelDestination(), this.getGenPage(), null, "genCancelDestination", null, 0, 1, GenControlUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genSearchUnitEClass, GenSearchUnit.class, "GenSearchUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenSearchUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenSearchUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenSearchUnit_JsfUnit(), theJsfPackage.getSearchUnit(), null, "jsfUnit", null, 1, 1, GenSearchUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenSearchUnit_GenResultDestination(), this.getGenIndexUnit(), this.getGenIndexUnit_GenTargettingSearches(), "genResultDestination", null, 1, 1, GenSearchUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genAuthenticationUnitEClass, GenAuthenticationUnit.class, "GenAuthenticationUnit", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(genRegistrationUnitEClass, GenRegistrationUnit.class, "GenRegistrationUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenRegistrationUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenRegistrationUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenRegistrationUnit_JsfUnit(), theJsfPackage.getRegistrationUnit(), null, "jsfUnit", null, 1, 1, GenRegistrationUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenRegistrationUnit_GenAuthenticationSystem(), this.getGenLocalAuthenticationSystem(), this.getGenLocalAuthenticationSystem_GenRegistrationUnit(), "genAuthenticationSystem", null, 0, 1, GenRegistrationUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genLoginUnitEClass, GenLoginUnit.class, "GenLoginUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenLoginUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenLoginUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenLoginUnit_JsfUnit(), theJsfPackage.getLoginUnit(), null, "jsfUnit", null, 1, 1, GenLoginUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenLoginUnit_GenAuthenticationSystem(), this.getGenLocalAuthenticationSystem(), this.getGenLocalAuthenticationSystem_GenLoginUnit(), "genAuthenticationSystem", null, 0, 1, GenLoginUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLoginUnit_GenLoginIdField(), this.getGenUnitField(), null, "genLoginIdField", null, 1, 1, GenLoginUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLoginUnit_GenPasswordField(), this.getGenUnitField(), null, "genPasswordField", null, 1, 1, GenLoginUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenLoginUnit_GenRememberMeField(), this.getGenUnitField(), null, "genRememberMeField", null, 0, 1, GenLoginUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genForgottenPasswordUnitEClass, GenForgottenPasswordUnit.class, "GenForgottenPasswordUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenForgottenPasswordUnit_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenForgottenPasswordUnit.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenForgottenPasswordUnit_JsfUnit(), theJsfPackage.getForgottenPasswordUnit(), null, "jsfUnit", null, 1, 1, GenForgottenPasswordUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenForgottenPasswordUnit_GenAuthenticationSystem(), this.getGenLocalAuthenticationSystem(), this.getGenLocalAuthenticationSystem_GenForgottenPasswordUnit(), "genAuthenticationSystem", null, 0, 1, GenForgottenPasswordUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genInlineActionContainerEClass, GenInlineActionContainer.class, "GenInlineActionContainer", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenInlineActionContainer_GenActions(), this.getGenInlineAction(), this.getGenInlineAction_GenUsedBy(), "genActions", null, 0, -1, GenInlineActionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genInlineActionEClass, GenInlineAction.class, "GenInlineAction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenInlineAction_Name(), ecorePackage.getEString(), "name", null, 0, 1, GenInlineAction.class, !IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getGenInlineAction_JsfAction(), theJsfPackage.getInlineAction(), null, "jsfAction", null, 1, 1, GenInlineAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenInlineAction_GenUsedBy(), this.getGenInlineActionContainer(), this.getGenInlineActionContainer_GenActions(), "genUsedBy", null, 1, 1, GenInlineAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genSelectActionEClass, GenSelectAction.class, "GenSelectAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenSelectAction_GenTarget(), this.getGenSelectTarget(), this.getGenSelectTarget_GenTargettingActions(), "genTarget", null, 1, 1, GenSelectAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genDeleteActionEClass, GenDeleteAction.class, "GenDeleteAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenDeleteAction_GenDestination(), this.getGenPage(), null, "genDestination", null, 0, 1, GenDeleteAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genFieldReferenceEClass, GenFieldReference.class, "GenFieldReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenFieldReference_CriteriaPath(), theJsfPackage.getFieldReference(), null, "criteriaPath", null, 1, 1, GenFieldReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenFieldReference_GenField(), this.getGenServiceIncludedFeature(), null, "genField", null, 1, 1, GenFieldReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genModelReferenceEClass, GenModelReference.class, "GenModelReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenModelReference_CriteriaPath(), theJsfPackage.getModelReference(), null, "criteriaPath", null, 1, 1, GenModelReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenModelReference_GenUnit(), this.getGenDynamicUnit(), null, "genUnit", null, 1, 1, GenModelReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genCurrentUserReferenceEClass, GenCurrentUserReference.class, "GenCurrentUserReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenCurrentUserReference_CriteriaPath(), theJsfPackage.getCurrentUserReference(), null, "criteriaPath", null, 1, 1, GenCurrentUserReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(selectOneofOptionsEEnum, SelectOneofOptions.class, "SelectOneofOptions");
+		addEEnumLiteral(selectOneofOptionsEEnum, SelectOneofOptions.MENU);
+		addEEnumLiteral(selectOneofOptionsEEnum, SelectOneofOptions.RADIO_HORIZONTAL);
+		addEEnumLiteral(selectOneofOptionsEEnum, SelectOneofOptions.RADIO_VERTICAL);
+
+		initEEnum(selectManyOptionsEEnum, SelectManyOptions.class, "SelectManyOptions");
+		addEEnumLiteral(selectManyOptionsEEnum, SelectManyOptions.LIST);
+		addEEnumLiteral(selectManyOptionsEEnum, SelectManyOptions.CHECKBOX_HORIZONTAL);
+		addEEnumLiteral(selectManyOptionsEEnum, SelectManyOptions.CHECKBOX_VERTICAL);
+
+		initEEnum(inputMessagePlacementOptionsEEnum, InputMessagePlacementOptions.class, "InputMessagePlacementOptions");
+		addEEnumLiteral(inputMessagePlacementOptionsEEnum, InputMessagePlacementOptions.FORM_HEAD);
+		addEEnumLiteral(inputMessagePlacementOptionsEEnum, InputMessagePlacementOptions.FORM_FOOT);
+		addEEnumLiteral(inputMessagePlacementOptionsEEnum, InputMessagePlacementOptions.ON_FEATURE);
+		addEEnumLiteral(inputMessagePlacementOptionsEEnum, InputMessagePlacementOptions.FORM_HEAD_AND_FOOT);
+		addEEnumLiteral(inputMessagePlacementOptionsEEnum, InputMessagePlacementOptions.FORM_AND_ON_FEATURE);
+
+		initEEnum(inputMessageDisplayOptionsEEnum, InputMessageDisplayOptions.class, "InputMessageDisplayOptions");
+		addEEnumLiteral(inputMessageDisplayOptionsEEnum, InputMessageDisplayOptions.SHORT);
+		addEEnumLiteral(inputMessageDisplayOptionsEEnum, InputMessageDisplayOptions.DESCRIPTION);
+		addEEnumLiteral(inputMessageDisplayOptionsEEnum, InputMessageDisplayOptions.TOOL_TIP);
+
+		initEEnum(collectionDisplayFormatEEnum, CollectionDisplayFormat.class, "CollectionDisplayFormat");
+		addEEnumLiteral(collectionDisplayFormatEEnum, CollectionDisplayFormat.LINE_DIRECTION);
+		addEEnumLiteral(collectionDisplayFormatEEnum, CollectionDisplayFormat.PAGE_DIRECTION);
+
+		initEEnum(ajaxTechnologiesEEnum, AjaxTechnologies.class, "AjaxTechnologies");
+		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.NONE);
+		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.JQUERY);
+
+		// Create resource
+		createResource(eNS_URI);
+
+		// Create annotations
+		// http://www.eclipse.org/emf/2002/Ecore
+		createEcoreAnnotations();
+		// http://www.eclipse.org/emf/2002/Ecore/OCL
+		createOCLAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createEcoreAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore";		
+		addAnnotation
+		  (this, 
+		   source, 
+		   new String[] {
+			 "invocationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL",
+			 "settingDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL",
+			 "validationDelegates", "http://www.eclipse.org/emf/2002/Ecore/OCL"
+		   });																											
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore/OCL</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createOCLAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore/OCL";			
+		addAnnotation
+		  (getGenService_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfService.oclIsUndefined() then \'\' else jsfService.name endif"
+		   });		
+		addAnnotation
+		  (getGenServiceIncludedSingletonElement_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenServiceIncludedCollectionElement_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenServiceIncludedSingletonAssociation_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenServiceIncludedCollectionAssociation_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenSelection_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfSelection.oclIsUndefined() then \'\' else jsfSelection.name endif"
+		   });		
+		addAnnotation
+		  (getGenPage_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfPage.oclIsUndefined() then \'\' else jsfPage.name endif"
+		   });		
+		addAnnotation
+		  (getGenStaticMenu_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfMenu.oclIsUndefined() then \'\' else jsfMenu.name endif"
+		   });		
+		addAnnotation
+		  (getGenFixedMenuEntry_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfMenuEntry.oclIsUndefined() then \'\' else jsfMenuEntry.name endif"
+		   });		
+		addAnnotation
+		  (getGenDynamicMenu_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfMenu.oclIsUndefined() then \'\' else jsfMenu.name endif"
+		   });		
+		addAnnotation
+		  (getGenMenuIncludedElement_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfMenuEntry.oclIsUndefined() then \'\' else jsfMenuEntry.name endif"
+		   });		
+		addAnnotation
+		  (getGenStaticUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenInterfaceField_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfInterfaceField.oclIsUndefined() then \'\' else jsfInterfaceField.name endif"
+		   });		
+		addAnnotation
+		  (getGenUnitIncludedSingletonElement_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenUnitIncludedCollectionElement_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenUnitIncludedSingletonAssociation_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenUnitIncludedCollectionAssociation_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfIncludedFeature.oclIsUndefined() then \'\' else jsfIncludedFeature.name endif"
+		   });		
+		addAnnotation
+		  (getGenCreateUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenCreateUpdateUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenUpdateUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenDetailsUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenIndexUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenSearchUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenRegistrationUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenLoginUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenForgottenPasswordUnit_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfUnit.oclIsUndefined() then \'\' else jsfUnit.name endif"
+		   });		
+		addAnnotation
+		  (getGenInlineAction_Name(), 
+		   source, 
+		   new String[] {
+			 "derivation", "if jsfAction.oclIsUndefined() then \'\' else jsfAction.name endif"
+		   });
+	}
+
+} //GenJsfPackageImpl
