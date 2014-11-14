@@ -117,7 +117,7 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 	}
 
 [/for]
-[if (genService.hasAttributesOrSingletons())]
+[if (not genService.jsfService.view and genService.hasAttributesOrSingletons())]
 	public function filters()
 	{
 		return array(
