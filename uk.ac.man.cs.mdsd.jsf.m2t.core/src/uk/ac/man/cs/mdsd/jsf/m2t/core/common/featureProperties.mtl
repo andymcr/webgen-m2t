@@ -95,10 +95,10 @@
 /]
 
 
-[query public associations(genService : GenService) : Sequence(GenServiceEntityAssociation)
+[query public associations(genService : GenService) : Sequence(GenServiceAssociation)
 	= genService.genFeatures
-		->select(f | f.oclIsTypeOf(GenServiceEntityAssociation))
-		.oclAsType(GenServiceEntityAssociation)
+		->select(f | f.oclIsKindOf(GenServiceAssociation))
+		.oclAsType(GenServiceAssociation)
 /]
 
 [query public attributes(genService : GenService) : Sequence(GenServiceEntityElement)
@@ -397,7 +397,7 @@
 		else if genFeature.oclIsTypeOf(GenServiceEntityAssociation) then
 			genFeature.oclAsType(GenServiceEntityAssociation).jsfFeature.cardinality <> Cardinality::Many
 		else
-			genFeature.oclAsType(GenServiceViewAssociation).genTargetFeature.isSingleton()
+			genFeature.oclAsType(GenServiceViewAssociation).jsfFeature.cardinality <> Cardinality::Many
 		endif endif
 /]
 
@@ -422,9 +422,9 @@
 
 [query public modelPropertyName(genFeature : GenServiceFeature) : String
 	= if genFeature.oclIsTypeOf(GenServiceEntityElement) then
-			genFeature.oclAsType(GenServiceEntityElement).genFeature.modelPropertyName()
-		else if genFeature.oclIsTypeOf(GenServiceEntityAssociation) then
-			genFeature.oclAsType(GenServiceEntityAssociation).name
+			genFeature.oclAsType(GenServiceEntityElement).columnName
+		else if genFeature.oclIsKindOf(GenServiceAssociation) then
+			genFeature.oclAsType(GenServiceAssociation).name
 		else
 			'unhandledFeature'
 		endif endif
@@ -434,9 +434,11 @@
 	= let name : String =
 			if genFeature.oclIsTypeOf(GenServiceEntityAssociation) then
 				genFeature.oclAsType(GenServiceEntityAssociation).genFeature.oppositeColumnName()
+			else if genFeature.oclIsTypeOf(GenServiceViewAssociation) then
+				genFeature.oclAsType(GenServiceViewAssociation).genTargetFeature.columnName()
 			else
 				'unhandledFeature'
-			endif
+			endif endif
 		in name
 /]
 
@@ -1484,18 +1486,6 @@
 		else
 			ormFeature.inputField
 		endif
-/]
-
-[query public modelPropertyName(genFeature : GenFeature) : String
-	= if genFeature.oclIsKindOf(GenSingletonAttribute) then
-			genFeature.oclAsType(GenSingletonAttribute).columnName
-		else if genFeature.oclIsKindOf(GenCollectionAttribute) then
-			genFeature.oclAsType(GenCollectionAttribute).columnName
-		else if genFeature.oclIsKindOf(GenAssociation) then
-			genFeature.oclAsType(GenAssociation).featureName
-		else
-			'unhandledFeature'
-		endif endif endif
 /]
 
 [query public name(genFeature : GenFeature) : String

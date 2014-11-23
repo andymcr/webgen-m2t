@@ -107,8 +107,6 @@
  <?php if ($[instanceVariable/]->[genDisplayField.modelPropertyName()/]->loaded()) { ?>
 		[/if]
 	[/if]
-[comment following ensures Accello invokes the correct template; Accello bug? /]
-<?php [genDisplayField.isDateSingleton()/]; ?>
 	[if (genUnit.hasOmitFieldLabels())]
 <li class="[genDisplayField.displayClass()/]">[genDisplayField.generateDisplayField(instanceVariable)/]</li>
 	[else]
@@ -423,9 +421,10 @@ $[instanceVariable/]->[genField.modelPropertyName()/]
 [template public generateDisplayFieldAssess(genField : GenUnitField, instanceVariable : String)
 	? (genField.oclIsTypeOf(GenUnitAssociation)) post(trim())]
 [let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
-$[instanceVariable/]->[genField.modelPropertyName()/]->[if (genAssociation.genChildFeature.oclIsUndefined())]
-displayLabel()[else]
-[genAssociation.genChildFeature.generateDisplayChildAssess()/]
+$[instanceVariable/]->[genField.modelPropertyName()/]->[if (not genAssociation.genDynamicLabel.oclIsUndefined())]
+[genAssociation.genDynamicLabel.name/]()[elseif (not genAssociation.genChildFeature.oclIsUndefined())]
+[genAssociation.genChildFeature.generateDisplayChildAssess()/][else]
+displayLabel()
 [/if]
 [/let]
 [/template]
