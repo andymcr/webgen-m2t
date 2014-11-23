@@ -59,26 +59,26 @@ public class GenServiceViewAssociationItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addJsfTargetFeaturePropertyDescriptor(object);
+			addJsfFeaturePropertyDescriptor(object);
 			addGenTargetFeaturePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Jsf Target Feature feature.
+	 * This adds a property descriptor for the Jsf Feature feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addJsfTargetFeaturePropertyDescriptor(Object object) {
+	protected void addJsfFeaturePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_GenServiceViewAssociation_jsfTargetFeature_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_GenServiceViewAssociation_jsfTargetFeature_feature", "_UI_GenServiceViewAssociation_type"),
-				 GenJsfPackage.Literals.GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE,
+				 getString("_UI_GenServiceViewAssociation_jsfFeature_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_GenServiceViewAssociation_jsfFeature_feature", "_UI_GenServiceViewAssociation_type"),
+				 GenJsfPackage.Literals.GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE,
 				 true,
 				 false,
 				 true,

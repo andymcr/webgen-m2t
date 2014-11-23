@@ -58,16 +58,9 @@
           ecoreFeature="ecore:EAttribute GenOrm.ecore#//GenEntity/tableName"/>
       <genFeatures createChild="false" propertyCategory="Relational" ecoreFeature="ecore:EAttribute GenOrm.ecore#//GenEntity/keyName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenOrm.ecore#//GenEntity/genFeatures"/>
-      <genFeatures createChild="false" propertyCategory="XML Binding" ecoreFeature="ecore:EAttribute GenOrm.ecore#//GenEntity/xmlTransient"/>
-      <genFeatures createChild="false" propertyCategory="XML Binding" propertyDescription=""
-          ecoreFeature="ecore:EAttribute GenOrm.ecore#//GenEntity/xmlRootElement"/>
-      <genFeatures createChild="false" propertyCategory="XML Binding" ecoreFeature="ecore:EAttribute GenOrm.ecore#//GenEntity/xmlNamespace"/>
-      <genFeatures createChild="false" propertyCategory="XML Binding" ecoreFeature="ecore:EAttribute GenOrm.ecore#//GenEntity/xmlName"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GenOrm.ecore#//GenFeature">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference GenOrm.ecore#//GenFeature/genParentEntity"/>
-      <genFeatures createChild="false" propertyCategory="XML Binding" propertyDescription=""
-          ecoreFeature="ecore:EAttribute GenOrm.ecore#//GenFeature/xmlTransient"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GenOrm.ecore#//GenAttribute"/>
     <genClasses image="false" ecoreClass="GenOrm.ecore#//GenSingletonAttribute">
@@ -97,9 +90,13 @@
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference GenOrm.ecore#//GenCollectionDate/ormFeature"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="GenOrm.ecore#//GenSingletonResource"/>
     <genClasses ecoreClass="GenOrm.ecore#//GenSingletonFile">
       <genFeatures property="None" notify="false" createChild="false" propertyDescription=""
           propertySortChoices="true" ecoreFeature="ecore:EReference GenOrm.ecore#//GenSingletonFile/ormFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="GenOrm.ecore#//GenSingletonImage">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenOrm.ecore#//GenSingletonImage/ormFeature"/>
     </genClasses>
     <genClasses ecoreClass="GenOrm.ecore#//GenSingletonLocation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenOrm.ecore#//GenSingletonLocation/ormFeature"/>

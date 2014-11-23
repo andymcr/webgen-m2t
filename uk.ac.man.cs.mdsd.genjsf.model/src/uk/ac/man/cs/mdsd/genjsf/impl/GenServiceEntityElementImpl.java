@@ -5,9 +5,9 @@ package uk.ac.man.cs.mdsd.genjsf.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import uk.ac.man.cs.mdsd.gencriteria.GenExpression;
 import uk.ac.man.cs.mdsd.genjsf.GenIncludedElement;
 import uk.ac.man.cs.mdsd.genjsf.GenJsfPackage;
@@ -15,6 +15,7 @@ import uk.ac.man.cs.mdsd.genjsf.GenServiceEntityElement;
 import uk.ac.man.cs.mdsd.genjsf.GenServiceFeature;
 import uk.ac.man.cs.mdsd.genjsf.GenUnitTitle;
 import uk.ac.man.cs.mdsd.genorm.GenAttribute;
+import uk.ac.man.cs.mdsd.genorm.GenSingletonAttribute;
 import uk.ac.man.cs.mdsd.jsf.ServiceEntityElement;
 
 /**
@@ -27,6 +28,7 @@ import uk.ac.man.cs.mdsd.jsf.ServiceEntityElement;
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityElementImpl#getGenDefaultValue <em>Gen Default Value</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityElementImpl#getJsfFeature <em>Jsf Feature</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityElementImpl#getGenFeature <em>Gen Feature</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityElementImpl#getColumnName <em>Column Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -62,6 +64,25 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 	protected GenAttribute genFeature;
 
 	/**
+	 * The default value of the '{@link #getColumnName() <em>Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String COLUMN_NAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getColumnName() <em>Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String columnName = COLUMN_NAME_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -82,6 +103,13 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 	 */
 	protected void reconcileSettings(final GenServiceFeature oldGenFeature) {
 		super.reconcileSettings(oldGenFeature);
+
+		if (oldGenFeature instanceof GenServiceEntityElement) {
+			final GenServiceEntityElement oldGenElement = (GenServiceEntityElement) oldGenFeature;
+			if ((oldGenElement.getColumnName() != null) && !oldGenElement.getColumnName().equals("")) {
+				setColumnName(oldGenElement.getColumnName());
+			}
+		}
 	}
 
 	/**
@@ -218,6 +246,27 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getColumnName() {
+		return columnName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setColumnName(String newColumnName) {
+		String oldColumnName = columnName;
+		columnName = newColumnName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME, oldColumnName, columnName));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -243,6 +292,8 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE:
 				if (resolve) return getGenFeature();
 				return basicGetGenFeature();
+			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME:
+				return getColumnName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -263,6 +314,9 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 				return;
 			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE:
 				setGenFeature((GenAttribute)newValue);
+				return;
+			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME:
+				setColumnName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -285,6 +339,9 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE:
 				setGenFeature((GenAttribute)null);
 				return;
+			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME:
+				setColumnName(COLUMN_NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -303,6 +360,8 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 				return jsfFeature != null;
 			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE:
 				return genFeature != null;
+			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME:
+				return COLUMN_NAME_EDEFAULT == null ? columnName != null : !COLUMN_NAME_EDEFAULT.equals(columnName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -347,6 +406,22 @@ public class GenServiceEntityElementImpl extends GenServiceEntityFeatureImpl imp
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (columnName: ");
+		result.append(columnName);
+		result.append(')');
+		return result.toString();
 	}
 
 } //GenServiceEntityElementImpl

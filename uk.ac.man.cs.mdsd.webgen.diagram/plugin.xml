@@ -231,7 +231,7 @@
       <viewProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteViewProvider">
          <Priority name="Lowest"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Website"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2008,2006,2003,2005,2009,2004,3055,3029,3149,3028,3054,3014,3152,3230,3213,3169,3170,3201,3207,3232,3225,3226,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3234,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3158,3159,3231,3156,3167,3168,3166,3163,3150"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2008,2006,2003,2005,2009,2004,3055,3029,3149,3028,3054,3014,3152,3235,3230,3213,3169,3170,3201,3207,3232,3225,3226,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3234,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3158,3159,3231,3156,3167,3168,3166,3163,3150"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001,4002,4003"/>
       </viewProvider>
    </extension>
@@ -244,13 +244,13 @@
             <method name="getType()" value="Website"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,2008,2006,2003,2005,2009,2004,3055,3029,3149,3028,3054,3014,3152,3230,3213,3169,3170,3201,3207,3232,3225,3226,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3234,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3158,3159,3231,3156,3167,3168,3166,3163,3150"/>
+            <method name="getType()" value="2001,2002,2008,2006,2003,2005,2009,2004,3055,3029,3149,3028,3054,3014,3152,3235,3230,3213,3169,3170,3201,3207,3232,3225,3226,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3234,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3158,3159,3231,3156,3167,3168,3166,3163,3150"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4001,4002,4003"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5054,5002,5155,5032,5004,5014,5157,5005,5156,5033,5059,5018,5160,5237,5221,5176,5177,5208,5214,5239,5233,5232,5107,5178,5179,5209,5215,5108,5180,5199,5210,5216,5109,5181,5106,5184,5116,5182,5198,5117,5183,5112,5185,5123,5186,5191,5120,5187,5188,5133,5189,5190,5122,5192,5197,5125,5193,5194,5135,5195,5196,5138,5200,5201,5110,5105,5130,5211,5217,5240,5142,5202,5131,5203,5226,5204,5207,5149,5205,5206,5132,5212,5218,5150,5151,5241,5235,5113,5222,5223,5213,5219,5114,5115,5227,5231,5230,5228,5229,5161,5162,5224,5225,5165,5166,5238,5164,5174,5175,5173,5170,5158"/>
+            <method name="getType()" value="5054,5002,5155,5032,5004,5014,5157,5005,5156,5033,5059,5018,5160,5242,5237,5221,5176,5177,5208,5214,5239,5233,5232,5107,5178,5179,5209,5215,5108,5180,5199,5210,5216,5109,5181,5106,5184,5116,5182,5198,5117,5183,5112,5185,5123,5186,5191,5120,5187,5188,5133,5189,5190,5122,5192,5197,5125,5193,5194,5135,5195,5196,5138,5200,5201,5110,5105,5130,5211,5217,5240,5142,5202,5131,5203,5226,5204,5207,5149,5205,5206,5132,5212,5218,5150,5151,5241,5235,5113,5222,5223,5213,5219,5114,5115,5227,5231,5230,5228,5229,5161,5162,5224,5225,5165,5166,5238,5164,5174,5175,5173,5170,5158"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
             <method name="getType()" value="7007,7081,7016,7001,7002,7103,7104,7117,7042,7043,7044,7087,7105,7096,7106,7051,7097,7053,7045,7054,7086,7098,7056,7107,7066,7057,7058,7108,7068,7069,7070,7071,7109,7110,7112,7113,7076,7047,7049,7114,7115,7116,7084,7006,7085,7088"/>
@@ -279,6 +279,7 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeAttributeEditPart" id="DataTypeAttribute_3054"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateAttributeEditPart" id="DateAttribute_3014"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FileAttributeEditPart" id="FileAttribute_3152"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageAttributeEditPart" id="ImageAttribute_3235"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocationAttributeEditPart" id="LocationAttribute_3230"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ActionUnitEditPart" id="ActionUnit_3213"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElementEditPart" id="UnitElement_3169"/>
@@ -379,7 +380,7 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceViewAssociationEditPart" id="ServiceViewAssociation_3166"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelEditPart" id="ModelLabel_3163"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionEditPart" id="Selection_3150"/>
-         <context elements="WebGenModel_1000,WebsiteProperties_2001,DataType_2002,DynamicMenu_2008,EnumerationType_2006,Entity_2003,Page_2005,StaticMenu_2009,Service_2004,CasAuthentication_3055,LocalAuthenticationSystem_3029,MenuIncludedElement_3149,EnumerationLiteral_3028,DataTypeAttribute_3054,DateAttribute_3014,FileAttribute_3152,LocationAttribute_3230,ActionUnit_3213,UnitElement_3169,UnitAssociation_3170,DataTypeField_3201,DateField_3207,UnitSupportAction_3232,CommandUnit_3225,UserCommand_3226,CreateUnit_3103,UnitElement_3171,UnitAssociation_3172,DataTypeField_3202,DateField_3208,CreateUpdateUnit_3104,UnitElement_3173,UnitAssociation_3174,DataTypeField_3203,DateField_3209,CreateSitemapUnit_3157,DetailsUnit_3105,UnitElement_3175,SelectAction_3102,UnitAssociation_3176,DetailsUnit_3112,UnitElement_3177,UnitAssociation_3180,DetailsUnit_3113,UnitElement_3178,IndexUnit_3106,UnitElement_3179,IndexUnit_3114,UnitElement_3181,UnitAssociation_3182,DetailsUnit_3116,UnitElement_3183,UnitAssociation_3184,DetailsUnit_3129,UnitElement_3185,UnitAssociation_3186,IndexUnit_3118,UnitElement_3187,UnitAssociation_3188,IndexUnit_3120,UnitElement_3189,UnitAssociation_3190,DetailsUnit_3131,UnitElement_3191,UnitAssociation_3192,IndexUnit_3133,UnitElement_3193,UnitAssociation_3194,SelectAction_3107,DeleteAction_3101,SelectAction_3126,DataTypeField_3204,DateField_3210,UnitSupportAction_3233,IndexUnit_3136,UnitElement_3195,SelectAction_3127,UnitAssociation_3196,DetailsUnit_3219,UnitElement_3197,UnitAssociation_3198,IndexUnit_3143,UnitElement_3199,UnitAssociation_3200,SelectAction_3128,DataTypeField_3205,DateField_3211,SelectAction_3146,DeleteAction_3147,FeatureSupportAction_3234,MapUnit_3228,SearchUnit_3109,UnitElement_3215,UnitAssociation_3216,DataTypeField_3206,DateField_3212,StaticUnit_3110,UpdateUnit_3111,UnitElement_3220,UnitAssociation_3221,IndexUnit_3222,UnitElement_3223,UnitAssociation_3224,SelectAction_3153,DeleteAction_3154,DataTypeField_3217,DateField_3218,FixedPageMenuEntry_3158,FixedActionMenuEntry_3159,FixedCommandMenuEntry_3231,EditStaticTextMenuEntry_3156,ServiceEntityElement_3167,ServiceEntityAssociation_3168,ServiceViewAssociation_3166,ModelLabel_3163,Selection_3150"/>
+         <context elements="WebGenModel_1000,WebsiteProperties_2001,DataType_2002,DynamicMenu_2008,EnumerationType_2006,Entity_2003,Page_2005,StaticMenu_2009,Service_2004,CasAuthentication_3055,LocalAuthenticationSystem_3029,MenuIncludedElement_3149,EnumerationLiteral_3028,DataTypeAttribute_3054,DateAttribute_3014,FileAttribute_3152,ImageAttribute_3235,LocationAttribute_3230,ActionUnit_3213,UnitElement_3169,UnitAssociation_3170,DataTypeField_3201,DateField_3207,UnitSupportAction_3232,CommandUnit_3225,UserCommand_3226,CreateUnit_3103,UnitElement_3171,UnitAssociation_3172,DataTypeField_3202,DateField_3208,CreateUpdateUnit_3104,UnitElement_3173,UnitAssociation_3174,DataTypeField_3203,DateField_3209,CreateSitemapUnit_3157,DetailsUnit_3105,UnitElement_3175,SelectAction_3102,UnitAssociation_3176,DetailsUnit_3112,UnitElement_3177,UnitAssociation_3180,DetailsUnit_3113,UnitElement_3178,IndexUnit_3106,UnitElement_3179,IndexUnit_3114,UnitElement_3181,UnitAssociation_3182,DetailsUnit_3116,UnitElement_3183,UnitAssociation_3184,DetailsUnit_3129,UnitElement_3185,UnitAssociation_3186,IndexUnit_3118,UnitElement_3187,UnitAssociation_3188,IndexUnit_3120,UnitElement_3189,UnitAssociation_3190,DetailsUnit_3131,UnitElement_3191,UnitAssociation_3192,IndexUnit_3133,UnitElement_3193,UnitAssociation_3194,SelectAction_3107,DeleteAction_3101,SelectAction_3126,DataTypeField_3204,DateField_3210,UnitSupportAction_3233,IndexUnit_3136,UnitElement_3195,SelectAction_3127,UnitAssociation_3196,DetailsUnit_3219,UnitElement_3197,UnitAssociation_3198,IndexUnit_3143,UnitElement_3199,UnitAssociation_3200,SelectAction_3128,DataTypeField_3205,DateField_3211,SelectAction_3146,DeleteAction_3147,FeatureSupportAction_3234,MapUnit_3228,SearchUnit_3109,UnitElement_3215,UnitAssociation_3216,DataTypeField_3206,DateField_3212,StaticUnit_3110,UpdateUnit_3111,UnitElement_3220,UnitAssociation_3221,IndexUnit_3222,UnitElement_3223,UnitAssociation_3224,SelectAction_3153,DeleteAction_3154,DataTypeField_3217,DateField_3218,FixedPageMenuEntry_3158,FixedActionMenuEntry_3159,FixedCommandMenuEntry_3231,EditStaticTextMenuEntry_3156,ServiceEntityElement_3167,ServiceEntityAssociation_3168,ServiceViewAssociation_3166,ModelLabel_3163,Selection_3150"/>
       </modelingAssistantProvider>
    </extension>
 
@@ -557,6 +558,16 @@
                eclass="FileAttribute"
                edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.FileAttributeEditHelper">
             <param name="semanticHint" value="3152"/>
+         </metamodelType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.ImageAttribute_3235"
+               name="%metatype.name.ImageAttribute_3235"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="ImageAttribute"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ImageAttributeEditHelper">
+            <param name="semanticHint" value="3235"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1547,6 +1558,7 @@
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeAttribute_3054"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3014"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.FileAttribute_3152"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ImageAttribute_3235"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3230"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>

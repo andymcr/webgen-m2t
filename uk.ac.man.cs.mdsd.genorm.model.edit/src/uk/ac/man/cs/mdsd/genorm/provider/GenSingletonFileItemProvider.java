@@ -24,7 +24,7 @@ import uk.ac.man.cs.mdsd.genorm.GenSingletonFile;
  * @generated
  */
 public class GenSingletonFileItemProvider
-	extends GenSingletonAttributeItemProvider
+	extends GenSingletonResourceItemProvider
 	implements
 		IEditingDomainItemProvider,
 		IStructuredItemContentProvider,

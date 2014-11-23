@@ -25,7 +25,7 @@ import uk.ac.man.cs.mdsd.orm.SingletonFile;
  *
  * @generated
  */
-public class GenSingletonFileImpl extends GenSingletonAttributeImpl implements GenSingletonFile {
+public class GenSingletonFileImpl extends GenSingletonResourceImpl implements GenSingletonFile {
 	/**
 	 * The cached value of the '{@link #getOrmFeature() <em>Orm Feature</em>}' reference.
 	 * <!-- begin-user-doc -->

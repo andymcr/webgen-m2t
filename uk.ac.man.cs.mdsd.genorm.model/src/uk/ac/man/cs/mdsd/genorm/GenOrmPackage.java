@@ -419,49 +419,13 @@ public interface GenOrmPackage extends EPackage {
 	int GEN_ENTITY__GEN_FEATURES = GEN_CLASSIFIER_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_ENTITY__XML_TRANSIENT = GEN_CLASSIFIER_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Xml Root Element</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_ENTITY__XML_ROOT_ELEMENT = GEN_CLASSIFIER_FEATURE_COUNT + 7;
-
-	/**
-	 * The feature id for the '<em><b>Xml Namespace</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_ENTITY__XML_NAMESPACE = GEN_CLASSIFIER_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Xml Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_ENTITY__XML_NAME = GEN_CLASSIFIER_FEATURE_COUNT + 9;
-
-	/**
 	 * The number of structural features of the '<em>Gen Entity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_ENTITY_FEATURE_COUNT = GEN_CLASSIFIER_FEATURE_COUNT + 10;
+	int GEN_ENTITY_FEATURE_COUNT = GEN_CLASSIFIER_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenFeatureImpl <em>Gen Feature</em>}' class.
@@ -492,22 +456,13 @@ public interface GenOrmPackage extends EPackage {
 	int GEN_FEATURE__GEN_PARENT_ENTITY = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_FEATURE__XML_TRANSIENT = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Gen Feature</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_FEATURE_FEATURE_COUNT = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
+	int GEN_FEATURE_FEATURE_COUNT = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenAttributeImpl <em>Gen Attribute</em>}' class.
@@ -536,15 +491,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_ATTRIBUTE__GEN_PARENT_ENTITY = GEN_FEATURE__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_ATTRIBUTE__XML_TRANSIENT = GEN_FEATURE__XML_TRANSIENT;
 
 	/**
 	 * The number of structural features of the '<em>Gen Attribute</em>' class.
@@ -582,15 +528,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_SINGLETON_ATTRIBUTE__GEN_PARENT_ENTITY = GEN_ATTRIBUTE__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_SINGLETON_ATTRIBUTE__XML_TRANSIENT = GEN_ATTRIBUTE__XML_TRANSIENT;
 
 	/**
 	 * The feature id for the '<em><b>Gen Default Value</b></em>' containment reference.
@@ -648,15 +585,6 @@ public interface GenOrmPackage extends EPackage {
 	int GEN_COLLECTION_ATTRIBUTE__GEN_PARENT_ENTITY = GEN_ATTRIBUTE__GEN_PARENT_ENTITY;
 
 	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_COLLECTION_ATTRIBUTE__XML_TRANSIENT = GEN_ATTRIBUTE__XML_TRANSIENT;
-
-	/**
 	 * The feature id for the '<em><b>Table Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -710,15 +638,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_SINGLETON_ELEMENT__GEN_PARENT_ENTITY = GEN_SINGLETON_ATTRIBUTE__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_SINGLETON_ELEMENT__XML_TRANSIENT = GEN_SINGLETON_ATTRIBUTE__XML_TRANSIENT;
 
 	/**
 	 * The feature id for the '<em><b>Gen Default Value</b></em>' containment reference.
@@ -804,15 +723,6 @@ public interface GenOrmPackage extends EPackage {
 	int GEN_COLLECTION_ELEMENT__GEN_PARENT_ENTITY = GEN_COLLECTION_ATTRIBUTE__GEN_PARENT_ENTITY;
 
 	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_COLLECTION_ELEMENT__XML_TRANSIENT = GEN_COLLECTION_ATTRIBUTE__XML_TRANSIENT;
-
-	/**
 	 * The feature id for the '<em><b>Table Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -865,15 +775,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_SINGLETON_DATE__GEN_PARENT_ENTITY = GEN_SINGLETON_ATTRIBUTE__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_SINGLETON_DATE__XML_TRANSIENT = GEN_SINGLETON_ATTRIBUTE__XML_TRANSIENT;
 
 	/**
 	 * The feature id for the '<em><b>Gen Default Value</b></em>' containment reference.
@@ -940,15 +841,6 @@ public interface GenOrmPackage extends EPackage {
 	int GEN_COLLECTION_DATE__GEN_PARENT_ENTITY = GEN_COLLECTION_ATTRIBUTE__GEN_PARENT_ENTITY;
 
 	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_COLLECTION_DATE__XML_TRANSIENT = GEN_COLLECTION_ATTRIBUTE__XML_TRANSIENT;
-
-	/**
 	 * The feature id for the '<em><b>Table Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -985,14 +877,14 @@ public interface GenOrmPackage extends EPackage {
 	int GEN_COLLECTION_DATE_FEATURE_COUNT = GEN_COLLECTION_ATTRIBUTE_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonFileImpl <em>Gen Singleton File</em>}' class.
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonResourceImpl <em>Gen Singleton Resource</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenSingletonFileImpl
-	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonFile()
+	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenSingletonResourceImpl
+	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonResource()
 	 * @generated
 	 */
-	int GEN_SINGLETON_FILE = 13;
+	int GEN_SINGLETON_RESOURCE = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1001,7 +893,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SINGLETON_FILE__NAME = GEN_SINGLETON_ATTRIBUTE__NAME;
+	int GEN_SINGLETON_RESOURCE__NAME = GEN_SINGLETON_ATTRIBUTE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Gen Parent Entity</b></em>' container reference.
@@ -1010,16 +902,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SINGLETON_FILE__GEN_PARENT_ENTITY = GEN_SINGLETON_ATTRIBUTE__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_SINGLETON_FILE__XML_TRANSIENT = GEN_SINGLETON_ATTRIBUTE__XML_TRANSIENT;
+	int GEN_SINGLETON_RESOURCE__GEN_PARENT_ENTITY = GEN_SINGLETON_ATTRIBUTE__GEN_PARENT_ENTITY;
 
 	/**
 	 * The feature id for the '<em><b>Gen Default Value</b></em>' containment reference.
@@ -1028,7 +911,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SINGLETON_FILE__GEN_DEFAULT_VALUE = GEN_SINGLETON_ATTRIBUTE__GEN_DEFAULT_VALUE;
+	int GEN_SINGLETON_RESOURCE__GEN_DEFAULT_VALUE = GEN_SINGLETON_ATTRIBUTE__GEN_DEFAULT_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Column Name</b></em>' attribute.
@@ -1037,7 +920,62 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SINGLETON_FILE__COLUMN_NAME = GEN_SINGLETON_ATTRIBUTE__COLUMN_NAME;
+	int GEN_SINGLETON_RESOURCE__COLUMN_NAME = GEN_SINGLETON_ATTRIBUTE__COLUMN_NAME;
+
+	/**
+	 * The number of structural features of the '<em>Gen Singleton Resource</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_RESOURCE_FEATURE_COUNT = GEN_SINGLETON_ATTRIBUTE_FEATURE_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonFileImpl <em>Gen Singleton File</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenSingletonFileImpl
+	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonFile()
+	 * @generated
+	 */
+	int GEN_SINGLETON_FILE = 14;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_FILE__NAME = GEN_SINGLETON_RESOURCE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Gen Parent Entity</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_FILE__GEN_PARENT_ENTITY = GEN_SINGLETON_RESOURCE__GEN_PARENT_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Gen Default Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_FILE__GEN_DEFAULT_VALUE = GEN_SINGLETON_RESOURCE__GEN_DEFAULT_VALUE;
+
+	/**
+	 * The feature id for the '<em><b>Column Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_FILE__COLUMN_NAME = GEN_SINGLETON_RESOURCE__COLUMN_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Orm Feature</b></em>' reference.
@@ -1046,7 +984,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SINGLETON_FILE__ORM_FEATURE = GEN_SINGLETON_ATTRIBUTE_FEATURE_COUNT + 0;
+	int GEN_SINGLETON_FILE__ORM_FEATURE = GEN_SINGLETON_RESOURCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Gen Singleton File</em>' class.
@@ -1055,7 +993,71 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SINGLETON_FILE_FEATURE_COUNT = GEN_SINGLETON_ATTRIBUTE_FEATURE_COUNT + 1;
+	int GEN_SINGLETON_FILE_FEATURE_COUNT = GEN_SINGLETON_RESOURCE_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonImageImpl <em>Gen Singleton Image</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenSingletonImageImpl
+	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonImage()
+	 * @generated
+	 */
+	int GEN_SINGLETON_IMAGE = 15;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_IMAGE__NAME = GEN_SINGLETON_RESOURCE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Gen Parent Entity</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_IMAGE__GEN_PARENT_ENTITY = GEN_SINGLETON_RESOURCE__GEN_PARENT_ENTITY;
+
+	/**
+	 * The feature id for the '<em><b>Gen Default Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_IMAGE__GEN_DEFAULT_VALUE = GEN_SINGLETON_RESOURCE__GEN_DEFAULT_VALUE;
+
+	/**
+	 * The feature id for the '<em><b>Column Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_IMAGE__COLUMN_NAME = GEN_SINGLETON_RESOURCE__COLUMN_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Orm Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_IMAGE__ORM_FEATURE = GEN_SINGLETON_RESOURCE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Gen Singleton Image</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SINGLETON_IMAGE_FEATURE_COUNT = GEN_SINGLETON_RESOURCE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonLocationImpl <em>Gen Singleton Location</em>}' class.
@@ -1065,7 +1067,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonLocation()
 	 * @generated
 	 */
-	int GEN_SINGLETON_LOCATION = 14;
+	int GEN_SINGLETON_LOCATION = 16;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1084,15 +1086,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_SINGLETON_LOCATION__GEN_PARENT_ENTITY = GEN_SINGLETON_ATTRIBUTE__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_SINGLETON_LOCATION__XML_TRANSIENT = GEN_SINGLETON_ATTRIBUTE__XML_TRANSIENT;
 
 	/**
 	 * The feature id for the '<em><b>Gen Default Value</b></em>' containment reference.
@@ -1138,7 +1131,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenAssociation()
 	 * @generated
 	 */
-	int GEN_ASSOCIATION = 15;
+	int GEN_ASSOCIATION = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1157,15 +1150,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_ASSOCIATION__GEN_PARENT_ENTITY = GEN_FEATURE__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_ASSOCIATION__XML_TRANSIENT = GEN_FEATURE__XML_TRANSIENT;
 
 	/**
 	 * The feature id for the '<em><b>Gen Opposite</b></em>' reference.
@@ -1202,7 +1186,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonAssociation()
 	 * @generated
 	 */
-	int GEN_SINGLETON_ASSOCIATION = 16;
+	int GEN_SINGLETON_ASSOCIATION = 18;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1221,15 +1205,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_SINGLETON_ASSOCIATION__GEN_PARENT_ENTITY = GEN_ASSOCIATION__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_SINGLETON_ASSOCIATION__XML_TRANSIENT = GEN_ASSOCIATION__XML_TRANSIENT;
 
 	/**
 	 * The feature id for the '<em><b>Gen Opposite</b></em>' reference.
@@ -1284,7 +1259,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenCollectionAssociation()
 	 * @generated
 	 */
-	int GEN_COLLECTION_ASSOCIATION = 17;
+	int GEN_COLLECTION_ASSOCIATION = 19;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1303,15 +1278,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @ordered
 	 */
 	int GEN_COLLECTION_ASSOCIATION__GEN_PARENT_ENTITY = GEN_ASSOCIATION__GEN_PARENT_ENTITY;
-
-	/**
-	 * The feature id for the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_COLLECTION_ASSOCIATION__XML_TRANSIENT = GEN_ASSOCIATION__XML_TRANSIENT;
 
 	/**
 	 * The feature id for the '<em><b>Gen Opposite</b></em>' reference.
@@ -1375,7 +1341,7 @@ public interface GenOrmPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getOrmTechnologies()
 	 * @generated
 	 */
-	int ORM_TECHNOLOGIES = 18;
+	int ORM_TECHNOLOGIES = 20;
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genorm.GenOrmModel <em>Model</em>}'.
@@ -1714,50 +1680,6 @@ public interface GenOrmPackage extends EPackage {
 	EReference getGenEntity_GenFeatures();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlTransient <em>Xml Transient</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Xml Transient</em>'.
-	 * @see uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlTransient()
-	 * @see #getGenEntity()
-	 * @generated
-	 */
-	EAttribute getGenEntity_XmlTransient();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlRootElement <em>Xml Root Element</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Xml Root Element</em>'.
-	 * @see uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlRootElement()
-	 * @see #getGenEntity()
-	 * @generated
-	 */
-	EAttribute getGenEntity_XmlRootElement();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlNamespace <em>Xml Namespace</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Xml Namespace</em>'.
-	 * @see uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlNamespace()
-	 * @see #getGenEntity()
-	 * @generated
-	 */
-	EAttribute getGenEntity_XmlNamespace();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlName <em>Xml Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Xml Name</em>'.
-	 * @see uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlName()
-	 * @see #getGenEntity()
-	 * @generated
-	 */
-	EAttribute getGenEntity_XmlName();
-
-	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genorm.GenFeature <em>Gen Feature</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1777,17 +1699,6 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getGenFeature_GenParentEntity();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genorm.GenFeature#getXmlTransient <em>Xml Transient</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Xml Transient</em>'.
-	 * @see uk.ac.man.cs.mdsd.genorm.GenFeature#getXmlTransient()
-	 * @see #getGenFeature()
-	 * @generated
-	 */
-	EAttribute getGenFeature_XmlTransient();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genorm.GenAttribute <em>Gen Attribute</em>}'.
@@ -1959,6 +1870,16 @@ public interface GenOrmPackage extends EPackage {
 	EReference getGenCollectionDate_OrmFeature();
 
 	/**
+	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonResource <em>Gen Singleton Resource</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Gen Singleton Resource</em>'.
+	 * @see uk.ac.man.cs.mdsd.genorm.GenSingletonResource
+	 * @generated
+	 */
+	EClass getGenSingletonResource();
+
+	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonFile <em>Gen Singleton File</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1978,6 +1899,27 @@ public interface GenOrmPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getGenSingletonFile_OrmFeature();
+
+	/**
+	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonImage <em>Gen Singleton Image</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Gen Singleton Image</em>'.
+	 * @see uk.ac.man.cs.mdsd.genorm.GenSingletonImage
+	 * @generated
+	 */
+	EClass getGenSingletonImage();
+
+	/**
+	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonImage#getOrmFeature <em>Orm Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Orm Feature</em>'.
+	 * @see uk.ac.man.cs.mdsd.genorm.GenSingletonImage#getOrmFeature()
+	 * @see #getGenSingletonImage()
+	 * @generated
+	 */
+	EReference getGenSingletonImage_OrmFeature();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonLocation <em>Gen Singleton Location</em>}'.
@@ -2398,38 +2340,6 @@ public interface GenOrmPackage extends EPackage {
 		EReference GEN_ENTITY__GEN_FEATURES = eINSTANCE.getGenEntity_GenFeatures();
 
 		/**
-		 * The meta object literal for the '<em><b>Xml Transient</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute GEN_ENTITY__XML_TRANSIENT = eINSTANCE.getGenEntity_XmlTransient();
-
-		/**
-		 * The meta object literal for the '<em><b>Xml Root Element</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute GEN_ENTITY__XML_ROOT_ELEMENT = eINSTANCE.getGenEntity_XmlRootElement();
-
-		/**
-		 * The meta object literal for the '<em><b>Xml Namespace</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute GEN_ENTITY__XML_NAMESPACE = eINSTANCE.getGenEntity_XmlNamespace();
-
-		/**
-		 * The meta object literal for the '<em><b>Xml Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute GEN_ENTITY__XML_NAME = eINSTANCE.getGenEntity_XmlName();
-
-		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenFeatureImpl <em>Gen Feature</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2446,14 +2356,6 @@ public interface GenOrmPackage extends EPackage {
 		 * @generated
 		 */
 		EReference GEN_FEATURE__GEN_PARENT_ENTITY = eINSTANCE.getGenFeature_GenParentEntity();
-
-		/**
-		 * The meta object literal for the '<em><b>Xml Transient</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute GEN_FEATURE__XML_TRANSIENT = eINSTANCE.getGenFeature_XmlTransient();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenAttributeImpl <em>Gen Attribute</em>}' class.
@@ -2598,6 +2500,16 @@ public interface GenOrmPackage extends EPackage {
 		EReference GEN_COLLECTION_DATE__ORM_FEATURE = eINSTANCE.getGenCollectionDate_OrmFeature();
 
 		/**
+		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonResourceImpl <em>Gen Singleton Resource</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.ac.man.cs.mdsd.genorm.impl.GenSingletonResourceImpl
+		 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonResource()
+		 * @generated
+		 */
+		EClass GEN_SINGLETON_RESOURCE = eINSTANCE.getGenSingletonResource();
+
+		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonFileImpl <em>Gen Singleton File</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2614,6 +2526,24 @@ public interface GenOrmPackage extends EPackage {
 		 * @generated
 		 */
 		EReference GEN_SINGLETON_FILE__ORM_FEATURE = eINSTANCE.getGenSingletonFile_OrmFeature();
+
+		/**
+		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonImageImpl <em>Gen Singleton Image</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.ac.man.cs.mdsd.genorm.impl.GenSingletonImageImpl
+		 * @see uk.ac.man.cs.mdsd.genorm.impl.GenOrmPackageImpl#getGenSingletonImage()
+		 * @generated
+		 */
+		EClass GEN_SINGLETON_IMAGE = eINSTANCE.getGenSingletonImage();
+
+		/**
+		 * The meta object literal for the '<em><b>Orm Feature</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GEN_SINGLETON_IMAGE__ORM_FEATURE = eINSTANCE.getGenSingletonImage_OrmFeature();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genorm.impl.GenSingletonLocationImpl <em>Gen Singleton Location</em>}' class.

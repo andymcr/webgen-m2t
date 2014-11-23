@@ -76,20 +76,10 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="genFeatures" upperBound="-1"
         eType="#//GenFeature" containment="true" eOpposite="#//GenFeature/genParentEntity"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlTransient" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlRootElement" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNamespace" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlName" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenFeature" abstract="true" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="genParentEntity" ordered="false"
         lowerBound="1" eType="#//GenEntity" eOpposite="#//GenEntity/genFeatures"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlTransient" ordered="false"
-        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenAttribute" abstract="true" eSuperTypes="#//GenFeature"/>
   <eClassifiers xsi:type="ecore:EClass" name="GenSingletonAttribute" abstract="true"
@@ -125,9 +115,15 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//CollectionDate"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonFile" eSuperTypes="#//GenSingletonAttribute">
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonResource" abstract="true"
+      eSuperTypes="#//GenSingletonAttribute"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonFile" eSuperTypes="#//GenSingletonResource">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//SingletonFile"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSingletonImage" eSuperTypes="#//GenSingletonResource">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"
+        lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//SingletonImage"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenSingletonLocation" eSuperTypes="#//GenSingletonAttribute">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ormFeature" ordered="false"

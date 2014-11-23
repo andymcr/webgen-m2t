@@ -24,10 +24,6 @@ import uk.ac.man.cs.mdsd.orm.Entity;
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getTableName <em>Table Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getKeyName <em>Key Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getGenFeatures <em>Gen Features</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlTransient <em>Xml Transient</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlRootElement <em>Xml Root Element</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlNamespace <em>Xml Namespace</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlName <em>Xml Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -185,110 +181,6 @@ public interface GenEntity extends GenClassifier {
 	 * @generated
 	 */
 	EList<GenFeature> getGenFeatures();
-
-	/**
-	 * Returns the value of the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Transient</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Transient</em>' attribute.
-	 * @see #setXmlTransient(Boolean)
-	 * @see uk.ac.man.cs.mdsd.genorm.GenOrmPackage#getGenEntity_XmlTransient()
-	 * @model required="true"
-	 * @generated
-	 */
-	Boolean getXmlTransient();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlTransient <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Transient</em>' attribute.
-	 * @see #getXmlTransient()
-	 * @generated
-	 */
-	void setXmlTransient(Boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Xml Root Element</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Root Element</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Root Element</em>' attribute.
-	 * @see #setXmlRootElement(Boolean)
-	 * @see uk.ac.man.cs.mdsd.genorm.GenOrmPackage#getGenEntity_XmlRootElement()
-	 * @model required="true"
-	 * @generated
-	 */
-	Boolean getXmlRootElement();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlRootElement <em>Xml Root Element</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Root Element</em>' attribute.
-	 * @see #getXmlRootElement()
-	 * @generated
-	 */
-	void setXmlRootElement(Boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Xml Namespace</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Namespace</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Namespace</em>' attribute.
-	 * @see #setXmlNamespace(String)
-	 * @see uk.ac.man.cs.mdsd.genorm.GenOrmPackage#getGenEntity_XmlNamespace()
-	 * @model required="true"
-	 * @generated
-	 */
-	String getXmlNamespace();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlNamespace <em>Xml Namespace</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Namespace</em>' attribute.
-	 * @see #getXmlNamespace()
-	 * @generated
-	 */
-	void setXmlNamespace(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Xml Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Name</em>' attribute.
-	 * @see #setXmlName(String)
-	 * @see uk.ac.man.cs.mdsd.genorm.GenOrmPackage#getGenEntity_XmlName()
-	 * @model required="true"
-	 * @generated
-	 */
-	String getXmlName();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genorm.GenEntity#getXmlName <em>Xml Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Name</em>' attribute.
-	 * @see #getXmlName()
-	 * @generated
-	 */
-	void setXmlName(String value);
 
 	void reconcile(final GenEntity oldGenEntity);
 } // GenEntity

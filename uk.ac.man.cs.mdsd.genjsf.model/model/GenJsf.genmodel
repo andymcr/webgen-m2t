@@ -124,6 +124,7 @@
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceEntityElement/jsfFeature"/>
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceEntityElement/genFeature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenServiceEntityElement/columnName"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceAssociation"/>
     <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceEntityAssociation">
@@ -133,7 +134,7 @@
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceEntityAssociation/genFeature"/>
     </genClasses>
     <genClasses ecoreClass="GenJsf.ecore#//GenServiceViewAssociation">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceViewAssociation/jsfTargetFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceViewAssociation/jsfFeature"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceViewAssociation/genTargetFeature"/>
     </genClasses>
     <genClasses ecoreClass="GenJsf.ecore#//GenPage">

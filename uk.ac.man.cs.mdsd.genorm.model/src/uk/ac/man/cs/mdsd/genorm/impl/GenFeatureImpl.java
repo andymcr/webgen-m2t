@@ -26,32 +26,12 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenFeatureImpl#getGenParentEntity <em>Gen Parent Entity</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenFeatureImpl#getXmlTransient <em>Xml Transient</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public abstract class GenFeatureImpl extends NamedElementImpl implements GenFeature {
-	/**
-	 * The default value of the '{@link #getXmlTransient() <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlTransient()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean XML_TRANSIENT_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getXmlTransient() <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlTransient()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean xmlTransient = XML_TRANSIENT_EDEFAULT;
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -112,33 +92,11 @@ public abstract class GenFeatureImpl extends NamedElementImpl implements GenFeat
 			eNotify(new ENotificationImpl(this, Notification.SET, GenOrmPackage.GEN_FEATURE__GEN_PARENT_ENTITY, newGenParentEntity, newGenParentEntity));
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Boolean getXmlTransient() {
-		return xmlTransient;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setXmlTransient(Boolean newXmlTransient) {
-		Boolean oldXmlTransient = xmlTransient;
-		xmlTransient = newXmlTransient;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GenOrmPackage.GEN_FEATURE__XML_TRANSIENT, oldXmlTransient, xmlTransient));
-	}
-
 	public void reconcile(final GenFeature oldGenFeature) {
 		reconcileSettings(oldGenFeature);
 	}
 
 	protected void reconcileSettings(final GenFeature oldGenFeature) {
-		setXmlTransient(oldGenFeature.getXmlTransient());
 	}
 
 	/**
@@ -195,8 +153,6 @@ public abstract class GenFeatureImpl extends NamedElementImpl implements GenFeat
 		switch (featureID) {
 			case GenOrmPackage.GEN_FEATURE__GEN_PARENT_ENTITY:
 				return getGenParentEntity();
-			case GenOrmPackage.GEN_FEATURE__XML_TRANSIENT:
-				return getXmlTransient();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -211,9 +167,6 @@ public abstract class GenFeatureImpl extends NamedElementImpl implements GenFeat
 		switch (featureID) {
 			case GenOrmPackage.GEN_FEATURE__GEN_PARENT_ENTITY:
 				setGenParentEntity((GenEntity)newValue);
-				return;
-			case GenOrmPackage.GEN_FEATURE__XML_TRANSIENT:
-				setXmlTransient((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -230,9 +183,6 @@ public abstract class GenFeatureImpl extends NamedElementImpl implements GenFeat
 			case GenOrmPackage.GEN_FEATURE__GEN_PARENT_ENTITY:
 				setGenParentEntity((GenEntity)null);
 				return;
-			case GenOrmPackage.GEN_FEATURE__XML_TRANSIENT:
-				setXmlTransient(XML_TRANSIENT_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -247,26 +197,8 @@ public abstract class GenFeatureImpl extends NamedElementImpl implements GenFeat
 		switch (featureID) {
 			case GenOrmPackage.GEN_FEATURE__GEN_PARENT_ENTITY:
 				return getGenParentEntity() != null;
-			case GenOrmPackage.GEN_FEATURE__XML_TRANSIENT:
-				return XML_TRANSIENT_EDEFAULT == null ? xmlTransient != null : !XML_TRANSIENT_EDEFAULT.equals(xmlTransient);
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (xmlTransient: ");
-		result.append(xmlTransient);
-		result.append(')');
-		return result.toString();
 	}
 
 } //GenFeatureImpl

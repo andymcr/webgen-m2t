@@ -35,7 +35,9 @@ import uk.ac.man.cs.mdsd.genorm.GenSingletonAttribute;
 import uk.ac.man.cs.mdsd.genorm.GenSingletonDate;
 import uk.ac.man.cs.mdsd.genorm.GenSingletonElement;
 import uk.ac.man.cs.mdsd.genorm.GenSingletonFile;
+import uk.ac.man.cs.mdsd.genorm.GenSingletonImage;
 import uk.ac.man.cs.mdsd.genorm.GenSingletonLocation;
+import uk.ac.man.cs.mdsd.genorm.GenSingletonResource;
 import uk.ac.man.cs.mdsd.genorm.OrmTechnologies;
 import uk.ac.man.cs.mdsd.orm.OrmPackage;
 
@@ -142,7 +144,21 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass genSingletonResourceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass genSingletonFileEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genSingletonImageEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -528,42 +544,6 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenEntity_XmlTransient() {
-		return (EAttribute)genEntityEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getGenEntity_XmlRootElement() {
-		return (EAttribute)genEntityEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getGenEntity_XmlNamespace() {
-		return (EAttribute)genEntityEClass.getEStructuralFeatures().get(8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getGenEntity_XmlName() {
-		return (EAttribute)genEntityEClass.getEStructuralFeatures().get(9);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getGenFeature() {
 		return genFeatureEClass;
 	}
@@ -575,15 +555,6 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 	 */
 	public EReference getGenFeature_GenParentEntity() {
 		return (EReference)genFeatureEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getGenFeature_XmlTransient() {
-		return (EAttribute)genFeatureEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -735,6 +706,15 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getGenSingletonResource() {
+		return genSingletonResourceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getGenSingletonFile() {
 		return genSingletonFileEClass;
 	}
@@ -746,6 +726,24 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 	 */
 	public EReference getGenSingletonFile_OrmFeature() {
 		return (EReference)genSingletonFileEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenSingletonImage() {
+		return genSingletonImageEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSingletonImage_OrmFeature() {
+		return (EReference)genSingletonImageEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -928,14 +926,9 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 		createEAttribute(genEntityEClass, GEN_ENTITY__TABLE_NAME);
 		createEAttribute(genEntityEClass, GEN_ENTITY__KEY_NAME);
 		createEReference(genEntityEClass, GEN_ENTITY__GEN_FEATURES);
-		createEAttribute(genEntityEClass, GEN_ENTITY__XML_TRANSIENT);
-		createEAttribute(genEntityEClass, GEN_ENTITY__XML_ROOT_ELEMENT);
-		createEAttribute(genEntityEClass, GEN_ENTITY__XML_NAMESPACE);
-		createEAttribute(genEntityEClass, GEN_ENTITY__XML_NAME);
 
 		genFeatureEClass = createEClass(GEN_FEATURE);
 		createEReference(genFeatureEClass, GEN_FEATURE__GEN_PARENT_ENTITY);
-		createEAttribute(genFeatureEClass, GEN_FEATURE__XML_TRANSIENT);
 
 		genAttributeEClass = createEClass(GEN_ATTRIBUTE);
 
@@ -960,8 +953,13 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 		genCollectionDateEClass = createEClass(GEN_COLLECTION_DATE);
 		createEReference(genCollectionDateEClass, GEN_COLLECTION_DATE__ORM_FEATURE);
 
+		genSingletonResourceEClass = createEClass(GEN_SINGLETON_RESOURCE);
+
 		genSingletonFileEClass = createEClass(GEN_SINGLETON_FILE);
 		createEReference(genSingletonFileEClass, GEN_SINGLETON_FILE__ORM_FEATURE);
+
+		genSingletonImageEClass = createEClass(GEN_SINGLETON_IMAGE);
+		createEReference(genSingletonImageEClass, GEN_SINGLETON_IMAGE__ORM_FEATURE);
 
 		genSingletonLocationEClass = createEClass(GEN_SINGLETON_LOCATION);
 		createEReference(genSingletonLocationEClass, GEN_SINGLETON_LOCATION__ORM_FEATURE);
@@ -1027,7 +1025,9 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 		genCollectionElementEClass.getESuperTypes().add(this.getGenCollectionAttribute());
 		genSingletonDateEClass.getESuperTypes().add(this.getGenSingletonAttribute());
 		genCollectionDateEClass.getESuperTypes().add(this.getGenCollectionAttribute());
-		genSingletonFileEClass.getESuperTypes().add(this.getGenSingletonAttribute());
+		genSingletonResourceEClass.getESuperTypes().add(this.getGenSingletonAttribute());
+		genSingletonFileEClass.getESuperTypes().add(this.getGenSingletonResource());
+		genSingletonImageEClass.getESuperTypes().add(this.getGenSingletonResource());
 		genSingletonLocationEClass.getESuperTypes().add(this.getGenSingletonAttribute());
 		genAssociationEClass.getESuperTypes().add(this.getGenFeature());
 		genSingletonAssociationEClass.getESuperTypes().add(this.getGenAssociation());
@@ -1069,14 +1069,9 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 		initEAttribute(getGenEntity_TableName(), ecorePackage.getEString(), "tableName", null, 1, 1, GenEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getGenEntity_KeyName(), ecorePackage.getEString(), "keyName", null, 1, 1, GenEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenEntity_GenFeatures(), this.getGenFeature(), this.getGenFeature_GenParentEntity(), "genFeatures", null, 0, -1, GenEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getGenEntity_XmlTransient(), ecorePackage.getEBooleanObject(), "xmlTransient", null, 1, 1, GenEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getGenEntity_XmlRootElement(), ecorePackage.getEBooleanObject(), "xmlRootElement", null, 1, 1, GenEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getGenEntity_XmlNamespace(), ecorePackage.getEString(), "xmlNamespace", null, 1, 1, GenEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getGenEntity_XmlName(), ecorePackage.getEString(), "xmlName", null, 1, 1, GenEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(genFeatureEClass, GenFeature.class, "GenFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenFeature_GenParentEntity(), this.getGenEntity(), this.getGenEntity_GenFeatures(), "genParentEntity", null, 1, 1, GenFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getGenFeature_XmlTransient(), ecorePackage.getEBooleanObject(), "xmlTransient", null, 1, 1, GenFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(genAttributeEClass, GenAttribute.class, "GenAttribute", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1101,8 +1096,13 @@ public class GenOrmPackageImpl extends EPackageImpl implements GenOrmPackage {
 		initEClass(genCollectionDateEClass, GenCollectionDate.class, "GenCollectionDate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenCollectionDate_OrmFeature(), theOrmPackage.getCollectionDate(), null, "ormFeature", null, 1, 1, GenCollectionDate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
+		initEClass(genSingletonResourceEClass, GenSingletonResource.class, "GenSingletonResource", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(genSingletonFileEClass, GenSingletonFile.class, "GenSingletonFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenSingletonFile_OrmFeature(), theOrmPackage.getSingletonFile(), null, "ormFeature", null, 1, 1, GenSingletonFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(genSingletonImageEClass, GenSingletonImage.class, "GenSingletonImage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenSingletonImage_OrmFeature(), theOrmPackage.getSingletonImage(), null, "ormFeature", null, 1, 1, GenSingletonImage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(genSingletonLocationEClass, GenSingletonLocation.class, "GenSingletonLocation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenSingletonLocation_OrmFeature(), theOrmPackage.getSingletonLocation(), null, "ormFeature", null, 1, 1, GenSingletonLocation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

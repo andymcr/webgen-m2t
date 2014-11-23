@@ -1083,13 +1083,22 @@ public interface GenJsfPackage extends EPackage {
 	int GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE = GEN_SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Column Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME = GEN_SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Gen Service Entity Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SERVICE_ENTITY_ELEMENT_FEATURE_COUNT = GEN_SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 3;
+	int GEN_SERVICE_ENTITY_ELEMENT_FEATURE_COUNT = GEN_SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1200,13 +1209,13 @@ public interface GenJsfPackage extends EPackage {
 	int GEN_SERVICE_VIEW_ASSOCIATION__GEN_INCLUDED_BY = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Jsf Target Feature</b></em>' reference.
+	 * The feature id for the '<em><b>Jsf Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+	int GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Gen Target Feature</b></em>' reference.
@@ -5725,6 +5734,17 @@ public interface GenJsfPackage extends EPackage {
 	EReference getGenServiceEntityElement_GenFeature();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceEntityElement#getColumnName <em>Column Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Column Name</em>'.
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenServiceEntityElement#getColumnName()
+	 * @see #getGenServiceEntityElement()
+	 * @generated
+	 */
+	EAttribute getGenServiceEntityElement_ColumnName();
+
+	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceAssociation <em>Gen Service Association</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5777,15 +5797,15 @@ public interface GenJsfPackage extends EPackage {
 	EClass getGenServiceViewAssociation();
 
 	/**
-	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfTargetFeature <em>Jsf Target Feature</em>}'.
+	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfFeature <em>Jsf Feature</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Jsf Target Feature</em>'.
-	 * @see uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfTargetFeature()
+	 * @return the meta object for the reference '<em>Jsf Feature</em>'.
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfFeature()
 	 * @see #getGenServiceViewAssociation()
 	 * @generated
 	 */
-	EReference getGenServiceViewAssociation_JsfTargetFeature();
+	EReference getGenServiceViewAssociation_JsfFeature();
 
 	/**
 	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getGenTargetFeature <em>Gen Target Feature</em>}'.
@@ -8046,6 +8066,14 @@ public interface GenJsfPackage extends EPackage {
 		EReference GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE = eINSTANCE.getGenServiceEntityElement_GenFeature();
 
 		/**
+		 * The meta object literal for the '<em><b>Column Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME = eINSTANCE.getGenServiceEntityElement_ColumnName();
+
+		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceAssociation <em>Gen Service Association</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8092,12 +8120,12 @@ public interface GenJsfPackage extends EPackage {
 		EClass GEN_SERVICE_VIEW_ASSOCIATION = eINSTANCE.getGenServiceViewAssociation();
 
 		/**
-		 * The meta object literal for the '<em><b>Jsf Target Feature</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Jsf Feature</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE = eINSTANCE.getGenServiceViewAssociation_JsfTargetFeature();
+		EReference GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE = eINSTANCE.getGenServiceViewAssociation_JsfFeature();
 
 		/**
 		 * The meta object literal for the '<em><b>Gen Target Feature</b></em>' reference feature.

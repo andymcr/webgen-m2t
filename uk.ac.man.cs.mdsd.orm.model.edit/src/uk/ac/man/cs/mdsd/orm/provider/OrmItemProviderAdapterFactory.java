@@ -329,6 +329,29 @@ public class OrmItemProviderAdapterFactory extends OrmAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.orm.SingletonImage} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SingletonImageItemProvider singletonImageItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.ac.man.cs.mdsd.orm.SingletonImage}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createSingletonImageAdapter() {
+		if (singletonImageItemProvider == null) {
+			singletonImageItemProvider = new SingletonImageItemProvider(this);
+		}
+
+		return singletonImageItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.orm.SingletonLocation} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -507,6 +530,7 @@ public class OrmItemProviderAdapterFactory extends OrmAdapterFactory implements 
 		if (singletonDateItemProvider != null) singletonDateItemProvider.dispose();
 		if (collectionDateItemProvider != null) collectionDateItemProvider.dispose();
 		if (singletonFileItemProvider != null) singletonFileItemProvider.dispose();
+		if (singletonImageItemProvider != null) singletonImageItemProvider.dispose();
 		if (singletonLocationItemProvider != null) singletonLocationItemProvider.dispose();
 		if (singletonAssociationItemProvider != null) singletonAssociationItemProvider.dispose();
 		if (collectionAssociationItemProvider != null) collectionAssociationItemProvider.dispose();

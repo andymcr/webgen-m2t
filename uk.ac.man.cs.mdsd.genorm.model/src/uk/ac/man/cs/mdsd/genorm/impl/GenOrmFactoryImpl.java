@@ -70,6 +70,7 @@ public class GenOrmFactoryImpl extends EFactoryImpl implements GenOrmFactory {
 			case GenOrmPackage.GEN_SINGLETON_DATE: return createGenSingletonDate();
 			case GenOrmPackage.GEN_COLLECTION_DATE: return createGenCollectionDate();
 			case GenOrmPackage.GEN_SINGLETON_FILE: return createGenSingletonFile();
+			case GenOrmPackage.GEN_SINGLETON_IMAGE: return createGenSingletonImage();
 			case GenOrmPackage.GEN_SINGLETON_LOCATION: return createGenSingletonLocation();
 			case GenOrmPackage.GEN_SINGLETON_ASSOCIATION: return createGenSingletonAssociation();
 			case GenOrmPackage.GEN_COLLECTION_ASSOCIATION: return createGenCollectionAssociation();
@@ -196,6 +197,16 @@ public class GenOrmFactoryImpl extends EFactoryImpl implements GenOrmFactory {
 	public GenSingletonFile createGenSingletonFile() {
 		GenSingletonFileImpl genSingletonFile = new GenSingletonFileImpl();
 		return genSingletonFile;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GenSingletonImage createGenSingletonImage() {
+		GenSingletonImageImpl genSingletonImage = new GenSingletonImageImpl();
+		return genSingletonImage;
 	}
 
 	/**

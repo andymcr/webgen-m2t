@@ -190,6 +190,10 @@ public class WebsiteVisualIDRegistry {
 					domainElement.eClass())) {
 				return FileAttributeEditPart.VISUAL_ID;
 			}
+			if (WebsitePackage.eINSTANCE.getImageAttribute().isSuperTypeOf(
+					domainElement.eClass())) {
+				return ImageAttributeEditPart.VISUAL_ID;
+			}
 			if (WebsitePackage.eINSTANCE.getLocationAttribute().isSuperTypeOf(
 					domainElement.eClass())) {
 				return LocationAttributeEditPart.VISUAL_ID;
@@ -815,6 +819,11 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case FileAttributeEditPart.VISUAL_ID:
 			if (FileAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ImageAttributeEditPart.VISUAL_ID:
+			if (ImageAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1452,6 +1461,9 @@ public class WebsiteVisualIDRegistry {
 			if (FileAttributeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (ImageAttributeEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (LocationAttributeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -2055,6 +2067,7 @@ public class WebsiteVisualIDRegistry {
 		case UnitSupportActionEditPart.VISUAL_ID:
 		case UnitSupportAction2EditPart.VISUAL_ID:
 		case FeatureSupportActionEditPart.VISUAL_ID:
+		case ImageAttributeEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

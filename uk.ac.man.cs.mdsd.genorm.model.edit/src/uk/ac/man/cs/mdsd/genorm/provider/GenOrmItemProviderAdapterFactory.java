@@ -283,6 +283,29 @@ public class GenOrmItemProviderAdapterFactory extends GenOrmAdapterFactory imple
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.genorm.GenSingletonImage} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GenSingletonImageItemProvider genSingletonImageItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.ac.man.cs.mdsd.genorm.GenSingletonImage}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGenSingletonImageAdapter() {
+		if (genSingletonImageItemProvider == null) {
+			genSingletonImageItemProvider = new GenSingletonImageItemProvider(this);
+		}
+
+		return genSingletonImageItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.genorm.GenSingletonLocation} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -459,6 +482,7 @@ public class GenOrmItemProviderAdapterFactory extends GenOrmAdapterFactory imple
 		if (genSingletonDateItemProvider != null) genSingletonDateItemProvider.dispose();
 		if (genCollectionDateItemProvider != null) genCollectionDateItemProvider.dispose();
 		if (genSingletonFileItemProvider != null) genSingletonFileItemProvider.dispose();
+		if (genSingletonImageItemProvider != null) genSingletonImageItemProvider.dispose();
 		if (genSingletonLocationItemProvider != null) genSingletonLocationItemProvider.dispose();
 		if (genSingletonAssociationItemProvider != null) genSingletonAssociationItemProvider.dispose();
 		if (genCollectionAssociationItemProvider != null) genCollectionAssociationItemProvider.dispose();

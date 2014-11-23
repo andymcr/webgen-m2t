@@ -19,6 +19,7 @@ import uk.ac.man.cs.mdsd.genjsf.GenServiceFeature;
 import uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation;
 
 import uk.ac.man.cs.mdsd.jsf.ServiceAssociation;
+import uk.ac.man.cs.mdsd.jsf.ServiceViewAssociation;
 import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
 
 /**
@@ -29,7 +30,7 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceViewAssociationImpl#getGenIncludedBy <em>Gen Included By</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceViewAssociationImpl#getJsfTargetFeature <em>Jsf Target Feature</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceViewAssociationImpl#getJsfFeature <em>Jsf Feature</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceViewAssociationImpl#getGenTargetFeature <em>Gen Target Feature</em>}</li>
  * </ul>
  * </p>
@@ -38,14 +39,14 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
  */
 public class GenServiceViewAssociationImpl extends NamedElementImpl implements GenServiceViewAssociation {
 	/**
-	 * The cached value of the '{@link #getJsfTargetFeature() <em>Jsf Target Feature</em>}' reference.
+	 * The cached value of the '{@link #getJsfFeature() <em>Jsf Feature</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getJsfTargetFeature()
+	 * @see #getJsfFeature()
 	 * @generated
 	 * @ordered
 	 */
-	protected ServiceAssociation jsfTargetFeature;
+	protected ServiceViewAssociation jsfFeature;
 	/**
 	 * The cached value of the '{@link #getGenTargetFeature() <em>Gen Target Feature</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -120,16 +121,16 @@ public class GenServiceViewAssociationImpl extends NamedElementImpl implements G
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ServiceAssociation getJsfTargetFeature() {
-		if (jsfTargetFeature != null && jsfTargetFeature.eIsProxy()) {
-			InternalEObject oldJsfTargetFeature = (InternalEObject)jsfTargetFeature;
-			jsfTargetFeature = (ServiceAssociation)eResolveProxy(oldJsfTargetFeature);
-			if (jsfTargetFeature != oldJsfTargetFeature) {
+	public ServiceViewAssociation getJsfFeature() {
+		if (jsfFeature != null && jsfFeature.eIsProxy()) {
+			InternalEObject oldJsfFeature = (InternalEObject)jsfFeature;
+			jsfFeature = (ServiceViewAssociation)eResolveProxy(oldJsfFeature);
+			if (jsfFeature != oldJsfFeature) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE, oldJsfTargetFeature, jsfTargetFeature));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE, oldJsfFeature, jsfFeature));
 			}
 		}
-		return jsfTargetFeature;
+		return jsfFeature;
 	}
 
 	/**
@@ -137,8 +138,8 @@ public class GenServiceViewAssociationImpl extends NamedElementImpl implements G
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ServiceAssociation basicGetJsfTargetFeature() {
-		return jsfTargetFeature;
+	public ServiceViewAssociation basicGetJsfFeature() {
+		return jsfFeature;
 	}
 
 	/**
@@ -146,11 +147,11 @@ public class GenServiceViewAssociationImpl extends NamedElementImpl implements G
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setJsfTargetFeature(ServiceAssociation newJsfTargetFeature) {
-		ServiceAssociation oldJsfTargetFeature = jsfTargetFeature;
-		jsfTargetFeature = newJsfTargetFeature;
+	public void setJsfFeature(ServiceViewAssociation newJsfFeature) {
+		ServiceViewAssociation oldJsfFeature = jsfFeature;
+		jsfFeature = newJsfFeature;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE, oldJsfTargetFeature, jsfTargetFeature));
+			eNotify(new ENotificationImpl(this, Notification.SET, GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE, oldJsfFeature, jsfFeature));
 	}
 
 	/**
@@ -258,9 +259,9 @@ public class GenServiceViewAssociationImpl extends NamedElementImpl implements G
 		switch (featureID) {
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_INCLUDED_BY:
 				return getGenIncludedBy();
-			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE:
-				if (resolve) return getJsfTargetFeature();
-				return basicGetJsfTargetFeature();
+			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE:
+				if (resolve) return getJsfFeature();
+				return basicGetJsfFeature();
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_TARGET_FEATURE:
 				if (resolve) return getGenTargetFeature();
 				return basicGetGenTargetFeature();
@@ -279,8 +280,8 @@ public class GenServiceViewAssociationImpl extends NamedElementImpl implements G
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_INCLUDED_BY:
 				setGenIncludedBy((GenService)newValue);
 				return;
-			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE:
-				setJsfTargetFeature((ServiceAssociation)newValue);
+			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE:
+				setJsfFeature((ServiceViewAssociation)newValue);
 				return;
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_TARGET_FEATURE:
 				setGenTargetFeature((GenServiceAssociation)newValue);
@@ -300,8 +301,8 @@ public class GenServiceViewAssociationImpl extends NamedElementImpl implements G
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_INCLUDED_BY:
 				setGenIncludedBy((GenService)null);
 				return;
-			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE:
-				setJsfTargetFeature((ServiceAssociation)null);
+			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE:
+				setJsfFeature((ServiceViewAssociation)null);
 				return;
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_TARGET_FEATURE:
 				setGenTargetFeature((GenServiceAssociation)null);
@@ -320,8 +321,8 @@ public class GenServiceViewAssociationImpl extends NamedElementImpl implements G
 		switch (featureID) {
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_INCLUDED_BY:
 				return getGenIncludedBy() != null;
-			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE:
-				return jsfTargetFeature != null;
+			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE:
+				return jsfFeature != null;
 			case GenJsfPackage.GEN_SERVICE_VIEW_ASSOCIATION__GEN_TARGET_FEATURE:
 				return genTargetFeature != null;
 		}

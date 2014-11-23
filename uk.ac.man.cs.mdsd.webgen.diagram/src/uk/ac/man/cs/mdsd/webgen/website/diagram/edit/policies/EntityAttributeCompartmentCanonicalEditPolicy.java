@@ -25,6 +25,7 @@ import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FileAttributeEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocationAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
@@ -88,6 +89,7 @@ public class EntityAttributeCompartmentCanonicalEditPolicy extends
 		case DataTypeAttributeEditPart.VISUAL_ID:
 		case DateAttributeEditPart.VISUAL_ID:
 		case FileAttributeEditPart.VISUAL_ID:
+		case ImageAttributeEditPart.VISUAL_ID:
 		case LocationAttributeEditPart.VISUAL_ID:
 			return true;
 		}

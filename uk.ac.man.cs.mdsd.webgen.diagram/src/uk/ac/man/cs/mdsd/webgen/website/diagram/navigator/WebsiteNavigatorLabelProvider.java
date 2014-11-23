@@ -432,6 +432,9 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider implements
 		case FeatureSupportActionEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?FeatureSupportAction", WebsiteElementTypes.FeatureSupportAction_3234); //$NON-NLS-1$
+		case ImageAttributeEditPart.VISUAL_ID:
+			return getImage(
+					"Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ImageAttribute", WebsiteElementTypes.ImageAttribute_3235); //$NON-NLS-1$
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getImage(
 					"Navigator?Link?http://www.cs.man.ac.uk/mdsd/2010/Website?AssociationWithoutContainment", WebsiteElementTypes.AssociationWithoutContainment_4001); //$NON-NLS-1$
@@ -725,6 +728,8 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider implements
 			return getUnitSupportAction_3233Text(view);
 		case FeatureSupportActionEditPart.VISUAL_ID:
 			return getFeatureSupportAction_3234Text(view);
+		case ImageAttributeEditPart.VISUAL_ID:
+			return getImageAttribute_3235Text(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001Text(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -3021,6 +3026,26 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider implements
 		} else {
 			WebsiteDiagramEditorPlugin.getInstance().logError(
 					"Parser was not found for label " + 5241); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * @generated
+	 */
+	private String getImageAttribute_3235Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(
+				WebsiteElementTypes.ImageAttribute_3235,
+				view.getElement() != null ? view.getElement() : view,
+				WebsiteVisualIDRegistry
+						.getType(ImageAttributeNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(
+					view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError(
+					"Parser was not found for label " + 5242); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}

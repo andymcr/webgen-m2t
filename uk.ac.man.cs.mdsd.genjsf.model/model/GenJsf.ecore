@@ -168,6 +168,7 @@
         eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ServiceEntityElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="genFeature" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenServiceAssociation" abstract="true"
       interface="true" eSuperTypes="#//GenServiceFeature"/>
@@ -178,8 +179,8 @@
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenAssociation"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenServiceViewAssociation" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement #//GenServiceAssociation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfTargetFeature" lowerBound="1"
-        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ServiceAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jsfFeature" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ServiceViewAssociation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="genTargetFeature" ordered="false"
         lowerBound="1" eType="#//GenServiceAssociation"/>
   </eClassifiers>

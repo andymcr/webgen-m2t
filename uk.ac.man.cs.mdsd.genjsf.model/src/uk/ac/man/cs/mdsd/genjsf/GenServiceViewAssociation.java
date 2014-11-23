@@ -3,6 +3,7 @@
 package uk.ac.man.cs.mdsd.genjsf;
 
 import uk.ac.man.cs.mdsd.jsf.ServiceAssociation;
+import uk.ac.man.cs.mdsd.jsf.ServiceViewAssociation;
 import uk.ac.man.cs.mdsd.orm.NamedElement;
 
 /**
@@ -13,7 +14,7 @@ import uk.ac.man.cs.mdsd.orm.NamedElement;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfTargetFeature <em>Jsf Target Feature</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfFeature <em>Jsf Feature</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getGenTargetFeature <em>Gen Target Feature</em>}</li>
  * </ul>
  * </p>
@@ -24,30 +25,30 @@ import uk.ac.man.cs.mdsd.orm.NamedElement;
  */
 public interface GenServiceViewAssociation extends NamedElement, GenServiceAssociation {
 	/**
-	 * Returns the value of the '<em><b>Jsf Target Feature</b></em>' reference.
+	 * Returns the value of the '<em><b>Jsf Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Jsf Target Feature</em>' reference isn't clear,
+	 * If the meaning of the '<em>Jsf Feature</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Jsf Target Feature</em>' reference.
-	 * @see #setJsfTargetFeature(ServiceAssociation)
-	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#getGenServiceViewAssociation_JsfTargetFeature()
+	 * @return the value of the '<em>Jsf Feature</em>' reference.
+	 * @see #setJsfFeature(ServiceViewAssociation)
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#getGenServiceViewAssociation_JsfFeature()
 	 * @model required="true"
 	 * @generated
 	 */
-	ServiceAssociation getJsfTargetFeature();
+	ServiceViewAssociation getJsfFeature();
 
 	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfTargetFeature <em>Jsf Target Feature</em>}' reference.
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation#getJsfFeature <em>Jsf Feature</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Jsf Target Feature</em>' reference.
-	 * @see #getJsfTargetFeature()
+	 * @param value the new value of the '<em>Jsf Feature</em>' reference.
+	 * @see #getJsfFeature()
 	 * @generated
 	 */
-	void setJsfTargetFeature(ServiceAssociation value);
+	void setJsfFeature(ServiceViewAssociation value);
 
 	/**
 	 * Returns the value of the '<em><b>Gen Target Feature</b></em>' reference.

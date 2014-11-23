@@ -348,6 +348,15 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 							.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
 					WebsiteVisualIDRegistry
+							.getType(ImageAttributeEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement,
+					false));
+			connectedViews = getChildrenByType(
+					Collections.singleton(sv),
+					WebsiteVisualIDRegistry
+							.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry
 							.getType(LocationAttributeEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement,
 					false));

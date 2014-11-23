@@ -6,6 +6,7 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DataTypeAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DateAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.FileAttributeCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ImageAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.LocationAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -34,6 +35,9 @@ public class EntityAttributeCompartmentItemSemanticEditPolicy extends
 		}
 		if (WebsiteElementTypes.FileAttribute_3152 == req.getElementType()) {
 			return getGEFWrapper(new FileAttributeCreateCommand(req));
+		}
+		if (WebsiteElementTypes.ImageAttribute_3235 == req.getElementType()) {
+			return getGEFWrapper(new ImageAttributeCreateCommand(req));
 		}
 		if (WebsiteElementTypes.LocationAttribute_3230 == req.getElementType()) {
 			return getGEFWrapper(new LocationAttributeCreateCommand(req));

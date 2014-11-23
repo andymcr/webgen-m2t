@@ -9,7 +9,6 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -17,9 +16,6 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ViewerNotification;
-import uk.ac.man.cs.mdsd.orm.OrmPackage;
 import uk.ac.man.cs.mdsd.orm.SingletonFile;
 
 /**
@@ -29,7 +25,7 @@ import uk.ac.man.cs.mdsd.orm.SingletonFile;
  * @generated
  */
 public class SingletonFileItemProvider
-	extends SingletonAttributeItemProvider
+	extends SingletonResourceItemProvider
 	implements
 		IEditingDomainItemProvider,
 		IStructuredItemContentProvider,
@@ -57,123 +53,8 @@ public class SingletonFileItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addMaximumUploadSizePropertyDescriptor(object);
-			addValidUploadMimeTypesPropertyDescriptor(object);
-			addValidUploadExtensionsPropertyDescriptor(object);
-			addUploadsWithinWebsitePropertyDescriptor(object);
-			addRelativeUploadDirectoryPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Maximum Upload Size feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addMaximumUploadSizePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonFile_maximumUploadSize_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonFile_maximumUploadSize_feature", "_UI_SingletonFile_type"),
-				 OrmPackage.Literals.SINGLETON_FILE__MAXIMUM_UPLOAD_SIZE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Valid Upload Mime Types feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addValidUploadMimeTypesPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonFile_validUploadMimeTypes_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonFile_validUploadMimeTypes_feature", "_UI_SingletonFile_type"),
-				 OrmPackage.Literals.SINGLETON_FILE__VALID_UPLOAD_MIME_TYPES,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Valid Upload Extensions feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addValidUploadExtensionsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonFile_validUploadExtensions_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonFile_validUploadExtensions_feature", "_UI_SingletonFile_type"),
-				 OrmPackage.Literals.SINGLETON_FILE__VALID_UPLOAD_EXTENSIONS,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Uploads Within Website feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addUploadsWithinWebsitePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonFile_uploadsWithinWebsite_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonFile_uploadsWithinWebsite_feature", "_UI_SingletonFile_type"),
-				 OrmPackage.Literals.SINGLETON_FILE__UPLOADS_WITHIN_WEBSITE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Relative Upload Directory feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addRelativeUploadDirectoryPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonFile_relativeUploadDirectory_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonFile_relativeUploadDirectory_feature", "_UI_SingletonFile_type"),
-				 OrmPackage.Literals.SINGLETON_FILE__RELATIVE_UPLOAD_DIRECTORY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -211,16 +92,6 @@ public class SingletonFileItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
-
-		switch (notification.getFeatureID(SingletonFile.class)) {
-			case OrmPackage.SINGLETON_FILE__MAXIMUM_UPLOAD_SIZE:
-			case OrmPackage.SINGLETON_FILE__VALID_UPLOAD_MIME_TYPES:
-			case OrmPackage.SINGLETON_FILE__VALID_UPLOAD_EXTENSIONS:
-			case OrmPackage.SINGLETON_FILE__UPLOADS_WITHIN_WEBSITE:
-			case OrmPackage.SINGLETON_FILE__RELATIVE_UPLOAD_DIRECTORY:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-		}
 		super.notifyChanged(notification);
 	}
 

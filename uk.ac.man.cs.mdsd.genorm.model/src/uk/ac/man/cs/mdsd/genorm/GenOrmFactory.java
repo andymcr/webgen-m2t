@@ -107,6 +107,15 @@ public interface GenOrmFactory extends EFactory {
 	GenSingletonFile createGenSingletonFile();
 
 	/**
+	 * Returns a new object of class '<em>Gen Singleton Image</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Gen Singleton Image</em>'.
+	 * @generated
+	 */
+	GenSingletonImage createGenSingletonImage();
+
+	/**
 	 * Returns a new object of class '<em>Gen Singleton Location</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -20,7 +20,7 @@ import uk.ac.man.cs.mdsd.orm.SingletonFile;
  * @model
  * @generated
  */
-public interface GenSingletonFile extends GenSingletonAttribute {
+public interface GenSingletonFile extends GenSingletonResource {
 	/**
 	 * Returns the value of the '<em><b>Orm Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->

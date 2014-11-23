@@ -125,8 +125,16 @@ public class GenOrmAdapterFactory extends AdapterFactoryImpl {
 				return createGenCollectionDateAdapter();
 			}
 			@Override
+			public Adapter caseGenSingletonResource(GenSingletonResource object) {
+				return createGenSingletonResourceAdapter();
+			}
+			@Override
 			public Adapter caseGenSingletonFile(GenSingletonFile object) {
 				return createGenSingletonFileAdapter();
+			}
+			@Override
+			public Adapter caseGenSingletonImage(GenSingletonImage object) {
+				return createGenSingletonImageAdapter();
 			}
 			@Override
 			public Adapter caseGenSingletonLocation(GenSingletonLocation object) {
@@ -351,6 +359,20 @@ public class GenOrmAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonResource <em>Gen Singleton Resource</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.ac.man.cs.mdsd.genorm.GenSingletonResource
+	 * @generated
+	 */
+	public Adapter createGenSingletonResourceAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonFile <em>Gen Singleton File</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -361,6 +383,20 @@ public class GenOrmAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createGenSingletonFileAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.genorm.GenSingletonImage <em>Gen Singleton Image</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.ac.man.cs.mdsd.genorm.GenSingletonImage
+	 * @generated
+	 */
+	public Adapter createGenSingletonImageAdapter() {
 		return null;
 	}
 

@@ -179,13 +179,35 @@ public class GenOrmSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GenOrmPackage.GEN_SINGLETON_RESOURCE: {
+				GenSingletonResource genSingletonResource = (GenSingletonResource)theEObject;
+				T result = caseGenSingletonResource(genSingletonResource);
+				if (result == null) result = caseGenSingletonAttribute(genSingletonResource);
+				if (result == null) result = caseGenAttribute(genSingletonResource);
+				if (result == null) result = caseGenFeature(genSingletonResource);
+				if (result == null) result = caseNamedElement(genSingletonResource);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GenOrmPackage.GEN_SINGLETON_FILE: {
 				GenSingletonFile genSingletonFile = (GenSingletonFile)theEObject;
 				T result = caseGenSingletonFile(genSingletonFile);
+				if (result == null) result = caseGenSingletonResource(genSingletonFile);
 				if (result == null) result = caseGenSingletonAttribute(genSingletonFile);
 				if (result == null) result = caseGenAttribute(genSingletonFile);
 				if (result == null) result = caseGenFeature(genSingletonFile);
 				if (result == null) result = caseNamedElement(genSingletonFile);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GenOrmPackage.GEN_SINGLETON_IMAGE: {
+				GenSingletonImage genSingletonImage = (GenSingletonImage)theEObject;
+				T result = caseGenSingletonImage(genSingletonImage);
+				if (result == null) result = caseGenSingletonResource(genSingletonImage);
+				if (result == null) result = caseGenSingletonAttribute(genSingletonImage);
+				if (result == null) result = caseGenAttribute(genSingletonImage);
+				if (result == null) result = caseGenFeature(genSingletonImage);
+				if (result == null) result = caseNamedElement(genSingletonImage);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -425,6 +447,21 @@ public class GenOrmSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Gen Singleton Resource</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Gen Singleton Resource</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGenSingletonResource(GenSingletonResource object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Gen Singleton File</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -436,6 +473,21 @@ public class GenOrmSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseGenSingletonFile(GenSingletonFile object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Gen Singleton Image</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Gen Singleton Image</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGenSingletonImage(GenSingletonImage object) {
 		return null;
 	}
 

@@ -315,6 +315,24 @@ public class WebsiteParserProvider extends AbstractProvider implements
 	/**
 	 * @generated
 	 */
+	private IParser imageAttributeName_5242Parser;
+
+	/**
+	 * @generated
+	 */
+	private IParser getImageAttributeName_5242Parser() {
+		if (imageAttributeName_5242Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE
+					.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			imageAttributeName_5242Parser = parser;
+		}
+		return imageAttributeName_5242Parser;
+	}
+
+	/**
+	 * @generated
+	 */
 	private IParser locationAttributeName_5237Parser;
 
 	/**
@@ -2202,6 +2220,8 @@ public class WebsiteParserProvider extends AbstractProvider implements
 			return getDateAttributeName_5018Parser();
 		case FileAttributeNameEditPart.VISUAL_ID:
 			return getFileAttributeName_5160Parser();
+		case ImageAttributeNameEditPart.VISUAL_ID:
+			return getImageAttributeName_5242Parser();
 		case LocationAttributeNameEditPart.VISUAL_ID:
 			return getLocationAttributeName_5237Parser();
 		case ActionUnitNameEditPart.VISUAL_ID:

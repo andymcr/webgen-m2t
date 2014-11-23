@@ -49,10 +49,6 @@ import uk.ac.man.cs.mdsd.orm.Entity;
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenEntityImpl#getTableName <em>Table Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenEntityImpl#getKeyName <em>Key Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenEntityImpl#getGenFeatures <em>Gen Features</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenEntityImpl#getXmlTransient <em>Xml Transient</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenEntityImpl#getXmlRootElement <em>Xml Root Element</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenEntityImpl#getXmlNamespace <em>Xml Namespace</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.impl.GenEntityImpl#getXmlName <em>Xml Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -138,86 +134,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 	 * @ordered
 	 */
 	protected EList<GenFeature> genFeatures;
-
-	/**
-	 * The default value of the '{@link #getXmlTransient() <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlTransient()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean XML_TRANSIENT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getXmlTransient() <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlTransient()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean xmlTransient = XML_TRANSIENT_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getXmlRootElement() <em>Xml Root Element</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlRootElement()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean XML_ROOT_ELEMENT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getXmlRootElement() <em>Xml Root Element</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlRootElement()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean xmlRootElement = XML_ROOT_ELEMENT_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getXmlNamespace() <em>Xml Namespace</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlNamespace()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String XML_NAMESPACE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getXmlNamespace() <em>Xml Namespace</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlNamespace()
-	 * @generated
-	 * @ordered
-	 */
-	protected String xmlNamespace = XML_NAMESPACE_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getXmlName() <em>Xml Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String XML_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getXmlName() <em>Xml Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXmlName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String xmlName = XML_NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -397,90 +313,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Boolean getXmlTransient() {
-		return xmlTransient;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setXmlTransient(Boolean newXmlTransient) {
-		Boolean oldXmlTransient = xmlTransient;
-		xmlTransient = newXmlTransient;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GenOrmPackage.GEN_ENTITY__XML_TRANSIENT, oldXmlTransient, xmlTransient));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Boolean getXmlRootElement() {
-		return xmlRootElement;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setXmlRootElement(Boolean newXmlRootElement) {
-		Boolean oldXmlRootElement = xmlRootElement;
-		xmlRootElement = newXmlRootElement;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GenOrmPackage.GEN_ENTITY__XML_ROOT_ELEMENT, oldXmlRootElement, xmlRootElement));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getXmlNamespace() {
-		return xmlNamespace;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setXmlNamespace(String newXmlNamespace) {
-		String oldXmlNamespace = xmlNamespace;
-		xmlNamespace = newXmlNamespace;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GenOrmPackage.GEN_ENTITY__XML_NAMESPACE, oldXmlNamespace, xmlNamespace));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getXmlName() {
-		return xmlName;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setXmlName(String newXmlName) {
-		String oldXmlName = xmlName;
-		xmlName = newXmlName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GenOrmPackage.GEN_ENTITY__XML_NAME, oldXmlName, xmlName));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -541,10 +373,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 	protected void reconcileSettings(final GenEntity oldGenEntity) {
 		setTableName(oldGenEntity.getTableName());
 		setKeyName(oldGenEntity.getKeyName());
-		setXmlTransient(oldGenEntity.getXmlTransient());
-		setXmlRootElement(oldGenEntity.getXmlRootElement());
-		setXmlNamespace(oldGenEntity.getXmlNamespace());
-		setXmlName(oldGenEntity.getXmlName());
 	}
 
 	/**
@@ -598,14 +426,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 				return getKeyName();
 			case GenOrmPackage.GEN_ENTITY__GEN_FEATURES:
 				return getGenFeatures();
-			case GenOrmPackage.GEN_ENTITY__XML_TRANSIENT:
-				return getXmlTransient();
-			case GenOrmPackage.GEN_ENTITY__XML_ROOT_ELEMENT:
-				return getXmlRootElement();
-			case GenOrmPackage.GEN_ENTITY__XML_NAMESPACE:
-				return getXmlNamespace();
-			case GenOrmPackage.GEN_ENTITY__XML_NAME:
-				return getXmlName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -638,18 +458,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 				getGenFeatures().clear();
 				getGenFeatures().addAll((Collection<? extends GenFeature>)newValue);
 				return;
-			case GenOrmPackage.GEN_ENTITY__XML_TRANSIENT:
-				setXmlTransient((Boolean)newValue);
-				return;
-			case GenOrmPackage.GEN_ENTITY__XML_ROOT_ELEMENT:
-				setXmlRootElement((Boolean)newValue);
-				return;
-			case GenOrmPackage.GEN_ENTITY__XML_NAMESPACE:
-				setXmlNamespace((String)newValue);
-				return;
-			case GenOrmPackage.GEN_ENTITY__XML_NAME:
-				setXmlName((String)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -680,18 +488,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 			case GenOrmPackage.GEN_ENTITY__GEN_FEATURES:
 				getGenFeatures().clear();
 				return;
-			case GenOrmPackage.GEN_ENTITY__XML_TRANSIENT:
-				setXmlTransient(XML_TRANSIENT_EDEFAULT);
-				return;
-			case GenOrmPackage.GEN_ENTITY__XML_ROOT_ELEMENT:
-				setXmlRootElement(XML_ROOT_ELEMENT_EDEFAULT);
-				return;
-			case GenOrmPackage.GEN_ENTITY__XML_NAMESPACE:
-				setXmlNamespace(XML_NAMESPACE_EDEFAULT);
-				return;
-			case GenOrmPackage.GEN_ENTITY__XML_NAME:
-				setXmlName(XML_NAME_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -716,14 +512,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 				return KEY_NAME_EDEFAULT == null ? keyName != null : !KEY_NAME_EDEFAULT.equals(keyName);
 			case GenOrmPackage.GEN_ENTITY__GEN_FEATURES:
 				return genFeatures != null && !genFeatures.isEmpty();
-			case GenOrmPackage.GEN_ENTITY__XML_TRANSIENT:
-				return XML_TRANSIENT_EDEFAULT == null ? xmlTransient != null : !XML_TRANSIENT_EDEFAULT.equals(xmlTransient);
-			case GenOrmPackage.GEN_ENTITY__XML_ROOT_ELEMENT:
-				return XML_ROOT_ELEMENT_EDEFAULT == null ? xmlRootElement != null : !XML_ROOT_ELEMENT_EDEFAULT.equals(xmlRootElement);
-			case GenOrmPackage.GEN_ENTITY__XML_NAMESPACE:
-				return XML_NAMESPACE_EDEFAULT == null ? xmlNamespace != null : !XML_NAMESPACE_EDEFAULT.equals(xmlNamespace);
-			case GenOrmPackage.GEN_ENTITY__XML_NAME:
-				return XML_NAME_EDEFAULT == null ? xmlName != null : !XML_NAME_EDEFAULT.equals(xmlName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -744,14 +532,6 @@ public class GenEntityImpl extends GenClassifierImpl implements GenEntity {
 		result.append(tableName);
 		result.append(", keyName: ");
 		result.append(keyName);
-		result.append(", xmlTransient: ");
-		result.append(xmlTransient);
-		result.append(", xmlRootElement: ");
-		result.append(xmlRootElement);
-		result.append(", xmlNamespace: ");
-		result.append(xmlNamespace);
-		result.append(", xmlName: ");
-		result.append(xmlName);
 		result.append(')');
 		return result.toString();
 	}

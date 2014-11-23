@@ -109,6 +109,12 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case FileAttributeNameEditPart.VISUAL_ID:
 				return new FileAttributeNameEditPart(view);
 
+			case ImageAttributeEditPart.VISUAL_ID:
+				return new ImageAttributeEditPart(view);
+
+			case ImageAttributeNameEditPart.VISUAL_ID:
+				return new ImageAttributeNameEditPart(view);
+
 			case LocationAttributeEditPart.VISUAL_ID:
 				return new LocationAttributeEditPart(view);
 

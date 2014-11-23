@@ -66,10 +66,6 @@ public class GenEntityItemProvider
 
 			addTableNamePropertyDescriptor(object);
 			addKeyNamePropertyDescriptor(object);
-			addXmlTransientPropertyDescriptor(object);
-			addXmlRootElementPropertyDescriptor(object);
-			addXmlNamespacePropertyDescriptor(object);
-			addXmlNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -115,94 +111,6 @@ public class GenEntityItemProvider
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 getString("_UI_RelationalPropertyCategory"),
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Xml Transient feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addXmlTransientPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_GenEntity_xmlTransient_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_GenEntity_xmlTransient_feature", "_UI_GenEntity_type"),
-				 GenOrmPackage.Literals.GEN_ENTITY__XML_TRANSIENT,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 getString("_UI_XMLBindingPropertyCategory"),
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Xml Root Element feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addXmlRootElementPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_GenEntity_xmlRootElement_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_GenEntity_xmlRootElement_feature", "_UI_GenEntity_type"),
-				 GenOrmPackage.Literals.GEN_ENTITY__XML_ROOT_ELEMENT,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 getString("_UI_XMLBindingPropertyCategory"),
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Xml Namespace feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addXmlNamespacePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_GenEntity_xmlNamespace_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_GenEntity_xmlNamespace_feature", "_UI_GenEntity_type"),
-				 GenOrmPackage.Literals.GEN_ENTITY__XML_NAMESPACE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 getString("_UI_XMLBindingPropertyCategory"),
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Xml Name feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addXmlNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_GenEntity_xmlName_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_GenEntity_xmlName_feature", "_UI_GenEntity_type"),
-				 GenOrmPackage.Literals.GEN_ENTITY__XML_NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 getString("_UI_XMLBindingPropertyCategory"),
 				 null));
 	}
 
@@ -276,10 +184,6 @@ public class GenEntityItemProvider
 			case GenOrmPackage.GEN_ENTITY__DEFAULT_TABLE_NAME:
 			case GenOrmPackage.GEN_ENTITY__TABLE_NAME:
 			case GenOrmPackage.GEN_ENTITY__KEY_NAME:
-			case GenOrmPackage.GEN_ENTITY__XML_TRANSIENT:
-			case GenOrmPackage.GEN_ENTITY__XML_ROOT_ELEMENT:
-			case GenOrmPackage.GEN_ENTITY__XML_NAMESPACE:
-			case GenOrmPackage.GEN_ENTITY__XML_NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case GenOrmPackage.GEN_ENTITY__GEN_FEATURES:
@@ -324,6 +228,11 @@ public class GenEntityItemProvider
 			(createChildParameter
 				(GenOrmPackage.Literals.GEN_ENTITY__GEN_FEATURES,
 				 GenOrmFactory.eINSTANCE.createGenSingletonFile()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GenOrmPackage.Literals.GEN_ENTITY__GEN_FEATURES,
+				 GenOrmFactory.eINSTANCE.createGenSingletonImage()));
 
 		newChildDescriptors.add
 			(createChildParameter

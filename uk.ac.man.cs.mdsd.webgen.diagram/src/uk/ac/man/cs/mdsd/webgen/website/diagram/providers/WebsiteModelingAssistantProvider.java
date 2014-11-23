@@ -103,10 +103,11 @@ public class WebsiteModelingAssistantProvider extends ModelingAssistantProvider 
 			return types;
 		}
 		if (editPart instanceof EntityEditPart) {
-			ArrayList<IElementType> types = new ArrayList<IElementType>(4);
+			ArrayList<IElementType> types = new ArrayList<IElementType>(5);
 			types.add(WebsiteElementTypes.DataTypeAttribute_3054);
 			types.add(WebsiteElementTypes.DateAttribute_3014);
 			types.add(WebsiteElementTypes.FileAttribute_3152);
+			types.add(WebsiteElementTypes.ImageAttribute_3235);
 			types.add(WebsiteElementTypes.LocationAttribute_3230);
 			return types;
 		}

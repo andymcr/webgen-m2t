@@ -1208,6 +1208,15 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getGenServiceEntityElement_ColumnName() {
+		return (EAttribute)genServiceEntityElementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getGenServiceAssociation() {
 		return genServiceAssociationEClass;
 	}
@@ -1253,7 +1262,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getGenServiceViewAssociation_JsfTargetFeature() {
+	public EReference getGenServiceViewAssociation_JsfFeature() {
 		return (EReference)genServiceViewAssociationEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -2889,6 +2898,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		genServiceEntityElementEClass = createEClass(GEN_SERVICE_ENTITY_ELEMENT);
 		createEReference(genServiceEntityElementEClass, GEN_SERVICE_ENTITY_ELEMENT__JSF_FEATURE);
 		createEReference(genServiceEntityElementEClass, GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE);
+		createEAttribute(genServiceEntityElementEClass, GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME);
 
 		genServiceAssociationEClass = createEClass(GEN_SERVICE_ASSOCIATION);
 
@@ -2897,7 +2907,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		createEReference(genServiceEntityAssociationEClass, GEN_SERVICE_ENTITY_ASSOCIATION__GEN_FEATURE);
 
 		genServiceViewAssociationEClass = createEClass(GEN_SERVICE_VIEW_ASSOCIATION);
-		createEReference(genServiceViewAssociationEClass, GEN_SERVICE_VIEW_ASSOCIATION__JSF_TARGET_FEATURE);
+		createEReference(genServiceViewAssociationEClass, GEN_SERVICE_VIEW_ASSOCIATION__JSF_FEATURE);
 		createEReference(genServiceViewAssociationEClass, GEN_SERVICE_VIEW_ASSOCIATION__GEN_TARGET_FEATURE);
 
 		genPageEClass = createEClass(GEN_PAGE);
@@ -3320,6 +3330,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		initEClass(genServiceEntityElementEClass, GenServiceEntityElement.class, "GenServiceEntityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenServiceEntityElement_JsfFeature(), theJsfPackage.getServiceEntityElement(), null, "jsfFeature", null, 1, 1, GenServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenServiceEntityElement_GenFeature(), theGenOrmPackage.getGenAttribute(), null, "genFeature", null, 1, 1, GenServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getGenServiceEntityElement_ColumnName(), ecorePackage.getEString(), "columnName", null, 0, 1, GenServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(genServiceAssociationEClass, GenServiceAssociation.class, "GenServiceAssociation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3328,7 +3339,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		initEReference(getGenServiceEntityAssociation_GenFeature(), theGenOrmPackage.getGenAssociation(), null, "genFeature", null, 1, 1, GenServiceEntityAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(genServiceViewAssociationEClass, GenServiceViewAssociation.class, "GenServiceViewAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getGenServiceViewAssociation_JsfTargetFeature(), theJsfPackage.getServiceAssociation(), null, "jsfTargetFeature", null, 1, 1, GenServiceViewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenServiceViewAssociation_JsfFeature(), theJsfPackage.getServiceViewAssociation(), null, "jsfFeature", null, 1, 1, GenServiceViewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenServiceViewAssociation_GenTargetFeature(), this.getGenServiceAssociation(), null, "genTargetFeature", null, 1, 1, GenServiceViewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(genPageEClass, GenPage.class, "GenPage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

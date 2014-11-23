@@ -18,7 +18,6 @@ import uk.ac.man.cs.mdsd.orm.NamedElement;
  * The following features are supported:
  * <ul>
  *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenFeature#getGenParentEntity <em>Gen Parent Entity</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genorm.GenFeature#getXmlTransient <em>Xml Transient</em>}</li>
  * </ul>
  * </p>
  *
@@ -55,32 +54,6 @@ public interface GenFeature extends NamedElement {
 	 * @generated
 	 */
 	void setGenParentEntity(GenEntity value);
-
-	/**
-	 * Returns the value of the '<em><b>Xml Transient</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Xml Transient</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Xml Transient</em>' attribute.
-	 * @see #setXmlTransient(Boolean)
-	 * @see uk.ac.man.cs.mdsd.genorm.GenOrmPackage#getGenFeature_XmlTransient()
-	 * @model required="true" ordered="false"
-	 * @generated
-	 */
-	Boolean getXmlTransient();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genorm.GenFeature#getXmlTransient <em>Xml Transient</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Xml Transient</em>' attribute.
-	 * @see #getXmlTransient()
-	 * @generated
-	 */
-	void setXmlTransient(Boolean value);
 
 	Feature getOrmFeature();
 
