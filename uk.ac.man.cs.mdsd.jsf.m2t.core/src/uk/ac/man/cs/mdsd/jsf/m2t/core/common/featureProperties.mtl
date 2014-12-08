@@ -786,15 +786,19 @@
 /]
 
 [query public hasUnitMethods(genUnit : GenContentUnit) : Boolean
-	= if genUnit.oclIsKindOf(GenEditUnit) then
+	= if genUnit.oclIsTypeOf(GenCommandUnit) then
+			true
+		else if genUnit.oclIsKindOf(GenEditUnit) then
 			true
 		else if genUnit.oclIsKindOf(GenDataUnit) then
 			genUnit.oclAsType(GenDataUnit).hasUriActions()
+		else if genUnit.oclIsTypeOf(GenActionUnit) then
+			true
 		else if genUnit.oclIsKindOf(GenAuthenticationUnit) then
 			true
 		else
 			false
-		endif endif endif
+		endif endif endif endif endif
 /]
 
 [query public hasUriActions(genUnit : GenDynamicUnit) : Boolean
