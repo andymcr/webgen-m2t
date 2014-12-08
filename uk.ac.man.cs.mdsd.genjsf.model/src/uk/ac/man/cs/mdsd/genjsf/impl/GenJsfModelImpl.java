@@ -772,7 +772,10 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 
 		if (oldGenModel instanceof GenJsfModel) {
 			final GenJsfModel oldGenJsfModel = (GenJsfModel) oldGenModel;
-			setBaseURL(oldGenJsfModel.getBaseURL());
+			if ((oldGenJsfModel.getBaseURL() != null ) && oldGenJsfModel.getBaseURL().equals("")) {
+				setBaseURL(oldGenJsfModel.getBaseURL());
+			}
+			setDevelopmentVersion(oldGenJsfModel.isDevelopmentVersion());
 			setRewriteURLs(oldGenJsfModel.isRewriteURLs());
 			setAjaxTechnology(oldGenJsfModel.getAjaxTechnology());
 			setTextEditorPath(oldGenJsfModel.getTextEditorPath());
