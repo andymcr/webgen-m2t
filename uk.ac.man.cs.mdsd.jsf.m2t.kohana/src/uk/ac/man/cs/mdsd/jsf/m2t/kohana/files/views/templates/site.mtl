@@ -27,7 +27,7 @@
 [if (not genModel.textEditorPath.oclIsUndefined())]
  <script type="text/javascript" src="[genModel.textEditorPath/]"></script>
 [/if]
-<?php foreach ($scripts as $script) { ?>
+<?php foreach ($javascripts as $script) { ?>
  <script type="text/javascript" src="<?php echo $script; ?>"></script>
 <?php } ?>
 </head>

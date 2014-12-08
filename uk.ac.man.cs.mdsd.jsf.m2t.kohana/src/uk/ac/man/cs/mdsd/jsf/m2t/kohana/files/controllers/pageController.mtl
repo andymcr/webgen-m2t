@@ -42,7 +42,6 @@ class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName(
 [if (not genPage.jsfPage.styleClass.oclIsUndefined())]
 		$this->template->style_class = '[genPage.jsfPage.styleClass/]';
 [/if]
-		$this->template->scripts = array();
 [if (genPage.hasMapUnits())]
 		$this->template->scripts['['/][']'/] = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places';
 [/if]
@@ -106,10 +105,6 @@ class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName(
 	[genUnit.generateUnitMethods()/]
 
 	[/if]
-[/for]
-[for (genUnit : GenCommandUnit | genPage.commandUnits())]
-	[genUnit.generateUnitMethods()/]
-
 [/for]
 [if (genPage.hasSupportActions())]
 	[if (genPage.hasDataSupportActions())]
