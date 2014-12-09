@@ -854,7 +854,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_TopNavigationId() {
+	public EAttribute getJsfProperties_CaptchaSiteKey() {
 		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -863,8 +863,26 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getJsfProperties_CaptchaSecretKey() {
+		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getJsfProperties_TopNavigationId() {
+		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getJsfProperties_SideMenu() {
-		return (EReference)jsfPropertiesEClass.getEStructuralFeatures().get(8);
+		return (EReference)jsfPropertiesEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -873,7 +891,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	public EAttribute getJsfProperties_StaticUnitsEditable() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(9);
+		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -1945,24 +1963,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 */
 	public EClass getCaptchaField() {
 		return captchaFieldEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getCaptchaField_PublicKey() {
-		return (EAttribute)captchaFieldEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getCaptchaField_PrivateKey() {
-		return (EAttribute)captchaFieldEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -3059,17 +3059,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getLocalAuthenticationSystem_UseCaptcha() {
-		return (EAttribute)localAuthenticationSystemEClass.getEStructuralFeatures().get(8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getLocalAuthenticationSystem_RegistrationUnit() {
-		return (EReference)localAuthenticationSystemEClass.getEStructuralFeatures().get(9);
+		return (EReference)localAuthenticationSystemEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -3078,7 +3069,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	public EReference getLocalAuthenticationSystem_LoginUnit() {
-		return (EReference)localAuthenticationSystemEClass.getEStructuralFeatures().get(10);
+		return (EReference)localAuthenticationSystemEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -3087,7 +3078,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	public EReference getLocalAuthenticationSystem_ForgottenPasswordUnit() {
-		return (EReference)localAuthenticationSystemEClass.getEStructuralFeatures().get(11);
+		return (EReference)localAuthenticationSystemEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -3142,6 +3133,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__META_DESCRIPTION);
 		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__FRAMEWORK_TECHNOLOGY);
 		createEReference(jsfPropertiesEClass, JSF_PROPERTIES__AUTHENTICATION);
+		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__CAPTCHA_SITE_KEY);
+		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__CAPTCHA_SECRET_KEY);
 		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__TOP_NAVIGATION_ID);
 		createEReference(jsfPropertiesEClass, JSF_PROPERTIES__SIDE_MENU);
 		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__STATIC_UNITS_EDITABLE);
@@ -3159,7 +3152,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEAttribute(localAuthenticationSystemEClass, LOCAL_AUTHENTICATION_SYSTEM__ALLOW_SELF_REGISTRATION);
 		createEAttribute(localAuthenticationSystemEClass, LOCAL_AUTHENTICATION_SYSTEM__USE_EMAIL_ACTIVATION);
 		createEAttribute(localAuthenticationSystemEClass, LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL);
-		createEAttribute(localAuthenticationSystemEClass, LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA);
 		createEReference(localAuthenticationSystemEClass, LOCAL_AUTHENTICATION_SYSTEM__REGISTRATION_UNIT);
 		createEReference(localAuthenticationSystemEClass, LOCAL_AUTHENTICATION_SYSTEM__LOGIN_UNIT);
 		createEReference(localAuthenticationSystemEClass, LOCAL_AUTHENTICATION_SYSTEM__FORGOTTEN_PASSWORD_UNIT);
@@ -3361,8 +3353,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEAttribute(dateFieldEClass, DATE_FIELD__FORMAT);
 
 		captchaFieldEClass = createEClass(CAPTCHA_FIELD);
-		createEAttribute(captchaFieldEClass, CAPTCHA_FIELD__PUBLIC_KEY);
-		createEAttribute(captchaFieldEClass, CAPTCHA_FIELD__PRIVATE_KEY);
 
 		unitSupportActionEClass = createEClass(UNIT_SUPPORT_ACTION);
 		createEAttribute(unitSupportActionEClass, UNIT_SUPPORT_ACTION__CONFIRM_MESSAGE);
@@ -3612,6 +3602,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEAttribute(getJsfProperties_MetaDescription(), ecorePackage.getEString(), "metaDescription", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getJsfProperties_FrameworkTechnology(), this.getFrameworkTechnologies(), "frameworkTechnology", null, 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getJsfProperties_Authentication(), this.getAuthentication(), null, "authentication", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfProperties_CaptchaSiteKey(), ecorePackage.getEString(), "captchaSiteKey", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJsfProperties_CaptchaSecretKey(), ecorePackage.getEString(), "captchaSecretKey", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getJsfProperties_TopNavigationId(), ecorePackage.getEString(), "topNavigationId", "", 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getJsfProperties_SideMenu(), this.getMenu(), null, "sideMenu", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getJsfProperties_StaticUnitsEditable(), ecorePackage.getEBoolean(), "staticUnitsEditable", "false", 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -3629,7 +3621,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEAttribute(getLocalAuthenticationSystem_AllowSelfRegistration(), ecorePackage.getEBoolean(), "allowSelfRegistration", "false", 1, 1, LocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getLocalAuthenticationSystem_UseEmailActivation(), ecorePackage.getEBoolean(), "useEmailActivation", "true", 1, 1, LocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getLocalAuthenticationSystem_SendWelcomeEmail(), ecorePackage.getEBoolean(), "sendWelcomeEmail", "true", 1, 1, LocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getLocalAuthenticationSystem_UseCaptcha(), ecorePackage.getEBoolean(), "useCaptcha", "true", 1, 1, LocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getLocalAuthenticationSystem_RegistrationUnit(), this.getRegistrationUnit(), this.getRegistrationUnit_AuthenticationSystem(), "registrationUnit", null, 0, 1, LocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getLocalAuthenticationSystem_LoginUnit(), this.getLoginUnit(), this.getLoginUnit_AuthenticationSystem(), "loginUnit", null, 1, 1, LocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getLocalAuthenticationSystem_ForgottenPasswordUnit(), this.getForgottenPasswordUnit(), this.getForgottenPasswordUnit_AuthenticationSystem(), "forgottenPasswordUnit", null, 0, 1, LocalAuthenticationSystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -3831,8 +3822,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEAttribute(getDateField_Format(), ecorePackage.getEString(), "format", null, 0, 1, DateField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(captchaFieldEClass, CaptchaField.class, "CaptchaField", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCaptchaField_PublicKey(), ecorePackage.getEString(), "publicKey", null, 0, 1, CaptchaField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getCaptchaField_PrivateKey(), ecorePackage.getEString(), "privateKey", null, 0, 1, CaptchaField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(unitSupportActionEClass, UnitSupportAction.class, "UnitSupportAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUnitSupportAction_ConfirmMessage(), ecorePackage.getEString(), "confirmMessage", null, 0, 1, UnitSupportAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

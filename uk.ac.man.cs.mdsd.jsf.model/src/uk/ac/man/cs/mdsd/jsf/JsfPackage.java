@@ -202,13 +202,31 @@ public interface JsfPackage extends EPackage {
 	int JSF_PROPERTIES__AUTHENTICATION = 6;
 
 	/**
+	 * The feature id for the '<em><b>Captcha Site Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JSF_PROPERTIES__CAPTCHA_SITE_KEY = 7;
+
+	/**
+	 * The feature id for the '<em><b>Captcha Secret Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JSF_PROPERTIES__CAPTCHA_SECRET_KEY = 8;
+
+	/**
 	 * The feature id for the '<em><b>Top Navigation Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__TOP_NAVIGATION_ID = 7;
+	int JSF_PROPERTIES__TOP_NAVIGATION_ID = 9;
 
 	/**
 	 * The feature id for the '<em><b>Side Menu</b></em>' reference.
@@ -217,7 +235,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__SIDE_MENU = 8;
+	int JSF_PROPERTIES__SIDE_MENU = 10;
 
 	/**
 	 * The feature id for the '<em><b>Static Units Editable</b></em>' attribute.
@@ -226,7 +244,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__STATIC_UNITS_EDITABLE = 9;
+	int JSF_PROPERTIES__STATIC_UNITS_EDITABLE = 11;
 
 	/**
 	 * The number of structural features of the '<em>Properties</em>' class.
@@ -235,7 +253,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES_FEATURE_COUNT = 10;
+	int JSF_PROPERTIES_FEATURE_COUNT = 12;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl <em>Service</em>}' class.
@@ -515,22 +533,13 @@ public interface JsfPackage extends EPackage {
 	int LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL = AUTHENTICATION_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Use Captcha</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA = AUTHENTICATION_FEATURE_COUNT + 8;
-
-	/**
 	 * The feature id for the '<em><b>Registration Unit</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LOCAL_AUTHENTICATION_SYSTEM__REGISTRATION_UNIT = AUTHENTICATION_FEATURE_COUNT + 9;
+	int LOCAL_AUTHENTICATION_SYSTEM__REGISTRATION_UNIT = AUTHENTICATION_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Login Unit</b></em>' reference.
@@ -539,7 +548,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LOCAL_AUTHENTICATION_SYSTEM__LOGIN_UNIT = AUTHENTICATION_FEATURE_COUNT + 10;
+	int LOCAL_AUTHENTICATION_SYSTEM__LOGIN_UNIT = AUTHENTICATION_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Forgotten Password Unit</b></em>' reference.
@@ -548,7 +557,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LOCAL_AUTHENTICATION_SYSTEM__FORGOTTEN_PASSWORD_UNIT = AUTHENTICATION_FEATURE_COUNT + 11;
+	int LOCAL_AUTHENTICATION_SYSTEM__FORGOTTEN_PASSWORD_UNIT = AUTHENTICATION_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Local Authentication System</em>' class.
@@ -557,7 +566,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LOCAL_AUTHENTICATION_SYSTEM_FEATURE_COUNT = AUTHENTICATION_FEATURE_COUNT + 12;
+	int LOCAL_AUTHENTICATION_SYSTEM_FEATURE_COUNT = AUTHENTICATION_FEATURE_COUNT + 11;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.CasAuthenticationImpl <em>Cas Authentication</em>}' class.
@@ -4210,31 +4219,13 @@ public interface JsfPackage extends EPackage {
 	int CAPTCHA_FIELD__DATE_FORMAT = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Public Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CAPTCHA_FIELD__PUBLIC_KEY = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>Private Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CAPTCHA_FIELD__PRIVATE_KEY = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 4;
-
-	/**
 	 * The number of structural features of the '<em>Captcha Field</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CAPTCHA_FIELD_FEATURE_COUNT = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 5;
+	int CAPTCHA_FIELD_FEATURE_COUNT = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.UnitSupportActionImpl <em>Unit Support Action</em>}' class.
@@ -8801,6 +8792,28 @@ public interface JsfPackage extends EPackage {
 	EReference getJsfProperties_Authentication();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSiteKey <em>Captcha Site Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Captcha Site Key</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSiteKey()
+	 * @see #getJsfProperties()
+	 * @generated
+	 */
+	EAttribute getJsfProperties_CaptchaSiteKey();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSecretKey <em>Captcha Secret Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Captcha Secret Key</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSecretKey()
+	 * @see #getJsfProperties()
+	 * @generated
+	 */
+	EAttribute getJsfProperties_CaptchaSecretKey();
+
+	/**
 	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getTopNavigationId <em>Top Navigation Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10108,28 +10121,6 @@ public interface JsfPackage extends EPackage {
 	EClass getCaptchaField();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.CaptchaField#getPublicKey <em>Public Key</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Public Key</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.CaptchaField#getPublicKey()
-	 * @see #getCaptchaField()
-	 * @generated
-	 */
-	EAttribute getCaptchaField_PublicKey();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.CaptchaField#getPrivateKey <em>Private Key</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Private Key</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.CaptchaField#getPrivateKey()
-	 * @see #getCaptchaField()
-	 * @generated
-	 */
-	EAttribute getCaptchaField_PrivateKey();
-
-	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.UnitSupportAction <em>Unit Support Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11420,17 +11411,6 @@ public interface JsfPackage extends EPackage {
 	EAttribute getLocalAuthenticationSystem_SendWelcomeEmail();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#isUseCaptcha <em>Use Captcha</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Use Captcha</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#isUseCaptcha()
-	 * @see #getLocalAuthenticationSystem()
-	 * @generated
-	 */
-	EAttribute getLocalAuthenticationSystem_UseCaptcha();
-
-	/**
 	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#getRegistrationUnit <em>Registration Unit</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11610,6 +11590,22 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference JSF_PROPERTIES__AUTHENTICATION = eINSTANCE.getJsfProperties_Authentication();
+
+		/**
+		 * The meta object literal for the '<em><b>Captcha Site Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute JSF_PROPERTIES__CAPTCHA_SITE_KEY = eINSTANCE.getJsfProperties_CaptchaSiteKey();
+
+		/**
+		 * The meta object literal for the '<em><b>Captcha Secret Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute JSF_PROPERTIES__CAPTCHA_SECRET_KEY = eINSTANCE.getJsfProperties_CaptchaSecretKey();
 
 		/**
 		 * The meta object literal for the '<em><b>Top Navigation Id</b></em>' attribute feature.
@@ -12656,22 +12652,6 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EClass CAPTCHA_FIELD = eINSTANCE.getCaptchaField();
-
-		/**
-		 * The meta object literal for the '<em><b>Public Key</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CAPTCHA_FIELD__PUBLIC_KEY = eINSTANCE.getCaptchaField_PublicKey();
-
-		/**
-		 * The meta object literal for the '<em><b>Private Key</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CAPTCHA_FIELD__PRIVATE_KEY = eINSTANCE.getCaptchaField_PrivateKey();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.impl.UnitSupportActionImpl <em>Unit Support Action</em>}' class.
@@ -13722,14 +13702,6 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL = eINSTANCE.getLocalAuthenticationSystem_SendWelcomeEmail();
-
-		/**
-		 * The meta object literal for the '<em><b>Use Captcha</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA = eINSTANCE.getLocalAuthenticationSystem_UseCaptcha();
 
 		/**
 		 * The meta object literal for the '<em><b>Registration Unit</b></em>' reference feature.

@@ -33,7 +33,6 @@ import uk.ac.man.cs.mdsd.jsf.ServiceEntityElement;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.LocalAuthenticationSystemImpl#isAllowSelfRegistration <em>Allow Self Registration</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.LocalAuthenticationSystemImpl#isUseEmailActivation <em>Use Email Activation</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.LocalAuthenticationSystemImpl#isSendWelcomeEmail <em>Send Welcome Email</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.LocalAuthenticationSystemImpl#isUseCaptcha <em>Use Captcha</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.LocalAuthenticationSystemImpl#getRegistrationUnit <em>Registration Unit</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.LocalAuthenticationSystemImpl#getLoginUnit <em>Login Unit</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.LocalAuthenticationSystemImpl#getForgottenPasswordUnit <em>Forgotten Password Unit</em>}</li>
@@ -152,26 +151,6 @@ public class LocalAuthenticationSystemImpl extends AuthenticationImpl implements
 	 * @ordered
 	 */
 	protected boolean sendWelcomeEmail = SEND_WELCOME_EMAIL_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isUseCaptcha() <em>Use Captcha</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isUseCaptcha()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean USE_CAPTCHA_EDEFAULT = true;
-
-	/**
-	 * The cached value of the '{@link #isUseCaptcha() <em>Use Captcha</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isUseCaptcha()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean useCaptcha = USE_CAPTCHA_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getRegistrationUnit() <em>Registration Unit</em>}' reference.
@@ -480,27 +459,6 @@ public class LocalAuthenticationSystemImpl extends AuthenticationImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isUseCaptcha() {
-		return useCaptcha;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setUseCaptcha(boolean newUseCaptcha) {
-		boolean oldUseCaptcha = useCaptcha;
-		useCaptcha = newUseCaptcha;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA, oldUseCaptcha, useCaptcha));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public RegistrationUnit getRegistrationUnit() {
 		if (registrationUnit != null && registrationUnit.eIsProxy()) {
 			InternalEObject oldRegistrationUnit = (InternalEObject)registrationUnit;
@@ -747,8 +705,6 @@ public class LocalAuthenticationSystemImpl extends AuthenticationImpl implements
 				return isUseEmailActivation();
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL:
 				return isSendWelcomeEmail();
-			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA:
-				return isUseCaptcha();
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__REGISTRATION_UNIT:
 				if (resolve) return getRegistrationUnit();
 				return basicGetRegistrationUnit();
@@ -793,9 +749,6 @@ public class LocalAuthenticationSystemImpl extends AuthenticationImpl implements
 				return;
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL:
 				setSendWelcomeEmail((Boolean)newValue);
-				return;
-			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA:
-				setUseCaptcha((Boolean)newValue);
 				return;
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__REGISTRATION_UNIT:
 				setRegistrationUnit((RegistrationUnit)newValue);
@@ -842,9 +795,6 @@ public class LocalAuthenticationSystemImpl extends AuthenticationImpl implements
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL:
 				setSendWelcomeEmail(SEND_WELCOME_EMAIL_EDEFAULT);
 				return;
-			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA:
-				setUseCaptcha(USE_CAPTCHA_EDEFAULT);
-				return;
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__REGISTRATION_UNIT:
 				setRegistrationUnit((RegistrationUnit)null);
 				return;
@@ -882,8 +832,6 @@ public class LocalAuthenticationSystemImpl extends AuthenticationImpl implements
 				return useEmailActivation != USE_EMAIL_ACTIVATION_EDEFAULT;
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL:
 				return sendWelcomeEmail != SEND_WELCOME_EMAIL_EDEFAULT;
-			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA:
-				return useCaptcha != USE_CAPTCHA_EDEFAULT;
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__REGISTRATION_UNIT:
 				return registrationUnit != null;
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__LOGIN_UNIT:
@@ -910,8 +858,6 @@ public class LocalAuthenticationSystemImpl extends AuthenticationImpl implements
 		result.append(useEmailActivation);
 		result.append(", sendWelcomeEmail: ");
 		result.append(sendWelcomeEmail);
-		result.append(", useCaptcha: ");
-		result.append(useCaptcha);
 		result.append(')');
 		return result.toString();
 	}

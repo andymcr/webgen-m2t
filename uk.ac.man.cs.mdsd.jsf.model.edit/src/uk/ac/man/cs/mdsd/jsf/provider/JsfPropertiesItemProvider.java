@@ -72,6 +72,8 @@ public class JsfPropertiesItemProvider
 			addCopyrightTextPropertyDescriptor(object);
 			addMetaDescriptionPropertyDescriptor(object);
 			addFrameworkTechnologyPropertyDescriptor(object);
+			addCaptchaSiteKeyPropertyDescriptor(object);
+			addCaptchaSecretKeyPropertyDescriptor(object);
 			addTopNavigationIdPropertyDescriptor(object);
 			addSideMenuPropertyDescriptor(object);
 			addStaticUnitsEditablePropertyDescriptor(object);
@@ -203,6 +205,50 @@ public class JsfPropertiesItemProvider
 				 getString("_UI_JsfProperties_frameworkTechnology_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_JsfProperties_frameworkTechnology_feature", "_UI_JsfProperties_type"),
 				 JsfPackage.Literals.JSF_PROPERTIES__FRAMEWORK_TECHNOLOGY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Captcha Site Key feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addCaptchaSiteKeyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfProperties_captchaSiteKey_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfProperties_captchaSiteKey_feature", "_UI_JsfProperties_type"),
+				 JsfPackage.Literals.JSF_PROPERTIES__CAPTCHA_SITE_KEY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Captcha Secret Key feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addCaptchaSecretKeyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfProperties_captchaSecretKey_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfProperties_captchaSecretKey_feature", "_UI_JsfProperties_type"),
+				 JsfPackage.Literals.JSF_PROPERTIES__CAPTCHA_SECRET_KEY,
 				 true,
 				 false,
 				 false,
@@ -350,6 +396,8 @@ public class JsfPropertiesItemProvider
 			case JsfPackage.JSF_PROPERTIES__COPYRIGHT_TEXT:
 			case JsfPackage.JSF_PROPERTIES__META_DESCRIPTION:
 			case JsfPackage.JSF_PROPERTIES__FRAMEWORK_TECHNOLOGY:
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SITE_KEY:
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SECRET_KEY:
 			case JsfPackage.JSF_PROPERTIES__TOP_NAVIGATION_ID:
 			case JsfPackage.JSF_PROPERTIES__STATIC_UNITS_EDITABLE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

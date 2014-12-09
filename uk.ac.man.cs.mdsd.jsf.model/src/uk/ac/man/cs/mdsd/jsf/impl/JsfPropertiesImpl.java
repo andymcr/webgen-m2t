@@ -35,6 +35,8 @@ import uk.ac.man.cs.mdsd.jsf.Menu;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#getMetaDescription <em>Meta Description</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#getFrameworkTechnology <em>Framework Technology</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#getAuthentication <em>Authentication</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#getCaptchaSiteKey <em>Captcha Site Key</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#getCaptchaSecretKey <em>Captcha Secret Key</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#getTopNavigationId <em>Top Navigation Id</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#getSideMenu <em>Side Menu</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl#isStaticUnitsEditable <em>Static Units Editable</em>}</li>
@@ -173,6 +175,46 @@ public class JsfPropertiesImpl extends EObjectImpl implements JsfProperties {
 	 * @ordered
 	 */
 	protected Authentication authentication;
+
+	/**
+	 * The default value of the '{@link #getCaptchaSiteKey() <em>Captcha Site Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCaptchaSiteKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CAPTCHA_SITE_KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCaptchaSiteKey() <em>Captcha Site Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCaptchaSiteKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String captchaSiteKey = CAPTCHA_SITE_KEY_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getCaptchaSecretKey() <em>Captcha Secret Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCaptchaSecretKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CAPTCHA_SECRET_KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCaptchaSecretKey() <em>Captcha Secret Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCaptchaSecretKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String captchaSecretKey = CAPTCHA_SECRET_KEY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getTopNavigationId() <em>Top Navigation Id</em>}' attribute.
@@ -417,6 +459,48 @@ public class JsfPropertiesImpl extends EObjectImpl implements JsfProperties {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getCaptchaSiteKey() {
+		return captchaSiteKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setCaptchaSiteKey(String newCaptchaSiteKey) {
+		String oldCaptchaSiteKey = captchaSiteKey;
+		captchaSiteKey = newCaptchaSiteKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.JSF_PROPERTIES__CAPTCHA_SITE_KEY, oldCaptchaSiteKey, captchaSiteKey));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getCaptchaSecretKey() {
+		return captchaSecretKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setCaptchaSecretKey(String newCaptchaSecretKey) {
+		String oldCaptchaSecretKey = captchaSecretKey;
+		captchaSecretKey = newCaptchaSecretKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.JSF_PROPERTIES__CAPTCHA_SECRET_KEY, oldCaptchaSecretKey, captchaSecretKey));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getTopNavigationId() {
 		return topNavigationId;
 	}
@@ -528,6 +612,10 @@ public class JsfPropertiesImpl extends EObjectImpl implements JsfProperties {
 				return getFrameworkTechnology();
 			case JsfPackage.JSF_PROPERTIES__AUTHENTICATION:
 				return getAuthentication();
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SITE_KEY:
+				return getCaptchaSiteKey();
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SECRET_KEY:
+				return getCaptchaSecretKey();
 			case JsfPackage.JSF_PROPERTIES__TOP_NAVIGATION_ID:
 				return getTopNavigationId();
 			case JsfPackage.JSF_PROPERTIES__SIDE_MENU:
@@ -567,6 +655,12 @@ public class JsfPropertiesImpl extends EObjectImpl implements JsfProperties {
 				return;
 			case JsfPackage.JSF_PROPERTIES__AUTHENTICATION:
 				setAuthentication((Authentication)newValue);
+				return;
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SITE_KEY:
+				setCaptchaSiteKey((String)newValue);
+				return;
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SECRET_KEY:
+				setCaptchaSecretKey((String)newValue);
 				return;
 			case JsfPackage.JSF_PROPERTIES__TOP_NAVIGATION_ID:
 				setTopNavigationId((String)newValue);
@@ -610,6 +704,12 @@ public class JsfPropertiesImpl extends EObjectImpl implements JsfProperties {
 			case JsfPackage.JSF_PROPERTIES__AUTHENTICATION:
 				setAuthentication((Authentication)null);
 				return;
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SITE_KEY:
+				setCaptchaSiteKey(CAPTCHA_SITE_KEY_EDEFAULT);
+				return;
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SECRET_KEY:
+				setCaptchaSecretKey(CAPTCHA_SECRET_KEY_EDEFAULT);
+				return;
 			case JsfPackage.JSF_PROPERTIES__TOP_NAVIGATION_ID:
 				setTopNavigationId(TOP_NAVIGATION_ID_EDEFAULT);
 				return;
@@ -645,6 +745,10 @@ public class JsfPropertiesImpl extends EObjectImpl implements JsfProperties {
 				return frameworkTechnology != FRAMEWORK_TECHNOLOGY_EDEFAULT;
 			case JsfPackage.JSF_PROPERTIES__AUTHENTICATION:
 				return authentication != null;
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SITE_KEY:
+				return CAPTCHA_SITE_KEY_EDEFAULT == null ? captchaSiteKey != null : !CAPTCHA_SITE_KEY_EDEFAULT.equals(captchaSiteKey);
+			case JsfPackage.JSF_PROPERTIES__CAPTCHA_SECRET_KEY:
+				return CAPTCHA_SECRET_KEY_EDEFAULT == null ? captchaSecretKey != null : !CAPTCHA_SECRET_KEY_EDEFAULT.equals(captchaSecretKey);
 			case JsfPackage.JSF_PROPERTIES__TOP_NAVIGATION_ID:
 				return TOP_NAVIGATION_ID_EDEFAULT == null ? topNavigationId != null : !TOP_NAVIGATION_ID_EDEFAULT.equals(topNavigationId);
 			case JsfPackage.JSF_PROPERTIES__SIDE_MENU:
@@ -677,6 +781,10 @@ public class JsfPropertiesImpl extends EObjectImpl implements JsfProperties {
 		result.append(metaDescription);
 		result.append(", frameworkTechnology: ");
 		result.append(frameworkTechnology);
+		result.append(", captchaSiteKey: ");
+		result.append(captchaSiteKey);
+		result.append(", captchaSecretKey: ");
+		result.append(captchaSecretKey);
 		result.append(", topNavigationId: ");
 		result.append(topNavigationId);
 		result.append(", staticUnitsEditable: ");

@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getMetaDescription <em>Meta Description</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getFrameworkTechnology <em>Framework Technology</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getAuthentication <em>Authentication</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSiteKey <em>Captcha Site Key</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSecretKey <em>Captcha Secret Key</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getTopNavigationId <em>Top Navigation Id</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getSideMenu <em>Side Menu</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#isStaticUnitsEditable <em>Static Units Editable</em>}</li>
@@ -218,6 +220,58 @@ public interface JsfProperties extends EObject {
 	 * @generated
 	 */
 	void setAuthentication(Authentication value);
+
+	/**
+	 * Returns the value of the '<em><b>Captcha Site Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Captcha Site Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Captcha Site Key</em>' attribute.
+	 * @see #setCaptchaSiteKey(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfProperties_CaptchaSiteKey()
+	 * @model
+	 * @generated
+	 */
+	String getCaptchaSiteKey();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSiteKey <em>Captcha Site Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Captcha Site Key</em>' attribute.
+	 * @see #getCaptchaSiteKey()
+	 * @generated
+	 */
+	void setCaptchaSiteKey(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Captcha Secret Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Captcha Secret Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Captcha Secret Key</em>' attribute.
+	 * @see #setCaptchaSecretKey(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfProperties_CaptchaSecretKey()
+	 * @model
+	 * @generated
+	 */
+	String getCaptchaSecretKey();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSecretKey <em>Captcha Secret Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Captcha Secret Key</em>' attribute.
+	 * @see #getCaptchaSecretKey()
+	 * @generated
+	 */
+	void setCaptchaSecretKey(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Top Navigation Id</b></em>' attribute.

@@ -65,7 +65,6 @@ public class LocalAuthenticationSystemItemProvider
 			addAllowSelfRegistrationPropertyDescriptor(object);
 			addUseEmailActivationPropertyDescriptor(object);
 			addSendWelcomeEmailPropertyDescriptor(object);
-			addUseCaptchaPropertyDescriptor(object);
 			addRegistrationUnitPropertyDescriptor(object);
 			addLoginUnitPropertyDescriptor(object);
 			addForgottenPasswordUnitPropertyDescriptor(object);
@@ -250,28 +249,6 @@ public class LocalAuthenticationSystemItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Use Captcha feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addUseCaptchaPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_LocalAuthenticationSystem_useCaptcha_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_LocalAuthenticationSystem_useCaptcha_feature", "_UI_LocalAuthenticationSystem_type"),
-				 JsfPackage.Literals.LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
 	 * This adds a property descriptor for the Registration Unit feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -377,7 +354,6 @@ public class LocalAuthenticationSystemItemProvider
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__ALLOW_SELF_REGISTRATION:
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__USE_EMAIL_ACTIVATION:
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__SEND_WELCOME_EMAIL:
-			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM__USE_CAPTCHA:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

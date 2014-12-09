@@ -19,7 +19,6 @@ package uk.ac.man.cs.mdsd.jsf;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#isAllowSelfRegistration <em>Allow Self Registration</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#isUseEmailActivation <em>Use Email Activation</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#isSendWelcomeEmail <em>Send Welcome Email</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#isUseCaptcha <em>Use Captcha</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#getRegistrationUnit <em>Registration Unit</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#getLoginUnit <em>Login Unit</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#getForgottenPasswordUnit <em>Forgotten Password Unit</em>}</li>
@@ -241,33 +240,6 @@ public interface LocalAuthenticationSystem extends Authentication {
 	 * @generated
 	 */
 	void setSendWelcomeEmail(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Use Captcha</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Use Captcha</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Use Captcha</em>' attribute.
-	 * @see #setUseCaptcha(boolean)
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getLocalAuthenticationSystem_UseCaptcha()
-	 * @model default="true" required="true" ordered="false"
-	 * @generated
-	 */
-	boolean isUseCaptcha();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem#isUseCaptcha <em>Use Captcha</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Use Captcha</em>' attribute.
-	 * @see #isUseCaptcha()
-	 * @generated
-	 */
-	void setUseCaptcha(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Registration Unit</b></em>' reference.

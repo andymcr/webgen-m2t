@@ -40,6 +40,8 @@
         lowerBound="1" eType="#//FrameworkTechnologies"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="authentication" ordered="false"
         eType="#//Authentication" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="captchaSiteKey" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="captchaSecretKey" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="topNavigationId" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
@@ -75,9 +77,6 @@
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sendWelcomeEmail" ordered="false"
-        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-        defaultValueLiteral="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="useCaptcha" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="registrationUnit" ordered="false"
@@ -406,12 +405,7 @@
         eType="ecore:EEnum ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//DateDetails"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CaptchaField" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedDisplayElement #//UnitField">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="publicKey" ordered="false"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="privateKey" ordered="false"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CaptchaField" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedDisplayElement #//UnitField"/>
   <eClassifiers xsi:type="ecore:EClass" name="UnitSupportAction" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedDisplayElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="confirmMessage" ordered="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
