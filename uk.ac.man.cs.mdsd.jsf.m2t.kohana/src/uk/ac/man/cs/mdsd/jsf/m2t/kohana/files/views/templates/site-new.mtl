@@ -1,0 +1,57 @@
+[comment encoding = UTF-8 /]
+[module site-new(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+
+[template public generateNewPage(genModel : GenJsfModel)]
+[file(genModel.viewDirectory().concat('/site-new').concat(genModel.executableExtension()), false)]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+[if (not genModel.jsfModel.metaDescription.oclIsUndefined())]
+ <meta name="description" content="[genModel.jsfModel.metaDescription/]">
+[/if]
+ <title>[genModel.jsfModel.siteTitle/]: <?php echo __($title); ?></title>
+ <?php echo HTML::style('css/default.css') . PHP_EOL; ?>
+ <?php echo HTML::style('css/non-print.css', array(
+		'media' => 'not print'
+	)) . PHP_EOL; ?>
+ <?php echo HTML::style('css/print.css', array(
+		'media' => 'print'
+	)) . PHP_EOL; ?>
+ <?php echo HTML::style('css/custom.css') . PHP_EOL; ?>
+[if (not genModel.textEditorPath.oclIsUndefined())]
+ <script type="text/javascript" src="[genModel.textEditorPath/]"></script>
+[/if]
+<?php foreach ($scripts as $script) { ?>
+ <script type="text/javascript" src="<?php echo $script; ?>"></script>
+<?php } ?>
+</head>
+<body id="page" class="framed">
+<header>
+ <h1 id="banner"><?php echo __('[genModel.jsfModel.siteTitle/]'); ?></h1>
+ <?php echo $topbar; ?>
+</header>
+<?php if (isset($sidebar)) echo $sidebar; ?>
+<main <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>id="content">
+<?php if (!empty($page_message)) { ?>
+ <p><?php echo __($page_message); ?></p>
+<?php } ?>
+<?php
+	foreach ($unitViews as $unitView) {
+		echo $unitView;
+	}
+?>
+</main>
+<div class="clear"></div>
+<footer>
+ <p>[genModel.jsfModel.copyrightText/]</p>
+</footer>
+</body>
+</html>
+[/file]
+[/template]
