@@ -61,11 +61,13 @@ $this->[genUnit.instanceName()/]->[genFeature.columnName()/] = [genValue.generat
 
 [template public generateCaptchaCheck(genUnit : GenDynamicUnit) post(trim())]
 require_once(Kohana::find_file('vendor/recaptcha', 'recaptchalib'));
-$resp = recaptcha_check_answer ('[genUnit.captchaFields()->first().oclAsType(GenCaptchaField).jsfField.privateKey/]', $_SERVER['['/]'REMOTE_ADDR'[']'/],
-	$_POST['['/]'recaptcha_challenge_field'[']'/], $_POST['['/]'recaptcha_response_field'[']'/]
-);
-if (!$resp->is_valid)
-	throw new Captcha_Exception($resp->error);
+$reCaptcha = new ReCaptcha('[genUnit.pageDisplayedOn().genPartOf.jsfModel.captchaSecretKey/]');
+$resp = $reCaptcha->verifyResponse(
+	$_SERVER['['/]"REMOTE_ADDR"[']'/], 
+	$this->request->post('g-recaptcha-response') 
+	); 
+if ($resp == NULL || !$resp->success)
+	throw new Captcha_Exception($resp->errorCodes);
 [/template]
 
 [template public generateCatchCaptchaException(genUnit : GenDynamicUnit) post(trim())]
@@ -117,20 +119,20 @@ $this->[genUnit.instanceName()/]->unit_fields($this->request->post(), array([for
 	? (genAction.oclIsTypeOf(GenDeleteAction)) post(trim())]
 [let genDeleteAction : GenDeleteAction = genAction.oclAsType(GenDeleteAction)]
 public function action_[genDeleteAction.actionName()/]()
+{
+	$[genDeleteAction.instanceName()/] = ORM::factory('[genDeleteAction.modelName()/]', $this->request->param('param'));
+	if ($[genDeleteAction.instanceName()/]->loaded())
 	{
-		$[genDeleteAction.instanceName()/] = ORM::factory('[genDeleteAction.modelName()/]', $this->request->param('param'));
-		if ($[genDeleteAction.instanceName()/]->loaded())
-		{
-			$[genDeleteAction.instanceName()/]->delete();
+		$[genDeleteAction.instanceName()/]->delete();
 [if (genDeleteAction.genDestination.oclIsUndefined())]
-			[genDeleteAction.generateRemoveParameter(genAction.parameterName())/]
+		[genDeleteAction.generateRemoveParameter(genAction.parameterName())/]
 [else]
-			$this->redirect(Route::get('[genDeleteAction.genDestination.controllerName()/]')->uri());
+		$this->redirect(Route::get('[genDeleteAction.genDestination.controllerName()/]')->uri());
 [/if]
-		}
-		else
-			[errorVariable/] = 'Invalid [genDeleteAction.modelName()/] identifier';
 	}
+	else
+		[errorVariable/] = 'Invalid [genDeleteAction.modelName()/] identifier';
+}
 [/let]
 [/template]
 
@@ -138,18 +140,18 @@ public function action_[genDeleteAction.actionName()/]()
 	? (genAction.oclIsTypeOf(GenFeatureSupportAction)) post(trim())]
 [let genSupportAction : GenFeatureSupportAction = genAction.oclAsType(GenFeatureSupportAction)]
 public function action_[genAction.actionName()/]()
+{
+	$[genSupportAction.instanceName()/] = ORM::factory('[genSupportAction.modelName()/]', $this->request->param('param'));
+	if (!$[genSupportAction.instanceName()/]->loaded())
+		[errorVariable/] = 'Invalid [genSupportAction.modelName()/] identifier';
+	else
 	{
-		$[genSupportAction.instanceName()/] = ORM::factory('[genSupportAction.modelName()/]', $this->request->param('param'));
-		if (!$[genSupportAction.instanceName()/]->loaded())
-			[errorVariable/] = 'Invalid [genSupportAction.modelName()/] identifier';
-		else
-		{
-			/* [protected ('support.'.concat(genSupportAction.actionName()))]
-			 */
-			/* [/protected]
-			 */
-		}
+		/* [protected ('support.'.concat(genSupportAction.actionName()))]
+		 */
+		/* [/protected]
+		 */
 	}
+}
 [/let]
 [/template]
 

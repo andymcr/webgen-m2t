@@ -43,7 +43,7 @@
 	= if genFeature.oclIsKindOf(GenServiceEntityAssociation) then
 			genFeature.oclAsType(GenServiceEntityAssociation).genFeature.modelName()
 		else if genFeature.oclIsKindOf(GenServiceViewAssociation) then
-			genFeature.oclAsType(GenServiceViewAssociation).genTargetFeature.modelName()
+			genFeature.oclAsType(GenServiceViewAssociation).genTargetFeature.genIncludedBy.modelName()
 		else
 			'unhandledFeature'
 		endif endif

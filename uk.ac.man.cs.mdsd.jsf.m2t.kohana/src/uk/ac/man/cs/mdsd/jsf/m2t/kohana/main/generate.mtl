@@ -34,6 +34,7 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::views::templates::menu/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::views::templates::pagination/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::views::templates::site/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::views::templates::site-new/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::views::templates::staticUnit/]
 
 
@@ -68,6 +69,7 @@ genModel.generateCreateSitemap()/]
 [genModel.generatePrintCSS()/]
 [genModel.generateCustomCSS()/]
 [genModel.generatePage()/]
+[genModel.generateNewPage()/]
 [genModel.generateTopNav()/]
 [genModel.genMenus.generateMenu()/]
 [genModel.genPages.genUnits.generateUnitView()/]

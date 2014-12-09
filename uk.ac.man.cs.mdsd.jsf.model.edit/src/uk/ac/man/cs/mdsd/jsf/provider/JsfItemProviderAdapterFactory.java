@@ -113,29 +113,6 @@ public class JsfItemProviderAdapterFactory extends JsfAdapterFactory implements 
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.jsf.JsfProperties} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected JsfPropertiesItemProvider jsfPropertiesItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link uk.ac.man.cs.mdsd.jsf.JsfProperties}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createJsfPropertiesAdapter() {
-		if (jsfPropertiesItemProvider == null) {
-			jsfPropertiesItemProvider = new JsfPropertiesItemProvider(this);
-		}
-
-		return jsfPropertiesItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1316,7 +1293,6 @@ public class JsfItemProviderAdapterFactory extends JsfAdapterFactory implements 
 	 */
 	public void dispose() {
 		if (jsfModelItemProvider != null) jsfModelItemProvider.dispose();
-		if (jsfPropertiesItemProvider != null) jsfPropertiesItemProvider.dispose();
 		if (localAuthenticationSystemItemProvider != null) localAuthenticationSystemItemProvider.dispose();
 		if (casAuthenticationItemProvider != null) casAuthenticationItemProvider.dispose();
 		if (serviceItemProvider != null) serviceItemProvider.dispose();

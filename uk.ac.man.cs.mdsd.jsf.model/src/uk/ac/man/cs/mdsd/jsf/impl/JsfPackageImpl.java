@@ -58,7 +58,6 @@ import uk.ac.man.cs.mdsd.jsf.InterfaceField;
 import uk.ac.man.cs.mdsd.jsf.JsfFactory;
 import uk.ac.man.cs.mdsd.jsf.JsfModel;
 import uk.ac.man.cs.mdsd.jsf.JsfPackage;
-import uk.ac.man.cs.mdsd.jsf.JsfProperties;
 import uk.ac.man.cs.mdsd.jsf.LocalAuthenticationSystem;
 import uk.ac.man.cs.mdsd.jsf.LoginUnit;
 import uk.ac.man.cs.mdsd.jsf.MapUnit;
@@ -112,13 +111,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	private EClass jsfModelEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass jsfPropertiesEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -737,7 +729,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getJsfModel_Properties() {
+	public EReference getJsfModel_Persistence() {
 		return (EReference)jsfModelEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -746,7 +738,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getJsfModel_Persistence() {
+	public EReference getJsfModel_Services() {
 		return (EReference)jsfModelEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -755,7 +747,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getJsfModel_Services() {
+	public EReference getJsfModel_Pages() {
 		return (EReference)jsfModelEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -764,7 +756,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getJsfModel_Pages() {
+	public EReference getJsfModel_Menus() {
 		return (EReference)jsfModelEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -773,8 +765,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getJsfModel_Menus() {
-		return (EReference)jsfModelEClass.getEStructuralFeatures().get(4);
+	public EAttribute getJsfModel_SiteName() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -782,8 +774,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getJsfProperties() {
-		return jsfPropertiesEClass;
+	public EAttribute getJsfModel_SiteTitle() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -791,8 +783,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_SiteName() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(0);
+	public EAttribute getJsfModel_WebmasterEmail() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -800,8 +792,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_SiteTitle() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(1);
+	public EAttribute getJsfModel_CopyrightText() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -809,8 +801,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_WebmasterEmail() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(2);
+	public EAttribute getJsfModel_MetaDescription() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -818,8 +810,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_CopyrightText() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(3);
+	public EAttribute getJsfModel_FrameworkTechnology() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -827,8 +819,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_MetaDescription() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(4);
+	public EReference getJsfModel_Authentication() {
+		return (EReference)jsfModelEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -836,8 +828,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_FrameworkTechnology() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(5);
+	public EAttribute getJsfModel_CaptchaSiteKey() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -845,8 +837,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getJsfProperties_Authentication() {
-		return (EReference)jsfPropertiesEClass.getEStructuralFeatures().get(6);
+	public EAttribute getJsfModel_CaptchaSecretKey() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(12);
 	}
 
 	/**
@@ -854,8 +846,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_CaptchaSiteKey() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(7);
+	public EAttribute getJsfModel_TopNavigationId() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(13);
 	}
 
 	/**
@@ -863,8 +855,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_CaptchaSecretKey() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(8);
+	public EReference getJsfModel_SideMenu() {
+		return (EReference)jsfModelEClass.getEStructuralFeatures().get(14);
 	}
 
 	/**
@@ -872,26 +864,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfProperties_TopNavigationId() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(9);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getJsfProperties_SideMenu() {
-		return (EReference)jsfPropertiesEClass.getEStructuralFeatures().get(10);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getJsfProperties_StaticUnitsEditable() {
-		return (EAttribute)jsfPropertiesEClass.getEStructuralFeatures().get(11);
+	public EAttribute getJsfModel_StaticUnitsEditable() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(15);
 	}
 
 	/**
@@ -3119,25 +3093,22 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 
 		// Create classes and their features
 		jsfModelEClass = createEClass(JSF_MODEL);
-		createEReference(jsfModelEClass, JSF_MODEL__PROPERTIES);
 		createEReference(jsfModelEClass, JSF_MODEL__PERSISTENCE);
 		createEReference(jsfModelEClass, JSF_MODEL__SERVICES);
 		createEReference(jsfModelEClass, JSF_MODEL__PAGES);
 		createEReference(jsfModelEClass, JSF_MODEL__MENUS);
-
-		jsfPropertiesEClass = createEClass(JSF_PROPERTIES);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__SITE_NAME);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__SITE_TITLE);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__WEBMASTER_EMAIL);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__COPYRIGHT_TEXT);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__META_DESCRIPTION);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__FRAMEWORK_TECHNOLOGY);
-		createEReference(jsfPropertiesEClass, JSF_PROPERTIES__AUTHENTICATION);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__CAPTCHA_SITE_KEY);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__CAPTCHA_SECRET_KEY);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__TOP_NAVIGATION_ID);
-		createEReference(jsfPropertiesEClass, JSF_PROPERTIES__SIDE_MENU);
-		createEAttribute(jsfPropertiesEClass, JSF_PROPERTIES__STATIC_UNITS_EDITABLE);
+		createEAttribute(jsfModelEClass, JSF_MODEL__SITE_NAME);
+		createEAttribute(jsfModelEClass, JSF_MODEL__SITE_TITLE);
+		createEAttribute(jsfModelEClass, JSF_MODEL__WEBMASTER_EMAIL);
+		createEAttribute(jsfModelEClass, JSF_MODEL__COPYRIGHT_TEXT);
+		createEAttribute(jsfModelEClass, JSF_MODEL__META_DESCRIPTION);
+		createEAttribute(jsfModelEClass, JSF_MODEL__FRAMEWORK_TECHNOLOGY);
+		createEReference(jsfModelEClass, JSF_MODEL__AUTHENTICATION);
+		createEAttribute(jsfModelEClass, JSF_MODEL__CAPTCHA_SITE_KEY);
+		createEAttribute(jsfModelEClass, JSF_MODEL__CAPTCHA_SECRET_KEY);
+		createEAttribute(jsfModelEClass, JSF_MODEL__TOP_NAVIGATION_ID);
+		createEReference(jsfModelEClass, JSF_MODEL__SIDE_MENU);
+		createEAttribute(jsfModelEClass, JSF_MODEL__STATIC_UNITS_EDITABLE);
 
 		authenticationEClass = createEClass(AUTHENTICATION);
 		createEAttribute(authenticationEClass, AUTHENTICATION__LOGIN_LABEL);
@@ -3588,25 +3559,22 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(jsfModelEClass, JsfModel.class, "JsfModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getJsfModel_Properties(), this.getJsfProperties(), null, "properties", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJsfModel_Persistence(), theOrmPackage.getOrmModel(), null, "persistence", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJsfModel_Services(), this.getService(), null, "services", null, 0, -1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJsfModel_Pages(), this.getPage(), this.getPage_PartOf(), "pages", null, 0, -1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJsfModel_Menus(), this.getMenu(), null, "menus", null, 0, -1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(jsfPropertiesEClass, JsfProperties.class, "JsfProperties", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getJsfProperties_SiteName(), ecorePackage.getEString(), "siteName", null, 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJsfProperties_SiteTitle(), ecorePackage.getEString(), "siteTitle", null, 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJsfProperties_WebmasterEmail(), ecorePackage.getEString(), "webmasterEmail", null, 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJsfProperties_CopyrightText(), ecorePackage.getEString(), "copyrightText", null, 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJsfProperties_MetaDescription(), ecorePackage.getEString(), "metaDescription", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJsfProperties_FrameworkTechnology(), this.getFrameworkTechnologies(), "frameworkTechnology", null, 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEReference(getJsfProperties_Authentication(), this.getAuthentication(), null, "authentication", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJsfProperties_CaptchaSiteKey(), ecorePackage.getEString(), "captchaSiteKey", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getJsfProperties_CaptchaSecretKey(), ecorePackage.getEString(), "captchaSecretKey", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getJsfProperties_TopNavigationId(), ecorePackage.getEString(), "topNavigationId", "", 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEReference(getJsfProperties_SideMenu(), this.getMenu(), null, "sideMenu", null, 0, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getJsfProperties_StaticUnitsEditable(), ecorePackage.getEBoolean(), "staticUnitsEditable", "false", 1, 1, JsfProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_SiteName(), ecorePackage.getEString(), "siteName", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_SiteTitle(), ecorePackage.getEString(), "siteTitle", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_WebmasterEmail(), ecorePackage.getEString(), "webmasterEmail", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_CopyrightText(), ecorePackage.getEString(), "copyrightText", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_MetaDescription(), ecorePackage.getEString(), "metaDescription", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_FrameworkTechnology(), this.getFrameworkTechnologies(), "frameworkTechnology", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getJsfModel_Authentication(), this.getAuthentication(), null, "authentication", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_CaptchaSiteKey(), ecorePackage.getEString(), "captchaSiteKey", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJsfModel_CaptchaSecretKey(), ecorePackage.getEString(), "captchaSecretKey", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJsfModel_TopNavigationId(), ecorePackage.getEString(), "topNavigationId", "", 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getJsfModel_SideMenu(), this.getMenu(), null, "sideMenu", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_StaticUnitsEditable(), ecorePackage.getEBoolean(), "staticUnitsEditable", "false", 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(authenticationEClass, Authentication.class, "Authentication", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAuthentication_LoginLabel(), ecorePackage.getEString(), "loginLabel", "", 1, 1, Authentication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

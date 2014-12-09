@@ -35,15 +35,6 @@ public interface JsfFactory extends EFactory {
 	JsfModel createJsfModel();
 
 	/**
-	 * Returns a new object of class '<em>Properties</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Properties</em>'.
-	 * @generated
-	 */
-	JsfProperties createJsfProperties();
-
-	/**
 	 * Returns a new object of class '<em>Local Authentication System</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

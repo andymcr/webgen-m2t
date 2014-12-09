@@ -14,7 +14,7 @@
 [if (not genStaticUnit.omitCaption())]
   <h1 class="[genStaticUnit.captionClass()/]">[genStaticUnit.displayLabel()/]</h1>
 [/if]
-[if (genStaticUnit.pageDisplayedOn().genPartOf.jsfModel.properties.staticUnitsEditable)]
+[if (genStaticUnit.pageDisplayedOn().genPartOf.jsfModel.staticUnitsEditable)]
   <div class="[genStaticUnit.layoutClass()/]"><?php
 	if ($[genStaticUnit.instanceName()/]->loaded())
 		echo $[genStaticUnit.instanceName()/]->content;

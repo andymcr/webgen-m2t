@@ -105,7 +105,7 @@ DATETIME[/if][if (genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
 	? (genFeature.oclIsTypeOf(GenServiceEntityElement)) post(trim())]
 [let genElement : GenServiceEntityElement = genFeature.oclAsType(GenServiceEntityElement)]
 [if (genElement.isSingleton())]
-`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName()/]` `[genElement.modelPropertyName()/]`
+`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName/]` `[genElement.modelPropertyName()/]`
 [else]
 `[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName()/]` `[genElement.modelPropertyName()/]`
 [/if]

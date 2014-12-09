@@ -20,11 +20,22 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getProperties <em>Properties</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getPersistence <em>Persistence</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getServices <em>Services</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getPages <em>Pages</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getMenus <em>Menus</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteName <em>Site Name</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteTitle <em>Site Title</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getWebmasterEmail <em>Webmaster Email</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCopyrightText <em>Copyright Text</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getMetaDescription <em>Meta Description</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getFrameworkTechnology <em>Framework Technology</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAuthentication <em>Authentication</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSiteKey <em>Captcha Site Key</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSecretKey <em>Captcha Secret Key</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTopNavigationId <em>Top Navigation Id</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSideMenu <em>Side Menu</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isStaticUnitsEditable <em>Static Units Editable</em>}</li>
  * </ul>
  * </p>
  *
@@ -33,32 +44,6 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  * @generated
  */
 public interface JsfModel extends EObject {
-	/**
-	 * Returns the value of the '<em><b>Properties</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Properties</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Properties</em>' containment reference.
-	 * @see #setProperties(JsfProperties)
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_Properties()
-	 * @model containment="true"
-	 * @generated
-	 */
-	JsfProperties getProperties();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getProperties <em>Properties</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Properties</em>' containment reference.
-	 * @see #getProperties()
-	 * @generated
-	 */
-	void setProperties(JsfProperties value);
-
 	/**
 	 * Returns the value of the '<em><b>Persistence</b></em>' reference.
 	 * <!-- begin-user-doc -->
@@ -134,5 +119,322 @@ public interface JsfModel extends EObject {
 	 * @generated
 	 */
 	EList<Menu> getMenus();
+
+	/**
+	 * Returns the value of the '<em><b>Site Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Site Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Site Name</em>' attribute.
+	 * @see #setSiteName(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_SiteName()
+	 * @model required="true" ordered="false"
+	 * @generated
+	 */
+	String getSiteName();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteName <em>Site Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Site Name</em>' attribute.
+	 * @see #getSiteName()
+	 * @generated
+	 */
+	void setSiteName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Site Title</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Site Title</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Site Title</em>' attribute.
+	 * @see #setSiteTitle(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_SiteTitle()
+	 * @model required="true" ordered="false"
+	 * @generated
+	 */
+	String getSiteTitle();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteTitle <em>Site Title</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Site Title</em>' attribute.
+	 * @see #getSiteTitle()
+	 * @generated
+	 */
+	void setSiteTitle(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Webmaster Email</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Webmaster Email</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Webmaster Email</em>' attribute.
+	 * @see #setWebmasterEmail(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_WebmasterEmail()
+	 * @model required="true" ordered="false"
+	 * @generated
+	 */
+	String getWebmasterEmail();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getWebmasterEmail <em>Webmaster Email</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Webmaster Email</em>' attribute.
+	 * @see #getWebmasterEmail()
+	 * @generated
+	 */
+	void setWebmasterEmail(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Copyright Text</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Copyright Text</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Copyright Text</em>' attribute.
+	 * @see #setCopyrightText(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_CopyrightText()
+	 * @model required="true" ordered="false"
+	 * @generated
+	 */
+	String getCopyrightText();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCopyrightText <em>Copyright Text</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Copyright Text</em>' attribute.
+	 * @see #getCopyrightText()
+	 * @generated
+	 */
+	void setCopyrightText(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Meta Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Meta Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Meta Description</em>' attribute.
+	 * @see #setMetaDescription(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_MetaDescription()
+	 * @model ordered="false"
+	 * @generated
+	 */
+	String getMetaDescription();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getMetaDescription <em>Meta Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Meta Description</em>' attribute.
+	 * @see #getMetaDescription()
+	 * @generated
+	 */
+	void setMetaDescription(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Framework Technology</b></em>' attribute.
+	 * The literals are from the enumeration {@link uk.ac.man.cs.mdsd.jsf.FrameworkTechnologies}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Framework Technology</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Framework Technology</em>' attribute.
+	 * @see uk.ac.man.cs.mdsd.jsf.FrameworkTechnologies
+	 * @see #setFrameworkTechnology(FrameworkTechnologies)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_FrameworkTechnology()
+	 * @model required="true" ordered="false"
+	 * @generated
+	 */
+	FrameworkTechnologies getFrameworkTechnology();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getFrameworkTechnology <em>Framework Technology</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Framework Technology</em>' attribute.
+	 * @see uk.ac.man.cs.mdsd.jsf.FrameworkTechnologies
+	 * @see #getFrameworkTechnology()
+	 * @generated
+	 */
+	void setFrameworkTechnology(FrameworkTechnologies value);
+
+	/**
+	 * Returns the value of the '<em><b>Authentication</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Authentication</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Authentication</em>' containment reference.
+	 * @see #setAuthentication(Authentication)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_Authentication()
+	 * @model containment="true" ordered="false"
+	 * @generated
+	 */
+	Authentication getAuthentication();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAuthentication <em>Authentication</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Authentication</em>' containment reference.
+	 * @see #getAuthentication()
+	 * @generated
+	 */
+	void setAuthentication(Authentication value);
+
+	/**
+	 * Returns the value of the '<em><b>Captcha Site Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Captcha Site Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Captcha Site Key</em>' attribute.
+	 * @see #setCaptchaSiteKey(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_CaptchaSiteKey()
+	 * @model
+	 * @generated
+	 */
+	String getCaptchaSiteKey();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSiteKey <em>Captcha Site Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Captcha Site Key</em>' attribute.
+	 * @see #getCaptchaSiteKey()
+	 * @generated
+	 */
+	void setCaptchaSiteKey(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Captcha Secret Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Captcha Secret Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Captcha Secret Key</em>' attribute.
+	 * @see #setCaptchaSecretKey(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_CaptchaSecretKey()
+	 * @model
+	 * @generated
+	 */
+	String getCaptchaSecretKey();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSecretKey <em>Captcha Secret Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Captcha Secret Key</em>' attribute.
+	 * @see #getCaptchaSecretKey()
+	 * @generated
+	 */
+	void setCaptchaSecretKey(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Top Navigation Id</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Top Navigation Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Top Navigation Id</em>' attribute.
+	 * @see #setTopNavigationId(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_TopNavigationId()
+	 * @model default="" required="true" ordered="false"
+	 * @generated
+	 */
+	String getTopNavigationId();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTopNavigationId <em>Top Navigation Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Top Navigation Id</em>' attribute.
+	 * @see #getTopNavigationId()
+	 * @generated
+	 */
+	void setTopNavigationId(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Side Menu</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Side Menu</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Side Menu</em>' reference.
+	 * @see #setSideMenu(Menu)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_SideMenu()
+	 * @model ordered="false"
+	 * @generated
+	 */
+	Menu getSideMenu();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSideMenu <em>Side Menu</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Side Menu</em>' reference.
+	 * @see #getSideMenu()
+	 * @generated
+	 */
+	void setSideMenu(Menu value);
+
+	/**
+	 * Returns the value of the '<em><b>Static Units Editable</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Static Units Editable</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Static Units Editable</em>' attribute.
+	 * @see #setStaticUnitsEditable(boolean)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_StaticUnitsEditable()
+	 * @model default="false" required="true" ordered="false"
+	 * @generated
+	 */
+	boolean isStaticUnitsEditable();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isStaticUnitsEditable <em>Static Units Editable</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Static Units Editable</em>' attribute.
+	 * @see #isStaticUnitsEditable()
+	 * @generated
+	 */
+	void setStaticUnitsEditable(boolean value);
 
 } // JsfModel

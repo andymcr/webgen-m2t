@@ -56,66 +56,66 @@
 	background-color: SteelBlue;
 }
 
-[if (not genModel.jsfModel.properties.topNavigationId.oclIsUndefined())]
-#[genModel.jsfModel.properties.topNavigationId/] {
+[if (not genModel.jsfModel.topNavigationId.oclIsUndefined())]
+#[genModel.jsfModel.topNavigationId/] {
 	width: 100%;
 	padding: 0.5em 0em 0.5em 0em;
 	color: white;
 	background-color: SteelBlue;
 }
 
-#[genModel.jsfModel.properties.topNavigationId/] ul {
+#[genModel.jsfModel.topNavigationId/] ul {
 	list-style: none;
 	overflow: auto;
 }
 
-#[genModel.jsfModel.properties.topNavigationId/] ul li {
+#[genModel.jsfModel.topNavigationId/] ul li {
 	display: inline-block;
 	float: left;
 	text-align: center;
 }
 
 @media only screen and (min-width: 60em) {
-	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+	#[genModel.jsfModel.topNavigationId/] ul li {
 		width: 10%;
 	}
 }
 
 @media only screen and (min-width: 40em) and (max-width: 60em) {
-	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+	#[genModel.jsfModel.topNavigationId/] ul li {
 		width: 15%;
 	}
 }
 
 @media only screen and (min-width: 30em) and (max-width: 40em) {
-	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+	#[genModel.jsfModel.topNavigationId/] ul li {
 		width: 25%;
 	}
 }
 
 @media only screen and (min-width: 20em) and (max-width: 30em) {
-	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+	#[genModel.jsfModel.topNavigationId/] ul li {
 		width: 33%;
 	}
 }
 
 @media only screen and (min-width: 10em) and (max-width: 20em) {
-	#[genModel.jsfModel.properties.topNavigationId/] ul li {
+	#[genModel.jsfModel.topNavigationId/] ul li {
 		width: 50%;
 	}
 }
 
 
-#[genModel.jsfModel.properties.topNavigationId/] a {
+#[genModel.jsfModel.topNavigationId/] a {
 	text-decoration: none;
 	color: white;
 }
 
-#[genModel.jsfModel.properties.topNavigationId/] a:hover {
+#[genModel.jsfModel.topNavigationId/] a:hover {
 	font-weight: bold;
 }
 
-#[genModel.jsfModel.properties.topNavigationId/] #authentication {
+#[genModel.jsfModel.topNavigationId/] #authentication {
 	width: 20%;
 	display: inline-block;
 	float: right;

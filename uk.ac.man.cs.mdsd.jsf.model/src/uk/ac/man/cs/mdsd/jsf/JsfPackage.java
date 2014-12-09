@@ -75,22 +75,13 @@ public interface JsfPackage extends EPackage {
 	int JSF_MODEL = 0;
 
 	/**
-	 * The feature id for the '<em><b>Properties</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int JSF_MODEL__PROPERTIES = 0;
-
-	/**
 	 * The feature id for the '<em><b>Persistence</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__PERSISTENCE = 1;
+	int JSF_MODEL__PERSISTENCE = 0;
 
 	/**
 	 * The feature id for the '<em><b>Services</b></em>' containment reference list.
@@ -99,7 +90,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__SERVICES = 2;
+	int JSF_MODEL__SERVICES = 1;
 
 	/**
 	 * The feature id for the '<em><b>Pages</b></em>' containment reference list.
@@ -108,7 +99,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__PAGES = 3;
+	int JSF_MODEL__PAGES = 2;
 
 	/**
 	 * The feature id for the '<em><b>Menus</b></em>' containment reference list.
@@ -117,26 +108,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__MENUS = 4;
-
-	/**
-	 * The number of structural features of the '<em>Model</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int JSF_MODEL_FEATURE_COUNT = 5;
-
-	/**
-	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl <em>Properties</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl
-	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getJsfProperties()
-	 * @generated
-	 */
-	int JSF_PROPERTIES = 1;
+	int JSF_MODEL__MENUS = 3;
 
 	/**
 	 * The feature id for the '<em><b>Site Name</b></em>' attribute.
@@ -145,7 +117,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__SITE_NAME = 0;
+	int JSF_MODEL__SITE_NAME = 4;
 
 	/**
 	 * The feature id for the '<em><b>Site Title</b></em>' attribute.
@@ -154,7 +126,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__SITE_TITLE = 1;
+	int JSF_MODEL__SITE_TITLE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Webmaster Email</b></em>' attribute.
@@ -163,7 +135,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__WEBMASTER_EMAIL = 2;
+	int JSF_MODEL__WEBMASTER_EMAIL = 6;
 
 	/**
 	 * The feature id for the '<em><b>Copyright Text</b></em>' attribute.
@@ -172,7 +144,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__COPYRIGHT_TEXT = 3;
+	int JSF_MODEL__COPYRIGHT_TEXT = 7;
 
 	/**
 	 * The feature id for the '<em><b>Meta Description</b></em>' attribute.
@@ -181,7 +153,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__META_DESCRIPTION = 4;
+	int JSF_MODEL__META_DESCRIPTION = 8;
 
 	/**
 	 * The feature id for the '<em><b>Framework Technology</b></em>' attribute.
@@ -190,7 +162,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__FRAMEWORK_TECHNOLOGY = 5;
+	int JSF_MODEL__FRAMEWORK_TECHNOLOGY = 9;
 
 	/**
 	 * The feature id for the '<em><b>Authentication</b></em>' containment reference.
@@ -199,7 +171,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__AUTHENTICATION = 6;
+	int JSF_MODEL__AUTHENTICATION = 10;
 
 	/**
 	 * The feature id for the '<em><b>Captcha Site Key</b></em>' attribute.
@@ -208,7 +180,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__CAPTCHA_SITE_KEY = 7;
+	int JSF_MODEL__CAPTCHA_SITE_KEY = 11;
 
 	/**
 	 * The feature id for the '<em><b>Captcha Secret Key</b></em>' attribute.
@@ -217,7 +189,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__CAPTCHA_SECRET_KEY = 8;
+	int JSF_MODEL__CAPTCHA_SECRET_KEY = 12;
 
 	/**
 	 * The feature id for the '<em><b>Top Navigation Id</b></em>' attribute.
@@ -226,7 +198,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__TOP_NAVIGATION_ID = 9;
+	int JSF_MODEL__TOP_NAVIGATION_ID = 13;
 
 	/**
 	 * The feature id for the '<em><b>Side Menu</b></em>' reference.
@@ -235,7 +207,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__SIDE_MENU = 10;
+	int JSF_MODEL__SIDE_MENU = 14;
 
 	/**
 	 * The feature id for the '<em><b>Static Units Editable</b></em>' attribute.
@@ -244,16 +216,16 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES__STATIC_UNITS_EDITABLE = 11;
+	int JSF_MODEL__STATIC_UNITS_EDITABLE = 15;
 
 	/**
-	 * The number of structural features of the '<em>Properties</em>' class.
+	 * The number of structural features of the '<em>Model</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_PROPERTIES_FEATURE_COUNT = 12;
+	int JSF_MODEL_FEATURE_COUNT = 16;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl <em>Service</em>}' class.
@@ -263,7 +235,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getService()
 	 * @generated
 	 */
-	int SERVICE = 8;
+	int SERVICE = 7;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.SelectTarget <em>Select Target</em>}' class.
@@ -273,7 +245,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getSelectTarget()
 	 * @generated
 	 */
-	int SELECT_TARGET = 28;
+	int SELECT_TARGET = 27;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.PageImpl <em>Page</em>}' class.
@@ -283,7 +255,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getPage()
 	 * @generated
 	 */
-	int PAGE = 17;
+	int PAGE = 16;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ContentUnitImpl <em>Content Unit</em>}' class.
@@ -293,7 +265,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getContentUnit()
 	 * @generated
 	 */
-	int CONTENT_UNIT = 31;
+	int CONTENT_UNIT = 30;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.IncludedFeature <em>Included Feature</em>}' class.
@@ -303,7 +275,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getIncludedFeature()
 	 * @generated
 	 */
-	int INCLUDED_FEATURE = 5;
+	int INCLUDED_FEATURE = 4;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.EditUnitImpl <em>Edit Unit</em>}' class.
@@ -313,7 +285,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getEditUnit()
 	 * @generated
 	 */
-	int EDIT_UNIT = 50;
+	int EDIT_UNIT = 49;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.CreateUnitImpl <em>Create Unit</em>}' class.
@@ -323,7 +295,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCreateUnit()
 	 * @generated
 	 */
-	int CREATE_UNIT = 51;
+	int CREATE_UNIT = 50;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.UpdateUnitImpl <em>Update Unit</em>}' class.
@@ -333,7 +305,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUpdateUnit()
 	 * @generated
 	 */
-	int UPDATE_UNIT = 54;
+	int UPDATE_UNIT = 53;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.DataUnitImpl <em>Data Unit</em>}' class.
@@ -343,7 +315,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getDataUnit()
 	 * @generated
 	 */
-	int DATA_UNIT = 55;
+	int DATA_UNIT = 54;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.DetailsUnitImpl <em>Details Unit</em>}' class.
@@ -353,7 +325,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getDetailsUnit()
 	 * @generated
 	 */
-	int DETAILS_UNIT = 56;
+	int DETAILS_UNIT = 55;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.IndexUnitImpl <em>Index Unit</em>}' class.
@@ -363,7 +335,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getIndexUnit()
 	 * @generated
 	 */
-	int INDEX_UNIT = 57;
+	int INDEX_UNIT = 56;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.InlineActionImpl <em>Inline Action</em>}' class.
@@ -373,7 +345,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getInlineAction()
 	 * @generated
 	 */
-	int INLINE_ACTION = 69;
+	int INLINE_ACTION = 68;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.SelectActionImpl <em>Select Action</em>}' class.
@@ -383,7 +355,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getSelectAction()
 	 * @generated
 	 */
-	int SELECT_ACTION = 70;
+	int SELECT_ACTION = 69;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.DeleteActionImpl <em>Delete Action</em>}' class.
@@ -393,7 +365,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getDeleteAction()
 	 * @generated
 	 */
-	int DELETE_ACTION = 71;
+	int DELETE_ACTION = 70;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.AuthenticationImpl <em>Authentication</em>}' class.
@@ -403,7 +375,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getAuthentication()
 	 * @generated
 	 */
-	int AUTHENTICATION = 2;
+	int AUTHENTICATION = 1;
 
 	/**
 	 * The feature id for the '<em><b>Login Label</b></em>' attribute.
@@ -440,7 +412,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getLocalAuthenticationSystem()
 	 * @generated
 	 */
-	int LOCAL_AUTHENTICATION_SYSTEM = 3;
+	int LOCAL_AUTHENTICATION_SYSTEM = 2;
 
 	/**
 	 * The feature id for the '<em><b>Login Label</b></em>' attribute.
@@ -576,7 +548,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCasAuthentication()
 	 * @generated
 	 */
-	int CAS_AUTHENTICATION = 4;
+	int CAS_AUTHENTICATION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Login Label</b></em>' attribute.
@@ -685,7 +657,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getIncludedElement()
 	 * @generated
 	 */
-	int INCLUDED_ELEMENT = 6;
+	int INCLUDED_ELEMENT = 5;
 
 	/**
 	 * The feature id for the '<em><b>Display Label</b></em>' attribute.
@@ -785,7 +757,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getIncludedAssociation()
 	 * @generated
 	 */
-	int INCLUDED_ASSOCIATION = 7;
+	int INCLUDED_ASSOCIATION = 6;
 
 	/**
 	 * The feature id for the '<em><b>Display Label</b></em>' attribute.
@@ -957,7 +929,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getModelLabel()
 	 * @generated
 	 */
-	int MODEL_LABEL = 9;
+	int MODEL_LABEL = 8;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1012,7 +984,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getServiceFeature()
 	 * @generated
 	 */
-	int SERVICE_FEATURE = 11;
+	int SERVICE_FEATURE = 10;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.ServiceAssociation <em>Service Association</em>}' class.
@@ -1022,7 +994,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getServiceAssociation()
 	 * @generated
 	 */
-	int SERVICE_ASSOCIATION = 14;
+	int SERVICE_ASSOCIATION = 13;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl <em>Service View Association</em>}' class.
@@ -1032,7 +1004,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getServiceViewAssociation()
 	 * @generated
 	 */
-	int SERVICE_VIEW_ASSOCIATION = 16;
+	int SERVICE_VIEW_ASSOCIATION = 15;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.SelectionImpl <em>Selection</em>}' class.
@@ -1042,7 +1014,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getSelection()
 	 * @generated
 	 */
-	int SELECTION = 10;
+	int SELECTION = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1133,7 +1105,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getServiceEntityFeature()
 	 * @generated
 	 */
-	int SERVICE_ENTITY_FEATURE = 12;
+	int SERVICE_ENTITY_FEATURE = 11;
 
 	/**
 	 * The feature id for the '<em><b>Display Label</b></em>' attribute.
@@ -1251,7 +1223,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getServiceEntityElement()
 	 * @generated
 	 */
-	int SERVICE_ENTITY_ELEMENT = 13;
+	int SERVICE_ENTITY_ELEMENT = 12;
 
 	/**
 	 * The feature id for the '<em><b>Display Label</b></em>' attribute.
@@ -1468,7 +1440,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getServiceEntityAssociation()
 	 * @generated
 	 */
-	int SERVICE_ENTITY_ASSOCIATION = 15;
+	int SERVICE_ENTITY_ASSOCIATION = 14;
 
 	/**
 	 * The feature id for the '<em><b>Display Label</b></em>' attribute.
@@ -1784,7 +1756,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getMenu()
 	 * @generated
 	 */
-	int MENU = 18;
+	int MENU = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1866,7 +1838,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getMenuEntry()
 	 * @generated
 	 */
-	int MENU_ENTRY = 19;
+	int MENU_ENTRY = 18;
 
 	/**
 	 * The feature id for the '<em><b>Part Of</b></em>' container reference.
@@ -1894,7 +1866,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getMenuIncludedFeature()
 	 * @generated
 	 */
-	int MENU_INCLUDED_FEATURE = 26;
+	int MENU_INCLUDED_FEATURE = 25;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.MenuIncludedElementImpl <em>Menu Included Element</em>}' class.
@@ -1904,7 +1876,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getMenuIncludedElement()
 	 * @generated
 	 */
-	int MENU_INCLUDED_ELEMENT = 27;
+	int MENU_INCLUDED_ELEMENT = 26;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.StaticMenuImpl <em>Static Menu</em>}' class.
@@ -1914,7 +1886,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getStaticMenu()
 	 * @generated
 	 */
-	int STATIC_MENU = 20;
+	int STATIC_MENU = 19;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.DynamicMenuImpl <em>Dynamic Menu</em>}' class.
@@ -1924,7 +1896,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getDynamicMenu()
 	 * @generated
 	 */
-	int DYNAMIC_MENU = 25;
+	int DYNAMIC_MENU = 24;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.UnitContainerImpl <em>Unit Container</em>}' class.
@@ -1934,7 +1906,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitContainer()
 	 * @generated
 	 */
-	int UNIT_CONTAINER = 29;
+	int UNIT_CONTAINER = 28;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2016,7 +1988,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getFixedPageMenuEntry()
 	 * @generated
 	 */
-	int FIXED_PAGE_MENU_ENTRY = 21;
+	int FIXED_PAGE_MENU_ENTRY = 20;
 
 	/**
 	 * The feature id for the '<em><b>Part Of</b></em>' container reference.
@@ -2071,7 +2043,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getFixedActionMenuEntry()
 	 * @generated
 	 */
-	int FIXED_ACTION_MENU_ENTRY = 22;
+	int FIXED_ACTION_MENU_ENTRY = 21;
 
 	/**
 	 * The feature id for the '<em><b>Part Of</b></em>' container reference.
@@ -2126,7 +2098,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getFixedCommandMenuEntry()
 	 * @generated
 	 */
-	int FIXED_COMMAND_MENU_ENTRY = 23;
+	int FIXED_COMMAND_MENU_ENTRY = 22;
 
 	/**
 	 * The feature id for the '<em><b>Part Of</b></em>' container reference.
@@ -2181,7 +2153,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getEditStaticTextMenuEntry()
 	 * @generated
 	 */
-	int EDIT_STATIC_TEXT_MENU_ENTRY = 24;
+	int EDIT_STATIC_TEXT_MENU_ENTRY = 23;
 
 	/**
 	 * The feature id for the '<em><b>Part Of</b></em>' container reference.
@@ -2227,7 +2199,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitField()
 	 * @generated
 	 */
-	int UNIT_FIELD = 38;
+	int UNIT_FIELD = 37;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.InterfaceFieldImpl <em>Interface Field</em>}' class.
@@ -2237,7 +2209,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getInterfaceField()
 	 * @generated
 	 */
-	int INTERFACE_FIELD = 45;
+	int INTERFACE_FIELD = 44;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.CreateUpdateUnitImpl <em>Create Update Unit</em>}' class.
@@ -2247,7 +2219,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCreateUpdateUnit()
 	 * @generated
 	 */
-	int CREATE_UPDATE_UNIT = 52;
+	int CREATE_UPDATE_UNIT = 51;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.StaticUnitImpl <em>Static Unit</em>}' class.
@@ -2257,7 +2229,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getStaticUnit()
 	 * @generated
 	 */
-	int STATIC_UNIT = 32;
+	int STATIC_UNIT = 31;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.DynamicUnitImpl <em>Dynamic Unit</em>}' class.
@@ -2267,7 +2239,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getDynamicUnit()
 	 * @generated
 	 */
-	int DYNAMIC_UNIT = 37;
+	int DYNAMIC_UNIT = 36;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2484,7 +2456,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitTitle()
 	 * @generated
 	 */
-	int UNIT_TITLE = 30;
+	int UNIT_TITLE = 29;
 
 	/**
 	 * The number of structural features of the '<em>Unit Title</em>' class.
@@ -2683,7 +2655,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCommandUnit()
 	 * @generated
 	 */
-	int COMMAND_UNIT = 33;
+	int COMMAND_UNIT = 32;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2783,7 +2755,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCommand()
 	 * @generated
 	 */
-	int COMMAND = 34;
+	int COMMAND = 33;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2820,7 +2792,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUserCommand()
 	 * @generated
 	 */
-	int USER_COMMAND = 35;
+	int USER_COMMAND = 34;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2857,7 +2829,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCreateSitemapUnit()
 	 * @generated
 	 */
-	int CREATE_SITEMAP_UNIT = 36;
+	int CREATE_SITEMAP_UNIT = 35;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3164,7 +3136,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitFeature()
 	 * @generated
 	 */
-	int UNIT_FEATURE = 39;
+	int UNIT_FEATURE = 38;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3336,7 +3308,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitElement()
 	 * @generated
 	 */
-	int UNIT_ELEMENT = 40;
+	int UNIT_ELEMENT = 39;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3553,7 +3525,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitAssociation()
 	 * @generated
 	 */
-	int UNIT_ASSOCIATION = 41;
+	int UNIT_ASSOCIATION = 40;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3770,7 +3742,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitChildFeature()
 	 * @generated
 	 */
-	int UNIT_CHILD_FEATURE = 42;
+	int UNIT_CHILD_FEATURE = 41;
 
 	/**
 	 * The number of structural features of the '<em>Unit Child Feature</em>' class.
@@ -3789,7 +3761,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitChildElement()
 	 * @generated
 	 */
-	int UNIT_CHILD_ELEMENT = 43;
+	int UNIT_CHILD_ELEMENT = 42;
 
 	/**
 	 * The feature id for the '<em><b>Service Feature</b></em>' reference.
@@ -3817,7 +3789,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitChildAssociation()
 	 * @generated
 	 */
-	int UNIT_CHILD_ASSOCIATION = 44;
+	int UNIT_CHILD_ASSOCIATION = 43;
 
 	/**
 	 * The feature id for the '<em><b>Service Feature</b></em>' reference.
@@ -3935,7 +3907,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getDataTypeField()
 	 * @generated
 	 */
-	int DATA_TYPE_FIELD = 46;
+	int DATA_TYPE_FIELD = 45;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4062,7 +4034,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getDateField()
 	 * @generated
 	 */
-	int DATE_FIELD = 47;
+	int DATE_FIELD = 46;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4171,7 +4143,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCaptchaField()
 	 * @generated
 	 */
-	int CAPTCHA_FIELD = 48;
+	int CAPTCHA_FIELD = 47;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4235,7 +4207,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getUnitSupportAction()
 	 * @generated
 	 */
-	int UNIT_SUPPORT_ACTION = 49;
+	int UNIT_SUPPORT_ACTION = 48;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4893,7 +4865,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getMapUnit()
 	 * @generated
 	 */
-	int MAP_UNIT = 53;
+	int MAP_UNIT = 52;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -6010,7 +5982,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getIndexGridUnit()
 	 * @generated
 	 */
-	int INDEX_GRID_UNIT = 58;
+	int INDEX_GRID_UNIT = 57;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -6299,7 +6271,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getIndexPageDirectionUnit()
 	 * @generated
 	 */
-	int INDEX_PAGE_DIRECTION_UNIT = 59;
+	int INDEX_PAGE_DIRECTION_UNIT = 58;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -6588,7 +6560,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getIndexLineDirectionUnit()
 	 * @generated
 	 */
-	int INDEX_LINE_DIRECTION_UNIT = 60;
+	int INDEX_LINE_DIRECTION_UNIT = 59;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -6877,7 +6849,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getControlUnit()
 	 * @generated
 	 */
-	int CONTROL_UNIT = 61;
+	int CONTROL_UNIT = 60;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -7076,7 +7048,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getSearchUnit()
 	 * @generated
 	 */
-	int SEARCH_UNIT = 62;
+	int SEARCH_UNIT = 61;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -7284,7 +7256,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getActionUnit()
 	 * @generated
 	 */
-	int ACTION_UNIT = 63;
+	int ACTION_UNIT = 62;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -7492,7 +7464,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getAuthenticationUnit()
 	 * @generated
 	 */
-	int AUTHENTICATION_UNIT = 64;
+	int AUTHENTICATION_UNIT = 63;
 
 	/**
 	 * The number of structural features of the '<em>Authentication Unit</em>' class.
@@ -7511,7 +7483,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getRegistrationUnit()
 	 * @generated
 	 */
-	int REGISTRATION_UNIT = 65;
+	int REGISTRATION_UNIT = 64;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -7728,7 +7700,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getLoginUnit()
 	 * @generated
 	 */
-	int LOGIN_UNIT = 66;
+	int LOGIN_UNIT = 65;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -7963,7 +7935,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getForgottenPasswordUnit()
 	 * @generated
 	 */
-	int FORGOTTEN_PASSWORD_UNIT = 67;
+	int FORGOTTEN_PASSWORD_UNIT = 66;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -8180,7 +8152,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getInlineActionContainer()
 	 * @generated
 	 */
-	int INLINE_ACTION_CONTAINER = 68;
+	int INLINE_ACTION_CONTAINER = 67;
 
 	/**
 	 * The feature id for the '<em><b>Actions</b></em>' containment reference list.
@@ -8451,7 +8423,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getFeatureSupportAction()
 	 * @generated
 	 */
-	int FEATURE_SUPPORT_ACTION = 72;
+	int FEATURE_SUPPORT_ACTION = 71;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -8542,7 +8514,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getModelReference()
 	 * @generated
 	 */
-	int MODEL_REFERENCE = 73;
+	int MODEL_REFERENCE = 72;
 
 	/**
 	 * The feature id for the '<em><b>Unit</b></em>' reference.
@@ -8570,7 +8542,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getFeatureReference()
 	 * @generated
 	 */
-	int FEATURE_REFERENCE = 74;
+	int FEATURE_REFERENCE = 73;
 
 	/**
 	 * The feature id for the '<em><b>Field</b></em>' reference.
@@ -8598,7 +8570,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCurrentUserReference()
 	 * @generated
 	 */
-	int CURRENT_USER_REFERENCE = 75;
+	int CURRENT_USER_REFERENCE = 74;
 
 	/**
 	 * The number of structural features of the '<em>Current User Reference</em>' class.
@@ -8617,7 +8589,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getFrameworkTechnologies()
 	 * @generated
 	 */
-	int FRAMEWORK_TECHNOLOGIES = 76;
+	int FRAMEWORK_TECHNOLOGIES = 75;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.PageTopMenuOptions <em>Page Top Menu Options</em>}' enum.
@@ -8627,7 +8599,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getPageTopMenuOptions()
 	 * @generated
 	 */
-	int PAGE_TOP_MENU_OPTIONS = 77;
+	int PAGE_TOP_MENU_OPTIONS = 76;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.CollectionDisplayOptions <em>Collection Display Options</em>}' enum.
@@ -8637,7 +8609,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCollectionDisplayOptions()
 	 * @generated
 	 */
-	int COLLECTION_DISPLAY_OPTIONS = 78;
+	int COLLECTION_DISPLAY_OPTIONS = 77;
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.JsfModel <em>Model</em>}'.
@@ -8648,17 +8620,6 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getJsfModel();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getProperties <em>Properties</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Properties</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getProperties()
-	 * @see #getJsfModel()
-	 * @generated
-	 */
-	EReference getJsfModel_Properties();
 
 	/**
 	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getPersistence <em>Persistence</em>}'.
@@ -8705,146 +8666,136 @@ public interface JsfPackage extends EPackage {
 	EReference getJsfModel_Menus();
 
 	/**
-	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties <em>Properties</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Properties</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties
-	 * @generated
-	 */
-	EClass getJsfProperties();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getSiteName <em>Site Name</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteName <em>Site Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Site Name</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getSiteName()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteName()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_SiteName();
+	EAttribute getJsfModel_SiteName();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getSiteTitle <em>Site Title</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteTitle <em>Site Title</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Site Title</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getSiteTitle()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteTitle()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_SiteTitle();
+	EAttribute getJsfModel_SiteTitle();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getWebmasterEmail <em>Webmaster Email</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getWebmasterEmail <em>Webmaster Email</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Webmaster Email</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getWebmasterEmail()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getWebmasterEmail()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_WebmasterEmail();
+	EAttribute getJsfModel_WebmasterEmail();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCopyrightText <em>Copyright Text</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCopyrightText <em>Copyright Text</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Copyright Text</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getCopyrightText()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getCopyrightText()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_CopyrightText();
+	EAttribute getJsfModel_CopyrightText();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getMetaDescription <em>Meta Description</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getMetaDescription <em>Meta Description</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Meta Description</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getMetaDescription()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getMetaDescription()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_MetaDescription();
+	EAttribute getJsfModel_MetaDescription();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getFrameworkTechnology <em>Framework Technology</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getFrameworkTechnology <em>Framework Technology</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Framework Technology</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getFrameworkTechnology()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getFrameworkTechnology()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_FrameworkTechnology();
+	EAttribute getJsfModel_FrameworkTechnology();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getAuthentication <em>Authentication</em>}'.
+	 * Returns the meta object for the containment reference '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAuthentication <em>Authentication</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Authentication</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getAuthentication()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getAuthentication()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EReference getJsfProperties_Authentication();
+	EReference getJsfModel_Authentication();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSiteKey <em>Captcha Site Key</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSiteKey <em>Captcha Site Key</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Captcha Site Key</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSiteKey()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSiteKey()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_CaptchaSiteKey();
+	EAttribute getJsfModel_CaptchaSiteKey();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSecretKey <em>Captcha Secret Key</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSecretKey <em>Captcha Secret Key</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Captcha Secret Key</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getCaptchaSecretKey()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSecretKey()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_CaptchaSecretKey();
+	EAttribute getJsfModel_CaptchaSecretKey();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getTopNavigationId <em>Top Navigation Id</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTopNavigationId <em>Top Navigation Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Top Navigation Id</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getTopNavigationId()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getTopNavigationId()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_TopNavigationId();
+	EAttribute getJsfModel_TopNavigationId();
 
 	/**
-	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#getSideMenu <em>Side Menu</em>}'.
+	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSideMenu <em>Side Menu</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Side Menu</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#getSideMenu()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getSideMenu()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EReference getJsfProperties_SideMenu();
+	EReference getJsfModel_SideMenu();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties#isStaticUnitsEditable <em>Static Units Editable</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isStaticUnitsEditable <em>Static Units Editable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Static Units Editable</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties#isStaticUnitsEditable()
-	 * @see #getJsfProperties()
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#isStaticUnitsEditable()
+	 * @see #getJsfModel()
 	 * @generated
 	 */
-	EAttribute getJsfProperties_StaticUnitsEditable();
+	EAttribute getJsfModel_StaticUnitsEditable();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.Service <em>Service</em>}'.
@@ -11486,14 +11437,6 @@ public interface JsfPackage extends EPackage {
 		EClass JSF_MODEL = eINSTANCE.getJsfModel();
 
 		/**
-		 * The meta object literal for the '<em><b>Properties</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference JSF_MODEL__PROPERTIES = eINSTANCE.getJsfModel_Properties();
-
-		/**
 		 * The meta object literal for the '<em><b>Persistence</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -11526,22 +11469,12 @@ public interface JsfPackage extends EPackage {
 		EReference JSF_MODEL__MENUS = eINSTANCE.getJsfModel_Menus();
 
 		/**
-		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl <em>Properties</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPropertiesImpl
-		 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getJsfProperties()
-		 * @generated
-		 */
-		EClass JSF_PROPERTIES = eINSTANCE.getJsfProperties();
-
-		/**
 		 * The meta object literal for the '<em><b>Site Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__SITE_NAME = eINSTANCE.getJsfProperties_SiteName();
+		EAttribute JSF_MODEL__SITE_NAME = eINSTANCE.getJsfModel_SiteName();
 
 		/**
 		 * The meta object literal for the '<em><b>Site Title</b></em>' attribute feature.
@@ -11549,7 +11482,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__SITE_TITLE = eINSTANCE.getJsfProperties_SiteTitle();
+		EAttribute JSF_MODEL__SITE_TITLE = eINSTANCE.getJsfModel_SiteTitle();
 
 		/**
 		 * The meta object literal for the '<em><b>Webmaster Email</b></em>' attribute feature.
@@ -11557,7 +11490,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__WEBMASTER_EMAIL = eINSTANCE.getJsfProperties_WebmasterEmail();
+		EAttribute JSF_MODEL__WEBMASTER_EMAIL = eINSTANCE.getJsfModel_WebmasterEmail();
 
 		/**
 		 * The meta object literal for the '<em><b>Copyright Text</b></em>' attribute feature.
@@ -11565,7 +11498,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__COPYRIGHT_TEXT = eINSTANCE.getJsfProperties_CopyrightText();
+		EAttribute JSF_MODEL__COPYRIGHT_TEXT = eINSTANCE.getJsfModel_CopyrightText();
 
 		/**
 		 * The meta object literal for the '<em><b>Meta Description</b></em>' attribute feature.
@@ -11573,7 +11506,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__META_DESCRIPTION = eINSTANCE.getJsfProperties_MetaDescription();
+		EAttribute JSF_MODEL__META_DESCRIPTION = eINSTANCE.getJsfModel_MetaDescription();
 
 		/**
 		 * The meta object literal for the '<em><b>Framework Technology</b></em>' attribute feature.
@@ -11581,7 +11514,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__FRAMEWORK_TECHNOLOGY = eINSTANCE.getJsfProperties_FrameworkTechnology();
+		EAttribute JSF_MODEL__FRAMEWORK_TECHNOLOGY = eINSTANCE.getJsfModel_FrameworkTechnology();
 
 		/**
 		 * The meta object literal for the '<em><b>Authentication</b></em>' containment reference feature.
@@ -11589,7 +11522,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference JSF_PROPERTIES__AUTHENTICATION = eINSTANCE.getJsfProperties_Authentication();
+		EReference JSF_MODEL__AUTHENTICATION = eINSTANCE.getJsfModel_Authentication();
 
 		/**
 		 * The meta object literal for the '<em><b>Captcha Site Key</b></em>' attribute feature.
@@ -11597,7 +11530,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__CAPTCHA_SITE_KEY = eINSTANCE.getJsfProperties_CaptchaSiteKey();
+		EAttribute JSF_MODEL__CAPTCHA_SITE_KEY = eINSTANCE.getJsfModel_CaptchaSiteKey();
 
 		/**
 		 * The meta object literal for the '<em><b>Captcha Secret Key</b></em>' attribute feature.
@@ -11605,7 +11538,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__CAPTCHA_SECRET_KEY = eINSTANCE.getJsfProperties_CaptchaSecretKey();
+		EAttribute JSF_MODEL__CAPTCHA_SECRET_KEY = eINSTANCE.getJsfModel_CaptchaSecretKey();
 
 		/**
 		 * The meta object literal for the '<em><b>Top Navigation Id</b></em>' attribute feature.
@@ -11613,7 +11546,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__TOP_NAVIGATION_ID = eINSTANCE.getJsfProperties_TopNavigationId();
+		EAttribute JSF_MODEL__TOP_NAVIGATION_ID = eINSTANCE.getJsfModel_TopNavigationId();
 
 		/**
 		 * The meta object literal for the '<em><b>Side Menu</b></em>' reference feature.
@@ -11621,7 +11554,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference JSF_PROPERTIES__SIDE_MENU = eINSTANCE.getJsfProperties_SideMenu();
+		EReference JSF_MODEL__SIDE_MENU = eINSTANCE.getJsfModel_SideMenu();
 
 		/**
 		 * The meta object literal for the '<em><b>Static Units Editable</b></em>' attribute feature.
@@ -11629,7 +11562,7 @@ public interface JsfPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute JSF_PROPERTIES__STATIC_UNITS_EDITABLE = eINSTANCE.getJsfProperties_StaticUnitsEditable();
+		EAttribute JSF_MODEL__STATIC_UNITS_EDITABLE = eINSTANCE.getJsfModel_StaticUnitsEditable();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl <em>Service</em>}' class.

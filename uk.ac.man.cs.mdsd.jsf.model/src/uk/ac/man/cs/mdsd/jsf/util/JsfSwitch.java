@@ -80,12 +80,6 @@ public class JsfSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case JsfPackage.JSF_PROPERTIES: {
-				JsfProperties jsfProperties = (JsfProperties)theEObject;
-				T result = caseJsfProperties(jsfProperties);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case JsfPackage.AUTHENTICATION: {
 				Authentication authentication = (Authentication)theEObject;
 				T result = caseAuthentication(authentication);
@@ -769,21 +763,6 @@ public class JsfSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseJsfModel(JsfModel object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Properties</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Properties</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseJsfProperties(JsfProperties object) {
 		return null;
 	}
 

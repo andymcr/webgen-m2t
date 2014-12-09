@@ -11,7 +11,6 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
-
 [template public generateModel(genService : GenService, genAuthentication : GenAuthentication)]
 [file(genService.modelFilename(), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
@@ -117,7 +116,7 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 	}
 
 [/for]
-[if (genService.hasAttributesOrSingletons())]
+[if (not genService.jsfService.view and genService.hasAttributesOrSingletons())]
 	public function filters()
 	{
 		return array(
@@ -295,11 +294,11 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 [/if]
 [for (genFeature : GenServiceEntityFeature | genService.fileAttributes())]
 [let genFile : GenSingletonFile = genFeature.oclAsType(GenServiceEntityElement).genFeature.oclAsType(GenSingletonFile)]
-	private function _save_[genFile.modelPropertyName()/]()
+	private function _save_[genFeature.modelPropertyName()/]()
 	{
 		$validation = Validation::factory($_FILES);
 		$validation
-			->rules('[genFile.modelPropertyName()/]', array(
+			->rules('[genFeature.modelPropertyName()/]', array(
 [if (genFeature.isRequired())]
 				array('not_empty'),
 				array('Upload::not_empty'),
@@ -313,19 +312,19 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 		if ($validation->check() === FALSE)
 			throw new ORM_Validation_Exception($this->errors_filename(), $validation);
 
-		if ($_FILES['['/]'[genFile.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
+		if ($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
 			return;
 
 		if (!empty($this->[genFile.columnName()/])) 
 			$filename = pathinfo($this->[genFile.columnName()/], PATHINFO_FILENAME);
 		else
-			$filename = pathinfo($_FILES['['/]'[genFile.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME);
-		$extension = pathinfo($_FILES['['/]'[genFile.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
+			$filename = pathinfo($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME);
+		$extension = pathinfo($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (genFile.ormFeature.uploadsWithinWebsite)]
-		$filepath = Upload::save($_FILES['['/]'[genFile.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[genFile.ormFeature.relativeUploadDirectory/]');
-		$this->[genFile.columnName()/] = '[genFile.ormFeature.relativeUploadDirectory/]/' . $filename . '.' . $extension;
+		$filepath = Upload::save($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[genFile.ormFeature.relativeUploadDirectory/]');
+		$this->[genFeature.columnName()/] = '[genFile.ormFeature.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [else]
-		$filepath = Upload::save($_FILES['['/]'[genFile.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
+		$filepath = Upload::save($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
 [/if]
 	}
 

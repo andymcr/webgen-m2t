@@ -62,7 +62,6 @@ public class JsfFactoryImpl extends EFactoryImpl implements JsfFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case JsfPackage.JSF_MODEL: return createJsfModel();
-			case JsfPackage.JSF_PROPERTIES: return createJsfProperties();
 			case JsfPackage.LOCAL_AUTHENTICATION_SYSTEM: return createLocalAuthenticationSystem();
 			case JsfPackage.CAS_AUTHENTICATION: return createCasAuthentication();
 			case JsfPackage.SERVICE: return createService();
@@ -161,16 +160,6 @@ public class JsfFactoryImpl extends EFactoryImpl implements JsfFactory {
 	public JsfModel createJsfModel() {
 		JsfModelImpl jsfModel = new JsfModelImpl();
 		return jsfModel;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public JsfProperties createJsfProperties() {
-		JsfPropertiesImpl jsfProperties = new JsfPropertiesImpl();
-		return jsfProperties;
 	}
 
 	/**

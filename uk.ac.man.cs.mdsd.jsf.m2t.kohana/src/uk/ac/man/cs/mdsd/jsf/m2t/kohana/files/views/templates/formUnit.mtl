@@ -363,7 +363,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 ?>
    <ul>
 [for (genDisplayField : GenUnitField | genDynamicUnit.inputOrEmbeddedFields())]
-    <li[if (genDynamicUnit.hasMessagesOnFeature() and not genDisplayField.oclIsTypeOf(GenCaptchaField))]<?php
+    <li[if (genDynamicUnit.hasMessagesOnFeature())]<?php
 		unset($field_error);
 		if (!empty($[genDynamicUnit.instanceName()/]_field_errors))
 		[if (genDisplayField.oclIsKindOf(GenInterfaceField))]
@@ -399,7 +399,7 @@ find_all()[else]
      </div>
 	[/let]
 	[/if]
-	[if (genDynamicUnit.hasMessagesOnFeature() and not genDisplayField.oclIsTypeOf(GenCaptchaField))]
+	[if (genDynamicUnit.hasMessagesOnFeature())]
 <?php if (isset($field_error)) { ?>
      <p class="[genDynamicUnit.errorClass()/]"><?php echo __($field_error); ?></p>
 <?php } ?>
@@ -631,12 +631,12 @@ echo form_input('[genField.modelPropertyName()/]');
 
 [template protected generateInput(genField : GenUnitField, instanceVariable : String)
 	? (genField.oclIsTypeOf(GenCaptchaField)) post(trim())]
-<div class="g-recaptcha" data-sitekey="[genField.oclAsType(GenCaptchaField).jsfField.publicKey/]"></div>
+<div class="g-recaptcha" data-sitekey="[genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.captchaSiteKey/]"></div>
 <noscript>
 <div style="width: 302px; height: 352px;">
  <div style="width: 302px; height: 352px; position: relative;">
   <div style="width: 302px; height: 352px; position: absolute;">
-   <iframe src="https://www.google.com/recaptcha/api/fallback?k=[genField.oclAsType(GenCaptchaField).jsfField.publicKey/]"
+   <iframe src="https://www.google.com/recaptcha/api/fallback?k=[genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.captchaSiteKey/]"
                 frameborder="0" scrolling="no"
                 style="width: 302px; height:352px; border-style: none;">
    </iframe>

@@ -9,7 +9,7 @@
 
 [template public generateTopbarLoggedIn(genModel : GenJsfModel)]
 [file(genModel.viewElementsDirectory().concat('/topbar_logged_in').concat(genModel.executableExtension()), false)]
-<nav id="[genModel.jsfModel.properties.topNavigationId/]">
+<nav id="[genModel.jsfModel.topNavigationId/]">
 [if (genModel.topMenuItemsAuthenticated()->notEmpty() or genModel.isAuthenticated())]
  <ul>
 [/if]
@@ -29,7 +29,7 @@ TBC[elseif (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem)
 TBC[/if]')->uri(array(
 			'action' => 'logout',
 		)),
-		HTML::chars(__('[genModel.jsfModel.properties.authentication.logoutLabel/]')));
+		HTML::chars(__('[genModel.jsfModel.authentication.logoutLabel/]')));
 ?></li>
 [if (genModel.topMenuItemsAuthenticated()->notEmpty() or genModel.isAuthenticated())]
  </ul>

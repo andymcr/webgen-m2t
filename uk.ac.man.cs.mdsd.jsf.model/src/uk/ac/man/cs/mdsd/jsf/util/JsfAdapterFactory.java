@@ -81,10 +81,6 @@ public class JsfAdapterFactory extends AdapterFactoryImpl {
 				return createJsfModelAdapter();
 			}
 			@Override
-			public Adapter caseJsfProperties(JsfProperties object) {
-				return createJsfPropertiesAdapter();
-			}
-			@Override
 			public Adapter caseAuthentication(Authentication object) {
 				return createAuthenticationAdapter();
 			}
@@ -427,20 +423,6 @@ public class JsfAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createJsfModelAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.jsf.JsfProperties <em>Properties</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see uk.ac.man.cs.mdsd.jsf.JsfProperties
-	 * @generated
-	 */
-	public Adapter createJsfPropertiesAdapter() {
 		return null;
 	}
 

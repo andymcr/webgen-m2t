@@ -24,6 +24,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -67,6 +68,17 @@ public class JsfModelItemProvider
 			super.getPropertyDescriptors(object);
 
 			addPersistencePropertyDescriptor(object);
+			addSiteNamePropertyDescriptor(object);
+			addSiteTitlePropertyDescriptor(object);
+			addWebmasterEmailPropertyDescriptor(object);
+			addCopyrightTextPropertyDescriptor(object);
+			addMetaDescriptionPropertyDescriptor(object);
+			addFrameworkTechnologyPropertyDescriptor(object);
+			addCaptchaSiteKeyPropertyDescriptor(object);
+			addCaptchaSecretKeyPropertyDescriptor(object);
+			addTopNavigationIdPropertyDescriptor(object);
+			addSideMenuPropertyDescriptor(object);
+			addStaticUnitsEditablePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -94,6 +106,248 @@ public class JsfModelItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Site Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSiteNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_siteName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_siteName_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__SITE_NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Site Title feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSiteTitlePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_siteTitle_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_siteTitle_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__SITE_TITLE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Webmaster Email feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addWebmasterEmailPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_webmasterEmail_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_webmasterEmail_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__WEBMASTER_EMAIL,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Copyright Text feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addCopyrightTextPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_copyrightText_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_copyrightText_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__COPYRIGHT_TEXT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Meta Description feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMetaDescriptionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_metaDescription_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_metaDescription_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__META_DESCRIPTION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Framework Technology feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addFrameworkTechnologyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_frameworkTechnology_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_frameworkTechnology_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__FRAMEWORK_TECHNOLOGY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Captcha Site Key feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addCaptchaSiteKeyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_captchaSiteKey_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_captchaSiteKey_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__CAPTCHA_SITE_KEY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Captcha Secret Key feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addCaptchaSecretKeyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_captchaSecretKey_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_captchaSecretKey_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__CAPTCHA_SECRET_KEY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Top Navigation Id feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTopNavigationIdPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_topNavigationId_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_topNavigationId_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__TOP_NAVIGATION_ID,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Side Menu feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSideMenuPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_sideMenu_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_sideMenu_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__SIDE_MENU,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Static Units Editable feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addStaticUnitsEditablePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_staticUnitsEditable_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_staticUnitsEditable_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__STATIC_UNITS_EDITABLE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -105,10 +359,10 @@ public class JsfModelItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(JsfPackage.Literals.JSF_MODEL__PROPERTIES);
 			childrenFeatures.add(JsfPackage.Literals.JSF_MODEL__SERVICES);
 			childrenFeatures.add(JsfPackage.Literals.JSF_MODEL__PAGES);
 			childrenFeatures.add(JsfPackage.Literals.JSF_MODEL__MENUS);
+			childrenFeatures.add(JsfPackage.Literals.JSF_MODEL__AUTHENTICATION);
 		}
 		return childrenFeatures;
 	}
@@ -145,7 +399,10 @@ public class JsfModelItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_JsfModel_type");
+		String label = ((JsfModel)object).getSiteName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_JsfModel_type") :
+			getString("_UI_JsfModel_type") + " " + label;
 	}
 
 	/**
@@ -160,10 +417,22 @@ public class JsfModelItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(JsfModel.class)) {
-			case JsfPackage.JSF_MODEL__PROPERTIES:
+			case JsfPackage.JSF_MODEL__SITE_NAME:
+			case JsfPackage.JSF_MODEL__SITE_TITLE:
+			case JsfPackage.JSF_MODEL__WEBMASTER_EMAIL:
+			case JsfPackage.JSF_MODEL__COPYRIGHT_TEXT:
+			case JsfPackage.JSF_MODEL__META_DESCRIPTION:
+			case JsfPackage.JSF_MODEL__FRAMEWORK_TECHNOLOGY:
+			case JsfPackage.JSF_MODEL__CAPTCHA_SITE_KEY:
+			case JsfPackage.JSF_MODEL__CAPTCHA_SECRET_KEY:
+			case JsfPackage.JSF_MODEL__TOP_NAVIGATION_ID:
+			case JsfPackage.JSF_MODEL__STATIC_UNITS_EDITABLE:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
 			case JsfPackage.JSF_MODEL__SERVICES:
 			case JsfPackage.JSF_MODEL__PAGES:
 			case JsfPackage.JSF_MODEL__MENUS:
+			case JsfPackage.JSF_MODEL__AUTHENTICATION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -180,11 +449,6 @@ public class JsfModelItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(JsfPackage.Literals.JSF_MODEL__PROPERTIES,
-				 JsfFactory.eINSTANCE.createJsfProperties()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -205,6 +469,16 @@ public class JsfModelItemProvider
 			(createChildParameter
 				(JsfPackage.Literals.JSF_MODEL__MENUS,
 				 JsfFactory.eINSTANCE.createDynamicMenu()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(JsfPackage.Literals.JSF_MODEL__AUTHENTICATION,
+				 JsfFactory.eINSTANCE.createLocalAuthenticationSystem()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(JsfPackage.Literals.JSF_MODEL__AUTHENTICATION,
+				 JsfFactory.eINSTANCE.createCasAuthentication()));
 	}
 
 	/**

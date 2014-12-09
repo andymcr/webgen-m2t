@@ -46,7 +46,7 @@
 /]
 
 [query public isAuthenticated(genJsfModel : GenJsfModel) : Boolean
-	= not genJsfModel.jsfModel.properties.authentication.oclIsUndefined()
+	= not genJsfModel.jsfModel.authentication.oclIsUndefined()
 /]
 
 [query public modelAssociations(genModel : GenOrmModel) : Sequence(GenAssociation)
@@ -506,6 +506,10 @@
 
 [query public hasAuthenticationUnit(genPage : GenPage) : Boolean
 	= genPage.authenticationUnits()->notEmpty()
+/]
+
+[query public hasCaptchaFields(genPage : GenPage) : Boolean
+	= genPage.dynamicUnits()->select(u | u.hasCaptchaFields())->notEmpty()
 /]
 
 [query public hasCommandUnits(genPage : GenPage) : Boolean

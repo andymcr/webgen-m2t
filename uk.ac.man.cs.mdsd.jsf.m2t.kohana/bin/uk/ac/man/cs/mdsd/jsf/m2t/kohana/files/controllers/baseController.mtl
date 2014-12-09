@@ -27,8 +27,7 @@ class [genModel.baseControllerClassName()/] extends Controller_Template
 			$this->template->metaTags =array();
 			$this->template->links = array();
 			$this->template->stylesheets = array();
-			$this->template->javascripts = array();
-			$this->template->js_custom = '';
+			$this->template->scripts = array();
 [if (not genModel.isAuthenticated())]
 			$topbar_template = View::factory('elements/topbar');
 [else]

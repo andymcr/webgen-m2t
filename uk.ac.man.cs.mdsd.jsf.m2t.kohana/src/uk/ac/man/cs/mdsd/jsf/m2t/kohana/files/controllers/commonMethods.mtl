@@ -61,7 +61,7 @@ $this->[genUnit.instanceName()/]->[genFeature.columnName()/] = [genValue.generat
 
 [template public generateCaptchaCheck(genUnit : GenDynamicUnit) post(trim())]
 require_once(Kohana::find_file('vendor/recaptcha', 'recaptchalib'));
-$reCaptcha = new ReCaptcha('[genField.oclAsType(GenCaptchaField).jsfField.privateKey/]');
+$reCaptcha = new ReCaptcha('[genUnit.pageDisplayedOn().genPartOf.jsfModel.captchaSecretKey/]');
 $resp = $reCaptcha->verifyResponse(
 	$_SERVER['['/]"REMOTE_ADDR"[']'/], 
 	$this->request->post('g-recaptcha-response') 

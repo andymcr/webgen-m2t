@@ -10,7 +10,7 @@
 
 [template public generateTopNav(genModel : GenJsfModel)]
 [file(genModel.viewElementsDirectory().concat('/topbar').concat(genModel.executableExtension()), false)]
-<nav id="[genModel.jsfModel.properties.topNavigationId/]">
+<nav id="[genModel.jsfModel.topNavigationId/]">
 [if (genModel.topMenuItemsNonAuthenticated()->notEmpty() or genModel.isAuthenticated())]
  <ul>
 [/if]
@@ -39,7 +39,7 @@
 TBC[elseif (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
 [genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.controllerName()/][else]
 TBC[/if]')->uri(),
-		HTML::chars(__('[genModel.jsfModel.properties.authentication.loginLabel/]'))); ?></li>
+		HTML::chars(__('[genModel.jsfModel.authentication.loginLabel/]'))); ?></li>
 [/if]
 [if (genModel.topMenuItemsNonAuthenticated()->notEmpty() or genModel.isAuthenticated())]
  </ul>
