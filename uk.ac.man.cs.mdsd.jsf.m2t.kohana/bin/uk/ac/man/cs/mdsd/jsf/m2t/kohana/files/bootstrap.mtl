@@ -104,7 +104,9 @@ if (isset($_SERVER['['/]'KOHANA_ENV'[']'/]))
  */
 Kohana::init(array(
 [if (not genModel.baseURL.oclIsUndefined())]
+	[if (genModel.baseURL <> '')]
 	'base_url'   => '/[genModel.baseURL/]',
+	[/if]
 [/if]
 [if (genModel.rewriteURLs)]
 	'index_file'   => FALSE,
