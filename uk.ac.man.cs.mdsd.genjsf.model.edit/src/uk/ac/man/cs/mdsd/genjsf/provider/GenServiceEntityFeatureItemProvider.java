@@ -65,6 +65,7 @@ public class GenServiceEntityFeatureItemProvider
 			super.getPropertyDescriptors(object);
 
 			addMessageDisplayOptionPropertyDescriptor(object);
+			addColumnNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -83,6 +84,28 @@ public class GenServiceEntityFeatureItemProvider
 				 getString("_UI_GenIncludedFeature_messageDisplayOption_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_GenIncludedFeature_messageDisplayOption_feature", "_UI_GenIncludedFeature_type"),
 				 GenJsfPackage.Literals.GEN_INCLUDED_FEATURE__MESSAGE_DISPLAY_OPTION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Column Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addColumnNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_GenServiceEntityFeature_columnName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_GenServiceEntityFeature_columnName_feature", "_UI_GenServiceEntityFeature_type"),
+				 GenJsfPackage.Literals.GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME,
 				 true,
 				 false,
 				 false,
@@ -149,6 +172,7 @@ public class GenServiceEntityFeatureItemProvider
 		switch (notification.getFeatureID(GenServiceEntityFeature.class)) {
 			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__MESSAGE_DISPLAY_OPTION:
 			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__NAME:
+			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__GEN_FORCED_VALUE:

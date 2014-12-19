@@ -105,20 +105,20 @@ DATETIME[/if][if (genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
 	? (genFeature.oclIsTypeOf(GenServiceEntityElement)) post(trim())]
 [let genElement : GenServiceEntityElement = genFeature.oclAsType(GenServiceEntityElement)]
 [if (genElement.isSingleton())]
-`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName/]` `[genElement.modelPropertyName()/]`
+`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName/]` AS `[genElement.modelPropertyName()/]`
 [else]
-`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName()/]` `[genElement.modelPropertyName()/]`
+`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName()/]` AS `[genElement.modelPropertyName()/]`
 [/if]
 [/let]
 [/template]
 
 [template protected generateViewColumn(genFeature : GenServiceFeature)
-	? (genFeature.oclIsTypeOf(GenServiceEntityAssociation))]
+	? (genFeature.oclIsTypeOf(GenServiceEntityAssociation)) post(trim())]
 [let genAssociation : GenServiceEntityAssociation = genFeature.oclAsType(GenServiceEntityAssociation)]
 [if (genAssociation.isSingleton())]
-`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` `[genAssociation.modelPropertyName()/]`
+`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` AS `[genAssociation.modelPropertyName()/]`
 [else]
-`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` `[genAssociation.modelPropertyName()/]`
+`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` AS `[genAssociation.modelPropertyName()/]`
 [/if]
 [/let]
 [/template]

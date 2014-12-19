@@ -60,31 +60,8 @@ public class GenServiceEntityElementItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addColumnNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Column Name feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addColumnNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_GenServiceEntityElement_columnName_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_GenServiceEntityElement_columnName_feature", "_UI_GenServiceEntityElement_type"),
-				 GenJsfPackage.Literals.GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -143,9 +120,6 @@ public class GenServiceEntityElementItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(GenServiceEntityElement.class)) {
-			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
 			case GenJsfPackage.GEN_SERVICE_ENTITY_ELEMENT__GEN_DEFAULT_VALUE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;

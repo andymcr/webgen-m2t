@@ -1181,6 +1181,15 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getGenServiceEntityFeature_ColumnName() {
+		return (EAttribute)genServiceEntityFeatureEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getGenServiceEntityElement() {
 		return genServiceEntityElementEClass;
 	}
@@ -1201,15 +1210,6 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 */
 	public EReference getGenServiceEntityElement_GenFeature() {
 		return (EReference)genServiceEntityElementEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getGenServiceEntityElement_ColumnName() {
-		return (EAttribute)genServiceEntityElementEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -2894,11 +2894,11 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		createEReference(genServiceFeatureEClass, GEN_SERVICE_FEATURE__GEN_INCLUDED_BY);
 
 		genServiceEntityFeatureEClass = createEClass(GEN_SERVICE_ENTITY_FEATURE);
+		createEAttribute(genServiceEntityFeatureEClass, GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME);
 
 		genServiceEntityElementEClass = createEClass(GEN_SERVICE_ENTITY_ELEMENT);
 		createEReference(genServiceEntityElementEClass, GEN_SERVICE_ENTITY_ELEMENT__JSF_FEATURE);
 		createEReference(genServiceEntityElementEClass, GEN_SERVICE_ENTITY_ELEMENT__GEN_FEATURE);
-		createEAttribute(genServiceEntityElementEClass, GEN_SERVICE_ENTITY_ELEMENT__COLUMN_NAME);
 
 		genServiceAssociationEClass = createEClass(GEN_SERVICE_ASSOCIATION);
 
@@ -3326,11 +3326,11 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		initEReference(getGenServiceFeature_GenIncludedBy(), this.getGenService(), this.getGenService_GenFeatures(), "genIncludedBy", null, 1, 1, GenServiceFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(genServiceEntityFeatureEClass, GenServiceEntityFeature.class, "GenServiceEntityFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGenServiceEntityFeature_ColumnName(), ecorePackage.getEString(), "columnName", null, 0, 1, GenServiceEntityFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(genServiceEntityElementEClass, GenServiceEntityElement.class, "GenServiceEntityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenServiceEntityElement_JsfFeature(), theJsfPackage.getServiceEntityElement(), null, "jsfFeature", null, 1, 1, GenServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenServiceEntityElement_GenFeature(), theGenOrmPackage.getGenAttribute(), null, "genFeature", null, 1, 1, GenServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getGenServiceEntityElement_ColumnName(), ecorePackage.getEString(), "columnName", null, 0, 1, GenServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(genServiceAssociationEClass, GenServiceAssociation.class, "GenServiceAssociation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

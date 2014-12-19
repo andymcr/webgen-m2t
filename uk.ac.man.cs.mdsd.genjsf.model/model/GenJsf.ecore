@@ -162,13 +162,14 @@
         lowerBound="1" eType="#//GenService" eOpposite="#//GenService/genFeatures"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenServiceEntityFeature" abstract="true"
-      eSuperTypes="#//GenIncludedFeature #//GenServiceFeature"/>
+      eSuperTypes="#//GenIncludedFeature #//GenServiceFeature">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenServiceEntityElement" eSuperTypes="#//GenServiceEntityFeature #//GenIncludedElement #//GenUnitTitle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="jsfFeature" lowerBound="1"
         eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//ServiceEntityElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="genFeature" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenAttribute"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenServiceAssociation" abstract="true"
       interface="true" eSuperTypes="#//GenServiceFeature"/>

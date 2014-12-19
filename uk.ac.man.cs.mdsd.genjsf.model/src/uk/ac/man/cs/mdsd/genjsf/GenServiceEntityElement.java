@@ -16,7 +16,6 @@ import uk.ac.man.cs.mdsd.jsf.ServiceEntityElement;
  * <ul>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenServiceEntityElement#getJsfFeature <em>Jsf Feature</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenServiceEntityElement#getGenFeature <em>Gen Feature</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenServiceEntityElement#getColumnName <em>Column Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -77,30 +76,4 @@ public interface GenServiceEntityElement extends GenServiceEntityFeature, GenInc
 	 * @generated
 	 */
 	void setGenFeature(GenAttribute value);
-
-	/**
-	 * Returns the value of the '<em><b>Column Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Column Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Name</em>' attribute.
-	 * @see #setColumnName(String)
-	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#getGenServiceEntityElement_ColumnName()
-	 * @model
-	 * @generated
-	 */
-	String getColumnName();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genjsf.GenServiceEntityElement#getColumnName <em>Column Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Column Name</em>' attribute.
-	 * @see #getColumnName()
-	 * @generated
-	 */
-	void setColumnName(String value);
 } // GenServiceEntityElement

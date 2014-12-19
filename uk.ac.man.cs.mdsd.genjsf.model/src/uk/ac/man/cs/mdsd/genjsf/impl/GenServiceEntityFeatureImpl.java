@@ -4,13 +4,10 @@ package uk.ac.man.cs.mdsd.genjsf.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import uk.ac.man.cs.mdsd.gencriteria.GenExpression;
@@ -33,6 +30,7 @@ import uk.ac.man.cs.mdsd.orm.OrmPackage;
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityFeatureImpl#getMessageDisplayOption <em>Message Display Option</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityFeatureImpl#getName <em>Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityFeatureImpl#getGenIncludedBy <em>Gen Included By</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenServiceEntityFeatureImpl#getColumnName <em>Column Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -88,6 +86,26 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getColumnName() <em>Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String COLUMN_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getColumnName() <em>Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String columnName = COLUMN_NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -235,6 +253,27 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getColumnName() {
+		return columnName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setColumnName(String newColumnName) {
+		String oldColumnName = columnName;
+		columnName = newColumnName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME, oldColumnName, columnName));
+	}
+
+	/**
 	 * @generated NOT
 	 */
 	public void reconcile(final GenServiceFeature oldGenFeature) {
@@ -245,6 +284,12 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 	 * @generated NOT
 	 */
 	protected void reconcileSettings(final GenServiceFeature oldGenFeature) {
+		if (oldGenFeature instanceof GenServiceEntityFeature) {
+			final GenServiceEntityFeature oldGenElement = (GenServiceEntityFeature) oldGenFeature;
+			if ((oldGenElement.getColumnName() != null) && !oldGenElement.getColumnName().equals("")) {
+				setColumnName(oldGenElement.getColumnName());
+			}
+		}
 	}
 
 	/**
@@ -309,6 +354,8 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 				return getName();
 			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__GEN_INCLUDED_BY:
 				return getGenIncludedBy();
+			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME:
+				return getColumnName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -332,6 +379,9 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 				return;
 			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__GEN_INCLUDED_BY:
 				setGenIncludedBy((GenService)newValue);
+				return;
+			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME:
+				setColumnName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -357,6 +407,9 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__GEN_INCLUDED_BY:
 				setGenIncludedBy((GenService)null);
 				return;
+			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME:
+				setColumnName(COLUMN_NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -377,6 +430,8 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__GEN_INCLUDED_BY:
 				return getGenIncludedBy() != null;
+			case GenJsfPackage.GEN_SERVICE_ENTITY_FEATURE__COLUMN_NAME:
+				return COLUMN_NAME_EDEFAULT == null ? columnName != null : !COLUMN_NAME_EDEFAULT.equals(columnName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -439,6 +494,8 @@ public abstract class GenServiceEntityFeatureImpl extends EObjectImpl implements
 		result.append(messageDisplayOption);
 		result.append(", name: ");
 		result.append(name);
+		result.append(", columnName: ");
+		result.append(columnName);
 		result.append(')');
 		return result.toString();
 	}

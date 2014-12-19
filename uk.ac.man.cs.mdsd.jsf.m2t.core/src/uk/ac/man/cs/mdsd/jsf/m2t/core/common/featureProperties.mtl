@@ -248,15 +248,17 @@
 
 
 [query public columnName(genFeature : GenServiceFeature) : String
-	= let name : String =
-			if genFeature.oclIsTypeOf(GenServiceEntityElement) then
-				genFeature.oclAsType(GenServiceEntityElement).genFeature.columnName()
-			else if genFeature.oclIsTypeOf(GenServiceEntityAssociation) then
-				genFeature.oclAsType(GenServiceEntityAssociation).genFeature.columnName()
+	= if genFeature.oclIsTypeOf(GenServiceEntityElement) then
+			genFeature.oclAsType(GenServiceEntityElement).columnName
+		else if genFeature.oclIsTypeOf(GenServiceEntityAssociation) then
+			if genFeature.isSingleton() then
+				genFeature.oclAsType(GenServiceEntityAssociation).columnName
 			else
-				'unhandledFeature'
-			endif endif
-		in name
+				genFeature.oclAsType(GenServiceEntityAssociation).name
+			endif
+		else
+			'unhandledFeature'
+		endif endif
 /]
 
 [query public displayLabel(genFeature : GenServiceFeature) : String

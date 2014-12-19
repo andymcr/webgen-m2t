@@ -118,13 +118,14 @@
     <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceFeature">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceFeature/genIncludedBy"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceEntityFeature"/>
+    <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceEntityFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenServiceEntityFeature/columnName"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceEntityElement">
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceEntityElement/jsfFeature"/>
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenServiceEntityElement/genFeature"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenServiceEntityElement/columnName"/>
     </genClasses>
     <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceAssociation"/>
     <genClasses image="false" ecoreClass="GenJsf.ecore#//GenServiceEntityAssociation">

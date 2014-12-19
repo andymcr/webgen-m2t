@@ -18,7 +18,6 @@ import uk.ac.man.cs.mdsd.genjsf.GenServiceAssociation;
 import uk.ac.man.cs.mdsd.genjsf.GenServiceFeature;
 import uk.ac.man.cs.mdsd.genjsf.GenServiceViewAssociation;
 
-import uk.ac.man.cs.mdsd.jsf.ServiceAssociation;
 import uk.ac.man.cs.mdsd.jsf.ServiceViewAssociation;
 import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
 
