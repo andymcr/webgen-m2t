@@ -31,8 +31,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="GenPredicateBooleanOperator" eSuperTypes="#//GenPredicate">
     <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"
         eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//PredicateBooleanOperator"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="genExpressions" ordered="false"
-        lowerBound="1" upperBound="-1" eType="#//GenPredicate" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genExpressions" lowerBound="1"
+        upperBound="-1" eType="#//GenPredicate" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenPredicateEqualityOperator" eSuperTypes="#//GenPredicate">
     <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"

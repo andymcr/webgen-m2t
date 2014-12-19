@@ -61,7 +61,7 @@ public interface GenPredicateBooleanOperator extends GenPredicate {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Gen Expressions</em>' containment reference list.
 	 * @see uk.ac.man.cs.mdsd.gencriteria.GencriteriaPackage#getGenPredicateBooleanOperator_GenExpressions()
-	 * @model containment="true" required="true" ordered="false"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<GenPredicate> getGenExpressions();

@@ -33,7 +33,7 @@ public interface PredicateBooleanOperator extends Predicate {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Expressions</em>' containment reference list.
 	 * @see uk.ac.man.cs.mdsd.criteria.CriteriaPackage#getPredicateBooleanOperator_Expressions()
-	 * @model containment="true" required="true" ordered="false"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<Predicate> getExpressions();

@@ -679,7 +679,7 @@ public class GencriteriaPackageImpl extends EPackageImpl implements GencriteriaP
 
 		initEClass(genPredicateBooleanOperatorEClass, GenPredicateBooleanOperator.class, "GenPredicateBooleanOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenPredicateBooleanOperator_CriteriaPredicate(), theCriteriaPackage.getPredicateBooleanOperator(), null, "criteriaPredicate", null, 1, 1, GenPredicateBooleanOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getGenPredicateBooleanOperator_GenExpressions(), this.getGenPredicate(), null, "genExpressions", null, 1, -1, GenPredicateBooleanOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenPredicateBooleanOperator_GenExpressions(), this.getGenPredicate(), null, "genExpressions", null, 1, -1, GenPredicateBooleanOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(genPredicateEqualityOperatorEClass, GenPredicateEqualityOperator.class, "GenPredicateEqualityOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenPredicateEqualityOperator_CriteriaPredicate(), theCriteriaPackage.getPredicateEqualityOperator(), null, "criteriaPredicate", null, 1, 1, GenPredicateEqualityOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
