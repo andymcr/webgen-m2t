@@ -137,10 +137,6 @@
 		in displayFeatures->collect(f | genService.genFeatures->any(i | i.name = f.name))
 /]
 
-[query public fileAttributes(genService : GenService) : Sequence(GenServiceEntityElement)
-	= genService.genFeatures->select(f | f.isFileAttribute()).oclAsType(GenServiceEntityElement)
-/]
-
 [query public forcedValueFeatures(genService : GenService) : Sequence(GenServiceEntityFeature)
 	= genService.genFeatures
 		->select(f | f.oclIsKindOf(GenIncludedFeature)).oclAsType(GenIncludedFeature)
@@ -185,10 +181,6 @@
 		endif
 /]
 
-[query public hasFileAttributes(genService : GenService) : Boolean
-	= genService.fileAttributes()->notEmpty()
-/]
-
 [query public hasForcedValueFeatures(genService : GenService) : Boolean
 	= genService.forcedValueFeatures()->notEmpty()
 /]
@@ -207,6 +199,10 @@
 
 [query public hasInputFeatures(genService : GenService) : Boolean
 	= genService.inputFeatures()->notEmpty()
+/]
+
+[query public hasResourceAttributes(genService : GenService) : Boolean
+	= genService.resourceAttributes()->notEmpty()
 /]
 
 [query public hasValidatedFeatures(genService : GenService) : Boolean
@@ -236,6 +232,10 @@
 
 [query public keyName(genService : GenService) : String
 	= genService.genEntities->first().keyName
+/]
+
+[query public resourceAttributes(genService : GenService) : Sequence(GenServiceEntityElement)
+	= genService.genFeatures->select(f | f.isResourceAttribute()).oclAsType(GenServiceEntityElement)
 /]
 
 [query public tableName(genService : GenService) : String
@@ -324,14 +324,6 @@
 		endif
 /]
 
-[query public isFileAttribute(genFeature : GenServiceFeature) : Boolean
-	= if genFeature.oclIsTypeOf(GenServiceEntityElement) then
-			genFeature.oclAsType(GenServiceEntityElement).genFeature.oclIsTypeOf(GenSingletonFile)
-		else
-			false
-		endif
-/]
-
 [comment TODO switch use of jsfFeature to genFeature/]
 [query public isInput(genFeature : GenServiceFeature) : Boolean
 	= if genFeature.oclIsTypeOf(GenServiceEntityElement) then
@@ -391,6 +383,14 @@
 		else
 			false
 		endif endif
+/]
+
+[query public isResourceAttribute(genFeature : GenServiceFeature) : Boolean
+	= if genFeature.oclIsTypeOf(GenServiceEntityElement) then
+			genFeature.oclAsType(GenServiceEntityElement).genFeature.oclIsKindOf(GenSingletonResource)
+		else
+			false
+		endif
 /]
 
 [query public isSingleton(genFeature : GenServiceFeature) : Boolean
@@ -677,15 +677,6 @@
 			endif
 /]
 
-[query public fileInputFields(genUnit : GenDynamicUnit) : OrderedSet(GenUnitField)
-	= genUnit.genDisplayFields->select(f |
-		if f.oclIsKindOf(GenUnitFeature) then
-			f.oclAsType(GenUnitFeature).isFileInput()
-		else
-			false
-		endif)
-/]
-
 [query public forcedValueFeatures(genUnit : GenDynamicUnit) : OrderedSet(GenUnitField)
 	= genUnit.genDisplayFields->select(f | f.hasForcedValue())
 /]
@@ -919,10 +910,10 @@
 			endif
 /]
 
-[query public nonFileInputFeatures(genUnit : GenDynamicUnit) : OrderedSet(GenUnitField)
+[query public nonResourceInputFeatures(genUnit : GenDynamicUnit) : OrderedSet(GenUnitField)
 	= genUnit.genDisplayFields->select(f | f.oclIsKindOf(GenUnitFeature))->select(f |
 		if f.oclIsKindOf(GenUnitFeature) then
-			f.oclAsType(GenUnitFeature).isInput() and not f.oclAsType(GenUnitFeature).isFileInput()
+			f.oclAsType(GenUnitFeature).isInput() and not f.oclAsType(GenUnitFeature).isResourceInput()
 		else
 			true
 		endif)
@@ -1147,11 +1138,11 @@
 		endif
 /]
 
-[query public isFileSingleton(genField : GenUnitField) : Boolean
+[query public isResourceSingleton(genField : GenUnitField) : Boolean
 	= if not genField.oclIsTypeOf(GenUnitElement) then
 			false
 		else let genFeature : GenUnitElement = genField.oclAsType(GenUnitElement)
-			in genFeature.genServiceFeature.genFeature.oclIsTypeOf(GenSingletonFile)
+			in genFeature.genServiceFeature.genFeature.oclIsKindOf(GenSingletonResource)
 		endif
 /]
 
@@ -1283,16 +1274,16 @@
 		endif
 /]
 
-[query public isFileAttribute(genFeature : GenUnitFeature) : Boolean
+[query public isResourceAttribute(genFeature : GenUnitFeature) : Boolean
 	= if not genFeature.oclIsTypeOf(GenUnitElement) then
 			false
 		else
-			genFeature.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclIsTypeOf(GenSingletonFile)
+			genFeature.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclIsKindOf(GenSingletonResource)
 		endif
 /]
 
-[query public isFileInput(genFeature : GenUnitFeature) : Boolean
-	= genFeature.isInput() and genFeature.isFileAttribute()
+[query public isResourceInput(genFeature : GenUnitFeature) : Boolean
+	= genFeature.isInput() and genFeature.isResourceAttribute()
 /]
 
 [query public isInput(genFeature : GenUnitFeature) : Boolean

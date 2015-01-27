@@ -589,8 +589,8 @@ array_key_exists('[genField.modelPropertyName()/]', $unit_fields) ? $unit_fields
 [/template]
 
 [template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.isFileSingleton()) post(trim())]
-[let genFile : GenSingletonFile = genField.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclAsType(GenSingletonFile)]
+	? (genField.isResourceSingleton()) post(trim())]
+[let genResource : GenSingletonResource = genField.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclAsType(GenSingletonResource)]
 <?php
 	echo Form::file('[genField.modelPropertyName()/]',
 		array(
@@ -599,9 +599,16 @@ array_key_exists('[genField.modelPropertyName()/]', $unit_fields) ? $unit_fields
 [if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
 			'required' => '',
 [/if]
-[if (genFile.ormFeature.validUploadMimeTypes->notEmpty())]
-			'accept' => '[genFile.ormFeature.validUploadMimeTypes->first()/]', // array([for (type : String | genFile.ormFeature.validUploadMimeTypes) separator(', ')]'[type/]'[/for]),
-[/if]
+[let ormFeature : SingletonResource
+		= if genResource.oclIsTypeOf(GenSingletonFile) then 
+				genResource.oclAsType(GenSingletonFile).ormFeature
+			else
+				genResource.oclAsType(GenSingletonImage).ormFeature
+			endif]
+	[if (ormFeature.validUploadMimeTypes->notEmpty())]
+			'accept' => '[ormFeature.validUploadMimeTypes->first()/]', // array([for (type : String | ormFeature.validUploadMimeTypes) separator(', ')]'[type/]'[/for]),
+	[/if]
+[/let]
 	)) . PHP_EOL;
 ?>
 [/let]

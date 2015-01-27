@@ -132,7 +132,7 @@ $this->[genUnit.instanceName()/]->validation['['/]'[genField.modelPropertyName()
 
 [template private generateSaveCode(genUnit : GenEditUnit) post(trim())]
 try
-	{
+{
 	[genUnit.generateValuesFromFormToModel()/]
 [if (genUnit.hasForcedValueFeatures())]
 	[genUnit.generateForcedFeatureValues()/]

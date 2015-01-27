@@ -36,7 +36,7 @@ TBC[/if]')->uri());
 
 [template public generateValuesFromFormToModel(genUnit : GenDynamicUnit) post(trim())]
 $this->[genUnit.instanceName()/]->values($this->request->post(), array([for
-	(genField : GenUnitField | genUnit.nonFileInputFeatures())
+	(genField : GenUnitField | genUnit.nonResourceInputFeatures())
 	separator (', ')][if (genField.isLocation())]'[genField.columnName()/]_latitude', '[genField.columnName()/]_longitude'[else]'[genField.columnName()/]'[/if][/for]));
 [/template]
 

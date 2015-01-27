@@ -86,10 +86,17 @@ DATETIME[/if][if (genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
 [/template]
 
 [template protected generateColumn(genFeature : GenFeature)
-	? (genFeature.oclIsTypeOf(GenSingletonFile)) post(trim())]
-[let genSingletonFeature : GenSingletonFile = genFeature.oclAsType(GenSingletonFile)]
-`[genSingletonFeature.columnName/]` varchar(255)[if (genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
-	(not genSingletonFeature.ormFeature.defaultValue.oclIsUndefined())] DEFAULT [genSingletonFeature.genDefaultValue.generateCriteria()/][/if]
+	? (genFeature.oclIsKindOf(GenSingletonResource)) post(trim())]
+[let genSingletonFeature : GenSingletonResource = genFeature.oclAsType(GenSingletonResource)]
+[let ormFeature : SingletonResource
+		= if genSingletonFeature.oclIsTypeOf(SingletonFile) then
+				genSingletonFeature.oclAsType(GenSingletonFile).ormFeature
+			else
+				genSingletonFeature.oclAsType(GenSingletonImage).ormFeature
+			endif] 
+`[genSingletonFeature.columnName/]` varchar(255)[if (ormFeature.required)] NOT NULL[/if][if
+	(not ormFeature.defaultValue.oclIsUndefined())] DEFAULT [genSingletonFeature.genDefaultValue.generateCriteria()/][/if]
+[/let]
 [/let]
 [/template]
 
@@ -105,20 +112,20 @@ DATETIME[/if][if (genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
 	? (genFeature.oclIsTypeOf(GenServiceEntityElement)) post(trim())]
 [let genElement : GenServiceEntityElement = genFeature.oclAsType(GenServiceEntityElement)]
 [if (genElement.isSingleton())]
-`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName/]` `[genElement.modelPropertyName()/]`
+`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName/]` AS `[genElement.modelPropertyName()/]`
 [else]
-`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName()/]` `[genElement.modelPropertyName()/]`
+`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName()/]` AS `[genElement.modelPropertyName()/]`
 [/if]
 [/let]
 [/template]
 
 [template protected generateViewColumn(genFeature : GenServiceFeature)
-	? (genFeature.oclIsTypeOf(GenServiceEntityAssociation))]
+	? (genFeature.oclIsTypeOf(GenServiceEntityAssociation)) post(trim())]
 [let genAssociation : GenServiceEntityAssociation = genFeature.oclAsType(GenServiceEntityAssociation)]
 [if (genAssociation.isSingleton())]
-`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` `[genAssociation.modelPropertyName()/]`
+`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` AS `[genAssociation.modelPropertyName()/]`
 [else]
-`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` `[genAssociation.modelPropertyName()/]`
+`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` AS `[genAssociation.modelPropertyName()/]`
 [/if]
 [/let]
 [/template]

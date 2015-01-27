@@ -303,7 +303,7 @@ $[instanceVariable/]->[genField.genDisplayedOn.genService.keyName()/]
 [/template]
 
 [template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
-	? (genField.isFileSingleton()) post(trim())]
+	? (genField.isResourceSingleton()) post(trim())]
 [let genFeature : GenUnitElement = genField.oclAsType(GenUnitElement)]
 <?php
 	if (!empty($[instanceVariable/]->[genFeature.modelPropertyName()/]))

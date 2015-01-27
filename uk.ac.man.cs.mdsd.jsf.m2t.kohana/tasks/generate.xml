@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="generate" name="uk.ac.man.cs.mdsd.jsf.m2t.kohana">
     <property name="ECLIPSE_HOME" value="../../../../../../Eclipse/eclipse-modeling-kepler-SR2-win32-x86_64"/>
-    <property name="ECLIPSE_WORKSPACE" value="../../../../eclipse/webgen-kepler"/>
+    <property name="ECLIPSE_WORKSPACE" value="../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
     <path id="uk.ac.man.cs.mdsd.jsf.m2t.kohana.libraryclasspath">

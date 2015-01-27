@@ -292,8 +292,14 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 
 [/for]
 [/if]
-[for (genFeature : GenServiceEntityFeature | genService.fileAttributes())]
-[let genFile : GenSingletonFile = genFeature.oclAsType(GenServiceEntityElement).genFeature.oclAsType(GenSingletonFile)]
+[for (genFeature : GenServiceEntityFeature | genService.resourceAttributes())]
+[let genResource : GenSingletonResource = genFeature.oclAsType(GenServiceEntityElement).genFeature.oclAsType(GenSingletonResource)]
+[let ormFeature : SingletonResource
+		= if genResource.oclIsTypeOf(SingletonFile) then
+				genResource.oclAsType(GenSingletonFile).ormFeature
+			else
+				genResource.oclAsType(GenSingletonImage).ormFeature
+			endif] 
 	private function _save_[genFeature.modelPropertyName()/]()
 	{
 		$validation = Validation::factory($_FILES);
@@ -304,9 +310,9 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 				array('Upload::not_empty'),
 [/if]
 				array('Upload::valid'),
-				array('Upload::size', array(':value', [genFile.ormFeature.maximumUploadSize/])),
-[if (genFile.ormFeature.validUploadExtensions->notEmpty())]
-				array('Upload::type', array(':value', array([for (extension : String | genFile.ormFeature.validUploadExtensions) separator(', ')]'[extension/]'[/for]))),
+				array('Upload::size', array(':value', [ormFeature.maximumUploadSize/])),
+[if (ormFeature.validUploadExtensions->notEmpty())]
+				array('Upload::type', array(':value', array([for (extension : String | ormFeature.validUploadExtensions) separator(', ')]'[extension/]'[/for]))),
 [/if]
 			));
 		if ($validation->check() === FALSE)
@@ -315,25 +321,26 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 		if ($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
 			return;
 
-		if (!empty($this->[genFile.columnName()/])) 
-			$filename = pathinfo($this->[genFile.columnName()/], PATHINFO_FILENAME);
+		if (!empty($this->[genResource.columnName()/])) 
+			$filename = str_replace(' ', '_', pathinfo($this->[genResource.columnName()/], PATHINFO_FILENAME));
 		else
-			$filename = pathinfo($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME);
+			$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
 		$extension = pathinfo($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
-[if (genFile.ormFeature.uploadsWithinWebsite)]
-		$filepath = Upload::save($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[genFile.ormFeature.relativeUploadDirectory/]');
-		$this->[genFeature.columnName()/] = '[genFile.ormFeature.relativeUploadDirectory/]/' . $filename . '.' . $extension;
+[if (ormFeature.uploadsWithinWebsite)]
+		$filepath = Upload::save($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[ormFeature.relativeUploadDirectory/]');
+		$this->[genFeature.columnName()/] = '[ormFeature.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [else]
 		$filepath = Upload::save($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
 [/if]
 	}
 
 [/let]
+[/let]
 [/for]
-[if (genService.hasInputCollectionAssociations() or genService.hasFileAttributes())]
+[if (genService.hasInputCollectionAssociations() or genService.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
 	{
-[for (genFeature : GenServiceEntityFeature | genService.fileAttributes())]
+[for (genFeature : GenServiceEntityFeature | genService.resourceAttributes())]
 		$this->_save_[genFeature.modelPropertyName()/]();
 [/for]
 		parent::save($validation);
