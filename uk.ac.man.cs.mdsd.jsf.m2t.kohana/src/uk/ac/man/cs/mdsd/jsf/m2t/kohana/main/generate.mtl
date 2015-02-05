@@ -18,6 +18,7 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::config::database]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::config::mysql_schema]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::config::pagination]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::angularJsController]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::baseController]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::pageController]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::models::enumerationModel]
@@ -60,6 +61,7 @@ genModel.generateCreateSitemap()/]
 
 [genModel.generateBaseController()/]
 [genModel.genPages.generateController()/]
+[genModel.generateAngularJsControllers()/]
 
 [genModel.generateRecaptchalib()/]
 [genModel.generateCaptchaException()/]

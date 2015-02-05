@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import uk.ac.man.cs.mdsd.genjsf.GenContentUnit;
@@ -25,6 +26,7 @@ import uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation;
 import uk.ac.man.cs.mdsd.genjsf.GenUnitChildFeature;
 import uk.ac.man.cs.mdsd.genjsf.GenUnitContainer;
 import uk.ac.man.cs.mdsd.genjsf.GenUnitField;
+import uk.ac.man.cs.mdsd.genjsf.GenUnitTitle;
 import uk.ac.man.cs.mdsd.genjsf.SelectManyOptions;
 import uk.ac.man.cs.mdsd.genjsf.SelectOneofOptions;
 import uk.ac.man.cs.mdsd.jsf.UnitAssociation;
@@ -42,6 +44,7 @@ import uk.ac.man.cs.mdsd.jsf.UnitAssociation;
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenUnitAssociationImpl#getGenChildFeature <em>Gen Child Feature</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenUnitAssociationImpl#getGenSelection <em>Gen Selection</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenUnitAssociationImpl#getGenDynamicLabel <em>Gen Dynamic Label</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenUnitAssociationImpl#getGenFilters <em>Gen Filters</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenUnitAssociationImpl#getSelectOneOfOption <em>Select One Of Option</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenUnitAssociationImpl#getSelectManyOption <em>Select Many Option</em>}</li>
  * </ul>
@@ -109,6 +112,16 @@ public class GenUnitAssociationImpl extends GenUnitFeatureImpl implements GenUni
 	 * @ordered
 	 */
 	protected GenModelLabel genDynamicLabel;
+
+	/**
+	 * The cached value of the '{@link #getGenFilters() <em>Gen Filters</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGenFilters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<GenUnitTitle> genFilters;
 
 	/**
 	 * The default value of the '{@link #getSelectOneOfOption() <em>Select One Of Option</em>}' attribute.
@@ -381,6 +394,18 @@ public class GenUnitAssociationImpl extends GenUnitFeatureImpl implements GenUni
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<GenUnitTitle> getGenFilters() {
+		if (genFilters == null) {
+			genFilters = new EObjectResolvingEList<GenUnitTitle>(GenUnitTitle.class, this, GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_FILTERS);
+		}
+		return genFilters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public SelectOneofOptions getSelectOneOfOption() {
 		return selectOneOfOption;
 	}
@@ -501,6 +526,8 @@ public class GenUnitAssociationImpl extends GenUnitFeatureImpl implements GenUni
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_DYNAMIC_LABEL:
 				if (resolve) return getGenDynamicLabel();
 				return basicGetGenDynamicLabel();
+			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_FILTERS:
+				return getGenFilters();
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__SELECT_ONE_OF_OPTION:
 				return getSelectOneOfOption();
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__SELECT_MANY_OPTION:
@@ -536,6 +563,10 @@ public class GenUnitAssociationImpl extends GenUnitFeatureImpl implements GenUni
 				return;
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_DYNAMIC_LABEL:
 				setGenDynamicLabel((GenModelLabel)newValue);
+				return;
+			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_FILTERS:
+				getGenFilters().clear();
+				getGenFilters().addAll((Collection<? extends GenUnitTitle>)newValue);
 				return;
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__SELECT_ONE_OF_OPTION:
 				setSelectOneOfOption((SelectOneofOptions)newValue);
@@ -573,6 +604,9 @@ public class GenUnitAssociationImpl extends GenUnitFeatureImpl implements GenUni
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_DYNAMIC_LABEL:
 				setGenDynamicLabel((GenModelLabel)null);
 				return;
+			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_FILTERS:
+				getGenFilters().clear();
+				return;
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__SELECT_ONE_OF_OPTION:
 				setSelectOneOfOption(SELECT_ONE_OF_OPTION_EDEFAULT);
 				return;
@@ -603,6 +637,8 @@ public class GenUnitAssociationImpl extends GenUnitFeatureImpl implements GenUni
 				return genSelection != null;
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_DYNAMIC_LABEL:
 				return genDynamicLabel != null;
+			case GenJsfPackage.GEN_UNIT_ASSOCIATION__GEN_FILTERS:
+				return genFilters != null && !genFilters.isEmpty();
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__SELECT_ONE_OF_OPTION:
 				return selectOneOfOption != SELECT_ONE_OF_OPTION_EDEFAULT;
 			case GenJsfPackage.GEN_UNIT_ASSOCIATION__SELECT_MANY_OPTION:

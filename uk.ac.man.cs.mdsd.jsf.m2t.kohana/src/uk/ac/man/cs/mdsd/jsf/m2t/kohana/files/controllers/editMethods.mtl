@@ -1,7 +1,8 @@
 [comment encoding = UTF-8 /]
 [module editMethods(
 	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
@@ -34,8 +35,9 @@ if (!empty($[genEditUnit.instanceName()/]))
 $this->[genEditUnit.templateInstanceName()/]->bind('[genEditUnit.instanceName()/]', $this->[genEditUnit.instanceName()/]);
 if (isset($this->[genEditUnit.instanceName()/]_field_errors))
 	$this->[genEditUnit.templateInstanceName()/]->bind('[genEditUnit.instanceName()/]_field_errors', $this->[genEditUnit.instanceName()/]_field_errors);
-[for (genField : GenUnitField | genEditUnit.inputAssociations())]
-[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
+[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::None)]
+	[for (genField : GenUnitField | genEditUnit.inputAssociations())]
+	[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
 $[genAssociation.optionsName()/] = array([if (genAssociation.isSingleton())]'' => __('Please select')[/if]);
 foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
 find_all()[else]
@@ -44,8 +46,9 @@ find_all()[else]
 displayLabel()[else]
 [genAssociation.genDynamicLabel.name/]()[/if];
 $this->[genEditUnit.templateInstanceName()/]->bind('[genAssociation.optionsName()/]', $[genAssociation.optionsName()/]);
-[/let]
-[/for]
+	[/let]
+	[/for]
+[/if]
 [/let]
 [/template]
 
@@ -56,7 +59,8 @@ $this->[genEditUnit.templateInstanceName()/]->bind('[genAssociation.optionsName(
 [if (genCreateUnit.hasInterfaceFields())]
 		[genCreateUnit.generateUnitRules()/]
 [/if]
-public function action_[genCreateUnit.actionName()/]() {
+public function action_[genCreateUnit.actionName()/]()
+{
 [if (not genCreateUnit.genCancelDestination.oclIsUndefined())]
 	[genCreateUnit.generateHandleCancel()/]
 
@@ -64,6 +68,10 @@ public function action_[genCreateUnit.actionName()/]() {
 	[genCreateUnit.oclAsType(GenCreateUnit).generateSaveCode()/]
 }
 
+[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology <> AjaxTechnologies::None)]
+[genUnit.generateJsMethods()/]
+
+[/if]
 [/let]
 [/template]
 
@@ -104,6 +112,45 @@ public function action_[genEditUnit.actionName()/]()
 	}
 }
 
+[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology <> AjaxTechnologies::None)]
+[genUnit.generateJsMethods()/]
+
+[/if]
+[for (genAction : GenInlineAction | genEditUnit.uriActions())]
+[genAction.generateActionMethod('$this->'.concat(genEditUnit.instanceName()).concat('_error'))/]
+
+[/for]
+[/let]
+[/template]
+
+[template private generateJsMethods(genUnit : GenContentUnit) post(trim())]
+[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
+[for (genField : GenUnitField | genEditUnit.inputAssociations())]
+[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
+public function action_[genAssociation.optionsName()/]()
+{
+	$options = array([if (genAssociation.isSingleton())]
+
+		'id' => '',
+		'label' => __('Please select'),
+		[/if]);
+	foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
+find_all()[else]
+[genAssociation.genSelection.instanceName()/](FALSE)[/if] AS $option)
+		$options['['/][']'/] = array(
+			'id' => $option->id,
+			'label' => $option->[if (genAssociation.genDynamicLabel.oclIsUndefined())]
+displayLabel()[else]
+[genAssociation.genDynamicLabel.name/]()[/if],
+		);
+
+	$this->auto_render = FALSE;
+	$this->response->headers('Content-Type','application/json');
+	$this->response->body(json_encode($options));
+}
+
+[/let]
+[/for]
 [for (genAction : GenInlineAction | genEditUnit.uriActions())]
 [genAction.generateActionMethod('$this->'.concat(genEditUnit.instanceName()).concat('_error'))/]
 

@@ -67,7 +67,6 @@ public class GenJsfModelItemProvider
 			addBaseURLPropertyDescriptor(object);
 			addRewriteURLsPropertyDescriptor(object);
 			addDevelopmentVersionPropertyDescriptor(object);
-			addAjaxTechnologyPropertyDescriptor(object);
 			addTextEditorPathPropertyDescriptor(object);
 			addBackingPackagePropertyDescriptor(object);
 			addConverterPackagePropertyDescriptor(object);
@@ -141,28 +140,6 @@ public class GenJsfModelItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 getString("_UI_SitePropertyCategory"),
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Ajax Technology feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addAjaxTechnologyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_GenJsfModel_ajaxTechnology_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_GenJsfModel_ajaxTechnology_feature", "_UI_GenJsfModel_type"),
-				 GenJsfPackage.Literals.GEN_JSF_MODEL__AJAX_TECHNOLOGY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 getString("_UI_SitePropertyCategory"),
 				 null));
 	}
@@ -393,7 +370,6 @@ public class GenJsfModelItemProvider
 			case GenJsfPackage.GEN_JSF_MODEL__BASE_URL:
 			case GenJsfPackage.GEN_JSF_MODEL__REWRITE_UR_LS:
 			case GenJsfPackage.GEN_JSF_MODEL__DEVELOPMENT_VERSION:
-			case GenJsfPackage.GEN_JSF_MODEL__AJAX_TECHNOLOGY:
 			case GenJsfPackage.GEN_JSF_MODEL__TEXT_EDITOR_PATH:
 			case GenJsfPackage.GEN_JSF_MODEL__BACKING_PACKAGE:
 			case GenJsfPackage.GEN_JSF_MODEL__CONVERTER_PACKAGE:

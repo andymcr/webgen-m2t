@@ -28,10 +28,6 @@
     <eLiterals name="Description"/>
     <eLiterals name="ToolTip"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="AjaxTechnologies">
-    <eLiterals name="None"/>
-    <eLiterals name="jQuery"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenJsfModel" eSuperTypes="../../uk.ac.man.cs.mdsd.genorm.model/model/GenOrm.ecore#//GenOrmModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="jsfModel" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//JsfModel"/>
@@ -50,8 +46,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="developmentVersion" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ajaxTechnology" ordered="false"
-        lowerBound="1" eType="#//AjaxTechnologies" defaultValueLiteral="None"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="textEditorPath" ordered="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="backingPackage" ordered="false"
@@ -314,6 +308,8 @@
         eType="#//GenSelection"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="genDynamicLabel" ordered="false"
         eType="#//GenModelLabel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFilters" upperBound="-1"
+        eType="#//GenUnitTitle"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectOneOfOption" lowerBound="1"
         eType="#//SelectOneofOptions" defaultValueLiteral="Menu"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectManyOption" lowerBound="1"

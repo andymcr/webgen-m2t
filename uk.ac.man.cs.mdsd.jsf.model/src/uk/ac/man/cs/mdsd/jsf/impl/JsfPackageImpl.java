@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import uk.ac.man.cs.mdsd.criteria.CriteriaPackage;
 import uk.ac.man.cs.mdsd.jsf.ActionUnit;
+import uk.ac.man.cs.mdsd.jsf.AjaxTechnologies;
 import uk.ac.man.cs.mdsd.jsf.Authentication;
 import uk.ac.man.cs.mdsd.jsf.AuthenticationUnit;
 import uk.ac.man.cs.mdsd.jsf.CaptchaField;
@@ -642,6 +643,13 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EEnum ajaxTechnologiesEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum pageTopMenuOptionsEEnum = null;
 
 	/**
@@ -819,8 +827,17 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getJsfModel_AjaxTechnology() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getJsfModel_Authentication() {
-		return (EReference)jsfModelEClass.getEStructuralFeatures().get(10);
+		return (EReference)jsfModelEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -829,15 +846,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	public EAttribute getJsfModel_CaptchaSiteKey() {
-		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(11);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getJsfModel_CaptchaSecretKey() {
 		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(12);
 	}
 
@@ -846,7 +854,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfModel_TopNavigationId() {
+	public EAttribute getJsfModel_CaptchaSecretKey() {
 		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(13);
 	}
 
@@ -855,8 +863,17 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getJsfModel_TopNavigationId() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(14);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getJsfModel_SideMenu() {
-		return (EReference)jsfModelEClass.getEStructuralFeatures().get(14);
+		return (EReference)jsfModelEClass.getEStructuralFeatures().get(15);
 	}
 
 	/**
@@ -865,7 +882,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	public EAttribute getJsfModel_StaticUnitsEditable() {
-		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(15);
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(16);
 	}
 
 	/**
@@ -1766,6 +1783,15 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 */
 	public EReference getUnitAssociation_DynamicLabel() {
 		return (EReference)unitAssociationEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getUnitAssociation_Filters() {
+		return (EReference)unitAssociationEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -2907,6 +2933,15 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EEnum getAjaxTechnologies() {
+		return ajaxTechnologiesEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getPageTopMenuOptions() {
 		return pageTopMenuOptionsEEnum;
 	}
@@ -3103,6 +3138,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEAttribute(jsfModelEClass, JSF_MODEL__COPYRIGHT_TEXT);
 		createEAttribute(jsfModelEClass, JSF_MODEL__META_DESCRIPTION);
 		createEAttribute(jsfModelEClass, JSF_MODEL__FRAMEWORK_TECHNOLOGY);
+		createEAttribute(jsfModelEClass, JSF_MODEL__AJAX_TECHNOLOGY);
 		createEReference(jsfModelEClass, JSF_MODEL__AUTHENTICATION);
 		createEAttribute(jsfModelEClass, JSF_MODEL__CAPTCHA_SITE_KEY);
 		createEAttribute(jsfModelEClass, JSF_MODEL__CAPTCHA_SECRET_KEY);
@@ -3298,6 +3334,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEReference(unitAssociationEClass, UNIT_ASSOCIATION__CHILD_FEATURE);
 		createEReference(unitAssociationEClass, UNIT_ASSOCIATION__SELECTION);
 		createEReference(unitAssociationEClass, UNIT_ASSOCIATION__DYNAMIC_LABEL);
+		createEReference(unitAssociationEClass, UNIT_ASSOCIATION__FILTERS);
 
 		unitChildFeatureEClass = createEClass(UNIT_CHILD_FEATURE);
 
@@ -3427,6 +3464,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 
 		// Create enums
 		frameworkTechnologiesEEnum = createEEnum(FRAMEWORK_TECHNOLOGIES);
+		ajaxTechnologiesEEnum = createEEnum(AJAX_TECHNOLOGIES);
 		pageTopMenuOptionsEEnum = createEEnum(PAGE_TOP_MENU_OPTIONS);
 		collectionDisplayOptionsEEnum = createEEnum(COLLECTION_DISPLAY_OPTIONS);
 	}
@@ -3569,6 +3607,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEAttribute(getJsfModel_CopyrightText(), ecorePackage.getEString(), "copyrightText", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getJsfModel_MetaDescription(), ecorePackage.getEString(), "metaDescription", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getJsfModel_FrameworkTechnology(), this.getFrameworkTechnologies(), "frameworkTechnology", null, 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getJsfModel_AjaxTechnology(), this.getAjaxTechnologies(), "ajaxTechnology", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getJsfModel_Authentication(), this.getAuthentication(), null, "authentication", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getJsfModel_CaptchaSiteKey(), ecorePackage.getEString(), "captchaSiteKey", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getJsfModel_CaptchaSecretKey(), ecorePackage.getEString(), "captchaSecretKey", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3764,6 +3803,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEReference(getUnitAssociation_ChildFeature(), this.getUnitChildFeature(), null, "childFeature", null, 0, 1, UnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUnitAssociation_Selection(), this.getSelection(), null, "selection", null, 0, 1, UnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getUnitAssociation_DynamicLabel(), this.getModelLabel(), null, "dynamicLabel", null, 0, 1, UnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getUnitAssociation_Filters(), this.getUnitTitle(), null, "filters", null, 0, -1, UnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(unitChildFeatureEClass, UnitChildFeature.class, "UnitChildFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3898,6 +3938,11 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.CODE_IGNITER);
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.KOHANA);
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.LARAVEL);
+
+		initEEnum(ajaxTechnologiesEEnum, AjaxTechnologies.class, "AjaxTechnologies");
+		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.NONE);
+		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.JQUERY);
+		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.ANGULAR_JS);
 
 		initEEnum(pageTopMenuOptionsEEnum, PageTopMenuOptions.class, "PageTopMenuOptions");
 		addEEnumLiteral(pageTopMenuOptionsEEnum, PageTopMenuOptions.NEVER_INCLUDE);

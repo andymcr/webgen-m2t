@@ -74,6 +74,7 @@ public class JsfModelItemProvider
 			addCopyrightTextPropertyDescriptor(object);
 			addMetaDescriptionPropertyDescriptor(object);
 			addFrameworkTechnologyPropertyDescriptor(object);
+			addAjaxTechnologyPropertyDescriptor(object);
 			addCaptchaSiteKeyPropertyDescriptor(object);
 			addCaptchaSecretKeyPropertyDescriptor(object);
 			addTopNavigationIdPropertyDescriptor(object);
@@ -229,6 +230,28 @@ public class JsfModelItemProvider
 				 getString("_UI_JsfModel_frameworkTechnology_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_frameworkTechnology_feature", "_UI_JsfModel_type"),
 				 JsfPackage.Literals.JSF_MODEL__FRAMEWORK_TECHNOLOGY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Ajax Technology feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addAjaxTechnologyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_ajaxTechnology_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_ajaxTechnology_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__AJAX_TECHNOLOGY,
 				 true,
 				 false,
 				 false,
@@ -423,6 +446,7 @@ public class JsfModelItemProvider
 			case JsfPackage.JSF_MODEL__COPYRIGHT_TEXT:
 			case JsfPackage.JSF_MODEL__META_DESCRIPTION:
 			case JsfPackage.JSF_MODEL__FRAMEWORK_TECHNOLOGY:
+			case JsfPackage.JSF_MODEL__AJAX_TECHNOLOGY:
 			case JsfPackage.JSF_MODEL__CAPTCHA_SITE_KEY:
 			case JsfPackage.JSF_MODEL__CAPTCHA_SECRET_KEY:
 			case JsfPackage.JSF_MODEL__TOP_NAVIGATION_ID:

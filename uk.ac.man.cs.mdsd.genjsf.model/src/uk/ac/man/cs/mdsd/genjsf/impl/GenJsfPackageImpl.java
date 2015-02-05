@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import uk.ac.man.cs.mdsd.gencriteria.GencriteriaPackage;
-import uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies;
 import uk.ac.man.cs.mdsd.genjsf.GenActionUnit;
 import uk.ac.man.cs.mdsd.genjsf.GenAuthentication;
 import uk.ac.man.cs.mdsd.genjsf.GenAuthenticationUnit;
@@ -664,13 +663,6 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	private EEnum inputMessageDisplayOptionsEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum ajaxTechnologiesEEnum = null;
-
-	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -821,7 +813,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenJsfModel_AjaxTechnology() {
+	public EAttribute getGenJsfModel_TextEditorPath() {
 		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -830,7 +822,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenJsfModel_TextEditorPath() {
+	public EAttribute getGenJsfModel_BackingPackage() {
 		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(9);
 	}
 
@@ -839,7 +831,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenJsfModel_BackingPackage() {
+	public EAttribute getGenJsfModel_ConverterPackage() {
 		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(10);
 	}
 
@@ -848,7 +840,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenJsfModel_ConverterPackage() {
+	public EAttribute getGenJsfModel_ValidatorPackage() {
 		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(11);
 	}
 
@@ -857,7 +849,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenJsfModel_ValidatorPackage() {
+	public EAttribute getGenJsfModel_ServicePackage() {
 		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(12);
 	}
 
@@ -866,7 +858,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenJsfModel_ServicePackage() {
+	public EAttribute getGenJsfModel_SecurityPackage() {
 		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(13);
 	}
 
@@ -875,17 +867,8 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGenJsfModel_SecurityPackage() {
-		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(14);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getGenJsfModel_UiPackage() {
-		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(15);
+		return (EAttribute)genJsfModelEClass.getEStructuralFeatures().get(14);
 	}
 
 	/**
@@ -1838,8 +1821,17 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getGenUnitAssociation_GenFilters() {
+		return (EReference)genUnitAssociationEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getGenUnitAssociation_SelectOneOfOption() {
-		return (EAttribute)genUnitAssociationEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)genUnitAssociationEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -1848,7 +1840,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * @generated
 	 */
 	public EAttribute getGenUnitAssociation_SelectManyOption() {
-		return (EAttribute)genUnitAssociationEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)genUnitAssociationEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -2792,15 +2784,6 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EEnum getAjaxTechnologies() {
-		return ajaxTechnologiesEEnum;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public GenJsfFactory getGenJsfFactory() {
 		return (GenJsfFactory)getEFactoryInstance();
 	}
@@ -2833,7 +2816,6 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__BASE_URL);
 		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__REWRITE_UR_LS);
 		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__DEVELOPMENT_VERSION);
-		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__AJAX_TECHNOLOGY);
 		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__TEXT_EDITOR_PATH);
 		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__BACKING_PACKAGE);
 		createEAttribute(genJsfModelEClass, GEN_JSF_MODEL__CONVERTER_PACKAGE);
@@ -3000,6 +2982,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		createEReference(genUnitAssociationEClass, GEN_UNIT_ASSOCIATION__GEN_CHILD_FEATURE);
 		createEReference(genUnitAssociationEClass, GEN_UNIT_ASSOCIATION__GEN_SELECTION);
 		createEReference(genUnitAssociationEClass, GEN_UNIT_ASSOCIATION__GEN_DYNAMIC_LABEL);
+		createEReference(genUnitAssociationEClass, GEN_UNIT_ASSOCIATION__GEN_FILTERS);
 		createEAttribute(genUnitAssociationEClass, GEN_UNIT_ASSOCIATION__SELECT_ONE_OF_OPTION);
 		createEAttribute(genUnitAssociationEClass, GEN_UNIT_ASSOCIATION__SELECT_MANY_OPTION);
 
@@ -3128,7 +3111,6 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		selectManyOptionsEEnum = createEEnum(SELECT_MANY_OPTIONS);
 		inputMessagePlacementOptionsEEnum = createEEnum(INPUT_MESSAGE_PLACEMENT_OPTIONS);
 		inputMessageDisplayOptionsEEnum = createEEnum(INPUT_MESSAGE_DISPLAY_OPTIONS);
-		ajaxTechnologiesEEnum = createEEnum(AJAX_TECHNOLOGIES);
 	}
 
 	/**
@@ -3265,7 +3247,6 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		initEAttribute(getGenJsfModel_BaseURL(), ecorePackage.getEString(), "baseURL", null, 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getGenJsfModel_RewriteURLs(), ecorePackage.getEBoolean(), "rewriteURLs", null, 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getGenJsfModel_DevelopmentVersion(), ecorePackage.getEBoolean(), "developmentVersion", "true", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getGenJsfModel_AjaxTechnology(), this.getAjaxTechnologies(), "ajaxTechnology", "None", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getGenJsfModel_TextEditorPath(), ecorePackage.getEString(), "textEditorPath", null, 0, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getGenJsfModel_BackingPackage(), ecorePackage.getEString(), "backingPackage", "backing", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getGenJsfModel_ConverterPackage(), ecorePackage.getEString(), "converterPackage", "converter", 1, 1, GenJsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -3432,6 +3413,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		initEReference(getGenUnitAssociation_GenChildFeature(), this.getGenUnitChildFeature(), null, "genChildFeature", null, 0, 1, GenUnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenUnitAssociation_GenSelection(), this.getGenSelection(), null, "genSelection", null, 0, 1, GenUnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getGenUnitAssociation_GenDynamicLabel(), this.getGenModelLabel(), null, "genDynamicLabel", null, 0, 1, GenUnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenUnitAssociation_GenFilters(), this.getGenUnitTitle(), null, "genFilters", null, 0, -1, GenUnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getGenUnitAssociation_SelectOneOfOption(), this.getSelectOneofOptions(), "selectOneOfOption", "Menu", 1, 1, GenUnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getGenUnitAssociation_SelectManyOption(), this.getSelectManyOptions(), "selectManyOption", "List", 1, 1, GenUnitAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3577,10 +3559,6 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 		addEEnumLiteral(inputMessageDisplayOptionsEEnum, InputMessageDisplayOptions.SHORT);
 		addEEnumLiteral(inputMessageDisplayOptionsEEnum, InputMessageDisplayOptions.DESCRIPTION);
 		addEEnumLiteral(inputMessageDisplayOptionsEEnum, InputMessageDisplayOptions.TOOL_TIP);
-
-		initEEnum(ajaxTechnologiesEEnum, AjaxTechnologies.class, "AjaxTechnologies");
-		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.NONE);
-		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.JQUERY);
 
 		// Create resource
 		createResource(eNS_URI);

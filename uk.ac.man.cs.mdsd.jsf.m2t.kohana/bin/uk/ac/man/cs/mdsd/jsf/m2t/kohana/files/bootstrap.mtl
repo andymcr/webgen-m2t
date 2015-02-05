@@ -158,7 +158,9 @@ Route::set('[genPage.controllerName()/]', '[genPage.controllerName()/][if (genPa
 		'controller' => '[genPage.controllerName()/]',
 	[if (genPage.hasParameterisedUnits() or genPage.hasControlUnits() or genPage.hasCommandUnits() or genPage.hasAuthenticationUnit() or genPage.hasUriActions())]
 		'action' => '[for (genUnit : GenDynamicUnit | genPage.parameterisedUnits()) separator('|')]
-[genUnit.actionName()/][/for][if (genPage.hasControlUnits())]
+[genUnit.actionName()/][if (genUnit.oclIsKindOf(GenEditUnit) and genUnit.hasInputAssociations())]
+|[for (genField : GenUnitField | genUnit.inputAssociations()) separator('|')]
+[genField.optionsName()/][/for][/if][/for][if (genPage.hasControlUnits())]
 [if (genPage.hasParameterisedUnits())]|[/if][for (genUnit : GenDynamicUnit | genPage.controlUnits()) separator('|')]
 [genUnit.actionName()/][/for][/if][if (genPage.hasCommandUnits())]
 |[for (genUnit : GenCommandUnit | genPage.commandUnits()) separator('|')]

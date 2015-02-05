@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module site-new(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
@@ -8,7 +9,7 @@
 [template public generateNewPage(genModel : GenJsfModel)]
 [file(genModel.viewDirectory().concat('/site-new').concat(genModel.executableExtension()), false)]
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"[if (genModel.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)] ng-app="[genModel.jsfModel.siteName/]"[/if]>
 <head>
  <meta charset="UTF-8"/>
  <meta name="viewport" content="width=device-width, initial-scale=1">

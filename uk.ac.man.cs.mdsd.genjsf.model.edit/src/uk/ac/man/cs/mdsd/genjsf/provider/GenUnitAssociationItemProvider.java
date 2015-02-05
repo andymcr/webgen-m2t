@@ -63,6 +63,7 @@ public class GenUnitAssociationItemProvider
 			addJsfFeaturePropertyDescriptor(object);
 			addGenServiceFeaturePropertyDescriptor(object);
 			addGenSelectionPropertyDescriptor(object);
+			addGenFiltersPropertyDescriptor(object);
 			addSelectOneOfOptionPropertyDescriptor(object);
 			addSelectManyOptionPropertyDescriptor(object);
 		}
@@ -128,6 +129,28 @@ public class GenUnitAssociationItemProvider
 				 getString("_UI_PropertyDescriptor_description", "_UI_GenUnitAssociation_genSelection_feature", "_UI_GenUnitAssociation_type"),
 				 GenJsfPackage.Literals.GEN_UNIT_ASSOCIATION__GEN_SELECTION,
 				 false,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Gen Filters feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addGenFiltersPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_GenUnitAssociation_genFilters_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_GenUnitAssociation_genFilters_feature", "_UI_GenUnitAssociation_type"),
+				 GenJsfPackage.Literals.GEN_UNIT_ASSOCIATION__GEN_FILTERS,
+				 true,
 				 false,
 				 true,
 				 null,

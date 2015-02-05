@@ -1,10 +1,6 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id: AjaxTechnologies.java,v 1.1 2011/04/18 10:50:40 andy Exp $
  */
-package uk.ac.man.cs.mdsd.genjsf;
+package uk.ac.man.cs.mdsd.jsf;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,7 +13,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Ajax Technologies</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#getAjaxTechnologies()
+ * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getAjaxTechnologies()
  * @model
  * @generated
  */
@@ -40,7 +36,15 @@ public enum AjaxTechnologies implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	JQUERY(0, "jQuery", "jQuery");
+	JQUERY(1, "jQuery", "jQuery"), /**
+	 * The '<em><b>Angular JS</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #ANGULAR_JS_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	ANGULAR_JS(2, "AngularJS", "AngularJS");
 
 	/**
 	 * The '<em><b>None</b></em>' literal value.
@@ -70,7 +74,22 @@ public enum AjaxTechnologies implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JQUERY_VALUE = 0;
+	public static final int JQUERY_VALUE = 1;
+
+	/**
+	 * The '<em><b>Angular JS</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>Angular JS</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #ANGULAR_JS
+	 * @model name="AngularJS"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ANGULAR_JS_VALUE = 2;
 
 	/**
 	 * An array of all the '<em><b>Ajax Technologies</b></em>' enumerators.
@@ -82,6 +101,7 @@ public enum AjaxTechnologies implements Enumerator {
 		new AjaxTechnologies[] {
 			NONE,
 			JQUERY,
+			ANGULAR_JS,
 		};
 
 	/**
@@ -133,6 +153,8 @@ public enum AjaxTechnologies implements Enumerator {
 	public static AjaxTechnologies get(int value) {
 		switch (value) {
 			case NONE_VALUE: return NONE;
+			case JQUERY_VALUE: return JQUERY;
+			case ANGULAR_JS_VALUE: return ANGULAR_JS;
 		}
 		return null;
 	}

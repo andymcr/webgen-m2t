@@ -130,8 +130,6 @@ public class GenJsfFactoryImpl extends EFactoryImpl implements GenJsfFactory {
 				return createInputMessagePlacementOptionsFromString(eDataType, initialValue);
 			case GenJsfPackage.INPUT_MESSAGE_DISPLAY_OPTIONS:
 				return createInputMessageDisplayOptionsFromString(eDataType, initialValue);
-			case GenJsfPackage.AJAX_TECHNOLOGIES:
-				return createAjaxTechnologiesFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -153,8 +151,6 @@ public class GenJsfFactoryImpl extends EFactoryImpl implements GenJsfFactory {
 				return convertInputMessagePlacementOptionsToString(eDataType, instanceValue);
 			case GenJsfPackage.INPUT_MESSAGE_DISPLAY_OPTIONS:
 				return convertInputMessageDisplayOptionsToString(eDataType, instanceValue);
-			case GenJsfPackage.AJAX_TECHNOLOGIES:
-				return convertAjaxTechnologiesToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -717,26 +713,6 @@ public class GenJsfFactoryImpl extends EFactoryImpl implements GenJsfFactory {
 	 * @generated
 	 */
 	public String convertInputMessageDisplayOptionsToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public AjaxTechnologies createAjaxTechnologiesFromString(EDataType eDataType, String initialValue) {
-		AjaxTechnologies result = AjaxTechnologies.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertAjaxTechnologiesToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

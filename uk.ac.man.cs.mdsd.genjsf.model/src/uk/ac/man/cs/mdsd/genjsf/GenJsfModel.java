@@ -28,7 +28,6 @@ import uk.ac.man.cs.mdsd.jsf.JsfModel;
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getBaseURL <em>Base URL</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#isRewriteURLs <em>Rewrite UR Ls</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#isDevelopmentVersion <em>Development Version</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getAjaxTechnology <em>Ajax Technology</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getTextEditorPath <em>Text Editor Path</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getBackingPackage <em>Backing Package</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getConverterPackage <em>Converter Package</em>}</li>
@@ -224,36 +223,6 @@ public interface GenJsfModel extends GenOrmModel {
 	 * @generated
 	 */
 	void setDevelopmentVersion(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Ajax Technology</b></em>' attribute.
-	 * The default value is <code>"None"</code>.
-	 * The literals are from the enumeration {@link uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Ajax Technology</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Ajax Technology</em>' attribute.
-	 * @see uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies
-	 * @see #setAjaxTechnology(AjaxTechnologies)
-	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#getGenJsfModel_AjaxTechnology()
-	 * @model default="None" required="true" ordered="false"
-	 * @generated
-	 */
-	AjaxTechnologies getAjaxTechnology();
-
-	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getAjaxTechnology <em>Ajax Technology</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Ajax Technology</em>' attribute.
-	 * @see uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies
-	 * @see #getAjaxTechnology()
-	 * @generated
-	 */
-	void setAjaxTechnology(AjaxTechnologies value);
 
 	/**
 	 * Returns the value of the '<em><b>Text Editor Path</b></em>' attribute.

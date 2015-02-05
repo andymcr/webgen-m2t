@@ -283,22 +283,13 @@ public interface GenJsfPackage extends EPackage {
 	int GEN_JSF_MODEL__DEVELOPMENT_VERSION = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Ajax Technology</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int GEN_JSF_MODEL__AJAX_TECHNOLOGY = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 8;
-
-	/**
 	 * The feature id for the '<em><b>Text Editor Path</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL__TEXT_EDITOR_PATH = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 9;
+	int GEN_JSF_MODEL__TEXT_EDITOR_PATH = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Backing Package</b></em>' attribute.
@@ -307,7 +298,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL__BACKING_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 10;
+	int GEN_JSF_MODEL__BACKING_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Converter Package</b></em>' attribute.
@@ -316,7 +307,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL__CONVERTER_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 11;
+	int GEN_JSF_MODEL__CONVERTER_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Validator Package</b></em>' attribute.
@@ -325,7 +316,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL__VALIDATOR_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 12;
+	int GEN_JSF_MODEL__VALIDATOR_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Service Package</b></em>' attribute.
@@ -334,7 +325,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL__SERVICE_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 13;
+	int GEN_JSF_MODEL__SERVICE_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Security Package</b></em>' attribute.
@@ -343,7 +334,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL__SECURITY_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 14;
+	int GEN_JSF_MODEL__SECURITY_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Ui Package</b></em>' attribute.
@@ -352,7 +343,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL__UI_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 15;
+	int GEN_JSF_MODEL__UI_PACKAGE = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 14;
 
 	/**
 	 * The number of structural features of the '<em>Model</em>' class.
@@ -361,7 +352,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_JSF_MODEL_FEATURE_COUNT = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 16;
+	int GEN_JSF_MODEL_FEATURE_COUNT = GenOrmPackage.GEN_ORM_MODEL_FEATURE_COUNT + 15;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genjsf.impl.GenAuthenticationImpl <em>Gen Authentication</em>}' class.
@@ -2529,13 +2520,22 @@ public interface GenJsfPackage extends EPackage {
 	int GEN_UNIT_ASSOCIATION__GEN_DYNAMIC_LABEL = GEN_UNIT_FEATURE_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Gen Filters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_UNIT_ASSOCIATION__GEN_FILTERS = GEN_UNIT_FEATURE_FEATURE_COUNT + 6;
+
+	/**
 	 * The feature id for the '<em><b>Select One Of Option</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_UNIT_ASSOCIATION__SELECT_ONE_OF_OPTION = GEN_UNIT_FEATURE_FEATURE_COUNT + 6;
+	int GEN_UNIT_ASSOCIATION__SELECT_ONE_OF_OPTION = GEN_UNIT_FEATURE_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Select Many Option</b></em>' attribute.
@@ -2544,7 +2544,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_UNIT_ASSOCIATION__SELECT_MANY_OPTION = GEN_UNIT_FEATURE_FEATURE_COUNT + 7;
+	int GEN_UNIT_ASSOCIATION__SELECT_MANY_OPTION = GEN_UNIT_FEATURE_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Gen Unit Association</em>' class.
@@ -2553,7 +2553,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_UNIT_ASSOCIATION_FEATURE_COUNT = GEN_UNIT_FEATURE_FEATURE_COUNT + 8;
+	int GEN_UNIT_ASSOCIATION_FEATURE_COUNT = GEN_UNIT_FEATURE_FEATURE_COUNT + 9;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genjsf.impl.GenUnitChildFeatureImpl <em>Gen Unit Child Feature</em>}' class.
@@ -5178,17 +5178,6 @@ public interface GenJsfPackage extends EPackage {
 
 
 	/**
-	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies <em>Ajax Technologies</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies
-	 * @see uk.ac.man.cs.mdsd.genjsf.impl.GenJsfPackageImpl#getAjaxTechnologies()
-	 * @generated
-	 */
-	int AJAX_TECHNOLOGIES = 79;
-
-
-	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel <em>Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5285,17 +5274,6 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getGenJsfModel_DevelopmentVersion();
-
-	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getAjaxTechnology <em>Ajax Technology</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Ajax Technology</em>'.
-	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getAjaxTechnology()
-	 * @see #getGenJsfModel()
-	 * @generated
-	 */
-	EAttribute getGenJsfModel_AjaxTechnology();
 
 	/**
 	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genjsf.GenJsfModel#getTextEditorPath <em>Text Editor Path</em>}'.
@@ -6495,6 +6473,17 @@ public interface GenJsfPackage extends EPackage {
 	EReference getGenUnitAssociation_GenDynamicLabel();
 
 	/**
+	 * Returns the meta object for the reference list '{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getGenFilters <em>Gen Filters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Gen Filters</em>'.
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getGenFilters()
+	 * @see #getGenUnitAssociation()
+	 * @generated
+	 */
+	EReference getGenUnitAssociation_GenFilters();
+
+	/**
 	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getSelectOneOfOption <em>Select One Of Option</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7618,16 +7607,6 @@ public interface GenJsfPackage extends EPackage {
 	EEnum getInputMessageDisplayOptions();
 
 	/**
-	 * Returns the meta object for enum '{@link uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies <em>Ajax Technologies</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Ajax Technologies</em>'.
-	 * @see uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies
-	 * @generated
-	 */
-	EEnum getAjaxTechnologies();
-
-	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7722,14 +7701,6 @@ public interface GenJsfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute GEN_JSF_MODEL__DEVELOPMENT_VERSION = eINSTANCE.getGenJsfModel_DevelopmentVersion();
-
-		/**
-		 * The meta object literal for the '<em><b>Ajax Technology</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute GEN_JSF_MODEL__AJAX_TECHNOLOGY = eINSTANCE.getGenJsfModel_AjaxTechnology();
 
 		/**
 		 * The meta object literal for the '<em><b>Text Editor Path</b></em>' attribute feature.
@@ -8698,6 +8669,14 @@ public interface GenJsfPackage extends EPackage {
 		EReference GEN_UNIT_ASSOCIATION__GEN_DYNAMIC_LABEL = eINSTANCE.getGenUnitAssociation_GenDynamicLabel();
 
 		/**
+		 * The meta object literal for the '<em><b>Gen Filters</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GEN_UNIT_ASSOCIATION__GEN_FILTERS = eINSTANCE.getGenUnitAssociation_GenFilters();
+
+		/**
 		 * The meta object literal for the '<em><b>Select One Of Option</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9630,16 +9609,6 @@ public interface GenJsfPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum INPUT_MESSAGE_DISPLAY_OPTIONS = eINSTANCE.getInputMessageDisplayOptions();
-
-		/**
-		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies <em>Ajax Technologies</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies
-		 * @see uk.ac.man.cs.mdsd.genjsf.impl.GenJsfPackageImpl#getAjaxTechnologies()
-		 * @generated
-		 */
-		EEnum AJAX_TECHNOLOGIES = eINSTANCE.getAjaxTechnologies();
 
 	}
 

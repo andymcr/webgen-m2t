@@ -28,10 +28,6 @@
       <genEnumLiterals ecoreEnumLiteral="GenJsf.ecore#//InputMessageDisplayOptions/Description"/>
       <genEnumLiterals ecoreEnumLiteral="GenJsf.ecore#//InputMessageDisplayOptions/ToolTip"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="GenJsf.ecore#//AjaxTechnologies">
-      <genEnumLiterals ecoreEnumLiteral="GenJsf.ecore#//AjaxTechnologies/None"/>
-      <genEnumLiterals ecoreEnumLiteral="GenJsf.ecore#//AjaxTechnologies/jQuery"/>
-    </genEnums>
     <genClasses ecoreClass="GenJsf.ecore#//GenJsfModel">
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenJsfModel/jsfModel"/>
@@ -43,7 +39,6 @@
       <genFeatures createChild="false" propertyCategory="Site" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenJsfModel/baseURL"/>
       <genFeatures createChild="false" propertyCategory="Site" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenJsfModel/rewriteURLs"/>
       <genFeatures createChild="false" propertyCategory="Site" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenJsfModel/developmentVersion"/>
-      <genFeatures createChild="false" propertyCategory="Site" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenJsfModel/ajaxTechnology"/>
       <genFeatures createChild="false" propertyCategory="Site" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenJsfModel/textEditorPath"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenJsfModel/backingPackage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenJsfModel/converterPackage"/>
@@ -244,6 +239,7 @@
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenUnitAssociation/genSelection"/>
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenUnitAssociation/genDynamicLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenJsf.ecore#//GenUnitAssociation/genFilters"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenUnitAssociation/selectOneOfOption"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GenJsf.ecore#//GenUnitAssociation/selectManyOption"/>
     </genClasses>

@@ -165,13 +165,22 @@ public interface JsfPackage extends EPackage {
 	int JSF_MODEL__FRAMEWORK_TECHNOLOGY = 9;
 
 	/**
+	 * The feature id for the '<em><b>Ajax Technology</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JSF_MODEL__AJAX_TECHNOLOGY = 10;
+
+	/**
 	 * The feature id for the '<em><b>Authentication</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__AUTHENTICATION = 10;
+	int JSF_MODEL__AUTHENTICATION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Captcha Site Key</b></em>' attribute.
@@ -180,7 +189,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__CAPTCHA_SITE_KEY = 11;
+	int JSF_MODEL__CAPTCHA_SITE_KEY = 12;
 
 	/**
 	 * The feature id for the '<em><b>Captcha Secret Key</b></em>' attribute.
@@ -189,7 +198,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__CAPTCHA_SECRET_KEY = 12;
+	int JSF_MODEL__CAPTCHA_SECRET_KEY = 13;
 
 	/**
 	 * The feature id for the '<em><b>Top Navigation Id</b></em>' attribute.
@@ -198,7 +207,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__TOP_NAVIGATION_ID = 13;
+	int JSF_MODEL__TOP_NAVIGATION_ID = 14;
 
 	/**
 	 * The feature id for the '<em><b>Side Menu</b></em>' reference.
@@ -207,7 +216,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__SIDE_MENU = 14;
+	int JSF_MODEL__SIDE_MENU = 15;
 
 	/**
 	 * The feature id for the '<em><b>Static Units Editable</b></em>' attribute.
@@ -216,7 +225,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__STATIC_UNITS_EDITABLE = 15;
+	int JSF_MODEL__STATIC_UNITS_EDITABLE = 16;
 
 	/**
 	 * The number of structural features of the '<em>Model</em>' class.
@@ -225,7 +234,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL_FEATURE_COUNT = 16;
+	int JSF_MODEL_FEATURE_COUNT = 17;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl <em>Service</em>}' class.
@@ -3726,13 +3735,22 @@ public interface JsfPackage extends EPackage {
 	int UNIT_ASSOCIATION__DYNAMIC_LABEL = UNIT_FEATURE_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Filters</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNIT_ASSOCIATION__FILTERS = UNIT_FEATURE_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Unit Association</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UNIT_ASSOCIATION_FEATURE_COUNT = UNIT_FEATURE_FEATURE_COUNT + 5;
+	int UNIT_ASSOCIATION_FEATURE_COUNT = UNIT_FEATURE_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.UnitChildFeatureImpl <em>Unit Child Feature</em>}' class.
@@ -8592,6 +8610,16 @@ public interface JsfPackage extends EPackage {
 	int FRAMEWORK_TECHNOLOGIES = 75;
 
 	/**
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.AjaxTechnologies <em>Ajax Technologies</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.ac.man.cs.mdsd.jsf.AjaxTechnologies
+	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getAjaxTechnologies()
+	 * @generated
+	 */
+	int AJAX_TECHNOLOGIES = 76;
+
+	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.PageTopMenuOptions <em>Page Top Menu Options</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8599,7 +8627,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getPageTopMenuOptions()
 	 * @generated
 	 */
-	int PAGE_TOP_MENU_OPTIONS = 76;
+	int PAGE_TOP_MENU_OPTIONS = 77;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.CollectionDisplayOptions <em>Collection Display Options</em>}' enum.
@@ -8609,7 +8637,7 @@ public interface JsfPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getCollectionDisplayOptions()
 	 * @generated
 	 */
-	int COLLECTION_DISPLAY_OPTIONS = 77;
+	int COLLECTION_DISPLAY_OPTIONS = 78;
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.JsfModel <em>Model</em>}'.
@@ -8730,6 +8758,17 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getJsfModel_FrameworkTechnology();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAjaxTechnology <em>Ajax Technology</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Ajax Technology</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getAjaxTechnology()
+	 * @see #getJsfModel()
+	 * @generated
+	 */
+	EAttribute getJsfModel_AjaxTechnology();
 
 	/**
 	 * Returns the meta object for the containment reference '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAuthentication <em>Authentication</em>}'.
@@ -9868,6 +9907,17 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getUnitAssociation_DynamicLabel();
+
+	/**
+	 * Returns the meta object for the reference list '{@link uk.ac.man.cs.mdsd.jsf.UnitAssociation#getFilters <em>Filters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Filters</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.UnitAssociation#getFilters()
+	 * @see #getUnitAssociation()
+	 * @generated
+	 */
+	EReference getUnitAssociation_Filters();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.UnitChildFeature <em>Unit Child Feature</em>}'.
@@ -11212,6 +11262,16 @@ public interface JsfPackage extends EPackage {
 	EEnum getFrameworkTechnologies();
 
 	/**
+	 * Returns the meta object for enum '{@link uk.ac.man.cs.mdsd.jsf.AjaxTechnologies <em>Ajax Technologies</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Ajax Technologies</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.AjaxTechnologies
+	 * @generated
+	 */
+	EEnum getAjaxTechnologies();
+
+	/**
 	 * Returns the meta object for enum '{@link uk.ac.man.cs.mdsd.jsf.PageTopMenuOptions <em>Page Top Menu Options</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11515,6 +11575,14 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute JSF_MODEL__FRAMEWORK_TECHNOLOGY = eINSTANCE.getJsfModel_FrameworkTechnology();
+
+		/**
+		 * The meta object literal for the '<em><b>Ajax Technology</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute JSF_MODEL__AJAX_TECHNOLOGY = eINSTANCE.getJsfModel_AjaxTechnology();
 
 		/**
 		 * The meta object literal for the '<em><b>Authentication</b></em>' containment reference feature.
@@ -12419,6 +12487,14 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference UNIT_ASSOCIATION__DYNAMIC_LABEL = eINSTANCE.getUnitAssociation_DynamicLabel();
+
+		/**
+		 * The meta object literal for the '<em><b>Filters</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference UNIT_ASSOCIATION__FILTERS = eINSTANCE.getUnitAssociation_Filters();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.impl.UnitChildFeatureImpl <em>Unit Child Feature</em>}' class.
@@ -13515,6 +13591,16 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum FRAMEWORK_TECHNOLOGIES = eINSTANCE.getFrameworkTechnologies();
+
+		/**
+		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.AjaxTechnologies <em>Ajax Technologies</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.ac.man.cs.mdsd.jsf.AjaxTechnologies
+		 * @see uk.ac.man.cs.mdsd.jsf.impl.JsfPackageImpl#getAjaxTechnologies()
+		 * @generated
+		 */
+		EEnum AJAX_TECHNOLOGIES = eINSTANCE.getAjaxTechnologies();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.PageTopMenuOptions <em>Page Top Menu Options</em>}' enum.

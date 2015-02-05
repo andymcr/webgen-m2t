@@ -124,6 +124,8 @@ public class JsfFactoryImpl extends EFactoryImpl implements JsfFactory {
 		switch (eDataType.getClassifierID()) {
 			case JsfPackage.FRAMEWORK_TECHNOLOGIES:
 				return createFrameworkTechnologiesFromString(eDataType, initialValue);
+			case JsfPackage.AJAX_TECHNOLOGIES:
+				return createAjaxTechnologiesFromString(eDataType, initialValue);
 			case JsfPackage.PAGE_TOP_MENU_OPTIONS:
 				return createPageTopMenuOptionsFromString(eDataType, initialValue);
 			case JsfPackage.COLLECTION_DISPLAY_OPTIONS:
@@ -143,6 +145,8 @@ public class JsfFactoryImpl extends EFactoryImpl implements JsfFactory {
 		switch (eDataType.getClassifierID()) {
 			case JsfPackage.FRAMEWORK_TECHNOLOGIES:
 				return convertFrameworkTechnologiesToString(eDataType, instanceValue);
+			case JsfPackage.AJAX_TECHNOLOGIES:
+				return convertAjaxTechnologiesToString(eDataType, instanceValue);
 			case JsfPackage.PAGE_TOP_MENU_OPTIONS:
 				return convertPageTopMenuOptionsToString(eDataType, instanceValue);
 			case JsfPackage.COLLECTION_DISPLAY_OPTIONS:
@@ -649,6 +653,26 @@ public class JsfFactoryImpl extends EFactoryImpl implements JsfFactory {
 	 * @generated
 	 */
 	public String convertFrameworkTechnologiesToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AjaxTechnologies createAjaxTechnologiesFromString(EDataType eDataType, String initialValue) {
+		AjaxTechnologies result = AjaxTechnologies.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertAjaxTechnologiesToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

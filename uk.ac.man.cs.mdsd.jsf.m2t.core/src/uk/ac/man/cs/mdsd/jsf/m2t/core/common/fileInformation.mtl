@@ -9,6 +9,10 @@
 	= '.php'
 /]
 
+[query public javascriptExtension(eObject : EObject) : String
+	= '.js'
+/]
+
 [query public htmlExtension(eObject : EObject) : String
 	= '.html'
 /]

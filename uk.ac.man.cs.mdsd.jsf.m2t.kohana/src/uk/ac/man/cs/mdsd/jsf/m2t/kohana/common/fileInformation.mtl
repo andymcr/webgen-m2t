@@ -68,6 +68,10 @@
 	= eObject.applicationDirectory().concat('/').concat('helpers')
 /]
 
+[query public jsDirectory(eObject : EObject) : String
+	= 'js'
+/]
+
 [query public languageDirectory(eObject : EObject) : String
 	= eObject.applicationDirectory().concat('/').concat('language')
 /]

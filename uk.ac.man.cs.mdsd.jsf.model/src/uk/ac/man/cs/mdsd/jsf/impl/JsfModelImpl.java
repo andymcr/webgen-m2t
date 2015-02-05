@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import uk.ac.man.cs.mdsd.jsf.AjaxTechnologies;
 import uk.ac.man.cs.mdsd.jsf.Authentication;
 import uk.ac.man.cs.mdsd.jsf.FrameworkTechnologies;
 import uk.ac.man.cs.mdsd.jsf.JsfModel;
@@ -50,6 +51,7 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getCopyrightText <em>Copyright Text</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getMetaDescription <em>Meta Description</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getFrameworkTechnology <em>Framework Technology</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getAjaxTechnology <em>Ajax Technology</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getAuthentication <em>Authentication</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getCaptchaSiteKey <em>Captcha Site Key</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getCaptchaSecretKey <em>Captcha Secret Key</em>}</li>
@@ -221,6 +223,26 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * @ordered
 	 */
 	protected FrameworkTechnologies frameworkTechnology = FRAMEWORK_TECHNOLOGY_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getAjaxTechnology() <em>Ajax Technology</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAjaxTechnology()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final AjaxTechnologies AJAX_TECHNOLOGY_EDEFAULT = AjaxTechnologies.NONE;
+
+	/**
+	 * The cached value of the '{@link #getAjaxTechnology() <em>Ajax Technology</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAjaxTechnology()
+	 * @generated
+	 * @ordered
+	 */
+	protected AjaxTechnologies ajaxTechnology = AJAX_TECHNOLOGY_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAuthentication() <em>Authentication</em>}' containment reference.
@@ -546,6 +568,27 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public AjaxTechnologies getAjaxTechnology() {
+		return ajaxTechnology;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAjaxTechnology(AjaxTechnologies newAjaxTechnology) {
+		AjaxTechnologies oldAjaxTechnology = ajaxTechnology;
+		ajaxTechnology = newAjaxTechnology == null ? AJAX_TECHNOLOGY_EDEFAULT : newAjaxTechnology;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.JSF_MODEL__AJAX_TECHNOLOGY, oldAjaxTechnology, ajaxTechnology));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Authentication getAuthentication() {
 		return authentication;
 	}
@@ -770,6 +813,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return getMetaDescription();
 			case JsfPackage.JSF_MODEL__FRAMEWORK_TECHNOLOGY:
 				return getFrameworkTechnology();
+			case JsfPackage.JSF_MODEL__AJAX_TECHNOLOGY:
+				return getAjaxTechnology();
 			case JsfPackage.JSF_MODEL__AUTHENTICATION:
 				return getAuthentication();
 			case JsfPackage.JSF_MODEL__CAPTCHA_SITE_KEY:
@@ -828,6 +873,9 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return;
 			case JsfPackage.JSF_MODEL__FRAMEWORK_TECHNOLOGY:
 				setFrameworkTechnology((FrameworkTechnologies)newValue);
+				return;
+			case JsfPackage.JSF_MODEL__AJAX_TECHNOLOGY:
+				setAjaxTechnology((AjaxTechnologies)newValue);
 				return;
 			case JsfPackage.JSF_MODEL__AUTHENTICATION:
 				setAuthentication((Authentication)newValue);
@@ -889,6 +937,9 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 			case JsfPackage.JSF_MODEL__FRAMEWORK_TECHNOLOGY:
 				setFrameworkTechnology(FRAMEWORK_TECHNOLOGY_EDEFAULT);
 				return;
+			case JsfPackage.JSF_MODEL__AJAX_TECHNOLOGY:
+				setAjaxTechnology(AJAX_TECHNOLOGY_EDEFAULT);
+				return;
 			case JsfPackage.JSF_MODEL__AUTHENTICATION:
 				setAuthentication((Authentication)null);
 				return;
@@ -939,6 +990,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return META_DESCRIPTION_EDEFAULT == null ? metaDescription != null : !META_DESCRIPTION_EDEFAULT.equals(metaDescription);
 			case JsfPackage.JSF_MODEL__FRAMEWORK_TECHNOLOGY:
 				return frameworkTechnology != FRAMEWORK_TECHNOLOGY_EDEFAULT;
+			case JsfPackage.JSF_MODEL__AJAX_TECHNOLOGY:
+				return ajaxTechnology != AJAX_TECHNOLOGY_EDEFAULT;
 			case JsfPackage.JSF_MODEL__AUTHENTICATION:
 				return authentication != null;
 			case JsfPackage.JSF_MODEL__CAPTCHA_SITE_KEY:
@@ -977,6 +1030,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 		result.append(metaDescription);
 		result.append(", frameworkTechnology: ");
 		result.append(frameworkTechnology);
+		result.append(", ajaxTechnology: ");
+		result.append(ajaxTechnology);
 		result.append(", captchaSiteKey: ");
 		result.append(captchaSiteKey);
 		result.append(", captchaSecretKey: ");

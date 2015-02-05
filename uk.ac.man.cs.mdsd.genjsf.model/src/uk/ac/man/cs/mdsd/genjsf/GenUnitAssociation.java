@@ -2,6 +2,7 @@
  */
 package uk.ac.man.cs.mdsd.genjsf;
 
+import org.eclipse.emf.common.util.EList;
 import uk.ac.man.cs.mdsd.jsf.UnitAssociation;
 
 
@@ -18,6 +19,7 @@ import uk.ac.man.cs.mdsd.jsf.UnitAssociation;
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getGenChildFeature <em>Gen Child Feature</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getGenSelection <em>Gen Selection</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getGenDynamicLabel <em>Gen Dynamic Label</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getGenFilters <em>Gen Filters</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getSelectOneOfOption <em>Select One Of Option</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenUnitAssociation#getSelectManyOption <em>Select Many Option</em>}</li>
  * </ul>
@@ -157,6 +159,22 @@ public interface GenUnitAssociation extends GenUnitFeature, GenIncludedAssociati
 	 * @generated
 	 */
 	void setGenDynamicLabel(GenModelLabel value);
+
+	/**
+	 * Returns the value of the '<em><b>Gen Filters</b></em>' reference list.
+	 * The list contents are of type {@link uk.ac.man.cs.mdsd.genjsf.GenUnitTitle}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Gen Filters</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Gen Filters</em>' reference list.
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#getGenUnitAssociation_GenFilters()
+	 * @model
+	 * @generated
+	 */
+	EList<GenUnitTitle> getGenFilters();
 
 	/**
 	 * Returns the value of the '<em><b>Select One Of Option</b></em>' attribute.

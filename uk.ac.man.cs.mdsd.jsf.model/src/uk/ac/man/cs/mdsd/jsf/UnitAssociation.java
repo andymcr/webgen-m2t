@@ -2,6 +2,8 @@
  */
 package uk.ac.man.cs.mdsd.jsf;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -15,6 +17,7 @@ package uk.ac.man.cs.mdsd.jsf;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.UnitAssociation#getChildFeature <em>Child Feature</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.UnitAssociation#getSelection <em>Selection</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.UnitAssociation#getDynamicLabel <em>Dynamic Label</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.UnitAssociation#getFilters <em>Filters</em>}</li>
  * </ul>
  * </p>
  *
@@ -126,5 +129,21 @@ public interface UnitAssociation extends UnitFeature, IncludedAssociation, UnitC
 	 * @generated
 	 */
 	void setDynamicLabel(ModelLabel value);
+
+	/**
+	 * Returns the value of the '<em><b>Filters</b></em>' reference list.
+	 * The list contents are of type {@link uk.ac.man.cs.mdsd.jsf.UnitTitle}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Filters</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Filters</em>' reference list.
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getUnitAssociation_Filters()
+	 * @model
+	 * @generated
+	 */
+	EList<UnitTitle> getFilters();
 
 } // UnitAssociation

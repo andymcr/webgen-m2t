@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import uk.ac.man.cs.mdsd.genjsf.AjaxTechnologies;
 import uk.ac.man.cs.mdsd.genjsf.GenAuthentication;
 import uk.ac.man.cs.mdsd.genjsf.GenDynamicMenu;
 import uk.ac.man.cs.mdsd.genjsf.GenJsfModel;
@@ -48,7 +47,6 @@ import uk.ac.man.cs.mdsd.jsf.JsfModel;
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenJsfModelImpl#getBaseURL <em>Base URL</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenJsfModelImpl#isRewriteURLs <em>Rewrite UR Ls</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenJsfModelImpl#isDevelopmentVersion <em>Development Version</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenJsfModelImpl#getAjaxTechnology <em>Ajax Technology</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenJsfModelImpl#getTextEditorPath <em>Text Editor Path</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenJsfModelImpl#getBackingPackage <em>Backing Package</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenJsfModelImpl#getConverterPackage <em>Converter Package</em>}</li>
@@ -171,26 +169,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 	 * @ordered
 	 */
 	protected boolean developmentVersion = DEVELOPMENT_VERSION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getAjaxTechnology() <em>Ajax Technology</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAjaxTechnology()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final AjaxTechnologies AJAX_TECHNOLOGY_EDEFAULT = AjaxTechnologies.NONE;
-
-	/**
-	 * The cached value of the '{@link #getAjaxTechnology() <em>Ajax Technology</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAjaxTechnology()
-	 * @generated
-	 * @ordered
-	 */
-	protected AjaxTechnologies ajaxTechnology = AJAX_TECHNOLOGY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getTextEditorPath() <em>Text Editor Path</em>}' attribute.
@@ -536,27 +514,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AjaxTechnologies getAjaxTechnology() {
-		return ajaxTechnology;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setAjaxTechnology(AjaxTechnologies newAjaxTechnology) {
-		AjaxTechnologies oldAjaxTechnology = ajaxTechnology;
-		ajaxTechnology = newAjaxTechnology == null ? AJAX_TECHNOLOGY_EDEFAULT : newAjaxTechnology;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GenJsfPackage.GEN_JSF_MODEL__AJAX_TECHNOLOGY, oldAjaxTechnology, ajaxTechnology));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getTextEditorPath() {
 		return textEditorPath;
 	}
@@ -777,7 +734,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 			}
 			setDevelopmentVersion(oldGenJsfModel.isDevelopmentVersion());
 			setRewriteURLs(oldGenJsfModel.isRewriteURLs());
-			setAjaxTechnology(oldGenJsfModel.getAjaxTechnology());
 			setTextEditorPath(oldGenJsfModel.getTextEditorPath());
 			setBackingPackage(oldGenJsfModel.getBackingPackage());
 			setConverterPackage(oldGenJsfModel.getConverterPackage());
@@ -833,8 +789,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 				return isRewriteURLs();
 			case GenJsfPackage.GEN_JSF_MODEL__DEVELOPMENT_VERSION:
 				return isDevelopmentVersion();
-			case GenJsfPackage.GEN_JSF_MODEL__AJAX_TECHNOLOGY:
-				return getAjaxTechnology();
 			case GenJsfPackage.GEN_JSF_MODEL__TEXT_EDITOR_PATH:
 				return getTextEditorPath();
 			case GenJsfPackage.GEN_JSF_MODEL__BACKING_PACKAGE:
@@ -888,9 +842,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 				return;
 			case GenJsfPackage.GEN_JSF_MODEL__DEVELOPMENT_VERSION:
 				setDevelopmentVersion((Boolean)newValue);
-				return;
-			case GenJsfPackage.GEN_JSF_MODEL__AJAX_TECHNOLOGY:
-				setAjaxTechnology((AjaxTechnologies)newValue);
 				return;
 			case GenJsfPackage.GEN_JSF_MODEL__TEXT_EDITOR_PATH:
 				setTextEditorPath((String)newValue);
@@ -949,9 +900,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 			case GenJsfPackage.GEN_JSF_MODEL__DEVELOPMENT_VERSION:
 				setDevelopmentVersion(DEVELOPMENT_VERSION_EDEFAULT);
 				return;
-			case GenJsfPackage.GEN_JSF_MODEL__AJAX_TECHNOLOGY:
-				setAjaxTechnology(AJAX_TECHNOLOGY_EDEFAULT);
-				return;
 			case GenJsfPackage.GEN_JSF_MODEL__TEXT_EDITOR_PATH:
 				setTextEditorPath(TEXT_EDITOR_PATH_EDEFAULT);
 				return;
@@ -1001,8 +949,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 				return rewriteURLs != REWRITE_UR_LS_EDEFAULT;
 			case GenJsfPackage.GEN_JSF_MODEL__DEVELOPMENT_VERSION:
 				return developmentVersion != DEVELOPMENT_VERSION_EDEFAULT;
-			case GenJsfPackage.GEN_JSF_MODEL__AJAX_TECHNOLOGY:
-				return ajaxTechnology != AJAX_TECHNOLOGY_EDEFAULT;
 			case GenJsfPackage.GEN_JSF_MODEL__TEXT_EDITOR_PATH:
 				return TEXT_EDITOR_PATH_EDEFAULT == null ? textEditorPath != null : !TEXT_EDITOR_PATH_EDEFAULT.equals(textEditorPath);
 			case GenJsfPackage.GEN_JSF_MODEL__BACKING_PACKAGE:
@@ -1037,8 +983,6 @@ public class GenJsfModelImpl extends GenOrmModelImpl implements GenJsfModel {
 		result.append(rewriteURLs);
 		result.append(", developmentVersion: ");
 		result.append(developmentVersion);
-		result.append(", ajaxTechnology: ");
-		result.append(ajaxTechnology);
 		result.append(", textEditorPath: ");
 		result.append(textEditorPath);
 		result.append(", backingPackage: ");

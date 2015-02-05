@@ -40,8 +40,16 @@ $this->[genUnit.templateInstanceName()/]->bind('pagination', $[genUnit.instanceN
 
 [template public generateUnitMethods(genUnit : GenDynamicUnit)
 	? (genUnit.oclIsKindOf(GenIndexUnit)) post(trim())]
+[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
 [for (genAction : GenInlineAction | genUnit.uriActions())]
 [genAction.generateActionMethod('$this->'.concat(genUnit.instanceName()).concat('_error'))/]
 
 [/for]
+[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::jQuery
+		and (genIndexUnit.jsfUnit.defaultPaginationSize) > 0)]
+public function page()
+{
+}
+[/if]
+[/let]
 [/template]

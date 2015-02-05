@@ -2,7 +2,6 @@
  */
 package uk.ac.man.cs.mdsd.genjsf;
 
-import uk.ac.man.cs.mdsd.jsf.ServiceAssociation;
 import uk.ac.man.cs.mdsd.jsf.ServiceViewAssociation;
 import uk.ac.man.cs.mdsd.orm.NamedElement;
 

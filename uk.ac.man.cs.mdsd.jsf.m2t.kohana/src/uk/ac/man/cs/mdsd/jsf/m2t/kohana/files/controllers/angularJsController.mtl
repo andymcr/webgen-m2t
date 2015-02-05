@@ -1,0 +1,37 @@
+[comment encoding = UTF-8 /]
+[module angularJsController(
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
+
+
+[template public generateAngularJsControllers(genModel : GenJsfModel)]
+[file(genModel.jsDirectory().concat('/controllers').concat(genModel.javascriptExtension()), false)]
+var [genModel.jsfModel.siteName/] = angular.module('[genModel.jsfModel.siteName/]', ['['/][']'/]);
+
+[genModel.genPages.formUnits().generateJsController()/]
+[/file]
+[/template]
+
+
+[template public generateJsController(genUnit : GenDynamicUnit)]
+[genUnit.pageDisplayedOn().genPartOf.jsfModel.siteName/].controller('[genUnit.uniqueName()/]', function ($scope, $http) {
+[for (genField : GenUnitField | genUnit.inputAssociations())]
+[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
+$http.get('<?php
+	echo Route::get('[genAssociation.genDisplayedOn.pageDisplayedOn().controllerName()/]')->uri(array(
+		'action' => '[genAssociation.optionsName()/]',
+	));
+?>').success(function(data) {
+    $scope.[genAssociation.optionsName()/] = data;
+  });
+
+[/let]
+[/for]
+});
+
+[/template]

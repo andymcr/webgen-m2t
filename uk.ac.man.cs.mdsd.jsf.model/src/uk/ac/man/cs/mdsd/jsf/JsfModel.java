@@ -30,6 +30,7 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCopyrightText <em>Copyright Text</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getMetaDescription <em>Meta Description</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getFrameworkTechnology <em>Framework Technology</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAjaxTechnology <em>Ajax Technology</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAuthentication <em>Authentication</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSiteKey <em>Captcha Site Key</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSecretKey <em>Captcha Secret Key</em>}</li>
@@ -278,6 +279,35 @@ public interface JsfModel extends EObject {
 	 * @generated
 	 */
 	void setFrameworkTechnology(FrameworkTechnologies value);
+
+	/**
+	 * Returns the value of the '<em><b>Ajax Technology</b></em>' attribute.
+	 * The literals are from the enumeration {@link uk.ac.man.cs.mdsd.jsf.AjaxTechnologies}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Ajax Technology</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Ajax Technology</em>' attribute.
+	 * @see uk.ac.man.cs.mdsd.jsf.AjaxTechnologies
+	 * @see #setAjaxTechnology(AjaxTechnologies)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_AjaxTechnology()
+	 * @model
+	 * @generated
+	 */
+	AjaxTechnologies getAjaxTechnology();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAjaxTechnology <em>Ajax Technology</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Ajax Technology</em>' attribute.
+	 * @see uk.ac.man.cs.mdsd.jsf.AjaxTechnologies
+	 * @see #getAjaxTechnology()
+	 * @generated
+	 */
+	void setAjaxTechnology(AjaxTechnologies value);
 
 	/**
 	 * Returns the value of the '<em><b>Authentication</b></em>' containment reference.
