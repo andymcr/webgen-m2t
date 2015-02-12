@@ -52,6 +52,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateLikeOperator/left"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateLikeOperator/right"/>
     </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//PredicateIsEmpty">
+      <genFeatures property="None" children="true" createChild="true" propertyCategory=""
+          propertySortChoices="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateIsEmpty/feature"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="Criteria.ecore#//Order">
       <genFeatures property="None" children="true" createChild="true" propertyCategory=""
           ecoreFeature="ecore:EReference Criteria.ecore#//Order/path"/>

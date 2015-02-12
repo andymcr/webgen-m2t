@@ -401,6 +401,11 @@ public class ServiceEntityFeatureItemProvider
 			(createChildParameter
 				(JsfPackage.Literals.INCLUDED_FEATURE__FORCED_VALUE,
 				 CriteriaFactory.eINSTANCE.createPredicateLikeOperator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(JsfPackage.Literals.INCLUDED_FEATURE__FORCED_VALUE,
+				 CriteriaFactory.eINSTANCE.createPredicateIsEmpty()));
 	}
 
 	/**

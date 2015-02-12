@@ -116,6 +116,10 @@ public class GencriteriaAdapterFactory extends AdapterFactoryImpl {
 				return createGenPredicateComparisonOperatorAdapter();
 			}
 			@Override
+			public Adapter caseGenPredicateIsEmpty(GenPredicateIsEmpty object) {
+				return createGenPredicateIsEmptyAdapter();
+			}
+			@Override
 			public Adapter caseGenOrder(GenOrder object) {
 				return createGenOrderAdapter();
 			}
@@ -214,6 +218,20 @@ public class GencriteriaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createGenPredicateComparisonOperatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty <em>Gen Predicate Is Empty</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty
+	 * @generated
+	 */
+	public Adapter createGenPredicateIsEmptyAdapter() {
 		return null;
 	}
 

@@ -213,6 +213,11 @@ public class GenPredicateIsOperatorItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(GencriteriaPackage.Literals.GEN_PREDICATE_IS_OPERATOR__GEN_LEFT,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GencriteriaPackage.Literals.GEN_PREDICATE_IS_OPERATOR__GEN_LEFT,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateIsOperator()));
 
 		newChildDescriptors.add
@@ -259,6 +264,11 @@ public class GenPredicateIsOperatorItemProvider
 			(createChildParameter
 				(GencriteriaPackage.Literals.GEN_PREDICATE_IS_OPERATOR__GEN_RIGHT,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateComparisonOperator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GencriteriaPackage.Literals.GEN_PREDICATE_IS_OPERATOR__GEN_RIGHT,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter

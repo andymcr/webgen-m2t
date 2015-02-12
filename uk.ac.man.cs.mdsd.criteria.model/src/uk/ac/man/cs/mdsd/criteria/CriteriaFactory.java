@@ -76,6 +76,15 @@ public interface CriteriaFactory extends EFactory {
 	PredicateLikeOperator createPredicateLikeOperator();
 
 	/**
+	 * Returns a new object of class '<em>Predicate Is Empty</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Predicate Is Empty</em>'.
+	 * @generated
+	 */
+	PredicateIsEmpty createPredicateIsEmpty();
+
+	/**
 	 * Returns a new object of class '<em>Asc</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

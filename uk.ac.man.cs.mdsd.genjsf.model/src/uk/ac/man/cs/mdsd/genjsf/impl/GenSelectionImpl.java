@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import uk.ac.man.cs.mdsd.gencriteria.GenOrder;
@@ -22,6 +23,7 @@ import uk.ac.man.cs.mdsd.gencriteria.GenPredicate;
 import uk.ac.man.cs.mdsd.genjsf.GenJsfPackage;
 import uk.ac.man.cs.mdsd.genjsf.GenSelection;
 
+import uk.ac.man.cs.mdsd.genjsf.GenServiceAssociation;
 import uk.ac.man.cs.mdsd.jsf.Selection;
 import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
 
@@ -33,6 +35,7 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenSelectionImpl#getJsfSelection <em>Jsf Selection</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenSelectionImpl#getGenJoins <em>Gen Joins</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenSelectionImpl#getGenFilter <em>Gen Filter</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.impl.GenSelectionImpl#getGenOrdering <em>Gen Ordering</em>}</li>
  * </ul>
@@ -50,6 +53,16 @@ public class GenSelectionImpl extends NamedElementImpl implements GenSelection {
 	 * @ordered
 	 */
 	protected Selection jsfSelection;
+
+	/**
+	 * The cached value of the '{@link #getGenJoins() <em>Gen Joins</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGenJoins()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<GenServiceAssociation> genJoins;
 
 	/**
 	 * The cached value of the '{@link #getGenFilter() <em>Gen Filter</em>}' containment reference.
@@ -126,6 +139,18 @@ public class GenSelectionImpl extends NamedElementImpl implements GenSelection {
 		jsfSelection = newJsfSelection;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, GenJsfPackage.GEN_SELECTION__JSF_SELECTION, oldJsfSelection, jsfSelection));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<GenServiceAssociation> getGenJoins() {
+		if (genJoins == null) {
+			genJoins = new EObjectResolvingEList<GenServiceAssociation>(GenServiceAssociation.class, this, GenJsfPackage.GEN_SELECTION__GEN_JOINS);
+		}
+		return genJoins;
 	}
 
 	/**
@@ -210,6 +235,8 @@ public class GenSelectionImpl extends NamedElementImpl implements GenSelection {
 			case GenJsfPackage.GEN_SELECTION__JSF_SELECTION:
 				if (resolve) return getJsfSelection();
 				return basicGetJsfSelection();
+			case GenJsfPackage.GEN_SELECTION__GEN_JOINS:
+				return getGenJoins();
 			case GenJsfPackage.GEN_SELECTION__GEN_FILTER:
 				return getGenFilter();
 			case GenJsfPackage.GEN_SELECTION__GEN_ORDERING:
@@ -229,6 +256,10 @@ public class GenSelectionImpl extends NamedElementImpl implements GenSelection {
 		switch (featureID) {
 			case GenJsfPackage.GEN_SELECTION__JSF_SELECTION:
 				setJsfSelection((Selection)newValue);
+				return;
+			case GenJsfPackage.GEN_SELECTION__GEN_JOINS:
+				getGenJoins().clear();
+				getGenJoins().addAll((Collection<? extends GenServiceAssociation>)newValue);
 				return;
 			case GenJsfPackage.GEN_SELECTION__GEN_FILTER:
 				setGenFilter((GenPredicate)newValue);
@@ -252,6 +283,9 @@ public class GenSelectionImpl extends NamedElementImpl implements GenSelection {
 			case GenJsfPackage.GEN_SELECTION__JSF_SELECTION:
 				setJsfSelection((Selection)null);
 				return;
+			case GenJsfPackage.GEN_SELECTION__GEN_JOINS:
+				getGenJoins().clear();
+				return;
 			case GenJsfPackage.GEN_SELECTION__GEN_FILTER:
 				setGenFilter((GenPredicate)null);
 				return;
@@ -272,6 +306,8 @@ public class GenSelectionImpl extends NamedElementImpl implements GenSelection {
 		switch (featureID) {
 			case GenJsfPackage.GEN_SELECTION__JSF_SELECTION:
 				return jsfSelection != null;
+			case GenJsfPackage.GEN_SELECTION__GEN_JOINS:
+				return genJoins != null && !genJoins.isEmpty();
 			case GenJsfPackage.GEN_SELECTION__GEN_FILTER:
 				return genFilter != null;
 			case GenJsfPackage.GEN_SELECTION__GEN_ORDERING:

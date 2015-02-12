@@ -19,6 +19,7 @@ import uk.ac.man.cs.mdsd.orm.NamedElement;
  * The following features are supported:
  * <ul>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenSelection#getJsfSelection <em>Jsf Selection</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenSelection#getGenJoins <em>Gen Joins</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenSelection#getGenFilter <em>Gen Filter</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.genjsf.GenSelection#getGenOrdering <em>Gen Ordering</em>}</li>
  * </ul>
@@ -54,6 +55,22 @@ public interface GenSelection extends NamedElement {
 	 * @generated
 	 */
 	void setJsfSelection(Selection value);
+
+	/**
+	 * Returns the value of the '<em><b>Gen Joins</b></em>' reference list.
+	 * The list contents are of type {@link uk.ac.man.cs.mdsd.genjsf.GenServiceAssociation}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Gen Joins</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Gen Joins</em>' reference list.
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenJsfPackage#getGenSelection_GenJoins()
+	 * @model
+	 * @generated
+	 */
+	EList<GenServiceAssociation> getGenJoins();
 
 	/**
 	 * Returns the value of the '<em><b>Gen Filter</b></em>' containment reference.

@@ -227,6 +227,11 @@ public class PredicateComparisonOperatorItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__LEFT,
+				 CriteriaFactory.eINSTANCE.createPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__RIGHT,
 				 CriteriaFactory.eINSTANCE.createNullLiteral()));
 
@@ -274,6 +279,11 @@ public class PredicateComparisonOperatorItemProvider
 			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__RIGHT,
 				 CriteriaFactory.eINSTANCE.createPredicateLikeOperator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__RIGHT,
+				 CriteriaFactory.eINSTANCE.createPredicateIsEmpty()));
 	}
 
 	/**

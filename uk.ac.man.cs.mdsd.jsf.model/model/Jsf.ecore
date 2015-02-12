@@ -142,6 +142,8 @@
         upperBound="-1" eType="#//ServiceFeature"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Selection" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joins" upperBound="-1"
+        eType="#//ServiceAssociation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="filter" ordered="false"
         eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//Predicate"
         containment="true"/>

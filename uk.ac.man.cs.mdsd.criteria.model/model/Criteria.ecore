@@ -65,6 +65,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" ordered="false"
         lowerBound="1" eType="#//Expression" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PredicateIsEmpty" eSuperTypes="#//Predicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//Path"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Order" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="path" ordered="false" lowerBound="1"
         eType="#//Path" containment="true"/>

@@ -181,6 +181,29 @@ public class GencriteriaItemProviderAdapterFactory extends GencriteriaAdapterFac
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GenPredicateIsEmptyItemProvider genPredicateIsEmptyItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGenPredicateIsEmptyAdapter() {
+		if (genPredicateIsEmptyItemProvider == null) {
+			genPredicateIsEmptyItemProvider = new GenPredicateIsEmptyItemProvider(this);
+		}
+
+		return genPredicateIsEmptyItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.gencriteria.GenOrder} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -475,6 +498,7 @@ public class GencriteriaItemProviderAdapterFactory extends GencriteriaAdapterFac
 		if (genPredicateBooleanOperatorItemProvider != null) genPredicateBooleanOperatorItemProvider.dispose();
 		if (genPredicateEqualityOperatorItemProvider != null) genPredicateEqualityOperatorItemProvider.dispose();
 		if (genPredicateComparisonOperatorItemProvider != null) genPredicateComparisonOperatorItemProvider.dispose();
+		if (genPredicateIsEmptyItemProvider != null) genPredicateIsEmptyItemProvider.dispose();
 		if (genOrderItemProvider != null) genOrderItemProvider.dispose();
 		if (genPredicateIsOperatorItemProvider != null) genPredicateIsOperatorItemProvider.dispose();
 		if (genPredicateLikeOperatorItemProvider != null) genPredicateLikeOperatorItemProvider.dispose();

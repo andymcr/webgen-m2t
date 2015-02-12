@@ -503,6 +503,43 @@ public interface CriteriaPackage extends EPackage {
 	int PREDICATE_LIKE_OPERATOR_FEATURE_COUNT = PREDICATE_FEATURE_COUNT + 2;
 
 	/**
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.impl.PredicateIsEmptyImpl <em>Predicate Is Empty</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.ac.man.cs.mdsd.criteria.impl.PredicateIsEmptyImpl
+	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateIsEmpty()
+	 * @generated
+	 */
+	int PREDICATE_IS_EMPTY = 14;
+
+	/**
+	 * The feature id for the '<em><b>Negated</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PREDICATE_IS_EMPTY__NEGATED = PREDICATE__NEGATED;
+
+	/**
+	 * The feature id for the '<em><b>Feature</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PREDICATE_IS_EMPTY__FEATURE = PREDICATE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Predicate Is Empty</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PREDICATE_IS_EMPTY_FEATURE_COUNT = PREDICATE_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.impl.OrderImpl <em>Order</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -510,7 +547,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getOrder()
 	 * @generated
 	 */
-	int ORDER = 14;
+	int ORDER = 15;
 
 	/**
 	 * The feature id for the '<em><b>Path</b></em>' containment reference.
@@ -538,7 +575,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getAsc()
 	 * @generated
 	 */
-	int ASC = 15;
+	int ASC = 16;
 
 	/**
 	 * The feature id for the '<em><b>Path</b></em>' containment reference.
@@ -566,7 +603,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getDesc()
 	 * @generated
 	 */
-	int DESC = 16;
+	int DESC = 17;
 
 	/**
 	 * The feature id for the '<em><b>Path</b></em>' containment reference.
@@ -594,7 +631,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getBooleanOperator()
 	 * @generated
 	 */
-	int BOOLEAN_OPERATOR = 17;
+	int BOOLEAN_OPERATOR = 18;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.ComparisionOperator <em>Comparision Operator</em>}' enum.
@@ -604,7 +641,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getComparisionOperator()
 	 * @generated
 	 */
-	int COMPARISION_OPERATOR = 18;
+	int COMPARISION_OPERATOR = 19;
 
 
 	/**
@@ -808,6 +845,27 @@ public interface CriteriaPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getPredicateLikeOperator_Right();
+
+	/**
+	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.criteria.PredicateIsEmpty <em>Predicate Is Empty</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Predicate Is Empty</em>'.
+	 * @see uk.ac.man.cs.mdsd.criteria.PredicateIsEmpty
+	 * @generated
+	 */
+	EClass getPredicateIsEmpty();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link uk.ac.man.cs.mdsd.criteria.PredicateIsEmpty#getFeature <em>Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Feature</em>'.
+	 * @see uk.ac.man.cs.mdsd.criteria.PredicateIsEmpty#getFeature()
+	 * @see #getPredicateIsEmpty()
+	 * @generated
+	 */
+	EReference getPredicateIsEmpty_Feature();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.criteria.Order <em>Order</em>}'.
@@ -1160,6 +1218,24 @@ public interface CriteriaPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PREDICATE_LIKE_OPERATOR__RIGHT = eINSTANCE.getPredicateLikeOperator_Right();
+
+		/**
+		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.criteria.impl.PredicateIsEmptyImpl <em>Predicate Is Empty</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.ac.man.cs.mdsd.criteria.impl.PredicateIsEmptyImpl
+		 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateIsEmpty()
+		 * @generated
+		 */
+		EClass PREDICATE_IS_EMPTY = eINSTANCE.getPredicateIsEmpty();
+
+		/**
+		 * The meta object literal for the '<em><b>Feature</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PREDICATE_IS_EMPTY__FEATURE = eINSTANCE.getPredicateIsEmpty_Feature();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.criteria.impl.OrderImpl <em>Order</em>}' class.

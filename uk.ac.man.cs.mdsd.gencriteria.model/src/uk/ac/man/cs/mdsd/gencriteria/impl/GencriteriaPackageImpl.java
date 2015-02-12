@@ -22,6 +22,7 @@ import uk.ac.man.cs.mdsd.gencriteria.GenPredicate;
 import uk.ac.man.cs.mdsd.gencriteria.GenPredicateBooleanOperator;
 import uk.ac.man.cs.mdsd.gencriteria.GenPredicateComparisonOperator;
 import uk.ac.man.cs.mdsd.gencriteria.GenPredicateEqualityOperator;
+import uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty;
 import uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsOperator;
 import uk.ac.man.cs.mdsd.gencriteria.GenPredicateLikeOperator;
 import uk.ac.man.cs.mdsd.gencriteria.GenStringLiteral;
@@ -69,6 +70,13 @@ public class GencriteriaPackageImpl extends EPackageImpl implements GencriteriaP
 	 * @generated
 	 */
 	private EClass genPredicateComparisonOperatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genPredicateIsEmptyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -319,6 +327,33 @@ public class GencriteriaPackageImpl extends EPackageImpl implements GencriteriaP
 	 */
 	public EReference getGenPredicateComparisonOperator_GenRight() {
 		return (EReference)genPredicateComparisonOperatorEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenPredicateIsEmpty() {
+		return genPredicateIsEmptyEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenPredicateIsEmpty_CriteriaPredicate() {
+		return (EReference)genPredicateIsEmptyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenPredicateIsEmpty_GenFeature() {
+		return (EReference)genPredicateIsEmptyEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -593,6 +628,10 @@ public class GencriteriaPackageImpl extends EPackageImpl implements GencriteriaP
 		createEReference(genPredicateComparisonOperatorEClass, GEN_PREDICATE_COMPARISON_OPERATOR__GEN_LEFT);
 		createEReference(genPredicateComparisonOperatorEClass, GEN_PREDICATE_COMPARISON_OPERATOR__GEN_RIGHT);
 
+		genPredicateIsEmptyEClass = createEClass(GEN_PREDICATE_IS_EMPTY);
+		createEReference(genPredicateIsEmptyEClass, GEN_PREDICATE_IS_EMPTY__CRITERIA_PREDICATE);
+		createEReference(genPredicateIsEmptyEClass, GEN_PREDICATE_IS_EMPTY__GEN_FEATURE);
+
 		genOrderEClass = createEClass(GEN_ORDER);
 		createEReference(genOrderEClass, GEN_ORDER__CRITERIA_ORDER);
 		createEReference(genOrderEClass, GEN_ORDER__GEN_PATH);
@@ -650,6 +689,7 @@ public class GencriteriaPackageImpl extends EPackageImpl implements GencriteriaP
 		genPredicateBooleanOperatorEClass.getESuperTypes().add(this.getGenPredicate());
 		genPredicateEqualityOperatorEClass.getESuperTypes().add(this.getGenPredicate());
 		genPredicateComparisonOperatorEClass.getESuperTypes().add(this.getGenPredicate());
+		genPredicateIsEmptyEClass.getESuperTypes().add(this.getGenPredicate());
 		genPredicateIsOperatorEClass.getESuperTypes().add(this.getGenPredicate());
 		genPredicateLikeOperatorEClass.getESuperTypes().add(this.getGenPredicate());
 
@@ -690,6 +730,10 @@ public class GencriteriaPackageImpl extends EPackageImpl implements GencriteriaP
 		initEReference(getGenPredicateComparisonOperator_CriteriaPredicate(), theCriteriaPackage.getPredicateComparisonOperator(), null, "criteriaPredicate", null, 1, 1, GenPredicateComparisonOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenPredicateComparisonOperator_GenLeft(), this.getGenExpression(), null, "genLeft", null, 1, 1, GenPredicateComparisonOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenPredicateComparisonOperator_GenRight(), this.getGenExpression(), null, "genRight", null, 1, 1, GenPredicateComparisonOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genPredicateIsEmptyEClass, GenPredicateIsEmpty.class, "GenPredicateIsEmpty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenPredicateIsEmpty_CriteriaPredicate(), theCriteriaPackage.getPredicateIsEmpty(), null, "criteriaPredicate", null, 1, 1, GenPredicateIsEmpty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGenPredicateIsEmpty_GenFeature(), this.getGenPath(), null, "genFeature", null, 0, 1, GenPredicateIsEmpty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(genOrderEClass, GenOrder.class, "GenOrder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenOrder_CriteriaOrder(), theCriteriaPackage.getOrder(), null, "criteriaOrder", null, 0, 1, GenOrder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

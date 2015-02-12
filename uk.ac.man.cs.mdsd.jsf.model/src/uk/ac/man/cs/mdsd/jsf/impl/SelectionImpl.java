@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import uk.ac.man.cs.mdsd.criteria.Order;
@@ -23,6 +24,7 @@ import uk.ac.man.cs.mdsd.criteria.Predicate;
 import uk.ac.man.cs.mdsd.jsf.JsfPackage;
 import uk.ac.man.cs.mdsd.jsf.Selection;
 
+import uk.ac.man.cs.mdsd.jsf.ServiceAssociation;
 import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
 
 /**
@@ -32,6 +34,7 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.SelectionImpl#getJoins <em>Joins</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.SelectionImpl#getFilter <em>Filter</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.SelectionImpl#getOrdering <em>Ordering</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.SelectionImpl#getLimit <em>Limit</em>}</li>
@@ -41,6 +44,16 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
  * @generated
  */
 public class SelectionImpl extends NamedElementImpl implements Selection {
+	/**
+	 * The cached value of the '{@link #getJoins() <em>Joins</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoins()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ServiceAssociation> joins;
+
 	/**
 	 * The cached value of the '{@link #getFilter() <em>Filter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -98,6 +111,18 @@ public class SelectionImpl extends NamedElementImpl implements Selection {
 	@Override
 	protected EClass eStaticClass() {
 		return JsfPackage.Literals.SELECTION;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<ServiceAssociation> getJoins() {
+		if (joins == null) {
+			joins = new EObjectResolvingEList<ServiceAssociation>(ServiceAssociation.class, this, JsfPackage.SELECTION__JOINS);
+		}
+		return joins;
 	}
 
 	/**
@@ -200,6 +225,8 @@ public class SelectionImpl extends NamedElementImpl implements Selection {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case JsfPackage.SELECTION__JOINS:
+				return getJoins();
 			case JsfPackage.SELECTION__FILTER:
 				return getFilter();
 			case JsfPackage.SELECTION__ORDERING:
@@ -219,6 +246,10 @@ public class SelectionImpl extends NamedElementImpl implements Selection {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case JsfPackage.SELECTION__JOINS:
+				getJoins().clear();
+				getJoins().addAll((Collection<? extends ServiceAssociation>)newValue);
+				return;
 			case JsfPackage.SELECTION__FILTER:
 				setFilter((Predicate)newValue);
 				return;
@@ -241,6 +272,9 @@ public class SelectionImpl extends NamedElementImpl implements Selection {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case JsfPackage.SELECTION__JOINS:
+				getJoins().clear();
+				return;
 			case JsfPackage.SELECTION__FILTER:
 				setFilter((Predicate)null);
 				return;
@@ -262,6 +296,8 @@ public class SelectionImpl extends NamedElementImpl implements Selection {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case JsfPackage.SELECTION__JOINS:
+				return joins != null && !joins.isEmpty();
 			case JsfPackage.SELECTION__FILTER:
 				return filter != null;
 			case JsfPackage.SELECTION__ORDERING:

@@ -28,6 +28,7 @@ import uk.ac.man.cs.mdsd.criteria.Predicate;
 import uk.ac.man.cs.mdsd.criteria.PredicateBooleanOperator;
 import uk.ac.man.cs.mdsd.criteria.PredicateComparisonOperator;
 import uk.ac.man.cs.mdsd.criteria.PredicateEqualityOperator;
+import uk.ac.man.cs.mdsd.criteria.PredicateIsEmpty;
 import uk.ac.man.cs.mdsd.criteria.PredicateIsOperator;
 import uk.ac.man.cs.mdsd.criteria.PredicateLikeOperator;
 import uk.ac.man.cs.mdsd.criteria.StringLiteral;
@@ -87,6 +88,13 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 	 * @generated
 	 */
 	private EClass predicateLikeOperatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass predicateIsEmptyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -409,6 +417,24 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getPredicateIsEmpty() {
+		return predicateIsEmptyEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getPredicateIsEmpty_Feature() {
+		return (EReference)predicateIsEmptyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getOrder() {
 		return orderEClass;
 	}
@@ -619,6 +645,9 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 		createEReference(predicateLikeOperatorEClass, PREDICATE_LIKE_OPERATOR__LEFT);
 		createEReference(predicateLikeOperatorEClass, PREDICATE_LIKE_OPERATOR__RIGHT);
 
+		predicateIsEmptyEClass = createEClass(PREDICATE_IS_EMPTY);
+		createEReference(predicateIsEmptyEClass, PREDICATE_IS_EMPTY__FEATURE);
+
 		orderEClass = createEClass(ORDER);
 		createEReference(orderEClass, ORDER__PATH);
 
@@ -672,6 +701,7 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 		predicateComparisonOperatorEClass.getESuperTypes().add(this.getPredicate());
 		predicateIsOperatorEClass.getESuperTypes().add(this.getPredicate());
 		predicateLikeOperatorEClass.getESuperTypes().add(this.getPredicate());
+		predicateIsEmptyEClass.getESuperTypes().add(this.getPredicate());
 		ascEClass.getESuperTypes().add(this.getOrder());
 		descEClass.getESuperTypes().add(this.getOrder());
 
@@ -718,6 +748,9 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 		initEClass(predicateLikeOperatorEClass, PredicateLikeOperator.class, "PredicateLikeOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPredicateLikeOperator_Left(), this.getExpression(), null, "left", null, 1, 1, PredicateLikeOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getPredicateLikeOperator_Right(), this.getExpression(), null, "right", null, 1, 1, PredicateLikeOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+		initEClass(predicateIsEmptyEClass, PredicateIsEmpty.class, "PredicateIsEmpty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPredicateIsEmpty_Feature(), this.getPath(), null, "feature", null, 0, 1, PredicateIsEmpty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(orderEClass, Order.class, "Order", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getOrder_Path(), this.getPath(), null, "path", null, 1, 1, Order.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

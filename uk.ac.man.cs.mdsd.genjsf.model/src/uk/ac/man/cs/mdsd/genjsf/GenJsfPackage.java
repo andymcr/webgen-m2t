@@ -912,13 +912,22 @@ public interface GenJsfPackage extends EPackage {
 	int GEN_SELECTION__JSF_SELECTION = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Gen Joins</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_SELECTION__GEN_JOINS = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Gen Filter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SELECTION__GEN_FILTER = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+	int GEN_SELECTION__GEN_FILTER = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Gen Ordering</b></em>' containment reference list.
@@ -927,7 +936,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SELECTION__GEN_ORDERING = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
+	int GEN_SELECTION__GEN_ORDERING = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Gen Selection</em>' class.
@@ -936,7 +945,7 @@ public interface GenJsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int GEN_SELECTION_FEATURE_COUNT = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 3;
+	int GEN_SELECTION_FEATURE_COUNT = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5836,6 +5845,17 @@ public interface GenJsfPackage extends EPackage {
 	EReference getGenSelection_JsfSelection();
 
 	/**
+	 * Returns the meta object for the reference list '{@link uk.ac.man.cs.mdsd.genjsf.GenSelection#getGenJoins <em>Gen Joins</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Gen Joins</em>'.
+	 * @see uk.ac.man.cs.mdsd.genjsf.GenSelection#getGenJoins()
+	 * @see #getGenSelection()
+	 * @generated
+	 */
+	EReference getGenSelection_GenJoins();
+
+	/**
 	 * Returns the meta object for the containment reference '{@link uk.ac.man.cs.mdsd.genjsf.GenSelection#getGenFilter <em>Gen Filter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8141,6 +8161,14 @@ public interface GenJsfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference GEN_SELECTION__JSF_SELECTION = eINSTANCE.getGenSelection_JsfSelection();
+
+		/**
+		 * The meta object literal for the '<em><b>Gen Joins</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GEN_SELECTION__GEN_JOINS = eINSTANCE.getGenSelection_GenJoins();
 
 		/**
 		 * The meta object literal for the '<em><b>Gen Filter</b></em>' containment reference feature.

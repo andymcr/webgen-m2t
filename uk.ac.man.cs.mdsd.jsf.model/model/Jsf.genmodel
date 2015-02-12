@@ -97,6 +97,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ModelLabel/features"/>
     </genClasses>
     <genClasses ecoreClass="Jsf.ecore#//Selection">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Selection/joins"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Selection/filter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Selection/ordering"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Selection/limit"/>

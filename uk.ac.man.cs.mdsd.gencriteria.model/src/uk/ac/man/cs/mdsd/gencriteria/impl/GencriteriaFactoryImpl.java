@@ -64,6 +64,7 @@ public class GencriteriaFactoryImpl extends EFactoryImpl implements GencriteriaF
 			case GencriteriaPackage.GEN_PREDICATE_BOOLEAN_OPERATOR: return createGenPredicateBooleanOperator();
 			case GencriteriaPackage.GEN_PREDICATE_EQUALITY_OPERATOR: return createGenPredicateEqualityOperator();
 			case GencriteriaPackage.GEN_PREDICATE_COMPARISON_OPERATOR: return createGenPredicateComparisonOperator();
+			case GencriteriaPackage.GEN_PREDICATE_IS_EMPTY: return createGenPredicateIsEmpty();
 			case GencriteriaPackage.GEN_ORDER: return createGenOrder();
 			case GencriteriaPackage.GEN_PREDICATE_IS_OPERATOR: return createGenPredicateIsOperator();
 			case GencriteriaPackage.GEN_PREDICATE_LIKE_OPERATOR: return createGenPredicateLikeOperator();
@@ -110,6 +111,16 @@ public class GencriteriaFactoryImpl extends EFactoryImpl implements GencriteriaF
 	public GenPredicateComparisonOperator createGenPredicateComparisonOperator() {
 		GenPredicateComparisonOperatorImpl genPredicateComparisonOperator = new GenPredicateComparisonOperatorImpl();
 		return genPredicateComparisonOperator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GenPredicateIsEmpty createGenPredicateIsEmpty() {
+		GenPredicateIsEmptyImpl genPredicateIsEmpty = new GenPredicateIsEmptyImpl();
+		return genPredicateIsEmpty;
 	}
 
 	/**

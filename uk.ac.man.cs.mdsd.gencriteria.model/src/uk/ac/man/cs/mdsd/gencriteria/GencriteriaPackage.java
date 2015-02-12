@@ -403,6 +403,43 @@ public interface GencriteriaPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.gencriteria.impl.GenPredicateIsEmptyImpl <em>Gen Predicate Is Empty</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.ac.man.cs.mdsd.gencriteria.impl.GenPredicateIsEmptyImpl
+	 * @see uk.ac.man.cs.mdsd.gencriteria.impl.GencriteriaPackageImpl#getGenPredicateIsEmpty()
+	 * @generated
+	 */
+	int GEN_PREDICATE_IS_EMPTY = 12;
+
+	/**
+	 * The feature id for the '<em><b>Criteria Predicate</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_PREDICATE_IS_EMPTY__CRITERIA_PREDICATE = GEN_PREDICATE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Gen Feature</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_PREDICATE_IS_EMPTY__GEN_FEATURE = GEN_PREDICATE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Gen Predicate Is Empty</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GEN_PREDICATE_IS_EMPTY_FEATURE_COUNT = GEN_PREDICATE_FEATURE_COUNT + 2;
+
+	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.gencriteria.impl.GenOrderImpl <em>Gen Order</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -410,7 +447,7 @@ public interface GencriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.gencriteria.impl.GencriteriaPackageImpl#getGenOrder()
 	 * @generated
 	 */
-	int GEN_ORDER = 12;
+	int GEN_ORDER = 13;
 
 	/**
 	 * The feature id for the '<em><b>Criteria Order</b></em>' reference.
@@ -448,7 +485,7 @@ public interface GencriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.gencriteria.impl.GencriteriaPackageImpl#getGenPredicateIsOperator()
 	 * @generated
 	 */
-	int GEN_PREDICATE_IS_OPERATOR = 13;
+	int GEN_PREDICATE_IS_OPERATOR = 14;
 
 	/**
 	 * The feature id for the '<em><b>Criteria Predicate</b></em>' reference.
@@ -494,7 +531,7 @@ public interface GencriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.gencriteria.impl.GencriteriaPackageImpl#getGenPredicateLikeOperator()
 	 * @generated
 	 */
-	int GEN_PREDICATE_LIKE_OPERATOR = 14;
+	int GEN_PREDICATE_LIKE_OPERATOR = 15;
 
 	/**
 	 * The feature id for the '<em><b>Criteria Predicate</b></em>' reference.
@@ -670,6 +707,38 @@ public interface GencriteriaPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getGenPredicateComparisonOperator_GenRight();
+
+	/**
+	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty <em>Gen Predicate Is Empty</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Gen Predicate Is Empty</em>'.
+	 * @see uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty
+	 * @generated
+	 */
+	EClass getGenPredicateIsEmpty();
+
+	/**
+	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty#getCriteriaPredicate <em>Criteria Predicate</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Criteria Predicate</em>'.
+	 * @see uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty#getCriteriaPredicate()
+	 * @see #getGenPredicateIsEmpty()
+	 * @generated
+	 */
+	EReference getGenPredicateIsEmpty_CriteriaPredicate();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty#getGenFeature <em>Gen Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Gen Feature</em>'.
+	 * @see uk.ac.man.cs.mdsd.gencriteria.GenPredicateIsEmpty#getGenFeature()
+	 * @see #getGenPredicateIsEmpty()
+	 * @generated
+	 */
+	EReference getGenPredicateIsEmpty_GenFeature();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.gencriteria.GenOrder <em>Gen Order</em>}'.
@@ -1049,6 +1118,32 @@ public interface GencriteriaPackage extends EPackage {
 		 * @generated
 		 */
 		EReference GEN_PREDICATE_COMPARISON_OPERATOR__GEN_RIGHT = eINSTANCE.getGenPredicateComparisonOperator_GenRight();
+
+		/**
+		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.gencriteria.impl.GenPredicateIsEmptyImpl <em>Gen Predicate Is Empty</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.ac.man.cs.mdsd.gencriteria.impl.GenPredicateIsEmptyImpl
+		 * @see uk.ac.man.cs.mdsd.gencriteria.impl.GencriteriaPackageImpl#getGenPredicateIsEmpty()
+		 * @generated
+		 */
+		EClass GEN_PREDICATE_IS_EMPTY = eINSTANCE.getGenPredicateIsEmpty();
+
+		/**
+		 * The meta object literal for the '<em><b>Criteria Predicate</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GEN_PREDICATE_IS_EMPTY__CRITERIA_PREDICATE = eINSTANCE.getGenPredicateIsEmpty_CriteriaPredicate();
+
+		/**
+		 * The meta object literal for the '<em><b>Gen Feature</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GEN_PREDICATE_IS_EMPTY__GEN_FEATURE = eINSTANCE.getGenPredicateIsEmpty_GenFeature();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.gencriteria.impl.GenOrderImpl <em>Gen Order</em>}' class.

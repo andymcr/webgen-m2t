@@ -347,6 +347,11 @@ public class ServiceEntityElementItemProvider
 			(createChildParameter
 				(JsfPackage.Literals.INCLUDED_ELEMENT__DEFAULT_VALUE,
 				 CriteriaFactory.eINSTANCE.createPredicateLikeOperator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(JsfPackage.Literals.INCLUDED_ELEMENT__DEFAULT_VALUE,
+				 CriteriaFactory.eINSTANCE.createPredicateIsEmpty()));
 	}
 
 	/**

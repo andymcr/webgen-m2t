@@ -18,7 +18,7 @@
 	if (isset($[genDynamicUnit.instanceName()/]_field_errors)) {
 		echo ' [genDynamicUnit.errorClass()/]';
 	}
-?>" id="[genDynamicUnit.instanceName()/]"[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
+?>" id="[genDynamicUnit.instanceName()/]"[if (genDynamicUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS and genDynamicUnit.hasInputAssociations())]
  ng-controller="[genUnit.uniqueName()/]"[/if]>
  <h1 class="[genDynamicUnit.captionClass()/][if (genDynamicUnit.omitCaption())] hidden[/if]"><?php echo __('[genDynamicUnit.displayLabel()/]'); ?></h1>
  <div class="unit_padding">
@@ -637,14 +637,23 @@ echo form_input('[genField.modelPropertyName()/]');
 	)) . PHP_EOL;
 ?>
 [else]
+	[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
+	[if (genAssociation.genFilters->size() > 0)]
+<div class="[genField.styleClass()/] [genField.inputClass()/]">
+ <input id="[genField.uniqueName()/]_filter" name="[genField.uniqueName()/]_filter" ng-model="[genField.name/]_filter"/>
+	[/if]
 <!--select id="[genField.uniqueName()/]" name="[genField.columnName()/][if (not genField.isSingleton())]
 ['['/][']'/][/if]" class="[genField.styleClass()/] [genField.inputClass()/]" [if (genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
  ng-model="[genField.name/]_selected" ng-options="[genField.name/].label for [genField.name/] in [genField.optionsName()/]"[/if] -->
 <select id="[genField.uniqueName()/]" name="[genField.columnName()/][if (not genField.isSingleton())]
 ['['/][']'/][/if]" class="[genField.styleClass()/] [genField.inputClass()/]" [if (genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
  ng-model="[genField.name/]_selected"[/if]>
- <option ng-repeat="[genField.name/] in [genField.optionsName()/]" value="{{[genField.name/].id}}">{{[genField.name/].label}}</option>
+ <option ng-repeat="[genField.name/] in [genField.optionsName()/] | filter:[genField.name/]_filter" value="{{[genField.name/].id}}">{{[genField.name/].label}}</option>
 </select>
+	[if (genAssociation.genFilters->size() > 0)]
+</div>
+	[/if]
+	[/let]
 [/if]
 [/template]
 

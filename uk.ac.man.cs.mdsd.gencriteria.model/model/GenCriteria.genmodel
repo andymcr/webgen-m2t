@@ -39,6 +39,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateComparisonOperator/genLeft"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateComparisonOperator/genRight"/>
     </genClasses>
+    <genClasses ecoreClass="GenCriteria.ecore#//GenPredicateIsEmpty">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateIsEmpty/criteriaPredicate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenPredicateIsEmpty/genFeature"/>
+    </genClasses>
     <genClasses ecoreClass="GenCriteria.ecore#//GenOrder">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenOrder/criteriaOrder"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenCriteria.ecore#//GenOrder/genPath"/>

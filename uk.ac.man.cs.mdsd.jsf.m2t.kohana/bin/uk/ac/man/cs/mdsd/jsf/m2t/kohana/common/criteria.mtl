@@ -116,6 +116,13 @@ $this->where([predicate.genLeft.generateCriteria()/], 'LIKE', [predicate.genRigh
 [/let]
 [/template]
 
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateIsEmpty)) post(trim())]
+[let predicate : GenPredicateIsEmpty = criteria.oclAsType(GenPredicateIsEmpty)]
+$this->where([predicate.genFeature.generateCriteria()/], [if (predicate.criteriaPredicate.negated)]'>'[else]'='[/if], '0');
+[/let]
+[/template]
+
 [query public generateOperator(operator : BooleanOperator) : String
 	= if operator = BooleanOperator::And then
 			'AND'

@@ -1281,7 +1281,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getGenSelection_GenFilter() {
+	public EReference getGenSelection_GenJoins() {
 		return (EReference)genSelectionEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1290,8 +1290,17 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getGenSelection_GenOrdering() {
+	public EReference getGenSelection_GenFilter() {
 		return (EReference)genSelectionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenSelection_GenOrdering() {
+		return (EReference)genSelectionEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -2869,6 +2878,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 
 		genSelectionEClass = createEClass(GEN_SELECTION);
 		createEReference(genSelectionEClass, GEN_SELECTION__JSF_SELECTION);
+		createEReference(genSelectionEClass, GEN_SELECTION__GEN_JOINS);
 		createEReference(genSelectionEClass, GEN_SELECTION__GEN_FILTER);
 		createEReference(genSelectionEClass, GEN_SELECTION__GEN_ORDERING);
 
@@ -3300,6 +3310,7 @@ public class GenJsfPackageImpl extends EPackageImpl implements GenJsfPackage {
 
 		initEClass(genSelectionEClass, GenSelection.class, "GenSelection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGenSelection_JsfSelection(), theJsfPackage.getSelection(), null, "jsfSelection", null, 1, 1, GenSelection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getGenSelection_GenJoins(), this.getGenServiceAssociation(), null, "genJoins", null, 0, -1, GenSelection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenSelection_GenFilter(), theGencriteriaPackage.getGenPredicate(), null, "genFilter", null, 0, 1, GenSelection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getGenSelection_GenOrdering(), theGencriteriaPackage.getGenOrder(), null, "genOrdering", null, 0, -1, GenSelection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

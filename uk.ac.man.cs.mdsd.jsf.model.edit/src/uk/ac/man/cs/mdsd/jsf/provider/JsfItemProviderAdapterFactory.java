@@ -35,6 +35,7 @@ import uk.ac.man.cs.mdsd.criteria.CriteriaPackage;
 import uk.ac.man.cs.mdsd.criteria.Order;
 import uk.ac.man.cs.mdsd.criteria.PredicateComparisonOperator;
 import uk.ac.man.cs.mdsd.criteria.PredicateEqualityOperator;
+import uk.ac.man.cs.mdsd.criteria.PredicateIsEmpty;
 import uk.ac.man.cs.mdsd.criteria.PredicateIsOperator;
 import uk.ac.man.cs.mdsd.criteria.PredicateLikeOperator;
 import uk.ac.man.cs.mdsd.criteria.util.CriteriaSwitch;
@@ -1536,6 +1537,30 @@ public class JsfItemProviderAdapterFactory extends JsfAdapterFactory implements 
 				newChildDescriptors.add
 					(createChildParameter
 						(CriteriaPackage.Literals.PREDICATE_LIKE_OPERATOR__RIGHT,
+						 JsfFactory.eINSTANCE.createCurrentUserReference()));
+
+				return null;
+			}
+			/**
+			 * <!-- begin-user-doc -->
+			 * <!-- end-user-doc -->
+			 * @generated
+			 */
+			@Override
+			public Object casePredicateIsEmpty(PredicateIsEmpty object) {
+				newChildDescriptors.add
+					(createChildParameter
+						(CriteriaPackage.Literals.PREDICATE_IS_EMPTY__FEATURE,
+						 JsfFactory.eINSTANCE.createModelReference()));
+
+				newChildDescriptors.add
+					(createChildParameter
+						(CriteriaPackage.Literals.PREDICATE_IS_EMPTY__FEATURE,
+						 JsfFactory.eINSTANCE.createFeatureReference()));
+
+				newChildDescriptors.add
+					(createChildParameter
+						(CriteriaPackage.Literals.PREDICATE_IS_EMPTY__FEATURE,
 						 JsfFactory.eINSTANCE.createCurrentUserReference()));
 
 				return null;

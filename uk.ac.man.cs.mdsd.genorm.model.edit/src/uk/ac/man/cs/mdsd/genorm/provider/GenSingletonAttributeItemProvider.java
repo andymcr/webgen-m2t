@@ -207,6 +207,11 @@ public class GenSingletonAttributeItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(GenOrmPackage.Literals.GEN_SINGLETON_ATTRIBUTE__GEN_DEFAULT_VALUE,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GenOrmPackage.Literals.GEN_SINGLETON_ATTRIBUTE__GEN_DEFAULT_VALUE,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateIsOperator()));
 
 		newChildDescriptors.add

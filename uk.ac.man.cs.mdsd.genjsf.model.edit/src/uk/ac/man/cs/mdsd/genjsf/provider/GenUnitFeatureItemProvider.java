@@ -229,6 +229,11 @@ public class GenUnitFeatureItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(GenJsfPackage.Literals.GEN_INCLUDED_FEATURE__GEN_FORCED_VALUE,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GenJsfPackage.Literals.GEN_INCLUDED_FEATURE__GEN_FORCED_VALUE,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateIsOperator()));
 
 		newChildDescriptors.add

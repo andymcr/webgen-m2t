@@ -208,6 +208,11 @@ public class GenInterfaceFieldItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(GenJsfPackage.Literals.GEN_INTERFACE_FIELD__GEN_DEFAULT_VALUE,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GenJsfPackage.Literals.GEN_INTERFACE_FIELD__GEN_DEFAULT_VALUE,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateIsOperator()));
 
 		newChildDescriptors.add

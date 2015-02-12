@@ -144,6 +144,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="GenSelection" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="jsfSelection" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.jsf.model/model/Jsf.ecore#//Selection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genJoins" upperBound="-1"
+        eType="#//GenServiceAssociation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="genFilter" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.gencriteria.model/model/GenCriteria.ecore#//GenPredicate"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="genOrdering" upperBound="-1"

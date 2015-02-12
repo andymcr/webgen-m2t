@@ -58,6 +58,15 @@ public interface GencriteriaFactory extends EFactory {
 	GenPredicateComparisonOperator createGenPredicateComparisonOperator();
 
 	/**
+	 * Returns a new object of class '<em>Gen Predicate Is Empty</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Gen Predicate Is Empty</em>'.
+	 * @generated
+	 */
+	GenPredicateIsEmpty createGenPredicateIsEmpty();
+
+	/**
 	 * Returns a new object of class '<em>Gen Order</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

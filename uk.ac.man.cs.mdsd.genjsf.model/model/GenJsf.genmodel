@@ -107,6 +107,7 @@
     <genClasses ecoreClass="GenJsf.ecore#//GenSelection">
       <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference GenJsf.ecore#//GenSelection/jsfSelection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GenJsf.ecore#//GenSelection/genJoins"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenJsf.ecore#//GenSelection/genFilter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GenJsf.ecore#//GenSelection/genOrdering"/>
     </genClasses>

@@ -376,6 +376,11 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 [for (genSelection : GenSelection | genService.genSelections)]
 	public function [genSelection.instanceName()/]([if (genSelection.jsfSelection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 	{
+	[for (genAssociation : GenServiceAssociation | genSelection.genJoins)]
+		$this->join('')->on([if (genAssociation.isDependentEnd())]
+'[genAssociation.columnName()/]'[else]'id'[/if], '=', [if (genAssociation.isDependentEnd())]
+'b'[else]'id'[/if]);
+	[/for]
 	[if (not genSelection.genFilter.oclIsUndefined())]
 		[genSelection.genFilter.generateCriteria()/]
 	[/if]

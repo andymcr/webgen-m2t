@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -62,8 +63,31 @@ public class GenSelectionItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addGenJoinsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Gen Joins feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addGenJoinsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_GenSelection_genJoins_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_GenSelection_genJoins_feature", "_UI_GenSelection_type"),
+				 GenJsfPackage.Literals.GEN_SELECTION__GEN_JOINS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
 	}
 
 	/**
@@ -167,6 +191,11 @@ public class GenSelectionItemProvider
 			(createChildParameter
 				(GenJsfPackage.Literals.GEN_SELECTION__GEN_FILTER,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateComparisonOperator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GenJsfPackage.Literals.GEN_SELECTION__GEN_FILTER,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
 
 		newChildDescriptors.add
 			(createChildParameter

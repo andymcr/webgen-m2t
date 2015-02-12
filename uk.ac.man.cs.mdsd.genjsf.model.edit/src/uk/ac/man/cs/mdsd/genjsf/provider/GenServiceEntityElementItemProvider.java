@@ -196,6 +196,11 @@ public class GenServiceEntityElementItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(GenJsfPackage.Literals.GEN_INCLUDED_ELEMENT__GEN_DEFAULT_VALUE,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GenJsfPackage.Literals.GEN_INCLUDED_ELEMENT__GEN_DEFAULT_VALUE,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateIsOperator()));
 
 		newChildDescriptors.add

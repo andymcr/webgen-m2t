@@ -156,6 +156,14 @@ public class GencriteriaSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GencriteriaPackage.GEN_PREDICATE_IS_EMPTY: {
+				GenPredicateIsEmpty genPredicateIsEmpty = (GenPredicateIsEmpty)theEObject;
+				T result = caseGenPredicateIsEmpty(genPredicateIsEmpty);
+				if (result == null) result = caseGenPredicate(genPredicateIsEmpty);
+				if (result == null) result = caseGenExpression(genPredicateIsEmpty);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GencriteriaPackage.GEN_ORDER: {
 				GenOrder genOrder = (GenOrder)theEObject;
 				T result = caseGenOrder(genOrder);
@@ -254,6 +262,21 @@ public class GencriteriaSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseGenPredicateComparisonOperator(GenPredicateComparisonOperator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Gen Predicate Is Empty</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Gen Predicate Is Empty</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGenPredicateIsEmpty(GenPredicateIsEmpty object) {
 		return null;
 	}
 

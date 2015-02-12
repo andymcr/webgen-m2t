@@ -186,6 +186,11 @@ public class GenPredicateBooleanOperatorItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(GencriteriaPackage.Literals.GEN_PREDICATE_BOOLEAN_OPERATOR__GEN_EXPRESSIONS,
+				 GencriteriaFactory.eINSTANCE.createGenPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(GencriteriaPackage.Literals.GEN_PREDICATE_BOOLEAN_OPERATOR__GEN_EXPRESSIONS,
 				 GencriteriaFactory.eINSTANCE.createGenPredicateIsOperator()));
 
 		newChildDescriptors.add

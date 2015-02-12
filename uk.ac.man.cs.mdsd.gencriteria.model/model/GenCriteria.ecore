@@ -50,6 +50,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="genRight" lowerBound="1"
         eType="#//GenExpression" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenPredicateIsEmpty" eSuperTypes="#//GenPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaPredicate" lowerBound="1"
+        eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//PredicateIsEmpty"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genFeature" eType="#//GenPath"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenOrder">
     <eStructuralFeatures xsi:type="ecore:EReference" name="criteriaOrder" ordered="false"
         eType="ecore:EClass ../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.ecore#//Order"/>
