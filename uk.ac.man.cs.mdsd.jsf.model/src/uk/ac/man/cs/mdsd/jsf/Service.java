@@ -23,6 +23,7 @@ import uk.ac.man.cs.mdsd.orm.NamedElement;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.Service#getDaosUsed <em>Daos Used</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.Service#getModelName <em>Model Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.Service#isView <em>View</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.Service#getViewName <em>View Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.Service#getDisplayLabels <em>Display Labels</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.Service#getSelections <em>Selections</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.Service#getFeatures <em>Features</em>}</li>
@@ -168,6 +169,32 @@ public interface Service extends NamedElement {
 	 * @generated
 	 */
 	void setView(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>View Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>View Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>View Name</em>' attribute.
+	 * @see #setViewName(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getService_ViewName()
+	 * @model ordered="false"
+	 * @generated
+	 */
+	String getViewName();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.Service#getViewName <em>View Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>View Name</em>' attribute.
+	 * @see #getViewName()
+	 * @generated
+	 */
+	void setViewName(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Display Labels</b></em>' containment reference list.

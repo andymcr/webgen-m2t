@@ -61,6 +61,9 @@ public class EntityItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addTableNamePropertyDescriptor(object);
+			addKeysPropertyDescriptor(object);
+			addAutoKeyNamePropertyDescriptor(object);
 			addContainsPropertyDescriptor(object);
 			addContainerPropertyDescriptor(object);
 			addFeaturesPropertyDescriptor(object);
@@ -68,6 +71,72 @@ public class EntityItemProvider
 			addDisplayFormatPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Table Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTableNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Entity_tableName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Entity_tableName_feature", "_UI_Entity_type"),
+				 OrmPackage.Literals.ENTITY__TABLE_NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Keys feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addKeysPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Entity_keys_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Entity_keys_feature", "_UI_Entity_type"),
+				 OrmPackage.Literals.ENTITY__KEYS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Auto Key Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addAutoKeyNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Entity_autoKeyName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Entity_autoKeyName_feature", "_UI_Entity_type"),
+				 OrmPackage.Literals.ENTITY__AUTO_KEY_NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
@@ -217,6 +286,8 @@ public class EntityItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Entity.class)) {
+			case OrmPackage.ENTITY__TABLE_NAME:
+			case OrmPackage.ENTITY__AUTO_KEY_NAME:
 			case OrmPackage.ENTITY__DISPLAY_FORMAT:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

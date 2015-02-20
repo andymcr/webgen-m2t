@@ -909,15 +909,6 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	public EReference getService_Selections() {
-		return (EReference)serviceEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getService_Features() {
 		return (EReference)serviceEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -926,8 +917,17 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getService_AccessedBy() {
+	public EReference getService_Features() {
 		return (EReference)serviceEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getService_AccessedBy() {
+		return (EReference)serviceEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -1196,8 +1196,17 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getService_ViewName() {
+		return (EAttribute)serviceEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getService_DisplayLabels() {
-		return (EReference)serviceEClass.getEStructuralFeatures().get(4);
+		return (EReference)serviceEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -3194,6 +3203,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEReference(serviceEClass, SERVICE__DAOS_USED);
 		createEAttribute(serviceEClass, SERVICE__MODEL_NAME);
 		createEAttribute(serviceEClass, SERVICE__VIEW);
+		createEAttribute(serviceEClass, SERVICE__VIEW_NAME);
 		createEReference(serviceEClass, SERVICE__DISPLAY_LABELS);
 		createEReference(serviceEClass, SERVICE__SELECTIONS);
 		createEReference(serviceEClass, SERVICE__FEATURES);
@@ -3664,6 +3674,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEReference(getService_DaosUsed(), theOrmPackage.getEntity(), null, "daosUsed", null, 1, -1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getService_ModelName(), ecorePackage.getEString(), "modelName", null, 1, 1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getService_View(), ecorePackage.getEBoolean(), "view", null, 0, 1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getService_ViewName(), ecorePackage.getEString(), "viewName", null, 0, 1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getService_DisplayLabels(), this.getModelLabel(), this.getModelLabel_LabelFor(), "displayLabels", null, 0, -1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getService_Selections(), this.getSelection(), null, "selections", null, 0, -1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getService_Features(), this.getServiceFeature(), this.getServiceFeature_IncludedBy(), "features", null, 0, -1, Service.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3948,7 +3959,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.CAKE_PHP);
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.CODE_IGNITER);
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.KOHANA);
-		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.LARAVEL);
+		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.SYMFONY);
 
 		initEEnum(ajaxTechnologiesEEnum, AjaxTechnologies.class, "AjaxTechnologies");
 		addEEnumLiteral(ajaxTechnologiesEEnum, AjaxTechnologies.NONE);

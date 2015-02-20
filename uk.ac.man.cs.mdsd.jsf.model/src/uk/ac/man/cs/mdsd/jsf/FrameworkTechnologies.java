@@ -59,14 +59,14 @@ public enum FrameworkTechnologies implements Enumerator {
 	KOHANA(3, "Kohana", "Kohana"),
 
 	/**
-	 * The '<em><b>Laravel</b></em>' literal object.
+	 * The '<em><b>Symfony</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #LARAVEL_VALUE
+	 * @see #SYMFONY_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	LARAVEL(4, "Laravel", "Laravel");
+	SYMFONY(4, "Symfony", "Symfony");
 
 	/**
 	 * The '<em><b>JSF</b></em>' literal value.
@@ -129,19 +129,19 @@ public enum FrameworkTechnologies implements Enumerator {
 	public static final int KOHANA_VALUE = 3;
 
 	/**
-	 * The '<em><b>Laravel</b></em>' literal value.
+	 * The '<em><b>Symfony</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>Laravel</b></em>' literal object isn't clear,
+	 * If the meaning of '<em><b>Symfony</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @see #LARAVEL
-	 * @model name="Laravel"
+	 * @see #SYMFONY
+	 * @model name="Symfony"
 	 * @generated
 	 * @ordered
 	 */
-	public static final int LARAVEL_VALUE = 4;
+	public static final int SYMFONY_VALUE = 4;
 
 	/**
 	 * An array of all the '<em><b>Framework Technologies</b></em>' enumerators.
@@ -155,7 +155,7 @@ public enum FrameworkTechnologies implements Enumerator {
 			CAKE_PHP,
 			CODE_IGNITER,
 			KOHANA,
-			LARAVEL,
+			SYMFONY,
 		};
 
 	/**
@@ -210,7 +210,7 @@ public enum FrameworkTechnologies implements Enumerator {
 			case CAKE_PHP_VALUE: return CAKE_PHP;
 			case CODE_IGNITER_VALUE: return CODE_IGNITER;
 			case KOHANA_VALUE: return KOHANA;
-			case LARAVEL_VALUE: return LARAVEL;
+			case SYMFONY_VALUE: return SYMFONY;
 		}
 		return null;
 	}

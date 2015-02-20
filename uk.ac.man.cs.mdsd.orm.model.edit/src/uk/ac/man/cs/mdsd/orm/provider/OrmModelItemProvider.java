@@ -69,6 +69,7 @@ public class OrmModelItemProvider
 			super.getPropertyDescriptors(object);
 
 			addDatabaseTechnologyPropertyDescriptor(object);
+			addOrmTechnologyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -87,6 +88,28 @@ public class OrmModelItemProvider
 				 getString("_UI_OrmModel_databaseTechnology_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_OrmModel_databaseTechnology_feature", "_UI_OrmModel_type"),
 				 OrmPackage.Literals.ORM_MODEL__DATABASE_TECHNOLOGY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Orm Technology feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addOrmTechnologyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_OrmModel_ormTechnology_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_OrmModel_ormTechnology_feature", "_UI_OrmModel_type"),
+				 OrmPackage.Literals.ORM_MODEL__ORM_TECHNOLOGY,
 				 true,
 				 false,
 				 false,
@@ -166,6 +189,7 @@ public class OrmModelItemProvider
 
 		switch (notification.getFeatureID(OrmModel.class)) {
 			case OrmPackage.ORM_MODEL__DATABASE_TECHNOLOGY:
+			case OrmPackage.ORM_MODEL__ORM_TECHNOLOGY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case OrmPackage.ORM_MODEL__DATA_TYPES:

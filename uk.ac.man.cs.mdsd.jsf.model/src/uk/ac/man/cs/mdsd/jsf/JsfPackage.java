@@ -886,13 +886,22 @@ public interface JsfPackage extends EPackage {
 	int SERVICE__VIEW = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>View Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERVICE__VIEW_NAME = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Display Labels</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE__DISPLAY_LABELS = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 4;
+	int SERVICE__DISPLAY_LABELS = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Selections</b></em>' containment reference list.
@@ -901,7 +910,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE__SELECTIONS = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 5;
+	int SERVICE__SELECTIONS = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Features</b></em>' containment reference list.
@@ -910,7 +919,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE__FEATURES = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 6;
+	int SERVICE__FEATURES = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Accessed By</b></em>' reference list.
@@ -919,7 +928,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE__ACCESSED_BY = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 7;
+	int SERVICE__ACCESSED_BY = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Service</em>' class.
@@ -928,7 +937,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE_FEATURE_COUNT = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 8;
+	int SERVICE_FEATURE_COUNT = OrmPackage.NAMED_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ModelLabelImpl <em>Model Label</em>}' class.
@@ -9211,6 +9220,17 @@ public interface JsfPackage extends EPackage {
 	EAttribute getService_View();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.Service#getViewName <em>View Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>View Name</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.Service#getViewName()
+	 * @see #getService()
+	 * @generated
+	 */
+	EAttribute getService_ViewName();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link uk.ac.man.cs.mdsd.jsf.Service#getDisplayLabels <em>Display Labels</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11941,6 +11961,14 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute SERVICE__VIEW = eINSTANCE.getService_View();
+
+		/**
+		 * The meta object literal for the '<em><b>View Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SERVICE__VIEW_NAME = eINSTANCE.getService_ViewName();
 
 		/**
 		 * The meta object literal for the '<em><b>Display Labels</b></em>' containment reference list feature.

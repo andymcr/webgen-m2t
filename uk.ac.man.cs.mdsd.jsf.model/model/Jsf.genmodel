@@ -11,7 +11,7 @@
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/CakePHP"/>
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/CodeIgniter"/>
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Kohana"/>
-      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Laravel"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Symfony"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Jsf.ecore#//AjaxTechnologies">
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//AjaxTechnologies/None"/>
@@ -86,6 +86,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/daosUsed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Service/modelName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Service/view"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//Service/viewName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/displayLabels"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/selections"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//Service/features"/>

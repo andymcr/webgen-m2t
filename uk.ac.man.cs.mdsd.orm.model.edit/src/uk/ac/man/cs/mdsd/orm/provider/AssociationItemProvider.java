@@ -65,6 +65,7 @@ public class AssociationItemProvider
 			addSourceEndPropertyDescriptor(object);
 			addBidirectionalPropertyDescriptor(object);
 			addContainmentPropertyDescriptor(object);
+			addPivotTableNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -158,6 +159,28 @@ public class AssociationItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Pivot Table Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPivotTableNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Association_pivotTableName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Association_pivotTableName_feature", "_UI_Association_type"),
+				 OrmPackage.Literals.ASSOCIATION__PIVOT_TABLE_NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -186,6 +209,7 @@ public class AssociationItemProvider
 			case OrmPackage.ASSOCIATION__SOURCE_END:
 			case OrmPackage.ASSOCIATION__BIDIRECTIONAL:
 			case OrmPackage.ASSOCIATION__CONTAINMENT:
+			case OrmPackage.ASSOCIATION__PIVOT_TABLE_NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

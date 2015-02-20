@@ -43,6 +43,7 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedElementImpl;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl#getDaosUsed <em>Daos Used</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl#getModelName <em>Model Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl#isView <em>View</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl#getViewName <em>View Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl#getDisplayLabels <em>Display Labels</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl#getSelections <em>Selections</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl#getFeatures <em>Features</em>}</li>
@@ -112,6 +113,26 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 	 * @ordered
 	 */
 	protected boolean view = VIEW_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getViewName() <em>View Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getViewName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String VIEW_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getViewName() <em>View Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getViewName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String viewName = VIEW_NAME_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getDisplayLabels() <em>Display Labels</em>}' containment reference list.
@@ -296,6 +317,27 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getViewName() {
+		return viewName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setViewName(String newViewName) {
+		String oldViewName = viewName;
+		viewName = newViewName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.SERVICE__VIEW_NAME, oldViewName, viewName));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<ModelLabel> getDisplayLabels() {
 		if (displayLabels == null) {
 			displayLabels = new EObjectContainmentWithInverseEList<ModelLabel>(ModelLabel.class, this, JsfPackage.SERVICE__DISPLAY_LABELS, JsfPackage.MODEL_LABEL__LABEL_FOR);
@@ -337,6 +379,8 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 				return getModelName();
 			case JsfPackage.SERVICE__VIEW:
 				return isView();
+			case JsfPackage.SERVICE__VIEW_NAME:
+				return getViewName();
 			case JsfPackage.SERVICE__DISPLAY_LABELS:
 				return getDisplayLabels();
 			case JsfPackage.SERVICE__SELECTIONS:
@@ -371,6 +415,9 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 				return;
 			case JsfPackage.SERVICE__VIEW:
 				setView((Boolean)newValue);
+				return;
+			case JsfPackage.SERVICE__VIEW_NAME:
+				setViewName((String)newValue);
 				return;
 			case JsfPackage.SERVICE__DISPLAY_LABELS:
 				getDisplayLabels().clear();
@@ -412,6 +459,9 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 			case JsfPackage.SERVICE__VIEW:
 				setView(VIEW_EDEFAULT);
 				return;
+			case JsfPackage.SERVICE__VIEW_NAME:
+				setViewName(VIEW_NAME_EDEFAULT);
+				return;
 			case JsfPackage.SERVICE__DISPLAY_LABELS:
 				getDisplayLabels().clear();
 				return;
@@ -444,6 +494,8 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 				return MODEL_NAME_EDEFAULT == null ? modelName != null : !MODEL_NAME_EDEFAULT.equals(modelName);
 			case JsfPackage.SERVICE__VIEW:
 				return view != VIEW_EDEFAULT;
+			case JsfPackage.SERVICE__VIEW_NAME:
+				return VIEW_NAME_EDEFAULT == null ? viewName != null : !VIEW_NAME_EDEFAULT.equals(viewName);
 			case JsfPackage.SERVICE__DISPLAY_LABELS:
 				return displayLabels != null && !displayLabels.isEmpty();
 			case JsfPackage.SERVICE__SELECTIONS:
@@ -470,6 +522,8 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 		result.append(modelName);
 		result.append(", view: ");
 		result.append(view);
+		result.append(", viewName: ");
+		result.append(viewName);
 		result.append(')');
 		return result.toString();
 	}

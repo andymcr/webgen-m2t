@@ -11,7 +11,7 @@
     <eLiterals name="CakePHP" value="1"/>
     <eLiterals name="CodeIgniter" value="2"/>
     <eLiterals name="Kohana" value="3"/>
-    <eLiterals name="Laravel" value="4"/>
+    <eLiterals name="Symfony" value="4" literal="Symfony"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="AjaxTechnologies">
     <eLiterals name="None"/>
@@ -124,6 +124,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelName" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="view" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewName" ordered="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="displayLabels" upperBound="-1"
         eType="#//ModelLabel" containment="true" eOpposite="#//ModelLabel/labelFor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="selections" upperBound="-1"
