@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;mysql_schema.mtl&apos; to &apos;uk.ac.man.cs.mdsd.jsf.m2t.kohana/src/uk.ac.man.cs.mdsd.jsf.m2t.kohana.files.config&apos;&#x0D;&#x0A;- Original project: &apos;uk.ac.man.cs.mdsd.jsf.m2t.codeigniter&apos;&#x0D;&#x0A;- Destination element: &apos;uk.ac.man.cs.mdsd.jsf.m2t.kohana/src/uk.ac.man.cs.mdsd.jsf.m2t.kohana.files.config&apos;&#x0D;&#x0A;- Original element: &apos;mysql_schema.mtl&apos;" description="Copy file" destination="=uk.ac.man.cs.mdsd.jsf.m2t.kohana/src&lt;uk.ac.man.cs.mdsd.jsf.m2t.kohana.files.config" element1="src/uk/ac/man/cs/mdsd/jsf/m2t/codeigniter/files/config/mysql_schema.mtl" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1386865745291" units="0" version="1.0"/>
-</session>

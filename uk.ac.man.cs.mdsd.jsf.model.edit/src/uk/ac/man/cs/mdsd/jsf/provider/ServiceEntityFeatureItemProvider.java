@@ -72,6 +72,7 @@ public class ServiceEntityFeatureItemProvider
 			addFooterClassPropertyDescriptor(object);
 			addCardinalityPropertyDescriptor(object);
 			addDateFormatPropertyDescriptor(object);
+			addViewColumnNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -134,6 +135,28 @@ public class ServiceEntityFeatureItemProvider
 				 getString("_UI_ServiceFeature_dateFormat_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceFeature_dateFormat_feature", "_UI_ServiceFeature_type"),
 				 JsfPackage.Literals.SERVICE_FEATURE__DATE_FORMAT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the View Column Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addViewColumnNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ServiceEntityFeature_viewColumnName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceEntityFeature_viewColumnName_feature", "_UI_ServiceEntityFeature_type"),
+				 JsfPackage.Literals.SERVICE_ENTITY_FEATURE__VIEW_COLUMN_NAME,
 				 true,
 				 false,
 				 false,
@@ -317,6 +340,7 @@ public class ServiceEntityFeatureItemProvider
 			case JsfPackage.SERVICE_ENTITY_FEATURE__CARDINALITY:
 			case JsfPackage.SERVICE_ENTITY_FEATURE__DATE_FORMAT:
 			case JsfPackage.SERVICE_ENTITY_FEATURE__NAME:
+			case JsfPackage.SERVICE_ENTITY_FEATURE__VIEW_COLUMN_NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case JsfPackage.SERVICE_ENTITY_FEATURE__FORCED_VALUE:

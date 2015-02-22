@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;PassAuthentication.atl&apos; to &apos;transformations&apos;&#x0D;&#x0A;- Original project: &apos;uk.ac.man.cs.mdsd.webgen.pim2psms&apos;&#x0D;&#x0A;- Destination element: &apos;transformations&apos;&#x0D;&#x0A;- Original element: &apos;PassAuthentication.atl&apos;" description="Copy file" element1="transformations/PassAuthentication.atl" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1387458880709" target="/uk.ac.man.cs.mdsd.webgen.pim2psms/transformations" units="0" version="1.0"/>
-</session>

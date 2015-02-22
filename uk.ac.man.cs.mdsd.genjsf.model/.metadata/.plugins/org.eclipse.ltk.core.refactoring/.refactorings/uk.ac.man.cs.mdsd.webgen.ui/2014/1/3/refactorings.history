@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;uk.ac.man.cs.mdsd.webgen.ui/resources/pagination-3.3-master.zip&apos; to &apos;kohana-pagination-3.3-master.zip&apos;" description="Rename resource &apos;pagination-3.3-master.zip&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="resources/pagination-3.3-master.zip" name="kohana-pagination-3.3-master.zip" stamp="1389710960985" updateReferences="true"/>
-</session>

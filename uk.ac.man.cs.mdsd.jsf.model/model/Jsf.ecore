@@ -164,7 +164,9 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ServiceEntityFeature" abstract="true"
-      eSuperTypes="#//IncludedFeature #//ServiceFeature ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement"/>
+      eSuperTypes="#//IncludedFeature #//ServiceFeature ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewColumnName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ServiceEntityElement" eSuperTypes="#//ServiceEntityFeature #//IncludedElement #//UnitTitle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//Attribute"/>

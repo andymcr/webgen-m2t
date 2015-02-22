@@ -1016,6 +1016,15 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getServiceEntityFeature_ViewColumnName() {
+		return (EAttribute)serviceEntityFeatureEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getServiceEntityElement() {
 		return serviceEntityElementEClass;
 	}
@@ -3226,6 +3235,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEAttribute(serviceFeatureEClass, SERVICE_FEATURE__DATE_FORMAT);
 
 		serviceEntityFeatureEClass = createEClass(SERVICE_ENTITY_FEATURE);
+		createEAttribute(serviceEntityFeatureEClass, SERVICE_ENTITY_FEATURE__VIEW_COLUMN_NAME);
 
 		serviceEntityElementEClass = createEClass(SERVICE_ENTITY_ELEMENT);
 		createEReference(serviceEntityElementEClass, SERVICE_ENTITY_ELEMENT__FEATURE);
@@ -3697,6 +3707,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEAttribute(getServiceFeature_DateFormat(), ecorePackage.getEString(), "dateFormat", null, 0, 1, ServiceFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(serviceEntityFeatureEClass, ServiceEntityFeature.class, "ServiceEntityFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getServiceEntityFeature_ViewColumnName(), ecorePackage.getEString(), "viewColumnName", null, 0, 1, ServiceEntityFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(serviceEntityElementEClass, ServiceEntityElement.class, "ServiceEntityElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getServiceEntityElement_Feature(), theOrmPackage.getAttribute(), null, "feature", null, 1, 1, ServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

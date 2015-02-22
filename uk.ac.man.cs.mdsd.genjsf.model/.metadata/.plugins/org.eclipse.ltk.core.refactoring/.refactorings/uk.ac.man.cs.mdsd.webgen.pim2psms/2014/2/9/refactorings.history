@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;uk.ac.man.cs.mdsd.webgen.pim2psms/transformations/PassImplicitServiceIncludedFeatures.atl&apos; to &apos;PassImplicitServiceEntityFeatures.atl&apos;" description="Rename resource &apos;PassImplicitServiceIncludedFeatures.atl&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="transformations/PassImplicitServiceIncludedFeatures.atl" name="PassImplicitServiceEntityFeatures.atl" stamp="1393430249486" updateReferences="true"/>
-</session>

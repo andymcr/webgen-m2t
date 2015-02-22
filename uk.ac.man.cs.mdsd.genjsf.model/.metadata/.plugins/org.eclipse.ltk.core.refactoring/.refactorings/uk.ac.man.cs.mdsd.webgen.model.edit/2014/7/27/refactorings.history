@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;uk.ac.man.cs.mdsd.webgen.model.edit/icons/full/obj16/world.png&apos; to &apos;MapUnit.png&apos;" description="Rename resource &apos;world.png&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="icons/full/obj16/world.png" name="MapUnit.png" stamp="1404402683032" updateReferences="true"/>
-</session>

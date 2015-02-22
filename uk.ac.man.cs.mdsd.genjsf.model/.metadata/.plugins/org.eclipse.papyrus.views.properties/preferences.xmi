@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<pref:Preferences xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pref="http://www.eclipse.org/papryus/properties/preferences" version="2">
-  <contexts name="style"/>
-  <contexts name="notation"/>
-  <contexts name="SequenceNotation"/>
-</pref:Preferences>
