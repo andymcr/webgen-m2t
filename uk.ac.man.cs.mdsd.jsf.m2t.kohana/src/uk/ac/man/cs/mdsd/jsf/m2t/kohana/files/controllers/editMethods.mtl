@@ -41,7 +41,7 @@ if (isset($this->[genEditUnit.instanceName()/]_field_errors))
 $[genAssociation.optionsName()/] = array([if (genAssociation.isSingleton())]'' => __('Please select')[/if]);
 foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
 find_all()[else]
-[genAssociation.genSelection.instanceName()/](FALSE)[/if] AS $option)
+[genAssociation.genSelection.jsfSelection.instanceName()/](FALSE)[/if] AS $option)
 	$[genAssociation.optionsName()/]['['/]$option->id[']'/] = $option->[if (genAssociation.genDynamicLabel.oclIsUndefined())]
 displayLabel()[else]
 [genAssociation.genDynamicLabel.name/]()[/if];
@@ -129,14 +129,10 @@ public function action_[genEditUnit.actionName()/]()
 [let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
 public function action_[genAssociation.optionsName()/]()
 {
-	$options = array([if (genAssociation.isSingleton())]
-
-		'id' => '',
-		'label' => __('Please select'),
-		[/if]);
+	$options = array();
 	foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
 find_all()[else]
-[genAssociation.genSelection.instanceName()/](FALSE)[/if] AS $option)
+[genAssociation.genSelection.jsfSelection.instanceName()/](FALSE)[/if] AS $option)
 		$options['['/][']'/] = array(
 			'id' => $option->id,
 			'label' => $option->[if (genAssociation.genDynamicLabel.oclIsUndefined())]

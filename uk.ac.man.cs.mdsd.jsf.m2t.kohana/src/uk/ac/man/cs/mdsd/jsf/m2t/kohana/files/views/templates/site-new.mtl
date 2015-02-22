@@ -9,7 +9,7 @@
 [template public generateNewPage(genModel : GenJsfModel)]
 [file(genModel.viewDirectory().concat('/site-new').concat(genModel.executableExtension()), false)]
 <!DOCTYPE html>
-<html lang="en"[if (genModel.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)] ng-app="[genModel.jsfModel.siteName/]"[/if]>
+<html lang="en"[if (genModel.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)] data-ng-app="[genModel.jsfModel.siteName/]"[/if]>
 <head>
  <meta charset="UTF-8"/>
  <meta name="viewport" content="width=device-width, initial-scale=1">

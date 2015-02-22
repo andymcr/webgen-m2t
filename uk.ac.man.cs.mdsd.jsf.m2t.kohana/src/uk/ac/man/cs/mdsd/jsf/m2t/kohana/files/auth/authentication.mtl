@@ -18,7 +18,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 
     private function load_authentication($login_id)
     {
-		return ORM::factory('[genAuthentication.genAuthenticationService.modelName()/]', array(
+		return ORM::factory('[genAuthentication.genAuthenticationService.jsfService.modelName()/]', array(
 			'[genAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/]' => $login_id
 		));
 	}
@@ -27,7 +27,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
     {
 [if (not genAuthentication.genAutoLoginService.oclIsUndefined())]
 		if (mt_rand(1, 100) === 1)
-			[genAuthentication.genAutoLoginService.modelClassName()/]::delete_expired($this->_config['['/]'lifetime'[']'/]);
+			[genAuthentication.genAutoLoginService.jsfService.modelClassName()/]::delete_expired($this->_config['['/]'lifetime'[']'/]);
 
 		$maximum_attempts = $this->_config['['/]'maximum_attempts'[']'/];
 		$attempt_expiry_period = $this->_config['['/]'attempt_expiry_period'[']'/];
@@ -53,7 +53,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 				$this->message = 'Your account is currently locked out';
 			}
 [if (not genAuthentication.genLoginAttemptService.oclIsUndefined())]
-			else if ([genAuthentication.genLoginAttemptService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
+			else if ([genAuthentication.genLoginAttemptService.jsfService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
 			{
 				$this->message = 'Maximum login atempts exceeded';
 			}
@@ -61,7 +61,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 			else
 			{
 [if (not genAuthentication.genLoginAttemptService.oclIsUndefined())]
-				[genAuthentication.genLoginAttemptService.modelClassName()/]::clear_attempts($login_id, $attempt_expiry_period);
+				[genAuthentication.genLoginAttemptService.jsfService.modelClassName()/]::clear_attempts($login_id, $attempt_expiry_period);
 [/if]
 				$authentication->record_last_login();
 	
@@ -69,7 +69,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 				if ($remember === TRUE)
 				{
 					$key = substr(md5(uniqid(rand() . Cookie::get(Session::instance()->name()))), 0, 16);
-					$autologin = [genAuthentication.genAutoLoginService.modelClassName()/]::create_token($key, $authentication, $this->user_agent_id());
+					$autologin = [genAuthentication.genAutoLoginService.jsfService.modelClassName()/]::create_token($key, $authentication, $this->user_agent_id());
 					if ($autologin->loaded())
 						$this->set_autologin_cookie(serialize(array(
 							'user_id' => $login_id,
@@ -84,8 +84,8 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		}
 
 [if (not genAuthentication.genLoginAttemptService.oclIsUndefined())]
-		if (![genAuthentication.genLoginAttemptService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
-			[genAuthentication.genLoginAttemptService.modelClassName()/]::record_attempt($login_id);
+		if (![genAuthentication.genLoginAttemptService.jsfService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
+			[genAuthentication.genLoginAttemptService.jsfService.modelClassName()/]::record_attempt($login_id);
 [/if]
 		return FALSE;
    }
@@ -157,7 +157,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		$cookie = Cookie::get('authautologin');
 		if ($cookie)
 		{
-			$autologin = [genAuthentication.genAutoLoginService.modelClassName()/]::load_token($cookie,
+			$autologin = [genAuthentication.genAutoLoginService.jsfService.modelClassName()/]::load_token($cookie,
 				$this->user_agent_id(), $this->_config['['/]'lifetime'[']'/]);
 			if (is_object($autologin) && $autologin->loaded())
 			{
@@ -189,10 +189,10 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		if ($cookie)
 		{
 			if($logout_all)
-				[genAuthentication.genAutoLoginService.modelClassName()/]::delete_user();
+				[genAuthentication.genAutoLoginService.jsfService.modelClassName()/]::delete_user();
 			else
 			{
-				$autologin = [genAuthentication.genAutoLoginService.modelClassName()/]::load_token($cookie,
+				$autologin = [genAuthentication.genAutoLoginService.jsfService.modelClassName()/]::load_token($cookie,
 					$this->user_agent_id(), $this->_config['['/]'lifetime'[']'/]);
 				if (is_object($autologin) && $autologin->loaded())
 					$autologin->delete();
@@ -210,7 +210,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		if ($authentication === $default)
 			return $default;
 
-		return [genAuthentication.genUserService.modelClassName()/]::authenticated_user($authentication);
+		return [genAuthentication.genUserService.jsfService.modelClassName()/]::authenticated_user($authentication);
 	}
 
 }

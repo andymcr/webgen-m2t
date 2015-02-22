@@ -56,7 +56,13 @@ genModel.generateCreateSitemap()/]
 [genModel.generateExtendedOrm()/]
 [genModel.ormModel.dataTypes.generateModel()/]
 [if (genModel.ormModel.databaseTechnology = DatabaseTechnologies::MySql)]
-[genModel.genServices.generateModel(genModel.genAuthentication)/]
+[genModel.genServices.jsfService.generateModel(
+	let genAuthentication : GenAuthentication = genModel.genAuthentication
+	in if genAuthentication.oclIsTypeOf(GenCasAuthentication) then
+			genAuthentication.oclAsType(GenCasAuthentication).jsfAuthentication
+		else
+			genAuthentication.oclAsType(GenLocalAuthenticationSystem).jsfAuthentication
+		endif)/]
 [/if]
 
 [genModel.generateBaseController()/]

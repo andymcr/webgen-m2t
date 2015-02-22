@@ -25,7 +25,7 @@ if (!empty($[genDetailsUnit.instanceName()/]))
 else
 	$this->[genDetailsUnit.instanceName()/] = ORM::factory('[genDetailsUnit.modelName()/]');
 [else]
-$this->[genDetailsUnit.instanceName()/] = ORM::factory('[genDetailsUnit.modelName()/]')->[genDetailsUnit.genSelection.instanceName()/]();
+$this->[genDetailsUnit.instanceName()/] = ORM::factory('[genDetailsUnit.modelName()/]')->[genDetailsUnit.genSelection.jsfSelection.instanceName()/]();
 [/if]
 [/let]
 [/template]

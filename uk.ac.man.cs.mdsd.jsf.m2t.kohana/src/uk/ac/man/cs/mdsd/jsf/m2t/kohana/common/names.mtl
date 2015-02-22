@@ -5,6 +5,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
 
 
@@ -12,12 +13,12 @@
 	= 'Controller_Template_Base'
 /]
 
-[query public modelName(genService : GenService) : String
-	= genService.jsfService.modelName
+[query public modelName(service : Service) : String
+	= service.modelName
 /]
 
-[query public modelClassName(genService : GenService) : String
-	= 'Model_'.concat(genService.modelName())
+[query public modelClassName(service : Service) : String
+	= 'Model_'.concat(service.modelName())
 /]
 
 
@@ -39,11 +40,11 @@
 /]
 
 
-[query public modelName(genFeature : GenServiceAssociation) : String
-	= if genFeature.oclIsKindOf(GenServiceEntityAssociation) then
-			genFeature.oclAsType(GenServiceEntityAssociation).genFeature.modelName()
-		else if genFeature.oclIsKindOf(GenServiceViewAssociation) then
-			genFeature.oclAsType(GenServiceViewAssociation).genTargetFeature.genIncludedBy.modelName()
+[query public modelName(feature : ServiceAssociation) : String
+	= if feature.oclIsKindOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).feature.modelName()
+		else if feature.oclIsKindOf(ServiceViewAssociation) then
+			feature.oclAsType(ServiceViewAssociation).targetFeature.includedBy.modelName()
 		else
 			'unhandledFeature'
 		endif endif
@@ -58,22 +59,26 @@
 	= genUnit.pageDisplayedOn().controllerName()
 /]
 
+[query public instanceName(unit : ContentUnit) : String
+	= unit.name.toLowerFirst()
+/]
+
 [query public instanceName(genUnit : GenContentUnit) : String
 	= genUnit.name.toLowerFirst()
 /]
 
-[query public modelName(genUnit : GenContentUnit) : String
+[query public modelName(unit : GenContentUnit) : String
 	= let baseName : String
-		= if genUnit.oclIsTypeOf(GenStaticUnit) then
-				if genUnit.oclAsType(GenStaticUnit).genService.oclIsUndefined() then
+		= if unit.oclIsTypeOf(GenStaticUnit) then
+				if unit.oclAsType(GenStaticUnit).genService.oclIsUndefined() then
 					'None'
 				else
-					genUnit.oclAsType(GenStaticUnit).genService.modelName()
+					unit.oclAsType(GenStaticUnit).genService.jsfService.modelName()
 				endif
 			else
-				genUnit.oclAsType(GenDynamicUnit).genService.modelName()
+				unit.oclAsType(GenDynamicUnit).genService.jsfService.modelName()
 			endif
-		in if genUnit.pageDisplayedOn().genPartOf.ormTechnology = OrmTechnologies::GasORM then
+		in if unit.pageDisplayedOn().genPartOf.ormTechnology = OrmTechnologies::GasORM then
 				'Model\\'.concat(baseName)
 			else
 				baseName
@@ -122,17 +127,12 @@
 /]
 
 [query public modelName(genFeature : GenUnitAssociation) : String
-	= genFeature.genServiceFeature.modelName()
-/]
-
-[query public parentModelName(genFeature : GenUnitFeature) : String
-	= if genFeature.oclIsKindOf(GenServiceEntityFeature) then
-			genFeature.oclAsType(GenServiceEntityFeature).genIncludedBy.modelName()
-		else if genFeature.oclIsKindOf(GenUnitFeature) then
-			genFeature.oclAsType(GenUnitFeature).genDisplayedOn.modelName()
-		else
-			'unhandledFeature'
-		endif endif
+	= let genAssociation : GenServiceAssociation = genFeature.genServiceFeature
+		in if genAssociation.oclIsTypeOf(GenServiceEntityAssociation) then
+				genAssociation.oclAsType(GenServiceEntityAssociation).jsfFeature.modelName()
+			else
+				genAssociation.oclAsType(GenServiceViewAssociation).jsfFeature.modelName()
+				endif
 /]
 
 
@@ -210,7 +210,7 @@
 			else
 				genAction.genUsedBy.oclAsType(GenUnitAssociation).genDisplayedOn
 			endif
-		in genUnit.genService.modelName()
+		in genUnit.genService.jsfService.modelName()
 /]
 
 [query public parameterName(genAction : GenInlineAction) : String
@@ -218,40 +218,26 @@
 /]
 
 
-[query public countName(genSelection : GenSelection) : String
-	= genSelection.instanceName().concat('_count')
+[query public countName(selection : Selection) : String
+	= selection.instanceName().concat('_count')
 /]
 
-[query public instanceName(genSelection : GenSelection) : String
-	= genSelection.name.toLowerFirst()
-/]
-
-
-[query public instanceName(genEntity : GenEntity) : String
-	= genEntity.name.toLowerFirst()
-/]
-
-[query public modelName(genEntity : GenEntity) : String
-	= genEntity.name
+[query public instanceName(selection : Selection) : String
+	= selection.name.toLowerFirst()
 /]
 
 
-[query public modelName(genFeature : GenAssociation) : String
-	= if genFeature.oclIsTypeOf(GenSingletonAssociation) then
-			genFeature.oclAsType(GenSingletonAssociation).modelName()
-		else if genFeature.oclIsTypeOf(GenCollectionAssociation) then
-			genFeature.oclAsType(GenCollectionAssociation).modelName()
-		else
-			'unhandledFeature'
-		endif endif
+[query public instanceName(entity : Entity) : String
+	= entity.name.toLowerFirst()
 /]
 
-[query public modelName(genFeature : GenCollectionAssociation) : String
-	= genFeature.genOpposite.genParentEntity.modelName()
+[query public modelName(entity : Entity) : String
+	= entity.name
 /]
 
-[query public modelName(genFeature : GenSingletonAssociation) : String
-	= genFeature.genOpposite.genParentEntity.modelName()
+
+[query public modelName(feature : Association) : String
+	= feature.opposite.parentEntity.modelName()
 /]
 
 

@@ -82,7 +82,7 @@ public function action_[genRegistrationUnit.actionName()/]() {
 //		$this->page_message = 'Activation email sent';
 	[else]
 		[let genAuthentication : GenLocalAuthenticationSystem = genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
-			$user = ORM::factory('[genAuthentication.genUserService.modelName()/]');
+			$user = ORM::factory('[genAuthentication.genUserService.jsfService.modelName()/]');
 			$user->[genAuthentication.genUserAuthenticationKey.columnName()/] = $this->[genRegistrationUnit.instanceName()/]->[genAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/];
 			[for (genUserFeature : GenServiceEntityFeature | genAuthentication.genUserService.genFeatures->select(f | f.isRequired())->select(f | f <> genAuthentication.genUserAuthenticationKey))]
 			$user->[genUserFeature.columnName()/] = '';
