@@ -1,0 +1,1240 @@
+[comment encoding = UTF-8 /]
+[module featureProperties(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+
+
+[query public escapeQuotes(string : String) : String
+	= string.replaceAll('(\')', '\\\\$1')
+/]
+
+
+[query public entry(entries : Sequence(String), index : Integer) : String
+	= if entries->size() < index then
+			''
+		else
+			entries->drop(index - 1)->first()
+		endif
+/]
+
+
+[query public hasCommandUnits(model : JsfModel) : Boolean
+	= model.pages->collect(p | p.units)->select(e | e.oclIsTypeOf(CommandUnit))->notEmpty()
+/]
+
+[query public homePage(model : JsfModel) : Page
+	= let topPage : Page
+			= if model.topMenuItemsNonAuthenticated()->notEmpty() then
+					model.topMenuItemsNonAuthenticated()->first()
+				else
+					null
+				endif
+		in if not topPage.oclIsUndefined() then
+			topPage
+		else
+			if model.pages->notEmpty() then
+				model.pages->first()
+			else
+				null
+		endif endif
+/]
+
+[query public indexUnits(model : JsfModel) : Sequence(IndexUnit)
+	= model.pages->collect(p | p.indexUnits())
+/]
+
+[query public isAuthenticated(model : JsfModel) : Boolean
+	= not model.authentication.oclIsUndefined()
+/]
+
+[query public modelAssociations(model : OrmModel) : Sequence(Association)
+	= model.modelFeatures()->select(f | f.oclIsKindOf(Association))
+/]
+
+[query public modelAttributes(model : OrmModel) : Sequence(Attribute)
+	= model.modelFeatures()->select(f | f.oclIsTypeOf(Attribute))
+/]
+
+[query public modelFeatures(model : OrmModel) : Sequence(Feature)
+	= model.entities->collect(features)
+/]
+
+[query public modelManyToManyAssociations(model : OrmModel) : Sequence(CollectionAssociation)
+	= model.modelAssociations()->select(f | f.isManyToManyAssociationXX())
+/]
+
+[query public topMenuItemsAuthenticated(model : JsfModel) : Sequence(Page)
+	= model.pages
+		->select(p | p.topMenuOption <> PageTopMenuOptions::NeverInclude)
+		->sortedBy(p | p.topMenuRank).oclAsType(Page)
+/]
+
+[query public topMenuItemsNonAuthenticated(model : JsfModel) : Sequence(Page)
+	= model.pages
+		->select(p | p.topMenuOption = PageTopMenuOptions::AlwaysInclude)
+		->sortedBy(p | p.topMenuRank).oclAsType(Page)
+/]
+
+
+[query public hasDefaultValue(feature : IncludedFeature) : Boolean
+	= if feature.oclIsKindOf(IncludedElement) then
+			not feature.oclAsType(IncludedElement).defaultValue.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public hasForcedValue(feature : IncludedFeature) : Boolean
+	= not feature.forcedValue.oclIsUndefined()
+/]
+
+[query public isAssociation(feature : IncludedFeature) : Boolean
+	= feature.oclIsKindOf(IncludedAssociation)
+/]
+
+
+[query public associations(service : Service) : Sequence(ServiceAssociation)
+	= service.features
+		->select(f | f.oclIsKindOf(ServiceAssociation))
+		.oclAsType(ServiceAssociation)
+/]
+
+[query public attributes(service : Service) : Sequence(ServiceEntityElement)
+	= service.features
+		->select(f | f.oclIsTypeOf(ServiceEntityElement)).oclAsType(ServiceEntityElement)
+/]
+
+[query public attributesAndSingletons(service : Service) : Sequence(ServiceFeature)
+	= service.features
+		->select(f | f.oclIsTypeOf(ServiceEntityElement) or f.isSingleton()).oclAsType(ServiceFeature)
+/]
+
+[query public collectionAssociations(service : Service) : Sequence(ServiceAssociation)
+	= service.associations()->select(f | not f.isSingleton())
+/]
+
+[query public defaultValueFeatures(service : Service) : Sequence(ServiceEntityElement)
+	= service.features->select(f | f.hasDefaultValue()).oclAsType(ServiceEntityFeature)
+/]
+
+[query public dependentSingletonAssociations(service : Service) : Sequence(ServiceAssociation)
+	= service.associations()->select(a | 
+		if a.isOneToOneAssociation() then
+			a.oclAsType(ServiceAssociation).isDependentEnd()
+		else
+			a.isOneToManyAssociation()
+		endif)
+/]
+
+[query public displayFeatures(service : Service) : Sequence(ServiceEntityFeature)
+	= let displayFeatures : Sequence(Feature)
+			= service.entities->collect(e | e.displayFeatures)
+		in displayFeatures->collect(f |
+			service.features
+			->select(f | f.oclIsKindOf(ServiceEntityFeature)).oclAsType(ServiceEntityFeature)
+			->any(i | i.name = f.name))
+/]
+
+[query public forcedValueFeatures(service : Service) : Sequence(ServiceEntityFeature)
+	= service.features->select(f | f.hasForcedValue()).oclAsType(ServiceEntityFeature)
+/]
+
+[query public hasAssociations(service : Service) : Boolean
+	= service.associations()->notEmpty()
+/]
+
+[query public hasAttributes(service : Service) : Boolean
+	= service.attributes()->notEmpty()
+/]
+
+[query public hasAttributesOrSingletons(service : Service) : Boolean
+	= service.attributesAndSingletons()->notEmpty()
+/]
+
+[query public hasCollectionAssociations(service : Service) : Boolean
+	= service.collectionAssociations()->notEmpty()
+/]
+
+[query public hasDefaultValueFeatures(service : Service) : Boolean
+	= service.defaultValueFeatures()->notEmpty()
+/]
+
+[query public hasDependentSingletonAssociations(service : Service) : Boolean
+	= service.dependentSingletonAssociations()->notEmpty()
+/]
+
+[query public hasDisplayFeatures(service : Service) : Boolean
+	= service.displayFeatures()->notEmpty()
+/]
+
+[query public hasExplicitTableName(service : Service) : Boolean
+	= if not service.view then
+			let defaultTableName : String = service.entities->first().tableName.toLower()
+				in service.modelName.toLower() <> defaultTableName
+		else
+			let defaultViewName : String = service.name.toLower()
+				in service.modelName.toLower() <> defaultViewName
+		endif
+/]
+
+[query public hasForcedValueFeatures(service : Service) : Boolean
+	= service.forcedValueFeatures()->notEmpty()
+/]
+
+[query public hasIndependentSingletonAssociations(service : Service) : Boolean
+	= service.independentSingletonAssociations()->notEmpty()
+/]
+
+[query public hasInputAssociations(service : Service) : Boolean
+	= service.inputAssociations()->notEmpty()
+/]
+
+[query public hasInputCollectionAssociations(service : Service) : Boolean
+	= service.inputCollectionAssociations()->notEmpty()
+/]
+
+[query public hasInputFeatures(service : Service) : Boolean
+	= service.inputFeatures()->notEmpty()
+/]
+
+[query public hasResourceAttributes(service : Service) : Boolean
+	= service.resourceAttributes()->notEmpty()
+/]
+
+[query public hasValidatedFeatures(service : Service) : Boolean
+	= service.validatedFeatures()->notEmpty()
+/]
+
+[query public independentSingletonAssociations(service : Service) : Sequence(ServiceAssociation)
+	= service.associations()->select(a | 
+		if a.isOneToOneAssociation() then
+			not a.oclAsType(ServiceAssociation).isDependentEnd()
+		else
+			false
+		endif)
+/]
+
+[query public inputAssociations(service : Service) : Sequence(ServiceEntityAssociation)
+	= service.inputFeatures()
+		->select(f | f.oclIsTypeOf(ServiceEntityAssociation)).oclAsType(ServiceEntityAssociation)
+/]
+
+[query public inputCollectionAssociations(service : Service) : Sequence(ServiceEntityAssociation)
+	= service.inputFeatures()
+		->select(f | f.oclIsTypeOf(ServiceEntityAssociation) and not f.isSingleton())
+/]
+
+[query public inputFeatures(service : Service) : Sequence(ServiceEntityFeature)
+	= service.features->select(f | f.isInput()).oclAsType(ServiceEntityFeature)
+/]
+
+[query public keyName(service : Service) : String
+	= service.entities->first().autoKeyName
+/]
+
+[query public resourceAttributes(service : Service) : Sequence(ServiceEntityElement)
+	= service.features->select(f | f.isResourceAttribute()).oclAsType(ServiceEntityElement)
+/]
+
+[query public tableName(service : Service) : String
+	= service.entities->first().tableName
+/]
+
+[query public validatedFeatures(service : Service) : Sequence(ServiceEntityFeature)
+	= service.features->select(f | f.isValidated()).oclAsType(ServiceEntityFeature)
+/]
+
+
+[query public columnName(feature : ServiceFeature) : String
+	= if feature.oclIsKindOf(ServiceEntityFeature) then
+			if not feature.oclAsType(ServiceEntityFeature).viewColumnName.oclIsUndefined() then
+				feature.oclAsType(ServiceEntityFeature).viewColumnName
+			else if feature.oclIsTypeOf(ServiceEntityElement) then
+				feature.oclAsType(ServiceEntityElement).feature.columnName
+			else 
+				feature.oclAsType(ServiceEntityAssociation).feature.columnName
+			endif endif
+		else
+			'unhandledFeature'
+		endif
+/]
+
+[query public displayLabel(feature : ServiceFeature) : String
+	= if feature.oclIsKindOf(IncludedFeature) then
+			feature.oclAsType(IncludedFeature).displayLabel
+		else
+			'unhandledFeature'
+		endif
+/]
+
+[query public hasDefaultValue(feature : ServiceFeature) : Boolean
+	= if feature.oclIsKindOf(IncludedElement) then
+			feature.oclAsType(IncludedElement).hasDefaultValue()
+		else
+			false
+		endif
+/]
+
+[query public hasForcedValue(feature : ServiceFeature) : Boolean
+	= if feature.oclIsKindOf(IncludedFeature) then
+			feature.oclAsType(IncludedFeature).hasForcedValue()
+		else
+			false
+		endif
+/]
+
+[query public isCaseInsensitive(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			feature.oclAsType(ServiceEntityElement).caseInsensitive
+		else
+			false
+		endif
+/]
+
+[query public isCollectionAssociation(feature : ServiceFeature) : Boolean
+	= if feature.oclIsKindOf(ServiceAssociation) then
+			not feature.isSingleton()
+		else
+			false
+		endif
+/]
+
+[query public isDependentEnd(feature : ServiceAssociation) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
+			let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)
+			in if association.cardinality = Cardinality::Many then
+					false
+				else
+					association.feature.oclAsType(SingletonAssociation).isDependentEnd()
+				endif
+		else
+			false
+		endif
+/]
+
+[query public isEncrypted(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			feature.oclAsType(ServiceEntityElement).encrypt
+		else
+			false
+		endif
+/]
+
+[query public isEnumerationTypeSingletonElement(feature : ServiceFeature) : Boolean
+	= if not feature.oclIsTypeOf(ServiceEntityElement) then
+			false
+		else let serviceFeature : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
+			in if not serviceFeature.feature.oclIsTypeOf(SingletonElement) then
+					false
+				else let element : SingletonElement = serviceFeature.feature.oclAsType(SingletonElement)
+					in element.dataType.oclIsTypeOf(EnumerationType)
+				endif
+		endif
+/]
+
+[query public isInput(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			feature.oclAsType(ServiceEntityElement).feature.isInput()
+		else if feature.oclIsTypeOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).feature.isInput()
+		else
+			false
+		endif endif
+/]
+
+[query public isLocation(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			feature.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonLocation)
+		else
+			false
+		endif
+/]
+
+[query public isManyToManyAssociation(feature : ServiceAssociation) : Boolean
+	= feature.isCollectionAssociation() and feature.isOppositeCollectionAssociation()
+/]
+
+[query public isManyToOneAssociation(feature : ServiceAssociation) : Boolean
+	= feature.isCollectionAssociation() and feature.isOppositeSingletonAssociation()
+/]
+
+[query public isOneToOneAssociation(feature : ServiceAssociation) : Boolean
+	= feature.isSingleton() and feature.isOppositeSingletonAssociation()
+/]
+
+[query public isOneToManyAssociation(feature : ServiceAssociation) : Boolean
+	= feature.isSingleton() and feature.isOppositeCollectionAssociation()
+/]
+
+[query public isOppositeCollectionAssociation(feature : ServiceAssociation) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).feature.opposite.oclIsKindOf(CollectionAssociation)
+		else
+			false
+		endif
+/]
+
+[query public isOppositeSingletonAssociation(feature : ServiceAssociation) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).feature.opposite.oclIsKindOf(SingletonAssociation)
+		else
+			false
+		endif
+/]
+
+[query public isRequired(feature : ServiceFeature) : Boolean
+	= feature.cardinality = Cardinality::Required
+/]
+
+[query public isResourceAttribute(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			feature.oclAsType(ServiceEntityElement).feature.oclIsKindOf(SingletonResource)
+		else
+			false
+		endif
+/]
+
+[query public isSingleton(feature : ServiceFeature) : Boolean
+	= feature.cardinality <> Cardinality::Many
+/]
+
+[query public isUnique(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
+			in if element.feature.oclIsKindOf(SingletonAttribute) then
+					element.feature.oclAsType(SingletonAttribute).unique
+				else
+					false
+				endif
+		else
+			false
+		endif
+/]
+
+[query public isValidated(feature : ServiceFeature) : Boolean
+	= feature.isRequired() or feature.isUnique()
+/]
+
+[query public modelPropertyName(feature : ServiceFeature) : String
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			feature.oclAsType(ServiceEntityElement).feature.columnName
+		else if feature.oclIsKindOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).name
+		else if feature.oclIsKindOf(ServiceViewAssociation) then
+			feature.oclAsType(ServiceViewAssociation).name
+		else
+			'unhandledFeature'
+		endif endif endif
+/]
+
+[query public oppositeColumnName(feature : ServiceFeature) : String
+	= let name : String =
+		if feature.oclIsTypeOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).feature.oppositeColumnName()
+		else if feature.oclIsTypeOf(ServiceViewAssociation) then
+			feature.oclAsType(ServiceViewAssociation).targetFeature.columnName()
+		else
+			'unhandledFeature'
+		endif endif
+	in name
+/]
+
+
+[query public displayLabel(action : UnitSupportAction) : String
+	= action.displayLabel
+/]
+
+
+[query public authenticationUnits(page : Page) : Sequence(AuthenticationUnit)
+	= page.units->select(u | u.oclIsKindOf(AuthenticationUnit)).oclAsType(AuthenticationUnit)
+/]
+
+[query public commandUnits(page : Page) : Sequence(CommandUnit)
+	= page.units->select(u | u.oclIsTypeOf(CommandUnit)).oclAsType(CommandUnit)
+/]
+
+[query public controlUnits(page : Page) : Sequence(DynamicUnit)
+	= page.units->select(u | u.oclIsKindOf(ControlUnit)).oclAsType(DynamicUnit)
+/]
+
+[query public dataSupportActions(page : Page) : Sequence(UnitSupportAction)
+	= page.dynamicUnits()->select(u | u.oclIsKindOf(DataUnit))->collect(u | u.supportActions)
+/]
+
+[query public displayLabel(page : Page) : String
+	= page.displayLabel
+/]
+
+[query public dynamicUnits(page : Page) : Sequence(DynamicUnit)
+	= page.units->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+/]
+
+[query public formUnits(page : Page) : Sequence(DynamicUnit)
+	= page.units
+		->select(u | u.oclIsKindOf(ControlUnit) or u.oclIsKindOf(EditUnit)).oclAsType(DynamicUnit)
+/]
+
+[query public hasAuthenticationUnit(page : Page) : Boolean
+	= page.authenticationUnits()->notEmpty()
+/]
+
+[query public hasCaptchaFields(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasCaptchaFields())->notEmpty()
+/]
+
+[query public hasCommandUnits(page : Page) : Boolean
+	= page.commandUnits()->notEmpty()
+/]
+
+[query public hasControlUnits(page : Page) : Boolean
+	= page.controlUnits()->notEmpty()
+/]
+
+[query public hasDataSupportActions(page : Page) : Boolean
+	= page.dataSupportActions()->notEmpty()
+/]
+
+[query public hasDynamicUnits(page : Page) : Boolean
+	= page.dynamicUnits()->notEmpty()
+/]
+
+[query public hasFormUnits(page : Page) : Boolean
+	= page.formUnits()->notEmpty()
+/]
+
+[query public hasInputAssociations(page : Page) : Boolean
+	= page.inputAssociations()->notEmpty()
+/]
+
+[query public hasMapUnits(page : Page) : Boolean
+	= page.mapUnits()->notEmpty()
+/]
+
+[query public hasNoDynamicUnits(page : Page) : Boolean
+	= page.dynamicUnits()->isEmpty()
+/]
+
+[query public hasParameterisedUnits(page : Page) : Boolean
+	= page.parameterisedUnits()->notEmpty()
+/]
+
+[query public hasSupportActions(page : Page) : Boolean
+	= page.supportActions()->notEmpty()
+/]
+
+[query public hasUriActions(page : Page) : Boolean
+	= page.uriActions()->notEmpty()
+/]
+
+[query public indexUnits(page : Page) : Sequence(IndexUnit)
+	= page.units->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
+/]
+
+[query public inputAssociations(page : Page) : Sequence(IncludedAssociation)
+	= page.dynamicUnits()->collect(u | u.inputAssociations())
+/]
+
+[query public isAuthenticated(page : Page) : Boolean
+	= page.authenticated and page.partOf.isAuthenticated()
+/]
+
+[query public mapUnits(page : Page) : Sequence(MapUnit)
+	= page.units->select(u | u.oclIsKindOf(MapUnit)).oclAsType(MapUnit)
+/]
+
+[query public nonDynamicUnits(page : Page) : Set(ContentUnit)
+	= page.units->select(u | not u.oclIsKindOf(DynamicUnit))
+/]
+
+[query public parameterisedUnits(page : Page) : OrderedSet(DynamicUnit)
+	= page.units->select(u | u.isParameterised())
+/]
+
+[query public supportActions(page : Page) : Sequence(UnitSupportAction)
+	= page.dynamicUnits()->collect(u | u.supportActions)
+/]
+
+[query public uriActions(page : Page) : Sequence(InlineAction)
+	= page.dynamicUnits()->collect(u | u.uriActions())
+/]
+
+
+[query public styleClass(menu : Menu) : String
+	= menu.styleClass
+/]
+
+
+[query public associationFields(unit : DynamicUnit) : Sequence(UnitAssociation)
+	= unit.displayFields->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
+/]
+
+[query public cancelLabel(unit : DynamicUnit) : String
+	= if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).cancelLabel
+		else if unit.oclIsKindOf(ControlUnit) then
+			unit.oclAsType(ControlUnit).cancelLabel
+		else
+			'unexpectedUnit'
+		endif endif
+/]
+
+[query public captchaFields(unit : DynamicUnit) : Sequence(CaptchaField)
+	= unit.displayFields->select(f | f.oclIsTypeOf(CaptchaField)).oclAsType(CaptchaField)
+/]
+
+[query public defaultValueFields(unit : DynamicUnit) : Set(UnitField)
+	= unit.displayFields->select(f | f.hasDefaultValue())
+/]
+
+[query public encryptedFeatures(unit : DynamicUnit) : Set(UnitField)
+	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f | f.isEncrypted())
+/]
+
+[query public forcedValueFeatures(unit : DynamicUnit) : Sequence(UnitField)
+	= unit.displayFields
+		->select(f | f.hasForcedValue()).oclAsType(UnitField)
+/]
+
+[query public hasCaptchaFields(unit : DynamicUnit) : Boolean
+	= unit.captchaFields()->notEmpty()
+/]
+
+[query public hasClearLabel(unit : EditUnit) : Boolean
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+			not unit.oclAsType(CreateUpdateUnit).clearLabel.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public hasDefaultValueFields(unit : DynamicUnit) : Boolean
+	= unit.defaultValueFields()->notEmpty()
+/]
+
+[query public hasEncryptedFeatures(unit : DynamicUnit) : Boolean
+	= unit.encryptedFeatures()->notEmpty()
+/]
+
+[query public hasForcedValueFeatures(unit : DynamicUnit) : Boolean
+	= unit.forcedValueFeatures()->notEmpty()
+/]
+
+[query public hasInputAssociations(unit : DynamicUnit) : Boolean
+	= unit.inputAssociations()->notEmpty()
+/]
+
+[query public hasInputFields(unit : DynamicUnit) : Boolean
+	= unit.inputFields()->notEmpty()
+/]
+
+[query public hasOmitFieldLabels(unit : DataUnit) : Boolean
+	= if unit.oclIsTypeOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).omitFieldLabels
+		else
+			unit.oclAsType(IndexUnit).omitColumnLabels
+		endif
+/]
+
+[query public hasInterfaceFields(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(DynamicUnit) then
+			unit.oclAsType(DynamicUnit).interfaceFields()->notEmpty()
+		else
+			false
+		endif
+/]
+
+[comment query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if unit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormHead
+				or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+				or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[comment query public hasMessagesOnFormFoot(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if uUnit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormFoot
+			or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[comment query public hasMessagesOnFeature(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if unit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::OnFeature
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasUnitMethods(unit : ContentUnit) : Boolean
+	= if unit.oclIsTypeOf(CommandUnit) then
+			true
+		else if unit.oclIsKindOf(EditUnit) then
+			true
+		else if unit.oclIsKindOf(DataUnit) then
+			unit.oclAsType(DataUnit).hasUriActions()
+		else if unit.oclIsTypeOf(ActionUnit) then
+			true
+		else if unit.oclIsKindOf(AuthenticationUnit) then
+			true
+		else
+			false
+		endif endif endif endif endif
+/]
+
+[query public hasUriActions(unit : DynamicUnit) : Boolean
+	= unit.uriActions()->notEmpty()
+/]
+
+[query public inputAssociations(unit : DynamicUnit) : Sequence(UnitField)
+	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
+			unit.inputFields()->select(f | f.oclIsTypeOf(UnitAssociation))
+		else
+			Sequence{}
+		endif
+/]
+
+[query public inputCollectionAssociations(unit : DynamicUnit) : Sequence(UnitField)
+	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
+			unit.inputFields()->select(f | f.oclIsTypeOf(UnitAssociation) and not f.isSingleton())
+		else
+			Sequence{}
+		endif
+/]
+
+[query public inputFields(unit : DynamicUnit) : Sequence(UnitField)
+	= unit.displayFields->asSequence()->select(f |
+		if f.oclIsKindOf(UnitFeature) then
+			f.oclAsType(UnitFeature).isInput()
+		else
+			true
+		endif)
+/]
+
+[query public inputOrEmbeddedFields(unit : DynamicUnit) : Sequence(UnitField)
+	= unit.displayFields->asSequence()->select(f |
+		if f.oclIsKindOf(UnitFeature) then
+			f.oclAsType(UnitFeature).isInputOrEmbedded()
+		else
+			true
+		endif)
+/]
+
+[query public interfaceFields(unit : DynamicUnit) : Sequence(InterfaceField)
+	= unit.displayFields->select(f | f.oclIsKindOf(InterfaceField)).oclAsType(InterfaceField)
+/]
+
+[query public isAuthenticated(unit : ContentUnit) : Boolean
+	= unit.pageDisplayedOn().isAuthenticated()
+/]
+
+[query public isParameterised(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(DataUnit) then
+			unit.oclAsType(DataUnit).selection.oclIsUndefined()
+		else
+			unit.oclIsKindOf(EditUnit)
+		endif
+/]
+
+[query public nonResourceInputFeatures(unit : DynamicUnit) : Set(UnitField)
+	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f |
+		if f.oclIsKindOf(UnitFeature) then
+			f.oclAsType(UnitFeature).isInput() and not f.oclAsType(UnitFeature).isResourceInput()
+		else
+			true
+		endif)
+/]
+
+[query public pageDisplayedOn(unit : ContentUnit) : Page
+	= if unit.displayedOn.oclIsTypeOf(Page) then
+			unit.displayedOn.oclAsType(Page)
+		else
+			unit.displayedOn.oclAsType(UnitAssociation).displayedOn.pageDisplayedOn()
+		endif
+/]
+
+[query public rowClasses(unit : IndexUnit) : Sequence(String)
+	= unit.rowClasses.tokenize(' ')
+/]
+
+[query public searchFields(unit : IndexUnit) : Bag(UnitField)
+	= unit->collect(targettingSearches.displayFields)
+/]
+
+[query public submitLabel(unit : DynamicUnit) : String
+	= if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).confirmLabel
+		else if unit.oclIsKindOf(ControlUnit) then
+			unit.oclAsType(ControlUnit).submitLabel
+		else
+			'unexpectedUnit'
+		endif endif
+/]
+
+[query public uriActions(unit : DynamicUnit) : Sequence(InlineAction)
+	= unit.displayFields->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
+			->collect(f | f.units.oclAsType(DynamicUnit).uriActions())
+		->union(if unit.oclIsKindOf(IndexUnit) then
+				unit.oclAsType(IndexUnit).actions->select(a | not a.oclIsTypeOf(SelectAction)).oclAsType(InlineAction)
+			else
+				Sequence{}
+			endif)
+/]
+
+
+[query public columnName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).serviceFeature.columnName()
+			else 
+				field.oclAsType(UnitAssociation).serviceFeature.columnName()
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).name
+		else if field.oclIsTypeOf(DateField) then
+			field.oclAsType(DateField).name
+		else
+			field.oclAsType(CaptchaField).name
+		endif endif endif
+/]
+
+[query public conditionalDisplay(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitFeature) then
+			field.oclAsType(UnitFeature).onlyDisplayWhenNotEmpty
+		else
+			false
+		endif
+/]
+
+[query public displayClass(field : UnitField) : String
+	= if not field.oclIsTypeOf(UnitAssociation) or field.isSingleton() then
+			field.modelPropertyName()
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.units->isEmpty() then
+					field.modelPropertyName()
+				else
+					association.units->first().styleClass
+				endif
+		endif
+/]
+
+[query public displayLabel(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).displayLabel
+		else if field.oclIsTypeOf(InterfaceField) then
+			field.oclAsType(InterfaceField).displayLabel
+		else 
+			field.oclAsType(CaptchaField).displayLabel
+		endif endif
+/]
+
+[query public hasDefaultValue(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(IncludedFeature).hasDefaultValue()
+		else if field.oclIsKindOf(InterfaceField) then
+			not field.oclAsType(InterfaceField).defaultValue.oclIsUndefined()
+		else
+			false
+		endif endif
+/]
+
+[query public hasForcedValue(field : UnitField) : Boolean
+	= if field.oclIsKindOf(IncludedFeature) then
+			field.oclAsType(IncludedFeature).hasForcedValue()
+		else
+			false
+		endif
+/]
+
+[query public hasSelection(field : UnitField) : Boolean
+	= not field.selection().oclIsUndefined()
+/]
+
+[query public inputClass(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).inputClass
+		else if field.oclIsTypeOf(InterfaceField) then
+			field.oclAsType(InterfaceField).inputClass
+		else
+			'Unhandled'
+		endif endif
+/]
+
+[query public isBooleanDataType(field : UnitField) : Boolean
+	= if not field.oclIsTypeOf(UnitElement) then
+			false
+		else let element : UnitElement = field.oclAsType(UnitElement)
+			in if not element.serviceFeature.feature.oclIsTypeOf(SingletonElement) then
+					false
+				else let singleton : SingletonElement = element.serviceFeature.feature.oclAsType(SingletonElement)
+					in singleton.dataType.name = 'Boolean'
+				endif
+		endif
+/]
+
+[query public isCaseInsensitive(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).serviceFeature.isCaseInsensitive()
+			else
+				false
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).caseInsensitive
+		else
+			false
+		endif endif
+/]
+[query public isDataTypeSingleton(field : UnitField) : Boolean
+	= if not field.oclIsTypeOf(UnitElement) then
+			false
+		else let element : UnitElement = field.oclAsType(UnitElement)
+			in if not element.serviceFeature.feature.oclIsTypeOf(SingletonElement) then
+					false
+				else let singleton : SingletonElement = element.serviceFeature.feature.oclAsType(SingletonElement)
+					in singleton.dataType.oclIsTypeOf(DataType)
+				endif
+		endif
+/]
+
+[query public isDateSingleton(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitElement) then
+			let element : UnitElement = field.oclAsType(UnitElement)
+			in element.serviceFeature.feature.oclIsTypeOf(SingletonDate)
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isDateSingletonElement()
+				endif
+		endif
+/]
+
+[query public isDateSingletonElement(child : UnitChildFeature) : Boolean
+	= if child.oclIsTypeOf(UnitChildElement) then
+			let element : UnitChildElement = child.oclAsType(UnitChildElement)
+			in element.serviceFeature.feature.oclIsTypeOf(SingletonDate)
+		else
+			let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isDateSingletonElement()
+				endif
+		endif
+/]
+
+[query public isEncrypted(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).serviceFeature.isEncrypted()
+			else
+				false
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).encrypt
+		else
+			false
+		endif endif
+/]
+
+[query public isEnumerationTypeSingleton(field : UnitField) : Boolean
+	= if not field.oclIsTypeOf(UnitElement) then
+			false
+		else let element : UnitElement = field.oclAsType(UnitElement)
+			in element.serviceFeature.isEnumerationTypeSingletonElement()
+		endif
+/]
+
+[query public isInput(feature : UnitFeature) : Boolean
+	= if feature.oclIsKindOf(UnitFeature) and feature.isSingleton() then
+			if feature.oclAsType(UnitFeature).forcedValue.oclIsUndefined() then
+				if feature.oclIsTypeOf(UnitElement) then
+					feature.oclAsType(UnitElement).serviceFeature.isInput()
+				else
+					feature.oclAsType(UnitAssociation).serviceFeature.isInput()
+				endif
+			else
+				false
+			endif
+		else if feature.oclIsTypeOf(UnitAssociation) and not feature.isSingleton() then
+			if feature.oclAsType(UnitAssociation).units->isEmpty() then
+				feature.oclAsType(UnitAssociation).serviceFeature.isInput()
+			else
+				false
+			endif
+		else
+			false
+		endif endif
+/]
+
+[query public isInputOrEmbedded(feature : UnitFeature) : Boolean
+	= feature.isInput() or
+		if not feature.oclIsTypeOf(UnitAssociation) then
+			false
+		else
+			feature.oclAsType(UnitAssociation).units->notEmpty()
+		endif
+/]
+
+[query public isLocation(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).serviceFeature.isLocation()
+			else
+				false
+			endif
+		else
+			false
+		endif
+/]
+
+[query public isObfuscated(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).obfuscateFormFields
+			else
+				false
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).obfuscateFormFields
+		else
+			false
+		endif endif
+/]
+
+[query public isRequired(field : UnitField) : Boolean
+	= field.cardinality = Cardinality::Required
+/]
+
+[query public isResourceSingleton(field : UnitField) : Boolean
+	= if not field.oclIsTypeOf(UnitElement) then
+			false
+		else let element : UnitElement = field.oclAsType(UnitElement)
+			in element.serviceFeature.feature.oclIsKindOf(SingletonResource)
+		endif
+/]
+
+[query public isResourceAttribute(feature : UnitFeature) : Boolean
+	= if not feature.oclIsTypeOf(UnitElement) then
+			false
+		else
+			feature.oclAsType(UnitElement).serviceFeature.feature.oclIsKindOf(SingletonResource)
+		endif
+/]
+
+[query public isResourceInput(feature : UnitFeature) : Boolean
+	= feature.isInput() and feature.isResourceAttribute()
+/]
+
+
+
+[query public isSingleton(field : UnitField) : Boolean
+	= field.cardinality <> Cardinality::Many
+/]
+
+[query public isUnique(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).serviceFeature.isUnique()
+			else
+				field.oclAsType(UnitAssociation).serviceFeature.isUnique()
+			endif
+		else
+			false
+		endif
+/]
+
+[query public isValidated(feature : UnitFeature) : Boolean
+	= if feature.oclIsTypeOf(UnitElement) then
+			feature.oclAsType(UnitElement).serviceFeature.isValidated()
+		else 
+			feature.oclAsType(UnitAssociation).serviceFeature.isValidated()
+		endif
+/]
+
+[query public modelPropertyName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).serviceFeature.modelPropertyName()
+			else
+				field.oclAsType(UnitAssociation).serviceFeature.modelPropertyName()
+			endif
+		else if field.oclIsTypeOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else if field.oclIsTypeOf(CaptchaField) then
+			field.oclAsType(CaptchaField).name
+		else
+			'UnhandledFeature'
+		endif endif endif
+/]
+
+[query public pageDisplayedOn(field : UnitField) : Page
+	= field.displayedOn.pageDisplayedOn()
+/]
+
+[comment TODO what if field has a selection?/]
+[query public selection(field : UnitField) : Selection
+	= if not field.oclIsTypeOf(UnitAssociation) then
+			null
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.units->isEmpty() then
+					null
+				else if association.units->first().oclIsKindOf(IndexUnit) then
+					association.units->first().oclAsType(IndexUnit).selection
+				else
+					null
+			endif endif
+		endif
+/]
+
+[query public styleClass(field : UnitField) : String
+	= let className : String = field.modelPropertyName()
+		in className.replaceAll('([A-Z])', '_$1').toLowerCase()
+/]
+
+
+[query public controller(action : InlineAction) : Page
+	= if action.oclIsTypeOf(SelectAction) then
+			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).pageDisplayedOn()
+		else
+			if action.usedBy.oclIsKindOf(DynamicUnit) then
+				action.usedBy.oclAsType(DynamicUnit).pageDisplayedOn()
+			else
+				null
+			endif
+		endif
+/]
+
+
+[query public tableColumns(entity : Entity) : Set(Feature)
+	= entity.features->select(f | f.hasColumn())
+/]
+
+
+[query public columnName(feature : Feature) : String
+	= if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).columnName
+		else if feature.oclIsKindOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).columnName
+		else if feature.oclIsKindOf(CollectionAssociation) then
+			if feature.oclAsType(CollectionAssociation).opposite.oclIsTypeOf(CollectionAssociation) then
+				feature.oclAsType(CollectionAssociation).columnName
+			else
+				feature.oclAsType(CollectionAssociation).name
+			endif
+		else
+			'unhandledFeature'
+		endif endif endif
+/]
+
+[query public hasColumn(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			true
+		else if feature.oclIsTypeOf(SingletonAssociation) then
+			let association : SingletonAssociation = Feature.oclAsType(SingletonAssociation)
+			in if association.opposite.oclIsTypeOf(SingletonAssociation) then
+					association.isDependentEnd()
+				else
+					true
+				endif
+		else
+			false
+		endif endif
+/]
+
+[query public isDataTypeSingletonElement(feature : Feature) : Boolean
+	= if not feature.oclIsKindOf(SingletonElement) then
+			false
+		else let element : SingletonElement = feature.oclAsType(SingletonElement)
+			in element.dataType.oclIsTypeOf(DataType)
+		endif
+/]
+
+[query public isEnumerationTypeSingletonElement(feature : Feature) : Boolean
+	= if not feature.oclIsKindOf(SingletonElement) then
+			false
+		else let element : SingletonElement = feature.oclAsType(SingletonElement)
+			in element.dataType.oclIsTypeOf(EnumerationType)
+		endif
+/]
+
+[query public isManyToManyAssociationXX(feature : Association) : Boolean
+	= feature.oclIsTypeOf(CollectionAssociation) and feature.opposite.oclIsTypeOf(CollectionAssociation)
+/]
+
+[query public isDependentEnd(feature : SingletonAssociation) : Boolean
+	= if not feature.opposite.oclIsTypeOf(SingletonAssociation) then
+			true
+		else
+			feature.sourceEnd and feature.required
+			or feature.sourceEnd and not feature.opposite.oclAsType(SingletonAssociation).required
+			or not feature.sourceEnd and not feature.opposite.oclAsType(SingletonAssociation).required
+		endif
+/]
+
+
+[query public isInput(ormFeature : Feature) : Boolean
+	= if ormFeature.inputField.oclIsUndefined() then
+			false
+		else
+			ormFeature.inputField
+		endif
+/]
+
+[query public oppositeColumnName(feature : Association) : String
+	= if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).oppositeColumnName()
+		else if feature.oclIsTypeOf(CollectionAssociation) then
+			feature.oclAsType(CollectionAssociation).oppositeColumnName()
+		else
+			'Unhandled Association'
+		endif endif
+/]
+
+[query public oppositeColumnName(feature : CollectionAssociation) : String
+	= feature.opposite.columnName()
+/]
+
+[query public oppositeColumnName(feature : SingletonAssociation) : String
+	= feature.opposite.columnName()
+/]
+
+
+[query public displayLabel(enumerationLiteral : EnumerationLiteral) : String
+	= enumerationLiteral.displayLabel
+/]
+
