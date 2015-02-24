@@ -1,13 +1,13 @@
 [comment encoding = UTF-8 /]
 [module database(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 
 
-[template public generateDatabase(genModel : GenJsfModel)]
-[file (genModel.configDirectory().concat('/').concat('database').concat(genModel.executableExtension()), false)]
+[template public generateDatabase(model : JsfModel)]
+[file (model.configDirectory().concat('/').concat('database').concat(model.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 return array
@@ -28,13 +28,13 @@ return array
 			 *
 			 * Ports and sockets may be appended to the hostname.
 			 */
-			'hostname'   => '[genModel.databaseHost/]',
-			'database'   => '[genModel.databaseName/]',
-			'username'   => '[genModel.databaseUsername/]',
-			'password'   => '[genModel.databasePassword/]',
+			'hostname'   => '[model.persistence.databaseHost/]',
+			'database'   => '[model.persistence.databaseName/]',
+			'username'   => '[model.persistence.databaseUsername/]',
+			'password'   => '[model.persistence.databasePassword/]',
 			'persistent' => FALSE,
 		),
-		'table_prefix' => '[genModel.databasePrefix/]',
+		'table_prefix' => '[model.persistence.databasePrefix/]',
 		'charset'      => 'utf8',
 		'caching'      => FALSE,
 	),

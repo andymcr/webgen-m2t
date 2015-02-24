@@ -91,7 +91,7 @@
 find()[else][let embeddedIndexUnit : GenIndexUnit = embeddedUnit.oclAsType(GenIndexUnit)]
 [if (embeddedIndexUnit.genSelection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.genSelection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.genSelection.jsfSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
      <div class="framed [genDisplayField.modelPropertyName()/]">
       [genDisplayField.oclAsType(GenUnitAssociation).genUnits.generateViewContent(genDisplayField.uniqueName())/]
@@ -393,7 +393,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 find()[else][let embeddedIndexUnit : GenIndexUnit = embeddedUnit.oclAsType(GenIndexUnit)]
 [if (embeddedIndexUnit.genSelection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.genSelection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.genSelection.jsfSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
      <div class="framed [genDisplayField.modelPropertyName()/]">
       [genDisplayField.oclAsType(GenUnitAssociation).genUnits.generateViewContent(genDisplayField.uniqueName())/]
@@ -640,15 +640,14 @@ echo form_input('[genField.modelPropertyName()/]');
 	[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
 	[if (genAssociation.genFilters->size() > 0)]
 <div class="[genField.styleClass()/] [genField.inputClass()/]">
- <input id="[genField.uniqueName()/]_filter" name="[genField.uniqueName()/]_filter" ng-model="[genField.name/]_filter"/>
+ <input id="[genField.uniqueName()/]_filter" name="[genField.uniqueName()/]_filter" data-ng-model="[genField.name/]_filter"/>
 	[/if]
-<!--select id="[genField.uniqueName()/]" name="[genField.columnName()/][if (not genField.isSingleton())]
-['['/][']'/][/if]" class="[genField.styleClass()/] [genField.inputClass()/]" [if (genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
- ng-model="[genField.name/]_selected" ng-options="[genField.name/].label for [genField.name/] in [genField.optionsName()/]"[/if] -->
 <select id="[genField.uniqueName()/]" name="[genField.columnName()/][if (not genField.isSingleton())]
 ['['/][']'/][/if]" class="[genField.styleClass()/] [genField.inputClass()/]" [if (genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
- ng-model="[genField.name/]_selected"[/if]>
- <option ng-repeat="[genField.name/] in [genField.optionsName()/] | filter:[genField.name/]_filter" value="{{[genField.name/].id}}">{{[genField.name/].label}}</option>
+ data-ng-model="[genField.name/]_selected" data-ng-options="[genField.name/].label for [genField.name/] in [genField.optionsName()/]"[/if]>
+[if (genAssociation.isSingleton())]
+ <option></option>
+[/if]
 </select>
 	[if (genAssociation.genFilters->size() > 0)]
 </div>

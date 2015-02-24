@@ -1,14 +1,14 @@
 [comment encoding = UTF-8 /]
 [module activate(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateEmailActivate(genAuthentication : GenLocalAuthenticationSystem)]
-[file(genAuthentication.emailViewsDirectory().concat('/activate_text').concat(genAuthentication.executableExtension()), false)]
+[template public generateEmailActivate(authentication : LocalAuthenticationSystem)]
+[file(authentication.emailViewsDirectory().concat('/activate_text').concat(authentication.executableExtension()), false)]
 Welcome to <?php echo $site_name; ?>,
 
 Thanks for joining <?php echo $site_name; ?>. We listed your sign in details below, make sure you keep them safe.
@@ -34,7 +34,7 @@ The <?php echo $site_name; ?> Team
 [/file]
 
 
-[file(genAuthentication.emailViewsDirectory().concat('/activate_html').concat(genAuthentication.executableExtension()), false)]
+[file(authentication.emailViewsDirectory().concat('/activate_html').concat(authentication.executableExtension()), false)]
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head><title>Welcome to <?php echo $site_name; ?>!</title></head>

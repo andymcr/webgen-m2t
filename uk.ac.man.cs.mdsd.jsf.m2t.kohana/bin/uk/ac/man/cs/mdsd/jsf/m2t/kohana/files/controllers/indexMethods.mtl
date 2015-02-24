@@ -18,7 +18,7 @@
 [let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
 $this->[genUnit.templateInstanceName()/]->bind('[genUnit.instanceName()/]', $this->[genUnit.instanceName()/]);
 [if (not genIndexUnit.genSelection.oclIsUndefined())]
-$this->[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->[genIndexUnit.genSelection.instanceName()/]([if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
+$this->[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->[genIndexUnit.genSelection.jsfSelection.instanceName()/]([if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
 TRUE, max($this->request->query('[genUnit.parameterName()/]'), 1), [genIndexUnit.jsfUnit.defaultPaginationSize/][/if]);
 [else]
 $this->[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->[if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
@@ -27,7 +27,7 @@ find_all()[/if];
 [/if]
 [if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
 $[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->[if (not genIndexUnit.genSelection.oclIsUndefined())]
-[genIndexUnit.genSelection.countName()/]()[else]
+[genIndexUnit.genSelection.jsfSelection.countName()/]()[else]
 count_all()[/if];
 $[genUnit.instanceName()/]_pagination = Pagination::factory(array(
 	'group' => '[genUnit.uniqueName()/]',

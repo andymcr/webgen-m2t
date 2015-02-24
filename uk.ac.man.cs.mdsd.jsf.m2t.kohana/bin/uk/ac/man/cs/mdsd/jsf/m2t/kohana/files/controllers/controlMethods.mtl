@@ -27,7 +27,7 @@ if (isset($this->[genControlUnit.instanceName()/]_field_errors))
 $[genField.optionsName()/] = array([if (genField.isSingleton())]'' => __('Please select')[/if]);
 foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
 find_all()[else]
-[genAssociation.genSelection.instanceName()/](FALSE)[/if] AS $option)
+[genAssociation.genSelection.jsfSelection.instanceName()/](FALSE)[/if] AS $option)
 	$[genField.optionsName()/]['['/]$option->id[']'/] = $option->displayLabel();
 $this->[genControlUnit.templateInstanceName()/]->bind('[genField.optionsName()/]', $[genField.optionsName()/]);
 [/let]

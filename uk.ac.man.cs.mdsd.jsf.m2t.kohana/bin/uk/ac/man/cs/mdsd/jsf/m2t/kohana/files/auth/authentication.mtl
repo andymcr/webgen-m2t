@@ -1,33 +1,34 @@
 [comment encoding = UTF-8 /]
 [module authentication(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateAuthenticationModule(genAuthentication : GenLocalAuthenticationSystem)]
-[file(genAuthentication.webgenAuthDirectory().concat('/').concat(genAuthentication.webgenAuthName()).concat(genAuthentication.executableExtension()), false)]
+[template public generateAuthenticationModule(authentication : Authentication)
+	? (authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+[file(authentication.webgenAuthDirectory().concat('/').concat(authentication.webgenAuthName()).concat(authentication.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-class [genAuthentication.webgenAuthClassName()/] extends Auth
+class [authentication.webgenAuthClassName()/] extends Auth
 {
 	var $message = 'Invalid username or password';
 
     private function load_authentication($login_id)
     {
-		return ORM::factory('[genAuthentication.genAuthenticationService.modelName()/]', array(
-			'[genAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/]' => $login_id
+		return ORM::factory('[localAuthentication.authenticationService.modelName()/]', array(
+			'[localAuthentication.loginUnit.loginIdField.modelPropertyName()/]' => $login_id
 		));
 	}
 
 	protected function _login($login_id, $password, $remember)
     {
-[if (not genAuthentication.genAutoLoginService.oclIsUndefined())]
+[if (not localAuthentication.autoLoginService.oclIsUndefined())]
 		if (mt_rand(1, 100) === 1)
-			[genAuthentication.genAutoLoginService.modelClassName()/]::delete_expired($this->_config['['/]'lifetime'[']'/]);
+			[localAuthentication.autoLoginService.modelClassName()/]::delete_expired($this->_config['['/]'lifetime'[']'/]);
 
 		$maximum_attempts = $this->_config['['/]'maximum_attempts'[']'/];
 		$attempt_expiry_period = $this->_config['['/]'attempt_expiry_period'[']'/];
@@ -36,7 +37,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		if (is_object($login_id))
 		{
 			$authentication = $login_id;
-			$login_id = $authentication->[genAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/];
+			$login_id = $authentication->[localAuthentication.loginUnit.loginIdField.modelPropertyName()/];
 		}
 		else
 			$authentication = $this->load_authentication($login_id);
@@ -52,24 +53,24 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 			{
 				$this->message = 'Your account is currently locked out';
 			}
-[if (not genAuthentication.genLoginAttemptService.oclIsUndefined())]
-			else if ([genAuthentication.genLoginAttemptService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
+[if (not localAuthentication.loginAttemptService.oclIsUndefined())]
+			else if ([localAuthentication.loginAttemptService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
 			{
 				$this->message = 'Maximum login atempts exceeded';
 			}
 [/if]
 			else
 			{
-[if (not genAuthentication.genLoginAttemptService.oclIsUndefined())]
-				[genAuthentication.genLoginAttemptService.modelClassName()/]::clear_attempts($login_id, $attempt_expiry_period);
+[if (not localAuthentication.loginAttemptService.oclIsUndefined())]
+				[localAuthentication.loginAttemptService.modelClassName()/]::clear_attempts($login_id, $attempt_expiry_period);
 [/if]
 				$authentication->record_last_login();
 	
-[if (not genAuthentication.genAutoLoginService.oclIsUndefined())]
+[if (not localAuthentication.autoLoginService.oclIsUndefined())]
 				if ($remember === TRUE)
 				{
 					$key = substr(md5(uniqid(rand() . Cookie::get(Session::instance()->name()))), 0, 16);
-					$autologin = [genAuthentication.genAutoLoginService.modelClassName()/]::create_token($key, $authentication, $this->user_agent_id());
+					$autologin = [localAuthentication.autoLoginService.modelClassName()/]::create_token($key, $authentication, $this->user_agent_id());
 					if ($autologin->loaded())
 						$this->set_autologin_cookie(serialize(array(
 							'user_id' => $login_id,
@@ -83,9 +84,9 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 			}
 		}
 
-[if (not genAuthentication.genLoginAttemptService.oclIsUndefined())]
-		if (![genAuthentication.genLoginAttemptService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
-			[genAuthentication.genLoginAttemptService.modelClassName()/]::record_attempt($login_id);
+[if (not localAuthentication.loginAttemptService.oclIsUndefined())]
+		if (![localAuthentication.loginAttemptService.modelClassName()/]::attempts_exceeded($login_id, $maximum_attempts, $attempt_expiry_period))
+			[localAuthentication.loginAttemptService.modelClassName()/]::record_attempt($login_id);
 [/if]
 		return FALSE;
    }
@@ -130,7 +131,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
     {
  		$login_id = parent::get_user($default);
 		if ($login_id === $default)
-[if (genAuthentication.genAutoLoginService.oclIsUndefined())]
+[if (localAuthentication.autoLoginService.oclIsUndefined())]
 			return $default;
 [else]
 		{
@@ -151,13 +152,13 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		}
     }
 
-[if (not genAuthentication.genAutoLoginService.oclIsUndefined())]
+[if (not localAuthentication.autoLoginService.oclIsUndefined())]
 	private function auto_login()
 	{
 		$cookie = Cookie::get('authautologin');
 		if ($cookie)
 		{
-			$autologin = [genAuthentication.genAutoLoginService.modelClassName()/]::load_token($cookie,
+			$autologin = [localAuthentication.autoLoginService.modelClassName()/]::load_token($cookie,
 				$this->user_agent_id(), $this->_config['['/]'lifetime'[']'/]);
 			if (is_object($autologin) && $autologin->loaded())
 			{
@@ -165,7 +166,7 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 				$this->set_autologin_cookie($cookie);
 				$x = unserialize($cookie);
 				$authentication = $this->load_authentication($x['['/]'user_id'[']'/]);
-				$this->complete_login($authentication->[genAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/]);
+				$this->complete_login($authentication->[localAuthentication.loginUnit.loginIdField.modelPropertyName()/]);
 				return $authentication;
 			}
 		}
@@ -189,10 +190,10 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		if ($cookie)
 		{
 			if($logout_all)
-				[genAuthentication.genAutoLoginService.modelClassName()/]::delete_user();
+				[localAuthentication.autoLoginService.modelClassName()/]::delete_user();
 			else
 			{
-				$autologin = [genAuthentication.genAutoLoginService.modelClassName()/]::load_token($cookie,
+				$autologin = [localAuthentication.autoLoginService.modelClassName()/]::load_token($cookie,
 					$this->user_agent_id(), $this->_config['['/]'lifetime'[']'/]);
 				if (is_object($autologin) && $autologin->loaded())
 					$autologin->delete();
@@ -210,9 +211,10 @@ class [genAuthentication.webgenAuthClassName()/] extends Auth
 		if ($authentication === $default)
 			return $default;
 
-		return [genAuthentication.genUserService.modelClassName()/]::authenticated_user($authentication);
+		return [localAuthentication.userService.modelClassName()/]::authenticated_user($authentication);
 	}
 
 }
 [/file]
+[/let]
 [/template]

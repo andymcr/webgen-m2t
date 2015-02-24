@@ -1,94 +1,93 @@
 [comment encoding = UTF-8 /]
 [module serviceModel(
-	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
-[template public generateModel(genService : GenService, genAuthentication : GenAuthentication)]
-[file(genService.modelFilename(), false)]
+[template public generateModel(service : Service, authentication : Authentication)]
+[file(service.modelFilename(), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-class [genService.modelClassName()/] extends Model_ExtendedORM
+class [service.modelClassName()/] extends Model_ExtendedORM
 {
-[if (genService.hasExplicitTableName())]
-[if (not genService.jsfService.view)]
-	protected $_table_name = '[genService.tableName()/]';
+[if (service.hasExplicitTableName())]
+[if (not service.view)]
+	protected $_table_name = '[service.tableName()/]';
 [else]
-	protected $_table_name = '[genService.viewName/]';
+	protected $_table_name = '[service.viewName/]';
 [/if]
 
 [/if]
-[if (genService.keyName() <> 'id')]
-	protected $_primary_key = '[genService.keyName()/]';
+[if (service.keyName() <> 'id')]
+	protected $_primary_key = '[service.keyName()/]';
 
 [/if]
-[if (genService.hasDependentSingletonAssociations())]
+[if (service.hasDependentSingletonAssociations())]
 	protected $_belongs_to = array(
-	[for (genFeature : GenServiceAssociation | genService.dependentSingletonAssociations())
+	[for (feature : ServiceAssociation | service.dependentSingletonAssociations())
 			separator (',')]
-		'[genFeature.modelPropertyName()/]' => array(
-			'model' => '[genFeature.modelName()/]',
-			'foreign_key' => '[genFeature.columnName()/]'
+		'[feature.modelPropertyName()/]' => array(
+			'model' => '[feature.modelName()/]',
+			'foreign_key' => '[feature.columnName()/]'
 		)
 	[/for]
 	);
 
 [/if]
-[if (genService.hasIndependentSingletonAssociations())]
+[if (service.hasIndependentSingletonAssociations())]
 	protected $_has_one = array(
-	[for (genFeature : GenServiceAssociation | genService.independentSingletonAssociations())
+	[for (feature : ServiceAssociation | service.independentSingletonAssociations())
 			separator (',')]
-		'[genFeature.modelPropertyName()/]' => array(
-			'model' => '[genFeature.modelName()/]',
-			'foreign_key' => '[genFeature.columnName()/]'
+		'[feature.modelPropertyName()/]' => array(
+			'model' => '[feature.modelName()/]',
+			'foreign_key' => '[feature.columnName()/]'
 		)
 	[/for]
 	);
 
 [/if]
-[if (genService.hasCollectionAssociations())]
+[if (service.hasCollectionAssociations())]
 	protected $_has_many = array(
-	[for (genFeature : GenServiceAssociation | genService.collectionAssociations())
+	[for (feature : ServiceAssociation | service.collectionAssociations())
 			separator (',')]
-		'[genFeature.modelPropertyName()/]' => array(
-			'model' => '[genFeature.modelName()/]',
-		[if (genFeature.isManyToManyAssociation())]
-			'through' => '[genFeature.pivotTableName()/]',
-			'far_key' => '[genFeature.pivotColumnName()/]',
+		'[feature.modelPropertyName()/]' => array(
+			'model' => '[feature.modelName()/]',
+		[if (feature.isManyToManyAssociation())]
+			[if (feature.oclIsTypeOf(ServiceEntityAssociation))]
+			'through' => '[feature.oclAsType(ServiceEntityAssociation).feature.pivotTableName/]',
+			'far_key' => '[feature.columnName()/]',
+			[/if]
 		[/if]
-			'foreign_key' => '[genFeature.oppositeColumnName()/]'
+			'foreign_key' => '[feature.oppositeColumnName()/]'
 		)
 	[/for]
 	);
 
 [/if]
-[if (not genService.jsfService.view and genService.genEntities->size() > 1)]
-	[for (genEntity : GenEntity | genService.genEntities->subOrderedSet(2, genService.genEntities->size()))]
-	private $_component_[genEntity.instanceName()/];
+[if (not service.view and service.entities->size() > 1)]
+	[for (entity : Entity | service.entities->subOrderedSet(2, service.entities->size()))]
+	private $_component_[entity.instanceName()/];
 
 	[/for]
 [/if]
-[if (not genService.jsfService.view and genService.genEntities->size() > 1 or genService.hasDefaultValueFeatures())]
+[if (not service.view and service.entities->size() > 1 or service.hasDefaultValueFeatures())]
 	public function __construct($id = NULL)
 	{
-	[let genLocalAuthentication : GenLocalAuthenticationSystem = genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
-		[if (genService <> genLocalAuthentication.genAuthenticationService)]
-			[for (genFeature : GenServiceEntityElement | genService.defaultValueFeatures())]
-		$this->[genFeature.columnName()/] = [genFeature.genDefaultValue.generateCriteria()/];
+	[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+		[if (service <> localAuthentication.authenticationService)]
+			[for (feature : ServiceEntityElement | service.defaultValueFeatures())]
+		$this->[feature.columnName()/] = [feature.defaultValue.generateCriteria()/];
 			[/for]
 		[/if]
 	[/let]
 		parent::__construct($id);
-	[if (not genService.jsfService.view and genService.genEntities->size() > 1)]
-		[for (genEntity : GenEntity | genService.genEntities->subOrderedSet(2, genService.genEntities->size()))]
-		$this->_component_[genEntity.instanceName()/] = ORM::factory('[genEntity.modelName()/]');
+	[if (not service.view and service.entities->size() > 1)]
+		[for (entity : Entity | service.entities->subOrderedSet(2, service.entities->size()))]
+		$this->_component_[entity.instanceName()/] = ORM::factory('[entity.modelName()/]');
 		[/for]
 	[/if]
 	}
@@ -96,52 +95,52 @@ class [genService.modelClassName()/] extends Model_ExtendedORM
 [/if]
 	public function displayLabel()
 	{
-[if (genService.hasDisplayFeatures())]
-		return [for (genFeature : GenServiceEntityFeature | genService.displayFeatures())
+[if (service.hasDisplayFeatures())]
+		return [for (feature : ServiceEntityFeature | service.displayFeatures())
 			separator(' . \' \' . ')]
-[if (genFeature.oclIsKindOf(GenServiceEntityElement))]
-$this->[genFeature.columnName()/][else]
-$this->[genFeature.modelPropertyName()/]->displayLabel()[/if][/for];
+[if (feature.oclIsKindOf(ServiceEntityElement))]
+$this->[feature.columnName()/][else]
+$this->[feature.modelPropertyName()/]->displayLabel()[/if][/for];
 [else]
 		return $this;
 [/if]
 	}
 
-[for (genLabel : GenModelLabel | genService.genDisplayLabels)]
-	public function [genLabel.jsfLabel.name/]()
+[for (label : ModelLabel | service.displayLabels)]
+	public function [label.name/]()
 	{
-		return sprintf('[genLabel.jsfLabel.format/]', [for (genFeature : GenServiceFeature | genLabel.genFeatures) separator(', ')]
-$this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEntityAssociation))]
+		return sprintf('[label.format/]', [for (feature : ServiceFeature | label.features) separator(', ')]
+$this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssociation))]
 ->displayLabel()[/if][/for]);
 	}
 
 [/for]
-[if (not genService.jsfService.view and genService.hasAttributesOrSingletons())]
+[if (not service.view and service.hasAttributesOrSingletons())]
 	public function filters()
 	{
 		return array(
-[for (genFeature : GenServiceFeature | genService.attributesAndSingletons())]
-			'[genFeature.columnName()/]' => array(
-	[if (genFeature.hasForcedValue())]
-	[let genEntityFeature : GenServiceEntityFeature = genFeature.oclAsType(GenServiceEntityFeature)]
+[for (feature : ServiceFeature | service.attributesAndSingletons())]
+			'[feature.columnName()/]' => array(
+	[if (feature.hasForcedValue())]
+	[let genEntityFeature : ServiceEntityFeature = feature.oclAsType(ServiceEntityFeature)]
 				array(function($value) {
-					return [genEntityFeature.genForcedValue.generateCriteria()/];
+					return [genEntityFeature.forcedValue.generateCriteria()/];
 				})
 	[/let]
-	[elseif (genFeature.oclIsTypeOf(GenServiceEntityAssociation))]
+	[elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
 				array(function($value) {
 					return empty($value) ? NULL : $value;
 				})
 	[else]
 				array('trim'),
-		[if (genFeature.isCaseInsensitive())]
+		[if (feature.isCaseInsensitive())]
 				array('strtolower'),
 		[/if]
-		[if (genFeature.isEncrypted())]
+		[if (feature.isEncrypted())]
 				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
 		[/if]
-		[if (genFeature.oclIsTypeOf(GenServiceEntityElement))]
-			[if (genFeature.oclAsType(GenServiceEntityElement).genFeature.oclIsTypeOf(GenSingletonDate))]
+		[if (feature.oclIsTypeOf(ServiceEntityElement))]
+			[if (feature.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonDate))]
 				array('date'),
 				array(function($value) {
 					return empty($value) ? NULL : $value;
@@ -155,16 +154,16 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 	}
 
 [/if]
-[if (genService.hasValidatedFeatures())]
-[let genUserService : GenService
-	= if genAuthentication.oclIsUndefined() then
+[if (service.hasValidatedFeatures())]
+[let userService : Service
+	= if authentication.oclIsUndefined() then
 			null
-		else if not genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem) then
+		else if not authentication.oclIsTypeOf(LocalAuthenticationSystem) then
 			null
 		else
-			genAuthentication.oclAsType(GenLocalAuthenticationSystem).genUserService
+			authentication.oclAsType(LocalAuthenticationSystem).userService
 	endif endif]
-	[if (genService = genUserService)]
+	[if (service = userService)]
 	protected $_validation_required = TRUE;
 
 	public function validation_required($required = TRUE)
@@ -177,7 +176,7 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 	}
 
 	[/if]
-	[if (genService.genAccessedBy->select(u | u.oclIsTypeOf(GenActionUnit))->notEmpty())]
+	[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->notEmpty())]
 	protected $_control_fields = array();
 
 	public function control_fields($control_fields)
@@ -188,12 +187,12 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 	[/if]
 	public function rules()
 	{
-	[if (genService = genUserService)]
+	[if (service = userService)]
 		if ($this->validation_required(NULL)) 
 			return array(
-		[for (genFeature : GenServiceEntityFeature | genService.validatedFeatures())]
-				'[genFeature.columnName()/]' => array(
-			[if (genFeature.isRequired())]
+		[for (feature : ServiceEntityFeature | service.validatedFeatures())]
+				'[feature.columnName()/]' => array(
+			[if (feature.isRequired())]
 					array('not_empty'),
 			[/if]
 				),
@@ -202,11 +201,11 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 		else
 			return array();
 	[else]
-		[if (genService.genAccessedBy->select(u | u.oclIsTypeOf(GenActionUnit))->isEmpty())]
+		[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->isEmpty())]
 		return array(
-			[for (genFeature : GenServiceEntityFeature | genService.validatedFeatures())]
-			'[genFeature.columnName()/]' => array(
-				[if (genFeature.isRequired())]
+			[for (feature : ServiceEntityFeature | service.validatedFeatures())]
+			'[feature.columnName()/]' => array(
+				[if (feature.isRequired())]
 				array('not_empty'),
 				[/if]
 			),
@@ -214,9 +213,9 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 		);
 		[else]
 		$rules = array(
-			[for (genFeature : GenServiceEntityFeature | genService.validatedFeatures())]
-			'[genFeature.columnName()/]' => array(
-				[if (genFeature.isRequired())]
+			[for (feature : ServiceEntityFeature | service.validatedFeatures())]
+			'[feature.columnName()/]' => array(
+				[if (feature.isRequired())]
 				array('not_empty'),
 				[/if]
 			),
@@ -230,45 +229,45 @@ $this->[genFeature.modelPropertyName()/][if (genFeature.oclIsTypeOf(GenServiceEn
 	public function labels()
 	{
 		return array(
-	[for (genFeature : GenServiceEntityFeature | genService.validatedFeatures())]
-			'[genFeature.columnName()/]' => '[genFeature.displayLabel()/]',
+	[for (feature : ServiceEntityFeature | service.validatedFeatures())]
+			'[feature.columnName()/]' => '[feature.displayLabel()/]',
 	[/for]
 		);
 	}
 
 [/let]
 [/if]
-[if (genService.hasInputCollectionAssociations())]
-	[for (genAssociation : GenServiceEntityAssociation | genService.inputCollectionAssociations())]
-	protected $_[genAssociation.modelPropertyName()/]_changes = array();
+[if (service.hasInputCollectionAssociations())]
+	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
+	protected $_[association.modelPropertyName()/]_changes = array();
 	[/for]
 
 	public function values(array $values, array $expected = NULL)
 	{
 		parent::values($values, array_diff($expected, array([for
-(genFeature : GenServiceEntityFeature | genService.inputCollectionAssociations())
-separator (', ')]'[genFeature.columnName()/]'[/for])));
-[for (genAssociation : GenServiceEntityAssociation | genService.inputCollectionAssociations())]
+(feature : ServiceEntityFeature | service.inputCollectionAssociations())
+separator (', ')]'[feature.modelPropertyName()/]'[/for])));
+[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
 
-		if (in_array('[genAssociation.columnName()/]', $expected))
+		if (in_array('[association.modelPropertyName()/]', $expected))
 		{
 			$current = array();
-			foreach ($this->[genAssociation.modelPropertyName()/]_as_array() AS $value)
+			foreach ($this->[association.modelPropertyName()/]_as_array() AS $value)
 				$current['['/][']'/] = $value->id;
-			if (array_key_exists('[genAssociation.columnName()/]', $values))
-				foreach ($values['['/]'[genAssociation.columnName()/]'[']'/] AS $selected)
+			if (array_key_exists('[association.modelPropertyName()/]', $values))
+				foreach ($values['['/]'[association.modelPropertyName()/]'[']'/] AS $selected)
 				{
 					$key = array_search($selected, $current);
 					if ($key !== FALSE)
 						unset($current['['/]$key[']'/]);
 					else
-						$this->_[genAssociation.modelPropertyName()/]_changes['['/][']'/] = array(
+						$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
 							'op' => 'add',
 							'value' => $selected
 						);
 				}
 			foreach ($current AS $removed)
-				$this->_[genAssociation.modelPropertyName()/]_changes['['/][']'/] = array(
+				$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
 					'op' => 'remove',
 					'value' => $removed
 				);
@@ -277,93 +276,86 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	}
 
 [/if]
-[if (genService.hasInputCollectionAssociations())]
-[for (genAssociation : GenServiceEntityAssociation | genService.inputCollectionAssociations())]
-	public function [genAssociation.modelPropertyName()/]_as_array()
+[if (service.hasInputCollectionAssociations())]
+[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
+	public function [association.modelPropertyName()/]_as_array()
 	{
 		if (!$this->loaded())
 			return array();
 
 		$value_array = array();
-		foreach ($this->[genAssociation.modelPropertyName()/]->find_all() as $value)
+		foreach ($this->[association.modelPropertyName()/]->find_all() as $value)
 			$value_array['['/][']'/] = $value;
 		return $value_array;
 	}
 
 [/for]
 [/if]
-[for (genFeature : GenServiceEntityFeature | genService.resourceAttributes())]
-[let genResource : GenSingletonResource = genFeature.oclAsType(GenServiceEntityElement).genFeature.oclAsType(GenSingletonResource)]
-[let ormFeature : SingletonResource
-		= if genResource.oclIsTypeOf(SingletonFile) then
-				genResource.oclAsType(GenSingletonFile).ormFeature
-			else
-				genResource.oclAsType(GenSingletonImage).ormFeature
-			endif] 
-	private function _save_[genFeature.modelPropertyName()/]()
+[for (feature : ServiceEntityFeature | service.resourceAttributes())]
+[let resource : SingletonResource = feature.oclAsType(ServiceEntityElement).feature.oclAsType(SingletonResource)]
+	private function _save_[feature.modelPropertyName()/]()
 	{
 		$validation = Validation::factory($_FILES);
 		$validation
-			->rules('[genFeature.modelPropertyName()/]', array(
-[if (genFeature.isRequired())]
+			->rules('[feature.modelPropertyName()/]', array(
+[if (feature.isRequired())]
 				array('not_empty'),
 				array('Upload::not_empty'),
 [/if]
 				array('Upload::valid'),
-				array('Upload::size', array(':value', [ormFeature.maximumUploadSize/])),
-[if (ormFeature.validUploadExtensions->notEmpty())]
-				array('Upload::type', array(':value', array([for (extension : String | ormFeature.validUploadExtensions) separator(', ')]'[extension/]'[/for]))),
+				array('Upload::size', array(':value', [resource.maximumUploadSize/])),
+[if (resource.validUploadExtensions->notEmpty())]
+				array('Upload::type', array(':value', array([for (extension : String | resource.validUploadExtensions) separator(', ')]'[extension/]'[/for]))),
 [/if]
 			));
 		if ($validation->check() === FALSE)
 			throw new ORM_Validation_Exception($this->errors_filename(), $validation);
 
-		if ($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
+		if ($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
 			return;
 
-		if (!empty($this->[genResource.columnName()/])) 
-			$filename = str_replace(' ', '_', pathinfo($this->[genResource.columnName()/], PATHINFO_FILENAME));
+		if (!empty($this->[resource.columnName()/])) 
+			$filename = str_replace(' ', '_', pathinfo($this->[resource.columnName()/], PATHINFO_FILENAME));
 		else
-			$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
-		$extension = pathinfo($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
-[if (ormFeature.uploadsWithinWebsite)]
-		$filepath = Upload::save($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[ormFeature.relativeUploadDirectory/]');
-		$this->[genFeature.columnName()/] = '[ormFeature.relativeUploadDirectory/]/' . $filename . '.' . $extension;
+			$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
+		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
+[if (resource.uploadsWithinWebsite)]
+		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');
+		$this->[feature.columnName()/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [else]
-		$filepath = Upload::save($_FILES['['/]'[genFeature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
+		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
 [/if]
 	}
 
 [/let]
-[/let]
 [/for]
-[if (genService.hasInputCollectionAssociations() or genService.hasResourceAttributes())]
+[if (service.hasInputCollectionAssociations() or service.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
 	{
-[for (genFeature : GenServiceEntityFeature | genService.resourceAttributes())]
-		$this->_save_[genFeature.modelPropertyName()/]();
+[for (feature : ServiceEntityFeature | service.resourceAttributes())]
+		$this->_save_[feature.modelPropertyName()/]();
 [/for]
 		parent::save($validation);
-[if (genService.hasInputCollectionAssociations())]
-	[for (genAssociation : GenServiceEntityAssociation | genService.inputCollectionAssociations())]
+[if (service.hasInputCollectionAssociations())]
+	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
 
-		foreach ($this->_[genAssociation.modelPropertyName()/]_changes AS $change)
-		[if (genAssociation.isManyToManyAssociation())]
+		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
+		[if (association.isManyToManyAssociation())]
 			if ($change['['/]'op'[']'/] == 'add')
-				$this->add('[genAssociation.modelPropertyName()/]', $change['['/]'value'[']'/]);
+				$this->add('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
 			else
-				$this->remove('[genAssociation.modelPropertyName()/]', $change['['/]'value'[']'/]);
+				$this->remove('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
 		[else]
 		{
-			$opposite = ORM::factory('[genAssociation.modelName()/]', $change['['/]'value'[']'/]);
+			$opposite = ORM::factory('[association.modelName()/]', $change['['/]'value'[']'/]);
 			if (!$opposite->loaded())
 				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'value'[']'/]));
 			else
 			{
 				if ($change['['/]'op'[']'/] == 'add')
-					$opposite->[genAssociation.oppositeColumnName()/] = $this->id;
+					$opposite->[association.oppositeColumnName()/] = $this->id;
 				else
-					$opposite->[genAssociation.oppositeColumnName()/] = NULL;
+					$opposite->[association.oppositeColumnName()/] = NULL;
 				$opposite->save();
 			}
 		}
@@ -373,36 +365,36 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	}
 
 [/if]
-[for (genSelection : GenSelection | genService.genSelections)]
-	public function [genSelection.instanceName()/]([if (genSelection.jsfSelection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
+[for (selection : Selection | service.selections)]
+	public function [selection.instanceName()/]([if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 	{
-	[for (genAssociation : GenServiceAssociation | genSelection.genJoins)]
-		$this->join('')->on([if (genAssociation.isDependentEnd())]
-'[genAssociation.columnName()/]'[else]'id'[/if], '=', [if (genAssociation.isDependentEnd())]
+	[for (association : ServiceAssociation | selection.joins)]
+		$this->join('')->on([if (association.isDependentEnd())]
+'[association.columnName()/]'[else]'id'[/if], '=', [if (association.isDependentEnd())]
 'b'[else]'id'[/if]);
 	[/for]
-	[if (not genSelection.genFilter.oclIsUndefined())]
-		[genSelection.genFilter.generateCriteria()/]
+	[if (not selection.filter.oclIsUndefined())]
+		[selection.filter.generateCriteria()/]
 	[/if]
-	[for (genOrder : GenOrder | genSelection.genOrdering)]
-		$this->order_by('[genOrder.genPath.generateOrderPath()/]', '[if (genOrder.criteriaOrder.oclIsTypeOf(Asc))]asc[else]desc[/if]');
+	[for (order : Order | selection.ordering)]
+		$this->order_by('[order.path.generateOrderPath()/]', '[if (order.oclIsTypeOf(Asc))]asc[else]desc[/if]');
 	[/for]
-[if (genSelection.jsfSelection.limit <= 0)]
+[if (selection.limit <= 0)]
 		if ($paging)
 			return $this->limit($pageSize)->offset(($page - 1) * $pageSize)->find_all();
 		else
 			return $this->find_all();
 [else]
-		$this->limit([genSelection.jsfSelection.limit/]);
-		return $this->[if (genSelection.jsfSelection.limit = 1)]find()[else]find_all()[/if];
+		$this->limit([selection.limit/]);
+		return $this->[if (selection.limit = 1)]find()[else]find_all()[/if];
 [/if]
 	}
 
-	[if (genSelection.jsfSelection.limit <> 1)]
-	public function [genSelection.countName()/]()
+	[if (selection.limit <> 1)]
+	public function [selection.countName()/]()
 	{
-		[if (not genSelection.genFilter.oclIsUndefined())]
-		[genSelection.genFilter.generateCriteria()/]
+		[if (not selection.filter.oclIsUndefined())]
+		[selection.filter.generateCriteria()/]
 		[/if]
 		return $this->count_all();
 	}
@@ -414,9 +406,9 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 		return $this->limit($pageSize)->offset(($page - 1) * $pageSize)->find_all();
 	}
 
-[if (if genAuthentication.oclIsUndefined() then false else genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem) endif)]
-[let genLocalAuthentication : GenLocalAuthenticationSystem = genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
-	[if (genService = genLocalAuthentication.genAuthenticationService)]
+[if (if authentication.oclIsUndefined() then false else authentication.oclIsTypeOf(LocalAuthenticationSystem) endif)]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+	[if (service = localAuthentication.authenticationService)]
 	public function record_last_login()
 	{
 		$this->last_ip = Request::$client_ip;
@@ -425,20 +417,20 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	}
 
 	[/if]
-	[if (genService = genLocalAuthentication.genUserService)]
+	[if (service = localAuthentication.userService)]
 	public static function authenticated_user($authentication)
 	{
-		$user = ORM::factory('[genService.modelName()/]');
-		$user->where('[genLocalAuthentication.genUserAuthenticationKey.columnName()/]', '=', $authentication->email);
+		$user = ORM::factory('[service.modelName()/]');
+		$user->where('[localAuthentication.userAuthenticationKey.columnName()/]', '=', $authentication->email);
 		return $user->find();
 	}
 
 // this is something to do with registring
 	public function authentication_save()
 	{
-		[for (genFeature : GenServiceFeature | genService.genFeatures->select(f | f.isRequired()))]
-		if (!isset($this->[genFeature.modelPropertyName()/])) {
-			$this->[genFeature.modelPropertyName()/] = '';
+		[for (feature : ServiceFeature | service.features->select(f | f.isRequired()))]
+		if (!isset($this->[feature.modelPropertyName()/])) {
+			$this->[feature.modelPropertyName()/] = '';
 		}
 		[/for]
 
@@ -446,12 +438,12 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	}
 
 	[/if]
-	[if (if genLocalAuthentication.genLoginAttemptService.oclIsUndefined() then false else genService = genLocalAuthentication.genLoginAttemptService endif)]
+	[if (if localAuthentication.loginAttemptService.oclIsUndefined() then false else service = localAuthentication.loginAttemptService endif)]
 	public static function record_attempt($login_id)
 	{
 		try
 		{
-			$login_attempt = ORM::factory('[genService.modelName()/]');
+			$login_attempt = ORM::factory('[service.modelName()/]');
 			$login_attempt->login_id = $login_id;
 			$login_attempt->ip_address = Request::$client_ip;
 			$login_attempt->time = date('Y-m-d H:i:s');
@@ -467,7 +459,7 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 
 	public static function attempts_exceeded($login_id, $maximum_attempts, $expiry_period)
 	{
-		$login_attempt = ORM::factory('[genService.modelName()/]');
+		$login_attempt = ORM::factory('[service.modelName()/]');
 		$login_attempt->where_open();
 		$login_attempt->where('login_id', '=', $login_id);
 		$login_attempt->or_where('ip_address', '=', Request::$client_ip);
@@ -482,7 +474,7 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$login_attempt = ORM::factory('[genService.modelName()/]');
+			$login_attempt = ORM::factory('[service.modelName()/]');
 			$login_attempt->where_open();
 			$login_attempt->where('login_id', '=', $login_id);
 			$login_attempt->where('ip_address', '=', Request::$client_ip);
@@ -506,17 +498,17 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	}
 
 	[/if]
-	[if (if genLocalAuthentication.genAutoLoginService.oclIsUndefined() then false else genService = genLocalAuthentication.genAutoLoginService endif)]
+	[if (if localAuthentication.autoLoginService.oclIsUndefined() then false else service = localAuthentication.autoLoginService endif)]
 	public static function create_token($key, $authentication, $user_agent)
 	{
 		try
 		{
-			$autologin = ORM::factory('[genService.modelName()/]');
+			$autologin = ORM::factory('[service.modelName()/]');
 			$autologin->key = $key;
 			$autologin->user_agent = $user_agent;
 			$autologin->last_ip_address = Request::$client_ip;
 			$autologin->last_login = date('Y-m-d H:i:s');
-			$autologin->authentication_id = $authentication->[genLocalAuthentication.genAuthenticationService.keyName()/];
+			$autologin->authentication_id = $authentication->[localAuthentication.authenticationService.keyName()/];
 			$autologin->save();
 
 			return $autologin;
@@ -530,7 +522,7 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 				Log::instance()->add(Log::ERROR, 'Validation errors :errors', array(
 					':errors' => print_r($e->errors(''), TRUE)
 				));
-			return ORM::factory('[genService.modelName()/]');
+			return ORM::factory('[service.modelName()/]');
 		}
 	}
 
@@ -544,14 +536,14 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	
 			$login_id = $data['['/]'user_id'[']'/];
 			$key = $data['['/]'key'[']'/];
-			$autologin = ORM::factory('[genService.modelName()/]');
+			$autologin = ORM::factory('[service.modelName()/]');
 			$autologin->where('key', '=', $key)
 				->where('user_agent', '=', $user_agent)
 				// checking time means that reducing lifetime has immediate effect
 				->where(new Database_Expression('UNIX_TIMESTAMP(autologin.last_login)'), '>', time() - $lifetime);
-			$autologin->join('[genLocalAuthentication.genAuthenticationService.tableName()/]')
-				->on('authentication_id', '=', '[genLocalAuthentication.genAuthenticationService.tableName()/].[genLocalAuthentication.genAuthenticationService.keyName()/]')
-				->where('[genLocalAuthentication.genAuthenticationService.tableName()/].[genLocalAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/]', '=', $login_id);
+			$autologin->join('[localAuthentication.authenticationService.tableName()/]')
+				->on('authentication_id', '=', '[localAuthentication.authenticationService.tableName()/].[localAuthentication.authenticationService.keyName()/]')
+				->where('[localAuthentication.authenticationService.tableName()/].[localAuthentication.loginUnit.loginIdField.modelPropertyName()/]', '=', $login_id);
 			return $autologin->find();
 		}
 		catch (Kohana_Exception $e)
@@ -583,10 +575,10 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[genService.modelName()/]');
-			$autologin->join('[genLocalAuthentication.genAuthenticationService.tableName()/]')
-				->on('authentication_id', '=', '[genLocalAuthentication.genAuthenticationService.tableName()/].[genLocalAuthentication.genAuthenticationService.keyName()/]')
-				->where('[genLocalAuthentication.genAuthenticationService.tableName()/].[genLocalAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/]', '=', $login_id);
+			$autologin = ORM::factory('[service.modelName()/]');
+			$autologin->join('[localAuthentication.authenticationService.tableName()/]')
+				->on('authentication_id', '=', '[localAuthentication.authenticationService.tableName()/].[localAuthentication.authenticationService.keyName()/]')
+				->where('[localAuthentication.authenticationService.tableName()/].[localAuthentication.loginUnit.loginIdField.modelPropertyName()/]', '=', $login_id);
 			foreach ($autologin->find_all() AS $token)
 				$token->delete();
 		}
@@ -603,7 +595,7 @@ separator (', ')]'[genFeature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[genService.modelName()/]');
+			$autologin = ORM::factory('[service.modelName()/]');
 			$autologin->where(new Database_Expression('UNIX_TIMESTAMP(last_login)'), '<', time() - $lifetime);
 			foreach ($autologin->find_all() AS $token)
 				$token->delete();

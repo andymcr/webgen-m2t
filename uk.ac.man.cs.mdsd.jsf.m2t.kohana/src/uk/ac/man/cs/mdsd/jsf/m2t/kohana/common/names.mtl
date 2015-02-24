@@ -22,12 +22,20 @@
 /]
 
 
+[query public controllerName(page : Page) : String
+	= page.name
+/]
+
 [query public controllerName(genPage : GenPage) : String
 	= genPage.name
 /]
 
 [query public controllerClassName(genPage : GenPage) : String
 	= 'Controller_'.concat(genPage.controllerName())
+/]
+
+[query public instanceName(page : Page) : String
+	= page.name.toLowerFirst()
 /]
 
 [query public instanceName(genPage : GenPage) : String
@@ -53,6 +61,10 @@
 
 [query public actionName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName()
+/]
+
+[query public controllerName(unit : DynamicUnit) : String
+	= unit.pageDisplayedOn().controllerName()
 /]
 
 [query public controllerName(genUnit : GenDynamicUnit) : String
@@ -90,6 +102,10 @@
 		.concat(genUnit.actionName()).concat('/')
 /]
 
+[query public parameterName(unit : ContentUnit) : String
+	= unit.instanceName()
+/]
+
 [query public parameterName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName()
 /]
@@ -100,6 +116,16 @@
 
 [query public templateInstanceName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName().concat('_template')
+/]
+
+[query public uniqueName(unit : ContentUnit) : String
+	= let key : String
+			= if unit.displayedOn.oclIsTypeOf(Page) then
+				unit.displayedOn.oclAsType(Page).instanceName()
+			else
+				unit.displayedOn.oclAsType(UnitAssociation).displayedOn.uniqueName()
+			endif
+		in key.concat('_').concat(unit.instanceName())
 /]
 
 [query public uniqueName(genUnit : GenContentUnit) : String

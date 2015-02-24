@@ -2,8 +2,9 @@
 [module fileInformation(
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
@@ -159,16 +160,16 @@
 		.concat(enumerationType.executableExtension())
 /]
 
-[query public modelFilename(genService : GenService) : String
-	= genService.modelsDirectory().concat('/')
-		.concat(genService.modelName())
-		.concat(genService.executableExtension())
+[query public modelFilename(service : Service) : String
+	= service.modelsDirectory().concat('/')
+		.concat(service.modelName())
+		.concat(service.executableExtension())
 /]
 
-[query public modelLanguageFilename(genService : GenService) : String
-	= genService.languageEnglishDirectory().concat('/')
-		.concat('model_').concat(genService.modelName()).concat('_lang')
-		.concat(genService.executableExtension())
+[query public modelLanguageFilename(service : Service) : String
+	= service.languageEnglishDirectory().concat('/')
+		.concat('model_').concat(service.modelName()).concat('_lang')
+		.concat(service.executableExtension())
 /]
 
 [query public pageViewsDirectory(genPage : GenPage) : String

@@ -397,7 +397,7 @@ $[instanceVariable/]->[genField.genDisplayedOn.genService.keyName()/]
 find_all()[else][let embeddedIndexUnit : GenIndexUnit = embeddedUnit.oclAsType(GenIndexUnit)]
 [if (embeddedIndexUnit.genSelection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.genSelection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.genSelection.jsfSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
 [genFeature.genUnits.generateViewContent(genField.genDisplayedOn.uniqueName())/]
 [/let]

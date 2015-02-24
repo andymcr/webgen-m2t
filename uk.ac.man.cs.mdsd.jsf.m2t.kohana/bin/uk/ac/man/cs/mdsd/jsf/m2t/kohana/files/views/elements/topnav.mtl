@@ -1,47 +1,46 @@
 [comment encoding = UTF-8 /]
 [module topnav(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateTopNav(genModel : GenJsfModel)]
-[file(genModel.viewElementsDirectory().concat('/topbar').concat(genModel.executableExtension()), false)]
-<nav id="[genModel.jsfModel.topNavigationId/]">
-[if (genModel.topMenuItemsNonAuthenticated()->notEmpty() or genModel.isAuthenticated())]
+[template public generateTopNav(jsfModel : JsfModel)]
+[file(jsfModel.viewElementsDirectory().concat('/topbar').concat(jsfModel.executableExtension()), false)]
+<nav id="[jsfModel.topNavigationId/]">
+[if (jsfModel.topMenuItemsNonAuthenticated()->notEmpty() or jsfModel.isAuthenticated())]
  <ul>
 [/if]
-[for (genPage : GenPage | genModel.topMenuItemsNonAuthenticated())]
+[for (page : Page | jsfModel.topMenuItemsNonAuthenticated())]
   <li><?php
 	echo HTML::anchor(
-		Route::get('[genPage.controllerName()/]')->uri(),
-		HTML::chars(__('[genPage.jsfPage.navigationLabel/]'))); ?></li>
+		Route::get('[page.controllerName()/]')->uri(),
+		HTML::chars(__('[page.navigationLabel/]'))); ?></li>
 [/for]
-[if (not genModel.genAuthentication.oclIsUndefined())]
-[if (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
-[let genAuthentication : GenLocalAuthenticationSystem = genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
-	[if (genAuthentication.jsfAuthentication.allowSelfRegistration)]
+[if (not jsfModel.authentication.oclIsUndefined())]
+[if (jsfModel.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[let authentication : LocalAuthenticationSystem = jsfModel.authentication.oclAsType(LocalAuthenticationSystem)]
+	[if (authentication.allowSelfRegistration)]
   <li id="authentication"><?php
 	echo HTML::anchor(
-		Route::get('[genAuthentication.genRegistrationUnit.controllerName()/]')->uri(),
+		Route::get('[authentication.registrationUnit.controllerName()/]')->uri(),
 		HTML::chars(__('Register'))); ?></li>
 	[/if]
 [/let]
 [/if]
 [/if]
-[if (genModel.isAuthenticated())]
+[if (jsfModel.isAuthenticated())]
   <li id="authentication"><?php
 	echo HTML::anchor(
-		Route::get('[if (genModel.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
-TBC[elseif (genModel.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
-[genModel.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.controllerName()/][else]
+		Route::get('[if (jsfModel.authentication.oclIsTypeOf(CasAuthentication))]
+TBC[elseif (jsfModel.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[jsfModel.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.controllerName()/][else]
 TBC[/if]')->uri(),
-		HTML::chars(__('[genModel.jsfModel.authentication.loginLabel/]'))); ?></li>
+		HTML::chars(__('[jsfModel.authentication.loginLabel/]'))); ?></li>
 [/if]
-[if (genModel.topMenuItemsNonAuthenticated()->notEmpty() or genModel.isAuthenticated())]
+[if (jsfModel.topMenuItemsNonAuthenticated()->notEmpty() or jsfModel.isAuthenticated())]
  </ul>
 [/if]
 </nav>

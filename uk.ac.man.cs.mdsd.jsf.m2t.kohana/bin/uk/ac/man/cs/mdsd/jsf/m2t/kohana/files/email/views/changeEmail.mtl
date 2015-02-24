@@ -1,15 +1,15 @@
 [comment encoding = UTF-8 /]
 [module changeEmail(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateEmailChangeEmail(genAuthentication : GenLocalAuthenticationSystem)]
+[template public generateEmailChangeEmail(authentication : LocalAuthenticationSystem)]
 
-[file(genAuthentication.emailViewsDirectory().concat('/change_email_text').concat(genAuthentication.executableExtension()), false)]
+[file(authentication.emailViewsDirectory().concat('/change_email_text').concat(authentication.executableExtension()), false)]
 Hi<?php if (strlen($username) > 0) { ?> <?php echo $username; ?><?php } ?>,
 
 You have changed your email address for <?php echo $site_name; ?>.
@@ -29,7 +29,7 @@ The <?php echo $site_name; ?> Team
 [/file]
 
 
-[file(genAuthentication.emailViewsDirectory().concat('/change_email_html').concat(genAuthentication.executableExtension()), false)]
+[file(authentication.emailViewsDirectory().concat('/change_email_html').concat(authentication.executableExtension()), false)]
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head><title>Your new email address on <?php echo $site_name; ?></title></head>

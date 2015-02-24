@@ -1,125 +1,197 @@
 [comment encoding = UTF-8 /]
 [module criteria(
+	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
-	'http://www.cs.man.ac.uk/mdsd/2013/Criteria')]
+	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',)]
 [import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
-
 [template public generateCriteria(criteria : GenExpression)
 	? (criteria.oclIsTypeOf(GenNullLiteral)) post(trim())]
-NULL
+[criteria.oclAsType(GenNullLiteral).criteriaLiteral.generateCriteria()/]
 [/template]
 
 [template public generateCriteria(criteria : GenExpression)
 	? (criteria.oclIsTypeOf(GenIntegerLiteral)) post(trim())]
-[let literal : GenIntegerLiteral = criteria.oclAsType(GenIntegerLiteral)]
-[literal.criteriaLiteral.value/]
-[/let]
+[criteria.oclAsType(GenIntegerLiteral).criteriaLiteral.generateCriteria()/]
 [/template]
 
 [template public generateCriteria(criteria : GenExpression)
 	? (criteria.oclIsTypeOf(GenStringLiteral)) post(trim())]
-[let literal : GenStringLiteral = criteria.oclAsType(GenStringLiteral)]
-'[literal.criteriaLiteral.value/]'
-[/let]
+[criteria.oclAsType(GenStringLiteral).criteriaLiteral.generateCriteria()/]
 [/template]
 
 [template public generateCriteria(criteria : GenExpression)
 	? (criteria.oclIsTypeOf(GenCurrentTime)) post(trim())]
-Time()
+[criteria.oclAsType(GenCurrentTime).criteriaLiteral.generateCriteria()/]
 [/template]
 
 
 [template public generateCriteria(criteria : GenExpression)
 	? (criteria.oclIsTypeOf(GenFunction)) post(trim())]
-[let function : GenFunction = criteria.oclAsType(GenFunction)]
-[function.criteriaFunction.name/]('Y-m-d H:i:s')
-[/let]
+[criteria.oclAsType(GenFunction).criteriaFunction.generateCriteria()/]
 [/template]
-
 
 [template public generateCriteria(criteria : GenExpression)
 	? (criteria.oclIsTypeOf(GenModelReference)) post(trim())]
-[let path : GenModelReference = criteria.oclAsType(GenModelReference)]
-$this->[path.genUnit.instanceName()/]->[path.genUnit.genService.keyName()/]
-[/let]
+[criteria.oclAsType(GenModelReference).criteriaPath.generateCriteria()/]
 [/template]
 
 [template public generateCriteria(criteria : GenExpression)
 	? (criteria.oclIsTypeOf(GenFeatureReference)) post(trim())]
-[let genPath : GenFeatureReference = criteria.oclAsType(GenFeatureReference)]
+[criteria.oclAsType(GenFeatureReference).criteriaPath.generateCriteria()/]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenCurrentUserReference)) post(trim())]
+[criteria.oclAsType(GenCurrentUserReference).criteriaPath.generateCriteria()/]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateBooleanOperator)) post(trim())]
+[criteria.oclAsType(GenPredicateBooleanOperator).criteriaPredicate.generateCriteria()/]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateEqualityOperator)) post(trim())]
+[criteria.oclAsType(GenPredicateEqualityOperator).criteriaPredicate.generateCriteria()/]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateComparisonOperator)) post(trim())]
+[criteria.oclAsType(GenPredicateEqualityOperator).criteriaPredicate.generateCriteria()/]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateIsOperator)) post(trim())]
+[criteria.oclAsType(GenPredicateIsOperator).criteriaPredicate.generateCriteria()/]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateLikeOperator)) post(trim())]
+[criteria.oclAsType(GenPredicateLikeOperator).criteriaPredicate.generateCriteria()/]
+[/template]
+
+[template public generateCriteria(criteria : GenExpression)
+	? (criteria.oclIsTypeOf(GenPredicateIsEmpty)) post(trim())]
+[criteria.oclAsType(GenPredicateIsEmpty).criteriaPredicate.generateCriteria()/]
+[/template]
+
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(NullLiteral)) post(trim())]
+NULL
+[/template]
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(IntegerLiteral)) post(trim())]
+[let literal : IntegerLiteral = criteria.oclAsType(IntegerLiteral)]
+[literal.value/]
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(StringLiteral)) post(trim())]
+[let literal : StringLiteral = criteria.oclAsType(StringLiteral)]
+'[literal.value/]'
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
+Time()
+[/template]
+
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(Function)) post(trim())]
+[let function : Function = criteria.oclAsType(Function)]
+[function.name/]('Y-m-d H:i:s')
+[/let]
+[/template]
+
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
+[let path : ModelReference = criteria.oclAsType(ModelReference)]
+$this->[path.unit.instanceName()/]->[path.unit.service.keyName()/]
+[/let]
+[/template]
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
+[let path : FeatureReference = criteria.oclAsType(FeatureReference)]
 [let isDate : Boolean
-	= if not genPath.genField.oclIsTypeOf(GenServiceEntityElement) then
+	= if not path.field.oclIsTypeOf(ServiceEntityElement) then
 			false
 		else
-			genPath.genField.oclAsType(GenServiceEntityElement).genFeature.oclIsTypeOf(GenSingletonDate)
+			path.field.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonDate)
 		endif
 ]
 [if (isDate)]
-new Database_Expression('UNIX_TIMESTAMP([genPath.genField.columnName()/])')
+new Database_Expression('UNIX_TIMESTAMP([path.field.columnName()/])')
 [else]
-	[if (genPath.genField.oclIsKindOf(GenIncludedAssociation))]
-'[genPath.genField.columnName()/]'
+	[if (path.field.oclIsKindOf(IncludedAssociation))]
+'[path.field.columnName()/]'
 	[else]
-'[genPath.genField.modelPropertyName()/]'
+'[path.field.modelPropertyName()/]'
 	[/if]
 [/if]
 [/let]
 [/let]
 [/template]
 
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenCurrentUserReference)) post(trim())]
-[let path : GenCurrentUserReference = criteria.oclAsType(GenCurrentUserReference)]
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
+[let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
 Auth::instance()->get_actual_user()->id
 [/let]
 [/template]
 
 
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateBooleanOperator)) post(trim())]
-[let predicate : GenPredicateBooleanOperator = criteria.oclAsType(GenPredicateBooleanOperator)]
-[for (expression : GenExpression | predicate.genExpressions)]
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
+[let predicate : PredicateBooleanOperator = criteria.oclAsType(PredicateBooleanOperator)]
+[for (expression : Expression | predicate.expressions)]
 [expression.generateCriteria()/]
 [/for]
 [/let]
 [/template]
 
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateEqualityOperator)) post(trim())]
-[let predicate : GenPredicateEqualityOperator = criteria.oclAsType(GenPredicateEqualityOperator)]
-$this->where([predicate.genLeft.generateCriteria()/], [if (predicate.criteriaPredicate.negated)]'!='[else]'='[/if], [predicate.genRight.generateCriteria()/]);
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
+[let predicate : PredicateEqualityOperator = criteria.oclAsType(PredicateEqualityOperator)]
+$this->where([predicate.left.generateCriteria()/], [if (predicate.negated)]'!='[else]'='[/if], [predicate.right.generateCriteria()/]);
 [/let]
 [/template]
 
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateComparisonOperator)) post(trim())]
-[let predicate : GenPredicateComparisonOperator = criteria.oclAsType(GenPredicateComparisonOperator)]
-$this->where([predicate.genLeft.generateCriteria()/], '[predicate.criteriaPredicate.operator.generateOperator()/]', [predicate.genRight.generateCriteria()/]);
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
+[let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
+$this->where([predicate.left.generateCriteria()/], '[predicate.operator.generateOperator()/]', [predicate.right.generateCriteria()/]);
 [/let]
 [/template]
 
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateIsOperator)) post(trim())]
-[let predicate : GenPredicateIsOperator = criteria.oclAsType(GenPredicateIsOperator)]
-$this->where([predicate.genLeft.generateCriteria()/], 'IS[if (predicate.criteriaPredicate.negated)] NOT[/if]', [predicate.genRight.generateCriteria()/]);
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(PredicateIsOperator)) post(trim())]
+[let predicate : PredicateIsOperator = criteria.oclAsType(PredicateIsOperator)]
+$this->where([predicate.left.generateCriteria()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.generateCriteria()/]);
 [/let]
 [/template]
 
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateLikeOperator)) post(trim())]
-[let predicate : GenPredicateLikeOperator = criteria.oclAsType(GenPredicateLikeOperator)]
-$this->where([predicate.genLeft.generateCriteria()/], 'LIKE', [predicate.genRight.generateCriteria()/]);
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
+[let predicate : PredicateLikeOperator = criteria.oclAsType(PredicateLikeOperator)]
+$this->where([predicate.left.generateCriteria()/], 'LIKE', [predicate.right.generateCriteria()/]);
 [/let]
 [/template]
 
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateIsEmpty)) post(trim())]
-[let predicate : GenPredicateIsEmpty = criteria.oclAsType(GenPredicateIsEmpty)]
-$this->where([predicate.genFeature.generateCriteria()/], [if (predicate.criteriaPredicate.negated)]'>'[else]'='[/if], '0');
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
+[let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
+$this->where([predicate.feature.generateCriteria()/], [if (predicate.negated)]'>'[else]'='[/if], '0');
 [/let]
 [/template]
 
@@ -144,17 +216,17 @@ $this->where([predicate.genFeature.generateCriteria()/], [if (predicate.criteria
 /]
 
 
-[template public generateOrderPath(genPath : GenPath)
-	? (genPath.oclIsTypeOf(GenModelReference)) post(trim())]
-[let genModelReference : GenModelReference = genPath.oclAsType(GenModelReference)]
-$this->[genModelReference.genUnit.instanceName()/]
+[template public generateOrderPath(path : Path)
+	? (path.oclIsTypeOf(ModelReference)) post(trim())]
+[let modelReference : ModelReference = path.oclAsType(ModelReference)]
+$this->[modelReference.unit.instanceName()/]
 [/let]
 [/template]
 
-[template public generateOrderPath(genPath : GenExpression)
-	? (genPath.oclIsTypeOf(GenFeatureReference)) post(trim())]
-[let genFeatureReference : GenFeatureReference = genPath.oclAsType(GenFeatureReference)]
-[genFeatureReference.genField.columnName()/]
+[template public generateOrderPath(path : Expression)
+	? (path.oclIsTypeOf(FeatureReference)) post(trim())]
+[let featureReference : FeatureReference = path.oclAsType(FeatureReference)]
+[featureReference.field.columnName()/]
 [/let]
 [/template]
 

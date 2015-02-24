@@ -68,7 +68,7 @@ class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName(
 			$this->template->sidebar = View::factory('menu/[genPage.genSideMenu.instanceName()/]');
 	[if (genPage.genSideMenu.oclIsTypeOf(GenDynamicMenu))]
 	[let genDynamicMenu : GenDynamicMenu = genPage.genSideMenu.oclAsType(GenDynamicMenu)]
-			$this->template->sidebar->[genPage.genSideMenu.instanceName()/] = ORM::factory('[genDynamicMenu.genService.modelName()/]')->[genDynamicMenu.genSelection.instanceName()/]();
+			$this->template->sidebar->[genPage.genSideMenu.instanceName()/] = ORM::factory('[genDynamicMenu.genService.jsfService.modelName()/]')->[genDynamicMenu.genSelection.jsfSelection.instanceName()/]();
 	[/let]
 	[/if]
 [/if]
