@@ -1,17 +1,15 @@
 [comment encoding = UTF-8 /]
 [module mysql_schema(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateMySqlSchema(genModel : GenJsfModel)]
-[file (genModel.configDirectory().concat('/').concat('mySqlSchema.ddl'), false)]
+[template public generateMySqlSchema(model : JsfModel)]
+[file (model.configDirectory().concat('/').concat('mySqlSchema.ddl'), false)]
 CREATE TABLE IF NOT EXISTS  `ci_sessions` (
 	`session_id` varchar(40) NOT NULL DEFAULT '0',
 	`ip_address` varchar(45) NOT NULL DEFAULT '0',
@@ -22,11 +20,11 @@ CREATE TABLE IF NOT EXISTS  `ci_sessions` (
 	KEY `last_activity_idx` (`last_activity`)
 );
 
-[for (genEntity : GenEntity | genModel.genEntities)]
-CREATE TABLE IF NOT EXISTS `[genEntity.tableName/]` (
-	`[genEntity.keyName/]` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY[if (genEntity.genFeatures->notEmpty())],[/if]
-	[for (genFeature : GenFeature | genEntity.tableColumns())]
-	[genFeature.generateColumn()/],
+[for (entity : Entity | model.persistence.entities)]
+CREATE TABLE IF NOT EXISTS `[entity.tableName/]` (
+	`[entity.autoKeyName/]` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY[if (entity.features->notEmpty())],[/if]
+	[for (feature : Feature | entity.tableColumns())]
+	[feature.generateColumn()/],
 	[/for]
 	`created` datetime not null,
 	`updated` datetime
@@ -34,98 +32,85 @@ CREATE TABLE IF NOT EXISTS `[genEntity.tableName/]` (
 
 [/for]
 
-[for (genAssociation : GenCollectionAssociation | genModel.modelManyToManyAssociations()->select(a | a.ormFeature.sourceEnd))]
-CREATE TABLE IF NOT EXISTS `[genAssociation.pivotTableName/]` (
-	`[genAssociation.pivotColumnName/]` INT(11) NOT NULL,
-	`[genAssociation.genOpposite.oclAsType(GenCollectionAssociation).pivotColumnName/]` INT(11) NOT NULL
+[for (association : CollectionAssociation | model.persistence.modelManyToManyAssociations()->select(a | a.sourceEnd))]
+CREATE TABLE IF NOT EXISTS `[association.pivotTableName/]` (
+	`[association.columnName/]` INT(11) NOT NULL,
+	`[association.opposite.oclAsType(CollectionAssociation).columnName/]` INT(11) NOT NULL
 );
 
 [/for]
-[for (genService : GenService | genModel.genServices->select(s | s.jsfService.view))]
-CREATE OR REPLACE VIEW [genService.jsfService.modelName/] AS
+[for (service : Service | model.services->select(s | s.view))]
+CREATE OR REPLACE VIEW [service.modelName/] AS
 SELECT
-	[for (genFeature : GenServiceFeature | genService.genFeatures) separator(',\n\t')][genFeature.generateViewColumn()/][/for]
-FROM [for (genEntity : GenEntity | genService.genEntities) separator(', ')][genEntity.tableName/][/for];
+	[for (feature : ServiceFeature | service.features) separator(',\n\t')][feature.generateViewColumn()/][/for]
+FROM [for (entity : Entity | service.entities) separator(', ')][entity.tableName/][/for];
+
 [/for]
 [/file]
 [/template]
 
 
-[template protected generateColumn(genFeature : GenFeature)
-	? (genFeature.isDataTypeSingletonElement()) post(trim())]
-[let genSingletonFeature : GenSingletonElement = genFeature.oclAsType(GenSingletonElement)]
-`[genSingletonFeature.columnName/]` [if (genSingletonFeature.genDataType.persistenceType = 'string')]
-varchar(255)[elseif (genSingletonFeature.genDataType.persistenceType = 'textblock')]
-TEXT[elseif (genSingletonFeature.genDataType.persistenceType = 'binary')]
-blob[elseif (genSingletonFeature.genDataType.persistenceType = 'boolean')]
+[template protected generateColumn(feature : Feature)
+	? (feature.isDataTypeSingletonElement()) post(trim())]
+[let element : SingletonElement = feature.oclAsType(SingletonElement)]
+`[element.columnName/]` [if (element.persistentType = 'String')]
+varchar(255)[elseif (element.persistentType = 'TextBlock')]
+TEXT[elseif (element.persistentType = 'Binary')]
+blob[elseif (element.persistentType = 'Integer')]
+integer[elseif (element.persistentType = 'Boolean')]
 tinyint(1)[else]
-[genSingletonFeature.genDataType.persistenceType/][/if][if
-	(genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
-	(not genSingletonFeature.ormFeature.defaultValue.oclIsUndefined())] DEFAULT [genSingletonFeature.genDefaultValue.generateCriteria()/][/if]
+[element.persistentType/][/if][if
+	(element.required)] NOT NULL[/if][if
+	(not element.defaultValue.oclIsUndefined())] DEFAULT [element.defaultValue.generateCriteria()/][/if]
 [/let]
 [/template]
 
-[template protected generateColumn(genFeature : GenFeature)
-	? (genFeature.isEnumerationTypeSingletonElement()) post(trim())]
-[let genSingletonFeature : GenSingletonElement = genFeature.oclAsType(GenSingletonElement)]
-`[genSingletonFeature.columnName/]` int(8) [if 
-	(genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
-	(not genSingletonFeature.ormFeature.defaultValue.oclIsUndefined())] DEFAULT [genSingletonFeature.genDefaultValue.generateCriteria()/][/if]
+[template protected generateColumn(feature : Feature)
+	? (feature.isEnumerationTypeSingletonElement()) post(trim())]
+[let element : SingletonElement = feature.oclAsType(SingletonElement)]
+`[element.columnName/]` int(8) [if 
+	(element.required)] NOT NULL[/if][if
+	(not element.defaultValue.oclIsUndefined())] DEFAULT [element.defaultValue.generateCriteria()/][/if]
 [/let]
 [/template]
 
-[template protected generateColumn(genFeature : GenFeature)
-	? (genFeature.oclIsTypeOf(GenSingletonDate)) post(trim())]
-[let genSingletonFeature : GenSingletonDate = genFeature.oclAsType(GenSingletonDate)]
-`[genSingletonFeature.columnName/]` [if (genSingletonFeature.ormFeature.details = DateDetails::DateOnly)]
-DATE[elseif (genSingletonFeature.ormFeature.details = DateDetails::TimeOnly)]
+[template protected generateColumn(feature : Feature)
+	? (feature.oclIsTypeOf(SingletonDate)) post(trim())]
+[let element : SingletonDate = feature.oclAsType(SingletonDate)]
+`[element.columnName/]` [if (element.details = DateDetails::DateOnly)]
+DATE[elseif (element.details = DateDetails::TimeOnly)]
 TIME[else]
-DATETIME[/if][if (genSingletonFeature.ormFeature.required)] NOT NULL[/if][if
-	(not genSingletonFeature.ormFeature.defaultValue.oclIsUndefined())] DEFAULT [genSingletonFeature.genDefaultValue.generateCriteria()/][/if]
+DATETIME[/if][if (element.required)] NOT NULL[/if][if
+	(not element.defaultValue.oclIsUndefined())] DEFAULT [element.defaultValue.generateCriteria()/][/if]
 [/let]
 [/template]
 
-[template protected generateColumn(genFeature : GenFeature)
-	? (genFeature.oclIsKindOf(GenSingletonResource)) post(trim())]
-[let genSingletonFeature : GenSingletonResource = genFeature.oclAsType(GenSingletonResource)]
-[let ormFeature : SingletonResource
-		= if genSingletonFeature.oclIsTypeOf(SingletonFile) then
-				genSingletonFeature.oclAsType(GenSingletonFile).ormFeature
-			else
-				genSingletonFeature.oclAsType(GenSingletonImage).ormFeature
-			endif] 
-`[genSingletonFeature.columnName/]` varchar(255)[if (ormFeature.required)] NOT NULL[/if][if
-	(not ormFeature.defaultValue.oclIsUndefined())] DEFAULT [genSingletonFeature.genDefaultValue.generateCriteria()/][/if]
-[/let]
+[template protected generateColumn(feature : Feature)
+	? (feature.oclIsKindOf(SingletonResource)) post(trim())]
+[let element : SingletonResource = feature.oclAsType(SingletonResource)]
+`[element.columnName/]` varchar(255)[if (element.required)] NOT NULL[/if][if
+	(not element.defaultValue.oclIsUndefined())] DEFAULT [element.defaultValue.generateCriteria()/][/if]
 [/let]
 [/template]
 
-[template protected generateColumn(genFeature : GenFeature)
-	? (genFeature.oclIsTypeOf(GenSingletonAssociation)) post(trim())]
-[let genSingletonFeature : GenSingletonAssociation = genFeature.oclAsType(GenSingletonAssociation)]
-`[genSingletonFeature.columnName/]` INT(11)
+[template protected generateColumn(feature : Feature)
+	? (feature.oclIsTypeOf(SingletonAssociation)) post(trim())]
+[let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)]
+`[association.columnName/]` INT(11)
 [/let]
 [/template]
 
 
-[template protected generateViewColumn(genFeature : GenServiceFeature)
-	? (genFeature.oclIsTypeOf(GenServiceEntityElement)) post(trim())]
-[let genElement : GenServiceEntityElement = genFeature.oclAsType(GenServiceEntityElement)]
-[if (genElement.isSingleton())]
-`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName/]` AS `[genElement.modelPropertyName()/]`
-[else]
-`[genElement.genFeature.genParentEntity.tableName/]`.`[genElement.columnName()/]` AS `[genElement.modelPropertyName()/]`
-[/if]
+[template protected generateViewColumn(feature : ServiceFeature)
+	? (feature.oclIsTypeOf(ServiceEntityElement)) post(trim())]
+[let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)]
+`[element.feature.parentEntity.tableName/]`.`[element.columnName()/]` AS `[element.modelPropertyName()/]`
 [/let]
 [/template]
 
-[template protected generateViewColumn(genFeature : GenServiceFeature)
-	? (genFeature.oclIsTypeOf(GenServiceEntityAssociation)) post(trim())]
-[let genAssociation : GenServiceEntityAssociation = genFeature.oclAsType(GenServiceEntityAssociation)]
-[if (genAssociation.isSingleton())]
-`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` AS `[genAssociation.modelPropertyName()/]`
-[else]
-`[genAssociation.genFeature.genParentEntity.tableName/]`.`[genAssociation.columnName()/]` AS `[genAssociation.modelPropertyName()/]`
-[/if]
+[template protected generateViewColumn(feature : ServiceFeature)
+	? (feature.oclIsTypeOf(ServiceEntityAssociation)) post(trim())]
+[let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)]
+`[association.feature.parentEntity.tableName/]`.`[association.columnName()/]` AS `[association.modelPropertyName()/]`
 [/let]
 [/template]

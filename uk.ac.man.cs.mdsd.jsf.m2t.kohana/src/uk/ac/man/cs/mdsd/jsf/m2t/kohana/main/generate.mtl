@@ -41,6 +41,7 @@
 
 [template public generateElement(genModel : GenJsfModel)]
 [comment @main/]
+[let jsfModel : JsfModel = genModel.jsfModel]
 [genModel.generateHtaccess()/]
 [genModel.generateBootstrap()/]
 
@@ -50,19 +51,13 @@ genModel.generateCreateSitemap()/]
 /if]
 
 [genModel.generateDatabase()/]
-[genModel.generateMySqlSchema()/]
+[jsfModel.generateMySqlSchema()/]
 [genModel.generatePagination()/]
 
 [genModel.generateExtendedOrm()/]
 [genModel.ormModel.dataTypes.generateModel()/]
-[if (genModel.ormModel.databaseTechnology = DatabaseTechnologies::MySql)]
-[genModel.genServices.jsfService.generateModel(
-	let genAuthentication : GenAuthentication = genModel.genAuthentication
-	in if genAuthentication.oclIsTypeOf(GenCasAuthentication) then
-			genAuthentication.oclAsType(GenCasAuthentication).jsfAuthentication
-		else
-			genAuthentication.oclAsType(GenLocalAuthenticationSystem).jsfAuthentication
-		endif)/]
+[if (jsfModel.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
+[jsfModel.services.generateModel(jsfModel.authentication)/]
 [/if]
 
 [genModel.generateBaseController()/]
@@ -97,4 +92,5 @@ genAuthentication.generateEmailWelcome()/]
 [/let]
 [/if]
 [/if]
+[/let]
 [/template]
