@@ -230,7 +230,8 @@ public class WebsiteDiagramEditorUtil {
 
 		DataType email = WebsiteFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(email);
-		bool.setName("EMail");
+		email.setName("EMail");
+		email.setPersistentType("String");
 
 		return model;
 	}
