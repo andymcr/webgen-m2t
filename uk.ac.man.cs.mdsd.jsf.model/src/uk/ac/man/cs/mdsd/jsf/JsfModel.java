@@ -26,6 +26,7 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getMenus <em>Menus</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteName <em>Site Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSiteTitle <em>Site Title</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isDevelopmentVersion <em>Development Version</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getBaseURL <em>Base URL</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isRewriteURLs <em>Rewrite UR Ls</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getWebmasterEmail <em>Webmaster Email</em>}</li>
@@ -174,6 +175,32 @@ public interface JsfModel extends EObject {
 	 * @generated
 	 */
 	void setSiteTitle(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Development Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Development Version</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Development Version</em>' attribute.
+	 * @see #setDevelopmentVersion(boolean)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_DevelopmentVersion()
+	 * @model
+	 * @generated
+	 */
+	boolean isDevelopmentVersion();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isDevelopmentVersion <em>Development Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Development Version</em>' attribute.
+	 * @see #isDevelopmentVersion()
+	 * @generated
+	 */
+	void setDevelopmentVersion(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Base URL</b></em>' attribute.

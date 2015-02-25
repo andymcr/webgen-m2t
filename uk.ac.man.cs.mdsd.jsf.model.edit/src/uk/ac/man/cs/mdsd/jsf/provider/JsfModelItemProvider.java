@@ -70,6 +70,7 @@ public class JsfModelItemProvider
 			addPersistencePropertyDescriptor(object);
 			addSiteNamePropertyDescriptor(object);
 			addSiteTitlePropertyDescriptor(object);
+			addDevelopmentVersionPropertyDescriptor(object);
 			addBaseURLPropertyDescriptor(object);
 			addRewriteURLsPropertyDescriptor(object);
 			addWebmasterEmailPropertyDescriptor(object);
@@ -148,6 +149,28 @@ public class JsfModelItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Development Version feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDevelopmentVersionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_developmentVersion_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_developmentVersion_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__DEVELOPMENT_VERSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -488,6 +511,7 @@ public class JsfModelItemProvider
 		switch (notification.getFeatureID(JsfModel.class)) {
 			case JsfPackage.JSF_MODEL__SITE_NAME:
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
+			case JsfPackage.JSF_MODEL__DEVELOPMENT_VERSION:
 			case JsfPackage.JSF_MODEL__BASE_URL:
 			case JsfPackage.JSF_MODEL__REWRITE_UR_LS:
 			case JsfPackage.JSF_MODEL__WEBMASTER_EMAIL:

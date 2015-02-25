@@ -47,6 +47,7 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getMenus <em>Menus</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getSiteName <em>Site Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getSiteTitle <em>Site Title</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#isDevelopmentVersion <em>Development Version</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getBaseURL <em>Base URL</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#isRewriteURLs <em>Rewrite UR Ls</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getWebmasterEmail <em>Webmaster Email</em>}</li>
@@ -145,6 +146,26 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * @ordered
 	 */
 	protected String siteTitle = SITE_TITLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isDevelopmentVersion() <em>Development Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDevelopmentVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEVELOPMENT_VERSION_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDevelopmentVersion() <em>Development Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDevelopmentVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean developmentVersion = DEVELOPMENT_VERSION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getBaseURL() <em>Base URL</em>}' attribute.
@@ -526,6 +547,27 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isDevelopmentVersion() {
+		return developmentVersion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDevelopmentVersion(boolean newDevelopmentVersion) {
+		boolean oldDevelopmentVersion = developmentVersion;
+		developmentVersion = newDevelopmentVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.JSF_MODEL__DEVELOPMENT_VERSION, oldDevelopmentVersion, developmentVersion));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getBaseURL() {
 		return baseURL;
 	}
@@ -889,6 +931,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return getSiteName();
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				return getSiteTitle();
+			case JsfPackage.JSF_MODEL__DEVELOPMENT_VERSION:
+				return isDevelopmentVersion();
 			case JsfPackage.JSF_MODEL__BASE_URL:
 				return getBaseURL();
 			case JsfPackage.JSF_MODEL__REWRITE_UR_LS:
@@ -949,6 +993,9 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return;
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				setSiteTitle((String)newValue);
+				return;
+			case JsfPackage.JSF_MODEL__DEVELOPMENT_VERSION:
+				setDevelopmentVersion((Boolean)newValue);
 				return;
 			case JsfPackage.JSF_MODEL__BASE_URL:
 				setBaseURL((String)newValue);
@@ -1019,6 +1066,9 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				setSiteTitle(SITE_TITLE_EDEFAULT);
 				return;
+			case JsfPackage.JSF_MODEL__DEVELOPMENT_VERSION:
+				setDevelopmentVersion(DEVELOPMENT_VERSION_EDEFAULT);
+				return;
 			case JsfPackage.JSF_MODEL__BASE_URL:
 				setBaseURL(BASE_URL_EDEFAULT);
 				return;
@@ -1082,6 +1132,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return SITE_NAME_EDEFAULT == null ? siteName != null : !SITE_NAME_EDEFAULT.equals(siteName);
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				return SITE_TITLE_EDEFAULT == null ? siteTitle != null : !SITE_TITLE_EDEFAULT.equals(siteTitle);
+			case JsfPackage.JSF_MODEL__DEVELOPMENT_VERSION:
+				return developmentVersion != DEVELOPMENT_VERSION_EDEFAULT;
 			case JsfPackage.JSF_MODEL__BASE_URL:
 				return BASE_URL_EDEFAULT == null ? baseURL != null : !BASE_URL_EDEFAULT.equals(baseURL);
 			case JsfPackage.JSF_MODEL__REWRITE_UR_LS:
@@ -1126,6 +1178,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 		result.append(siteName);
 		result.append(", siteTitle: ");
 		result.append(siteTitle);
+		result.append(", developmentVersion: ");
+		result.append(developmentVersion);
 		result.append(", baseURL: ");
 		result.append(baseURL);
 		result.append(", rewriteURLs: ");
