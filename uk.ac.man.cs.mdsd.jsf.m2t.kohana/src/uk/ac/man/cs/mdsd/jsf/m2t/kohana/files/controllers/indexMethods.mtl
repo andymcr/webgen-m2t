@@ -1,52 +1,51 @@
 [comment encoding = UTF-8 /]
 [module indexMethods(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
 
 
-[template public generateUnitVariables(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenIndexUnit)) post(trim())]
-[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
+[template public generateUnitVariables(unit : ContentUnit)
+	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
+[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [/let]
 [/template]
 
-[template public generateUnitDisplay(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenIndexUnit)) post(trim())]
-[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
-$this->[genUnit.templateInstanceName()/]->bind('[genUnit.instanceName()/]', $this->[genUnit.instanceName()/]);
-[if (not genIndexUnit.genSelection.oclIsUndefined())]
-$this->[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->[genIndexUnit.genSelection.jsfSelection.instanceName()/]([if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
-TRUE, max($this->request->query('[genUnit.parameterName()/]'), 1), [genIndexUnit.jsfUnit.defaultPaginationSize/][/if]);
+[template public generateUnitDisplay(unit : ContentUnit)
+	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
+[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
+$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
+[if (not indexUnit.selection.oclIsUndefined())]
+$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[indexUnit.selection.instanceName()/]([if (indexUnit.defaultPaginationSize) > 0]
+TRUE, max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.defaultPaginationSize/][/if]);
 [else]
-$this->[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->[if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
-paginated(max($this->request->query('[genUnit.parameterName()/]'), 1), [genIndexUnit.jsfUnit.defaultPaginationSize/])[else]
+$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (indexUnit.defaultPaginationSize) > 0]
+paginated(max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.defaultPaginationSize/])[else]
 find_all()[/if];
 [/if]
-[if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
-$[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->[if (not genIndexUnit.genSelection.oclIsUndefined())]
-[genIndexUnit.genSelection.jsfSelection.countName()/]()[else]
+[if (indexUnit.defaultPaginationSize) > 0]
+$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (not indexUnit.selection.oclIsUndefined())]
+[indexUnit.selection.countName()/]()[else]
 count_all()[/if];
-$[genUnit.instanceName()/]_pagination = Pagination::factory(array(
-	'group' => '[genUnit.uniqueName()/]',
-	'total_items' => $[genUnit.instanceName()/]
+$[unit.instanceName()/]_pagination = Pagination::factory(array(
+	'group' => '[unit.uniqueName()/]',
+	'total_items' => $[unit.instanceName()/]
 ));
-$this->[genUnit.templateInstanceName()/]->bind('pagination', $[genUnit.instanceName()/]_pagination);
+$this->[unit.templateInstanceName()/]->bind('pagination', $[unit.instanceName()/]_pagination);
 [/if]
 [/let]
 [/template]
 
-[template public generateUnitMethods(genUnit : GenDynamicUnit)
-	? (genUnit.oclIsKindOf(GenIndexUnit)) post(trim())]
-[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
-[for (genAction : GenInlineAction | genUnit.uriActions())]
-[genAction.generateActionMethod('$this->'.concat(genUnit.instanceName()).concat('_error'))/]
+[template public generateUnitMethods(unit : DynamicUnit)
+	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
+[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
+[for (action : InlineAction | unit.uriActions())]
+[action.generateActionMethod('$this->'.concat(unit.instanceName()).concat('_error'))/]
 
 [/for]
-[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::jQuery
-		and (genIndexUnit.jsfUnit.defaultPaginationSize) > 0)]
+[if (unit.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::jQuery
+		and (indexUnit.defaultPaginationSize) > 0)]
 public function page()
 {
 }

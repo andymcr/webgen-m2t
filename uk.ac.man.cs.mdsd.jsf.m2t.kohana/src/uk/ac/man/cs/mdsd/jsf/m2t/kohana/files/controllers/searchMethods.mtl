@@ -1,67 +1,67 @@
 [comment encoding = UTF-8 /]
 [module searchMethods(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
 
 
-[template public generateUnitMethods(genUnit : GenDynamicUnit)
-	? (genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
-[let genSearchUnit : GenSearchUnit = genUnit.oclAsType(GenSearchUnit)]
-public function action_[genSearchUnit.actionName()/]()
+[template public generateUnitMethods(unit : DynamicUnit)
+	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
+[let searchUnit : SearchUnit = unit.oclAsType(SearchUnit)]
+public function action_[searchUnit.actionName()/]()
 {
 	try
 		{
-		[genUnit.generateValuesFromFormToModel()/]
-	[if (genUnit.hasForcedValueFeatures())]
-		[genUnit.generateForcedFeatureValues()/]
+		[unit.generateValuesFromFormToModel()/]
+	[if (unit.hasForcedValueFeatures())]
+		[unit.generateForcedFeatureValues()/]
 	[/if]
-	[if (genUnit.hasCaptchaFields())]
-		[genUnit.generateCaptchaCheck()/]
+	[if (unit.hasCaptchaFields())]
+		[unit.generateCaptchaCheck()/]
 	[/if]
-	[if (genUnit.hasInterfaceFields())]
-		[genUnit.generateInterfaceFieldValidation()/]
+	[if (unit.hasInterfaceFields())]
+		[unit.generateInterfaceFieldValidation()/]
 	[/if]
-//validate?		$this->[genUnit.instanceName()/]->save([if (genUnit.hasInterfaceFields())]$extra_validation[/if]);
-		/* [protected ('action.'.concat(genSearchUnit.actionName()).concat('.x'))]
+//validate?		$this->[unit.instanceName()/]->save([if (unit.hasInterfaceFields())]$extra_validation[/if]);
+		/* [protected ('action.'.concat(searchUnit.actionName()).concat('.x'))]
 		 */
 		/* [/protected]
 		 */
 	}
-[if (genUnit.hasCaptchaFields())]
-		[genUnit.generateCatchCaptchaException()/]
+[if (unit.hasCaptchaFields())]
+		[unit.generateCatchCaptchaException()/]
 [/if]
 	catch (ORM_Validation_Exception $e)
 	{
-		$this->[genUnit.instanceName()/]_field_errors = $e->errors('');
-	[if (genUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.developmentVersion)]
-		$unreported_field_errors = array_diff_key($this->[genUnit.instanceName()/]_field_errors, array([for
-		(genField : GenUnitField | genUnit.inputFields())
-			separator (', ')]'[genField.columnName()/]' => ''[/for][if (genUnit.hasInterfaceFields())], '_external' => ''[/if]));
+		$this->[unit.instanceName()/]_field_errors = $e->errors('');
+	[if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
+		$unreported_field_errors = array_diff_key($this->[unit.instanceName()/]_field_errors, array([for
+		(field : UnitField | unit.inputFields())
+			separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
 		if (!empty($unreported_field_errors))
-			$this->[genUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+			$this->[unit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
 	[/if]
-	[if (genUnit.hasEncryptedFeatures())]
-		[genUnit.generateClearEncryptedFeatures()/]
+	[if (unit.hasEncryptedFeatures())]
+		[unit.generateClearEncryptedFeatures()/]
 	[/if]
 	}
-[if (genUnit.hasInterfaceFields())]
-		[genUnit.generateRememberInterfaceFields()/]
+[if (unit.hasInterfaceFields())]
+		[unit.generateRememberInterfaceFields()/]
 [/if]
-[if (genUnit.isAuthenticated() or not genUnit.oclAsType(GenControlUnit).genCancelDestination.oclIsUndefined())]
-	[genSearchUnit.generateHandleCancel()/]
+[if (unit.isAuthenticated() or not unit.oclAsType(ControlUnit).cancelDestination.oclIsUndefined())]
+	[searchUnit.generateHandleCancel()/]
 [/if]
-	[genUnit.generateValuesFromFormToModel()/]
-[for (genField : GenUnitField | genSearchUnit.genDisplayFields)]
-//	if (!empty($this->[genUnit.instanceName()/]->[genField.modelPropertyName()/]))
-//		$this->session->set('[genSearchUnit.genResultDestination.uniqueName()/]_[genField.modelPropertyName()/]', $this->[genUnit.instanceName()/]->[genField.modelPropertyName()/]);
+	[unit.generateValuesFromFormToModel()/]
+[for (field : UnitField | searchUnit.displayFields)]
+//	if (!empty($this->[unit.instanceName()/]->[field.modelPropertyName()/]))
+//		$this->session->set('[searchUnit.resultsDestination.uniqueName()/]_[field.modelPropertyName()/]', $this->[unit.instanceName()/]->[field.modelPropertyName()/]);
 //	else
-//		$this->session->delete('[genSearchUnit.genResultDestination.uniqueName()/]_[genField.modelPropertyName()/]');
+//		$this->session->delete('[searchUnit.resultsDestination.uniqueName()/]_[field.modelPropertyName()/]');
 [/for]
-[if (genSearchUnit.genDisplayedOn <> genSearchUnit.genResultDestination.genDisplayedOn)]
-//	$this->redirect(Route::get('[genSearchUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]')->uri());
+[if (searchUnit.displayedOn <> searchUnit.resultsDestination.displayedOn)]
+//	$this->redirect(Route::get('[searchUnit.displayedOn.oclAsType(Page).controllerName()/]')->uri());
 [/if]
 }
 [/let]

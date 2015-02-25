@@ -61,9 +61,9 @@ jsfModel.generateCreateSitemap()/]
 [jsfModel.services.generateModel(jsfModel.authentication)/]
 [/if]
 
-[genModel.generateBaseController()/]
-[genModel.genPages.generateController()/]
-[genModel.generateAngularJsControllers()/]
+[jsfModel.generateBaseController()/]
+[jsfModel.pages.generateController()/]
+[jsfModel.generateAngularJsControllers()/]
 
 [jsfModel.generateRecaptchalib()/]
 [jsfModel.generateCaptchaException()/]

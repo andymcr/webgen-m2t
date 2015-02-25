@@ -1,47 +1,47 @@
 [comment encoding = UTF-8 /]
 [module detailsMethods(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
 
 
-[template public generateUnitVariables(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenDetailsUnit)) post(trim())]
-[let genDetailsUnit : GenDetailsUnit = genUnit.oclAsType(GenDetailsUnit)]
-[if (genDetailsUnit.hasDefaultValueFields())]
-[genDetailsUnit.generateDefaultUnitValues()/]
+[template public generateUnitVariables(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.hasDefaultValueFields())]
+[detailsUnit.generateDefaultUnitValues()/]
 [/if]
-[if (genDetailsUnit.genSelection.oclIsUndefined())]
-$[genDetailsUnit.instanceName()/] = $this->request->query('[genUnit.parameterName()/]');
-if (!empty($[genDetailsUnit.instanceName()/]))
+[if (detailsUnit.selection.oclIsUndefined())]
+$[detailsUnit.instanceName()/] = $this->request->query('[detailsUnit.parameterName()/]');
+if (!empty($[detailsUnit.instanceName()/]))
 {
-	$this->[genDetailsUnit.instanceName()/] = ORM::factory('[genDetailsUnit.modelName()/]', $[genDetailsUnit.instanceName()/]);
-	if (!$this->[genDetailsUnit.instanceName()/]->loaded())
+	$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]', $[detailsUnit.instanceName()/]);
+	if (!$this->[detailsUnit.instanceName()/]->loaded())
 	{
-		$this->[genDetailsUnit.instanceName()/]_error = 'Invalid [genDetailsUnit.modelName()/] identifier';
+		$this->[detailsUnit.instanceName()/]_error = 'Invalid [detailsUnit.modelName()/] identifier';
 	}
 }
 else
-	$this->[genDetailsUnit.instanceName()/] = ORM::factory('[genDetailsUnit.modelName()/]');
+	$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]');
 [else]
-$this->[genDetailsUnit.instanceName()/] = ORM::factory('[genDetailsUnit.modelName()/]')->[genDetailsUnit.genSelection.jsfSelection.instanceName()/]();
+$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]')->[detailsUnit.selection.instanceName()/]();
 [/if]
 [/let]
 [/template]
 
-[template public generateUnitDisplay(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenDetailsUnit)) post(trim())]
-$this->[genUnit.templateInstanceName()/]->bind('[genUnit.instanceName()/]', $this->[genUnit.instanceName()/]);
+[template public generateUnitDisplay(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
 [/template]
 
 
 
-[template public generateUnitMethods(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenDetailsUnit)) post(trim())]
-[let genDetailsUnit : GenDetailsUnit = genUnit.oclAsType(GenDetailsUnit)]
-[for (genAction : GenInlineAction | genDetailsUnit.uriActions())]
-[genAction.generateActionMethod('$this->'.concat(genDetailsUnit.instanceName()).concat('_error'))/]
+[template public generateUnitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[for (action : InlineAction | detailsUnit.uriActions())]
+[action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
 [/for]
 [/let]
 [/template]

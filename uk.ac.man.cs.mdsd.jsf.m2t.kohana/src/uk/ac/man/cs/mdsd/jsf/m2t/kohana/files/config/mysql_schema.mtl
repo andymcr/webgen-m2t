@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `[association.pivotTableName/]` (
 [for (service : Service | model.services->select(s | s.view))]
 CREATE OR REPLACE VIEW [service.modelName/] AS
 SELECT
-	[for (feature : ServiceFeature | service.features) separator(',\n\t')][feature.generateViewColumn()/][/for]
+	[for (feature : ServiceFeature | service.viewColumns()) separator(',\n\t')][feature.generateViewColumn()/][/for]
 FROM [for (entity : Entity | service.entities) separator(', ')][entity.tableName/][/for];
 
 [/for]
@@ -104,13 +104,13 @@ DATETIME[/if][if (element.required)] NOT NULL[/if][if
 [template protected generateViewColumn(feature : ServiceFeature)
 	? (feature.oclIsTypeOf(ServiceEntityElement)) post(trim())]
 [let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)]
-`[element.feature.parentEntity.tableName/]`.`[element.columnName()/]` AS `[element.modelPropertyName()/]`
+`[element.feature.parentEntity.tableName/]`.`[element.columnName()/]` AS `[element.viewColumnName()/]`
 [/let]
 [/template]
 
 [template protected generateViewColumn(feature : ServiceFeature)
 	? (feature.oclIsTypeOf(ServiceEntityAssociation)) post(trim())]
 [let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)]
-`[association.feature.parentEntity.tableName/]`.`[association.columnName()/]` AS `[association.modelPropertyName()/]`
+`[association.feature.parentEntity.tableName/]`.`[association.columnName()/]` AS `[association.viewColumnName()/]`
 [/let]
 [/template]

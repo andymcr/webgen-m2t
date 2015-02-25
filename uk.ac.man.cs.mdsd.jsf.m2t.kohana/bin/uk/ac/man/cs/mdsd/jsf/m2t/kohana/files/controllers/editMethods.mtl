@@ -1,51 +1,50 @@
 [comment encoding = UTF-8 /]
 [module editMethods(
-	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
+	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
 
 
-[template public generateUnitVariables(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenEditUnit)) post(trim())]
-[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
-$this->[genEditUnit.instanceName()/] = ORM::factory('[genEditUnit.modelName()/]');
-[if (genEditUnit.hasDefaultValueFields())]
-[genEditUnit.generateDefaultUnitValues()/]
+[template public generateUnitVariables(unit : ContentUnit)
+	? (unit.oclIsKindOf(EditUnit)) post(trim())]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+$this->[editUnit.instanceName()/] = ORM::factory('[editUnit.modelName()/]');
+[if (editUnit.hasDefaultValueFields())]
+[editUnit.generateDefaultUnitValues()/]
 [/if]
-[if (genEditUnit.oclIsTypeOf(GenCreateUpdateUnit) or genEditUnit.oclIsTypeOf(GenUpdateUnit))]
-$[genEditUnit.instanceName()/] = $this->request->query('[genUnit.parameterName()/]');
-if (!empty($[genEditUnit.instanceName()/]))
+[if (editUnit.oclIsTypeOf(CreateUpdateUnit) or editUnit.oclIsTypeOf(UpdateUnit))]
+$[editUnit.instanceName()/] = $this->request->query('[unit.parameterName()/]');
+if (!empty($[editUnit.instanceName()/]))
 {
-	$this->[genEditUnit.instanceName()/]->where('[genEditUnit.genService.keyName()/]', '=', $[genEditUnit.instanceName()/])->find();
-	if (!$this->[genEditUnit.instanceName()/]->loaded())
-		$this->[genEditUnit.instanceName()/]_error = 'Invalid [genEditUnit.modelName()/] identifier';
+	$this->[editUnit.instanceName()/]->where('[editUnit.service.keyName()/]', '=', $[editUnit.instanceName()/])->find();
+	if (!$this->[editUnit.instanceName()/]->loaded())
+		$this->[editUnit.instanceName()/]_error = 'Invalid [editUnit.modelName()/] identifier';
 }
 [/if]
 [/let]
 [/template]
 
-[template public generateUnitDisplay(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenEditUnit)) post(trim())]
-[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
-$this->[genEditUnit.templateInstanceName()/]->bind('[genEditUnit.instanceName()/]', $this->[genEditUnit.instanceName()/]);
-if (isset($this->[genEditUnit.instanceName()/]_field_errors))
-	$this->[genEditUnit.templateInstanceName()/]->bind('[genEditUnit.instanceName()/]_field_errors', $this->[genEditUnit.instanceName()/]_field_errors);
-[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::None)]
-	[for (genField : GenUnitField | genEditUnit.inputAssociations())]
-	[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
-$[genAssociation.optionsName()/] = array([if (genAssociation.isSingleton())]'' => __('Please select')[/if]);
-foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
+[template public generateUnitDisplay(unit : ContentUnit)
+	? (unit.oclIsKindOf(EditUnit)) post(trim())]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+$this->[editUnit.templateInstanceName()/]->bind('[editUnit.instanceName()/]', $this->[editUnit.instanceName()/]);
+if (isset($this->[editUnit.instanceName()/]_field_errors))
+	$this->[editUnit.templateInstanceName()/]->bind('[editUnit.instanceName()/]_field_errors', $this->[editUnit.instanceName()/]_field_errors);
+[if (unit.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::None)]
+	[for (field : UnitField | editUnit.inputAssociations())]
+	[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+$[association.optionsName()/] = array([if (association.isSingleton())]'' => __('Please select')[/if]);
+foreach (ORM::factory('[association.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
-[genAssociation.genSelection.jsfSelection.instanceName()/](FALSE)[/if] AS $option)
-	$[genAssociation.optionsName()/]['['/]$option->id[']'/] = $option->[if (genAssociation.genDynamicLabel.oclIsUndefined())]
+[association.selection.instanceName()/](FALSE)[/if] AS $option)
+	$[association.optionsName()/]['['/]$option->id[']'/] = $option->[if (association.dynamicLabel.oclIsUndefined())]
 displayLabel()[else]
-[genAssociation.genDynamicLabel.name/]()[/if];
-$this->[genEditUnit.templateInstanceName()/]->bind('[genAssociation.optionsName()/]', $[genAssociation.optionsName()/]);
+[association.dynamicLabel.name/]()[/if];
+$this->[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[association.optionsName()/]);
 	[/let]
 	[/for]
 [/if]
@@ -53,48 +52,48 @@ $this->[genEditUnit.templateInstanceName()/]->bind('[genAssociation.optionsName(
 [/template]
 
 
-[template public generateUnitMethods(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenCreateUnit)) post(trim())]
-[let genCreateUnit : GenCreateUnit = genUnit.oclAsType(GenCreateUnit)]
-[if (genCreateUnit.hasInterfaceFields())]
-		[genCreateUnit.generateUnitRules()/]
+[template public generateUnitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(CreateUnit)) post(trim())]
+[let createUnit : CreateUnit = unit.oclAsType(CreateUnit)]
+[if (createUnit.hasInterfaceFields())]
+		[createUnit.generateUnitRules()/]
 [/if]
-public function action_[genCreateUnit.actionName()/]()
+public function action_[createUnit.actionName()/]()
 {
-[if (not genCreateUnit.genCancelDestination.oclIsUndefined())]
-	[genCreateUnit.generateHandleCancel()/]
+[if (not createUnit.cancelDestination.oclIsUndefined())]
+	[createUnit.generateHandleCancel()/]
 
 [/if]
-	[genCreateUnit.oclAsType(GenCreateUnit).generateSaveCode()/]
+	[createUnit.oclAsType(CreateUnit).generateSaveCode()/]
 }
 
-[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology <> AjaxTechnologies::None)]
-[genUnit.generateJsMethods()/]
+[if (unit.pageDisplayedOn().partOf.ajaxTechnology <> AjaxTechnologies::None)]
+[unit.generateJsMethods()/]
 
 [/if]
 [/let]
 [/template]
 
-[template public generateUnitMethods(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenCreateUpdateUnit) or genUnit.oclIsKindOf(GenUpdateUnit) or genUnit.oclIsKindOf(GenMapUnit)) post(trim())]
-[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
-[if (genEditUnit.hasInterfaceFields())]
-		[genEditUnit.generateUnitRules()/]
+[template public generateUnitMethods(unit : ContentUnit)
+	? (unit.oclIsKindOf(CreateUpdateUnit) or unit.oclIsKindOf(UpdateUnit) or unit.oclIsKindOf(MapUnit)) post(trim())]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[if (editUnit.hasInterfaceFields())]
+		[editUnit.generateUnitRules()/]
 [/if]
-public function action_[genEditUnit.actionName()/]()
+public function action_[editUnit.actionName()/]()
 {
-[if (not genEditUnit.genCancelDestination.oclIsUndefined())]
-	[genEditUnit.generateHandleCancel()/]
+[if (not editUnit.cancelDestination.oclIsUndefined())]
+	[editUnit.generateHandleCancel()/]
 
 [/if]
-[if (genEditUnit.oclIsTypeOf(GenCreateUpdateUnit))]
-[let genCreateUpdateUnit : GenCreateUpdateUnit = genEditUnit.oclAsType(GenCreateUpdateUnit)]
-	[if (not genCreateUpdateUnit.jsfUnit.clearLabel.oclIsUndefined())]
+[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
+[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
+	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
 	if ($this->request->post('clear'))
 	{
-		$this->[genCreateUpdateUnit.instanceName()/]->clear();
+		$this->[createUpdateUnit.instanceName()/]->clear();
 // default unit values?
-		[genEditUnit.generateRemoveParameter(genCreateUpdateUnit.parameterName())/]
+		[editUnit.generateRemoveParameter(createUpdateUnit.parameterName())/]
 		return;
 	}
 
@@ -104,40 +103,40 @@ public function action_[genEditUnit.actionName()/]()
 	$submit = $this->request->param('param');
 	if (isset($submit))
 	{
-		[genEditUnit.generateSaveCode()/]
+		[editUnit.generateSaveCode()/]
 	}
 	else
 	{
-//		$this->[genEditUnit.instanceName()/]->validate();
+//		$this->[editUnit.instanceName()/]->validate();
 	}
 }
 
-[if (genUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology <> AjaxTechnologies::None)]
-[genUnit.generateJsMethods()/]
+[if (unit.pageDisplayedOn().partOf.ajaxTechnology <> AjaxTechnologies::None)]
+[unit.generateJsMethods()/]
 
 [/if]
-[for (genAction : GenInlineAction | genEditUnit.uriActions())]
-[genAction.generateActionMethod('$this->'.concat(genEditUnit.instanceName()).concat('_error'))/]
+[for (action : InlineAction | editUnit.uriActions())]
+[action.generateActionMethod('$this->'.concat(editUnit.instanceName()).concat('_error'))/]
 
 [/for]
 [/let]
 [/template]
 
-[template private generateJsMethods(genUnit : GenContentUnit) post(trim())]
-[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
-[for (genField : GenUnitField | genEditUnit.inputAssociations())]
-[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
-public function action_[genAssociation.optionsName()/]()
+[template private generateJsMethods(unit : ContentUnit) post(trim())]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[for (field : UnitField | editUnit.inputAssociations())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+public function action_[association.optionsName()/]()
 {
 	$options = array();
-	foreach (ORM::factory('[genAssociation.modelName()/]')->[if (genAssociation.genSelection.oclIsUndefined())]
+	foreach (ORM::factory('[association.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
-[genAssociation.genSelection.jsfSelection.instanceName()/](FALSE)[/if] AS $option)
+[association.selection.instanceName()/](FALSE)[/if] AS $option)
 		$options['['/][']'/] = array(
 			'id' => $option->id,
-			'label' => $option->[if (genAssociation.genDynamicLabel.oclIsUndefined())]
+			'label' => $option->[if (association.dynamicLabel.oclIsUndefined())]
 displayLabel()[else]
-[genAssociation.genDynamicLabel.name/]()[/if],
+[association.dynamicLabel.name/]()[/if],
 		);
 
 	$this->auto_render = FALSE;
@@ -147,24 +146,24 @@ displayLabel()[else]
 
 [/let]
 [/for]
-[for (genAction : GenInlineAction | genEditUnit.uriActions())]
-[genAction.generateActionMethod('$this->'.concat(genEditUnit.instanceName()).concat('_error'))/]
+[for (action : InlineAction | editUnit.uriActions())]
+[action.generateActionMethod('$this->'.concat(editUnit.instanceName()).concat('_error'))/]
 
 [/for]
 [/let]
 [/template]
 
-[template public generateUnitRules(genUnit : GenDynamicUnit) post(trim())]
+[template public generateUnitRules(unit : DynamicUnit) post(trim())]
 	private function unit_rules
 	{
-[for (genField : GenInterfaceField | genUnit.interfaceFields())]
-$this->[genUnit.instanceName()/]->validation['['/]'[genField.modelPropertyName()/]'[']'/] = array(
-		'label' => '[genField.displayLabel()/]',
-		'rules' => array([if (genField.isRequired())]
-'required', [/if]'trim'[if (genField.isCaseInsensitive())]
-, 'strtolower'[/if][if (genField.isEncrypted())]
-, 'encrypt'[/if][if (not genField.genMustMatch.oclIsUndefined())]
-, 'matches' => '[genField.genMustMatch.modelPropertyName()/]'[/if])
+[for (field : InterfaceField | unit.interfaceFields())]
+$this->[unit.instanceName()/]->validation['['/]'[field.modelPropertyName()/]'[']'/] = array(
+		'label' => '[field.displayLabel()/]',
+		'rules' => array([if (field.isRequired())]
+'required', [/if]'trim'[if (field.isCaseInsensitive())]
+, 'strtolower'[/if][if (field.isEncrypted())]
+, 'encrypt'[/if][if (not field.mustMatch.oclIsUndefined())]
+, 'matches' => '[field.mustMatch.modelPropertyName()/]'[/if])
 	);
 [/for]
 	}
@@ -173,53 +172,53 @@ $this->[genUnit.instanceName()/]->validation['['/]'[genField.modelPropertyName()
 
 
 
-[template private generateSaveCode(genUnit : GenEditUnit) post(trim())]
+[template private generateSaveCode(unit : EditUnit) post(trim())]
 try
 {
-	[genUnit.generateValuesFromFormToModel()/]
-[if (genUnit.hasForcedValueFeatures())]
-	[genUnit.generateForcedFeatureValues()/]
+	[unit.generateValuesFromFormToModel()/]
+[if (unit.hasForcedValueFeatures())]
+	[unit.generateForcedFeatureValues()/]
 [/if]
-[if (genUnit.hasCaptchaFields())]
-	[genUnit.generateCaptchaCheck()/]
+[if (unit.hasCaptchaFields())]
+	[unit.generateCaptchaCheck()/]
 [/if]
-[if (genUnit.hasInterfaceFields())]
-		[genUnit.generateInterfaceFieldValidation()/]
+[if (unit.hasInterfaceFields())]
+		[unit.generateInterfaceFieldValidation()/]
 [/if]
-	$this->[genUnit.instanceName()/]->save([if (genUnit.hasInterfaceFields())]$extra_validation[/if]);
-[if (not genUnit.oclAsType(GenEditUnit).genConfirmDestination.oclIsUndefined())]
-	$this->redirect(Route::get('[genUnit.oclAsType(GenEditUnit).genConfirmDestination.controllerName()/]')->uri());
+	$this->[unit.instanceName()/]->save([if (unit.hasInterfaceFields())]$extra_validation[/if]);
+[if (not unit.oclAsType(EditUnit).confirmDestination.oclIsUndefined())]
+	$this->redirect(Route::get('[unit.oclAsType(EditUnit).confirmDestination.controllerName()/]')->uri());
 [else]
-	[if (genUnit.oclIsTypeOf(GenCreateUnit) or genUnit.hasClearLabel())]
-	$this->[genUnit.instanceName()/]->clear();
-		[if (genUnit.hasInterfaceFields())]
-	[genUnit.generateClearInterfaceFields()/]
+	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+	$this->[unit.instanceName()/]->clear();
+		[if (unit.hasInterfaceFields())]
+	[unit.generateClearInterfaceFields()/]
 		[/if]
-	[genUnit.generateRemoveParameter(genUnit.parameterName())/]
+	[unit.generateRemoveParameter(unit.parameterName())/]
 	[/if]
 [/if]
 }
-[if (genUnit.hasCaptchaFields())]
-		[genUnit.generateCatchCaptchaException()/]
+[if (unit.hasCaptchaFields())]
+		[unit.generateCatchCaptchaException()/]
 [/if]
 catch (ORM_Validation_Exception $e)
 {
-	$this->[genUnit.instanceName()/]_field_errors = $e->errors('');
-[if (genUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.developmentVersion)]
-	$unreported_field_errors = array_diff_key($this->[genUnit.instanceName()/]_field_errors, array([for
-	(genField : GenUnitField | genUnit.inputFields())
-		separator (', ')]'[genField.columnName()/]' => ''[/for][if (genUnit.hasInterfaceFields())], '_external' => ''[/if]));
+	$this->[unit.instanceName()/]_field_errors = $e->errors('');
+[if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
+	$unreported_field_errors = array_diff_key($this->[unit.instanceName()/]_field_errors, array([for
+	(field : UnitField | unit.inputFields())
+		separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
 	if (!empty($unreported_field_errors))
-		$this->[genUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+		$this->[unit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
 [/if]
-[if (genUnit.hasEncryptedFeatures())]
-	[genUnit.generateClearEncryptedFeatures()/]
+[if (unit.hasEncryptedFeatures())]
+	[unit.generateClearEncryptedFeatures()/]
 [/if]
 }
 [/template]
 
-[template public generateClearInterfaceFields(genUnit : GenDynamicUnit) post(trim())]
-[for (genField : GenInterfaceField | genUnit.interfaceFields())]
-unset($this->[genUnit.instanceName()/]->[genField.modelPropertyName()/]);
+[template public generateClearInterfaceFields(unit : DynamicUnit) post(trim())]
+[for (field : InterfaceField | unit.interfaceFields())]
+unset($this->[unit.instanceName()/]->[field.modelPropertyName()/]);
 [/for]
 [/template]

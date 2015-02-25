@@ -1,57 +1,57 @@
 [comment encoding = UTF-8 /]
 [module actionMethods(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::controlMethods/]
 
 
-[template public generateUnitMethods(genUnit : GenDynamicUnit)
-	? (genUnit.oclIsTypeOf(GenActionUnit)) post(trim())]
-[let genActionUnit : GenActionUnit = genUnit.oclAsType(GenActionUnit)]
-public function action_[genActionUnit.actionName()/]()
+[template public generateUnitMethods(unit : DynamicUnit)
+	? (unit.oclIsTypeOf(ActionUnit)) post(trim())]
+[let actionUnit : ActionUnit = unit.oclAsType(ActionUnit)]
+public function action_[actionUnit.actionName()/]()
 {
 	try
 	{
-		[genUnit.generateValuesFromFormToModel()/]
-	[if (genUnit.hasForcedValueFeatures())]
-		[genUnit.generateForcedFeatureValues()/]
+		[unit.generateValuesFromFormToModel()/]
+	[if (unit.hasForcedValueFeatures())]
+		[unit.generateForcedFeatureValues()/]
 	[/if]
-	[if (genUnit.hasCaptchaFields())]
-		[genUnit.generateCaptchaCheck()/]
+	[if (unit.hasCaptchaFields())]
+		[unit.generateCaptchaCheck()/]
 	[/if]
-	[if (genUnit.hasInterfaceFields())]
-		[genUnit.generateRememberInterfaceFields()/]
-		[genUnit.generateInterfaceFieldValidation()/]
-		[genUnit.generateValidateOnlyControlFields()/]
+	[if (unit.hasInterfaceFields())]
+		[unit.generateRememberInterfaceFields()/]
+		[unit.generateInterfaceFieldValidation()/]
+		[unit.generateValidateOnlyControlFields()/]
 	[/if]
-		$this->[genUnit.instanceName()/]->check([if (genUnit.hasInterfaceFields())]$extra_validation[/if]);
-	[for (genAction : GenUnitSupportAction | genActionUnit.genSupportActions)]
-		if (array_key_exists('[genAction.name/]', $this->request->post()))
+		$this->[unit.instanceName()/]->check([if (unit.hasInterfaceFields())]$extra_validation[/if]);
+	[for (action : UnitSupportAction | actionUnit.supportActions)]
+		if (array_key_exists('[action.name/]', $this->request->post()))
 		{
-			/* [protected (genActionUnit.instanceName().concat('.support.').concat(genAction.name))]
+			/* [protected (actionUnit.instanceName().concat('.support.').concat(action.name))]
 			 */
 			/* [/protected]
 			 */
 		}
 	[/for]
 	}
-[if (genUnit.hasCaptchaFields())]
-		[genUnit.generateCatchCaptchaException()/]
+[if (unit.hasCaptchaFields())]
+		[unit.generateCatchCaptchaException()/]
 [/if]
 	catch (ORM_Validation_Exception $e)
 	{
-		$this->[genUnit.instanceName()/]_field_errors = $e->errors('');
-	[if (genUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.developmentVersion)]
-		$unreported_field_errors = array_diff_key($this->[genUnit.instanceName()/]_field_errors, array([for
-		(genField : GenUnitField | genUnit.inputFields())
-			separator (', ')]'[genField.columnName()/]' => ''[/for][if (genUnit.hasInterfaceFields())], '_external' => ''[/if]));
+		$this->[unit.instanceName()/]_field_errors = $e->errors('');
+	[if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
+		$unreported_field_errors = array_diff_key($this->[unit.instanceName()/]_field_errors, array([for
+		(field : UnitField | unit.inputFields())
+			separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
 		if (!empty($unreported_field_errors))
-			$this->[genUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+			$this->[unit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
 	[/if]
-	[if (genUnit.hasEncryptedFeatures())]
-		[genUnit.generateClearEncryptedFeatures()/]
+	[if (unit.hasEncryptedFeatures())]
+		[unit.generateClearEncryptedFeatures()/]
 	[/if]
 	}
 }

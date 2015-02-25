@@ -1,8 +1,7 @@
 [comment encoding = UTF-8 /]
 [module pageController(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::authenticationMethods/]
@@ -18,44 +17,44 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::staticMethods/]
 
 
-[template public generateController(genPage : GenPage)]
-[file(genPage.controllerFilename(), false)]
+[template public generateController(page : Page)]
+[file(page.controllerFilename(), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName()/]
+class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
 
 	public function before()
 	{
-[if (genPage.isAuthenticated())]
-		[genPage.generateLoggedInCheck()/]
+[if (page.isAuthenticated())]
+		[page.generateLoggedInCheck()/]
 
 [/if]
 		parent::before();
 
-[if (genPage.hasParameterisedUnits())]
+[if (page.hasParameterisedUnits())]
 		$this->query_parameters = $this->request->query();
 
 [/if]
-		$this->template->title = '[genPage.displayLabel()/]';
-		$this->template->id = '[genPage.instanceName()/]';
-[if (not genPage.jsfPage.styleClass.oclIsUndefined())]
-		$this->template->style_class = '[genPage.jsfPage.styleClass/]';
+		$this->template->title = '[page.displayLabel()/]';
+		$this->template->id = '[page.instanceName()/]';
+[if (not page.styleClass.oclIsUndefined())]
+		$this->template->style_class = '[page.styleClass/]';
 [/if]
-[if (genPage.hasMapUnits())]
+[if (page.hasMapUnits())]
 		$this->template->scripts['['/][']'/] = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places';
 [/if]
-[if (genPage.hasCaptchaFields())]
+[if (page.hasCaptchaFields())]
 		$this->template->scripts['['/][']'/] = 'https://www.google.com/recaptcha/api.js';
 [/if]
 
-[if (genPage.genPartOf.jsfModel.staticUnitsEditable)]
-	[for (genUnit : GenContentUnit | genPage.genUnits)]
-		[genUnit.generateUnitVariables()/]
+[if (page.partOf.staticUnitsEditable)]
+	[for (unit : ContentUnit | page.units)]
+		[unit.generateUnitVariables()/]
 	[/for]
 [else]
-	[for (genUnit : GenDynamicUnit | genPage.dynamicUnits()->select(u | not u.oclIsKindOf(GenIndexUnit)))]
-		[genUnit.generateUnitVariables()/]
+	[for (unit : DynamicUnit | page.dynamicUnits()->select(u | not u.oclIsKindOf(IndexUnit)))]
+		[unit.generateUnitVariables()/]
 	[/for]
 [/if]
 	}
@@ -64,34 +63,34 @@ class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName(
 	{
 		if ($this->auto_render === TRUE)
 		{
-[if (not genPage.genSideMenu.oclIsUndefined())]
-			$this->template->sidebar = View::factory('menu/[genPage.genSideMenu.instanceName()/]');
-	[if (genPage.genSideMenu.oclIsTypeOf(GenDynamicMenu))]
-	[let genDynamicMenu : GenDynamicMenu = genPage.genSideMenu.oclAsType(GenDynamicMenu)]
-			$this->template->sidebar->[genPage.genSideMenu.instanceName()/] = ORM::factory('[genDynamicMenu.genService.jsfService.modelName()/]')->[genDynamicMenu.genSelection.jsfSelection.instanceName()/]();
+[if (not page.sideMenu.oclIsUndefined())]
+			$this->template->sidebar = View::factory('menu/[page.sideMenu.instanceName()/]');
+	[if (page.sideMenu.oclIsTypeOf(DynamicMenu))]
+	[let dynamicMenu : DynamicMenu = page.sideMenu.oclAsType(DynamicMenu)]
+			$this->template->sidebar->[page.sideMenu.instanceName()/] = ORM::factory('[dynamicMenu.service.modelName()/]')->[dynamicMenu.selection.instanceName()/]();
 	[/let]
 	[/if]
 [/if]
-[for (genUnit : GenContentUnit | genPage.genUnits)]
-			$this->[genUnit.templateInstanceName()/] = View::factory('[genPage.controllerName()/]/[genUnit.instanceName()/]');
-			$this->template->unitViews['['/][']'/] = $this->[genUnit.templateInstanceName()/];
-	[if (genPage.hasParameterisedUnits())]
-			$this->[genUnit.templateInstanceName()/]->bind('query_parameters', $this->query_parameters);
+[for (unit : ContentUnit | page.units)]
+			$this->[unit.templateInstanceName()/] = View::factory('[page.controllerName()/]/[unit.instanceName()/]');
+			$this->template->unitViews['['/][']'/] = $this->[unit.templateInstanceName()/];
+	[if (page.hasParameterisedUnits())]
+			$this->[unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameters);
 	[/if]
-	[if (not genUnit.oclIsTypeOf(GenStaticUnit))]
-			if (!empty($this->[genUnit.instanceName()/]_error))
-				$this->[genUnit.templateInstanceName()/]->bind('[genUnit.instanceName()/]_error', $this->[genUnit.instanceName()/]_error);
+	[if (not unit.oclIsTypeOf(StaticUnit))]
+			if (!empty($this->[unit.instanceName()/]_error))
+				$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]_error', $this->[unit.instanceName()/]_error);
 	[/if]
 [/for]
-[if (genPage.genPartOf.jsfModel.staticUnitsEditable)]
-	[for (genUnit : GenContentUnit | genPage.genUnits)]
+[if (page.partOf.staticUnitsEditable)]
+	[for (unit : ContentUnit | page.units)]
 
-			[genUnit.generateUnitDisplay()/]
+			[unit.generateUnitDisplay()/]
 	[/for]
 [else]
-	[for (genUnit : GenDynamicUnit | genPage.dynamicUnits())]
+	[for (unit : DynamicUnit | page.dynamicUnits())]
 
-			[genUnit.generateUnitDisplay()/]
+			[unit.generateUnitDisplay()/]
 	[/for]
 [/if]
 		}
@@ -103,20 +102,20 @@ class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName(
 	{
 	}
 
-[for (genUnit : GenContentUnit | genPage.genUnits)]
-	[if (genUnit.hasUnitMethods())]
-	[genUnit.generateUnitMethods()/]
+[for (unit : ContentUnit | page.units)]
+	[if (unit.hasUnitMethods())]
+	[unit.generateUnitMethods()/]
 
 	[/if]
 [/for]
-[if (genPage.hasSupportActions())]
-	[if (genPage.hasDataSupportActions())]
+[if (page.hasSupportActions())]
+	[if (page.hasDataSupportActions())]
 	public function action_support()
 	{
-	[for (genAction : GenUnitSupportAction | genPage.dataSupportActions())]
-		if ($this->request->post('[genAction.name/]'))
+	[for (action : UnitSupportAction | page.dataSupportActions())]
+		if ($this->request->post('[action.name/]'))
 		{
-			/* [protected ('support.'.concat(genAction.name))]
+			/* [protected ('support.'.concat(action.name))]
 			 */
 			/* [/protected]
 			 */
@@ -125,7 +124,7 @@ class [genPage.controllerClassName()/] extends [genPage.baseControllerClassName(
 	}
 
 	[/if]
-	/* [protected (genPage.instanceName().concat('.support.'))]
+	/* [protected (page.instanceName().concat('.support.'))]
 	 */
 	/* [/protected]
 	 */

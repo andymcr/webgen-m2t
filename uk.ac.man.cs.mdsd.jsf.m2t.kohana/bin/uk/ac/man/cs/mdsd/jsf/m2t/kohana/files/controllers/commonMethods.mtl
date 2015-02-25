@@ -1,67 +1,65 @@
 [comment encoding = UTF-8 /]
 [module commonMethods(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
-	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2013/Criteria')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::criteria/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateLoggedInCheck(genPage : GenPage)
-	? (not genPage.genPartOf.genAuthentication.oclIsUndefined())
+[template public generateLoggedInCheck(page : Page)
+	? (not page.partOf.authentication.oclIsUndefined())
 	post(trim())]
-// Log::instance()->add(Log::DEBUG, '[genPage.name/] setting use of ssl ');
+// Log::instance()->add(Log::DEBUG, '[page.name/] setting use of ssl ');
 // use_ssl();
-[if (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
-[let genLocalAuthentication : GenLocalAuthenticationSystem
-	= genPage.genPartOf.genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
+[if (page.partOf.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[let localAuthentication : LocalAuthenticationSystem = page.partOf.authentication.oclAsType(LocalAuthenticationSystem)]
 if (!Auth::instance()->logged_in())
 {
 	Session::instance()->set('login_referrer', $this->request->uri());
-	$this->redirect(Route::get('[if (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
-TBC[elseif (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenLocalAuthenticationSystem))]
-[genPage.genPartOf.genAuthentication.oclAsType(GenLocalAuthenticationSystem).genLoginUnit.controllerName()/][else]
+	$this->redirect(Route::get('[if (page.partOf.authentication.oclIsTypeOf(CasAuthentication))]
+TBC[elseif (page.partOf.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[page.partOf.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.controllerName()/][else]
 TBC[/if]')->uri());
 }
 [/let]
-[elseif (genPage.genPartOf.genAuthentication.oclIsTypeOf(GenCasAuthentication))]
-[let genCasAuthentication : GenCasAuthentication
-	= genPage.genPartOf.genAuthentication.oclAsType(GenCasAuthentication)]
+[elseif (page.partOf.authentication.oclIsTypeOf(CasAuthentication))]
+[let casAuthentication : CasAuthentication = page.partOf.authentication.oclAsType(CasAuthentication)]
 [/let]
 [/if]
 [/template]
 
 
-[template public generateValuesFromFormToModel(genUnit : GenDynamicUnit) post(trim())]
-$this->[genUnit.instanceName()/]->values($this->request->post(), array([for
-	(genField : GenUnitField | genUnit.nonResourceInputFeatures())
-	separator (', ')][if (genField.isLocation())]'[genField.columnName()/]_latitude', '[genField.columnName()/]_longitude'[else]'[genField.columnName()/]'[/if][/for]));
+[template public generateValuesFromFormToModel(unit : DynamicUnit) post(trim())]
+$this->[unit.instanceName()/]->values($this->request->post(), array([for
+	(field : UnitField | unit.nonResourceInputFeatures())
+	separator (', ')][if (field.isLocation())]'[field.modelPropertyName()/]_latitude', '[field.modelPropertyName()/]_longitude'[else]'[field.modelPropertyName()/]'[/if][/for]));
 [/template]
 
-[template public generateDefaultUnitValues(genUnit : GenDynamicUnit) post(trim())]
-[for (genField : GenUnitField | genUnit.defaultValueFields())]
-[if (genField.oclIsTypeOf(GenUnitElement))]
-$this->[genUnit.instanceName()/]->[genField.modelPropertyName()/] = [genField.oclAsType(GenIncludedElement).genDefaultValue.generateCriteria()/];
+[template public generateDefaultUnitValues(unit : DynamicUnit) post(trim())]
+[for (field : UnitField | unit.defaultValueFields())]
+[if (field.oclIsTypeOf(UnitElement))]
+$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedElement).defaultValue.generateCriteria()/];
 [else]
-$this->[genUnit.instanceName()/]->[genField.modelPropertyName()/] = [genField.oclAsType(GenInterfaceField).genDefaultValue.generateCriteria()/];
+$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
 [/if]
 [/for]
 [/template]
 
 
-[template public generateForcedFeatureValues(genUnit : GenDynamicUnit) post(trim())]
-[for (genFeature : GenUnitField | genUnit.forcedValueFeatures())]
-[let genValue : GenExpression = genFeature.oclAsType(GenUnitFeature).genForcedValue]
-$this->[genUnit.instanceName()/]->[genFeature.columnName()/] = [genValue.generateCriteria()/];
+[template public generateForcedFeatureValues(unit : DynamicUnit) post(trim())]
+[for (feature : UnitField | unit.forcedValueFeatures())]
+[let value : Expression = feature.oclAsType(UnitFeature).forcedValue]
+$this->[unit.instanceName()/]->[feature.modelPropertyName()/] = [value.generateCriteria()/];
 [/let]
 [/for]
 [/template]
 
-[template public generateCaptchaCheck(genUnit : GenDynamicUnit) post(trim())]
+[template public generateCaptchaCheck(unit : DynamicUnit) post(trim())]
 require_once(Kohana::find_file('vendor/recaptcha', 'recaptchalib'));
-$reCaptcha = new ReCaptcha('[genUnit.pageDisplayedOn().genPartOf.jsfModel.captchaSecretKey/]');
+$reCaptcha = new ReCaptcha('[unit.pageDisplayedOn().partOf.captchaSecretKey/]');
 $resp = $reCaptcha->verifyResponse(
 	$_SERVER['['/]"REMOTE_ADDR"[']'/], 
 	$this->request->post('g-recaptcha-response') 
@@ -70,83 +68,83 @@ if ($resp == NULL || !$resp->success)
 	throw new Captcha_Exception($resp->errorCodes);
 [/template]
 
-[template public generateCatchCaptchaException(genUnit : GenDynamicUnit) post(trim())]
+[template public generateCatchCaptchaException(unit : DynamicUnit) post(trim())]
 catch (Captcha_Exception $e)
 {
-	$this->[genUnit.instanceName()/]_field_errors = ['['/][']'/];
-[for (genField : GenUnitField | genUnit.captchaFields())]
-	$this->[genUnit.instanceName()/]_field_errors['['/]'[genField.modelPropertyName()/]'[']'/] = $e->message();
+	$this->[unit.instanceName()/]_field_errors = ['['/][']'/];
+[for (field : UnitField | unit.captchaFields())]
+	$this->[unit.instanceName()/]_field_errors['['/]'[field.modelPropertyName()/]'[']'/] = $e->message();
 [/for]
-[if (genUnit.hasEncryptedFeatures())]
-	[genUnit.generateClearEncryptedFeatures()/]
+[if (unit.hasEncryptedFeatures())]
+	[unit.generateClearEncryptedFeatures()/]
 [/if]
-[if (genUnit.hasInterfaceFields())]
-	[genUnit.generateRememberInterfaceFields()/]
+[if (unit.hasInterfaceFields())]
+	[unit.generateRememberInterfaceFields()/]
 [/if]
 }
 [/template]
 
-[template public generateInterfaceFieldValidation(genUnit : GenDynamicUnit) post(trim())]
+[template public generateInterfaceFieldValidation(unit : DynamicUnit) post(trim())]
 $extra_validation = Validation::factory($_POST);
-[for (genField : GenInterfaceField | genUnit.interfaceFields())]
-	[if (genField.isRequired())]
-$extra_validation->rule('[genField.modelPropertyName()/]', 'not_empty');
+[for (field : InterfaceField | unit.interfaceFields())]
+	[if (field.isRequired())]
+$extra_validation->rule('[field.modelPropertyName()/]', 'not_empty');
 	[/if]
-	[if (genField.oclIsTypeOf(GenDateField))]
-$extra_validation->rule('[genField.modelPropertyName()/]', 'date');
+	[if (field.oclIsTypeOf(DateField))]
+$extra_validation->rule('[field.modelPropertyName()/]', 'date');
 	[/if]
-	[if (not genField.genMustMatch.oclIsUndefined())]
-$extra_validation->rule('[genField.modelPropertyName()/]', 'matches', array(':validation', ':field', '[genField.genMustMatch.modelPropertyName()/]'));
+	[if (not field.mustMatch.oclIsUndefined())]
+$extra_validation->rule('[field.modelPropertyName()/]', 'matches', array(':validation', ':field', '[field.mustMatch.modelPropertyName()/]'));
 	[/if]
 [/for]
 [/template]
 
 
-[template public generateClearEncryptedFeatures(genUnit : GenDynamicUnit) post(trim())]
-[for (genField : GenUnitField | genUnit.encryptedFeatures())]
-$this->[genUnit.instanceName()/]->[genField.modelPropertyName()/] = '';
+[template public generateClearEncryptedFeatures(unit : DynamicUnit) post(trim())]
+[for (field : UnitField | unit.encryptedFeatures())]
+$this->[unit.instanceName()/]->[field.modelPropertyName()/] = '';
 [/for]
 [/template]
 
-[template public generateRememberInterfaceFields(genUnit : GenDynamicUnit) post(trim())]
-$this->[genUnit.instanceName()/]->unit_fields($this->request->post(), array([for
-	(genField : GenUnitField | genUnit.interfaceFields())
-	separator (', ')]'[genField.columnName()/]'[/for]));
+[template public generateRememberInterfaceFields(unit : DynamicUnit) post(trim())]
+$this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
+	(field : UnitField | unit.interfaceFields())
+	separator (', ')]'[field.modelPropertyName()/]'[/for]));
 [/template]
 
 
-[template public generateActionMethod(genAction : GenInlineAction, errorVariable : String)
-	? (genAction.oclIsTypeOf(GenDeleteAction)) post(trim())]
-[let genDeleteAction : GenDeleteAction = genAction.oclAsType(GenDeleteAction)]
-public function action_[genDeleteAction.actionName()/]()
+[template public generateActionMethod(action : InlineAction, errorVariable : String)
+	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
+[let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
+public function action_[deleteAction.actionName()/]()
 {
-	$[genDeleteAction.instanceName()/] = ORM::factory('[genDeleteAction.modelName()/]', $this->request->param('param'));
-	if ($[genDeleteAction.instanceName()/]->loaded())
+	$[deleteAction.instanceName()/] = ORM::factory('[deleteAction.modelName()/]', $this->request->param('param'));
+	if ($[deleteAction.instanceName()/]->loaded())
 	{
-		$[genDeleteAction.instanceName()/]->delete();
-[if (genDeleteAction.genDestination.oclIsUndefined())]
-		[genDeleteAction.generateRemoveParameter(genAction.parameterName())/]
+		$[deleteAction.instanceName()/]->delete();
+[if (deleteAction.destination.oclIsUndefined())]
+		[deleteAction.generateRemoveParameter(action.parameterName())/]
 [else]
-		$this->redirect(Route::get('[genDeleteAction.genDestination.controllerName()/]')->uri());
+		$this->redirect(Route::get('[deleteAction.destination.controllerName()/]')->uri());
 [/if]
 	}
 	else
-		[errorVariable/] = 'Invalid [genDeleteAction.modelName()/] identifier';
+		[errorVariable/] = 'Invalid [deleteAction.modelName()/] identifier';
 }
 [/let]
 [/template]
 
-[template public generateActionMethod(genAction : GenInlineAction, errorVariable : String)
-	? (genAction.oclIsTypeOf(GenFeatureSupportAction)) post(trim())]
-[let genSupportAction : GenFeatureSupportAction = genAction.oclAsType(GenFeatureSupportAction)]
-public function action_[genAction.actionName()/]()
+[template public generateActionMethod(action : InlineAction, errorVariable : String)
+	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
+[let supportAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+public function action_[action.actionName()/]()
 {
-	$[genSupportAction.instanceName()/] = ORM::factory('[genSupportAction.modelName()/]', $this->request->param('param'));
-	if (!$[genSupportAction.instanceName()/]->loaded())
-		[errorVariable/] = 'Invalid [genSupportAction.modelName()/] identifier';
+	$[supportAction.instanceName()/] = ORM::factory('[supportAction.modelName()/]', $this->request->param('param'));
+	if (!$[supportAction.instanceName()/]->loaded())
+		[errorVariable/] = 'Invalid [supportAction.modelName()/] identifier';
 	else
 	{
-		/* [protected ('support.'.concat(genSupportAction.actionName()))]
+		/* [protected ('support.'.concat(supportAction.actionName()))]
 		 */
 		/* [/protected]
 		 */

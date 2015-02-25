@@ -1,18 +1,17 @@
 [comment encoding = UTF-8 /]
 [module baseController(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateBaseController(genModel : GenJsfModel)]
-[file(genModel.controllersDirectory().concat('/Template/Base').concat(genModel.executableExtension()), false)]
+[template public generateBaseController(jsfModel : JsfModel)]
+[file(jsfModel.controllersDirectory().concat('/Template/Base').concat(jsfModel.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-class [genModel.baseControllerClassName()/] extends Controller_Template
+class [jsfModel.baseControllerClassName()/] extends Controller_Template
 {
 	public $template = 'site';
 
@@ -26,13 +25,13 @@ class [genModel.baseControllerClassName()/] extends Controller_Template
 			$this->template->metaTags =array();
 			$this->template->links = array();
 			$this->template->stylesheets = array();
-			$this->template->scripts = array([if (genModel.jsfModel.ajaxTechnology = AjaxTechnologies::jQuery)]
-'//code.jquery.com/jquery-2.1.3.min.js'[elseif (genModel.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
+			$this->template->scripts = array([if (jsfModel.ajaxTechnology = AjaxTechnologies::jQuery)]
+'//code.jquery.com/jquery-2.1.3.min.js'[elseif (jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
 
 				'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js',
 				'/js/controllers.js'
 			[/if]);
-[if (not genModel.isAuthenticated())]
+[if (not jsfModel.isAuthenticated())]
 			$topbar_template = View::factory('elements/topbar');
 [else]
 			if (Auth::instance()->logged_in()) 

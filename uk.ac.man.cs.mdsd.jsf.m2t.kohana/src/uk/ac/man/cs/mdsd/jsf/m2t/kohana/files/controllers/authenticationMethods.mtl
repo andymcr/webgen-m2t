@@ -1,8 +1,7 @@
 [comment encoding = UTF-8 /]
 [module authenticationMethods(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::commonMethods/]
@@ -10,9 +9,9 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::controllers::editMethods/]
 
 
-[template protected generateAuthenticationStart(genUnit : GenDynamicUnit) post(trim())]
-[if (not genUnit.oclAsType(GenControlUnit).genCancelDestination.oclIsUndefined())]
-[genUnit.generateHandleCancel()/]
+[template protected generateAuthenticationStart(unit : DynamicUnit) post(trim())]
+[if (not unit.oclAsType(ControlUnit).cancelDestination.oclIsUndefined())]
+[unit.generateHandleCancel()/]
 [/if]
 if (Auth::instance()->logged_in())
 {
@@ -22,105 +21,105 @@ if (Auth::instance()->logged_in())
 [/template]
 
 
-[template public generateUnitVariables(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenRegistrationUnit)) post(trim())]
-[let genAuthenticationUnit : GenDynamicUnit = genUnit.oclAsType(GenDynamicUnit)]
-$this->[genAuthenticationUnit.instanceName()/] = ORM::factory('[genAuthenticationUnit.modelName()/]');
-[if (genAuthenticationUnit.hasDefaultValueFields())]
-[genAuthenticationUnit.generateDefaultUnitValues()/]
+[template public generateUnitVariables(unit : ContentUnit)
+	? (unit.oclIsKindOf(RegistrationUnit)) post(trim())]
+[let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+$this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.modelName()/]');
+[if (authenticationUnit.hasDefaultValueFields())]
+[authenticationUnit.generateDefaultUnitValues()/]
 [/if]
 [/let]
 [/template]
 
-[template public generateUnitDisplay(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenAuthenticationUnit) and not genUnit.oclIsKindOf(GenEditUnit)) post(trim())]
-[let genAuthenticationUnit : GenDynamicUnit = genUnit.oclAsType(GenDynamicUnit)]
-$this->[genAuthenticationUnit.templateInstanceName()/]->bind('[genAuthenticationUnit.instanceName()/]', $this->[genAuthenticationUnit.instanceName()/]);
+[template public generateUnitDisplay(unit : ContentUnit)
+	? (unit.oclIsKindOf(AuthenticationUnit) and not unit.oclIsKindOf(EditUnit)) post(trim())]
+[let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+$this->[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.instanceName()/]', $this->[authenticationUnit.instanceName()/]);
 [/let]
 [/template]
 
 
-[template public generateUnitMethods(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenRegistrationUnit)) post(trim())]
-[let genAuthentication : GenLocalAuthenticationSystem = genUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
-[let genRegistrationUnit : GenRegistrationUnit = genUnit.oclAsType(GenRegistrationUnit)]
-public function action_[genRegistrationUnit.actionName()/]() {
-	[genRegistrationUnit.generateAuthenticationStart()/]
-[if (not genRegistrationUnit.genCancelDestination.oclIsUndefined())]
-	[genRegistrationUnit.generateHandleCancel()/]
+[template public generateUnitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(RegistrationUnit)) post(trim())]
+[let authentication : LocalAuthenticationSystem = unit.displayedOn.oclAsType(Page).partOf.authentication.oclAsType(LocalAuthenticationSystem)]
+[let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
+public function action_[registrationUnit.actionName()/]() {
+	[registrationUnit.generateAuthenticationStart()/]
+[if (not registrationUnit.cancelDestination.oclIsUndefined())]
+	[registrationUnit.generateHandleCancel()/]
 [/if]
 	else if ($this->request->method() == HTTP_Request::POST)
 	{
 		try
 		{
-[if (genRegistrationUnit.hasCaptchaFields())]
-			[genRegistrationUnit.generateCaptchaCheck()/]
+[if (registrationUnit.hasCaptchaFields())]
+			[registrationUnit.generateCaptchaCheck()/]
 
 [/if]
-			$this->[genRegistrationUnit.instanceName()/]->salt = md5(uniqid(rand(), true));
-			[genRegistrationUnit.generateValuesFromFormToModel()/]
-[if (genRegistrationUnit.hasForcedValueFeatures())]
-			[genRegistrationUnit.generateForcedFeatureValues()/]
+			$this->[registrationUnit.instanceName()/]->salt = md5(uniqid(rand(), true));
+			[registrationUnit.generateValuesFromFormToModel()/]
+[if (registrationUnit.hasForcedValueFeatures())]
+			[registrationUnit.generateForcedFeatureValues()/]
 [/if]
-			$this->[genRegistrationUnit.instanceName()/]->activated = [if (genAuthentication.jsfAuthentication.useEmailActivation)]'0'[else]'1'[/if];
-[if (genAuthentication.jsfAuthentication.useEmailActivation)]
-			$this->[genRegistrationUnit.instanceName()/]->new_email_key = md5(rand().microtime());
+			$this->[registrationUnit.instanceName()/]->activated = [if (authentication.useEmailActivation)]'0'[else]'1'[/if];
+[if (authentication.useEmailActivation)]
+			$this->[registrationUnit.instanceName()/]->new_email_key = md5(rand().microtime());
 [/if]
-[if (genRegistrationUnit.hasInterfaceFields())]
-			[genRegistrationUnit.generateInterfaceFieldValidation()/]
+[if (registrationUnit.hasInterfaceFields())]
+			[registrationUnit.generateInterfaceFieldValidation()/]
 [/if]
-			$this->[genRegistrationUnit.instanceName()/]->save([if (genRegistrationUnit.hasInterfaceFields())]$extra_validation[/if]);
-	[if (genAuthentication.jsfAuthentication.useEmailActivation)]
-//		$this->[genRegistrationUnit.instanceName()/]->trans_commit();
-//		$this->authentication_lib->sendEmail('activate', $this->[genRegistrationUnit.instanceName()/]->email, array(
+			$this->[registrationUnit.instanceName()/]->save([if (registrationUnit.hasInterfaceFields())]$extra_validation[/if]);
+	[if (authentication.useEmailActivation)]
+//		$this->[registrationUnit.instanceName()/]->trans_commit();
+//		$this->authentication_lib->sendEmail('activate', $this->[registrationUnit.instanceName()/]->email, array(
 //			'site_name' => $this->config->item('site_title', 'site'),
-//			'user_id' => $this->[genRegistrationUnit.instanceName()/]->id,
-//			'username' => $this->[genRegistrationUnit.instanceName()/]->username,
-//			'email' => $this->[genRegistrationUnit.instanceName()/]->email,
-//			'new_email_key' => $this->[genRegistrationUnit.instanceName()/]->new_email_key,
+//			'user_id' => $this->[registrationUnit.instanceName()/]->id,
+//			'username' => $this->[registrationUnit.instanceName()/]->username,
+//			'email' => $this->[registrationUnit.instanceName()/]->email,
+//			'new_email_key' => $this->[registrationUnit.instanceName()/]->new_email_key,
 //			'activation_period' => $this->config->item('email_activation_expire', 'tank_auth')));
 //		$this->page_message = 'Activation email sent';
 	[else]
-		[let genAuthentication : GenLocalAuthenticationSystem = genAuthentication.oclAsType(GenLocalAuthenticationSystem)]
-			$user = ORM::factory('[genAuthentication.genUserService.jsfService.modelName()/]');
-			$user->[genAuthentication.genUserAuthenticationKey.columnName()/] = $this->[genRegistrationUnit.instanceName()/]->[genAuthentication.genLoginUnit.genLoginIdField.modelPropertyName()/];
-			[for (genUserFeature : GenServiceEntityFeature | genAuthentication.genUserService.genFeatures->select(f | f.isRequired())->select(f | f <> genAuthentication.genUserAuthenticationKey))]
-			$user->[genUserFeature.columnName()/] = '';
+		[let authentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+			$user = ORM::factory('[authentication.userService.modelName()/]');
+			$user->[authentication.userAuthenticationKey.columnName()/] = $this->[registrationUnit.instanceName()/]->[authentication.loginUnit.loginIdField.modelPropertyName()/];
+			[for (userFeature : ServiceFeature | authentication.userService.features->select(f | f.isRequired())->select(f | f <> authentication.userAuthenticationKey))]
+			$user->[userFeature.columnName()/] = '';
 			[/for]
 			$user->validation_required(FALSE)->save();
-			[if (genAuthentication.jsfAuthentication.sendWelcomeEmail)]
-//			$this->authentication_lib->sendEmail('welcome', $this->[genRegistrationUnit.instanceName()/]->email, array(
+			[if (authentication.sendWelcomeEmail)]
+//			$this->authentication_lib->sendEmail('welcome', $this->[registrationUnit.instanceName()/]->email, array(
 //				'site_name' => $this->config->item('site_title', 'site'),
-//				'username' => $this->[genRegistrationUnit.instanceName()/]->username,
-//				'email' => $this->[genRegistrationUnit.instanceName()/]->email));
+//				'username' => $this->[registrationUnit.instanceName()/]->username,
+//				'email' => $this->[registrationUnit.instanceName()/]->email));
 			[/if]
 		[/let]
-		[if (not genRegistrationUnit.genConfirmDestination.oclIsUndefined())]
-			$this->redirect(Route::get('[genRegistrationUnit.genConfirmDestination.controllerName()/]')->uri());
+		[if (not registrationUnit.confirmDestination.oclIsUndefined())]
+			$this->redirect(Route::get('[registrationUnit.confirmDestination.controllerName()/]')->uri());
 		[else]
-			$this->[genRegistrationUnit.instanceName()/]->clear();
+			$this->[registrationUnit.instanceName()/]->clear();
 			$this->page_message = 'Registration completed';
 		[/if]
 	[/if]
 		}
-[if (genRegistrationUnit.hasCaptchaFields())]
-		[genRegistrationUnit.generateCatchCaptchaException()/]
+[if (registrationUnit.hasCaptchaFields())]
+		[registrationUnit.generateCatchCaptchaException()/]
 [/if]
 		catch (ORM_Validation_Exception $e)
 		{
-			$this->[genRegistrationUnit.instanceName()/]_field_errors = $e->errors('');
-	[if (genRegistrationUnit.genDisplayedOn.oclAsType(GenPage).genPartOf.developmentVersion)]
-			$unreported_field_errors = array_diff_key($this->[genRegistrationUnit.instanceName()/]_field_errors, array([for
-	(genField : GenUnitField | genRegistrationUnit.inputFields())
-		separator (', ')]'[genField.columnName()/]' => ''[/for][if (genRegistrationUnit.hasInterfaceFields())], '_external' => ''[/if]));
+			$this->[registrationUnit.instanceName()/]_field_errors = $e->errors('');
+	[if (registrationUnit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
+			$unreported_field_errors = array_diff_key($this->[registrationUnit.instanceName()/]_field_errors, array([for
+	(field : UnitField | registrationUnit.inputFields())
+		separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (registrationUnit.hasInterfaceFields())], '_external' => ''[/if]));
 			if (!empty($unreported_field_errors))
-				$this->[genRegistrationUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+				$this->[registrationUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
 	[/if]
-[if (genRegistrationUnit.hasEncryptedFeatures())]
-			[genRegistrationUnit.generateClearEncryptedFeatures()/]
+[if (registrationUnit.hasEncryptedFeatures())]
+			[registrationUnit.generateClearEncryptedFeatures()/]
 [/if]
-[if (genRegistrationUnit.hasInterfaceFields())]
-			[genRegistrationUnit.generateRememberInterfaceFields()/]
+[if (registrationUnit.hasInterfaceFields())]
+			[registrationUnit.generateRememberInterfaceFields()/]
 [/if]
 		}
 	}
@@ -129,21 +128,21 @@ public function action_[genRegistrationUnit.actionName()/]() {
 [/let]
 [/template]
 
-[template public generateUnitMethods(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenLoginUnit)) post(trim())]
-[let genLoginUnit : GenLoginUnit = genUnit.oclAsType(GenLoginUnit)]
-[let genLocalAuthentication : GenLocalAuthenticationSystem = genLoginUnit.genAuthenticationSystem]
-public function action_[genLoginUnit.actionName()/]()
+[template public generateUnitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(LoginUnit)) post(trim())]
+[let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
+[let localAuthentication : LocalAuthenticationSystem = loginUnit.authenticationSystem]
+public function action_[loginUnit.actionName()/]()
 {
-	[genLoginUnit.generateAuthenticationStart()/]
+	[loginUnit.generateAuthenticationStart()/]
 	else if ($this->request->method() == HTTP_Request::POST)
 	{
-		$login_id = $this->request->post('[genLoginUnit.genLoginIdField.modelPropertyName()/]');
-		$password = $this->request->post('[genLoginUnit.genPasswordField.modelPropertyName()/]');
-[if (not genLocalAuthentication.genAutoLoginService.oclIsUndefined())]
-		$remember_me = $this->request->post('[genLoginUnit.genRememberMeField.modelPropertyName()/]');
+		$login_id = $this->request->post('[loginUnit.loginIdField.modelPropertyName()/]');
+		$password = $this->request->post('[loginUnit.passwordField.modelPropertyName()/]');
+[if (not localAuthentication.autoLoginService.oclIsUndefined())]
+		$remember_me = $this->request->post('[loginUnit.rememberMeField.modelPropertyName()/]');
 [/if]
-		$authentication = Auth::instance()->login($login_id, $password, [if (genLocalAuthentication.genAutoLoginService.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
+		$authentication = Auth::instance()->login($login_id, $password, [if (localAuthentication.autoLoginService.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
 		if ($authentication)
 		{
 			$referrer = Session::instance()->get('login_referrer');
@@ -157,13 +156,13 @@ public function action_[genLoginUnit.actionName()/]()
 		}
 		else
 		{
-			$this->[genLoginUnit.instanceName()/]_error = Auth::instance()->message;
-			[genLoginUnit.generateValuesFromFormToModel()/]
-[if (genLoginUnit.hasEncryptedFeatures())]
-			[genLoginUnit.generateClearEncryptedFeatures()/]
+			$this->[loginUnit.instanceName()/]_error = Auth::instance()->message;
+			[loginUnit.generateValuesFromFormToModel()/]
+[if (loginUnit.hasEncryptedFeatures())]
+			[loginUnit.generateClearEncryptedFeatures()/]
 [/if]
-[if (genLoginUnit.hasInterfaceFields())]
-			[genLoginUnit.generateRememberInterfaceFields()/]
+[if (loginUnit.hasInterfaceFields())]
+			[loginUnit.generateRememberInterfaceFields()/]
 [/if]
 		}
 	}
@@ -178,15 +177,15 @@ public function action_logout()
 [/let]
 [/template]
 
-[template public generateUnitMethods(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenForgottenPasswordUnit)) post(trim())]
-[let genForgottenUnit : GenForgottenPasswordUnit = genUnit.oclAsType(GenForgottenPasswordUnit)]
-public function action_[genForgottenUnit.actionName()/]() {
+[template public generateUnitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(ForgottenPasswordUnit)) post(trim())]
+[let forgottenUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
+public function action_[forgottenUnit.actionName()/]() {
 	// based on code from tank_auth by Ilya Konyukhov (http://konyukhov.com/soft/tank_auth/)
-	[genForgottenUnit.generateAuthenticationStart()/]
+	[forgottenUnit.generateAuthenticationStart()/]
 	else {
-		$this->[genForgottenUnit.instanceName()/]->where('[genForgottenUnit.genLoginIdField.modelPropertyName()/]', '=', $this->request->post('[genForgottenUnit.genLoginIdField.modelPropertyName()/]'))->find();
-		if ($this->[genForgottenUnit.instanceName()/]->loaded())
+		$this->[forgottenUnit.instanceName()/]->where('[forgottenUnit.loginIdField.modelPropertyName()/]', '=', $this->request->post('[forgottenUnit.loginIdField.modelPropertyName()/]'))->find();
+		if ($this->[forgottenUnit.instanceName()/]->loaded())
 		{
 		}
 	$this->template->page_message = 'Email sent';

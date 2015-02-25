@@ -1,18 +1,18 @@
 [comment encoding = UTF-8 /]
 [module staticMethods(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateUnitVariables(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenStaticUnit)) post(trim())]
-[let genStaticUnit : GenStaticUnit = genUnit.oclAsType(GenStaticUnit)]
-$this->[genUnit.instanceName()/] = ORM::factory('[genUnit.modelName()/]')->where('name', '=', '[genStaticUnit.name/]')->find();
+[template public generateUnitVariables(unit : ContentUnit)
+	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
+[let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
+$this->[staticUnit.instanceName()/] = ORM::factory('[staticUnit.modelName()/]')->where('name', '=', '[staticUnit.name/]')->find();
 [/let]
 [/template]
 
-[template public generateUnitDisplay(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenStaticUnit)) post(trim())]
-$this->[genUnit.templateInstanceName()/]->bind('[genUnit.instanceName()/]', $this->[genUnit.instanceName()/]);
+[template public generateUnitDisplay(unit : ContentUnit)
+	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
+$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
 [/template]

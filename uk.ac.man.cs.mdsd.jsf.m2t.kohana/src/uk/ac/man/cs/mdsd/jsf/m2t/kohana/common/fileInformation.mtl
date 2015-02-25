@@ -142,10 +142,10 @@
 		.concat(genAuthentication.executableExtension())
 /]
 
-[query public controllerFilename(genPage : GenPage) : String
-	= genPage.controllersDirectory().concat('/')
-		.concat(genPage.controllerName().toUpperFirst())
-		.concat(genPage.executableExtension())
+[query public controllerFilename(page : Page) : String
+	= page.controllersDirectory().concat('/')
+		.concat(page.controllerName().toUpperFirst())
+		.concat(page.executableExtension())
 /]
 
 [query public menuFilename(genMenu : GenMenu) : String

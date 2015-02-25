@@ -30,6 +30,10 @@
 	= genPage.name
 /]
 
+[query public controllerClassName(page : Page) : String
+	= 'Controller_'.concat(page.controllerName())
+/]
+
 [query public controllerClassName(genPage : GenPage) : String
 	= 'Controller_'.concat(genPage.controllerName())
 /]
@@ -42,6 +46,10 @@
 	= genPage.name.toLowerFirst()
 /]
 
+
+[query public instanceName(menu : Menu) : String
+	= menu.name.toLowerFirst()
+/]
 
 [query public instanceName(genMenu : GenMenu) : String
 	= genMenu.name().toLowerFirst()
@@ -136,6 +144,10 @@
 	= genUnit.instanceName().concat('_page')
 /]
 
+[query public templateInstanceName(unit : ContentUnit) : String
+	= unit.instanceName().concat('_template')
+/]
+
 [query public templateInstanceName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName().concat('_template')
 /]
@@ -180,6 +192,10 @@
 
 [query public instanceName(genFeature : GenUnitFeature) : String
 	= genFeature.name().toLowerFirst()
+/]
+
+[query public modelName(feature : UnitAssociation) : String
+	= feature.serviceFeature.modelName()
 /]
 
 [query public modelName(genFeature : GenUnitAssociation) : String
@@ -260,8 +276,20 @@
 				.concat(methodName).concat('/')
 /]
 
+[query public instanceName(action : InlineAction) : String
+	= action.name.toLowerFirst()
+/]
+
 [query public instanceName(genAction : GenInlineAction) : String
 	= genAction.name.toLowerFirst()
+/]
+
+[query public modelName(action : DeleteAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).modelName()
+		else
+			action.usedBy.oclAsType(UnitAssociation).modelName()
+		endif
 /]
 
 [query public modelName(genAction : GenDeleteAction) : String
@@ -269,6 +297,14 @@
 			genAction.genUsedBy.oclAsType(GenDynamicUnit).modelName()
 		else
 			genAction.genUsedBy.oclAsType(GenUnitAssociation).modelName()
+		endif
+/]
+
+[query public modelName(action : FeatureSupportAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).modelName()
+		else
+			action.usedBy.oclAsType(UnitAssociation).modelName()
 		endif
 /]
 
