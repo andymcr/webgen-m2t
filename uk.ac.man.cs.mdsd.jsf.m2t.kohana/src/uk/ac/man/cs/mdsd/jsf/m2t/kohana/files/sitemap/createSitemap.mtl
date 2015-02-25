@@ -1,13 +1,13 @@
 [comment encoding = UTF-8 /]
-[module createSitemap('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[module createSitemap('http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateCreateSitemap(genModel : GenJsfModel)]
-[file (genModel.sitemapClassesDirectory().concat('/Sitemap').concat(genModel.executableExtension()), false)]
+[template public generateCreateSitemap(jsfModel : JsfModel)]
+[file (jsfModel.sitemapClassesDirectory().concat('/Sitemap').concat(jsfModel.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
 class Sitemap
@@ -35,8 +35,8 @@ class Sitemap
 		$priority = $sitemap->createElement('priority', '0.9');
 		$home_url->appendChild($priority);
 		
-		[for (genPage : GenPage | genModel.topMenuItemsNonAuthenticated())]
-		[genPage.generatePageEntry(0.5)/]
+		[for (page : Page | jsfModel.topMenuItemsNonAuthenticated())]
+		[page.generatePageEntry(0.5)/]
 		[/for]
 		
 		$sitemap->save($filename);
@@ -45,45 +45,45 @@ class Sitemap
 [/file]
 [/template]
 
-[template private generatePageEntry(genPage : GenPage, priority : Real)]
-[genPage.generateSingleEntry(priority, '', null)/]
-[for (genUnit : GenContentUnit | genPage.genUnits)]
-	[if (genUnit.oclIsKindOf(GenIndexUnit))]
-	[let genIndexUnit : GenIndexUnit = genUnit.oclAsType(GenIndexUnit)]
-		[if (genIndexUnit.jsfUnit.defaultPaginationSize > 0)]
-$entries = ORM::factory('[genUnit.modelName()/]')->[if (if genIndexUnit.genSelection.oclIsUndefined() then true else genIndexUnit.genSelection.genFilter.oclIsUndefined() endif)]
+[template private generatePageEntry(page : Page, priority : Real)]
+[page.generateSingleEntry(priority, '', null)/]
+[for (unit : ContentUnit | page.units)]
+	[if (unit.oclIsKindOf(IndexUnit))]
+	[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
+		[if (indexUnit.defaultPaginationSize > 0)]
+$entries = ORM::factory('[indexUnit.modelName()/]')->[if (if indexUnit.selection.oclIsUndefined() then true else indexUnit.selection.filter.oclIsUndefined() endif)]
 count_all()[else]
-[genIndexUnit.genSelection.jsfSelection.countName()/]()[/if];
+[indexUnit.selection.countName()/]()[/if];
 $i = 1;
-while ($i < ($entries / [genIndexUnit.jsfUnit.defaultPaginationSize/]))
+while ($i < ($entries / [indexUnit.defaultPaginationSize/]))
 {
 	$i++;
-	[genPage.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(genUnit.parameterName()).concat('\' => $i)'))/]
+	[page.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(indexUnit.parameterName()).concat('\' => $i)'))/]
 }
 		[/if]
 	[/let]
-	[elseif (genUnit.oclIsTypeOf(GenDetailsUnit))]
-	[let genDetailsUnit : GenDetailsUnit = genUnit.oclAsType(GenDetailsUnit)]
-		[if (genDetailsUnit.genSelection.oclIsUndefined())]
-$entries = ORM::factory('[genUnit.modelName()/]')->find_all();
+	[elseif (unit.oclIsTypeOf(DetailsUnit))]
+	[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+		[if (detailsUnit.selection.oclIsUndefined())]
+$entries = ORM::factory('[unit.modelName()/]')->find_all();
 foreach ($entries AS $entry)
 {
-	[genPage.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(genDetailsUnit.parameterName()).concat('\' => $entry->'.concat(genDetailsUnit.genService.keyName()).concat(')')))/]
+	[page.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(detailsUnit.parameterName()).concat('\' => $entry->'.concat(detailsUnit.service.keyName()).concat(')')))/]
 }
 		[/if]
 	[/let]
 	[/if]
 [/for]
-[for (genChildPage : GenPage | genPage.genChildPages)]
-[genChildPage.generatePageEntry((priority - 0.1).max(0.1))/]
+[for (childPage : Page | page.childPages)]
+[childPage.generatePageEntry((priority - 0.1).max(0.1))/]
 [/for]
 
 [/template]
 
-[template private generateSingleEntry(genPage : GenPage, priority : Real, routeParameter : String, queryString : String)]
+[template private generateSingleEntry(page : Page, priority : Real, routeParameter : String, queryString : String)]
 $url = $sitemap->createElement('url');
 $urlset->appendChild($url);
-$loc = $sitemap->createElement('loc', $deployed_url . Route::get('[genPage.controllerName()/]')->uri([routeParameter/])[if (not queryString.oclIsUndefined())]
+$loc = $sitemap->createElement('loc', $deployed_url . Route::get('[page.controllerName()/]')->uri([routeParameter/])[if (not queryString.oclIsUndefined())]
  . URL::query([queryString/])[/if]);
 $url->appendChild($loc);
 $change_freq = $sitemap->createElement('changefreq', 'monthly');

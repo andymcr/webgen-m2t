@@ -1,16 +1,16 @@
 [comment encoding = UTF-8 /]
 [module bootstrap(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateBootstrap(genModel : GenJsfModel)]
-[file (genModel.applicationDirectory().concat('/')
+[template public generateBootstrap(jsfModel : JsfModel)]
+[file (jsfModel.applicationDirectory().concat('/')
 		.concat('bootstrap')
-		.concat(genModel.executableExtension()), false)]
+		.concat(jsfModel.executableExtension()), false)]
 <?php defined('SYSPATH') or die('No direct script access.');
 
 // -- Environment setup --------------------------------------------------------
@@ -103,12 +103,12 @@ if (isset($_SERVER['['/]'KOHANA_ENV'[']'/]))
  * - boolean  expose      set the X-Powered-By header                        FALSE
  */
 Kohana::init(array(
-[if (not genModel.baseURL.oclIsUndefined())]
-	[if (genModel.baseURL <> '')]
-	'base_url'   => '/[genModel.baseURL/]',
+[if (not jsfModel.baseURL.oclIsUndefined())]
+	[if (jsfModel.baseURL <> '')]
+	'base_url'   => '/[jsfModel.baseURL/]',
 	[/if]
 [/if]
-[if (genModel.rewriteURLs)]
+[if (jsfModel.rewriteURLs)]
 	'index_file'   => FALSE,
 [/if]
 ));
@@ -148,38 +148,38 @@ Kohana::modules(array(
  */
 Route::set('default', '')
 	->defaults(array(
-		'controller' => '[genModel.homePage().controllerName()/]',
+		'controller' => '[jsfModel.homePage().controllerName()/]',
 		'action'  => 'index',
 	));
-[for (genPage : GenPage | genModel.genPages)]
-Route::set('[genPage.controllerName()/]', '[genPage.controllerName()/][if (genPage.hasParameterisedUnits() or genPage.hasControlUnits() or genPage.hasCommandUnits() or genPage.hasAuthenticationUnit() or genPage.hasUriActions() or genPage.hasSupportActions())]
-(/<action>[if (genPage.hasFormUnits() or genPage.hasUriActions())](/<param>)[/if])[/if]',
+[for (page : Page | jsfModel.pages)]
+Route::set('[page.controllerName()/]', '[page.controllerName()/][if (page.hasParameterisedUnits() or page.hasControlUnits() or page.hasCommandUnits() or page.hasAuthenticationUnit() or page.hasUriActions() or page.hasSupportActions())]
+(/<action>[if (page.hasFormUnits() or page.hasUriActions())](/<param>)[/if])[/if]',
 	array(
-		'controller' => '[genPage.controllerName()/]',
-	[if (genPage.hasParameterisedUnits() or genPage.hasControlUnits() or genPage.hasCommandUnits() or genPage.hasAuthenticationUnit() or genPage.hasUriActions())]
-		'action' => '[for (genUnit : GenDynamicUnit | genPage.parameterisedUnits()) separator('|')]
-[genUnit.actionName()/][if (genUnit.oclIsKindOf(GenEditUnit) and genUnit.hasInputAssociations())]
-|[for (genField : GenUnitField | genUnit.inputAssociations()) separator('|')]
-[genField.optionsName()/][/for][/if][/for][if (genPage.hasControlUnits())]
-[if (genPage.hasParameterisedUnits())]|[/if][for (genUnit : GenDynamicUnit | genPage.controlUnits()) separator('|')]
-[genUnit.actionName()/][/for][/if][if (genPage.hasCommandUnits())]
-|[for (genUnit : GenCommandUnit | genPage.commandUnits()) separator('|')]
-[for (genCommand : GenCommand | genUnit.genCommands) separator('|')]
-[genCommand.actionName()/][/for][/for][/if]
-[for (genUnit : GenAuthenticationUnit | genPage.authenticationUnits()->select(u | not u.oclIsTypeOf(GenRegistrationUnit))) separator('|')]
-[genUnit.oclAsType(GenDynamicUnit).actionName()/][if (genUnit.oclIsTypeOf(GenLoginUnit))]|logout[/if][/for]
-[if (genPage.hasUriActions())]
-|[for (genAction : GenInlineAction | genPage.uriActions()) separator('|')]
-[genAction.parameterName()/][/for][/if][if (genPage.hasSupportActions())]
+		'controller' => '[page.controllerName()/]',
+	[if (page.hasParameterisedUnits() or page.hasControlUnits() or page.hasCommandUnits() or page.hasAuthenticationUnit() or page.hasUriActions())]
+		'action' => '[for (unit : DynamicUnit | page.parameterisedUnits()) separator('|')]
+[unit.actionName()/][if (unit.oclIsKindOf(EditUnit) and unit.hasInputAssociations())]
+|[for (field : UnitField | unit.inputAssociations()) separator('|')]
+[field.optionsName()/][/for][/if][/for][if (page.hasControlUnits())]
+[if (page.hasParameterisedUnits())]|[/if][for (unit : DynamicUnit | page.controlUnits()) separator('|')]
+[unit.actionName()/][/for][/if][if (page.hasCommandUnits())]
+|[for (unit : CommandUnit | page.commandUnits()) separator('|')]
+[for (command : Command | unit.commands) separator('|')]
+[command.actionName()/][/for][/for][/if]
+[for (unit : AuthenticationUnit | page.authenticationUnits()->select(u | not u.oclIsTypeOf(RegistrationUnit))) separator('|')]
+[unit.oclAsType(DynamicUnit).actionName()/][if (unit.oclIsTypeOf(LoginUnit))]|logout[/if][/for]
+[if (page.hasUriActions())]
+|[for (action : InlineAction | page.uriActions()) separator('|')]
+[action.parameterName()/][/for][/if][if (page.hasSupportActions())]
 |support[/if]',
-		[if (genPage.hasFormUnits() or genPage.hasUriActions())]
-		'param' => '[if (genPage.hasFormUnits())]
-submit[if (genPage.hasUriActions())]|[/if][/if]
-[if (genPage.hasUriActions())]\d+[/if]',
+		[if (page.hasFormUnits() or page.hasUriActions())]
+		'param' => '[if (page.hasFormUnits())]
+submit[if (page.hasUriActions())]|[/if][/if]
+[if (page.hasUriActions())]\d+[/if]',
 		[/if]
 	[/if]
 	))->defaults(array(
-		'controller'  => '[genPage.controllerName()/]',
+		'controller'  => '[page.controllerName()/]',
 		'action'  => 'index'
 	));
 [/for]

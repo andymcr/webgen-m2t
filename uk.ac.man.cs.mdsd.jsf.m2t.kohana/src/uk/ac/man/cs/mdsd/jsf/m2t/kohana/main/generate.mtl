@@ -43,12 +43,12 @@
 [template public generateElement(genModel : GenJsfModel)]
 [comment @main/]
 [let jsfModel : JsfModel = genModel.jsfModel]
-[genModel.generateHtaccess()/]
-[genModel.generateBootstrap()/]
+[jsfModel.generateHtaccess()/]
+[jsfModel.generateBootstrap()/]
 
-[genModel.generateStaticSitemapXML()/]
-if (genModel.hasCreateSitemapUnits())]
-genModel.generateCreateSitemap()/]
+[jsfModel.generateStaticSitemapXML()/]
+if (jsfModel.hasCreateSitemapUnits())]
+jsfModel.generateCreateSitemap()/]
 /if]
 
 [jsfModel.generateDatabase()/]

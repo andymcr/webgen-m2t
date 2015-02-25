@@ -1,11 +1,11 @@
 [comment encoding = UTF-8 /]
-[module staticSitemapXML('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+[module staticSitemapXML('http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateStaticSitemapXML(genModel : GenJsfModel)]
+[template public generateStaticSitemapXML(jsfModel : JsfModel)]
 [file ('sitemap-static.xml', false)]
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,20 +16,20 @@
   <changefreq>monthly</changefreq>
   <priority>0.9</priority>
  </url>
-[for (genPage : GenPage | genModel.topMenuItemsNonAuthenticated())]
-[genPage.genaratePageEntry(0.5)/]
+[for (page : Page | jsfModel.topMenuItemsNonAuthenticated())]
+[page.genaratePageEntry(0.5)/]
 [/for]
 </urlset> 
 [/file]
 [/template]
 
-[template private genaratePageEntry(genPage : GenPage, priority : Real) post(trim())]
+[template private genaratePageEntry(page : Page, priority : Real) post(trim())]
  <url>
-  <loc>$DeployedURL$[genPage.controllerName()/]</loc>
+  <loc>$DeployedURL$[page.controllerName()/]</loc>
   <changefreq>monthly</changefreq>
   <priority>[priority/]</priority>
  </url>
-[for (genChildPage : GenPage | genPage.genChildPages)]
-[genChildPage.genaratePageEntry((priority - 0.1).max(0.1))/]
+[for (childPage : Page | page.childPages)]
+[childPage.genaratePageEntry((priority - 0.1).max(0.1))/]
 [/for]
 [/template]

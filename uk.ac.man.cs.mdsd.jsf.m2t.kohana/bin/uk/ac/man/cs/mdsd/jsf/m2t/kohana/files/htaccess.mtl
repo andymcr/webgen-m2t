@@ -1,13 +1,12 @@
 [comment encoding = UTF-8 /]
-[module htaccess('http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
+[module htaccess('http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
 
 
-[template public generateHtaccess(genJsfModel : GenJsfModel)]
+[template public generateHtaccess(jsfModel : JsfModel)]
 [file ('x.htaccess', false)]
 <IfModule mod_rewrite.c>
     RewriteEngine on
-    RewriteBase /[genJsfModel.baseURL/]/
+    RewriteBase /[jsfModel.baseURL/]/
     RewriteCond $1 !^(css|index\.php|images|robots\.txt)
     RewriteRule ^(.*)$ /index.php/$1 ['['/]L[']'/]
 </IfModule>

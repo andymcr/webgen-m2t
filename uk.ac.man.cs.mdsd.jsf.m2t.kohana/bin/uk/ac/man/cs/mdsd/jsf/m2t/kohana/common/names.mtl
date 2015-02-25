@@ -59,6 +59,10 @@
 /]
 
 
+[query public actionName(unit : ContentUnit) : String
+	= unit.instanceName()
+/]
+
 [query public actionName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName()
 /]
@@ -77,6 +81,24 @@
 
 [query public instanceName(genUnit : GenContentUnit) : String
 	= genUnit.name.toLowerFirst()
+/]
+
+[query public modelName(unit : ContentUnit) : String
+	= let baseName : String
+		= if unit.oclIsTypeOf(StaticUnit) then
+				if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
+					'None'
+				else
+					unit.oclAsType(StaticUnit).service.modelName()
+				endif
+			else
+				unit.oclAsType(DynamicUnit).service.modelName()
+			endif
+		in if unit.pageDisplayedOn().partOf.persistence.ormTechnology = OrmTechnologies::GasORM then
+				'Model\\'.concat(baseName)
+			else
+				baseName
+			endif
 /]
 
 [query public modelName(unit : GenContentUnit) : String
@@ -139,8 +161,16 @@
 /]
 
 
+[query public optionsName(field : UnitField) : String
+	= field.uniqueName().concat('_options')
+/]
+
 [query public optionsName(genField : GenUnitField) : String
 	= genField.uniqueName().concat('_options')
+/]
+
+[query public uniqueName(field : UnitField) : String
+	= field.displayedOn.instanceName().concat('_').concat(field.modelPropertyName())
 /]
 
 [query public uniqueName(genField : GenUnitField) : String
@@ -162,14 +192,35 @@
 /]
 
 
+[query public actionName(command : Command) : String
+	= command.instanceName()
+/]
+
 [query public actionName(genCommand : GenCommand) : String
 	= genCommand.instanceName()
+/]
+
+[query public instanceName(command : Command) : String
+	= command.name.toLowerFirst()
 /]
 
 [query public instanceName(genCommand : GenCommand) : String
 	= genCommand.name.toLowerFirst()
 /]
 
+
+[query public actionName(action : InlineAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).instanceName()
+				.concat(action.name.toUpperFirst())
+		else
+			let association : UnitAssociation
+					= action.usedBy.oclAsType(UnitAssociation)
+				in association.displayedOn.instanceName()
+				.concat(association.name.toUpperFirst())
+				.concat(action.name.toUpperFirst())
+		endif
+/]
 
 [query public actionName(genAction : GenInlineAction) : String
 	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
@@ -237,6 +288,10 @@
 				genAction.genUsedBy.oclAsType(GenUnitAssociation).genDisplayedOn
 			endif
 		in genUnit.genService.jsfService.modelName()
+/]
+
+[query public parameterName(action : InlineAction) : String
+	= action.actionName()
 /]
 
 [query public parameterName(genAction : GenInlineAction) : String
