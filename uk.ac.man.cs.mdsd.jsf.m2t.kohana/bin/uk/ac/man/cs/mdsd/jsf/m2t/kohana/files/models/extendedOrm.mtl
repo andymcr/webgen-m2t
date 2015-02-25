@@ -1,12 +1,12 @@
 [comment encoding = UTF-8 /]
 [module extendedOrm(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 
 
-[template public generateExtendedOrm(genModel : GenJsfModel)]
-[file(genModel.modelsDirectory().concat('/ExtendedORM').concat(genModel.executableExtension()), false)]
+[template public generateExtendedOrm(jsfModel : JsfModel)]
+[file(jsfModel.modelsDirectory().concat('/ExtendedORM').concat(jsfModel.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
 abstract class Model_ExtendedORM extends ORM
