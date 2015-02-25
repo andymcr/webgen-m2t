@@ -34,6 +34,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/menus"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/siteName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/siteTitle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/baseURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/rewriteURLs"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/webmasterEmail"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/copyrightText"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/metaDescription"/>

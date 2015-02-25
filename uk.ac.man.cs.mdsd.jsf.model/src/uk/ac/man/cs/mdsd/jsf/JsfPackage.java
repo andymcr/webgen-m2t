@@ -129,13 +129,31 @@ public interface JsfPackage extends EPackage {
 	int JSF_MODEL__SITE_TITLE = 5;
 
 	/**
+	 * The feature id for the '<em><b>Base URL</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JSF_MODEL__BASE_URL = 6;
+
+	/**
+	 * The feature id for the '<em><b>Rewrite UR Ls</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JSF_MODEL__REWRITE_UR_LS = 7;
+
+	/**
 	 * The feature id for the '<em><b>Webmaster Email</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__WEBMASTER_EMAIL = 6;
+	int JSF_MODEL__WEBMASTER_EMAIL = 8;
 
 	/**
 	 * The feature id for the '<em><b>Copyright Text</b></em>' attribute.
@@ -144,7 +162,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__COPYRIGHT_TEXT = 7;
+	int JSF_MODEL__COPYRIGHT_TEXT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Meta Description</b></em>' attribute.
@@ -153,7 +171,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__META_DESCRIPTION = 8;
+	int JSF_MODEL__META_DESCRIPTION = 10;
 
 	/**
 	 * The feature id for the '<em><b>Framework Technology</b></em>' attribute.
@@ -162,7 +180,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__FRAMEWORK_TECHNOLOGY = 9;
+	int JSF_MODEL__FRAMEWORK_TECHNOLOGY = 11;
 
 	/**
 	 * The feature id for the '<em><b>Ajax Technology</b></em>' attribute.
@@ -171,7 +189,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__AJAX_TECHNOLOGY = 10;
+	int JSF_MODEL__AJAX_TECHNOLOGY = 12;
 
 	/**
 	 * The feature id for the '<em><b>Authentication</b></em>' containment reference.
@@ -180,7 +198,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__AUTHENTICATION = 11;
+	int JSF_MODEL__AUTHENTICATION = 13;
 
 	/**
 	 * The feature id for the '<em><b>Captcha Site Key</b></em>' attribute.
@@ -189,7 +207,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__CAPTCHA_SITE_KEY = 12;
+	int JSF_MODEL__CAPTCHA_SITE_KEY = 14;
 
 	/**
 	 * The feature id for the '<em><b>Captcha Secret Key</b></em>' attribute.
@@ -198,7 +216,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__CAPTCHA_SECRET_KEY = 13;
+	int JSF_MODEL__CAPTCHA_SECRET_KEY = 15;
 
 	/**
 	 * The feature id for the '<em><b>Top Navigation Id</b></em>' attribute.
@@ -207,7 +225,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__TOP_NAVIGATION_ID = 14;
+	int JSF_MODEL__TOP_NAVIGATION_ID = 16;
 
 	/**
 	 * The feature id for the '<em><b>Side Menu</b></em>' reference.
@@ -216,7 +234,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__SIDE_MENU = 15;
+	int JSF_MODEL__SIDE_MENU = 17;
 
 	/**
 	 * The feature id for the '<em><b>Static Units Editable</b></em>' attribute.
@@ -225,7 +243,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__STATIC_UNITS_EDITABLE = 16;
+	int JSF_MODEL__STATIC_UNITS_EDITABLE = 18;
 
 	/**
 	 * The number of structural features of the '<em>Model</em>' class.
@@ -234,7 +252,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL_FEATURE_COUNT = 17;
+	int JSF_MODEL_FEATURE_COUNT = 19;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl <em>Service</em>}' class.
@@ -8761,6 +8779,28 @@ public interface JsfPackage extends EPackage {
 	EAttribute getJsfModel_SiteTitle();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getBaseURL <em>Base URL</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Base URL</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getBaseURL()
+	 * @see #getJsfModel()
+	 * @generated
+	 */
+	EAttribute getJsfModel_BaseURL();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isRewriteURLs <em>Rewrite UR Ls</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Rewrite UR Ls</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#isRewriteURLs()
+	 * @see #getJsfModel()
+	 * @generated
+	 */
+	EAttribute getJsfModel_RewriteURLs();
+
+	/**
 	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getWebmasterEmail <em>Webmaster Email</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11621,6 +11661,22 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute JSF_MODEL__SITE_TITLE = eINSTANCE.getJsfModel_SiteTitle();
+
+		/**
+		 * The meta object literal for the '<em><b>Base URL</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute JSF_MODEL__BASE_URL = eINSTANCE.getJsfModel_BaseURL();
+
+		/**
+		 * The meta object literal for the '<em><b>Rewrite UR Ls</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute JSF_MODEL__REWRITE_UR_LS = eINSTANCE.getJsfModel_RewriteURLs();
 
 		/**
 		 * The meta object literal for the '<em><b>Webmaster Email</b></em>' attribute feature.

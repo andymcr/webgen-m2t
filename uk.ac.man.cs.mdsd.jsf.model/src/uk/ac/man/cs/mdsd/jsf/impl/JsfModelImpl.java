@@ -47,6 +47,8 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getMenus <em>Menus</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getSiteName <em>Site Name</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getSiteTitle <em>Site Title</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getBaseURL <em>Base URL</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#isRewriteURLs <em>Rewrite UR Ls</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getWebmasterEmail <em>Webmaster Email</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getCopyrightText <em>Copyright Text</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getMetaDescription <em>Meta Description</em>}</li>
@@ -143,6 +145,46 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * @ordered
 	 */
 	protected String siteTitle = SITE_TITLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getBaseURL() <em>Base URL</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBaseURL()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String BASE_URL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getBaseURL() <em>Base URL</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBaseURL()
+	 * @generated
+	 * @ordered
+	 */
+	protected String baseURL = BASE_URL_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isRewriteURLs() <em>Rewrite UR Ls</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isRewriteURLs()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean REWRITE_UR_LS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isRewriteURLs() <em>Rewrite UR Ls</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isRewriteURLs()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean rewriteURLs = REWRITE_UR_LS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getWebmasterEmail() <em>Webmaster Email</em>}' attribute.
@@ -484,6 +526,48 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getBaseURL() {
+		return baseURL;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setBaseURL(String newBaseURL) {
+		String oldBaseURL = baseURL;
+		baseURL = newBaseURL;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.JSF_MODEL__BASE_URL, oldBaseURL, baseURL));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isRewriteURLs() {
+		return rewriteURLs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setRewriteURLs(boolean newRewriteURLs) {
+		boolean oldRewriteURLs = rewriteURLs;
+		rewriteURLs = newRewriteURLs;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.JSF_MODEL__REWRITE_UR_LS, oldRewriteURLs, rewriteURLs));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getWebmasterEmail() {
 		return webmasterEmail;
 	}
@@ -805,6 +889,10 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return getSiteName();
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				return getSiteTitle();
+			case JsfPackage.JSF_MODEL__BASE_URL:
+				return getBaseURL();
+			case JsfPackage.JSF_MODEL__REWRITE_UR_LS:
+				return isRewriteURLs();
 			case JsfPackage.JSF_MODEL__WEBMASTER_EMAIL:
 				return getWebmasterEmail();
 			case JsfPackage.JSF_MODEL__COPYRIGHT_TEXT:
@@ -861,6 +949,12 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return;
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				setSiteTitle((String)newValue);
+				return;
+			case JsfPackage.JSF_MODEL__BASE_URL:
+				setBaseURL((String)newValue);
+				return;
+			case JsfPackage.JSF_MODEL__REWRITE_UR_LS:
+				setRewriteURLs((Boolean)newValue);
 				return;
 			case JsfPackage.JSF_MODEL__WEBMASTER_EMAIL:
 				setWebmasterEmail((String)newValue);
@@ -925,6 +1019,12 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				setSiteTitle(SITE_TITLE_EDEFAULT);
 				return;
+			case JsfPackage.JSF_MODEL__BASE_URL:
+				setBaseURL(BASE_URL_EDEFAULT);
+				return;
+			case JsfPackage.JSF_MODEL__REWRITE_UR_LS:
+				setRewriteURLs(REWRITE_UR_LS_EDEFAULT);
+				return;
 			case JsfPackage.JSF_MODEL__WEBMASTER_EMAIL:
 				setWebmasterEmail(WEBMASTER_EMAIL_EDEFAULT);
 				return;
@@ -982,6 +1082,10 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return SITE_NAME_EDEFAULT == null ? siteName != null : !SITE_NAME_EDEFAULT.equals(siteName);
 			case JsfPackage.JSF_MODEL__SITE_TITLE:
 				return SITE_TITLE_EDEFAULT == null ? siteTitle != null : !SITE_TITLE_EDEFAULT.equals(siteTitle);
+			case JsfPackage.JSF_MODEL__BASE_URL:
+				return BASE_URL_EDEFAULT == null ? baseURL != null : !BASE_URL_EDEFAULT.equals(baseURL);
+			case JsfPackage.JSF_MODEL__REWRITE_UR_LS:
+				return rewriteURLs != REWRITE_UR_LS_EDEFAULT;
 			case JsfPackage.JSF_MODEL__WEBMASTER_EMAIL:
 				return WEBMASTER_EMAIL_EDEFAULT == null ? webmasterEmail != null : !WEBMASTER_EMAIL_EDEFAULT.equals(webmasterEmail);
 			case JsfPackage.JSF_MODEL__COPYRIGHT_TEXT:
@@ -1022,6 +1126,10 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 		result.append(siteName);
 		result.append(", siteTitle: ");
 		result.append(siteTitle);
+		result.append(", baseURL: ");
+		result.append(baseURL);
+		result.append(", rewriteURLs: ");
+		result.append(rewriteURLs);
 		result.append(", webmasterEmail: ");
 		result.append(webmasterEmail);
 		result.append(", copyrightText: ");
