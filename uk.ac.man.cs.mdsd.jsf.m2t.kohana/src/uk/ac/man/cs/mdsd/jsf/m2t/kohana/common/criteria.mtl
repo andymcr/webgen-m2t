@@ -2,83 +2,9 @@
 [module criteria(
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
-	'http://www.cs.man.ac.uk/mdsd/2013/GenCriteria',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',)]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenNullLiteral)) post(trim())]
-[criteria.oclAsType(GenNullLiteral).criteriaLiteral.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenIntegerLiteral)) post(trim())]
-[criteria.oclAsType(GenIntegerLiteral).criteriaLiteral.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenStringLiteral)) post(trim())]
-[criteria.oclAsType(GenStringLiteral).criteriaLiteral.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenCurrentTime)) post(trim())]
-[criteria.oclAsType(GenCurrentTime).criteriaLiteral.generateCriteria()/]
-[/template]
-
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenFunction)) post(trim())]
-[criteria.oclAsType(GenFunction).criteriaFunction.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenModelReference)) post(trim())]
-[criteria.oclAsType(GenModelReference).criteriaPath.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenFeatureReference)) post(trim())]
-[criteria.oclAsType(GenFeatureReference).criteriaPath.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenCurrentUserReference)) post(trim())]
-[criteria.oclAsType(GenCurrentUserReference).criteriaPath.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateBooleanOperator)) post(trim())]
-[criteria.oclAsType(GenPredicateBooleanOperator).criteriaPredicate.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateEqualityOperator)) post(trim())]
-[criteria.oclAsType(GenPredicateEqualityOperator).criteriaPredicate.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateComparisonOperator)) post(trim())]
-[criteria.oclAsType(GenPredicateEqualityOperator).criteriaPredicate.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateIsOperator)) post(trim())]
-[criteria.oclAsType(GenPredicateIsOperator).criteriaPredicate.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateLikeOperator)) post(trim())]
-[criteria.oclAsType(GenPredicateLikeOperator).criteriaPredicate.generateCriteria()/]
-[/template]
-
-[template public generateCriteria(criteria : GenExpression)
-	? (criteria.oclIsTypeOf(GenPredicateIsEmpty)) post(trim())]
-[criteria.oclAsType(GenPredicateIsEmpty).criteriaPredicate.generateCriteria()/]
-[/template]
-
 
 [template public generateCriteria(criteria : Expression)
 	? (criteria.oclIsTypeOf(NullLiteral)) post(trim())]

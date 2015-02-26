@@ -18,7 +18,7 @@
         <acceleoCompiler 
             sourceFolder="${target.folder}"
             outputFolder="${target.folder}"
-            dependencies="${target.folder}/../../uk.ac.man.cs..mdsd.criteria.m2t;${target.folder}/../../uk.ac.man.cs.mdsd.web.m2t.core;${target.folder}/../../uk.ac.man.cs.mdsd.jsf.m2t.core;"
+            dependencies="${target.folder}/../../uk.ac.man.cs..mdsd.criteria.m2t;${target.folder}/../../uk.ac.man.cs.mdsd.web.m2t.core;"
             binaryResource="false"
             packagesToRegister="">
         </acceleoCompiler>
