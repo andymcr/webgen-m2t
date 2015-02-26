@@ -1,0 +1,15 @@
+[comment encoding = UTF-8 /]
+[module customCSS(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
+
+
+[template public generateCustomCSS(jsfModel : JsfModel)]
+[file (jsfModel.cssDirectory().concat('/').concat('custom.css'), false)]
+/* [protected ('css.custom')]
+ */
+/* [/protected]
+ */
+[/file]
+[/template]
+

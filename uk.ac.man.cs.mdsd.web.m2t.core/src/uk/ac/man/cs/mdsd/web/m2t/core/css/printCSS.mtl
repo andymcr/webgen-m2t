@@ -1,0 +1,42 @@
+[comment encoding = UTF-8 /]
+[module printCSS(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
+
+
+[template public generatePrintCSS(jsfModel : JsfModel)]
+[file (jsfModel.cssDirectory().concat('/').concat('print.css'), false)]
+#page {
+	width: 52em;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0em 1em 0em 1em;
+}
+
+#topnav {
+	display: none;
+}
+
+.menu {
+	display: none;
+}
+
+#content {
+	width: 100%;
+	float: none;
+	margin: 1em;
+}
+
+#banner {
+	width: 100%;
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 0.5em;
+	color: white;
+	background-color: SteelBlue;
+}
+
+[/file]
+[/template]
+
