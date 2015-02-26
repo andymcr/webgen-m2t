@@ -37,6 +37,7 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getAuthentication <em>Authentication</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSiteKey <em>Captcha Site Key</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getCaptchaSecretKey <em>Captcha Secret Key</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTextEditorURL <em>Text Editor URL</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTopNavigationId <em>Top Navigation Id</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getSideMenu <em>Side Menu</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.JsfModel#isStaticUnitsEditable <em>Static Units Editable</em>}</li>
@@ -467,6 +468,32 @@ public interface JsfModel extends EObject {
 	 * @generated
 	 */
 	void setCaptchaSecretKey(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Text Editor URL</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Text Editor URL</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Text Editor URL</em>' attribute.
+	 * @see #setTextEditorURL(String)
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getJsfModel_TextEditorURL()
+	 * @model
+	 * @generated
+	 */
+	String getTextEditorURL();
+
+	/**
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTextEditorURL <em>Text Editor URL</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Text Editor URL</em>' attribute.
+	 * @see #getTextEditorURL()
+	 * @generated
+	 */
+	void setTextEditorURL(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Top Navigation Id</b></em>' attribute.

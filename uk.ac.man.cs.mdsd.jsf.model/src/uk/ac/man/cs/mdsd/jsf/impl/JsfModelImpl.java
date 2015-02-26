@@ -58,6 +58,7 @@ import uk.ac.man.cs.mdsd.orm.OrmModel;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getAuthentication <em>Authentication</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getCaptchaSiteKey <em>Captcha Site Key</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getCaptchaSecretKey <em>Captcha Secret Key</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getTextEditorURL <em>Text Editor URL</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getTopNavigationId <em>Top Navigation Id</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#getSideMenu <em>Side Menu</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.JsfModelImpl#isStaticUnitsEditable <em>Static Units Editable</em>}</li>
@@ -356,6 +357,26 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * @ordered
 	 */
 	protected String captchaSecretKey = CAPTCHA_SECRET_KEY_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getTextEditorURL() <em>Text Editor URL</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTextEditorURL()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TEXT_EDITOR_URL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getTextEditorURL() <em>Text Editor URL</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTextEditorURL()
+	 * @generated
+	 * @ordered
+	 */
+	protected String textEditorURL = TEXT_EDITOR_URL_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getTopNavigationId() <em>Top Navigation Id</em>}' attribute.
@@ -800,6 +821,27 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getTextEditorURL() {
+		return textEditorURL;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTextEditorURL(String newTextEditorURL) {
+		String oldTextEditorURL = textEditorURL;
+		textEditorURL = newTextEditorURL;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.JSF_MODEL__TEXT_EDITOR_URL, oldTextEditorURL, textEditorURL));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getTopNavigationId() {
 		return topNavigationId;
 	}
@@ -953,6 +995,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return getCaptchaSiteKey();
 			case JsfPackage.JSF_MODEL__CAPTCHA_SECRET_KEY:
 				return getCaptchaSecretKey();
+			case JsfPackage.JSF_MODEL__TEXT_EDITOR_URL:
+				return getTextEditorURL();
 			case JsfPackage.JSF_MODEL__TOP_NAVIGATION_ID:
 				return getTopNavigationId();
 			case JsfPackage.JSF_MODEL__SIDE_MENU:
@@ -1027,6 +1071,9 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 			case JsfPackage.JSF_MODEL__CAPTCHA_SECRET_KEY:
 				setCaptchaSecretKey((String)newValue);
 				return;
+			case JsfPackage.JSF_MODEL__TEXT_EDITOR_URL:
+				setTextEditorURL((String)newValue);
+				return;
 			case JsfPackage.JSF_MODEL__TOP_NAVIGATION_ID:
 				setTopNavigationId((String)newValue);
 				return;
@@ -1099,6 +1146,9 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 			case JsfPackage.JSF_MODEL__CAPTCHA_SECRET_KEY:
 				setCaptchaSecretKey(CAPTCHA_SECRET_KEY_EDEFAULT);
 				return;
+			case JsfPackage.JSF_MODEL__TEXT_EDITOR_URL:
+				setTextEditorURL(TEXT_EDITOR_URL_EDEFAULT);
+				return;
 			case JsfPackage.JSF_MODEL__TOP_NAVIGATION_ID:
 				setTopNavigationId(TOP_NAVIGATION_ID_EDEFAULT);
 				return;
@@ -1154,6 +1204,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 				return CAPTCHA_SITE_KEY_EDEFAULT == null ? captchaSiteKey != null : !CAPTCHA_SITE_KEY_EDEFAULT.equals(captchaSiteKey);
 			case JsfPackage.JSF_MODEL__CAPTCHA_SECRET_KEY:
 				return CAPTCHA_SECRET_KEY_EDEFAULT == null ? captchaSecretKey != null : !CAPTCHA_SECRET_KEY_EDEFAULT.equals(captchaSecretKey);
+			case JsfPackage.JSF_MODEL__TEXT_EDITOR_URL:
+				return TEXT_EDITOR_URL_EDEFAULT == null ? textEditorURL != null : !TEXT_EDITOR_URL_EDEFAULT.equals(textEditorURL);
 			case JsfPackage.JSF_MODEL__TOP_NAVIGATION_ID:
 				return TOP_NAVIGATION_ID_EDEFAULT == null ? topNavigationId != null : !TOP_NAVIGATION_ID_EDEFAULT.equals(topNavigationId);
 			case JsfPackage.JSF_MODEL__SIDE_MENU:
@@ -1198,6 +1250,8 @@ public class JsfModelImpl extends EObjectImpl implements JsfModel {
 		result.append(captchaSiteKey);
 		result.append(", captchaSecretKey: ");
 		result.append(captchaSecretKey);
+		result.append(", textEditorURL: ");
+		result.append(textEditorURL);
 		result.append(", topNavigationId: ");
 		result.append(topNavigationId);
 		result.append(", staticUnitsEditable: ");

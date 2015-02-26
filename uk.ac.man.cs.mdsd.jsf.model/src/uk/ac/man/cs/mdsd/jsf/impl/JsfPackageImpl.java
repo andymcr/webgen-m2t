@@ -890,7 +890,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getJsfModel_TopNavigationId() {
+	public EAttribute getJsfModel_TextEditorURL() {
 		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(17);
 	}
 
@@ -899,8 +899,17 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getJsfModel_TopNavigationId() {
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(18);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getJsfModel_SideMenu() {
-		return (EReference)jsfModelEClass.getEStructuralFeatures().get(18);
+		return (EReference)jsfModelEClass.getEStructuralFeatures().get(19);
 	}
 
 	/**
@@ -909,7 +918,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * @generated
 	 */
 	public EAttribute getJsfModel_StaticUnitsEditable() {
-		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(19);
+		return (EAttribute)jsfModelEClass.getEStructuralFeatures().get(20);
 	}
 
 	/**
@@ -3199,6 +3208,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEReference(jsfModelEClass, JSF_MODEL__AUTHENTICATION);
 		createEAttribute(jsfModelEClass, JSF_MODEL__CAPTCHA_SITE_KEY);
 		createEAttribute(jsfModelEClass, JSF_MODEL__CAPTCHA_SECRET_KEY);
+		createEAttribute(jsfModelEClass, JSF_MODEL__TEXT_EDITOR_URL);
 		createEAttribute(jsfModelEClass, JSF_MODEL__TOP_NAVIGATION_ID);
 		createEReference(jsfModelEClass, JSF_MODEL__SIDE_MENU);
 		createEAttribute(jsfModelEClass, JSF_MODEL__STATIC_UNITS_EDITABLE);
@@ -3674,6 +3684,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEReference(getJsfModel_Authentication(), this.getAuthentication(), null, "authentication", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getJsfModel_CaptchaSiteKey(), ecorePackage.getEString(), "captchaSiteKey", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getJsfModel_CaptchaSecretKey(), ecorePackage.getEString(), "captchaSecretKey", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJsfModel_TextEditorURL(), ecorePackage.getEString(), "textEditorURL", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getJsfModel_TopNavigationId(), ecorePackage.getEString(), "topNavigationId", "", 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getJsfModel_SideMenu(), this.getMenu(), null, "sideMenu", null, 0, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getJsfModel_StaticUnitsEditable(), ecorePackage.getEBoolean(), "staticUnitsEditable", "false", 1, 1, JsfModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);

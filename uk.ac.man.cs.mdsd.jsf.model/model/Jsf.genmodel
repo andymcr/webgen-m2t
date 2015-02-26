@@ -45,6 +45,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/authentication"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/captchaSiteKey"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/captchaSecretKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/textEditorURL"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/topNavigationId"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//JsfModel/sideMenu"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//JsfModel/staticUnitsEditable"/>

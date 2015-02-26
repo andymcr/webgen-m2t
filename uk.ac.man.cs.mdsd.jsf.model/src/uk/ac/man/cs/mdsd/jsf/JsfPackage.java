@@ -228,13 +228,22 @@ public interface JsfPackage extends EPackage {
 	int JSF_MODEL__CAPTCHA_SECRET_KEY = 16;
 
 	/**
+	 * The feature id for the '<em><b>Text Editor URL</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JSF_MODEL__TEXT_EDITOR_URL = 17;
+
+	/**
 	 * The feature id for the '<em><b>Top Navigation Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__TOP_NAVIGATION_ID = 17;
+	int JSF_MODEL__TOP_NAVIGATION_ID = 18;
 
 	/**
 	 * The feature id for the '<em><b>Side Menu</b></em>' reference.
@@ -243,7 +252,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__SIDE_MENU = 18;
+	int JSF_MODEL__SIDE_MENU = 19;
 
 	/**
 	 * The feature id for the '<em><b>Static Units Editable</b></em>' attribute.
@@ -252,7 +261,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL__STATIC_UNITS_EDITABLE = 19;
+	int JSF_MODEL__STATIC_UNITS_EDITABLE = 20;
 
 	/**
 	 * The number of structural features of the '<em>Model</em>' class.
@@ -261,7 +270,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JSF_MODEL_FEATURE_COUNT = 20;
+	int JSF_MODEL_FEATURE_COUNT = 21;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceImpl <em>Service</em>}' class.
@@ -8909,6 +8918,17 @@ public interface JsfPackage extends EPackage {
 	EAttribute getJsfModel_CaptchaSecretKey();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTextEditorURL <em>Text Editor URL</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Text Editor URL</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.JsfModel#getTextEditorURL()
+	 * @see #getJsfModel()
+	 * @generated
+	 */
+	EAttribute getJsfModel_TextEditorURL();
+
+	/**
 	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.jsf.JsfModel#getTopNavigationId <em>Top Navigation Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11769,6 +11789,14 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute JSF_MODEL__CAPTCHA_SECRET_KEY = eINSTANCE.getJsfModel_CaptchaSecretKey();
+
+		/**
+		 * The meta object literal for the '<em><b>Text Editor URL</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute JSF_MODEL__TEXT_EDITOR_URL = eINSTANCE.getJsfModel_TextEditorURL();
 
 		/**
 		 * The meta object literal for the '<em><b>Top Navigation Id</b></em>' attribute feature.

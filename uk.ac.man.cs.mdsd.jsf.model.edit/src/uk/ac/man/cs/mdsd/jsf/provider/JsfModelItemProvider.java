@@ -80,6 +80,7 @@ public class JsfModelItemProvider
 			addAjaxTechnologyPropertyDescriptor(object);
 			addCaptchaSiteKeyPropertyDescriptor(object);
 			addCaptchaSecretKeyPropertyDescriptor(object);
+			addTextEditorURLPropertyDescriptor(object);
 			addTopNavigationIdPropertyDescriptor(object);
 			addSideMenuPropertyDescriptor(object);
 			addStaticUnitsEditablePropertyDescriptor(object);
@@ -374,6 +375,28 @@ public class JsfModelItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Text Editor URL feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTextEditorURLPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_JsfModel_textEditorURL_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_JsfModel_textEditorURL_feature", "_UI_JsfModel_type"),
+				 JsfPackage.Literals.JSF_MODEL__TEXT_EDITOR_URL,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Top Navigation Id feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -521,6 +544,7 @@ public class JsfModelItemProvider
 			case JsfPackage.JSF_MODEL__AJAX_TECHNOLOGY:
 			case JsfPackage.JSF_MODEL__CAPTCHA_SITE_KEY:
 			case JsfPackage.JSF_MODEL__CAPTCHA_SECRET_KEY:
+			case JsfPackage.JSF_MODEL__TEXT_EDITOR_URL:
 			case JsfPackage.JSF_MODEL__TOP_NAVIGATION_ID:
 			case JsfPackage.JSF_MODEL__STATIC_UNITS_EDITABLE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
