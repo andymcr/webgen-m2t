@@ -5,7 +5,7 @@
       <objectContribution
             adaptable="true"
             objectClass="org.eclipse.core.resources.IFile"
-            nameFilter="*.website_genjsf"
+            nameFilter="*.website_jsf"
             id="uk.ac.man.cs.mdsd.jsf.m2t.kohana.ui.popupMenus.contribution.IFile">
          <menu id="org.eclipse.acceleo.module.menu" label="Acceleo Model to Text" path="additionsAcceleo">
                <groupMarker name="acceleo"/> 
