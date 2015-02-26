@@ -1,12 +1,9 @@
 [comment encoding = UTF-8 /]
 [module names(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
 
 
 [query public baseControllerClassName(eObject : EObject) : String
@@ -26,33 +23,17 @@
 	= page.name
 /]
 
-[query public controllerName(genPage : GenPage) : String
-	= genPage.name
-/]
-
 [query public controllerClassName(page : Page) : String
 	= 'Controller_'.concat(page.controllerName())
-/]
-
-[query public controllerClassName(genPage : GenPage) : String
-	= 'Controller_'.concat(genPage.controllerName())
 /]
 
 [query public instanceName(page : Page) : String
 	= page.name.toLowerFirst()
 /]
 
-[query public instanceName(genPage : GenPage) : String
-	= genPage.name.toLowerFirst()
-/]
-
 
 [query public instanceName(menu : Menu) : String
 	= menu.name.toLowerFirst()
-/]
-
-[query public instanceName(genMenu : GenMenu) : String
-	= genMenu.name().toLowerFirst()
 /]
 
 
@@ -71,27 +52,27 @@
 	= unit.instanceName()
 /]
 
-[query public actionName(genUnit : GenContentUnit) : String
-	= genUnit.instanceName()
-/]
-
 [query public controllerName(unit : DynamicUnit) : String
 	= unit.pageDisplayedOn().controllerName()
-/]
-
-[query public controllerName(genUnit : GenDynamicUnit) : String
-	= genUnit.pageDisplayedOn().controllerName()
 /]
 
 [query public instanceName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
 /]
 
-[query public instanceName(genUnit : GenContentUnit) : String
-	= genUnit.name.toLowerFirst()
+[query public modelName(unit : ContentUnit) : String
+	= if unit.oclIsTypeOf(StaticUnit) then
+			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
+				'None'
+			else
+				unit.oclAsType(StaticUnit).service.modelName()
+			endif
+		else
+			unit.oclAsType(DynamicUnit).service.modelName()
+		endif
 /]
 
-[query public modelName(unit : ContentUnit) : String
+[comment query public modelName(unit : ContentUnit) : String
 	= let baseName : String
 		= if unit.oclIsTypeOf(StaticUnit) then
 				if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
@@ -109,47 +90,13 @@
 			endif
 /]
 
-[query public modelName(unit : GenContentUnit) : String
-	= let baseName : String
-		= if unit.oclIsTypeOf(GenStaticUnit) then
-				if unit.oclAsType(GenStaticUnit).genService.oclIsUndefined() then
-					'None'
-				else
-					unit.oclAsType(GenStaticUnit).genService.jsfService.modelName()
-				endif
-			else
-				unit.oclAsType(GenDynamicUnit).genService.jsfService.modelName()
-			endif
-		in if unit.pageDisplayedOn().genPartOf.ormTechnology = OrmTechnologies::GasORM then
-				'Model\\'.concat(baseName)
-			else
-				baseName
-			endif
-/]
-
-[query public asTargetUri(genUnit : GenDynamicUnit) : String
-	= genUnit.genDisplayedOn.oclAsType(GenPage).controllerName().concat('/')
-		.concat(genUnit.actionName()).concat('/')
-/]
 
 [query public parameterName(unit : ContentUnit) : String
 	= unit.instanceName()
 /]
 
-[query public parameterName(genUnit : GenContentUnit) : String
-	= genUnit.instanceName()
-/]
-
-[query public pageIndexName(genUnit : GenContentUnit) : String
-	= genUnit.instanceName().concat('_page')
-/]
-
 [query public templateInstanceName(unit : ContentUnit) : String
 	= unit.instanceName().concat('_template')
-/]
-
-[query public templateInstanceName(genUnit : GenContentUnit) : String
-	= genUnit.instanceName().concat('_template')
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
@@ -162,49 +109,18 @@
 		in key.concat('_').concat(unit.instanceName())
 /]
 
-[query public uniqueName(genUnit : GenContentUnit) : String
-	= let key : String
-			= if genUnit.genDisplayedOn.oclIsTypeOf(GenPage) then
-				genUnit.genDisplayedOn.oclAsType(GenPage).instanceName()
-			else
-				genUnit.genDisplayedOn.oclAsType(GenUnitAssociation).genDisplayedOn.uniqueName()
-			endif
-		in key.concat('_').concat(genUnit.instanceName())
-/]
-
 
 [query public optionsName(field : UnitField) : String
 	= field.uniqueName().concat('_options')
-/]
-
-[query public optionsName(genField : GenUnitField) : String
-	= genField.uniqueName().concat('_options')
 /]
 
 [query public uniqueName(field : UnitField) : String
 	= field.displayedOn.instanceName().concat('_').concat(field.modelPropertyName())
 /]
 
-[query public uniqueName(genField : GenUnitField) : String
-	= genField.genDisplayedOn.instanceName().concat('_').concat(genField.modelPropertyName())
-/]
-
-
-[query public instanceName(genFeature : GenUnitFeature) : String
-	= genFeature.name().toLowerFirst()
-/]
 
 [query public modelName(feature : UnitAssociation) : String
 	= feature.serviceFeature.modelName()
-/]
-
-[query public modelName(genFeature : GenUnitAssociation) : String
-	= let genAssociation : GenServiceAssociation = genFeature.genServiceFeature
-		in if genAssociation.oclIsTypeOf(GenServiceEntityAssociation) then
-				genAssociation.oclAsType(GenServiceEntityAssociation).jsfFeature.modelName()
-			else
-				genAssociation.oclAsType(GenServiceViewAssociation).jsfFeature.modelName()
-				endif
 /]
 
 
@@ -230,37 +146,8 @@
 		endif
 /]
 
-[query public actionName(genAction : GenInlineAction) : String
-	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
-			genAction.genUsedBy.oclAsType(GenDynamicUnit).instanceName()
-				.concat(genAction.name.toUpperFirst())
-		else
-			let genAssociation : GenUnitAssociation
-					= genAction.genUsedBy.oclAsType(GenUnitAssociation)
-				in genAssociation.genDisplayedOn.instanceName()
-				.concat(genAssociation.name.toUpperFirst())
-				.concat(genAction.name.toUpperFirst())
-		endif
-/]
-
-[query public destinationUriX(genSelectAction : GenSelectAction) : String
-	= let genTarget : GenDynamicUnit = genSelectAction.genTarget.oclAsType(GenDynamicUnit)
-		in let methodName : String
-			= if genTarget.oclIsKindOf(GenIndexUnit) then
-					genTarget.actionName().concat(genSelectAction.name)
-				else
-					genTarget.actionName()
-				endif
-			in genTarget.genDisplayedOn.oclAsType(GenPage).controllerName().concat('/')
-				.concat(methodName).concat('/')
-/]
-
 [query public instanceName(action : InlineAction) : String
 	= action.name.toLowerFirst()
-/]
-
-[query public instanceName(genAction : GenInlineAction) : String
-	= genAction.name.toLowerFirst()
 /]
 
 [query public modelName(action : DeleteAction) : String
