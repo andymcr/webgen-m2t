@@ -244,16 +244,31 @@
 	= service.features->select(f | f.isValidated()).oclAsType(ServiceEntityFeature)
 /]
 
+[query public viewColumns(service : Service) : OrderedSet(ServiceFeature)
+	= service.features->select(f | f.hasColumn())
+/]
 
-[query public columnName(feature : ServiceFeature) : String
+
+[query public baseColumnName(feature : ServiceFeature) : String
 	= if feature.oclIsKindOf(ServiceEntityFeature) then
-			if not feature.oclAsType(ServiceEntityFeature).viewColumnName.oclIsUndefined() then
-				feature.oclAsType(ServiceEntityFeature).viewColumnName
-			else if feature.oclIsTypeOf(ServiceEntityElement) then
+			if feature.oclIsTypeOf(ServiceEntityElement) then
 				feature.oclAsType(ServiceEntityElement).feature.columnName
 			else 
 				feature.oclAsType(ServiceEntityAssociation).feature.columnName
-			endif endif
+			endif
+		else
+			'unhandledFeature'
+		endif
+/]
+
+[query public columnName(feature : ServiceFeature) : String
+	= if feature.oclIsKindOf(ServiceEntityFeature) then
+			let entityFeature : ServiceEntityFeature = feature.oclAsType(ServiceEntityFeature)
+				in if feature.includedBy.view and not entityFeature.viewColumnName.oclIsUndefined() then
+						entityFeature.viewColumnName
+					else
+						feature.baseColumnName()
+					endif
 		else
 			'unhandledFeature'
 		endif
@@ -265,6 +280,32 @@
 		else
 			'unhandledFeature'
 		endif
+/]
+
+[query public formName(feature : ServiceFeature) : String
+	= if feature.oclIsKindOf(ServiceEntityFeature) then
+			if feature.oclIsTypeOf(ServiceEntityElement) then
+				feature.oclAsType(ServiceEntityElement).feature.columnName
+			else 
+				if feature.isCollectionAssociation() then
+					feature.oclAsType(ServiceEntityAssociation).name
+				else
+					feature.oclAsType(ServiceEntityAssociation).feature.columnName
+				endif
+			endif
+		else
+			'unhandledFeature'
+		endif
+/]
+
+[query public hasColumn(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityElement) then
+			feature.oclAsType(ServiceEntityElement).feature.hasColumn()
+		else if feature.oclIsKindOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).feature.hasColumn()
+		else
+			false
+		endif endif
 /]
 
 [query public hasDefaultValue(feature : ServiceFeature) : Boolean
@@ -416,15 +457,13 @@
 /]
 
 [query public modelPropertyName(feature : ServiceFeature) : String
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			feature.oclAsType(ServiceEntityElement).feature.columnName
+	= if feature.oclIsKindOf(ServiceEntityElement) then
+			feature.columnName()
 		else if feature.oclIsKindOf(ServiceEntityAssociation) then
 			feature.oclAsType(ServiceEntityAssociation).name
-		else if feature.oclIsKindOf(ServiceViewAssociation) then
-			feature.oclAsType(ServiceViewAssociation).name
 		else
-			'unhandledFeature'
-		endif endif endif
+			feature.oclAsType(ServiceViewAssociation).name
+		endif endif
 /]
 
 [query public oppositeColumnName(feature : ServiceFeature) : String
@@ -530,7 +569,7 @@
 	= page.units->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
 /]
 
-[query public inputAssociations(page : Page) : Sequence(IncludedAssociation)
+[query public inputAssociations(page : Page) : Sequence(UnitAssociation)
 	= page.dynamicUnits()->collect(u | u.inputAssociations())
 /]
 
@@ -643,6 +682,10 @@
 		endif
 /]
 
+[query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
+	= false
+/]
+
 [comment query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
 	= let placementOption : InputMessagePlacementOptions
 			= if unit.oclIsKindOf(EditUnit) then
@@ -661,6 +704,10 @@
 		endif
 /]
 
+[query public hasMessagesOnFormFoot(unit : DynamicUnit) : Boolean
+	= false
+/]
+
 [comment query public hasMessagesOnFormFoot(unit : DynamicUnit) : Boolean
 	= let placementOption : InputMessagePlacementOptions
 			= if unit.oclIsKindOf(EditUnit) then
@@ -677,6 +724,10 @@
 			or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
 			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
 		endif
+/]
+
+[query public hasMessagesOnFeature(unit : DynamicUnit) : Boolean
+	= true
 /]
 
 [comment query public hasMessagesOnFeature(unit : DynamicUnit) : Boolean
@@ -716,7 +767,7 @@
 	= unit.uriActions()->notEmpty()
 /]
 
-[query public inputAssociations(unit : DynamicUnit) : Sequence(UnitField)
+[query public inputAssociations(unit : DynamicUnit) : Sequence(UnitAssociation)
 	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
 			unit.inputFields()->select(f | f.oclIsTypeOf(UnitAssociation))
 		else
@@ -816,15 +867,15 @@
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitElement) then
 				field.oclAsType(UnitElement).serviceFeature.columnName()
-			else 
+			else
 				field.oclAsType(UnitAssociation).serviceFeature.columnName()
 			endif
-		else if field.oclIsTypeOf(DataTypeField) then
-			field.oclAsType(DataTypeField).name
-		else if field.oclIsTypeOf(DateField) then
-			field.oclAsType(DateField).name
-		else
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else if field.oclIsTypeOf(CaptchaField) then
 			field.oclAsType(CaptchaField).name
+		else
+			'UnhandledFeature'
 		endif endif endif
 /]
 
@@ -852,11 +903,27 @@
 [query public displayLabel(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
 			field.oclAsType(UnitFeature).displayLabel
-		else if field.oclIsTypeOf(InterfaceField) then
+		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).displayLabel
 		else 
 			field.oclAsType(CaptchaField).displayLabel
 		endif endif
+/]
+
+[query public formName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitElement) then
+				field.oclAsType(UnitElement).serviceFeature.formName()
+			else
+				field.oclAsType(UnitAssociation).serviceFeature.formName()
+			endif
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else if field.oclIsTypeOf(CaptchaField) then
+			field.oclAsType(CaptchaField).name
+		else
+			'UnhandledFeature'
+		endif endif endif
 /]
 
 [query public hasDefaultValue(field : UnitField) : Boolean
@@ -884,7 +951,7 @@
 [query public inputClass(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
 			field.oclAsType(UnitFeature).inputClass
-		else if field.oclIsTypeOf(InterfaceField) then
+		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).inputClass
 		else
 			'Unhandled'
@@ -1092,7 +1159,7 @@
 			else
 				field.oclAsType(UnitAssociation).serviceFeature.modelPropertyName()
 			endif
-		else if field.oclIsTypeOf(InterfaceField) then
+		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name
 		else if field.oclIsTypeOf(CaptchaField) then
 			field.oclAsType(CaptchaField).name
@@ -1140,7 +1207,7 @@
 /]
 
 
-[query public tableColumns(entity : Entity) : Set(Feature)
+[query public tableColumns(entity : Entity) : OrderedSet(Feature)
 	= entity.features->select(f | f.hasColumn())
 /]
 
@@ -1165,7 +1232,7 @@
 	= if feature.oclIsKindOf(SingletonAttribute) then
 			true
 		else if feature.oclIsTypeOf(SingletonAssociation) then
-			let association : SingletonAssociation = Feature.oclAsType(SingletonAssociation)
+			let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)
 			in if association.opposite.oclIsTypeOf(SingletonAssociation) then
 					association.isDependentEnd()
 				else
