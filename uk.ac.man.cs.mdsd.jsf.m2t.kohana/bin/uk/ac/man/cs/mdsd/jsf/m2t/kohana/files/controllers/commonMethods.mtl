@@ -35,7 +35,7 @@ TBC[/if]')->uri());
 [template public generateValuesFromFormToModel(unit : DynamicUnit) post(trim())]
 $this->[unit.instanceName()/]->values($this->request->post(), array([for
 	(field : UnitField | unit.nonResourceInputFeatures())
-	separator (', ')][if (field.isLocation())]'[field.modelPropertyName()/]_latitude', '[field.modelPropertyName()/]_longitude'[else]'[field.modelPropertyName()/]'[/if][/for]));
+	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
 [/template]
 
 [template public generateDefaultUnitValues(unit : DynamicUnit) post(trim())]
@@ -52,7 +52,7 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(I
 [template public generateForcedFeatureValues(unit : DynamicUnit) post(trim())]
 [for (feature : UnitField | unit.forcedValueFeatures())]
 [let value : Expression = feature.oclAsType(UnitFeature).forcedValue]
-$this->[unit.instanceName()/]->[feature.modelPropertyName()/] = [value.generateCriteria()/];
+$this->[unit.instanceName()/]->[feature.formName()/] = [value.generateCriteria()/];
 [/let]
 [/for]
 [/template]
@@ -109,7 +109,7 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = '';
 [template public generateRememberInterfaceFields(unit : DynamicUnit) post(trim())]
 $this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
 	(field : UnitField | unit.interfaceFields())
-	separator (', ')]'[field.modelPropertyName()/]'[/for]));
+	separator (', ')]'[field.formName()/]'[/for]));
 [/template]
 
 

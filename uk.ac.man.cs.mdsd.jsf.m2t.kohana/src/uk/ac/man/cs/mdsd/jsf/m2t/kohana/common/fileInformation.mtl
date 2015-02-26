@@ -1,7 +1,6 @@
 [comment encoding = UTF-8 /]
 [module fileInformation(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
@@ -97,6 +96,10 @@
 	= 'modules'
 /]
 
+[query public pageViewsDirectory(page : Page) : String
+	= page.viewDirectory().concat('/').concat(page.controllerName())
+/]
+
 [query public recaptchaDirectory(eObject : EObject) : String
 	= eObject.vendorDirectory().concat('/').concat('recaptcha')
 /]
@@ -130,28 +133,16 @@
 /]
 
 
-[query public authenticationLanguageFilename(genAuthentication : GenLocalAuthenticationSystem) : String
-	= genAuthentication.languageEnglishDirectory().concat('/')
-		.concat('authentication_lang')
-		.concat(genAuthentication.executableExtension())
-/]
-
-[query public authenticationLibraryFilename(genAuthentication : GenLocalAuthenticationSystem) : String
-	= genAuthentication.librariesDirectory().concat('/')
-		.concat('authentication_lib')
-		.concat(genAuthentication.executableExtension())
-/]
-
 [query public controllerFilename(page : Page) : String
 	= page.controllersDirectory().concat('/')
 		.concat(page.controllerName().toUpperFirst())
 		.concat(page.executableExtension())
 /]
 
-[query public menuFilename(genMenu : GenMenu) : String
-	= genMenu.menuDirectory().concat('/')
-		.concat(genMenu.instanceName())
-		.concat(genMenu.executableExtension())
+[query public menuFilename(menu : Menu) : String
+	= menu.menuDirectory().concat('/')
+		.concat(menu.instanceName())
+		.concat(menu.executableExtension())
 /]
 
 [query public modelFilename(enumerationType : EnumerationType) : String
@@ -172,22 +163,17 @@
 		.concat(service.executableExtension())
 /]
 
-[query public pageViewsDirectory(genPage : GenPage) : String
-	= genPage.viewDirectory().concat('/')
-		.concat(genPage.controllerName())
-/]
-
-[query public paginationViewFilename(genUnit : GenContentUnit) : String
-	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
-		.concat(genUnit.instanceName()).concat('_pagination')
-		.concat(genUnit.executableExtension())
+[query public paginationViewFilename(unit : ContentUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageViewsDirectory().concat('/')
+		.concat(unit.instanceName()).concat('_pagination')
+		.concat(unit.executableExtension())
 /]
 
 
-[query public viewFilename(genUnit : GenContentUnit) : String
-	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
-		.concat(genUnit.instanceName())
-		.concat(genUnit.executableExtension())
+[query public viewFilename(unit : ContentUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageViewsDirectory().concat('/')
+		.concat(unit.instanceName())
+		.concat(unit.executableExtension())
 /]
 
 

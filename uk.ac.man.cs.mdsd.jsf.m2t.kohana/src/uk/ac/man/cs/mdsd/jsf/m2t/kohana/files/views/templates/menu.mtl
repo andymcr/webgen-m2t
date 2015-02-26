@@ -1,78 +1,78 @@
 [comment encoding = UTF-8 /]
 [module menu(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateMenu(genMenu : GenMenu)]
-[file(genMenu.menuFilename(), false)]
-<section  class="[genMenu.styleClass()/]" id="[genMenu.instanceName()/]">
- [genMenu.generateMenuEntries()/]
+[template public generateMenu(menu : Menu)]
+[file(menu.menuFilename(), false)]
+<section  class="[menu.styleClass()/]" id="[menu.instanceName()/]">
+ [menu.generateMenuEntries()/]
 </section>
 [/file]
 [/template]
 
 
-[template private generateMenuEntries(genMenu : GenMenu)
-	? (genMenu.oclIsTypeOf(GenDynamicMenu)) post(trim())]
-[let genDynamicMenu : GenDynamicMenu = genMenu.oclAsType(GenDynamicMenu)]
-[if (genDynamicMenu.genDynamicTitle.oclIsUndefined())]
-<h1 class="[genDynamicMenu.jsfMenu.captionClass/][if (genDynamicMenu.jsfMenu.omitCaption)] hidden[/if]">[genDynamicMenu.jsfMenu.displayLabel/]</h1>
+[template private generateMenuEntries(menu : Menu)
+	? (menu.oclIsTypeOf(DynamicMenu)) post(trim())]
+[let dynamicMenu : DynamicMenu = menu.oclAsType(DynamicMenu)]
+[if (dynamicMenu.dynamicTitle.oclIsUndefined())]
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">[dynamicMenu.displayLabel/]</h1>
 [else]
-<h1 class="[genDynamicMenu.jsfMenu.captionClass/][if (genDynamicMenu.jsfMenu.omitCaption)] hidden[/if]"><?php echo $[genDynamicMenu.instanceName()/]->[genDynamicMenu.genDynamicTitle.modelPropertyName()/]; ?></h1>
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]"><?php echo $[dynamicMenu.instanceName()/]->[dynamicMenu.dynamicTitle.modelPropertyName()/]; ?></h1>
 [/if]
-<ul class="[genDynamicMenu.jsfMenu.layoutClass/]">
- [genMenu.genEntries.generateMenuEntry()/]
+<ul class="[dynamicMenu.layoutClass/]">
+ [menu.entries.generateMenuEntry()/]
 </ul>
 [/let]
 [/template]
 
-[template private generateMenuEntries(genMenu : GenMenu)
-	? (genMenu.oclIsTypeOf(GenStaticMenu)) post(trim())]
-[let genStaticMenu : GenStaticMenu = genMenu.oclAsType(GenStaticMenu)]
-<h1 class="[genStaticMenu.jsfMenu.captionClass/][if (genStaticMenu.jsfMenu.omitCaption)] hidden[/if]">[genStaticMenu.jsfMenu.displayLabel/]</h1>
-<ul class="[genStaticMenu.jsfMenu.layoutClass/]">
- [genMenu.genEntries.generateMenuEntry()/]
+[template private generateMenuEntries(menu : Menu)
+	? (menu.oclIsTypeOf(StaticMenu)) post(trim())]
+[let staticMenu : StaticMenu = menu.oclAsType(StaticMenu)]
+<h1 class="[staticMenu.captionClass/][if (staticMenu.omitCaption)] hidden[/if]">[staticMenu.displayLabel/]</h1>
+<ul class="[staticMenu.layoutClass/]">
+ [menu.entries.generateMenuEntry()/]
 </ul>
 [/let]
 [/template]
 
 
-[template private generateMenuEntry(genEntry : GenMenuEntry)
-	? (genEntry.oclIsTypeOf(GenFixedPageMenuEntry)) post(trim())]
-[let genFixedEntry : GenFixedPageMenuEntry = genEntry.oclAsType(GenFixedPageMenuEntry)]
+[template private generateMenuEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(FixedPageMenuEntry)) post(trim())]
+[let fixedEntry : FixedPageMenuEntry = entry.oclAsType(FixedPageMenuEntry)]
 <li><?php
 	echo HTML::anchor(
-		Route::get('[genFixedEntry.genDestination.controllerName()/]')->uri(),
-		HTML::chars(__('[genFixedEntry.jsfMenuEntry.displayLabel/]')));
+		Route::get('[fixedEntry.destination.controllerName()/]')->uri(),
+		HTML::chars(__('[fixedEntry.displayLabel/]')));
 ?></li>
 [/let]
 [/template]
 
-[template private generateMenuEntry(genEntry : GenMenuEntry)
-	? (genEntry.oclIsTypeOf(GenFixedActionMenuEntry)) post(trim())]
-[let genFixedEntry : GenFixedActionMenuEntry = genEntry.oclAsType(GenFixedActionMenuEntry)]
+[template private generateMenuEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(FixedActionMenuEntry)) post(trim())]
+[let fixedEntry : FixedActionMenuEntry = entry.oclAsType(FixedActionMenuEntry)]
 <li><?php
 	echo HTML::anchor(
-		Route::get('[genFixedEntry.genDestination.pageDisplayedOn().controllerName()/]')->uri(array(
-			'action' => '[genFixedEntry.genDestination.actionName()/]'
+		Route::get('[fixedEntry.destination.pageDisplayedOn().controllerName()/]')->uri(array(
+			'action' => '[fixedEntry.destination.actionName()/]'
 		)),
-		HTML::chars(__('[genFixedEntry.jsfMenuEntry.displayLabel/]')));
+		HTML::chars(__('[fixedEntry.displayLabel/]')));
 ?></li>
 [/let]
 [/template]
 
-[template private generateMenuEntry(genEntry : GenMenuEntry)
-	? (genEntry.oclIsTypeOf(GenFixedCommandMenuEntry)) post(trim())]
-[let genFixedEntry : GenFixedCommandMenuEntry = genEntry.oclAsType(GenFixedCommandMenuEntry)]
+[template private generateMenuEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(FixedCommandMenuEntry)) post(trim())]
+[let fixedEntry : FixedCommandMenuEntry = entry.oclAsType(FixedCommandMenuEntry)]
 <li><?php
 	echo HTML::anchor(
-		Route::get('[genFixedEntry.genDestination.genPartOf.pageDisplayedOn().controllerName()/]')->uri(array(
-			'action' => '[genFixedEntry.genDestination.actionName()/]'
+		Route::get('[fixedEntry.destination.partOf.pageDisplayedOn().controllerName()/]')->uri(array(
+			'action' => '[fixedEntry.destination.actionName()/]'
 		)),
-		HTML::chars(__('[genFixedEntry.jsfMenuEntry.displayLabel/]')));
+		HTML::chars(__('[fixedEntry.displayLabel/]')));
 ?></li>
 [/let]
 [/template]

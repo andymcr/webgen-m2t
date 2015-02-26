@@ -8,32 +8,32 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generatePaginationView(genIndexUnit : GenIndexUnit)]
-[file(genIndexUnit.paginationViewFilename(), false)]
-<div class="[genIndexUnit.controlClass()/]">
+[template public generatePaginationView(indexUnit : IndexUnit)]
+[file(indexUnit.paginationViewFilename(), false)]
+<div class="[indexUnit.controlClass/]">
 <?php
 	$key = $config['['/]'current_page'[']'/]['['/]'key'[']'/];
 	$first_page_in_url = $config['['/]'first_page_in_url'[']'/];
 
-[if (genIndexUnit.jsfUnit.useFirstLastPageLinks)]
+[if (indexUnit.useFirstLastPageLinks)]
 	if ($first_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[genIndexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.controllerName()/]')->uri()
 				. URL::query(array($key => ($first_page_in_url ? $first_page : NULL))),
-			HTML::chars(__('[genIndexUnit.jsfUnit.firstPageLabel/]'))
+			HTML::chars(__('[indexUnit.firstPageLabel/]'))
 		) . PHP_EOL;
 	else
-		echo HTML::chars(__('[genIndexUnit.jsfUnit.firstPageLabel/]')) . PHP_EOL;
+		echo HTML::chars(__('[indexUnit.firstPageLabel/]')) . PHP_EOL;
 
 [/if]
 	if ($previous_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[genIndexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.controllerName()/]')->uri()
 				. URL::query(array($key => ($previous_page == 1 && !$first_page_in_url ? NULL : $previous_page))),
-			HTML::chars(__('[genIndexUnit.jsfUnit.previousPageLabel/]'))
+			HTML::chars(__('[indexUnit.previousPageLabel/]'))
 		) . PHP_EOL;
 	else
-		echo HTML::chars(__('[genIndexUnit.jsfUnit.previousPageLabel/] ')) . PHP_EOL;
+		echo HTML::chars(__('[indexUnit.previousPageLabel/] ')) . PHP_EOL;
 
 	for ($i = 1; $i <= $total_pages; $i++)
 	{
@@ -43,7 +43,7 @@
 		}
 		else
 			echo HTML::anchor(
-				Route::get('[genIndexUnit.controllerName()/]')->uri()
+				Route::get('[indexUnit.controllerName()/]')->uri()
 					. URL::query(array($key => ($i == 1 && !$first_page_in_url ? NULL : $i))),
 				$i
 			) . PHP_EOL;
@@ -51,22 +51,22 @@
 
 	if ($next_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[genIndexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.controllerName()/]')->uri()
 				. URL::query(array($key => $next_page)),
-			HTML::chars(__('[genIndexUnit.jsfUnit.nextPageLabel/]'))
+			HTML::chars(__('[indexUnit.nextPageLabel/]'))
 		) . PHP_EOL;
 	else
-		echo HTML::chars(__('[genIndexUnit.jsfUnit.nextPageLabel/]')) . PHP_EOL;
-[if (genIndexUnit.jsfUnit.useFirstLastPageLinks)]
+		echo HTML::chars(__('[indexUnit.nextPageLabel/]')) . PHP_EOL;
+[if (indexUnit.useFirstLastPageLinks)]
 
 	if ($last_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[genIndexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.controllerName()/]')->uri()
 				. URL::query(array($key => $last_page)),
-			HTML::chars(__('[genIndexUnit.jsfUnit.lastPageLabel/]'))
+			HTML::chars(__('[indexUnit.lastPageLabel/]'))
 		) . PHP_EOL;
 	else
-		echo HTML::chars(__('[genIndexUnit.jsfUnit.lastPageLabel/]')) . PHP_EOL;
+		echo HTML::chars(__('[indexUnit.lastPageLabel/]')) . PHP_EOL;
 [/if]
 ?>
 </div>

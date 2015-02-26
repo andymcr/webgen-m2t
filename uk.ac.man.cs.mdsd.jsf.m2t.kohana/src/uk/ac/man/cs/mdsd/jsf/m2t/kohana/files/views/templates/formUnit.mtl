@@ -1,153 +1,151 @@
 [comment encoding = UTF-8 /]
 [module formUnit(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::views::templates::dataUnit/]
 
 
-[template public generateUnitView(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenEditUnit) or genUnit.oclIsKindOf(GenControlUnit) and not genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
-[let genDynamicUnit : GenDynamicUnit = genUnit.oclAsType(GenDynamicUnit)]
-[file(genDynamicUnit.viewFilename(), false)]
-<section class="[genDynamicUnit.styleClass()/]<?php
-	if (isset($[genDynamicUnit.instanceName()/]_field_errors)) {
-		echo ' [genDynamicUnit.errorClass()/]';
+[template public generateUnitView(unit : ContentUnit)
+	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[file(dynamicUnit.viewFilename(), false)]
+<section class="[dynamicUnit.styleClass/]<?php
+	if (isset($[dynamicUnit.instanceName()/]_field_errors)) {
+		echo ' [dynamicUnit.errorClass/]';
 	}
-?>" id="[genDynamicUnit.instanceName()/]"[if (genDynamicUnit.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS and genDynamicUnit.hasInputAssociations())]
- ng-controller="[genUnit.uniqueName()/]"[/if]>
- <h1 class="[genDynamicUnit.captionClass()/][if (genDynamicUnit.omitCaption())] hidden[/if]"><?php echo __('[genDynamicUnit.displayLabel()/]'); ?></h1>
+?>" id="[dynamicUnit.instanceName()/]"[if (dynamicUnit.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::AngularJS and dynamicUnit.hasInputAssociations())]
+ ng-controller="[unit.uniqueName()/]"[/if]>
+ <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[genDynamicUnit.errorClass()/]<?php if (empty($[genDynamicUnit.instanceName()/]_error)[if (genDynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[genDynamicUnit.instanceName()/]_error)) { ?>
-   <p class="[genDynamicUnit.errorClass()/]"><?php echo html::chars(__($[genDynamicUnit.instanceName()/]_error)); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.instanceName()/]_error)[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.instanceName()/]_error)) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.instanceName()/]_error)); ?></p>
 <?php } ?>
-[if (genDynamicUnit.hasMessagesOnFormHead())]
-   [genDynamicUnit.generateFormErrors()/]
+[if (dynamicUnit.hasMessagesOnFormHead())]
+   [dynamicUnit.generateFormErrors()/]
 [/if]
   </section>
-[if (genDynamicUnit.hasInterfaceFields())]
+[if (dynamicUnit.hasInterfaceFields())]
   <?php
-	$unit_fields = $[genDynamicUnit.instanceName()/]->unit_fields();
+	$unit_fields = $[dynamicUnit.instanceName()/]->unit_fields();
 ?>
 [/if]
-  [genDynamicUnit.generateUnitBody()/]
+  [dynamicUnit.generateUnitBody()/]
  </div>
 </section>
 [/file]
 [/let]
 [/template]
 
-[template public generateUnitBody(genUnit : GenDynamicUnit)
-	? (not genUnit.oclIsTypeOf(GenMapUnit))]
+[template public generateUnitBody(unit : DynamicUnit)
+	? (not unit.oclIsTypeOf(MapUnit))]
   <?php
 	echo Form::open(
-		Route::get('[genUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]')->uri(array(
-			'action' => '[genUnit.actionName()/]',
+		Route::get('[unit.displayedOn.oclAsType(Page).controllerName()/]')->uri(array(
+			'action' => '[unit.actionName()/]',
 			'param' => 'submit'
-[if (genUnit.pageDisplayedOn().hasParameterisedUnits())]
+[if (unit.pageDisplayedOn().hasParameterisedUnits())]
 		)) . URL::query($query_parameters, FALSE),
 [else]
 		)),
 [/if]
 		array(
-			'id' => '[genUnit.instanceName()/]',
-			'class' => '[genUnit.layoutClass()/]' . (isset($[genUnit.instanceName()/]_error) ? ' [genUnit.errorClass()/]' : ''),
+			'id' => '[unit.instanceName()/]',
+			'class' => '[unit.layoutClass/]' . (isset($[unit.instanceName()/]_error) ? ' [unit.errorClass/]' : ''),
 			'enctype' => 'multipart/form-data'
 		)) . PHP_EOL;
 ?>
    <ul>
-[for (genDisplayField : GenUnitField | genUnit.inputOrEmbeddedFields())]
-    <li[if (genUnit.hasMessagesOnFeature())]<?php
+[for (displayField : UnitField | unit.inputOrEmbeddedFields())]
+    <li[if (unit.hasMessagesOnFeature())]<?php
 		unset($field_error);
-		if (!empty($[genUnit.instanceName()/]_field_errors))
-		[if (genDisplayField.oclIsKindOf(GenInterfaceField))]
-			if (array_key_exists('_external', $[genUnit.instanceName()/]_field_errors))
-				if (array_key_exists('[genDisplayField.modelPropertyName()/]', $[genUnit.instanceName()/]_field_errors['['/]'_external'[']'/]))
-					$field_error = $[genUnit.instanceName()/]_field_errors['['/]'_external'[']'/]['['/]'[genDisplayField.modelPropertyName()/]'[']'/];
+		if (!empty($[unit.instanceName()/]_field_errors))
+		[if (displayField.oclIsKindOf(InterfaceField))]
+			if (array_key_exists('_external', $[unit.instanceName()/]_field_errors))
+				if (array_key_exists('[displayField.modelPropertyName()/]', $[unit.instanceName()/]_field_errors['['/]'_external'[']'/]))
+					$field_error = $[unit.instanceName()/]_field_errors['['/]'_external'[']'/]['['/]'[displayField.modelPropertyName()/]'[']'/];
 		[else]
-			if (array_key_exists('[genDisplayField.modelPropertyName()/]', $[genUnit.instanceName()/]_field_errors))
-				$field_error = $[genUnit.instanceName()/]_field_errors['['/]'[genDisplayField.modelPropertyName()/]'[']'/];
+			if (array_key_exists('[displayField.modelPropertyName()/]', $[unit.instanceName()/]_field_errors))
+				$field_error = $[unit.instanceName()/]_field_errors['['/]'[displayField.modelPropertyName()/]'[']'/];
 		[/if]
 		if (isset($field_error))
-			echo ' class="[genUnit.errorClass()/]"'; 
+			echo ' class="[unit.errorClass/]"'; 
 ?>[/if]>
-	[if (if not genDisplayField.oclIsKindOf(GenUnitAssociation) then true else genDisplayField.oclAsType(GenUnitAssociation).genUnits->isEmpty() endif)]
+	[if (if not displayField.oclIsKindOf(UnitAssociation) then true else displayField.oclAsType(UnitAssociation).units->isEmpty() endif)]
      <?php
-		echo Form::label('[genDisplayField.uniqueName()/]', '[genDisplayField.displayLabel()/]',
+		echo Form::label('[displayField.uniqueName()/]', '[displayField.displayLabel()/]',
 			array(
-				'class' => '[genDisplayField.styleClass()/][if (genDisplayField.isRequired() and not genUnit.oclIsTypeOf(GenSearchUnit))] required[/if]'
+				'class' => '[displayField.styleClass()/][if (displayField.isRequired() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
 		)) . PHP_EOL;
 	?>
-     [genDisplayField.generateInput(genUnit.instanceName())/]
+     [displayField.generateInput(unit.instanceName())/]
 	[else]
-	[let embeddedUnit : GenContentUnit = genDisplayField.oclAsType(GenUnitAssociation).genUnits->first()]
-     <p class="[genDisplayField.modelPropertyName()/]">[genDisplayField.displayLabel()/]</p>
-<?php $[genDisplayField.uniqueName()/] = $[genUnit.instanceName()/]->[genDisplayField.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(GenIndexUnit))]
-find()[else][let embeddedIndexUnit : GenIndexUnit = embeddedUnit.oclAsType(GenIndexUnit)]
-[if (embeddedIndexUnit.genSelection.oclIsUndefined())]
+	[let embeddedUnit : ContentUnit = displayField.oclAsType(UnitAssociation).units->first()]
+     <p class="[displayField.modelPropertyName()/]">[displayField.displayLabel()/]</p>
+<?php $[displayField.uniqueName()/] = $[unit.instanceName()/]->[displayField.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+[if (embeddedIndexUnit.selection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.genSelection.jsfSelection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
-     <div class="framed [genDisplayField.modelPropertyName()/]">
-      [genDisplayField.oclAsType(GenUnitAssociation).genUnits.generateViewContent(genDisplayField.uniqueName())/]
+     <div class="framed [displayField.modelPropertyName()/]">
+      [displayField.oclAsType(UnitAssociation).units.generateViewContent(displayField.uniqueName())/]
      </div>
 	[/let]
 	[/if]
-	[if (genUnit.hasMessagesOnFeature())]
+	[if (unit.hasMessagesOnFeature())]
 <?php if (isset($field_error)) { ?>
-     <p class="[genUnit.errorClass()/]"><?php echo __($field_error); ?></p>
+     <p class="[unit.errorClass/]"><?php echo __($field_error); ?></p>
 <?php } ?>
 	[/if]
     </li>
 [/for]
    </ul>
-[if (genUnit.hasMessagesOnFormFoot())]
-<?php if (isset($[genUnit.instanceName()/]->error->all)) { ?>
-   <div class="[genUnit.errorClass()/]">
-[genUnit.generateFormErrors()/]
+[if (unit.hasMessagesOnFormFoot())]
+<?php if (isset($[unit.instanceName()/]->error->all)) { ?>
+   <div class="[unit.errorClass/]">
+[unit.generateFormErrors()/]
    </div>
 <?php } ?>
 [/if]
-   <div class="[genUnit.controlClass()/]">
-[if (not genUnit.oclIsTypeOf(GenActionUnit))]
+   <div class="[unit.controlClass/]">
+[if (not unit.oclIsTypeOf(ActionUnit))]
    <?php
-		echo Form::button('[genUnit.instanceName()/]', '[genUnit.submitLabel()/]', array(
+		echo Form::button('[unit.instanceName()/]', '[unit.submitLabel()/]', array(
 			'type' => 'submit'
 		)) . PHP_EOL;
 ?>
 [else]
-			[for (genAction : GenUnitSupportAction | genUnit.oclAsType(GenActionUnit).genSupportActions)]
+			[for (action : UnitSupportAction | unit.oclAsType(ActionUnit).supportActions)]
   <?php
-		echo Form::button('[genAction.name/]', '[genAction.displayLabel()/]', array(
+		echo Form::button('[action.name/]', '[action.displayLabel()/]', array(
 			'type' => 'submit',
-[if (not genAction.jsfAction.confirmMessage.oclIsUndefined())]
-			'onclick' => 'return confirm(\'' . __('[genAction.jsfAction.confirmMessage/]') . '\');'
+[if (not action.confirmMessage.oclIsUndefined())]
+			'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
 [/if]
 		)) . PHP_EOL;
 ?>
 			[/for]
 [/if]
-[if (genUnit.oclIsKindOf(GenEditUnit))]
-[let genEditUnit : GenEditUnit = genUnit.oclAsType(GenEditUnit)]
-	[if (genEditUnit.oclIsTypeOf(GenCreateUpdateUnit))]
-	[let genCreateUpdateUnit : GenCreateUpdateUnit = genEditUnit.oclAsType(GenCreateUpdateUnit)]
-		[if (not genCreateUpdateUnit.jsfUnit.clearLabel.oclIsUndefined())]
+[if (unit.oclIsKindOf(EditUnit))]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
+	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
+		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
    <?php
-		echo Form::button('clear', '[genCreateUpdateUnit.jsfUnit.clearLabel/]', array(
+		echo Form::button('clear', '[createUpdateUnit.clearLabel/]', array(
 			'type' => 'submit'
 		)) . PHP_EOL;
 ?>
 		[/if]
 	[/let]
 	[/if]
-	[if (not genEditUnit.genCancelDestination.oclIsUndefined())]
+	[if (not editUnit.cancelDestination.oclIsUndefined())]
    <?php
-		echo Form::button('cancel', '[genUnit.cancelLabel()/]', array(
+		echo Form::button('cancel', '[unit.cancelLabel()/]', array(
 			'type' => 'submit'
 		)) . PHP_EOL;
 ?>
@@ -160,22 +158,22 @@ find_all()[else]
 ?>
 [/template]
 
-[template public generateUnitBody(genUnit : GenDynamicUnit)
-	? (genUnit.oclIsTypeOf(GenMapUnit))]
-[let genMapUnit : GenMapUnit = genUnit.oclAsType(GenMapUnit)]
-<div id="[genUnit.uniqueName()/]">
+[template public generateUnitBody(unit : DynamicUnit)
+	? (unit.oclIsTypeOf(MapUnit))]
+[let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
+<div id="[unit.uniqueName()/]">
  <?php
-	echo Form::input('[genUnit.uniqueName()/]_autocomplete', NULL,
+	echo Form::input('[mapUnit.uniqueName()/]_autocomplete', NULL,
 		array(
-			'id' => '[genUnit.uniqueName()/]_autocomplete',
-//			'class' => 'genField.styleClass()/] genField.inputClass()/]',
+			'id' => '[mapUnit.uniqueName()/]_autocomplete',
+//			'class' => 'field.styleClass()/] field.inputClass()/]',
 	)) . PHP_EOL;
 ?>
- <div id="[genUnit.uniqueName()/]_map" class="map-canvas"></div>
+ <div id="[mapUnit.uniqueName()/]_map" class="map-canvas"></div>
  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
  <script>
 var map;
-[if (not genMapUnit.jsfUnit.readOnly)]
+[if (not mapUnit.readOnly)]
 var marker;
 var infoWindow;
 var autocomplete;
@@ -186,10 +184,10 @@ function initialize() {
 	var mapOptions = {
 		zoom: 12
 	};
-	map = new google.maps.Map(document.getElementById('[genUnit.uniqueName()/]_map'), mapOptions);
-[if (genMapUnit.jsfUnit.readOnly)]
+	map = new google.maps.Map(document.getElementById('[unit.uniqueName()/]_map'), mapOptions);
+[if (mapUnit.readOnly)]
 [else]
-	input = document.getElementById('[genUnit.uniqueName()/]_autocomplete');
+	input = document.getElementById('[unit.uniqueName()/]_autocomplete');
 	map.controls['['/]google.maps.ControlPosition.TOP_LEFT[']'/].push(input);
 	marker = new google.maps.Marker();
 	infoWindow = new google.maps.InfoWindow();
@@ -217,7 +215,7 @@ function initialize() {
 					var contentString = $('<div class="marker-info-win">' +
 						'<p class="place-address">' + results['['/]1[']'/].formatted_address + '</p>' +
 						'<?php
-							echo Form::button('[genMapUnit.instanceName()/]', '[genMapUnit.submitLabel()/]', array(
+							echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
 								'type' => 'submit',
 								'class' => 'save-marker'
 							));
@@ -239,14 +237,14 @@ function initialize() {
 				'<h1 class="place-name">' + place.name + '</h1>' +
 				'<p class="place-address">' + place.formatted_address + '</p>' +
 				'<?php
-					echo Form::button('[genMapUnit.instanceName()/]', '[genMapUnit.submitLabel()/]', array(
+					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
 						'type' => 'submit',
 						'class' => 'save-marker'
 					));
 				?></div>');    
 			showPlace(place.name, place.geometry.location, contentString);
 		} else {
-			document.getElementById('[genUnit.uniqueName()/]_input').placeholder = 'Enter a location';
+			document.getElementById('[mapUnit.uniqueName()/]_input').placeholder = 'Enter a location';
 		}
 	});
 }
@@ -273,17 +271,17 @@ function showPlace(name, latLng, contentString) {
 
 function saveMarker() {
 	var myData = {
-[if (not genMapUnit.genPlaceName.oclIsUndefined())]
-		[genMapUnit.genPlaceName.modelPropertyName()/]: infoWindow.get('name'),
+[if (not mapUnit.placeName.oclIsUndefined())]
+		[mapUnit.placeName.modelPropertyName()/]: infoWindow.get('name'),
 [/if]
-		[genMapUnit.genLocation.modelPropertyName()/]_latitude: infoWindow.getPosition().lat(),
-		[genMapUnit.genLocation.modelPropertyName()/]_longitude: infoWindow.getPosition().lng()
+		[mapUnit.location.modelPropertyName()/]_latitude: infoWindow.getPosition().lat(),
+		[mapUnit.location.modelPropertyName()/]_longitude: infoWindow.getPosition().lng()
 	};
 	$.ajax({
 		type: "POST",
 		url: "<?php
-			echo Route::get('[genMapUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]')->uri(array(
-				'action' => '[genMapUnit.actionName()/]',
+			echo Route::get('[mapUnit.displayedOn.oclAsType(Page).controllerName()/]')->uri(array(
+				'action' => '[mapUnit.actionName()/]',
 				'param' => 'submit'
 			));
 ?>",
@@ -324,132 +322,132 @@ google.maps.event.addDomListener(window, 'load', initialize);
 [/template]
 
 
-[template public generateUnitView(genUnit : GenContentUnit)
-	? (genUnit.oclIsTypeOf(GenSearchUnit)) post(trim())]
-[let genDynamicUnit : GenDynamicUnit = genUnit.oclAsType(GenDynamicUnit)]
-[file(genDynamicUnit.viewFilename(), false)]
-<section class="[genDynamicUnit.styleClass()/]<?php
-	if (isset($[genDynamicUnit.instanceName()/]_field_errors)) {
-		echo ' [genDynamicUnit.errorClass()/]';
+[template public generateUnitView(unit : ContentUnit)
+	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[file(dynamicUnit.viewFilename(), false)]
+<section class="[dynamicUnit.styleClass/]<?php
+	if (isset($[dynamicUnit.instanceName()/]_field_errors)) {
+		echo ' [dynamicUnit.errorClass/]';
 	}
-?>" id="[genDynamicUnit.instanceName()/]">
- <h1 class="[genDynamicUnit.captionClass()/][if (genDynamicUnit.omitCaption())] hidden[/if]"><?php echo __('[genDynamicUnit.displayLabel()/]'); ?></h1>
+?>" id="[dynamicUnit.instanceName()/]">
+ <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[genDynamicUnit.errorClass()/]<?php if (empty($[genDynamicUnit.instanceName()/]_error)[if (genDynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[genDynamicUnit.instanceName()/]_error)) { ?>
-   <p class="[genDynamicUnit.errorClass()/]"><?php echo html::chars(__($[genDynamicUnit.instanceName()/]_error)); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.instanceName()/]_error)[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.instanceName()/]_error)) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.instanceName()/]_error)); ?></p>
 <?php } ?>
-[if (genDynamicUnit.hasMessagesOnFormHead())]
-   [genDynamicUnit.generateFormErrors()/]
+[if (dynamicUnit.hasMessagesOnFormHead())]
+   [dynamicUnit.generateFormErrors()/]
 [/if]
   </section>
   <?php
-[if (genDynamicUnit.hasInterfaceFields())]
-	$unit_fields = $[genDynamicUnit.instanceName()/]->unit_fields();
+[if (dynamicUnit.hasInterfaceFields())]
+	$unit_fields = $[dynamicUnit.instanceName()/]->unit_fields();
 [/if]
 	echo Form::open(
-		Route::get('[genDynamicUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]')->uri(array(
-			'action' => '[genDynamicUnit.actionName()/]',
+		Route::get('[dynamicUnit.displayedOn.oclAsType(Page).controllerName()/]')->uri(array(
+			'action' => '[dynamicUnit.actionName()/]',
 			'param' => 'submit'
-[if (genUnit.pageDisplayedOn().hasParameterisedUnits())]
+[if (unit.pageDisplayedOn().hasParameterisedUnits())]
 		)) . URL::query($query_parameters, FALSE),
 [else]
 		)),
 [/if]
 		array(
-			'id' => '[genDynamicUnit.instanceName()/]',
-			'class' => '[genDynamicUnit.layoutClass()/]' . (isset($[genDynamicUnit.instanceName()/]_error) ? ' [genDynamicUnit.errorClass()/]' : ''),
+			'id' => '[dynamicUnit.instanceName()/]',
+			'class' => '[dynamicUnit.layoutClass/]' . (isset($[dynamicUnit.instanceName()/]_error) ? ' [dynamicUnit.errorClass/]' : ''),
 			'enctype' => 'multipart/form-data'
 		)) . PHP_EOL;
 ?>
    <ul>
-[for (genDisplayField : GenUnitField | genDynamicUnit.inputOrEmbeddedFields())]
-    <li[if (genDynamicUnit.hasMessagesOnFeature())]<?php
+[for (displayField : UnitField | dynamicUnit.inputOrEmbeddedFields())]
+    <li[if (dynamicUnit.hasMessagesOnFeature())]<?php
 		unset($field_error);
-		if (!empty($[genDynamicUnit.instanceName()/]_field_errors))
-		[if (genDisplayField.oclIsKindOf(GenInterfaceField))]
-			if (array_key_exists('_external', $[genDynamicUnit.instanceName()/]_field_errors))
-				if (array_key_exists('[genDisplayField.modelPropertyName()/]', $[genDynamicUnit.instanceName()/]_field_errors['['/]'_external'[']'/]))
-					$field_error = $[genDynamicUnit.instanceName()/]_field_errors['['/]'_external'[']'/]['['/]'[genDisplayField.modelPropertyName()/]'[']'/];
+		if (!empty($[dynamicUnit.instanceName()/]_field_errors))
+		[if (displayField.oclIsKindOf(InterfaceField))]
+			if (array_key_exists('_external', $[dynamicUnit.instanceName()/]_field_errors))
+				if (array_key_exists('[displayField.modelPropertyName()/]', $[dynamicUnit.instanceName()/]_field_errors['['/]'_external'[']'/]))
+					$field_error = $[dynamicUnit.instanceName()/]_field_errors['['/]'_external'[']'/]['['/]'[displayField.modelPropertyName()/]'[']'/];
 		[else]
-			if (array_key_exists('[genDisplayField.modelPropertyName()/]', $[genDynamicUnit.instanceName()/]_field_errors))
-				$field_error = $[genDynamicUnit.instanceName()/]_field_errors['['/]'[genDisplayField.modelPropertyName()/]'[']'/];
+			if (array_key_exists('[displayField.modelPropertyName()/]', $[dynamicUnit.instanceName()/]_field_errors))
+				$field_error = $[dynamicUnit.instanceName()/]_field_errors['['/]'[displayField.modelPropertyName()/]'[']'/];
 		[/if]
 		if (isset($field_error))
-			echo ' class="[genDynamicUnit.errorClass()/]"'; 
+			echo ' class="[dynamicUnit.errorClass/]"'; 
 ?>[/if]>
-	[if (if not genDisplayField.oclIsKindOf(GenUnitAssociation) then true else genDisplayField.oclAsType(GenUnitAssociation).genUnits->isEmpty() endif)]
+	[if (if not displayField.oclIsKindOf(UnitAssociation) then true else displayField.oclAsType(UnitAssociation).units->isEmpty() endif)]
      <?php
-		echo Form::label('[genDisplayField.uniqueName()/]', '[genDisplayField.displayLabel()/]',
+		echo Form::label('[displayField.uniqueName()/]', '[displayField.displayLabel()/]',
 			array(
-				'class' => '[genDisplayField.styleClass()/][if (genDisplayField.isRequired() and not genUnit.oclIsTypeOf(GenSearchUnit))] required[/if]'
+				'class' => '[displayField.styleClass()/][if (displayField.isRequired() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
 		)) . PHP_EOL;
 	?>
-     [genDisplayField.generateInput(genDynamicUnit.instanceName())/]
+     [displayField.generateInput(dynamicUnit.instanceName())/]
 	[else]
-	[let embeddedUnit : GenContentUnit = genDisplayField.oclAsType(GenUnitAssociation).genUnits->first()]
-     <p class="[genDisplayField.modelPropertyName()/]">[genDisplayField.displayLabel()/]</p>
-<?php $[genDisplayField.uniqueName()/] = $[genDynamicUnit.instanceName()/]->[genDisplayField.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(GenIndexUnit))]
-find()[else][let embeddedIndexUnit : GenIndexUnit = embeddedUnit.oclAsType(GenIndexUnit)]
-[if (embeddedIndexUnit.genSelection.oclIsUndefined())]
+	[let embeddedUnit : ContentUnit = displayField.oclAsType(UnitAssociation).units->first()]
+     <p class="[displayField.modelPropertyName()/]">[displayField.displayLabel()/]</p>
+<?php $[displayField.uniqueName()/] = $[dynamicUnit.instanceName()/]->[displayField.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+[if (embeddedIndexUnit.selection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.genSelection.jsfSelection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
-     <div class="framed [genDisplayField.modelPropertyName()/]">
-      [genDisplayField.oclAsType(GenUnitAssociation).genUnits.generateViewContent(genDisplayField.uniqueName())/]
+     <div class="framed [displayField.modelPropertyName()/]">
+      [displayField.oclAsType(UnitAssociation).units.generateViewContent(displayField.uniqueName())/]
      </div>
 	[/let]
 	[/if]
-	[if (genDynamicUnit.hasMessagesOnFeature())]
+	[if (dynamicUnit.hasMessagesOnFeature())]
 <?php if (isset($field_error)) { ?>
-     <p class="[genDynamicUnit.errorClass()/]"><?php echo __($field_error); ?></p>
+     <p class="[dynamicUnit.errorClass/]"><?php echo __($field_error); ?></p>
 <?php } ?>
 	[/if]
     </li>
 [/for]
    </ul>
-[if (genDynamicUnit.hasMessagesOnFormFoot())]
-<?php if (isset($[genDynamicUnit.instanceName()/]->error->all)) { ?>
-   <div class="[genDynamicUnit.errorClass()/]">
-[genDynamicUnit.generateFormErrors()/]
+[if (dynamicUnit.hasMessagesOnFormFoot())]
+<?php if (isset($[dynamicUnit.instanceName()/]->error->all)) { ?>
+   <div class="[dynamicUnit.errorClass/]">
+[dynamicUnit.generateFormErrors()/]
    </div>
 <?php } ?>
 [/if]
-   <div class="[genDynamicUnit.controlClass()/]">
-[if (not genDynamicUnit.oclIsTypeOf(GenActionUnit))]
+   <div class="[dynamicUnit.controlClass/]">
+[if (not dynamicUnit.oclIsTypeOf(ActionUnit))]
    <?php
-		echo Form::button('[genDynamicUnit.instanceName()/]', '[genDynamicUnit.submitLabel()/]', array(
+		echo Form::button('[dynamicUnit.instanceName()/]', '[dynamicUnit.submitLabel()/]', array(
 			'type' => 'submit'
 		)) . PHP_EOL;
 ?>
 [else]
-			[for (genAction : GenUnitSupportAction | genDynamicUnit.oclAsType(GenActionUnit).genSupportActions)]
+			[for (action : UnitSupportAction | dynamicUnit.oclAsType(ActionUnit).supportActions)]
   <?php
-		echo Form::button('[genAction.name/]', '[genAction.displayLabel()/]', array(
+		echo Form::button('[action.name/]', '[action.displayLabel()/]', array(
 			'type' => 'submit',
-[if (not genAction.jsfAction.confirmMessage.oclIsUndefined())]
-			'onclick' => 'return confirm(\'' . __('[genAction.jsfAction.confirmMessage/]') . '\');'
+[if (not action.confirmMessage.oclIsUndefined())]
+			'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
 [/if]
 		)) . PHP_EOL;
 ?>
 			[/for]
 [/if]
-[if (genDynamicUnit.oclIsKindOf(GenEditUnit))]
-[let genEditUnit : GenEditUnit = genDynamicUnit.oclAsType(GenEditUnit)]
-	[if (genEditUnit.oclIsTypeOf(GenCreateUpdateUnit))]
-	[let genCreateUpdateUnit : GenCreateUpdateUnit = genEditUnit.oclAsType(GenCreateUpdateUnit)]
-		[if (not genCreateUpdateUnit.jsfUnit.clearLabel.oclIsUndefined())]
+[if (dynamicUnit.oclIsKindOf(EditUnit))]
+[let editUnit : EditUnit = dynamicUnit.oclAsType(EditUnit)]
+	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
+	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
+		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
    <?php
-		echo Form::button('clear', '[genCreateUpdateUnit.jsfUnit.clearLabel/]', array(
+		echo Form::button('clear', '[createUpdateUnit.clearLabel/]', array(
 			'type' => 'submit'
 		)) . PHP_EOL;
 ?>
 		[/if]
 	[/let]
 	[/if]
-	[if (not genEditUnit.genCancelDestination.oclIsUndefined())]
+	[if (not editUnit.cancelDestination.oclIsUndefined())]
    <?php
-		echo Form::button('cancel', '[genDynamicUnit.cancelLabel()/]', array(
+		echo Form::button('cancel', '[dynamicUnit.cancelLabel()/]', array(
 			'type' => 'submit'
 		)) . PHP_EOL;
 ?>
@@ -467,76 +465,76 @@ find_all()[else]
 [/template]
 
 
-[template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.isDataTypeSingleton() or genField.oclIsTypeOf(GenDataTypeField)) post(trim())]
-[let genDataType : GenDataType = 
-	if genField.oclIsTypeOf(GenUnitElement) then
-		genField.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclAsType(GenSingletonElement).genDataType
+[template protected generateInput(field : UnitField, instanceVariable : String)
+	? (field.isDataTypeSingleton() or field.oclIsTypeOf(DataTypeField)) post(trim())]
+[let dataType : DataType = 
+	if field.oclIsTypeOf(UnitElement) then
+		field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonElement).dataType
 	else
-		genField.oclAsType(GenDataTypeField).genDataType
+		field.oclAsType(DataTypeField).dataType
 	endif]
-[if (genDataType.ormDataType.name = 'Boolean')]
+[if (dataType.name = 'Boolean')]
 <?php
-	echo Form::hidden('[genField.modelPropertyName()/]', '0') .PHP_EOL;
-	echo Form::checkbox('[genField.modelPropertyName()/]', '1', [if (genField.oclIsKindOf(GenDataTypeField))]
-array_key_exists('[genField.modelPropertyName()/]', $[instanceVariable/]->unit_fields())[else]
-(bool) $[instanceVariable/]->[genField.modelPropertyName()/][/if], array(
-			'id' => '[genField.uniqueName()/]',
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+	echo Form::hidden('[field.modelPropertyName()/]', '0') .PHP_EOL;
+	echo Form::checkbox('[field.modelPropertyName()/]', '1', [if (field.oclIsKindOf(DataTypeField))]
+array_key_exists('[field.modelPropertyName()/]', $[instanceVariable/]->unit_fields())[else]
+(bool) $[instanceVariable/]->[field.modelPropertyName()/][/if], array(
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => ''
 [/if]
 	)) . PHP_EOL;
 ?>
-[elseif (genField.isObfuscated())]
+[elseif (field.isObfuscated())]
 <?php
-	echo Form::password('[genField.modelPropertyName()/]', [if (genField.oclIsKindOf(GenDataTypeField))]
-array_key_exists('[genField.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[genField.modelPropertyName()/]'[']'/] : NULL[else]
-$[instanceVariable/]->[genField.modelPropertyName()/][/if],
+	echo Form::password('[field.modelPropertyName()/]', [if (field.oclIsKindOf(DataTypeField))]
+array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[else]
+$[instanceVariable/]->[field.modelPropertyName()/][/if],
 		array(
-			'id' => '[genField.uniqueName()/]',
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => ''
 [/if]
 	)) . PHP_EOL;
 ?>
-[elseif (genDataType.ormDataType.name = 'TextBlock')]
-[if (not genField.pageDisplayedOn().genPartOf.textEditorPath.oclIsUndefined())]
-<div class="[genField.modelPropertyName()/] [genField.inputClass()/]">
+[elseif (dataType.name = 'TextBlock')]
+[if (not field.pageDisplayedOn().partOf.textEditorURL.oclIsUndefined())]
+<div class="[field.modelPropertyName()/] [field.inputClass()/]">
 [/if]
 <?php
-	echo Form::textarea('[genField.modelPropertyName()/]', [if (genField.oclIsKindOf(GenDataTypeField))]
-array_key_exists('[genField.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[genField.modelPropertyName()/]'[']'/] : NULL[else]
-$[instanceVariable/]->[genField.modelPropertyName()/][/if],
+	echo Form::textarea('[field.modelPropertyName()/]', [if (field.oclIsKindOf(DataTypeField))]
+array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[else]
+$[instanceVariable/]->[field.modelPropertyName()/][/if],
 		array(
-			'id' => '[genField.uniqueName()/]',
-[if (genField.pageDisplayedOn().genPartOf.textEditorPath.oclIsUndefined())]
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
+			'id' => '[field.uniqueName()/]',
+[if (field.pageDisplayedOn().partOf.textEditorURL.oclIsUndefined())]
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
 [else]
 			'class' => 'full_width',
 [/if]
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => ''
 [/if]
 	)) . PHP_EOL;
 ?>
-[if (not genField.pageDisplayedOn().genPartOf.textEditorPath.oclIsUndefined())]
-<script>CKEDITOR.replace('[genField.uniqueName()/]');</script>
+[if (not field.pageDisplayedOn().partOf.textEditorURL.oclIsUndefined())]
+<script>CKEDITOR.replace('[field.uniqueName()/]');</script>
 </div>
 [/if]
 [else]
 <?php
-	echo Form::input('[genField.modelPropertyName()/]', [if (genField.oclIsKindOf(GenDataTypeField))]
-array_key_exists('[genField.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[genField.modelPropertyName()/]'[']'/] : NULL[else]
-$[instanceVariable/]->[genField.modelPropertyName()/][/if],
+	echo Form::input('[field.modelPropertyName()/]', [if (field.oclIsKindOf(DataTypeField))]
+array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[else]
+$[instanceVariable/]->[field.modelPropertyName()/][/if],
 		array(
-			'id' => '[genField.uniqueName()/]',
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
-[if (genDataType.ormDataType.name <> 'String')]
-			'type' => '[genDataType.ormDataType.name.toLower()/]',
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+[if (dataType.name <> 'String')]
+			'type' => '[dataType.name.toLower()/]',
 [/if]
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => ''
 [/if]
 	)) . PHP_EOL;
@@ -545,19 +543,19 @@ $[instanceVariable/]->[genField.modelPropertyName()/][/if],
 [/let]
 [/template]
 
-[template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.isEnumerationTypeSingleton()) post(trim())]
+[template protected generateInput(field : UnitField, instanceVariable : String)
+	? (field.isEnumerationTypeSingleton()) post(trim())]
 [let enumerationType : EnumerationType
-	= genField.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclAsType(GenSingletonElement).genDataType.ormDataType.oclAsType(EnumerationType)]
+	= field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
 <?php
 	echo Form::select(
-		'[genField.columnName()/]',
-		[enumerationType.modelClassName()/]::options([genField.isRequired()/]),
-		$[instanceVariable/]->[genField.modelPropertyName()/],
+		'[field.formName()/]',
+		[enumerationType.modelClassName()/]::options([field.isRequired()/]),
+		$[instanceVariable/]->[field.modelPropertyName()/],
 		array(
-			'id' => '[genField.uniqueName()/]',
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => '',
 [/if]
 	)) . PHP_EOL;
@@ -565,22 +563,22 @@ $[instanceVariable/]->[genField.modelPropertyName()/][/if],
 [/let]
 [/template]
 
-[template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.isDateSingleton() or genField.oclIsTypeOf(GenDateField)) post(trim())]
+[template protected generateInput(field : UnitField, instanceVariable : String)
+	? (field.isDateSingleton() or field.oclIsTypeOf(DateField)) post(trim())]
 [let dateDetails : DateDetails
-	= if genField.isDateSingleton() then
-			genField.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclAsType(GenSingletonDate).ormFeature.details
+	= if field.isDateSingleton() then
+			field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonDate).details
 		else
-			genField.oclAsType(GenDateField).jsfField.details
+			field.oclAsType(DateField).details
 		endif]
 <?php
-	echo Form::input('[genField.modelPropertyName()/]', [if (genField.oclIsKindOf(GenUnitFeature))]
-$[instanceVariable/]->[genField.modelPropertyName()/][else]
-array_key_exists('[genField.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[genField.modelPropertyName()/]'[']'/] : NULL[/if],
+	echo Form::input('[field.modelPropertyName()/]', [if (field.oclIsKindOf(UnitFeature))]
+$[instanceVariable/]->[field.modelPropertyName()/][else]
+array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[/if],
 		array(
-			'id' => '[genField.uniqueName()/]',
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => '',
 [/if]
 			'type' => '[if (dateDetails = DateDetails::DateOnly)]date[elseif (dateDetails = DateDetails::TimeOnly)]time[else]datetime[/if]'
@@ -589,81 +587,74 @@ array_key_exists('[genField.modelPropertyName()/]', $unit_fields) ? $unit_fields
 [/let]
 [/template]
 
-[template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.isResourceSingleton()) post(trim())]
-[let genResource : GenSingletonResource = genField.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclAsType(GenSingletonResource)]
+[template protected generateInput(field : UnitField, instanceVariable : String)
+	? (field.isResourceSingleton()) post(trim())]
+[let resource : SingletonResource = field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonResource)]
 <?php
-	echo Form::file('[genField.modelPropertyName()/]',
+	echo Form::file('[field.modelPropertyName()/]',
 		array(
-			'id' => '[genField.uniqueName()/]',
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => '',
 [/if]
-[let ormFeature : SingletonResource
-		= if genResource.oclIsTypeOf(GenSingletonFile) then 
-				genResource.oclAsType(GenSingletonFile).ormFeature
-			else
-				genResource.oclAsType(GenSingletonImage).ormFeature
-			endif]
-	[if (ormFeature.validUploadMimeTypes->notEmpty())]
-			'accept' => '[ormFeature.validUploadMimeTypes->first()/]', // array([for (type : String | ormFeature.validUploadMimeTypes) separator(', ')]'[type/]'[/for]),
+	[if (resource.validUploadMimeTypes->notEmpty())]
+			'accept' => '[resource.validUploadMimeTypes->first()/]', // array([for (type : String | resource.validUploadMimeTypes) separator(', ')]'[type/]'[/for]),
 	[/if]
-[/let]
 	)) . PHP_EOL;
 ?>
 [/let]
 [/template]
 
-[template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.oclIsTypeOf(GenUnitElement) and not genField.isSingleton()) post(trim())]
-echo form_input('[genField.modelPropertyName()/]');
+[template protected generateInput(field : UnitField, instanceVariable : String)
+	? (field.oclIsTypeOf(UnitElement) and not field.isSingleton()) post(trim())]
+echo form_input('[field.modelPropertyName()/]');
 [/template]
 
-[template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.oclIsKindOf(GenUnitAssociation)) post(trim())]
-[if (genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology <> AjaxTechnologies::AngularJS)]
+[template protected generateInput(field : UnitField, instanceVariable : String)
+	? (field.oclIsKindOf(UnitAssociation)) post(trim())]
+[if (field.displayedOn.pageDisplayedOn().partOf.ajaxTechnology <> AjaxTechnologies::AngularJS)]
 <?php
-	echo Form::select('[genField.columnName()/][if (not genField.isSingleton())]['['/][']'/][/if]', $[genField.optionsName()/], $[instanceVariable/]->[genField.modelPropertyName()/][if (not genField.isSingleton())]_as_array()[/if],
+	echo Form::select('[field.formName()/][if (not field.isSingleton())]['['/][']'/][/if]', $[field.optionsName()/], $[instanceVariable/]->[field.modelPropertyName()/][if (not field.isSingleton())]_as_array()[/if],
 		array(
-			'id' => '[genField.uniqueName()/]',
-			'class' => '[genField.styleClass()/] [genField.inputClass()/]',
-[if (not genField.isSingleton())]
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+[if (not field.isSingleton())]
 			'multiple' => 'multiple',
 [/if]
-[if (genField.isRequired() and not genField.genDisplayedOn.oclIsTypeOf(GenSearchUnit))]
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => '',
 [/if]
 	)) . PHP_EOL;
 ?>
 [else]
-	[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
-	[if (genAssociation.genFilters->size() > 0)]
-<div class="[genField.styleClass()/] [genField.inputClass()/]">
- <input id="[genField.uniqueName()/]_filter" name="[genField.uniqueName()/]_filter" data-ng-model="[genField.name/]_filter"/>
+	[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+	[if (association.filters->size() > 0)]
+<div class="[association.styleClass()/] [association.inputClass()/]">
+ <input id="[association.uniqueName()/]_filter" name="[association.uniqueName()/]_filter" data-ng-model="[association.name/]_filter"/>
 	[/if]
-<select id="[genField.uniqueName()/]" name="[genField.columnName()/][if (not genField.isSingleton())]
-['['/][']'/][/if]" class="[genField.styleClass()/] [genField.inputClass()/]" [if (genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.ajaxTechnology = AjaxTechnologies::AngularJS)]
- data-ng-model="[genField.name/]_selected" data-ng-options="[genField.name/].label for [genField.name/] in [genField.optionsName()/]"[/if]>
-[if (genAssociation.isSingleton())]
+<select id="[field.uniqueName()/]" name="[field.formName()/][if (not association.isSingleton())]
+['['/][']'/][/if]" class="[association.styleClass()/] [association.inputClass()/]" [if (field.displayedOn.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::AngularJS)]
+ data-ng-model="[association.name/]_selected" data-ng-options="[association.name/].label for [association.name/] in [association.optionsName()/]"[/if]>
+[if (association.isSingleton())]
  <option></option>
 [/if]
 </select>
-	[if (genAssociation.genFilters->size() > 0)]
+	[if (association.filters->size() > 0)]
 </div>
 	[/if]
 	[/let]
 [/if]
 [/template]
 
-[template protected generateInput(genField : GenUnitField, instanceVariable : String)
-	? (genField.oclIsTypeOf(GenCaptchaField)) post(trim())]
-<div class="g-recaptcha" data-sitekey="[genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.captchaSiteKey/]"></div>
+[template protected generateInput(field : UnitField, instanceVariable : String)
+	? (field.oclIsTypeOf(CaptchaField)) post(trim())]
+<div class="g-recaptcha" data-sitekey="[field.displayedOn.pageDisplayedOn().partOf.captchaSiteKey/]"></div>
 <noscript>
 <div style="width: 302px; height: 352px;">
  <div style="width: 302px; height: 352px; position: relative;">
   <div style="width: 302px; height: 352px; position: absolute;">
-   <iframe src="https://www.google.com/recaptcha/api/fallback?k=[genField.genDisplayedOn.pageDisplayedOn().genPartOf.jsfModel.captchaSiteKey/]"
+   <iframe src="https://www.google.com/recaptcha/api/fallback?k=[field.displayedOn.pageDisplayedOn().partOf.captchaSiteKey/]"
                 frameborder="0" scrolling="no"
                 style="width: 302px; height:352px; border-style: none;">
    </iframe>
@@ -682,12 +673,12 @@ echo form_input('[genField.modelPropertyName()/]');
 [/template]
 
 
-[template protected generateFormErrors(genDynamicUnit : GenDynamicUnit) post(trim())]
+[template protected generateFormErrors(dynamicUnit : DynamicUnit) post(trim())]
 <?php
 	if ( isset($field_errors)) {
 		foreach ($field_errors AS $field => $message) {
 ?>
-<p class="[genDynamicUnit.errorClass()/]"><?php echo __($message); ?></p>
+<p class="[dynamicUnit.errorClass/]"><?php echo __($message); ?></p>
 <?php
 		}
 	} 

@@ -212,16 +212,8 @@
 	= command.instanceName()
 /]
 
-[query public actionName(genCommand : GenCommand) : String
-	= genCommand.instanceName()
-/]
-
 [query public instanceName(command : Command) : String
 	= command.name.toLowerFirst()
-/]
-
-[query public instanceName(genCommand : GenCommand) : String
-	= genCommand.name.toLowerFirst()
 /]
 
 
@@ -249,19 +241,6 @@
 				.concat(genAssociation.name.toUpperFirst())
 				.concat(genAction.name.toUpperFirst())
 		endif
-/]
-
-[query public destinationUriX(genAction : GenInlineAction) : String
-	= if genAction.oclIsTypeOf(GenDeleteAction) then
-			genAction.oclAsType(GenDeleteAction).destinationUriX()
-		else
-			genAction.oclAsType(GenSelectAction).destinationUriX()
-		endif
-/]
-
-[query public destinationUriX(genAction : GenDeleteAction) : String
-	= genAction.genUsedBy.oclAsType(GenDynamicUnit).pageDisplayedOn().controllerName()
-		.concat('/').concat(genAction.actionName()).concat('/')
 /]
 
 [query public destinationUriX(genSelectAction : GenSelectAction) : String
@@ -292,14 +271,6 @@
 		endif
 /]
 
-[query public modelName(genAction : GenDeleteAction) : String
-	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
-			genAction.genUsedBy.oclAsType(GenDynamicUnit).modelName()
-		else
-			genAction.genUsedBy.oclAsType(GenUnitAssociation).modelName()
-		endif
-/]
-
 [query public modelName(action : FeatureSupportAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
@@ -308,30 +279,18 @@
 		endif
 /]
 
-[query public modelName(genAction : GenFeatureSupportAction) : String
-	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
-			genAction.genUsedBy.oclAsType(GenDynamicUnit).modelName()
-		else
-			genAction.genUsedBy.oclAsType(GenUnitAssociation).modelName()
-		endif
-/]
-
-[query public modelName(genAction : GenSelectAction) : String
-	= let genUnit : GenDynamicUnit
-		= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
-				genAction.genUsedBy.oclAsType(GenDynamicUnit)
+[query public modelName(action : SelectAction) : String
+	= let unit : DynamicUnit
+		= if action.usedBy.oclIsKindOf(DynamicUnit) then
+				action.usedBy.oclAsType(DynamicUnit)
 			else
-				genAction.genUsedBy.oclAsType(GenUnitAssociation).genDisplayedOn
+				action.usedBy.oclAsType(UnitAssociation).displayedOn
 			endif
-		in genUnit.genService.jsfService.modelName()
+		in unit.service.modelName()
 /]
 
 [query public parameterName(action : InlineAction) : String
 	= action.actionName()
-/]
-
-[query public parameterName(genAction : GenInlineAction) : String
-	= genAction.actionName()
 /]
 
 

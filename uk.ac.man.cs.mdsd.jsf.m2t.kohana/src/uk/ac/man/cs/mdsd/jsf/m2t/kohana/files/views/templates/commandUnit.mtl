@@ -1,20 +1,20 @@
 [comment encoding = UTF-8 /]
 [module commandUnit(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateUnitView(genUnit : GenCommandUnit)
-	? (genUnit.oclIsTypeOf(GenCommandUnit))]
-[let genCommandUnit : GenCommandUnit = genUnit.oclAsType(GenCommandUnit)]
-[file(genCommandUnit.viewFilename(), false)]
- <section class="[genCommandUnit.styleClass()/]" id="[genCommandUnit.instanceName()/]">
-[if (not genCommandUnit.omitCaption())]
-  <h1 class="[genCommandUnit.captionClass()/]">[genCommandUnit.displayLabel()/]</h1>
+[template public generateUnitView(unit : CommandUnit)
+	? (unit.oclIsTypeOf(CommandUnit))]
+[let commandUnit : CommandUnit = unit.oclAsType(CommandUnit)]
+[file(commandUnit.viewFilename(), false)]
+ <section class="[commandUnit.styleClass/]" id="[commandUnit.instanceName()/]">
+[if (not commandUnit.omitCaption)]
+  <h1 class="[commandUnit.captionClass/]">[commandUnit.displayLabel/]</h1>
 [/if]
-  <div class="[genCommandUnit.layoutClass()/]"></div>
+  <div class="[commandUnit.layoutClass/]"></div>
  </section>
 [/file]
 [/let]

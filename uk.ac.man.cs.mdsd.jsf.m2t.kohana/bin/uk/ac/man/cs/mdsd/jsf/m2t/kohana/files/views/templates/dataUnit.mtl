@@ -1,50 +1,48 @@
 [comment encoding = UTF-8 /]
 [module dataUnit(
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenOrm',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::fileInformation/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::common::names/]
 
 
-[template public generateUnitView(genUnit : GenContentUnit)
-	? (genUnit.oclIsKindOf(GenDataUnit)) post(trim())]
-[let genDataUnit : GenDataUnit = genUnit.oclAsType(GenDataUnit)]
-[file(genDataUnit.viewFilename(), false)]
-<section class="[genDataUnit.styleClass()/]<?php
-	if (isset($[genDataUnit.instanceName()/]_error)) {
-		echo ' [genDataUnit.errorClass()/]';
+[template public generateUnitView(unit : ContentUnit)
+	? (unit.oclIsKindOf(DataUnit)) post(trim())]
+[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+[file(dataUnit.viewFilename(), false)]
+<section class="[dataUnit.styleClass/]<?php
+	if (isset($[dataUnit.instanceName()/]_error)) {
+		echo ' [dataUnit.errorClass/]';
 	}
-?>" id="[genDataUnit.instanceName()/]">
- <h1 class="[genDataUnit.captionClass()/][if (genDataUnit.omitCaption())] hidden[/if]">[genDataUnit.generateUnitTitle(genDataUnit.instanceName())/]</h1>
- <section class="[genDataUnit.errorClass()/]<?php if (empty($[genDataUnit.instanceName()/]_error)) echo ' hidden'; ?>">
-<?php if (!empty($[genDataUnit.instanceName()/]_error)) { ?>
-  <p class="[genDataUnit.errorClass()/]"><?php echo __($[genDataUnit.instanceName()/]_error); ?></p>
+?>" id="[dataUnit.instanceName()/]">
+ <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.generateUnitTitle(dataUnit.instanceName())/]</h1>
+ <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.instanceName()/]_error)) echo ' hidden'; ?>">
+<?php if (!empty($[dataUnit.instanceName()/]_error)) { ?>
+  <p class="[dataUnit.errorClass/]"><?php echo __($[dataUnit.instanceName()/]_error); ?></p>
 <?php } ?>
  </section>
-[if (not genDataUnit.oclIsKindOf(GenIndexUnit))]
- [genDataUnit.generateViewContent(genDataUnit.instanceName())/]
-	[if (genDataUnit.genSupportActions->notEmpty())]
+[if (not dataUnit.oclIsKindOf(IndexUnit))]
+ [dataUnit.generateViewContent(dataUnit.instanceName())/]
+	[if (dataUnit.supportActions->notEmpty())]
  <?php
 	echo Form::open(
-		Route::get('[genDataUnit.genDisplayedOn.oclAsType(GenPage).controllerName()/]')->uri(array(
+		Route::get('[dataUnit.displayedOn.oclAsType(Page).controllerName()/]')->uri(array(
 			'action' => 'support',
 			'param' => 'submit'
-			[if (genUnit.pageDisplayedOn().hasParameterisedUnits())]
+			[if (unit.pageDisplayedOn().hasParameterisedUnits())]
 		)) . URL::query($query_parameters, FALSE),
 			[else]
 		)),
 			[/if]
 		array(
-			'id' => '[genDataUnit.instanceName()/]',
-			'class' => '[genDataUnit.controlClass()/]'
+			'id' => '[dataUnit.instanceName()/]',
+			'class' => '[dataUnit.controlClass/]'
 		)) . PHP_EOL;
 ?>
-			[for (genAction : GenUnitSupportAction | genDataUnit.genSupportActions)]
+			[for (action : UnitSupportAction | dataUnit.supportActions)]
   <?php
-		echo Form::submit('[genAction.name/]', '[genAction.displayLabel()/]') . PHP_EOL;
+		echo Form::submit('[action.name/]', '[action.displayLabel/]') . PHP_EOL;
 ?>
 			[/for]
   <?php
@@ -52,10 +50,10 @@
 ?>
 	[/if]
 [else]
-[let genIndexUnit : GenIndexUnit = genDataUnit.oclAsType(GenIndexUnit)]
+[let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
  <div class="unit_padding">
-  [genDataUnit.generateViewContent(genDataUnit.instanceName())/]
-	[if (genIndexUnit.jsfUnit.defaultPaginationSize) > 0]
+  [dataUnit.generateViewContent(dataUnit.instanceName())/]
+	[if (indexUnit.defaultPaginationSize) > 0]
 <?php echo $pagination; ?>
 	[/if]
  </div>
@@ -66,96 +64,96 @@
 [/let]
 [/template]
 
-[template private generateUnitTitle(genUnit : GenDataUnit, instanceVariable : String) post(trim())]
-[if (genUnit.oclIsTypeOf(GenIndexGridUnit) or genUnit.genDynamicTitle.oclIsUndefined())]
-[genUnit.displayLabel()/]
-[elseif (genUnit.genDynamicTitle.oclIsTypeOf(GenServiceEntityElement))]
-[let genElement : GenServiceEntityElement = genUnit.genDynamicTitle.oclAsType(GenServiceEntityElement)]
-	[if (not genElement.isEnumerationTypeSingletonElement())]
-<?php echo HTML::chars($[instanceVariable/]->[genElement.modelPropertyName()/]); ?>
+[template private generateUnitTitle(unit : DataUnit, instanceVariable : String) post(trim())]
+[if (unit.oclIsTypeOf(IndexGridUnit) or unit.dynamicTitle.oclIsUndefined())]
+[unit.displayLabel/]
+[elseif (unit.dynamicTitle.oclIsTypeOf(ServiceEntityElement))]
+[let element : ServiceEntityElement = unit.dynamicTitle.oclAsType(ServiceEntityElement)]
+	[if (not element.isEnumerationTypeSingletonElement())]
+<?php echo HTML::chars($[instanceVariable/]->[element.modelPropertyName()/]); ?>
 	[else]
 [let enumerationType : EnumerationType
-	= genElement.genFeature.oclAsType(GenSingletonElement).genDataType.ormDataType.oclAsType(EnumerationType)]
-<?php echo [enumerationType.modelClassName()/]::option($entry->[genElement.modelPropertyName()/]); ?>
+	= element.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+<?php echo [enumerationType.modelClassName()/]::option($entry->[element.modelPropertyName()/]); ?>
 [/let]
 	[/if]
 [/let]
 [else]
-<?php echo HTML::chars($[instanceVariable/]->[genUnit.genDynamicTitle.oclAsType(GenModelLabel).name/]()); ?>
+<?php echo HTML::chars($[instanceVariable/]->[unit.dynamicTitle.oclAsType(ModelLabel).name/]()); ?>
 [/if]
 [/template]
 
-[template public generateViewContent(genUnit : GenContentUnit, instanceVariable : String)
-	? (genUnit.oclIsTypeOf(GenDetailsUnit)) post(trim())]
-[let genDetailsUnit : GenDetailsUnit = genUnit.oclAsType(GenDetailsUnit)]
-[genDetailsUnit.generateDetailsContent(instanceVariable)/]
+[template public generateViewContent(unit : ContentUnit, instanceVariable : String)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[detailsUnit.generateDetailsContent(instanceVariable)/]
 [/let]
 [/template]
 
-[template public generateDetailsContent(genUnit : GenDataUnit, instanceVariable : String)
+[template public generateDetailsContent(unit : DataUnit, instanceVariable : String)
 	post(trim())]
-[if (genUnit.hasOmitFieldLabels())]
-<ul class="[genUnit.layoutClass()/]">
+[if (unit.hasOmitFieldLabels())]
+<ul class="[unit.layoutClass/]">
 [else]
-<dl class="[genUnit.layoutClass()/]">
+<dl class="[unit.layoutClass/]">
 [/if]
-[for (genDisplayField : GenUnitField | genUnit.genDisplayFields)]
-	[if (genDisplayField.conditionalDisplay())]
-		[if (genDisplayField.oclIsKindOf(GenUnitElement))]
- <?php if (!empty($[instanceVariable/]->[genDisplayField.modelPropertyName()/])) { ?>
+[for (displayField : UnitField | unit.displayFields)]
+	[if (displayField.conditionalDisplay())]
+		[if (displayField.oclIsKindOf(UnitElement))]
+ <?php if (!empty($[instanceVariable/]->[displayField.modelPropertyName()/])) { ?>
 		[else]
- <?php if ($[instanceVariable/]->[genDisplayField.modelPropertyName()/]->loaded()) { ?>
+ <?php if ($[instanceVariable/]->[displayField.modelPropertyName()/]->loaded()) { ?>
 		[/if]
 	[/if]
-	[if (genUnit.hasOmitFieldLabels())]
-<li class="[genDisplayField.displayClass()/]">[genDisplayField.generateDisplayField(instanceVariable)/]</li>
+	[if (unit.hasOmitFieldLabels())]
+<li class="[displayField.displayClass()/]">[displayField.generateDisplayField(instanceVariable)/]</li>
 	[else]
- <dt class="[genDisplayField.displayClass()/]">[genDisplayField.displayLabel()/]</dt>
- <dd class="[genDisplayField.displayClass()/]">[genDisplayField.generateDisplayField(instanceVariable)/]</dd>
+ <dt class="[displayField.displayClass()/]">[displayField.displayLabel()/]</dt>
+ <dd class="[displayField.displayClass()/]">[displayField.generateDisplayField(instanceVariable)/]</dd>
 	[/if]
-	[if (genDisplayField.conditionalDisplay())]
+	[if (displayField.conditionalDisplay())]
   <?php } ?>
 	[/if]
 [/for]
-[if (genUnit.hasOmitFieldLabels())]
+[if (unit.hasOmitFieldLabels())]
 </ul>
 [else]
 </dl>
 [/if]
 [/template]
 
-[template protected generateViewContent(genUnit : GenDataUnit, instanceVariable : String)
-	? (genUnit.oclIsTypeOf(GenIndexLineDirectionUnit)) post(trim())]
-[let genIndexUnit : GenIndexLineDirectionUnit = genUnit.oclAsType(GenIndexLineDirectionUnit)]
-<ul class="[genIndexUnit.layoutClass()/]">
+[template protected generateViewContent(unit : DataUnit, instanceVariable : String)
+	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
+[let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
+<ul class="[indexUnit.layoutClass/]">
 <?php foreach ($[instanceVariable/] as $entry): ?>
  <li>
-[if (not genIndexUnit.omitCaption())]
+[if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[genIndexUnit.captionClass()/]">[genIndexUnit.generateUnitTitle('entry')/]</h1>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('entry')/]</h1>
 [/if]
-[for (genDisplayField : GenUnitField | genIndexUnit.genDisplayFields) ]
-	[if (genDisplayField.conditionalDisplay())]
-		[if (genDisplayField.oclIsKindOf(GenUnitElement))]
-<?php if (!empty($entry->[genDisplayField.modelPropertyName()/])) { ?>
+[for (displayField : UnitField | indexUnit.displayFields) ]
+	[if (displayField.conditionalDisplay())]
+		[if (displayField.oclIsKindOf(UnitElement))]
+<?php if (!empty($entry->[displayField.modelPropertyName()/])) { ?>
 		[else]
-<?php if ($entry->[genDisplayField.modelPropertyName()/]->loaded()) { ?>
+<?php if ($entry->[displayField.modelPropertyName()/]->loaded()) { ?>
 		[/if]
 	[/if]
-<span class="[genDisplayField.modelPropertyName()/]">[genDisplayField.generateDisplayField('entry')/]</span>
-	[if (genDisplayField.conditionalDisplay())]
+<span class="[displayField.modelPropertyName()/]">[displayField.generateDisplayField('entry')/]</span>
+	[if (displayField.conditionalDisplay())]
 <?php } ?>
 	[/if]
 [/for]
-[if (genIndexUnit.genActions->notEmpty())]
+[if (indexUnit.actions->notEmpty())]
 <span class="actions">
-	[for (genAction : GenInlineAction | genIndexUnit.genActions)]
-		[genAction.generateAction('entry')/]
+	[for (action : InlineAction | indexUnit.actions)]
+		[action.generateAction('entry')/]
 	[/for]</span>
 [else]
 
 [/if]
-[if (not genIndexUnit.omitCaption())]
+[if (not indexUnit.omitCaption)]
   </section>
 [/if]
  </li>
@@ -164,24 +162,24 @@
 [/let]
 [/template]
 
-[template protected generateViewContent(genUnit : GenDataUnit, instanceVariable : String)
-	? (genUnit.oclIsTypeOf(GenIndexPageDirectionUnit)) post(trim())]
-[let genIndexUnit : GenIndexPageDirectionUnit = genUnit.oclAsType(GenIndexPageDirectionUnit)]
-<ul class="[genIndexUnit.layoutClass()/]">
+[template protected generateViewContent(unit : DataUnit, instanceVariable : String)
+	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
+[let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
+<ul class="[indexUnit.layoutClass/]">
 <?php foreach ($[instanceVariable/] as $entry): ?>
  <li>
-[if (not genIndexUnit.omitCaption())]
+[if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[genIndexUnit.captionClass()/]">[genIndexUnit.generateUnitTitle('entry')/]</h1>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('entry')/]</h1>
 [/if]
-  [genUnit.generateDetailsContent('entry')/]
-[if (genIndexUnit.genActions->notEmpty())]
+  [unit.generateDetailsContent('entry')/]
+[if (indexUnit.actions->notEmpty())]
   <td class="actions">
-	[for (genAction : GenInlineAction | genIndexUnit.genActions)]
-		[genAction.generateAction('entry')/]
+	[for (action : InlineAction | indexUnit.actions)]
+		[action.generateAction('entry')/]
 	[/for]</td>
 [/if]
-[if (not genIndexUnit.omitCaption())]
+[if (not indexUnit.omitCaption)]
   </section>
 [/if]
  </li>
@@ -190,17 +188,17 @@
 [/let]
 [/template]
 
-[template public generateViewContent(genUnit : GenDataUnit, instanceVariable : String)
-	? (genUnit.oclIsTypeOf(GenIndexGridUnit)) post(trim())]
-[let genIndexUnit : GenIndexGridUnit = genUnit.oclAsType(GenIndexGridUnit)]
-<table class="[genIndexUnit.layoutClass()/]">
-[if (not genIndexUnit.jsfUnit.omitColumnLabels)]
- <thead class="[genIndexUnit.headerClass()/]">
+[template public generateViewContent(unit : DataUnit, instanceVariable : String)
+	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
+[let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
+<table class="[indexUnit.layoutClass/]">
+[if (not indexUnit.omitColumnLabels)]
+ <thead class="[indexUnit.headerClass/]">
   <tr>
- 	[for (genDisplayField : GenUnitField | genIndexUnit.genDisplayFields)]
-   <th>[genDisplayField.displayLabel()/]</th>
+ 	[for (displayField : UnitField | indexUnit.displayFields)]
+   <th>[displayField.displayLabel()/]</th>
  	[/for]
-	[if (genIndexUnit.genActions->notEmpty())]
+	[if (indexUnit.actions->notEmpty())]
    <th>Actions</th>
 	[/if]
   </tr>
@@ -208,14 +206,14 @@
 [/if]
  <tbody>
 <?php foreach ($[instanceVariable/] as $entry): ?>
-  <tr class="<?php echo Text::alternate([for (class : String | genIndexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
- [for (genDisplayField : GenUnitField | genIndexUnit.genDisplayFields)]
-   <td class="[genDisplayField.styleClass()/]">[genDisplayField.generateDisplayField('entry')/]</td>
+  <tr class="<?php echo Text::alternate([for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
+ [for (displayField : UnitField | indexUnit.displayFields)]
+   <td class="[displayField.styleClass()/]">[displayField.generateDisplayField('entry')/]</td>
 [/for]
-[if (genIndexUnit.genActions->notEmpty())]
+[if (indexUnit.actions->notEmpty())]
    <td class="actions">
-	[for (genAction : GenInlineAction | genIndexUnit.genActions)]
-    [genAction.generateAction('entry')/]
+	[for (action : InlineAction | indexUnit.actions)]
+    [action.generateAction('entry')/]
 	[/for]</td>
  [/if]
   </tr>
@@ -226,38 +224,38 @@
 [/template]
 
 
-[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
-	? (genField.isDataTypeSingleton()) post(trim())]
-[let genFeature : GenUnitElement = genField.oclAsType(GenUnitElement)]
-[if (genFeature.genActions->isEmpty())]
+[template public generateDisplayField(field : UnitField, instanceVariable : String)
+	? (field.isDataTypeSingleton()) post(trim())]
+[let feature : UnitElement = field.oclAsType(UnitElement)]
+[if (feature.actions->isEmpty())]
 <?php
-	[if (genFeature.jsfFeature.maximumDisplaySize > 0)]
-	[let maxSize : Integer = genFeature.jsfFeature.maximumDisplaySize]
-	if (strlen([genField.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
-		echo substr([genField.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
+	[if (feature.maximumDisplaySize > 0)]
+	[let maxSize : Integer = feature.maximumDisplaySize]
+	if (strlen([field.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
+		echo substr([field.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
 	else
-		echo [genField.generateDisplayFieldAssess(instanceVariable)/];
+		echo [field.generateDisplayFieldAssess(instanceVariable)/];
 	[/let]
 	[else]
-	echo [genField.generateDisplayFieldAssess(instanceVariable)/];
+	echo [field.generateDisplayFieldAssess(instanceVariable)/];
 	[/if]
 ?>
 [else]
-[let genAction : GenInlineAction = genFeature.genActions->first()]
-[let targetController : GenPage = genAction.controller()]
-[let targetUnit : GenDynamicUnit = genAction.oclAsType(GenSelectAction).genTarget.oclAsType(GenDynamicUnit)]
+[let action : InlineAction = feature.actions->first()]
+[let targetController : Page = action.controller()]
+[let targetUnit : DynamicUnit = action.oclAsType(SelectAction).target.oclAsType(DynamicUnit)]
 <?php
 	echo HTML::anchor(
 		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
-				'[targetUnit.parameterName()/]' => [if (genField.genDisplayedOn.oclIsTypeOf(GenDetailsUnit))]
-$[instanceVariable/]->[genField.modelPropertyName()/]->[targetUnit.genService.keyName()/]
+				'[targetUnit.parameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
+$[instanceVariable/]->[field.modelPropertyName()/]->[targetUnit.service.keyName()/]
 [else]
-$[instanceVariable/]->[genField.genDisplayedOn.genService.keyName()/]
+$[instanceVariable/]->[field.displayedOn.service.keyName()/]
 [/if]
 			), FALSE),
-		HTML::chars([genField.generateDisplayFieldAssess(instanceVariable)/]),
+		HTML::chars([field.generateDisplayFieldAssess(instanceVariable)/]),
 		array(
-			'title' => HTML::chars(__('[genAction.displayLabel()/]') . ' ' . [genField.generateDisplayFieldAssess(instanceVariable)/]),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [field.generateDisplayFieldAssess(instanceVariable)/]),
 	));
 ?>
 [/let]
@@ -267,87 +265,87 @@ $[instanceVariable/]->[genField.genDisplayedOn.genService.keyName()/]
 [/let]
 [/template]
 
-[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
-	? (genField.isDateSingleton()) post(trim())]
+[template public generateDisplayField(field : UnitField, instanceVariable : String)
+	? (field.isDateSingleton()) post(trim())]
 [let dateFormat : String =
-	if genField.oclIsTypeOf(GenUnitElement) then
-		genField.oclAsType(GenUnitElement).jsfFeature.dateFormat
-	else if genField.oclIsTypeOf(GenUnitAssociation) then
-		genField.oclAsType(GenUnitAssociation).jsfFeature.dateFormat
-	else if genField.oclIsTypeOf(GenDateField) then
-		genField.oclAsType(GenDateField).jsfField.dateFormat
+	if field.oclIsTypeOf(UnitElement) then
+		field.oclAsType(UnitElement).dateFormat
+	else if field.oclIsTypeOf(UnitAssociation) then
+		field.oclAsType(UnitAssociation).dateFormat
+	else if field.oclIsTypeOf(DateField) then
+		field.oclAsType(DateField).dateFormat
 	else
 		null
 	endif endif endif]
 [if (dateFormat.oclIsUndefined())]
 <?php
-	echo [genField.generateDisplayFieldAssess(instanceVariable)/];
+	echo [field.generateDisplayFieldAssess(instanceVariable)/];
 ?>
 [else]
 <?php
-	$date = new DateTime([genField.generateDisplayFieldAssess(instanceVariable)/]);
+	$date = new DateTime([field.generateDisplayFieldAssess(instanceVariable)/]);
 	echo $date->format('[dateFormat/]');
 ?>
 [/if]
 [/let]
 [/template]
 
-[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
-	? (genField.isEnumerationTypeSingleton()) post(trim())]
+[template public generateDisplayField(field : UnitField, instanceVariable : String)
+	? (field.isEnumerationTypeSingleton()) post(trim())]
 [let enumerationType : EnumerationType
-	= genField.oclAsType(GenUnitElement).genServiceFeature.genFeature.oclAsType(GenSingletonElement).genDataType.ormDataType.oclAsType(EnumerationType)]
+	= field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
 <?php
-	echo [enumerationType.modelClassName()/]::option($[instanceVariable/]->[genField.oclAsType(GenUnitElement).modelPropertyName()/]);
+	echo [enumerationType.modelClassName()/]::option($[instanceVariable/]->[field.oclAsType(UnitElement).modelPropertyName()/]);
 ?>
 [/let]
 [/template]
 
-[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
-	? (genField.isResourceSingleton()) post(trim())]
-[let genFeature : GenUnitElement = genField.oclAsType(GenUnitElement)]
+[template public generateDisplayField(field : UnitField, instanceVariable : String)
+	? (field.isResourceSingleton()) post(trim())]
+[let feature : UnitElement = field.oclAsType(UnitElement)]
 <?php
-	if (!empty($[instanceVariable/]->[genFeature.modelPropertyName()/]))
+	if (!empty($[instanceVariable/]->[feature.modelPropertyName()/]))
 		echo HTML::anchor(
-			$[instanceVariable/]->[genFeature.modelPropertyName()/],
-			'[genFeature.displayLabel()/]',
+			$[instanceVariable/]->[feature.modelPropertyName()/],
+			'[feature.displayLabel()/]',
 			NULL, NULL, FALSE);
 ?>
 [/let]
 [/template]
 
-[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
-	? (genField.oclIsKindOf(GenUnitAssociation) and genField.isSingleton()) post(trim())]
-[let genFeature : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
-[if (genFeature.genUnits->isEmpty())]
-	[if (genFeature.genActions->isEmpty())]
+[template public generateDisplayField(field : UnitField, instanceVariable : String)
+	? (field.oclIsKindOf(UnitAssociation) and field.isSingleton()) post(trim())]
+[let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (feature.units->isEmpty())]
+	[if (feature.actions->isEmpty())]
 <?php
-		[if (genFeature.jsfFeature.maximumDisplaySize > 0)]
-		[let maxSize : Integer = genFeature.jsfFeature.maximumDisplaySize]
-	if (strlen([genFeature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
-		echo substr([genFeature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
+		[if (feature.maximumDisplaySize > 0)]
+		[let maxSize : Integer = feature.maximumDisplaySize]
+	if (strlen([feature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
+		echo substr([feature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
 	else
-		echo [genFeature.generateDisplayFieldAssess(instanceVariable)/];
+		echo [feature.generateDisplayFieldAssess(instanceVariable)/];
 		[/let]
 		[else]
-	echo [genFeature.generateDisplayFieldAssess(instanceVariable)/];
+	echo [feature.generateDisplayFieldAssess(instanceVariable)/];
 		[/if]
 ?>
 	[else]
-	[let genAction : GenInlineAction = genFeature.genActions->first()]
-	[let targetController : GenPage = genAction.controller()]
-	[let targetUnit : GenDynamicUnit = genAction.oclAsType(GenSelectAction).genTarget.oclAsType(GenDynamicUnit)]
+	[let action : InlineAction = feature.actions->first()]
+	[let targetController : Page = action.controller()]
+	[let targetUnit : DynamicUnit = action.oclAsType(SelectAction).target.oclAsType(DynamicUnit)]
 <?php
 	echo HTML::anchor(
 		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
-				'[targetUnit.parameterName()/]' => [if (genField.genDisplayedOn.oclIsTypeOf(GenDetailsUnit))]
-$[instanceVariable/]->[genField.modelPropertyName()/]->[targetUnit.genService.keyName()/]
+				'[targetUnit.parameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
+$[instanceVariable/]->[field.modelPropertyName()/]->[targetUnit.service.keyName()/]
 	[else]
-$[instanceVariable/]->[genField.genDisplayedOn.genService.keyName()/]
+$[instanceVariable/]->[field.displayedOn.service.keyName()/]
 	[/if]
 			), FALSE),
-		HTML::chars([genFeature.generateDisplayFieldAssess(instanceVariable)/]),
+		HTML::chars([feature.generateDisplayFieldAssess(instanceVariable)/]),
 		array(
-			'title' => HTML::chars(__('[genAction.displayLabel()/]') . ' ' . [genFeature.generateDisplayFieldAssess(instanceVariable)/]),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [feature.generateDisplayFieldAssess(instanceVariable)/]),
 	));
 ?>
 	[/let]
@@ -355,35 +353,35 @@ $[instanceVariable/]->[genField.genDisplayedOn.genService.keyName()/]
 	[/let]
 	[/if]
 [else]
-[let embeddedUnit : GenContentUnit = genFeature.genUnits->first()]
-[genFeature.genUnits.generateViewContent(instanceVariable.concat('->').concat(genFeature.modelPropertyName()))/]
+[let embeddedUnit : ContentUnit = feature.units->first()]
+[feature.units.generateViewContent(instanceVariable.concat('->').concat(feature.modelPropertyName()))/]
 [/let]
 [/if]
 [/let]
 [/template]
 
-[template public generateDisplayField(genField : GenUnitField, instanceVariable : String)
-	? (genField.oclIsKindOf(GenUnitAssociation) and not genField.isSingleton()) post(trim())]
-[let genFeature : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
-[if (genFeature.genUnits->isEmpty())]
-	[if (genFeature.jsfFeature.displayOption = CollectionDisplayOptions::PageDirection)]
-<?php foreach ($[instanceVariable/]->[genFeature.modelPropertyName()/]->find_all() as $value) {
-	?><p><?php echo $value->[if (genFeature.genDynamicLabel.oclIsUndefined())]displayLabel()[else][genFeature.genDynamicLabel/]()[/if]; ?></p>
+[template public generateDisplayField(field : UnitField, instanceVariable : String)
+	? (field.oclIsKindOf(UnitAssociation) and not field.isSingleton()) post(trim())]
+[let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (feature.units->isEmpty())]
+	[if (feature.displayOption = CollectionDisplayOptions::PageDirection)]
+<?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) {
+	?><p><?php echo $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]; ?></p>
 <?php } ?>
 	[else]
-<?php foreach ($[instanceVariable/]->[genFeature.modelPropertyName()/]->find_all() as $value) { ?><span><?php 
-		[if (genFeature.genActions->isEmpty())]
-	echo $value->[if (genFeature.genDynamicLabel.oclIsUndefined())]displayLabel()[else][genFeature.genDynamicLabel/]()[/if];
+<?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) { ?><span><?php 
+		[if (feature.actions->isEmpty())]
+	echo $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if];
 		[else]
-		[let genAction : GenInlineAction = genFeature.genActions->first()]
-		[let targetController : GenPage = genAction.controller()]
+		[let action : InlineAction = feature.actions->first()]
+		[let targetController : Page = action.controller()]
 	echo HTML::anchor(
 		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
-				'[genAction.oclAsType(GenSelectAction).genTarget.oclAsType(GenDynamicUnit).parameterName()/]' => $value->[genField.genDisplayedOn.genService.keyName()/]
+				'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' => $value->[field.displayedOn.service.keyName()/]
 			), FALSE),
-		HTML::chars($value->[if (genFeature.genDynamicLabel.oclIsUndefined())]displayLabel()[else][genFeature.genDynamicLabel/]()[/if]),
+		HTML::chars($value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]),
 		array(
-			'title' => HTML::chars(__('[genAction.displayLabel()/]') . ' ' . $value->[if (genFeature.genDynamicLabel.oclIsUndefined())]displayLabel()[else][genFeature.genDynamicLabel/]()[/if]),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]),
 	));
 		[/let]
 		[/let]
@@ -391,92 +389,92 @@ $[instanceVariable/]->[genField.genDisplayedOn.genService.keyName()/]
 ?></span><?php } ?>
 	[/if]
 [else]
-[let embeddedUnit : GenContentUnit = genFeature.genUnits->first()]
+[let embeddedUnit : ContentUnit = feature.units->first()]
 <?php
-	$[genField.genDisplayedOn.uniqueName()/] = $[instanceVariable/]->[genFeature.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(GenIndexUnit))]
-find_all()[else][let embeddedIndexUnit : GenIndexUnit = embeddedUnit.oclAsType(GenIndexUnit)]
-[if (embeddedIndexUnit.genSelection.oclIsUndefined())]
+	$[field.displayedOn.uniqueName()/] = $[instanceVariable/]->[feature.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+[if (embeddedIndexUnit.selection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.genSelection.jsfSelection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
-[genFeature.genUnits.generateViewContent(genField.genDisplayedOn.uniqueName())/]
+[feature.units.generateViewContent(field.displayedOn.uniqueName())/]
 [/let]
 [/if]
 [/let]
 [/template]
 
 
-[template public generateDisplayFieldAssess(genField : GenUnitField, instanceVariable : String)
-	? (genField.oclIsTypeOf(GenUnitElement)) post(trim())]
-[if (genField.isBooleanDataType())]
-Form::checkbox('[genField.modelPropertyName()/]', '1', (bool) $[instanceVariable/]->[genField.modelPropertyName()/], array(
-		'class' => '[genField.styleClass()/] [genField.inputClass()/]',
+[template public generateDisplayFieldAssess(field : UnitField, instanceVariable : String)
+	? (field.oclIsTypeOf(UnitElement)) post(trim())]
+[if (field.isBooleanDataType())]
+Form::checkbox('[field.modelPropertyName()/]', '1', (bool) $[instanceVariable/]->[field.modelPropertyName()/], array(
+		'class' => '[field.styleClass()/] [field.inputClass()/]',
 		'disabled' => ''
 )) . PHP_EOL;
 [else]
-$[instanceVariable/]->[genField.modelPropertyName()/]
+$[instanceVariable/]->[field.modelPropertyName()/]
 [/if]
 [/template]
 
-[template public generateDisplayFieldAssess(genField : GenUnitField, instanceVariable : String)
-	? (genField.oclIsTypeOf(GenUnitAssociation)) post(trim())]
-[let genAssociation : GenUnitAssociation = genField.oclAsType(GenUnitAssociation)]
-$[instanceVariable/]->[genField.modelPropertyName()/]->[if (not genAssociation.genDynamicLabel.oclIsUndefined())]
-[genAssociation.genDynamicLabel.name/]()[elseif (not genAssociation.genChildFeature.oclIsUndefined())]
-[genAssociation.genChildFeature.generateDisplayChildAssess()/][else]
+[template public generateDisplayFieldAssess(field : UnitField, instanceVariable : String)
+	? (field.oclIsTypeOf(UnitAssociation)) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+$[instanceVariable/]->[field.modelPropertyName()/]->[if (not association.dynamicLabel.oclIsUndefined())]
+[association.dynamicLabel.name/]()[elseif (not association.childFeature.oclIsUndefined())]
+[association.childFeature.generateDisplayChildAssess()/][else]
 displayLabel()
 [/if]
 [/let]
 [/template]
 
-[template public generateDisplayChildAssess(genChild : GenUnitChildFeature)
-	? (genChild.oclIsTypeOf(GenUnitChildElement)) post(trim())]
-[let genElement : GenUnitChildElement = genChild.oclAsType(GenUnitChildElement)]
-[genElement.genServiceFeature.modelPropertyName()/]
+[template public generateDisplayChildAssess(child : UnitChildFeature)
+	? (child.oclIsTypeOf(UnitChildElement)) post(trim())]
+[let element : UnitChildElement = child.oclAsType(UnitChildElement)]
+[element.serviceFeature.modelPropertyName()/]
 [/let]
 [/template]
 
-[template public generateDisplayChildAssess(genChild : GenUnitChildFeature)
-	? (genChild.oclIsTypeOf(GenUnitChildAssociation)) post(trim())]
-[let genAssociation : GenUnitChildAssociation = genChild.oclAsType(GenUnitChildAssociation)]
-[genAssociation.genServiceFeature.modelPropertyName()/]->[if (genAssociation.genChildFeature.oclIsUndefined())]
+[template public generateDisplayChildAssess(child : UnitChildFeature)
+	? (child.oclIsTypeOf(UnitChildAssociation)) post(trim())]
+[let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)]
+[association.serviceFeature.modelPropertyName()/]->[if (association.childFeature.oclIsUndefined())]
 displayLabel()[else]
-[genAssociation.genChildFeature.generateDisplayChildAssess()/]
+[association.childFeature.generateDisplayChildAssess()/]
 [/if]
 [/let]
 [/template]
 
 
-[template public generateAction(genAction : GenInlineAction, instanceVariable : String) post(trim())]
-[let targetController : GenPage = genAction.controller()]
+[template public generateAction(action : InlineAction, instanceVariable : String) post(trim())]
+[let targetController : Page = action.controller()]
 <?php
 	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri([if (not genAction.oclIsTypeOf(GenSelectAction))]array(
-			'action' => '[genAction.actionName()/]',
-			'param' => $[instanceVariable/]->[genAction.genUsedBy.oclAsType(GenDynamicUnit).genService.keyName()/]
+		Route::get('[targetController.controllerName()/]')->uri([if (not action.oclIsTypeOf(SelectAction))]array(
+			'action' => '[action.actionName()/]',
+			'param' => $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
 		)[/if]
-	[if (genAction.genUsedBy.oclAsType(GenDynamicUnit).pageDisplayedOn().hasParameterisedUnits())]
-		[if (genAction.oclIsTypeOf(GenSelectAction))]
+	[if (action.usedBy.oclAsType(DynamicUnit).pageDisplayedOn().hasParameterisedUnits())]
+		[if (action.oclIsTypeOf(SelectAction))]
 ) . URL::query(array_merge($query_parameters, array(
-			'[genAction.oclAsType(GenSelectAction).genTarget.oclAsType(GenDynamicUnit).parameterName()/]' =>  $[instanceVariable/]->[genAction.genUsedBy.oclAsType(GenDynamicUnit).genService.keyName()/]
+			'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' =>  $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
 		)), FALSE),
 		[else]
 ) . URL::query($query_parameters, FALSE),
 		[/if]
 	[else]
-		[if (genAction.oclIsTypeOf(GenSelectAction))]
+		[if (action.oclIsTypeOf(SelectAction))]
 ) . URL::query(array(
-			'[genAction.oclAsType(GenSelectAction).genTarget.oclAsType(GenDynamicUnit).parameterName()/]' =>  $[instanceVariable/]->[genAction.genUsedBy.oclAsType(GenDynamicUnit).genService.keyName()/]
+			'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' =>  $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
 		), FALSE),
 		[else]
 ),
 		[/if]
 	[/if]
-		HTML::chars(__('[genAction.displayLabel()/]')),
+		HTML::chars(__('[action.displayLabel/]')),
 		array(
-			'title' => HTML::chars(__('[genAction.displayLabel()/]') . ' ' . $[instanceVariable/]->displayLabel()),
-	[if (genAction.oclIsTypeOf(GenDeleteAction))]
-			'onclick' => 'return confirm(\'' . $[instanceVariable/]->displayLabel() . ' ' . __('[genAction.oclAsType(GenDeleteAction).jsfAction.oclAsType(DeleteAction).confirmMessage/]') . '\');'
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $[instanceVariable/]->displayLabel()),
+	[if (action.oclIsTypeOf(DeleteAction))]
+			'onclick' => 'return confirm(\'' . $[instanceVariable/]->displayLabel() . ' ' . __('[action.oclAsType(DeleteAction).oclAsType(DeleteAction).confirmMessage/]') . '\');'
 	[/if]
 	));
 ?>
