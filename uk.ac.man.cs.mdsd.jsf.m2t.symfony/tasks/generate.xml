@@ -49,7 +49,7 @@
 
     <!-- The default task with the jars used by this project -->
     <target name="generate">
-        <java classname="uk.ac.man.cs.mdsd.jsf.m2t.symfony.main.Generate" classpathref="uk.ac.man.cs.mdsd.jsf.m2t.symfony.classpath">
+        <java classname="uk.ac.man.cs.mdsd.jsf.m2t.symfony.Generate" classpathref="uk.ac.man.cs.mdsd.jsf.m2t.symfony.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
@@ -60,7 +60,7 @@
         Keep in mind that having two versions of the same jar can create problems
     -->
     <target name="generate.alljars">
-        <java classname="uk.ac.man.cs.mdsd.jsf.m2t.symfony.main.Generate" classpathref="uk.ac.man.cs.mdsd.jsf.m2t.symfony.classpath">
+        <java classname="uk.ac.man.cs.mdsd.jsf.m2t.symfony.Generate" classpathref="uk.ac.man.cs.mdsd.jsf.m2t.symfony.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>

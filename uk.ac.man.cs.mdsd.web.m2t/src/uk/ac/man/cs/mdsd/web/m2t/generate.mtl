@@ -1,0 +1,25 @@
+[comment encoding = UTF-8 /]
+[module generate(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::generate/]
+
+
+[template public generateElement(jsfModel : JsfModel)]
+[comment @main/]
+[if (jsfModel.persistence.ormTechnology = OrmTechnologies::JPA)]
+[elseif (jsfModel.persistence.ormTechnology = OrmTechnologies::DataMapper)]
+[elseif (jsfModel.persistence.ormTechnology = OrmTechnologies::Idiorm)]
+[elseif (jsfModel.persistence.ormTechnology = OrmTechnologies::Kohana)]
+[elseif (jsfModel.persistence.ormTechnology = OrmTechnologies::Doctrine)]
+[jsfModel.generateDoctrine()/]
+[/if]
+
+[if (jsfModel.frameworkTechnology = FrameworkTechnologies::JSF)]
+[elseif (jsfModel.frameworkTechnology = FrameworkTechnologies::CakePHP)]
+[elseif (jsfModel.frameworkTechnology = FrameworkTechnologies::CodeIgniter)]
+[elseif (jsfModel.frameworkTechnology = FrameworkTechnologies::Kohana)]
+[elseif (jsfModel.frameworkTechnology = FrameworkTechnologies::Symfony)]
+[jsfModel.generateSymfony()/]
+[/if]
+[/template]

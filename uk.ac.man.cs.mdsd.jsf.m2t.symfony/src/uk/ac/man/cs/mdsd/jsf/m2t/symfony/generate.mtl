@@ -1,0 +1,36 @@
+[comment encoding = UTF-8 /]
+[module generate(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::css::customCSS/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::css::defaultCSS/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::css::nonPrintCSS/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::css::printCSS/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::config::config/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::config::configDev/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::config::configProd/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::config::configTest/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::config::parameters/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::config::parametersDist/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::views::site/]
+
+
+[template public generateSymfony(jsfModel : JsfModel)]
+[jsfModel.generateParameters()/]
+[jsfModel.generateParametersDist()/]
+[jsfModel.generateConfig()/]
+[jsfModel.generateConfigDev()/]
+[jsfModel.generateConfigProd()/]
+[jsfModel.generateConfigTest()/]
+
+[if (jsfModel.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
+[comment jsfModel.services.generateModel(jsfModel.authentication)/]
+[/if]
+
+[jsfModel.generateDefaultCSS()/]
+[jsfModel.generateNonPrintCSS()/]
+[jsfModel.generatePrintCSS()/]
+[jsfModel.generateCustomCSS()/]
+[jsfModel.generatePage()/]
+[/template]

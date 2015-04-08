@@ -1,0 +1,135 @@
+[comment encoding = UTF-8 /]
+[module pageController(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::names/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::authenticationMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::createSitemapMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::actionMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::commandMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::commonMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::controlMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::detailsMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::editMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::indexMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::searchMethods/]
+[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::staticMethods/]
+
+
+[template public generateController(page : Page)]
+[file(page.controllerFilename(), false)]
+namespace [page.controllersDirectory()/];
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class [page.controllerClassName()/] extends [page.baseControllerClassName()/] {
+
+	public function before()
+	{
+[if (page.isAuthenticated())]
+		[comment page.generateLoggedInCheck()/]
+
+[/if]
+		parent::before();
+
+[if (page.hasParameterisedUnits())]
+		$this->query_parameters = $this->request->query();
+
+[/if]
+		$this->template->title = '[page.displayLabel()/]';
+		$this->template->id = '[page.instanceName()/]';
+[if (not page.styleClass.oclIsUndefined())]
+		$this->template->style_class = '[page.styleClass/]';
+[/if]
+[if (page.hasMapUnits())]
+		$this->template->scripts['['/][']'/] = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places';
+[/if]
+[if (page.hasCaptchaFields())]
+		$this->template->scripts['['/][']'/] = 'https://www.google.com/recaptcha/api.js';
+[/if]
+
+[if (page.partOf.staticUnitsEditable)]
+	[for (unit : ContentUnit | page.units)]
+		[comment unit.generateUnitVariables()/]
+	[/for]
+[else]
+	[for (unit : DynamicUnit | page.dynamicUnits()->select(u | not u.oclIsKindOf(IndexUnit)))]
+		[comment unit.generateUnitVariables()/]
+	[/for]
+[/if]
+	}
+
+	public function after()
+	{
+		if ($this->auto_render === TRUE)
+		{
+[if (not page.sideMenu.oclIsUndefined())]
+			$this->template->sidebar = View::factory('menu/[comment page.sideMenu.instanceName()/]');
+	[if (page.sideMenu.oclIsTypeOf(DynamicMenu))]
+	[let dynamicMenu : DynamicMenu = page.sideMenu.oclAsType(DynamicMenu)]
+			$this->template->sidebar->[comment page.sideMenu.instanceName()/] = ORM::factory('[dynamicMenu.service.modelName()/]')->[dynamicMenu.selection.instanceName()/]();
+	[/let]
+	[/if]
+[/if]
+[for (unit : ContentUnit | page.units)]
+			$this->[comment unit.templateInstanceName()/] = View::factory('[page.controllerName()/]/[unit.instanceName()/]');
+			$this->template->unitViews['['/][']'/] = $this->[comment unit.templateInstanceName()/];
+	[if (page.hasParameterisedUnits())]
+			$this->[comment unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameters);
+	[/if]
+	[if (not unit.oclIsTypeOf(StaticUnit))]
+			if (!empty($this->[unit.instanceName()/]_error))
+				$this->[comment unit.templateInstanceName()/]->bind('[unit.instanceName()/]_error', $this->[unit.instanceName()/]_error);
+	[/if]
+[/for]
+[if (page.partOf.staticUnitsEditable)]
+	[for (unit : ContentUnit | page.units)]
+
+			[comment unit.generateUnitDisplay()/]
+	[/for]
+[else]
+	[for (unit : DynamicUnit | page.dynamicUnits())]
+
+			[comment unit.generateUnitDisplay()/]
+	[/for]
+[/if]
+		}
+
+		parent::after();
+	}
+
+	public function action_index()
+	{
+	}
+
+[for (unit : ContentUnit | page.units)]
+	[if (unit.hasUnitMethods())]
+	[comment unit.generateUnitMethods()/]
+
+	[/if]
+[/for]
+[if (page.hasSupportActions())]
+	[if (page.hasDataSupportActions())]
+	public function action_support()
+	{
+	[for (action : UnitSupportAction | page.dataSupportActions())]
+		if ($this->request->post('[action.name/]'))
+		{
+			/* [protected ('support.'.concat(action.name))]
+			 */
+			/* [/protected]
+			 */
+		}
+	[/for]
+	}
+
+	[/if]
+	/* [protected (page.instanceName().concat('.support.'))]
+	 */
+	/* [/protected]
+	 */
+[/if]
+}
+[/file]
+[/template]

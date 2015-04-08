@@ -1,0 +1,257 @@
+[comment encoding = UTF-8 /]
+[module names(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+
+
+[query public baseControllerClassName(eObject : EObject) : String
+	= 'Controller'
+/]
+
+[query public modelName(service : Service) : String
+	= service.modelName
+/]
+
+[query public modelClassName(service : Service) : String
+	= 'Model_'.concat(service.modelName())
+/]
+
+
+[query public controllerName(page : Page) : String
+	= page.name
+/]
+
+[query public controllerClassName(page : Page) : String
+	= page.controllerName().concat('Controller')
+/]
+
+[query public instanceName(page : Page) : String
+	= page.name.toLowerFirst()
+/]
+
+
+[comment query public instanceName(genMenu : GenMenu) : String
+	= genMenu.name().toLowerFirst()
+/]
+
+[comment genFeature.oclAsType(GenServiceEntityAssociation).genFeature.modelName()/]
+[query public modelName(feature : ServiceAssociation) : String
+	= if feature.oclIsKindOf(ServiceEntityAssociation) then
+			'?? '
+		else if feature.oclIsKindOf(ServiceViewAssociation) then
+			feature.oclAsType(ServiceViewAssociation).targetFeature.includedBy.modelName()
+		else
+			'unhandledFeature'
+		endif endif
+/]
+
+
+[comment query public actionName(genUnit : GenContentUnit) : String
+	= genUnit.instanceName()
+/]
+
+[comment query public controllerName(genUnit : GenDynamicUnit) : String
+	= genUnit.pageDisplayedOn().controllerName()
+/]
+
+[query public instanceName(unit : ContentUnit) : String
+	= unit.name.toLowerFirst()
+/]
+
+[comment query public modelName(genUnit : GenContentUnit) : String
+	= let baseName : String
+		= if genUnit.oclIsTypeOf(GenStaticUnit) then
+				if genUnit.oclAsType(GenStaticUnit).genService.oclIsUndefined() then
+					'None'
+				else
+					genUnit.oclAsType(GenStaticUnit).genService.modelName()
+				endif
+			else
+				genUnit.oclAsType(GenDynamicUnit).genService.modelName()
+			endif
+		in if genUnit.pageDisplayedOn().genPartOf.ormTechnology = OrmTechnologies::GasORM then
+				'Model\\'.concat(baseName)
+			else
+				baseName
+			endif
+/]
+
+[comment query public asTargetUri(genUnit : GenDynamicUnit) : String
+	= genUnit.genDisplayedOn.oclAsType(GenPage).controllerName().concat('/')
+		.concat(genUnit.actionName()).concat('/')
+/]
+
+[comment query public parameterName(genUnit : GenContentUnit) : String
+	= genUnit.instanceName()
+/]
+
+[comment query public pageIndexName(genUnit : GenContentUnit) : String
+	= genUnit.instanceName().concat('_page')
+/]
+
+[comment query public templateInstanceName(genUnit : GenContentUnit) : String
+	= genUnit.instanceName().concat('_template')
+/]
+
+[comment query public uniqueName(genUnit : GenContentUnit) : String
+	= let key : String
+			= if genUnit.genDisplayedOn.oclIsTypeOf(GenPage) then
+				genUnit.genDisplayedOn.oclAsType(GenPage).instanceName()
+			else
+				genUnit.genDisplayedOn.oclAsType(GenUnitAssociation).genDisplayedOn.uniqueName()
+			endif
+		in key.concat('_').concat(genUnit.instanceName())
+/]
+
+
+[comment query public optionsName(genField : GenUnitField) : String
+	= genField.uniqueName().concat('_options')
+/]
+
+[comment query public uniqueName(genField : GenUnitField) : String
+	= genField.genDisplayedOn.instanceName().concat('_').concat(genField.modelPropertyName())
+/]
+
+
+[comment query public instanceName(genFeature : GenUnitFeature) : String
+	= genFeature.name().toLowerFirst()
+/]
+
+[comment query public modelName(genFeature : GenUnitAssociation) : String
+	= genFeature.genServiceFeature.modelName()
+/]
+
+
+[comment query public actionName(genCommand : GenCommand) : String
+	= genCommand.instanceName()
+/]
+
+[comment query public instanceName(genCommand : GenCommand) : String
+	= genCommand.name.toLowerFirst()
+/]
+
+
+[comment query public actionName(genAction : GenInlineAction) : String
+	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
+			genAction.genUsedBy.oclAsType(GenDynamicUnit).instanceName()
+				.concat(genAction.name.toUpperFirst())
+		else
+			let genAssociation : GenUnitAssociation
+					= genAction.genUsedBy.oclAsType(GenUnitAssociation)
+				in genAssociation.genDisplayedOn.instanceName()
+				.concat(genAssociation.name.toUpperFirst())
+				.concat(genAction.name.toUpperFirst())
+		endif
+/]
+
+[comment query public destinationUriX(genAction : GenInlineAction) : String
+	= if genAction.oclIsTypeOf(GenDeleteAction) then
+			genAction.oclAsType(GenDeleteAction).destinationUriX()
+		else
+			genAction.oclAsType(GenSelectAction).destinationUriX()
+		endif
+/]
+
+[comment query public destinationUriX(genAction : GenDeleteAction) : String
+	= genAction.genUsedBy.oclAsType(GenDynamicUnit).pageDisplayedOn().controllerName()
+		.concat('/').concat(genAction.actionName()).concat('/')
+/]
+
+[comment query public destinationUriX(genSelectAction : GenSelectAction) : String
+	= let genTarget : GenDynamicUnit = genSelectAction.genTarget.oclAsType(GenDynamicUnit)
+		in let methodName : String
+			= if genTarget.oclIsKindOf(GenIndexUnit) then
+					genTarget.actionName().concat(genSelectAction.name)
+				else
+					genTarget.actionName()
+				endif
+			in genTarget.genDisplayedOn.oclAsType(GenPage).controllerName().concat('/')
+				.concat(methodName).concat('/')
+/]
+
+[comment query public instanceName(genAction : GenInlineAction) : String
+	= genAction.name.toLowerFirst()
+/]
+
+[comment query public modelName(genAction : GenDeleteAction) : String
+	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
+			genAction.genUsedBy.oclAsType(GenDynamicUnit).modelName()
+		else
+			genAction.genUsedBy.oclAsType(GenUnitAssociation).modelName()
+		endif
+/]
+
+[comment query public modelName(genAction : GenFeatureSupportAction) : String
+	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
+			genAction.genUsedBy.oclAsType(GenDynamicUnit).modelName()
+		else
+			genAction.genUsedBy.oclAsType(GenUnitAssociation).modelName()
+		endif
+/]
+
+[comment query public modelName(genAction : GenSelectAction) : String
+	= let genUnit : GenDynamicUnit
+		= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
+				genAction.genUsedBy.oclAsType(GenDynamicUnit)
+			else
+				genAction.genUsedBy.oclAsType(GenUnitAssociation).genDisplayedOn
+			endif
+		in genUnit.genService.modelName()
+/]
+
+[comment query public parameterName(genAction : GenInlineAction) : String
+	= genAction.actionName()
+/]
+
+
+[query public countName(selection : Selection) : String
+	= selection.instanceName().concat('_count')
+/]
+
+[query public instanceName(selection : Selection) : String
+	= selection.name.toLowerFirst()
+/]
+
+
+[comment query public instanceName(genEntity : GenEntity) : String
+	= genEntity.name.toLowerFirst()
+/]
+
+[comment query public modelName(genEntity : GenEntity) : String
+	= genEntity.name
+/]
+
+
+[query public modelName(feature : Association) : String
+	= if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).modelName()
+		else if feature.oclIsTypeOf(CollectionAssociation) then
+			feature.oclAsType(CollectionAssociation).modelName()
+		else
+			'unhandledFeature'
+		endif endif
+/]
+
+[comment query public modelName(genFeature : GenCollectionAssociation) : String
+	= genFeature.genOpposite.genParentEntity.modelName()
+/]
+
+[comment query public modelName(genFeature : GenSingletonAssociation) : String
+	= genFeature.genOpposite.genParentEntity.modelName()
+/]
+
+
+[comment query public modelClassName(enumerationType : EnumerationType) : String
+	= 'Model_'.concat(enumerationType.modelName())
+/]
+
+[comment query public modelName(enumerationType : EnumerationType) : String
+	= enumerationType.name
+/]
+
+[comment query public name(enumerationLiteral : EnumerationLiteral) : String
+	= enumerationLiteral.name.toUpper()
+/]
+

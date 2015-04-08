@@ -1,8 +1,9 @@
 [comment encoding = UTF-8 /]
 [module fileInformation(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://www.cs.man.ac.uk/mdsd/2010/GenJsf')]
-[import uk::ac::man::cs::mdsd::jsf::m2t::core::common::fileInformation/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::names/]
 
 
 [query public ymlExtension(eObject : EObject) : String
@@ -14,14 +15,101 @@
 	= 'app'
 /]
 
+[query public appBundleDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('AppBundle')
+/]
+
 [query public configDirectory(eObject : EObject) : String
 	= eObject.applicationDirectory().concat('/').concat('config')
+/]
+
+[query public controllersDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Controller')
+/]
+
+[query public modelsDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Entity')
 /]
 
 [query public resourcesDirectory(eObject : EObject) : String
 	= eObject.applicationDirectory().concat('/').concat('Resources')
 /]
 
+[query public sourceDirectory(eObject : EObject) : String
+	= 'src'
+/]
+
 [query public viewsDirectory(eObject : EObject) : String
 	= eObject.resourcesDirectory().concat('/').concat('views')
 /]
+
+[query public webDirectory(eObject : EObject) : String
+	= 'web'
+/]
+
+
+[query public appBundleNamespace(eObject : EObject) : String
+	= 'AppBundle'
+/]
+
+[query public controllersNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Controller')
+/]
+
+[query public modelsNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Entity')
+/]
+
+
+[query public configBaseFilename(eObject : EObject) : String
+	= eObject.configDirectory().concat('/').concat('config')
+/]
+
+[query public controllerFilename(page : Page) : String
+	= page.controllersDirectory().concat('/')
+		.concat(page.controllerName().toUpperFirst())
+		.concat(page.executableExtension())
+/]
+
+[comment query public menuFilename(genMenu : GenMenu) : String
+	= genMenu.menuDirectory().concat('/')
+		.concat(genMenu.instanceName())
+		.concat(genMenu.executableExtension())
+/]
+
+[comment query public modelFilename(enumerationType : EnumerationType) : String
+	= enumerationType.modelsDirectory().concat('/')
+		.concat(enumerationType.modelName())
+		.concat(enumerationType.executableExtension())
+/]
+
+[query public modelFilename(service : Service) : String
+	= service.modelsDirectory().concat('/')
+		.concat(service.modelName())
+		.concat(service.executableExtension())
+/]
+
+[comment query public modelLanguageFilename(genService : GenService) : String
+	= genService.languageEnglishDirectory().concat('/')
+		.concat('model_').concat(genService.modelName()).concat('_lang')
+		.concat(genService.executableExtension())
+/]
+
+[comment query public pageViewsDirectory(genPage : GenPage) : String
+	= genPage.viewDirectory().concat('/')
+		.concat(genPage.controllerName())
+/]
+
+[comment query public paginationViewFilename(genUnit : GenContentUnit) : String
+	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
+		.concat(genUnit.instanceName()).concat('_pagination')
+		.concat(genUnit.executableExtension())
+/]
+
+
+[comment query public viewFilename(genUnit : GenContentUnit) : String
+	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
+		.concat(genUnit.instanceName())
+		.concat(genUnit.executableExtension())
+/]
+

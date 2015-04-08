@@ -1,0 +1,41 @@
+[comment encoding = UTF-8 /]
+[module files(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::names/]
+
+
+[query public appBundleDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('AppBundle')
+/]
+
+[query public modelsDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Entity')
+/]
+
+[query public sourceDirectory(eObject : EObject) : String
+	= 'src'
+/]
+
+
+[query public appBundleNamespace(eObject : EObject) : String
+	= 'AppBundle'
+/]
+
+[query public modelsNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Entity')
+/]
+
+
+[comment query public modelFilename(enumerationType : EnumerationType) : String
+	= enumerationType.modelsDirectory().concat('/')
+		.concat(enumerationType.modelName())
+		.concat(enumerationType.executableExtension())
+/]
+
+[query public modelFilename(service : Service) : String
+	= service.modelsDirectory().concat('/')
+		.concat(service.modelName())
+		.concat(service.executableExtension())
+/]

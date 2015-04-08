@@ -315,9 +315,8 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 			return;
 
 		if (!empty($this->[resource.columnName()/])) 
-			$filename = str_replace(' ', '_', pathinfo($this->[resource.columnName()/], PATHINFO_FILENAME));
-		else
-			$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
+			unlink($this->[resource.columnName()/]);
+		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
 		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (resource.uploadsWithinWebsite)]
 		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');

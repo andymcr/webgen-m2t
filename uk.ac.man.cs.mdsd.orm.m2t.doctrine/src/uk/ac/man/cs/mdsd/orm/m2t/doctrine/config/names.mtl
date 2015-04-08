@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module names(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+
+
+[query public modelName(service : Service) : String
+	= service.modelName
+/]
+
+[query public modelClassName(service : Service) : String
+	= service.modelName()
+/]
+
+
+[comment genFeature.oclAsType(GenServiceEntityAssociation).genFeature.modelName()/]
+[query public modelName(feature : ServiceAssociation) : String
+	= if feature.oclIsKindOf(ServiceEntityAssociation) then
+			'?? '
+		else if feature.oclIsKindOf(ServiceViewAssociation) then
+			feature.oclAsType(ServiceViewAssociation).targetFeature.includedBy.modelName()
+		else
+			'unhandledFeature'
+		endif endif
+/]

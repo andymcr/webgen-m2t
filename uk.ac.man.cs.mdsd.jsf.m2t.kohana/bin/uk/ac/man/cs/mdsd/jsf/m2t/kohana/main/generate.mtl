@@ -37,7 +37,7 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::kohana::files::views::templates::staticUnit/]
 
 
-[template public generateElement(genModel : GenJsfModel)]
+[template public generateElement(jsfModel : JsfModel)]
 [comment @main/]
 [jsfModel.generateHtaccess()/]
 [jsfModel.generateBootstrap()/]

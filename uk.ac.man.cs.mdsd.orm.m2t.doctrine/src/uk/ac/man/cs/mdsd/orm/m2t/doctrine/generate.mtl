@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module generate(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::names/]
+
+
+[template public generateDoctrine(jsfModel : JsfModel)]
+	= jsfModel.services.generateModel(jsfModel.authentication);
+[/template]
