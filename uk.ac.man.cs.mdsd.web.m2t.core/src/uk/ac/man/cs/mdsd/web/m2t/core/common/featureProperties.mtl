@@ -340,6 +340,29 @@
 		endif
 /]
 
+[query public isDataTypeSingleton(feature : ServiceFeature) : Boolean
+	= if not feature.oclIsTypeOf(ServiceEntityElement) then
+			false
+		else
+			let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
+			in if not element.feature.oclIsTypeOf(SingletonElement) then
+					false
+				else
+					let singleton : SingletonElement = element.feature.oclAsType(SingletonElement)
+					in singleton.dataType.oclIsTypeOf(DataType)
+				endif
+		endif
+/]
+
+[query public isDateSingleton(feature : ServiceFeature) : Boolean
+	= if not feature.oclIsTypeOf(ServiceEntityElement) then
+			false
+		else
+			let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
+			in element.feature.oclIsTypeOf(SingletonDate)
+		endif
+/]
+
 [query public isDependentEnd(feature : ServiceAssociation) : Boolean
 	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
 			let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)
@@ -361,13 +384,15 @@
 		endif
 /]
 
-[query public isEnumerationTypeSingletonElement(feature : ServiceFeature) : Boolean
+[query public isEnumerationTypeSingleton(feature : ServiceFeature) : Boolean
 	= if not feature.oclIsTypeOf(ServiceEntityElement) then
 			false
-		else let serviceFeature : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
+		else
+			let serviceFeature : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
 			in if not serviceFeature.feature.oclIsTypeOf(SingletonElement) then
 					false
-				else let element : SingletonElement = serviceFeature.feature.oclAsType(SingletonElement)
+				else
+					let element : SingletonElement = serviceFeature.feature.oclAsType(SingletonElement)
 					in element.dataType.oclIsTypeOf(EnumerationType)
 				endif
 		endif
@@ -958,6 +983,32 @@
 		endif endif
 /]
 
+[query public isAssociationSingleton(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitElement) then
+			false
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					association.isSingleton()
+				else
+					association.childFeature.isAssociationSingletonElement()
+				endif
+		endif
+/]
+
+[query public isAssociationSingletonElement(child : UnitChildFeature) : Boolean
+	= if child.oclIsTypeOf(UnitChildElement) then
+			false
+		else
+			let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					association.serviceFeature.isSingleton()
+				else
+					association.childFeature.isAssociationSingletonElement()
+				endif
+		endif
+/]
+
 [query public isBooleanDataType(field : UnitField) : Boolean
 	= if not field.oclIsTypeOf(UnitElement) then
 			false
@@ -983,22 +1034,36 @@
 			false
 		endif endif
 /]
+
 [query public isDataTypeSingleton(field : UnitField) : Boolean
-	= if not field.oclIsTypeOf(UnitElement) then
-			false
-		else let element : UnitElement = field.oclAsType(UnitElement)
-			in if not element.serviceFeature.feature.oclIsTypeOf(SingletonElement) then
+	= if field.oclIsTypeOf(UnitElement) then
+			field.oclAsType(UnitElement).serviceFeature.isDataTypeSingleton()
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.childFeature.oclIsUndefined() then
 					false
-				else let singleton : SingletonElement = element.serviceFeature.feature.oclAsType(SingletonElement)
-					in singleton.dataType.oclIsTypeOf(DataType)
+				else
+					association.childFeature.isDataTypeSingletonElement()
+				endif
+		endif
+/]
+
+[query public isDataTypeSingletonElement(child : UnitChildFeature) : Boolean
+	= if child.oclIsTypeOf(UnitChildElement) then
+			child.oclAsType(UnitChildElement).serviceFeature.isDataTypeSingleton()
+		else
+			let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isDataTypeSingletonElement()
 				endif
 		endif
 /]
 
 [query public isDateSingleton(field : UnitField) : Boolean
 	= if field.oclIsTypeOf(UnitElement) then
-			let element : UnitElement = field.oclAsType(UnitElement)
-			in element.serviceFeature.feature.oclIsTypeOf(SingletonDate)
+			field.oclAsType(UnitElement).serviceFeature.isDateSingleton()
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.childFeature.oclIsUndefined() then
@@ -1011,8 +1076,7 @@
 
 [query public isDateSingletonElement(child : UnitChildFeature) : Boolean
 	= if child.oclIsTypeOf(UnitChildElement) then
-			let element : UnitChildElement = child.oclAsType(UnitChildElement)
-			in element.serviceFeature.feature.oclIsTypeOf(SingletonDate)
+			child.oclAsType(UnitChildElement).serviceFeature.isDateSingleton()
 		else
 			let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)
 			in if association.childFeature.oclIsUndefined() then
@@ -1038,10 +1102,28 @@
 /]
 
 [query public isEnumerationTypeSingleton(field : UnitField) : Boolean
-	= if not field.oclIsTypeOf(UnitElement) then
-			false
-		else let element : UnitElement = field.oclAsType(UnitElement)
-			in element.serviceFeature.isEnumerationTypeSingletonElement()
+	= if field.oclIsTypeOf(UnitElement) then
+			field.oclAsType(UnitElement).serviceFeature.isEnumerationTypeSingleton()
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isEnumerationTypeSingletonElement()
+				endif
+		endif
+/]
+
+[query public isEnumerationTypeSingletonElement(child : UnitChildFeature) : Boolean
+	= if child.oclIsTypeOf(UnitChildElement) then
+			child.oclAsType(UnitChildElement).serviceFeature.isEnumerationTypeSingleton()
+		else
+			let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isEnumerationTypeSingletonElement()
+				endif
 		endif
 /]
 
