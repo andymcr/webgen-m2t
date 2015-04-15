@@ -11,7 +11,8 @@
     <eLiterals name="CakePHP" value="1"/>
     <eLiterals name="CodeIgniter" value="2"/>
     <eLiterals name="Kohana" value="3"/>
-    <eLiterals name="Symfony" value="4" literal="Symfony"/>
+    <eLiterals name="Laravel" value="4" literal="Laravel"/>
+    <eLiterals name="Symfony" value="5"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="AjaxTechnologies">
     <eLiterals name="None"/>

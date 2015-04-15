@@ -4014,6 +4014,7 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.CAKE_PHP);
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.CODE_IGNITER);
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.KOHANA);
+		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.LARAVEL);
 		addEEnumLiteral(frameworkTechnologiesEEnum, FrameworkTechnologies.SYMFONY);
 
 		initEEnum(ajaxTechnologiesEEnum, AjaxTechnologies.class, "AjaxTechnologies");

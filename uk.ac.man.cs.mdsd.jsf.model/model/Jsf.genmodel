@@ -11,6 +11,7 @@
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/CakePHP"/>
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/CodeIgniter"/>
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Kohana"/>
+      <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Laravel"/>
       <genEnumLiterals ecoreEnumLiteral="Jsf.ecore#//FrameworkTechnologies/Symfony"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Jsf.ecore#//AjaxTechnologies">
