@@ -1,14 +1,14 @@
 [comment encoding = UTF-8 /]
-[module parameters(
+[module parametersDist(
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files/]
 
 
-[template public generateParameters(jsfModel : JsfModel)]
-[file (jsfModel.configDirectory().concat('/').concat('parameters').concat(jsfModel.ymlExtension()), false)]
-# [jsfModel.configDirectory()/]/parameters[jsfModel.ymlExtension()/]
+[template public generateParametersDist(jsfModel : JsfModel)]
+[file (jsfModel.configDirectory().concat('/').concat('parameters').concat(jsfModel.ymlExtension()).concat('.dist'), false)]
+# [jsfModel.configDirectory()/]parameters[jsfModel.ymlExtension()/].dist
 parameters:
     database_driver: [if (jsfModel.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
 pdo_mysql[elseif (jsfModel.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]

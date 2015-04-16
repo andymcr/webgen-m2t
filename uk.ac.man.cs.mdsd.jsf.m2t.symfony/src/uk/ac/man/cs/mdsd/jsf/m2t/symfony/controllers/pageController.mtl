@@ -2,8 +2,8 @@
 [module pageController(
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
 [import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::fileInformation/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::names/]
 [comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::authenticationMethods/]
 [comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::createSitemapMethods/]
 [comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::actionMethods/]
@@ -19,7 +19,8 @@
 
 [template public generateController(page : Page)]
 [file(page.controllerFilename(), false)]
-namespace [page.controllersDirectory()/];
+<?php
+namespace [page.controllersNamespace()/];
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 

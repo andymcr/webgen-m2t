@@ -5,37 +5,39 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::names/]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 
 [template public generateModel(service : Service, authentication : Authentication)]
 [file(service.modelFilename(), false)]
 <?php
 namespace [service.modelsNamespace()/];
 
+use Doctrine\ORM\Mapping as ORM;
 [if (service.hasCollectionAssociations())]
 use Doctrine\Common\Collections\ArrayCollection;
-
 [/if]
+
 /**
- * @Entity
- * @Table(name="[service.tableName()/]")
+ * @ORM/Entity
+ * @ORM/Table(name="[service.tableName()/]")
  **/
-class [service.modelClassName()/] {
+class [service.modelClassName()/]
+{
 	/**
-	 * @Id
-	 * @Column(type="integer")
-	 * @GeneratedValue
+	 * @ORM/Id
+	 * @ORM/Column(type="integer")
+	 * @ORM/GeneratedValue
 	 **/
 	protected $[service.keyName()/];
 
 [for (feature : ServiceFeature | service.features)]
 	/**
 	[if (feature.oclIsKindOf(ServiceEntityElement))]
-	 * @Column(type="[feature.oclAsType(ServiceEntityElement).feature.persistentType/]")
+	 * @ORM/Column(type="[feature.oclAsType(ServiceEntityElement).feature.persistentType/]")
 	[elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
 	[let association : Association = feature.oclAsType(ServiceEntityAssociation).feature]
-	 * @[if (association.oclIsTypeOf(SingletonAssociation))]
+	 * @ORM/[if (association.oclIsTypeOf(SingletonAssociation))]
 [association.oclAsType(SingletonAssociation).associationRelationship/][else]
 [association.oclAsType(CollectionAssociation).associationRelationship/][/if](targetEntity="[feature.oclAsType(ServiceEntityAssociation).modelName()/]", inversedBy="[feature.oppositeColumnName()/]")
 	[/let]
@@ -45,7 +47,8 @@ class [service.modelClassName()/] {
 
 [/for]
 [if (service.hasDefaultValueFeatures() or service.hasForcedValueFeatures() or service.hasCollectionAssociations())]
-	public function __construct() {
+	public function __construct()
+	{
 	[for (feature : ServiceFeature | service.features)]
 		[if (feature.hasDefaultValue())]
 		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedElement).defaultValue.generateCriteria()/];
@@ -60,41 +63,51 @@ class [service.modelClassName()/] {
 	}
 
 [/if]
-	public function getId() {
+	public function getId()
+	{
 		return $id;
 	}
 
 [for (feature : ServiceFeature | service.features)]
-	public function get[feature.modelPropertyName().toUpperFirst()/]() {
+	public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.modelPropertyName().toUpperFirst()/]()
+	{
 		return $this->[feature.modelPropertyName()/];
 	}
 
 	[if (not feature.hasForcedValue())]
 		[if (feature.oclIsKindOf(ServiceEntityElement))]
-	public function set[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/]) {
+	public function set[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/]) {
 //				array('trim'),
-//		if (genFeature.isCaseInsensitive())]
-//				array('strtolower'),
-//		/if]
-//		if (genFeature.isEncrypted())]
+		[if (feature.oclIsKindOf(ServiceEntityElement))]
+		[let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)]
+			[if (element.feature.oclIsTypeOf(SingletonElement))]
+				[if (element.isCaseInsensitive())]
+		$this->[feature.modelPropertyName()/] = strtolower(trim($[feature.instanceName()/]));
+				[elseif (element.isEncrypted())]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-//		/if]
-//			if (genFeature.oclAsType(GenServiceEntityElement).genFeature.oclIsTypeOf(GenSingletonDate))]
-//				array('date'),
-//				array(function($value) {
-//					return empty($value) ? NULL : $value;
-//				})
-//			/if]
+				[else]
+		$this->[feature.modelPropertyName()/] = trim($[feature.instanceName()/]);
+				[/if]
+			[elseif (element.feature.oclIsTypeOf(SingletonDate))]
+		if (empty(trim($[feature.instanceName()/]))) {
+			$this->[feature.modelPropertyName()/] = NULL;
+		} else {
+		}
+			[/if]
+		[/let]
+		[/if]
 	}
 
 		[else]
-	public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/]) {
+	public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/])
+	{
 	}
 
 		[/if]
 	[/if]
 [/for]
-	public function displayLabel() {
+	public function displayLabel()
+	{
 [if (service.hasDisplayFeatures())]
 		return [for (feature : ServiceEntityFeature | service.displayFeatures())
 			separator(' . \' \' . ')]

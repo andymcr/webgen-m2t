@@ -4,7 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::names/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::names/]
 
 
 [template public generateCriteria(criteria : Expression)

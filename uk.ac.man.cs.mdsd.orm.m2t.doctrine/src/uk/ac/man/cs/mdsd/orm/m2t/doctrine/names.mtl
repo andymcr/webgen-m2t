@@ -1,0 +1,50 @@
+[comment encoding = UTF-8 /]
+[module names(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+
+
+[query public modelName(service : Service) : String
+	= service.modelName
+/]
+
+[query public modelClassName(service : Service) : String
+	= service.modelName()
+/]
+
+
+[query public instanceName(feature : ServiceFeature) : String
+	= feature.modelPropertyName()
+/]
+
+[query public modelName(feature : ServiceAssociation) : String
+	= if feature.oclIsKindOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).feature.modelName()
+		else if feature.oclIsKindOf(ServiceViewAssociation) then
+			feature.oclAsType(ServiceViewAssociation).targetFeature.includedBy.modelName()
+		else
+			'unhandledFeature'
+		endif endif
+/]
+
+
+[query public modelName(feature : Association) : String
+	= if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).modelName()
+		else if feature.oclIsTypeOf(CollectionAssociation) then
+			feature.oclAsType(CollectionAssociation).modelName()
+		else
+			'unhandledFeature'
+		endif endif
+/]
+
+[query public modelName(feature : CollectionAssociation) : String
+	= feature.opposite.parentEntity.modelName()
+/]
+
+[query public modelName(feature : SingletonAssociation) : String
+	= feature.opposite.parentEntity.modelName()
+/]
+
+

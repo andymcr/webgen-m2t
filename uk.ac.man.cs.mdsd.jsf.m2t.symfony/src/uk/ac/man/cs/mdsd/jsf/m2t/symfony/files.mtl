@@ -1,9 +1,9 @@
 [comment encoding = UTF-8 /]
-[module fileInformation(
+[module files(
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::names/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::names/]
 
 
 [query public ymlExtension(eObject : EObject) : String
@@ -25,6 +25,14 @@
 
 [query public controllersDirectory(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/').concat('Controller')
+/]
+
+[query public formDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Form')
+/]
+
+[query public formTypeDirectory(eObject : EObject) : String
+	= eObject.formDirectory().concat('/').concat('Type')
 /]
 
 [query public modelsDirectory(eObject : EObject) : String
@@ -56,10 +64,24 @@
 	= eObject.appBundleNamespace().concat('\\').concat('Controller')
 /]
 
+[query public formNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Form')
+/]
+
+[query public formTypeNamespace(eObject : EObject) : String
+	= eObject.formNamespace().concat('\\').concat('Type')
+/]
+
 [query public modelsNamespace(eObject : EObject) : String
 	= eObject.appBundleNamespace().concat('\\').concat('Entity')
 /]
 
+
+[query public appBundleFilename(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/')
+		.concat('AppBundle')
+		.concat(eObject.executableExtension())
+/]
 
 [query public configBaseFilename(eObject : EObject) : String
 	= eObject.configDirectory().concat('/').concat('config')
@@ -69,6 +91,12 @@
 	= page.controllersDirectory().concat('/')
 		.concat(page.controllerName().toUpperFirst())
 		.concat(page.executableExtension())
+/]
+
+[query public formTypeFilename(service : Service) : String
+	= service.formTypeDirectory().concat('/')
+		.concat(service.modelName()).concat('Type')
+		.concat(service.executableExtension())
 /]
 
 [comment query public menuFilename(genMenu : GenMenu) : String

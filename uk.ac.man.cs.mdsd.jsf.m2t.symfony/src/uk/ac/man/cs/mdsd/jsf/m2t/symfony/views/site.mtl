@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module site(
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::config::files/]
-[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files/]
 
 
 [template public generatePage(jsfModel : JsfModel)]

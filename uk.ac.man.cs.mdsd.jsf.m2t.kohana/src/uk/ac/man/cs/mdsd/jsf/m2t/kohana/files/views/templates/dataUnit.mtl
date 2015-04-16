@@ -237,6 +237,8 @@
 		$[feature.name/] = [feature.generateDisplayFieldAssess(instanceVariable)/];
 	echo HTML::chars($[feature.name/]);
 	[/let]
+	[elseif (feature.isBooleanDataType())]
+	echo [feature.generateDisplayFieldAssess(instanceVariable)/];
 	[else]
 	echo HTML::chars([feature.generateDisplayFieldAssess(instanceVariable)/]);
 	[/if]
@@ -421,7 +423,7 @@ find_all()[else]
 Form::checkbox('[field.modelPropertyName()/]', '1', (bool) $[instanceVariable/]->[field.modelPropertyName()/], array(
 		'class' => '[field.styleClass()/] [field.inputClass()/]',
 		'disabled' => ''
-)) . PHP_EOL;
+))
 [else]
 $[instanceVariable/]->[field.modelPropertyName()/]
 [/if]

@@ -69,7 +69,7 @@
 [unit.displayLabel/]
 [elseif (unit.dynamicTitle.oclIsTypeOf(ServiceEntityElement))]
 [let element : ServiceEntityElement = unit.dynamicTitle.oclAsType(ServiceEntityElement)]
-	[if (not element.isEnumerationTypeSingletonElement())]
+	[if (not element.isEnumerationTypeSingleton())]
 <?php echo HTML::chars($[instanceVariable/]->[element.modelPropertyName()/]); ?>
 	[else]
 [let enumerationType : EnumerationType
@@ -226,18 +226,21 @@
 
 [template public generateDisplayField(field : UnitField, instanceVariable : String)
 	? (field.isDataTypeSingleton()) post(trim())]
-[let feature : UnitElement = field.oclAsType(UnitElement)]
+[let feature : UnitFeature = field.oclAsType(UnitFeature)]
 [if (feature.actions->isEmpty())]
 <?php
 	[if (feature.maximumDisplaySize > 0)]
 	[let maxSize : Integer = feature.maximumDisplaySize]
-	if (strlen([field.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
-		echo substr([field.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
+	if (strlen([feature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
+		$[feature.name/] = substr([feature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
 	else
-		echo [field.generateDisplayFieldAssess(instanceVariable)/];
+		$[feature.name/] = [feature.generateDisplayFieldAssess(instanceVariable)/];
+	echo HTML::chars($[feature.name/]);
 	[/let]
+	[elseif (feature.isBooleanDataType())]
+	echo [feature.generateDisplayFieldAssess(instanceVariable)/];
 	[else]
-	echo [field.generateDisplayFieldAssess(instanceVariable)/];
+	echo HTML::chars([feature.generateDisplayFieldAssess(instanceVariable)/]);
 	[/if]
 ?>
 [else]
@@ -245,6 +248,14 @@
 [let targetController : Page = action.controller()]
 [let targetUnit : DynamicUnit = action.oclAsType(SelectAction).target.oclAsType(DynamicUnit)]
 <?php
+	[if (feature.maximumDisplaySize > 0)]
+	[let maxSize : Integer = feature.maximumDisplaySize]
+	if (strlen([feature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
+		$[feature.name/] = substr([feature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
+	else
+		$[feature.name/] = [feature.generateDisplayFieldAssess(instanceVariable)/];
+	[/let]
+	[/if]
 	echo HTML::anchor(
 		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
 				'[targetUnit.parameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
@@ -253,7 +264,9 @@ $[instanceVariable/]->[field.modelPropertyName()/]->[targetUnit.service.keyName(
 $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 [/if]
 			), FALSE),
-		HTML::chars([field.generateDisplayFieldAssess(instanceVariable)/]),
+		HTML::chars([if (feature.maximumDisplaySize > 0)]
+$[feature.name/][else]
+[feature.generateDisplayFieldAssess(instanceVariable)/][/if]),
 		array(
 			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [field.generateDisplayFieldAssess(instanceVariable)/]),
 	));
@@ -275,9 +288,9 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 	else if field.oclIsTypeOf(DateField) then
 		field.oclAsType(DateField).dateFormat
 	else
-		null
+		''
 	endif endif endif]
-[if (dateFormat.oclIsUndefined())]
+[if (dateFormat = '')]
 <?php
 	echo [field.generateDisplayFieldAssess(instanceVariable)/];
 ?>
@@ -314,7 +327,7 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 [/template]
 
 [template public generateDisplayField(field : UnitField, instanceVariable : String)
-	? (field.oclIsKindOf(UnitAssociation) and field.isSingleton()) post(trim())]
+	? (field.isAssociationSingleton()) post(trim())]
 [let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (feature.units->isEmpty())]
 	[if (feature.actions->isEmpty())]
@@ -410,7 +423,7 @@ find_all()[else]
 Form::checkbox('[field.modelPropertyName()/]', '1', (bool) $[instanceVariable/]->[field.modelPropertyName()/], array(
 		'class' => '[field.styleClass()/] [field.inputClass()/]',
 		'disabled' => ''
-)) . PHP_EOL;
+))
 [else]
 $[instanceVariable/]->[field.modelPropertyName()/]
 [/if]

@@ -39,7 +39,7 @@
 [comment genFeature.oclAsType(GenServiceEntityAssociation).genFeature.modelName()/]
 [query public modelName(feature : ServiceAssociation) : String
 	= if feature.oclIsKindOf(ServiceEntityAssociation) then
-			'?? '
+			feature.oclAsType(ServiceEntityAssociation).feature.modelName()
 		else if feature.oclIsKindOf(ServiceViewAssociation) then
 			feature.oclAsType(ServiceViewAssociation).targetFeature.includedBy.modelName()
 		else
