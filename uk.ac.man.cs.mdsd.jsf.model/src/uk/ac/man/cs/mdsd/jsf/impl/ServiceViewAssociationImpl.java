@@ -31,7 +31,8 @@ import uk.ac.man.cs.mdsd.orm.impl.NamedDisplayElementImpl;
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl#getIncludedBy <em>Included By</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl#getCardinality <em>Cardinality</em>}</li>
  *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl#getDateFormat <em>Date Format</em>}</li>
- *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl#getTargetFeature <em>Target Feature</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl#getOppositeService <em>Opposite Service</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl#getOppositeFeature <em>Opposite Feature</em>}</li>
  * </ul>
  * </p>
  *
@@ -75,14 +76,23 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 	 */
 	protected String dateFormat = DATE_FORMAT_EDEFAULT;
 	/**
-	 * The cached value of the '{@link #getTargetFeature() <em>Target Feature</em>}' reference.
+	 * The cached value of the '{@link #getOppositeService() <em>Opposite Service</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTargetFeature()
+	 * @see #getOppositeService()
 	 * @generated
 	 * @ordered
 	 */
-	protected ServiceAssociation targetFeature;
+	protected Service oppositeService;
+	/**
+	 * The cached value of the '{@link #getOppositeFeature() <em>Opposite Feature</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOppositeFeature()
+	 * @generated
+	 * @ordered
+	 */
+	protected ServiceAssociation oppositeFeature;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -190,16 +200,16 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ServiceAssociation getTargetFeature() {
-		if (targetFeature != null && targetFeature.eIsProxy()) {
-			InternalEObject oldTargetFeature = (InternalEObject)targetFeature;
-			targetFeature = (ServiceAssociation)eResolveProxy(oldTargetFeature);
-			if (targetFeature != oldTargetFeature) {
+	public Service getOppositeService() {
+		if (oppositeService != null && oppositeService.eIsProxy()) {
+			InternalEObject oldOppositeService = (InternalEObject)oppositeService;
+			oppositeService = (Service)eResolveProxy(oldOppositeService);
+			if (oppositeService != oldOppositeService) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, JsfPackage.SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE, oldTargetFeature, targetFeature));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE, oldOppositeService, oppositeService));
 			}
 		}
-		return targetFeature;
+		return oppositeService;
 	}
 
 	/**
@@ -207,8 +217,8 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ServiceAssociation basicGetTargetFeature() {
-		return targetFeature;
+	public Service basicGetOppositeService() {
+		return oppositeService;
 	}
 
 	/**
@@ -216,11 +226,49 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setTargetFeature(ServiceAssociation newTargetFeature) {
-		ServiceAssociation oldTargetFeature = targetFeature;
-		targetFeature = newTargetFeature;
+	public void setOppositeService(Service newOppositeService) {
+		Service oldOppositeService = oppositeService;
+		oppositeService = newOppositeService;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE, oldTargetFeature, targetFeature));
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE, oldOppositeService, oppositeService));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ServiceAssociation getOppositeFeature() {
+		if (oppositeFeature != null && oppositeFeature.eIsProxy()) {
+			InternalEObject oldOppositeFeature = (InternalEObject)oppositeFeature;
+			oppositeFeature = (ServiceAssociation)eResolveProxy(oldOppositeFeature);
+			if (oppositeFeature != oldOppositeFeature) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE, oldOppositeFeature, oppositeFeature));
+			}
+		}
+		return oppositeFeature;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ServiceAssociation basicGetOppositeFeature() {
+		return oppositeFeature;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOppositeFeature(ServiceAssociation newOppositeFeature) {
+		ServiceAssociation oldOppositeFeature = oppositeFeature;
+		oppositeFeature = newOppositeFeature;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE, oldOppositeFeature, oppositeFeature));
 	}
 
 	/**
@@ -281,9 +329,12 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 				return getCardinality();
 			case JsfPackage.SERVICE_VIEW_ASSOCIATION__DATE_FORMAT:
 				return getDateFormat();
-			case JsfPackage.SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE:
-				if (resolve) return getTargetFeature();
-				return basicGetTargetFeature();
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE:
+				if (resolve) return getOppositeService();
+				return basicGetOppositeService();
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE:
+				if (resolve) return getOppositeFeature();
+				return basicGetOppositeFeature();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -305,8 +356,11 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 			case JsfPackage.SERVICE_VIEW_ASSOCIATION__DATE_FORMAT:
 				setDateFormat((String)newValue);
 				return;
-			case JsfPackage.SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE:
-				setTargetFeature((ServiceAssociation)newValue);
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE:
+				setOppositeService((Service)newValue);
+				return;
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE:
+				setOppositeFeature((ServiceAssociation)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -329,8 +383,11 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 			case JsfPackage.SERVICE_VIEW_ASSOCIATION__DATE_FORMAT:
 				setDateFormat(DATE_FORMAT_EDEFAULT);
 				return;
-			case JsfPackage.SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE:
-				setTargetFeature((ServiceAssociation)null);
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE:
+				setOppositeService((Service)null);
+				return;
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE:
+				setOppositeFeature((ServiceAssociation)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -350,8 +407,10 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 				return cardinality != CARDINALITY_EDEFAULT;
 			case JsfPackage.SERVICE_VIEW_ASSOCIATION__DATE_FORMAT:
 				return DATE_FORMAT_EDEFAULT == null ? dateFormat != null : !DATE_FORMAT_EDEFAULT.equals(dateFormat);
-			case JsfPackage.SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE:
-				return targetFeature != null;
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE:
+				return oppositeService != null;
+			case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE:
+				return oppositeFeature != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -373,6 +432,8 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 		}
 		if (baseClass == ServiceAssociation.class) {
 			switch (derivedFeatureID) {
+				case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE: return JsfPackage.SERVICE_ASSOCIATION__OPPOSITE_SERVICE;
+				case JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE: return JsfPackage.SERVICE_ASSOCIATION__OPPOSITE_FEATURE;
 				default: return -1;
 			}
 		}
@@ -396,6 +457,8 @@ public class ServiceViewAssociationImpl extends NamedDisplayElementImpl implemen
 		}
 		if (baseClass == ServiceAssociation.class) {
 			switch (baseFeatureID) {
+				case JsfPackage.SERVICE_ASSOCIATION__OPPOSITE_SERVICE: return JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE;
+				case JsfPackage.SERVICE_ASSOCIATION__OPPOSITE_FEATURE: return JsfPackage.SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE;
 				default: return -1;
 			}
 		}

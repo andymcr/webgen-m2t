@@ -55,10 +55,55 @@ public class ServiceEntityAssociationItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addOppositeServicePropertyDescriptor(object);
+			addOppositeFeaturePropertyDescriptor(object);
 			addFeaturePropertyDescriptor(object);
-			addOppositePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Opposite Service feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addOppositeServicePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ServiceAssociation_oppositeService_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceAssociation_oppositeService_feature", "_UI_ServiceAssociation_type"),
+				 JsfPackage.Literals.SERVICE_ASSOCIATION__OPPOSITE_SERVICE,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Opposite Feature feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addOppositeFeaturePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ServiceAssociation_oppositeFeature_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceAssociation_oppositeFeature_feature", "_UI_ServiceAssociation_type"),
+				 JsfPackage.Literals.SERVICE_ASSOCIATION__OPPOSITE_FEATURE,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
 	}
 
 	/**
@@ -75,28 +120,6 @@ public class ServiceEntityAssociationItemProvider
 				 getString("_UI_ServiceEntityAssociation_feature_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceEntityAssociation_feature_feature", "_UI_ServiceEntityAssociation_type"),
 				 JsfPackage.Literals.SERVICE_ENTITY_ASSOCIATION__FEATURE,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Opposite feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addOppositePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ServiceEntityAssociation_opposite_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceEntityAssociation_opposite_feature", "_UI_ServiceEntityAssociation_type"),
-				 JsfPackage.Literals.SERVICE_ENTITY_ASSOCIATION__OPPOSITE,
 				 true,
 				 false,
 				 true,

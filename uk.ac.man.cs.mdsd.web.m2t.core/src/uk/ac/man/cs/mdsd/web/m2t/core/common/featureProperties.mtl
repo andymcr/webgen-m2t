@@ -508,7 +508,7 @@
 		if feature.oclIsTypeOf(ServiceEntityAssociation) then
 			feature.oclAsType(ServiceEntityAssociation).feature.oppositeColumnName()
 		else if feature.oclIsTypeOf(ServiceViewAssociation) then
-			feature.oclAsType(ServiceViewAssociation).targetFeature.columnName()
+			feature.oclAsType(ServiceViewAssociation).oppositeFeature.columnName()
 		else
 			'unhandledFeature'
 		endif endif

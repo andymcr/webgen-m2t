@@ -63,7 +63,8 @@ public class ServiceViewAssociationItemProvider
 
 			addCardinalityPropertyDescriptor(object);
 			addDateFormatPropertyDescriptor(object);
-			addTargetFeaturePropertyDescriptor(object);
+			addOppositeServicePropertyDescriptor(object);
+			addOppositeFeaturePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -113,19 +114,41 @@ public class ServiceViewAssociationItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Target Feature feature.
+	 * This adds a property descriptor for the Opposite Service feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addTargetFeaturePropertyDescriptor(Object object) {
+	protected void addOppositeServicePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ServiceViewAssociation_targetFeature_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceViewAssociation_targetFeature_feature", "_UI_ServiceViewAssociation_type"),
-				 JsfPackage.Literals.SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE,
+				 getString("_UI_ServiceAssociation_oppositeService_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceAssociation_oppositeService_feature", "_UI_ServiceAssociation_type"),
+				 JsfPackage.Literals.SERVICE_ASSOCIATION__OPPOSITE_SERVICE,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Opposite Feature feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addOppositeFeaturePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ServiceAssociation_oppositeFeature_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ServiceAssociation_oppositeFeature_feature", "_UI_ServiceAssociation_type"),
+				 JsfPackage.Literals.SERVICE_ASSOCIATION__OPPOSITE_FEATURE,
 				 true,
 				 false,
 				 true,

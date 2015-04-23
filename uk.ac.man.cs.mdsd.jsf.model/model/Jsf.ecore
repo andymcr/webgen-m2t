@@ -185,17 +185,17 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ServiceAssociation" abstract="true"
-      interface="true" eSuperTypes="#//ServiceFeature"/>
+      interface="true" eSuperTypes="#//ServiceFeature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="oppositeService" lowerBound="1"
+        eType="#//Service"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="oppositeFeature" ordered="false"
+        eType="#//ServiceAssociation"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ServiceEntityAssociation" eSuperTypes="#//ServiceEntityFeature #//ServiceAssociation #//IncludedAssociation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" ordered="false"
         lowerBound="1" eType="ecore:EClass ../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//Association"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" lowerBound="1"
-        eType="#//ServiceEntityAssociation"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ServiceViewAssociation" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedDisplayElement #//ServiceAssociation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetFeature" ordered="false"
-        lowerBound="1" eType="#//ServiceAssociation"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ServiceViewAssociation" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedDisplayElement #//ServiceAssociation"/>
   <eClassifiers xsi:type="ecore:EEnum" name="PageTopMenuOptions">
     <eLiterals name="NeverInclude"/>
     <eLiterals name="AlwaysInclude"/>

@@ -1505,13 +1505,31 @@ public interface JsfPackage extends EPackage {
 	int SERVICE_ASSOCIATION__DATE_FORMAT = SERVICE_FEATURE__DATE_FORMAT;
 
 	/**
+	 * The feature id for the '<em><b>Opposite Service</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERVICE_ASSOCIATION__OPPOSITE_SERVICE = SERVICE_FEATURE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Opposite Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERVICE_ASSOCIATION__OPPOSITE_FEATURE = SERVICE_FEATURE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Service Association</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE_ASSOCIATION_FEATURE_COUNT = SERVICE_FEATURE_FEATURE_COUNT + 0;
+	int SERVICE_ASSOCIATION_FEATURE_COUNT = SERVICE_FEATURE_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceEntityAssociationImpl <em>Service Entity Association</em>}' class.
@@ -1632,22 +1650,31 @@ public interface JsfPackage extends EPackage {
 	int SERVICE_ENTITY_ASSOCIATION__VIEW_COLUMN_NAME = SERVICE_ENTITY_FEATURE__VIEW_COLUMN_NAME;
 
 	/**
+	 * The feature id for the '<em><b>Opposite Service</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERVICE_ENTITY_ASSOCIATION__OPPOSITE_SERVICE = SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Opposite Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERVICE_ENTITY_ASSOCIATION__OPPOSITE_FEATURE = SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE_ENTITY_ASSOCIATION__FEATURE = SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Opposite</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SERVICE_ENTITY_ASSOCIATION__OPPOSITE = SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 1;
+	int SERVICE_ENTITY_ASSOCIATION__FEATURE = SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Service Entity Association</em>' class.
@@ -1656,7 +1683,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE_ENTITY_ASSOCIATION_FEATURE_COUNT = SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 2;
+	int SERVICE_ENTITY_ASSOCIATION_FEATURE_COUNT = SERVICE_ENTITY_FEATURE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1704,13 +1731,22 @@ public interface JsfPackage extends EPackage {
 	int SERVICE_VIEW_ASSOCIATION__DATE_FORMAT = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Target Feature</b></em>' reference.
+	 * The feature id for the '<em><b>Opposite Service</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 3;
+	int SERVICE_VIEW_ASSOCIATION__OPPOSITE_SERVICE = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Opposite Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SERVICE_VIEW_ASSOCIATION__OPPOSITE_FEATURE = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Service View Association</em>' class.
@@ -1719,7 +1755,7 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SERVICE_VIEW_ASSOCIATION_FEATURE_COUNT = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 4;
+	int SERVICE_VIEW_ASSOCIATION_FEATURE_COUNT = OrmPackage.NAMED_DISPLAY_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -9198,6 +9234,28 @@ public interface JsfPackage extends EPackage {
 	EClass getServiceAssociation();
 
 	/**
+	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.ServiceAssociation#getOppositeService <em>Opposite Service</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Opposite Service</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.ServiceAssociation#getOppositeService()
+	 * @see #getServiceAssociation()
+	 * @generated
+	 */
+	EReference getServiceAssociation_OppositeService();
+
+	/**
+	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.ServiceAssociation#getOppositeFeature <em>Opposite Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Opposite Feature</em>'.
+	 * @see uk.ac.man.cs.mdsd.jsf.ServiceAssociation#getOppositeFeature()
+	 * @see #getServiceAssociation()
+	 * @generated
+	 */
+	EReference getServiceAssociation_OppositeFeature();
+
+	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.ServiceEntityAssociation <em>Service Entity Association</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -9219,17 +9277,6 @@ public interface JsfPackage extends EPackage {
 	EReference getServiceEntityAssociation_Feature();
 
 	/**
-	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.ServiceEntityAssociation#getOpposite <em>Opposite</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Opposite</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.ServiceEntityAssociation#getOpposite()
-	 * @see #getServiceEntityAssociation()
-	 * @generated
-	 */
-	EReference getServiceEntityAssociation_Opposite();
-
-	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.ServiceViewAssociation <em>Service View Association</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -9238,17 +9285,6 @@ public interface JsfPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getServiceViewAssociation();
-
-	/**
-	 * Returns the meta object for the reference '{@link uk.ac.man.cs.mdsd.jsf.ServiceViewAssociation#getTargetFeature <em>Target Feature</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Target Feature</em>'.
-	 * @see uk.ac.man.cs.mdsd.jsf.ServiceViewAssociation#getTargetFeature()
-	 * @see #getServiceViewAssociation()
-	 * @generated
-	 */
-	EReference getServiceViewAssociation_TargetFeature();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.jsf.Selection <em>Selection</em>}'.
@@ -12011,6 +12047,22 @@ public interface JsfPackage extends EPackage {
 		EClass SERVICE_ASSOCIATION = eINSTANCE.getServiceAssociation();
 
 		/**
+		 * The meta object literal for the '<em><b>Opposite Service</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SERVICE_ASSOCIATION__OPPOSITE_SERVICE = eINSTANCE.getServiceAssociation_OppositeService();
+
+		/**
+		 * The meta object literal for the '<em><b>Opposite Feature</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SERVICE_ASSOCIATION__OPPOSITE_FEATURE = eINSTANCE.getServiceAssociation_OppositeFeature();
+
+		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceEntityAssociationImpl <em>Service Entity Association</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -12029,14 +12081,6 @@ public interface JsfPackage extends EPackage {
 		EReference SERVICE_ENTITY_ASSOCIATION__FEATURE = eINSTANCE.getServiceEntityAssociation_Feature();
 
 		/**
-		 * The meta object literal for the '<em><b>Opposite</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SERVICE_ENTITY_ASSOCIATION__OPPOSITE = eINSTANCE.getServiceEntityAssociation_Opposite();
-
-		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.impl.ServiceViewAssociationImpl <em>Service View Association</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -12045,14 +12089,6 @@ public interface JsfPackage extends EPackage {
 		 * @generated
 		 */
 		EClass SERVICE_VIEW_ASSOCIATION = eINSTANCE.getServiceViewAssociation();
-
-		/**
-		 * The meta object literal for the '<em><b>Target Feature</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE = eINSTANCE.getServiceViewAssociation_TargetFeature();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.jsf.impl.SelectionImpl <em>Selection</em>}' class.

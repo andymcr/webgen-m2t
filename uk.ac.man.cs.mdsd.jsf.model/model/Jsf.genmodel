@@ -123,14 +123,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceEntityElement/placeholder"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Jsf.ecore#//ServiceEntityElement/validationPattern"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceAssociation"/>
+    <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceAssociation/oppositeService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceAssociation/oppositeFeature"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="Jsf.ecore#//ServiceEntityAssociation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceEntityAssociation/feature"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceEntityAssociation/opposite"/>
     </genClasses>
-    <genClasses ecoreClass="Jsf.ecore#//ServiceViewAssociation">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//ServiceViewAssociation/targetFeature"/>
-    </genClasses>
+    <genClasses ecoreClass="Jsf.ecore#//ServiceViewAssociation"/>
     <genClasses ecoreClass="Jsf.ecore#//Page">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Jsf.ecore#//Page/partOf"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Jsf.ecore#//Page/parentPage"/>

@@ -1124,6 +1124,24 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getServiceAssociation_OppositeService() {
+		return (EReference)serviceAssociationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getServiceAssociation_OppositeFeature() {
+		return (EReference)serviceAssociationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getServiceEntityAssociation() {
 		return serviceEntityAssociationEClass;
 	}
@@ -1142,26 +1160,8 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getServiceEntityAssociation_Opposite() {
-		return (EReference)serviceEntityAssociationEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getServiceViewAssociation() {
 		return serviceViewAssociationEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getServiceViewAssociation_TargetFeature() {
-		return (EReference)serviceViewAssociationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -3285,13 +3285,13 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		createEAttribute(serviceEntityElementEClass, SERVICE_ENTITY_ELEMENT__VALIDATION_PATTERN);
 
 		serviceAssociationEClass = createEClass(SERVICE_ASSOCIATION);
+		createEReference(serviceAssociationEClass, SERVICE_ASSOCIATION__OPPOSITE_SERVICE);
+		createEReference(serviceAssociationEClass, SERVICE_ASSOCIATION__OPPOSITE_FEATURE);
 
 		serviceEntityAssociationEClass = createEClass(SERVICE_ENTITY_ASSOCIATION);
 		createEReference(serviceEntityAssociationEClass, SERVICE_ENTITY_ASSOCIATION__FEATURE);
-		createEReference(serviceEntityAssociationEClass, SERVICE_ENTITY_ASSOCIATION__OPPOSITE);
 
 		serviceViewAssociationEClass = createEClass(SERVICE_VIEW_ASSOCIATION);
-		createEReference(serviceViewAssociationEClass, SERVICE_VIEW_ASSOCIATION__TARGET_FEATURE);
 
 		pageEClass = createEClass(PAGE);
 		createEReference(pageEClass, PAGE__PART_OF);
@@ -3761,13 +3761,13 @@ public class JsfPackageImpl extends EPackageImpl implements JsfPackage {
 		initEAttribute(getServiceEntityElement_ValidationPattern(), ecorePackage.getEString(), "validationPattern", null, 0, 1, ServiceEntityElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(serviceAssociationEClass, ServiceAssociation.class, "ServiceAssociation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getServiceAssociation_OppositeService(), this.getService(), null, "oppositeService", null, 1, 1, ServiceAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getServiceAssociation_OppositeFeature(), this.getServiceAssociation(), null, "oppositeFeature", null, 0, 1, ServiceAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(serviceEntityAssociationEClass, ServiceEntityAssociation.class, "ServiceEntityAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getServiceEntityAssociation_Feature(), theOrmPackage.getAssociation(), null, "feature", null, 1, 1, ServiceEntityAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEReference(getServiceEntityAssociation_Opposite(), this.getServiceEntityAssociation(), null, "opposite", null, 1, 1, ServiceEntityAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(serviceViewAssociationEClass, ServiceViewAssociation.class, "ServiceViewAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getServiceViewAssociation_TargetFeature(), this.getServiceAssociation(), null, "targetFeature", null, 1, 1, ServiceViewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPage_PartOf(), this.getJsfModel(), this.getJsfModel_Pages(), "partOf", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
