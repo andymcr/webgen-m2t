@@ -95,7 +95,7 @@
 
 [query public formTypeFilename(service : Service) : String
 	= service.formTypeDirectory().concat('/')
-		.concat(service.modelName()).concat('Type')
+		.concat(service.modelName).concat('Type')
 		.concat(service.executableExtension())
 /]
 
@@ -113,7 +113,7 @@
 
 [query public modelFilename(service : Service) : String
 	= service.modelsDirectory().concat('/')
-		.concat(service.modelName())
+		.concat(service.modelName)
 		.concat(service.executableExtension())
 /]
 

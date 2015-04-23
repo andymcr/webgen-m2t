@@ -10,14 +10,6 @@
 	= 'Controller'
 /]
 
-[query public modelName(service : Service) : String
-	= service.modelName
-/]
-
-[query public modelClassName(service : Service) : String
-	= 'Model_'.concat(service.modelName())
-/]
-
 
 [query public controllerName(page : Page) : String
 	= page.name
@@ -35,18 +27,6 @@
 [comment query public instanceName(genMenu : GenMenu) : String
 	= genMenu.name().toLowerFirst()
 /]
-
-[comment genFeature.oclAsType(GenServiceEntityAssociation).genFeature.modelName()/]
-[query public modelName(feature : ServiceAssociation) : String
-	= if feature.oclIsKindOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).feature.modelName()
-		else if feature.oclIsKindOf(ServiceViewAssociation) then
-			feature.oclAsType(ServiceViewAssociation).targetFeature.includedBy.modelName()
-		else
-			'unhandledFeature'
-		endif endif
-/]
-
 
 [comment query public actionName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName()
@@ -217,29 +197,6 @@
 
 [comment query public instanceName(genEntity : GenEntity) : String
 	= genEntity.name.toLowerFirst()
-/]
-
-[comment query public modelName(genEntity : GenEntity) : String
-	= genEntity.name
-/]
-
-
-[query public modelName(feature : Association) : String
-	= if feature.oclIsTypeOf(SingletonAssociation) then
-			feature.oclAsType(SingletonAssociation).modelName()
-		else if feature.oclIsTypeOf(CollectionAssociation) then
-			feature.oclAsType(CollectionAssociation).modelName()
-		else
-			'unhandledFeature'
-		endif endif
-/]
-
-[comment query public modelName(genFeature : GenCollectionAssociation) : String
-	= genFeature.genOpposite.genParentEntity.modelName()
-/]
-
-[comment query public modelName(genFeature : GenSingletonAssociation) : String
-	= genFeature.genOpposite.genParentEntity.modelName()
 /]
 
 
