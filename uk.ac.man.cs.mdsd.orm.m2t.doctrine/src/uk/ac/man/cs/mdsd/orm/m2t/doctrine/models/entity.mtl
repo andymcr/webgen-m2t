@@ -41,7 +41,7 @@ class [service.modelClassName()/]
 	 * @ORM/[if (attribute.oclIsTypeOf(SingletonAssociation))]
 [attribute.oclAsType(SingletonAssociation).associationRelationship/][else]
 [attribute.oclAsType(CollectionAssociation).associationRelationship/][/if]
-(targetEntity="[association.targetService.modelName/]", inversedBy="[feature.oppositeColumnName()/]")
+(targetEntity="[association.oppositeService.modelName/]", inversedBy="[feature.oppositeColumnName()/]")
 	[/let]
 	[/let]
 	[/if]
@@ -323,7 +323,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 				$this->remove('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
 		[else]
 		{
-			$opposite = ORM::factory('[association.targetService.modelName/]', $change['['/]'value'[']'/]);
+			$opposite = ORM::factory('[association.oppositeService.modelName/]', $change['['/]'value'[']'/]);
 			if (!$opposite->loaded())
 				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'value'[']'/]));
 			else
