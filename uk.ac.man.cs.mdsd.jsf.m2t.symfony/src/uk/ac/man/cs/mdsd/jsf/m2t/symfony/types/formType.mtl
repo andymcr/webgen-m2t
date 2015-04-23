@@ -1,0 +1,40 @@
+[comment encoding = UTF-8 /]
+[module formType(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::names/]
+
+
+[template public generateFormType(service : Service)]
+[file(service.formTypeFilename(), false)]
+<?php
+namespace [service.formTypeNamespace()/];
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class [service.modelName/]Task extends AbstractType
+{
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+	[for (feature : ServiceFeature | service.features)]
+			->add('[feature.modelPropertyName()/]')
+	[/for]
+	}
+
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		$resolver->setDefaults(array(
+			'data_class' => 'AppBundle\Entity\service.modelname()/]'
+		));
+	}
+
+	public function getName()
+	{
+		return '[service.modelName.toLowerFirst()/]';
+	}
+}
+[/file]
+[/template]
