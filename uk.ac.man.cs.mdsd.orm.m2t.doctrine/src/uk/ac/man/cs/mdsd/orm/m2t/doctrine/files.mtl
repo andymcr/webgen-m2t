@@ -36,6 +36,6 @@
 
 [query public modelFilename(service : Service) : String
 	= service.modelsDirectory().concat('/')
-		.concat(service.modelName())
+		.concat(service.modelName)
 		.concat(service.executableExtension())
 /]

@@ -36,10 +36,13 @@ class [service.modelClassName()/]
 	[if (feature.oclIsKindOf(ServiceEntityElement))]
 	 * @ORM/Column(type="[feature.oclAsType(ServiceEntityElement).feature.persistentType/]")
 	[elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
-	[let association : Association = feature.oclAsType(ServiceEntityAssociation).feature]
-	 * @ORM/[if (association.oclIsTypeOf(SingletonAssociation))]
-[association.oclAsType(SingletonAssociation).associationRelationship/][else]
-[association.oclAsType(CollectionAssociation).associationRelationship/][/if](targetEntity="[feature.oclAsType(ServiceEntityAssociation).modelName()/]", inversedBy="[feature.oppositeColumnName()/]")
+	[let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)]
+	[let attribute : Association = association.feature]
+	 * @ORM/[if (attribute.oclIsTypeOf(SingletonAssociation))]
+[attribute.oclAsType(SingletonAssociation).associationRelationship/][else]
+[attribute.oclAsType(CollectionAssociation).associationRelationship/][/if]
+(targetEntity="[association.targetService.modelName/]", inversedBy="[feature.oppositeColumnName()/]")
+	[/let]
 	[/let]
 	[/if]
 	 **/
@@ -320,7 +323,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 				$this->remove('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
 		[else]
 		{
-			$opposite = ORM::factory('[association.modelName()/]', $change['['/]'value'[']'/]);
+			$opposite = ORM::factory('[association.targetService.modelName/]', $change['['/]'value'[']'/]);
 			if (!$opposite->loaded())
 				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'value'[']'/]));
 			else
@@ -352,7 +355,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	[if (service = localAuthentication.userService)]
 	public static function authenticated_user($authentication)
 	{
-		$user = ORM::factory('[service.modelName()/]');
+		$user = ORM::factory('[service.modelName/]');
 		$user->where('[localAuthentication.userAuthenticationKey.columnName()/]', '=', $authentication->email);
 		return $user->find();
 	}
@@ -375,7 +378,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$login_attempt = ORM::factory('[service.modelName()/]');
+			$login_attempt = ORM::factory('[service.modelName/]');
 			$login_attempt->login_id = $login_id;
 			$login_attempt->ip_address = Request::$client_ip;
 			$login_attempt->time = date('Y-m-d H:i:s');
@@ -391,7 +394,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 
 	public static function attempts_exceeded($login_id, $maximum_attempts, $expiry_period)
 	{
-		$login_attempt = ORM::factory('[service.modelName()/]');
+		$login_attempt = ORM::factory('[service.modelName/]');
 		$login_attempt->where_open();
 		$login_attempt->where('login_id', '=', $login_id);
 		$login_attempt->or_where('ip_address', '=', Request::$client_ip);
@@ -406,7 +409,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$login_attempt = ORM::factory('[service.modelName()/]');
+			$login_attempt = ORM::factory('[service.modelName/]');
 			$login_attempt->where_open();
 			$login_attempt->where('login_id', '=', $login_id);
 			$login_attempt->where('ip_address', '=', Request::$client_ip);
@@ -435,7 +438,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[service.modelName()/]');
+			$autologin = ORM::factory('[service.modelName/]');
 			$autologin->key = $key;
 			$autologin->user_agent = $user_agent;
 			$autologin->last_ip_address = Request::$client_ip;
@@ -454,7 +457,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 				Log::instance()->add(Log::ERROR, 'Validation errors :errors', array(
 					':errors' => print_r($e->errors(''), TRUE)
 				));
-			return ORM::factory('[service.modelName()/]');
+			return ORM::factory('[service.modelName/]');
 		}
 	}
 
@@ -468,7 +471,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	
 			$login_id = $data['['/]'user_id'[']'/];
 			$key = $data['['/]'key'[']'/];
-			$autologin = ORM::factory('[service.modelName()/]');
+			$autologin = ORM::factory('[service.modelName/]');
 			$autologin->where('key', '=', $key)
 				->where('user_agent', '=', $user_agent)
 				// checking time means that reducing lifetime has immediate effect
@@ -507,7 +510,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[service.modelName()/]');
+			$autologin = ORM::factory('[service.modelName/]');
 			$autologin->join('[localAuthentication.authenticationService.tableName()/]')
 				->on('authentication_id', '=', '[localAuthentication.authenticationService.tableName()/].[localAuthentication.authenticationService.keyName()/]')
 				->where('[localAuthentication.authenticationService.tableName()/].[localAuthentication.loginUnit.loginIdField.modelPropertyName()/]', '=', $login_id);
@@ -527,7 +530,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[service.modelName()/]');
+			$autologin = ORM::factory('[service.modelName/]');
 			$autologin->where(new Database_Expression('UNIX_TIMESTAMP(last_login)'), '<', time() - $lifetime);
 			foreach ($autologin->find_all() AS $token)
 				$token->delete();
