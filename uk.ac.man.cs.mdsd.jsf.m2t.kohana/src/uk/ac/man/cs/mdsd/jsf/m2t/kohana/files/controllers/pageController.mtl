@@ -67,7 +67,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 			$this->template->sidebar = View::factory('menu/[page.sideMenu.instanceName()/]');
 	[if (page.sideMenu.oclIsTypeOf(DynamicMenu))]
 	[let dynamicMenu : DynamicMenu = page.sideMenu.oclAsType(DynamicMenu)]
-			$this->template->sidebar->[page.sideMenu.instanceName()/] = ORM::factory('[dynamicMenu.service.modelName()/]')->[dynamicMenu.selection.instanceName()/]();
+			$this->template->sidebar->[page.sideMenu.instanceName()/] = ORM::factory('[dynamicMenu.service.modelName/]')->[dynamicMenu.selection.instanceName()/]();
 	[/let]
 	[/if]
 [/if]

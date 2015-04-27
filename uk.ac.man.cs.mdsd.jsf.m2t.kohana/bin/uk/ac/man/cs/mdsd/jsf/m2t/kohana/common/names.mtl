@@ -10,12 +10,8 @@
 	= 'Controller_Template_Base'
 /]
 
-[query public modelName(service : Service) : String
-	= service.modelName
-/]
-
 [query public modelClassName(service : Service) : String
-	= 'Model_'.concat(service.modelName())
+	= 'Model_'.concat(service.modelName)
 /]
 
 
@@ -37,17 +33,6 @@
 /]
 
 
-[query public modelName(feature : ServiceAssociation) : String
-	= if feature.oclIsKindOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).feature.modelName()
-		else if feature.oclIsKindOf(ServiceViewAssociation) then
-			feature.oclAsType(ServiceViewAssociation).targetFeature.includedBy.modelName()
-		else
-			'unhandledFeature'
-		endif endif
-/]
-
-
 [query public actionName(unit : ContentUnit) : String
 	= unit.instanceName()
 /]
@@ -65,29 +50,11 @@
 			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
 				'None'
 			else
-				unit.oclAsType(StaticUnit).service.modelName()
+				unit.oclAsType(StaticUnit).service.modelName
 			endif
 		else
-			unit.oclAsType(DynamicUnit).service.modelName()
+			unit.oclAsType(DynamicUnit).service.modelName
 		endif
-/]
-
-[comment query public modelName(unit : ContentUnit) : String
-	= let baseName : String
-		= if unit.oclIsTypeOf(StaticUnit) then
-				if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
-					'None'
-				else
-					unit.oclAsType(StaticUnit).service.modelName()
-				endif
-			else
-				unit.oclAsType(DynamicUnit).service.modelName()
-			endif
-		in if unit.pageDisplayedOn().partOf.persistence.ormTechnology = OrmTechnologies::GasORM then
-				'Model\\'.concat(baseName)
-			else
-				baseName
-			endif
 /]
 
 
@@ -116,11 +83,6 @@
 
 [query public uniqueName(field : UnitField) : String
 	= field.displayedOn.instanceName().concat('_').concat(field.modelPropertyName())
-/]
-
-
-[query public modelName(feature : UnitAssociation) : String
-	= feature.serviceFeature.modelName()
 /]
 
 
@@ -154,15 +116,15 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
-			action.usedBy.oclAsType(UnitAssociation).modelName()
+			action.usedBy.oclAsType(UnitAssociation).serviceFeature.oppositeService.modelName
 		endif
 /]
 
 [query public modelName(action : FeatureSupportAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).modelName()
+			action.usedBy.oclAsType(DynamicUnit).service.modelName
 		else
-			action.usedBy.oclAsType(UnitAssociation).modelName()
+			action.usedBy.oclAsType(UnitAssociation).serviceFeature.oppositeService.modelName
 		endif
 /]
 
@@ -173,8 +135,7 @@
 			else
 				action.usedBy.oclAsType(UnitAssociation).displayedOn
 			endif
-		in unit.service.modelName()
-/]
+		in unit.service.modelName/]
 
 [query public parameterName(action : InlineAction) : String
 	= action.actionName()

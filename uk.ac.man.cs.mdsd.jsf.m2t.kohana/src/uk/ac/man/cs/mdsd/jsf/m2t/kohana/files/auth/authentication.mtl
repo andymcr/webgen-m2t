@@ -19,7 +19,7 @@ class [authentication.webgenAuthClassName()/] extends Auth
 
     private function load_authentication($login_id)
     {
-		return ORM::factory('[localAuthentication.authenticationService.modelName()/]', array(
+		return ORM::factory('[localAuthentication.authenticationService.modelName/]', array(
 			'[localAuthentication.loginUnit.loginIdField.modelPropertyName()/]' => $login_id
 		));
 	}

@@ -38,7 +38,7 @@ if (isset($this->[editUnit.instanceName()/]_field_errors))
 	[for (field : UnitField | editUnit.inputAssociations())]
 	[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 $[association.optionsName()/] = array([if (association.isSingleton())]'' => __('Please select')[/if]);
-foreach (ORM::factory('[association.modelName()/]')->[if (association.selection.oclIsUndefined())]
+foreach (ORM::factory('[association.serviceFeature.oppositeService.modelName/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 	$[association.optionsName()/]['['/]$option->id[']'/] = $option->[if (association.dynamicLabel.oclIsUndefined())]
@@ -129,7 +129,7 @@ public function action_[editUnit.actionName()/]()
 public function action_[association.optionsName()/]()
 {
 	$options = array();
-	foreach (ORM::factory('[association.modelName()/]')->[if (association.selection.oclIsUndefined())]
+	foreach (ORM::factory('[association.serviceFeature.oppositeService.modelName/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 		$options['['/][']'/] = array(

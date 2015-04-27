@@ -24,7 +24,7 @@ if (isset($this->[controlUnit.instanceName()/]_field_errors))
 	$this->[controlUnit.templateInstanceName()/]->bind('[controlUnit.instanceName()/]_field_errors', $this->[controlUnit.instanceName()/]_field_errors);
 [for (association : UnitAssociation | controlUnit.associationFields())]
 $[association.optionsName()/] = array([if (association.isSingleton())]'' => __('Please select')[/if]);
-foreach (ORM::factory('[association.modelName()/]')->[if (association.selection.oclIsUndefined())]
+foreach (ORM::factory('[association.serviceFeature.oppositeService.modelName/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 	$[association.optionsName()/]['['/]$option->id[']'/] = $option->displayLabel();

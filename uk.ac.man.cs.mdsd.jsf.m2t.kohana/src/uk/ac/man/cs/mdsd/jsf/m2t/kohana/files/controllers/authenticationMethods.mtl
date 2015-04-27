@@ -81,7 +81,7 @@ public function action_[registrationUnit.actionName()/]() {
 //		$this->page_message = 'Activation email sent';
 	[else]
 		[let authentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
-			$user = ORM::factory('[authentication.userService.modelName()/]');
+			$user = ORM::factory('[authentication.userService.modelName/]');
 			$user->[authentication.userAuthenticationKey.columnName()/] = $this->[registrationUnit.instanceName()/]->[authentication.loginUnit.loginIdField.modelPropertyName()/];
 			[for (userFeature : ServiceFeature | authentication.userService.features->select(f | f.isRequired())->select(f | f <> authentication.userAuthenticationKey))]
 			$user->[userFeature.columnName()/] = '';
