@@ -331,9 +331,13 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 [if (service.hasInputCollectionAssociations() or service.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
 	{
-[for (feature : ServiceEntityFeature | service.resourceAttributes())]
-		$this->_save_[feature.modelPropertyName()/]();
-[/for]
+[if (service.hasResourceAttributes())]
+		if (!empty($_FILES)) {
+	[for (feature : ServiceEntityFeature | service.resourceAttributes())]
+			$this->_save_[feature.modelPropertyName()/]();
+	[/for]
+		}
+[/if]
 		parent::save($validation);
 [if (service.hasInputCollectionAssociations())]
 	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
