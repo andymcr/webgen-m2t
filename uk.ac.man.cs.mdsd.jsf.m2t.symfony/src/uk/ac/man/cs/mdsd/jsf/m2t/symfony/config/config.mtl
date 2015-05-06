@@ -1,14 +1,15 @@
 [comment encoding = UTF-8 /]
 [module config(
-	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 
 
-[template public generateConfig(jsfModel : JsfModel)]
-[file (jsfModel.configBaseFilename().concat(jsfModel.ymlExtension()), false)]
-# [jsfModel.configBaseFilename()/][jsfModel.ymlExtension()/]
+[template public generateConfig(model : JsfModel)]
+[file (model.configBaseFilename().concat(model.ymlExtension()), false)]
+# [model.configBaseFilename()/][model.ymlExtension()/]
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
@@ -64,12 +65,6 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #     path:     "%database_path%"
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
