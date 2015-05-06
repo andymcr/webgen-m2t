@@ -39,8 +39,16 @@
 	= eObject.appBundleDirectory().concat('/').concat('Entity')
 /]
 
+[query public pageViewDirectory(page : Page) : String
+	= page.viewsDirectory().concat('/').concat(page.name)
+/]
+
 [query public resourcesDirectory(eObject : EObject) : String
 	= eObject.applicationDirectory().concat('/').concat('Resources')
+/]
+
+[query public servicesDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Service')
 /]
 
 [query public sourceDirectory(eObject : EObject) : String
@@ -76,6 +84,10 @@
 	= eObject.appBundleNamespace().concat('\\').concat('Entity')
 /]
 
+[query public servicesNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Service')
+/]
+
 
 [query public appBundleFilename(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/')
@@ -89,7 +101,7 @@
 
 [query public controllerFilename(page : Page) : String
 	= page.controllersDirectory().concat('/')
-		.concat(page.controllerName().toUpperFirst())
+		.concat(page.controllerClassName().toUpperFirst())
 		.concat(page.executableExtension())
 /]
 
@@ -111,21 +123,10 @@
 		.concat(enumerationType.executableExtension())
 /]
 
-[query public modelFilename(service : Service) : String
-	= service.modelsDirectory().concat('/')
-		.concat(service.modelName)
-		.concat(service.executableExtension())
-/]
-
 [comment query public modelLanguageFilename(genService : GenService) : String
 	= genService.languageEnglishDirectory().concat('/')
 		.concat('model_').concat(genService.modelName()).concat('_lang')
 		.concat(genService.executableExtension())
-/]
-
-[comment query public pageViewsDirectory(genPage : GenPage) : String
-	= genPage.viewDirectory().concat('/')
-		.concat(genPage.controllerName())
 /]
 
 [comment query public paginationViewFilename(genUnit : GenContentUnit) : String
@@ -134,10 +135,15 @@
 		.concat(genUnit.executableExtension())
 /]
 
+[query public serviceFilename(service : Service) : String
+	= service.servicesDirectory().concat('/')
+		.concat(service.serviceClassName())
+		.concat(service.executableExtension())
+/]
 
-[comment query public viewFilename(genUnit : GenContentUnit) : String
-	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
-		.concat(genUnit.instanceName())
-		.concat(genUnit.executableExtension())
+[query public viewFilename(unit : ContentUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
+		.concat(unit.instanceName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 

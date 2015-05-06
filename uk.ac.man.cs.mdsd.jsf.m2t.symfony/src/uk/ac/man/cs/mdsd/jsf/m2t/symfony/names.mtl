@@ -6,10 +6,23 @@
 [import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 
 
+[query public appBundleName(eObject : EObject) : String
+	= 'AppBundle'
+/]
+
+
+[query public serviceClassName(service : Service) : String
+	= service.name.concat('Service')
+/]
+
+[query public selectName(service : Service) : String
+	= service.name.toLowerCase()
+/]
+
+
 [query public baseControllerClassName(eObject : EObject) : String
 	= 'Controller'
 /]
-
 
 [query public controllerName(page : Page) : String
 	= page.name
@@ -32,8 +45,8 @@
 	= genUnit.instanceName()
 /]
 
-[comment query public controllerName(genUnit : GenDynamicUnit) : String
-	= genUnit.pageDisplayedOn().controllerName()
+[query public controllerName(unit : DynamicUnit) : String
+	= unit.pageDisplayedOn().controllerName()
 /]
 
 [query public instanceName(unit : ContentUnit) : String
@@ -63,26 +76,26 @@
 		.concat(genUnit.actionName()).concat('/')
 /]
 
-[comment query public parameterName(genUnit : GenContentUnit) : String
-	= genUnit.instanceName()
-/]
-
 [comment query public pageIndexName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName().concat('_page')
+/]
+
+[query public routeParameterName(unit : ContentUnit) : String
+	= unit.instanceName()
 /]
 
 [comment query public templateInstanceName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName().concat('_template')
 /]
 
-[comment query public uniqueName(genUnit : GenContentUnit) : String
+[query public uniqueName(unit : ContentUnit) : String
 	= let key : String
-			= if genUnit.genDisplayedOn.oclIsTypeOf(GenPage) then
-				genUnit.genDisplayedOn.oclAsType(GenPage).instanceName()
+			= if unit.displayedOn.oclIsTypeOf(Page) then
+				unit.displayedOn.oclAsType(Page).instanceName()
 			else
-				genUnit.genDisplayedOn.oclAsType(GenUnitAssociation).genDisplayedOn.uniqueName()
+				unit.displayedOn.oclAsType(UnitAssociation).displayedOn.uniqueName()
 			endif
-		in key.concat('_').concat(genUnit.instanceName())
+		in key.concat('_').concat(unit.instanceName())
 /]
 
 
@@ -113,16 +126,16 @@
 /]
 
 
-[comment query public actionName(genAction : GenInlineAction) : String
-	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
-			genAction.genUsedBy.oclAsType(GenDynamicUnit).instanceName()
-				.concat(genAction.name.toUpperFirst())
+[query public actionName(action : InlineAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).instanceName()
+				.concat(action.name.toUpperFirst())
 		else
-			let genAssociation : GenUnitAssociation
-					= genAction.genUsedBy.oclAsType(GenUnitAssociation)
-				in genAssociation.genDisplayedOn.instanceName()
-				.concat(genAssociation.name.toUpperFirst())
-				.concat(genAction.name.toUpperFirst())
+			let association : UnitAssociation
+					= action.usedBy.oclAsType(UnitAssociation)
+				in association.displayedOn.instanceName()
+				.concat(association.name.toUpperFirst())
+				.concat(action.name.toUpperFirst())
 		endif
 /]
 
@@ -151,23 +164,23 @@
 				.concat(methodName).concat('/')
 /]
 
-[comment query public instanceName(genAction : GenInlineAction) : String
-	= genAction.name.toLowerFirst()
+[query public instanceName(action : InlineAction) : String
+	= action.name.toLowerFirst()
 /]
 
-[comment query public modelName(genAction : GenDeleteAction) : String
-	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
-			genAction.genUsedBy.oclAsType(GenDynamicUnit).modelName()
+[query public modelName(action : DeleteAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).service.modelName
 		else
-			genAction.genUsedBy.oclAsType(GenUnitAssociation).modelName()
+			action.usedBy.oclAsType(UnitAssociation).serviceFeature.oppositeService.modelName
 		endif
 /]
 
-[comment query public modelName(genAction : GenFeatureSupportAction) : String
-	= if genAction.genUsedBy.oclIsKindOf(GenDynamicUnit) then
-			genAction.genUsedBy.oclAsType(GenDynamicUnit).modelName()
+[query public modelName(action : FeatureSupportAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).service.modelName
 		else
-			genAction.genUsedBy.oclAsType(GenUnitAssociation).modelName()
+			action.usedBy.oclAsType(UnitAssociation).serviceFeature.oppositeService.modelName
 		endif
 /]
 
@@ -181,8 +194,8 @@
 		in genUnit.genService.modelName()
 /]
 
-[comment query public parameterName(genAction : GenInlineAction) : String
-	= genAction.actionName()
+[query public routeParameterName(action : InlineAction) : String
+	= action.actionName()
 /]
 
 
@@ -200,8 +213,8 @@
 /]
 
 
-[comment query public modelClassName(enumerationType : EnumerationType) : String
-	= 'Model_'.concat(enumerationType.modelName())
+[query public modelClassName(enumerationType : EnumerationType) : String
+	= enumerationType.name
 /]
 
 [comment query public modelName(enumerationType : EnumerationType) : String

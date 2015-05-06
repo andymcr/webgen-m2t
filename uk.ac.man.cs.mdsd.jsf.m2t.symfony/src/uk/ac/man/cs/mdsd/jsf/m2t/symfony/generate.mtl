@@ -11,10 +11,14 @@
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::config::config/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::config::configDev/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::config::configProd/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::config::services/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::config::configTest/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::config::parameters/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::config::parametersDist/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::controllers::pageController/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::services::service/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::views::dataUnit/]
+[import uk::ac::man::cs::mdsd::jsf::m2t::symfony::views::page/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::views::site/]
 [import uk::ac::man::cs::mdsd::jsf::m2t::symfony::types::formType/]
 
@@ -26,6 +30,9 @@
 [jsfModel.generateConfigDev()/]
 [jsfModel.generateConfigProd()/]
 [jsfModel.generateConfigTest()/]
+[jsfModel.generateConfigServices()/]
+
+[jsfModel.servicesWithSelections().generateService()/]
 
 [jsfModel.generateAppBundle()/]
 [jsfModel.services.generateFormType()/]
@@ -36,4 +43,6 @@
 [jsfModel.generatePrintCSS()/]
 [jsfModel.generateCustomCSS()/]
 [jsfModel.generatePage()/]
+[jsfModel.pages.generatePage()/]
+[jsfModel.pages.units.generateUnitView()/]
 [/template]
