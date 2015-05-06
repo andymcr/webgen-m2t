@@ -19,29 +19,36 @@ use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 
 /**
- * @ORM/Entity
- * @ORM/Table(name="[service.tableName()/]")
+ * @ORM\Entity
+ * @ORM\Table(name="[if (service.view)][service.viewName/][else][service.tableName()/][/if]")
  **/
 class [service.modelClassName()/]
 {
 	/**
-	 * @ORM/Id
-	 * @ORM/Column(type="integer")
-	 * @ORM/GeneratedValue
+	 * @ORM\Id
+	 * @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue
 	 **/
 	protected $[service.keyName()/];
 
 [for (feature : ServiceFeature | service.features)]
 	/**
 	[if (feature.oclIsKindOf(ServiceEntityElement))]
-	 * @ORM/Column(type="[feature.oclAsType(ServiceEntityElement).feature.persistentType/]")
+	 * @ORM\Column(type="[feature.oclAsType(ServiceEntityElement).feature.ormType/]")
 	[elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
 	[let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)]
 	[let attribute : Association = association.feature]
-	 * @ORM/[if (attribute.oclIsTypeOf(SingletonAssociation))]
-[attribute.oclAsType(SingletonAssociation).associationRelationship/][else]
-[attribute.oclAsType(CollectionAssociation).associationRelationship/][/if]
-(targetEntity="[association.oppositeService.modelName/]", inversedBy="[feature.oppositeColumnName()/]")
+		[if (attribute.oclIsTypeOf(SingletonAssociation))]
+		[let singleton : SingletonAssociation = attribute.oclAsType(SingletonAssociation)]
+	 * @ORM\[singleton.associationRelationship/](targetEntity="[association.oppositeService.modelName/]")
+		[if (association.isOwningEnd())]
+     * @ORM\JoinColumn(name="[association.columnName()/]", referencedColumnName="[association.oppositeService.keyName()/]"))
+		[/if]
+		[/let]
+		[else]
+		[let collection : CollectionAssociation = attribute.oclAsType(CollectionAssociation)]
+		[/let]
+		[/if]
 	[/let]
 	[/let]
 	[/if]

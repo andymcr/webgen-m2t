@@ -372,8 +372,8 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	public function [selection.instanceName()/]([if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 	{
 	[for (association : ServiceAssociation | selection.joins)]
-		$this->join('')->on([if (association.isDependentEnd())]
-'[association.columnName()/]'[else]'id'[/if], '=', [if (association.isDependentEnd())]
+		$this->join('')->on([if (association.isOwningEnd())]
+'[association.columnName()/]'[else]'id'[/if], '=', [if (association.isOwningEnd())]
 'b'[else]'id'[/if]);
 	[/for]
 	[if (not selection.filter.oclIsUndefined())]

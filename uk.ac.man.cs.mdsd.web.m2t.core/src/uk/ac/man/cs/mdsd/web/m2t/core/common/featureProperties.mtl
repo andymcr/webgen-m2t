@@ -22,6 +22,10 @@
 	= model.pages->collect(p | p.units)->select(e | e.oclIsTypeOf(CommandUnit))->notEmpty()
 /]
 
+[query public hasServicesWithSelections(model : JsfModel) : Boolean
+	= model.servicesWithSelections()->notEmpty()
+/]
+
 [query public homePage(model : JsfModel) : Page
 	= let topPage : Page
 			= if model.topMenuItemsNonAuthenticated()->notEmpty() then
@@ -61,6 +65,10 @@
 
 [query public modelManyToManyAssociations(model : OrmModel) : Sequence(CollectionAssociation)
 	= model.modelAssociations()->select(f | f.isManyToManyAssociationXX())
+/]
+
+[query public servicesWithSelections(model : JsfModel) : Sequence(Service)
+	= model.services->select(s | s.selections->notEmpty()).oclAsType(Service)
 /]
 
 [query public topMenuItemsAuthenticated(model : JsfModel) : Sequence(Page)
@@ -120,7 +128,7 @@
 [query public dependentSingletonAssociations(service : Service) : Sequence(ServiceAssociation)
 	= service.associations()->select(a | 
 		if a.isOneToOneAssociation() then
-			a.oclAsType(ServiceAssociation).isDependentEnd()
+			a.oclAsType(ServiceAssociation).isOwningEnd()
 		else
 			a.isOneToManyAssociation()
 		endif)
@@ -208,7 +216,7 @@
 [query public independentSingletonAssociations(service : Service) : Sequence(ServiceAssociation)
 	= service.associations()->select(a | 
 		if a.isOneToOneAssociation() then
-			not a.oclAsType(ServiceAssociation).isDependentEnd()
+			not a.oclAsType(ServiceAssociation).isOwningEnd()
 		else
 			false
 		endif)
@@ -375,19 +383,6 @@
 		endif
 /]
 
-[query public isDependentEnd(feature : ServiceAssociation) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
-			let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)
-			in if association.cardinality = Cardinality::Many then
-					false
-				else
-					association.feature.oclAsType(SingletonAssociation).isDependentEnd()
-				endif
-		else
-			false
-		endif
-/]
-
 [query public isEncrypted(feature : ServiceFeature) : Boolean
 	= if feature.oclIsTypeOf(ServiceEntityElement) then
 			feature.oclAsType(ServiceEntityElement).encrypt
@@ -455,6 +450,19 @@
 [query public isOppositeSingletonAssociation(feature : ServiceAssociation) : Boolean
 	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
 			feature.oclAsType(ServiceEntityAssociation).feature.opposite.oclIsKindOf(SingletonAssociation)
+		else
+			false
+		endif
+/]
+
+[query public isOwningEnd(feature : ServiceAssociation) : Boolean
+	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
+			let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)
+			in if association.cardinality = Cardinality::Many then
+					false
+				else
+					association.feature.oclAsType(SingletonAssociation).isOwningEnd()
+				endif
 		else
 			false
 		endif
@@ -1342,7 +1350,7 @@
 		else if feature.oclIsTypeOf(SingletonAssociation) then
 			let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)
 			in if association.opposite.oclIsTypeOf(SingletonAssociation) then
-					association.isDependentEnd()
+					association.isOwningEnd()
 				else
 					true
 				endif
@@ -1371,7 +1379,7 @@
 	= feature.oclIsTypeOf(CollectionAssociation) and feature.opposite.oclIsTypeOf(CollectionAssociation)
 /]
 
-[query public isDependentEnd(feature : SingletonAssociation) : Boolean
+[query public isOwningEnd(feature : SingletonAssociation) : Boolean
 	= if not feature.opposite.oclIsTypeOf(SingletonAssociation) then
 			true
 		else
