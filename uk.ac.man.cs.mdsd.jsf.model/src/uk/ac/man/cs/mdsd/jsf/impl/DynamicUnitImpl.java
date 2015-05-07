@@ -246,11 +246,33 @@ public abstract class DynamicUnitImpl extends ContentUnitImpl implements Dynamic
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setService(Service newService) {
+	public NotificationChain basicSetService(Service newService, NotificationChain msgs) {
 		Service oldService = service;
 		service = newService;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.DYNAMIC_UNIT__SERVICE, oldService, service));
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, JsfPackage.DYNAMIC_UNIT__SERVICE, oldService, newService);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setService(Service newService) {
+		if (newService != service) {
+			NotificationChain msgs = null;
+			if (service != null)
+				msgs = ((InternalEObject)service).eInverseRemove(this, JsfPackage.SERVICE__ACCESSED_BY, Service.class, msgs);
+			if (newService != null)
+				msgs = ((InternalEObject)newService).eInverseAdd(this, JsfPackage.SERVICE__ACCESSED_BY, Service.class, msgs);
+			msgs = basicSetService(newService, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, JsfPackage.DYNAMIC_UNIT__SERVICE, newService, newService));
 	}
 
 	/**
@@ -412,6 +434,10 @@ public abstract class DynamicUnitImpl extends ContentUnitImpl implements Dynamic
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case JsfPackage.DYNAMIC_UNIT__SERVICE:
+				if (service != null)
+					msgs = ((InternalEObject)service).eInverseRemove(this, JsfPackage.SERVICE__ACCESSED_BY, Service.class, msgs);
+				return basicSetService((Service)otherEnd, msgs);
 			case JsfPackage.DYNAMIC_UNIT__DISPLAY_FIELDS:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDisplayFields()).basicAdd(otherEnd, msgs);
 		}
@@ -426,6 +452,8 @@ public abstract class DynamicUnitImpl extends ContentUnitImpl implements Dynamic
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case JsfPackage.DYNAMIC_UNIT__SERVICE:
+				return basicSetService(null, msgs);
 			case JsfPackage.DYNAMIC_UNIT__DISPLAY_FIELDS:
 				return ((InternalEList<?>)getDisplayFields()).basicRemove(otherEnd, msgs);
 			case JsfPackage.DYNAMIC_UNIT__SUPPORT_ACTIONS:

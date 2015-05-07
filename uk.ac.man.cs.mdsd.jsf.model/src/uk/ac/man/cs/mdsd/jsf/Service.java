@@ -88,7 +88,8 @@ public interface Service extends NamedElement {
 
 	/**
 	 * Returns the value of the '<em><b>Accessed By</b></em>' reference list.
-	 * The list contents are of type {@link uk.ac.man.cs.mdsd.jsf.ContentUnit}.
+	 * The list contents are of type {@link uk.ac.man.cs.mdsd.jsf.DynamicUnit}.
+	 * It is bidirectional and its opposite is '{@link uk.ac.man.cs.mdsd.jsf.DynamicUnit#getService <em>Service</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Accessed By</em>' reference list isn't clear,
@@ -97,10 +98,11 @@ public interface Service extends NamedElement {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Accessed By</em>' reference list.
 	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getService_AccessedBy()
-	 * @model
+	 * @see uk.ac.man.cs.mdsd.jsf.DynamicUnit#getService
+	 * @model opposite="service"
 	 * @generated
 	 */
-	EList<ContentUnit> getAccessedBy();
+	EList<DynamicUnit> getAccessedBy();
 
 	/**
 	 * Returns the value of the '<em><b>Daos Used</b></em>' reference list.

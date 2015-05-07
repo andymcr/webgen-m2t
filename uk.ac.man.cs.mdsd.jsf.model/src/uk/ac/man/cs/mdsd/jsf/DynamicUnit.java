@@ -31,6 +31,7 @@ import org.eclipse.emf.common.util.EList;
 public interface DynamicUnit extends ContentUnit {
 	/**
 	 * Returns the value of the '<em><b>Service</b></em>' reference.
+	 * It is bidirectional and its opposite is '{@link uk.ac.man.cs.mdsd.jsf.Service#getAccessedBy <em>Accessed By</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Service</em>' reference isn't clear,
@@ -40,7 +41,8 @@ public interface DynamicUnit extends ContentUnit {
 	 * @return the value of the '<em>Service</em>' reference.
 	 * @see #setService(Service)
 	 * @see uk.ac.man.cs.mdsd.jsf.JsfPackage#getDynamicUnit_Service()
-	 * @model required="true" ordered="false"
+	 * @see uk.ac.man.cs.mdsd.jsf.Service#getAccessedBy
+	 * @model opposite="accessedBy" required="true" ordered="false"
 	 * @generated
 	 */
 	Service getService();

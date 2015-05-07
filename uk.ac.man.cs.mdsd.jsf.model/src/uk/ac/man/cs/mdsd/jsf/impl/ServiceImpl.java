@@ -21,8 +21,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
+import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import uk.ac.man.cs.mdsd.jsf.ContentUnit;
+import uk.ac.man.cs.mdsd.jsf.DynamicUnit;
 import uk.ac.man.cs.mdsd.jsf.JsfPackage;
 import uk.ac.man.cs.mdsd.jsf.ModelLabel;
 import uk.ac.man.cs.mdsd.jsf.Selection;
@@ -172,7 +174,7 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ContentUnit> accessedBy;
+	protected EList<DynamicUnit> accessedBy;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -234,9 +236,9 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<ContentUnit> getAccessedBy() {
+	public EList<DynamicUnit> getAccessedBy() {
 		if (accessedBy == null) {
-			accessedBy = new EObjectResolvingEList<ContentUnit>(ContentUnit.class, this, JsfPackage.SERVICE__ACCESSED_BY);
+			accessedBy = new EObjectWithInverseResolvingEList<DynamicUnit>(DynamicUnit.class, this, JsfPackage.SERVICE__ACCESSED_BY, JsfPackage.DYNAMIC_UNIT__SERVICE);
 		}
 		return accessedBy;
 	}
@@ -254,6 +256,8 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDisplayLabels()).basicAdd(otherEnd, msgs);
 			case JsfPackage.SERVICE__FEATURES:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getFeatures()).basicAdd(otherEnd, msgs);
+			case JsfPackage.SERVICE__ACCESSED_BY:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getAccessedBy()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -359,6 +363,8 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 				return ((InternalEList<?>)getSelections()).basicRemove(otherEnd, msgs);
 			case JsfPackage.SERVICE__FEATURES:
 				return ((InternalEList<?>)getFeatures()).basicRemove(otherEnd, msgs);
+			case JsfPackage.SERVICE__ACCESSED_BY:
+				return ((InternalEList<?>)getAccessedBy()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -433,7 +439,7 @@ public class ServiceImpl extends NamedElementImpl implements Service {
 				return;
 			case JsfPackage.SERVICE__ACCESSED_BY:
 				getAccessedBy().clear();
-				getAccessedBy().addAll((Collection<? extends ContentUnit>)newValue);
+				getAccessedBy().addAll((Collection<? extends DynamicUnit>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

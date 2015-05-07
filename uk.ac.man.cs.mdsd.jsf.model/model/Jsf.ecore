@@ -138,7 +138,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
         eType="#//ServiceFeature" containment="true" eOpposite="#//ServiceFeature/includedBy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="accessedBy" upperBound="-1"
-        eType="#//ContentUnit"/>
+        eType="#//DynamicUnit" eOpposite="#//DynamicUnit/service"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ModelLabel" eSuperTypes="../../uk.ac.man.cs.mdsd.orm.model/model/orm.ecore#//NamedElement #//UnitTitle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="labelFor" ordered="false"
@@ -319,7 +319,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DynamicUnit" abstract="true" eSuperTypes="#//ContentUnit">
     <eStructuralFeatures xsi:type="ecore:EReference" name="service" ordered="false"
-        lowerBound="1" eType="#//Service"/>
+        lowerBound="1" eType="#//Service" eOpposite="#//Service/accessedBy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="displayFields" upperBound="-1"
         eType="#//UnitField" containment="true" eOpposite="#//UnitField/displayedOn"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="supportActions" upperBound="-1"
