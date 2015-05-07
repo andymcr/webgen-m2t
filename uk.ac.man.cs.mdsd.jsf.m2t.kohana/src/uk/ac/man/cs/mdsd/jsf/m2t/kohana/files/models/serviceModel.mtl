@@ -44,7 +44,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 			separator (',')]
 		'[feature.modelPropertyName()/]' => array(
 			'model' => '[feature.oppositeService.modelName/]',
-			'foreign_key' => '[feature.columnName()/]'
+			'foreign_key' => '[feature.oppositeColumnName()/]'
 		)
 	[/for]
 	);
@@ -314,8 +314,8 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 		if ($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
 			return;
 
-		if (!empty($this->[resource.columnName()/])) 
-			unlink($this->[resource.columnName()/]);
+		if (!empty($this->[resource.columnName/])) 
+			unlink($this->[resource.columnName/]);
 		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
 		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (resource.uploadsWithinWebsite)]

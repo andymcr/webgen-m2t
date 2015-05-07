@@ -41,12 +41,16 @@ class [service.modelClassName()/]
 		[if (attribute.oclIsTypeOf(SingletonAssociation))]
 		[let singleton : SingletonAssociation = attribute.oclAsType(SingletonAssociation)]
 	 * @ORM\[singleton.associationRelationship/](targetEntity="[association.oppositeService.modelName/]")
-		[if (association.isOwningEnd())]
-     * @ORM\JoinColumn(name="[association.columnName()/]", referencedColumnName="[association.oppositeService.keyName()/]"))
+		[if (singleton.owningEnd)]
+     * @ORM\JoinColumn(name="[association.columnName()/]", referencedColumnName="[association.oppositeService.keyName()/]")
 		[/if]
 		[/let]
 		[else]
 		[let collection : CollectionAssociation = attribute.oclAsType(CollectionAssociation)]
+	 * @ORM\[collection.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany)], mappedBy="[association.oppositeColumnName()/]"[/if])
+		[if (association.isOwningEnd())]
+     * @ORM\JoinTable(name="[association.columnName()/]")
+		[/if]
 		[/let]
 		[/if]
 	[/let]
@@ -313,7 +317,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 [/let]
 [/for]
 [if (service.hasInputCollectionAssociations() or service.hasResourceAttributes())]
-	public function save(Validation $validation = NULL)
+/*	public function save(Validation $validation = NULL)
 	{
 [for (feature : ServiceEntityFeature | service.resourceAttributes())]
 		$this->_save_[feature.modelPropertyName()/]();
@@ -346,7 +350,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	[/for]
 [/if]
 	}
-
+*/
 [/if]
 [if (if authentication.oclIsUndefined() then false else authentication.oclIsTypeOf(LocalAuthenticationSystem) endif)]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]

@@ -457,12 +457,7 @@
 
 [query public isOwningEnd(feature : ServiceAssociation) : Boolean
 	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
-			let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)
-			in if association.cardinality = Cardinality::Many then
-					false
-				else
-					association.feature.oclAsType(SingletonAssociation).isOwningEnd()
-				endif
+			feature.oclAsType(ServiceEntityAssociation).feature.owningEnd
 		else
 			false
 		endif
@@ -1328,7 +1323,7 @@
 /]
 
 
-[query public columnName(feature : Feature) : String
+[query public columnNameX(feature : Feature) : String
 	= if feature.oclIsKindOf(Attribute) then
 			feature.oclAsType(Attribute).columnName
 		else if feature.oclIsKindOf(SingletonAssociation) then
@@ -1348,12 +1343,7 @@
 	= if feature.oclIsKindOf(SingletonAttribute) then
 			true
 		else if feature.oclIsTypeOf(SingletonAssociation) then
-			let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)
-			in if association.opposite.oclIsTypeOf(SingletonAssociation) then
-					association.isOwningEnd()
-				else
-					true
-				endif
+			feature.oclAsType(SingletonAssociation).owningEnd
 		else
 			false
 		endif endif
@@ -1379,16 +1369,6 @@
 	= feature.oclIsTypeOf(CollectionAssociation) and feature.opposite.oclIsTypeOf(CollectionAssociation)
 /]
 
-[query public isOwningEnd(feature : SingletonAssociation) : Boolean
-	= if not feature.opposite.oclIsTypeOf(SingletonAssociation) then
-			true
-		else
-			feature.sourceEnd and feature.required
-			or feature.sourceEnd and not feature.opposite.oclAsType(SingletonAssociation).required
-			or not feature.sourceEnd and not feature.opposite.oclAsType(SingletonAssociation).required
-		endif
-/]
-
 
 [query public isInput(ormFeature : Feature) : Boolean
 	= if ormFeature.inputField.oclIsUndefined() then
@@ -1400,20 +1380,12 @@
 
 [query public oppositeColumnName(feature : Association) : String
 	= if feature.oclIsTypeOf(SingletonAssociation) then
-			feature.oclAsType(SingletonAssociation).oppositeColumnName()
+			feature.oclAsType(SingletonAssociation).opposite.columnName
 		else if feature.oclIsTypeOf(CollectionAssociation) then
-			feature.oclAsType(CollectionAssociation).oppositeColumnName()
+			feature.oclAsType(CollectionAssociation).opposite.columnName
 		else
 			'Unhandled Association'
 		endif endif
-/]
-
-[query public oppositeColumnName(feature : CollectionAssociation) : String
-	= feature.opposite.columnName()
-/]
-
-[query public oppositeColumnName(feature : SingletonAssociation) : String
-	= feature.opposite.columnName()
 /]
 
 
