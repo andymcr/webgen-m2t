@@ -70,8 +70,10 @@ class [service.modelClassName()/]
 		[if (feature.hasForcedValue())]
 		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedFeature).forcedValue.generateCriteria()/];
 		[/if]
-		[if (feature.isCollectionAssociation())]
+		[if (feature.oclIsTypeOf(ServiceAssociation))]
+			[if (feature.oclAsType(ServiceAssociation).isOwningEnd())]
 		$this->[feature.modelPropertyName()/] = new ArrayCollection();
+			[/if]
 		[/if]
 	[/for]
 	}
@@ -327,7 +329,7 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
 
 		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
-		[if (association.isManyToManyAssociation())]
+		[if (not association.feature.opposite.isSingleton())]
 			if ($change['['/]'op'[']'/] == 'add')
 				$this->add('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
 			else

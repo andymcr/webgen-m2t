@@ -26,9 +26,9 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	protected $_primary_key = '[service.keyName()/]';
 
 [/if]
-[if (service.hasDependentSingletonAssociations())]
+[if (service.hasOwnedSingletonAssociations())]
 	protected $_belongs_to = array(
-	[for (feature : ServiceAssociation | service.dependentSingletonAssociations())
+	[for (feature : ServiceAssociation | service.ownedSingletonAssociations())
 			separator (',')]
 		'[feature.modelPropertyName()/]' => array(
 			'model' => '[feature.oppositeService.modelName/]',
@@ -38,9 +38,9 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	);
 
 [/if]
-[if (service.hasIndependentSingletonAssociations())]
+[if (service.hasInverseSingletonAssociations())]
 	protected $_has_one = array(
-	[for (feature : ServiceAssociation | service.independentSingletonAssociations())
+	[for (feature : ServiceAssociation | service.inverseSingletonAssociations())
 			separator (',')]
 		'[feature.modelPropertyName()/]' => array(
 			'model' => '[feature.oppositeService.modelName/]',
@@ -56,8 +56,8 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 			separator (',')]
 		'[feature.modelPropertyName()/]' => array(
 			'model' => '[feature.oppositeService.modelName/]',
-		[if (feature.isManyToManyAssociation())]
-			[if (feature.oclIsTypeOf(ServiceEntityAssociation))]
+		[if (feature.oclIsTypeOf(ServiceEntityAssociation))]
+			[if (not feature.oclAsType(ServiceEntityAssociation).feature.opposite.isSingleton())]
 			'through' => '[feature.oclAsType(ServiceEntityAssociation).feature.pivotTableName/]',
 			'far_key' => '[feature.columnName()/]',
 			[/if]
@@ -343,7 +343,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
 
 		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
-		[if (association.isManyToManyAssociation())]
+		[if (not association.feature.opposite.isSingleton())]
 			if ($change['['/]'op'[']'/] == 'add')
 				$this->add('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
 			else
