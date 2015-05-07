@@ -62,7 +62,7 @@ public class AssociationItemProvider
 			super.getPropertyDescriptors(object);
 
 			addOppositePropertyDescriptor(object);
-			addSourceEndPropertyDescriptor(object);
+			addOwningEndPropertyDescriptor(object);
 			addBidirectionalPropertyDescriptor(object);
 			addContainmentPropertyDescriptor(object);
 			addPivotTableNamePropertyDescriptor(object);
@@ -93,19 +93,19 @@ public class AssociationItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Source End feature.
+	 * This adds a property descriptor for the Owning End feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addSourceEndPropertyDescriptor(Object object) {
+	protected void addOwningEndPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Association_sourceEnd_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Association_sourceEnd_feature", "_UI_Association_type"),
-				 OrmPackage.Literals.ASSOCIATION__SOURCE_END,
+				 getString("_UI_Association_owningEnd_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Association_owningEnd_feature", "_UI_Association_type"),
+				 OrmPackage.Literals.ASSOCIATION__OWNING_END,
 				 true,
 				 false,
 				 false,
@@ -206,7 +206,7 @@ public class AssociationItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Association.class)) {
-			case OrmPackage.ASSOCIATION__SOURCE_END:
+			case OrmPackage.ASSOCIATION__OWNING_END:
 			case OrmPackage.ASSOCIATION__BIDIRECTIONAL:
 			case OrmPackage.ASSOCIATION__CONTAINMENT:
 			case OrmPackage.ASSOCIATION__PIVOT_TABLE_NAME:
