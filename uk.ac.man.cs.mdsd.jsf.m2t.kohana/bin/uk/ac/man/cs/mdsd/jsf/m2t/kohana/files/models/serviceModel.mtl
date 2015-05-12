@@ -26,9 +26,9 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	protected $_primary_key = '[service.keyName()/]';
 
 [/if]
-[if (service.hasDependentSingletonAssociations())]
+[if (service.hasOwnedSingletonAssociations())]
 	protected $_belongs_to = array(
-	[for (feature : ServiceAssociation | service.dependentSingletonAssociations())
+	[for (feature : ServiceAssociation | service.ownedSingletonAssociations())
 			separator (',')]
 		'[feature.modelPropertyName()/]' => array(
 			'model' => '[feature.oppositeService.modelName/]',
@@ -38,13 +38,13 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	);
 
 [/if]
-[if (service.hasIndependentSingletonAssociations())]
+[if (service.hasInverseSingletonAssociations())]
 	protected $_has_one = array(
-	[for (feature : ServiceAssociation | service.independentSingletonAssociations())
+	[for (feature : ServiceAssociation | service.inverseSingletonAssociations())
 			separator (',')]
 		'[feature.modelPropertyName()/]' => array(
 			'model' => '[feature.oppositeService.modelName/]',
-			'foreign_key' => '[feature.columnName()/]'
+			'foreign_key' => '[feature.oppositeColumnName()/]'
 		)
 	[/for]
 	);
@@ -56,8 +56,8 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 			separator (',')]
 		'[feature.modelPropertyName()/]' => array(
 			'model' => '[feature.oppositeService.modelName/]',
-		[if (feature.isManyToManyAssociation())]
-			[if (feature.oclIsTypeOf(ServiceEntityAssociation))]
+		[if (feature.oclIsTypeOf(ServiceEntityAssociation))]
+			[if (not feature.oclAsType(ServiceEntityAssociation).feature.opposite.isSingleton())]
 			'through' => '[feature.oclAsType(ServiceEntityAssociation).feature.pivotTableName/]',
 			'far_key' => '[feature.columnName()/]',
 			[/if]
@@ -237,47 +237,73 @@ $this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssoc
 
 [/let]
 [/if]
-[if (service.hasInputCollectionAssociations())]
-	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
+[if (service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
+	[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 	protected $_[association.modelPropertyName()/]_changes = array();
 	[/for]
+[/if]
+[if (service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
 
 	public function values(array $values, array $expected = NULL)
 	{
 		parent::values($values, array_diff($expected, array([for
-(feature : ServiceEntityFeature | service.inputCollectionAssociations())
+(feature : ServiceEntityFeature | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))
 separator (', ')]'[feature.modelPropertyName()/]'[/for])));
-[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
+[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 
-		if (in_array('[association.modelPropertyName()/]', $expected))
+		$this->_[association.modelPropertyName()/]_changes = array();
+		if (in_array('[association.modelPropertyName()/]', $expected)
+				&& array_key_exists('[association.modelPropertyName()/]', $values))
 		{
+	[if (association.isSingleton())]
+			if ($this->loaded() && $this->[association.modelPropertyName()/]->loaded())
+			{
+				if ($values['['/]'[association.modelPropertyName()/]'[']'/] != $this->[association.modelPropertyName()/]->id)
+				{
+					$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+						'op' => 'remove',
+						'id' => $this->[association.modelPropertyName()/]->id,
+					);
+					if (!empty($values['['/]'[association.modelPropertyName()/]'[']'/]))
+						$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+							'op' => 'set',
+							'id' => $values['['/]'[association.modelPropertyName()/]'[']'/],
+						);
+				}
+			}
+			else
+				if (!empty($values['['/]'[association.modelPropertyName()/]'[']'/]))
+					$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+						'op' => 'set',
+						'id' => $values['['/]'[association.modelPropertyName()/]'[']'/],
+					);
+	[else]
 			$current = array();
 			foreach ($this->[association.modelPropertyName()/]_as_array() AS $value)
 				$current['['/][']'/] = $value->id;
-			if (array_key_exists('[association.modelPropertyName()/]', $values))
-				foreach ($values['['/]'[association.modelPropertyName()/]'[']'/] AS $selected)
-				{
-					$key = array_search($selected, $current);
-					if ($key !== FALSE)
-						unset($current['['/]$key[']'/]);
-					else
-						$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-							'op' => 'add',
-							'value' => $selected
-						);
-				}
+			foreach ($values['['/]'[association.modelPropertyName()/]'[']'/] AS $selected)
+			{
+				$key = array_search($selected, $current);
+				if ($key !== FALSE)
+					unset($current['['/]$key[']'/]);
+				else
+					$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+						'op' => 'add',
+						'id' => $selected,
+					);
+			}
 			foreach ($current AS $removed)
 				$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
 					'op' => 'remove',
-					'value' => $removed
+					'id' => $removed,
 				);
+	[/if]
 		}
 [/for]
 	}
 
 [/if]
-[if (service.hasInputCollectionAssociations())]
-[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
+[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton()))]
 	public function [association.modelPropertyName()/]_as_array()
 	{
 		if (!$this->loaded())
@@ -290,7 +316,6 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	}
 
 [/for]
-[/if]
 [for (feature : ServiceEntityFeature | service.resourceAttributes())]
 [let resource : SingletonResource = feature.oclAsType(ServiceEntityElement).feature.oclAsType(SingletonResource)]
 	private function _save_[feature.modelPropertyName()/]()
@@ -314,8 +339,8 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 		if ($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
 			return;
 
-		if (!empty($this->[resource.columnName()/])) 
-			unlink($this->[resource.columnName()/]);
+		if (!empty($this->[resource.columnName/])) 
+			unlink($this->[resource.columnName/]);
 		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
 		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (resource.uploadsWithinWebsite)]
@@ -328,39 +353,46 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 
 [/let]
 [/for]
-[if (service.hasInputCollectionAssociations() or service.hasResourceAttributes())]
+[if (service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or service.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
 	{
-[for (feature : ServiceEntityFeature | service.resourceAttributes())]
-		$this->_save_[feature.modelPropertyName()/]();
-[/for]
+[if (service.hasResourceAttributes())]
+		if (!empty($_FILES))
+	[if (service.resourceAttributes()->size() > 1)]
+		{
+	[/if]
+	[for (feature : ServiceEntityFeature | service.resourceAttributes())]
+			$this->_save_[feature.modelPropertyName()/]();
+	[/for]
+	[if (service.resourceAttributes()->size() > 1)]
+		}
+	[/if]
+[/if]
 		parent::save($validation);
-[if (service.hasInputCollectionAssociations())]
-	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
+[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 
 		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
-		[if (association.isManyToManyAssociation())]
+	[if (not association.feature.opposite.isSingleton())]
 			if ($change['['/]'op'[']'/] == 'add')
-				$this->add('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
+				$this->add('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
 			else
-				$this->remove('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
-		[else]
+				$this->remove('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
+	[else]
 		{
-			$opposite = ORM::factory('[association.oppositeService.modelName/]', $change['['/]'value'[']'/]);
+			$opposite = ORM::factory('[association.oppositeService.modelName/]', $change['['/]'id'[']'/]);
 			if (!$opposite->loaded())
-				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'value'[']'/]));
+				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'id'[']'/]));
 			else
 			{
-				if ($change['['/]'op'[']'/] == 'add')
+				if (($change['['/]'op'[']'/] == 'add') || ($change['['/]'op'[']'/] == 'set'))
 					$opposite->[association.oppositeColumnName()/] = $this->id;
 				else
 					$opposite->[association.oppositeColumnName()/] = NULL;
 				$opposite->save();
 			}
 		}
-		[/if]
-	[/for]
-[/if]
+	[/if]
+[/for]
 	}
 
 [/if]
@@ -368,8 +400,8 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	public function [selection.instanceName()/]([if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 	{
 	[for (association : ServiceAssociation | selection.joins)]
-		$this->join('')->on([if (association.isDependentEnd())]
-'[association.columnName()/]'[else]'id'[/if], '=', [if (association.isDependentEnd())]
+		$this->join('')->on([if (association.isOwningEnd())]
+'[association.columnName()/]'[else]'id'[/if], '=', [if (association.isOwningEnd())]
 'b'[else]'id'[/if]);
 	[/for]
 	[if (not selection.filter.oclIsUndefined())]

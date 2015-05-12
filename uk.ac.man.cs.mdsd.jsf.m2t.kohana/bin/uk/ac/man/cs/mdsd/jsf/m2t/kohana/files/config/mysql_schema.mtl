@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `[entity.tableName/]` (
 
 [/for]
 
-[for (association : CollectionAssociation | model.persistence.modelManyToManyAssociations()->select(a | a.sourceEnd))]
+[for (association : CollectionAssociation | model.persistence.modelManyToManyAssociations()->select(a | a.owningEnd))]
 CREATE TABLE IF NOT EXISTS `[association.pivotTableName/]` (
 	`[association.columnName/]` INT(11) NOT NULL,
 	`[association.opposite.oclAsType(CollectionAssociation).columnName/]` INT(11) NOT NULL
