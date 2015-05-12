@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.profiler;bundle-version="3.3.0",
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  com.google.guava,
- uk.ac.man.cs.mdsd.web.m2t.core
+ uk.ac.man.cs.mdsd.web.m2t.core,
+ uk.ac.man.cs..mdsd.criteria.m2t
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
