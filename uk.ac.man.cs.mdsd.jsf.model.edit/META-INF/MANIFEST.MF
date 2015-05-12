@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: uk.ac.man.cs.mdsd.jsf.model.edit;singleton:=true
+Bundle-SymbolicName: uk.ac.man.cs.mdsd.waf.model.edit;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: uk.ac.man.cs.mdsd.jsf.provider.JsfEditPlugin$Implementation
@@ -10,7 +10,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: uk.ac.man.cs.mdsd.jsf.provider
 Require-Bundle: org.eclipse.core.runtime,
- uk.ac.man.cs.mdsd.jsf.model;visibility:=reexport,
+ uk.ac.man.cs.mdsd.waf.model;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  uk.ac.man.cs.mdsd.criteria.model;visibility:=reexport,
  uk.ac.man.cs.mdsd.criteria.model.edit;visibility:=reexport,
