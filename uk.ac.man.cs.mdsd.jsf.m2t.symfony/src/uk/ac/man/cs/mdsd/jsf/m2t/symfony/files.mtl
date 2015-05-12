@@ -27,6 +27,10 @@
 	= eObject.appBundleDirectory().concat('/').concat('Controller')
 /]
 
+[query public cssDirectory(eObject : EObject) : String
+	= eObject.webDirectory().concat('/css')
+/]
+
 [query public formDirectory(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/').concat('Form')
 /]

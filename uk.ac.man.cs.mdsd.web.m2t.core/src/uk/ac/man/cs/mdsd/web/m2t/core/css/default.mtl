@@ -1,11 +1,10 @@
 [comment encoding = UTF-8 /]
-[module defaultCSS(
+[module default(
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
 
 
-[template public generateDefaultCSS(jsfModel : JsfModel)]
-[file (jsfModel.cssDirectory().concat('/').concat('default.css'), false)]
+[template public generateDefaultCSS(model : JsfModel, cssDirectory : String)]
+[file (cssDirectory.concat('/').concat('default.css'), false)]
 * {
 	margin: 0;
 	padding: 0;

@@ -1,0 +1,14 @@
+[comment encoding = UTF-8 /]
+[module custom(
+	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+
+
+[template public generateCustomCSS(model : JsfModel, cssDirectory : String)]
+[file (cssDirectory.concat('/').concat('custom.css'), false)]
+/* [protected ('css.custom')]
+ */
+/* [/protected]
+ */
+[/file]
+[/template]
+

@@ -52,6 +52,10 @@
 	= eObject.applicationDirectory().concat('/').concat('core')
 /]
 
+[query public cssDirectory(eObject : EObject) : String
+	= '/css'
+/]
+
 [query public emailClassesDirectory(eObject : EObject) : String
 	= eObject.emailModuleDirectory().concat('/').concat('classes')
 /]

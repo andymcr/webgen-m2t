@@ -1,11 +1,10 @@
 [comment encoding = UTF-8 /]
-[module nonPrintCSS(
+[module nonPrint(
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
 
 
-[template public generateNonPrintCSS(jsfModel : JsfModel)]
-[file (jsfModel.cssDirectory().concat('/').concat('non-print.css'), false)]
+[template public generateNonPrintCSS(model : JsfModel, cssDirectory : String)]
+[file (cssDirectory.concat('/').concat('non-print.css'), false)]
 @media only screen and (max-width: 60em) {
 	#page {
 		width: 100%;
@@ -56,66 +55,66 @@
 	background-color: SteelBlue;
 }
 
-[if (not jsfModel.topNavigationId.oclIsUndefined())]
-#[jsfModel.topNavigationId/] {
+[if (not model.topNavigationId.oclIsUndefined())]
+#[model.topNavigationId/] {
 	width: 100%;
 	padding: 0.5em 0em 0.5em 0em;
 	color: white;
 	background-color: SteelBlue;
 }
 
-#[jsfModel.topNavigationId/] ul {
+#[model.topNavigationId/] ul {
 	list-style: none;
 	overflow: auto;
 }
 
-#[jsfModel.topNavigationId/] ul li {
+#[model.topNavigationId/] ul li {
 	display: inline-block;
 	float: left;
 	text-align: center;
 }
 
 @media only screen and (min-width: 60em) {
-	#[jsfModel.topNavigationId/] ul li {
+	#[model.topNavigationId/] ul li {
 		width: 10%;
 	}
 }
 
 @media only screen and (min-width: 40em) and (max-width: 60em) {
-	#[jsfModel.topNavigationId/] ul li {
+	#[model.topNavigationId/] ul li {
 		width: 15%;
 	}
 }
 
 @media only screen and (min-width: 30em) and (max-width: 40em) {
-	#[jsfModel.topNavigationId/] ul li {
+	#[model.topNavigationId/] ul li {
 		width: 25%;
 	}
 }
 
 @media only screen and (min-width: 20em) and (max-width: 30em) {
-	#[jsfModel.topNavigationId/] ul li {
+	#[model.topNavigationId/] ul li {
 		width: 33%;
 	}
 }
 
 @media only screen and (min-width: 10em) and (max-width: 20em) {
-	#[jsfModel.topNavigationId/] ul li {
+	#[model.topNavigationId/] ul li {
 		width: 50%;
 	}
 }
 
 
-#[jsfModel.topNavigationId/] a {
+#[model.topNavigationId/] a {
 	text-decoration: none;
 	color: white;
 }
 
-#[jsfModel.topNavigationId/] a:hover {
+#[model.topNavigationId/] a:hover {
 	font-weight: bold;
 }
 
-#[jsfModel.topNavigationId/] #authentication {
+#[model.topNavigationId/] #authentication {
 	width: 20%;
 	display: inline-block;
 	float: right;

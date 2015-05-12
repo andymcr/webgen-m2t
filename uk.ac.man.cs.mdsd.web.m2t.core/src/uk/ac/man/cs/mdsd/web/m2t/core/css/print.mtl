@@ -1,11 +1,10 @@
 [comment encoding = UTF-8 /]
-[module printCSS(
+[module print(
 	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
 
 
-[template public generatePrintCSS(jsfModel : JsfModel)]
-[file (jsfModel.cssDirectory().concat('/').concat('print.css'), false)]
+[template public generatePrintCSS(model : JsfModel, cssDirectory : String)]
+[file (cssDirectory.concat('/').concat('print.css'), false)]
 #page {
 	width: 52em;
 	margin-left: auto;

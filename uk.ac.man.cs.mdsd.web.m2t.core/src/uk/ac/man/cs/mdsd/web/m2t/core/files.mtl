@@ -21,12 +21,3 @@
 [query public xmlExtension(eObject : EObject) : String
 	= '.xml'
 /]
-
-
-[query public cssDirectory(eObject : EObject) : String
-	= eObject.webDirectory().concat('/css')
-/]
-
-[query public webDirectory(eObject : EObject) : String
-	= 'web'
-/]
