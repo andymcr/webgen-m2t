@@ -180,12 +180,12 @@
 	= service.inputAssociations()->notEmpty()
 /]
 
-[query public hasInputCollectionAssociations(service : Service) : Boolean
-	= service.inputCollectionAssociations()->notEmpty()
-/]
-
 [query public hasInputFeatures(service : Service) : Boolean
 	= service.inputFeatures()->notEmpty()
+/]
+
+[query public hasInputInverseAssociations(service : Service) : Boolean
+	= service.inputInverseAssociations()->notEmpty()
 /]
 
 [query public hasInverseSingletonAssociations(service : Service) : Boolean
@@ -206,15 +206,15 @@
 
 [query public inputAssociations(service : Service) : Sequence(ServiceEntityAssociation)
 	= service.associations()
-		->select(f | f.isInput() and f.oclIsTypeOf(ServiceEntityAssociation)).oclAsType(ServiceEntityAssociation)
-/]
-
-[query public inputCollectionAssociations(service : Service) : Sequence(ServiceEntityAssociation)
-	= service.inputAssociations()->select(f | not f.isSingleton())
+		->select(f | f.isInput() and f.oclIsTypeOf(ServiceEntityAssociation))
 /]
 
 [query public inputFeatures(service : Service) : Sequence(ServiceEntityFeature)
 	= service.features->select(f | f.isInput()).oclAsType(ServiceEntityFeature)
+/]
+
+[query public inputInverseAssociations(service : Service) : Sequence(ServiceEntityAssociation)
+	= service.inputAssociations()->select(f | not f.isOwningEnd())
 /]
 
 [query public inverseSingletonAssociations(service : Service) : Sequence(ServiceAssociation)
@@ -285,12 +285,13 @@
 	= if feature.oclIsKindOf(ServiceEntityFeature) then
 			if feature.oclIsTypeOf(ServiceEntityElement) then
 				feature.oclAsType(ServiceEntityElement).feature.columnName
-			else 
-				if feature.isSingleton() then
-					feature.oclAsType(ServiceEntityAssociation).feature.columnName
-				else
-					feature.oclAsType(ServiceEntityAssociation).name
-				endif
+			else let association : ServiceEntityAssociation
+				= feature.oclAsType(ServiceEntityAssociation)
+				in if association.isSingleton() and association.isOwningEnd() then
+						association.feature.columnName
+					else
+						association.modelPropertyName()
+					endif
 			endif
 		else
 			'unhandledFeature'
