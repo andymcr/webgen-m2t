@@ -18,7 +18,7 @@
         <acceleoCompiler 
             sourceFolder="${target.folder}"
             outputFolder="${target.folder}"
-            dependencies="${target.folder}/../../uk.ac.man.cs.mdsd.web.m2t.core;${target.folder}/../../uk.ac.man.cs.mdsd.orm.m2t.doctrine;${target.folder}/../../uk.ac.man.cs..mdsd.criteria.m2t;${target.folder}/../../uk.ac.man.cs.mdsd.jsf.m2t.symfony;"
+            dependencies="${target.folder}/../../uk.ac.man.cs.mdsd.web.m2t.core;${target.folder}/../../uk.ac.man.cs.mdsd.orm.m2t.doctrine;${target.folder}/../../uk.ac.man.cs..mdsd.criteria.m2t;${target.folder}/../../uk.ac.man.cs.mdsd.waf.m2t.kohana;${target.folder}/../../uk.ac.man.cs.mdsd.waf.m2t.symfony;"
             binaryResource="false"
             packagesToRegister="">
         </acceleoCompiler>

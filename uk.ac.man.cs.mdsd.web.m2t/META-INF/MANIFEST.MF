@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.google.guava,
  uk.ac.man.cs.mdsd.web.m2t.core,
  uk.ac.man.cs.mdsd.orm.m2t.doctrine,
- uk.ac.man.cs.mdsd.jsf.m2t.symfony
+ uk.ac.man.cs.mdsd.waf.m2t.kohana,
+ uk.ac.man.cs.mdsd.waf.m2t.symfony
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
