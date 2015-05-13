@@ -1,0 +1,37 @@
+[comment encoding = UTF-8 /]
+[module configProd(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+
+
+[template public generateConfigProd(model : WafModel)]
+[file (model.configBaseFilename().concat('_prod').concat(model.ymlExtension()), false)]
+# [model.configBaseFilename()/]_prod[model.ymlExtension()/]
+imports:
+    - { resource: config.yml }
+
+#framework:
+#    validation:
+#        cache: apc
+
+#doctrine:
+#    orm:
+#        metadata_cache_driver: apc
+#        result_cache_driver: apc
+#        query_cache_driver: apc
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
+[/file]
+[/template]

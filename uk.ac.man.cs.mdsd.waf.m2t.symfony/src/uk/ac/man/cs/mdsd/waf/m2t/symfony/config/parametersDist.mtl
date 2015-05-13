@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module parametersDist(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+
+
+[template public generateParametersDist(model : WafModel)]
+[file (model.configDirectory().concat('/').concat('parameters').concat(model.ymlExtension()).concat('.dist'), false)]
+# [model.configDirectory()/]parameters[model.ymlExtension()/].dist
+parameters:
+    database_driver: [if (model.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
+pdo_mysql[elseif (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
+pdo_oci[/if]
+    database_host: [model.persistence.databaseHost/]
+    database_port: null
+    database_name: [model.persistence.databaseName/]
+    database_path: null
+    database_user: [model.persistence.databaseUsername/]
+    database_password: [model.persistence.databasePassword/]
+
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+
+    locale: en
+
+    secret: 1ec446a4907a8a138704482ea9b59521ac31883e
+[/file]
+[/template]
