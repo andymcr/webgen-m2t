@@ -1,0 +1,48 @@
+[comment encoding = UTF-8 /]
+[module topnav(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::fileInformation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::names/]
+
+
+[template public generateTopNav(model : WafModel)]
+[file(model.viewElementsDirectory().concat('/topbar').concat(model.executableExtension()), false)]
+<nav id="[model.topNavigationId/]">
+[if (model.topMenuItemsNonAuthenticated()->notEmpty() or model.isAuthenticated())]
+ <ul>
+[/if]
+[for (page : Page | model.topMenuItemsNonAuthenticated())]
+  <li><?php
+	echo HTML::anchor(
+		Route::get('[page.controllerName()/]')->uri(),
+		HTML::chars(__('[page.navigationLabel/]'))); ?></li>
+[/for]
+[if (not model.authentication.oclIsUndefined())]
+[if (model.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
+	[if (authentication.allowSelfRegistration)]
+  <li id="authentication"><?php
+	echo HTML::anchor(
+		Route::get('[authentication.registrationUnit.controllerName()/]')->uri(),
+		HTML::chars(__('Register'))); ?></li>
+	[/if]
+[/let]
+[/if]
+[/if]
+[if (model.isAuthenticated())]
+  <li id="authentication"><?php
+	echo HTML::anchor(
+		Route::get('[if (model.authentication.oclIsTypeOf(CasAuthentication))]
+TBC[elseif (model.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[model.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.controllerName()/][else]
+TBC[/if]')->uri(),
+		HTML::chars(__('[model.authentication.loginLabel/]'))); ?></li>
+[/if]
+[if (model.topMenuItemsNonAuthenticated()->notEmpty() or model.isAuthenticated())]
+ </ul>
+[/if]
+</nav>
+[/file]
+[/template]

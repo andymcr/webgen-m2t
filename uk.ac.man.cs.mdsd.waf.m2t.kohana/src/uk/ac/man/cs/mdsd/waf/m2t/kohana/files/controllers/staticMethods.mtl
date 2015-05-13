@@ -1,0 +1,18 @@
+[comment encoding = UTF-8 /]
+[module staticMethods(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::names/]
+
+
+[template public generateUnitVariables(unit : ContentUnit)
+	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
+[let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
+$this->[staticUnit.instanceName()/] = ORM::factory('[staticUnit.modelName()/]')->where('name', '=', '[staticUnit.name/]')->find();
+[/let]
+[/template]
+
+[template public generateUnitDisplay(unit : ContentUnit)
+	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
+$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
+[/template]
