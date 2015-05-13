@@ -1,10 +1,10 @@
 [comment encoding = UTF-8 /]
 [module generate(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::entity/]
 
 
-[template public generateDoctrine(jsfModel : JsfModel)]
-[jsfModel.services.generateModel(jsfModel.authentication)/]
+[template public generateDoctrine(model : WafModel)]
+[model.services.generateModel(model.authentication)/]
 [/template]

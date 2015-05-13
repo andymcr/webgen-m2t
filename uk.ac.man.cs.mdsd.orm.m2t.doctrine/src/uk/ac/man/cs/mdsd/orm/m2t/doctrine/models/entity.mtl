@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module entity(
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
-	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -226,60 +226,6 @@ $this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssoc
 
 [/let]
 [/if]
-[if (service.hasInputCollectionAssociations())]
-	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
-	protected $_[association.modelPropertyName()/]_changes = array();
-	[/for]
-
-	public function values(array $values, array $expected = NULL)
-	{
-		parent::values($values, array_diff($expected, array([for
-(feature : ServiceEntityFeature | service.inputCollectionAssociations())
-separator (', ')]'[feature.columnName()/]'[/for])));
-[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
-
-		if (in_array('[association.columnName()/]', $expected))
-		{
-			$current = array();
-			foreach ($this->[association.modelPropertyName()/]_as_array() AS $value)
-				$current['['/][']'/] = $value->id;
-			if (array_key_exists('[association.columnName()/]', $values))
-				foreach ($values['['/]'[association.columnName()/]'[']'/] AS $selected)
-				{
-					$key = array_search($selected, $current);
-					if ($key !== FALSE)
-						unset($current['['/]$key[']'/]);
-					else
-						$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-							'op' => 'add',
-							'value' => $selected
-						);
-				}
-			foreach ($current AS $removed)
-				$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-					'op' => 'remove',
-					'value' => $removed
-				);
-		}
-[/for]
-	}
-
-[/if]
-[if (service.hasInputCollectionAssociations())]
-[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
-	public function [association.modelPropertyName()/]_as_array()
-	{
-		if (!$this->loaded())
-			return array();
-
-		$value_array = array();
-		foreach ($this->[association.modelPropertyName()/]->find_all() as $value)
-			$value_array['['/][']'/] = $value;
-		return $value_array;
-	}
-
-[/for]
-[/if]
 [for (feature : ServiceEntityElement | service.resourceAttributes())]
 [let resource : SingletonResource = feature.feature.oclAsType(SingletonResource)]
 	private function _save_[feature.modelPropertyName()/]()
@@ -318,39 +264,13 @@ separator (', ')]'[feature.columnName()/]'[/for])));
 
 [/let]
 [/for]
-[if (service.hasInputCollectionAssociations() or service.hasResourceAttributes())]
+[if (service.hasResourceAttributes())]
 /*	public function save(Validation $validation = NULL)
 	{
 [for (feature : ServiceEntityFeature | service.resourceAttributes())]
 		$this->_save_[feature.modelPropertyName()/]();
 [/for]
 		parent::save($validation);
-[if (service.hasInputCollectionAssociations())]
-	[for (association : ServiceEntityAssociation | service.inputCollectionAssociations())]
-
-		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
-		[if (not association.feature.opposite.isSingleton())]
-			if ($change['['/]'op'[']'/] == 'add')
-				$this->add('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
-			else
-				$this->remove('[association.modelPropertyName()/]', $change['['/]'value'[']'/]);
-		[else]
-		{
-			$opposite = ORM::factory('[association.oppositeService.modelName/]', $change['['/]'value'[']'/]);
-			if (!$opposite->loaded())
-				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'value'[']'/]));
-			else
-			{
-				if ($change['['/]'op'[']'/] == 'add')
-					$opposite->[association.oppositeColumnName()/] = $this->id;
-				else
-					$opposite->[association.oppositeColumnName()/] = NULL;
-				$opposite->save();
-			}
-		}
-		[/if]
-	[/for]
-[/if]
 	}
 */
 [/if]
