@@ -7,9 +7,9 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: uk.ac.man.cs.mdsd.jsf,
- uk.ac.man.cs.mdsd.jsf.impl,
- uk.ac.man.cs.mdsd.jsf.util
+Export-Package: uk.ac.man.cs.mdsd.waf,
+ uk.ac.man.cs.mdsd.waf.impl,
+ uk.ac.man.cs.mdsd.waf.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.ocl.ecore;visibility:=reexport,

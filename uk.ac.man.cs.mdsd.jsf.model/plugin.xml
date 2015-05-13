@@ -12,9 +12,9 @@
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://www.cs.man.ac.uk/mdsd/2010/Jsf"
-            class="uk.ac.man.cs.mdsd.jsf.JsfPackage"
-            genModel="model/jsf.genmodel"/>
+            uri="http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework"
+            class="uk.ac.man.cs.mdsd.waf.WafPackage"
+            genModel="model/waf.genmodel"/>
    </extension>
 
 </plugin>

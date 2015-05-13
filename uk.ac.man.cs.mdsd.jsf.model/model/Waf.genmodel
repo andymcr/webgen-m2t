@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/uk.ac.man.cs.mdsd.waf.model/src" modelPluginID="uk.ac.man.cs.mdsd.waf.model"
+    modelName="Waf" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false" usedGenPackages="../../uk.ac.man.cs.mdsd.criteria.model/model/Criteria.genmodel#//criteria ../../uk.ac.man.cs.mdsd.orm.model/model/orm.genmodel#//orm">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.emf.ecore.xcore.exporter">
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <foreignModel>Waf.ecore</foreignModel>
+  <genPackages prefix="Waf" basePackage="uk.ac.man.cs.mdsd" disposableProviderFactory="true"
+      childCreationExtenders="true" ecorePackage="Waf.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Waf.ecore#//FrameworkTechnologies">
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//FrameworkTechnologies/JSF"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//FrameworkTechnologies/CakePHP"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//FrameworkTechnologies/CodeIgniter"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//FrameworkTechnologies/Kohana"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//FrameworkTechnologies/Laravel"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//FrameworkTechnologies/Symfony"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Waf.ecore#//AjaxTechnologies">
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//AjaxTechnologies/None"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//AjaxTechnologies/jQuery"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//AjaxTechnologies/AngularJS"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Waf.ecore#//PageTopMenuOptions">
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//PageTopMenuOptions/NeverInclude"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//PageTopMenuOptions/AlwaysInclude"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//PageTopMenuOptions/IncludeWhenAuthenticated"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Waf.ecore#//CollectionDisplayOptions">
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//CollectionDisplayOptions/LineDirection"/>
+      <genEnumLiterals ecoreEnumLiteral="Waf.ecore#//CollectionDisplayOptions/PageDirection"/>
+    </genEnums>
+    <genClasses ecoreClass="Waf.ecore#//WafModel">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//WafModel/persistence"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//WafModel/services"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//WafModel/pages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//WafModel/menus"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/siteName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/siteTitle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/developmentVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/baseURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/rewriteURLs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/webmasterEmail"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/copyrightText"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/metaDescription"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/frameworkTechnology"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/ajaxTechnology"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//WafModel/authentication"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/captchaSiteKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/captchaSecretKey"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/textEditorURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/topNavigationId"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//WafModel/sideMenu"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//WafModel/staticUnitsEditable"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//Authentication">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Authentication/loginLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Authentication/logoutLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//LocalAuthenticationSystem">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/userService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/userAuthenticationKey"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/authenticationService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/loginAttemptService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/autoLoginService"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//LocalAuthenticationSystem/allowSelfRegistration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//LocalAuthenticationSystem/useEmailActivation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//LocalAuthenticationSystem/sendWelcomeEmail"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/registrationUnit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/loginUnit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LocalAuthenticationSystem/forgottenPasswordUnit"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//CasAuthentication"/>
+    <genClasses image="false" ecoreClass="Waf.ecore#//IncludedFeature">
+      <genFeatures createChild="false" propertyCategory="Interface" ecoreFeature="ecore:EAttribute Waf.ecore#//IncludedFeature/displayLabel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//IncludedFeature/forcedValue"/>
+      <genFeatures createChild="false" propertyCategory="Interface" propertyDescription=""
+          ecoreFeature="ecore:EAttribute Waf.ecore#//IncludedFeature/footer"/>
+      <genFeatures createChild="false" propertyCategory="Style" ecoreFeature="ecore:EAttribute Waf.ecore#//IncludedFeature/headerClass"/>
+      <genFeatures createChild="false" propertyCategory="Style" propertyDescription=""
+          ecoreFeature="ecore:EAttribute Waf.ecore#//IncludedFeature/inputClass"/>
+      <genFeatures createChild="false" propertyCategory="Style" propertyDescription=""
+          ecoreFeature="ecore:EAttribute Waf.ecore#//IncludedFeature/displayClass"/>
+      <genFeatures createChild="false" propertyCategory="Style" ecoreFeature="ecore:EAttribute Waf.ecore#//IncludedFeature/footerClass"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//IncludedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IncludedElement/obfuscateFormFields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//IncludedElement/defaultValue"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//IncludedAssociation"/>
+    <genClasses ecoreClass="Waf.ecore#//Service">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//Service/entities"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//Service/daosUsed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Service/modelName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Service/view"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Service/viewName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//Service/displayLabels"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//Service/selections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//Service/features"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//Service/accessedBy"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//ModelLabel">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//ModelLabel/labelFor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ModelLabel/format"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ModelLabel/features"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//Selection">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//Selection/joins"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//Selection/filter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//Selection/ordering"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Selection/limit"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//ServiceFeature">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//ServiceFeature/includedBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ServiceFeature/cardinality"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ServiceFeature/dateFormat"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//ServiceEntityFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ServiceEntityFeature/viewColumnName"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//ServiceEntityElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ServiceEntityElement/feature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ServiceEntityElement/caseInsensitive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ServiceEntityElement/encrypt"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ServiceEntityElement/placeholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ServiceEntityElement/validationPattern"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//ServiceAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ServiceAssociation/oppositeService"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ServiceAssociation/oppositeFeature"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//ServiceEntityAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ServiceEntityAssociation/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//ServiceViewAssociation"/>
+    <genClasses ecoreClass="Waf.ecore#//Page">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//Page/partOf"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//Page/parentPage"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//Page/childPages"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Page/authenticated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Page/topMenuOption"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Page/topMenuRank"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Page/navigationLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//Page/sideMenu"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Page/styleClass"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//Menu">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//Menu/entries"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Menu/omitCaption"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Menu/captionClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Menu/styleClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//Menu/layoutClass"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//MenuEntry">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//MenuEntry/partOf"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//StaticMenu"/>
+    <genClasses ecoreClass="Waf.ecore#//FixedPageMenuEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//FixedPageMenuEntry/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//FixedActionMenuEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//FixedActionMenuEntry/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//FixedCommandMenuEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//FixedCommandMenuEntry/destination"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//EditStaticTextMenuEntry"/>
+    <genClasses ecoreClass="Waf.ecore#//DynamicMenu">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DynamicMenu/service"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DynamicMenu/selection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DynamicMenu/dynamicTitle"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//MenuIncludedFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//MenuIncludedFeature/displayLabel"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//MenuIncludedElement">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//MenuIncludedElement/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//MenuIncludedElement/feature"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//SelectTarget">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//SelectTarget/targettingActions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//UnitContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitContainer/units"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//UnitTitle"/>
+    <genClasses image="false" ecoreClass="Waf.ecore#//ContentUnit">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//ContentUnit/displayedOn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ContentUnit/purposeSummary"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ContentUnit/omitCaption"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ContentUnit/captionClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ContentUnit/styleClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ContentUnit/layoutClass"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//StaticUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//StaticUnit/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//StaticUnit/content"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//CommandUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//CommandUnit/commands"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//Command">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//Command/partOf"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//UserCommand"/>
+    <genClasses ecoreClass="Waf.ecore#//CreateSitemapUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//CreateSitemapUnit/deployedURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//CreateSitemapUnit/filename"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//DynamicUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DynamicUnit/service"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//DynamicUnit/displayFields"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//DynamicUnit/supportActions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DynamicUnit/header"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DynamicUnit/footer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DynamicUnit/headerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DynamicUnit/controlClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DynamicUnit/footerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DynamicUnit/errorClass"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//UnitField">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//UnitField/displayedOn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitField/cardinality"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitField/dateFormat"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//UnitFeature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitFeature/onlyDisplayWhenNotEmpty"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitFeature/displayOption"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitFeature/linkedAction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitFeature/maximumDisplaySize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitFeature/autofocus"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//UnitElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitElement/serviceFeature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitElement/placeholder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitElement/validationPattern"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//UnitAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitAssociation/serviceFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitAssociation/childFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitAssociation/selection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitAssociation/dynamicLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitAssociation/filters"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//UnitChildFeature"/>
+    <genClasses ecoreClass="Waf.ecore#//UnitChildElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitChildElement/serviceFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//UnitChildAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitChildAssociation/serviceFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//UnitChildAssociation/childFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//InterfaceField">
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//InterfaceField/defaultValue"/>
+      <genFeatures createChild="false" propertyCategory="Style" ecoreFeature="ecore:EAttribute Waf.ecore#//InterfaceField/inputClass"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//InterfaceField/mustMatch"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//DataTypeField">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DataTypeField/dataType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DataTypeField/caseInsensitive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DataTypeField/obfuscateFormFields"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DataTypeField/encrypt"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//DateField">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DateField/details"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DateField/format"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//CaptchaField"/>
+    <genClasses ecoreClass="Waf.ecore#//UnitSupportAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//UnitSupportAction/confirmMessage"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//EditUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//EditUnit/confirmDestination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//EditUnit/confirmLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//EditUnit/cancelDestination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//EditUnit/cancelLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//CreateUnit"/>
+    <genClasses ecoreClass="Waf.ecore#//CreateUpdateUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//CreateUpdateUnit/clearLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//MapUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//MapUnit/readOnly"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//MapUnit/defaultZoomLevel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//MapUnit/location"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//MapUnit/placeName"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//UpdateUnit"/>
+    <genClasses image="false" ecoreClass="Waf.ecore#//DataUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DataUnit/selection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DataUnit/dynamicTitle"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//DetailsUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DetailsUnit/omitFieldLabels"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//IndexUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/omitColumnLabels"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/defaultPaginationSize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/nextPageLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/previousPageLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/useFirstLastPageLinks"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/firstPageLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/lastPageLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//IndexUnit/targettingSearches"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//IndexUnit/rowClasses"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//IndexGridUnit"/>
+    <genClasses ecoreClass="Waf.ecore#//IndexPageDirectionUnit"/>
+    <genClasses ecoreClass="Waf.ecore#//IndexLineDirectionUnit"/>
+    <genClasses image="false" ecoreClass="Waf.ecore#//ControlUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ControlUnit/submitLabel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ControlUnit/cancelDestination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ControlUnit/cancelLabel"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//SearchUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//SearchUnit/resultsDestination"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//ActionUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//ActionUnit/omitFieldLabels"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//AuthenticationUnit"/>
+    <genClasses ecoreClass="Waf.ecore#//RegistrationUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//RegistrationUnit/authenticationSystem"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//LoginUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LoginUnit/authenticationSystem"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LoginUnit/loginIdField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LoginUnit/passwordField"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//LoginUnit/rememberMeField"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//ForgottenPasswordUnit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ForgottenPasswordUnit/authenticationSystem"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ForgottenPasswordUnit/loginIdField"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//InlineActionContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Waf.ecore#//InlineActionContainer/actions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Waf.ecore#//InlineAction">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference Waf.ecore#//InlineAction/usedBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//InlineAction/header"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//InlineAction/footer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//InlineAction/headerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//InlineAction/footerClass"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//SelectAction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//SelectAction/target"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//DeleteAction">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//DeleteAction/destination"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//DeleteAction/confirmMessage"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//FeatureSupportAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Waf.ecore#//FeatureSupportAction/confirmMessage"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//ModelReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//ModelReference/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//FeatureReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Waf.ecore#//FeatureReference/field"/>
+    </genClasses>
+    <genClasses ecoreClass="Waf.ecore#//CurrentUserReference"/>
+  </genPackages>
+</genmodel:GenModel>
