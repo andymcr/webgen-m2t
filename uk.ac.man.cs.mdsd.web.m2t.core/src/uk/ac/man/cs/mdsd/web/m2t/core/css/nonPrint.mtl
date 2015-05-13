@@ -1,9 +1,9 @@
 [comment encoding = UTF-8 /]
 [module nonPrint(
-	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 
 
-[template public generateNonPrintCSS(model : JsfModel, cssDirectory : String)]
+[template public generateNonPrintCSS(model : WafModel, cssDirectory : String)]
 [file (cssDirectory.concat('/').concat('non-print.css'), false)]
 @media only screen and (max-width: 60em) {
 	#page {

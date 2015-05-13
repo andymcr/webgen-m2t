@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
-	'http://www.cs.man.ac.uk/mdsd/2010/Jsf',
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 
 
 [query public escapeQuotes(string : String) : String
@@ -18,15 +18,15 @@
 /]
 
 
-[query public hasCommandUnits(model : JsfModel) : Boolean
+[query public hasCommandUnits(model : WafModel) : Boolean
 	= model.pages->collect(p | p.units)->select(e | e.oclIsTypeOf(CommandUnit))->notEmpty()
 /]
 
-[query public hasServicesWithSelections(model : JsfModel) : Boolean
+[query public hasServicesWithSelections(model : WafModel) : Boolean
 	= model.servicesWithSelections()->notEmpty()
 /]
 
-[query public homePage(model : JsfModel) : Page
+[query public homePage(model : WafModel) : Page
 	= let topPage : Page
 			= if model.topMenuItemsNonAuthenticated()->notEmpty() then
 					model.topMenuItemsNonAuthenticated()->first()
@@ -43,11 +43,11 @@
 		endif endif
 /]
 
-[query public indexUnits(model : JsfModel) : Sequence(IndexUnit)
+[query public indexUnits(model : WafModel) : Sequence(IndexUnit)
 	= model.pages->collect(p | p.indexUnits())
 /]
 
-[query public isAuthenticated(model : JsfModel) : Boolean
+[query public isAuthenticated(model : WafModel) : Boolean
 	= not model.authentication.oclIsUndefined()
 /]
 
@@ -67,17 +67,17 @@
 	= model.modelAssociations()->select(f | f.isManyToManyAssociationXX())
 /]
 
-[query public servicesWithSelections(model : JsfModel) : Sequence(Service)
+[query public servicesWithSelections(model : WafModel) : Sequence(Service)
 	= model.services->select(s | s.selections->notEmpty()).oclAsType(Service)
 /]
 
-[query public topMenuItemsAuthenticated(model : JsfModel) : Sequence(Page)
+[query public topMenuItemsAuthenticated(model : WafModel) : Sequence(Page)
 	= model.pages
 		->select(p | p.topMenuOption <> PageTopMenuOptions::NeverInclude)
 		->sortedBy(p | p.topMenuRank).oclAsType(Page)
 /]
 
-[query public topMenuItemsNonAuthenticated(model : JsfModel) : Sequence(Page)
+[query public topMenuItemsNonAuthenticated(model : WafModel) : Sequence(Page)
 	= model.pages
 		->select(p | p.topMenuOption = PageTopMenuOptions::AlwaysInclude)
 		->sortedBy(p | p.topMenuRank).oclAsType(Page)

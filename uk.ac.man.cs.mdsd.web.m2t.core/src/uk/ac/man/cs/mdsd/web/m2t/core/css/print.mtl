@@ -1,9 +1,9 @@
 [comment encoding = UTF-8 /]
 [module print(
-	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 
 
-[template public generatePrintCSS(model : JsfModel, cssDirectory : String)]
+[template public generatePrintCSS(model : WafModel, cssDirectory : String)]
 [file (cssDirectory.concat('/').concat('print.css'), false)]
 #page {
 	width: 52em;

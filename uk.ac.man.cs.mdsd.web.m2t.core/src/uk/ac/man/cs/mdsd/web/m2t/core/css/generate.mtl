@@ -1,13 +1,13 @@
 [comment encoding = UTF-8 /]
 [module generate(
-	'http://www.cs.man.ac.uk/mdsd/2010/Jsf')]
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::web::m2t::core::css::custom/]
 [import uk::ac::man::cs::mdsd::web::m2t::core::css::default/]
 [import uk::ac::man::cs::mdsd::web::m2t::core::css::nonPrint/]
 [import uk::ac::man::cs::mdsd::web::m2t::core::css::print/]
 
 
-[template public generateCSS(model : JsfModel, cssDirectory : String)]
+[template public generateCSS(model : WafModel, cssDirectory : String)]
 [model.generateDefaultCSS(cssDirectory)/]
 [model.generateNonPrintCSS(cssDirectory)/]
 [model.generatePrintCSS(cssDirectory)/]
