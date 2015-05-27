@@ -1,10 +1,10 @@
 [comment encoding = UTF-8 /]
 [module baseController(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::fileInformation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
 [template public generateBaseController(model : WafModel)]

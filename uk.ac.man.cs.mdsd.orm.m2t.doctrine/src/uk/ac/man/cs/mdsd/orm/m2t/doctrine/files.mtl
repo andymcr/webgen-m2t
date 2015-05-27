@@ -2,7 +2,7 @@
 [module files(
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
 

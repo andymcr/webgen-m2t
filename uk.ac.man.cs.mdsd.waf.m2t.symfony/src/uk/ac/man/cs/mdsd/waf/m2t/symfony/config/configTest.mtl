@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module configTest(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
 
 
 [template public generateConfigTest(model : WafModel)]

@@ -2,15 +2,15 @@
 [module generate(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::web::m2t::core::css::generate/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::css::generate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::bootstrap]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::htaccess]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::auth::authentication]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::auth::config]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::captcha::captchaException]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::captcha::recaptchalib]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::fileInformation]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::config::database]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::config::mysql_schema]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::config::pagination]

@@ -1,9 +1,10 @@
 [comment encoding = UTF-8 /]
 [module enumerationModel(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::fileInformation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::common::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
 [template public generateModel(dataType : DataType) ? (dataType.oclIsTypeOf(EnumerationType))]

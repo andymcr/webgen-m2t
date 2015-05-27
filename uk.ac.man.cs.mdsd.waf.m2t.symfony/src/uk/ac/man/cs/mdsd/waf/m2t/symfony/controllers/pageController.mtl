@@ -1,6 +1,8 @@
 [comment encoding = UTF-8 /]
 [module pageController(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::authenticationMethods/]
@@ -14,8 +16,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::indexMethods/]
 [comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::searchMethods/]
 [comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::staticMethods/]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::web::m2t::core::common::featureProperties/]
 
 
 [template public generateController(page : Page)]

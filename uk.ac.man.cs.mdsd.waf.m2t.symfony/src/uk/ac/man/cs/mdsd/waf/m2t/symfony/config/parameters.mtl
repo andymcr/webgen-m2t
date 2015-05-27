@@ -2,8 +2,8 @@
 [module parameters(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
-[import uk::ac::man::cs::mdsd::web::m2t::core::files/]
 
 
 [template public generateParameters(model : WafModel)]

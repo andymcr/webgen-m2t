@@ -1,0 +1,99 @@
+[comment encoding = UTF-8 /]
+[module featureProperties(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+
+
+[query public escapeQuotes(string : String) : String
+	= string.replaceAll('(\')', '\\\\$1')
+/]
+
+
+[query public entry(entries : Sequence(String), index : Integer) : String
+	= if entries->size() < index then
+			''
+		else
+			entries->drop(index - 1)->first()
+		endif
+/]
+
+
+[query public modelAssociations(model : OrmModel) : Sequence(Association)
+	= model.modelFeatures()->select(f | f.oclIsKindOf(Association))
+/]
+
+[query public modelAttributes(model : OrmModel) : Sequence(Attribute)
+	= model.modelFeatures()->select(f | f.oclIsTypeOf(Attribute))
+/]
+
+[query public modelFeatures(model : OrmModel) : Sequence(Feature)
+	= model.entities->collect(features)
+/]
+
+[query public modelManyToManyAssociations(model : OrmModel) : Sequence(CollectionAssociation)
+	= model.modelAssociations()->select(f | f.isManyToManyAssociationXX())
+/]
+
+
+[query public tableColumns(entity : Entity) : OrderedSet(Feature)
+	= entity.features->select(f | f.hasColumn())
+/]
+
+
+[query public hasColumn(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			true
+		else if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).owningEnd
+		else
+			false
+		endif endif
+/]
+
+[query public isDataTypeSingletonElement(feature : Feature) : Boolean
+	= if not feature.oclIsKindOf(SingletonElement) then
+			false
+		else let element : SingletonElement = feature.oclAsType(SingletonElement)
+			in element.dataType.oclIsTypeOf(DataType)
+		endif
+/]
+
+[query public isEnumerationTypeSingletonElement(feature : Feature) : Boolean
+	= if not feature.oclIsKindOf(SingletonElement) then
+			false
+		else let element : SingletonElement = feature.oclAsType(SingletonElement)
+			in element.dataType.oclIsTypeOf(EnumerationType)
+		endif
+/]
+
+[query public isManyToManyAssociationXX(feature : Association) : Boolean
+	= feature.oclIsTypeOf(CollectionAssociation) and feature.opposite.oclIsTypeOf(CollectionAssociation)
+/]
+
+
+[query public isInput(feature : Feature) : Boolean
+	= if feature.inputField.oclIsUndefined() then
+			false
+		else
+			feature.inputField
+		endif
+/]
+
+[query public isSingleton(feature : Feature) : Boolean
+	= feature.oclIsKindOf(SingletonAttribute) or feature.oclIsKindOf(SingletonAssociation)
+/]
+
+[query public oppositeColumnName(feature : Association) : String
+	= if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).opposite.columnName
+		else if feature.oclIsTypeOf(CollectionAssociation) then
+			feature.oclAsType(CollectionAssociation).opposite.columnName
+		else
+			'Unhandled Association'
+		endif endif
+/]
+
+
+[query public displayLabel(enumerationLiteral : EnumerationLiteral) : String
+	= enumerationLiteral.displayLabel
+/]
+
