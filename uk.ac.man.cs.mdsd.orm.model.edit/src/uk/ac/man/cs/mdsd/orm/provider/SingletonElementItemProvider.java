@@ -41,178 +41,180 @@ public class SingletonElementItemProvider
 		IItemLabelProvider,
 		IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
+   * This constructs an instance from a factory and a notifier.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public SingletonElementItemProvider(AdapterFactory adapterFactory) {
-		super(adapterFactory);
-	}
+    super(adapterFactory);
+  }
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
+   * This returns the property descriptors for the adapted class.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	@Override
 	public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-		if (itemPropertyDescriptors == null) {
-			super.getPropertyDescriptors(object);
+    if (itemPropertyDescriptors == null)
+    {
+      super.getPropertyDescriptors(object);
 
-			addDataTypePropertyDescriptor(object);
-			addObfuscateFormFieldsPropertyDescriptor(object);
-			addCaseInsensitivePropertyDescriptor(object);
-			addEncryptPropertyDescriptor(object);
-		}
-		return itemPropertyDescriptors;
-	}
+      addDataTypePropertyDescriptor(object);
+      addObfuscateFormFieldsPropertyDescriptor(object);
+      addCaseInsensitivePropertyDescriptor(object);
+      addEncryptPropertyDescriptor(object);
+    }
+    return itemPropertyDescriptors;
+  }
 
 	/**
-	 * This adds a property descriptor for the Data Type feature.
-	 * <!-- begin-user-doc -->
+   * This adds a property descriptor for the Data Type feature.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	protected void addDataTypePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonElement_dataType_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_dataType_feature", "_UI_SingletonElement_type"),
-				 OrmPackage.Literals.SINGLETON_ELEMENT__DATA_TYPE,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_SingletonElement_dataType_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_dataType_feature", "_UI_SingletonElement_type"),
+         OrmPackage.Literals.SINGLETON_ELEMENT__DATA_TYPE,
+         true,
+         false,
+         true,
+         null,
+         null,
+         null));
+  }
 
 	/**
-	 * This adds a property descriptor for the Obfuscate Form Fields feature.
-	 * <!-- begin-user-doc -->
+   * This adds a property descriptor for the Obfuscate Form Fields feature.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	protected void addObfuscateFormFieldsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonElement_obfuscateFormFields_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_obfuscateFormFields_feature", "_UI_SingletonElement_type"),
-				 OrmPackage.Literals.SINGLETON_ELEMENT__OBFUSCATE_FORM_FIELDS,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_SingletonElement_obfuscateFormFields_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_obfuscateFormFields_feature", "_UI_SingletonElement_type"),
+         OrmPackage.Literals.SINGLETON_ELEMENT__OBFUSCATE_FORM_FIELDS,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+         null,
+         null));
+  }
 
 	/**
-	 * This adds a property descriptor for the Case Insensitive feature.
-	 * <!-- begin-user-doc -->
+   * This adds a property descriptor for the Case Insensitive feature.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	protected void addCaseInsensitivePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonElement_caseInsensitive_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_caseInsensitive_feature", "_UI_SingletonElement_type"),
-				 OrmPackage.Literals.SINGLETON_ELEMENT__CASE_INSENSITIVE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_SingletonElement_caseInsensitive_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_caseInsensitive_feature", "_UI_SingletonElement_type"),
+         OrmPackage.Literals.SINGLETON_ELEMENT__CASE_INSENSITIVE,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+         null,
+         null));
+  }
 
 	/**
-	 * This adds a property descriptor for the Encrypt feature.
-	 * <!-- begin-user-doc -->
+   * This adds a property descriptor for the Encrypt feature.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	protected void addEncryptPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_SingletonElement_encrypt_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_encrypt_feature", "_UI_SingletonElement_type"),
-				 OrmPackage.Literals.SINGLETON_ELEMENT__ENCRYPT,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
-	}
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_SingletonElement_encrypt_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_SingletonElement_encrypt_feature", "_UI_SingletonElement_type"),
+         OrmPackage.Literals.SINGLETON_ELEMENT__ENCRYPT,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+         null,
+         null));
+  }
 
 	/**
-	 * This returns SingletonElement.gif.
-	 * <!-- begin-user-doc -->
+   * This returns SingletonElement.gif.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/SingletonElement"));
-	}
+    return overlayImage(object, getResourceLocator().getImage("full/obj16/SingletonElement"));
+  }
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
+   * This returns the label text for the adapted class.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	@Override
 	public String getText(Object object) {
-		String label = ((SingletonElement)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_SingletonElement_type") :
-			getString("_UI_SingletonElement_type") + " " + label;
-	}
+    String label = ((SingletonElement)object).getName();
+    return label == null || label.length() == 0 ?
+      getString("_UI_SingletonElement_type") :
+      getString("_UI_SingletonElement_type") + " " + label;
+  }
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
+   * This handles model notifications by calling {@link #updateChildren} to update any cached
+   * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	@Override
 	public void notifyChanged(Notification notification) {
-		updateChildren(notification);
+    updateChildren(notification);
 
-		switch (notification.getFeatureID(SingletonElement.class)) {
-			case OrmPackage.SINGLETON_ELEMENT__OBFUSCATE_FORM_FIELDS:
-			case OrmPackage.SINGLETON_ELEMENT__CASE_INSENSITIVE:
-			case OrmPackage.SINGLETON_ELEMENT__ENCRYPT:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-		}
-		super.notifyChanged(notification);
-	}
+    switch (notification.getFeatureID(SingletonElement.class))
+    {
+      case OrmPackage.SINGLETON_ELEMENT__OBFUSCATE_FORM_FIELDS:
+      case OrmPackage.SINGLETON_ELEMENT__CASE_INSENSITIVE:
+      case OrmPackage.SINGLETON_ELEMENT__ENCRYPT:
+        fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+        return;
+    }
+    super.notifyChanged(notification);
+  }
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
+   * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+   * that can be created under this object.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-		super.collectNewChildDescriptors(newChildDescriptors, object);
-	}
+    super.collectNewChildDescriptors(newChildDescriptors, object);
+  }
 
 }
