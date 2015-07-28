@@ -17,18 +17,18 @@
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [if (not indexUnit.selection.oclIsUndefined())]
 $[unit.instanceName()/] = $this->get('[indexUnit.service.name/]')
-    ->[indexUnit.selection.instanceName()/](/* [if (indexUnit.defaultPaginationSize) > 0]
+    ->[indexUnit.selection.instanceName()/](/* [if (indexUnit.defaultPaginationSize > 0)]
 TRUE, max($this->request->query('[unit.routeParameterName()/]'), 1), [indexUnit.defaultPaginationSize/][/if] */);
 [else]
 $[unit.instanceName()/] = $this->getDoctrine()
         ->getRepository('[indexUnit.appBundleName()/]:[indexUnit.service.modelName/]')
         ->findAll();
 
-$this->[unit.instanceName()/] = ORM::factory('[indexUnit.service.modelName/]')->[if (indexUnit.defaultPaginationSize) > 0]
+$this->[unit.instanceName()/] = ORM::factory('[indexUnit.service.modelName/]')->[if (indexUnit.defaultPaginationSize > 0)]
 paginated(max($this->request->query('[unit.routeParameterName()/]'), 1), [indexUnit.defaultPaginationSize/])[else]
 find_all()[/if];
 [/if]
-/* [if (indexUnit.defaultPaginationSize) > 0]
+/* [if (indexUnit.defaultPaginationSize > 0)]
 $[unit.instanceName()/] = ORM::factory('[indexUnit.service.modelName/]')->[if (not indexUnit.selection.oclIsUndefined())]
 [indexUnit.selection.countName()/]()[else]
 count_all()[/if];
@@ -55,7 +55,7 @@ $[unit.instanceName()/]_pagination = Pagination::factory(array(
 
 [/for]
 [if (unit.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::jQuery
-		and (indexUnit.defaultPaginationSize) > 0)]
+		and (indexUnit.defaultPaginationSize > 0))]
 public function page()
 {
 }
