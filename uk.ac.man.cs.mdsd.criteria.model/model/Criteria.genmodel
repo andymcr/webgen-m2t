@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/uk.ac.man.cs.mdsd.criteria.model/src" modelPluginID="uk.ac.man.cs.mdsd.criteria.model"
-    modelName="Criteria" importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0"
-    copyrightFields="false">
-  <foreignModel>Criteria.ecore</foreignModel>
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/uk.ac.man.cs.mdsd.criteria.model/src" editDirectory="/uk.ac.man.cs.mdsd.criteria.edit/src"
+    modelPluginID="uk.ac.man.cs.mdsd.criteria.model" runtimeJar="true" modelName="Criteria"
+    updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="" booleanFlagsField="eFlags" booleanFlagsReservedBits="8" importerID="org.eclipse.emf.ecore.xcore.importer"
+    containmentProxies="true" complianceLevel="7.0" editPluginID="uk.ac.man.cs.mdsd.criteria.edit"
+    language="en" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true" decoration="Live" oSGiCompatible="true">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="Ecore.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter.xmi">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="EcoreXMI.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <foreignModel>Criteria.xcore</foreignModel>
+  <modelPluginVariables>org.eclipse.xtext.xbase.lib</modelPluginVariables>
+  <modelPluginVariables>org.eclipse.emf.ecore.xcore.lib</modelPluginVariables>
   <genPackages prefix="Criteria" basePackage="uk.ac.man.cs.mdsd" disposableProviderFactory="true"
       extensibleProviderFactory="true" ecorePackage="Criteria.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Criteria.ecore#//BooleanOperator">
@@ -53,8 +71,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateLikeOperator/right"/>
     </genClasses>
     <genClasses ecoreClass="Criteria.ecore#//PredicateIsEmpty">
-      <genFeatures property="None" children="true" createChild="true" propertyCategory=""
-          propertySortChoices="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateIsEmpty/feature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Criteria.ecore#//PredicateIsEmpty/feature"/>
     </genClasses>
     <genClasses image="false" ecoreClass="Criteria.ecore#//Order">
       <genFeatures property="None" children="true" createChild="true" propertyCategory=""

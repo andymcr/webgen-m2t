@@ -1,0 +1,93 @@
+@Ecore(
+	nsURI="http://www.cs.man.ac.uk/mdsd/2013/Criteria",
+	nsPrefix="criteria"
+)
+@GenModel(
+	editDirectory="/uk.ac.man.cs.mdsd.criteria.edit/src",
+	editPluginID="uk.ac.man.cs.mdsd.criteria.edit",
+	extensibleProviderFactory="true"
+)
+package uk.ac.man.cs.mdsd.criteria
+
+
+enum BooleanOperator {
+	And
+	Or = 1
+}
+
+enum ComparisionOperator {
+	GreaterThan
+	LessThan = 1
+}
+
+interface Expression {
+}
+
+interface Literal extends Expression {
+}
+
+class NullLiteral extends Literal {
+}
+
+class IntegerLiteral extends Literal {
+	int[1] value
+}
+
+class StringLiteral extends Literal {
+	String[1] value
+}
+
+class CurrentTime extends Literal {
+}
+
+class Function extends Expression {
+	String[1] name
+}
+
+interface Path extends Expression {
+}
+
+abstract class Predicate extends Expression {
+	boolean negated = "false"
+}
+
+class PredicateBooleanOperator extends Predicate {
+	contains Predicate[+] expressions
+	BooleanOperator[1] operator = "And"
+}
+
+class PredicateEqualityOperator extends Predicate {
+	contains Expression[1] left
+	contains Expression[1] right
+}
+
+class PredicateComparisonOperator extends Predicate {
+	contains Expression[1] left
+	ComparisionOperator[1] operator
+	contains Expression[1] right
+}
+
+class PredicateIsOperator extends Predicate {
+	contains Expression[1] left
+	contains Expression[1] right
+}
+
+class PredicateLikeOperator extends Predicate {
+	contains Expression[1] left
+	contains Expression[1] right
+}
+
+class PredicateIsEmpty extends Predicate {
+	contains Path feature
+}
+
+abstract class Order {
+	@GenModel(propertyCategory="")
+	contains Path[1] path
+}
+
+class Asc extends Order {
+}
+
+class Desc extends Order {
+}
