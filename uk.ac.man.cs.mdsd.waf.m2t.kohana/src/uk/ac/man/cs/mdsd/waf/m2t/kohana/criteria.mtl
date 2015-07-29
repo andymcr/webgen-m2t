@@ -50,19 +50,19 @@ $this->[path.unit.instanceName()/]->[path.unit.service.keyName()/]
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
 [let isDate : Boolean
-	= if not path.field.oclIsTypeOf(ServiceEntityElement) then
+	= if not path.feature.oclIsTypeOf(ServiceEntityElement) then
 			false
 		else
-			path.field.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonDate)
+			path.feature.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonDate)
 		endif
 ]
 [if (isDate)]
-new Database_Expression('UNIX_TIMESTAMP([path.field.columnName()/])')
+new Database_Expression('UNIX_TIMESTAMP([path.feature.columnName()/])')
 [else]
-	[if (path.field.oclIsKindOf(IncludedAssociation))]
-'[path.field.columnName()/]'
+	[if (path.feature.oclIsKindOf(IncludedAssociation))]
+'[path.feature.columnName()/]'
 	[else]
-'[path.field.modelPropertyName()/]'
+'[path.feature.modelPropertyName()/]'
 	[/if]
 [/if]
 [/let]
@@ -152,7 +152,7 @@ $this->[modelReference.unit.instanceName()/]
 [template public generateOrderPath(path : Expression)
 	? (path.oclIsTypeOf(FeatureReference)) post(trim())]
 [let featureReference : FeatureReference = path.oclAsType(FeatureReference)]
-[featureReference.field.columnName()/]
+[featureReference.feature.columnName()/]
 [/let]
 [/template]
 

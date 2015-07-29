@@ -31,7 +31,7 @@
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
  <div class="unit_padding">
   [dataUnit.generateViewContent(dataUnit.instanceName())/]
-	[if (indexUnit.defaultPaginationSize) > 0]
+	[if (indexUnit.defaultPaginationSize > 0)]
 <?php echo $pagination; ?>
 	[/if]
 	[if (dataUnit.supportActions->notEmpty())]

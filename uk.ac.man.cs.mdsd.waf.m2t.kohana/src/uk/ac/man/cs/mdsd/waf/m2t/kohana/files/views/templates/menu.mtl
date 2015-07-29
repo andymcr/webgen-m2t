@@ -45,7 +45,7 @@
 [let fixedEntry : FixedPageMenuEntry = entry.oclAsType(FixedPageMenuEntry)]
 <li><?php
 	echo HTML::anchor(
-		Route::get('[fixedEntry.destination.controllerName()/]')->uri(),
+		Route::get('[fixedEntry.page.controllerName()/]')->uri(),
 		HTML::chars(__('[fixedEntry.displayLabel/]')));
 ?></li>
 [/let]
@@ -56,8 +56,8 @@
 [let fixedEntry : FixedActionMenuEntry = entry.oclAsType(FixedActionMenuEntry)]
 <li><?php
 	echo HTML::anchor(
-		Route::get('[fixedEntry.destination.pageDisplayedOn().controllerName()/]')->uri(array(
-			'action' => '[fixedEntry.destination.actionName()/]'
+		Route::get('[fixedEntry.action.pageDisplayedOn().controllerName()/]')->uri(array(
+			'action' => '[fixedEntry.action.actionName()/]'
 		)),
 		HTML::chars(__('[fixedEntry.displayLabel/]')));
 ?></li>
@@ -68,11 +68,7 @@
 	? (entry.oclIsTypeOf(FixedCommandMenuEntry)) post(trim())]
 [let fixedEntry : FixedCommandMenuEntry = entry.oclAsType(FixedCommandMenuEntry)]
 <li><?php
-	echo HTML::anchor(
-		Route::get('[fixedEntry.destination.partOf.pageDisplayedOn().controllerName()/]')->uri(array(
-			'action' => '[fixedEntry.destination.actionName()/]'
-		)),
-		HTML::chars(__('[fixedEntry.displayLabel/]')));
+		HTML::chars(__('[fixedEntry.displayLabel/]'));
 ?></li>
 [/let]
 [/template]

@@ -5,9 +5,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::authenticationMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::createSitemapMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::actionMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commandMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::controlMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::detailsMethods/]
@@ -48,7 +46,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		$this->template->scripts['['/][']'/] = 'https://www.google.com/recaptcha/api.js';
 [/if]
 
-[if (page.partOf.staticUnitsEditable)]
+[if (page.partOf.staticUnitsEditable.oclAsType(Boolean))]
 	[for (unit : ContentUnit | page.units)]
 		[unit.generateUnitVariables()/]
 	[/for]

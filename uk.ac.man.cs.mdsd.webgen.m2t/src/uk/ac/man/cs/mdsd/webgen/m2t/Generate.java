@@ -340,6 +340,12 @@ public class Generate extends AbstractAcceleoGenerator {
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
+        if (!isInWorkspace(uk.ac.man.cs.mdsd.orm.OrmPackage.class)) {
+            resourceSet.getPackageRegistry().put(uk.ac.man.cs.mdsd.orm.OrmPackage.eINSTANCE.getNsURI(), uk.ac.man.cs.mdsd.orm.OrmPackage.eINSTANCE);
+        }
+        if (!isInWorkspace(uk.ac.man.cs.mdsd.waf.WafPackage.class)) {
+            resourceSet.getPackageRegistry().put(uk.ac.man.cs.mdsd.waf.WafPackage.eINSTANCE.getNsURI(), uk.ac.man.cs.mdsd.waf.WafPackage.eINSTANCE);
+        }
         
         /*
          * If you want to change the content of this method, do NOT forget to change the "@generated"

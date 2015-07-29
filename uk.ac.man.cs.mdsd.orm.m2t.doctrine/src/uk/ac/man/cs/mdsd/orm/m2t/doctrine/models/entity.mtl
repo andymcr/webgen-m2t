@@ -6,7 +6,7 @@
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::webgen::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
 [template public generateModel(service : Service, authentication : Authentication)]
 [file(service.modelFilename(), false)]
@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="[if (service.view)][service.viewName/][else][service.tableName()/][/if]")
+ * @ORM\Table(name="[if (service.view = true)][service.viewName/][else][service.tableName()/][/if]")
  **/
 class [service.modelClassName()/]
 {
@@ -41,7 +41,7 @@ class [service.modelClassName()/]
 		[if (attribute.oclIsTypeOf(SingletonAssociation))]
 		[let singleton : SingletonAssociation = attribute.oclAsType(SingletonAssociation)]
 	 * @ORM\[singleton.associationRelationship/](targetEntity="[association.oppositeService.modelName/]")
-		[if (singleton.owningEnd)]
+		[if (singleton.owningEnd = true)]
      * @ORM\JoinColumn(name="[association.columnName()/]", referencedColumnName="[association.oppositeService.keyName()/]")
 		[/if]
 		[/let]
@@ -254,7 +254,7 @@ $this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssoc
 		else
 			$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
 		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
-[if (resource.uploadsWithinWebsite)]
+[if (resource.uploadsWithinWebsite = true)]
 		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');
 		$this->[feature.columnName()/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [else]

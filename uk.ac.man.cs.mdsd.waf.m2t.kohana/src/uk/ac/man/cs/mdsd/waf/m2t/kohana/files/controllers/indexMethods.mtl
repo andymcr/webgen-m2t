@@ -17,14 +17,14 @@
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 $this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
 [if (not indexUnit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[indexUnit.selection.instanceName()/]([if (indexUnit.defaultPaginationSize) > 0]
+$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[indexUnit.selection.instanceName()/]([if (indexUnit.defaultPaginationSize > 0)]
 TRUE, max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.defaultPaginationSize/][/if]);
 [else]
-$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (indexUnit.defaultPaginationSize) > 0]
+$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (indexUnit.defaultPaginationSize > 0)]
 paginated(max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.defaultPaginationSize/])[else]
 find_all()[/if];
 [/if]
-[if (indexUnit.defaultPaginationSize) > 0]
+[if (indexUnit.defaultPaginationSize > 0)]
 $[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (not indexUnit.selection.oclIsUndefined())]
 [indexUnit.selection.countName()/]()[else]
 count_all()[/if];
@@ -45,7 +45,7 @@ $this->[unit.templateInstanceName()/]->bind('pagination', $[unit.instanceName()/
 
 [/for]
 [if (unit.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::jQuery
-		and (indexUnit.defaultPaginationSize) > 0)]
+		and (indexUnit.defaultPaginationSize > 0))]
 public function page()
 {
 }

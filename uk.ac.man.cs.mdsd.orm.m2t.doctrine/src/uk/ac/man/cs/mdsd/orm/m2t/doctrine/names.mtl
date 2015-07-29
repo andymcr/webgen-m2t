@@ -2,7 +2,7 @@
 [module names(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::common::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
 
 [query public modelClassName(service : Service) : String

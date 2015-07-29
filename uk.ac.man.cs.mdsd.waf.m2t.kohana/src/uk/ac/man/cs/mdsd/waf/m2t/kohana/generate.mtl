@@ -24,8 +24,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::sitemap::staticSitemapXML/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::elements::topnav/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::elements::topbar_loggedin/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::templates::commandUnit/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::templates::createSitemapUnit/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::templates::dataUnit/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::templates::formUnit/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::templates::menu/]
