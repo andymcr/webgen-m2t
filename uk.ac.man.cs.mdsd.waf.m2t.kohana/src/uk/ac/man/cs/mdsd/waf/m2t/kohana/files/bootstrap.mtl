@@ -158,9 +158,7 @@ Route::set('[page.controllerName()/]', '[page.controllerName()/][if (page.hasPar
 		'controller' => '[page.controllerName()/]',
 	[if (page.hasParameterisedUnits() or page.hasControlUnits() or page.hasCommandUnits() or page.hasAuthenticationUnit() or page.hasUriActions())]
 		'action' => '[for (unit : DynamicUnit | page.parameterisedUnits()) separator('|')]
-[unit.actionName()/][if (unit.oclIsKindOf(EditUnit) and unit.hasInputAssociations())]
-|[for (field : UnitField | unit.inputAssociations()) separator('|')]
-[field.optionsName()/][/for][/if][/for][if (page.hasControlUnits())]
+[unit.actionName()/][/for][if (page.hasControlUnits())]
 [if (page.hasParameterisedUnits())]|[/if][for (unit : DynamicUnit | page.controlUnits()) separator('|')]
 [unit.actionName()/][/for][/if][if (page.hasCommandUnits())]
 |[for (unit : CommandUnit | page.commandUnits()) separator('|')]
