@@ -38,9 +38,9 @@
 [model.generateBootstrap()/]
 
 [model.generateStaticSitemapXML()/]
-if (model.hasCreateSitemapUnits())]
-model.generateCreateSitemap()/]
-/if]
+[comment if (model.hasCreateSitemapUnits()) /]
+[comment model.generateCreateSitemap() /]
+[comment /]
 
 [model.generateDatabase()/]
 [model.generateMySqlSchema()/]
@@ -54,7 +54,6 @@ model.generateCreateSitemap()/]
 
 [model.generateBaseController()/]
 [model.pages.generateController()/]
-[model.generateAngularJsControllers()/]
 
 [model.generateRecaptchalib()/]
 [model.generateCaptchaException()/]
