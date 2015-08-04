@@ -19,6 +19,10 @@
 /]
 
 
+[query public hasCaptchaFields(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
+/]
+
 [query public hasCommandUnits(model : WafModel) : Boolean
 	= model.pages->collect(p | p.units)->select(e | e.oclIsTypeOf(CommandUnit))->notEmpty()
 /]
@@ -841,7 +845,7 @@
 
 
 [query public conditionalDisplay(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitFeature) then
+	= if field.oclIsKindOf(UnitFeature) then
 			field.oclAsType(UnitFeature).onlyDisplayWhenNotEmpty
 		else
 			false
