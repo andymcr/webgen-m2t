@@ -34,7 +34,7 @@ TBC[/if]')->uri());
 
 [template public generateValuesFromFormToModel(unit : DynamicUnit) post(trim())]
 $this->[unit.instanceName()/]->values($this->request->post(), array([for
-	(field : UnitField | unit.nonResourceInputFeatures())
+	(field : UnitField | unit.nonResourceInputFeatures()->select(f | not f.isEncrypted()))
 	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
 [/template]
 
@@ -58,26 +58,17 @@ $this->[unit.instanceName()/]->[feature.formName()/] = [value.generateCriteria()
 [/template]
 
 [template public generateCaptchaCheck(unit : DynamicUnit) post(trim())]
-require_once(Kohana::find_file('vendor/recaptcha', 'recaptchalib'));
-$reCaptcha = new ReCaptcha('[unit.pageDisplayedOn().partOf.captchaSecretKey/]');
-$resp = $reCaptcha->verifyResponse(
-	$_SERVER['['/]"REMOTE_ADDR"[']'/], 
-	$this->request->post('g-recaptcha-response') 
-	); 
-if ($resp == NULL || !$resp->success)
-	throw new Captcha_Exception($resp->errorCodes);
-[/template]
-
-[template public generateCatchCaptchaException(unit : DynamicUnit) post(trim())]
-catch (Captcha_Exception $e)
+$captcha = $this->isCaptchaValid(
+	$this->request->post('g-recaptcha-response'),
+	Request::$client_ip); 
+if (!$captcha['['/]'success'[']'/])
 {
 	$this->[unit.instanceName()/]_field_errors = ['['/][']'/];
 [for (field : UnitField | unit.captchaFields())]
-	$this->[unit.instanceName()/]_field_errors['['/]'[field.modelPropertyName()/]'[']'/] = $e->message();
+	$this->[unit.instanceName()/]_field_errors['['/]'[field.modelPropertyName()/]'[']'/] = $captcha['['/]'error-codes'[']'/]['['/]0[']'/] == 'missing-input-response'
+		? 'Not completed'
+		: 'reCAPTCHA cannot be verified';
 [/for]
-[if (unit.hasEncryptedFeatures())]
-	[unit.generateClearEncryptedFeatures()/]
-[/if]
 [if (unit.hasInterfaceFields())]
 	[unit.generateRememberInterfaceFields()/]
 [/if]
@@ -108,7 +99,7 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = '';
 
 [template public generateRememberInterfaceFields(unit : DynamicUnit) post(trim())]
 $this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
-	(field : UnitField | unit.interfaceFields())
+	(field : UnitField | unit.interfaceFields()->select(f | not f.isEncrypted()))
 	separator (', ')]'[field.formName()/]'[/for]));
 [/template]
 

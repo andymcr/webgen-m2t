@@ -8,13 +8,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::htaccess]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::auth::authentication]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::auth::config]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::captcha::captchaException]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::captcha::recaptchalib]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::config::database]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::config::mysql_schema]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::config::pagination]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::angularJsController]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::baseController]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::pageController]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::models::enumerationModel]
@@ -54,9 +51,6 @@
 
 [model.generateBaseController()/]
 [model.pages.generateController()/]
-
-[model.generateRecaptchalib()/]
-[model.generateCaptchaException()/]
 
 [model.generateCSS(model.cssDirectory())/]
 [model.generatePage()/]

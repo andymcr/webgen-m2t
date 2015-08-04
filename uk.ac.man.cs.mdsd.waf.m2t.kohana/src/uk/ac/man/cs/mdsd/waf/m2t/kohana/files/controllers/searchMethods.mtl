@@ -20,6 +20,8 @@ public function action_[searchUnit.actionName()/]()
 	[/if]
 	[if (unit.hasCaptchaFields())]
 		[unit.generateCaptchaCheck()/]
+		else
+		{
 	[/if]
 	[if (unit.hasInterfaceFields())]
 		[unit.generateInterfaceFieldValidation()/]
@@ -31,7 +33,7 @@ public function action_[searchUnit.actionName()/]()
 		 */
 	}
 [if (unit.hasCaptchaFields())]
-		[unit.generateCatchCaptchaException()/]
+		}
 [/if]
 	catch (ORM_Validation_Exception $e)
 	{

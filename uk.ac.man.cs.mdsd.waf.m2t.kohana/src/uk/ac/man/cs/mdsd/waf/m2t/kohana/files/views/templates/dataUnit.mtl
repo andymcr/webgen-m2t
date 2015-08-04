@@ -324,7 +324,9 @@ $[feature.name/][else]
 	? (field.isResourceSingleton()) post(trim())]
 [let feature : UnitElement = field.oclAsType(UnitElement)]
 <?php
+[if (not feature.conditionalDisplay())]
 	if (!empty($[instanceVariable/]->[feature.modelPropertyName()/]))
+[/if]
 		echo HTML::anchor(
 			$[instanceVariable/]->[feature.modelPropertyName()/],
 			'[feature.displayLabel()/]',

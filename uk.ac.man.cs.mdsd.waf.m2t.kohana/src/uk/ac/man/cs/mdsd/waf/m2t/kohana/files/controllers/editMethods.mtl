@@ -181,6 +181,8 @@ try
 [/if]
 [if (unit.hasCaptchaFields())]
 	[unit.generateCaptchaCheck()/]
+	else
+	{
 [/if]
 [if (unit.hasInterfaceFields())]
 		[unit.generateInterfaceFieldValidation()/]
@@ -199,7 +201,7 @@ try
 [/if]
 }
 [if (unit.hasCaptchaFields())]
-		[unit.generateCatchCaptchaException()/]
+		}
 [/if]
 catch (ORM_Validation_Exception $e)
 {

@@ -35,6 +35,10 @@ $this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.
 	? (unit.oclIsKindOf(AuthenticationUnit) and not unit.oclIsKindOf(EditUnit)) post(trim())]
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 $this->[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.instanceName()/]', $this->[authenticationUnit.instanceName()/]);
+[if (authenticationUnit.hasCaptchaFields())]
+if (isset($this->[authenticationUnit.instanceName()/]_field_errors))
+	$this->[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.instanceName()/]_field_errors', $this->[authenticationUnit.instanceName()/]_field_errors);
+[/if]
 [/let]
 [/template]
 
@@ -43,7 +47,8 @@ $this->[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.i
 	? (unit.oclIsTypeOf(RegistrationUnit)) post(trim())]
 [let authentication : LocalAuthenticationSystem = unit.displayedOn.oclAsType(Page).partOf.authentication.oclAsType(LocalAuthenticationSystem)]
 [let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
-public function action_[registrationUnit.actionName()/]() {
+public function action_[registrationUnit.actionName()/]()
+{
 	[registrationUnit.generateAuthenticationStart()/]
 [if (not registrationUnit.cancelDestination.oclIsUndefined())]
 	[registrationUnit.generateHandleCancel()/]
@@ -53,58 +58,59 @@ public function action_[registrationUnit.actionName()/]() {
 		try
 		{
 [if (registrationUnit.hasCaptchaFields())]
-			[registrationUnit.generateCaptchaCheck()/]
-
-[/if]
-			$this->[registrationUnit.instanceName()/]->salt = md5(uniqid(rand(), true));
 			[registrationUnit.generateValuesFromFormToModel()/]
 [if (registrationUnit.hasForcedValueFeatures())]
 			[registrationUnit.generateForcedFeatureValues()/]
 [/if]
-			$this->[registrationUnit.instanceName()/]->activated = [if (authentication.useEmailActivation)]'0'[else]'1'[/if];
+			[registrationUnit.generateCaptchaCheck()/]
+			else
+			{
+[/if]
+				$this->[registrationUnit.instanceName()/]->salt = md5(uniqid(rand(), true));
+				$this->[registrationUnit.instanceName()/]->activated = [if (authentication.useEmailActivation)]'0'[else]'1'[/if];
 [if (authentication.useEmailActivation)]
-			$this->[registrationUnit.instanceName()/]->new_email_key = md5(rand().microtime());
+				$this->[registrationUnit.instanceName()/]->new_email_key = md5(rand().microtime());
 [/if]
 [if (registrationUnit.hasInterfaceFields())]
-			[registrationUnit.generateInterfaceFieldValidation()/]
+				[registrationUnit.generateInterfaceFieldValidation()/]
 [/if]
-			$this->[registrationUnit.instanceName()/]->save([if (registrationUnit.hasInterfaceFields())]$extra_validation[/if]);
+				$this->[registrationUnit.instanceName()/]->save([if (registrationUnit.hasInterfaceFields())]$extra_validation[/if]);
 	[if (authentication.useEmailActivation)]
-//		$this->[registrationUnit.instanceName()/]->trans_commit();
-//		$this->authentication_lib->sendEmail('activate', $this->[registrationUnit.instanceName()/]->email, array(
-//			'site_name' => $this->config->item('site_title', 'site'),
-//			'user_id' => $this->[registrationUnit.instanceName()/]->id,
-//			'username' => $this->[registrationUnit.instanceName()/]->username,
-//			'email' => $this->[registrationUnit.instanceName()/]->email,
-//			'new_email_key' => $this->[registrationUnit.instanceName()/]->new_email_key,
-//			'activation_period' => $this->config->item('email_activation_expire', 'tank_auth')));
-//		$this->page_message = 'Activation email sent';
+//				$this->[registrationUnit.instanceName()/]->trans_commit();
+//				$this->authentication_lib->sendEmail('activate', $this->[registrationUnit.instanceName()/]->email, array(
+//					'site_name' => $this->config->item('site_title', 'site'),
+//					'user_id' => $this->[registrationUnit.instanceName()/]->id,
+//					'username' => $this->[registrationUnit.instanceName()/]->username,
+//					'email' => $this->[registrationUnit.instanceName()/]->email,
+//					'new_email_key' => $this->[registrationUnit.instanceName()/]->new_email_key,
+//					'activation_period' => $this->config->item('email_activation_expire', 'tank_auth')));
+//				$this->page_message = 'Activation email sent';
 	[else]
 		[let authentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
-			$user = ORM::factory('[authentication.userService.modelName/]');
-			$user->[authentication.userAuthenticationKey.columnName()/] = $this->[registrationUnit.instanceName()/]->[authentication.loginUnit.loginIdField.modelPropertyName()/];
+				$user = ORM::factory('[authentication.userService.modelName/]');
+				$user->[authentication.userAuthenticationKey.columnName()/] = $this->[registrationUnit.instanceName()/]->[authentication.loginUnit.loginIdField.modelPropertyName()/];
 			[for (userFeature : ServiceFeature | authentication.userService.features->select(f | f.isRequired())->select(f | f <> authentication.userAuthenticationKey))]
-			$user->[userFeature.columnName()/] = '';
+				$user->[userFeature.columnName()/] = '';
 			[/for]
-			$user->validation_required(FALSE)->save();
+				$user->validation_required(FALSE)->save();
 			[if (authentication.sendWelcomeEmail)]
-//			$this->authentication_lib->sendEmail('welcome', $this->[registrationUnit.instanceName()/]->email, array(
-//				'site_name' => $this->config->item('site_title', 'site'),
-//				'username' => $this->[registrationUnit.instanceName()/]->username,
-//				'email' => $this->[registrationUnit.instanceName()/]->email));
+//				$this->authentication_lib->sendEmail('welcome', $this->[registrationUnit.instanceName()/]->email, array(
+//					'site_name' => $this->config->item('site_title', 'site'),
+//					'username' => $this->[registrationUnit.instanceName()/]->username,
+//					'email' => $this->[registrationUnit.instanceName()/]->email));
 			[/if]
 		[/let]
 		[if (not registrationUnit.confirmDestination.oclIsUndefined())]
-			$this->redirect(Route::get('[registrationUnit.confirmDestination.controllerName()/]')->uri());
+				$this->redirect(Route::get('[registrationUnit.confirmDestination.controllerName()/]')->uri());
 		[else]
-			$this->[registrationUnit.instanceName()/]->clear();
-			$this->page_message = 'Registration completed';
+				$this->[registrationUnit.instanceName()/]->clear();
+				$this->page_message = 'Registration completed';
 		[/if]
 	[/if]
-		}
 [if (registrationUnit.hasCaptchaFields())]
-		[registrationUnit.generateCatchCaptchaException()/]
+			}
 [/if]
+		}
 		catch (ORM_Validation_Exception $e)
 		{
 			$this->[registrationUnit.instanceName()/]_field_errors = $e->errors('');
@@ -115,9 +121,6 @@ public function action_[registrationUnit.actionName()/]() {
 			if (!empty($unreported_field_errors))
 				$this->[registrationUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
 	[/if]
-[if (registrationUnit.hasEncryptedFeatures())]
-			[registrationUnit.generateClearEncryptedFeatures()/]
-[/if]
 [if (registrationUnit.hasInterfaceFields())]
 			[registrationUnit.generateRememberInterfaceFields()/]
 [/if]
@@ -137,34 +140,42 @@ public function action_[loginUnit.actionName()/]()
 	[loginUnit.generateAuthenticationStart()/]
 	else if ($this->request->method() == HTTP_Request::POST)
 	{
-		$login_id = $this->request->post('[loginUnit.loginIdField.modelPropertyName()/]');
-		$password = $this->request->post('[loginUnit.passwordField.modelPropertyName()/]');
-[if (not localAuthentication.autoLoginService.oclIsUndefined())]
-		$remember_me = $this->request->post('[loginUnit.rememberMeField.modelPropertyName()/]');
+		[loginUnit.generateValuesFromFormToModel()/]
+[if (loginUnit.hasForcedValueFeatures())]
+		[loginUnit.generateForcedFeatureValues()/]
 [/if]
-		$authentication = Auth::instance()->login($login_id, $password, [if (localAuthentication.autoLoginService.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
-		if ($authentication)
-		{
-			$referrer = Session::instance()->get('login_referrer');
-			if (!empty($referrer))
-			{
-				Session::instance()->delete('login_referrer');
-				$this->redirect($referrer);
-			}
-			else
-				$this->redirect();
-		}
+[if (loginUnit.hasCaptchaFields())]
+		[loginUnit.generateCaptchaCheck()/]
 		else
 		{
-			$this->[loginUnit.instanceName()/]_error = Auth::instance()->message;
-			[loginUnit.generateValuesFromFormToModel()/]
-[if (loginUnit.hasEncryptedFeatures())]
-			[loginUnit.generateClearEncryptedFeatures()/]
 [/if]
+			$login_id = $this->request->post('[loginUnit.loginIdField.modelPropertyName()/]');
+			$password = $this->request->post('[loginUnit.passwordField.modelPropertyName()/]');
+[if (not localAuthentication.autoLoginService.oclIsUndefined())]
+			$remember_me = $this->request->post('[loginUnit.rememberMeField.modelPropertyName()/]');
+[/if]
+			$authentication = Auth::instance()->login($login_id, $password, [if (localAuthentication.autoLoginService.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
+			if ($authentication)
+			{
+				$referrer = Session::instance()->get('login_referrer');
+				if (!empty($referrer))
+				{
+					Session::instance()->delete('login_referrer');
+					$this->redirect($referrer);
+				}
+				else
+					$this->redirect();
+			}
+			else
+			{
+				$this->[loginUnit.instanceName()/]_error = Auth::instance()->message;
 [if (loginUnit.hasInterfaceFields())]
-			[loginUnit.generateRememberInterfaceFields()/]
+				[loginUnit.generateRememberInterfaceFields()/]
 [/if]
+			}
+[if (loginUnit.hasCaptchaFields())]
 		}
+[/if]
 	}
 }
 
