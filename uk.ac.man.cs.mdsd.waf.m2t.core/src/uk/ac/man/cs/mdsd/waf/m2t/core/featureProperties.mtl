@@ -114,15 +114,6 @@
 	= service.features->select(f | f.hasDefaultValue()).oclAsType(ServiceEntityFeature)
 /]
 
-[query public displayFeatures(service : Service) : Sequence(ServiceEntityFeature)
-	= let displayFeatures : Sequence(Feature)
-			= service.entities->collect(e | e.displayFeatures)
-		in displayFeatures->collect(f |
-			service.features
-			->select(f | f.oclIsKindOf(ServiceEntityFeature)).oclAsType(ServiceEntityFeature)
-			->any(i | i.name = f.name))
-/]
-
 [query public forcedValueFeatures(service : Service) : Sequence(ServiceEntityFeature)
 	= service.features->select(f | f.hasForcedValue()).oclAsType(ServiceEntityFeature)
 /]
@@ -143,12 +134,12 @@
 	= service.collectionAssociations()->notEmpty()
 /]
 
-[query public hasDefaultValueFeatures(service : Service) : Boolean
-	= service.defaultValueFeatures()->notEmpty()
+[query public hasDefaultLabel(service : Service) : Boolean
+	= service.displayLabels->exists(l | l.name = 'defaultLabel')
 /]
 
-[query public hasDisplayFeatures(service : Service) : Boolean
-	= service.displayFeatures()->notEmpty()
+[query public hasDefaultValueFeatures(service : Service) : Boolean
+	= service.defaultValueFeatures()->notEmpty()
 /]
 
 [query public hasExplicitTableName(service : Service) : Boolean

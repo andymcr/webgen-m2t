@@ -32,10 +32,6 @@
 	= 'application'
 /]
 
-[query public captchaDirectory(eObject : EObject) : String
-	= eObject.classesDirectory().concat('/').concat('Captcha')
-/]
-
 [query public classesDirectory(eObject : EObject) : String
 	= eObject.applicationDirectory().concat('/').concat('classes')
 /]
@@ -102,10 +98,6 @@
 
 [query public pageViewsDirectory(page : Page) : String
 	= page.viewDirectory().concat('/').concat(page.controllerName())
-/]
-
-[query public recaptchaDirectory(eObject : EObject) : String
-	= eObject.vendorDirectory().concat('/').concat('recaptcha')
 /]
 
 [query public sitemapClassesDirectory(eObject : EObject) : String

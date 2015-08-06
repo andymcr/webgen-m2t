@@ -388,12 +388,12 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 [if (feature.units->isEmpty())]
 	[if (feature.displayOption = CollectionDisplayOptions::PageDirection)]
 <?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) {
-	?><p><?php echo $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]; ?></p>
+	?><p><?php echo $value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]; ?></p>
 <?php } ?>
 	[else]
 <?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) { ?><span><?php 
 		[if (feature.actions->isEmpty())]
-	echo $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if];
+	echo $value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if];
 		[else]
 		[let action : InlineAction = feature.actions->first()]
 		[let targetController : Page = action.controller()]
@@ -401,9 +401,9 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
 				'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' => $value->[field.displayedOn.service.keyName()/]
 			), FALSE),
-		HTML::chars($value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]),
+		HTML::chars($value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]),
 		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]),
 	));
 		[/let]
 		[/let]

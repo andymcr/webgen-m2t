@@ -122,18 +122,6 @@ class [service.modelClassName()/]
 		[/if]
 	[/if]
 [/for]
-	public function displayLabel()
-	{
-[if (service.hasDisplayFeatures())]
-		return [for (feature : ServiceEntityFeature | service.displayFeatures())
-			separator(' . \' \' . ')]
-
-$this->[feature.modelPropertyName()/][if (feature.oclIsKindOf(ServiceEntityElement))]->displayLabel()[/if][/for];
-[else]
-		return $this;
-[/if]
-	}
-
 [for (label : ModelLabel | service.displayLabels)]
 	public function [label.name/]()
 	{

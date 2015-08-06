@@ -94,25 +94,18 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	}
 
 [/if]
-	public function displayLabel()
+[if (not service.hasDefaultLabel())]
+	public function defaultLabel()
 	{
-[if (service.hasDisplayFeatures())]
-		return [for (feature : ServiceEntityFeature | service.displayFeatures())
-			separator(' . \' \' . ')]
-[if (feature.oclIsKindOf(ServiceEntityElement))]
-$this->[feature.columnName()/][else]
-$this->[feature.modelPropertyName()/]->displayLabel()[/if][/for];
-[else]
 		return $this;
-[/if]
 	}
 
+[/if]
 [for (label : ModelLabel | service.displayLabels)]
 	public function [label.name/]()
 	{
 		return sprintf('[label.format/]', [for (feature : ServiceFeature | label.features) separator(', ')]
-$this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssociation))]
-->displayLabel()[/if][/for]);
+$this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssociation))]->defaultLabel()[/if][/for]);
 	}
 
 [/for]
