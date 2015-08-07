@@ -42,7 +42,7 @@ foreach (ORM::factory('[association.serviceFeature.oppositeService.modelName/]')
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 	$[association.optionsName()/]['['/]$option->id[']'/] = $option->[if (association.dynamicLabel.oclIsUndefined())]
-displayLabel()[else]
+defaultLabel()[else]
 [association.dynamicLabel.name/]()[/if];
 $this->[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[association.optionsName()/]);
 	[/let]
@@ -135,7 +135,7 @@ find_all()[else]
 		$options['['/][']'/] = array(
 			'id' => $option->id,
 			'label' => $option->[if (association.dynamicLabel.oclIsUndefined())]
-displayLabel()[else]
+defaultLabel()[else]
 [association.dynamicLabel.name/]()[/if],
 		);
 

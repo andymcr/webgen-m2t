@@ -27,7 +27,7 @@ $[association.optionsName()/] = array([if (association.isSingleton())]'' => __('
 foreach (ORM::factory('[association.serviceFeature.oppositeService.modelName/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
-	$[association.optionsName()/]['['/]$option->id[']'/] = $option->displayLabel();
+	$[association.optionsName()/]['['/]$option->id[']'/] = $option->defaultLabel();
 $this->[controlUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[association.optionsName()/]);
 [/for]
 [/let]

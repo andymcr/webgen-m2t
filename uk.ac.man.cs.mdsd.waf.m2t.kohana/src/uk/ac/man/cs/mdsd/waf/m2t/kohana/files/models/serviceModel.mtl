@@ -104,8 +104,12 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 [for (label : ModelLabel | service.displayLabels)]
 	public function [label.name/]()
 	{
-		return sprintf('[label.format/]', [for (feature : ServiceFeature | label.features) separator(', ')]
-$this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssociation))]->defaultLabel()[/if][/for]);
+		return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
+$this->[if (feature.oclIsTypeOf(ModelLabelElement))]
+[feature.oclAsType(ModelLabelElement).serviceFeature.modelPropertyName()/][else]
+[let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
+[association.serviceFeature.modelPropertyName()/]->[if (association.dynamicLabel.oclIsUndefined())]defaultLabel()[else][association.dynamicLabel.name/]()[/if][/let]
+[/if][/for]);
 	}
 
 [/for]

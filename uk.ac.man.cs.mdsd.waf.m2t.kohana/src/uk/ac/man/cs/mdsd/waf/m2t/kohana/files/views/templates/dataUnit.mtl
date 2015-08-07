@@ -444,7 +444,7 @@ $[instanceVariable/]->[field.modelPropertyName()/]
 $[instanceVariable/]->[field.modelPropertyName()/]->[if (not association.dynamicLabel.oclIsUndefined())]
 [association.dynamicLabel.name/]()[elseif (not association.childFeature.oclIsUndefined())]
 [association.childFeature.generateDisplayChildAssess()/][else]
-displayLabel()
+defaultLabel()
 [/if]
 [/let]
 [/template]
@@ -460,7 +460,7 @@ displayLabel()
 	? (child.oclIsTypeOf(UnitChildAssociation)) post(trim())]
 [let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)]
 [association.serviceFeature.modelPropertyName()/]->[if (association.childFeature.oclIsUndefined())]
-displayLabel()[else]
+defaultLabel()[else]
 [association.childFeature.generateDisplayChildAssess()/]
 [/if]
 [/let]
@@ -494,9 +494,9 @@ displayLabel()[else]
 	[/if]
 		HTML::chars(__('[action.displayLabel/]')),
 		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $[instanceVariable/]->displayLabel()),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $[instanceVariable/]->defaultLabel()),
 	[if (action.oclIsTypeOf(DeleteAction))]
-			'onclick' => 'return confirm(\'' . $[instanceVariable/]->displayLabel() . ' ' . __('[action.oclAsType(DeleteAction).oclAsType(DeleteAction).confirmMessage/]') . '\');'
+			'onclick' => 'return confirm(\'' . $[instanceVariable/]->defaultLabel() . ' ' . __('[action.oclAsType(DeleteAction).oclAsType(DeleteAction).confirmMessage/]') . '\');'
 	[/if]
 	));
 ?>
