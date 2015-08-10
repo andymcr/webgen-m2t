@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::criteria/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
@@ -49,7 +50,9 @@ class [service.modelClassName()/]
 		[let collection : CollectionAssociation = attribute.oclAsType(CollectionAssociation)]
 	 * @ORM\[collection.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany)], mappedBy="[association.oppositeColumnName()/]"[/if])
 		[if (association.isOwningEnd())]
-     * @ORM\JoinTable(name="[association.columnName()/]")
+     * @ORM\JoinTable(name="[association.feature.pivotTableName/]",
+			joinColumns={@ORM\JoinColumn(name="[feature.oppositeColumnName()/]")},
+			inverseJoinColumns={@ORM\JoinColumn(name="[feature.columnName()/]")})
 		[/if]
 		[/let]
 		[/if]
@@ -65,10 +68,10 @@ class [service.modelClassName()/]
 	{
 	[for (feature : ServiceFeature | service.features)]
 		[if (feature.hasDefaultValue())]
-		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedElement).defaultValue.generateCriteria()/];
+		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedElement).defaultValue.generateCriteriaExpression()/];
 		[/if]
 		[if (feature.hasForcedValue())]
-		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedFeature).forcedValue.generateCriteria()/];
+		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedFeature).forcedValue.generateCriteriaExpression()/];
 		[/if]
 		[if (feature.oclIsTypeOf(ServiceAssociation))]
 			[if (feature.oclAsType(ServiceAssociation).isOwningEnd())]
@@ -105,7 +108,7 @@ class [service.modelClassName()/]
 		$this->[feature.modelPropertyName()/] = trim($[feature.instanceName()/]);
 				[/if]
 			[elseif (element.feature.oclIsTypeOf(SingletonDate))]
-		if (empty(trim($[feature.instanceName()/]))) {
+		if (trim($[feature.instanceName()/]) == FALSE) {
 			$this->[feature.modelPropertyName()/] = NULL;
 		} else {
 		}
@@ -125,9 +128,12 @@ class [service.modelClassName()/]
 [for (label : ModelLabel | service.displayLabels)]
 	public function [label.name/]()
 	{
-		return sprintf('[label.format/]', [for (feature : ServiceFeature | label.features) separator(', ')]
-$this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssociation))]
-->displayLabel()[/if][/for]);
+		return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
+$this->[if (feature.oclIsTypeOf(ModelLabelElement))]
+[feature.oclAsType(ModelLabelElement).serviceFeature.modelPropertyName()/][else]
+[let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
+[association.serviceFeature.modelPropertyName()/]->[if (association.dynamicLabel.oclIsUndefined())]defaultLabel()[else][association.dynamicLabel.name/]()[/if][/let]
+[/if][/for]);
 	}
 
 [/for]
@@ -201,15 +207,6 @@ $this->[feature.modelPropertyName()/][if (feature.oclIsTypeOf(ServiceEntityAssoc
 		return empty($this->_control_fields) ? $rules : array_intersect_key($rules, $this->_control_fields);
 		[/if]
 	[/if]
-	}
-
-	public function labels()
-	{
-		return array(
-	[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-			'[feature.modelPropertyName()/]' => '[feature.displayLabel/]',
-	[/for]
-		);
 	}
 
 [/let]

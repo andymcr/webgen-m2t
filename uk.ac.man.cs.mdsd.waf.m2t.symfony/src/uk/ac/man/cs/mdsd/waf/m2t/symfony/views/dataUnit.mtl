@@ -355,28 +355,23 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 [let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (feature.units->isEmpty())]
 	[if (feature.displayOption = CollectionDisplayOptions::PageDirection)]
-<?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) {
-	?><p><?php echo $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]; ?></p>
-<?php } ?>
+{% for value in [instanceVariable/].[feature.modelPropertyName()/] %}
+	<p>{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}</p>
+{% endfor %}
 	[else]
-<?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) { ?><span><?php 
-		[if (feature.actions->isEmpty())]
-	echo $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if];
+{% for value in [instanceVariable/].[feature.modelPropertyName()/] %}
+<span>[if (feature.actions->isEmpty())]
+{{ $value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}
 		[else]
 		[let action : InlineAction = feature.actions->first()]
 		[let targetController : Page = action.controller()]
-	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
-				'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).routeParameterName()/]' => $value->[field.displayedOn.service.keyName()/]
-			), FALSE),
-		HTML::chars($value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]),
-		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $value->[if (feature.dynamicLabel.oclIsUndefined())]displayLabel()[else][feature.dynamicLabel/]()[/if]),
-	));
+	<a href="{{ path('[targetController.name/]') }}"
+title="[action.displayLabel/] {{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]) }}">
+		{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}</a>
 		[/let]
 		[/let]
 		[/if]
-?></span><?php } ?>
+?></span>{% endfor %}
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = feature.units->first()]
@@ -436,36 +431,6 @@ displayLabel()[else]
 
 [template public generateAction(action : InlineAction, instanceVariable : String) post(trim())]
 [let targetController : Page = action.controller()]
-<?php
-	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri([if (not action.oclIsTypeOf(SelectAction))]array(
-			'action' => '[action.actionName()/]',
-			'param' => $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
-		)[/if]
-	[if (action.usedBy.oclAsType(DynamicUnit).pageDisplayedOn().hasParameterisedUnits())]
-		[if (action.oclIsTypeOf(SelectAction))]
-) . URL::query(array_merge($query_parameters, array(
-			'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).routeParameterName()/]' =>  $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
-		)), FALSE),
-		[else]
-) . URL::query($query_parameters, FALSE),
-		[/if]
-	[else]
-		[if (action.oclIsTypeOf(SelectAction))]
-) . URL::query(array(
-			'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).routeParameterName()/]' =>  $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
-		), FALSE),
-		[else]
-),
-		[/if]
-	[/if]
-		HTML::chars(__('[action.displayLabel/]')),
-		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $[instanceVariable/]->displayLabel()),
-	[if (action.oclIsTypeOf(DeleteAction))]
-			'onclick' => 'return confirm(\'' . $[instanceVariable/]->displayLabel() . ' ' . __('[action.oclAsType(DeleteAction).oclAsType(DeleteAction).confirmMessage/]') . '\');'
-	[/if]
-	));
-?>
+<a href="{{ path('[targetController.name/]') }}" title="[action.displayLabel/] [instanceVariable/].displayLabel(">[action.displayLabel/]</a>
 [/let]
 [/template]
