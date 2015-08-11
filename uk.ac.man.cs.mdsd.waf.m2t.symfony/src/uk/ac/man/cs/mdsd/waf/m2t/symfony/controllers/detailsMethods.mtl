@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module detailsMethods(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
+
+
+[template public generateUnitDisplay(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+$[detailsUnit.instanceName()/] = $this->getDoctrine()
+    ->getRepository('[detailsUnit.appBundleName()/]:[detailsUnit.service.modelName/]')
+    ->find(-1);
+[/let]
+[/template]
+
+[template public generateUnitTemplateParameters(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+'[detailsUnit.instanceName()/]' => $[detailsUnit.instanceName()/],
+[/let]
+[/template]
+
+[template public generateUnitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[for (action : InlineAction | detailsUnit.uriActions())]
+[action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
+[/for]
+[/let]
+[/template]

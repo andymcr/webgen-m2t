@@ -557,6 +557,22 @@
 	= page.units->select(u | not u.oclIsKindOf(DynamicUnit))
 /]
 
+[query public path(page : Page) : String
+	= let path : String
+		= if page.path.startsWith('/') then
+				page.path
+			else
+				'/'.concat(page.path)
+			endif
+		in if page.parentPage.oclIsUndefined() then
+			path
+		else if page.parentPage.name = 'Home' then
+			path
+		else
+			page.parentPage.path().concat(path)
+		endif endif
+/]
+
 [query public parameterisedUnits(page : Page) : OrderedSet(DynamicUnit)
 	= page.units->select(u | u.isParameterised())
 /]
@@ -796,6 +812,10 @@
 		else
 			true
 		endif)
+/]
+
+[query public path(unit : ContentUnit) : String
+	= unit.path
 /]
 
 [query public pageDisplayedOn(unit : ContentUnit) : Page

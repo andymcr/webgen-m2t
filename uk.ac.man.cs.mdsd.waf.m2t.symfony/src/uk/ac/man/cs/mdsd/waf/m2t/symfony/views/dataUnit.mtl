@@ -11,16 +11,12 @@
 	? (unit.oclIsKindOf(DataUnit)) post(trim())]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 [file(dataUnit.viewFilename(), false)]
-<section class="[dataUnit.styleClass/]<?php
-	if (isset($[dataUnit.instanceName()/]_error)) {
-		echo ' [dataUnit.errorClass/]';
-	}
-?>" id="[dataUnit.instanceName()/]">
+<section class="[dataUnit.styleClass/]{%if [dataUnit.instanceName()/]_error is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
  <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.generateUnitTitle(dataUnit.instanceName())/]</h1>
- <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.instanceName()/]_error)) echo ' hidden'; ?>">
-<?php if (!empty($[dataUnit.instanceName()/]_error)) { ?>
-  <p class="[dataUnit.errorClass/]"><?php echo __($[dataUnit.instanceName()/]_error); ?></p>
-<?php } ?>
+ <section class="[dataUnit.errorClass/]{% if not [dataUnit.instanceName()/]_error is defined %} hidden{% endif %}">
+{% if [dataUnit.instanceName()/]_error is defined %}
+  <p class="[dataUnit.errorClass/]">{{ [dataUnit.instanceName()/]_error }}</p>
+{% endif %}
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.generateViewContent(dataUnit.instanceName())/]
@@ -51,16 +47,18 @@
 [elseif (unit.dynamicTitle.oclIsTypeOf(ServiceEntityElement))]
 [let element : ServiceEntityElement = unit.dynamicTitle.oclAsType(ServiceEntityElement)]
 	[if (not element.isEnumerationTypeSingleton())]
-<?php echo HTML::chars($[instanceVariable/]->[element.modelPropertyName()/]); ?>
+{% if [instanceVariable/] %}
+{{ [instanceVariable/].[element.modelPropertyName()/] }}
+{% endif %}
 	[else]
-[let enumerationType : EnumerationType
-	= element.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
-<?php echo [enumerationType.modelClassName()/]::option($entry->[element.modelPropertyName()/]); ?>
-[/let]
+	[let enumerationType : EnumerationType
+		= element.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+{{ [enumerationType.modelClassName()/]::option(entry.[element.modelPropertyName()/]) }}
+	[/let]
 	[/if]
 [/let]
 [else]
-<?php echo HTML::chars($[instanceVariable/]->[unit.dynamicTitle.oclAsType(ModelLabel).name/]()); ?>
+{{ [instanceVariable/].[unit.dynamicTitle.oclAsType(ModelLabel).name/]() }}
 [/if]
 [/template]
 
@@ -106,11 +104,7 @@
 [/if]
 [for (displayField : UnitField | unit.displayFields)]
 	[if (displayField.conditionalDisplay())]
-		[if (displayField.oclIsKindOf(UnitElement))]
- <?php if (!empty($[instanceVariable/]->[displayField.modelPropertyName()/])) { ?>
-		[else]
- <?php if ($[instanceVariable/]->[displayField.modelPropertyName()/]->loaded()) { ?>
-		[/if]
+{% if [instanceVariable/].[displayField.modelPropertyName()/] %}
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
 <li class="[displayField.displayClass()/]">[displayField.generateDisplayField(instanceVariable)/]</li>
@@ -119,7 +113,7 @@
  <dd class="[displayField.displayClass()/]">[displayField.generateDisplayField(instanceVariable)/]</dd>
 	[/if]
 	[if (displayField.conditionalDisplay())]
-  <?php } ?>
+{% endif %}
 	[/if]
 [/for]
 [if (unit.hasOmitFieldLabels())]
@@ -141,15 +135,11 @@
 [/if]
 [for (displayField : UnitField | indexUnit.displayFields) ]
 	[if (displayField.conditionalDisplay())]
-		[if (displayField.oclIsKindOf(UnitElement))]
-<?php if (!empty($entry->[displayField.modelPropertyName()/])) { ?>
-		[else]
-<?php if ($entry->[displayField.modelPropertyName()/]->loaded()) { ?>
-		[/if]
+{% if [instanceVariable/].[displayField.modelPropertyName()/] %}
 	[/if]
 <span class="[displayField.modelPropertyName()/]">[displayField.generateDisplayField('entry')/]</span>
 	[if (displayField.conditionalDisplay())]
-<?php } ?>
+{% endif %}
 	[/if]
 [/for]
 [if (indexUnit.actions->notEmpty())]
@@ -305,9 +295,9 @@ $[feature.name/][else]
 	? (field.isResourceSingleton()) post(trim())]
 [let feature : UnitElement = field.oclAsType(UnitElement)]
 <?php
-	if (!empty($[instanceVariable/]->[feature.modelPropertyName()/]))
+	if (!empty($[instanceVariable/].[feature.modelPropertyName()/]))
 		echo HTML::anchor(
-			$[instanceVariable/]->[feature.modelPropertyName()/],
+			$[instanceVariable/].[feature.modelPropertyName()/],
 			'[feature.displayLabel()/]',
 			NULL, NULL, FALSE);
 ?>
@@ -319,7 +309,9 @@ $[feature.name/][else]
 [let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (feature.units->isEmpty())]
 	[if (feature.actions->isEmpty())]
-{{ [feature.generateDisplayFieldAssess(instanceVariable)/] [if (feature.maximumDisplaySize > 0)]| truncate([feature.maximumDisplaySize/]) [/if]}}
+{% if [feature.generateDisplayFieldAssess(instanceVariable)/] %}
+{{ [feature.generateDisplayFieldAssess(instanceVariable)/].[feature.generateAssociationLabel()/] [if (feature.maximumDisplaySize > 0)]| truncate([feature.maximumDisplaySize/]) [/if]}}
+{% endif %}
 	[else]
 	[let action : InlineAction = feature.actions->first()]
 	[let targetController : Page = action.controller()]
@@ -344,7 +336,7 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = feature.units->first()]
-[feature.units.generateViewContent(instanceVariable.concat('->').concat(feature.modelPropertyName()))/]
+[feature.units.generateViewContent(instanceVariable.concat('.').concat(feature.modelPropertyName()))/]
 [/let]
 [/if]
 [/let]
@@ -361,7 +353,7 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 	[else]
 {% for value in [instanceVariable/].[feature.modelPropertyName()/] %}
 <span>[if (feature.actions->isEmpty())]
-{{ $value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}
+{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}
 		[else]
 		[let action : InlineAction = feature.actions->first()]
 		[let targetController : Page = action.controller()]
@@ -388,6 +380,12 @@ find_all()[else]
 [/let]
 [/template]
 
+[template public generateAssociationLabel(association : UnitAssociation) post(trim())]
+[if (not association.dynamicLabel.oclIsUndefined())]
+[association.dynamicLabel.name/]()[else]
+defaultLabel()[/if]
+[/template]
+
 
 [template public generateDisplayFieldAssess(field : UnitField, instanceVariable : String)
 	? (field.oclIsTypeOf(UnitElement)) post(trim())]
@@ -404,10 +402,8 @@ Form::checkbox('[field.modelPropertyName()/]', '1', (bool) $[instanceVariable/]-
 [template public generateDisplayFieldAssess(field : UnitField, instanceVariable : String)
 	? (field.oclIsTypeOf(UnitAssociation)) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[instanceVariable/].[field.modelPropertyName()/].[if (not association.dynamicLabel.oclIsUndefined())]
-[association.dynamicLabel.name/]()[elseif (not association.childFeature.oclIsUndefined())]
-[association.childFeature.generateDisplayChildAssess()/][else]
-displayLabel()[/if]
+[instanceVariable/].[field.modelPropertyName()/][if (not association.childFeature.oclIsUndefined())]
+.[association.childFeature.generateDisplayChildAssess()/][/if]
 [/let]
 [/template]
 
@@ -421,10 +417,8 @@ displayLabel()[/if]
 [template public generateDisplayChildAssess(child : UnitChildFeature)
 	? (child.oclIsTypeOf(UnitChildAssociation)) post(trim())]
 [let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)]
-[association.serviceFeature.modelPropertyName()/]->[if (association.childFeature.oclIsUndefined())]
-displayLabel()[else]
-[association.childFeature.generateDisplayChildAssess()/]
-[/if]
+[association.serviceFeature.modelPropertyName()/][if (not association.childFeature.oclIsUndefined())]
+.[association.childFeature.generateDisplayChildAssess()/][/if]
 [/let]
 [/template]
 

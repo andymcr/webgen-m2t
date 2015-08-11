@@ -32,10 +32,10 @@ class [service.serviceClassName()/]
             ->where([selection.filter.generateDoctrineExpression()/])
 	[/if]
 	[if (selection.ordering->size() > 0)]
-//            ->orderBy(, [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if])
+            ->orderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if])
 		[if (selection.ordering->size() > 1)]
 			[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-//            ->addOrderBy(, [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if])
+            ->addOrderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if])
 			[/for]
 		[/if]
 	[/if]
