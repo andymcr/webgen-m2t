@@ -232,6 +232,7 @@ public class WebsiteDiagramEditorUtil {
 		model.getClassifiers().add(email);
 		email.setName("Email");
 		email.setPersistentType("String");
+		email.setOrmType("string");
 
 		return model;
 	}
