@@ -16,8 +16,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::pageController/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::services::service/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::dataUnit/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::sidemenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::site/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::topmenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::types::formType/]
 
 
@@ -37,6 +39,8 @@
 [model.pages.generateController()/]
 
 [model.generateCSS(model.cssDirectory())/]
+[model.generateMenu()/]
+[model.menus.generateMenu()/]
 [model.generatePage()/]
 [model.pages.generatePage()/]
 [model.pages.units.generateUnitView()/]

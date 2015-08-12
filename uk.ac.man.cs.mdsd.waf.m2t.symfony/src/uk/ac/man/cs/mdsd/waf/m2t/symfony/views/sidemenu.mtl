@@ -1,0 +1,62 @@
+[comment encoding = UTF-8 /]
+[module sidemenu(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public generateMenu(menu : Menu)]
+[file(menu.menuFilename(), false)]
+<section  class="[menu.styleClass()/]" id="[menu.instanceName()/]">
+ [menu.generateMenuEntries()/]
+</section>
+[/file]
+[/template]
+
+
+[template private generateMenuEntries(menu : Menu)
+	? (menu.oclIsTypeOf(DynamicMenu)) post(trim())]
+[let dynamicMenu : DynamicMenu = menu.oclAsType(DynamicMenu)]
+[if (dynamicMenu.dynamicTitle.oclIsUndefined())]
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">[dynamicMenu.displayLabel/]</h1>
+[else]
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">{{ [dynamicMenu.instanceName()/].[dynamicMenu.dynamicTitle.modelPropertyName()/] }}</h1>
+[/if]
+<ul class="[dynamicMenu.layoutClass/]">
+ [menu.entries.generateMenuEntry()/]
+</ul>
+[/let]
+[/template]
+
+[template private generateMenuEntries(menu : Menu)
+	? (menu.oclIsTypeOf(StaticMenu)) post(trim())]
+[let staticMenu : StaticMenu = menu.oclAsType(StaticMenu)]
+<h1 class="[staticMenu.captionClass/][if (staticMenu.omitCaption)] hidden[/if]">[staticMenu.displayLabel/]</h1>
+<ul class="[staticMenu.layoutClass/]">
+ [menu.entries.generateMenuEntry()/]
+</ul>
+[/let]
+[/template]
+
+
+[template private generateMenuEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(FixedPageMenuEntry))]
+[let entry : FixedPageMenuEntry = entry.oclAsType(FixedPageMenuEntry)]
+<li><a href="{{ path('[entry.page.name/]') }}">[entry.displayLabel/]</a></li>
+[/let]
+[/template]
+
+[template private generateMenuEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(FixedActionMenuEntry))]
+[let entry : FixedActionMenuEntry = entry.oclAsType(FixedActionMenuEntry)]
+<li><a href="{{ path('[entry.action.pageDisplayedOn().name/]') }}">[entry.displayLabel/]</a></li>
+[/let]
+[/template]
+
+[template private generateMenuEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(FixedCommandMenuEntry))]
+[let entry : FixedCommandMenuEntry = entry.oclAsType(FixedCommandMenuEntry)]
+<li><{{ entry.displayLabel() }}</li>
+[/let]
+[/template]

@@ -29,12 +29,16 @@
  <h1 id="banner">[model.siteTitle/]</h1>
 </header>
 {% block topbar %}
+{{ include('Menu/topbar[model.htmlExtension()/][model.twigExtension()/]') }}
 {% endblock %}
-<?php if (isset($sidebar)) echo $sidebar; ?>
-<main <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>id="content">
-<?php if (!empty($page_message)) { ?>
- <p><?php echo __($page_message); ?></p>
-<?php } ?>
+{% block sidebar %}
+<section  class="menu" id="sidebar">
+</section>
+{% endblock %}
+<main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
+{% if page_message is defined %}
+ <p>{{ page_message }}</p>
+{% endif %}
 {% block content %}
 {% endblock %}
 </main>

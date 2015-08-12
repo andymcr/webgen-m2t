@@ -39,6 +39,10 @@
 	= eObject.formDirectory().concat('/').concat('Type')
 /]
 
+[query public menuDirectory(eObject : EObject) : String
+	= eObject.viewsDirectory().concat('/').concat('Menu')
+/]
+
 [query public modelsDirectory(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/').concat('Entity')
 /]
@@ -115,10 +119,10 @@
 		.concat(service.executableExtension())
 /]
 
-[comment query public menuFilename(genMenu : GenMenu) : String
-	= genMenu.menuDirectory().concat('/')
-		.concat(genMenu.instanceName())
-		.concat(genMenu.executableExtension())
+[query public menuFilename(menu : Menu) : String
+	= menu.menuDirectory().concat('/')
+		.concat(menu.instanceName())
+		.concat(menu.htmlExtension()).concat(menu.twigExtension())
 /]
 
 [comment query public modelFilename(enumerationType : EnumerationType) : String

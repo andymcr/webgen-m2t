@@ -1,0 +1,36 @@
+[comment encoding = UTF-8 /]
+[module topmenu(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public generateMenu(model : WafModel)]
+[file(model.menuDirectory().concat('/topbar').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+<nav id="[model.topNavigationId/]">
+[if (model.topMenuItemsAuthenticated()->notEmpty())]
+ <ul>
+[/if]
+[for (page : Page | model.topMenuItemsAuthenticated())]
+  <li><a href="{{ path('[page.name/]') }}">[page.navigationLabel/]</a></li>
+[/for]
+  <li id="authentication">{# <?php
+	echo __('Logged in as ') . $user->username;
+	echo '&nbsp;';
+	echo HTML::anchor(
+		Route::get('[if (model.authentication.oclIsTypeOf(CasAuthentication))]
+TBC[elseif (model.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[model.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.controllerName()/][else]
+TBC[/if]')->uri(array(
+			'action' => 'logout',
+		)),
+		HTML::chars(__('[model.authentication.logoutLabel/]')));
+?> #}</li>
+[if (model.topMenuItemsAuthenticated()->notEmpty())]
+ </ul>
+[/if]
+</nav>
+[/file]
+[/template]

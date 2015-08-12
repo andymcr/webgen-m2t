@@ -24,6 +24,10 @@
 	= 'Controller'
 /]
 
+[query public instanceName(menu : Menu) : String
+	= menu.name.toLowerFirst()
+/]
+
 [query public controllerName(page : Page) : String
 	= page.name
 /]
@@ -36,10 +40,6 @@
 	= page.name.toLowerFirst()
 /]
 
-
-[comment query public instanceName(genMenu : GenMenu) : String
-	= genMenu.name().toLowerFirst()
-/]
 
 [comment query public actionName(genUnit : GenContentUnit) : String
 	= genUnit.instanceName()
@@ -86,10 +86,6 @@
 		else
 			'unhandled'
 		endif
-/]
-
-[comment query public templateInstanceName(genUnit : GenContentUnit) : String
-	= genUnit.instanceName().concat('_template')
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
