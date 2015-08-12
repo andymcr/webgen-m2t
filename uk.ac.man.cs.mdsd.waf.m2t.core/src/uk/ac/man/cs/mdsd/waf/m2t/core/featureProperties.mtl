@@ -450,6 +450,18 @@
 	in name
 /]
 
+[query public oppositeModelPropertyName(feature : ServiceFeature) : String
+	= let name : String =
+		if feature.oclIsTypeOf(ServiceEntityAssociation) then
+			feature.oclAsType(ServiceEntityAssociation).oppositeFeature.modelPropertyName()
+		else if feature.oclIsTypeOf(ServiceViewAssociation) then
+			feature.oclAsType(ServiceViewAssociation).oppositeFeature.columnName()
+		else
+			'unhandledFeature'
+		endif endif
+	in name
+/]
+
 
 [query public displayLabel(action : UnitSupportAction) : String
 	= action.displayLabel
@@ -797,12 +809,26 @@
 	= unit.pageDisplayedOn().isAuthenticated()
 /]
 
-[query public isParameterised(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(DataUnit) then
+[ comment if unit.oclIsKindOf(DataUnit) then
 			unit.oclAsType(DataUnit).selection.oclIsUndefined()
 		else
 			unit.oclIsKindOf(EditUnit)
 		endif
+	/]
+[query public isParameterised(unit : ContentUnit) : Boolean
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+				not unit.oclAsType(CreateUpdateUnit).selectionFeature.oclIsUndefined()
+			else if unit.oclIsTypeOf(DetailsUnit) then
+				not unit.oclAsType(DetailsUnit).selectionFeature.oclIsUndefined()
+			else if unit.oclIsTypeOf(IndexUnit) then
+				not unit.oclAsType(IndexUnit).selectionFeature.oclIsUndefined()
+			else if unit.oclIsTypeOf(MapUnit) then
+				not unit.oclAsType(MapUnit).selectionFeature.oclIsUndefined()
+			else if unit.oclIsTypeOf(UpdateUnit) then
+				not unit.oclAsType(UpdateUnit).selectionFeature.oclIsUndefined()
+			else
+				false
+			endif endif endif endif endif
 /]
 
 [query public nonResourceInputFeatures(unit : DynamicUnit) : Set(UnitField)

@@ -29,9 +29,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/] {
 
 	/**
-	 * @Route("[page.path()/]", name="[page.name/]")
+	 * @Route("[page.path()/][for (unit : DynamicUnit | page.parameterisedUnits()) separator (', ')]
+/{[unit.routeParameterName()/]}[/for]", name="[page.name/]")
 	 */
-	public function indexAction()
+	public function indexAction([for (unit : DynamicUnit | page.parameterisedUnits()) separator (', ')]
+$[unit.routeParameterName()/] = NULL[/for])
 	{
 [for (unit : DynamicUnit | page.dynamicUnits())]
         [unit.generateUnitDisplay()/]

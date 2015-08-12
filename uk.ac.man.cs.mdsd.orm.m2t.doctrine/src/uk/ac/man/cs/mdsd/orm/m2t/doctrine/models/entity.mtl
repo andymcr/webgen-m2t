@@ -48,7 +48,7 @@ class [service.modelClassName()/]
 		[/let]
 		[else]
 		[let collection : CollectionAssociation = attribute.oclAsType(CollectionAssociation)]
-	 * @ORM\[collection.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany)], mappedBy="[association.oppositeColumnName()/]"[/if])
+	 * @ORM\[collection.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany)], mappedBy="[association.oppositeModelPropertyName()/]"[/if])
 		[if (association.isOwningEnd())]
      * @ORM\JoinTable(name="[association.feature.pivotTableName/]",
 			joinColumns={@ORM\JoinColumn(name="[feature.oppositeColumnName()/]")},

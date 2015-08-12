@@ -9,9 +9,13 @@
 [template public generateUnitDisplay(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.isParameterised())]
 $[detailsUnit.instanceName()/] = $this->getDoctrine()
     ->getRepository('[detailsUnit.appBundleName()/]:[detailsUnit.service.modelName/]')
-    ->find(-1);
+    ->findOneBy(array('[detailsUnit.routeParameterName()/]' => $[detailsUnit.routeParameterName()/]));
+[else]
+$[detailsUnit.instanceName()/] = NULL;
+[/if]
 [/let]
 [/template]
 

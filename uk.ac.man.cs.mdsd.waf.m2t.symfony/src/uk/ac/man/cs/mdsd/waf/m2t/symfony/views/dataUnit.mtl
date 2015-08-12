@@ -11,7 +11,7 @@
 	? (unit.oclIsKindOf(DataUnit)) post(trim())]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 [file(dataUnit.viewFilename(), false)]
-<section class="[dataUnit.styleClass/]{%if [dataUnit.instanceName()/]_error is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
+<section class="[dataUnit.styleClass/]{% if not [dataUnit.instanceName()/] %} hidden{% endif %}{%if [dataUnit.instanceName()/]_error is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
  <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.generateUnitTitle(dataUnit.instanceName())/]</h1>
  <section class="[dataUnit.errorClass/]{% if not [dataUnit.instanceName()/]_error is defined %} hidden{% endif %}">
 {% if [dataUnit.instanceName()/]_error is defined %}
@@ -46,16 +46,12 @@
 [unit.displayLabel/]
 [elseif (unit.dynamicTitle.oclIsTypeOf(ServiceEntityElement))]
 [let element : ServiceEntityElement = unit.dynamicTitle.oclAsType(ServiceEntityElement)]
-	[if (not element.isEnumerationTypeSingleton())]
-{% if [instanceVariable/] %}
-{{ [instanceVariable/].[element.modelPropertyName()/] }}
-{% endif %}
-	[else]
+{% if [instanceVariable/] %}[if (not element.isEnumerationTypeSingleton())]
+{{ [instanceVariable/].[element.modelPropertyName()/] }}[else]
 	[let enumerationType : EnumerationType
 		= element.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
-{{ [enumerationType.modelClassName()/]::option(entry.[element.modelPropertyName()/]) }}
-	[/let]
-	[/if]
+{{ [enumerationType.modelClassName()/]::option(entry.[element.modelPropertyName()/]) }}[/let]
+	[/if]{% endif %}
 [/let]
 [else]
 {{ [instanceVariable/].[unit.dynamicTitle.oclAsType(ModelLabel).name/]() }}
@@ -97,6 +93,7 @@
 
 [template public generateDetailsContent(unit : DataUnit, instanceVariable : String)
 	post(trim())]
+{% if [instanceVariable/] %}
 [if (unit.hasOmitFieldLabels())]
 <ul class="[unit.layoutClass/]">
 [else]
@@ -121,6 +118,7 @@
 [else]
 </dl>
 [/if]
+{% endif %}
 [/template]
 
 [template protected generateViewContent(unit : DataUnit, instanceVariable : String)
@@ -211,7 +209,8 @@
    <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
     [action.generateAction('entry')/]
-	[/for]</td>
+	[/for]
+   </td>
  [/if]
   </tr>
 {% endfor %}
@@ -226,39 +225,15 @@
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 [if (feature.actions->isEmpty())]
 	[if (feature.isBooleanDataType())]
-	echo [feature.generateDisplayFieldAssess(instanceVariable)/];
+<input type="checkbox"{% if [instanceVariable/] %} checked="checked"{% endif %} disabled=""/>
 	[else]
-{{ [feature.generateDisplayFieldAssess(instanceVariable)/] [if (feature.maximumDisplaySize > 0)]| truncate([feature.maximumDisplaySize/]) [/if]}}
+{{ [feature.generateDisplayFieldAssess(instanceVariable)/][if (feature.maximumDisplaySize > 0)] | truncate([feature.maximumDisplaySize/]) [/if] }}
 [/if]
 [else]
 [let action : InlineAction = feature.actions->first()]
 [let targetController : Page = action.controller()]
-[let targetUnit : DynamicUnit = action.oclAsType(SelectAction).target.oclAsType(DynamicUnit)]
-[comment <?php /]
-	[if (feature.maximumDisplaySize > 0)]
-	[let maxSize : Integer = feature.maximumDisplaySize]
-	if (strlen([feature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
-		$[feature.name/] = substr([feature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
-	else
-		$[feature.name/] = [feature.generateDisplayFieldAssess(instanceVariable)/];
-	[/let]
-	[/if]
-	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
-				'[targetUnit.routeParameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
-$[instanceVariable/]->[field.modelPropertyName()/]->[targetUnit.service.keyName()/]
-[else]
-$[instanceVariable/]->[field.displayedOn.service.keyName()/]
-[/if]
-			), FALSE),
-		HTML::chars([if (feature.maximumDisplaySize > 0)]
-$[feature.name/][else]
-[feature.generateDisplayFieldAssess(instanceVariable)/][/if]),
-		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [field.generateDisplayFieldAssess(instanceVariable)/]),
-	));
-[comment ?> /]
-[/let]
+<a href="{{ path('[targetController.name/]') }}">{{ [feature.generateDisplayFieldAssess(instanceVariable)/][if (feature.maximumDisplaySize > 0)]
+ | truncate([feature.maximumDisplaySize/]) [/if] }}</a>
 [/let]
 [/let]
 [/if]
@@ -307,30 +282,20 @@ $[feature.name/][else]
 [template public generateDisplayField(field : UnitField, instanceVariable : String)
 	? (field.isAssociationSingleton()) post(trim())]
 [let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (feature.units->isEmpty())]
+{% if [feature.generateDisplayFieldAssess(instanceVariable)/] %}[if (feature.units->isEmpty())]
 	[if (feature.actions->isEmpty())]
-{% if [feature.generateDisplayFieldAssess(instanceVariable)/] %}
-{{ [feature.generateDisplayFieldAssess(instanceVariable)/].[feature.generateAssociationLabel()/] [if (feature.maximumDisplaySize > 0)]| truncate([feature.maximumDisplaySize/]) [/if]}}
-{% endif %}
+{{ [feature.generateDisplayFieldAssess(instanceVariable)/].[feature.generateAssociationLabel()/][if (feature.maximumDisplaySize > 0)]
+ | truncate([feature.maximumDisplaySize/]) [/if]}}
 	[else]
 	[let action : InlineAction = feature.actions->first()]
 	[let targetController : Page = action.controller()]
-	[let targetUnit : DynamicUnit = action.oclAsType(SelectAction).target.oclAsType(DynamicUnit)]
-<?php
-	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
-				'[targetUnit.routeParameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
-$[instanceVariable/]->[field.modelPropertyName()/]->[targetUnit.service.keyName()/]
-	[else]
-$[instanceVariable/]->[field.displayedOn.service.keyName()/]
-	[/if]
-			), FALSE),
-		HTML::chars([feature.generateDisplayFieldAssess(instanceVariable)/]),
-		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [feature.generateDisplayFieldAssess(instanceVariable)/]),
-	));
-?>
-	[/let]
+<a href="{{ path('[targetController.name/]'[if (action.oclIsTypeOf(SelectAction))]
+[let select : SelectAction = action.oclAsType(SelectAction)]
+	[if (not select.target.selectionFeature.oclIsUndefined())]
+, { '[select.routeParameterName()/]': [instanceVariable/].[select.target.selectionFeature.modelPropertyName()/]}[/if]
+[/let]
+[/if]) }}">{{ [feature.generateDisplayFieldAssess(instanceVariable)/].[feature.generateAssociationLabel()/][if (feature.maximumDisplaySize > 0)]
+ | truncate([feature.maximumDisplaySize/]) [/if] }}</a>
 	[/let]
 	[/let]
 	[/if]
@@ -340,6 +305,7 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 [/let]
 [/if]
 [/let]
+{% endif %}
 [/template]
 
 [template public generateDisplayField(field : UnitField, instanceVariable : String)
@@ -351,30 +317,27 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 	<p>{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}</p>
 {% endfor %}
 	[else]
-{% for value in [instanceVariable/].[feature.modelPropertyName()/] %}
-<span>[if (feature.actions->isEmpty())]
-{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}
-		[else]
+{% for value in [instanceVariable/].[feature.modelPropertyName()/] %}<span>[if (feature.actions->isEmpty())]
+{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}[else]
 		[let action : InlineAction = feature.actions->first()]
 		[let targetController : Page = action.controller()]
 	<a href="{{ path('[targetController.name/]') }}"
-title="[action.displayLabel/] {{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]) }}">
-		{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}</a>
-		[/let]
+title="[action.displayLabel/] {{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]
+) }}">{{ value.[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if] }}</a>[/let]
 		[/let]
 		[/if]
-?></span>{% endfor %}
+</span>{% endfor %}
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = feature.units->first()]
-<?php
-	$[field.displayedOn.uniqueName()/] = $[instanceVariable/]->[feature.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+{# <?php
+	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
 [if (embeddedIndexUnit.selection.oclIsUndefined())]
 find_all()[else]
 [embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
-?>
-[feature.units.generateViewContent(field.displayedOn.uniqueName())/]
+?> #}
+[feature.units.generateViewContent(instanceVariable.concat('.').concat(feature.modelPropertyName()))/]
 [/let]
 [/if]
 [/let]
@@ -390,10 +353,7 @@ defaultLabel()[/if]
 [template public generateDisplayFieldAssess(field : UnitField, instanceVariable : String)
 	? (field.oclIsTypeOf(UnitElement)) post(trim())]
 [if (field.isBooleanDataType())]
-Form::checkbox('[field.modelPropertyName()/]', '1', (bool) $[instanceVariable/]->[field.modelPropertyName()/], array(
-		'class' => '[field.styleClass()/] [field.inputClass()/]',
-		'disabled' => ''
-))
+<input type="checkbox"{% if [instanceVariable/].[field.modelPropertyName()/] %} checked="checked"{% endif %} disabled=""/>
 [else]
 [instanceVariable/].[field.modelPropertyName()/]
 [/if]
@@ -425,6 +385,11 @@ Form::checkbox('[field.modelPropertyName()/]', '1', (bool) $[instanceVariable/]-
 
 [template public generateAction(action : InlineAction, instanceVariable : String) post(trim())]
 [let targetController : Page = action.controller()]
-<a href="{{ path('[targetController.name/]') }}" title="[action.displayLabel/] [instanceVariable/].displayLabel(">[action.displayLabel/]</a>
+<a href="{{ path('[targetController.name/]'[if (action.oclIsTypeOf(SelectAction))]
+[let select : SelectAction = action.oclAsType(SelectAction)]
+	[if (not select.target.selectionFeature.oclIsUndefined())]
+, { '[select.routeParameterName()/]': [instanceVariable/].[select.target.selectionFeature.modelPropertyName()/]}[/if]
+[/let]
+[/if]) }}" title="[action.displayLabel/] {{ [instanceVariable/].defaultLabel() }}">[action.displayLabel/]</a>
 [/let]
 [/template]

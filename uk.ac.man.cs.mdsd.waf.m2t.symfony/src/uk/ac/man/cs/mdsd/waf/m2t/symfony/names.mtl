@@ -81,7 +81,11 @@
 /]
 
 [query public routeParameterName(unit : ContentUnit) : String
-	= unit.instanceName()
+	= if unit.oclIsKindOf(SelectTarget) then
+			unit.oclAsType(SelectTarget).routeParameterName()
+		else
+			'unhandled'
+		endif
 /]
 
 [comment query public templateInstanceName(genUnit : GenContentUnit) : String
@@ -194,8 +198,20 @@
 		in genUnit.genService.modelName()
 /]
 
+[query public routeParameterName(target : SelectTarget) : String
+	= if not target.selectionFeature.oclIsUndefined() then
+			target.selectionFeature.name
+		else
+			''
+		endif
+/]
+
 [query public routeParameterName(action : InlineAction) : String
-	= action.actionName()
+	= if action.oclIsKindOf(SelectAction) then
+			action.oclAsType(SelectAction).target.routeParameterName()
+		else
+			action.actionName()
+		endif
 /]
 
 
