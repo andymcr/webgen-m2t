@@ -10,10 +10,10 @@
 [template public generateMenu(model : WafModel)]
 [file(model.menuDirectory().concat('/topbar').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 <nav id="[model.topNavigationId/]">
-[if (model.topMenuItemsAuthenticated()->notEmpty())]
+[if (model.topMenuItems()->notEmpty())]
  <ul>
 [/if]
-[for (page : Page | model.topMenuItemsAuthenticated())]
+[for (page : Page | model.topMenuItems())]
   <li><a href="{{ path('[page.name/]') }}">[page.navigationLabel/]</a></li>
 [/for]
   <li id="authentication">{# <?php
@@ -28,7 +28,7 @@ TBC[/if]')->uri(array(
 		)),
 		HTML::chars(__('[model.authentication.logoutLabel/]')));
 ?> #}</li>
-[if (model.topMenuItemsAuthenticated()->notEmpty())]
+[if (model.topMenuItems()->notEmpty())]
  </ul>
 [/if]
 </nav>

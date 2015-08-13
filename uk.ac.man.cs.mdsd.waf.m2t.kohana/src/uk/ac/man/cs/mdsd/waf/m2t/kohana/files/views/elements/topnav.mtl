@@ -10,14 +10,16 @@
 [template public generateTopNav(model : WafModel)]
 [file(model.viewElementsDirectory().concat('/topbar').concat(model.executableExtension()), false)]
 <nav id="[model.topNavigationId/]">
-[if (model.topMenuItemsNonAuthenticated()->notEmpty() or model.isAuthenticated())]
+[if (model.topMenuItems()->notEmpty() or model.isAuthenticated())]
  <ul>
 [/if]
-[for (page : Page | model.topMenuItemsNonAuthenticated())]
+[for (page : Page | model.topMenuItems())]
+	[if (page.topMenuOption = PageTopMenuOptions::AlwaysInclude)]
   <li><?php
 	echo HTML::anchor(
 		Route::get('[page.controllerName()/]')->uri(),
 		HTML::chars(__('[page.navigationLabel/]'))); ?></li>
+	[/if]
 [/for]
 [if (not model.authentication.oclIsUndefined())]
 [if (model.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
@@ -40,7 +42,7 @@ TBC[elseif (model.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
 TBC[/if]')->uri(),
 		HTML::chars(__('[model.authentication.loginLabel/]'))); ?></li>
 [/if]
-[if (model.topMenuItemsNonAuthenticated()->notEmpty() or model.isAuthenticated())]
+[if (model.topMenuItems()->notEmpty() or model.isAuthenticated())]
  </ul>
 [/if]
 </nav>

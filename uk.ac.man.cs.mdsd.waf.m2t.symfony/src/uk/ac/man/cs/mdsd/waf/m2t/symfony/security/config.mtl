@@ -1,0 +1,67 @@
+[comment encoding = UTF-8 /]
+[module config(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public generateConfigSecurity(model : WafModel)]
+[file (model.configDirectory().concat('/').concat('security').concat(model.ymlExtension()), false)]
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+    encoders:
+[if (model.authentication.useLocalAuthentication() and false)]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+[/let]
+[else]
+        Symfony\Component\Security\Core\User\User: plaintext
+[/if]
+
+    providers:
+[if (model.authentication.useLocalAuthentication() and false)]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+        localDB:
+            entity:
+                class: [localAuthentication.appBundleNamespace()/]:[localAuthentication.authenticationService.modelClassName()/]
+                property: [localAuthentication.authenticationService.modelClassName()/]
+[/let]
+[else]
+        in_memory:
+            memory:
+                users:
+                    webgen:
+                        password: genweb
+                        roles: 'ROLE_USER'
+[/if]
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+[if (model.authentication.useLocalAuthentication() and false)]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+            form_login: ~
+                login_path: [localAuthentication.loginUnit.path()/]
+                check_path: /login_check
+[/let]
+[else]
+            http_basic: ~
+[/if]
+
+    access_control:
+[if (model.authentication.useLocalAuthentication())]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+        - { path: ^[localAuthentication.loginUnit.path()/], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+[/let]
+[/if]
+        - { path: ^/, roles: ROLE_USER }
+[/file]
+[/template]

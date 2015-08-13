@@ -73,7 +73,7 @@
 
 
 [query public appBundleNamespace(eObject : EObject) : String
-	= 'AppBundle'
+	= eObject.appBundleName()
 /]
 
 [query public controllersNamespace(eObject : EObject) : String
@@ -99,7 +99,7 @@
 
 [query public appBundleFilename(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/')
-		.concat('AppBundle')
+		.concat(eObject.appBundleName())
 		.concat(eObject.executableExtension())
 /]
 
@@ -115,7 +115,7 @@
 
 [query public formTypeFilename(service : Service) : String
 	= service.formTypeDirectory().concat('/')
-		.concat(service.modelName).concat('Type')
+		.concat(service.typePrefix()).concat(service.modelName).concat('Type')
 		.concat(service.executableExtension())
 /]
 

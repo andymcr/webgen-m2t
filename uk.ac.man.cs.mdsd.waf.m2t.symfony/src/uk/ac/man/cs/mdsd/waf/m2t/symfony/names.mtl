@@ -19,6 +19,14 @@
 	= service.name.toLowerCase()
 /]
 
+[query public typeClassName(service : Service) : String
+	= service.typePrefix().concat(service.modelName).concat('Type')
+/]
+
+[query public typePrefix(service : Service) : String
+	= 'App'
+/]
+
 
 [query public baseControllerClassName(eObject : EObject) : String
 	= 'Controller'
@@ -41,8 +49,8 @@
 /]
 
 
-[comment query public actionName(genUnit : GenContentUnit) : String
-	= genUnit.instanceName()
+[query public actionName(unit : ContentUnit) : String
+	= unit.instanceName()
 /]
 
 [query public controllerName(unit : DynamicUnit) : String

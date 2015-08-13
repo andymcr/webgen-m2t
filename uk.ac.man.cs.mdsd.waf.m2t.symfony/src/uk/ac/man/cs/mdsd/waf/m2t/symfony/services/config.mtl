@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module services(
+[module config(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
@@ -9,7 +9,6 @@
 
 [template public generateConfigServices(model : WafModel)]
 [file (model.configDirectory().concat('/').concat('services').concat(model.ymlExtension()), false)]
-# [model.configDirectory()/]/services[model.ymlExtension()/]
 services:
     twig.extension.text:
         class: Twig_Extensions_Extension_Text

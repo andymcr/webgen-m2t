@@ -35,7 +35,7 @@ class Sitemap
 		$priority = $sitemap->createElement('priority', '0.9');
 		$home_url->appendChild($priority);
 		
-		[for (page : Page | model.topMenuItemsNonAuthenticated())]
+		[for (page : Page | model.topMenuItems())]
 		[page.generatePageEntry(0.5)/]
 		[/for]
 		

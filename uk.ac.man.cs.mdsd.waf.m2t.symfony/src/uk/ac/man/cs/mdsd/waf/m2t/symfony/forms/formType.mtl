@@ -12,22 +12,23 @@
 namespace [service.formTypeNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class [service.modelName/]Task extends AbstractType
+class [service.typeClassName()/] extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder
-	[for (feature : ServiceFeature | service.features)]
-			->add('[feature.modelPropertyName()/]')
-	[/for];
+		$builder[for (feature : ServiceFeature | service.features)]
+	[if (feature.oclIsTypeOf(ServiceEntityElement))]
+
+			->add('[feature.modelPropertyName()/]')[/if][/for];
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setDefaults(array(
-			'data_class' => 'AppBundle\Entity\service.modelname()/]'
+			'data_class' => '[service.modelsNamespace()/]\[service.modelName/]'
 		));
 	}
 

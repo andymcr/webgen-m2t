@@ -9,10 +9,10 @@
 [template public generateTopbarLoggedIn(model : WafModel)]
 [file(model.viewElementsDirectory().concat('/topbar_logged_in').concat(model.executableExtension()), false)]
 <nav id="[model.topNavigationId/]">
-[if (model.topMenuItemsAuthenticated()->notEmpty() or model.isAuthenticated())]
+[if (model.topMenuItems()->notEmpty() or model.isAuthenticated())]
  <ul>
 [/if]
-[for (page : Page | model.topMenuItemsAuthenticated())]
+[for (page : Page | model.topMenuItems())]
   <li><?php
 	echo HTML::anchor(
 		Route::get('[page.controllerName()/]')->uri(),
@@ -30,7 +30,7 @@ TBC[/if]')->uri(array(
 		)),
 		HTML::chars(__('[model.authentication.logoutLabel/]')));
 ?></li>
-[if (model.topMenuItemsAuthenticated()->notEmpty() or model.isAuthenticated())]
+[if (model.topMenuItems()->notEmpty() or model.isAuthenticated())]
  </ul>
 [/if]
 </nav>

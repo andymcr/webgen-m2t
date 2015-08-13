@@ -9,18 +9,20 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::config/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::configDev/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::configProd/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::services/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::configTest/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::parameters/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::parametersDist/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::pageController/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::formType/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::config/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::services::config/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::services::service/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::dataUnit/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::sidemenu/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::formUnit/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::page/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::sidemenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::site/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::topmenu/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::types::formType/]
 
 
 [template public generateSymfony(model : WafModel)]
@@ -31,6 +33,7 @@
 [model.generateConfigProd()/]
 [model.generateConfigTest()/]
 [model.generateConfigServices()/]
+[model.generateConfigSecurity()/]
 
 [model.servicesWithSelections().generateService()/]
 

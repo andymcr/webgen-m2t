@@ -33,8 +33,8 @@
 
 [query public homePage(model : WafModel) : Page
 	= let topPage : Page
-			= if model.topMenuItemsNonAuthenticated()->notEmpty() then
-					model.topMenuItemsNonAuthenticated()->first()
+			= if model.topMenuItems()->notEmpty() then
+					model.topMenuItems()->first()
 				else
 					null
 				endif
@@ -60,16 +60,19 @@
 	= model.services->select(s | s.selections->notEmpty()).oclAsType(Service)
 /]
 
-[query public topMenuItemsAuthenticated(model : WafModel) : Sequence(Page)
+[query public topMenuItems(model : WafModel) : Sequence(Page)
 	= model.pages
 		->select(p | p.topMenuOption <> PageTopMenuOptions::NeverInclude)
 		->sortedBy(p | p.topMenuRank).oclAsType(Page)
 /]
 
-[query public topMenuItemsNonAuthenticated(model : WafModel) : Sequence(Page)
-	= model.pages
-		->select(p | p.topMenuOption = PageTopMenuOptions::AlwaysInclude)
-		->sortedBy(p | p.topMenuRank).oclAsType(Page)
+
+[query public useLocalAuthentication(authentication : Authentication) : Boolean
+	= if authentication.oclIsUndefined() then
+			false
+		else
+			authentication.oclIsTypeOf(LocalAuthenticationSystem)
+		endif
 /]
 
 
@@ -578,7 +581,7 @@
 			endif
 		in if page.parentPage.oclIsUndefined() then
 			path
-		else if page.parentPage.name = 'Home' then
+		else if page.parentPage = page.partOf.homePage() then
 			path
 		else
 			page.parentPage.path().concat(path)
@@ -820,8 +823,8 @@
 				not unit.oclAsType(CreateUpdateUnit).selectionFeature.oclIsUndefined()
 			else if unit.oclIsTypeOf(DetailsUnit) then
 				not unit.oclAsType(DetailsUnit).selectionFeature.oclIsUndefined()
-			else if unit.oclIsTypeOf(IndexUnit) then
-				not unit.oclAsType(IndexUnit).selectionFeature.oclIsUndefined()
+			else if unit.oclIsKindOf(IndexUnit) then
+				false -- not unit.oclAsType(IndexUnit).selectionFeature.oclIsUndefined()
 			else if unit.oclIsTypeOf(MapUnit) then
 				not unit.oclAsType(MapUnit).selectionFeature.oclIsUndefined()
 			else if unit.oclIsTypeOf(UpdateUnit) then
@@ -841,7 +844,14 @@
 /]
 
 [query public path(unit : ContentUnit) : String
-	= unit.path
+	= unit.pageDisplayedOn().path().concat(
+		if unit.path.oclIsUndefined() then
+			''
+		else if unit.path = '' then
+			''
+		else
+			'/'.concat(unit.path)
+		endif endif)
 /]
 
 [query public pageDisplayedOn(unit : ContentUnit) : Page
