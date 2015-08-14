@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module config(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
@@ -14,12 +15,20 @@ services:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+
 [if (model.hasServicesWithSelections())]
 	[for (service : Service | model.servicesWithSelections())]
     [service.name/]:
         class: [service.appBundleName()/]\Service\[service.serviceClassName()/]
         arguments: ['['/]"@doctrine"[']'/]
+
 	[/for]
 [/if]
+[for (type : EnumerationType | model.enumerationTypes())]
+    app.form.type.[type.formTypeName()/]:
+        class: [type.formTypeNamespace()/]\[type.typeClassName()/]
+        tags:
+            - { name: form.type, alias: [type.formTypeName()/] }
+[/for]
 [/file]
 [/template]

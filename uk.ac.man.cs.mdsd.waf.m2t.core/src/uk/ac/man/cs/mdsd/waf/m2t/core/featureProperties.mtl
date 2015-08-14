@@ -19,6 +19,10 @@
 /]
 
 
+[query public enumerationTypes(model : WafModel) : Sequence(EnumerationType)
+	= model.persistence.dataTypes->select(t | t.oclIsTypeOf(EnumerationType)).oclAsType(EnumerationType)
+/]
+
 [query public hasCaptchaFields(model : WafModel) : Boolean
 	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
 /]

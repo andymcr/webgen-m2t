@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module formType(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -22,7 +23,15 @@ class [service.typeClassName()/] extends AbstractType
 		$builder[for (feature : ServiceFeature | service.features)]
 	[if (feature.oclIsTypeOf(ServiceEntityElement))]
 
-			->add('[feature.modelPropertyName()/]')[/if][/for];
+			->add('[feature.modelPropertyName()/]', '[if (feature.oclIsKindOf(ServiceEntityElement))]
+[let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)]
+	[if (element.feature.oclIsTypeOf(SingletonElement))]
+	[let singleton : SingletonElement = element.feature.oclAsType(SingletonElement)]
+		[if (singleton.dataType.oclIsTypeOf(EnumerationType))]
+[singleton.dataType.oclAsType(EnumerationType).formTypeName()/][else]
+[element.interfaceType/][/if][/let][else]
+[element.interfaceType/][/if][/let][else]
+[/if]')[/if][/for];
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

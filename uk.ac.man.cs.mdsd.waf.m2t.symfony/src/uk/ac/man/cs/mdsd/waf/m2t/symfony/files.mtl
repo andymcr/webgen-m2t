@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module files(
 	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -111,6 +112,12 @@
 	= page.controllersDirectory().concat('/')
 		.concat(page.controllerClassName().toUpperFirst())
 		.concat(page.executableExtension())
+/]
+
+[query public formTypeFilename(type : EnumerationType) : String
+	= type.formTypeDirectory().concat('/')
+		.concat(type.typePrefix()).concat(type.name).concat('Type')
+		.concat(type.executableExtension())
 /]
 
 [query public formTypeFilename(service : Service) : String

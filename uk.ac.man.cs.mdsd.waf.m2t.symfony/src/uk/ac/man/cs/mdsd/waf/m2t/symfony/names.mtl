@@ -11,6 +11,15 @@
 /]
 
 
+[query public formTypeName(type : EnumerationType) : String
+	= type.name.toLowerFirst()
+/]
+
+[query public typeClassName(type : EnumerationType) : String
+	= type.typePrefix().concat(type.name).concat('Type')
+/]
+
+
 [query public serviceClassName(service : Service) : String
 	= service.name.concat('Service')
 /]
@@ -23,7 +32,7 @@
 	= service.typePrefix().concat(service.modelName).concat('Type')
 /]
 
-[query public typePrefix(service : Service) : String
+[query public typePrefix(eObject : EObject) : String
 	= 'App'
 /]
 

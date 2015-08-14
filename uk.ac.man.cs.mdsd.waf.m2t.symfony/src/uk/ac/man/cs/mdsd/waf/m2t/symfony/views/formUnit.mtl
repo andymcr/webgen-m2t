@@ -38,7 +38,11 @@
 [template public generateUnitBody(unit : DynamicUnit)
 	? (not unit.oclIsTypeOf(MapUnit))]
 {{ form_start([unit.instanceName()/]) }}
-{{ form_widget([unit.instanceName()/]) }}
+[for (field : UnitField | unit.inputOrEmbeddedFields())]
+	[if (not field.oclIsTypeOf(UnitAssociation))]
+{{ form_row([unit.instanceName()/].[field.modelPropertyName()/]) }}
+	[/if]
+[/for]
 {{ form_end([unit.instanceName()/]) }}
 [/template]
 

@@ -13,6 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::parameters/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::parametersDist/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::pageController/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::enumerationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::formType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::config/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::services::config/]
@@ -38,6 +39,7 @@
 [model.servicesWithSelections().generateService()/]
 
 [model.generateAppBundle()/]
+[model.enumerationTypes().generateFormType()/]
 [model.services.generateFormType()/]
 [model.pages.generateController()/]
 

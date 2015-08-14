@@ -1,0 +1,42 @@
+[comment encoding = UTF-8 /]
+[module enumerationType(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public generateFormType(type : EnumerationType)]
+[file(type.formTypeFilename(), false)]
+<?php
+namespace [type.formTypeNamespace()/];
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class [type.typeClassName()/] extends AbstractType
+{
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults(array(
+			'choices' => array(
+[for (literal : EnumerationLiteral | type.enumerations)]
+				'[i/]' => '[literal.name/]',
+[/for]
+			)
+		));
+	}
+
+	public function getParent()
+	{
+		return 'choice';
+	}
+
+	public function getName()
+	{
+		return '[type.formTypeName()/]';
+	}
+}
+[/file]
+[/template]
