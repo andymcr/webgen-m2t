@@ -215,24 +215,29 @@ public class WebsiteDiagramEditorUtil {
 		DataType string = WebsiteFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(string);
 		string.setName("String");
+		string.setInterfaceType("string");
 
 		DataType textBlock = WebsiteFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(textBlock);
 		textBlock.setName("TextBlock");
+		textBlock.setInterfaceType("textArea");
 
 		DataType integer = WebsiteFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(integer);
 		integer.setName("Integer");
+		integer.setInterfaceType("integer");
 
 		DataType bool = WebsiteFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(bool);
 		bool.setName("Boolean");
+		bool.setInterfaceType("checkbox");
 
 		DataType email = WebsiteFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(email);
 		email.setName("Email");
 		email.setPersistentType("String");
 		email.setOrmType("string");
+		email.setInterfaceType("email");
 
 		return model;
 	}
