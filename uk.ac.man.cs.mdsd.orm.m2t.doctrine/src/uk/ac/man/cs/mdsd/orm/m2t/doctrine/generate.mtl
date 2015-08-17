@@ -2,9 +2,12 @@
 [module generate(
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::entity/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::enumeration/]
 
 
 [template public generateDoctrine(model : WafModel)]
+[model.persistence.enumerationTypes().generateModel()/]
 [model.services.generateModel(model.authentication)/]
 [/template]

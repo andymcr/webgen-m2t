@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module files(
 	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -28,10 +29,10 @@
 /]
 
 
-[comment query public modelFilename(enumerationType : EnumerationType) : String
-	= enumerationType.modelsDirectory().concat('/')
-		.concat(enumerationType.modelName())
-		.concat(enumerationType.executableExtension())
+[query public modelFilename(type : EnumerationType) : String
+	= type.modelsDirectory().concat('/')
+		.concat(type.name)
+		.concat(type.executableExtension())
 /]
 
 [query public modelFilename(service : Service) : String

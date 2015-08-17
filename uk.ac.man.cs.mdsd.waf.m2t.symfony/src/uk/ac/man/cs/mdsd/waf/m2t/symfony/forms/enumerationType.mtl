@@ -14,17 +14,14 @@ namespace [type.formTypeNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use [type.modelsNamespace()/]\[type.modelClassName()/];
 
 class [type.typeClassName()/] extends AbstractType
 {
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
-			'choices' => array(
-[for (literal : EnumerationLiteral | type.enumerations)]
-				'[i/]' => '[literal.name/]',
-[/for]
-			)
+			'choices' => [type.modelClassName()/]::options()
 		));
 	}
 

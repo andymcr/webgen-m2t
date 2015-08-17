@@ -1,0 +1,43 @@
+[comment encoding = UTF-8 /]
+[module enumeration(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+
+
+[template public generateModel(type : EnumerationType)]
+[file(type.modelFilename(), false)]
+<?php
+namespace [type.modelsNamespace()/];
+class [type.modelClassName()/]
+{
+[for (literal : EnumerationLiteral | type.enumerations)]
+	const [literal.name/] = [i/];
+[/for]
+
+	public static function options()
+	{
+		$options = array();
+[for (literal : EnumerationLiteral | type.enumerations)]
+		$options['['/]self::[literal.name/][']'/] = '[literal.displayLabel()/]';
+[/for]
+
+		return $options;
+	}
+
+	public static function option($value = null, $default = '')
+	{
+		$options = [type.modelClassName()/]::options();
+
+		if (array_key_exists($value, $options)) {
+			return $options['['/]$value[']'/];
+		}
+
+		return $default;
+	}
+
+}
+[/file]
+[/template]

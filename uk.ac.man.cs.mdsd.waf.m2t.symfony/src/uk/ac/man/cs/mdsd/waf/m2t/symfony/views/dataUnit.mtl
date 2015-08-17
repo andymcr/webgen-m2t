@@ -50,7 +50,7 @@
 {{ [instanceVariable/].[element.modelPropertyName()/] }}[else]
 	[let enumerationType : EnumerationType
 		= element.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
-{{ [enumerationType.modelClassName()/]::option(entry.[element.modelPropertyName()/]) }}[/let]
+{{ [enumerationType.modelClassName()/].option(entry.[element.modelPropertyName()/]) }}[/let]
 	[/if]{% endif %}
 [/let]
 [else]
@@ -261,7 +261,7 @@
 [let enumerationType : EnumerationType
 	= field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
 <?php
-	echo [enumerationType.modelClassName()/]::option($[instanceVariable/]->[field.oclAsType(UnitElement).modelPropertyName()/]);
+	echo [enumerationType.modelClassName()/].option($[instanceVariable/]->[field.oclAsType(UnitElement).modelPropertyName()/]);
 ?>
 [/let]
 [/template]
@@ -345,8 +345,8 @@ find_all()[else]
 
 [template public generateAssociationLabel(association : UnitAssociation) post(trim())]
 [if (not association.dynamicLabel.oclIsUndefined())]
-[association.dynamicLabel.name/]()[else]
-defaultLabel()[/if]
+[association.dynamicLabel.name/][else]
+default[/if]Label
 [/template]
 
 

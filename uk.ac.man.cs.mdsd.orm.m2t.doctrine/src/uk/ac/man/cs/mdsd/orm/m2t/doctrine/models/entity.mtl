@@ -141,13 +141,13 @@ class [service.modelClassName()/][if (authentication.useLocalAuthentication())]
 	[/if]
 [/for]
 [for (label : ModelLabel | service.displayLabels)]
-	public function [label.name/]()
+	public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if]()
 	{
 		return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
 $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 [feature.oclAsType(ModelLabelElement).serviceFeature.modelPropertyName()/][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
-[association.serviceFeature.modelPropertyName()/]->[if (association.dynamicLabel.oclIsUndefined())]defaultLabel()[else][association.dynamicLabel.name/]()[/if][/let]
+[association.serviceFeature.modelPropertyName()/]->get[if (association.dynamicLabel.oclIsUndefined())]DefaultLabel()[else][association.dynamicLabel.name.toUpperFirst()/]()[/if][/let]
 [/if][/for]);
 	}
 

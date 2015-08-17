@@ -5,6 +5,11 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
 
+[query public modelClassName(type : EnumerationType) : String
+	= type.name
+/]
+
+
 [query public modelClassName(service : Service) : String
 	= service.modelName
 /]

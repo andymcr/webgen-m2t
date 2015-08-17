@@ -17,6 +17,10 @@
 /]
 
 
+[query public enumerationTypes(model : OrmModel) : Sequence(EnumerationType)
+	= model.dataTypes->select(t | t.oclIsTypeOf(EnumerationType)).oclAsType(EnumerationType)
+/]
+
 [query public modelAssociations(model : OrmModel) : Sequence(Association)
 	= model.modelFeatures()->select(f | f.oclIsKindOf(Association))
 /]
