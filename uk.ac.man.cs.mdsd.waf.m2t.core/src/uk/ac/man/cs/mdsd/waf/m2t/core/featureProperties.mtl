@@ -20,7 +20,7 @@
 
 
 [query public enumerationTypes(model : WafModel) : Sequence(EnumerationType)
-	= model.persistence.dataTypes->select(t | t.oclIsTypeOf(EnumerationType)).oclAsType(EnumerationType)
+	= model.persistence.enumerationTypes()
 /]
 
 [query public hasCaptchaFields(model : WafModel) : Boolean
@@ -548,6 +548,10 @@
 	= page.parameterisedUnits()->notEmpty()
 /]
 
+[query public hasQueryParameters(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasQueryParameters())->notEmpty()
+/]
+
 [query public hasSupportActions(page : Page) : Boolean
 	= page.supportActions()->notEmpty()
 /]
@@ -754,6 +758,14 @@
 		endif
 /]
 
+[query public hasQueryParameters(unit : DynamicUnit) : Boolean
+	= unit.queries->notEmpty()
+/]
+
+[query public hasSelectQueries(unit : DynamicUnit) : Boolean
+	= unit.selectQueries()->notEmpty()
+/]
+
 [query public hasUnitMethods(unit : ContentUnit) : Boolean
 	= if unit.oclIsTypeOf(CommandUnit) then
 			true
@@ -872,6 +884,10 @@
 
 [query public searchFields(unit : IndexUnit) : Bag(UnitField)
 	= unit->collect(targettingSearches.displayFields)
+/]
+
+[query public selectQueries(unit : DynamicUnit) : OrderedSet(Query)
+	= unit.queries->select(q | not q.selection.oclIsUndefined())
 /]
 
 [query public submitLabel(unit : DynamicUnit) : String

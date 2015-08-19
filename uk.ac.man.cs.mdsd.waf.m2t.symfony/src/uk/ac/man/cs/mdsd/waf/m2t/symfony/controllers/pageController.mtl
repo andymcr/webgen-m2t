@@ -25,6 +25,9 @@ namespace [page.controllersNamespace()/];
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+[if (page.hasQueryParameters())]
+use Symfony\Component\HttpFoundation\Request;
+[/if]
 [for (service : Service | page.formUnits().service->asSet())]
 use [service.formTypeNamespace()/]\[service.typeClassName()/];
 [/for]
@@ -35,8 +38,11 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/] {
 	 * @Route("[page.path()/][for (unit : DynamicUnit | page.parameterisedUnits())]
 /{[unit.routeParameterName()/]}[/for]", name="[page.name/]")
 	 */
-	public function indexAction([for (unit : DynamicUnit | page.parameterisedUnits()) separator (', ')]
-$[unit.routeParameterName()/] = NULL[/for])
+	public function indexAction([if (page.hasQueryParameters())]
+Request $request[if(page.hasParameterisedUnits())], [/if][/if]
+[for (unit : DynamicUnit | page.parameterisedUnits()) separator (', ')]
+$[unit.routeParameterName()/] = NULL[/for]
+)
 	{
 [for (unit : DynamicUnit | page.dynamicUnits())]
         [unit.generateUnitDisplay()/]

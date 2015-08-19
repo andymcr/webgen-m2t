@@ -145,7 +145,8 @@ ul.details_content, dl.details_content {
 	list-style: none;
 }
 
-ul.details_content > li > ul, dl.details_content > dd > ul {
+ul.details_content > li > ul,
+dl.details_content > dd > ul {
 	list-style: disc inside;
 	margin: 0.5em;
 }
@@ -157,7 +158,9 @@ ul.details_content > li > ul, dl.details_content > dd > ul {
 	width: 100%;
 }
 
-ul.index_content, ul.details_content > li > ul.index_content, dl.details_content > dd > ul.index_content {
+ul.index_content,
+ul.details_content > li > ul.index_content,
+dl.details_content > dd > ul.index_content {
 	list-style: none;
 	margin: 0em;
 }
@@ -169,6 +172,14 @@ main > section > ul.index_content {
 table.index_content {
 }
 
+ul.unit_control {
+	list-style: none;
+}
+
+ul.unit_control > li {
+	display: inline;
+}
+
 .input_form, .control_form {
 	width: 100%;
 }
@@ -178,7 +189,8 @@ form > ul {
 	padding-top: 0.5em;
 }
 
-form li {
+form li,
+form > div {
 	padding: 0.25em 0em 0.25em 0em;
 }
 
@@ -193,7 +205,10 @@ form p.error {
 	color: FireBrick;
 }
 
-form > ul > li > label, form > ul > li > p, dt.field_label {
+form > ul > li > label,
+form > ul > li > p,
+form > div > label,
+dt.field_label {
 	display: inline-block;
 	width: 15%;
 	vertical-align: top;
@@ -210,7 +225,19 @@ label.required:after {
 	display:inline;
 }
 
-form > ul > li > input['['/]type="date"[']'/], form > ul > li > input['['/]type="email"[']'/], form > ul > li > input['['/]type="integer"[']'/], form > ul > li > input['['/]type="password"[']'/], form > ul > li > input['['/]type="text"[']'/], form > ul > li > select, form > ul > li > div {
+form > ul > li > input['['/]type="date"[']'/],
+form > ul > li > input['['/]type="email"[']'/],
+form > ul > li > input['['/]type="integer"[']'/],
+form > ul > li > input['['/]type="password"[']'/],
+form > ul > li > input['['/]type="text"[']'/],
+form > ul > li > select,
+form > ul > li > div,
+form > div > input['['/]type="date"[']'/],
+form > div > input['['/]type="email"[']'/],
+form > div > input['['/]type="integer"[']'/],
+form > div > input['['/]type="password"[']'/],
+form > div > input['['/]type="text"[']'/],
+form > div > select {
 	display: inline-block;
 	width: 83%;
 	vertical-align: top;
@@ -228,7 +255,9 @@ form > ul > li > p['['/]class="error"[']'/] {
 .input_association {
 }
 
-form > ul > li > input['['/]type="checkbox"[']'/], .input_checkbox {
+form > ul > li > input['['/]type="checkbox"[']'/],
+form > div > input['['/]type="checkbox"[']'/],
+ .input_checkbox {
 	width: 1em;
 	vertical-align: baseline;
 }

@@ -16,8 +16,8 @@
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 $this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
-[if (not indexUnit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[indexUnit.selection.instanceName()/]([if (indexUnit.defaultPaginationSize > 0)]
+[if (not indexUnit.defaultSelection.oclIsUndefined())]
+$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[indexUnit.defaultSelection.instanceName()/]([if (indexUnit.defaultPaginationSize > 0)]
 TRUE, max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.defaultPaginationSize/][/if]);
 [else]
 $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (indexUnit.defaultPaginationSize > 0)]
@@ -25,8 +25,8 @@ paginated(max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.d
 find_all()[/if];
 [/if]
 [if (indexUnit.defaultPaginationSize > 0)]
-$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (not indexUnit.selection.oclIsUndefined())]
-[indexUnit.selection.countName()/]()[else]
+$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (not indexUnit.defaultSelection.oclIsUndefined())]
+[indexUnit.defaultSelection.countName()/]()[else]
 count_all()[/if];
 $[unit.instanceName()/]_pagination = Pagination::factory(array(
 	'group' => '[unit.uniqueName()/]',

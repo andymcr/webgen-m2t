@@ -18,6 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
 [if (service.hasCollectionAssociations())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
+[if (service.hasValidatedFeatures())]
+use Symfony\Component\Validator\Constraints as Assert;
+[/if]
 [if (authentication.useLocalAuthentication())]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 	[if (service = localAuthentication.authenticationService)]
@@ -38,194 +41,40 @@ class [service.modelClassName()/][if (authentication.useLocalAuthentication())]
 [/if]
 
 {
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue
-	 **/
-	protected $[service.keyName()/];
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     **/
+    protected $[service.keyName()/];
 
 [for (feature : ServiceFeature | service.features)]
 	[if (not feature.isLocation())]
-	/**
-	[if (feature.oclIsKindOf(ServiceEntityElement))]
-	 * @ORM\Column(type="[feature.oclAsType(ServiceEntityElement).feature.ormType/]")
-	[elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
-	[let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)]
-	[let attribute : Association = association.feature]
-		[if (attribute.oclIsTypeOf(SingletonAssociation))]
-		[let singleton : SingletonAssociation = attribute.oclAsType(SingletonAssociation)]
-	 * @ORM\[singleton.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (singleton.owningEnd <> true)], mappedBy="[association.oppositeModelPropertyName()/]"[/if])
-		[if (singleton.owningEnd = true)]
-     * @ORM\JoinColumn(name="[association.columnName()/]", referencedColumnName="[association.oppositeService.keyName()/]")
-		[/if]
-		[/let]
-		[else]
-		[let collection : CollectionAssociation = attribute.oclAsType(CollectionAssociation)]
-	 * @ORM\[collection.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany)], mappedBy="[association.oppositeModelPropertyName()/]"[/if])
-		[if (association.isOwningEnd())]
-     * @ORM\JoinTable(name="[association.feature.pivotTableName/]",
-			joinColumns={@ORM\JoinColumn(name="[feature.oppositeColumnName()/]")},
-			inverseJoinColumns={@ORM\JoinColumn(name="[feature.columnName()/]")})
-		[/if]
-		[/let]
-		[/if]
-	[/let]
-	[/let]
-	[/if]
-	 **/
-	protected $[feature.modelPropertyName()/];
+    /**
+      [feature.generateOrmAnnotation()/]
+      [feature.generateValidationAnnotation()/]
+    **/
+    protected $[feature.modelPropertyName()/];
 
 	[/if]
 [/for]
 [if (service.hasDefaultValueFeatures() or service.hasForcedValueFeatures() or service.hasCollectionAssociations())]
-	public function __construct()
-	{
-	[for (feature : ServiceFeature | service.features)]
-		[if (feature.hasDefaultValue())]
-		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedElement).defaultValue.generateCriteriaExpression()/];
-		[/if]
-		[if (feature.hasForcedValue())]
-		$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedFeature).forcedValue.generateCriteriaExpression()/];
-		[/if]
-		[if (feature.oclIsTypeOf(ServiceAssociation))]
-			[if (feature.oclAsType(ServiceAssociation).isOwningEnd())]
-		$this->[feature.modelPropertyName()/] = new ArrayCollection();
-			[/if]
-		[/if]
-	[/for]
-	}
+    [service.generateConstructor()/]
 
 [/if]
-	public function getId()
-	{
-		return $id;
-	}
+    public function getId()
+    {
+        return $id;
+    }
 
 [for (feature : ServiceFeature | service.features)]
-	public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.modelPropertyName().toUpperFirst()/]()
-	{
-		return $this->[feature.modelPropertyName()/];
-	}
+    [generateFeatureMethods(feature)/]
 
-	[if (not feature.hasForcedValue())]
-		[if (feature.oclIsKindOf(ServiceEntityElement))]
-	public function set[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/]) {
-//				array('trim'),
-		[if (feature.oclIsKindOf(ServiceEntityElement))]
-		[let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)]
-			[if (element.feature.oclIsTypeOf(SingletonElement))]
-				[if (element.isCaseInsensitive())]
-		$this->[feature.modelPropertyName()/] = strtolower(trim($[feature.instanceName()/]));
-				[elseif (element.isEncrypted())]
-//				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-				[else]
-		$this->[feature.modelPropertyName()/] = trim($[feature.instanceName()/]);
-				[/if]
-			[elseif (element.feature.oclIsTypeOf(SingletonDate))]
-		if (trim($[feature.instanceName()/]) == FALSE) {
-			$this->[feature.modelPropertyName()/] = NULL;
-		} else {
-		}
-			[/if]
-		[/let]
-		[/if]
-	}
-
-		[else]
-	public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/])
-	{
-	}
-
-		[/if]
-	[/if]
 [/for]
 [for (label : ModelLabel | service.displayLabels)]
-	public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if]()
-	{
-		return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
-$this->[if (feature.oclIsTypeOf(ModelLabelElement))]
-[feature.oclAsType(ModelLabelElement).serviceFeature.modelPropertyName()/][else]
-[let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
-[association.serviceFeature.modelPropertyName()/]->get[if (association.dynamicLabel.oclIsUndefined())]DefaultLabel()[else][association.dynamicLabel.name.toUpperFirst()/]()[/if][/let]
-[/if][/for]);
-	}
+    [label.generateModelLabel()/]
 
 [/for]
-[if (service.hasValidatedFeatures())]
-[let userService : Service
-	= if authentication.oclIsUndefined() then
-			null
-		else if not authentication.oclIsTypeOf(LocalAuthenticationSystem) then
-			null
-		else
-			authentication.oclAsType(LocalAuthenticationSystem).userService
-	endif endif]
-	[if (service = userService)]
-	protected $_validation_required = TRUE;
-
-	public function validation_required($required = TRUE)
-	{
-		if ($required === NULL)
-			return $this->_validation_required;
-
- 		$this->_validation_required = (bool)$required;
-		return $this;
-	}
-
-	[/if]
-	[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->notEmpty())]
-	protected $_control_fields = array();
-
-	public function control_fields($control_fields)
-	{
-		$this->_control_fields = $control_fields;
-	}
-
-	[/if]
-	public function rules()
-	{
-	[if (service = userService)]
-		if ($this->validation_required(NULL)) 
-			return array(
-		[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-				'[feature.modelPropertyName()/]' => array(
-			[if (feature.isRequired())]
-					array('not_empty'),
-			[/if]
-				),
-		[/for]
-			);
-		else
-			return array();
-	[else]
-		[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->isEmpty())]
-		return array(
-			[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-			'[feature.modelPropertyName()/]' => array(
-				[if (feature.isRequired())]
-				array('not_empty'),
-				[/if]
-			),
-			[/for]
-		);
-		[else]
-		$rules = array(
-			[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-			'[feature.modelPropertyName()/]' => array(
-				[if (feature.isRequired())]
-				array('not_empty'),
-				[/if]
-			),
-			[/for]
-		);
-		return empty($this->_control_fields) ? $rules : array_intersect_key($rules, $this->_control_fields);
-		[/if]
-	[/if]
-	}
-
-[/let]
-[/if]
 [for (feature : ServiceEntityElement | service.resourceAttributes())]
 [let resource : SingletonResource = feature.feature.oclAsType(SingletonResource)]
 	private function _save_[feature.modelPropertyName()/]()
@@ -514,4 +363,110 @@ $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 [/if]
 }
 [/file]
+[/template]
+
+[template private generateOrmAnnotation(feature : ServiceFeature) post(trim())]
+[if (feature.oclIsKindOf(ServiceEntityElement))]
+	 * @ORM\Column(type="[feature.oclAsType(ServiceEntityElement).feature.ormType/]")
+[elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
+[let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)]
+[let attribute : Association = association.feature]
+	[if (attribute.oclIsTypeOf(SingletonAssociation))]
+	[let singleton : SingletonAssociation = attribute.oclAsType(SingletonAssociation)]
+	 * @ORM\[singleton.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (singleton.owningEnd <> true)], mappedBy="[association.oppositeModelPropertyName()/]"[/if])
+		[if (singleton.owningEnd = true)]
+     * @ORM\JoinColumn(name="[association.columnName()/]", referencedColumnName="[association.oppositeService.keyName()/]")
+		[/if]
+	[/let]
+	[else]
+	[let collection : CollectionAssociation = attribute.oclAsType(CollectionAssociation)]
+	 * @ORM\[collection.associationRelationship/](targetEntity="[association.oppositeService.modelName/]"[if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany)], mappedBy="[association.oppositeModelPropertyName()/]"[/if])
+		[if (association.isOwningEnd())]
+     * @ORM\JoinTable(name="[association.feature.pivotTableName/]",
+			joinColumns={@ORM\JoinColumn(name="[feature.oppositeColumnName()/]")},
+			inverseJoinColumns={@ORM\JoinColumn(name="[feature.columnName()/]")})
+		[/if]
+	[/let]
+	[/if]
+[/let]
+[/let]
+[/if]
+[/template]
+
+[template private generateValidationAnnotation(feature : ServiceFeature) post(trim())]
+		[if (feature.isValidated())]
+			[if (feature.isRequired())]
+	 * @Assert\NotBlank
+			[/if]
+		[/if]
+[/template]
+
+[template private generateConstructor(service : Service)]
+public function __construct()
+{
+[for (feature : ServiceFeature | service.features)]
+	[if (feature.hasDefaultValue())]
+	$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedElement).defaultValue.generateCriteriaExpression()/];
+	[/if]
+	[if (feature.hasForcedValue())]
+	$this->[feature.modelPropertyName()/] = [feature.oclAsType(IncludedFeature).forcedValue.generateCriteriaExpression()/];
+	[/if]
+	[if (feature.oclIsTypeOf(ServiceAssociation))]
+		[if (feature.oclAsType(ServiceAssociation).isOwningEnd())]
+	$this->[feature.modelPropertyName()/] = new ArrayCollection();
+		[/if]
+	[/if]
+[/for]
+}
+[/template]
+
+[template private generateFeatureMethods(feature : ServiceFeature) post(trim())]
+public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.modelPropertyName().toUpperFirst()/]()
+{
+    return $this->[feature.modelPropertyName()/];
+}
+
+[if (not feature.hasForcedValue())]
+	[if (feature.oclIsKindOf(ServiceEntityElement))]
+public function set[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/]) {
+//				array('trim'),
+	[if (feature.oclIsKindOf(ServiceEntityElement))]
+	[let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)]
+		[if (element.feature.oclIsTypeOf(SingletonElement))]
+			[if (element.isCaseInsensitive())]
+    $this->[feature.modelPropertyName()/] = strtolower(trim($[feature.instanceName()/]));
+			[elseif (element.isEncrypted())]
+//				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
+			[else]
+    $this->[feature.modelPropertyName()/] = trim($[feature.instanceName()/]);
+			[/if]
+		[elseif (element.feature.oclIsTypeOf(SingletonDate))]
+    if (trim($[feature.instanceName()/]) == FALSE) {
+        $this->[feature.modelPropertyName()/] = NULL;
+    } else {
+    }
+		[/if]
+	[/let]
+	[/if]
+}
+
+	[else]
+public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/])
+{
+}
+
+	[/if]
+[/if]
+[/template]
+
+[template private generateModelLabel(label : ModelLabel)]
+public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if]()
+{
+        return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
+$this->[if (feature.oclIsTypeOf(ModelLabelElement))]
+[feature.oclAsType(ModelLabelElement).serviceFeature.modelPropertyName()/][else]
+[let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
+[association.serviceFeature.modelPropertyName()/]->get[if (association.dynamicLabel.oclIsUndefined())]Default[else][association.dynamicLabel.name.toUpperFirst()/][/if]Label()[/let]
+[/if][/for]);
+}
 [/template]

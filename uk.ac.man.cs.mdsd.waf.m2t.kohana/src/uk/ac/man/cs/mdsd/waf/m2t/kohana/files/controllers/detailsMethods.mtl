@@ -12,7 +12,7 @@
 [if (detailsUnit.hasDefaultValueFields())]
 [detailsUnit.generateDefaultUnitValues()/]
 [/if]
-[if (detailsUnit.selection.oclIsUndefined())]
+[if (detailsUnit.defaultSelection.oclIsUndefined())]
 $[detailsUnit.instanceName()/] = $this->request->query('[detailsUnit.parameterName()/]');
 if (!empty($[detailsUnit.instanceName()/]))
 {
@@ -25,7 +25,7 @@ if (!empty($[detailsUnit.instanceName()/]))
 else
 	$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]');
 [else]
-$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]')->[detailsUnit.selection.instanceName()/]();
+$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]')->[detailsUnit.defaultSelection.instanceName()/]();
 [/if]
 [/let]
 [/template]

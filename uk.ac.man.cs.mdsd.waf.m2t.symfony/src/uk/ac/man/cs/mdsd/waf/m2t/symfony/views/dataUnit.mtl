@@ -26,12 +26,12 @@
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
  <div class="unit_padding">
-  [dataUnit.generateViewContent(dataUnit.instanceName())/]
-	[if (indexUnit.defaultPaginationSize > 0)]
-<?php echo $pagination; ?>
+  [indexUnit.generateViewContent(dataUnit.instanceName())/]
+	[if (not indexUnit.paginationQuery.oclIsUndefined())]
+  [indexUnit.generatePagination()/]
 	[/if]
-	[if (dataUnit.supportActions->notEmpty())]
-  [dataUnit.generateSupportActions()/]
+	[if (indexUnit.supportActions->notEmpty())]
+  [indexUnit.generateSupportActions()/]
 	[/if]
  </div>
 [/let]
@@ -82,6 +82,14 @@
   <?php
 	echo Form::close() . PHP_EOL;
 ?>
+[/template]
+
+[template private generatePagination(unit : IndexUnit)]
+<ul class="unit_control">
+{% for page in 1..pageCount %}
+ <li><a href="{{ path('[unit.pageDisplayedOn().name/]', app.request.query.all|merge({'[unit.paginationQuery.parameters->first().name/]': page})) }}" {% if page == currentPage %}{% endif %}>{{ page }}</a></li>
+{% endfor %}
+</ul>
 [/template]
 
 [template public generateViewContent(unit : ContentUnit, instanceVariable : String)
@@ -333,9 +341,9 @@ title="[action.displayLabel/] {{ value.[if (feature.dynamicLabel.oclIsUndefined(
 {# <?php
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[if (embeddedIndexUnit.selection.oclIsUndefined())]
+[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?> #}
 [feature.units.generateViewContent(instanceVariable.concat('.').concat(feature.modelPropertyName()))/]
 [/let]

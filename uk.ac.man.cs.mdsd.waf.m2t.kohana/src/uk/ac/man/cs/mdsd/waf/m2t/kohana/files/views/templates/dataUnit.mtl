@@ -415,9 +415,9 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 <?php
 	$[field.displayedOn.uniqueName()/] = $[instanceVariable/]->[feature.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[if (embeddedIndexUnit.selection.oclIsUndefined())]
+[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
 [feature.units.generateViewContent(field.displayedOn.uniqueName())/]
 [/let]

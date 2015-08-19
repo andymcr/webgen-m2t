@@ -45,10 +45,10 @@
 /]
 
 [query public modelName(feature : ServiceAssociation) : String
-	= if feature.oppositeFeature.oclIsUndefined() then
-			'unknown'
+	= if not feature.oppositeService.oclIsUndefined() then
+			feature.oppositeService.modelName
 		else
-			feature.oppositeFeature.includedBy.modelName
+			'unknown'
 		endif
 /]
 

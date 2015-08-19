@@ -87,9 +87,9 @@
      <p class="[displayField.modelPropertyName()/]">[displayField.displayLabel()/]</p>
 <?php $[displayField.uniqueName()/] = $[unit.instanceName()/]->[displayField.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[if (embeddedIndexUnit.selection.oclIsUndefined())]
+[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
      <div class="framed [displayField.modelPropertyName()/]">
       [displayField.oclAsType(UnitAssociation).units.generateViewContent(displayField.uniqueName())/]
@@ -389,9 +389,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
      <p class="[displayField.modelPropertyName()/]">[displayField.displayLabel()/]</p>
 <?php $[displayField.uniqueName()/] = $[dynamicUnit.instanceName()/]->[displayField.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[if (embeddedIndexUnit.selection.oclIsUndefined())]
+[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
 find_all()[else]
-[embeddedIndexUnit.selection.instanceName()/](FALSE)[/if][/let][/if];
+[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
      <div class="framed [displayField.modelPropertyName()/]">
       [displayField.oclAsType(UnitAssociation).units.generateViewContent(displayField.uniqueName())/]

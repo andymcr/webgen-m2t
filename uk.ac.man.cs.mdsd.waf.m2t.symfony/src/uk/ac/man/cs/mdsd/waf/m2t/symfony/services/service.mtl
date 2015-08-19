@@ -13,6 +13,8 @@
 <?php
 namespace [service.servicesNamespace()/];
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 class [service.serviceClassName()/]
 {
     private $doctrine;
@@ -23,36 +25,46 @@ class [service.serviceClassName()/]
     }
 
 [for (selection : Selection | service.selections)]
-    public function [selection.name/]()
-    {
-        $repository = $this->doctrine->getRepository('[service.appBundleName()/]:[service.modelName/]');
-		$queryBuilder = $repository->createQueryBuilder('[service.selectName()/]');
-        $query = $queryBuilder
-	[if (not selection.filter.oclIsUndefined())]
-            ->where([selection.filter.generateDoctrineExpression()/])
-	[/if]
-	[if (selection.ordering->size() > 0)]
-            ->orderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if])
-		[if (selection.ordering->size() > 1)]
-			[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-            ->addOrderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if])
-			[/for]
-		[/if]
-	[/if]
-	[if (selection.limit > 0)]
-            ->setMaxResults([selection.limit/])
-	[/if]
-            ->getQuery();
-	[if (not selection.filter.oclIsUndefined())]
-        [selection.filter.generateCriteriaParameter()/]
-	[/if]
-
-        return $query->getResult();
-    }
+    [selection.generateSelectionMethod(service)/]
 
 [/for]
 }
 [/file]
 [/template]
 
+[template private generateSelectionMethod(selection : Selection, service : Service)]
+public function [selection.name/]($page = NULL, $pageSize = 10)
+{
+    $repository = $this->doctrine->getRepository('[service.appBundleName()/]:[service.modelName/]');
+	$queryBuilder = $repository->createQueryBuilder('[service.selectName()/]');
+[if (not selection.filter.oclIsUndefined())]
+    $queryBuilder->where([selection.filter.generateDoctrineExpression()/]);
+[/if]
+[if (selection.ordering->size() > 0)]
+    $queryBuilder->orderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
+	[if (selection.ordering->size() > 1)]
+		[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
+    $queryBuilder->addOrderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
+		[/for]
+	[/if]
+[/if]
+    if ($page)
+    {
+        $queryBuilder->setFirstResult(($page - 1) * $pageSize);
+        $queryBuilder->setMaxResults($pageSize);
+    }
+[if (selection.limit > 0)]
+    else
+        $queryBuilder->setMaxResults([selection.limit/]);
+[/if]
+    $query = $queryBuilder->getQuery();
+[if (not selection.filter.oclIsUndefined())]
+    [selection.filter.generateCriteriaParameter()/]
+[/if]
 
+    if ($page)
+        return new Paginator($query);
+    else
+        return $query->getResult();
+}
+[/template]

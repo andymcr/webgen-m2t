@@ -51,9 +51,9 @@ class Sitemap
 	[if (unit.oclIsKindOf(IndexUnit))]
 	[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 		[if (indexUnit.defaultPaginationSize > 0)]
-$entries = ORM::factory('[indexUnit.modelName()/]')->[if (if indexUnit.selection.oclIsUndefined() then true else indexUnit.selection.filter.oclIsUndefined() endif)]
+$entries = ORM::factory('[indexUnit.modelName()/]')->[if (if indexUnit.defaultSelection.oclIsUndefined() then true else indexUnit.defaultSelection.filter.oclIsUndefined() endif)]
 count_all()[else]
-[indexUnit.selection.countName()/]()[/if];
+[indexUnit.defaultSelection.countName()/]()[/if];
 $i = 1;
 while ($i < ($entries / [indexUnit.defaultPaginationSize/]))
 {
@@ -64,7 +64,7 @@ while ($i < ($entries / [indexUnit.defaultPaginationSize/]))
 	[/let]
 	[elseif (unit.oclIsTypeOf(DetailsUnit))]
 	[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-		[if (detailsUnit.selection.oclIsUndefined())]
+		[if (detailsUnit.defaultSelection.oclIsUndefined())]
 $entries = ORM::factory('[unit.modelName()/]')->find_all();
 foreach ($entries AS $entry)
 {
