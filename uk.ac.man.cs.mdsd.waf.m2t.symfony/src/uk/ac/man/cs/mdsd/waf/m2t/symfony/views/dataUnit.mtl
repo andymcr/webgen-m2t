@@ -86,10 +86,42 @@
 
 [template private generatePagination(unit : IndexUnit)]
 <ul class="unit_control">
+[if (unit.useFirstLastPageLinks)]
+{% if currentPage == 1 %}
+ <li>[unit.firstPageLabel/]</li>
+{% else %}
+ <li><a href="[unit.generatePageHref('1')/]">[unit.firstPageLabel/]</a></li>
+{% endif %}
+[/if]
+{% if currentPage == 1 %}
+ <li>[unit.previousPageLabel/]</li>
+{% else %}
+ <li><a href="[unit.generatePageHref('currentPage - 1')/]">[unit.previousPageLabel/]</a></li>
+{% endif %}
 {% for page in 1..pageCount %}
- <li><a href="{{ path('[unit.pageDisplayedOn().name/]', app.request.query.all|merge({'[unit.paginationQuery.parameters->first().name/]': page})) }}" {% if page == currentPage %}{% endif %}>{{ page }}</a></li>
+ {% if page == currentPage %}
+ <li>{{ page }}</li>
+ {% else %}
+ <li><a href="[unit.generatePageHref('page')/]">{{ page }}</a></li>
+ {% endif %}
 {% endfor %}
+{% if currentPage == pageCount %}
+ <li>[unit.nextPageLabel/]</li>
+{% else %}
+ <li><a href="[unit.generatePageHref('currentPage + 1')/]">[unit.nextPageLabel/]</a></li>
+{% endif %}
+[if (unit.useFirstLastPageLinks)]
+{% if currentPage == pageCount %}
+ <li>[unit.lastPageLabel/]</li>
+{% else %}
+ <li><a href="[unit.generatePageHref('pageCount')/]">[unit.lastPageLabel/]</a></li>
+{% endif %}
+[/if]
 </ul>
+[/template]
+
+[template private generatePageHref(unit : IndexUnit, x : String) post(trim())]
+{{ path('[unit.pageDisplayedOn().name/]', app.request.query.all|merge({'[unit.paginationQuery.parameters->first().name/]': [x/]})) }}
 [/template]
 
 [template public generateViewContent(unit : ContentUnit, instanceVariable : String)

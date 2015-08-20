@@ -158,6 +158,10 @@ dl.details_content > dd > ul {
 	width: 100%;
 }
 
+table.index_content > tbody > tr {
+	vertical-align: text-top;
+}
+
 ul.index_content,
 ul.details_content > li > ul.index_content,
 dl.details_content > dd > ul.index_content {
@@ -178,6 +182,11 @@ ul.unit_control {
 
 ul.unit_control > li {
 	display: inline;
+}
+
+ul.unit_control > li > a {
+	color: inherit;
+	text-decoration: none;
 }
 
 .input_form, .control_form {

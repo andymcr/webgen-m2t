@@ -50,7 +50,9 @@
 [template private generateMenuEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(FixedActionMenuEntry))]
 [let entry : FixedActionMenuEntry = entry.oclAsType(FixedActionMenuEntry)]
-<li><a href="{{ path('[entry.action.pageDisplayedOn().name/]') }}">[entry.displayLabel/]</a></li>
+<li><a href="{{ path('[entry.action.pageDisplayedOn().name/]'[if (not entry.query.oclIsUndefined())]
+, {[for (actual : QueryActual | entry.query.actuals) separator(', ')]
+'[actual.parameter.name/]': '[actual.value/]'[/for]}[/if]) }}">[entry.displayLabel/]</a></li>
 [/let]
 [/template]
 
