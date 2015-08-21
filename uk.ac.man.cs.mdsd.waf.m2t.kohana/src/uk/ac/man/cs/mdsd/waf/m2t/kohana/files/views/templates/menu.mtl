@@ -41,19 +41,8 @@
 
 
 [template private generateMenuEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(FixedPageMenuEntry)) post(trim())]
-[let fixedEntry : FixedPageMenuEntry = entry.oclAsType(FixedPageMenuEntry)]
-<li><?php
-	echo HTML::anchor(
-		Route::get('[fixedEntry.page.controllerName()/]')->uri(),
-		HTML::chars(__('[fixedEntry.displayLabel/]')));
-?></li>
-[/let]
-[/template]
-
-[template private generateMenuEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(FixedActionMenuEntry)) post(trim())]
-[let fixedEntry : FixedActionMenuEntry = entry.oclAsType(FixedActionMenuEntry)]
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let fixedEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
 <li><?php
 	echo HTML::anchor(
 		Route::get('[fixedEntry.action.pageDisplayedOn().controllerName()/]')->uri(array(

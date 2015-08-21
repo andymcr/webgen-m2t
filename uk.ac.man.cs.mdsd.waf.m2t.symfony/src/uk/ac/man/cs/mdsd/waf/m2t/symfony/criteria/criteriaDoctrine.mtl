@@ -7,53 +7,57 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(NullLiteral)) post(trim())]
 NULL
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(IntegerLiteral)) post(trim())]
 [let literal : IntegerLiteral = criteria.oclAsType(IntegerLiteral)]
 [literal.value/]
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(StringLiteral)) post(trim())]
 [let literal : StringLiteral = criteria.oclAsType(StringLiteral)]
 '[literal.value/]'
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
 ':now'
 [/template]
 
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
 [let path : ModelReference = criteria.oclAsType(ModelReference)]
 $this->[path.unit.instanceName()/]->[path.unit.service.keyName()/]
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
-'[path.feature.includedBy.selectName()/].[path.feature.modelPropertyName()/]'
+[path.feature.featureReference()/]
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public featureReference(feature : ServiceFeature) post(trim())]
+'[feature.includedBy.selectName()/].[feature.modelPropertyName()/]'
+[/template]
+
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]
 [let path : ParameterReference = criteria.oclAsType(ParameterReference)]
 ':[path.parameter.name/]'
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
 [let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
 Auth::instance()->get_actual_user()->id
@@ -61,62 +65,62 @@ Auth::instance()->get_actual_user()->id
 [/template]
 
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = criteria.oclAsType(PredicateBooleanOperator)]
 $queryBuilder->expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
 [for (expression : Expression | predicate.expressions) separator (',')]
 
-    [expression.generateDoctrineExpression()/][/for]
+    [expression.doctrineExpression()/][/for]
 
 )
 [else]
 [for (expression : Expression | predicate.expressions) separator (', ')]
-[expression.generateDoctrineExpression()/]
+[expression.doctrineExpression()/]
 [/for]
 [/if]
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = criteria.oclAsType(PredicateEqualityOperator)]
 $queryBuilder->expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(Predicate) or predicate.right.oclIsKindOf(Predicate))]
 
-    [predicate.left.generateDoctrineExpression()/],
-    [predicate.right.generateDoctrineExpression()/]
+    [predicate.left.doctrineExpression()/],
+    [predicate.right.doctrineExpression()/]
 )
 [else]
-[predicate.left.generateDoctrineExpression()/], [predicate.right.generateDoctrineExpression()/])
+[predicate.left.doctrineExpression()/], [predicate.right.doctrineExpression()/])
 [/if]
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([predicate.left.generateDoctrineExpression()/], [predicate.right.generateDoctrineExpression()/])
+$queryBuilder->expr()->[predicate.operator()/]([predicate.left.doctrineExpression()/], [predicate.right.doctrineExpression()/])
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateIsOperator)) post(trim())]
 [let predicate : PredicateIsOperator = criteria.oclAsType(PredicateIsOperator)]
-[predicate.left.generateDoctrineExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.generateDoctrineExpression()/]
+[predicate.left.doctrineExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.doctrineExpression()/]
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
 [let predicate : PredicateLikeOperator = criteria.oclAsType(PredicateLikeOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([predicate.left.generateDoctrineExpression()/], [predicate.right.generateDoctrineExpression()/])
+$queryBuilder->expr()->[predicate.operator()/]([predicate.left.doctrineExpression()/], [predicate.right.doctrineExpression()/])
 [/let]
 [/template]
 
-[template public generateDoctrineExpression(criteria : Expression)
+[template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.generateDoctrineExpression()/], '0')
+$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.doctrineExpression()/], '0')
 [/let]
 [/template]
 

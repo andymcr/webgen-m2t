@@ -28,7 +28,7 @@
  <div class="unit_padding">
   [indexUnit.generateViewContent(dataUnit.instanceName())/]
 	[if (not indexUnit.paginationQuery.oclIsUndefined())]
-  [indexUnit.generatePagination()/]
+  [indexUnit.pagination()/]
 	[/if]
 	[if (indexUnit.supportActions->notEmpty())]
   [indexUnit.generateSupportActions()/]
@@ -84,44 +84,44 @@
 ?>
 [/template]
 
-[template private generatePagination(unit : IndexUnit)]
+[template private pagination(unit : IndexUnit)]
 <ul class="unit_control">
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage == 1 %}
  <li>[unit.firstPageLabel/]</li>
 {% else %}
- <li><a href="[unit.generatePageHref('1')/]">[unit.firstPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('1')/]">[unit.firstPageLabel/]</a></li>
 {% endif %}
 [/if]
 {% if currentPage == 1 %}
  <li>[unit.previousPageLabel/]</li>
 {% else %}
- <li><a href="[unit.generatePageHref('currentPage - 1')/]">[unit.previousPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('currentPage - 1')/]">[unit.previousPageLabel/]</a></li>
 {% endif %}
 {% for page in 1..pageCount %}
  {% if page == currentPage %}
  <li>{{ page }}</li>
  {% else %}
- <li><a href="[unit.generatePageHref('page')/]">{{ page }}</a></li>
+ <li><a href="[unit.pageHref('page')/]">{{ page }}</a></li>
  {% endif %}
 {% endfor %}
 {% if currentPage == pageCount %}
  <li>[unit.nextPageLabel/]</li>
 {% else %}
- <li><a href="[unit.generatePageHref('currentPage + 1')/]">[unit.nextPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('currentPage + 1')/]">[unit.nextPageLabel/]</a></li>
 {% endif %}
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage == pageCount %}
  <li>[unit.lastPageLabel/]</li>
 {% else %}
- <li><a href="[unit.generatePageHref('pageCount')/]">[unit.lastPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('pageCount')/]">[unit.lastPageLabel/]</a></li>
 {% endif %}
 [/if]
 </ul>
 [/template]
 
-[template private generatePageHref(unit : IndexUnit, x : String) post(trim())]
-{{ path('[unit.pageDisplayedOn().name/]', app.request.query.all|merge({'[unit.paginationQuery.parameters->first().name/]': [x/]})) }}
+[template private pageHref(unit : IndexUnit, x : String) post(trim())]
+{{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.paginationQuery.parameters->first().name/]': [x/]})) }}
 [/template]
 
 [template public generateViewContent(unit : ContentUnit, instanceVariable : String)
@@ -423,13 +423,11 @@ default[/if]Label
 [/template]
 
 
-[template public generateAction(action : InlineAction, instanceVariable : String) post(trim())]
-[let targetController : Page = action.controller()]
-<a href="{{ path('[targetController.name/]'[if (action.oclIsTypeOf(SelectAction))]
+[template public generateAction(action : InlineAction, instanceVariable : String)
+	? (action.oclIsTypeOf(SelectAction)) post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
-	[comment if (not select.target.selectionFeature.oclIsUndefined()) /]
-, { '[comment select.routeParameterName()/]': [instanceVariable/].[comment select.target.selectionFeature.modelPropertyName()/]}[comment /if /]
-[/let]
-[/if]) }}" title="[action.displayLabel/] {{ [instanceVariable/].defaultLabel() }}">[action.displayLabel/]</a>
+<a href="{{ path('[select.target.oclAsType(DynamicUnit).routeName()/]'[if (select.target.selectionFeatures->notEmpty())]
+, {[for (feature : ServiceEntityElement | select.target.selectionFeatures) separator(', ')]
+'[feature.name/]': [instanceVariable/].[feature.modelPropertyName()/][/for]}[/if]) }}" title="[action.displayLabel/] {{ [instanceVariable/].defaultLabel() }}">[action.displayLabel/]</a>
 [/let]
 [/template]

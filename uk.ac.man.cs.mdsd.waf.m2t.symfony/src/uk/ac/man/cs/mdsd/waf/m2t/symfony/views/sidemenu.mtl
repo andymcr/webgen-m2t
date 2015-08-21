@@ -41,18 +41,13 @@
 
 
 [template private generateMenuEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(FixedPageMenuEntry))]
-[let entry : FixedPageMenuEntry = entry.oclAsType(FixedPageMenuEntry)]
-<li><a href="{{ path('[entry.page.name/]') }}">[entry.displayLabel/]</a></li>
-[/let]
-[/template]
-
-[template private generateMenuEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(FixedActionMenuEntry))]
-[let entry : FixedActionMenuEntry = entry.oclAsType(FixedActionMenuEntry)]
-<li><a href="{{ path('[entry.action.pageDisplayedOn().name/]'[if (not entry.query.oclIsUndefined())]
+	? (entry.oclIsTypeOf(ActionMenuEntry))]
+[let entry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+<li>[if (not entry.action.oclIsUndefined())]
+<a href="{{ path('[entry.action.routeName()/]'[if (not entry.query.oclIsUndefined())]
 , {[for (actual : QueryActual | entry.query.actuals) separator(', ')]
-'[actual.parameter.name/]': '[actual.value/]'[/for]}[/if]) }}">[entry.displayLabel/]</a></li>
+'[actual.parameter.name/]': '[actual.value/]'[/for]}[/if]) }}">[entry.displayLabel/]</a>[else]
+[entry.displayLabel/][/if]</li>
 [/let]
 [/template]
 

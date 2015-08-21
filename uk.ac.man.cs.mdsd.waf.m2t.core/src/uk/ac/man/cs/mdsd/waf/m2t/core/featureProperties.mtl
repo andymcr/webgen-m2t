@@ -857,7 +857,14 @@
 			''
 		else
 			unit.oclAsType(SelectTarget).selectionFeatures->collect(f | f.name)->sep('/{', '}/{', '}')->toString()
-		endif)
+		endif).concat(
+			if unit.path.oclIsUndefined() then
+				''
+			else if unit.path = '' then
+				''
+			else
+				'/'.concat(unit.path)
+			endif endif)
 /]
 
 [query public pageDisplayedOn(unit : ContentUnit) : Page

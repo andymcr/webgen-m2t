@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
 
 
 [template public generateUnitMethods(unit : ContentUnit)
@@ -26,9 +27,14 @@
 public function [unit.actionName()/]([if (unit.hasQueryParameters())]
 Request $request[if (unit.selectionFeatures->notEmpty())], [/if][/if][unit.routeParameters()/])
 {
-    $repository = $this->doctrine->getRepository('AppBundle:Competition');
+    $repository = $this->getDoctrine()->getRepository('AppBundle:Competition');
     $queryBuilder = $repository->createQueryBuilder('competitions');
-    $queryBuilder->where();
+    $queryBuilder->where(
+[for (feature : ServiceEntityElement | unit.selectionFeatures)]
+        $queryBuilder->expr()->eq([feature.featureReference()/], $queryBuilder->expr()->literal($[feature.name/]))
+[/for]
+    );
+	$[unit.instanceName()/] = $queryBuilder->getQuery()->getSingleResult();
 
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', array(
         'title' => '[page.displayLabel()/]',

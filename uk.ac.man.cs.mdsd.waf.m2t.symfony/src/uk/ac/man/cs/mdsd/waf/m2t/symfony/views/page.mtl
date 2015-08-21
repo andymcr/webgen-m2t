@@ -18,7 +18,9 @@
 
 {% block content %}
 [for (unit : ContentUnit | page.units)]
+{% if [unit.instanceName()/] is defined %}
 {{ include('[page.name/]/[unit.instanceName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
+{% endif %}
 [/for]
 {% endblock %}
 [/file]

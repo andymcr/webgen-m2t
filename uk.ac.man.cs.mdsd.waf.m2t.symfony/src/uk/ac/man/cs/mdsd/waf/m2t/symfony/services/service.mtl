@@ -4,9 +4,9 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
 
 [template public generateService(service : Service)]
 [file(service.serviceFilename(), false)]
@@ -39,13 +39,13 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
     $repository = $this->doctrine->getRepository('[service.appBundleName()/]:[service.modelName/]');
 	$queryBuilder = $repository->createQueryBuilder('[service.selectName()/]');
 [if (not selection.filter.oclIsUndefined())]
-    $queryBuilder->where([selection.filter.generateDoctrineExpression()/]);
+    $queryBuilder->where([selection.filter.doctrineExpression()/]);
 [/if]
 [if (selection.ordering->size() > 0)]
-    $queryBuilder->orderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
+    $queryBuilder->orderBy([selection.ordering->first().path.doctrineExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
 	[if (selection.ordering->size() > 1)]
 		[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-    $queryBuilder->addOrderBy([selection.ordering->first().path.generateDoctrineExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
+    $queryBuilder->addOrderBy([selection.ordering->first().path.doctrineExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
 		[/for]
 	[/if]
 [/if]

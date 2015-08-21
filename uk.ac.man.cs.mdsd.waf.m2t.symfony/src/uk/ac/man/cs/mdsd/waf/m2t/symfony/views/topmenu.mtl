@@ -14,7 +14,9 @@
  <ul>
 [/if]
 [for (page : Page | model.topMenuItems())]
-  <li><a href="{{ path('[page.name/]') }}">[page.navigationLabel/]</a></li>
+  <li>[if (page.units->notEmpty())]
+<a href="{{ path('[page.units->first().routeName()/]') }}">[page.navigationLabel/]</a>[else]
+[page.navigationLabel/][/if]</li>
 [/for]
   <li id="authentication">{# <?php
 	echo __('Logged in as ') . $user->username;
