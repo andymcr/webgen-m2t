@@ -15,8 +15,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.PageLinkItemSemant
 /**
  * @generated
  */
-public class PageLinkEditPart extends ConnectionNodeEditPart implements
-		ITreeBranchEditPart {
+public class PageLinkEditPart extends ConnectionNodeEditPart implements ITreeBranchEditPart {
 
 	/**
 	 * @generated
@@ -35,8 +34,7 @@ public class PageLinkEditPart extends ConnectionNodeEditPart implements
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new PageLinkItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new PageLinkItemSemanticEditPolicy());
 	}
 
 	/**

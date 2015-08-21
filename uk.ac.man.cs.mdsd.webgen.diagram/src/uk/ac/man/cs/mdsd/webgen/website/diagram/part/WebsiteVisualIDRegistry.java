@@ -38,8 +38,7 @@ public class WebsiteVisualIDRegistry {
 				return -1;
 			}
 		}
-		return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry
-				.getVisualID(view.getType());
+		return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry.getVisualID(view.getType());
 	}
 
 	/**
@@ -64,11 +63,9 @@ public class WebsiteVisualIDRegistry {
 		try {
 			return Integer.parseInt(type);
 		} catch (NumberFormatException e) {
-			if (Boolean.TRUE.toString().equalsIgnoreCase(
-					Platform.getDebugOption(DEBUG_KEY))) {
-				WebsiteDiagramEditorPlugin.getInstance().logError(
-						"Unable to parse view type as a visualID number: "
-								+ type);
+			if (Boolean.TRUE.toString().equalsIgnoreCase(Platform.getDebugOption(DEBUG_KEY))) {
+				WebsiteDiagramEditorPlugin.getInstance()
+						.logError("Unable to parse view type as a visualID number: " + type);
 			}
 		}
 		return -1;
@@ -88,8 +85,7 @@ public class WebsiteVisualIDRegistry {
 		if (domainElement == null) {
 			return -1;
 		}
-		if (WebsitePackage.eINSTANCE.getWebGenModel().isSuperTypeOf(
-				domainElement.eClass())
+		if (WebsitePackage.eINSTANCE.getWebGenModel().isSuperTypeOf(domainElement.eClass())
 				&& isDiagram((WebGenModel) domainElement)) {
 			return WebGenModelEditPart.VISUAL_ID;
 		}
@@ -121,561 +117,437 @@ public class WebsiteVisualIDRegistry {
 		}
 		switch (containerVisualID) {
 		case WebGenModelEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getWebsiteProperties().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getWebsiteProperties().isSuperTypeOf(domainElement.eClass())) {
 				return WebsitePropertiesEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataType().isSuperTypeOf(
-					domainElement.eClass())
+			if (WebsitePackage.eINSTANCE.getDataType().isSuperTypeOf(domainElement.eClass())
 					&& isDataType_2002((DataType) domainElement)) {
 				return DataTypeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDynamicMenu().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDynamicMenu().isSuperTypeOf(domainElement.eClass())) {
 				return DynamicMenuEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getEnumerationType().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getEnumerationType().isSuperTypeOf(domainElement.eClass())) {
 				return EnumerationTypeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getEntity().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getEntity().isSuperTypeOf(domainElement.eClass())) {
 				return EntityEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getPage().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getPage().isSuperTypeOf(domainElement.eClass())) {
 				return PageEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getStaticMenu().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getStaticMenu().isSuperTypeOf(domainElement.eClass())) {
 				return StaticMenuEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getService().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getService().isSuperTypeOf(domainElement.eClass())) {
 				return ServiceEditPart.VISUAL_ID;
 			}
 			break;
 		case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getCasAuthentication().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getCasAuthentication().isSuperTypeOf(domainElement.eClass())) {
 				return CasAuthenticationEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getLocalAuthenticationSystem()
-					.isSuperTypeOf(domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getLocalAuthenticationSystem().isSuperTypeOf(domainElement.eClass())) {
 				return LocalAuthenticationSystemEditPart.VISUAL_ID;
 			}
 			break;
-		case DynamicMenuUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getMenuIncludedElement()
-					.isSuperTypeOf(domainElement.eClass())) {
-				return MenuIncludedElementEditPart.VISUAL_ID;
-			}
-			break;
 		case EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getEnumerationLiteral().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getEnumerationLiteral().isSuperTypeOf(domainElement.eClass())) {
 				return EnumerationLiteralEditPart.VISUAL_ID;
 			}
 			break;
 		case EntityAttributeCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDataTypeAttribute().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateAttribute().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return DateAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getFileAttribute().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getFileAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return FileAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getImageAttribute().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getImageAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return ImageAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getLocationAttribute().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getLocationAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return LocationAttributeEditPart.VISUAL_ID;
 			}
 			break;
 		case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getActionUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getActionUnit().isSuperTypeOf(domainElement.eClass())) {
 				return ActionUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getCommandUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getCommandUnit().isSuperTypeOf(domainElement.eClass())) {
 				return CommandUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getCreateUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getCreateUnit().isSuperTypeOf(domainElement.eClass())) {
 				return CreateUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getCreateUpdateUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getCreateUpdateUnit().isSuperTypeOf(domainElement.eClass())) {
 				return CreateUpdateUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getCreateSitemapUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getCreateSitemapUnit().isSuperTypeOf(domainElement.eClass())) {
 				return CreateSitemapUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit6EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getMapUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getMapUnit().isSuperTypeOf(domainElement.eClass())) {
 				return MapUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getSearchUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSearchUnit().isSuperTypeOf(domainElement.eClass())) {
 				return SearchUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getStaticUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getStaticUnit().isSuperTypeOf(domainElement.eClass())) {
 				return StaticUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUpdateUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUpdateUnit().isSuperTypeOf(domainElement.eClass())) {
 				return UpdateUnitEditPart.VISUAL_ID;
 			}
 			break;
 		case ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElementEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociationEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeFieldEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
 				return DateFieldEditPart.VISUAL_ID;
 			}
 			break;
 		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitSupportAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitSupportAction().isSuperTypeOf(domainElement.eClass())) {
 				return UnitSupportActionEditPart.VISUAL_ID;
 			}
 			break;
 		case CommandUnitCommandsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUserCommand().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUserCommand().isSuperTypeOf(domainElement.eClass())) {
 				return UserCommandEditPart.VISUAL_ID;
 			}
 			break;
 		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement2EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation2EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeField2EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
 				return DateField2EditPart.VISUAL_ID;
 			}
 			break;
 		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement3EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation3EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeField3EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
 				return DateField3EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement4EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation4EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeField4EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
 				return DateField4EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitSupportAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitSupportAction().isSuperTypeOf(domainElement.eClass())) {
 				return UnitSupportAction2EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitElementActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectActionEditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit2EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit2EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction3EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement5EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation5EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit3EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnitEditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment3EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement6EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement7EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement8EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation6EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitActionCompartment3EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction2EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
 				return DeleteActionEditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit4EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit4EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement9EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation7EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit5EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit3EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement10EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation8EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement11EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation9EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement12EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation10EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit6EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit5EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement13EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation11EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement14EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation12EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement15EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation13EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeField5EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
 				return DateField5EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction6EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
 				return DeleteAction2EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getFeatureSupportAction()
-					.isSuperTypeOf(domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getFeatureSupportAction().isSuperTypeOf(domainElement.eClass())) {
 				return FeatureSupportActionEditPart.VISUAL_ID;
 			}
 			break;
 		case UnitElementActionCompartment2EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction4EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit7EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit7EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationActionCompartment3EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction5EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement16EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation14EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement17EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation15EditPart.VISUAL_ID;
 			}
 			break;
 		case SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement18EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation16EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeField6EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
 				return DateField6EditPart.VISUAL_ID;
 			}
 			break;
 		case UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement19EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation17EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeField7EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
 				return DateField7EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit8EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement20EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation18EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction7EditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
 				return DeleteAction3EditPart.VISUAL_ID;
 			}
 			break;
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getFixedPageMenuEntry().isSuperTypeOf(
-					domainElement.eClass())) {
-				return FixedPageMenuEntryEditPart.VISUAL_ID;
+			if (WebsitePackage.eINSTANCE.getActionMenuEntry().isSuperTypeOf(domainElement.eClass())) {
+				return ActionMenuEntryEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getFixedActionMenuEntry()
-					.isSuperTypeOf(domainElement.eClass())) {
-				return FixedActionMenuEntryEditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getFixedCommandMenuEntry()
-					.isSuperTypeOf(domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getFixedCommandMenuEntry().isSuperTypeOf(domainElement.eClass())) {
 				return FixedCommandMenuEntryEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry()
-					.isSuperTypeOf(domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry().isSuperTypeOf(domainElement.eClass())) {
 				return EditStaticTextMenuEntryEditPart.VISUAL_ID;
 			}
 			break;
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getServiceEntityElement()
-					.isSuperTypeOf(domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getServiceEntityElement().isSuperTypeOf(domainElement.eClass())) {
 				return ServiceEntityElementEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getServiceEntityAssociation()
-					.isSuperTypeOf(domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getServiceEntityAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return ServiceEntityAssociationEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getServiceViewAssociation()
-					.isSuperTypeOf(domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getServiceViewAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return ServiceViewAssociationEditPart.VISUAL_ID;
 			}
 			break;
 		case ServiceModelLabelsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getModelLabel().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getModelLabel().isSuperTypeOf(domainElement.eClass())) {
 				return ModelLabelEditPart.VISUAL_ID;
 			}
 			break;
 		case ServiceSelectionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelection().isSuperTypeOf(
-					domainElement.eClass())) {
+			if (WebsitePackage.eINSTANCE.getSelection().isSuperTypeOf(domainElement.eClass())) {
 				return SelectionEditPart.VISUAL_ID;
 			}
 			break;
@@ -794,11 +666,6 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			if (ServiceSelectionCompartmentEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case MenuIncludedElementEditPart.VISUAL_ID:
-			if (MenuIncludedElementNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1388,13 +1255,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case FixedPageMenuEntryEditPart.VISUAL_ID:
-			if (FixedPageMenuEntryNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case FixedActionMenuEntryEditPart.VISUAL_ID:
-			if (FixedActionMenuEntryNameEditPart.VISUAL_ID == nodeVisualID) {
+		case ActionMenuEntryEditPart.VISUAL_ID:
+			if (ActionMenuEntryNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1438,11 +1300,6 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			if (LocalAuthenticationSystemEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case DynamicMenuUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (MenuIncludedElementEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1815,10 +1672,7 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
-			if (FixedPageMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (FixedActionMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
+			if (ActionMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (FixedCommandMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
@@ -1876,16 +1730,13 @@ public class WebsiteVisualIDRegistry {
 		if (domainElement == null) {
 			return -1;
 		}
-		if (WebsitePackage.eINSTANCE.getAssociationWithoutContainment()
-				.isSuperTypeOf(domainElement.eClass())) {
+		if (WebsitePackage.eINSTANCE.getAssociationWithoutContainment().isSuperTypeOf(domainElement.eClass())) {
 			return AssociationWithoutContainmentEditPart.VISUAL_ID;
 		}
-		if (WebsitePackage.eINSTANCE.getAssociationWithContainment()
-				.isSuperTypeOf(domainElement.eClass())) {
+		if (WebsitePackage.eINSTANCE.getAssociationWithContainment().isSuperTypeOf(domainElement.eClass())) {
 			return AssociationWithContainmentEditPart.VISUAL_ID;
 		}
-		if (WebsitePackage.eINSTANCE.getPageLink().isSuperTypeOf(
-				domainElement.eClass())) {
+		if (WebsitePackage.eINSTANCE.getPageLink().isSuperTypeOf(domainElement.eClass())) {
 			return PageLinkEditPart.VISUAL_ID;
 		}
 		return -1;
@@ -1905,17 +1756,15 @@ public class WebsiteVisualIDRegistry {
 	 * @generated
 	 */
 	private static boolean isDataType_2002(DataType domainElement) {
-		Object result = WebsiteOCLFactory.getExpression(0,
-				WebsitePackage.eINSTANCE.getDataType(), null).evaluate(
-				domainElement);
+		Object result = WebsiteOCLFactory.getExpression(0, WebsitePackage.eINSTANCE.getDataType(), null)
+				.evaluate(domainElement);
 		return result instanceof Boolean && ((Boolean) result).booleanValue();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static boolean checkNodeVisualID(View containerView,
-			EObject domainElement, int candidate) {
+	public static boolean checkNodeVisualID(View containerView, EObject domainElement, int candidate) {
 		if (candidate == -1) {
 			//unrecognized id is always bad
 			return false;
@@ -1990,6 +1839,7 @@ public class WebsiteVisualIDRegistry {
 		case WebGenModelEditPart.VISUAL_ID:
 			return false;
 		case DataTypeEditPart.VISUAL_ID:
+		case DynamicMenuEditPart.VISUAL_ID:
 		case DateAttributeEditPart.VISUAL_ID:
 		case EnumerationLiteralEditPart.VISUAL_ID:
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
@@ -2004,15 +1854,12 @@ public class WebsiteVisualIDRegistry {
 		case SelectAction5EditPart.VISUAL_ID:
 		case SelectAction6EditPart.VISUAL_ID:
 		case DeleteAction2EditPart.VISUAL_ID:
-		case MenuIncludedElementEditPart.VISUAL_ID:
 		case SelectionEditPart.VISUAL_ID:
 		case FileAttributeEditPart.VISUAL_ID:
 		case SelectAction7EditPart.VISUAL_ID:
 		case DeleteAction3EditPart.VISUAL_ID:
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 		case CreateSitemapUnitEditPart.VISUAL_ID:
-		case FixedPageMenuEntryEditPart.VISUAL_ID:
-		case FixedActionMenuEntryEditPart.VISUAL_ID:
 		case ModelLabelEditPart.VISUAL_ID:
 		case ServiceViewAssociationEditPart.VISUAL_ID:
 		case ServiceEntityElementEditPart.VISUAL_ID:
@@ -2068,6 +1915,7 @@ public class WebsiteVisualIDRegistry {
 		case UnitSupportAction2EditPart.VISUAL_ID:
 		case FeatureSupportActionEditPart.VISUAL_ID:
 		case ImageAttributeEditPart.VISUAL_ID:
+		case ActionMenuEntryEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;
@@ -2080,55 +1928,58 @@ public class WebsiteVisualIDRegistry {
 	 */
 	public static final DiagramStructure TYPED_INSTANCE = new DiagramStructure() {
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public int getVisualID(View view) {
-			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry
-					.getVisualID(view);
+			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry.getVisualID(view);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public String getModelID(View view) {
-			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry
-					.getModelID(view);
+			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry.getModelID(view);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public int getNodeVisualID(View containerView, EObject domainElement) {
-			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry
-					.getNodeVisualID(containerView, domainElement);
+			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry.getNodeVisualID(containerView,
+					domainElement);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
-		public boolean checkNodeVisualID(View containerView,
-				EObject domainElement, int candidate) {
+
+		public boolean checkNodeVisualID(View containerView, EObject domainElement, int candidate) {
 			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry
 					.checkNodeVisualID(containerView, domainElement, candidate);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public boolean isCompartmentVisualID(int visualID) {
 			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry
 					.isCompartmentVisualID(visualID);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public boolean isSemanticLeafVisualID(int visualID) {
 			return uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry
 					.isSemanticLeafVisualID(visualID);

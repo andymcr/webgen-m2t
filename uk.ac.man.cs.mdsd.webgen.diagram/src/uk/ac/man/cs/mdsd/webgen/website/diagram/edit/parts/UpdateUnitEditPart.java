@@ -63,11 +63,9 @@ public class UpdateUnitEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new UpdateUnitItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new UpdateUnitItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -84,8 +82,7 @@ public class UpdateUnitEditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -115,8 +112,8 @@ public class UpdateUnitEditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof UpdateUnitNameEditPart) {
-			((UpdateUnitNameEditPart) childEditPart).setLabel(getPrimaryShape()
-					.getFigureInterfaceUnitNameLabelFigure());
+			((UpdateUnitNameEditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureInterfaceUnitNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -249,8 +246,7 @@ public class UpdateUnitEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(UpdateUnitNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(UpdateUnitNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -258,26 +254,24 @@ public class UpdateUnitEditPart extends ShapeNodeEditPart {
 	 */
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
 			if (type == WebsiteElementTypes.UnitElement_3220) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.UnitAssociation_3221) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.DataTypeField_3217) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.DateField_3218) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -309,8 +303,7 @@ public class UpdateUnitEditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5),
-					getMapMode().DPtoLP(5)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5)));
 			this.setLineWidth(2);
 			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);

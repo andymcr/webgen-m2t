@@ -17,8 +17,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.AssociationWithout
 /**
  * @generated
  */
-public class AssociationWithoutContainmentEditPart extends
-		ConnectionNodeEditPart implements ITreeBranchEditPart {
+public class AssociationWithoutContainmentEditPart extends ConnectionNodeEditPart implements ITreeBranchEditPart {
 
 	/**
 	 * @generated
@@ -37,8 +36,7 @@ public class AssociationWithoutContainmentEditPart extends
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new AssociationWithoutContainmentItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new AssociationWithoutContainmentItemSemanticEditPolicy());
 	}
 
 	/**
@@ -47,14 +45,12 @@ public class AssociationWithoutContainmentEditPart extends
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof AssociationWithoutContainmentNameEditPart) {
 			((AssociationWithoutContainmentNameEditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureAssociationWithoutContainmentNameFigure());
+					.setLabel(getPrimaryShape().getFigureAssociationWithoutContainmentNameFigure());
 			return true;
 		}
 		if (childEditPart instanceof AssociationWithoutContainmentCardinalityTargetCardinEditPart) {
 			((AssociationWithoutContainmentCardinalityTargetCardinEditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureAssociationWithoutContainmentMultiplicityFigure());
+					.setLabel(getPrimaryShape().getFigureAssociationWithoutContainmentMultiplicityFigure());
 			return true;
 		}
 		return false;
@@ -116,8 +112,7 @@ public class AssociationWithoutContainmentEditPart extends
 	/**
 	 * @generated
 	 */
-	public class AssociationWithoutContainmentFigure extends
-			PolylineConnectionEx {
+	public class AssociationWithoutContainmentFigure extends PolylineConnectionEx {
 
 		/**
 		 * @generated

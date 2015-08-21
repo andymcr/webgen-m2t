@@ -22,10 +22,9 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ActionMenuEntryEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EditStaticTextMenuEntryEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedActionMenuEntryEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedCommandMenuEntryEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedPageMenuEntryEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -33,8 +32,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 /**
  * @generated
  */
-public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
-		CanonicalEditPolicy {
+public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
 	 * @generated
@@ -73,10 +71,8 @@ public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
 	/**
 	 * @generated
 	 */
-	protected boolean isOrphaned(Collection<EObject> semanticChildren,
-			final View view) {
-		return isMyDiagramElement(view)
-				&& !semanticChildren.contains(view.getElement());
+	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
+		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
 	}
 
 	/**
@@ -84,14 +80,8 @@ public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
 	 */
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		switch (visualID) {
-		case FixedPageMenuEntryEditPart.VISUAL_ID:
-		case FixedActionMenuEntryEditPart.VISUAL_ID:
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
-		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
-			return true;
-		}
-		return false;
+		return visualID == ActionMenuEntryEditPart.VISUAL_ID || visualID == FixedCommandMenuEntryEditPart.VISUAL_ID
+				|| visualID == EditStaticTextMenuEntryEditPart.VISUAL_ID;
 	}
 
 	/**
@@ -103,8 +93,7 @@ public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getStaticMenuMenuEntriesCompartment_7084SemanticChildren((View) getHost()
-						.getModel());
+				.getStaticMenuMenuEntriesCompartment_7084SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();
@@ -118,8 +107,8 @@ public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
 		// iteration happens over list of desired semantic elements, trying to find best matching View, while original CEP
 		// iterates views, potentially losing view (size/bounds) information - i.e. if there are few views to reference same EObject, only last one 
 		// to answer isOrphaned == true will be used for the domain element representation, see #cleanCanonicalSemanticChildren()
-		for (Iterator<WebsiteNodeDescriptor> descriptorsIterator = childDescriptors
-				.iterator(); descriptorsIterator.hasNext();) {
+		for (Iterator<WebsiteNodeDescriptor> descriptorsIterator = childDescriptors.iterator(); descriptorsIterator
+				.hasNext();) {
 			WebsiteNodeDescriptor next = descriptorsIterator.next();
 			String hint = WebsiteVisualIDRegistry.getType(next.getVisualID());
 			LinkedList<View> perfectMatch = new LinkedList<View>(); // both semanticElement and hint match that of NodeDescriptor
@@ -148,11 +137,9 @@ public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
 				childDescriptors.size());
 		for (WebsiteNodeDescriptor next : childDescriptors) {
 			String hint = WebsiteVisualIDRegistry.getType(next.getVisualID());
-			IAdaptable elementAdapter = new CanonicalElementAdapter(
-					next.getModelElement(), hint);
-			CreateViewRequest.ViewDescriptor descriptor = new CreateViewRequest.ViewDescriptor(
-					elementAdapter, Node.class, hint, ViewUtil.APPEND, false,
-					host().getDiagramPreferencesHint());
+			IAdaptable elementAdapter = new CanonicalElementAdapter(next.getModelElement(), hint);
+			CreateViewRequest.ViewDescriptor descriptor = new CreateViewRequest.ViewDescriptor(elementAdapter,
+					Node.class, hint, ViewUtil.APPEND, false, host().getDiagramPreferencesHint());
 			viewDescriptors.add(descriptor);
 		}
 
@@ -161,10 +148,10 @@ public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
 		CreateViewRequest request = getCreateViewRequest(viewDescriptors);
 		Command cmd = getCreateViewCommand(request);
 		if (cmd != null && cmd.canExecute()) {
-			SetViewMutabilityCommand.makeMutable(
-					new EObjectAdapter(host().getNotationView())).execute();
+			SetViewMutabilityCommand.makeMutable(new EObjectAdapter(host().getNotationView())).execute();
 			executeCommand(cmd);
 			@SuppressWarnings("unchecked")
+
 			List<IAdaptable> nl = (List<IAdaptable>) request.getNewObject();
 			createdViews.addAll(nl);
 		}
@@ -173,8 +160,8 @@ public class StaticMenuIncludedFeaturesCompartmentCanonicalEditPolicy extends
 		}
 		if (createdViews.size() > 1) {
 			// perform a layout of the container
-			DeferredLayoutCommand layoutCmd = new DeferredLayoutCommand(host()
-					.getEditingDomain(), createdViews, host());
+			DeferredLayoutCommand layoutCmd = new DeferredLayoutCommand(host().getEditingDomain(), createdViews,
+					host());
 			executeCommand(new ICommandProxy(layoutCmd));
 		}
 

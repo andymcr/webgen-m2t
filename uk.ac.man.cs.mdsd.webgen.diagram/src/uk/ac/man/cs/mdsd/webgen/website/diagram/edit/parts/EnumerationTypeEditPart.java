@@ -63,11 +63,9 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new EnumerationTypeItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new EnumerationTypeItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -84,8 +82,7 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -116,8 +113,7 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof EnumerationTypeNameEditPart) {
 			((EnumerationTypeNameEditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureEnumerationTypeNameLabelFigure());
+					.setLabel(getPrimaryShape().getFigureEnumerationTypeNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -250,8 +246,7 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(EnumerationTypeNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(EnumerationTypeNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -259,14 +254,12 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 	 */
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
 			if (type == WebsiteElementTypes.EnumerationLiteral_3028) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -298,8 +291,7 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5),
-					getMapMode().DPtoLP(5)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5)));
 			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);
 			createContents();

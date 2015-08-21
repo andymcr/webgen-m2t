@@ -9,8 +9,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class PageLinkItemSemanticEditPolicy extends
-		WebsiteBaseItemSemanticEditPolicy {
+public class PageLinkItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated

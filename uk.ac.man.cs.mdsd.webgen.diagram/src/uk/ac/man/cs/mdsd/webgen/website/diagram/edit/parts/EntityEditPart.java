@@ -1,9 +1,5 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RoundedRectangle;
@@ -67,11 +63,9 @@ public class EntityEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new EntityItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new EntityItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -88,8 +82,7 @@ public class EntityEditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -119,8 +112,7 @@ public class EntityEditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof EntityNameEditPart) {
-			((EntityNameEditPart) childEditPart).setLabel(getPrimaryShape()
-					.getFigureEntityNameLabelFigure());
+			((EntityNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureEntityNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -253,69 +245,7 @@ public class EntityEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(EntityNameEditPart.VISUAL_ID));
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMARelTypesOnSource() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.AssociationWithoutContainment_4001);
-		types.add(WebsiteElementTypes.AssociationWithContainment_4002);
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMARelTypesOnSourceAndTarget(
-			IGraphicalEditPart targetEditPart) {
-		LinkedList<IElementType> types = new LinkedList<IElementType>();
-		if (targetEditPart instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EntityEditPart) {
-			types.add(WebsiteElementTypes.AssociationWithoutContainment_4001);
-		}
-		if (targetEditPart instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EntityEditPart) {
-			types.add(WebsiteElementTypes.AssociationWithContainment_4002);
-		}
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMATypesForTarget(IElementType relationshipType) {
-		LinkedList<IElementType> types = new LinkedList<IElementType>();
-		if (relationshipType == WebsiteElementTypes.AssociationWithoutContainment_4001) {
-			types.add(WebsiteElementTypes.Entity_2003);
-		} else if (relationshipType == WebsiteElementTypes.AssociationWithContainment_4002) {
-			types.add(WebsiteElementTypes.Entity_2003);
-		}
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMARelTypesOnTarget() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.AssociationWithoutContainment_4001);
-		types.add(WebsiteElementTypes.AssociationWithContainment_4002);
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMATypesForSource(IElementType relationshipType) {
-		LinkedList<IElementType> types = new LinkedList<IElementType>();
-		if (relationshipType == WebsiteElementTypes.AssociationWithoutContainment_4001) {
-			types.add(WebsiteElementTypes.Entity_2003);
-		} else if (relationshipType == WebsiteElementTypes.AssociationWithContainment_4002) {
-			types.add(WebsiteElementTypes.Entity_2003);
-		}
-		return types;
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(EntityNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -323,30 +253,28 @@ public class EntityEditPart extends ShapeNodeEditPart {
 	 */
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
 			if (type == WebsiteElementTypes.DataTypeAttribute_3054) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.DateAttribute_3014) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.FileAttribute_3152) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.ImageAttribute_3235) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.LocationAttribute_3230) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -378,8 +306,7 @@ public class EntityEditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(10),
-					getMapMode().DPtoLP(10)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(10), getMapMode().DPtoLP(10)));
 			this.setLineWidth(2);
 			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);

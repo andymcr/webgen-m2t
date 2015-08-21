@@ -63,11 +63,9 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new StaticMenuItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new StaticMenuItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -84,8 +82,7 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -115,8 +112,7 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof StaticMenuNameEditPart) {
-			((StaticMenuNameEditPart) childEditPart).setLabel(getPrimaryShape()
-					.getFigureMenuNameLabel());
+			((StaticMenuNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureMenuNameLabel());
 			return true;
 		}
 		return false;
@@ -249,8 +245,7 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(StaticMenuNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(StaticMenuNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -258,26 +253,20 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 	 */
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.FixedPageMenuEntry_3158) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.FixedActionMenuEntry_3159) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
+			if (type == WebsiteElementTypes.ActionMenuEntry_3236) {
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.FixedCommandMenuEntry_3231) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.EditStaticTextMenuEntry_3156) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -309,8 +298,7 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5),
-					getMapMode().DPtoLP(5)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5)));
 			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);
 			createContents();

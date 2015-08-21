@@ -21,8 +21,7 @@ public class WebsiteCreationWizardPage extends WizardNewFileCreationPage {
 	/**
 	 * @generated
 	 */
-	public WebsiteCreationWizardPage(String pageName,
-			IStructuredSelection selection, String fileExtension) {
+	public WebsiteCreationWizardPage(String pageName, IStructuredSelection selection, String fileExtension) {
 		super(pageName, selection);
 		this.fileExtension = fileExtension;
 	}
@@ -63,8 +62,7 @@ public class WebsiteCreationWizardPage extends WizardNewFileCreationPage {
 	 */
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		setFileName(WebsiteDiagramEditorUtil.getUniqueFileName(
-				getContainerFullPath(), getFileName(), getExtension()));
+		setFileName(WebsiteDiagramEditorUtil.getUniqueFileName(getContainerFullPath(), getFileName(), getExtension()));
 		setPageComplete(validatePage());
 	}
 
@@ -76,11 +74,8 @@ public class WebsiteCreationWizardPage extends WizardNewFileCreationPage {
 			return false;
 		}
 		String extension = getExtension();
-		if (extension != null
-				&& !getFilePath().toString().endsWith("." + extension)) {
-			setErrorMessage(NLS
-					.bind(Messages.WebsiteCreationWizardPageExtensionError,
-							extension));
+		if (extension != null && !getFilePath().toString().endsWith("." + extension)) {
+			setErrorMessage(NLS.bind(Messages.WebsiteCreationWizardPageExtensionError, extension));
 			return false;
 		}
 		return true;

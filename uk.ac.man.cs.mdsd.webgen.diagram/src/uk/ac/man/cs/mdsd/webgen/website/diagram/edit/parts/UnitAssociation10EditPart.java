@@ -62,11 +62,9 @@ public class UnitAssociation10EditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new UnitAssociation10ItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new UnitAssociation10ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -83,8 +81,7 @@ public class UnitAssociation10EditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -115,8 +112,7 @@ public class UnitAssociation10EditPart extends ShapeNodeEditPart {
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof UnitAssociationName10EditPart) {
 			((UnitAssociationName10EditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureInterfaceFieldNameLabelFigure());
+					.setLabel(getPrimaryShape().getFigureInterfaceFieldNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -249,8 +245,7 @@ public class UnitAssociation10EditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(UnitAssociationName10EditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(UnitAssociationName10EditPart.VISUAL_ID));
 	}
 
 	/**
@@ -258,18 +253,16 @@ public class UnitAssociation10EditPart extends ShapeNodeEditPart {
 	 */
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
 			if (type == WebsiteElementTypes.DetailsUnit_3131) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.IndexUnit_3133) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);

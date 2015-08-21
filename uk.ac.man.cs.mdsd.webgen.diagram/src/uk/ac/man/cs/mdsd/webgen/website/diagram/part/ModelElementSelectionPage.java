@@ -12,8 +12,7 @@ public class ModelElementSelectionPage extends DefaultModelElementSelectionPage 
 	 * @generated
 	 */
 	public ModelElementSelectionPage(String pageName) {
-		super(WebsiteDiagramEditorPlugin.getInstance()
-				.getItemProvidersAdapterFactory(), pageName);
+		super(WebsiteDiagramEditorPlugin.getInstance().getItemProvidersAdapterFactory(), pageName);
 	}
 
 	/**

@@ -40,8 +40,6 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EntityEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EnumerationLiteralEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EnumerationTypeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FileAttributeEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedActionMenuEntryEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FixedPageMenuEntryEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit4EditPart;
@@ -50,7 +48,6 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit7EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocalAuthenticationSystemEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MenuIncludedElementEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageLinkEditPart;
@@ -92,8 +89,7 @@ public class WebsiteElementTypes {
 	 * @generated
 	 */
 	private static DiagramElementTypeImages elementTypeImages = new DiagramElementTypeImages(
-			WebsiteDiagramEditorPlugin.getInstance()
-					.getItemProvidersAdapterFactory());
+			WebsiteDiagramEditorPlugin.getInstance().getItemProvidersAdapterFactory());
 
 	/**
 	 * @generated
@@ -103,11 +99,13 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType WebGenModel_1000 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.WebGenModel_1000"); //$NON-NLS-1$
+	public static final IElementType WebGenModel_1000 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.WebGenModel_1000"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType WebsiteProperties_2001 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.WebsiteProperties_2001"); //$NON-NLS-1$
+	public static final IElementType WebsiteProperties_2001 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.WebsiteProperties_2001"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
@@ -115,12 +113,14 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType DynamicMenu_2008 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DynamicMenu_2008"); //$NON-NLS-1$
+	public static final IElementType DynamicMenu_2008 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DynamicMenu_2008"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType EnumerationType_2006 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.EnumerationType_2006"); //$NON-NLS-1$
+	public static final IElementType EnumerationType_2006 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EnumerationType_2006"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
@@ -136,67 +136,75 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType StaticMenu_2009 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.StaticMenu_2009"); //$NON-NLS-1$
+	public static final IElementType StaticMenu_2009 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.StaticMenu_2009"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType CasAuthentication_3055 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.CasAuthentication_3055"); //$NON-NLS-1$
+	public static final IElementType CasAuthentication_3055 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.CasAuthentication_3055"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType LocalAuthenticationSystem_3029 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3029"); //$NON-NLS-1$
+	public static final IElementType LocalAuthenticationSystem_3029 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3029"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType MenuIncludedElement_3149 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.MenuIncludedElement_3149"); //$NON-NLS-1$
+	public static final IElementType EnumerationLiteral_3028 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3028"); //$NON-NLS-1$
+	/**
+	 * @generated
+	 */
+	public static final IElementType DataTypeAttribute_3054 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeAttribute_3054"); //$NON-NLS-1$
+	/**
+	 * @generated
+	 */
+	public static final IElementType DateAttribute_3014 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3014"); //$NON-NLS-1$
+	/**
+	 * @generated
+	 */
+	public static final IElementType FileAttribute_3152 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.FileAttribute_3152"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType EnumerationLiteral_3028 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3028"); //$NON-NLS-1$
-	/**
-	 * @generated
-	 */
-	public static final IElementType DataTypeAttribute_3054 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeAttribute_3054"); //$NON-NLS-1$
-	/**
-	 * @generated
-	 */
-	public static final IElementType DateAttribute_3014 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3014"); //$NON-NLS-1$
-	/**
-	 * @generated
-	 */
-	public static final IElementType FileAttribute_3152 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.FileAttribute_3152"); //$NON-NLS-1$
+	public static final IElementType ImageAttribute_3235 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ImageAttribute_3235"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType ImageAttribute_3235 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.ImageAttribute_3235"); //$NON-NLS-1$
+	public static final IElementType LocationAttribute_3230 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3230"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType LocationAttribute_3230 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3230"); //$NON-NLS-1$
+	public static final IElementType ActionUnit_3213 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType ActionUnit_3213 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"); //$NON-NLS-1$
+	public static final IElementType ServiceEntityAssociation_3168 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityAssociation_3168"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType ServiceEntityAssociation_3168 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityAssociation_3168"); //$NON-NLS-1$
+	public static final IElementType ServiceViewAssociation_3166 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceViewAssociation_3166"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType ServiceViewAssociation_3166 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.ServiceViewAssociation_3166"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType ModelLabel_3163 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3163"); //$NON-NLS-1$
+	public static final IElementType ModelLabel_3163 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3163"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -206,21 +214,25 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType CreateUnit_3103 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"); //$NON-NLS-1$
+	public static final IElementType CreateUnit_3103 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3169 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3169 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3170 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3170 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DataTypeField_3201 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"); //$NON-NLS-1$
+	public static final IElementType DataTypeField_3201 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -230,36 +242,43 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitSupportAction_3232 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"); //$NON-NLS-1$
+	public static final IElementType UnitSupportAction_3232 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType CommandUnit_3225 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.CommandUnit_3225"); //$NON-NLS-1$
+	public static final IElementType CommandUnit_3225 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.CommandUnit_3225"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UserCommand_3226 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UserCommand_3226"); //$NON-NLS-1$
+	public static final IElementType UserCommand_3226 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UserCommand_3226"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType CreateUpdateUnit_3104 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"); //$NON-NLS-1$
+	public static final IElementType CreateUpdateUnit_3104 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3171 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3171"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3171 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3171"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3172 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3172"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3172 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3172"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DataTypeField_3202 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3202"); //$NON-NLS-1$
+	public static final IElementType DataTypeField_3202 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3202"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -269,48 +288,58 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType CreateSitemapUnit_3157 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.CreateSitemapUnit_3157"); //$NON-NLS-1$
+	public static final IElementType CreateSitemapUnit_3157 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.CreateSitemapUnit_3157"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DetailsUnit_3105 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"); //$NON-NLS-1$
+	public static final IElementType DetailsUnit_3105 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3173 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3173 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType SelectAction_3102 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"); //$NON-NLS-1$
+	public static final IElementType SelectAction_3102 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3174 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3174 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DetailsUnit_3112 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3112"); //$NON-NLS-1$
+	public static final IElementType DetailsUnit_3112 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3112"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3175 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3175 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3176 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3176 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DetailsUnit_3113 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3113"); //$NON-NLS-1$
+	public static final IElementType DetailsUnit_3113 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3113"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3177 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3177 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -319,7 +348,8 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3178 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3178 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -328,26 +358,31 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3179 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3179 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3180 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3180 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DetailsUnit_3116 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"); //$NON-NLS-1$
+	public static final IElementType DetailsUnit_3116 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3181 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3181"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3181 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3181"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3182 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3182"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3182 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3182"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -356,12 +391,14 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3185 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3185"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3185 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3185"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3186 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3186"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3186 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3186"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -371,7 +408,8 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3193 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3193 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -380,40 +418,48 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3187 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3187"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3187 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3187"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3188 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3188"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3188 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3188"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType SelectAction_3107 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3107"); //$NON-NLS-1$
+	public static final IElementType SelectAction_3107 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3107"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType DetailsUnit_3129 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"); //$NON-NLS-1$
+	public static final IElementType DetailsUnit_3129 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3183 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3183"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3183 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3183"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3184 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3184"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3184 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3184"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType SelectAction_3126 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3126"); //$NON-NLS-1$
+	public static final IElementType SelectAction_3126 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3126"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType DataTypeField_3203 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"); //$NON-NLS-1$
+	public static final IElementType DataTypeField_3203 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -423,12 +469,14 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType SelectAction_3128 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3128"); //$NON-NLS-1$
+	public static final IElementType SelectAction_3128 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3128"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DataTypeField_3204 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"); //$NON-NLS-1$
+	public static final IElementType DataTypeField_3204 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -438,44 +486,53 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitSupportAction_3233 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3233"); //$NON-NLS-1$
+	public static final IElementType UnitSupportAction_3233 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3233"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType SelectAction_3127 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3127"); //$NON-NLS-1$
+	public static final IElementType SelectAction_3127 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3127"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3194 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3194 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DeleteAction_3101 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"); //$NON-NLS-1$
+	public static final IElementType DeleteAction_3101 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType SearchUnit_3109 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SearchUnit_3109"); //$NON-NLS-1$
+	public static final IElementType SearchUnit_3109 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SearchUnit_3109"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3195 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3195 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3196 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3196 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DetailsUnit_3219 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3219"); //$NON-NLS-1$
+	public static final IElementType DetailsUnit_3219 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3219"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DataTypeField_3205 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"); //$NON-NLS-1$
+	public static final IElementType DataTypeField_3205 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -485,35 +542,42 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType DetailsUnit_3131 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"); //$NON-NLS-1$
+	public static final IElementType DetailsUnit_3131 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3189 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3189"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3189 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3189"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3190 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3190"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3190 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3190"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType StaticUnit_3110 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.StaticUnit_3110"); //$NON-NLS-1$
+	public static final IElementType StaticUnit_3110 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.StaticUnit_3110"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UpdateUnit_3111 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UpdateUnit_3111"); //$NON-NLS-1$
+	public static final IElementType UpdateUnit_3111 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UpdateUnit_3111"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3220 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3220"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3220 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3220"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3221 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3221"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3221 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3221"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -523,22 +587,26 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3223 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3223"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3223 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3223"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3224 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3224"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3224 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3224"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3197 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3197"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3197 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3197"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3198 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3198"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3198 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3198"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -548,37 +616,44 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3215 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3215 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3216 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3216 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3199 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3199 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3200 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3200 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType SelectAction_3153 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3153"); //$NON-NLS-1$
+	public static final IElementType SelectAction_3153 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3153"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DeleteAction_3154 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3154"); //$NON-NLS-1$
+	public static final IElementType DeleteAction_3154 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3154"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DataTypeField_3217 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3217"); //$NON-NLS-1$
+	public static final IElementType DataTypeField_3217 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3217"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -586,9 +661,16 @@ public class WebsiteElementTypes {
 	public static final IElementType DateField_3218 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DateField_3218"); //$NON-NLS-1$
 
 	/**
+	* @generated
+	*/
+	public static final IElementType ActionMenuEntry_3236 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ActionMenuEntry_3236"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
-	public static final IElementType DataTypeField_3206 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"); //$NON-NLS-1$
+	public static final IElementType DataTypeField_3206 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -598,17 +680,20 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType SelectAction_3146 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3146"); //$NON-NLS-1$
+	public static final IElementType SelectAction_3146 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3146"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType DeleteAction_3147 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3147"); //$NON-NLS-1$
+	public static final IElementType DeleteAction_3147 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3147"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType FeatureSupportAction_3234 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.FeatureSupportAction_3234"); //$NON-NLS-1$
+	public static final IElementType FeatureSupportAction_3234 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.FeatureSupportAction_3234"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -623,46 +708,43 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3191 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3191"); //$NON-NLS-1$
+	public static final IElementType UnitElement_3191 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3191"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitAssociation_3192 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3192"); //$NON-NLS-1$
+	public static final IElementType UnitAssociation_3192 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3192"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType FixedPageMenuEntry_3158 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.FixedPageMenuEntry_3158"); //$NON-NLS-1$
+	public static final IElementType FixedCommandMenuEntry_3231 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.FixedCommandMenuEntry_3231"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType FixedActionMenuEntry_3159 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.FixedActionMenuEntry_3159"); //$NON-NLS-1$
+	public static final IElementType EditStaticTextMenuEntry_3156 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType FixedCommandMenuEntry_3231 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.FixedCommandMenuEntry_3231"); //$NON-NLS-1$
+	public static final IElementType ServiceEntityElement_3167 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityElement_3167"); //$NON-NLS-1$
 
 	/**
 	 * @generated
 	 */
-	public static final IElementType EditStaticTextMenuEntry_3156 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"); //$NON-NLS-1$
-
+	public static final IElementType AssociationWithoutContainment_4001 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithoutContainment_4001"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
-	public static final IElementType ServiceEntityElement_3167 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityElement_3167"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType AssociationWithoutContainment_4001 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithoutContainment_4001"); //$NON-NLS-1$
-	/**
-	 * @generated
-	 */
-	public static final IElementType AssociationWithContainment_4002 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithContainment_4002"); //$NON-NLS-1$
+	public static final IElementType AssociationWithContainment_4002 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithContainment_4002"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
@@ -706,357 +788,240 @@ public class WebsiteElementTypes {
 		if (elements == null) {
 			elements = new IdentityHashMap<IElementType, ENamedElement>();
 
-			elements.put(WebGenModel_1000,
-					WebsitePackage.eINSTANCE.getWebGenModel());
+			elements.put(WebGenModel_1000, WebsitePackage.eINSTANCE.getWebGenModel());
 
-			elements.put(WebsiteProperties_2001,
-					WebsitePackage.eINSTANCE.getWebsiteProperties());
+			elements.put(WebsiteProperties_2001, WebsitePackage.eINSTANCE.getWebsiteProperties());
 
 			elements.put(DataType_2002, WebsitePackage.eINSTANCE.getDataType());
 
-			elements.put(DynamicMenu_2008,
-					WebsitePackage.eINSTANCE.getDynamicMenu());
+			elements.put(DynamicMenu_2008, WebsitePackage.eINSTANCE.getDynamicMenu());
 
-			elements.put(EnumerationType_2006,
-					WebsitePackage.eINSTANCE.getEnumerationType());
+			elements.put(EnumerationType_2006, WebsitePackage.eINSTANCE.getEnumerationType());
 
 			elements.put(Entity_2003, WebsitePackage.eINSTANCE.getEntity());
 
 			elements.put(Page_2005, WebsitePackage.eINSTANCE.getPage());
 
-			elements.put(StaticMenu_2009,
-					WebsitePackage.eINSTANCE.getStaticMenu());
+			elements.put(StaticMenu_2009, WebsitePackage.eINSTANCE.getStaticMenu());
 
 			elements.put(Service_2004, WebsitePackage.eINSTANCE.getService());
 
-			elements.put(CasAuthentication_3055,
-					WebsitePackage.eINSTANCE.getCasAuthentication());
+			elements.put(CasAuthentication_3055, WebsitePackage.eINSTANCE.getCasAuthentication());
 
-			elements.put(LocalAuthenticationSystem_3029,
-					WebsitePackage.eINSTANCE.getLocalAuthenticationSystem());
+			elements.put(LocalAuthenticationSystem_3029, WebsitePackage.eINSTANCE.getLocalAuthenticationSystem());
 
-			elements.put(MenuIncludedElement_3149,
-					WebsitePackage.eINSTANCE.getMenuIncludedElement());
+			elements.put(EnumerationLiteral_3028, WebsitePackage.eINSTANCE.getEnumerationLiteral());
 
-			elements.put(EnumerationLiteral_3028,
-					WebsitePackage.eINSTANCE.getEnumerationLiteral());
+			elements.put(DataTypeAttribute_3054, WebsitePackage.eINSTANCE.getDataTypeAttribute());
 
-			elements.put(DataTypeAttribute_3054,
-					WebsitePackage.eINSTANCE.getDataTypeAttribute());
+			elements.put(DateAttribute_3014, WebsitePackage.eINSTANCE.getDateAttribute());
 
-			elements.put(DateAttribute_3014,
-					WebsitePackage.eINSTANCE.getDateAttribute());
+			elements.put(FileAttribute_3152, WebsitePackage.eINSTANCE.getFileAttribute());
 
-			elements.put(FileAttribute_3152,
-					WebsitePackage.eINSTANCE.getFileAttribute());
+			elements.put(ImageAttribute_3235, WebsitePackage.eINSTANCE.getImageAttribute());
 
-			elements.put(ImageAttribute_3235,
-					WebsitePackage.eINSTANCE.getImageAttribute());
+			elements.put(LocationAttribute_3230, WebsitePackage.eINSTANCE.getLocationAttribute());
 
-			elements.put(LocationAttribute_3230,
-					WebsitePackage.eINSTANCE.getLocationAttribute());
+			elements.put(ActionUnit_3213, WebsitePackage.eINSTANCE.getActionUnit());
 
-			elements.put(ActionUnit_3213,
-					WebsitePackage.eINSTANCE.getActionUnit());
+			elements.put(UnitElement_3169, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3169,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3170, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3170,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DataTypeField_3201, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DataTypeField_3201,
-					WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DateField_3207, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(DateField_3207,
-					WebsitePackage.eINSTANCE.getDateField());
+			elements.put(UnitSupportAction_3232, WebsitePackage.eINSTANCE.getUnitSupportAction());
 
-			elements.put(UnitSupportAction_3232,
-					WebsitePackage.eINSTANCE.getUnitSupportAction());
+			elements.put(CommandUnit_3225, WebsitePackage.eINSTANCE.getCommandUnit());
 
-			elements.put(CommandUnit_3225,
-					WebsitePackage.eINSTANCE.getCommandUnit());
+			elements.put(UserCommand_3226, WebsitePackage.eINSTANCE.getUserCommand());
 
-			elements.put(UserCommand_3226,
-					WebsitePackage.eINSTANCE.getUserCommand());
+			elements.put(CreateUnit_3103, WebsitePackage.eINSTANCE.getCreateUnit());
 
-			elements.put(CreateUnit_3103,
-					WebsitePackage.eINSTANCE.getCreateUnit());
+			elements.put(UnitElement_3171, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3171,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3172, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3172,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DataTypeField_3202, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DataTypeField_3202,
-					WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DateField_3208, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(DateField_3208,
-					WebsitePackage.eINSTANCE.getDateField());
+			elements.put(CreateUpdateUnit_3104, WebsitePackage.eINSTANCE.getCreateUpdateUnit());
 
-			elements.put(CreateUpdateUnit_3104,
-					WebsitePackage.eINSTANCE.getCreateUpdateUnit());
+			elements.put(UnitElement_3173, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3173,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3174, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3174,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DataTypeField_3203, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DataTypeField_3203,
-					WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DateField_3209, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(DateField_3209,
-					WebsitePackage.eINSTANCE.getDateField());
+			elements.put(CreateSitemapUnit_3157, WebsitePackage.eINSTANCE.getCreateSitemapUnit());
 
-			elements.put(CreateSitemapUnit_3157,
-					WebsitePackage.eINSTANCE.getCreateSitemapUnit());
+			elements.put(DetailsUnit_3105, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(DetailsUnit_3105,
-					WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(UnitElement_3175, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3175,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(SelectAction_3102, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(SelectAction_3102,
-					WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(UnitAssociation_3176, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3176,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DetailsUnit_3112, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(DetailsUnit_3112,
-					WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(UnitElement_3177, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3177,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3180, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3180,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DetailsUnit_3113, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(DetailsUnit_3113,
-					WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(UnitElement_3178, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3178,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(IndexUnit_3106, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(IndexUnit_3106,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(UnitElement_3179, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3179,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(IndexUnit_3114, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(IndexUnit_3114,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(UnitElement_3181, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3181,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3182, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3182,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DetailsUnit_3116, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(DetailsUnit_3116,
-					WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(UnitElement_3183, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3183,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3184, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3184,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DetailsUnit_3129, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(DetailsUnit_3129,
-					WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(UnitElement_3185, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3185,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3186, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3186,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(IndexUnit_3118, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(IndexUnit_3118,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(UnitElement_3187, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3187,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3188, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3188,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(IndexUnit_3120, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(IndexUnit_3120,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(UnitElement_3189, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3189,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3190, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3190,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DetailsUnit_3131, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(DetailsUnit_3131,
-					WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(UnitElement_3191, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3191,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3192, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3192,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(IndexUnit_3133, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(IndexUnit_3133,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(UnitElement_3193, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3193,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3194, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3194,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(SelectAction_3107, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(SelectAction_3107,
-					WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(DeleteAction_3101, WebsitePackage.eINSTANCE.getDeleteAction());
 
-			elements.put(DeleteAction_3101,
-					WebsitePackage.eINSTANCE.getDeleteAction());
+			elements.put(SelectAction_3126, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(SelectAction_3126,
-					WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(DataTypeField_3204, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DataTypeField_3204,
-					WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DateField_3210, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(DateField_3210,
-					WebsitePackage.eINSTANCE.getDateField());
+			elements.put(UnitSupportAction_3233, WebsitePackage.eINSTANCE.getUnitSupportAction());
 
-			elements.put(UnitSupportAction_3233,
-					WebsitePackage.eINSTANCE.getUnitSupportAction());
+			elements.put(IndexUnit_3136, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(IndexUnit_3136,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(UnitElement_3195, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3195,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(SelectAction_3127, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(SelectAction_3127,
-					WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(UnitAssociation_3196, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3196,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(DetailsUnit_3219, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(DetailsUnit_3219,
-					WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(UnitElement_3197, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3197,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3198, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3198,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(IndexUnit_3143, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(IndexUnit_3143,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(UnitElement_3199, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitElement_3199,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitAssociation_3200, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(UnitAssociation_3200,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(SelectAction_3128, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(SelectAction_3128,
-					WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(DataTypeField_3205, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DataTypeField_3205,
-					WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DateField_3211, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(DateField_3211,
-					WebsitePackage.eINSTANCE.getDateField());
+			elements.put(SelectAction_3146, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(SelectAction_3146,
-					WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(DeleteAction_3147, WebsitePackage.eINSTANCE.getDeleteAction());
 
-			elements.put(DeleteAction_3147,
-					WebsitePackage.eINSTANCE.getDeleteAction());
-
-			elements.put(FeatureSupportAction_3234,
-					WebsitePackage.eINSTANCE.getFeatureSupportAction());
+			elements.put(FeatureSupportAction_3234, WebsitePackage.eINSTANCE.getFeatureSupportAction());
 
 			elements.put(MapUnit_3228, WebsitePackage.eINSTANCE.getMapUnit());
 
-			elements.put(SearchUnit_3109,
-					WebsitePackage.eINSTANCE.getSearchUnit());
+			elements.put(SearchUnit_3109, WebsitePackage.eINSTANCE.getSearchUnit());
 
-			elements.put(UnitElement_3215,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3215, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitAssociation_3216,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3216, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(DataTypeField_3206,
-					WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DataTypeField_3206, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DateField_3212,
-					WebsitePackage.eINSTANCE.getDateField());
+			elements.put(DateField_3212, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(StaticUnit_3110,
-					WebsitePackage.eINSTANCE.getStaticUnit());
+			elements.put(StaticUnit_3110, WebsitePackage.eINSTANCE.getStaticUnit());
 
-			elements.put(UpdateUnit_3111,
-					WebsitePackage.eINSTANCE.getUpdateUnit());
+			elements.put(UpdateUnit_3111, WebsitePackage.eINSTANCE.getUpdateUnit());
 
-			elements.put(UnitElement_3220,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3220, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitAssociation_3221,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3221, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(IndexUnit_3222,
-					WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(IndexUnit_3222, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(UnitElement_3223,
-					WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3223, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitAssociation_3224,
-					WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3224, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(SelectAction_3153,
-					WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(SelectAction_3153, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(DeleteAction_3154,
-					WebsitePackage.eINSTANCE.getDeleteAction());
+			elements.put(DeleteAction_3154, WebsitePackage.eINSTANCE.getDeleteAction());
 
-			elements.put(DataTypeField_3217,
-					WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DataTypeField_3217, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DateField_3218,
-					WebsitePackage.eINSTANCE.getDateField());
+			elements.put(DateField_3218, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(FixedPageMenuEntry_3158,
-					WebsitePackage.eINSTANCE.getFixedPageMenuEntry());
+			elements.put(ActionMenuEntry_3236, WebsitePackage.eINSTANCE.getActionMenuEntry());
 
-			elements.put(FixedActionMenuEntry_3159,
-					WebsitePackage.eINSTANCE.getFixedActionMenuEntry());
+			elements.put(FixedCommandMenuEntry_3231, WebsitePackage.eINSTANCE.getFixedCommandMenuEntry());
 
-			elements.put(FixedCommandMenuEntry_3231,
-					WebsitePackage.eINSTANCE.getFixedCommandMenuEntry());
+			elements.put(EditStaticTextMenuEntry_3156, WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
 
-			elements.put(EditStaticTextMenuEntry_3156,
-					WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
+			elements.put(ServiceEntityElement_3167, WebsitePackage.eINSTANCE.getServiceEntityElement());
 
-			elements.put(ServiceEntityElement_3167,
-					WebsitePackage.eINSTANCE.getServiceEntityElement());
+			elements.put(ServiceEntityAssociation_3168, WebsitePackage.eINSTANCE.getServiceEntityAssociation());
 
-			elements.put(ServiceEntityAssociation_3168,
-					WebsitePackage.eINSTANCE.getServiceEntityAssociation());
+			elements.put(ServiceViewAssociation_3166, WebsitePackage.eINSTANCE.getServiceViewAssociation());
 
-			elements.put(ServiceViewAssociation_3166,
-					WebsitePackage.eINSTANCE.getServiceViewAssociation());
+			elements.put(ModelLabel_3163, WebsitePackage.eINSTANCE.getModelLabel());
 
-			elements.put(ModelLabel_3163,
-					WebsitePackage.eINSTANCE.getModelLabel());
-
-			elements.put(Selection_3150,
-					WebsitePackage.eINSTANCE.getSelection());
+			elements.put(Selection_3150, WebsitePackage.eINSTANCE.getSelection());
 
 			elements.put(AssociationWithoutContainment_4001,
 					WebsitePackage.eINSTANCE.getAssociationWithoutContainment());
 
-			elements.put(AssociationWithContainment_4002,
-					WebsitePackage.eINSTANCE.getAssociationWithContainment());
+			elements.put(AssociationWithContainment_4002, WebsitePackage.eINSTANCE.getAssociationWithContainment());
 
 			elements.put(PageLink_4003, WebsitePackage.eINSTANCE.getPageLink());
 		}
@@ -1087,7 +1052,6 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(Service_2004);
 			KNOWN_ELEMENT_TYPES.add(CasAuthentication_3055);
 			KNOWN_ELEMENT_TYPES.add(LocalAuthenticationSystem_3029);
-			KNOWN_ELEMENT_TYPES.add(MenuIncludedElement_3149);
 			KNOWN_ELEMENT_TYPES.add(EnumerationLiteral_3028);
 			KNOWN_ELEMENT_TYPES.add(DataTypeAttribute_3054);
 			KNOWN_ELEMENT_TYPES.add(DateAttribute_3014);
@@ -1184,8 +1148,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(DeleteAction_3154);
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3217);
 			KNOWN_ELEMENT_TYPES.add(DateField_3218);
-			KNOWN_ELEMENT_TYPES.add(FixedPageMenuEntry_3158);
-			KNOWN_ELEMENT_TYPES.add(FixedActionMenuEntry_3159);
+			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(FixedCommandMenuEntry_3231);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
 			KNOWN_ELEMENT_TYPES.add(ServiceEntityElement_3167);
@@ -1227,8 +1190,6 @@ public class WebsiteElementTypes {
 			return CasAuthentication_3055;
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return LocalAuthenticationSystem_3029;
-		case MenuIncludedElementEditPart.VISUAL_ID:
-			return MenuIncludedElement_3149;
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return EnumerationLiteral_3028;
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -1421,10 +1382,8 @@ public class WebsiteElementTypes {
 			return DataTypeField_3217;
 		case DateField7EditPart.VISUAL_ID:
 			return DateField_3218;
-		case FixedPageMenuEntryEditPart.VISUAL_ID:
-			return FixedPageMenuEntry_3158;
-		case FixedActionMenuEntryEditPart.VISUAL_ID:
-			return FixedActionMenuEntry_3159;
+		case ActionMenuEntryEditPart.VISUAL_ID:
+			return ActionMenuEntry_3236;
 		case FixedCommandMenuEntryEditPart.VISUAL_ID:
 			return FixedCommandMenuEntry_3231;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -1452,33 +1411,33 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final DiagramElementTypes TYPED_INSTANCE = new DiagramElementTypes(
-			elementTypeImages) {
+	public static final DiagramElementTypes TYPED_INSTANCE = new DiagramElementTypes(elementTypeImages) {
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public boolean isKnownElementType(IElementType elementType) {
 			return uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes
 					.isKnownElementType(elementType);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public IElementType getElementTypeForVisualId(int visualID) {
-			return uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes
-					.getElementType(visualID);
+			return uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes.getElementType(visualID);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
-		public ENamedElement getDefiningNamedElement(
-				IAdaptable elementTypeAdapter) {
+
+		public ENamedElement getDefiningNamedElement(IAdaptable elementTypeAdapter) {
 			return uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes
 					.getElement(elementTypeAdapter);
 		}

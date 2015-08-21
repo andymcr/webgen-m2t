@@ -80,8 +80,7 @@ public class WebsiteCreationWizard extends Wizard implements INewWizard {
 	/**
 	 * @generated
 	 */
-	public void setOpenNewlyCreatedDiagramEditor(
-			boolean openNewlyCreatedDiagramEditor) {
+	public void setOpenNewlyCreatedDiagramEditor(boolean openNewlyCreatedDiagramEditor) {
 		this.openNewlyCreatedDiagramEditor = openNewlyCreatedDiagramEditor;
 	}
 
@@ -92,8 +91,8 @@ public class WebsiteCreationWizard extends Wizard implements INewWizard {
 		this.workbench = workbench;
 		this.selection = selection;
 		setWindowTitle(Messages.WebsiteCreationWizardTitle);
-		setDefaultPageImageDescriptor(WebsiteDiagramEditorPlugin
-				.getBundledImageDescriptor("icons/wizban/NewWebsiteWizard.gif")); //$NON-NLS-1$
+		setDefaultPageImageDescriptor(
+				WebsiteDiagramEditorPlugin.getBundledImageDescriptor("icons/wizban/NewWebsiteWizard.gif")); //$NON-NLS-1$
 		setNeedsProgressMonitor(true);
 	}
 
@@ -101,32 +100,25 @@ public class WebsiteCreationWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	public void addPages() {
-		diagramModelFilePage = new WebsiteCreationWizardPage(
-				"DiagramModelFile", getSelection(), "website_diagram"); //$NON-NLS-1$ //$NON-NLS-2$
-		diagramModelFilePage
-				.setTitle(Messages.WebsiteCreationWizard_DiagramModelFilePageTitle);
-		diagramModelFilePage
-				.setDescription(Messages.WebsiteCreationWizard_DiagramModelFilePageDescription);
+		diagramModelFilePage = new WebsiteCreationWizardPage("DiagramModelFile", getSelection(), "website_diagram"); //$NON-NLS-1$ //$NON-NLS-2$
+		diagramModelFilePage.setTitle(Messages.WebsiteCreationWizard_DiagramModelFilePageTitle);
+		diagramModelFilePage.setDescription(Messages.WebsiteCreationWizard_DiagramModelFilePageDescription);
 		addPage(diagramModelFilePage);
 
-		domainModelFilePage = new WebsiteCreationWizardPage(
-				"DomainModelFile", getSelection(), "website") { //$NON-NLS-1$ //$NON-NLS-2$
+		domainModelFilePage = new WebsiteCreationWizardPage("DomainModelFile", getSelection(), "website") { //$NON-NLS-1$ //$NON-NLS-2$
 
 			public void setVisible(boolean visible) {
 				if (visible) {
 					String fileName = diagramModelFilePage.getFileName();
-					fileName = fileName.substring(0, fileName.length()
-							- ".website_diagram".length()); //$NON-NLS-1$
-					setFileName(WebsiteDiagramEditorUtil.getUniqueFileName(
-							getContainerFullPath(), fileName, "website")); //$NON-NLS-1$
+					fileName = fileName.substring(0, fileName.length() - ".website_diagram".length()); //$NON-NLS-1$
+					setFileName(
+							WebsiteDiagramEditorUtil.getUniqueFileName(getContainerFullPath(), fileName, "website")); //$NON-NLS-1$
 				}
 				super.setVisible(visible);
 			}
 		};
-		domainModelFilePage
-				.setTitle(Messages.WebsiteCreationWizard_DomainModelFilePageTitle);
-		domainModelFilePage
-				.setDescription(Messages.WebsiteCreationWizard_DomainModelFilePageDescription);
+		domainModelFilePage.setTitle(Messages.WebsiteCreationWizard_DomainModelFilePageTitle);
+		domainModelFilePage.setDescription(Messages.WebsiteCreationWizard_DomainModelFilePageDescription);
 		addPage(domainModelFilePage);
 	}
 
@@ -136,17 +128,14 @@ public class WebsiteCreationWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		IRunnableWithProgress op = new WorkspaceModifyOperation(null) {
 
-			protected void execute(IProgressMonitor monitor)
-					throws CoreException, InterruptedException {
-				diagram = WebsiteDiagramEditorUtil.createDiagram(
-						diagramModelFilePage.getURI(),
+			protected void execute(IProgressMonitor monitor) throws CoreException, InterruptedException {
+				diagram = WebsiteDiagramEditorUtil.createDiagram(diagramModelFilePage.getURI(),
 						domainModelFilePage.getURI(), monitor);
 				if (isOpenNewlyCreatedDiagramEditor() && diagram != null) {
 					try {
 						WebsiteDiagramEditorUtil.openDiagram(diagram);
 					} catch (PartInitException e) {
-						ErrorDialog.openError(getContainer().getShell(),
-								Messages.WebsiteCreationWizardOpenEditorError,
+						ErrorDialog.openError(getContainer().getShell(), Messages.WebsiteCreationWizardOpenEditorError,
 								null, e.getStatus());
 					}
 				}
@@ -158,12 +147,10 @@ public class WebsiteCreationWizard extends Wizard implements INewWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			if (e.getTargetException() instanceof CoreException) {
-				ErrorDialog.openError(getContainer().getShell(),
-						Messages.WebsiteCreationWizardCreationError, null,
+				ErrorDialog.openError(getContainer().getShell(), Messages.WebsiteCreationWizardCreationError, null,
 						((CoreException) e.getTargetException()).getStatus());
 			} else {
-				WebsiteDiagramEditorPlugin.getInstance().logError(
-						"Error creating diagram", e.getTargetException()); //$NON-NLS-1$
+				WebsiteDiagramEditorPlugin.getInstance().logError("Error creating diagram", e.getTargetException()); //$NON-NLS-1$
 			}
 			return false;
 		}

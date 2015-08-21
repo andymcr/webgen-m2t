@@ -15,11 +15,9 @@ public class ElementInitializers {
 	 * @generated
 	 */
 	public static ElementInitializers getInstance() {
-		ElementInitializers cached = WebsiteDiagramEditorPlugin.getInstance()
-				.getElementInitializers();
+		ElementInitializers cached = WebsiteDiagramEditorPlugin.getInstance().getElementInitializers();
 		if (cached == null) {
-			WebsiteDiagramEditorPlugin.getInstance().setElementInitializers(
-					cached = new ElementInitializers());
+			WebsiteDiagramEditorPlugin.getInstance().setElementInitializers(cached = new ElementInitializers());
 		}
 		return cached;
 	}

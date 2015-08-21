@@ -56,8 +56,7 @@ public class DataTypeField7EditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new DataTypeField7ItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new DataTypeField7ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -74,8 +73,7 @@ public class DataTypeField7EditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -106,8 +104,7 @@ public class DataTypeField7EditPart extends ShapeNodeEditPart {
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof DataTypeFieldName7EditPart) {
 			((DataTypeFieldName7EditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureInterfaceFieldNameLabelFigure());
+					.setLabel(getPrimaryShape().getFigureInterfaceFieldNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -240,8 +237,7 @@ public class DataTypeField7EditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(DataTypeFieldName7EditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(DataTypeFieldName7EditPart.VISUAL_ID));
 	}
 
 	/**

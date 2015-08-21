@@ -27,8 +27,7 @@ public class WebsitePropertiesAuthenticationCompartmentItemSemanticEditPolicy
 		if (WebsiteElementTypes.CasAuthentication_3055 == req.getElementType()) {
 			return getGEFWrapper(new CasAuthenticationCreateCommand(req));
 		}
-		if (WebsiteElementTypes.LocalAuthenticationSystem_3029 == req
-				.getElementType()) {
+		if (WebsiteElementTypes.LocalAuthenticationSystem_3029 == req.getElementType()) {
 			return getGEFWrapper(new LocalAuthenticationSystemCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

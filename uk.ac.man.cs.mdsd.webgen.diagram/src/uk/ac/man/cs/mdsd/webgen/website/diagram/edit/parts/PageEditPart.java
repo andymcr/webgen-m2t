@@ -1,9 +1,5 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RoundedRectangle;
@@ -67,11 +63,9 @@ public class PageEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new PageItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new PageItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -88,8 +82,7 @@ public class PageEditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -119,8 +112,7 @@ public class PageEditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof PageNameEditPart) {
-			((PageNameEditPart) childEditPart).setLabel(getPrimaryShape()
-					.getFigurePageNameLabelFigure());
+			((PageNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigurePageNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -253,60 +245,7 @@ public class PageEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(PageNameEditPart.VISUAL_ID));
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMARelTypesOnSource() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(1);
-		types.add(WebsiteElementTypes.PageLink_4003);
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMARelTypesOnSourceAndTarget(
-			IGraphicalEditPart targetEditPart) {
-		LinkedList<IElementType> types = new LinkedList<IElementType>();
-		if (targetEditPart instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageEditPart) {
-			types.add(WebsiteElementTypes.PageLink_4003);
-		}
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMATypesForTarget(IElementType relationshipType) {
-		LinkedList<IElementType> types = new LinkedList<IElementType>();
-		if (relationshipType == WebsiteElementTypes.PageLink_4003) {
-			types.add(WebsiteElementTypes.Page_2005);
-		}
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMARelTypesOnTarget() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(1);
-		types.add(WebsiteElementTypes.PageLink_4003);
-		return types;
-	}
-
-	/**
-	 * @generated
-	 */
-	public List<IElementType> getMATypesForSource(IElementType relationshipType) {
-		LinkedList<IElementType> types = new LinkedList<IElementType>();
-		if (relationshipType == WebsiteElementTypes.PageLink_4003) {
-			types.add(WebsiteElementTypes.Page_2005);
-		}
-		return types;
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(PageNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -314,54 +253,52 @@ public class PageEditPart extends ShapeNodeEditPart {
 	 */
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
 			if (type == WebsiteElementTypes.ActionUnit_3213) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.CommandUnit_3225) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.CreateUnit_3103) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.CreateUpdateUnit_3104) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.CreateSitemapUnit_3157) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.DetailsUnit_3105) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.IndexUnit_3136) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.MapUnit_3228) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.SearchUnit_3109) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.StaticUnit_3110) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.UpdateUnit_3111) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -393,8 +330,7 @@ public class PageEditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(10),
-					getMapMode().DPtoLP(10)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(10), getMapMode().DPtoLP(10)));
 			this.setLineWidth(2);
 			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);

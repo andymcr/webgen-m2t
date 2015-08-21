@@ -33,8 +33,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class EntityItemSemanticEditPolicy extends
-		WebsiteBaseItemSemanticEditPolicy {
+public class EntityItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
@@ -48,21 +47,18 @@ public class EntityItemSemanticEditPolicy extends
 	 */
 	protected Command getDestroyElementCommand(DestroyElementRequest req) {
 		View view = (View) getHost().getModel();
-		CompositeTransactionalCommand cmd = new CompositeTransactionalCommand(
-				getEditingDomain(), null);
+		CompositeTransactionalCommand cmd = new CompositeTransactionalCommand(getEditingDomain(), null);
 		cmd.setTransactionNestingEnabled(false);
 		for (Iterator<?> it = view.getTargetEdges().iterator(); it.hasNext();) {
 			Edge incomingLink = (Edge) it.next();
 			if (WebsiteVisualIDRegistry.getVisualID(incomingLink) == AssociationWithoutContainmentEditPart.VISUAL_ID) {
-				DestroyElementRequest r = new DestroyElementRequest(
-						incomingLink.getElement(), false);
+				DestroyElementRequest r = new DestroyElementRequest(incomingLink.getElement(), false);
 				cmd.add(new DestroyElementCommand(r));
 				cmd.add(new DeleteCommand(getEditingDomain(), incomingLink));
 				continue;
 			}
 			if (WebsiteVisualIDRegistry.getVisualID(incomingLink) == AssociationWithContainmentEditPart.VISUAL_ID) {
-				DestroyElementRequest r = new DestroyElementRequest(
-						incomingLink.getElement(), false);
+				DestroyElementRequest r = new DestroyElementRequest(incomingLink.getElement(), false);
 				cmd.add(new DestroyElementCommand(r));
 				cmd.add(new DeleteCommand(getEditingDomain(), incomingLink));
 				continue;
@@ -71,15 +67,13 @@ public class EntityItemSemanticEditPolicy extends
 		for (Iterator<?> it = view.getSourceEdges().iterator(); it.hasNext();) {
 			Edge outgoingLink = (Edge) it.next();
 			if (WebsiteVisualIDRegistry.getVisualID(outgoingLink) == AssociationWithoutContainmentEditPart.VISUAL_ID) {
-				DestroyElementRequest r = new DestroyElementRequest(
-						outgoingLink.getElement(), false);
+				DestroyElementRequest r = new DestroyElementRequest(outgoingLink.getElement(), false);
 				cmd.add(new DestroyElementCommand(r));
 				cmd.add(new DeleteCommand(getEditingDomain(), outgoingLink));
 				continue;
 			}
 			if (WebsiteVisualIDRegistry.getVisualID(outgoingLink) == AssociationWithContainmentEditPart.VISUAL_ID) {
-				DestroyElementRequest r = new DestroyElementRequest(
-						outgoingLink.getElement(), false);
+				DestroyElementRequest r = new DestroyElementRequest(outgoingLink.getElement(), false);
 				cmd.add(new DestroyElementCommand(r));
 				cmd.add(new DeleteCommand(getEditingDomain(), outgoingLink));
 				continue;
@@ -107,42 +101,36 @@ public class EntityItemSemanticEditPolicy extends
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
 			case EntityAttributeCompartmentEditPart.VISUAL_ID:
-				for (Iterator<?> cit = node.getChildren().iterator(); cit
-						.hasNext();) {
+				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
 					case DataTypeAttributeEditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(),
-										cnode.getElement(), false))); // directlyOwned: true
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
 					case DateAttributeEditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(),
-										cnode.getElement(), false))); // directlyOwned: true
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
 					case FileAttributeEditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(),
-										cnode.getElement(), false))); // directlyOwned: true
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
 					case ImageAttributeEditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(),
-										cnode.getElement(), false))); // directlyOwned: true
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
 					case LocationAttributeEditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(),
-										cnode.getElement(), false))); // directlyOwned: true
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
@@ -159,24 +147,18 @@ public class EntityItemSemanticEditPolicy extends
 	protected Command getCreateRelationshipCommand(CreateRelationshipRequest req) {
 		Command command = req.getTarget() == null ? getStartCreateRelationshipCommand(req)
 				: getCompleteCreateRelationshipCommand(req);
-		return command != null ? command : super
-				.getCreateRelationshipCommand(req);
+		return command != null ? command : super.getCreateRelationshipCommand(req);
 	}
 
 	/**
 	 * @generated
 	 */
-	protected Command getStartCreateRelationshipCommand(
-			CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.AssociationWithoutContainment_4001 == req
-				.getElementType()) {
-			return getGEFWrapper(new AssociationWithoutContainmentCreateCommand(
-					req, req.getSource(), req.getTarget()));
+	protected Command getStartCreateRelationshipCommand(CreateRelationshipRequest req) {
+		if (WebsiteElementTypes.AssociationWithoutContainment_4001 == req.getElementType()) {
+			return getGEFWrapper(new AssociationWithoutContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
-		if (WebsiteElementTypes.AssociationWithContainment_4002 == req
-				.getElementType()) {
-			return getGEFWrapper(new AssociationWithContainmentCreateCommand(
-					req, req.getSource(), req.getTarget()));
+		if (WebsiteElementTypes.AssociationWithContainment_4002 == req.getElementType()) {
+			return getGEFWrapper(new AssociationWithContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;
 	}
@@ -184,17 +166,12 @@ public class EntityItemSemanticEditPolicy extends
 	/**
 	 * @generated
 	 */
-	protected Command getCompleteCreateRelationshipCommand(
-			CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.AssociationWithoutContainment_4001 == req
-				.getElementType()) {
-			return getGEFWrapper(new AssociationWithoutContainmentCreateCommand(
-					req, req.getSource(), req.getTarget()));
+	protected Command getCompleteCreateRelationshipCommand(CreateRelationshipRequest req) {
+		if (WebsiteElementTypes.AssociationWithoutContainment_4001 == req.getElementType()) {
+			return getGEFWrapper(new AssociationWithoutContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
-		if (WebsiteElementTypes.AssociationWithContainment_4002 == req
-				.getElementType()) {
-			return getGEFWrapper(new AssociationWithContainmentCreateCommand(
-					req, req.getSource(), req.getTarget()));
+		if (WebsiteElementTypes.AssociationWithContainment_4002 == req.getElementType()) {
+			return getGEFWrapper(new AssociationWithContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;
 	}
@@ -205,15 +182,12 @@ public class EntityItemSemanticEditPolicy extends
 	 * 
 	 * @generated
 	 */
-	protected Command getReorientRelationshipCommand(
-			ReorientRelationshipRequest req) {
+	protected Command getReorientRelationshipCommand(ReorientRelationshipRequest req) {
 		switch (getVisualID(req)) {
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
-			return getGEFWrapper(new AssociationWithoutContainmentReorientCommand(
-					req));
+			return getGEFWrapper(new AssociationWithoutContainmentReorientCommand(req));
 		case AssociationWithContainmentEditPart.VISUAL_ID:
-			return getGEFWrapper(new AssociationWithContainmentReorientCommand(
-					req));
+			return getGEFWrapper(new AssociationWithContainmentReorientCommand(req));
 		}
 		return super.getReorientRelationshipCommand(req);
 	}

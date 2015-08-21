@@ -15,9 +15,7 @@ public class WebsiteEditPartProvider extends DefaultEditPartProvider {
 	 * @generated
 	 */
 	public WebsiteEditPartProvider() {
-		super(new WebsiteEditPartFactory(),
-				WebsiteVisualIDRegistry.TYPED_INSTANCE,
-				WebGenModelEditPart.MODEL_ID);
+		super(new WebsiteEditPartFactory(), WebsiteVisualIDRegistry.TYPED_INSTANCE, WebGenModelEditPart.MODEL_ID);
 	}
 
 }

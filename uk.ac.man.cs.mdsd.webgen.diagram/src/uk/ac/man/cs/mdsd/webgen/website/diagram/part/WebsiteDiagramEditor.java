@@ -46,8 +46,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteNavigatorItem;
 /**
  * @generated
  */
-public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
-		IGotoMarker {
+public class WebsiteDiagramEditor extends DiagramDocumentEditor implements IGotoMarker {
 
 	/**
 	 * @generated
@@ -115,10 +114,8 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 	 * @generated
 	 */
 	protected IDocumentProvider getDocumentProvider(IEditorInput input) {
-		if (input instanceof IFileEditorInput
-				|| input instanceof URIEditorInput) {
-			return WebsiteDiagramEditorPlugin.getInstance()
-					.getDocumentProvider();
+		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
+			return WebsiteDiagramEditorPlugin.getInstance().getDocumentProvider();
 		}
 		return super.getDocumentProvider(input);
 	}
@@ -127,8 +124,7 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 	 * @generated
 	 */
 	public TransactionalEditingDomain getEditingDomain() {
-		IDocument document = getEditorInput() != null ? getDocumentProvider()
-				.getDocument(getEditorInput()) : null;
+		IDocument document = getEditorInput() != null ? getDocumentProvider().getDocument(getEditorInput()) : null;
 		if (document instanceof IDiagramDocument) {
 			return ((IDiagramDocument) document).getEditingDomain();
 		}
@@ -139,10 +135,8 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 	 * @generated
 	 */
 	protected void setDocumentProvider(IEditorInput input) {
-		if (input instanceof IFileEditorInput
-				|| input instanceof URIEditorInput) {
-			setDocumentProvider(WebsiteDiagramEditorPlugin.getInstance()
-					.getDocumentProvider());
+		if (input instanceof IFileEditorInput || input instanceof URIEditorInput) {
+			setDocumentProvider(WebsiteDiagramEditorPlugin.getInstance().getDocumentProvider());
 		} else {
 			super.setDocumentProvider(input);
 		}
@@ -176,8 +170,7 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 		Shell shell = getSite().getShell();
 		IEditorInput input = getEditorInput();
 		SaveAsDialog dialog = new SaveAsDialog(shell);
-		IFile original = input instanceof IFileEditorInput ? ((IFileEditorInput) input)
-				.getFile() : null;
+		IFile original = input instanceof IFileEditorInput ? ((IFileEditorInput) input).getFile() : null;
 		if (original != null) {
 			dialog.setOriginalFile(original);
 		}
@@ -188,9 +181,7 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 			return;
 		}
 		if (provider.isDeleted(input) && original != null) {
-			String message = NLS.bind(
-					Messages.WebsiteDiagramEditor_SavingDeletedFile,
-					original.getName());
+			String message = NLS.bind(Messages.WebsiteDiagramEditor_SavingDeletedFile, original.getName());
 			dialog.setErrorMessage(null);
 			dialog.setMessage(message, IMessageProvider.WARNING);
 		}
@@ -211,15 +202,12 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 		IFile file = workspaceRoot.getFile(filePath);
 		final IEditorInput newInput = new FileEditorInput(file);
 		// Check if the editor is already open
-		IEditorMatchingStrategy matchingStrategy = getEditorDescriptor()
-				.getEditorMatchingStrategy();
-		IEditorReference[] editorRefs = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage()
+		IEditorMatchingStrategy matchingStrategy = getEditorDescriptor().getEditorMatchingStrategy();
+		IEditorReference[] editorRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getEditorReferences();
 		for (int i = 0; i < editorRefs.length; i++) {
 			if (matchingStrategy.matches(editorRefs[i], newInput)) {
-				MessageDialog.openWarning(shell,
-						Messages.WebsiteDiagramEditor_SaveAsErrorTitle,
+				MessageDialog.openWarning(shell, Messages.WebsiteDiagramEditor_SaveAsErrorTitle,
 						Messages.WebsiteDiagramEditor_SaveAsErrorMessage);
 				return;
 			}
@@ -227,17 +215,14 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 		boolean success = false;
 		try {
 			provider.aboutToChange(newInput);
-			getDocumentProvider(newInput).saveDocument(progressMonitor,
-					newInput,
+			getDocumentProvider(newInput).saveDocument(progressMonitor, newInput,
 					getDocumentProvider().getDocument(getEditorInput()), true);
 			success = true;
 		} catch (CoreException x) {
 			IStatus status = x.getStatus();
 			if (status == null || status.getSeverity() != IStatus.CANCEL) {
-				ErrorDialog.openError(shell,
-						Messages.WebsiteDiagramEditor_SaveErrorTitle,
-						Messages.WebsiteDiagramEditor_SaveErrorMessage,
-						x.getStatus());
+				ErrorDialog.openError(shell, Messages.WebsiteDiagramEditor_SaveErrorTitle,
+						Messages.WebsiteDiagramEditor_SaveErrorMessage, x.getStatus());
 			}
 		} finally {
 			provider.changed(newInput);
@@ -271,8 +256,7 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 		}
 		IFile file = WorkspaceSynchronizer.getFile(diagram.eResource());
 		if (file != null) {
-			WebsiteNavigatorItem item = new WebsiteNavigatorItem(diagram, file,
-					false);
+			WebsiteNavigatorItem item = new WebsiteNavigatorItem(diagram, file, false);
 			return new StructuredSelection(item);
 		}
 		return StructuredSelection.EMPTY;
@@ -283,11 +267,10 @@ public class WebsiteDiagramEditor extends DiagramDocumentEditor implements
 	 */
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
-		DiagramEditorContextMenuProvider provider = new DiagramEditorContextMenuProvider(
-				this, getDiagramGraphicalViewer());
+		DiagramEditorContextMenuProvider provider = new DiagramEditorContextMenuProvider(this,
+				getDiagramGraphicalViewer());
 		getDiagramGraphicalViewer().setContextMenu(provider);
-		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU,
-				provider, getDiagramGraphicalViewer());
+		getSite().registerContextMenu(ActionIds.DIAGRAM_EDITOR_CONTEXT_MENU, provider, getDiagramGraphicalViewer());
 	}
 
 }

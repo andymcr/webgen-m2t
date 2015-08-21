@@ -31,8 +31,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 /**
  * @generated
  */
-public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy
-		extends CanonicalEditPolicy {
+public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
 	 * @generated
@@ -71,10 +70,8 @@ public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy
 	/**
 	 * @generated
 	 */
-	protected boolean isOrphaned(Collection<EObject> semanticChildren,
-			final View view) {
-		return isMyDiagramElement(view)
-				&& !semanticChildren.contains(view.getElement());
+	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
+		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
 	}
 
 	/**
@@ -95,8 +92,7 @@ public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getWebsitePropertiesAuthenticationCompartment_7007SemanticChildren((View) getHost()
-						.getModel());
+				.getWebsitePropertiesAuthenticationCompartment_7007SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();
@@ -110,8 +106,8 @@ public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy
 		// iteration happens over list of desired semantic elements, trying to find best matching View, while original CEP
 		// iterates views, potentially losing view (size/bounds) information - i.e. if there are few views to reference same EObject, only last one 
 		// to answer isOrphaned == true will be used for the domain element representation, see #cleanCanonicalSemanticChildren()
-		for (Iterator<WebsiteNodeDescriptor> descriptorsIterator = childDescriptors
-				.iterator(); descriptorsIterator.hasNext();) {
+		for (Iterator<WebsiteNodeDescriptor> descriptorsIterator = childDescriptors.iterator(); descriptorsIterator
+				.hasNext();) {
 			WebsiteNodeDescriptor next = descriptorsIterator.next();
 			String hint = WebsiteVisualIDRegistry.getType(next.getVisualID());
 			LinkedList<View> perfectMatch = new LinkedList<View>(); // both semanticElement and hint match that of NodeDescriptor
@@ -140,11 +136,9 @@ public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy
 				childDescriptors.size());
 		for (WebsiteNodeDescriptor next : childDescriptors) {
 			String hint = WebsiteVisualIDRegistry.getType(next.getVisualID());
-			IAdaptable elementAdapter = new CanonicalElementAdapter(
-					next.getModelElement(), hint);
-			CreateViewRequest.ViewDescriptor descriptor = new CreateViewRequest.ViewDescriptor(
-					elementAdapter, Node.class, hint, ViewUtil.APPEND, false,
-					host().getDiagramPreferencesHint());
+			IAdaptable elementAdapter = new CanonicalElementAdapter(next.getModelElement(), hint);
+			CreateViewRequest.ViewDescriptor descriptor = new CreateViewRequest.ViewDescriptor(elementAdapter,
+					Node.class, hint, ViewUtil.APPEND, false, host().getDiagramPreferencesHint());
 			viewDescriptors.add(descriptor);
 		}
 
@@ -153,10 +147,10 @@ public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy
 		CreateViewRequest request = getCreateViewRequest(viewDescriptors);
 		Command cmd = getCreateViewCommand(request);
 		if (cmd != null && cmd.canExecute()) {
-			SetViewMutabilityCommand.makeMutable(
-					new EObjectAdapter(host().getNotationView())).execute();
+			SetViewMutabilityCommand.makeMutable(new EObjectAdapter(host().getNotationView())).execute();
 			executeCommand(cmd);
 			@SuppressWarnings("unchecked")
+
 			List<IAdaptable> nl = (List<IAdaptable>) request.getNewObject();
 			createdViews.addAll(nl);
 		}
@@ -165,8 +159,8 @@ public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy
 		}
 		if (createdViews.size() > 1) {
 			// perform a layout of the container
-			DeferredLayoutCommand layoutCmd = new DeferredLayoutCommand(host()
-					.getEditingDomain(), createdViews, host());
+			DeferredLayoutCommand layoutCmd = new DeferredLayoutCommand(host().getEditingDomain(), createdViews,
+					host());
 			executeCommand(new ICommandProxy(layoutCmd));
 		}
 

@@ -20,8 +20,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSem
 /**
  * @generated
  */
-public class AssociationWithoutContainmentCreateCommand extends
-		EditElementCommand {
+public class AssociationWithoutContainmentCreateCommand extends EditElementCommand {
 
 	/**
 	 * @generated
@@ -36,8 +35,8 @@ public class AssociationWithoutContainmentCreateCommand extends
 	/**
 	 * @generated
 	 */
-	public AssociationWithoutContainmentCreateCommand(
-			CreateRelationshipRequest request, EObject source, EObject target) {
+	public AssociationWithoutContainmentCreateCommand(CreateRelationshipRequest request, EObject source,
+			EObject target) {
 		super(request.getLabel(), null, request);
 		this.source = source;
 		this.target = target;
@@ -61,22 +60,18 @@ public class AssociationWithoutContainmentCreateCommand extends
 		}
 		// target may be null here but it's possible to check constraint
 		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canCreateAssociationWithoutContainment_4001(getSource(),
-						getTarget());
+				.canCreateAssociationWithoutContainment_4001(getSource(), getTarget());
 	}
 
 	/**
 	 * @generated
 	 */
-	protected CommandResult doExecuteWithResult(IProgressMonitor monitor,
-			IAdaptable info) throws ExecutionException {
+	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		if (!canExecute()) {
-			throw new ExecutionException(
-					"Invalid arguments in create link command"); //$NON-NLS-1$
+			throw new ExecutionException("Invalid arguments in create link command"); //$NON-NLS-1$
 		}
 
-		AssociationWithoutContainment newElement = WebsiteFactory.eINSTANCE
-				.createAssociationWithoutContainment();
+		AssociationWithoutContainment newElement = WebsiteFactory.eINSTANCE.createAssociationWithoutContainment();
 		getSource().getFeatures().add(newElement);
 		newElement.setTargetEntity(getTarget());
 		doConfigure(newElement, monitor, info);
@@ -88,22 +83,15 @@ public class AssociationWithoutContainmentCreateCommand extends
 	/**
 	 * @generated
 	 */
-	protected void doConfigure(AssociationWithoutContainment newElement,
-			IProgressMonitor monitor, IAdaptable info)
+	protected void doConfigure(AssociationWithoutContainment newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
-		IElementType elementType = ((CreateElementRequest) getRequest())
-				.getElementType();
-		ConfigureRequest configureRequest = new ConfigureRequest(
-				getEditingDomain(), newElement, elementType);
-		configureRequest.setClientContext(((CreateElementRequest) getRequest())
-				.getClientContext());
+		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
+		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
+		configureRequest.setClientContext(((CreateElementRequest) getRequest()).getClientContext());
 		configureRequest.addParameters(getRequest().getParameters());
-		configureRequest.setParameter(CreateRelationshipRequest.SOURCE,
-				getSource());
-		configureRequest.setParameter(CreateRelationshipRequest.TARGET,
-				getTarget());
-		ICommand configureCommand = elementType
-				.getEditCommand(configureRequest);
+		configureRequest.setParameter(CreateRelationshipRequest.SOURCE, getSource());
+		configureRequest.setParameter(CreateRelationshipRequest.TARGET, getTarget());
+		ICommand configureCommand = elementType.getEditCommand(configureRequest);
 		if (configureCommand != null && configureCommand.canExecute()) {
 			configureCommand.execute(monitor, info);
 		}

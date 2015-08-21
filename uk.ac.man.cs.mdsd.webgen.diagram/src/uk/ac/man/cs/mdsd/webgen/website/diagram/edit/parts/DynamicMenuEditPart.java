@@ -8,28 +8,22 @@ import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.FlowLayoutEditPolicy;
-import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
-import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 import org.eclipse.swt.graphics.Color;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.DynamicMenuItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
  * @generated
@@ -62,12 +56,8 @@ public class DynamicMenuEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	protected void createDefaultEditPolicies() {
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new DynamicMenuItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new DynamicMenuItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -84,8 +74,7 @@ public class DynamicMenuEditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -115,8 +104,7 @@ public class DynamicMenuEditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof DynamicMenuNameEditPart) {
-			((DynamicMenuNameEditPart) childEditPart)
-					.setLabel(getPrimaryShape().getFigureMenuNameLabel());
+			((DynamicMenuNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureMenuNameLabel());
 			return true;
 		}
 		return false;
@@ -249,26 +237,7 @@ public class DynamicMenuEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(DynamicMenuNameEditPart.VISUAL_ID));
-	}
-
-	/**
-	 * @generated
-	 */
-	public EditPart getTargetEditPart(Request request) {
-		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
-					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.MenuIncludedElement_3149) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(DynamicMenuUnitFieldCompartmentEditPart.VISUAL_ID));
-			}
-		}
-		return super.getTargetEditPart(request);
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(DynamicMenuNameEditPart.VISUAL_ID));
 	}
 
 	/**
@@ -297,8 +266,7 @@ public class DynamicMenuEditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5),
-					getMapMode().DPtoLP(5)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5)));
 			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);
 			createContents();

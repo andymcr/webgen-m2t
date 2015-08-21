@@ -56,8 +56,7 @@ public class UnitElement12EditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new UnitElement12ItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new UnitElement12ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -74,8 +73,7 @@ public class UnitElement12EditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -106,8 +104,7 @@ public class UnitElement12EditPart extends ShapeNodeEditPart {
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof UnitElementName12EditPart) {
 			((UnitElementName12EditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureInterfaceFieldNameLabelFigure());
+					.setLabel(getPrimaryShape().getFigureInterfaceFieldNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -240,8 +237,7 @@ public class UnitElement12EditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(UnitElementName12EditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(UnitElementName12EditPart.VISUAL_ID));
 	}
 
 	/**

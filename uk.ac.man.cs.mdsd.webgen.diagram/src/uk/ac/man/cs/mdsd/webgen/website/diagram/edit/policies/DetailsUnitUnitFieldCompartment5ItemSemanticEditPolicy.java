@@ -10,8 +10,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class DetailsUnitUnitFieldCompartment5ItemSemanticEditPolicy extends
-		WebsiteBaseItemSemanticEditPolicy {
+public class DetailsUnitUnitFieldCompartment5ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated

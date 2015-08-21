@@ -2,7 +2,9 @@ package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
@@ -12,7 +14,6 @@ import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicy
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.DynamicMenuUnitFieldCompartmentCanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.DynamicMenuUnitFieldCompartmentItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -20,8 +21,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 /**
  * @generated
  */
-public class DynamicMenuUnitFieldCompartmentEditPart extends
-		ListCompartmentEditPart {
+public class DynamicMenuUnitFieldCompartmentEditPart extends ListCompartmentEditPart {
 
 	/**
 	 * @generated
@@ -53,8 +53,7 @@ public class DynamicMenuUnitFieldCompartmentEditPart extends
 	 * @generated
 	 */
 	public IFigure createFigure() {
-		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super
-				.createFigure();
+		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
 		result.setTitleVisibility(false);
 		return result;
 	}
@@ -64,18 +63,13 @@ public class DynamicMenuUnitFieldCompartmentEditPart extends
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new DynamicMenuUnitFieldCompartmentItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new DynamicMenuUnitFieldCompartmentItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
-		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE,
-				new DragDropEditPolicy());
-		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
-				new DynamicMenuUnitFieldCompartmentCanonicalEditPolicy());
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
+		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
+//		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new DynamicMenuUnitFieldCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(
-						WebsitePackage.Literals.MENU__ENTRIES));
+				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.MENU__ENTRIES));
 	}
 
 	/**
@@ -84,6 +78,13 @@ public class DynamicMenuUnitFieldCompartmentEditPart extends
 	protected void setRatio(Double ratio) {
 		// nothing to do -- parent layout does not accept Double constraints as ratio
 		// super.setRatio(ratio); 
+	}
+
+	/**
+	* @generated
+	*/
+	public EditPart getTargetEditPart(Request request) {
+		return super.getTargetEditPart(request);
 	}
 
 }

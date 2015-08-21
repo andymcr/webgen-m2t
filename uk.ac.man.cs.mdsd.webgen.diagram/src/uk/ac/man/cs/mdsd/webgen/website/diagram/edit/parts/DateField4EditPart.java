@@ -56,8 +56,7 @@ public class DateField4EditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new DateField4ItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new DateField4ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -74,8 +73,7 @@ public class DateField4EditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -105,8 +103,8 @@ public class DateField4EditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof DateFieldName4EditPart) {
-			((DateFieldName4EditPart) childEditPart).setLabel(getPrimaryShape()
-					.getFigureInterfaceFieldNameLabelFigure());
+			((DateFieldName4EditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureInterfaceFieldNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -239,8 +237,7 @@ public class DateField4EditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(DateFieldName4EditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(DateFieldName4EditPart.VISUAL_ID));
 	}
 
 	/**

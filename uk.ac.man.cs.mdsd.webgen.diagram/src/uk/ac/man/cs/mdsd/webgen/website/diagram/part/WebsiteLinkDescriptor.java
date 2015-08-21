@@ -11,16 +11,15 @@ public class WebsiteLinkDescriptor extends UpdaterLinkDescriptor {
 	/**
 	 * @generated
 	 */
-	public WebsiteLinkDescriptor(EObject source, EObject destination,
-			IElementType elementType, int linkVID) {
+	public WebsiteLinkDescriptor(EObject source, EObject destination, IElementType elementType, int linkVID) {
 		super(source, destination, elementType, linkVID);
 	}
 
 	/**
 	 * @generated
 	 */
-	public WebsiteLinkDescriptor(EObject source, EObject destination,
-			EObject linkElement, IElementType elementType, int linkVID) {
+	public WebsiteLinkDescriptor(EObject source, EObject destination, EObject linkElement, IElementType elementType,
+			int linkVID) {
 		super(source, destination, linkElement, elementType, linkVID);
 	}
 

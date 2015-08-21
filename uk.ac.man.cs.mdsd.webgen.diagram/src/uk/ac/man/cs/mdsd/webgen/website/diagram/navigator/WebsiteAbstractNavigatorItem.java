@@ -21,23 +21,20 @@ public abstract class WebsiteAbstractNavigatorItem extends PlatformObject {
 				return "uk.ac.man.cs.mdsd.webgen.diagram"; //$NON-NLS-1$
 			}
 		};
-		Platform.getAdapterManager().registerAdapters(
-				new IAdapterFactory() {
+		Platform.getAdapterManager().registerAdapters(new IAdapterFactory() {
 
-					public Object getAdapter(Object adaptableObject,
-							Class adapterType) {
-						if (adaptableObject instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem
-								&& adapterType == ITabbedPropertySheetPageContributor.class) {
-							return propertySheetPageContributor;
-						}
-						return null;
-					}
+			public Object getAdapter(Object adaptableObject, Class adapterType) {
+				if (adaptableObject instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem
+						&& adapterType == ITabbedPropertySheetPageContributor.class) {
+					return propertySheetPageContributor;
+				}
+				return null;
+			}
 
-					public Class[] getAdapterList() {
-						return supportedTypes;
-					}
-				},
-				uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem.class);
+			public Class[] getAdapterList() {
+				return supportedTypes;
+			}
+		}, uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem.class);
 	}
 
 	/**

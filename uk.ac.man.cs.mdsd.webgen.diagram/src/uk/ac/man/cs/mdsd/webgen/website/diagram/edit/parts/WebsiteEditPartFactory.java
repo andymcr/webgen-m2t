@@ -79,12 +79,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case LocalAuthenticationSystemEditPart.VISUAL_ID:
 				return new LocalAuthenticationSystemEditPart(view);
 
-			case MenuIncludedElementEditPart.VISUAL_ID:
-				return new MenuIncludedElementEditPart(view);
-
-			case MenuIncludedElementNameEditPart.VISUAL_ID:
-				return new MenuIncludedElementNameEditPart(view);
-
 			case EnumerationLiteralEditPart.VISUAL_ID:
 				return new EnumerationLiteralEditPart(view);
 
@@ -658,17 +652,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DateFieldName7EditPart.VISUAL_ID:
 				return new DateFieldName7EditPart(view);
 
-			case FixedPageMenuEntryEditPart.VISUAL_ID:
-				return new FixedPageMenuEntryEditPart(view);
+			case ActionMenuEntryEditPart.VISUAL_ID:
+				return new ActionMenuEntryEditPart(view);
 
-			case FixedPageMenuEntryNameEditPart.VISUAL_ID:
-				return new FixedPageMenuEntryNameEditPart(view);
-
-			case FixedActionMenuEntryEditPart.VISUAL_ID:
-				return new FixedActionMenuEntryEditPart(view);
-
-			case FixedActionMenuEntryNameEditPart.VISUAL_ID:
-				return new FixedActionMenuEntryNameEditPart(view);
+			case ActionMenuEntryNameEditPart.VISUAL_ID:
+				return new ActionMenuEntryNameEditPart(view);
 
 			case FixedCommandMenuEntryEditPart.VISUAL_ID:
 				return new FixedCommandMenuEntryEditPart(view);
@@ -713,8 +701,7 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 				return new SelectionNameEditPart(view);
 
 			case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
-				return new WebsitePropertiesAuthenticationCompartmentEditPart(
-						view);
+				return new WebsitePropertiesAuthenticationCompartmentEditPart(view);
 
 			case DynamicMenuUnitFieldCompartmentEditPart.VISUAL_ID:
 				return new DynamicMenuUnitFieldCompartmentEditPart(view);
@@ -762,8 +749,7 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 				return new DetailsUnitUnitFieldCompartment2EditPart(view);
 
 			case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment2EditPart(
-						view);
+				return new UnitAssociationInterfaceUnitCompartment2EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment3EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment3EditPart(view);
@@ -778,15 +764,13 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 				return new IndexUnitActionCompartment3EditPart(view);
 
 			case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment3EditPart(
-						view);
+				return new UnitAssociationInterfaceUnitCompartment3EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment4EditPart(view);
 
 			case UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment4EditPart(
-						view);
+				return new UnitAssociationInterfaceUnitCompartment4EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment5EditPart(view);
@@ -798,8 +782,7 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 				return new IndexUnitUnitFieldCompartment4EditPart(view);
 
 			case UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment5EditPart(
-						view);
+				return new UnitAssociationInterfaceUnitCompartment5EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment6EditPart(view);
@@ -835,8 +818,7 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 				return new UpdateUnitUnitFieldCompartmentEditPart(view);
 
 			case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitsCompartmentEditPart(
-						view);
+				return new UnitAssociationInterfaceUnitsCompartmentEditPart(view);
 
 			case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
 				return new IndexUnitUnitFieldCompartment8EditPart(view);
@@ -863,8 +845,7 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 				return new AssociationWithoutContainmentNameEditPart(view);
 
 			case AssociationWithoutContainmentCardinalityTargetCardinEditPart.VISUAL_ID:
-				return new AssociationWithoutContainmentCardinalityTargetCardinEditPart(
-						view);
+				return new AssociationWithoutContainmentCardinalityTargetCardinEditPart(view);
 
 			case AssociationWithContainmentEditPart.VISUAL_ID:
 				return new AssociationWithContainmentEditPart(view);
@@ -894,10 +875,8 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 	/**
 	 * @generated
 	 */
-	public static CellEditorLocator getTextCellEditorLocator(
-			ITextAwareEditPart source) {
-		return CellEditorLocatorAccess.INSTANCE
-				.getTextCellEditorLocator(source);
+	public static CellEditorLocator getTextCellEditorLocator(ITextAwareEditPart source) {
+		return CellEditorLocatorAccess.INSTANCE.getTextCellEditorLocator(source);
 	}
 
 }

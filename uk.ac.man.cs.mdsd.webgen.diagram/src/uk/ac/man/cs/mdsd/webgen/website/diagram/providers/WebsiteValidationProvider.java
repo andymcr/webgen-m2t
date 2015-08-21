@@ -27,8 +27,7 @@ public class WebsiteValidationProvider {
 	/**
 	 * @generated
 	 */
-	public static void runWithConstraints(
-			TransactionalEditingDomain editingDomain, Runnable operation) {
+	public static void runWithConstraints(TransactionalEditingDomain editingDomain, Runnable operation) {
 		final Runnable op = operation;
 		Runnable task = new Runnable() {
 			public void run() {
@@ -44,8 +43,7 @@ public class WebsiteValidationProvider {
 			try {
 				editingDomain.runExclusive(task);
 			} catch (Exception e) {
-				WebsiteDiagramEditorPlugin.getInstance().logError(
-						"Validation failed", e); //$NON-NLS-1$
+				WebsiteDiagramEditorPlugin.getInstance().logError("Validation failed", e); //$NON-NLS-1$
 			}
 		} else {
 			task.run();
@@ -61,9 +59,7 @@ public class WebsiteValidationProvider {
 		}
 		if (object instanceof View) {
 			return constraintsActive
-					&& WebGenModelEditPart.MODEL_ID
-							.equals(WebsiteVisualIDRegistry
-									.getModelID((View) object));
+					&& WebGenModelEditPart.MODEL_ID.equals(WebsiteVisualIDRegistry.getModelID((View) object));
 		}
 		return true;
 	}

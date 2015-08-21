@@ -12,15 +12,13 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorPlugin;
 /**
  * @generated
  */
-public class WebsiteDomainNavigatorLabelProvider implements
-		ICommonLabelProvider {
+public class WebsiteDomainNavigatorLabelProvider implements ICommonLabelProvider {
 
 	/**
 	 * @generated
 	 */
 	private AdapterFactoryLabelProvider myAdapterFactoryLabelProvider = new AdapterFactoryLabelProvider(
-			WebsiteDiagramEditorPlugin.getInstance()
-					.getItemProvidersAdapterFactory());
+			WebsiteDiagramEditorPlugin.getInstance().getItemProvidersAdapterFactory());
 
 	/**
 	 * @generated
@@ -33,9 +31,7 @@ public class WebsiteDomainNavigatorLabelProvider implements
 	 */
 	public Image getImage(Object element) {
 		if (element instanceof WebsiteDomainNavigatorItem) {
-			return myAdapterFactoryLabelProvider
-					.getImage(((WebsiteDomainNavigatorItem) element)
-							.getEObject());
+			return myAdapterFactoryLabelProvider.getImage(((WebsiteDomainNavigatorItem) element).getEObject());
 		}
 		return null;
 	}
@@ -45,9 +41,7 @@ public class WebsiteDomainNavigatorLabelProvider implements
 	 */
 	public String getText(Object element) {
 		if (element instanceof WebsiteDomainNavigatorItem) {
-			return myAdapterFactoryLabelProvider
-					.getText(((WebsiteDomainNavigatorItem) element)
-							.getEObject());
+			return myAdapterFactoryLabelProvider.getText(((WebsiteDomainNavigatorItem) element).getEObject());
 		}
 		return null;
 	}

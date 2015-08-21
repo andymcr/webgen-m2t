@@ -24,7 +24,6 @@ import uk.ac.man.cs.mdsd.webgen.website.ContentUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUpdateUnit;
 import uk.ac.man.cs.mdsd.webgen.website.DetailsUnit;
-import uk.ac.man.cs.mdsd.webgen.website.DynamicMenu;
 import uk.ac.man.cs.mdsd.webgen.website.Entity;
 import uk.ac.man.cs.mdsd.webgen.website.EnumerationLiteral;
 import uk.ac.man.cs.mdsd.webgen.website.EnumerationType;
@@ -117,8 +116,6 @@ public class WebsiteDiagramUpdater {
 			return getWebGenModel_1000SemanticChildren(view);
 		case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
 			return getWebsitePropertiesAuthenticationCompartment_7007SemanticChildren(view);
-		case DynamicMenuUnitFieldCompartmentEditPart.VISUAL_ID:
-			return getDynamicMenuServiceFeaturesCompartment_7081SemanticChildren(view);
 		case EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID:
 			return getEnumerationTypeEnumerationsCompartment_7016SemanticChildren(view);
 		case EntityAttributeCompartmentEditPart.VISUAL_ID:
@@ -214,27 +211,22 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getWebGenModel_1000SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getWebGenModel_1000SemanticChildren(View view) {
 		if (!view.isSetElement()) {
 			return Collections.emptyList();
 		}
 		WebGenModel modelElement = (WebGenModel) view.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		{
-			WebsiteProperties childElement = modelElement
-					.getWebsiteProperties();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			WebsiteProperties childElement = modelElement.getWebsiteProperties();
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == WebsitePropertiesEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 			}
 		}
-		for (Iterator<?> it = modelElement.getClassifiers().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getClassifiers().iterator(); it.hasNext();) {
 			Classifier childElement = (Classifier) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DataTypeEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -250,8 +242,7 @@ public class WebsiteDiagramUpdater {
 		}
 		for (Iterator<?> it = modelElement.getMenus().iterator(); it.hasNext();) {
 			Menu childElement = (Menu) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DynamicMenuEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -263,18 +254,15 @@ public class WebsiteDiagramUpdater {
 		}
 		for (Iterator<?> it = modelElement.getPages().iterator(); it.hasNext();) {
 			Page childElement = (Page) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == PageEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
 		}
-		for (Iterator<?> it = modelElement.getServices().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getServices().iterator(); it.hasNext();) {
 			Service childElement = (Service) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == ServiceEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -295,45 +283,16 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		WebsiteProperties modelElement = (WebsiteProperties) containerView
-				.getElement();
+		WebsiteProperties modelElement = (WebsiteProperties) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		{
 			Authentication childElement = modelElement.getAuthentication();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == CasAuthenticationEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 			}
 			if (visualID == LocalAuthenticationSystemEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteNodeDescriptor> getDynamicMenuServiceFeaturesCompartment_7081SemanticChildren(
-			View view) {
-		if (false == view.eContainer() instanceof View) {
-			return Collections.emptyList();
-		}
-		View containerView = (View) view.eContainer();
-		if (!containerView.isSetElement()) {
-			return Collections.emptyList();
-		}
-		DynamicMenu modelElement = (DynamicMenu) containerView.getElement();
-		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getEntries().iterator(); it
-				.hasNext();) {
-			MenuEntry childElement = (MenuEntry) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
-			if (visualID == MenuIncludedElementEditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
 			}
 		}
 		return result;
@@ -351,14 +310,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		EnumerationType modelElement = (EnumerationType) containerView
-				.getElement();
+		EnumerationType modelElement = (EnumerationType) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getEnumerations().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getEnumerations().iterator(); it.hasNext();) {
 			EnumerationLiteral childElement = (EnumerationLiteral) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == EnumerationLiteralEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -370,8 +326,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getEntityAttributeCompartment_7001SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getEntityAttributeCompartment_7001SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -381,11 +336,9 @@ public class WebsiteDiagramUpdater {
 		}
 		Entity modelElement = (Entity) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getFeatures().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getFeatures().iterator(); it.hasNext();) {
 			Feature childElement = (Feature) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DataTypeAttributeEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -413,8 +366,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getPageInterfaceUnitsCompartment_7002SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getPageInterfaceUnitsCompartment_7002SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -426,8 +378,7 @@ public class WebsiteDiagramUpdater {
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == ActionUnitEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -479,8 +430,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getServiceModelLabelsCompartment_7085SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getServiceModelLabelsCompartment_7085SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -490,11 +440,9 @@ public class WebsiteDiagramUpdater {
 		}
 		Service modelElement = (Service) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayLabels().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayLabels().iterator(); it.hasNext();) {
 			ModelLabel childElement = (ModelLabel) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == ModelLabelEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -506,8 +454,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getServiceSelectionsCompartment_7088SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getServiceSelectionsCompartment_7088SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -517,11 +464,9 @@ public class WebsiteDiagramUpdater {
 		}
 		Service modelElement = (Service) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getSelections().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getSelections().iterator(); it.hasNext();) {
 			Selection childElement = (Selection) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectionEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -533,8 +478,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getActionUnitUnitFieldCompartment_7103SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getActionUnitUnitFieldCompartment_7103SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -544,11 +488,9 @@ public class WebsiteDiagramUpdater {
 		}
 		ActionUnit modelElement = (ActionUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElementEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -572,8 +514,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getActionUnitActionCompartment_7104SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getActionUnitActionCompartment_7104SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -583,11 +524,9 @@ public class WebsiteDiagramUpdater {
 		}
 		ActionUnit modelElement = (ActionUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getSupportActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getSupportActions().iterator(); it.hasNext();) {
 			UnitSupportAction childElement = (UnitSupportAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitSupportActionEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -599,8 +538,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getCommandUnitCommandsCompartment_7117SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getCommandUnitCommandsCompartment_7117SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -610,11 +548,9 @@ public class WebsiteDiagramUpdater {
 		}
 		CommandUnit modelElement = (CommandUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getCommands().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getCommands().iterator(); it.hasNext();) {
 			Command childElement = (Command) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UserCommandEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -626,8 +562,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getCreateUnitUnitFieldCompartment_7042SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getCreateUnitUnitFieldCompartment_7042SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -637,11 +572,9 @@ public class WebsiteDiagramUpdater {
 		}
 		CreateUnit modelElement = (CreateUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement2EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -665,8 +598,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getCreateUpdateUnitUnitFieldCompartment_7043SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getCreateUpdateUnitUnitFieldCompartment_7043SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -674,14 +606,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		CreateUpdateUnit modelElement = (CreateUpdateUnit) containerView
-				.getElement();
+		CreateUpdateUnit modelElement = (CreateUpdateUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement3EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -705,8 +634,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7044SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7044SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -716,11 +644,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement4EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -744,8 +670,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitActionCompartment_7087SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitActionCompartment_7087SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -755,11 +680,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getSupportActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getSupportActions().iterator(); it.hasNext();) {
 			UnitSupportAction childElement = (UnitSupportAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitSupportAction2EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -771,8 +694,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getUnitElementActionCompartment_7105SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getUnitElementActionCompartment_7105SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -782,11 +704,9 @@ public class WebsiteDiagramUpdater {
 		}
 		UnitElement modelElement = (UnitElement) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectActionEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -807,13 +727,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DetailsUnit2EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -829,8 +747,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7051SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7051SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -840,11 +757,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement5EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -869,13 +784,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DetailsUnit3EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -891,8 +804,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getUnitAssociationActionCompartment_7106SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getUnitAssociationActionCompartment_7106SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -900,14 +812,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectAction3EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -919,8 +828,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7053SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7053SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -930,11 +838,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement6EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -946,8 +852,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7045SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7045SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -957,11 +862,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement7EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -973,8 +876,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7054SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7054SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -984,11 +886,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement8EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1004,8 +904,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitActionCompartment_7086SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitActionCompartment_7086SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1015,11 +914,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectAction2EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1044,13 +941,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DetailsUnit4EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1066,8 +961,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7056SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7056SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1077,11 +971,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement9EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1106,13 +998,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DetailsUnit5EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1128,8 +1018,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7066SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7066SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1139,11 +1028,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement10EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1159,8 +1046,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7057SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7057SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1170,11 +1056,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement11EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1190,8 +1074,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7058SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7058SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1201,11 +1084,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement12EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1230,13 +1111,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DetailsUnit6EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1252,8 +1131,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7068SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7068SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1263,11 +1141,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement13EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1283,8 +1159,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7069SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7069SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1294,11 +1169,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement14EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1314,8 +1187,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7070SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7070SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1325,11 +1197,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement15EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1353,8 +1223,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitActionCompartment_7071SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitActionCompartment_7071SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1364,11 +1233,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectAction6EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1388,8 +1255,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getUnitElementActionCompartment_7109SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getUnitElementActionCompartment_7109SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1399,11 +1265,9 @@ public class WebsiteDiagramUpdater {
 		}
 		UnitElement modelElement = (UnitElement) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectAction4EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1424,13 +1288,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == DetailsUnit7EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1446,8 +1308,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getUnitAssociationActionCompartment_7112SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getUnitAssociationActionCompartment_7112SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1455,14 +1316,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectAction5EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1474,8 +1332,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7113SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getDetailsUnitUnitFieldCompartment_7113SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1485,11 +1342,9 @@ public class WebsiteDiagramUpdater {
 		}
 		DetailsUnit modelElement = (DetailsUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement16EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1505,8 +1360,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getSearchUnitUnitFieldCompartment_7047SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getSearchUnitUnitFieldCompartment_7047SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1516,11 +1370,9 @@ public class WebsiteDiagramUpdater {
 		}
 		SearchUnit modelElement = (SearchUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement18EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1544,8 +1396,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getUpdateUnitUnitFieldCompartment_7049SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getUpdateUnitUnitFieldCompartment_7049SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1555,11 +1406,9 @@ public class WebsiteDiagramUpdater {
 		}
 		UpdateUnit modelElement = (UpdateUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement19EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1592,13 +1441,11 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		UnitAssociation modelElement = (UnitAssociation) containerView
-				.getElement();
+		UnitAssociation modelElement = (UnitAssociation) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getUnits().iterator(); it.hasNext();) {
 			ContentUnit childElement = (ContentUnit) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == IndexUnit8EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1610,8 +1457,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7115SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7115SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1621,11 +1467,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement20EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1641,8 +1485,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitActionCompartment_7116SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitActionCompartment_7116SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1652,11 +1495,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == SelectAction7EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1672,8 +1513,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7076SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7076SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1683,11 +1523,9 @@ public class WebsiteDiagramUpdater {
 		}
 		IndexUnit modelElement = (IndexUnit) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getDisplayFields().iterator(); it.hasNext();) {
 			UnitField childElement = (UnitField) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitElement17EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1703,8 +1541,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getStaticMenuMenuEntriesCompartment_7084SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getStaticMenuMenuEntriesCompartment_7084SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1714,16 +1551,10 @@ public class WebsiteDiagramUpdater {
 		}
 		StaticMenu modelElement = (StaticMenu) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getEntries().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getEntries().iterator(); it.hasNext();) {
 			MenuEntry childElement = (MenuEntry) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
-			if (visualID == FixedPageMenuEntryEditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
-			}
-			if (visualID == FixedActionMenuEntryEditPart.VISUAL_ID) {
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
+			if (visualID == ActionMenuEntryEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1742,8 +1573,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteNodeDescriptor> getServiceServiceFeaturesCompartment_7006SemanticChildren(
-			View view) {
+	public static List<WebsiteNodeDescriptor> getServiceServiceFeaturesCompartment_7006SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -1753,11 +1583,9 @@ public class WebsiteDiagramUpdater {
 		}
 		Service modelElement = (Service) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getFeatures().iterator(); it
-				.hasNext();) {
+		for (Iterator<?> it = modelElement.getFeatures().iterator(); it.hasNext();) {
 			ServiceFeature childElement = (ServiceFeature) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view,
-					childElement);
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == ServiceEntityElementEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1801,8 +1629,6 @@ public class WebsiteDiagramUpdater {
 			return getCasAuthentication_3055ContainedLinks(view);
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return getLocalAuthenticationSystem_3029ContainedLinks(view);
-		case MenuIncludedElementEditPart.VISUAL_ID:
-			return getMenuIncludedElement_3149ContainedLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3028ContainedLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -1995,10 +1821,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeField_3217ContainedLinks(view);
 		case DateField7EditPart.VISUAL_ID:
 			return getDateField_3218ContainedLinks(view);
-		case FixedPageMenuEntryEditPart.VISUAL_ID:
-			return getFixedPageMenuEntry_3158ContainedLinks(view);
-		case FixedActionMenuEntryEditPart.VISUAL_ID:
-			return getFixedActionMenuEntry_3159ContainedLinks(view);
+		case ActionMenuEntryEditPart.VISUAL_ID:
+			return getActionMenuEntry_3236ContainedLinks(view);
 		case FixedCommandMenuEntryEditPart.VISUAL_ID:
 			return getFixedCommandMenuEntry_3231ContainedLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2048,8 +1872,6 @@ public class WebsiteDiagramUpdater {
 			return getCasAuthentication_3055IncomingLinks(view);
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return getLocalAuthenticationSystem_3029IncomingLinks(view);
-		case MenuIncludedElementEditPart.VISUAL_ID:
-			return getMenuIncludedElement_3149IncomingLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3028IncomingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -2242,10 +2064,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeField_3217IncomingLinks(view);
 		case DateField7EditPart.VISUAL_ID:
 			return getDateField_3218IncomingLinks(view);
-		case FixedPageMenuEntryEditPart.VISUAL_ID:
-			return getFixedPageMenuEntry_3158IncomingLinks(view);
-		case FixedActionMenuEntryEditPart.VISUAL_ID:
-			return getFixedActionMenuEntry_3159IncomingLinks(view);
+		case ActionMenuEntryEditPart.VISUAL_ID:
+			return getActionMenuEntry_3236IncomingLinks(view);
 		case FixedCommandMenuEntryEditPart.VISUAL_ID:
 			return getFixedCommandMenuEntry_3231IncomingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2295,8 +2115,6 @@ public class WebsiteDiagramUpdater {
 			return getCasAuthentication_3055OutgoingLinks(view);
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return getLocalAuthenticationSystem_3029OutgoingLinks(view);
-		case MenuIncludedElementEditPart.VISUAL_ID:
-			return getMenuIncludedElement_3149OutgoingLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3028OutgoingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -2489,10 +2307,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeField_3217OutgoingLinks(view);
 		case DateField7EditPart.VISUAL_ID:
 			return getDateField_3218OutgoingLinks(view);
-		case FixedPageMenuEntryEditPart.VISUAL_ID:
-			return getFixedPageMenuEntry_3158OutgoingLinks(view);
-		case FixedActionMenuEntryEditPart.VISUAL_ID:
-			return getFixedActionMenuEntry_3159OutgoingLinks(view);
+		case ActionMenuEntryEditPart.VISUAL_ID:
+			return getActionMenuEntry_3236OutgoingLinks(view);
 		case FixedCommandMenuEntryEditPart.VISUAL_ID:
 			return getFixedCommandMenuEntry_3231OutgoingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2520,48 +2336,42 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getWebGenModel_1000ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getWebGenModel_1000ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getWebsiteProperties_2001ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getWebsiteProperties_2001ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataType_2002ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataType_2002ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDynamicMenu_2008ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDynamicMenu_2008ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationType_2006ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEnumerationType_2006ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEntity_2003ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEntity_2003ContainedLinks(View view) {
 		Entity modelElement = (Entity) view.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		result.addAll(getContainedTypeModelFacetLinks_AssociationWithoutContainment_4001(modelElement));
@@ -2572,16 +2382,14 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getService_2004ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getService_2004ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getPage_2005ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getPage_2005ContainedLinks(View view) {
 		Page modelElement = (Page) view.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		result.addAll(getContainedTypeModelFacetLinks_PageLink_4003(modelElement));
@@ -2591,1902 +2399,1635 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getStaticMenu_2009ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getStaticMenu_2009ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getMenuIncludedElement_3149ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3054ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3054ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateAttribute_3014ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateAttribute_3014ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFileAttribute_3152ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFileAttribute_3152ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getImageAttribute_3235ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getImageAttribute_3235ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getLocationAttribute_3230ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getLocationAttribute_3230ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getActionUnit_3213ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getActionUnit_3213ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceEntityAssociation_3168ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceEntityAssociation_3168ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceViewAssociation_3166ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceViewAssociation_3166ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3163ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getModelLabel_3163ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelection_3150ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelection_3150ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateUnit_3103ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateUnit_3103ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3169ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3169ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3170ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3170ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3201ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3201ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3207ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3207ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCommandUnit_3225ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCommandUnit_3225ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUserCommand_3226ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUserCommand_3226ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateUpdateUnit_3104ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateUpdateUnit_3104ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3171ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3171ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3172ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3172ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3202ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3202ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3208ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3208ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateSitemapUnit_3157ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateSitemapUnit_3157ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3105ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3105ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3173ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3173ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3102ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3102ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3174ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3174ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3112ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3112ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3175ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3175ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3176ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3176ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3113ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3113ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3177ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3177ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3106ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3106ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3178ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3178ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3114ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3114ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3179ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3179ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3180ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3180ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3116ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3116ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3181ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3181ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3182ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3182ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3118ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3118ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3185ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3185ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3186ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3186ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3136ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3136ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3193ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3193ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3120ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3120ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3187ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3187ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3188ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3188ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3107ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3107ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3129ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3129ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3183ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3183ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3184ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3184ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3126ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3126ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3203ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3203ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3209ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3209ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3128ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3128ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3204ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3204ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3210ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3210ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3233ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3233ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3127ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3127ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3194ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3194ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3101ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3101ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSearchUnit_3109ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSearchUnit_3109ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3195ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3195ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3196ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3196ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3219ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3219ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3205ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3205ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3211ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3211ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3131ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3131ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3189ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3189ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3190ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3190ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getStaticUnit_3110ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getStaticUnit_3110ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUpdateUnit_3111ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUpdateUnit_3111ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3220ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3220ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3221ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3221ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3222ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3222ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3223ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3223ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3224ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3224ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3197ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3197ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3198ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3198ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3143ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3143ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3215ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3215ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3216ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3216ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3199ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3199ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3200ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3200ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3153ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3153ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3154ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3154ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3217ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3217ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3218ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3218ContainedLinks(
-			View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3206ContainedLinks(
-			View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3212ContainedLinks(
-			View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getActionMenuEntry_3236ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3146ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3206ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3147ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3212ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3234ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3146ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getMapUnit_3228ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3147ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3133ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3234ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3191ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getMapUnit_3228ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3192ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3133ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedPageMenuEntry_3158ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3191ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedActionMenuEntry_3159ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3192ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceEntityElement_3167ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceEntityElement_3167ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getPageLink_4003ContainedLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getPageLink_4003ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getWebsiteProperties_2001IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getWebsiteProperties_2001IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataType_2002IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataType_2002IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDynamicMenu_2008IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDynamicMenu_2008IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationType_2006IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEnumerationType_2006IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEntity_2003IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEntity_2003IncomingLinks(View view) {
 		Entity modelElement = (Entity) view.getElement();
 		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
 				.find(view.eResource().getResourceSet().getResources());
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithoutContainment_4001(
-				modelElement, crossReferences));
-		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithContainment_4002(
-				modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithoutContainment_4001(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithContainment_4002(modelElement, crossReferences));
 		return result;
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getService_2004IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getService_2004IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getPage_2005IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getPage_2005IncomingLinks(View view) {
 		Page modelElement = (Page) view.getElement();
 		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
 				.find(view.eResource().getResourceSet().getResources());
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getIncomingTypeModelFacetLinks_PageLink_4003(
-				modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_PageLink_4003(modelElement, crossReferences));
 		return result;
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getStaticMenu_2009IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getStaticMenu_2009IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getMenuIncludedElement_3149IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3054IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3054IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateAttribute_3014IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateAttribute_3014IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFileAttribute_3152IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFileAttribute_3152IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getImageAttribute_3235IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getImageAttribute_3235IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getLocationAttribute_3230IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getLocationAttribute_3230IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getActionUnit_3213IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getActionUnit_3213IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceEntityAssociation_3168IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceEntityAssociation_3168IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceViewAssociation_3166IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceViewAssociation_3166IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3163IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getModelLabel_3163IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelection_3150IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelection_3150IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateUnit_3103IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateUnit_3103IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3169IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3169IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3170IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3170IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3201IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3201IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3207IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3207IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCommandUnit_3225IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCommandUnit_3225IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUserCommand_3226IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUserCommand_3226IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateUpdateUnit_3104IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateUpdateUnit_3104IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3171IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3171IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3172IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3172IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3202IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3202IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3208IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3208IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateSitemapUnit_3157IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateSitemapUnit_3157IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3105IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3105IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3173IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3173IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3102IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3102IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3174IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3174IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3112IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3112IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3175IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3175IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3176IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3176IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3113IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3113IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3177IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3177IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3106IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3106IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3178IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3178IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3114IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3114IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3179IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3179IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3180IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3180IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3116IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3116IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3181IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3181IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3182IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3182IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3118IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3118IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3185IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3185IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3186IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3186IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3136IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3136IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3193IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3193IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3120IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3120IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3187IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3187IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3188IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3188IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3107IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3107IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3129IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3129IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3183IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3183IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3184IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3184IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3126IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3126IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3203IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3203IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3209IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3209IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3128IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3128IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3204IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3204IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3210IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3210IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3233IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3233IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3127IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3127IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3194IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3194IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3101IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3101IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSearchUnit_3109IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSearchUnit_3109IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3195IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3195IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3196IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3196IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3219IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3219IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3205IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3205IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3211IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3211IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3131IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3131IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3189IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3189IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3190IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3190IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getStaticUnit_3110IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getStaticUnit_3110IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUpdateUnit_3111IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUpdateUnit_3111IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3220IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3220IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3221IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3221IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3222IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3222IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3223IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3223IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3224IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3224IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3197IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3197IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3198IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3198IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3143IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3143IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3215IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3215IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3216IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3216IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3199IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3199IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3200IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3200IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3153IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3153IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3154IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3154IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3217IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3217IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3218IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3218IncomingLinks(
-			View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3206IncomingLinks(
-			View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3212IncomingLinks(
-			View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getActionMenuEntry_3236IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3146IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3206IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3147IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3212IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3234IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3146IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getMapUnit_3228IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3147IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3133IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3234IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3191IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getMapUnit_3228IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3192IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3133IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedPageMenuEntry_3158IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3191IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedActionMenuEntry_3159IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3192IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceEntityElement_3167IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceEntityElement_3167IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getPageLink_4003IncomingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getPageLink_4003IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getWebsiteProperties_2001OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getWebsiteProperties_2001OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataType_2002OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataType_2002OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDynamicMenu_2008OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDynamicMenu_2008OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationType_2006OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEnumerationType_2006OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEntity_2003OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEntity_2003OutgoingLinks(View view) {
 		Entity modelElement = (Entity) view.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		result.addAll(getContainedTypeModelFacetLinks_AssociationWithoutContainment_4001(modelElement));
@@ -4497,16 +4038,14 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getService_2004OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getService_2004OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getPage_2005OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getPage_2005OutgoingLinks(View view) {
 		Page modelElement = (Page) view.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		result.addAll(getContainedTypeModelFacetLinks_PageLink_4003(modelElement));
@@ -4516,896 +4055,770 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getStaticMenu_2009OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getStaticMenu_2009OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getMenuIncludedElement_3149OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3054OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3054OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateAttribute_3014OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateAttribute_3014OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFileAttribute_3152OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFileAttribute_3152OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getImageAttribute_3235OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getImageAttribute_3235OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getLocationAttribute_3230OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getLocationAttribute_3230OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getActionUnit_3213OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getActionUnit_3213OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceEntityAssociation_3168OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceEntityAssociation_3168OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceViewAssociation_3166OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceViewAssociation_3166OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3163OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getModelLabel_3163OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelection_3150OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelection_3150OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateUnit_3103OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateUnit_3103OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3169OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3169OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3170OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3170OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3201OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3201OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3207OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3207OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCommandUnit_3225OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCommandUnit_3225OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUserCommand_3226OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUserCommand_3226OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateUpdateUnit_3104OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateUpdateUnit_3104OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3171OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3171OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3172OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3172OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3202OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3202OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3208OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3208OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getCreateSitemapUnit_3157OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getCreateSitemapUnit_3157OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3105OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3105OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3173OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3173OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3102OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3102OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3174OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3174OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3112OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3112OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3175OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3175OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3176OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3176OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3113OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3113OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3177OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3177OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3106OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3106OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3178OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3178OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3114OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3114OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3179OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3179OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3180OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3180OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3116OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3116OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3181OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3181OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3182OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3182OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3118OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3118OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3185OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3185OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3186OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3186OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3136OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3136OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3193OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3193OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3120OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3120OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3187OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3187OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3188OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3188OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3107OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3107OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3129OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3129OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3183OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3183OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3184OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3184OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3126OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3126OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3203OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3203OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3209OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3209OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3128OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3128OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3204OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3204OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3210OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3210OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3233OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3233OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3127OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3127OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3194OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3194OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3101OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3101OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSearchUnit_3109OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSearchUnit_3109OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3195OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3195OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3196OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3196OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3219OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3219OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3205OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3205OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3211OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3211OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDetailsUnit_3131OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDetailsUnit_3131OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3189OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3189OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3190OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3190OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getStaticUnit_3110OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getStaticUnit_3110OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUpdateUnit_3111OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUpdateUnit_3111OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3220OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3220OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3221OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3221OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3222OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3222OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3223OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3223OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3224OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3224OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3197OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3197OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3198OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3198OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3143OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3143OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3215OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3215OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3216OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3216OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3199OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3199OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3200OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3200OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3153OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3153OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3154OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3154OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3217OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3217OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3218OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3218OutgoingLinks(
-			View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDataTypeField_3206OutgoingLinks(
-			View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDateField_3212OutgoingLinks(
-			View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getActionMenuEntry_3236OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getSelectAction_3146OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeField_3206OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3147OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDateField_3212OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3234OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getSelectAction_3146OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getMapUnit_3228OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3147OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getIndexUnit_3133OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3234OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitElement_3191OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getMapUnit_3228OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getUnitAssociation_3192OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getIndexUnit_3133OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedPageMenuEntry_3158OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitElement_3191OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedActionMenuEntry_3159OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getUnitAssociation_3192OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getServiceEntityElement_3167OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getServiceEntityElement_3167OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getPageLink_4003OutgoingLinks(
-			View view) {
+	public static List<WebsiteLinkDescriptor> getPageLink_4003OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -5415,8 +4828,7 @@ public class WebsiteDiagramUpdater {
 	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_AssociationWithoutContainment_4001(
 			Entity container) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		for (Iterator<?> links = container.getFeatures().iterator(); links
-				.hasNext();) {
+		for (Iterator<?> links = container.getFeatures().iterator(); links.hasNext();) {
 			EObject linkObject = (EObject) links.next();
 			if (false == linkObject instanceof AssociationWithoutContainment) {
 				continue;
@@ -5440,8 +4852,7 @@ public class WebsiteDiagramUpdater {
 	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_AssociationWithContainment_4002(
 			Entity container) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		for (Iterator<?> links = container.getFeatures().iterator(); links
-				.hasNext();) {
+		for (Iterator<?> links = container.getFeatures().iterator(); links.hasNext();) {
 			EObject linkObject = (EObject) links.next();
 			if (false == linkObject instanceof AssociationWithContainment) {
 				continue;
@@ -5453,8 +4864,7 @@ public class WebsiteDiagramUpdater {
 			}
 			Entity dst = link.getTargetEntity();
 			result.add(new WebsiteLinkDescriptor(container, dst, link,
-					WebsiteElementTypes.AssociationWithContainment_4002,
-					AssociationWithContainmentEditPart.VISUAL_ID));
+					WebsiteElementTypes.AssociationWithContainment_4002, AssociationWithContainmentEditPart.VISUAL_ID));
 		}
 		return result;
 	}
@@ -5462,17 +4872,15 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_PageLink_4003(
-			Page container) {
+	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_PageLink_4003(Page container) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		PageLink link = container.getParentPage();
-		if (PageLinkEditPart.VISUAL_ID != WebsiteVisualIDRegistry
-				.getLinkWithClassVisualID(link)) {
+		if (PageLinkEditPart.VISUAL_ID != WebsiteVisualIDRegistry.getLinkWithClassVisualID(link)) {
 			return result;
 		}
 		Page dst = link.getTargetPage();
-		result.add(new WebsiteLinkDescriptor(container, dst, link,
-				WebsiteElementTypes.PageLink_4003, PageLinkEditPart.VISUAL_ID));
+		result.add(new WebsiteLinkDescriptor(container, dst, link, WebsiteElementTypes.PageLink_4003,
+				PageLinkEditPart.VISUAL_ID));
 		return result;
 	}
 
@@ -5480,19 +4888,15 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_AssociationWithoutContainment_4001(
-			Entity target,
-			Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
+			Entity target, Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		Collection<EStructuralFeature.Setting> settings = crossReferences
-				.get(target);
+		Collection<EStructuralFeature.Setting> settings = crossReferences.get(target);
 		for (EStructuralFeature.Setting setting : settings) {
-			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE
-					.getAssociation_TargetEntity()
+			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE.getAssociation_TargetEntity()
 					|| false == setting.getEObject() instanceof AssociationWithoutContainment) {
 				continue;
 			}
-			AssociationWithoutContainment link = (AssociationWithoutContainment) setting
-					.getEObject();
+			AssociationWithoutContainment link = (AssociationWithoutContainment) setting.getEObject();
 			if (AssociationWithoutContainmentEditPart.VISUAL_ID != WebsiteVisualIDRegistry
 					.getLinkWithClassVisualID(link)) {
 				continue;
@@ -5513,19 +4917,15 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_AssociationWithContainment_4002(
-			Entity target,
-			Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
+			Entity target, Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		Collection<EStructuralFeature.Setting> settings = crossReferences
-				.get(target);
+		Collection<EStructuralFeature.Setting> settings = crossReferences.get(target);
 		for (EStructuralFeature.Setting setting : settings) {
-			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE
-					.getAssociation_TargetEntity()
+			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE.getAssociation_TargetEntity()
 					|| false == setting.getEObject() instanceof AssociationWithContainment) {
 				continue;
 			}
-			AssociationWithContainment link = (AssociationWithContainment) setting
-					.getEObject();
+			AssociationWithContainment link = (AssociationWithContainment) setting.getEObject();
 			if (AssociationWithContainmentEditPart.VISUAL_ID != WebsiteVisualIDRegistry
 					.getLinkWithClassVisualID(link)) {
 				continue;
@@ -5535,8 +4935,7 @@ public class WebsiteDiagramUpdater {
 			}
 			Entity container = (Entity) link.eContainer();
 			result.add(new WebsiteLinkDescriptor(container, target, link,
-					WebsiteElementTypes.AssociationWithContainment_4002,
-					AssociationWithContainmentEditPart.VISUAL_ID));
+					WebsiteElementTypes.AssociationWithContainment_4002, AssociationWithContainmentEditPart.VISUAL_ID));
 
 		}
 		return result;
@@ -5545,29 +4944,24 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_PageLink_4003(
-			Page target,
+	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_PageLink_4003(Page target,
 			Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		Collection<EStructuralFeature.Setting> settings = crossReferences
-				.get(target);
+		Collection<EStructuralFeature.Setting> settings = crossReferences.get(target);
 		for (EStructuralFeature.Setting setting : settings) {
-			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE
-					.getPageLink_TargetPage()
+			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE.getPageLink_TargetPage()
 					|| false == setting.getEObject() instanceof PageLink) {
 				continue;
 			}
 			PageLink link = (PageLink) setting.getEObject();
-			if (PageLinkEditPart.VISUAL_ID != WebsiteVisualIDRegistry
-					.getLinkWithClassVisualID(link)) {
+			if (PageLinkEditPart.VISUAL_ID != WebsiteVisualIDRegistry.getLinkWithClassVisualID(link)) {
 				continue;
 			}
 			if (false == link.eContainer() instanceof Page) {
 				continue;
 			}
 			Page container = (Page) link.eContainer();
-			result.add(new WebsiteLinkDescriptor(container, target, link,
-					WebsiteElementTypes.PageLink_4003,
+			result.add(new WebsiteLinkDescriptor(container, target, link, WebsiteElementTypes.PageLink_4003,
 					PageLinkEditPart.VISUAL_ID));
 
 		}
@@ -5579,33 +4973,37 @@ public class WebsiteDiagramUpdater {
 	 */
 	public static final DiagramUpdater TYPED_INSTANCE = new DiagramUpdater() {
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public List<WebsiteNodeDescriptor> getSemanticChildren(View view) {
 			return WebsiteDiagramUpdater.getSemanticChildren(view);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public List<WebsiteLinkDescriptor> getContainedLinks(View view) {
 			return WebsiteDiagramUpdater.getContainedLinks(view);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public List<WebsiteLinkDescriptor> getIncomingLinks(View view) {
 			return WebsiteDiagramUpdater.getIncomingLinks(view);
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
 		@Override
+
 		public List<WebsiteLinkDescriptor> getOutgoingLinks(View view) {
 			return WebsiteDiagramUpdater.getOutgoingLinks(view);
 		}

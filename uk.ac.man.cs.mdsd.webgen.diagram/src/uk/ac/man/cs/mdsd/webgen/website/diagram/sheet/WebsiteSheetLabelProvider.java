@@ -15,8 +15,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class WebsiteSheetLabelProvider extends BaseLabelProvider implements
-		ILabelProvider {
+public class WebsiteSheetLabelProvider extends BaseLabelProvider implements ILabelProvider {
 
 	/**
 	 * @generated
@@ -72,8 +71,7 @@ public class WebsiteSheetLabelProvider extends BaseLabelProvider implements
 			if (etype != null) {
 				return etype;
 			}
-			view = view.eContainer() instanceof View ? (View) view.eContainer()
-					: null;
+			view = view.eContainer() instanceof View ? (View) view.eContainer() : null;
 		}
 		return null;
 	}

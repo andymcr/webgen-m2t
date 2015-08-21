@@ -56,8 +56,7 @@ public class ServiceEntityAssociationEditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new ServiceEntityAssociationItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ServiceEntityAssociationItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -74,8 +73,7 @@ public class ServiceEntityAssociationEditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -106,8 +104,7 @@ public class ServiceEntityAssociationEditPart extends ShapeNodeEditPart {
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof ServiceEntityAssociationNameEditPart) {
 			((ServiceEntityAssociationNameEditPart) childEditPart)
-					.setLabel(getPrimaryShape()
-							.getFigureIncludedFeatureNameLabelFigure());
+					.setLabel(getPrimaryShape().getFigureIncludedFeatureNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -240,8 +237,7 @@ public class ServiceEntityAssociationEditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(ServiceEntityAssociationNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(ServiceEntityAssociationNameEditPart.VISUAL_ID));
 	}
 
 	/**

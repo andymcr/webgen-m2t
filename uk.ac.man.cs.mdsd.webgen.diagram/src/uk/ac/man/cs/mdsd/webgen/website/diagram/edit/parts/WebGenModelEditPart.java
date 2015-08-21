@@ -36,13 +36,10 @@ public class WebGenModelEditPart extends DiagramEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new WebGenModelItemSemanticEditPolicy());
-		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
-				new WebGenModelCanonicalEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new WebGenModelItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new WebGenModelCanonicalEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.POPUPBAR_ROLE);
 	}
 

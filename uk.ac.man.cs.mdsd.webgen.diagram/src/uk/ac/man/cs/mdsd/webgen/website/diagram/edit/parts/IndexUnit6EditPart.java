@@ -63,11 +63,9 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 	 */
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(
-						WebsiteVisualIDRegistry.TYPED_INSTANCE));
+				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new IndexUnit6ItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new IndexUnit6ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -84,8 +82,7 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 				return null;
 			}
 
-			protected Command createMoveChildCommand(EditPart child,
-					EditPart after) {
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
 				return null;
 			}
 
@@ -115,8 +112,8 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 	 */
 	protected boolean addFixedChild(EditPart childEditPart) {
 		if (childEditPart instanceof IndexUnitName6EditPart) {
-			((IndexUnitName6EditPart) childEditPart).setLabel(getPrimaryShape()
-					.getFigureInterfaceUnitNameLabelFigure());
+			((IndexUnitName6EditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureInterfaceUnitNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -249,8 +246,7 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 	 * @generated
 	 */
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry
-				.getType(IndexUnitName6EditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(IndexUnitName6EditPart.VISUAL_ID));
 	}
 
 	/**
@@ -258,38 +254,36 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 	 */
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request)
-					.getViewAndElementDescriptor()
+			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter
-					.getAdapter(IElementType.class);
+			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
 			if (type == WebsiteElementTypes.UnitElement_3195) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.UnitAssociation_3196) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.DataTypeField_3205) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.DateField_3211) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.SelectAction_3146) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.DeleteAction_3147) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
 			}
 			if (type == WebsiteElementTypes.FeatureSupportAction_3234) {
-				return getChildBySemanticHint(WebsiteVisualIDRegistry
-						.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -321,8 +315,7 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5),
-					getMapMode().DPtoLP(5)));
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5)));
 			this.setLineWidth(2);
 			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);

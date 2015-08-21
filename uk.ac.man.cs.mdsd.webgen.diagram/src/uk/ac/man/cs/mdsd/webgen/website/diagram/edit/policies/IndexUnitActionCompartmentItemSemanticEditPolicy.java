@@ -11,8 +11,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class IndexUnitActionCompartmentItemSemanticEditPolicy extends
-		WebsiteBaseItemSemanticEditPolicy {
+public class IndexUnitActionCompartmentItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
 
 	/**
 	 * @generated
@@ -31,8 +30,7 @@ public class IndexUnitActionCompartmentItemSemanticEditPolicy extends
 		if (WebsiteElementTypes.DeleteAction_3147 == req.getElementType()) {
 			return getGEFWrapper(new DeleteAction2CreateCommand(req));
 		}
-		if (WebsiteElementTypes.FeatureSupportAction_3234 == req
-				.getElementType()) {
+		if (WebsiteElementTypes.FeatureSupportAction_3234 == req.getElementType()) {
 			return getGEFWrapper(new FeatureSupportActionCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

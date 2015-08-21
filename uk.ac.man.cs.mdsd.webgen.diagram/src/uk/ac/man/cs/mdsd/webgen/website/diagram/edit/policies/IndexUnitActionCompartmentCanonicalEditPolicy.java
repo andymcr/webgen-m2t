@@ -32,8 +32,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 /**
  * @generated
  */
-public class IndexUnitActionCompartmentCanonicalEditPolicy extends
-		CanonicalEditPolicy {
+public class IndexUnitActionCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
 	 * @generated
@@ -72,10 +71,8 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends
 	/**
 	 * @generated
 	 */
-	protected boolean isOrphaned(Collection<EObject> semanticChildren,
-			final View view) {
-		return isMyDiagramElement(view)
-				&& !semanticChildren.contains(view.getElement());
+	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
+		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
 	}
 
 	/**
@@ -83,8 +80,7 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends
 	 */
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == SelectAction6EditPart.VISUAL_ID
-				|| visualID == DeleteAction2EditPart.VISUAL_ID
+		return visualID == SelectAction6EditPart.VISUAL_ID || visualID == DeleteAction2EditPart.VISUAL_ID
 				|| visualID == FeatureSupportActionEditPart.VISUAL_ID;
 	}
 
@@ -97,8 +93,7 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getIndexUnitActionCompartment_7071SemanticChildren((View) getHost()
-						.getModel());
+				.getIndexUnitActionCompartment_7071SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();
@@ -112,8 +107,8 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends
 		// iteration happens over list of desired semantic elements, trying to find best matching View, while original CEP
 		// iterates views, potentially losing view (size/bounds) information - i.e. if there are few views to reference same EObject, only last one 
 		// to answer isOrphaned == true will be used for the domain element representation, see #cleanCanonicalSemanticChildren()
-		for (Iterator<WebsiteNodeDescriptor> descriptorsIterator = childDescriptors
-				.iterator(); descriptorsIterator.hasNext();) {
+		for (Iterator<WebsiteNodeDescriptor> descriptorsIterator = childDescriptors.iterator(); descriptorsIterator
+				.hasNext();) {
 			WebsiteNodeDescriptor next = descriptorsIterator.next();
 			String hint = WebsiteVisualIDRegistry.getType(next.getVisualID());
 			LinkedList<View> perfectMatch = new LinkedList<View>(); // both semanticElement and hint match that of NodeDescriptor
@@ -142,11 +137,9 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends
 				childDescriptors.size());
 		for (WebsiteNodeDescriptor next : childDescriptors) {
 			String hint = WebsiteVisualIDRegistry.getType(next.getVisualID());
-			IAdaptable elementAdapter = new CanonicalElementAdapter(
-					next.getModelElement(), hint);
-			CreateViewRequest.ViewDescriptor descriptor = new CreateViewRequest.ViewDescriptor(
-					elementAdapter, Node.class, hint, ViewUtil.APPEND, false,
-					host().getDiagramPreferencesHint());
+			IAdaptable elementAdapter = new CanonicalElementAdapter(next.getModelElement(), hint);
+			CreateViewRequest.ViewDescriptor descriptor = new CreateViewRequest.ViewDescriptor(elementAdapter,
+					Node.class, hint, ViewUtil.APPEND, false, host().getDiagramPreferencesHint());
 			viewDescriptors.add(descriptor);
 		}
 
@@ -155,10 +148,10 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends
 		CreateViewRequest request = getCreateViewRequest(viewDescriptors);
 		Command cmd = getCreateViewCommand(request);
 		if (cmd != null && cmd.canExecute()) {
-			SetViewMutabilityCommand.makeMutable(
-					new EObjectAdapter(host().getNotationView())).execute();
+			SetViewMutabilityCommand.makeMutable(new EObjectAdapter(host().getNotationView())).execute();
 			executeCommand(cmd);
 			@SuppressWarnings("unchecked")
+
 			List<IAdaptable> nl = (List<IAdaptable>) request.getNewObject();
 			createdViews.addAll(nl);
 		}
@@ -167,8 +160,8 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends
 		}
 		if (createdViews.size() > 1) {
 			// perform a layout of the container
-			DeferredLayoutCommand layoutCmd = new DeferredLayoutCommand(host()
-					.getEditingDomain(), createdViews, host());
+			DeferredLayoutCommand layoutCmd = new DeferredLayoutCommand(host().getEditingDomain(), createdViews,
+					host());
 			executeCommand(new ICommandProxy(layoutCmd));
 		}
 

@@ -18,34 +18,28 @@ public class WebsiteDomainNavigatorItem extends PlatformObject {
 	 * @generated
 	 */
 	static {
-		final Class[] supportedTypes = new Class[] { EObject.class,
-				IPropertySource.class };
-		Platform.getAdapterManager().registerAdapters(
-				new IAdapterFactory() {
+		final Class[] supportedTypes = new Class[] { EObject.class, IPropertySource.class };
+		Platform.getAdapterManager().registerAdapters(new IAdapterFactory() {
 
-					public Object getAdapter(Object adaptableObject,
-							Class adapterType) {
-						if (adaptableObject instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) {
-							uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem domainNavigatorItem = (uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) adaptableObject;
-							EObject eObject = domainNavigatorItem.getEObject();
-							if (adapterType == EObject.class) {
-								return eObject;
-							}
-							if (adapterType == IPropertySource.class) {
-								return domainNavigatorItem
-										.getPropertySourceProvider()
-										.getPropertySource(eObject);
-							}
-						}
-
-						return null;
+			public Object getAdapter(Object adaptableObject, Class adapterType) {
+				if (adaptableObject instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) {
+					uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem domainNavigatorItem = (uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) adaptableObject;
+					EObject eObject = domainNavigatorItem.getEObject();
+					if (adapterType == EObject.class) {
+						return eObject;
 					}
-
-					public Class[] getAdapterList() {
-						return supportedTypes;
+					if (adapterType == IPropertySource.class) {
+						return domainNavigatorItem.getPropertySourceProvider().getPropertySource(eObject);
 					}
-				},
-				uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem.class);
+				}
+
+				return null;
+			}
+
+			public Class[] getAdapterList() {
+				return supportedTypes;
+			}
+		}, uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem.class);
 	}
 
 	/**
@@ -66,8 +60,7 @@ public class WebsiteDomainNavigatorItem extends PlatformObject {
 	/**
 	 * @generated
 	 */
-	public WebsiteDomainNavigatorItem(EObject eObject, Object parent,
-			IPropertySourceProvider propertySourceProvider) {
+	public WebsiteDomainNavigatorItem(EObject eObject, Object parent, IPropertySourceProvider propertySourceProvider) {
 		myParent = parent;
 		myEObject = eObject;
 		myPropertySourceProvider = propertySourceProvider;
@@ -99,8 +92,7 @@ public class WebsiteDomainNavigatorItem extends PlatformObject {
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) {
-			return EcoreUtil
-					.getURI(getEObject())
+			return EcoreUtil.getURI(getEObject())
 					.equals(EcoreUtil
 							.getURI(((uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) obj)
 									.getEObject()));
