@@ -2,52 +2,108 @@
 [module indexMethods(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 
-
-[template public generateUnitDisplay(unit : ContentUnit)
-	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
-[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
-$page = $request->query->getInt('[indexUnit.paginationQuery.parameters->first().name/]', 1);
-[for (q : Query | indexUnit.selectQueries()) separator('else ')]
-if ([for (parameter : QueryParameter | q.parameters) separator(' || ')]$request->query->has('[parameter.name/]')[/for])
-    $[indexUnit.instanceName()/] = $this->get('[indexUnit.service.name/]')->[q.selection.instanceName()/]($page, [indexUnit.defaultPaginationSize/]);
-[/for]
-[if (indexUnit.hasSelectQueries())]
-else
-[/if]
-[if (not indexUnit.defaultSelection.oclIsUndefined())]
-    $[indexUnit.instanceName()/] = $this->get('[indexUnit.service.name/]')->[indexUnit.defaultSelection.instanceName()/]($page, [indexUnit.defaultPaginationSize/]);
-[else]
-    $[indexUnit.instanceName()/] = $this->getDoctrine()
-        ->getRepository('[indexUnit.appBundleName()/]:[indexUnit.service.modelName/]')
-        ->findAll();
-[/if]
-[/let]
-[/template]
-
-[template public generateUnitTemplateParameters(unit : ContentUnit)
-	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
-[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
-'[indexUnit.instanceName()/]' => $[indexUnit.instanceName()/],
-'currentPage' => $page,
-'pageCount' => ceil($[indexUnit.instanceName()/]->count() / [indexUnit.defaultPaginationSize/]),
-[/let]
-[/template]
 
 [template public generateUnitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
+[indexUnit.mainAction()/]
+
 [for (action : InlineAction | unit.uriActions())]
-[action.generateActionMethod('$this->'.concat(unit.instanceName()).concat('_error'))/]
+[comment action.generateActionMethod('$this->'.concat(unit.instanceName()).concat('_error'))/]
 
 [/for]
-[if (unit.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::jQuery
-		and (indexUnit.defaultPaginationSize > 0))]
-public function page()
+[/let]
+[/template]
+
+[template private mainAction(unit : IndexUnit) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
+/**
+ * @Route("[unit.path()/]", name="[unit.routeName()/]")
+ */
+public function [unit.actionName()/]([if (unit.hasQueryParameters())]
+Request $request[/if])
 {
+[if (not unit.paginationQuery.oclIsUndefined())]
+    $page = $request->query->getInt('[unit.paginationQuery.parameters->first().name/]', 1);
+[/if]
+[if (unit.hasSelectQueries())]
+    [unit.queryTests()/]
+    else
+[/if]
+[if (not unit.defaultSelection.oclIsUndefined())]
+        [unit.selectionCall(unit.defaultSelection, null)/]
+[else]
+    $[unit.instanceName()/] = $this->getDoctrine()
+        ->getRepository('[unit.appBundleName()/]:[unit.service.modelName/]')
+        ->findAll();
+[/if]
+
+    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', array(
+        'title' => '[page.displayLabel()/]',
+        [unit.templateParameters()/]
+    ));
+}
+[/let]
+[/template]
+
+[template private queryTests(unit : IndexUnit) post(trim())]
+[for (q : Query | unit.selectQueries()) separator('else ')]
+if ([for (parameter : QueryParameter | q.parameters) separator(' || ')][parameter.presenceTest()/][/for])
+[unit.queryCall(q)/][/for]
+[/template]
+
+[template private presenceTest(parameter : QueryParameter) post(trim())]
+$request->query->has('[parameter.name/]')
+[/template]
+
+[template private queryCall(unit : IndexUnit, q : Query)]
+[if (q.selection.parameters->notEmpty())]
+{
+	[for (parameter : SelectionParameter | q.selection.parameters)]
+	[let actual : QueryParameter = q.matchingActual(parameter)]
+		[if (q.selection.parameters->size() = 1)]
+    $[parameter.name/] = $request->query->get('[actual.name/]');
+		[else]
+    $[parameter.name/] = $request->query->has('[actual.name/]')
+        ? $request->query->get('[actual.name/]')
+        : NULL;
+		[/if]
+	[/let]
+	[/for]
+[/if]
+    [unit.selectionCall(q.selection, q)/]
+[if (q.selection.parameters->notEmpty())]
 }
 [/if]
-[/let]
+[/template]
+
+[query private matchingActual(q : Query, parameter : SelectionParameter) : QueryParameter
+	= q.parameters->any(p | if p.parameter.oclIsUndefined() then
+								false
+							else
+								p.parameter.name = parameter.name
+							endif)
+/]
+
+[template private selectionCall(unit : IndexUnit, selection : Selection, q : Query)]
+$[unit.instanceName()/] = $this->get('[unit.service.name/]')->[selection.instanceName()/]([unit.selectionActuals(q)/]);
+[/template]
+
+[template private selectionActuals(unit : IndexUnit, q : Query) post(trim())]
+[if (not q.oclIsUndefined())]
+	[if(q.selection.parameters->notEmpty())]
+		[for (parameter : SelectionParameter | q.selection.parameters) separator(', ')]
+$[parameter.name/][/for], [/if]
+[/if]
+[if (unit.paginationQuery.oclIsUndefined())]
+NULL[else]$page[/if], [unit.defaultPaginationSize/]
+[/template]
+
+[template private templateParameters(unit : IndexUnit) post(trim())]
+'[unit.instanceName()/]' => $[unit.instanceName()/],
+'currentPage' => $page,
+'pageCount' => ceil($[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]),
 [/template]

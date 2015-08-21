@@ -32,42 +32,17 @@ use Symfony\Component\HttpFoundation\Request;
 use [service.formTypeNamespace()/]\[service.typeClassName()/];
 [/for]
 
-class [page.controllerClassName()/] extends [page.baseControllerClassName()/] {
 
-	/**
-	 * @Route("[page.path()/][for (unit : DynamicUnit | page.parameterisedUnits())]
-/{[unit.routeParameterName()/]}[/for]", name="[page.name/]")
-	 */
-	public function indexAction([if (page.hasQueryParameters())]
-Request $request[if(page.hasParameterisedUnits())], [/if][/if]
-[for (unit : DynamicUnit | page.parameterisedUnits()) separator (', ')]
-$[unit.routeParameterName()/] = NULL[/for]
-)
-	{
-[for (unit : DynamicUnit | page.dynamicUnits())]
-        [unit.generateUnitDisplay()/]
-[/for]
-
-        return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', array(
-            'title' => '[page.displayLabel()/]',
-[for (unit : DynamicUnit | page.dynamicUnits())]
-	[if (unit.isParameterised() or unit.oclIsKindOf(IndexUnit))]
-            [unit.generateUnitTemplateParameters()/]
-	[/if]
-[/for]
-        ));
-	}
-
+class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
+{
 [for (unit : ContentUnit | page.units)]
-	[if (unit.hasUnitMethods())]
-	[unit.generateUnitMethods()/]
+    [unit.generateUnitMethods()/]
 
-	[/if]
 [/for]
 [if (page.hasSupportActions())]
 	[if (page.hasDataSupportActions())]
-	public function action_support()
-	{
+    public function action_support()
+    {
 	[for (action : UnitSupportAction | page.dataSupportActions())]
 		if ($this->request->post('[action.name/]'))
 		{

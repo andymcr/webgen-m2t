@@ -331,8 +331,8 @@
 	[let targetController : Page = action.controller()]
 <a href="{{ path('[targetController.name/]'[if (action.oclIsTypeOf(SelectAction))]
 [let select : SelectAction = action.oclAsType(SelectAction)]
-	[if (not select.target.selectionFeature.oclIsUndefined())]
-, { '[select.routeParameterName()/]': [instanceVariable/].[select.target.selectionFeature.modelPropertyName()/]}[/if]
+	[comment if (not select.target.selectionFeature.oclIsUndefined())/]
+, { '[comment select.routeParameterName()/]': [instanceVariable/].[comment select.target.selectionFeature.modelPropertyName()/]}[comment /if/]
 [/let]
 [/if]) }}">{{ [feature.generateDisplayFieldAssess(instanceVariable)/].[feature.generateAssociationLabel()/][if (feature.maximumDisplaySize > 0)]
  | truncate([feature.maximumDisplaySize/]) [/if] }}</a>
@@ -427,8 +427,8 @@ default[/if]Label
 [let targetController : Page = action.controller()]
 <a href="{{ path('[targetController.name/]'[if (action.oclIsTypeOf(SelectAction))]
 [let select : SelectAction = action.oclAsType(SelectAction)]
-	[if (not select.target.selectionFeature.oclIsUndefined())]
-, { '[select.routeParameterName()/]': [instanceVariable/].[select.target.selectionFeature.modelPropertyName()/]}[/if]
+	[comment if (not select.target.selectionFeature.oclIsUndefined()) /]
+, { '[comment select.routeParameterName()/]': [instanceVariable/].[comment select.target.selectionFeature.modelPropertyName()/]}[comment /if /]
 [/let]
 [/if]) }}" title="[action.displayLabel/] {{ [instanceVariable/].defaultLabel() }}">[action.displayLabel/]</a>
 [/let]

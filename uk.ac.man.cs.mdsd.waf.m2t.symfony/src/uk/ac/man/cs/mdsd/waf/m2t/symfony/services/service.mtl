@@ -33,7 +33,8 @@ class [service.serviceClassName()/]
 [/template]
 
 [template private generateSelectionMethod(selection : Selection, service : Service)]
-public function [selection.name/]($page = NULL, $pageSize = 10)
+public function [selection.name/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
     $repository = $this->doctrine->getRepository('[service.appBundleName()/]:[service.modelName/]');
 	$queryBuilder = $repository->createQueryBuilder('[service.selectName()/]');
@@ -59,7 +60,7 @@ public function [selection.name/]($page = NULL, $pageSize = 10)
 [/if]
     $query = $queryBuilder->getQuery();
 [if (not selection.filter.oclIsUndefined())]
-    [selection.filter.generateCriteriaParameter()/]
+    [selection.filter.criteriaParameter()/]
 [/if]
 
     if ($page)

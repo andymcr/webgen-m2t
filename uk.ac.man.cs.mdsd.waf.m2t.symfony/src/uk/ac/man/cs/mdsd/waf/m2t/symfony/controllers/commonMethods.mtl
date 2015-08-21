@@ -9,26 +9,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public generateLoggedInCheck(page : Page)
-	? (not page.partOf.authentication.oclIsUndefined())
-	post(trim())]
-// Log::instance()->add(Log::DEBUG, '[page.name/] setting use of ssl ');
-// use_ssl();
-[if (page.partOf.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[let localAuthentication : LocalAuthenticationSystem = page.partOf.authentication.oclAsType(LocalAuthenticationSystem)]
-if (!Auth::instance()->logged_in())
-{
-	Session::instance()->set('login_referrer', $this->request->uri());
-	$this->redirect(Route::get('[if (page.partOf.authentication.oclIsTypeOf(CasAuthentication))]
-TBC[elseif (page.partOf.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[page.partOf.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.controllerName()/][else]
-TBC[/if]')->uri());
-}
-[/let]
-[elseif (page.partOf.authentication.oclIsTypeOf(CasAuthentication))]
-[let casAuthentication : CasAuthentication = page.partOf.authentication.oclAsType(CasAuthentication)]
-[/let]
-[/if]
+[template public routeParameters(target : SelectTarget) post(trim())]
+[for (feature : ServiceEntityElement | target.selectionFeatures) separator (', ')]
+$[feature.name/]
+[/for]
 [/template]
 
 
@@ -123,7 +107,7 @@ public function action_[deleteAction.actionName()/]()
 	{
 		$[deleteAction.instanceName()/]->delete();
 [if (deleteAction.destination.oclIsUndefined())]
-		[deleteAction.generateRemoveParameter(action.routeParameterName())/]
+		[comment deleteAction.generateRemoveParameter(action.routeParameterName())/]
 [else]
 		$this->redirect(Route::get('[deleteAction.destination.controllerName()/]')->uri());
 [/if]

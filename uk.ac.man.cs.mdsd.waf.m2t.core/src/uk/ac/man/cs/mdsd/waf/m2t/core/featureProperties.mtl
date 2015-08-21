@@ -835,19 +835,11 @@
 		endif
 	/]
 [query public isParameterised(unit : ContentUnit) : Boolean
-	= if unit.oclIsTypeOf(CreateUpdateUnit) then
-				not unit.oclAsType(CreateUpdateUnit).selectionFeature.oclIsUndefined()
-			else if unit.oclIsTypeOf(DetailsUnit) then
-				not unit.oclAsType(DetailsUnit).selectionFeature.oclIsUndefined()
-			else if unit.oclIsKindOf(IndexUnit) then
-				false -- not unit.oclAsType(IndexUnit).selectionFeature.oclIsUndefined()
-			else if unit.oclIsTypeOf(MapUnit) then
-				not unit.oclAsType(MapUnit).selectionFeature.oclIsUndefined()
-			else if unit.oclIsTypeOf(UpdateUnit) then
-				not unit.oclAsType(UpdateUnit).selectionFeature.oclIsUndefined()
-			else
-				false
-			endif endif endif endif endif
+	= if unit.oclIsKindOf(SelectTarget) then
+			unit.oclAsType(SelectTarget).selectionFeatures->notEmpty()
+		else
+			false
+		endif
 /]
 
 [query public nonResourceInputFeatures(unit : DynamicUnit) : Set(UnitField)
@@ -861,13 +853,11 @@
 
 [query public path(unit : ContentUnit) : String
 	= unit.pageDisplayedOn().path().concat(
-		if unit.path.oclIsUndefined() then
-			''
-		else if unit.path = '' then
+		if not unit.oclIsKindOf(SelectTarget) then
 			''
 		else
-			'/'.concat(unit.path)
-		endif endif)
+			unit.oclAsType(SelectTarget).selectionFeatures->collect(f | f.name)->sep('/{', '}/{', '}')->toString()
+		endif)
 /]
 
 [query public pageDisplayedOn(unit : ContentUnit) : Page
@@ -1284,7 +1274,7 @@
 			in if association.units->isEmpty() then
 					null
 				else if association.units->first().oclIsKindOf(IndexUnit) then
-					association.units->first().oclAsType(IndexUnit).selection
+					association.units->first().oclAsType(IndexUnit).defaultSelection
 				else
 					null
 			endif endif

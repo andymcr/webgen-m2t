@@ -15,7 +15,7 @@
 [if (editUnit.isParameterised())]
 $[editUnit.instanceName()/] = $this->getDoctrine()
     ->getRepository('[editUnit.appBundleName()/]:[editUnit.service.modelName/]')
-    ->findOneBy(array('[editUnit.routeParameterName()/]' => $[editUnit.routeParameterName()/]));
+    ->findOneBy(array('[comment editUnit.routeParameterName()/]' => $[comment editUnit.routeParameterName()/]));
 [else]
 $[editUnit.instanceName()/] = NULL;
 [/if]

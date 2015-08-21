@@ -75,7 +75,7 @@
 
 
 [query public actionName(unit : ContentUnit) : String
-	= unit.instanceName()
+	= unit.instanceName().concat('Action')
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
@@ -113,17 +113,13 @@
 	= genUnit.instanceName().concat('_page')
 /]
 
-[query public routeParameterName(unit : ContentUnit) : String
-	= if unit.oclIsKindOf(SelectTarget) then
-			unit.oclAsType(SelectTarget).routeParameterName()
-		else
-			'unhandled'
-		endif
+[query public routeName(unit : ContentUnit) : String
+	= unit.uniqueName()
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
 	= let key : String
-			= if unit.displayedOn.oclIsTypeOf(Page) then
+		= if unit.displayedOn.oclIsTypeOf(Page) then
 				unit.displayedOn.oclAsType(Page).instanceName()
 			else
 				unit.displayedOn.oclAsType(UnitAssociation).displayedOn.uniqueName()
@@ -227,15 +223,7 @@
 		in genUnit.genService.modelName()
 /]
 
-[query public routeParameterName(target : SelectTarget) : String
-	= if not target.selectionFeature.oclIsUndefined() then
-			target.selectionFeature.name
-		else
-			''
-		endif
-/]
-
-[query public routeParameterName(action : InlineAction) : String
+[comment query public routeParameterName(action : InlineAction) : String
 	= if action.oclIsKindOf(SelectAction) then
 			action.oclAsType(SelectAction).target.routeParameterName()
 		else
