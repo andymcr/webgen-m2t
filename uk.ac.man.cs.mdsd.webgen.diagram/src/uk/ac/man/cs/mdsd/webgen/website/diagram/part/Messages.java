@@ -676,69 +676,79 @@ public class Messages extends NLS {
 	public static String Entity4CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String DataTypeAttribute5CreationTool_title;
+	* @generated
+	*/
+	public static String View5CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String DataTypeAttribute5CreationTool_desc;
+	* @generated
+	*/
+	public static String View5CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String DateAttribute6CreationTool_title;
+	* @generated
+	*/
+	public static String DataTypeAttribute6CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String DateAttribute6CreationTool_desc;
+	* @generated
+	*/
+	public static String DataTypeAttribute6CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String FileAttribute7CreationTool_title;
+	* @generated
+	*/
+	public static String DateAttribute7CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String FileAttribute7CreationTool_desc;
+	* @generated
+	*/
+	public static String DateAttribute7CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String ImageAttribute8CreationTool_title;
+	* @generated
+	*/
+	public static String FileAttribute8CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String LocationAttribute9CreationTool_title;
+	* @generated
+	*/
+	public static String FileAttribute8CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String LocationAttribute9CreationTool_desc;
+	* @generated
+	*/
+	public static String ImageAttribute9CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String UncontainedAssociation10CreationTool_title;
+	* @generated
+	*/
+	public static String LocationAttribute10CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String UncontainedAssociation10CreationTool_desc;
+	* @generated
+	*/
+	public static String LocationAttribute10CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String ContainedAssociation11CreationTool_title;
+	* @generated
+	*/
+	public static String UncontainedAssociation11CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String ContainedAssociation11CreationTool_desc;
+	* @generated
+	*/
+	public static String UncontainedAssociation11CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String ContainedAssociation12CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ContainedAssociation12CreationTool_desc;
 
 	/**
 	 * @generated
@@ -761,14 +771,19 @@ public class Messages extends NLS {
 	public static String EntityAttributeCompartmentEditPart_title;
 
 	/**
-	 * @generated
-	 */
-	public static String ServiceModelLabelsCompartmentEditPart_title;
+	* @generated
+	*/
+	public static String EntityModelLabelsCompartmentEditPart_title;
 
 	/**
-	 * @generated
-	 */
-	public static String ServiceSelectionCompartmentEditPart_title;
+	* @generated
+	*/
+	public static String ViewAttributeCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String ViewModelLabelsCompartmentEditPart_title;
 
 	/**
 	 * @generated
@@ -969,6 +984,11 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String ServiceFeaturesCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String ServiceSelectionCompartmentEditPart_title;
 
 	/**
 	 * @generated

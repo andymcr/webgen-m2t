@@ -48,7 +48,6 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit7EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocalAuthenticationSystemEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageLinkEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SearchUnitEditPart;
@@ -126,6 +125,11 @@ public class WebsiteElementTypes {
 	 */
 	public static final IElementType Entity_2003 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Entity_2003"); //$NON-NLS-1$
 	/**
+	* @generated
+	*/
+	public static final IElementType View_2010 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.View_2010"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType Service_2004 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Service_2004"); //$NON-NLS-1$
@@ -183,6 +187,18 @@ public class WebsiteElementTypes {
 			"uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3230"); //$NON-NLS-1$
 
 	/**
+	* @generated
+	*/
+	public static final IElementType ModelLabelY_3237 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabelY_3237"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType ModelLabelY_3238 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabelY_3238"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType ActionUnit_3213 = getElementType(
@@ -199,12 +215,6 @@ public class WebsiteElementTypes {
 	 */
 	public static final IElementType ServiceViewAssociation_3166 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceViewAssociation_3166"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType ModelLabel_3163 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3163"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -800,6 +810,8 @@ public class WebsiteElementTypes {
 
 			elements.put(Entity_2003, WebsitePackage.eINSTANCE.getEntity());
 
+			elements.put(View_2010, WebsitePackage.eINSTANCE.getView());
+
 			elements.put(Page_2005, WebsitePackage.eINSTANCE.getPage());
 
 			elements.put(StaticMenu_2009, WebsitePackage.eINSTANCE.getStaticMenu());
@@ -821,6 +833,10 @@ public class WebsiteElementTypes {
 			elements.put(ImageAttribute_3235, WebsitePackage.eINSTANCE.getImageAttribute());
 
 			elements.put(LocationAttribute_3230, WebsitePackage.eINSTANCE.getLocationAttribute());
+
+			elements.put(ModelLabelY_3237, WebsitePackage.eINSTANCE.getModelLabelY());
+
+			elements.put(ModelLabelY_3238, WebsitePackage.eINSTANCE.getModelLabelY());
 
 			elements.put(ActionUnit_3213, WebsitePackage.eINSTANCE.getActionUnit());
 
@@ -1014,8 +1030,6 @@ public class WebsiteElementTypes {
 
 			elements.put(ServiceViewAssociation_3166, WebsitePackage.eINSTANCE.getServiceViewAssociation());
 
-			elements.put(ModelLabel_3163, WebsitePackage.eINSTANCE.getModelLabel());
-
 			elements.put(Selection_3150, WebsitePackage.eINSTANCE.getSelection());
 
 			elements.put(AssociationWithoutContainment_4001,
@@ -1047,6 +1061,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(DynamicMenu_2008);
 			KNOWN_ELEMENT_TYPES.add(EnumerationType_2006);
 			KNOWN_ELEMENT_TYPES.add(Entity_2003);
+			KNOWN_ELEMENT_TYPES.add(View_2010);
 			KNOWN_ELEMENT_TYPES.add(Page_2005);
 			KNOWN_ELEMENT_TYPES.add(StaticMenu_2009);
 			KNOWN_ELEMENT_TYPES.add(Service_2004);
@@ -1058,6 +1073,8 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(FileAttribute_3152);
 			KNOWN_ELEMENT_TYPES.add(ImageAttribute_3235);
 			KNOWN_ELEMENT_TYPES.add(LocationAttribute_3230);
+			KNOWN_ELEMENT_TYPES.add(ModelLabelY_3237);
+			KNOWN_ELEMENT_TYPES.add(ModelLabelY_3238);
 			KNOWN_ELEMENT_TYPES.add(ActionUnit_3213);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3169);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3170);
@@ -1154,7 +1171,6 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(ServiceEntityElement_3167);
 			KNOWN_ELEMENT_TYPES.add(ServiceEntityAssociation_3168);
 			KNOWN_ELEMENT_TYPES.add(ServiceViewAssociation_3166);
-			KNOWN_ELEMENT_TYPES.add(ModelLabel_3163);
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithoutContainment_4001);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithContainment_4002);
@@ -1180,6 +1196,8 @@ public class WebsiteElementTypes {
 			return EnumerationType_2006;
 		case EntityEditPart.VISUAL_ID:
 			return Entity_2003;
+		case ViewEditPart.VISUAL_ID:
+			return View_2010;
 		case PageEditPart.VISUAL_ID:
 			return Page_2005;
 		case StaticMenuEditPart.VISUAL_ID:
@@ -1202,6 +1220,10 @@ public class WebsiteElementTypes {
 			return ImageAttribute_3235;
 		case LocationAttributeEditPart.VISUAL_ID:
 			return LocationAttribute_3230;
+		case ModelLabelYEditPart.VISUAL_ID:
+			return ModelLabelY_3237;
+		case ModelLabelY2EditPart.VISUAL_ID:
+			return ModelLabelY_3238;
 		case ActionUnitEditPart.VISUAL_ID:
 			return ActionUnit_3213;
 		case UnitElementEditPart.VISUAL_ID:
@@ -1394,8 +1416,6 @@ public class WebsiteElementTypes {
 			return ServiceEntityAssociation_3168;
 		case ServiceViewAssociationEditPart.VISUAL_ID:
 			return ServiceViewAssociation_3166;
-		case ModelLabelEditPart.VISUAL_ID:
-			return ModelLabel_3163;
 		case SelectionEditPart.VISUAL_ID:
 			return Selection_3150;
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:

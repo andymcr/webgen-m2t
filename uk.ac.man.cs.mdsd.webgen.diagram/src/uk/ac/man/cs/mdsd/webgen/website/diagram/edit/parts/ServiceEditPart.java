@@ -268,10 +268,6 @@ public class ServiceEditPart extends ShapeNodeEditPart {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ServiceFeaturesCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.ModelLabel_3163) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(ServiceModelLabelsCompartmentEditPart.VISUAL_ID));
-			}
 			if (type == WebsiteElementTypes.Selection_3150) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ServiceSelectionCompartmentEditPart.VISUAL_ID));

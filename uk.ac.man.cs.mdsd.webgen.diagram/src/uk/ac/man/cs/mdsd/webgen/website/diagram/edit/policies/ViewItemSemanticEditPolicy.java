@@ -12,25 +12,22 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityAssociationEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityElementEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceFeaturesCompartmentEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceSelectionCompartmentEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceViewAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelY2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAttributeCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewModelLabelsCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
  * @generated
  */
-public class ServiceItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
+public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
 
 	/**
 	* @generated
 	*/
-	public ServiceItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.Service_2004);
+	public ViewItemSemanticEditPolicy() {
+		super(WebsiteElementTypes.View_2010);
 	}
 
 	/**
@@ -61,36 +58,18 @@ public class ServiceItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPo
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
-			case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
+			case ViewAttributeCompartmentEditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case ServiceEntityElementEditPart.VISUAL_ID:
-						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
-						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
-						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
-						break;
-					case ServiceEntityAssociationEditPart.VISUAL_ID:
-						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
-						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
-						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
-						break;
-					case ServiceViewAssociationEditPart.VISUAL_ID:
-						cmd.add(new DestroyElementCommand(
-								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
-						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
-						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
-						break;
 					}
 				}
 				break;
-			case ServiceSelectionCompartmentEditPart.VISUAL_ID:
+			case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case SelectionEditPart.VISUAL_ID:
+					case ModelLabelY2EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

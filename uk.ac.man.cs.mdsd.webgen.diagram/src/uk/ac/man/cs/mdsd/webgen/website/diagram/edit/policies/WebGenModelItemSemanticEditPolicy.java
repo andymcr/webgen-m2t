@@ -14,6 +14,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.EnumerationTypeCre
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.PageCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ServiceCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.StaticMenuCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ViewCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.WebsitePropertiesCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -47,6 +48,9 @@ public class WebGenModelItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 		}
 		if (WebsiteElementTypes.Entity_2003 == req.getElementType()) {
 			return getGEFWrapper(new EntityCreateCommand(req));
+		}
+		if (WebsiteElementTypes.View_2010 == req.getElementType()) {
+			return getGEFWrapper(new ViewCreateCommand(req));
 		}
 		if (WebsiteElementTypes.Page_2005 == req.getElementType()) {
 			return getGEFWrapper(new PageCreateCommand(req));

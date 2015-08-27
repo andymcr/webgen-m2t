@@ -47,7 +47,6 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitName5EditPar
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitName6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitName7EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitNameEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SearchUnitNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectActionName2EditPart;
@@ -157,6 +156,23 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			entityName_5004Parser = parser;
 		}
 		return entityName_5004Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser viewName_5246Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getViewName_5246Parser() {
+		if (viewName_5246Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			viewName_5246Parser = parser;
+		}
+		return viewName_5246Parser;
 	}
 
 	/**
@@ -313,6 +329,40 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser modelLabelYName_5244Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getModelLabelYName_5244Parser() {
+		if (modelLabelYName_5244Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			modelLabelYName_5244Parser = parser;
+		}
+		return modelLabelYName_5244Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser modelLabelYName_5245Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getModelLabelYName_5245Parser() {
+		if (modelLabelYName_5245Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			modelLabelYName_5245Parser = parser;
+		}
+		return modelLabelYName_5245Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	private IParser actionUnitName_5221Parser;
@@ -361,23 +411,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			serviceViewAssociationName_5173Parser = parser;
 		}
 		return serviceViewAssociationName_5173Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser modelLabelName_5170Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getModelLabelName_5170Parser() {
-		if (modelLabelName_5170Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			modelLabelName_5170Parser = parser;
-		}
-		return modelLabelName_5170Parser;
 	}
 
 	/**
@@ -1988,7 +2021,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getAssociationWithoutContainmentCardinalityTargetCardinality_6002Parser() {
 		if (associationWithoutContainmentCardinalityTargetCardinality_6002Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeature_Cardinality(),
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getEntityFeature_Cardinality(),
 					WebsitePackage.eINSTANCE.getAssociationWithoutContainment_TargetCardinality() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			parser.setViewPattern("{0}..{1}"); //$NON-NLS-1$
@@ -2026,7 +2059,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getAssociationWithContainmentCardinality_6004Parser() {
 		if (associationWithContainmentCardinality_6004Parser == null) {
-			EAttribute editableFeature = WebsitePackage.eINSTANCE.getFeature_Cardinality();
+			EAttribute editableFeature = WebsitePackage.eINSTANCE.getEntityFeature_Cardinality();
 			EnumParser parser = new EnumParser(editableFeature);
 			associationWithContainmentCardinality_6004Parser = parser;
 		}
@@ -2048,6 +2081,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getEnumerationTypeName_5032Parser();
 		case EntityNameEditPart.VISUAL_ID:
 			return getEntityName_5004Parser();
+		case ViewNameEditPart.VISUAL_ID:
+			return getViewName_5246Parser();
 		case PageNameEditPart.VISUAL_ID:
 			return getPageName_5014Parser();
 		case StaticMenuNameEditPart.VISUAL_ID:
@@ -2066,6 +2101,10 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getImageAttributeName_5242Parser();
 		case LocationAttributeNameEditPart.VISUAL_ID:
 			return getLocationAttributeName_5237Parser();
+		case ModelLabelYNameEditPart.VISUAL_ID:
+			return getModelLabelYName_5244Parser();
+		case ModelLabelYName2EditPart.VISUAL_ID:
+			return getModelLabelYName_5245Parser();
 		case ActionUnitNameEditPart.VISUAL_ID:
 			return getActionUnitName_5221Parser();
 		case UnitElementNameEditPart.VISUAL_ID:
@@ -2256,8 +2295,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getServiceEntityAssociationName_5175Parser();
 		case ServiceViewAssociationNameEditPart.VISUAL_ID:
 			return getServiceViewAssociationName_5173Parser();
-		case ModelLabelNameEditPart.VISUAL_ID:
-			return getModelLabelName_5170Parser();
 		case SelectionNameEditPart.VISUAL_ID:
 			return getSelectionName_5158Parser();
 		case AssociationWithoutContainmentNameEditPart.VISUAL_ID:

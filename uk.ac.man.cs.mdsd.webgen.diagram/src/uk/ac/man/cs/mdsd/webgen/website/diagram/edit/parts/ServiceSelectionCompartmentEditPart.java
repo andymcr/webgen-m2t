@@ -27,34 +27,34 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 public class ServiceSelectionCompartmentEditPart extends ListCompartmentEditPart {
 
 	/**
-	 * @generated
-	 */
-	public static final int VISUAL_ID = 7088;
+	* @generated
+	*/
+	public static final int VISUAL_ID = 7085;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public ServiceSelectionCompartmentEditPart(View view) {
 		super(view);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean hasModelChildrenChanged(Notification evt) {
 		return false;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public String getCompartmentName() {
 		return Messages.ServiceSelectionCompartmentEditPart_title;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IFigure createFigure() {
 		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
 		result.setTitleVisibility(false);
@@ -62,8 +62,8 @@ public class ServiceSelectionCompartmentEditPart extends ListCompartmentEditPart
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ServiceSelectionCompartmentItemSemanticEditPolicy());
@@ -74,8 +74,8 @@ public class ServiceSelectionCompartmentEditPart extends ListCompartmentEditPart
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setRatio(Double ratio) {
 		// nothing to do -- parent layout does not accept Double constraints as ratio
 		// super.setRatio(ratio); 

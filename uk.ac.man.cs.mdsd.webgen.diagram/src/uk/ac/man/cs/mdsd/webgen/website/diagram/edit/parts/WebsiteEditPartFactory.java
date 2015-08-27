@@ -55,6 +55,12 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case EntityNameEditPart.VISUAL_ID:
 				return new EntityNameEditPart(view);
 
+			case ViewEditPart.VISUAL_ID:
+				return new ViewEditPart(view);
+
+			case ViewNameEditPart.VISUAL_ID:
+				return new ViewNameEditPart(view);
+
 			case PageEditPart.VISUAL_ID:
 				return new PageEditPart(view);
 
@@ -114,6 +120,18 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case LocationAttributeNameEditPart.VISUAL_ID:
 				return new LocationAttributeNameEditPart(view);
+
+			case ModelLabelYEditPart.VISUAL_ID:
+				return new ModelLabelYEditPart(view);
+
+			case ModelLabelYNameEditPart.VISUAL_ID:
+				return new ModelLabelYNameEditPart(view);
+
+			case ModelLabelY2EditPart.VISUAL_ID:
+				return new ModelLabelY2EditPart(view);
+
+			case ModelLabelYName2EditPart.VISUAL_ID:
+				return new ModelLabelYName2EditPart(view);
 
 			case ActionUnitEditPart.VISUAL_ID:
 				return new ActionUnitEditPart(view);
@@ -688,12 +706,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case ServiceViewAssociationNameEditPart.VISUAL_ID:
 				return new ServiceViewAssociationNameEditPart(view);
 
-			case ModelLabelEditPart.VISUAL_ID:
-				return new ModelLabelEditPart(view);
-
-			case ModelLabelNameEditPart.VISUAL_ID:
-				return new ModelLabelNameEditPart(view);
-
 			case SelectionEditPart.VISUAL_ID:
 				return new SelectionEditPart(view);
 
@@ -711,6 +723,15 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case EntityAttributeCompartmentEditPart.VISUAL_ID:
 				return new EntityAttributeCompartmentEditPart(view);
+
+			case EntityModelLabelsCompartmentEditPart.VISUAL_ID:
+				return new EntityModelLabelsCompartmentEditPart(view);
+
+			case ViewAttributeCompartmentEditPart.VISUAL_ID:
+				return new ViewAttributeCompartmentEditPart(view);
+
+			case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
+				return new ViewModelLabelsCompartmentEditPart(view);
 
 			case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
 				return new PageInterfaceUnitCompartmentEditPart(view);
@@ -831,9 +852,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
 				return new ServiceFeaturesCompartmentEditPart(view);
-
-			case ServiceModelLabelsCompartmentEditPart.VISUAL_ID:
-				return new ServiceModelLabelsCompartmentEditPart(view);
 
 			case ServiceSelectionCompartmentEditPart.VISUAL_ID:
 				return new ServiceSelectionCompartmentEditPart(view);

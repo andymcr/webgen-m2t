@@ -15,8 +15,8 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ServiceModelLabelsCompartmentCanonicalEditPolicy;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ServiceModelLabelsCompartmentItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ViewModelLabelsCompartmentCanonicalEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ViewModelLabelsCompartmentItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -24,37 +24,37 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class ServiceModelLabelsCompartmentEditPart extends ListCompartmentEditPart {
+public class ViewModelLabelsCompartmentEditPart extends ListCompartmentEditPart {
 
 	/**
-	 * @generated
-	 */
-	public static final int VISUAL_ID = 7085;
+	* @generated
+	*/
+	public static final int VISUAL_ID = 7120;
 
 	/**
-	 * @generated
-	 */
-	public ServiceModelLabelsCompartmentEditPart(View view) {
+	* @generated
+	*/
+	public ViewModelLabelsCompartmentEditPart(View view) {
 		super(view);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean hasModelChildrenChanged(Notification evt) {
 		return false;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public String getCompartmentName() {
-		return Messages.ServiceModelLabelsCompartmentEditPart_title;
+		return Messages.ViewModelLabelsCompartmentEditPart_title;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IFigure createFigure() {
 		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
 		result.setTitleVisibility(false);
@@ -62,20 +62,20 @@ public class ServiceModelLabelsCompartmentEditPart extends ListCompartmentEditPa
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ServiceModelLabelsCompartmentItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ViewModelLabelsCompartmentItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
-		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new ServiceModelLabelsCompartmentCanonicalEditPolicy());
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new ViewModelLabelsCompartmentCanonicalEditPolicy());
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setRatio(Double ratio) {
 		// nothing to do -- parent layout does not accept Double constraints as ratio
 		// super.setRatio(ratio); 
@@ -89,7 +89,7 @@ public class ServiceModelLabelsCompartmentEditPart extends ListCompartmentEditPa
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ModelLabel_3163) {
+			if (type == WebsiteElementTypes.ModelLabelY_3238) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);
