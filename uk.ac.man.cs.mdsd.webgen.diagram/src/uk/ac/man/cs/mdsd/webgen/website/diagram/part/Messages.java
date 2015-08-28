@@ -396,14 +396,14 @@ public class Messages extends NLS {
 	public static String Datefield7CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String Viewassociation8CreationTool_title;
+	* @generated
+	*/
+	public static String ViewassociationX8CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String Viewassociation8CreationTool_desc;
+	* @generated
+	*/
+	public static String ViewassociationX8CreationTool_desc;
 
 	/**
 	 * @generated
@@ -749,6 +749,26 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String ContainedAssociation12CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String ViewAttribute13CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ViewAttribute13CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String ViewAssociation14CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ViewAssociation14CreationTool_desc;
 
 	/**
 	 * @generated

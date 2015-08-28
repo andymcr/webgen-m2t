@@ -13,7 +13,9 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelY2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAssociationEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAttributeCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewModelLabelsCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -62,6 +64,18 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
+					case ViewAttributeEditPart.VISUAL_ID:
+						cmd.add(new DestroyElementCommand(
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
+						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
+						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
+						break;
+					case ViewAssociationEditPart.VISUAL_ID:
+						cmd.add(new DestroyElementCommand(
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
+						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
+						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
+						break;
 					}
 				}
 				break;

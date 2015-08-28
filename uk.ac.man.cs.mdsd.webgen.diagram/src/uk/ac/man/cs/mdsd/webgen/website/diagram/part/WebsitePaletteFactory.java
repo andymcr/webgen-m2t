@@ -45,7 +45,7 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createUserCommand5CreationTool());
 		paletteContainer.add(createDatatypefield6CreationTool());
 		paletteContainer.add(createDatefield7CreationTool());
-		paletteContainer.add(createViewassociation8CreationTool());
+		paletteContainer.add(createViewassociationX8CreationTool());
 		return paletteContainer;
 	}
 
@@ -148,6 +148,8 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createLocationAttribute10CreationTool());
 		paletteContainer.add(createUncontainedAssociation11CreationTool());
 		paletteContainer.add(createContainedAssociation12CreationTool());
+		paletteContainer.add(createViewAttribute13CreationTool());
+		paletteContainer.add(createViewAssociation14CreationTool());
 		return paletteContainer;
 	}
 
@@ -320,13 +322,13 @@ public class WebsitePaletteFactory {
 	}
 
 	/**
-	 * @generated
-	 */
-	private ToolEntry createViewassociation8CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Viewassociation8CreationTool_title,
-				Messages.Viewassociation8CreationTool_desc,
+	* @generated
+	*/
+	private ToolEntry createViewassociationX8CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ViewassociationX8CreationTool_title,
+				Messages.ViewassociationX8CreationTool_desc,
 				Collections.singletonList(WebsiteElementTypes.ServiceViewAssociation_3166));
-		entry.setId("createViewassociation8CreationTool"); //$NON-NLS-1$
+		entry.setId("createViewassociationX8CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ServiceViewAssociation_3166));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
@@ -802,6 +804,32 @@ public class WebsitePaletteFactory {
 				Collections.singletonList(WebsiteElementTypes.AssociationWithContainment_4002));
 		entry.setId("createContainedAssociation12CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.AssociationWithContainment_4002));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	* @generated
+	*/
+	private ToolEntry createViewAttribute13CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ViewAttribute13CreationTool_title,
+				Messages.ViewAttribute13CreationTool_desc,
+				Collections.singletonList(WebsiteElementTypes.ViewAttribute_3239));
+		entry.setId("createViewAttribute13CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ViewAttribute_3239));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	* @generated
+	*/
+	private ToolEntry createViewAssociation14CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ViewAssociation14CreationTool_title,
+				Messages.ViewAssociation14CreationTool_desc,
+				Collections.singletonList(WebsiteElementTypes.ViewAssociation_3240));
+		entry.setId("createViewAssociation14CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ViewAssociation_3240));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

@@ -1,45 +1,38 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
-import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.RoundedRectangle;
+import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
+import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.FlowLayoutEditPolicy;
-import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
-import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
-import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 import org.eclipse.swt.graphics.Color;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ViewItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ViewAssociationItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
  * @generated
  */
-public class ViewEditPart extends ShapeNodeEditPart {
+public class ViewAssociationEditPart extends ShapeNodeEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 2010;
+	public static final int VISUAL_ID = 3240;
 
 	/**
 	* @generated
@@ -54,7 +47,7 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public ViewEditPart(View view) {
+	public ViewAssociationEditPart(View view) {
 		super(view);
 	}
 
@@ -62,10 +55,8 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected void createDefaultEditPolicies() {
-		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
-				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ViewItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ViewAssociationItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -75,14 +66,17 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected LayoutEditPolicy createLayoutEditPolicy() {
+		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
 
-		FlowLayoutEditPolicy lep = new FlowLayoutEditPolicy() {
-
-			protected Command createAddCommand(EditPart child, EditPart after) {
-				return null;
+			protected EditPolicy createChildEditPolicy(EditPart child) {
+				EditPolicy result = child.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
+				if (result == null) {
+					result = new NonResizableEditPolicy();
+				}
+				return result;
 			}
 
-			protected Command createMoveChildCommand(EditPart child, EditPart after) {
+			protected Command getMoveChildrenCommand(Request request) {
 				return null;
 			}
 
@@ -97,22 +91,23 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected IFigure createNodeShape() {
-		return primaryShape = new ViewFigure();
+		return primaryShape = new AttributeFigure();
 	}
 
 	/**
 	* @generated
 	*/
-	public ViewFigure getPrimaryShape() {
-		return (ViewFigure) primaryShape;
+	public AttributeFigure getPrimaryShape() {
+		return (AttributeFigure) primaryShape;
 	}
 
 	/**
 	* @generated
 	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof ViewNameEditPart) {
-			((ViewNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureViewNameLabel());
+		if (childEditPart instanceof ViewAssociationNameEditPart) {
+			((ViewAssociationNameEditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureAttributeNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -122,7 +117,7 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof ViewNameEditPart) {
+		if (childEditPart instanceof ViewAssociationNameEditPart) {
 			return true;
 		}
 		return false;
@@ -159,7 +154,7 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(90, 80);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 20);
 		return result;
 	}
 
@@ -245,62 +240,23 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(ViewNameEditPart.VISUAL_ID));
-	}
-
-	/**
-	* @generated
-	*/
-	public EditPart getTargetEditPart(Request request) {
-		if (request instanceof CreateViewAndElementRequest) {
-			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
-					.getCreateElementRequestAdapter();
-			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ViewAttribute_3239) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(ViewAttributeCompartmentEditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.ViewAssociation_3240) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(ViewAttributeCompartmentEditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.ModelLabelY_3238) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(ViewModelLabelsCompartmentEditPart.VISUAL_ID));
-			}
-		}
-		return super.getTargetEditPart(request);
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(ViewAssociationNameEditPart.VISUAL_ID));
 	}
 
 	/**
 	 * @generated
 	 */
-	public class ViewFigure extends RoundedRectangle {
+	public class AttributeFigure extends RectangleFigure {
 
 		/**
 		 * @generated
 		 */
-		private WrappingLabel fFigureViewNameLabel;
+		private WrappingLabel fFigureAttributeNameLabelFigure;
 
 		/**
 		 * @generated
 		 */
-		public ViewFigure() {
-
-			FlowLayout layoutThis = new FlowLayout();
-			layoutThis.setStretchMinorAxis(true);
-			layoutThis.setMinorAlignment(FlowLayout.ALIGN_CENTER);
-
-			layoutThis.setMajorAlignment(FlowLayout.ALIGN_CENTER);
-			layoutThis.setMajorSpacing(2);
-			layoutThis.setMinorSpacing(2);
-			layoutThis.setHorizontal(true);
-
-			this.setLayoutManager(layoutThis);
-
-			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(10), getMapMode().DPtoLP(10)));
-			this.setLineWidth(4);
-			this.setForegroundColor(THIS_FORE);
+		public AttributeFigure() {
 			this.setBackgroundColor(THIS_BACK);
 			createContents();
 		}
@@ -310,19 +266,19 @@ public class ViewEditPart extends ShapeNodeEditPart {
 		 */
 		private void createContents() {
 
-			fFigureViewNameLabel = new WrappingLabel();
+			fFigureAttributeNameLabelFigure = new WrappingLabel();
 
-			fFigureViewNameLabel.setText("");
+			fFigureAttributeNameLabelFigure.setText("");
 
-			this.add(fFigureViewNameLabel);
+			this.add(fFigureAttributeNameLabelFigure);
 
 		}
 
 		/**
 		 * @generated
 		 */
-		public WrappingLabel getFigureViewNameLabel() {
-			return fFigureViewNameLabel;
+		public WrappingLabel getFigureAttributeNameLabelFigure() {
+			return fFigureAttributeNameLabelFigure;
 		}
 
 	}
@@ -330,11 +286,6 @@ public class ViewEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	static final Color THIS_FORE = new Color(null, 102, 153, 204);
-
-	/**
-	 * @generated
-	 */
-	static final Color THIS_BACK = new Color(null, 153, 204, 255);
+	static final Color THIS_BACK = new Color(null, 230, 230, 250);
 
 }

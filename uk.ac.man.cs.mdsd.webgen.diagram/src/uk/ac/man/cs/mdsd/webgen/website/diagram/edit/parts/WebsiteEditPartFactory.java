@@ -133,6 +133,18 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case ModelLabelYName2EditPart.VISUAL_ID:
 				return new ModelLabelYName2EditPart(view);
 
+			case ViewAttributeEditPart.VISUAL_ID:
+				return new ViewAttributeEditPart(view);
+
+			case ViewAttributeNameEditPart.VISUAL_ID:
+				return new ViewAttributeNameEditPart(view);
+
+			case ViewAssociationEditPart.VISUAL_ID:
+				return new ViewAssociationEditPart(view);
+
+			case ViewAssociationNameEditPart.VISUAL_ID:
+				return new ViewAssociationNameEditPart(view);
+
 			case ActionUnitEditPart.VISUAL_ID:
 				return new ActionUnitEditPart(view);
 

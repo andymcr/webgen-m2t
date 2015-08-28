@@ -519,6 +519,7 @@ public class ViewNameEditPart extends CompartmentEditPart implements ITextAwareE
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class key) {
 		if (ILabelDelegate.class.equals(key)) {

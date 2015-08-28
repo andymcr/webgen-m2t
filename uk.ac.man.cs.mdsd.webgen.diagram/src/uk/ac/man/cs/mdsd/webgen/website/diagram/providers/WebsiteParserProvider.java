@@ -363,6 +363,40 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser viewAttributeName_5247Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getViewAttributeName_5247Parser() {
+		if (viewAttributeName_5247Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getViewAttribute_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			viewAttributeName_5247Parser = parser;
+		}
+		return viewAttributeName_5247Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser viewAssociationName_5248Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getViewAssociationName_5248Parser() {
+		if (viewAssociationName_5248Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getViewAssociation_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			viewAssociationName_5248Parser = parser;
+		}
+		return viewAssociationName_5248Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	private IParser actionUnitName_5221Parser;
@@ -2105,6 +2139,10 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getModelLabelYName_5244Parser();
 		case ModelLabelYName2EditPart.VISUAL_ID:
 			return getModelLabelYName_5245Parser();
+		case ViewAttributeNameEditPart.VISUAL_ID:
+			return getViewAttributeName_5247Parser();
+		case ViewAssociationNameEditPart.VISUAL_ID:
+			return getViewAssociationName_5248Parser();
 		case ActionUnitNameEditPart.VISUAL_ID:
 			return getActionUnitName_5221Parser();
 		case UnitElementNameEditPart.VISUAL_ID:

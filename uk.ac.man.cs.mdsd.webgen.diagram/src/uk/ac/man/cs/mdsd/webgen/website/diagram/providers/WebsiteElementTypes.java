@@ -199,6 +199,18 @@ public class WebsiteElementTypes {
 			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabelY_3238"); //$NON-NLS-1$
 
 	/**
+	* @generated
+	*/
+	public static final IElementType ViewAttribute_3239 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ViewAttribute_3239"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType ViewAssociation_3240 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ViewAssociation_3240"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType ActionUnit_3213 = getElementType(
@@ -838,6 +850,10 @@ public class WebsiteElementTypes {
 
 			elements.put(ModelLabelY_3238, WebsitePackage.eINSTANCE.getModelLabelY());
 
+			elements.put(ViewAttribute_3239, WebsitePackage.eINSTANCE.getViewAttribute());
+
+			elements.put(ViewAssociation_3240, WebsitePackage.eINSTANCE.getViewAssociation());
+
 			elements.put(ActionUnit_3213, WebsitePackage.eINSTANCE.getActionUnit());
 
 			elements.put(UnitElement_3169, WebsitePackage.eINSTANCE.getUnitElement());
@@ -1075,6 +1091,8 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(LocationAttribute_3230);
 			KNOWN_ELEMENT_TYPES.add(ModelLabelY_3237);
 			KNOWN_ELEMENT_TYPES.add(ModelLabelY_3238);
+			KNOWN_ELEMENT_TYPES.add(ViewAttribute_3239);
+			KNOWN_ELEMENT_TYPES.add(ViewAssociation_3240);
 			KNOWN_ELEMENT_TYPES.add(ActionUnit_3213);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3169);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3170);
@@ -1224,6 +1242,10 @@ public class WebsiteElementTypes {
 			return ModelLabelY_3237;
 		case ModelLabelY2EditPart.VISUAL_ID:
 			return ModelLabelY_3238;
+		case ViewAttributeEditPart.VISUAL_ID:
+			return ViewAttribute_3239;
+		case ViewAssociationEditPart.VISUAL_ID:
+			return ViewAssociation_3240;
 		case ActionUnitEditPart.VISUAL_ID:
 			return ActionUnit_3213;
 		case UnitElementEditPart.VISUAL_ID:

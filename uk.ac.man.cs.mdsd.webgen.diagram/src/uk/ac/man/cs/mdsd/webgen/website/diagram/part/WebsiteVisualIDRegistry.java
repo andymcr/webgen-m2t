@@ -181,6 +181,14 @@ public class WebsiteVisualIDRegistry {
 				return ModelLabelYEditPart.VISUAL_ID;
 			}
 			break;
+		case ViewAttributeCompartmentEditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getViewAttribute().isSuperTypeOf(domainElement.eClass())) {
+				return ViewAttributeEditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getViewAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return ViewAssociationEditPart.VISUAL_ID;
+			}
+			break;
 		case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getModelLabelY().isSuperTypeOf(domainElement.eClass())) {
 				return ModelLabelY2EditPart.VISUAL_ID;
@@ -728,6 +736,16 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case ModelLabelY2EditPart.VISUAL_ID:
 			if (ModelLabelYName2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ViewAttributeEditPart.VISUAL_ID:
+			if (ViewAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ViewAssociationEditPart.VISUAL_ID:
+			if (ViewAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1357,6 +1375,14 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
+		case ViewAttributeCompartmentEditPart.VISUAL_ID:
+			if (ViewAttributeEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ViewAssociationEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
 			if (ModelLabelY2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1951,6 +1977,8 @@ public class WebsiteVisualIDRegistry {
 		case ActionMenuEntryEditPart.VISUAL_ID:
 		case ModelLabelYEditPart.VISUAL_ID:
 		case ModelLabelY2EditPart.VISUAL_ID:
+		case ViewAttributeEditPart.VISUAL_ID:
+		case ViewAssociationEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;
