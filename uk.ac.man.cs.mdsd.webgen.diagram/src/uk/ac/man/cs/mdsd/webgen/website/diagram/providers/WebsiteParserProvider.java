@@ -57,10 +57,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectActionName6Edit
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectActionName7EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectActionNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionNameEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityAssociationNameEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityElementNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceNameEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceViewAssociationNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticMenuNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticUnitNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitNameEditPart;
@@ -411,40 +408,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			actionUnitName_5221Parser = parser;
 		}
 		return actionUnitName_5221Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser serviceEntityAssociationName_5175Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getServiceEntityAssociationName_5175Parser() {
-		if (serviceEntityAssociationName_5175Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getServiceEntityAssociation_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			serviceEntityAssociationName_5175Parser = parser;
-		}
-		return serviceEntityAssociationName_5175Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser serviceViewAssociationName_5173Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getServiceViewAssociationName_5173Parser() {
-		if (serviceViewAssociationName_5173Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			serviceViewAssociationName_5173Parser = parser;
-		}
-		return serviceViewAssociationName_5173Parser;
 	}
 
 	/**
@@ -2012,20 +1975,37 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser serviceEntityElementName_5174Parser;
+	* @generated
+	*/
+	private IParser serviceAttributeName_5249Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getServiceEntityElementName_5174Parser() {
-		if (serviceEntityElementName_5174Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getServiceEntityElement_Name() };
+	* @generated
+	*/
+	private IParser getServiceAttributeName_5249Parser() {
+		if (serviceAttributeName_5249Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getServiceAttribute_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			serviceEntityElementName_5174Parser = parser;
+			serviceAttributeName_5249Parser = parser;
 		}
-		return serviceEntityElementName_5174Parser;
+		return serviceAttributeName_5249Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser serviceAssociationName_5250Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getServiceAssociationName_5250Parser() {
+		if (serviceAssociationName_5250Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getServiceAssociation_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			serviceAssociationName_5250Parser = parser;
+		}
+		return serviceAssociationName_5250Parser;
 	}
 
 	/**
@@ -2327,12 +2307,10 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getFixedCommandMenuEntryName_5238Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntryName_5164Parser();
-		case ServiceEntityElementNameEditPart.VISUAL_ID:
-			return getServiceEntityElementName_5174Parser();
-		case ServiceEntityAssociationNameEditPart.VISUAL_ID:
-			return getServiceEntityAssociationName_5175Parser();
-		case ServiceViewAssociationNameEditPart.VISUAL_ID:
-			return getServiceViewAssociationName_5173Parser();
+		case ServiceAttributeNameEditPart.VISUAL_ID:
+			return getServiceAttributeName_5249Parser();
+		case ServiceAssociationNameEditPart.VISUAL_ID:
+			return getServiceAssociationName_5250Parser();
 		case SelectionNameEditPart.VISUAL_ID:
 			return getSelectionName_5158Parser();
 		case AssociationWithoutContainmentNameEditPart.VISUAL_ID:

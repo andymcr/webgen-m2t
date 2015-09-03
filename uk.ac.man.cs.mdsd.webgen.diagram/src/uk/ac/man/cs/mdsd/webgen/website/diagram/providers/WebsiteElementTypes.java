@@ -60,7 +60,6 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction7EditPart
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectActionEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceViewAssociationEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticMenuEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitEditPart;
@@ -215,18 +214,6 @@ public class WebsiteElementTypes {
 	 */
 	public static final IElementType ActionUnit_3213 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType ServiceEntityAssociation_3168 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityAssociation_3168"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType ServiceViewAssociation_3166 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceViewAssociation_3166"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -752,10 +739,16 @@ public class WebsiteElementTypes {
 			"uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"); //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
-	public static final IElementType ServiceEntityElement_3167 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceEntityElement_3167"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType ServiceAttribute_3241 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceAttribute_3241"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType ServiceAssociation_3242 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceAssociation_3242"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -1040,11 +1033,9 @@ public class WebsiteElementTypes {
 
 			elements.put(EditStaticTextMenuEntry_3156, WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
 
-			elements.put(ServiceEntityElement_3167, WebsitePackage.eINSTANCE.getServiceEntityElement());
+			elements.put(ServiceAttribute_3241, WebsitePackage.eINSTANCE.getServiceAttribute());
 
-			elements.put(ServiceEntityAssociation_3168, WebsitePackage.eINSTANCE.getServiceEntityAssociation());
-
-			elements.put(ServiceViewAssociation_3166, WebsitePackage.eINSTANCE.getServiceViewAssociation());
+			elements.put(ServiceAssociation_3242, WebsitePackage.eINSTANCE.getServiceAssociation());
 
 			elements.put(Selection_3150, WebsitePackage.eINSTANCE.getSelection());
 
@@ -1186,9 +1177,8 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(FixedCommandMenuEntry_3231);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
-			KNOWN_ELEMENT_TYPES.add(ServiceEntityElement_3167);
-			KNOWN_ELEMENT_TYPES.add(ServiceEntityAssociation_3168);
-			KNOWN_ELEMENT_TYPES.add(ServiceViewAssociation_3166);
+			KNOWN_ELEMENT_TYPES.add(ServiceAttribute_3241);
+			KNOWN_ELEMENT_TYPES.add(ServiceAssociation_3242);
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithoutContainment_4001);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithContainment_4002);
@@ -1432,12 +1422,10 @@ public class WebsiteElementTypes {
 			return FixedCommandMenuEntry_3231;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return EditStaticTextMenuEntry_3156;
-		case ServiceEntityElementEditPart.VISUAL_ID:
-			return ServiceEntityElement_3167;
-		case ServiceEntityAssociationEditPart.VISUAL_ID:
-			return ServiceEntityAssociation_3168;
-		case ServiceViewAssociationEditPart.VISUAL_ID:
-			return ServiceViewAssociation_3166;
+		case ServiceAttributeEditPart.VISUAL_ID:
+			return ServiceAttribute_3241;
+		case ServiceAssociationEditPart.VISUAL_ID:
+			return ServiceAssociation_3242;
 		case SelectionEditPart.VISUAL_ID:
 			return Selection_3150;
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:

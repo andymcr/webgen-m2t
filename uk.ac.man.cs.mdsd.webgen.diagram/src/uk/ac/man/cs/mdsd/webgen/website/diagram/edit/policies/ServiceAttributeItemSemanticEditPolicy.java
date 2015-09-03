@@ -13,18 +13,18 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class ServiceEntityAssociationItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
+public class ServiceAttributeItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
 
 	/**
-	 * @generated
-	 */
-	public ServiceEntityAssociationItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.ServiceEntityAssociation_3168);
+	* @generated
+	*/
+	public ServiceAttributeItemSemanticEditPolicy() {
+		super(WebsiteElementTypes.ServiceAttribute_3241);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getDestroyElementCommand(DestroyElementRequest req) {
 		View view = (View) getHost().getModel();
 		CompositeTransactionalCommand cmd = new CompositeTransactionalCommand(getEditingDomain(), null);

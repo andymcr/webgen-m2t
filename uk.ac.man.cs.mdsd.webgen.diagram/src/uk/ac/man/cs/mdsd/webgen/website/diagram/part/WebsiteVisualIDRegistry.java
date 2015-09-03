@@ -552,14 +552,11 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getServiceEntityElement().isSuperTypeOf(domainElement.eClass())) {
-				return ServiceEntityElementEditPart.VISUAL_ID;
+			if (WebsitePackage.eINSTANCE.getServiceAttribute().isSuperTypeOf(domainElement.eClass())) {
+				return ServiceAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getServiceEntityAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return ServiceEntityAssociationEditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getServiceViewAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return ServiceViewAssociationEditPart.VISUAL_ID;
+			if (WebsitePackage.eINSTANCE.getServiceAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return ServiceAssociationEditPart.VISUAL_ID;
 			}
 			break;
 		case ServiceSelectionCompartmentEditPart.VISUAL_ID:
@@ -1320,18 +1317,13 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ServiceEntityElementEditPart.VISUAL_ID:
-			if (ServiceEntityElementNameEditPart.VISUAL_ID == nodeVisualID) {
+		case ServiceAttributeEditPart.VISUAL_ID:
+			if (ServiceAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case ServiceEntityAssociationEditPart.VISUAL_ID:
-			if (ServiceEntityAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case ServiceViewAssociationEditPart.VISUAL_ID:
-			if (ServiceViewAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
+		case ServiceAssociationEditPart.VISUAL_ID:
+			if (ServiceAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1746,13 +1738,10 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-			if (ServiceEntityElementEditPart.VISUAL_ID == nodeVisualID) {
+			if (ServiceAttributeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (ServiceEntityAssociationEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (ServiceViewAssociationEditPart.VISUAL_ID == nodeVisualID) {
+			if (ServiceAssociationEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1920,9 +1909,6 @@ public class WebsiteVisualIDRegistry {
 		case DeleteAction3EditPart.VISUAL_ID:
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 		case CreateSitemapUnitEditPart.VISUAL_ID:
-		case ServiceViewAssociationEditPart.VISUAL_ID:
-		case ServiceEntityElementEditPart.VISUAL_ID:
-		case ServiceEntityAssociationEditPart.VISUAL_ID:
 		case UnitElementEditPart.VISUAL_ID:
 		case UnitAssociationEditPart.VISUAL_ID:
 		case UnitElement2EditPart.VISUAL_ID:
@@ -1979,6 +1965,8 @@ public class WebsiteVisualIDRegistry {
 		case ModelLabelY2EditPart.VISUAL_ID:
 		case ViewAttributeEditPart.VISUAL_ID:
 		case ViewAssociationEditPart.VISUAL_ID:
+		case ServiceAttributeEditPart.VISUAL_ID:
+		case ServiceAssociationEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

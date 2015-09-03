@@ -13,25 +13,25 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.Service;
-import uk.ac.man.cs.mdsd.webgen.website.ServiceViewAssociation;
+import uk.ac.man.cs.mdsd.webgen.website.ServiceAttribute;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
  */
-public class ServiceViewAssociationCreateCommand extends EditElementCommand {
+public class ServiceAttributeCreateCommand extends EditElementCommand {
 
 	/**
-	 * @generated
-	 */
-	public ServiceViewAssociationCreateCommand(CreateElementRequest req) {
+	* @generated
+	*/
+	public ServiceAttributeCreateCommand(CreateElementRequest req) {
 		super(req.getLabel(), null, req);
 	}
 
 	/**
-	 * FIXME: replace with setElementToEdit()
-	 * @generated
-	 */
+	* FIXME: replace with setElementToEdit()
+	* @generated
+	*/
 	protected EObject getElementToEdit() {
 		EObject container = ((CreateElementRequest) getRequest()).getContainer();
 		if (container instanceof View) {
@@ -41,18 +41,18 @@ public class ServiceViewAssociationCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean canExecute() {
 		return true;
 
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ServiceViewAssociation newElement = WebsiteFactory.eINSTANCE.createServiceViewAssociation();
+		ServiceAttribute newElement = WebsiteFactory.eINSTANCE.createServiceAttribute();
 
 		Service owner = (Service) getElementToEdit();
 		owner.getFeatures().add(newElement);
@@ -64,9 +64,9 @@ public class ServiceViewAssociationCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void doConfigure(ServiceViewAssociation newElement, IProgressMonitor monitor, IAdaptable info)
+	* @generated
+	*/
+	protected void doConfigure(ServiceAttribute newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);

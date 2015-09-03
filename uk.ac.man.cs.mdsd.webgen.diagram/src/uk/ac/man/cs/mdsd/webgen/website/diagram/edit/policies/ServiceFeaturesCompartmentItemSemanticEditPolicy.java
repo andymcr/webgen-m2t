@@ -3,9 +3,8 @@ package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ServiceEntityAssociationCreateCommand;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ServiceEntityElementCreateCommand;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ServiceViewAssociationCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ServiceAssociationCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ServiceAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
@@ -24,14 +23,11 @@ public class ServiceFeaturesCompartmentItemSemanticEditPolicy extends WebsiteBas
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.ServiceEntityElement_3167 == req.getElementType()) {
-			return getGEFWrapper(new ServiceEntityElementCreateCommand(req));
+		if (WebsiteElementTypes.ServiceAttribute_3241 == req.getElementType()) {
+			return getGEFWrapper(new ServiceAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.ServiceEntityAssociation_3168 == req.getElementType()) {
-			return getGEFWrapper(new ServiceEntityAssociationCreateCommand(req));
-		}
-		if (WebsiteElementTypes.ServiceViewAssociation_3166 == req.getElementType()) {
-			return getGEFWrapper(new ServiceViewAssociationCreateCommand(req));
+		if (WebsiteElementTypes.ServiceAssociation_3242 == req.getElementType()) {
+			return getGEFWrapper(new ServiceAssociationCreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

@@ -22,9 +22,8 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityAssociationEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEntityElementEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceViewAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -80,9 +79,7 @@ public class ServiceFeaturesCompartmentCanonicalEditPolicy extends CanonicalEdit
 	 */
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == ServiceEntityElementEditPart.VISUAL_ID
-				|| visualID == ServiceEntityAssociationEditPart.VISUAL_ID
-				|| visualID == ServiceViewAssociationEditPart.VISUAL_ID;
+		return visualID == ServiceAttributeEditPart.VISUAL_ID || visualID == ServiceAssociationEditPart.VISUAL_ID;
 	}
 
 	/**

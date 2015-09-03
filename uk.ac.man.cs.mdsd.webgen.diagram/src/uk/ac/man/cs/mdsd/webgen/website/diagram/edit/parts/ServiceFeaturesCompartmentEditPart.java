@@ -94,13 +94,10 @@ public class ServiceFeaturesCompartmentEditPart extends ListCompartmentEditPart 
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ServiceEntityElement_3167) {
+			if (type == WebsiteElementTypes.ServiceAttribute_3241) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.ServiceEntityAssociation_3168) {
-				return this;
-			}
-			if (type == WebsiteElementTypes.ServiceViewAssociation_3166) {
+			if (type == WebsiteElementTypes.ServiceAssociation_3242) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

@@ -228,7 +228,7 @@ public class WebsitePaletteFactory {
 		types.add(WebsiteElementTypes.UnitElement_3215);
 		types.add(WebsiteElementTypes.UnitElement_3220);
 		types.add(WebsiteElementTypes.UnitElement_3223);
-		types.add(WebsiteElementTypes.ServiceEntityElement_3167);
+		types.add(WebsiteElementTypes.ServiceAttribute_3241);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Element3CreationTool_title,
 				Messages.Element3CreationTool_desc, types);
 		entry.setId("createElement3CreationTool"); //$NON-NLS-1$
@@ -260,7 +260,7 @@ public class WebsitePaletteFactory {
 		types.add(WebsiteElementTypes.UnitAssociation_3216);
 		types.add(WebsiteElementTypes.UnitAssociation_3221);
 		types.add(WebsiteElementTypes.UnitAssociation_3224);
-		types.add(WebsiteElementTypes.ServiceEntityAssociation_3168);
+		types.add(WebsiteElementTypes.ServiceAssociation_3242);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Association4CreationTool_title,
 				Messages.Association4CreationTool_desc, types);
 		entry.setId("createAssociation4CreationTool"); //$NON-NLS-1$
@@ -325,12 +325,10 @@ public class WebsitePaletteFactory {
 	* @generated
 	*/
 	private ToolEntry createViewassociationX8CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ViewassociationX8CreationTool_title,
-				Messages.ViewassociationX8CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.ServiceViewAssociation_3166));
+		ToolEntry entry = new ToolEntry(Messages.ViewassociationX8CreationTool_title,
+				Messages.ViewassociationX8CreationTool_desc, null, null) {
+		};
 		entry.setId("createViewassociationX8CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ServiceViewAssociation_3166));
-		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
 

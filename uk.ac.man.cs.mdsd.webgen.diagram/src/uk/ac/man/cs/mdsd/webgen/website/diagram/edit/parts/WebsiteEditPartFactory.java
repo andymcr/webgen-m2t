@@ -700,23 +700,17 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
 				return new EditStaticTextMenuEntryNameEditPart(view);
 
-			case ServiceEntityElementEditPart.VISUAL_ID:
-				return new ServiceEntityElementEditPart(view);
+			case ServiceAttributeEditPart.VISUAL_ID:
+				return new ServiceAttributeEditPart(view);
 
-			case ServiceEntityElementNameEditPart.VISUAL_ID:
-				return new ServiceEntityElementNameEditPart(view);
+			case ServiceAttributeNameEditPart.VISUAL_ID:
+				return new ServiceAttributeNameEditPart(view);
 
-			case ServiceEntityAssociationEditPart.VISUAL_ID:
-				return new ServiceEntityAssociationEditPart(view);
+			case ServiceAssociationEditPart.VISUAL_ID:
+				return new ServiceAssociationEditPart(view);
 
-			case ServiceEntityAssociationNameEditPart.VISUAL_ID:
-				return new ServiceEntityAssociationNameEditPart(view);
-
-			case ServiceViewAssociationEditPart.VISUAL_ID:
-				return new ServiceViewAssociationEditPart(view);
-
-			case ServiceViewAssociationNameEditPart.VISUAL_ID:
-				return new ServiceViewAssociationNameEditPart(view);
+			case ServiceAssociationNameEditPart.VISUAL_ID:
+				return new ServiceAssociationNameEditPart(view);
 
 			case SelectionEditPart.VISUAL_ID:
 				return new SelectionEditPart(view);

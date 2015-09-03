@@ -256,15 +256,11 @@ public class ServiceEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ServiceEntityElement_3167) {
+			if (type == WebsiteElementTypes.ServiceAttribute_3241) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ServiceFeaturesCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.ServiceEntityAssociation_3168) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(ServiceFeaturesCompartmentEditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.ServiceViewAssociation_3166) {
+			if (type == WebsiteElementTypes.ServiceAssociation_3242) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ServiceFeaturesCompartmentEditPart.VISUAL_ID));
 			}
