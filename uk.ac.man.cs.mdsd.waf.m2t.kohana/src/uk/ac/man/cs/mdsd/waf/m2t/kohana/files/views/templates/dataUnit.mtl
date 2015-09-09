@@ -48,14 +48,14 @@
 [template private generateUnitTitle(unit : DataUnit, instanceVariable : String) post(trim())]
 [if (unit.oclIsTypeOf(IndexGridUnit) or unit.dynamicTitle.oclIsUndefined())]
 [unit.displayLabel/]
-[elseif (unit.dynamicTitle.oclIsTypeOf(ServiceEntityElement))]
-[let element : ServiceEntityElement = unit.dynamicTitle.oclAsType(ServiceEntityElement)]
-	[if (not element.isEnumerationTypeSingleton())]
-<?php echo HTML::chars($[instanceVariable/]->[element.modelPropertyName()/]); ?>
+[elseif (unit.dynamicTitle.oclIsTypeOf(ServiceAttribute))]
+[let attribute : ServiceAttribute = unit.dynamicTitle.oclAsType(ServiceAttribute)]
+	[if (not attribute.isEnumerationTypeSingleton())]
+<?php echo HTML::chars($[instanceVariable/]->[attribute.modelPropertyName()/]); ?>
 	[else]
 [let enumerationType : EnumerationType
-	= element.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
-<?php echo [enumerationType.modelClassName()/]::option($entry->[element.modelPropertyName()/]); ?>
+	= attribute.attribute.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+<?php echo [enumerationType.modelClassName()/]::option($entry->[attribute.modelPropertyName()/]); ?>
 [/let]
 	[/if]
 [/let]
@@ -313,7 +313,7 @@ $[feature.name/][else]
 [template public generateDisplayField(field : UnitField, instanceVariable : String)
 	? (field.isEnumerationTypeSingleton()) post(trim())]
 [let enumerationType : EnumerationType
-	= field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+	= field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
 <?php
 	echo [enumerationType.modelClassName()/]::option($[instanceVariable/]->[field.oclAsType(UnitElement).modelPropertyName()/]);
 ?>

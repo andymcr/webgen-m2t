@@ -18,28 +18,181 @@
 
 
 [query public enumerationTypes(model : OrmModel) : Sequence(EnumerationType)
-	= model.dataTypes->select(t | t.oclIsTypeOf(EnumerationType)).oclAsType(EnumerationType)
+	= model.dataTypes->select(t | t.oclIsKindOf(EnumerationType)).oclAsType(EnumerationType)
 /]
 
-[query public modelAssociations(model : OrmModel) : Sequence(Association)
-	= model.modelFeatures()->select(f | f.oclIsKindOf(Association))
+[query public manyToManyAssociations(model : OrmModel) : Sequence(EntityAssociation)
+	= model.entitiesAndViews->select(e | e.oclIsTypeOf(Entity)).oclAsType(Entity)
+		-> collect(e | e.associations())
+		->select(a | not a.isSingleton() and not a.opposite.isSingleton())
 /]
 
-[query public modelAttributes(model : OrmModel) : Sequence(Attribute)
-	= model.modelFeatures()->select(f | f.oclIsTypeOf(Attribute))
+
+[query public associations(entity : Entity) : Sequence(EntityAssociation)
+	= entity.features->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
 /]
 
-[query public modelFeatures(model : OrmModel) : Sequence(Feature)
-	= model.entities->collect(features)
+[query public associations(view : View) : Sequence(ViewAssociation)
+	= view.features->select(f | f.oclIsKindOf(ViewAssociation)).oclAsType(ViewAssociation)
 /]
 
-[query public modelManyToManyAssociations(model : OrmModel) : Sequence(CollectionAssociation)
-	= model.modelAssociations()->select(f | f.isManyToManyAssociationXX())
+[query public attributesAndSingletons(entity : Entity) : OrderedSet(EntityFeature)
+	= entity.features
+		->select(f | f.oclIsTypeOf(EntityAttribute) or f.isSingleton())
 /]
 
+[query public collectionAssociations(entityOrView : EntityOrView) : Sequence(Association)
+	= if entityOrView.oclIsTypeOf(Entity) then
+			entityOrView.oclAsType(Entity).collectionAssociations()
+		else
+			entityOrView.oclAsType(View).collectionAssociations()
+		endif
+/]
+
+[query public collectionAssociations(entity : Entity) : Sequence(EntityAssociation)
+	= entity.associations()->select(f | not f.isSingleton())
+/]
+
+[query public collectionAssociations(view : View) : Sequence(ViewAssociation)
+	= view.associations()->select(f | not f.isSingleton())
+/]
+
+[query public defaultValueFeatures(entityOrView : EntityOrView) : Sequence(Attribute)
+	= if entityOrView.oclIsTypeOf(Entity) then
+			entityOrView.oclAsType(Entity).defaultValueFeatures()
+		else
+			entityOrView.oclAsType(View).defaultValueFeatures()
+		endif
+/]
+
+[query public defaultValueFeatures(entity : Entity) : Sequence(SingletonAttribute)
+	= entity.features->select(f | f.hasDefaultValue()).oclAsType(SingletonAttribute)
+/]
+
+[query public defaultValueFeatures(view : View) : Sequence(Attribute)
+	= view.features->select(f | f.hasDefaultValue()).oclAsType(SingletonAttribute)
+/]
+
+[query public hasAttributesOrSingletons(entity : Entity) : Boolean
+	= entity.attributesAndSingletons()->notEmpty()
+/]
+
+[query public hasCollectionAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.collectionAssociations()->notEmpty()
+/]
+
+[query public hasDefaultLabel(entityOrView : EntityOrView) : Boolean
+	= entityOrView.displayLabels->select(l | l.name = 'default')->notEmpty()
+/]
+
+[query public hasDefaultValueFeatures(entityOrView : EntityOrView) : Boolean
+	= entityOrView.defaultValueFeatures()->notEmpty()
+/]
+
+[query public hasInverseSingletonAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.inverseSingletonAssociations()->notEmpty()
+/]
+
+[query public hasOwnedSingletonAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.ownedSingletonAssociations()->notEmpty()
+/]
+
+[query public hasResourceAttributes(entityOrView : EntityOrView) : Boolean
+	= entityOrView.resourceAttributes()->notEmpty()
+/]
+
+[query public hasValidatedFeatures(entityOrView : EntityOrView) : Boolean
+	= entityOrView.validatedFeatures()->notEmpty()
+/]
+
+[query public inputAssociations(entityOrView : EntityOrView) : Sequence(Association)
+	= if entityOrView.oclIsTypeOf(Entity) then
+			entityOrView.oclAsType(Entity).inputAssociations()
+		else
+			entityOrView.oclAsType(View).inputAssociations()
+		endif
+/]
+
+[query public inputAssociations(entity : Entity) : Sequence(EntityAssociation)
+	= entity.associations()
+		->select(f | f.isInput())
+/]
+
+[query public inputAssociations(view : View) : Sequence(ViewAssociation)
+	= view.associations()
+		->select(f | f.isInput())
+/]
+
+[query public inverseSingletonAssociations(entityOrView : EntityOrView) : Sequence(Association)
+	= if entityOrView.oclIsTypeOf(Entity) then
+			entityOrView.oclAsType(Entity).inverseSingletonAssociations()
+		else
+			entityOrView.oclAsType(View).inverseSingletonAssociations()
+		endif
+/]
+
+[query public inverseSingletonAssociations(entity : Entity) : Sequence(EntityAssociation)
+	= entity.associations()->select(
+		a | a.isSingleton() and not a.owningEnd)
+/]
+
+[query public inverseSingletonAssociations(view : View) : Sequence(ViewAssociation)
+	= view.associations()->select(
+		a | a.isSingleton() and not a.isOwningEnd())
+/]
+
+[query public ownedSingletonAssociations(entityOrView : EntityOrView) : Sequence(Association)
+	= if entityOrView.oclIsTypeOf(Entity) then
+			entityOrView.oclAsType(Entity).ownedSingletonAssociations()
+		else
+			entityOrView.oclAsType(View).ownedSingletonAssociations()
+		endif
+/]
+
+[query public ownedSingletonAssociations(view : View) : Sequence(ViewAssociation)
+	= view.associations()->select(
+		a | a.isSingleton() and a.isOwningEnd())
+/]
+
+[query public ownedSingletonAssociations(entity : Entity) : Sequence(EntityAssociation)
+	= entity.associations()->select(
+		a | a.isSingleton() and a.owningEnd)
+/]
+
+[query public resourceAttributes(entity : Entity) : Sequence(SingletonResource)
+	= entity.features->select(f | f.isResource()).oclAsType(SingletonResource)
+/]
+
+[query public resourceAttributes(entityOrView : EntityOrView) : Sequence(Association)
+	= if entityOrView.oclIsTypeOf(Entity) then
+			entityOrView.oclAsType(Entity).resourceAttributes()
+		else
+			entityOrView.oclAsType(View).resourceAttributes()
+		endif
+/]
+
+[query public resourceAttributes(view : View) : Sequence(SingletonResource)
+	= view.features->select(f | f.isResource()).oclAsType(SingletonResource)
+/]
 
 [query public tableColumns(entity : Entity) : OrderedSet(Feature)
 	= entity.features->select(f | f.hasColumn())
+/]
+
+[query public validatedFeatures(entityOrView : EntityOrView) : Sequence(Feature)
+	= if entityOrView.oclIsTypeOf(Entity) then
+			entityOrView.oclAsType(Entity).validatedFeatures()
+		else
+			entityOrView.oclAsType(View).validatedFeatures()
+		endif
+/]
+
+[query public validatedFeatures(entity : Entity) : Sequence(EntityFeature)
+	= entity.features->select(f | f.isValidated())->asSequence()
+/]
+
+[query public validatedFeatures(view : View) : Sequence(ViewFeature)
+	= view.features->select(f | f.isValidated())->asSequence()
 /]
 
 
@@ -51,6 +204,24 @@
 		else
 			false
 		endif endif
+/]
+
+[query public hasDefaultValue(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			not feature.oclAsType(SingletonAttribute).defaultValue.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public isBooleanDataType(feature : Feature) : Boolean
+	= if not feature.oclIsTypeOf(SingletonElement) then
+			false
+		else
+			let singleton : SingletonElement
+				= feature.oclAsType(SingletonElement)
+				in singleton.dataType.name = 'Boolean'
+		endif
 /]
 
 [query public isDataTypeSingletonElement(feature : Feature) : Boolean
@@ -69,11 +240,6 @@
 		endif
 /]
 
-[query public isManyToManyAssociationXX(feature : Association) : Boolean
-	= feature.oclIsTypeOf(CollectionAssociation) and feature.opposite.oclIsTypeOf(CollectionAssociation)
-/]
-
-
 [query public isInput(feature : Feature) : Boolean
 	= if feature.inputField.oclIsUndefined() then
 			false
@@ -82,8 +248,68 @@
 		endif
 /]
 
+[query public isLocation(feature : Feature) : Boolean
+	= feature.oclIsTypeOf(SingletonLocation)
+/]
+
+[query public isOppositeSingleton(association : Association) : Boolean
+	= if association.oclIsTypeOf(EntityAttribute) then
+			association.oclAsType(EntityAssociation).opposite.isSingleton()
+		else
+			association.oclAsType(ViewAssociation).association.isOppositeSingleton()
+		endif
+/]
+
+[query public isOwningEnd(association : Association) : Boolean
+	= if association.oclIsKindOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).owningEnd
+		else
+			association.oclAsType(ViewAssociation).association.isOwningEnd()
+		endif
+/]
+
+[query public isResource(feature : Feature) : Boolean
+	= feature.oclIsKindOf(SingletonResource)
+/]
+
+[query public isRequired(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).required
+		else if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).required
+		else
+			false
+		endif endif
+/]
+
 [query public isSingleton(feature : Feature) : Boolean
-	= feature.oclIsKindOf(SingletonAttribute) or feature.oclIsKindOf(SingletonAssociation)
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclIsKindOf(SingletonAttribute) or feature.oclIsKindOf(SingletonAssociation)
+		else if feature.oclIsTypeOf(ViewAttribute) then
+			feature.oclAsType(ViewAttribute).attribute.isSingleton()
+		else
+			feature.oclAsType(ViewAssociation).association.isSingleton()
+		endif endif
+/]
+
+[query public isUnique(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).unique
+		else
+			false
+		endif
+/]
+
+[query public isValidated(feature : Feature) : Boolean
+	= feature.isRequired() or feature.isUnique()
+/]
+
+[query public modelPropertyName(feature : Feature) : String
+	= if feature.oclIsKindOf(SingletonElement) then
+			feature.columnName
+		else
+			feature.name
+		endif
 /]
 
 [query public oppositeColumnName(feature : Association) : String
@@ -95,9 +321,3 @@
 			'Unhandled Association'
 		endif endif
 /]
-
-
-[query public displayLabel(enumerationLiteral : EnumerationLiteral) : String
-	= enumerationLiteral.displayLabel
-/]
-

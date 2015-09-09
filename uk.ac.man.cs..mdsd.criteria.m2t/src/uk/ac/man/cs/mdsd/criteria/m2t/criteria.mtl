@@ -3,32 +3,32 @@
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria')]
 
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(NullLiteral)) post(trim())]
 NULL
 [/template]
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(IntegerLiteral)) post(trim())]
 [let literal : IntegerLiteral = criteria.oclAsType(IntegerLiteral)]
 [literal.value/]
 [/let]
 [/template]
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(StringLiteral)) post(trim())]
 [let literal : StringLiteral = criteria.oclAsType(StringLiteral)]
 '[literal.value/]'
 [/let]
 [/template]
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
 ':now'
 [/template]
 
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(Function)) post(trim())]
 [let function : Function = criteria.oclAsType(Function)]
 [function.name/]('Y-m-d H:i:s')
@@ -36,11 +36,11 @@ NULL
 [/template]
 
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = criteria.oclAsType(PredicateBooleanOperator)]
 [for (expression : Expression | predicate.expressions)]
-[expression.generateCriteriaExpression()/]
+[expression.valueExpression()/]
 [/for]
 [/let]
 [/template]

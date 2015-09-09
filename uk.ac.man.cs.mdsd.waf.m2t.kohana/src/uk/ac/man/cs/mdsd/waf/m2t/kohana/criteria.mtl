@@ -50,10 +50,10 @@ $this->[path.unit.instanceName()/]->[path.unit.service.keyName()/]
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
 [let isDate : Boolean
-	= if not path.feature.oclIsTypeOf(ServiceEntityElement) then
+	= if not path.feature.oclIsTypeOf(ServiceAttribute) then
 			false
 		else
-			path.feature.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonDate)
+			path.feature.oclAsType(ServiceAttribute).attribute.oclIsTypeOf(SingletonDate)
 		endif
 ]
 [if (isDate)]

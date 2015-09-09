@@ -2,6 +2,7 @@
 [module generate(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::generate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -39,7 +40,7 @@
 [model.servicesWithSelections().generateService()/]
 
 [model.generateAppBundle()/]
-[model.enumerationTypes().generateFormType()/]
+[model.persistence.enumerationTypes().generateFormType()/]
 [model.services.generateFormType()/]
 [model.pages.generateController()/]
 

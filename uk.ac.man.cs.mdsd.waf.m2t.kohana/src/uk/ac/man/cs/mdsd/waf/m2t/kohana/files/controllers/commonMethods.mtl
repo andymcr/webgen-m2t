@@ -41,7 +41,7 @@ $this->[unit.instanceName()/]->values($this->request->post(), array([for
 [template public generateDefaultUnitValues(unit : DynamicUnit) post(trim())]
 [for (field : UnitField | unit.defaultValueFields())]
 [if (field.oclIsTypeOf(UnitElement))]
-$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedElement).defaultValue.generateCriteria()/];
+$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.generateCriteria()/];
 [else]
 $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
 [/if]

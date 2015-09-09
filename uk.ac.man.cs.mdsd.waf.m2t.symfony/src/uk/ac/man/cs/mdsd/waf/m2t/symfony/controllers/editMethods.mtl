@@ -14,7 +14,7 @@
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.isParameterised())]
 $[editUnit.instanceName()/] = $this->getDoctrine()
-    ->getRepository('[editUnit.appBundleName()/]:[editUnit.service.modelName/]')
+    ->getRepository('[editUnit.appBundleName()/]:[editUnit.service.name/]')
     ->findOneBy(array('[comment editUnit.routeParameterName()/]' => $[comment editUnit.routeParameterName()/]));
 [else]
 $[editUnit.instanceName()/] = NULL;
@@ -107,7 +107,7 @@ public function action_[editUnit.actionName()/]()
 public function action_[comment association.optionsName()/]()
 {
 	$options = array();
-	foreach (ORM::factory('[association.serviceFeature.oppositeService.modelName/]')->[if (association.selection.oclIsUndefined())]
+	foreach (ORM::factory('[association.serviceFeature.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 		$options['['/][']'/] = array(

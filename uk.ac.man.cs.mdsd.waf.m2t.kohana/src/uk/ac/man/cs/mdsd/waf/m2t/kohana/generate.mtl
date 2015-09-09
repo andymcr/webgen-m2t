@@ -46,7 +46,7 @@
 [model.generateExtendedOrm()/]
 [model.persistence.dataTypes.generateModel()/]
 [if (model.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
-[model.services.generateModel(model.authentication)/]
+[model.services.model(model.authentication)/]
 [/if]
 
 [model.generateBaseController()/]

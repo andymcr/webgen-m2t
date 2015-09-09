@@ -15,7 +15,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  com.google.guava,
  uk.ac.man.cs..mdsd.criteria.m2t,
- uk.ac.man.cs.mdsd.orm.m2t.core,
- uk.ac.man.cs.mdsd.waf.m2t.core
+ uk.ac.man.cs.mdsd.orm.m2t.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 

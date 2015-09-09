@@ -2,7 +2,6 @@
 [module enumeration(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
@@ -21,7 +20,7 @@ class [type.modelClassName()/]
 	{
 		$options = array();
 [for (literal : EnumerationLiteral | type.enumerations)]
-		$options['['/]self::[literal.name/][']'/] = '[literal.displayLabel()/]';
+		$options['['/]self::[literal.name/][']'/] = '[literal.displayLabel/]';
 [/for]
 
 		return $options;

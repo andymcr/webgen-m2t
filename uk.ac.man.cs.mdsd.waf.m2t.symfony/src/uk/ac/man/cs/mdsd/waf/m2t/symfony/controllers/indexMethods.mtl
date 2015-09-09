@@ -37,12 +37,12 @@ Request $request[/if])
         [unit.selectionCall(unit.defaultSelection, null)/]
 [else]
     $[unit.instanceName()/] = $this->getDoctrine()
-        ->getRepository('[unit.appBundleName()/]:[unit.service.modelName/]')
+        ->getRepository('[unit.appBundleName()/]:[unit.service.name/]')
         ->findAll();
 [/if]
 
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', array(
-        'title' => '[page.displayLabel()/]',
+        'title' => '[page.displayLabel/]',
         [unit.templateParameters()/]
     ));
 }
@@ -104,6 +104,8 @@ NULL[else]$page[/if], [unit.defaultPaginationSize/]
 
 [template private templateParameters(unit : IndexUnit) post(trim())]
 '[unit.instanceName()/]' => $[unit.instanceName()/],
+[if (not unit.paginationQuery.oclIsUndefined())]
 'currentPage' => $page,
 'pageCount' => ceil($[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]),
+[/if]
 [/template]

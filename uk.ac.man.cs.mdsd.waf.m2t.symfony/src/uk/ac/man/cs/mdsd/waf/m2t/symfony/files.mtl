@@ -122,7 +122,7 @@
 
 [query public formTypeFilename(service : Service) : String
 	= service.formTypeDirectory().concat('/')
-		.concat(service.typePrefix()).concat(service.modelName).concat('Type')
+		.concat(service.typePrefix()).concat(service.name).concat('Type')
 		.concat(service.executableExtension())
 /]
 

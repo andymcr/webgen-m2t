@@ -35,8 +35,8 @@
 		.concat(type.executableExtension())
 /]
 
-[query public modelFilename(service : Service) : String
-	= service.modelsDirectory().concat('/')
-		.concat(service.modelName)
-		.concat(service.executableExtension())
+[query public modelFilename(entity : Entity) : String
+	= entity.modelsDirectory().concat('/')
+		.concat(entity.name)
+		.concat(entity.executableExtension())
 /]

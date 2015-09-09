@@ -4,23 +4,23 @@
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
 new \DateTime('now')
 [/template]
 
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = criteria.oclAsType(PredicateEqualityOperator)]
-[predicate.left.generateCriteriaExpression()/] [if (predicate.negated)]'!='[else]'='[/if] [predicate.right.generateCriteriaExpression()/]
+[predicate.left.valueExpression()/] [if (predicate.negated)]'!='[else]'='[/if] [predicate.right.valueExpression()/]
 [/let]
 [/template]
 
-[template public generateCriteriaExpression(criteria : Expression)
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
-[predicate.left.generateCriteriaExpression()/] '[predicate.operator.generateOperator()/]' [predicate.right.generateCriteriaExpression()/]
+[predicate.left.valueExpression()/] '[predicate.operator.generateOperator()/]' [predicate.right.valueExpression()/]
 [/let]
 [/template]
 

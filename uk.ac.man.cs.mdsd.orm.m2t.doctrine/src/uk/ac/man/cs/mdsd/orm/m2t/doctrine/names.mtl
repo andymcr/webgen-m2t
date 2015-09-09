@@ -2,7 +2,7 @@
 [module names(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 
 
 [query public modelClassName(type : EnumerationType) : String
@@ -10,12 +10,30 @@
 /]
 
 
-[query public modelClassName(service : Service) : String
-	= service.modelName
+[query public modelClassName(entity : Entity) : String
+	= entity.name
+/]
+
+[query public modelName(entityOrView : EntityOrView) : String
+	= entityOrView.name
 /]
 
 
-[query public instanceName(feature : ServiceFeature) : String
+[query public instanceName(feature : Feature) : String
 	= feature.modelPropertyName()
+/]
+
+[query public modelName(association : Association) : String
+	= if association.oclIsTypeOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).opposite.partOf.modelName()
+		else
+			'xxx'
+		endif
+/]
+
+
+[comment TODO remove?/]
+[query public instanceName(feature : ServiceFeature) : String
+	= 'xxx' -- feature.modelPropertyName()
 /]
 

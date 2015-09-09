@@ -309,7 +309,7 @@ find_all()[else]
 [else]
 			[for (action : UnitSupportAction | dynamicUnit.oclAsType(ActionUnit).supportActions)]
   <?php
-		echo Form::button('[action.name/]', '[action.displayLabel()/]', array(
+		echo Form::button('[action.name/]', '[action.displayLabel/]', array(
 			'type' => 'submit',
 [if (not action.confirmMessage.oclIsUndefined())]
 			'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'

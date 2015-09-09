@@ -10,8 +10,76 @@
 	= 'Controller_Template_Base'
 /]
 
+[query public instanceName(entity : Entity) : String
+	= entity.name.toLowerFirst()
+/]
+
+
+[query public modelClassName(enumerationType : EnumerationType) : String
+	= 'Model_'.concat(enumerationType.modelName())
+/]
+
+[query public modelName(enumerationType : EnumerationType) : String
+	= enumerationType.name
+/]
+
+[query public name(enumerationLiteral : EnumerationLiteral) : String
+	= enumerationLiteral.name.toUpper()
+/]
+
+
+[query public modelName(entityOrView : EntityOrView) : String
+	= entityOrView.name
+/]
+
+[query public selectName(entityOrView : EntityOrView) : String
+	= entityOrView.name
+/]
+
+
+[query public modelName(association : Association) : String
+	= if association.oclIsTypeOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).opposite.partOf.modelName()
+		else
+			'xxx'
+		endif
+/]
+
+
 [query public modelClassName(service : Service) : String
-	= 'Model_'.concat(service.modelName)
+	= 'Model_'.concat(service.modelName())
+/]
+
+
+[query public modelName(service : Service) : String
+	= let entityOrView : EntityOrView = service.encapsulates->first()
+		in if not entityOrView.oclIsUndefined() then
+			entityOrView.name
+			else
+				'????'
+			endif
+/]
+
+
+[query public countName(selection : Selection) : String
+	= selection.instanceName().concat('_count')
+/]
+
+[query public instanceName(selection : Selection) : String
+	= selection.name.toLowerFirst()
+/]
+
+
+[query public modelName(feature : ServiceFeature) : String
+	= if feature.oclIsTypeOf(ServiceAssociation) then
+			feature.oclAsType(ServiceAssociation).modelName()
+		else
+			'unknown'
+		endif
+/]
+
+[query public modelName(feature : ServiceAssociation) : String
+	= feature.association.modelName()
 /]
 
 
@@ -50,10 +118,10 @@
 			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
 				'None'
 			else
-				unit.oclAsType(StaticUnit).service.modelName
+				unit.oclAsType(StaticUnit).service.modelName()
 			endif
 		else
-			unit.oclAsType(DynamicUnit).service.modelName
+			unit.oclAsType(DynamicUnit).service.modelName()
 		endif
 /]
 
@@ -116,15 +184,15 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
-			action.usedBy.oclAsType(UnitAssociation).serviceFeature.oppositeService.modelName
+			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
 		endif
 /]
 
 [query public modelName(action : FeatureSupportAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).service.modelName
+			action.usedBy.oclAsType(DynamicUnit).service.modelName()
 		else
-			action.usedBy.oclAsType(UnitAssociation).serviceFeature.oppositeService.modelName
+			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
 		endif
 /]
 
@@ -135,45 +203,8 @@
 			else
 				action.usedBy.oclAsType(UnitAssociation).displayedOn
 			endif
-		in unit.service.modelName/]
+		in unit.service.modelName()/]
 
 [query public parameterName(action : InlineAction) : String
 	= action.actionName()
 /]
-
-
-[query public countName(selection : Selection) : String
-	= selection.instanceName().concat('_count')
-/]
-
-[query public instanceName(selection : Selection) : String
-	= selection.name.toLowerFirst()
-/]
-
-
-[query public instanceName(entity : Entity) : String
-	= entity.name.toLowerFirst()
-/]
-
-[query public modelName(entity : Entity) : String
-	= entity.name
-/]
-
-
-[query public modelName(feature : Association) : String
-	= feature.opposite.parentEntity.modelName()
-/]
-
-
-[query public modelClassName(enumerationType : EnumerationType) : String
-	= 'Model_'.concat(enumerationType.modelName())
-/]
-
-[query public modelName(enumerationType : EnumerationType) : String
-	= enumerationType.name
-/]
-
-[query public name(enumerationLiteral : EnumerationLiteral) : String
-	= enumerationLiteral.name.toUpper()
-/]
-

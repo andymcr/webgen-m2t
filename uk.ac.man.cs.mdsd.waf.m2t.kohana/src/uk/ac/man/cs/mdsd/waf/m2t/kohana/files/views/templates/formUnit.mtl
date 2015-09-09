@@ -121,7 +121,7 @@ find_all()[else]
 [else]
 			[for (action : UnitSupportAction | unit.oclAsType(ActionUnit).supportActions)]
   <?php
-		echo Form::button('[action.name/]', '[action.displayLabel()/]', array(
+		echo Form::button('[action.name/]', '[action.displayLabel/]', array(
 			'type' => 'submit',
 [if (not action.confirmMessage.oclIsUndefined())]
 			'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
@@ -423,7 +423,7 @@ find_all()[else]
 [else]
 			[for (action : UnitSupportAction | dynamicUnit.oclAsType(ActionUnit).supportActions)]
   <?php
-		echo Form::button('[action.name/]', '[action.displayLabel()/]', array(
+		echo Form::button('[action.name/]', '[action.displayLabel/]', array(
 			'type' => 'submit',
 [if (not action.confirmMessage.oclIsUndefined())]
 			'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
@@ -469,7 +469,7 @@ find_all()[else]
 	? (field.isDataTypeSingleton() or field.oclIsTypeOf(DataTypeField)) post(trim())]
 [let dataType : DataType = 
 	if field.oclIsTypeOf(UnitElement) then
-		field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonElement).dataType
+		field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonElement).dataType
 	else
 		field.oclAsType(DataTypeField).dataType
 	endif]
@@ -546,7 +546,7 @@ $[instanceVariable/]->[field.modelPropertyName()/][/if],
 [template protected generateInput(field : UnitField, instanceVariable : String)
 	? (field.isEnumerationTypeSingleton()) post(trim())]
 [let enumerationType : EnumerationType
-	= field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+	= field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
 <?php
 	echo Form::select(
 		'[field.formName()/]',
@@ -567,7 +567,7 @@ $[instanceVariable/]->[field.modelPropertyName()/][/if],
 	? (field.isDateSingleton() or field.oclIsTypeOf(DateField)) post(trim())]
 [let dateDetails : DateDetails
 	= if field.isDateSingleton() then
-			field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonDate).details
+			field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonDate).details
 		else
 			field.oclAsType(DateField).details
 		endif]
@@ -589,7 +589,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 
 [template protected generateInput(field : UnitField, instanceVariable : String)
 	? (field.isResourceSingleton()) post(trim())]
-[let resource : SingletonResource = field.oclAsType(UnitElement).serviceFeature.feature.oclAsType(SingletonResource)]
+[let resource : SingletonResource = field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonResource)]
 <?php
 	echo Form::file('[field.modelPropertyName()/]',
 		array(

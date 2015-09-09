@@ -22,7 +22,7 @@ class [enumerationType.modelClassName()/] {
 			$options['['/][']'/] = '';
 		}
 [for (literal : EnumerationLiteral | enumerationType.enumerations)]
-		$options['['/]self::[literal.name()/][']'/] = '[literal.displayLabel()/]';
+		$options['['/]self::[literal.name()/][']'/] = '[literal.displayLabel/]';
 [/for]
 
 		return $options;

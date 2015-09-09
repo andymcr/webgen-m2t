@@ -27,17 +27,18 @@
 public function [unit.actionName()/]([if (unit.hasQueryParameters())]
 Request $request[if (unit.selectionFeatures->notEmpty())], [/if][/if][unit.routeParameters()/])
 {
-    $repository = $this->getDoctrine()->getRepository('AppBundle:Competition');
-    $queryBuilder = $repository->createQueryBuilder('competitions');
+    $repository = $this->getDoctrine()
+        ->getRepository('[unit.appBundleName()/]:[unit.service.name/]');
+    $queryBuilder = $repository->createQueryBuilder('[unit.service.selectName()/]');
     $queryBuilder->where(
-[for (feature : ServiceEntityElement | unit.selectionFeatures)]
+[for (feature : ServiceAttribute | unit.selectionFeatures)]
         $queryBuilder->expr()->eq([feature.featureReference()/], $queryBuilder->expr()->literal($[feature.name/]))
 [/for]
     );
 	$[unit.instanceName()/] = $queryBuilder->getQuery()->getSingleResult();
 
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', array(
-        'title' => '[page.displayLabel()/]',
+        'title' => '[page.displayLabel/]',
         [unit.templateParameters()/]
     ));
 }

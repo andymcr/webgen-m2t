@@ -22,21 +22,21 @@ class [service.typeClassName()/] extends AbstractType
 	{
 		$builder[for (feature : ServiceFeature | service.features)]
 
-			->add('[feature.modelPropertyName()/]', '[if (feature.oclIsTypeOf(ServiceEntityElement))]
-[let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)]
-	[if (element.feature.oclIsTypeOf(SingletonElement))]
-	[let singleton : SingletonElement = element.feature.oclAsType(SingletonElement)]
+			->add('[feature.modelPropertyName()/]', '[if (feature.oclIsTypeOf(ServiceAttribute))]
+[let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)]
+	[if (attribute.attribute.oclIsTypeOf(SingletonElement))]
+	[let singleton : SingletonElement = attribute.attribute.oclAsType(SingletonElement)]
 		[if (singleton.dataType.oclIsTypeOf(EnumerationType))]
 [singleton.dataType.oclAsType(EnumerationType).formTypeName()/][else]
-[element.interfaceType/][/if][/let][else]
-[element.interfaceType/][/if][/let][elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
-entity[/if]'[if (not feature.isRequired() or feature.oclIsTypeOf(ServiceEntityAssociation))]
+[attribute.interfaceType/][/if][/let][else]
+[attribute.interfaceType/][/if][/let][elseif (feature.oclIsTypeOf(ServiceAssociation))]
+entity[/if]'[if (not feature.isRequired() or feature.oclIsTypeOf(ServiceAssociation))]
 , array(
 [if (not feature.isRequired())]
                     'required' => false,
 [/if]
-[if (feature.oclIsTypeOf(ServiceEntityAssociation))]
-[let association : ServiceEntityAssociation = feature.oclAsType(ServiceEntityAssociation)]
+[if (feature.oclIsTypeOf(ServiceAssociation))]
+[let association : ServiceAssociation = feature.oclAsType(ServiceAssociation)]
                     'class' => '[feature.appBundleName()/]:[association.modelName()/]',
                     'choice_label' => 'defaultLabel'
 [/let]
@@ -47,13 +47,13 @@ entity[/if]'[if (not feature.isRequired() or feature.oclIsTypeOf(ServiceEntityAs
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
-			'data_class' => '[service.modelsNamespace()/]\[service.modelName/]'
+			'data_class' => '[service.modelsNamespace()/]\[service.name/]'
 		));
 	}
 
 	public function getName()
 	{
-		return '[service.modelName.toLowerFirst()/]';
+		return '[service.name.toLowerFirst()/]';
 	}
 }
 [/file]

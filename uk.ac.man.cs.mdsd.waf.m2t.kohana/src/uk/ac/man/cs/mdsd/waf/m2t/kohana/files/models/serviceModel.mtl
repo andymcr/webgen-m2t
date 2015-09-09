@@ -9,123 +9,107 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
-[template public generateModel(service : Service, authentication : Authentication)]
+[template public model(service : Service, authentication : Authentication)]
 [file(service.modelFilename(), false)]
+[let entityOrView : EntityOrView = service.encapsulates->first()]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
 class [service.modelClassName()/] extends Model_ExtendedORM
 {
-[if (service.hasExplicitTableName())]
-[if (not service.view)]
-	protected $_table_name = '[service.tableName()/]';
-[else]
-	protected $_table_name = '[service.viewName/]';
-[/if]
+	protected $_table_name = '[entityOrView.tableName/]';
 
-[/if]
-[if (service.keyName() <> 'id')]
-	protected $_primary_key = '[service.keyName()/]';
+[if (entityOrView.oclIsTypeOf(Entity))]
+	[if (entityOrView.oclAsType(Entity).autoKeyName <> 'id')]
+	protected $_primary_key = '[entityOrView.oclAsType(Entity).autoKeyName/]';
 
+	[/if]
 [/if]
-[if (service.hasOwnedSingletonAssociations())]
+[if (entityOrView.hasOwnedSingletonAssociations())]
 	protected $_belongs_to = array(
-	[for (feature : ServiceAssociation | service.ownedSingletonAssociations())
+	[for (association : Association | entityOrView.ownedSingletonAssociations())
 			separator (',')]
-		'[feature.modelPropertyName()/]' => array(
-			'model' => '[feature.oppositeService.modelName/]',
-			'foreign_key' => '[feature.columnName()/]'
+		'[association.modelPropertyName()/]' => array(
+			'model' => '[association.modelName()/]',
+			'foreign_key' => '[association.columnName/]'
 		)
 	[/for]
 	);
 
 [/if]
-[if (service.hasInverseSingletonAssociations())]
+[if (entityOrView.hasInverseSingletonAssociations())]
 	protected $_has_one = array(
-	[for (feature : ServiceAssociation | service.inverseSingletonAssociations())
+	[for (association : Association | entityOrView.inverseSingletonAssociations())
 			separator (',')]
-		'[feature.modelPropertyName()/]' => array(
-			'model' => '[feature.oppositeService.modelName/]',
-			'foreign_key' => '[feature.oppositeColumnName()/]'
+		'[association.modelPropertyName()/]' => array(
+			'model' => '[association.modelName()/]',
+			'foreign_key' => '[association.oppositeColumnName()/]'
 		)
 	[/for]
 	);
 
 [/if]
-[if (service.hasCollectionAssociations())]
+[if (entityOrView.hasCollectionAssociations())]
 	protected $_has_many = array(
-	[for (feature : ServiceAssociation | service.collectionAssociations())
+	[for (association : Association | entityOrView.collectionAssociations())
 			separator (',')]
-		'[feature.modelPropertyName()/]' => array(
-			'model' => '[feature.oppositeService.modelName/]',
-		[if (feature.oclIsTypeOf(ServiceEntityAssociation))]
-			[if (not feature.oclAsType(ServiceEntityAssociation).feature.opposite.isSingleton())]
-			'through' => '[feature.oclAsType(ServiceEntityAssociation).feature.pivotTableName/]',
-			'far_key' => '[feature.columnName()/]',
-			[/if]
+		'[association.modelPropertyName()/]' => array(
+			'model' => '[association.modelName()/]',
+		[if (not association.isOppositeSingleton())]
+			'through' => '[association.oclAsType(EntityAssociation).pivotTableName/]',
+			'far_key' => '[association.columnName/]',
 		[/if]
-			'foreign_key' => '[feature.oppositeColumnName()/]'
+			'foreign_key' => '[association.oppositeColumnName()/]'
 		)
 	[/for]
 	);
 
 [/if]
-[if (not service.view and service.entities->size() > 1)]
-	[for (entity : Entity | service.entities->subOrderedSet(2, service.entities->size()))]
-	private $_component_[entity.instanceName()/];
-
-	[/for]
-[/if]
-[if (not service.view and service.entities->size() > 1 or service.hasDefaultValueFeatures())]
+[if (entityOrView.hasDefaultValueFeatures())]
 	public function __construct($id = NULL)
 	{
 	[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 		[if (service <> localAuthentication.authenticationService)]
-			[for (feature : ServiceEntityElement | service.defaultValueFeatures())]
-		$this->[feature.columnName()/] = [feature.defaultValue.generateCriteria()/];
+			[for (feature : Attribute | entityOrView.defaultValueFeatures())]
+		$this->[feature.columnName/] = [feature.defaultValue.generateCriteria()/];
 			[/for]
 		[/if]
 	[/let]
 		parent::__construct($id);
-	[if (not service.view and service.entities->size() > 1)]
-		[for (entity : Entity | service.entities->subOrderedSet(2, service.entities->size()))]
-		$this->_component_[entity.instanceName()/] = ORM::factory('[entity.modelName()/]');
-		[/for]
-	[/if]
 	}
 
 [/if]
-[if (not service.hasDefaultLabel())]
+[if (not entityOrView.hasDefaultLabel())]
 	public function defaultLabel()
 	{
 		return $this;
 	}
 
 [/if]
-[for (label : ModelLabel | service.displayLabels)]
-	public function [label.name/]()
+[for (label : ModelLabel | entityOrView.displayLabels)]
+	public function [label.name/]Label()
 	{
 		return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
-$this->[if (feature.oclIsTypeOf(ModelLabelElement))]
-[feature.oclAsType(ModelLabelElement).serviceFeature.modelPropertyName()/][else]
+$this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
+[feature.oclAsType(ModelLabelAttribute).attribute.modelPropertyName()/][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
-[association.serviceFeature.modelPropertyName()/]->[if (association.dynamicLabel.oclIsUndefined())]defaultLabel()[else][association.dynamicLabel.name/]()[/if][/let]
+[association.association.modelPropertyName()/]->[if (association.dynamicLabel.oclIsUndefined())]default[else][association.dynamicLabel.name/][/if]Label()[/let]
 [/if][/for]);
 	}
 
 [/for]
-[if (not service.view and service.hasAttributesOrSingletons())]
+[if (service.hasAttributesOrSingletons())]
 	public function filters()
 	{
 		return array(
 [for (feature : ServiceFeature | service.attributesAndSingletons())]
-			'[feature.columnName()/]' => array(
+			'[feature.modelPropertyName()/]' => array(
 	[if (feature.hasForcedValue())]
-	[let genEntityFeature : ServiceEntityFeature = feature.oclAsType(ServiceEntityFeature)]
+	[let genEntityFeature : ServiceFeature = feature.oclAsType(ServiceFeature)]
 				array(function($value) {
 					return [genEntityFeature.forcedValue.generateCriteria()/];
 				})
 	[/let]
-	[elseif (feature.oclIsTypeOf(ServiceEntityAssociation))]
+	[elseif (feature.oclIsTypeOf(ServiceAssociation))]
 				array(function($value) {
 					return empty($value) ? NULL : $value;
 				})
@@ -137,8 +121,8 @@ $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 		[if (feature.isEncrypted())]
 				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
 		[/if]
-		[if (feature.oclIsTypeOf(ServiceEntityElement))]
-			[if (feature.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonDate))]
+		[if (feature.oclIsTypeOf(ServiceAttribute))]
+			[if (feature.oclAsType(ServiceAttribute).attribute.oclIsTypeOf(SingletonDate))]
 				array('date'),
 				array(function($value) {
 					return empty($value) ? NULL : $value;
@@ -152,7 +136,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 	}
 
 [/if]
-[if (service.hasValidatedFeatures())]
+[if (entityOrView.hasValidatedFeatures())]
 [let userService : Service
 	= if authentication.oclIsUndefined() then
 			null
@@ -188,8 +172,8 @@ $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 	[if (service = userService)]
 		if ($this->validation_required(NULL)) 
 			return array(
-		[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-				'[feature.columnName()/]' => array(
+		[for (feature : Feature | entityOrView.validatedFeatures())]
+				'[feature.columnName/]' => array(
 			[if (feature.isRequired())]
 					array('not_empty'),
 			[/if]
@@ -201,8 +185,8 @@ $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 	[else]
 		[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->isEmpty())]
 		return array(
-			[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-			'[feature.columnName()/]' => array(
+			[for (feature : Feature | entityOrView.validatedFeatures())]
+			'[feature.columnName/]' => array(
 				[if (feature.isRequired())]
 				array('not_empty'),
 				[/if]
@@ -211,8 +195,8 @@ $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 		);
 		[else]
 		$rules = array(
-			[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-			'[feature.columnName()/]' => array(
+			[for (feature : Feature | entityOrView.validatedFeatures())]
+			'[feature.columnName/]' => array(
 				[if (feature.isRequired())]
 				array('not_empty'),
 				[/if]
@@ -227,27 +211,27 @@ $this->[if (feature.oclIsTypeOf(ModelLabelElement))]
 	public function labels()
 	{
 		return array(
-	[for (feature : ServiceEntityFeature | service.validatedFeatures())]
-			'[feature.columnName()/]' => '[feature.displayLabel()/]',
+	[for (feature : Feature | entityOrView.validatedFeatures())]
+			'[feature.columnName/]' => '[feature.displayLabel/]',
 	[/for]
 		);
 	}
 
 [/let]
 [/if]
-[if (service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
-	[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+[if (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
+	[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 	protected $_[association.modelPropertyName()/]_changes = array();
 	[/for]
 [/if]
-[if (service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
+[if (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
 
 	public function values(array $values, array $expected = NULL)
 	{
 		parent::values($values, array_diff($expected, array([for
-(feature : ServiceEntityFeature | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))
-separator (', ')]'[feature.modelPropertyName()/]'[/for])));
-[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+(association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))
+separator (', ')]'[association.modelPropertyName()/]'[/for])));
+[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 
 		$this->_[association.modelPropertyName()/]_changes = array();
 		if (in_array('[association.modelPropertyName()/]', $expected)
@@ -301,7 +285,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	}
 
 [/if]
-[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton()))]
+[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton()))]
 	public function [association.modelPropertyName()/]_as_array()
 	{
 		if (!$this->loaded())
@@ -314,8 +298,8 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	}
 
 [/for]
-[for (feature : ServiceEntityFeature | service.resourceAttributes())]
-[let resource : SingletonResource = feature.oclAsType(ServiceEntityElement).feature.oclAsType(SingletonResource)]
+[for (feature : Feature | entityOrView.resourceAttributes())]
+[let resource : SingletonResource = feature.oclAsType(SingletonResource)]
 	private function _save_[feature.modelPropertyName()/]()
 	{
 		$validation = Validation::factory($_FILES);
@@ -343,7 +327,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (resource.uploadsWithinWebsite)]
 		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');
-		$this->[feature.columnName()/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
+		$this->[feature.columnName/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [else]
 		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
 [/if]
@@ -351,33 +335,33 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 
 [/let]
 [/for]
-[if (service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or service.hasResourceAttributes())]
+[if (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or entityOrView.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
 	{
-[if (service.hasResourceAttributes())]
+[if (entityOrView.hasResourceAttributes())]
 		if (!empty($_FILES))
-	[if (service.resourceAttributes()->size() > 1)]
+	[if (entityOrView.resourceAttributes()->size() > 1)]
 		{
 	[/if]
-	[for (feature : ServiceEntityFeature | service.resourceAttributes())]
+	[for (feature : SingletonResource | entityOrView.resourceAttributes())]
 			$this->_save_[feature.modelPropertyName()/]();
 	[/for]
-	[if (service.resourceAttributes()->size() > 1)]
+	[if (entityOrView.resourceAttributes()->size() > 1)]
 		}
 	[/if]
 [/if]
 		parent::save($validation);
-[for (association : ServiceEntityAssociation | service.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 
 		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
-	[if (not association.feature.opposite.isSingleton())]
+	[if (not association.isOppositeSingleton())]
 			if ($change['['/]'op'[']'/] == 'add')
 				$this->add('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
 			else
 				$this->remove('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
 	[else]
 		{
-			$opposite = ORM::factory('[association.oppositeService.modelName/]', $change['['/]'id'[']'/]);
+			$opposite = ORM::factory('[association.modelName()/]', $change['['/]'id'[']'/]);
 			if (!$opposite->loaded())
 				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'id'[']'/]));
 			else
@@ -449,7 +433,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	[if (service = localAuthentication.userService)]
 	public static function authenticated_user($authentication)
 	{
-		$user = ORM::factory('[service.modelName/]');
+		$user = ORM::factory('[service.modelName()/]');
 		$user->where('[localAuthentication.userAuthenticationKey.columnName()/]', '=', $authentication->email);
 		return $user->find();
 	}
@@ -457,7 +441,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 // this is something to do with registring
 	public function authentication_save()
 	{
-		[for (feature : ServiceFeature | service.features->select(f | f.isRequired()))]
+		[for (feature : Feature | entityOrView.features->select(f | f.isRequired()))]
 		if (!isset($this->[feature.modelPropertyName()/])) {
 			$this->[feature.modelPropertyName()/] = '';
 		}
@@ -472,7 +456,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	{
 		try
 		{
-			$login_attempt = ORM::factory('[service.modelName/]');
+			$login_attempt = ORM::factory('[service.modelName()/]');
 			$login_attempt->login_id = $login_id;
 			$login_attempt->ip_address = Request::$client_ip;
 			$login_attempt->time = date('Y-m-d H:i:s');
@@ -488,7 +472,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 
 	public static function attempts_exceeded($login_id, $maximum_attempts, $expiry_period)
 	{
-		$login_attempt = ORM::factory('[service.modelName/]');
+		$login_attempt = ORM::factory('[service.modelName()/]');
 		$login_attempt->where_open();
 		$login_attempt->where('login_id', '=', $login_id);
 		$login_attempt->or_where('ip_address', '=', Request::$client_ip);
@@ -503,7 +487,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	{
 		try
 		{
-			$login_attempt = ORM::factory('[service.modelName/]');
+			$login_attempt = ORM::factory('[service.modelName()/]');
 			$login_attempt->where_open();
 			$login_attempt->where('login_id', '=', $login_id);
 			$login_attempt->where('ip_address', '=', Request::$client_ip);
@@ -532,7 +516,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[service.modelName/]');
+			$autologin = ORM::factory('[service.modelName()/]');
 			$autologin->key = $key;
 			$autologin->user_agent = $user_agent;
 			$autologin->last_ip_address = Request::$client_ip;
@@ -551,7 +535,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 				Log::instance()->add(Log::ERROR, 'Validation errors :errors', array(
 					':errors' => print_r($e->errors(''), TRUE)
 				));
-			return ORM::factory('[service.modelName/]');
+			return ORM::factory('[service.modelName()/]');
 		}
 	}
 
@@ -565,7 +549,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	
 			$login_id = $data['['/]'user_id'[']'/];
 			$key = $data['['/]'key'[']'/];
-			$autologin = ORM::factory('[service.modelName/]');
+			$autologin = ORM::factory('[service.modelName()/]');
 			$autologin->where('key', '=', $key)
 				->where('user_agent', '=', $user_agent)
 				// checking time means that reducing lifetime has immediate effect
@@ -604,7 +588,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[service.modelName/]');
+			$autologin = ORM::factory('[service.modelName()/]');
 			$autologin->join('[localAuthentication.authenticationService.tableName()/]')
 				->on('authentication_id', '=', '[localAuthentication.authenticationService.tableName()/].[localAuthentication.authenticationService.keyName()/]')
 				->where('[localAuthentication.authenticationService.tableName()/].[localAuthentication.loginUnit.loginIdField.modelPropertyName()/]', '=', $login_id);
@@ -624,7 +608,7 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 	{
 		try
 		{
-			$autologin = ORM::factory('[service.modelName/]');
+			$autologin = ORM::factory('[service.modelName()/]');
 			$autologin->where(new Database_Expression('UNIX_TIMESTAMP(last_login)'), '<', time() - $lifetime);
 			foreach ($autologin->find_all() AS $token)
 				$token->delete();
@@ -642,5 +626,17 @@ separator (', ')]'[feature.modelPropertyName()/]'[/for])));
 [/let]
 [/if]
 }
+[/let]
 [/file]
 [/template]
+
+
+[query public attributesAndSingletons(service : Service) : Sequence(ServiceFeature)
+	= service.features
+		->select(f | f.oclIsTypeOf(ServiceAttribute) or f.isSingleton())->asSequence()
+/]
+
+[query public hasAttributesOrSingletons(service : Service) : Boolean
+	= service.attributesAndSingletons()->notEmpty()
+/]
+

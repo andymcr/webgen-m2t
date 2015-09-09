@@ -47,7 +47,7 @@ $this->[path.unit.instanceName()/]->[path.unit.service.keyName()/]
 [/template]
 
 [template public featureReference(feature : ServiceFeature) post(trim())]
-'[feature.includedBy.selectName()/].[feature.modelPropertyName()/]'
+'[feature.partOf.selectName()/].[feature.modelPropertyName()/]'
 [/template]
 
 [template public doctrineExpression(criteria : Expression)

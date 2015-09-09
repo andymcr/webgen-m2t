@@ -19,7 +19,7 @@
 /]
 
 
-[query public enumerationTypes(model : WafModel) : Sequence(EnumerationType)
+[comment query public enumerationTypes(model : WafModel) : Sequence(EnumerationType)
 	= model.persistence.enumerationTypes()
 /]
 
@@ -81,8 +81,8 @@
 
 
 [query public hasDefaultValue(feature : IncludedFeature) : Boolean
-	= if feature.oclIsKindOf(IncludedElement) then
-			not feature.oclAsType(IncludedElement).defaultValue.oclIsUndefined()
+	= if feature.oclIsKindOf(IncludedAttribute) then
+			not feature.oclAsType(IncludedAttribute).defaultValue.oclIsUndefined()
 		else
 			false
 		endif
@@ -97,207 +97,45 @@
 /]
 
 
-[query public associations(service : Service) : Sequence(ServiceAssociation)
-	= service.features
-		->select(f | f.oclIsKindOf(ServiceAssociation))
-		.oclAsType(ServiceAssociation)
+[query public firstEntity(service : Service) : Entity
+	= service.encapsulates->select(e | e.oclIsTypeOf(Entity)).oclAsType(Entity)->first()
 /]
 
-[query public attributes(service : Service) : Sequence(ServiceEntityElement)
-	= service.features
-		->select(f | f.oclIsTypeOf(ServiceEntityElement)).oclAsType(ServiceEntityElement)
-/]
-
-[query public attributesAndSingletons(service : Service) : Sequence(ServiceFeature)
-	= service.features
-		->select(f | f.oclIsTypeOf(ServiceEntityElement) or f.isSingleton()).oclAsType(ServiceFeature)
-/]
-
-[query public collectionAssociations(service : Service) : Sequence(ServiceAssociation)
-	= service.associations()->select(f | not f.isSingleton())
-/]
-
-[query public defaultValueFeatures(service : Service) : Sequence(ServiceEntityElement)
-	= service.features->select(f | f.hasDefaultValue()).oclAsType(ServiceEntityFeature)
-/]
-
-[query public forcedValueFeatures(service : Service) : Sequence(ServiceEntityFeature)
-	= service.features->select(f | f.hasForcedValue()).oclAsType(ServiceEntityFeature)
-/]
-
-[query public hasAssociations(service : Service) : Boolean
-	= service.associations()->notEmpty()
-/]
-
-[query public hasAttributes(service : Service) : Boolean
-	= service.attributes()->notEmpty()
-/]
-
-[query public hasAttributesOrSingletons(service : Service) : Boolean
-	= service.attributesAndSingletons()->notEmpty()
-/]
-
-[query public hasCollectionAssociations(service : Service) : Boolean
-	= service.collectionAssociations()->notEmpty()
-/]
-
-[query public hasDefaultLabel(service : Service) : Boolean
-	= service.displayLabels->exists(l | l.name = 'defaultLabel')
-/]
-
-[query public hasDefaultValueFeatures(service : Service) : Boolean
-	= service.defaultValueFeatures()->notEmpty()
-/]
-
-[query public hasExplicitTableName(service : Service) : Boolean
-	= if not service.view then
-			let defaultTableName : String = service.entities->first().tableName.toLower()
-				in service.modelName.toLower() <> defaultTableName
-		else
-			let defaultViewName : String = service.name.toLower()
-				in service.modelName.toLower() <> defaultViewName
-		endif
-/]
-
-[query public hasForcedValueFeatures(service : Service) : Boolean
-	= service.forcedValueFeatures()->notEmpty()
-/]
-
-[query public hasInputAssociations(service : Service) : Boolean
-	= service.inputAssociations()->notEmpty()
-/]
-
-[query public hasInputFeatures(service : Service) : Boolean
-	= service.inputFeatures()->notEmpty()
-/]
-
-[query public hasInputInverseAssociations(service : Service) : Boolean
-	= service.inputInverseAssociations()->notEmpty()
-/]
-
-[query public hasInverseSingletonAssociations(service : Service) : Boolean
-	= service.inverseSingletonAssociations()->notEmpty()
-/]
-
-[query public hasOwnedSingletonAssociations(service : Service) : Boolean
-	= service.ownedSingletonAssociations()->notEmpty()
-/]
-
-[query public hasResourceAttributes(service : Service) : Boolean
-	= service.resourceAttributes()->notEmpty()
-/]
-
-[query public hasValidatedFeatures(service : Service) : Boolean
-	= service.validatedFeatures()->notEmpty()
-/]
-
-[query public inputAssociations(service : Service) : Sequence(ServiceEntityAssociation)
-	= service.associations()
-		->select(f | f.isInput() and f.oclIsTypeOf(ServiceEntityAssociation))
-/]
-
-[query public inputFeatures(service : Service) : Sequence(ServiceEntityFeature)
-	= service.features->select(f | f.isInput()).oclAsType(ServiceEntityFeature)
-/]
-
-[query public inputInverseAssociations(service : Service) : Sequence(ServiceEntityAssociation)
-	= service.inputAssociations()->select(f | not f.isOwningEnd())
-/]
-
-[query public inverseSingletonAssociations(service : Service) : Sequence(ServiceAssociation)
-	= service.associations()->select(
-		a | a.cardinality <> Cardinality::Many and not a.isOwningEnd())
-/]
-
+[comment for Kohana/]
 [query public keyName(service : Service) : String
-	= service.entities->first().autoKeyName
+	= service.firstEntity().autoKeyName
 /]
 
-[query public ownedSingletonAssociations(service : Service) : Sequence(ServiceAssociation)
-	= service.associations()->select(
-		a | a.cardinality <> Cardinality::Many and a.isOwningEnd())
-/]
-
-[query public resourceAttributes(service : Service) : Sequence(ServiceEntityElement)
-	= service.features->select(f | f.isResourceAttribute()).oclAsType(ServiceEntityElement)
-/]
-
+[comment for Kohana/]
 [query public tableName(service : Service) : String
-	= service.entities->first().tableName
+	= service.firstEntity().tableName
 /]
 
-[query public validatedFeatures(service : Service) : Sequence(ServiceEntityFeature)
-	= service.features->select(f | f.isValidated()).oclAsType(ServiceEntityFeature)
-/]
-
-[query public viewColumns(service : Service) : OrderedSet(ServiceFeature)
-	= service.features->select(f | f.hasColumn())
-/]
-
-
-[query public baseColumnName(feature : ServiceFeature) : String
-	= if feature.oclIsKindOf(ServiceEntityFeature) then
-			if feature.oclIsTypeOf(ServiceEntityElement) then
-				feature.oclAsType(ServiceEntityElement).feature.columnName
-			else 
-				feature.oclAsType(ServiceEntityAssociation).feature.columnName
-			endif
-		else
-			'unhandledFeature'
-		endif
-/]
 
 [query public columnName(feature : ServiceFeature) : String
-	= if feature.oclIsKindOf(ServiceEntityFeature) then
-			let entityFeature : ServiceEntityFeature = feature.oclAsType(ServiceEntityFeature)
-				in if feature.includedBy.view and not entityFeature.viewColumnName.oclIsUndefined() then
-						entityFeature.viewColumnName
-					else
-						feature.baseColumnName()
-					endif
-		else
-			'unhandledFeature'
-		endif
-/]
-
-[query public displayLabel(feature : ServiceFeature) : String
-	= if feature.oclIsKindOf(IncludedFeature) then
-			feature.oclAsType(IncludedFeature).displayLabel
-		else
-			'unhandledFeature'
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.columnName
+		else 
+			feature.oclAsType(ServiceAssociation).association.columnName
 		endif
 /]
 
 [query public formName(feature : ServiceFeature) : String
-	= if feature.oclIsKindOf(ServiceEntityFeature) then
-			if feature.oclIsTypeOf(ServiceEntityElement) then
-				feature.oclAsType(ServiceEntityElement).feature.columnName
-			else let association : ServiceEntityAssociation
-				= feature.oclAsType(ServiceEntityAssociation)
-				in if association.isSingleton() and association.isOwningEnd() then
-						association.feature.columnName
-					else
-						association.modelPropertyName()
-					endif
-			endif
-		else
-			'unhandledFeature'
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.columnName
+		else let association : ServiceAssociation
+			= feature.oclAsType(ServiceAssociation)
+			in if association.isSingleton() and association.isOwningEnd() then
+					association.association.columnName
+				else
+					association.modelPropertyName()
+				endif
 		endif
 /]
 
-[query public hasColumn(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			feature.oclAsType(ServiceEntityElement).feature.hasColumn()
-		else if feature.oclIsKindOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).feature.hasColumn()
-		else
-			false
-		endif endif
-/]
-
 [query public hasDefaultValue(feature : ServiceFeature) : Boolean
-	= if feature.oclIsKindOf(IncludedElement) then
-			feature.oclAsType(IncludedElement).hasDefaultValue()
+	= if feature.oclIsKindOf(IncludedAttribute) then
+			feature.oclAsType(IncludedAttribute).hasDefaultValue()
 		else
 			false
 		endif
@@ -312,91 +150,91 @@
 /]
 
 [query public isBooleanDataType(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceEntityElement) then
+	= if not feature.oclIsTypeOf(ServiceAttribute) then
 			false
-		else let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
-			in if not element.feature.oclIsTypeOf(SingletonElement) then
+		else let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
+			in if not attribute.attribute.oclIsTypeOf(SingletonElement) then
 					false
-				else let singleton : SingletonElement = element.feature.oclAsType(SingletonElement)
+				else let singleton : SingletonElement = attribute.attribute.oclAsType(SingletonElement)
 					in singleton.dataType.name = 'Boolean'
 				endif
 		endif
 /]
 
 [query public isCaseInsensitive(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			feature.oclAsType(ServiceEntityElement).caseInsensitive
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).caseInsensitive
 		else
 			false
 		endif
 /]
 
 [query public isDataTypeSingleton(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceEntityElement) then
+	= if not feature.oclIsTypeOf(ServiceAttribute) then
 			false
 		else
-			let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
-			in if not element.feature.oclIsTypeOf(SingletonElement) then
+			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
+			in if not attribute.attribute.oclIsTypeOf(SingletonElement) then
 					false
 				else
-					let singleton : SingletonElement = element.feature.oclAsType(SingletonElement)
+					let singleton : SingletonElement = attribute.attribute.oclAsType(SingletonElement)
 					in singleton.dataType.oclIsTypeOf(DataType)
 				endif
 		endif
 /]
 
 [query public isDateSingleton(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceEntityElement) then
+	= if not feature.oclIsTypeOf(ServiceAttribute) then
 			false
 		else
-			let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
-			in element.feature.oclIsTypeOf(SingletonDate)
+			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
+			in attribute.attribute.oclIsTypeOf(SingletonDate)
 		endif
 /]
 
 [query public isEncrypted(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			feature.oclAsType(ServiceEntityElement).encrypt
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).encrypt
 		else
 			false
 		endif
 /]
 
 [query public isEnumerationTypeSingleton(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceEntityElement) then
+	= if not feature.oclIsTypeOf(ServiceAttribute) then
 			false
 		else
-			let serviceFeature : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
-			in if not serviceFeature.feature.oclIsTypeOf(SingletonElement) then
+			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
+			in if not attribute.attribute.oclIsTypeOf(SingletonElement) then
 					false
 				else
-					let element : SingletonElement = serviceFeature.feature.oclAsType(SingletonElement)
+					let element : SingletonElement = attribute.attribute.oclAsType(SingletonElement)
 					in element.dataType.oclIsTypeOf(EnumerationType)
 				endif
 		endif
 /]
 
 [query public isInput(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			feature.oclAsType(ServiceEntityElement).feature.isInput()
-		else if feature.oclIsTypeOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).feature.isInput()
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.isInput()
+		else if feature.oclIsTypeOf(ServiceAssociation) then
+			feature.oclAsType(ServiceAssociation).association.isInput()
 		else
 			false
 		endif endif
 /]
 
 [query public isLocation(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			feature.oclAsType(ServiceEntityElement).feature.oclIsTypeOf(SingletonLocation)
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.oclIsTypeOf(SingletonLocation)
 		else
 			false
 		endif
 /]
 
 [query public isOwningEnd(feature : ServiceAssociation) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).feature.owningEnd
+	= if association.oclIsTypeOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).owningEnd
 		else
 			false
 		endif
@@ -406,23 +244,15 @@
 	= feature.cardinality = Cardinality::Required
 /]
 
-[query public isResourceAttribute(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			feature.oclAsType(ServiceEntityElement).feature.oclIsKindOf(SingletonResource)
-		else
-			false
-		endif
-/]
-
 [query public isSingleton(feature : ServiceFeature) : Boolean
 	= feature.cardinality <> Cardinality::Many
 /]
 
 [query public isUnique(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceEntityElement) then
-			let element : ServiceEntityElement = feature.oclAsType(ServiceEntityElement)
-			in if element.feature.oclIsKindOf(SingletonAttribute) then
-					element.feature.oclAsType(SingletonAttribute).unique
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
+			in if attribute.attribute.oclIsKindOf(SingletonAttribute) then
+					attribute.attribute.oclAsType(SingletonAttribute).unique
 				else
 					false
 				endif
@@ -436,42 +266,11 @@
 /]
 
 [query public modelPropertyName(feature : ServiceFeature) : String
-	= if feature.oclIsKindOf(ServiceEntityElement) then
+	= if feature.oclIsKindOf(ServiceAttribute) then
 			feature.columnName()
-		else if feature.oclIsKindOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).name
 		else
-			feature.oclAsType(ServiceViewAssociation).name
-		endif endif
-/]
-
-[query public oppositeColumnName(feature : ServiceFeature) : String
-	= let name : String =
-		if feature.oclIsTypeOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).feature.oppositeColumnName()
-		else if feature.oclIsTypeOf(ServiceViewAssociation) then
-			feature.oclAsType(ServiceViewAssociation).oppositeFeature.columnName()
-		else
-			'unhandledFeature'
-		endif endif
-	in name
-/]
-
-[query public oppositeModelPropertyName(feature : ServiceFeature) : String
-	= let name : String =
-		if feature.oclIsTypeOf(ServiceEntityAssociation) then
-			feature.oclAsType(ServiceEntityAssociation).oppositeFeature.modelPropertyName()
-		else if feature.oclIsTypeOf(ServiceViewAssociation) then
-			feature.oclAsType(ServiceViewAssociation).oppositeFeature.columnName()
-		else
-			'unhandledFeature'
-		endif endif
-	in name
-/]
-
-
-[query public displayLabel(action : UnitSupportAction) : String
-	= action.displayLabel
+			feature.name
+		endif
 /]
 
 
@@ -489,10 +288,6 @@
 
 [query public dataSupportActions(page : Page) : Sequence(UnitSupportAction)
 	= page.dynamicUnits()->select(u | u.oclIsKindOf(DataUnit))->collect(u | u.supportActions)
-/]
-
-[query public displayLabel(page : Page) : String
-	= page.displayLabel
 /]
 
 [query public dynamicUnits(page : Page) : Sequence(DynamicUnit)
@@ -828,12 +623,6 @@
 	= unit.pageDisplayedOn().isAuthenticated()
 /]
 
-[ comment if unit.oclIsKindOf(DataUnit) then
-			unit.oclAsType(DataUnit).selection.oclIsUndefined()
-		else
-			unit.oclIsKindOf(EditUnit)
-		endif
-	/]
 [query public isParameterised(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(SelectTarget) then
 			unit.oclAsType(SelectTarget).selectionFeatures->notEmpty()
@@ -1209,8 +998,8 @@
 [query public isResourceSingleton(field : UnitField) : Boolean
 	= if not field.oclIsTypeOf(UnitElement) then
 			false
-		else let element : UnitElement = field.oclAsType(UnitElement)
-			in element.serviceFeature.feature.oclIsKindOf(SingletonResource)
+		else let attribute : UnitElement = field.oclAsType(UnitElement)
+			in attribute.serviceFeature.attribute.oclIsKindOf(SingletonResource)
 		endif
 /]
 
@@ -1218,7 +1007,7 @@
 	= if not feature.oclIsTypeOf(UnitElement) then
 			false
 		else
-			feature.oclAsType(UnitElement).serviceFeature.feature.oclIsKindOf(SingletonResource)
+			feature.oclAsType(UnitElement).serviceFeature.attribute.oclIsKindOf(SingletonResource)
 		endif
 /]
 
