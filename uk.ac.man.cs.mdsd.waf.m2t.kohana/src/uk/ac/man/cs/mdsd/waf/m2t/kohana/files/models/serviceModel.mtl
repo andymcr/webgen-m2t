@@ -24,19 +24,19 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 
 	[/if]
 [/if]
-[if (entityOrView.hasOwnedSingletonAssociations())]
+[if (false)] [comment (entityOrView.hasOwnedSingletonAssociations())/]
 	protected $_belongs_to = array(
 	[for (association : Association | entityOrView.ownedSingletonAssociations())
 			separator (',')]
 		'[association.modelPropertyName()/]' => array(
 			'model' => '[association.modelName()/]',
-			'foreign_key' => '[association.columnName/]'
+			'foreign_key' => '[association.columnName()/]'
 		)
 	[/for]
 	);
 
 [/if]
-[if (entityOrView.hasInverseSingletonAssociations())]
+[if (false)] [comment (entityOrView.hasInverseSingletonAssociations())/]
 	protected $_has_one = array(
 	[for (association : Association | entityOrView.inverseSingletonAssociations())
 			separator (',')]
@@ -48,7 +48,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	);
 
 [/if]
-[if (entityOrView.hasCollectionAssociations())]
+[if (false)] [comment (entityOrView.hasCollectionAssociations())/]
 	protected $_has_many = array(
 	[for (association : Association | entityOrView.collectionAssociations())
 			separator (',')]
@@ -56,7 +56,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 			'model' => '[association.modelName()/]',
 		[if (not association.isOppositeSingleton())]
 			'through' => '[association.oclAsType(EntityAssociation).pivotTableName/]',
-			'far_key' => '[association.columnName/]',
+			'far_key' => '[association.columnName()/]',
 		[/if]
 			'foreign_key' => '[association.oppositeColumnName()/]'
 		)
@@ -64,17 +64,18 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	);
 
 [/if]
-[if (entityOrView.hasDefaultValueFeatures())]
+[if (false)] [comment (entityOrView.hasDefaultValueFeatures())/]
 	public function __construct($id = NULL)
 	{
+		parent::__construct($id);
 	[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 		[if (service <> localAuthentication.authenticationService)]
 			[for (feature : Attribute | entityOrView.defaultValueFeatures())]
-		$this->[feature.columnName/] = [feature.defaultValue.generateCriteria()/];
+		if (empty($this->[feature.columnName()/])) 
+            $this->[feature.columnName()/] = [feature.defaultValue.generateCriteria()/];
 			[/for]
 		[/if]
 	[/let]
-		parent::__construct($id);
 	}
 
 [/if]
@@ -97,19 +98,13 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	}
 
 [/for]
-[if (service.hasAttributesOrSingletons())]
+[if (false)] [comment entityOrView.hasAttributesOrSingletons())/]
 	public function filters()
 	{
 		return array(
-[for (feature : ServiceFeature | service.attributesAndSingletons())]
-			'[feature.modelPropertyName()/]' => array(
-	[if (feature.hasForcedValue())]
-	[let genEntityFeature : ServiceFeature = feature.oclAsType(ServiceFeature)]
-				array(function($value) {
-					return [genEntityFeature.forcedValue.generateCriteria()/];
-				})
-	[/let]
-	[elseif (feature.oclIsTypeOf(ServiceAssociation))]
+[for (feature : Feature | entityOrView.attributesAndSingletons())]
+			'[feature.columnName()/]' => array(
+	[if (feature.oclIsKindOf(Association))]
 				array(function($value) {
 					return empty($value) ? NULL : $value;
 				})
@@ -118,16 +113,14 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 		[if (feature.isCaseInsensitive())]
 				array('strtolower'),
 		[/if]
-		[if (feature.isEncrypted())]
+		[comment  if (feature.isEncrypted())
 				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-		[/if]
-		[if (feature.oclIsTypeOf(ServiceAttribute))]
-			[if (feature.oclAsType(ServiceAttribute).attribute.oclIsTypeOf(SingletonDate))]
+		if /]
+		[if (feature.oclIsTypeOf(SingletonDate))]
 				array('date'),
 				array(function($value) {
 					return empty($value) ? NULL : $value;
 				})
-			[/if]
 		[/if]
 	[/if]
 			),
@@ -136,7 +129,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	}
 
 [/if]
-[if (entityOrView.hasValidatedFeatures())]
+[if (false)] [comment (entityOrView.hasValidatedFeatures())/]
 [let userService : Service
 	= if authentication.oclIsUndefined() then
 			null
@@ -173,7 +166,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 		if ($this->validation_required(NULL)) 
 			return array(
 		[for (feature : Feature | entityOrView.validatedFeatures())]
-				'[feature.columnName/]' => array(
+				'[feature.columnName()/]' => array(
 			[if (feature.isRequired())]
 					array('not_empty'),
 			[/if]
@@ -186,7 +179,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 		[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->isEmpty())]
 		return array(
 			[for (feature : Feature | entityOrView.validatedFeatures())]
-			'[feature.columnName/]' => array(
+			'[feature.columnName()/]' => array(
 				[if (feature.isRequired())]
 				array('not_empty'),
 				[/if]
@@ -196,7 +189,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 		[else]
 		$rules = array(
 			[for (feature : Feature | entityOrView.validatedFeatures())]
-			'[feature.columnName/]' => array(
+			'[feature.columnName()/]' => array(
 				[if (feature.isRequired())]
 				array('not_empty'),
 				[/if]
@@ -212,19 +205,19 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	{
 		return array(
 	[for (feature : Feature | entityOrView.validatedFeatures())]
-			'[feature.columnName/]' => '[feature.displayLabel/]',
+			'[feature.columnName()/]' => '[feature.displayLabel/]',
 	[/for]
 		);
 	}
 
 [/let]
 [/if]
-[if (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
+[if (false)] [comment (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())/]
 	[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 	protected $_[association.modelPropertyName()/]_changes = array();
 	[/for]
 [/if]
-[if (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
+[if (false)] [comment (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())/]
 
 	public function values(array $values, array $expected = NULL)
 	{
@@ -327,7 +320,7 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (resource.uploadsWithinWebsite)]
 		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');
-		$this->[feature.columnName/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
+		$this->[feature.columnName()/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [else]
 		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
 [/if]
@@ -379,7 +372,8 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 
 [/if]
 [for (selection : Selection | service.selections)]
-	public function [selection.instanceName()/]([if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
+	public function [selection.instanceName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if][if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 	{
 	[for (association : ServiceAssociation | selection.joins)]
 		$this->join('')->on([if (association.isOwningEnd())]
@@ -404,7 +398,8 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 	}
 
 	[if (selection.limit <> 1)]
-	public function [selection.countName()/]()
+	public function [selection.countName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for])
 	{
 		[if (not selection.filter.oclIsUndefined())]
 		[selection.filter.generateCriteria()/]
@@ -629,14 +624,3 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 [/let]
 [/file]
 [/template]
-
-
-[query public attributesAndSingletons(service : Service) : Sequence(ServiceFeature)
-	= service.features
-		->select(f | f.oclIsTypeOf(ServiceAttribute) or f.isSingleton())->asSequence()
-/]
-
-[query public hasAttributesOrSingletons(service : Service) : Boolean
-	= service.attributesAndSingletons()->notEmpty()
-/]
-
