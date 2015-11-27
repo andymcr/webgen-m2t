@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -21,7 +22,7 @@ if (!Auth::instance()->logged_in())
 	Session::instance()->set('login_referrer', $this->request->uri());
 	$this->redirect(Route::get('[if (page.partOf.authentication.oclIsTypeOf(CasAuthentication))]
 TBC[elseif (page.partOf.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[page.partOf.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.controllerName()/][else]
+[page.partOf.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.routeName()/][else]
 TBC[/if]')->uri());
 }
 [/let]
@@ -50,10 +51,12 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(I
 
 
 [template public generateForcedFeatureValues(unit : DynamicUnit) post(trim())]
-[for (feature : UnitField | unit.forcedValueFeatures())]
-[let value : Expression = feature.oclAsType(UnitFeature).forcedValue]
-$this->[unit.instanceName()/]->[feature.formName()/] = [value.generateCriteria()/];
-[/let]
+[for (feature : IncludedFeature | unit.forcedValueFeatures())]
+	[if (feature.oclIsTypeOf(IncludedAttribute))]
+$this->[unit.instanceName()/]->[feature.oclAsType(IncludedAttribute).attribute.columnName()/] = [feature.forcedValue.generateCriteria()/];
+	[else]
+$this->[unit.instanceName()/]->[feature.oclAsType(IncludedAssociation).association.columnName()/] = [feature.forcedValue.generateCriteria()/];
+	[/if]
 [/for]
 [/template]
 
@@ -116,7 +119,7 @@ public function action_[deleteAction.actionName()/]()
 [if (deleteAction.destination.oclIsUndefined())]
 		[deleteAction.generateRemoveParameter(action.parameterName())/]
 [else]
-		$this->redirect(Route::get('[deleteAction.destination.controllerName()/]')->uri());
+		$this->redirect(Route::get('[deleteAction.destination.routeName()/]')->uri());
 [/if]
 	}
 	else

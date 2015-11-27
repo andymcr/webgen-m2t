@@ -24,7 +24,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 
 	[/if]
 [/if]
-[if (false)] [comment (entityOrView.hasOwnedSingletonAssociations())/]
+[if (entityOrView.hasOwnedSingletonAssociations())]
 	protected $_belongs_to = array(
 	[for (association : Association | entityOrView.ownedSingletonAssociations())
 			separator (',')]
@@ -36,7 +36,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	);
 
 [/if]
-[if (false)] [comment (entityOrView.hasInverseSingletonAssociations())/]
+[if (entityOrView.hasInverseSingletonAssociations())]
 	protected $_has_one = array(
 	[for (association : Association | entityOrView.inverseSingletonAssociations())
 			separator (',')]
@@ -48,14 +48,14 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	);
 
 [/if]
-[if (false)] [comment (entityOrView.hasCollectionAssociations())/]
+[if (entityOrView.hasCollectionAssociations())]
 	protected $_has_many = array(
 	[for (association : Association | entityOrView.collectionAssociations())
 			separator (',')]
 		'[association.modelPropertyName()/]' => array(
 			'model' => '[association.modelName()/]',
 		[if (not association.isOppositeSingleton())]
-			'through' => '[association.oclAsType(EntityAssociation).pivotTableName/]',
+			'through' => '[association.pivotTableName()/]',
 			'far_key' => '[association.columnName()/]',
 		[/if]
 			'foreign_key' => '[association.oppositeColumnName()/]'
@@ -64,7 +64,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	);
 
 [/if]
-[if (false)] [comment (entityOrView.hasDefaultValueFeatures())/]
+[if (entityOrView.hasDefaultValueFeatures())]
 	public function __construct($id = NULL)
 	{
 		parent::__construct($id);
@@ -86,7 +86,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	}
 
 [/if]
-[for (label : ModelLabel | entityOrView.displayLabels)]
+[for (label : ModelLabel | entityOrView.labels)]
 	public function [label.name/]Label()
 	{
 		return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
@@ -98,7 +98,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	}
 
 [/for]
-[if (false)] [comment entityOrView.hasAttributesOrSingletons())/]
+[if (entityOrView.hasAttributesOrSingletons())]
 	public function filters()
 	{
 		return array(
@@ -113,9 +113,9 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 		[if (feature.isCaseInsensitive())]
 				array('strtolower'),
 		[/if]
-		[comment  if (feature.isEncrypted())
+		[if (feature.isEncrypted())]
 				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-		if /]
+		[/if]
 		[if (feature.oclIsTypeOf(SingletonDate))]
 				array('date'),
 				array(function($value) {
@@ -129,7 +129,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	}
 
 [/if]
-[if (false)] [comment (entityOrView.hasValidatedFeatures())/]
+[if (entityOrView.hasValidatedFeatures())]
 [let userService : Service
 	= if authentication.oclIsUndefined() then
 			null
@@ -212,19 +212,19 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 
 [/let]
 [/if]
-[if (false)] [comment (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())/]
-	[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+[if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
+	[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 	protected $_[association.modelPropertyName()/]_changes = array();
 	[/for]
 [/if]
-[if (false)] [comment (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())/]
+[if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
 
 	public function values(array $values, array $expected = NULL)
 	{
 		parent::values($values, array_diff($expected, array([for
-(association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))
+(association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))
 separator (', ')]'[association.modelPropertyName()/]'[/for])));
-[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 
 		$this->_[association.modelPropertyName()/]_changes = array();
 		if (in_array('[association.modelPropertyName()/]', $expected)
@@ -278,7 +278,7 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 	}
 
 [/if]
-[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton()))]
+[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton()))]
 	public function [association.modelPropertyName()/]_as_array()
 	{
 		if (!$this->loaded())
@@ -297,7 +297,7 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 	{
 		$validation = Validation::factory($_FILES);
 		$validation
-			->rules('[feature.modelPropertyName()/]', array(
+			->rules('[feature.columnName()/]', array(
 [if (feature.isRequired())]
 				array('not_empty'),
 				array('Upload::not_empty'),
@@ -311,15 +311,15 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 		if ($validation->check() === FALSE)
 			throw new ORM_Validation_Exception($this->errors_filename(), $validation);
 
-		if ($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
+		if ($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
 			return;
 
 		if (!empty($this->[resource.columnName/])) 
 			unlink($this->[resource.columnName/]);
-		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
-		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
+		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.columnName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
+		$extension = pathinfo($_FILES['['/]'[feature.columnName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (resource.uploadsWithinWebsite)]
-		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');
+		$filepath = Upload::save($_FILES['['/]'[feature.columnName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');
 		$this->[feature.columnName()/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [else]
 		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
@@ -328,7 +328,7 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 
 [/let]
 [/for]
-[if (entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or entityOrView.hasResourceAttributes())]
+[if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or entityOrView.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
 	{
 [if (entityOrView.hasResourceAttributes())]
@@ -344,7 +344,7 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 	[/if]
 [/if]
 		parent::save($validation);
-[for (association : Association | entityOrView.inputAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 
 		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
 	[if (not association.isOppositeSingleton())]

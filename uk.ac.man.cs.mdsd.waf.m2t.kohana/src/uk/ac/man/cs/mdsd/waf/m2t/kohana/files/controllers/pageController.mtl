@@ -2,6 +2,7 @@
 [module pageController(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::authenticationMethods/]
@@ -72,7 +73,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [for (unit : ContentUnit | page.units)]
 			$this->[unit.templateInstanceName()/] = View::factory('[page.controllerName()/]/[unit.instanceName()/]');
 			$this->template->unitViews['['/][']'/] = $this->[unit.templateInstanceName()/];
-	[if (page.hasParameterisedUnits())]
+	[if (page.hasParameterisedUnitsKohana())]
 			$this->[unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameters);
 	[/if]
 	[if (not unit.oclIsTypeOf(StaticUnit))]

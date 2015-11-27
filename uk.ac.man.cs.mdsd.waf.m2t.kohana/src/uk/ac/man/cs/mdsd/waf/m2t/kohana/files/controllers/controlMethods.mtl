@@ -42,7 +42,7 @@ $this->[controlUnit.templateInstanceName()/]->bind('[association.optionsName()/]
 		unit.oclAsType(EditUnit).cancelDestination
 	endif]
 if ($this->request->post('cancel'))
-	$this->redirect(Route::get('[cancelDestination.controllerName()/]')->uri());
+	$this->redirect(Route::get('[cancelDestination.routeName()/]')->uri());
 [/let]
 [/template]
 

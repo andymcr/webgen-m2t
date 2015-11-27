@@ -15,7 +15,6 @@
 [template public generateUnitDisplay(unit : ContentUnit)
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
-$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
 [if (not indexUnit.defaultSelection.oclIsUndefined())]
 $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[indexUnit.defaultSelection.instanceName()/]([if (indexUnit.defaultPaginationSize > 0)]
 TRUE, max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.defaultPaginationSize/][/if]);
@@ -24,6 +23,7 @@ $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (indexU
 paginated(max($this->request->query('[unit.parameterName()/]'), 1), [indexUnit.defaultPaginationSize/])[else]
 find_all()[/if];
 [/if]
+$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
 [if (indexUnit.defaultPaginationSize > 0)]
 $[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->[if (not indexUnit.defaultSelection.oclIsUndefined())]
 [indexUnit.defaultSelection.countName()/]()[else]

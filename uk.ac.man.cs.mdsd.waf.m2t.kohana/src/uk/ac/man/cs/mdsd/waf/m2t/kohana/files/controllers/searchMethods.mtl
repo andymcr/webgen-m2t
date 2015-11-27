@@ -63,7 +63,7 @@ public function action_[searchUnit.actionName()/]()
 //		$this->session->delete('[searchUnit.resultsDestination.uniqueName()/]_[field.modelPropertyName()/]');
 [/for]
 [if (searchUnit.displayedOn <> searchUnit.resultsDestination.displayedOn)]
-//	$this->redirect(Route::get('[searchUnit.displayedOn.oclAsType(Page).controllerName()/]')->uri());
+//	$this->redirect(Route::get('[searchUnit.displayedOn.oclAsType(Page).routeName()/]')->uri());
 [/if]
 }
 [/let]

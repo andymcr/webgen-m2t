@@ -101,7 +101,7 @@ public function action_[registrationUnit.actionName()/]()
 			[/if]
 		[/let]
 		[if (not registrationUnit.confirmDestination.oclIsUndefined())]
-				$this->redirect(Route::get('[registrationUnit.confirmDestination.controllerName()/]')->uri());
+				$this->redirect(Route::get('[registrationUnit.confirmDestination.routeName()/]')->uri());
 		[else]
 				$this->[registrationUnit.instanceName()/]->clear();
 				$this->page_message = 'Registration completed';
