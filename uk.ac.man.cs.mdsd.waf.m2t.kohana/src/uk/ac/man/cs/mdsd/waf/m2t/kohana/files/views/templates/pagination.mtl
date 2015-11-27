@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module pagination(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
@@ -15,7 +16,7 @@
 [if (indexUnit.useFirstLastPageLinks)]
 	if ($first_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[indexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.pageDisplayedOn().routeName()/]')->uri()
 				. URL::query(array($key => ($first_page_in_url ? $first_page : NULL))),
 			HTML::chars(__('[indexUnit.firstPageLabel/]'))
 		) . PHP_EOL;
@@ -25,7 +26,7 @@
 [/if]
 	if ($previous_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[indexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.pageDisplayedOn().routeName()/]')->uri()
 				. URL::query(array($key => ($previous_page == 1 && !$first_page_in_url ? NULL : $previous_page))),
 			HTML::chars(__('[indexUnit.previousPageLabel/]'))
 		) . PHP_EOL;
@@ -40,7 +41,7 @@
 		}
 		else
 			echo HTML::anchor(
-				Route::get('[indexUnit.controllerName()/]')->uri()
+				Route::get('[indexUnit.pageDisplayedOn().routeName()/]')->uri()
 					. URL::query(array($key => ($i == 1 && !$first_page_in_url ? NULL : $i))),
 				$i
 			) . PHP_EOL;
@@ -48,7 +49,7 @@
 
 	if ($next_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[indexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.pageDisplayedOn().routeName()/]')->uri()
 				. URL::query(array($key => $next_page)),
 			HTML::chars(__('[indexUnit.nextPageLabel/]'))
 		) . PHP_EOL;
@@ -58,7 +59,7 @@
 
 	if ($last_page !== FALSE)
 		echo HTML::anchor(
-			Route::get('[indexUnit.controllerName()/]')->uri()
+			Route::get('[indexUnit.pageDisplayedOn().routeName()/]')->uri()
 				. URL::query(array($key => $last_page)),
 			HTML::chars(__('[indexUnit.lastPageLabel/]'))
 		) . PHP_EOL;

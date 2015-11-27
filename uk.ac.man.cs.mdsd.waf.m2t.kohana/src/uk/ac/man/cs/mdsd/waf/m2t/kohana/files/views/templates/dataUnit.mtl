@@ -2,8 +2,11 @@
 [module dataUnit(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
@@ -23,14 +26,14 @@
 <?php } ?>
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
- [dataUnit.generateViewContent(dataUnit.instanceName())/]
+ [dataUnit.generateViewContent('$'.concat(dataUnit.instanceName()))/]
 	[if (dataUnit.supportActions->notEmpty())]
   [dataUnit.generateSupportActions()/]
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
  <div class="unit_padding">
-  [dataUnit.generateViewContent(dataUnit.instanceName())/]
+  [dataUnit.generateViewContent('$'.concat(dataUnit.instanceName()))/]
 	[if (indexUnit.defaultPaginationSize > 0)]
 <?php echo $pagination; ?>
 	[/if]
@@ -45,32 +48,32 @@
 [/let]
 [/template]
 
-[template private generateUnitTitle(unit : DataUnit, instanceVariable : String) post(trim())]
-[if (unit.oclIsTypeOf(IndexGridUnit) or unit.dynamicTitle.oclIsUndefined())]
+
+[template private generateUnitTitle(unit : DataUnit, unitAccessor : String)
+	? (unit.oclIsTypeOf(IndexGridUnit) or unit.title.oclIsUndefined())  post(trim())]
 [unit.displayLabel/]
-[elseif (unit.dynamicTitle.oclIsTypeOf(ServiceAttribute))]
-[let attribute : ServiceAttribute = unit.dynamicTitle.oclAsType(ServiceAttribute)]
-	[if (not attribute.isEnumerationTypeSingleton())]
-<?php echo HTML::chars($[instanceVariable/]->[attribute.modelPropertyName()/]); ?>
-	[else]
-[let enumerationType : EnumerationType
-	= attribute.attribute.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
-<?php echo [enumerationType.modelClassName()/]::option($entry->[attribute.modelPropertyName()/]); ?>
-[/let]
-	[/if]
-[/let]
-[else]
-<?php echo HTML::chars($[instanceVariable/]->[unit.dynamicTitle.oclAsType(ModelLabel).name/]()); ?>
-[/if]
 [/template]
+
+[template private generateUnitTitle(unit : DataUnit, unitAccessor : String)
+	? (not unit.title.oclIsUndefined())  post(trim())]
+[let labelAccessor : String
+	= if unit.title.oclIsKindOf(Attribute) then
+			unitAccessor.concat('->').concat(unit.title.oclAsType(Attribute).modelPropertyName())
+		else
+			unitAccessor
+		endif]
+<?php echo HTML::chars([unit.title.label(labelAccessor)/]); ?>
+[/let]
+[/template]
+
 
 [template private generateSupportActions(unit : DynamicUnit) post(trim())]
  <?php
 	echo Form::open(
-		Route::get('[unit.displayedOn.oclAsType(Page).controllerName()/]')->uri(array(
+		Route::get('[unit.displayedOn.oclAsType(Page).routeName()/]')->uri(array(
 			'action' => 'support',
 			'param' => 'submit'
-			[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+			[if (unit.pageDisplayedOn().hasParameterisedUnitsKohana())]
 		)) . URL::query($query_parameters, FALSE),
 			[else]
 		)),
@@ -90,37 +93,39 @@
 ?>
 [/template]
 
-[template public generateViewContent(unit : ContentUnit, instanceVariable : String)
+[template public generateViewContent(unit : ContentUnit, accessor : String)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[detailsUnit.generateDetailsContent(instanceVariable)/]
+[detailsUnit.generateDetailsContent(accessor)/]
 [/let]
 [/template]
 
-[template public generateDetailsContent(unit : DataUnit, instanceVariable : String)
+[template public generateDetailsContent(unit : DataUnit, accessor : String)
 	post(trim())]
 [if (unit.hasOmitFieldLabels())]
 <ul class="[unit.layoutClass/]">
 [else]
 <dl class="[unit.layoutClass/]">
 [/if]
-[for (displayField : UnitField | unit.displayFields)]
-	[if (displayField.conditionalDisplay())]
-		[if (displayField.oclIsKindOf(UnitElement))]
- <?php if (!empty($[instanceVariable/]->[displayField.modelPropertyName()/])) { ?>
+[for (field : UnitField | unit.displayFields)]
+[let fieldAccessor : String = accessor.concat('->').concat(field.modelPropertyName())]
+	[if (field.conditionalDisplay())]
+		[if (field.oclIsKindOf(UnitElement))]
+ <?php if (!empty([field.getValue(accessor)/])) { ?>
 		[else]
- <?php if ($[instanceVariable/]->[displayField.modelPropertyName()/]->loaded()) { ?>
+ <?php if ([field.getValue(accessor)/]) { ?>
 		[/if]
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
-<li class="[displayField.displayClass()/]">[displayField.generateDisplayField(instanceVariable)/]</li>
+ <li class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</li>
 	[else]
- <dt class="[displayField.displayClass()/]">[displayField.displayLabel()/]</dt>
- <dd class="[displayField.displayClass()/]">[displayField.generateDisplayField(instanceVariable)/]</dd>
+ <dt class="[field.displayClass()/]">[field.displayLabel()/]</dt>
+ <dd class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</dd>
 	[/if]
-	[if (displayField.conditionalDisplay())]
+	[if (field.conditionalDisplay())]
   <?php } ?>
 	[/if]
+[/let]
 [/for]
 [if (unit.hasOmitFieldLabels())]
 </ul>
@@ -129,28 +134,30 @@
 [/if]
 [/template]
 
-[template protected generateViewContent(unit : DataUnit, instanceVariable : String)
+[template protected generateViewContent(unit : DataUnit, accessor : String)
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
 <ul class="[indexUnit.layoutClass/]">
-<?php foreach ($[instanceVariable/] as $entry): ?>
+<?php foreach ([accessor/] as $entry): ?>
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('entry')/]</h1>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('$entry')/]</h1>
 [/if]
-[for (displayField : UnitField | indexUnit.displayFields) ]
-	[if (displayField.conditionalDisplay())]
-		[if (displayField.oclIsKindOf(UnitElement))]
-<?php if (!empty($entry->[displayField.modelPropertyName()/])) { ?>
+[for (field : UnitField | indexUnit.displayFields) ]
+[let fieldAccessor : String = '$entry'.concat('->').concat(field.modelPropertyName())]
+	[if (field.conditionalDisplay())]
+		[if (field.oclIsKindOf(UnitElement))]
+<?php if (!empty([field.getValue(fieldAccessor)/])) { ?>
 		[else]
-<?php if ($entry->[displayField.modelPropertyName()/]->loaded()) { ?>
+<?php if ([field.getValue(fieldAccessor)/]) { ?>
 		[/if]
 	[/if]
-<span class="[displayField.modelPropertyName()/]">[displayField.generateDisplayField('entry')/]</span>
-	[if (displayField.conditionalDisplay())]
+<span class="[field.modelPropertyName()/]">[field.displayValue(fieldAccessor)/]</span>
+	[if (field.conditionalDisplay())]
 <?php } ?>
 	[/if]
+[/let]
 [/for]
 [if (indexUnit.actions->notEmpty())]
 <span class="actions">
@@ -173,13 +180,13 @@
 	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
 [let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
 <ul class="[indexUnit.layoutClass/]">
-<?php foreach ($[instanceVariable/] as $entry): ?>
+<?php foreach ([instanceVariable/] as $entry): ?>
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('entry')/]</h1>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('$entry')/]</h1>
 [/if]
-  [unit.generateDetailsContent('entry')/]
+  [unit.generateDetailsContent('$entry')/]
 [if (indexUnit.actions->notEmpty())]
   <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
@@ -202,8 +209,8 @@
 [if (not indexUnit.omitColumnLabels)]
  <thead class="[indexUnit.headerClass/]">
   <tr>
- 	[for (displayField : UnitField | indexUnit.displayFields)]
-   <th>[displayField.displayLabel()/]</th>
+ 	[for (field : UnitField | indexUnit.displayFields)]
+   <th>[field.displayLabel()/]</th>
  	[/for]
 	[if (indexUnit.actions->notEmpty())]
    <th>Actions</th>
@@ -212,10 +219,12 @@
  </thead>
 [/if]
  <tbody>
-<?php foreach ($[instanceVariable/] as $entry): ?>
+<?php foreach ([instanceVariable/] as $entry): ?>
   <tr class="<?php echo Text::alternate([for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
- [for (displayField : UnitField | indexUnit.displayFields)]
-   <td class="[displayField.styleClass()/]">[displayField.generateDisplayField('entry')/]</td>
+ [for (field : UnitField | indexUnit.displayFields)]
+[let fieldAccessor : String = '$entry'.concat('->').concat(field.modelPropertyName())]
+   <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
+[/let]
 [/for]
 [if (indexUnit.actions->notEmpty())]
    <td class="actions">
@@ -231,23 +240,23 @@
 [/template]
 
 
-[template public generateDisplayField(field : UnitField, instanceVariable : String)
-	? (field.isDataTypeSingleton()) post(trim())]
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.isDataTypeSingleton() and not field.isBooleanDataType()) post(trim())]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 [if (feature.actions->isEmpty())]
 <?php
 	[if (feature.maximumDisplaySize > 0)]
 	[let maxSize : Integer = feature.maximumDisplaySize]
-	if (strlen([feature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
-		$[feature.name/] = substr([feature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
+	if (strlen([feature.getValue(accessor)/]) > [maxSize/])
+		$[feature.name/] = substr([feature.getValue(accessor)/], 0, [maxSize/] - 3) . '...';
 	else
-		$[feature.name/] = [feature.generateDisplayFieldAssess(instanceVariable)/];
+		$[feature.name/] = [feature.getValue(accessor)/];
 	echo HTML::chars($[feature.name/]);
 	[/let]
 	[elseif (feature.isBooleanDataType())]
-	echo [feature.generateDisplayFieldAssess(instanceVariable)/];
+	echo [feature.getValue(accessor)/];
 	[else]
-	echo HTML::chars([feature.generateDisplayFieldAssess(instanceVariable)/]);
+	echo HTML::chars([feature.getValue(accessor)/]);
 	[/if]
 ?>
 [else]
@@ -257,25 +266,25 @@
 <?php
 	[if (feature.maximumDisplaySize > 0)]
 	[let maxSize : Integer = feature.maximumDisplaySize]
-	if (strlen([feature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
-		$[feature.name/] = substr([feature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
+	if (strlen([feature.getValue(accessor)/]) > [maxSize/])
+		$[feature.name/] = substr([feature.getValue(accessor)/], 0, [maxSize/] - 3) . '...';
 	else
-		$[feature.name/] = [feature.generateDisplayFieldAssess(instanceVariable)/];
+		$[feature.name/] = [feature.getValue(accessor)/];
 	[/let]
 	[/if]
 	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
+		Route::get('[targetController.routeName()/]')->uri() . URL::query(array(
 				'[targetUnit.parameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
-$[instanceVariable/]->[field.modelPropertyName()/]->[targetUnit.service.keyName()/]
+$[accessor/]->[targetUnit.service.keyName()/]
 [else]
-$[instanceVariable/]->[field.displayedOn.service.keyName()/]
+$[accessor/]->[field.displayedOn.service.keyName()/]
 [/if]
 			), FALSE),
 		HTML::chars([if (feature.maximumDisplaySize > 0)]
 $[feature.name/][else]
-[feature.generateDisplayFieldAssess(instanceVariable)/][/if]),
+[feature.getValue(accessor)/][/if]),
 		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [field.generateDisplayFieldAssess(instanceVariable)/]),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [feature.getValue(accessor)/]),
 	));
 ?>
 [/let]
@@ -285,89 +294,71 @@ $[feature.name/][else]
 [/let]
 [/template]
 
-[template public generateDisplayField(field : UnitField, instanceVariable : String)
-	? (field.isDateSingleton()) post(trim())]
-[let dateFormat : String =
-	if field.oclIsTypeOf(UnitElement) then
-		field.oclAsType(UnitElement).dateFormat
-	else if field.oclIsTypeOf(UnitAssociation) then
-		field.oclAsType(UnitAssociation).dateFormat
-	else if field.oclIsTypeOf(DateField) then
-		field.oclAsType(DateField).dateFormat
-	else
-		''
-	endif endif endif]
-[if (dateFormat = '')]
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.isDateSingleton() or field.isEnumerationTypeSingleton()) post(trim())]
 <?php
-	echo [field.generateDisplayFieldAssess(instanceVariable)/];
+	echo [field.getValue(accessor)/];
 ?>
-[else]
-<?php
-	$date = new DateTime([field.generateDisplayFieldAssess(instanceVariable)/]);
-	echo $date->format('[dateFormat/]');
-?>
-[/if]
-[/let]
 [/template]
 
-[template public generateDisplayField(field : UnitField, instanceVariable : String)
-	? (field.isEnumerationTypeSingleton()) post(trim())]
-[let enumerationType : EnumerationType
-	= field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+[template public displayValue(field : UnitField, accessor : String) 
+	? (field.isBooleanDataType()) post(trim())] 
 <?php
-	echo [enumerationType.modelClassName()/]::option($[instanceVariable/]->[field.oclAsType(UnitElement).modelPropertyName()/]);
+	echo Form::checkbox('[field.modelPropertyName()/]', '1', (bool) [field.getValue(accessor)/], array( 
+		'class' => '[field.styleClass()/] [field.inputClass()/]', 
+		'disabled' => '' 
+	));
 ?>
-[/let]
-[/template]
-
-[template public generateDisplayField(field : UnitField, instanceVariable : String)
+[/template] 
+ 
+[template public displayValue(field : UnitField, accessor : String)
 	? (field.isResourceSingleton()) post(trim())]
-[let feature : UnitElement = field.oclAsType(UnitElement)]
+[let attribute : UnitElement = field.oclAsType(UnitElement)]
 <?php
-[if (not feature.conditionalDisplay())]
-	if (!empty($[instanceVariable/]->[feature.modelPropertyName()/]))
+[if (not attribute.conditionalDisplay())]
+	if (!empty([attribute.getValue(accessor)/]))
 [/if]
 		echo HTML::anchor(
-			$[instanceVariable/]->[feature.modelPropertyName()/],
-			'[feature.displayLabel()/]',
+			[attribute.getValue(accessor)/],
+			'[attribute.displayLabel()/]',
 			NULL, NULL, FALSE);
 ?>
 [/let]
 [/template]
 
-[template public generateDisplayField(field : UnitField, instanceVariable : String)
+[template public displayValue(field : UnitField, accessor : String)
 	? (field.isAssociationSingleton()) post(trim())]
-[let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (feature.units->isEmpty())]
-	[if (feature.actions->isEmpty())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.oclAsType(UnitAssociation).units->isEmpty())]
+	[if (association.actions->isEmpty())]
 <?php
-		[if (feature.maximumDisplaySize > 0)]
-		[let maxSize : Integer = feature.maximumDisplaySize]
-	if (strlen([feature.generateDisplayFieldAssess(instanceVariable)/]) > [maxSize/])
-		echo substr([feature.generateDisplayFieldAssess(instanceVariable)/], 0, [maxSize/] - 3) . '...';
+		[if (association.maximumDisplaySize > 0)]
+		[let maxSize : Integer = association.maximumDisplaySize]
+	if (strlen([association.getValue(accessor)/]) > [maxSize/])
+		echo substr([association.getValue(accessor)/], 0, [maxSize/] - 3) . '...';
 	else
-		echo [feature.generateDisplayFieldAssess(instanceVariable)/];
+		echo [association.getValue(accessor)/];
 		[/let]
 		[else]
-	echo [feature.generateDisplayFieldAssess(instanceVariable)/];
+	echo [association.getValue(accessor)/];
 		[/if]
 ?>
 	[else]
-	[let action : InlineAction = feature.actions->first()]
+	[let action : InlineAction = association.actions->first()]
 	[let targetController : Page = action.controller()]
 	[let targetUnit : DynamicUnit = action.oclAsType(SelectAction).target.oclAsType(DynamicUnit)]
 <?php
 	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
+		Route::get('[targetController.routeName()/]')->uri() . URL::query(array(
 				'[targetUnit.parameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
-$[instanceVariable/]->[field.modelPropertyName()/]->[targetUnit.service.keyName()/]
+[accessor/]->[targetUnit.service.keyName()/]
 	[else]
-$[instanceVariable/]->[field.displayedOn.service.keyName()/]
+[accessor/]->[field.displayedOn.service.keyName()/]
 	[/if]
 			), FALSE),
-		HTML::chars([feature.generateDisplayFieldAssess(instanceVariable)/]),
+		HTML::chars([association.getValue(accessor)/]),
 		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [feature.generateDisplayFieldAssess(instanceVariable)/]),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [association.getValue(accessor)/]),
 	));
 ?>
 	[/let]
@@ -375,35 +366,35 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 	[/let]
 	[/if]
 [else]
-[let embeddedUnit : ContentUnit = feature.units->first()]
-[feature.units.generateViewContent(instanceVariable.concat('->').concat(feature.modelPropertyName()))/]
+[let embeddedUnit : ContentUnit = association.units->first()]
+[association.units.generateViewContent(accessor)/]
 [/let]
 [/if]
 [/let]
 [/template]
 
-[template public generateDisplayField(field : UnitField, instanceVariable : String)
+[template public displayValue(field : UnitField, accessor : String)
 	? (field.oclIsKindOf(UnitAssociation) and not field.isSingleton()) post(trim())]
-[let feature : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (feature.units->isEmpty())]
-	[if (feature.displayOption = CollectionDisplayOptions::PageDirection)]
-<?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) {
-	?><p><?php echo $value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]; ?></p>
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.units->isEmpty())]
+[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
+<?php foreach ([accessor/]->find_all() as $value) {
+	?><p><?php echo [association.getValue('$value')/]; ?></p>
 <?php } ?>
 	[else]
-<?php foreach ($[instanceVariable/]->[feature.modelPropertyName()/]->find_all() as $value) { ?><span><?php 
-		[if (feature.actions->isEmpty())]
-	echo $value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if];
+<?php foreach ([accessor/]->find_all() as $value) { ?><span><?php 
+		[if (association.actions->isEmpty())]
+	echo [association.getValue('$value')/];
 		[else]
-		[let action : InlineAction = feature.actions->first()]
+		[let action : InlineAction = association.actions->first()]
 		[let targetController : Page = action.controller()]
 	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri() . URL::query(array(
+		Route::get('[targetController.routeName()/]')->uri() . URL::query(array(
 				'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' => $value->[field.displayedOn.service.keyName()/]
 			), FALSE),
-		HTML::chars($value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]),
+		HTML::chars([association.getValue('$value')/]),
 		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $value->[if (feature.dynamicLabel.oclIsUndefined())]defaultLabel()[else][feature.dynamicLabel/]()[/if]),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [association.label.label('$value')/]),
 	));
 		[/let]
 		[/let]
@@ -411,94 +402,116 @@ $[instanceVariable/]->[field.displayedOn.service.keyName()/]
 ?></span><?php } ?>
 	[/if]
 [else]
-[let embeddedUnit : ContentUnit = feature.units->first()]
+[let embeddedUnit : ContentUnit = association.units->first()]
 <?php
-	$[field.displayedOn.uniqueName()/] = $[instanceVariable/]->[feature.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+	$[field.displayedOn.uniqueName()/] = [accessor/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
 [if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
 find_all()[else]
 [embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
-[feature.units.generateViewContent(field.displayedOn.uniqueName())/]
+[association.units.generateViewContent('$'.concat(field.displayedOn.uniqueName()))/]
 [/let]
 [/if]
 [/let]
 [/template]
 
 
-[template public generateDisplayFieldAssess(field : UnitField, instanceVariable : String)
-	? (field.oclIsTypeOf(UnitElement)) post(trim())]
-[if (field.isBooleanDataType())]
-Form::checkbox('[field.modelPropertyName()/]', '1', (bool) $[instanceVariable/]->[field.modelPropertyName()/], array(
-		'class' => '[field.styleClass()/] [field.inputClass()/]',
-		'disabled' => ''
-))
+[template private getValue(field : UnitField, accessor : String) post(trim())]
+[if (field.oclIsTypeOf(UnitFeature))]
+[field.oclAsType(UnitFeature).getValue(accessor)/]
 [else]
-$[instanceVariable/]->[field.modelPropertyName()/]
+
 [/if]
 [/template]
 
-[template public generateDisplayFieldAssess(field : UnitField, instanceVariable : String)
-	? (field.oclIsTypeOf(UnitAssociation)) post(trim())]
-[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-$[instanceVariable/]->[field.modelPropertyName()/]->[if (not association.dynamicLabel.oclIsUndefined())]
-[association.dynamicLabel.name/]()[elseif (not association.childFeature.oclIsUndefined())]
-[association.childFeature.generateDisplayChildAssess()/][else]
-defaultLabel()
+[template private getValue(feature : UnitFeature, accessor : String) post(trim())]
+[if (feature.oclIsTypeOf(UnitElement))]
+[feature.oclAsType(UnitElement).getValue(accessor)/]
+[else]
+[feature.oclAsType(UnitAssociation).getValue(accessor)/]
 [/if]
-[/let]
 [/template]
 
-[template public generateDisplayChildAssess(child : UnitChildFeature)
-	? (child.oclIsTypeOf(UnitChildElement)) post(trim())]
-[let element : UnitChildElement = child.oclAsType(UnitChildElement)]
-[element.serviceFeature.modelPropertyName()/]
-[/let]
+[template private getValue(attribute : UnitElement, accessor : String) post(trim())]
+[attribute.serviceFeature.attribute.getValue(attribute, accessor)/]
 [/template]
 
-[template public generateDisplayChildAssess(child : UnitChildFeature)
-	? (child.oclIsTypeOf(UnitChildAssociation)) post(trim())]
-[let association : UnitChildAssociation = child.oclAsType(UnitChildAssociation)]
-[association.serviceFeature.modelPropertyName()/]->[if (association.childFeature.oclIsUndefined())]
-defaultLabel()[else]
-[association.childFeature.generateDisplayChildAssess()/]
-[/if]
-[/let]
-[/template]
-
-
-[template public generateAction(action : InlineAction, instanceVariable : String) post(trim())]
-[let targetController : Page = action.controller()]
-<?php
-	echo HTML::anchor(
-		Route::get('[targetController.controllerName()/]')->uri([if (not action.oclIsTypeOf(SelectAction))]array(
-			'action' => '[action.actionName()/]',
-			'param' => $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
-		)[/if]
-	[if (action.usedBy.oclAsType(DynamicUnit).pageDisplayedOn().hasParameterisedUnits())]
-		[if (action.oclIsTypeOf(SelectAction))]
-) . URL::query(array_merge($query_parameters, array(
-			'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' =>  $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
-		)), FALSE),
-		[else]
-) . URL::query($query_parameters, FALSE),
-		[/if]
+[template private getValue(association : UnitAssociation, accessor : String) post(trim())]
+[if (association.childFeature.oclIsUndefined())]
+	[if (not association.label.oclIsUndefined())]
+[association.label.label(accessor)/]
 	[else]
-		[if (action.oclIsTypeOf(SelectAction))]
-) . URL::query(array(
-			'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' =>  $[instanceVariable/]->[action.usedBy.oclAsType(DynamicUnit).service.keyName()/]
-		), FALSE),
-		[else]
-),
-		[/if]
+[accessor/]->defaultLabel()
 	[/if]
+[else]
+[association.childFeature.getValue(accessor)/]
+[/if]
+[/template]
+
+[template private getValue(childFeature : UnitChildFeature, accessor : String)
+	? (childFeature.oclIsTypeOf(UnitChildElement)) post(trim())]
+[let childAttribute : UnitChildElement = childFeature.oclAsType(UnitChildElement)]
+[let childAccessor : String = accessor.concat('->').concat(childAttribute.serviceFeature.modelPropertyName())]
+[childAttribute.serviceFeature.attribute.getValue(childFeature.ancestors(UnitFeature)->first(), childAccessor)/]
+[/let]
+[/let]
+[/template]
+
+[template private getValue(childFeature : UnitChildFeature, accessor : String)
+	? (childFeature.oclIsTypeOf(UnitChildAssociation)) post(trim())]
+[let childAssociation : UnitChildAssociation = childFeature.oclAsType(UnitChildAssociation)]
+[let childAccessor : String = accessor.concat('->').concat(childAssociation.serviceFeature.modelPropertyName())]
+[if (childAssociation.childFeature.oclIsUndefined())]
+[childAccessor/]->defaultLabel()
+[else]
+[childAssociation.childFeature.getValue(childAccessor)/]
+[/if]
+[/let]
+[/let]
+[/template]
+
+
+[template private getValue(feature : Feature, field : UnitField, accessor : String)
+	? (feature.isDataTypeSingleton() or feature.isResource()) post(trim())]
+[accessor/]
+[/template]
+
+[template private getValue(feature : Feature, field : UnitField, accessor : String)
+	? (feature.isDateSingleton()) post(trim())]
+[if (field.dateFormat.oclIsUndefined())]
+[accessor/];
+[else]
+Helpers_View::date([accessor/], '[field.dateFormat/]');
+[/if]
+[/template]
+
+[template private getValue(feature : Feature, field : UnitField, accessor : String)
+	? (feature.isEnumerationTypeSingleton()) post(trim())]
+[let enumerationType : EnumerationType
+	= feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+[enumerationType.modelClassName()/]::option([accessor/])
+[/let]
+[/template]
+
+
+[template public generateAction(action : InlineAction, accessor : String)
+	? (action.oclIsTypeOf(SelectAction))  post(trim())]
+[let select : SelectAction = action.oclAsType(SelectAction)]
+[let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
+<?php
+    echo HTML::anchor(
+        Route::get('[targetUnit.routeName()/]')->uri(array(
+            'action' => '[targetUnit.name/]',
+	[for (parameter : ServiceAttribute | targetUnit.oclAsType(SelectTarget).selectionFeatures)]
+            '[parameter.name/]' => $[accessor/]->[parameter.modelPropertyName()/],
+	[/for]
+		)),
 		HTML::chars(__('[action.displayLabel/]')),
 		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $[instanceVariable/]->defaultLabel()),
-	[if (action.oclIsTypeOf(DeleteAction))]
-			'onclick' => 'return confirm(\'' . $[instanceVariable/]->defaultLabel() . ' ' . __('[action.oclAsType(DeleteAction).oclAsType(DeleteAction).confirmMessage/]') . '\');'
-	[/if]
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $[accessor/]->defaultLabel()),
 	));
 ?>
+[/let]
 [/let]
 [/template]

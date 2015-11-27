@@ -45,7 +45,7 @@
 [let fixedEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
 <li><?php
 	echo HTML::anchor(
-		Route::get('[fixedEntry.action.pageDisplayedOn().controllerName()/]')->uri(array(
+		Route::get('[fixedEntry.action.pageDisplayedOn().routeName()/]')->uri(array(
 			'action' => '[fixedEntry.action.actionName()/]'
 		)),
 		HTML::chars(__('[fixedEntry.displayLabel/]')));
