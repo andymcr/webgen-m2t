@@ -38,11 +38,17 @@
 
 
 [query public modelName(association : Association) : String
-	= if association.oclIsTypeOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).opposite.partOf.modelName()
+	= if association.oclIsKindOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).modelName()
+		else if association.oclIsTypeOf(EncapsulatedAssociation) then
+			association.oclAsType(EncapsulatedAssociation).association.modelName()
 		else
-			'xxx'
-		endif
+			association.oclAsType(ViewAssociation).opposite.partOf.modelName()
+		endif endif
+/]
+
+[query public modelName(association : EntityAssociation) : String
+	= association.oclAsType(EntityAssociation).opposite.partOf.modelName()
 /]
 
 
@@ -54,7 +60,7 @@
 [query public modelName(service : Service) : String
 	= let entityOrView : EntityOrView = service.encapsulates->first()
 		in if not entityOrView.oclIsUndefined() then
-			entityOrView.name
+			entityOrView.modelName()
 			else
 				'????'
 			endif
@@ -95,6 +101,10 @@
 	= page.name.toLowerFirst()
 /]
 
+[query public routeName(page : Page) : String
+	= page.instanceName()
+/]
+
 
 [query public instanceName(menu : Menu) : String
 	= menu.name.toLowerFirst()
@@ -128,6 +138,10 @@
 
 [query public parameterName(unit : ContentUnit) : String
 	= unit.instanceName()
+/]
+
+[query public routeName(unit : ContentUnit) : String
+	= unit.uniqueName()
 /]
 
 [query public templateInstanceName(unit : ContentUnit) : String

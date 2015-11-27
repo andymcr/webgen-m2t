@@ -152,34 +152,19 @@ Route::set('default', '')
 		'action'  => 'index',
 	));
 [for (page : Page | model.pages)]
-Route::set('[page.controllerName()/]', '[page.controllerName()/][if (page.hasParameterisedUnits() or page.hasControlUnits() or page.hasCommandUnits() or page.hasAuthenticationUnit() or page.hasUriActions() or page.hasSupportActions())]
-(/<action>[if (page.hasFormUnits() or page.hasUriActions())](/<param>)[/if])[/if]',
-	array(
-		'controller' => '[page.controllerName()/]',
-	[if (page.hasParameterisedUnits() or page.hasControlUnits() or page.hasCommandUnits() or page.hasAuthenticationUnit() or page.hasUriActions())]
-		'action' => '[for (unit : DynamicUnit | page.parameterisedUnits()) separator('|')]
-[unit.actionName()/][/for][if (page.hasControlUnits())]
-[if (page.hasParameterisedUnits())]|[/if][for (unit : DynamicUnit | page.controlUnits()) separator('|')]
-[unit.actionName()/][/for][/if][if (page.hasCommandUnits())]
-|[for (unit : CommandUnit | page.commandUnits()) separator('|')]
-[for (command : Command | unit.commands) separator('|')]
-[command.actionName()/][/for][/for][/if]
-[for (unit : AuthenticationUnit | page.authenticationUnits()->select(u | not u.oclIsTypeOf(RegistrationUnit))) separator('|')]
-[unit.oclAsType(DynamicUnit).actionName()/][if (unit.oclIsTypeOf(LoginUnit))]|logout[/if][/for]
-[if (page.hasUriActions())]
-|[for (action : InlineAction | page.uriActions()) separator('|')]
-[action.parameterName()/][/for][/if][if (page.hasSupportActions())]
-|support[/if]',
-		[if (page.hasFormUnits() or page.hasUriActions())]
-		'param' => '[if (page.hasFormUnits())]
-submit[if (page.hasUriActions())]|[/if][/if]
-[if (page.hasUriActions())]\d+[/if]',
-		[/if]
-	[/if]
-	))->defaults(array(
-		'controller'  => '[page.controllerName()/]',
-		'action'  => 'index'
-	));
+	[comment if (page.hasIndexUnits())/]
+Route::set('[page.routeName()/]', '[page.controllerName()/]')->defaults(array(
+    'controller' => '[page.controllerName()/]',
+    'action'  => 'index',
+));
+	[comment /if/]
+	[for (unit : ContentUnit | page.units->select(u | not u.oclIsKindOf(IndexUnit)))]
+Route::set('[unit.routeName()/]', '[page.controllerName()/]/[unit.actionName()/][if (unit.oclIsKindOf(SelectTarget))]
+[unit.oclAsType(SelectTarget).selectionFeatures->routeParameters()/][/if]')->defaults(array(
+    'controller' => '[page.controllerName()/]',
+    'action' => '[unit.actionName()/]',
+));
+	[/for]
 [/for]
 
 /**
@@ -187,4 +172,14 @@ submit[if (page.hasUriActions())]|[/if][/if]
  */
 Cookie::$salt = 'kjslkajdldlkdssslsdswe';
 [/file]
+[/template]
+
+
+[template private routeParameters(parameters : OrderedSet(ServiceAttribute)) post(trim())]
+[if (parameters->size() > 0)]
+[let parameter : ServiceAttribute = parameters->first()]
+(/<[parameter.name/]>[if (parameters->size() > 1)]
+[parameters.routeParameters(parameters->subOrderedSet(2, parameters->size()))/][/if])
+[/let]
+[/if]
 [/template]
