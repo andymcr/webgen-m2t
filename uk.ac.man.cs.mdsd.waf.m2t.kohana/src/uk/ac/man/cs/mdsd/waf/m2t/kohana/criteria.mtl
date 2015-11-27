@@ -49,14 +49,7 @@ $this->[path.unit.instanceName()/]->[path.unit.service.keyName()/]
 [template public generateCriteria(criteria : Expression)
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
-[let isDate : Boolean
-	= if not path.feature.oclIsTypeOf(ServiceAttribute) then
-			false
-		else
-			path.feature.oclAsType(ServiceAttribute).attribute.oclIsTypeOf(SingletonDate)
-		endif
-]
-[if (isDate)]
+[if (path.feature.isDateSingleton())]
 new Database_Expression('UNIX_TIMESTAMP([path.feature.columnName()/])')
 [else]
 	[if (path.feature.oclIsKindOf(IncludedAssociation))]
@@ -66,6 +59,12 @@ new Database_Expression('UNIX_TIMESTAMP([path.feature.columnName()/])')
 	[/if]
 [/if]
 [/let]
+[/template]
+
+[template public generateCriteria(criteria : Expression)
+	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]
+[let path : ParameterReference = criteria.oclAsType(ParameterReference)]
+$[path.parameter.name/]
 [/let]
 [/template]
 
