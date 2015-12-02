@@ -23,14 +23,14 @@
 /**
  * @Route("[unit.path()/]", name="[unit.routeName()/]")
  */
-public function [unit.actionName()/]([if (unit.hasQueryParameters())]
+public function [unit.actionName()/]([if (unit.hasFilterParameters())]
 Request $request[/if])
 {
-[if (not unit.paginationQuery.oclIsUndefined())]
-    $page = $request->query->getInt('[unit.paginationQuery.parameters->first().name/]', 1);
+[if (not unit.pagination.oclIsUndefined())]
+    $page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
 [/if]
-[if (unit.hasSelectQueries())]
-    [unit.queryTests()/]
+[if (unit.hasFilters())]
+    [unit.filterSelect()/]
     else
 [/if]
 [if (not unit.defaultSelection.oclIsUndefined())]
@@ -49,22 +49,22 @@ Request $request[/if])
 [/let]
 [/template]
 
-[template private queryTests(unit : IndexUnit) post(trim())]
-[for (q : Query | unit.selectQueries()) separator('else ')]
-if ([for (parameter : QueryParameter | q.parameters) separator(' || ')][parameter.presenceTest()/][/for])
-[unit.queryCall(q)/][/for]
+[template private filterSelect(unit : IndexUnit) post(trim())]
+[for (f : Filter | unit.filters()) separator('else ')]
+if ([for (parameter : FilterParameter | f.parameters) separator(' || ')][parameter.queryPresentTest()/][/for])
+[unit.filterCall(f)/][/for]
 [/template]
 
-[template private presenceTest(parameter : QueryParameter) post(trim())]
+[template private queryPresentTest(parameter : FilterParameter) post(trim())]
 $request->query->has('[parameter.name/]')
 [/template]
 
-[template private queryCall(unit : IndexUnit, q : Query)]
-[if (q.selection.parameters->notEmpty())]
+[template private filterCall(unit : IndexUnit, f : Filter)]
+[if (f.selection.parameters->notEmpty())]
 {
-	[for (parameter : SelectionParameter | q.selection.parameters)]
-	[let actual : QueryParameter = q.matchingActual(parameter)]
-		[if (q.selection.parameters->size() = 1)]
+	[for (parameter : SelectionParameter | f.selection.parameters)]
+	[let actual : FilterParameter = f.matchingActual(parameter)]
+		[if (f.selection.parameters->size() = 1)]
     $[parameter.name/] = $request->query->get('[actual.name/]');
 		[else]
     $[parameter.name/] = $request->query->has('[actual.name/]')
@@ -74,37 +74,29 @@ $request->query->has('[parameter.name/]')
 	[/let]
 	[/for]
 [/if]
-    [unit.selectionCall(q.selection, q)/]
-[if (q.selection.parameters->notEmpty())]
+    [unit.selectionCall(f.selection, f)/]
+[if (f.selection.parameters->notEmpty())]
 }
 [/if]
 [/template]
 
-[query private matchingActual(q : Query, parameter : SelectionParameter) : QueryParameter
-	= q.parameters->any(p | if p.parameter.oclIsUndefined() then
-								false
-							else
-								p.parameter.name = parameter.name
-							endif)
-/]
-
-[template private selectionCall(unit : IndexUnit, selection : Selection, q : Query)]
-$[unit.instanceName()/] = $this->get('[unit.service.name/]')->[selection.instanceName()/]([unit.selectionActuals(q)/]);
+[template private selectionCall(unit : IndexUnit, selection : Selection, f : Filter)]
+$[unit.instanceName()/] = $this->get('[unit.service.name/]')->[selection.instanceName()/]([unit.selectionActuals(f)/]);
 [/template]
 
-[template private selectionActuals(unit : IndexUnit, q : Query) post(trim())]
-[if (not q.oclIsUndefined())]
-	[if(q.selection.parameters->notEmpty())]
-		[for (parameter : SelectionParameter | q.selection.parameters) separator(', ')]
+[template private selectionActuals(unit : IndexUnit, f : Filter) post(trim())]
+[if (not f.oclIsUndefined())]
+	[if(f.selection.parameters->notEmpty())]
+		[for (parameter : SelectionParameter | f.selection.parameters) separator(', ')]
 $[parameter.name/][/for], [/if]
 [/if]
-[if (unit.paginationQuery.oclIsUndefined())]
+[if (unit.pagination.oclIsUndefined())]
 NULL[else]$page[/if], [unit.defaultPaginationSize/]
 [/template]
 
 [template private templateParameters(unit : IndexUnit) post(trim())]
 '[unit.instanceName()/]' => $[unit.instanceName()/],
-[if (not unit.paginationQuery.oclIsUndefined())]
+[if (not unit.pagination.oclIsUndefined())]
 'currentPage' => $page,
 'pageCount' => ceil($[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]),
 [/if]

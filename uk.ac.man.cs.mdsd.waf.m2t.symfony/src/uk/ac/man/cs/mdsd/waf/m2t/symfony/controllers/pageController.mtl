@@ -25,7 +25,7 @@ namespace [page.controllersNamespace()/];
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-[if (page.hasQueryParameters())]
+[if (page.hasFilterParameters())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 [for (service : Service | page.formUnits().service->asSet())]

@@ -27,7 +27,7 @@
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
  <div class="unit_padding">
   [indexUnit.generateViewContent(dataUnit.instanceName())/]
-	[if (not indexUnit.paginationQuery.oclIsUndefined())]
+	[if (not indexUnit.pagination.oclIsUndefined())]
   [indexUnit.pagination()/]
 	[/if]
 	[if (indexUnit.supportActions->notEmpty())]
@@ -121,7 +121,7 @@
 [/template]
 
 [template private pageHref(unit : IndexUnit, x : String) post(trim())]
-{{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.paginationQuery.parameters->first().name/]': [x/]})) }}
+{{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.pagination.parameters->first().name/]': [x/]})) }}
 [/template]
 
 [template public generateViewContent(unit : ContentUnit, instanceVariable : String)

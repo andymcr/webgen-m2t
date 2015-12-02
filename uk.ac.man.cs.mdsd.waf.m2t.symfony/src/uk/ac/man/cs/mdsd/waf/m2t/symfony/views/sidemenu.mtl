@@ -45,8 +45,8 @@
 [let entry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
 <li>[if (not entry.action.oclIsUndefined())]
 <a href="{{ path('[entry.action.routeName()/]'[if (not entry.query.oclIsUndefined())]
-, {[for (actual : QueryActual | entry.query.actuals) separator(', ')]
-'[actual.parameter.name/]': '[actual.value/]'[/for]}[/if]) }}">[entry.displayLabel/]</a>[else]
+, {[for (parameter : QueryParameter | entry.query.parameters) separator(', ')]
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">[entry.displayLabel/]</a>[else]
 [entry.displayLabel/][/if]</li>
 [/let]
 [/template]
