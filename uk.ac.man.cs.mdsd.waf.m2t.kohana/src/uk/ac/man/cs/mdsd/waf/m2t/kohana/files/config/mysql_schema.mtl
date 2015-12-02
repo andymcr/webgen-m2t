@@ -52,7 +52,7 @@ FROM [for (entityOrView : EntityOrView | view.encapsulates) separator(', ')][ent
 
 
 [template protected generateColumn(feature : Feature)
-	? (feature.isDataTypeSingletonElement()) post(trim())]
+	? (feature.isDataTypeSingleton()) post(trim())]
 [let element : SingletonElement = feature.oclAsType(SingletonElement)]
 `[element.columnName/]` [if (element.persistentType = 'String')]
 varchar(255)[elseif (element.persistentType = 'TextBlock')]
@@ -67,7 +67,7 @@ tinyint(1)[else]
 [/template]
 
 [template protected generateColumn(feature : Feature)
-	? (feature.isEnumerationTypeSingletonElement()) post(trim())]
+	? (feature.isEnumerationTypeSingleton()) post(trim())]
 [let element : SingletonElement = feature.oclAsType(SingletonElement)]
 `[element.columnName/]` int(8) [if 
 	(element.required)] NOT NULL[/if][if
@@ -103,15 +103,15 @@ DATETIME[/if][if (element.required)] NOT NULL[/if][if
 
 
 [template protected viewColumn(feature : Feature)
-	? (feature.oclIsTypeOf(ViewAttribute)) post(trim())]
-[let attribute : ViewAttribute = feature.oclAsType(ViewAttribute)]
-`[attribute.partOf.selectName()/]`.`[attribute.columnName/]` AS `[attribute.alias/]`
+	? (feature.oclIsTypeOf(EncapsulatedAttribute)) post(trim())]
+[let attribute : EncapsulatedAttribute = feature.oclAsType(EncapsulatedAttribute)]
+`[attribute.attribute.partOf.selectName()/]`.`[attribute.attribute.columnName()/]` AS `[attribute.columnName()/]`
 [/let]
 [/template]
 
 [template protected viewColumn(feature : Feature)
-	? (feature.oclIsTypeOf(ServiceAssociation)) post(trim())]
-[let association : ServiceAssociation = feature.oclAsType(ServiceAssociation)]
-`[association.association.partOf.selectName()/]`.`[association.columnName()/]` AS `[association.columnName()/]`
+	? (feature.oclIsTypeOf(EncapsulatedAssociation)) post(trim())]
+[let association : EncapsulatedAssociation = feature.oclAsType(EncapsulatedAssociation)]
+`[association.association.partOf.selectName()/]`.`[association.association.columnName()/]` AS `[association.columnName()/]`
 [/let]
 [/template]

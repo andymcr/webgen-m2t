@@ -6,16 +6,16 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
-[template public generateMenu(menu : Menu)]
+[template public menu(menu : Menu)]
 [file(menu.menuFilename(), false)]
 <section  class="[menu.styleClass()/]" id="[menu.instanceName()/]">
- [menu.generateMenuEntries()/]
+ [menu.menuEntries()/]
 </section>
 [/file]
 [/template]
 
 
-[template private generateMenuEntries(menu : Menu)
+[template private menuEntries(menu : Menu)
 	? (menu.oclIsTypeOf(DynamicMenu)) post(trim())]
 [let dynamicMenu : DynamicMenu = menu.oclAsType(DynamicMenu)]
 [if (dynamicMenu.dynamicTitle.oclIsUndefined())]
@@ -24,36 +24,41 @@
 <h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]"><?php echo $[dynamicMenu.instanceName()/]->[dynamicMenu.dynamicTitle.modelPropertyName()/]; ?></h1>
 [/if]
 <ul class="[dynamicMenu.layoutClass/]">
- [menu.entries.generateMenuEntry()/]
+ [menu.entries.menuEntry()/]
 </ul>
 [/let]
 [/template]
 
-[template private generateMenuEntries(menu : Menu)
+[template private menuEntries(menu : Menu)
 	? (menu.oclIsTypeOf(StaticMenu)) post(trim())]
 [let staticMenu : StaticMenu = menu.oclAsType(StaticMenu)]
 <h1 class="[staticMenu.captionClass/][if (staticMenu.omitCaption)] hidden[/if]">[staticMenu.displayLabel/]</h1>
 <ul class="[staticMenu.layoutClass/]">
- [menu.entries.generateMenuEntry()/]
+ [menu.entries.menuEntry()/]
 </ul>
 [/let]
 [/template]
 
 
-[template private generateMenuEntry(entry : MenuEntry)
+[template private menuEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
-[let fixedEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[let actionEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
 <li><?php
-	echo HTML::anchor(
-		Route::get('[fixedEntry.action.pageDisplayedOn().routeName()/]')->uri(array(
-			'action' => '[fixedEntry.action.actionName()/]'
-		)),
-		HTML::chars(__('[fixedEntry.displayLabel/]')));
+    echo HTML::anchor(
+        Route::get('[actionEntry.action.pageDisplayedOn().routeName()/]')->uri(array(
+            'action' => '[actionEntry.action.actionName()/]'
+        ))[if (not actionEntry.query.oclIsUndefined())]
+ . URL::query(array(
+[for (parameter : QueryParameter | actionEntry.query.parameters) separator(', ')]
+            '[parameter.formal.name/]' => '[parameter.value/]'[/for]
+
+        ), FALSE)[/if],
+		HTML::chars(__('[actionEntry.displayLabel/]')));
 ?></li>
 [/let]
 [/template]
 
-[template private generateMenuEntry(entry : MenuEntry)
+[template private menuEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(FixedCommandMenuEntry)) post(trim())]
 [let fixedEntry : FixedCommandMenuEntry = entry.oclAsType(FixedCommandMenuEntry)]
 <li><?php

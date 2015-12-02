@@ -83,7 +83,7 @@ foreach ($entries AS $entry)
 [template private generateSingleEntry(page : Page, priority : Real, routeParameter : String, queryString : String)]
 $url = $sitemap->createElement('url');
 $urlset->appendChild($url);
-$loc = $sitemap->createElement('loc', $deployed_url . Route::get('[page.controllerName()/]')->uri([routeParameter/])[if (not queryString.oclIsUndefined())]
+$loc = $sitemap->createElement('loc', $deployed_url . Route::get('[page.routeName()/]')->uri([routeParameter/])[if (not queryString.oclIsUndefined())]
  . URL::query([queryString/])[/if]);
 $url->appendChild($loc);
 $change_freq = $sitemap->createElement('changefreq', 'monthly');

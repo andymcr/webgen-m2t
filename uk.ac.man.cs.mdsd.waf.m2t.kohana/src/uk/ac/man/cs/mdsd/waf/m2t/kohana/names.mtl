@@ -111,12 +111,25 @@
 /]
 
 
+[query public errorName(selectable : Selectable) : String
+	= selectable.oclAsType(DynamicUnit).errorName()
+/]
+
+
 [query public actionName(unit : ContentUnit) : String
 	= unit.instanceName()
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
 	= unit.pageDisplayedOn().controllerName()
+/]
+
+[query public countName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_count')
+/]
+
+[query public errorName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_error')
 /]
 
 [query public instanceName(unit : ContentUnit) : String
@@ -135,6 +148,9 @@
 		endif
 /]
 
+[query public paginationName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_pagination')
+/]
 
 [query public parameterName(unit : ContentUnit) : String
 	= unit.instanceName()

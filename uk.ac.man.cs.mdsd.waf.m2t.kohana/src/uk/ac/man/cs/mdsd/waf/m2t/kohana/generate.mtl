@@ -56,7 +56,7 @@
 [model.generatePage()/]
 [model.generateNewPage()/]
 [model.generateTopNav()/]
-[model.menus.generateMenu()/]
+[model.menus.menu()/]
 [model.pages.units.generateUnitView()/]
 [model.pages.indexUnits().generatePaginationView()/]
 

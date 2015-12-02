@@ -6,42 +6,61 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 
 
-[template public generateUnitVariables(unit : ContentUnit)
-	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[template public unitBefore(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[if (detailsUnit.hasDefaultValueFields())]
-[detailsUnit.generateDefaultUnitValues()/]
-[/if]
-[if (detailsUnit.defaultSelection.oclIsUndefined())]
-$[detailsUnit.instanceName()/] = $this->request->query('[detailsUnit.parameterName()/]');
-if (!empty($[detailsUnit.instanceName()/]))
+$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
+[/let]
+[/template]
+
+[template public unitAfter(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.onlyDisplayWhenNotEmpty)]
+if ($this->[unit.instanceName()/]->loaded() || isset($this->[detailsUnit.errorName()/]))
 {
-	$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]', $[detailsUnit.instanceName()/]);
-	if (!$this->[detailsUnit.instanceName()/]->loaded())
-	{
-		$this->[detailsUnit.instanceName()/]_error = 'Invalid [detailsUnit.modelName()/] identifier';
-	}
+    [detailsUnit.createAndBindTemplate()/]
+    $[detailsUnit.templateInstanceName()/]->bind('[detailsUnit.instanceName()/]', $this->[detailsUnit.instanceName()/]);
+    [detailsUnit.bindErrorMessage()/]
 }
-else
-	$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]');
 [else]
-$this->[detailsUnit.instanceName()/] = ORM::factory('[detailsUnit.modelName()/]')->[detailsUnit.defaultSelection.instanceName()/]();
+[detailsUnit.createAndBindTemplate()/]
+$[detailsUnit.templateInstanceName()/]->bind('[detailsUnit.instanceName()/]', $this->[detailsUnit.instanceName()/]);
+[detailsUnit.bindErrorMessage()/]
 [/if]
 [/let]
 [/template]
 
-[template public generateUnitDisplay(unit : ContentUnit)
-	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
-$this->[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.instanceName()/]);
-[/template]
 
-
-
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[detailsUnit.actionMethod()/]
+
 [for (action : InlineAction | detailsUnit.uriActions())]
 [action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
 [/for]
 [/let]
+[/template]
+
+[template private actionMethod(unit : DetailsUnit)]
+public function action_[unit.actionName()/]()
+{
+    [unit.oclAsType(Selectable).loadSelection()/]
+[if (not unit.defaultSelection.oclIsUndefined())]
+	[if (unit.oclAsType(Selectable).parameters->size() > 0)]
+    else
+    {
+        $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
+        [unit.detectInvalidSelection()/]
+    }
+	[else]
+    $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
+    [unit.detectInvalidSelection()/]
+	[/if]
+[/if]
+[if (unit.hasDefaultValueFields())]
+    [unit.generateDefaultUnitValues()/]
+[/if]
+}
 [/template]

@@ -4,31 +4,26 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::criteria/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::controlMethods/]
 
 
-[template public generateUnitVariables(unit : ContentUnit)
+[template public unitBefore(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-$this->[editUnit.instanceName()/] = ORM::factory('[editUnit.modelName()/]');
+$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
+[if (editUnit.oclIsKindOf(Selectable))]
+[editUnit.oclAsType(Selectable).loadSelection()/]
+[/if]
 [if (editUnit.hasDefaultValueFields())]
 [editUnit.generateDefaultUnitValues()/]
-[/if]
-[if (editUnit.oclIsTypeOf(CreateUpdateUnit) or editUnit.oclIsTypeOf(UpdateUnit))]
-$[editUnit.instanceName()/] = $this->request->query('[unit.parameterName()/]');
-if (!empty($[editUnit.instanceName()/]))
-{
-	$this->[editUnit.instanceName()/]->where('[editUnit.service.keyName()/]', '=', $[editUnit.instanceName()/])->find();
-	if (!$this->[editUnit.instanceName()/]->loaded())
-		$this->[editUnit.instanceName()/]_error = 'Invalid [editUnit.modelName()/] identifier';
-}
 [/if]
 [/let]
 [/template]
 
-[template public generateUnitDisplay(unit : ContentUnit)
+[template public unitAfter(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 $this->[editUnit.templateInstanceName()/]->bind('[editUnit.instanceName()/]', $this->[editUnit.instanceName()/]);
@@ -41,9 +36,8 @@ $[association.optionsName()/] = array([if (association.isSingleton())]'' => __('
 foreach (ORM::factory('[association.serviceFeature.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
-	$[association.optionsName()/]['['/]$option->id[']'/] = $option->[if (association.dynamicLabel.oclIsUndefined())]
-defaultLabel()[else]
-[association.dynamicLabel.name/]()[/if];
+	$[association.optionsName()/]['['/]$option->id[']'/] = [if (association.label.oclIsUndefined())]
+$option->defaultLabel()[else][association.label.label('$option')/][/if];
 $this->[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[association.optionsName()/]);
 	[/let]
 	[/for]
@@ -52,7 +46,7 @@ $this->[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', 
 [/template]
 
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(CreateUnit)) post(trim())]
 [let createUnit : CreateUnit = unit.oclAsType(CreateUnit)]
 [if (createUnit.hasInterfaceFields())]
@@ -74,7 +68,7 @@ public function action_[createUnit.actionName()/]()
 [/let]
 [/template]
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsKindOf(CreateUpdateUnit) or unit.oclIsKindOf(UpdateUnit) or unit.oclIsKindOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.hasInterfaceFields())]
@@ -134,9 +128,9 @@ find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 		$options['['/][']'/] = array(
 			'id' => $option->id,
-			'label' => $option->[if (association.dynamicLabel.oclIsUndefined())]
+			'label' => $option->[if (association.label.oclIsUndefined())]
 defaultLabel()[else]
-[association.dynamicLabel.name/]()[/if],
+[association.label.name/]()[/if],
 		);
 
 	$this->auto_render = FALSE;
@@ -189,7 +183,7 @@ try
 [/if]
 	$this->[unit.instanceName()/]->save([if (unit.hasInterfaceFields())]$extra_validation[/if]);
 [if (not unit.oclAsType(EditUnit).confirmDestination.oclIsUndefined())]
-	$this->redirect(Route::get('[unit.oclAsType(EditUnit).confirmDestination.controllerName()/]')->uri());
+	$this->redirect(Route::get('[unit.oclAsType(EditUnit).confirmDestination.routeName()/]')->uri());
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 	$this->[unit.instanceName()/]->clear();
@@ -211,7 +205,7 @@ catch (ORM_Validation_Exception $e)
 	(field : UnitField | unit.inputFields())
 		separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
 	if (!empty($unreported_field_errors))
-		$this->[unit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+		$this->[unit.errorName()/] = print_r($unreported_field_errors, TRUE);
 [/if]
 [if (unit.hasEncryptedFeatures())]
 	[unit.generateClearEncryptedFeatures()/]

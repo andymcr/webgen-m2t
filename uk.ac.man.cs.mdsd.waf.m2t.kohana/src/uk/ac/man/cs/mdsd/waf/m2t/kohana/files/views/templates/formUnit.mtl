@@ -21,9 +21,9 @@
  ng-controller="[unit.uniqueName()/]"[/if]>
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.instanceName()/]_error)[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[dynamicUnit.instanceName()/]_error)) { ?>
-   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.instanceName()/]_error)); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.errorName()/])) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.generateFormErrors()/]
@@ -55,7 +55,7 @@
 [/if]
 		array(
 			'id' => '[unit.instanceName()/]',
-			'class' => '[unit.layoutClass/]' . (isset($[unit.instanceName()/]_error) ? ' [unit.errorClass/]' : ''),
+			'class' => '[unit.layoutClass/]' . (isset($[unit.errorName()/]) ? ' [unit.errorClass/]' : ''),
 			'enctype' => 'multipart/form-data'
 		)) . PHP_EOL;
 ?>
@@ -334,9 +334,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
 ?>" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.instanceName()/]_error)[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[dynamicUnit.instanceName()/]_error)) { ?>
-   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.instanceName()/]_error)); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.errorName()/])) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.generateFormErrors()/]
@@ -357,7 +357,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 [/if]
 		array(
 			'id' => '[dynamicUnit.instanceName()/]',
-			'class' => '[dynamicUnit.layoutClass/]' . (isset($[dynamicUnit.instanceName()/]_error) ? ' [dynamicUnit.errorClass/]' : ''),
+			'class' => '[dynamicUnit.layoutClass/]' . (isset($[dynamicUnit.errorName()/]) ? ' [dynamicUnit.errorClass/]' : ''),
 			'enctype' => 'multipart/form-data'
 		)) . PHP_EOL;
 ?>

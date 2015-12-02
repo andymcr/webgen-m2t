@@ -15,15 +15,13 @@
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 [file(dataUnit.viewFilename(), false)]
 <section class="[dataUnit.styleClass/]<?php
-	if (isset($[dataUnit.instanceName()/]_error)) {
+	if (isset($[dataUnit.errorName()/])) {
 		echo ' [dataUnit.errorClass/]';
 	}
 ?>" id="[dataUnit.instanceName()/]">
- <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.generateUnitTitle(dataUnit.instanceName())/]</h1>
- <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.instanceName()/]_error)) echo ' hidden'; ?>">
-<?php if (!empty($[dataUnit.instanceName()/]_error)) { ?>
-  <p class="[dataUnit.errorClass/]"><?php echo __($[dataUnit.instanceName()/]_error); ?></p>
-<?php } ?>
+ <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.generateUnitTitle('$'.concat(dataUnit.instanceName()))/]</h1>
+ <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.errorName()/])) echo ' hidden'; ?>">
+  <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.errorName()/]) ? $[dataUnit.errorName()/] : ''); ?></p>
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.generateViewContent('$'.concat(dataUnit.instanceName()))/]
@@ -503,7 +501,7 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
     echo HTML::anchor(
         Route::get('[targetUnit.routeName()/]')->uri(array(
             'action' => '[targetUnit.name/]',
-	[for (parameter : ServiceAttribute | targetUnit.oclAsType(SelectTarget).selectionFeatures)]
+	[for (parameter : ServiceAttribute | targetUnit.oclAsType(Selectable).parameters)]
             '[parameter.name/]' => $[accessor/]->[parameter.modelPropertyName()/],
 	[/for]
 		)),

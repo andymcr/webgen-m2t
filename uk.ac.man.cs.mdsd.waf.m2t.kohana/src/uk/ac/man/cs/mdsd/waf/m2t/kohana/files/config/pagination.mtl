@@ -25,7 +25,7 @@ return array
 [for (unit : IndexUnit | model.indexUnits())]
 	'[unit.uniqueName()/]' => array(
 		'group' => 'default',
-		'current_page' => array('source' => 'query_string', 'key' => '[unit.parameterName()/]'),
+		'current_page' => array('source' => 'query_string', 'key' => '[unit.pagination.parameters->first().name/]'),
 		'items_per_page' => [unit.defaultPaginationSize/],
 		'view' => '[unit.controllerName()/]/[unit.instanceName()/]_pagination',
 	),

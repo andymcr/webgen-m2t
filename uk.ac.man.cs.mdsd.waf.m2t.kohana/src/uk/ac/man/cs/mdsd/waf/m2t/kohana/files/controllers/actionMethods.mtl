@@ -50,7 +50,7 @@ public function action_[actionUnit.actionName()/]()
 		(field : UnitField | unit.inputFields())
 			separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
 		if (!empty($unreported_field_errors))
-			$this->[unit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+			$this->[unit.errorName()/] = print_r($unreported_field_errors, TRUE);
 	[/if]
 	[if (unit.hasEncryptedFeatures())]
 		[unit.generateClearEncryptedFeatures()/]

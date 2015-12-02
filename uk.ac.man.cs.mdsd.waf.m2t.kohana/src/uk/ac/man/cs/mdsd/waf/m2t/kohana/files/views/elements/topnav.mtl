@@ -17,7 +17,7 @@
 	[if (page.topMenuOption = PageTopMenuOptions::AlwaysInclude)]
   <li><?php
 	echo HTML::anchor(
-		Route::get('[page.controllerName()/]')->uri(),
+		Route::get('[page.routeName()/]')->uri(),
 		HTML::chars(__('[page.navigationLabel/]'))); ?></li>
 	[/if]
 [/for]
@@ -27,7 +27,7 @@
 	[if (authentication.allowSelfRegistration)]
   <li id="authentication"><?php
 	echo HTML::anchor(
-		Route::get('[authentication.registrationUnit.controllerName()/]')->uri(),
+		Route::get('[authentication.registrationUnit.routeName()/]')->uri(),
 		HTML::chars(__('Register'))); ?></li>
 	[/if]
 [/let]
@@ -38,7 +38,7 @@
 	echo HTML::anchor(
 		Route::get('[if (model.authentication.oclIsTypeOf(CasAuthentication))]
 TBC[elseif (model.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[model.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.controllerName()/][else]
+[model.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.routeName()/][else]
 TBC[/if]')->uri(),
 		HTML::chars(__('[model.authentication.loginLabel/]'))); ?></li>
 [/if]

@@ -33,6 +33,51 @@ TBC[/if]')->uri());
 [/template]
 
 
+[template public loadSelection(target : Selectable) post(trim())]
+[let unit : DynamicUnit = target.oclAsType(DynamicUnit)]
+[if (target.parameters->size() > 0)]
+	[if (target.parameters->size() = 1)]
+	[let parameter : ServiceAttribute = target.parameters->first()]
+if (!empty($this->request->param('[parameter.name/]')))
+{
+    $this->[unit.instanceName()/]->where('[parameter.name/]', '=', $this->request->param('[parameter.name/]'));
+	[/let]
+	[else]
+if ([for (parameter : ServiceAttribute | target.parameters) separator(' || ')]
+!empty($this->request->param('[parameter.name/]'))[/for])
+{
+		[for (parameter : ServiceAttribute | target.parameters)]
+    if (!empty($this->request->param('[parameter.name/]')))
+        $this->[unit.instanceName()/]->where('[parameter.name/]', '=', $this->request->param('[parameter.name/]'));
+		[/for]
+	[/if]
+    $this->[unit.instanceName()/]->find();
+    [unit.detectInvalidSelection()/]
+}
+[/if]
+[/let]
+[/template]
+
+[template public detectInvalidSelection(unit : DynamicUnit) post(trim())]
+if (!$this->[unit.instanceName()/]->loaded())
+    $this->[unit.errorName()/] = 'Invalid [unit.modelName()/] selection';
+[/template]
+
+
+[template public createAndBindTemplate(unit : ContentUnit) post(trim())]
+$[unit.templateInstanceName()/] = View::factory('[unit.pageDisplayedOn().controllerName()/]/[unit.instanceName()/]');
+$this->template->unitViews['['/][']'/] = $[unit.templateInstanceName()/];
+[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+$[unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameters);
+[/if]
+[/template]
+
+[template public bindErrorMessage(selectable : Selectable) post(trim())]
+if (!empty($this->[selectable.errorName()/]))
+    $[selectable.oclAsType(DynamicUnit).templateInstanceName()/]->bind('[selectable.errorName()/]', $this->[selectable.errorName()/]);
+[/template]
+
+
 [template public generateValuesFromFormToModel(unit : DynamicUnit) post(trim())]
 $this->[unit.instanceName()/]->values($this->request->post(), array([for
 	(field : UnitField | unit.nonResourceInputFeatures()->select(f | not f.isEncrypted()))

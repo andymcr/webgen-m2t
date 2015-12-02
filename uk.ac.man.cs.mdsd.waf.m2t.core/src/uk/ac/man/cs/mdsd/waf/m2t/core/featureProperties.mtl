@@ -97,36 +97,32 @@
 /]
 
 
-[query public firstEntity(service : Service) : Entity
-	= service.encapsulates->select(e | e.oclIsTypeOf(Entity)).oclAsType(Entity)->first()
-/]
-
 [comment for Kohana/]
 [query public keyName(service : Service) : String
-	= service.firstEntity().autoKeyName
+	= service.encapsulates->first().autoKeyName
 /]
 
 [comment for Kohana/]
 [query public tableName(service : Service) : String
-	= service.firstEntity().tableName
+	= service.encapsulates->first().tableName
 /]
 
 
 [query public columnName(feature : ServiceFeature) : String
 	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.columnName
+			feature.oclAsType(ServiceAttribute).attribute.columnName()
 		else 
-			feature.oclAsType(ServiceAssociation).association.columnName
+			feature.oclAsType(ServiceAssociation).association.columnName()
 		endif
 /]
 
 [query public formName(feature : ServiceFeature) : String
 	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.columnName
+			feature.oclAsType(ServiceAttribute).attribute.columnName()
 		else let association : ServiceAssociation
 			= feature.oclAsType(ServiceAssociation)
 			in if association.isSingleton() and association.isOwningEnd() then
-					association.association.columnName
+					association.association.columnName()
 				else
 					association.modelPropertyName()
 				endif
@@ -163,65 +159,42 @@
 
 [query public isCaseInsensitive(feature : ServiceFeature) : Boolean
 	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).caseInsensitive
+			feature.oclAsType(ServiceAttribute).attribute.isCaseInsensitive()
 		else
 			false
 		endif
 /]
 
 [query public isDataTypeSingleton(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceAttribute) then
-			false
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.isDataTypeSingleton()
 		else
-			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
-			in if not attribute.attribute.oclIsTypeOf(SingletonElement) then
-					false
-				else
-					let singleton : SingletonElement = attribute.attribute.oclAsType(SingletonElement)
-					in singleton.dataType.oclIsTypeOf(DataType)
-				endif
+			false
 		endif
 /]
 
 [query public isDateSingleton(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceAttribute) then
-			false
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.isDateSingleton()
 		else
-			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
-			in attribute.attribute.oclIsTypeOf(SingletonDate)
+			false
 		endif
 /]
 
 [query public isEncrypted(feature : ServiceFeature) : Boolean
 	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).encrypt
+			feature.oclAsType(ServiceAttribute).attribute.isEncrypted()
 		else
 			false
 		endif
 /]
 
 [query public isEnumerationTypeSingleton(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceAttribute) then
-			false
-		else
-			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
-			in if not attribute.attribute.oclIsTypeOf(SingletonElement) then
-					false
-				else
-					let element : SingletonElement = attribute.attribute.oclAsType(SingletonElement)
-					in element.dataType.oclIsTypeOf(EnumerationType)
-				endif
-		endif
-/]
-
-[query public isInput(feature : ServiceFeature) : Boolean
 	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isInput()
-		else if feature.oclIsTypeOf(ServiceAssociation) then
-			feature.oclAsType(ServiceAssociation).association.isInput()
+			feature.oclAsType(ServiceAttribute).attribute.isEnumerationTypeSingleton()
 		else
 			false
-		endif endif
+		endif
 /]
 
 [query public isLocation(feature : ServiceFeature) : Boolean
@@ -230,6 +203,16 @@
 		else
 			false
 		endif
+/]
+
+[query public isModifiable(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.isModifiable()
+		else if feature.oclIsTypeOf(ServiceAssociation) then
+			feature.oclAsType(ServiceAssociation).association.isModifiable()
+		else
+			false
+		endif endif
 /]
 
 [query public isOwningEnd(feature : ServiceAssociation) : Boolean
@@ -271,6 +254,15 @@
 		else
 			feature.name
 		endif
+/]
+
+
+[query public matchingActual(f : Filter, parameter : SelectionParameter) : FilterParameter
+	= f.parameters->any(p | if p.formal.oclIsUndefined() then
+								false
+							else
+								p.formal.name = parameter.name
+							endif)
 /]
 
 
@@ -319,12 +311,12 @@
 	= page.dataSupportActions()->notEmpty()
 /]
 
-[query public hasDynamicUnits(page : Page) : Boolean
-	= page.dynamicUnits()->notEmpty()
-/]
-
 [query public hasFormUnits(page : Page) : Boolean
 	= page.formUnits()->notEmpty()
+/]
+
+[query public hasIndexUnits(page : Page) : Boolean
+	= page.indexUnits()->notEmpty()
 /]
 
 [query public hasInputAssociations(page : Page) : Boolean
@@ -343,8 +335,8 @@
 	= page.parameterisedUnits()->notEmpty()
 /]
 
-[query public hasQueryParameters(page : Page) : Boolean
-	= page.dynamicUnits()->select(u | u.hasQueryParameters())->notEmpty()
+[query public hasFilterParameters(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasFilterParameters())->notEmpty()
 /]
 
 [query public hasSupportActions(page : Page) : Boolean
@@ -373,22 +365,6 @@
 
 [query public nonDynamicUnits(page : Page) : Set(ContentUnit)
 	= page.units->select(u | not u.oclIsKindOf(DynamicUnit))
-/]
-
-[query public path(page : Page) : String
-	= let path : String
-		= if page.path.startsWith('/') then
-				page.path
-			else
-				'/'.concat(page.path)
-			endif
-		in if page.parentPage.oclIsUndefined() then
-			path
-		else if page.parentPage = page.partOf.homePage() then
-			path
-		else
-			page.parentPage.path().concat(path)
-		endif endif
 /]
 
 [query public parameterisedUnits(page : Page) : OrderedSet(DynamicUnit)
@@ -435,9 +411,17 @@
 	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f | f.isEncrypted())
 /]
 
-[query public forcedValueFeatures(unit : DynamicUnit) : Sequence(UnitField)
+[query public filterParameters(unit : IndexUnit) : Sequence(FilterParameter)
+	= unit.filters()->collect(q | q.parameters)
+/]
+
+[query public filters(unit : IndexUnit) : Sequence(Filter)
+	= unit.filters->select(q | not q.selection.oclIsUndefined()).oclAsType(Filter)
+/]
+
+[query public forcedValueFeatures(unit : DynamicUnit) : Sequence(IncludedFeature)
 	= unit.displayFields
-		->select(f | f.hasForcedValue()).oclAsType(UnitField)
+		->select(f | f.hasForcedValue()).oclAsType(IncludedFeature)
 /]
 
 [query public hasCaptchaFields(unit : DynamicUnit) : Boolean
@@ -458,6 +442,18 @@
 
 [query public hasEncryptedFeatures(unit : DynamicUnit) : Boolean
 	= unit.encryptedFeatures()->notEmpty()
+/]
+
+[query public hasFilterParameters(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(IndexUnit) then
+			unit.oclAsType(IndexUnit).filters->notEmpty()
+		else
+			false
+		endif
+/]
+
+[query public hasFilters(unit : IndexUnit) : Boolean
+	= unit.filters()->notEmpty()
 /]
 
 [query public hasForcedValueFeatures(unit : DynamicUnit) : Boolean
@@ -553,30 +549,6 @@
 		endif
 /]
 
-[query public hasQueryParameters(unit : DynamicUnit) : Boolean
-	= unit.queries->notEmpty()
-/]
-
-[query public hasSelectQueries(unit : DynamicUnit) : Boolean
-	= unit.selectQueries()->notEmpty()
-/]
-
-[query public hasUnitMethods(unit : ContentUnit) : Boolean
-	= if unit.oclIsTypeOf(CommandUnit) then
-			true
-		else if unit.oclIsKindOf(EditUnit) then
-			true
-		else if unit.oclIsKindOf(DataUnit) then
-			unit.oclAsType(DataUnit).hasUriActions()
-		else if unit.oclIsTypeOf(ActionUnit) then
-			true
-		else if unit.oclIsKindOf(AuthenticationUnit) then
-			true
-		else
-			false
-		endif endif endif endif endif
-/]
-
 [query public hasUriActions(unit : DynamicUnit) : Boolean
 	= unit.uriActions()->notEmpty()
 /]
@@ -600,7 +572,7 @@
 [query public inputFields(unit : DynamicUnit) : Sequence(UnitField)
 	= unit.displayFields->asSequence()->select(f |
 		if f.oclIsKindOf(UnitFeature) then
-			f.oclAsType(UnitFeature).isInput()
+			f.oclAsType(UnitFeature).isModifiable()
 		else
 			true
 		endif)
@@ -609,7 +581,7 @@
 [query public inputOrEmbeddedFields(unit : DynamicUnit) : Sequence(UnitField)
 	= unit.displayFields->asSequence()->select(f |
 		if f.oclIsKindOf(UnitFeature) then
-			f.oclAsType(UnitFeature).isInputOrEmbedded()
+			f.oclAsType(UnitFeature).isModifiableOrEmbedded()
 		else
 			true
 		endif)
@@ -624,8 +596,8 @@
 /]
 
 [query public isParameterised(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(SelectTarget) then
-			unit.oclAsType(SelectTarget).selectionFeatures->notEmpty()
+	= if unit.oclIsKindOf(Selectable) then
+			unit.oclAsType(Selectable).parameters->notEmpty()
 		else
 			false
 		endif
@@ -634,26 +606,10 @@
 [query public nonResourceInputFeatures(unit : DynamicUnit) : Set(UnitField)
 	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f |
 		if f.oclIsKindOf(UnitFeature) then
-			f.oclAsType(UnitFeature).isInput() and not f.oclAsType(UnitFeature).isResourceInput()
+			f.oclAsType(UnitFeature).isModifiable() and not f.oclAsType(UnitFeature).isModifiableResource()
 		else
 			true
 		endif)
-/]
-
-[query public path(unit : ContentUnit) : String
-	= unit.pageDisplayedOn().path().concat(
-		if not unit.oclIsKindOf(SelectTarget) then
-			''
-		else
-			unit.oclAsType(SelectTarget).selectionFeatures->collect(f | f.name)->sep('/{', '}/{', '}')->toString()
-		endif).concat(
-			if unit.path.oclIsUndefined() then
-				''
-			else if unit.path = '' then
-				''
-			else
-				'/'.concat(unit.path)
-			endif endif)
 /]
 
 [query public pageDisplayedOn(unit : ContentUnit) : Page
@@ -670,10 +626,6 @@
 
 [query public searchFields(unit : IndexUnit) : Bag(UnitField)
 	= unit->collect(targettingSearches.displayFields)
-/]
-
-[query public selectQueries(unit : DynamicUnit) : OrderedSet(Query)
-	= unit.queries->select(q | not q.selection.oclIsUndefined())
 /]
 
 [query public submitLabel(unit : DynamicUnit) : String
@@ -934,30 +886,8 @@
 		endif
 /]
 
-[query public isInput(feature : UnitFeature) : Boolean
-	= if feature.oclIsKindOf(UnitFeature) and feature.isSingleton() then
-			if feature.oclAsType(UnitFeature).forcedValue.oclIsUndefined() then
-				if feature.oclIsTypeOf(UnitElement) then
-					feature.oclAsType(UnitElement).serviceFeature.isInput()
-				else
-					feature.oclAsType(UnitAssociation).serviceFeature.isInput()
-				endif
-			else
-				false
-			endif
-		else if feature.oclIsTypeOf(UnitAssociation) and not feature.isSingleton() then
-			if feature.oclAsType(UnitAssociation).units->isEmpty() then
-				feature.oclAsType(UnitAssociation).serviceFeature.isInput()
-			else
-				false
-			endif
-		else
-			false
-		endif endif
-/]
-
-[query public isInputOrEmbedded(feature : UnitFeature) : Boolean
-	= feature.isInput() or
+[query public isModifiableOrEmbedded(feature : UnitFeature) : Boolean
+	= feature.isModifiable() or
 		if not feature.oclIsTypeOf(UnitAssociation) then
 			false
 		else
@@ -975,6 +905,28 @@
 		else
 			false
 		endif
+/]
+
+[query public isModifiable(feature : UnitFeature) : Boolean
+	= if feature.oclIsKindOf(UnitFeature) and feature.isSingleton() then
+			if feature.oclAsType(UnitFeature).forcedValue.oclIsUndefined() then
+				if feature.oclIsTypeOf(UnitElement) then
+					feature.oclAsType(UnitElement).serviceFeature.isModifiable()
+				else
+					feature.oclAsType(UnitAssociation).serviceFeature.isModifiable()
+				endif
+			else
+				false
+			endif
+		else if feature.oclIsTypeOf(UnitAssociation) and not feature.isSingleton() then
+			if feature.oclAsType(UnitAssociation).units->isEmpty() then
+				feature.oclAsType(UnitAssociation).serviceFeature.isModifiable()
+			else
+				false
+			endif
+		else
+			false
+		endif endif
 /]
 
 [query public isObfuscated(field : UnitField) : Boolean
@@ -1011,8 +963,8 @@
 		endif
 /]
 
-[query public isResourceInput(feature : UnitFeature) : Boolean
-	= feature.isInput() and feature.isResourceAttribute()
+[query public isModifiableResource(feature : UnitFeature) : Boolean
+	= feature.isModifiable() and feature.isResourceAttribute()
 /]
 
 

@@ -119,7 +119,7 @@ public function action_[registrationUnit.actionName()/]()
 	(field : UnitField | registrationUnit.inputFields())
 		separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (registrationUnit.hasInterfaceFields())], '_external' => ''[/if]));
 			if (!empty($unreported_field_errors))
-				$this->[registrationUnit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
+				$this->[registrationUnit.errorName()/] = print_r($unreported_field_errors, TRUE);
 	[/if]
 [if (registrationUnit.hasInterfaceFields())]
 			[registrationUnit.generateRememberInterfaceFields()/]
@@ -168,7 +168,7 @@ public function action_[loginUnit.actionName()/]()
 			}
 			else
 			{
-				$this->[loginUnit.instanceName()/]_error = Auth::instance()->message;
+				$this->[loginUnit.errorName()/] = Auth::instance()->message;
 [if (loginUnit.hasInterfaceFields())]
 				[loginUnit.generateRememberInterfaceFields()/]
 [/if]
