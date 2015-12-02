@@ -380,30 +380,30 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case ModelLabelYEditPart.VISUAL_ID: {
+		case ModelLabelEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getModelLabelY_3237ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getModelLabel_3247ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case ModelLabelY2EditPart.VISUAL_ID: {
+		case ModelLabel2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getModelLabelY_3238ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getModelLabel_3248ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case ViewAttributeEditPart.VISUAL_ID: {
+		case EncapsulatedAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getViewAttribute_3239ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAttribute_3243ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case ViewAssociationEditPart.VISUAL_ID: {
+		case EncapsulatedAssociationEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getViewAssociation_3240ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAssociation_3244ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -1090,6 +1090,13 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		case AssociationWithContainmentEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(WebsiteDiagramUpdater.getAssociationWithContainment_4002ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case ViewAssociationEditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(WebsiteDiagramUpdater.getViewAssociation_4004ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

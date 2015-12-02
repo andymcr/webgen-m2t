@@ -42,8 +42,8 @@ public class DetailsUnitUnitFieldCompartmentEditPart extends ListCompartmentEdit
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean hasModelChildrenChanged(Notification evt) {
 		return false;
 	}

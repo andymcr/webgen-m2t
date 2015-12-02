@@ -12,19 +12,18 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.EntityOrView;
-import uk.ac.man.cs.mdsd.webgen.website.ModelLabelY;
+import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAttribute;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
  */
-public class ModelLabelYCreateCommand extends EditElementCommand {
+public class EncapsulatedAttributeCreateCommand extends EditElementCommand {
 
 	/**
 	* @generated
 	*/
-	public ModelLabelYCreateCommand(CreateElementRequest req) {
+	public EncapsulatedAttributeCreateCommand(CreateElementRequest req) {
 		super(req.getLabel(), null, req);
 	}
 
@@ -52,10 +51,10 @@ public class ModelLabelYCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ModelLabelY newElement = WebsiteFactory.eINSTANCE.createModelLabelY();
+		EncapsulatedAttribute newElement = WebsiteFactory.eINSTANCE.createEncapsulatedAttribute();
 
-		EntityOrView owner = (EntityOrView) getElementToEdit();
-		owner.getDisplayLabels().add(newElement);
+		uk.ac.man.cs.mdsd.webgen.website.View owner = (uk.ac.man.cs.mdsd.webgen.website.View) getElementToEdit();
+		owner.getFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 
@@ -66,7 +65,7 @@ public class ModelLabelYCreateCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	protected void doConfigure(ModelLabelY newElement, IProgressMonitor monitor, IAdaptable info)
+	protected void doConfigure(EncapsulatedAttribute newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);

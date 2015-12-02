@@ -1,19 +1,19 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
-import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
+import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.FlowLayoutEditPolicy;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
@@ -21,18 +21,18 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ModelLabelYItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.EncapsulatedAttributeItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 
 /**
  * @generated
  */
-public class ModelLabelYEditPart extends ShapeNodeEditPart {
+public class EncapsulatedAttributeEditPart extends ShapeNodeEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3237;
+	public static final int VISUAL_ID = 3243;
 
 	/**
 	* @generated
@@ -47,7 +47,7 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public ModelLabelYEditPart(View view) {
+	public EncapsulatedAttributeEditPart(View view) {
 		super(view);
 	}
 
@@ -56,7 +56,7 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ModelLabelYItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new EncapsulatedAttributeItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -66,14 +66,17 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected LayoutEditPolicy createLayoutEditPolicy() {
+		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
 
-		FlowLayoutEditPolicy lep = new FlowLayoutEditPolicy() {
-
-			protected Command createAddCommand(EditPart child, EditPart after) {
-				return null;
+			protected EditPolicy createChildEditPolicy(EditPart child) {
+				EditPolicy result = child.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
+				if (result == null) {
+					result = new NonResizableEditPolicy();
+				}
+				return result;
 			}
 
-			protected Command createMoveChildCommand(EditPart child, EditPart after) {
+			protected Command getMoveChildrenCommand(Request request) {
 				return null;
 			}
 
@@ -88,22 +91,23 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected IFigure createNodeShape() {
-		return primaryShape = new ModelLabelFigure();
+		return primaryShape = new AttributeFigure();
 	}
 
 	/**
 	* @generated
 	*/
-	public ModelLabelFigure getPrimaryShape() {
-		return (ModelLabelFigure) primaryShape;
+	public AttributeFigure getPrimaryShape() {
+		return (AttributeFigure) primaryShape;
 	}
 
 	/**
 	* @generated
 	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof ModelLabelYNameEditPart) {
-			((ModelLabelYNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureModelLabelNameLabel());
+		if (childEditPart instanceof EncapsulatedAttributeNameEditPart) {
+			((EncapsulatedAttributeNameEditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureAttributeNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -113,7 +117,7 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof ModelLabelYNameEditPart) {
+		if (childEditPart instanceof EncapsulatedAttributeNameEditPart) {
 			return true;
 		}
 		return false;
@@ -236,36 +240,24 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(ModelLabelYNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(EncapsulatedAttributeNameEditPart.VISUAL_ID));
 	}
 
 	/**
 	 * @generated
 	 */
-	public class ModelLabelFigure extends RectangleFigure {
+	public class AttributeFigure extends RectangleFigure {
 
 		/**
 		 * @generated
 		 */
-		private WrappingLabel fFigureModelLabelNameLabel;
+		private WrappingLabel fFigureAttributeNameLabelFigure;
 
 		/**
 		 * @generated
 		 */
-		public ModelLabelFigure() {
-
-			FlowLayout layoutThis = new FlowLayout();
-			layoutThis.setStretchMinorAxis(true);
-			layoutThis.setMinorAlignment(FlowLayout.ALIGN_CENTER);
-
-			layoutThis.setMajorAlignment(FlowLayout.ALIGN_CENTER);
-			layoutThis.setMajorSpacing(2);
-			layoutThis.setMinorSpacing(2);
-			layoutThis.setHorizontal(true);
-
-			this.setLayoutManager(layoutThis);
-
-			this.setForegroundColor(THIS_FORE);
+		public AttributeFigure() {
+			this.setBackgroundColor(THIS_BACK);
 			createContents();
 		}
 
@@ -274,19 +266,19 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 		 */
 		private void createContents() {
 
-			fFigureModelLabelNameLabel = new WrappingLabel();
+			fFigureAttributeNameLabelFigure = new WrappingLabel();
 
-			fFigureModelLabelNameLabel.setText("");
+			fFigureAttributeNameLabelFigure.setText("");
 
-			this.add(fFigureModelLabelNameLabel);
+			this.add(fFigureAttributeNameLabelFigure);
 
 		}
 
 		/**
 		 * @generated
 		 */
-		public WrappingLabel getFigureModelLabelNameLabel() {
-			return fFigureModelLabelNameLabel;
+		public WrappingLabel getFigureAttributeNameLabelFigure() {
+			return fFigureAttributeNameLabelFigure;
 		}
 
 	}
@@ -294,6 +286,6 @@ public class ModelLabelYEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	static final Color THIS_FORE = new Color(null, 180, 230, 180);
+	static final Color THIS_BACK = new Color(null, 230, 230, 250);
 
 }

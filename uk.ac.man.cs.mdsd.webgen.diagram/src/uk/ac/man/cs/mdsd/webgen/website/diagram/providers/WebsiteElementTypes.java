@@ -188,26 +188,26 @@ public class WebsiteElementTypes {
 	/**
 	* @generated
 	*/
-	public static final IElementType ModelLabelY_3237 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabelY_3237"); //$NON-NLS-1$
+	public static final IElementType ModelLabel_3247 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3247"); //$NON-NLS-1$
 
 	/**
 	* @generated
 	*/
-	public static final IElementType ModelLabelY_3238 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabelY_3238"); //$NON-NLS-1$
+	public static final IElementType ModelLabel_3248 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3248"); //$NON-NLS-1$
 
 	/**
 	* @generated
 	*/
-	public static final IElementType ViewAttribute_3239 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ViewAttribute_3239"); //$NON-NLS-1$
+	public static final IElementType EncapsulatedAttribute_3243 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAttribute_3243"); //$NON-NLS-1$
 
 	/**
 	* @generated
 	*/
-	public static final IElementType ViewAssociation_3240 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ViewAssociation_3240"); //$NON-NLS-1$
+	public static final IElementType EncapsulatedAssociation_3244 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAssociation_3244"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -761,6 +761,12 @@ public class WebsiteElementTypes {
 	public static final IElementType AssociationWithContainment_4002 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithContainment_4002"); //$NON-NLS-1$
 	/**
+	* @generated
+	*/
+	public static final IElementType ViewAssociation_4004 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ViewAssociation_4004"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType PageLink_4003 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.PageLink_4003"); //$NON-NLS-1$
@@ -839,13 +845,13 @@ public class WebsiteElementTypes {
 
 			elements.put(LocationAttribute_3230, WebsitePackage.eINSTANCE.getLocationAttribute());
 
-			elements.put(ModelLabelY_3237, WebsitePackage.eINSTANCE.getModelLabelY());
+			elements.put(ModelLabel_3247, WebsitePackage.eINSTANCE.getModelLabel());
 
-			elements.put(ModelLabelY_3238, WebsitePackage.eINSTANCE.getModelLabelY());
+			elements.put(ModelLabel_3248, WebsitePackage.eINSTANCE.getModelLabel());
 
-			elements.put(ViewAttribute_3239, WebsitePackage.eINSTANCE.getViewAttribute());
+			elements.put(EncapsulatedAttribute_3243, WebsitePackage.eINSTANCE.getEncapsulatedAttribute());
 
-			elements.put(ViewAssociation_3240, WebsitePackage.eINSTANCE.getViewAssociation());
+			elements.put(EncapsulatedAssociation_3244, WebsitePackage.eINSTANCE.getEncapsulatedAssociation());
 
 			elements.put(ActionUnit_3213, WebsitePackage.eINSTANCE.getActionUnit());
 
@@ -1044,6 +1050,8 @@ public class WebsiteElementTypes {
 
 			elements.put(AssociationWithContainment_4002, WebsitePackage.eINSTANCE.getAssociationWithContainment());
 
+			elements.put(ViewAssociation_4004, WebsitePackage.eINSTANCE.getViewAssociation());
+
 			elements.put(PageLink_4003, WebsitePackage.eINSTANCE.getPageLink());
 		}
 		return (ENamedElement) elements.get(type);
@@ -1080,10 +1088,10 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(FileAttribute_3152);
 			KNOWN_ELEMENT_TYPES.add(ImageAttribute_3235);
 			KNOWN_ELEMENT_TYPES.add(LocationAttribute_3230);
-			KNOWN_ELEMENT_TYPES.add(ModelLabelY_3237);
-			KNOWN_ELEMENT_TYPES.add(ModelLabelY_3238);
-			KNOWN_ELEMENT_TYPES.add(ViewAttribute_3239);
-			KNOWN_ELEMENT_TYPES.add(ViewAssociation_3240);
+			KNOWN_ELEMENT_TYPES.add(ModelLabel_3247);
+			KNOWN_ELEMENT_TYPES.add(ModelLabel_3248);
+			KNOWN_ELEMENT_TYPES.add(EncapsulatedAttribute_3243);
+			KNOWN_ELEMENT_TYPES.add(EncapsulatedAssociation_3244);
 			KNOWN_ELEMENT_TYPES.add(ActionUnit_3213);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3169);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3170);
@@ -1182,6 +1190,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithoutContainment_4001);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithContainment_4002);
+			KNOWN_ELEMENT_TYPES.add(ViewAssociation_4004);
 			KNOWN_ELEMENT_TYPES.add(PageLink_4003);
 		}
 		return KNOWN_ELEMENT_TYPES.contains(elementType);
@@ -1228,14 +1237,14 @@ public class WebsiteElementTypes {
 			return ImageAttribute_3235;
 		case LocationAttributeEditPart.VISUAL_ID:
 			return LocationAttribute_3230;
-		case ModelLabelYEditPart.VISUAL_ID:
-			return ModelLabelY_3237;
-		case ModelLabelY2EditPart.VISUAL_ID:
-			return ModelLabelY_3238;
-		case ViewAttributeEditPart.VISUAL_ID:
-			return ViewAttribute_3239;
-		case ViewAssociationEditPart.VISUAL_ID:
-			return ViewAssociation_3240;
+		case ModelLabelEditPart.VISUAL_ID:
+			return ModelLabel_3247;
+		case ModelLabel2EditPart.VISUAL_ID:
+			return ModelLabel_3248;
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+			return EncapsulatedAttribute_3243;
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
+			return EncapsulatedAssociation_3244;
 		case ActionUnitEditPart.VISUAL_ID:
 			return ActionUnit_3213;
 		case UnitElementEditPart.VISUAL_ID:
@@ -1432,6 +1441,8 @@ public class WebsiteElementTypes {
 			return AssociationWithoutContainment_4001;
 		case AssociationWithContainmentEditPart.VISUAL_ID:
 			return AssociationWithContainment_4002;
+		case ViewAssociationEditPart.VISUAL_ID:
+			return ViewAssociation_4004;
 		case PageLinkEditPart.VISUAL_ID:
 			return PageLink_4003;
 		}

@@ -52,12 +52,12 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteParserProvider;
 /**
  * @generated
  */
-public class ViewAttributeNameEditPart extends CompartmentEditPart implements ITextAwareEditPart {
+public class EncapsulatedAssociationNameEditPart extends CompartmentEditPart implements ITextAwareEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5247;
+	public static final int VISUAL_ID = 5252;
 
 	/**
 	* @generated
@@ -87,7 +87,7 @@ public class ViewAttributeNameEditPart extends CompartmentEditPart implements IT
 	/**
 	* @generated
 	*/
-	public ViewAttributeNameEditPart(View view) {
+	public EncapsulatedAssociationNameEditPart(View view) {
 		super(view);
 	}
 
@@ -291,9 +291,9 @@ public class ViewAttributeNameEditPart extends CompartmentEditPart implements IT
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ViewAttribute_3239, getParserElement(),
-					WebsiteVisualIDRegistry.getType(
-							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAttributeNameEditPart.VISUAL_ID));
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EncapsulatedAssociation_3244,
+					getParserElement(), WebsiteVisualIDRegistry.getType(
+							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAssociationNameEditPart.VISUAL_ID));
 		}
 		return parser;
 	}

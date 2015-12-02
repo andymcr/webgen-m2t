@@ -328,69 +328,69 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	* @generated
 	*/
-	private IParser modelLabelYName_5244Parser;
+	private IParser modelLabelName_5255Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getModelLabelYName_5244Parser() {
-		if (modelLabelYName_5244Parser == null) {
+	private IParser getModelLabelName_5255Parser() {
+		if (modelLabelName_5255Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			modelLabelYName_5244Parser = parser;
+			modelLabelName_5255Parser = parser;
 		}
-		return modelLabelYName_5244Parser;
+		return modelLabelName_5255Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser modelLabelYName_5245Parser;
+	private IParser modelLabelName_5256Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getModelLabelYName_5245Parser() {
-		if (modelLabelYName_5245Parser == null) {
+	private IParser getModelLabelName_5256Parser() {
+		if (modelLabelName_5256Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			modelLabelYName_5245Parser = parser;
+			modelLabelName_5256Parser = parser;
 		}
-		return modelLabelYName_5245Parser;
+		return modelLabelName_5256Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser viewAttributeName_5247Parser;
+	private IParser encapsulatedAttributeName_5251Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getViewAttributeName_5247Parser() {
-		if (viewAttributeName_5247Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getViewAttribute_Name() };
+	private IParser getEncapsulatedAttributeName_5251Parser() {
+		if (encapsulatedAttributeName_5251Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getEncapsulatedAttribute_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			viewAttributeName_5247Parser = parser;
+			encapsulatedAttributeName_5251Parser = parser;
 		}
-		return viewAttributeName_5247Parser;
+		return encapsulatedAttributeName_5251Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser viewAssociationName_5248Parser;
+	private IParser encapsulatedAssociationName_5252Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getViewAssociationName_5248Parser() {
-		if (viewAssociationName_5248Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getViewAssociation_Name() };
+	private IParser getEncapsulatedAssociationName_5252Parser() {
+		if (encapsulatedAssociationName_5252Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getEncapsulatedAssociation_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			viewAssociationName_5248Parser = parser;
+			encapsulatedAssociationName_5252Parser = parser;
 		}
-		return viewAssociationName_5248Parser;
+		return encapsulatedAssociationName_5252Parser;
 	}
 
 	/**
@@ -2115,14 +2115,14 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getImageAttributeName_5242Parser();
 		case LocationAttributeNameEditPart.VISUAL_ID:
 			return getLocationAttributeName_5237Parser();
-		case ModelLabelYNameEditPart.VISUAL_ID:
-			return getModelLabelYName_5244Parser();
-		case ModelLabelYName2EditPart.VISUAL_ID:
-			return getModelLabelYName_5245Parser();
-		case ViewAttributeNameEditPart.VISUAL_ID:
-			return getViewAttributeName_5247Parser();
-		case ViewAssociationNameEditPart.VISUAL_ID:
-			return getViewAssociationName_5248Parser();
+		case ModelLabelNameEditPart.VISUAL_ID:
+			return getModelLabelName_5255Parser();
+		case ModelLabelName2EditPart.VISUAL_ID:
+			return getModelLabelName_5256Parser();
+		case EncapsulatedAttributeNameEditPart.VISUAL_ID:
+			return getEncapsulatedAttributeName_5251Parser();
+		case EncapsulatedAssociationNameEditPart.VISUAL_ID:
+			return getEncapsulatedAssociationName_5252Parser();
 		case ActionUnitNameEditPart.VISUAL_ID:
 			return getActionUnitName_5221Parser();
 		case UnitElementNameEditPart.VISUAL_ID:

@@ -12,6 +12,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.figures.ResizableCompartmentFigure;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateUnspecifiedTypeConnectionRequest;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
+import org.eclipse.gmf.runtime.diagram.ui.requests.RequestConstants;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 
@@ -95,15 +96,24 @@ public class ViewAttributeCompartmentEditPart extends ListCompartmentEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ViewAttribute_3239) {
+			if (type == WebsiteElementTypes.EncapsulatedAttribute_3243) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.ViewAssociation_3240) {
+			if (type == WebsiteElementTypes.EncapsulatedAssociation_3244) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);
 		}
 		if (request instanceof CreateUnspecifiedTypeConnectionRequest) {
+			if (RequestConstants.REQ_CONNECTION_END.equals(request.getType())) {
+				for (Object type : ((CreateUnspecifiedTypeConnectionRequest) request).getElementTypes()) {
+					if (type instanceof IElementType) {
+						IElementType elementType = (IElementType) type;
+						if (elementType.equals(WebsiteElementTypes.ViewAssociation_4004))
+							return super.getTargetEditPart(request);
+					}
+				}
+			}
 			return getParent().getTargetEditPart(request);
 		}
 		return super.getTargetEditPart(request);

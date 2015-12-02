@@ -19,6 +19,7 @@ import org.eclipse.ui.navigator.ICommonLabelProvider;
 import uk.ac.man.cs.mdsd.webgen.website.CasAuthentication;
 import uk.ac.man.cs.mdsd.webgen.website.CreateSitemapUnit;
 import uk.ac.man.cs.mdsd.webgen.website.LocalAuthenticationSystem;
+import uk.ac.man.cs.mdsd.webgen.website.ViewAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorPlugin;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -414,24 +415,24 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ActionMenuEntry", //$NON-NLS-1$
 					WebsiteElementTypes.ActionMenuEntry_3236);
-		case ModelLabelYEditPart.VISUAL_ID:
-			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ModelLabelY", //$NON-NLS-1$
-					WebsiteElementTypes.ModelLabelY_3237);
-		case ModelLabelY2EditPart.VISUAL_ID:
-			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ModelLabelY", //$NON-NLS-1$
-					WebsiteElementTypes.ModelLabelY_3238);
-		case ViewAttributeEditPart.VISUAL_ID:
-			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ViewAttribute", //$NON-NLS-1$
-					WebsiteElementTypes.ViewAttribute_3239);
-		case ViewAssociationEditPart.VISUAL_ID:
-			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ViewAssociation", //$NON-NLS-1$
-					WebsiteElementTypes.ViewAssociation_3240);
 		case ServiceAttributeEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ServiceAttribute", //$NON-NLS-1$
 					WebsiteElementTypes.ServiceAttribute_3241);
 		case ServiceAssociationEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ServiceAssociation", //$NON-NLS-1$
 					WebsiteElementTypes.ServiceAssociation_3242);
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?EncapsulatedAttribute", //$NON-NLS-1$
+					WebsiteElementTypes.EncapsulatedAttribute_3243);
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?EncapsulatedAssociation", //$NON-NLS-1$
+					WebsiteElementTypes.EncapsulatedAssociation_3244);
+		case ModelLabelEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ModelLabel", //$NON-NLS-1$
+					WebsiteElementTypes.ModelLabel_3247);
+		case ModelLabel2EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?ModelLabel", //$NON-NLS-1$
+					WebsiteElementTypes.ModelLabel_3248);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?http://www.cs.man.ac.uk/mdsd/2010/Website?AssociationWithoutContainment", //$NON-NLS-1$
 					WebsiteElementTypes.AssociationWithoutContainment_4001);
@@ -441,6 +442,9 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 		case PageLinkEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?http://www.cs.man.ac.uk/mdsd/2010/Website?PageLink", //$NON-NLS-1$
 					WebsiteElementTypes.PageLink_4003);
+		case ViewAssociationEditPart.VISUAL_ID:
+			return getImage("Navigator?Link?http://www.cs.man.ac.uk/mdsd/2010/Website?ViewAssociation", //$NON-NLS-1$
+					WebsiteElementTypes.ViewAssociation_4004);
 		}
 		return getImage("Navigator?UnknownElement", null); //$NON-NLS-1$
 	}
@@ -715,24 +719,26 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 			return getImageAttribute_3235Text(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236Text(view);
-		case ModelLabelYEditPart.VISUAL_ID:
-			return getModelLabelY_3237Text(view);
-		case ModelLabelY2EditPart.VISUAL_ID:
-			return getModelLabelY_3238Text(view);
-		case ViewAttributeEditPart.VISUAL_ID:
-			return getViewAttribute_3239Text(view);
-		case ViewAssociationEditPart.VISUAL_ID:
-			return getViewAssociation_3240Text(view);
 		case ServiceAttributeEditPart.VISUAL_ID:
 			return getServiceAttribute_3241Text(view);
 		case ServiceAssociationEditPart.VISUAL_ID:
 			return getServiceAssociation_3242Text(view);
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+			return getEncapsulatedAttribute_3243Text(view);
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
+			return getEncapsulatedAssociation_3244Text(view);
+		case ModelLabelEditPart.VISUAL_ID:
+			return getModelLabel_3247Text(view);
+		case ModelLabel2EditPart.VISUAL_ID:
+			return getModelLabel_3248Text(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001Text(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
 			return getAssociationWithContainment_4002Text(view);
 		case PageLinkEditPart.VISUAL_ID:
 			return getPageLink_4003Text(view);
+		case ViewAssociationEditPart.VISUAL_ID:
+			return getViewAssociation_4004Text(view);
 		}
 		return getUnknownElementText(view);
 	}
@@ -2514,70 +2520,6 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 	/**
 	* @generated
 	*/
-	private String getModelLabelY_3237Text(View view) {
-		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabelY_3237,
-				view.getElement() != null ? view.getElement() : view,
-				WebsiteVisualIDRegistry.getType(ModelLabelYNameEditPart.VISUAL_ID));
-		if (parser != null) {
-			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
-					ParserOptions.NONE.intValue());
-		} else {
-			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5244); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	* @generated
-	*/
-	private String getModelLabelY_3238Text(View view) {
-		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabelY_3238,
-				view.getElement() != null ? view.getElement() : view,
-				WebsiteVisualIDRegistry.getType(ModelLabelYName2EditPart.VISUAL_ID));
-		if (parser != null) {
-			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
-					ParserOptions.NONE.intValue());
-		} else {
-			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5245); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	* @generated
-	*/
-	private String getViewAttribute_3239Text(View view) {
-		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ViewAttribute_3239,
-				view.getElement() != null ? view.getElement() : view,
-				WebsiteVisualIDRegistry.getType(ViewAttributeNameEditPart.VISUAL_ID));
-		if (parser != null) {
-			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
-					ParserOptions.NONE.intValue());
-		} else {
-			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5247); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	* @generated
-	*/
-	private String getViewAssociation_3240Text(View view) {
-		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ViewAssociation_3240,
-				view.getElement() != null ? view.getElement() : view,
-				WebsiteVisualIDRegistry.getType(ViewAssociationNameEditPart.VISUAL_ID));
-		if (parser != null) {
-			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
-					ParserOptions.NONE.intValue());
-		} else {
-			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5248); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	* @generated
-	*/
 	private String getServiceAttribute_3241Text(View view) {
 		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ServiceAttribute_3241,
 				view.getElement() != null ? view.getElement() : view,
@@ -2603,6 +2545,70 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 					ParserOptions.NONE.intValue());
 		} else {
 			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5250); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getEncapsulatedAttribute_3243Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EncapsulatedAttribute_3243,
+				view.getElement() != null ? view.getElement() : view,
+				WebsiteVisualIDRegistry.getType(EncapsulatedAttributeNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5251); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getEncapsulatedAssociation_3244Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EncapsulatedAssociation_3244,
+				view.getElement() != null ? view.getElement() : view,
+				WebsiteVisualIDRegistry.getType(EncapsulatedAssociationNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5252); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getModelLabel_3247Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabel_3247,
+				view.getElement() != null ? view.getElement() : view,
+				WebsiteVisualIDRegistry.getType(ModelLabelNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5255); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getModelLabel_3248Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabel_3248,
+				view.getElement() != null ? view.getElement() : view,
+				WebsiteVisualIDRegistry.getType(ModelLabelName2EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5256); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}
@@ -2644,6 +2650,19 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 	 */
 	private String getPageLink_4003Text(View view) {
 		return ""; //$NON-NLS-1$
+	}
+
+	/**
+	* @generated
+	*/
+	private String getViewAssociation_4004Text(View view) {
+		ViewAssociation domainModelElement = (ViewAssociation) view.getElement();
+		if (domainModelElement != null) {
+			return domainModelElement.getName();
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("No domain element for view with visualID = " + 4004); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
 	}
 
 	/**

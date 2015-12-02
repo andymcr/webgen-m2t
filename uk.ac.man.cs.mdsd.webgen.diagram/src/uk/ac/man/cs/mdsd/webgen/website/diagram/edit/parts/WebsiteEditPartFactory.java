@@ -121,29 +121,29 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case LocationAttributeNameEditPart.VISUAL_ID:
 				return new LocationAttributeNameEditPart(view);
 
-			case ModelLabelYEditPart.VISUAL_ID:
-				return new ModelLabelYEditPart(view);
+			case ModelLabelEditPart.VISUAL_ID:
+				return new ModelLabelEditPart(view);
 
-			case ModelLabelYNameEditPart.VISUAL_ID:
-				return new ModelLabelYNameEditPart(view);
+			case ModelLabelNameEditPart.VISUAL_ID:
+				return new ModelLabelNameEditPart(view);
 
-			case ModelLabelY2EditPart.VISUAL_ID:
-				return new ModelLabelY2EditPart(view);
+			case ModelLabel2EditPart.VISUAL_ID:
+				return new ModelLabel2EditPart(view);
 
-			case ModelLabelYName2EditPart.VISUAL_ID:
-				return new ModelLabelYName2EditPart(view);
+			case ModelLabelName2EditPart.VISUAL_ID:
+				return new ModelLabelName2EditPart(view);
 
-			case ViewAttributeEditPart.VISUAL_ID:
-				return new ViewAttributeEditPart(view);
+			case EncapsulatedAttributeEditPart.VISUAL_ID:
+				return new EncapsulatedAttributeEditPart(view);
 
-			case ViewAttributeNameEditPart.VISUAL_ID:
-				return new ViewAttributeNameEditPart(view);
+			case EncapsulatedAttributeNameEditPart.VISUAL_ID:
+				return new EncapsulatedAttributeNameEditPart(view);
 
-			case ViewAssociationEditPart.VISUAL_ID:
-				return new ViewAssociationEditPart(view);
+			case EncapsulatedAssociationEditPart.VISUAL_ID:
+				return new EncapsulatedAssociationEditPart(view);
 
-			case ViewAssociationNameEditPart.VISUAL_ID:
-				return new ViewAssociationNameEditPart(view);
+			case EncapsulatedAssociationNameEditPart.VISUAL_ID:
+				return new EncapsulatedAssociationNameEditPart(view);
 
 			case ActionUnitEditPart.VISUAL_ID:
 				return new ActionUnitEditPart(view);
@@ -879,6 +879,9 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case AssociationWithContainmentCardinalityEditPart.VISUAL_ID:
 				return new AssociationWithContainmentCardinalityEditPart(view);
+
+			case ViewAssociationEditPart.VISUAL_ID:
+				return new ViewAssociationEditPart(view);
 
 			case PageLinkEditPart.VISUAL_ID:
 				return new PageLinkEditPart(view);

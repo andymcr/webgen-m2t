@@ -29,7 +29,7 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 		types.add(WebsiteElementTypes.FileAttribute_3152);
 		types.add(WebsiteElementTypes.ImageAttribute_3235);
 		types.add(WebsiteElementTypes.LocationAttribute_3230);
-		types.add(WebsiteElementTypes.ModelLabelY_3237);
+		types.add(WebsiteElementTypes.ModelLabel_3247);
 		return types;
 	}
 

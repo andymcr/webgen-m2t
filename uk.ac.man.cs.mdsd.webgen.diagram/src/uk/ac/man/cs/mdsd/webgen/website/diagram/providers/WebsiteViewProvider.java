@@ -143,9 +143,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case FileAttributeEditPart.VISUAL_ID:
 				case ImageAttributeEditPart.VISUAL_ID:
 				case LocationAttributeEditPart.VISUAL_ID:
-				case ModelLabelYEditPart.VISUAL_ID:
-				case ViewAttributeEditPart.VISUAL_ID:
-				case ViewAssociationEditPart.VISUAL_ID:
+				case ModelLabelEditPart.VISUAL_ID:
+				case EncapsulatedAttributeEditPart.VISUAL_ID:
+				case EncapsulatedAssociationEditPart.VISUAL_ID:
 				case ActionUnitEditPart.VISUAL_ID:
 				case UnitElementEditPart.VISUAL_ID:
 				case UnitAssociationEditPart.VISUAL_ID:
@@ -172,7 +172,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case ServiceAttributeEditPart.VISUAL_ID:
 				case ServiceAssociationEditPart.VISUAL_ID:
 				case SelectionEditPart.VISUAL_ID:
-				case ModelLabelY2EditPart.VISUAL_ID:
+				case ModelLabel2EditPart.VISUAL_ID:
 				case UnitElement2EditPart.VISUAL_ID:
 				case UnitAssociation2EditPart.VISUAL_ID:
 				case DataTypeField2EditPart.VISUAL_ID:
@@ -262,54 +262,55 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				|| EnumerationLiteralEditPart.VISUAL_ID == visualID || DataTypeAttributeEditPart.VISUAL_ID == visualID
 				|| DateAttributeEditPart.VISUAL_ID == visualID || FileAttributeEditPart.VISUAL_ID == visualID
 				|| ImageAttributeEditPart.VISUAL_ID == visualID || LocationAttributeEditPart.VISUAL_ID == visualID
-				|| ModelLabelYEditPart.VISUAL_ID == visualID || ModelLabelY2EditPart.VISUAL_ID == visualID
-				|| ViewAttributeEditPart.VISUAL_ID == visualID || ViewAssociationEditPart.VISUAL_ID == visualID
-				|| ActionUnitEditPart.VISUAL_ID == visualID || UnitElementEditPart.VISUAL_ID == visualID
-				|| UnitAssociationEditPart.VISUAL_ID == visualID || DataTypeFieldEditPart.VISUAL_ID == visualID
-				|| DateFieldEditPart.VISUAL_ID == visualID || UnitSupportActionEditPart.VISUAL_ID == visualID
-				|| CommandUnitEditPart.VISUAL_ID == visualID || UserCommandEditPart.VISUAL_ID == visualID
-				|| CreateUnitEditPart.VISUAL_ID == visualID || UnitElement2EditPart.VISUAL_ID == visualID
-				|| UnitAssociation2EditPart.VISUAL_ID == visualID || DataTypeField2EditPart.VISUAL_ID == visualID
-				|| DateField2EditPart.VISUAL_ID == visualID || CreateUpdateUnitEditPart.VISUAL_ID == visualID
-				|| UnitElement3EditPart.VISUAL_ID == visualID || UnitAssociation3EditPart.VISUAL_ID == visualID
-				|| DataTypeField3EditPart.VISUAL_ID == visualID || DateField3EditPart.VISUAL_ID == visualID
-				|| CreateSitemapUnitEditPart.VISUAL_ID == visualID || DetailsUnitEditPart.VISUAL_ID == visualID
-				|| UnitElement4EditPart.VISUAL_ID == visualID || SelectActionEditPart.VISUAL_ID == visualID
-				|| UnitAssociation4EditPart.VISUAL_ID == visualID || DetailsUnit2EditPart.VISUAL_ID == visualID
-				|| UnitElement5EditPart.VISUAL_ID == visualID || UnitAssociation5EditPart.VISUAL_ID == visualID
-				|| DetailsUnit3EditPart.VISUAL_ID == visualID || UnitElement6EditPart.VISUAL_ID == visualID
-				|| IndexUnitEditPart.VISUAL_ID == visualID || UnitElement7EditPart.VISUAL_ID == visualID
-				|| IndexUnit2EditPart.VISUAL_ID == visualID || UnitElement8EditPart.VISUAL_ID == visualID
-				|| UnitAssociation6EditPart.VISUAL_ID == visualID || DetailsUnit4EditPart.VISUAL_ID == visualID
-				|| UnitElement9EditPart.VISUAL_ID == visualID || UnitAssociation7EditPart.VISUAL_ID == visualID
-				|| DetailsUnit5EditPart.VISUAL_ID == visualID || UnitElement10EditPart.VISUAL_ID == visualID
-				|| UnitAssociation8EditPart.VISUAL_ID == visualID || IndexUnit3EditPart.VISUAL_ID == visualID
-				|| UnitElement11EditPart.VISUAL_ID == visualID || UnitAssociation9EditPart.VISUAL_ID == visualID
-				|| IndexUnit4EditPart.VISUAL_ID == visualID || UnitElement12EditPart.VISUAL_ID == visualID
-				|| UnitAssociation10EditPart.VISUAL_ID == visualID || DetailsUnit6EditPart.VISUAL_ID == visualID
-				|| UnitElement13EditPart.VISUAL_ID == visualID || UnitAssociation11EditPart.VISUAL_ID == visualID
-				|| IndexUnit5EditPart.VISUAL_ID == visualID || UnitElement14EditPart.VISUAL_ID == visualID
-				|| UnitAssociation12EditPart.VISUAL_ID == visualID || SelectAction2EditPart.VISUAL_ID == visualID
-				|| DeleteActionEditPart.VISUAL_ID == visualID || SelectAction3EditPart.VISUAL_ID == visualID
-				|| DataTypeField4EditPart.VISUAL_ID == visualID || DateField4EditPart.VISUAL_ID == visualID
-				|| UnitSupportAction2EditPart.VISUAL_ID == visualID || IndexUnit6EditPart.VISUAL_ID == visualID
-				|| UnitElement15EditPart.VISUAL_ID == visualID || SelectAction4EditPart.VISUAL_ID == visualID
-				|| UnitAssociation13EditPart.VISUAL_ID == visualID || DetailsUnit7EditPart.VISUAL_ID == visualID
-				|| UnitElement16EditPart.VISUAL_ID == visualID || UnitAssociation14EditPart.VISUAL_ID == visualID
-				|| IndexUnit7EditPart.VISUAL_ID == visualID || UnitElement17EditPart.VISUAL_ID == visualID
-				|| UnitAssociation15EditPart.VISUAL_ID == visualID || SelectAction5EditPart.VISUAL_ID == visualID
-				|| DataTypeField5EditPart.VISUAL_ID == visualID || DateField5EditPart.VISUAL_ID == visualID
-				|| SelectAction6EditPart.VISUAL_ID == visualID || DeleteAction2EditPart.VISUAL_ID == visualID
-				|| FeatureSupportActionEditPart.VISUAL_ID == visualID || MapUnitEditPart.VISUAL_ID == visualID
-				|| SearchUnitEditPart.VISUAL_ID == visualID || UnitElement18EditPart.VISUAL_ID == visualID
-				|| UnitAssociation16EditPart.VISUAL_ID == visualID || DataTypeField6EditPart.VISUAL_ID == visualID
-				|| DateField6EditPart.VISUAL_ID == visualID || StaticUnitEditPart.VISUAL_ID == visualID
-				|| UpdateUnitEditPart.VISUAL_ID == visualID || UnitElement19EditPart.VISUAL_ID == visualID
-				|| UnitAssociation17EditPart.VISUAL_ID == visualID || IndexUnit8EditPart.VISUAL_ID == visualID
-				|| UnitElement20EditPart.VISUAL_ID == visualID || UnitAssociation18EditPart.VISUAL_ID == visualID
-				|| SelectAction7EditPart.VISUAL_ID == visualID || DeleteAction3EditPart.VISUAL_ID == visualID
-				|| DataTypeField7EditPart.VISUAL_ID == visualID || DateField7EditPart.VISUAL_ID == visualID
-				|| ActionMenuEntryEditPart.VISUAL_ID == visualID || FixedCommandMenuEntryEditPart.VISUAL_ID == visualID
+				|| ModelLabelEditPart.VISUAL_ID == visualID || ModelLabel2EditPart.VISUAL_ID == visualID
+				|| EncapsulatedAttributeEditPart.VISUAL_ID == visualID
+				|| EncapsulatedAssociationEditPart.VISUAL_ID == visualID || ActionUnitEditPart.VISUAL_ID == visualID
+				|| UnitElementEditPart.VISUAL_ID == visualID || UnitAssociationEditPart.VISUAL_ID == visualID
+				|| DataTypeFieldEditPart.VISUAL_ID == visualID || DateFieldEditPart.VISUAL_ID == visualID
+				|| UnitSupportActionEditPart.VISUAL_ID == visualID || CommandUnitEditPart.VISUAL_ID == visualID
+				|| UserCommandEditPart.VISUAL_ID == visualID || CreateUnitEditPart.VISUAL_ID == visualID
+				|| UnitElement2EditPart.VISUAL_ID == visualID || UnitAssociation2EditPart.VISUAL_ID == visualID
+				|| DataTypeField2EditPart.VISUAL_ID == visualID || DateField2EditPart.VISUAL_ID == visualID
+				|| CreateUpdateUnitEditPart.VISUAL_ID == visualID || UnitElement3EditPart.VISUAL_ID == visualID
+				|| UnitAssociation3EditPart.VISUAL_ID == visualID || DataTypeField3EditPart.VISUAL_ID == visualID
+				|| DateField3EditPart.VISUAL_ID == visualID || CreateSitemapUnitEditPart.VISUAL_ID == visualID
+				|| DetailsUnitEditPart.VISUAL_ID == visualID || UnitElement4EditPart.VISUAL_ID == visualID
+				|| SelectActionEditPart.VISUAL_ID == visualID || UnitAssociation4EditPart.VISUAL_ID == visualID
+				|| DetailsUnit2EditPart.VISUAL_ID == visualID || UnitElement5EditPart.VISUAL_ID == visualID
+				|| UnitAssociation5EditPart.VISUAL_ID == visualID || DetailsUnit3EditPart.VISUAL_ID == visualID
+				|| UnitElement6EditPart.VISUAL_ID == visualID || IndexUnitEditPart.VISUAL_ID == visualID
+				|| UnitElement7EditPart.VISUAL_ID == visualID || IndexUnit2EditPart.VISUAL_ID == visualID
+				|| UnitElement8EditPart.VISUAL_ID == visualID || UnitAssociation6EditPart.VISUAL_ID == visualID
+				|| DetailsUnit4EditPart.VISUAL_ID == visualID || UnitElement9EditPart.VISUAL_ID == visualID
+				|| UnitAssociation7EditPart.VISUAL_ID == visualID || DetailsUnit5EditPart.VISUAL_ID == visualID
+				|| UnitElement10EditPart.VISUAL_ID == visualID || UnitAssociation8EditPart.VISUAL_ID == visualID
+				|| IndexUnit3EditPart.VISUAL_ID == visualID || UnitElement11EditPart.VISUAL_ID == visualID
+				|| UnitAssociation9EditPart.VISUAL_ID == visualID || IndexUnit4EditPart.VISUAL_ID == visualID
+				|| UnitElement12EditPart.VISUAL_ID == visualID || UnitAssociation10EditPart.VISUAL_ID == visualID
+				|| DetailsUnit6EditPart.VISUAL_ID == visualID || UnitElement13EditPart.VISUAL_ID == visualID
+				|| UnitAssociation11EditPart.VISUAL_ID == visualID || IndexUnit5EditPart.VISUAL_ID == visualID
+				|| UnitElement14EditPart.VISUAL_ID == visualID || UnitAssociation12EditPart.VISUAL_ID == visualID
+				|| SelectAction2EditPart.VISUAL_ID == visualID || DeleteActionEditPart.VISUAL_ID == visualID
+				|| SelectAction3EditPart.VISUAL_ID == visualID || DataTypeField4EditPart.VISUAL_ID == visualID
+				|| DateField4EditPart.VISUAL_ID == visualID || UnitSupportAction2EditPart.VISUAL_ID == visualID
+				|| IndexUnit6EditPart.VISUAL_ID == visualID || UnitElement15EditPart.VISUAL_ID == visualID
+				|| SelectAction4EditPart.VISUAL_ID == visualID || UnitAssociation13EditPart.VISUAL_ID == visualID
+				|| DetailsUnit7EditPart.VISUAL_ID == visualID || UnitElement16EditPart.VISUAL_ID == visualID
+				|| UnitAssociation14EditPart.VISUAL_ID == visualID || IndexUnit7EditPart.VISUAL_ID == visualID
+				|| UnitElement17EditPart.VISUAL_ID == visualID || UnitAssociation15EditPart.VISUAL_ID == visualID
+				|| SelectAction5EditPart.VISUAL_ID == visualID || DataTypeField5EditPart.VISUAL_ID == visualID
+				|| DateField5EditPart.VISUAL_ID == visualID || SelectAction6EditPart.VISUAL_ID == visualID
+				|| DeleteAction2EditPart.VISUAL_ID == visualID || FeatureSupportActionEditPart.VISUAL_ID == visualID
+				|| MapUnitEditPart.VISUAL_ID == visualID || SearchUnitEditPart.VISUAL_ID == visualID
+				|| UnitElement18EditPart.VISUAL_ID == visualID || UnitAssociation16EditPart.VISUAL_ID == visualID
+				|| DataTypeField6EditPart.VISUAL_ID == visualID || DateField6EditPart.VISUAL_ID == visualID
+				|| StaticUnitEditPart.VISUAL_ID == visualID || UpdateUnitEditPart.VISUAL_ID == visualID
+				|| UnitElement19EditPart.VISUAL_ID == visualID || UnitAssociation17EditPart.VISUAL_ID == visualID
+				|| IndexUnit8EditPart.VISUAL_ID == visualID || UnitElement20EditPart.VISUAL_ID == visualID
+				|| UnitAssociation18EditPart.VISUAL_ID == visualID || SelectAction7EditPart.VISUAL_ID == visualID
+				|| DeleteAction3EditPart.VISUAL_ID == visualID || DataTypeField7EditPart.VISUAL_ID == visualID
+				|| DateField7EditPart.VISUAL_ID == visualID || ActionMenuEntryEditPart.VISUAL_ID == visualID
+				|| FixedCommandMenuEntryEditPart.VISUAL_ID == visualID
 				|| EditStaticTextMenuEntryEditPart.VISUAL_ID == visualID
 				|| ServiceAttributeEditPart.VISUAL_ID == visualID || ServiceAssociationEditPart.VISUAL_ID == visualID
 				|| SelectionEditPart.VISUAL_ID == visualID;
@@ -396,14 +397,14 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createImageAttribute_3235(domainElement, containerView, index, persisted, preferencesHint);
 		case LocationAttributeEditPart.VISUAL_ID:
 			return createLocationAttribute_3230(domainElement, containerView, index, persisted, preferencesHint);
-		case ModelLabelYEditPart.VISUAL_ID:
-			return createModelLabelY_3237(domainElement, containerView, index, persisted, preferencesHint);
-		case ModelLabelY2EditPart.VISUAL_ID:
-			return createModelLabelY_3238(domainElement, containerView, index, persisted, preferencesHint);
-		case ViewAttributeEditPart.VISUAL_ID:
-			return createViewAttribute_3239(domainElement, containerView, index, persisted, preferencesHint);
-		case ViewAssociationEditPart.VISUAL_ID:
-			return createViewAssociation_3240(domainElement, containerView, index, persisted, preferencesHint);
+		case ModelLabelEditPart.VISUAL_ID:
+			return createModelLabel_3247(domainElement, containerView, index, persisted, preferencesHint);
+		case ModelLabel2EditPart.VISUAL_ID:
+			return createModelLabel_3248(domainElement, containerView, index, persisted, preferencesHint);
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+			return createEncapsulatedAttribute_3243(domainElement, containerView, index, persisted, preferencesHint);
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
+			return createEncapsulatedAssociation_3244(domainElement, containerView, index, persisted, preferencesHint);
 		case ActionUnitEditPart.VISUAL_ID:
 			return createActionUnit_3213(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElementEditPart.VISUAL_ID:
@@ -615,6 +616,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 		case AssociationWithContainmentEditPart.VISUAL_ID:
 			return createAssociationWithContainment_4002(getSemanticElement(semanticAdapter), containerView, index,
 					persisted, preferencesHint);
+		case ViewAssociationEditPart.VISUAL_ID:
+			return createViewAssociation_4004(getSemanticElement(semanticAdapter), containerView, index, persisted,
+					preferencesHint);
 		case PageLinkEditPart.VISUAL_ID:
 			return createPageLink_4003(getSemanticElement(semanticAdapter), containerView, index, persisted,
 					preferencesHint);
@@ -1210,14 +1214,14 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	public Node createModelLabelY_3237(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createModelLabel_3247(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createFillStyle());
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(ModelLabelYEditPart.VISUAL_ID));
+		node.setType(WebsiteVisualIDRegistry.getType(ModelLabelEditPart.VISUAL_ID));
 		ViewUtil.insertChildView(containerView, node, index, persisted);
 		node.setElement(domainElement);
 		// initializeFromPreferences 
@@ -1237,21 +1241,21 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5244 = createLabel(node, WebsiteVisualIDRegistry.getType(ModelLabelYNameEditPart.VISUAL_ID));
+		Node label5255 = createLabel(node, WebsiteVisualIDRegistry.getType(ModelLabelNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createModelLabelY_3238(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createModelLabel_3248(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createFillStyle());
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(ModelLabelY2EditPart.VISUAL_ID));
+		node.setType(WebsiteVisualIDRegistry.getType(ModelLabel2EditPart.VISUAL_ID));
 		ViewUtil.insertChildView(containerView, node, index, persisted);
 		node.setElement(domainElement);
 		// initializeFromPreferences 
@@ -1271,21 +1275,21 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(),
 				FigureUtilities.RGBToInteger(fillRGB));
-		Node label5245 = createLabel(node, WebsiteVisualIDRegistry.getType(ModelLabelYName2EditPart.VISUAL_ID));
+		Node label5256 = createLabel(node, WebsiteVisualIDRegistry.getType(ModelLabelName2EditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createViewAttribute_3239(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
+	public Node createEncapsulatedAttribute_3243(EObject domainElement, View containerView, int index,
+			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(ViewAttributeEditPart.VISUAL_ID));
+		node.setType(WebsiteVisualIDRegistry.getType(EncapsulatedAttributeEditPart.VISUAL_ID));
 		ViewUtil.insertChildView(containerView, node, index, persisted);
 		node.setElement(domainElement);
 		// initializeFromPreferences 
@@ -1306,21 +1310,22 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5247 = createLabel(node, WebsiteVisualIDRegistry.getType(ViewAttributeNameEditPart.VISUAL_ID));
+		Node label5251 = createLabel(node,
+				WebsiteVisualIDRegistry.getType(EncapsulatedAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	public Node createViewAssociation_3240(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
+	public Node createEncapsulatedAssociation_3244(EObject domainElement, View containerView, int index,
+			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(ViewAssociationEditPart.VISUAL_ID));
+		node.setType(WebsiteVisualIDRegistry.getType(EncapsulatedAssociationEditPart.VISUAL_ID));
 		ViewUtil.insertChildView(containerView, node, index, persisted);
 		node.setElement(domainElement);
 		// initializeFromPreferences 
@@ -1341,7 +1346,8 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5248 = createLabel(node, WebsiteVisualIDRegistry.getType(ViewAssociationNameEditPart.VISUAL_ID));
+		Node label5252 = createLabel(node,
+				WebsiteVisualIDRegistry.getType(EncapsulatedAssociationNameEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -2111,6 +2117,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public Node createUnitAssociation_3176(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2285,6 +2292,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public Node createIndexUnit_3114(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2318,6 +2326,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public Node createUnitElement_3179(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2353,6 +2362,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public Node createUnitAssociation_3180(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2599,6 +2609,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public Node createIndexUnit_3136(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -4761,6 +4772,47 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 		Location location6004 = (Location) label6004.getLayoutConstraint();
 		location6004.setX(0);
 		location6004.setY(60);
+		return edge;
+	}
+
+	/**
+	* @generated
+	*/
+	public Edge createViewAssociation_4004(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Connector edge = NotationFactory.eINSTANCE.createConnector();
+		edge.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
+		RelativeBendpoints bendpoints = NotationFactory.eINSTANCE.createRelativeBendpoints();
+		ArrayList<RelativeBendpoint> points = new ArrayList<RelativeBendpoint>(2);
+		points.add(new RelativeBendpoint());
+		points.add(new RelativeBendpoint());
+		bendpoints.setPoints(points);
+		edge.setBendpoints(bendpoints);
+		ViewUtil.insertChildView(containerView, edge, index, persisted);
+		edge.setType(WebsiteVisualIDRegistry.getType(ViewAssociationEditPart.VISUAL_ID));
+		edge.setElement(domainElement);
+		// initializePreferences
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(edge, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle edgeFontStyle = (FontStyle) edge.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (edgeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			edgeFontStyle.setFontName(fontData.getName());
+			edgeFontStyle.setFontHeight(fontData.getHeight());
+			edgeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			edgeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			edgeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		Routing routing = Routing.get(prefStore.getInt(IPreferenceConstants.PREF_LINE_STYLE));
+		if (routing != null) {
+			ViewUtil.setStructuralFeatureValue(edge, NotationPackage.eINSTANCE.getRoutingStyle_Routing(), routing);
+		}
 		return edge;
 	}
 

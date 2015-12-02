@@ -12,18 +12,18 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.ViewAttribute;
+import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
  */
-public class ViewAttributeCreateCommand extends EditElementCommand {
+public class EncapsulatedAssociationCreateCommand extends EditElementCommand {
 
 	/**
 	* @generated
 	*/
-	public ViewAttributeCreateCommand(CreateElementRequest req) {
+	public EncapsulatedAssociationCreateCommand(CreateElementRequest req) {
 		super(req.getLabel(), null, req);
 	}
 
@@ -51,7 +51,7 @@ public class ViewAttributeCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ViewAttribute newElement = WebsiteFactory.eINSTANCE.createViewAttribute();
+		EncapsulatedAssociation newElement = WebsiteFactory.eINSTANCE.createEncapsulatedAssociation();
 
 		uk.ac.man.cs.mdsd.webgen.website.View owner = (uk.ac.man.cs.mdsd.webgen.website.View) getElementToEdit();
 		owner.getFeatures().add(newElement);
@@ -65,7 +65,7 @@ public class ViewAttributeCreateCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	protected void doConfigure(ViewAttribute newElement, IProgressMonitor monitor, IAdaptable info)
+	protected void doConfigure(EncapsulatedAssociation newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);

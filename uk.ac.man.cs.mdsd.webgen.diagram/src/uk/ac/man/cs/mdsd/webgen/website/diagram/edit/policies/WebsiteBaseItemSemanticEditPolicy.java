@@ -34,9 +34,11 @@ import org.eclipse.gmf.tooling.runtime.edit.helpers.GeneratedEditHelperBase;
 
 import uk.ac.man.cs.mdsd.webgen.website.AssociationWithContainment;
 import uk.ac.man.cs.mdsd.webgen.website.AssociationWithoutContainment;
+import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.Entity;
 import uk.ac.man.cs.mdsd.webgen.website.Page;
 import uk.ac.man.cs.mdsd.webgen.website.PageLink;
+import uk.ac.man.cs.mdsd.webgen.website.ViewAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorPlugin;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -324,8 +326,16 @@ public class WebsiteBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
+		public boolean canCreateViewAssociation_4004(uk.ac.man.cs.mdsd.webgen.website.View source,
+				EncapsulatedAssociation target) {
+			return canExistViewAssociation_4004(null, source, target);
+		}
+
+		/**
+				 * @generated
+				 */
 		public boolean canCreatePageLink_4003(Page source, Page target) {
 			if (source != null) {
 				if (source.getParentPage() != null) {
@@ -352,8 +362,16 @@ public class WebsiteBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		}
 
 		/**
-		 * @generated
-		 */
+		* @generated
+		*/
+		public boolean canExistViewAssociation_4004(ViewAssociation linkInstance,
+				uk.ac.man.cs.mdsd.webgen.website.View source, EncapsulatedAssociation target) {
+			return true;
+		}
+
+		/**
+				 * @generated
+				 */
 		public boolean canExistPageLink_4003(PageLink linkInstance, Page source, Page target) {
 			return true;
 		}

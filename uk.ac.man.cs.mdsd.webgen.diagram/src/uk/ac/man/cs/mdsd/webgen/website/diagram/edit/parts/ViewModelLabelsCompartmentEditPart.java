@@ -89,7 +89,7 @@ public class ViewModelLabelsCompartmentEditPart extends ListCompartmentEditPart 
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ModelLabelY_3238) {
+			if (type == WebsiteElementTypes.ModelLabel_3248) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

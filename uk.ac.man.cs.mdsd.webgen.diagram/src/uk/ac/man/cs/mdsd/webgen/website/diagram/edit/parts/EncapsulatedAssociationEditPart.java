@@ -21,18 +21,18 @@ import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.graphics.Color;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ViewAttributeItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.EncapsulatedAssociationItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 
 /**
  * @generated
  */
-public class ViewAttributeEditPart extends ShapeNodeEditPart {
+public class EncapsulatedAssociationEditPart extends ShapeNodeEditPart {
 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3239;
+	public static final int VISUAL_ID = 3244;
 
 	/**
 	* @generated
@@ -47,7 +47,7 @@ public class ViewAttributeEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public ViewAttributeEditPart(View view) {
+	public EncapsulatedAssociationEditPart(View view) {
 		super(view);
 	}
 
@@ -56,7 +56,7 @@ public class ViewAttributeEditPart extends ShapeNodeEditPart {
 	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ViewAttributeItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new EncapsulatedAssociationItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
@@ -105,8 +105,9 @@ public class ViewAttributeEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof ViewAttributeNameEditPart) {
-			((ViewAttributeNameEditPart) childEditPart).setLabel(getPrimaryShape().getFigureAttributeNameLabelFigure());
+		if (childEditPart instanceof EncapsulatedAssociationNameEditPart) {
+			((EncapsulatedAssociationNameEditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureAttributeNameLabelFigure());
 			return true;
 		}
 		return false;
@@ -116,7 +117,7 @@ public class ViewAttributeEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof ViewAttributeNameEditPart) {
+		if (childEditPart instanceof EncapsulatedAssociationNameEditPart) {
 			return true;
 		}
 		return false;
@@ -239,7 +240,7 @@ public class ViewAttributeEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(ViewAttributeNameEditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(EncapsulatedAssociationNameEditPart.VISUAL_ID));
 	}
 
 	/**

@@ -45,7 +45,6 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createUserCommand5CreationTool());
 		paletteContainer.add(createDatatypefield6CreationTool());
 		paletteContainer.add(createDatefield7CreationTool());
-		paletteContainer.add(createViewassociationX8CreationTool());
 		return paletteContainer;
 	}
 
@@ -148,8 +147,9 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createLocationAttribute10CreationTool());
 		paletteContainer.add(createUncontainedAssociation11CreationTool());
 		paletteContainer.add(createContainedAssociation12CreationTool());
-		paletteContainer.add(createViewAttribute13CreationTool());
-		paletteContainer.add(createViewAssociation14CreationTool());
+		paletteContainer.add(createEncapsulatedAttribute13CreationTool());
+		paletteContainer.add(createEncapsulatedAssociation14CreationTool());
+		paletteContainer.add(createViewAssociation15CreationTool());
 		return paletteContainer;
 	}
 
@@ -318,17 +318,6 @@ public class WebsitePaletteFactory {
 		entry.setId("createDatefield7CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DateField_3207));
 		entry.setLargeIcon(entry.getSmallIcon());
-		return entry;
-	}
-
-	/**
-	* @generated
-	*/
-	private ToolEntry createViewassociationX8CreationTool() {
-		ToolEntry entry = new ToolEntry(Messages.ViewassociationX8CreationTool_title,
-				Messages.ViewassociationX8CreationTool_desc, null, null) {
-		};
-		entry.setId("createViewassociationX8CreationTool"); //$NON-NLS-1$
 		return entry;
 	}
 
@@ -628,12 +617,12 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createModelLabel2CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.ModelLabelY_3237);
-		types.add(WebsiteElementTypes.ModelLabelY_3238);
+		types.add(WebsiteElementTypes.ModelLabel_3247);
+		types.add(WebsiteElementTypes.ModelLabel_3248);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ModelLabel2CreationTool_title,
 				Messages.ModelLabel2CreationTool_desc, types);
 		entry.setId("createModelLabel2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ModelLabelY_3237));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ModelLabel_3247));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -809,12 +798,12 @@ public class WebsitePaletteFactory {
 	/**
 	* @generated
 	*/
-	private ToolEntry createViewAttribute13CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ViewAttribute13CreationTool_title,
-				Messages.ViewAttribute13CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.ViewAttribute_3239));
-		entry.setId("createViewAttribute13CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ViewAttribute_3239));
+	private ToolEntry createEncapsulatedAttribute13CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.EncapsulatedAttribute13CreationTool_title,
+				Messages.EncapsulatedAttribute13CreationTool_desc,
+				Collections.singletonList(WebsiteElementTypes.EncapsulatedAttribute_3243));
+		entry.setId("createEncapsulatedAttribute13CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EncapsulatedAttribute_3243));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -822,12 +811,25 @@ public class WebsitePaletteFactory {
 	/**
 	* @generated
 	*/
-	private ToolEntry createViewAssociation14CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ViewAssociation14CreationTool_title,
-				Messages.ViewAssociation14CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.ViewAssociation_3240));
-		entry.setId("createViewAssociation14CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ViewAssociation_3240));
+	private ToolEntry createEncapsulatedAssociation14CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.EncapsulatedAssociation14CreationTool_title,
+				Messages.EncapsulatedAssociation14CreationTool_desc,
+				Collections.singletonList(WebsiteElementTypes.EncapsulatedAssociation_3244));
+		entry.setId("createEncapsulatedAssociation14CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EncapsulatedAssociation_3244));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	* @generated
+	*/
+	private ToolEntry createViewAssociation15CreationTool() {
+		DefaultLinkToolEntry entry = new DefaultLinkToolEntry(Messages.ViewAssociation15CreationTool_title,
+				Messages.ViewAssociation15CreationTool_desc,
+				Collections.singletonList(WebsiteElementTypes.ViewAssociation_4004));
+		entry.setId("createViewAssociation15CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ViewAssociation_4004));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

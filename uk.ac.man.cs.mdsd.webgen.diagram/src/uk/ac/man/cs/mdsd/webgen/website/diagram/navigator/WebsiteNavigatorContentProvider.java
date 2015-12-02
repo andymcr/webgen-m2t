@@ -247,6 +247,9 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 					WebsiteVisualIDRegistry.getType(AssociationWithContainmentEditPart.VISUAL_ID));
 			links.addChildren(createNavigatorItems(connectedViews, links, false));
 			connectedViews = getDiagramLinksByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(ViewAssociationEditPart.VISUAL_ID));
+			links.addChildren(createNavigatorItems(connectedViews, links, false));
+			connectedViews = getDiagramLinksByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(PageLinkEditPart.VISUAL_ID));
 			links.addChildren(createNavigatorItems(connectedViews, links, false));
 			if (!links.isEmpty()) {
@@ -310,7 +313,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(EntityModelLabelsCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(ModelLabelYEditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(ModelLabelEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(AssociationWithoutContainmentEditPart.VISUAL_ID));
@@ -472,22 +475,31 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 		case ViewEditPart.VISUAL_ID: {
 			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
 			Node sv = (Node) view;
+			WebsiteNavigatorGroup outgoinglinks = new WebsiteNavigatorGroup(
+					Messages.NavigatorGroupName_View_2010_outgoinglinks, "icons/outgoingLinksNavigatorGroup.gif", //$NON-NLS-1$
+					parentElement);
 			Collection<View> connectedViews;
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(ViewModelLabelsCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(ModelLabelY2EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(ModelLabel2EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(ViewAttributeCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(ViewAttributeEditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(EncapsulatedAttributeEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(ViewAttributeCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry.getType(EncapsulatedAssociationEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(ViewAssociationEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+			if (!outgoinglinks.isEmpty()) {
+				result.add(outgoinglinks);
+			}
 			return result.toArray();
 		}
 
@@ -1096,6 +1108,22 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			return result.toArray();
 		}
 
+		case EncapsulatedAssociationEditPart.VISUAL_ID: {
+			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			WebsiteNavigatorGroup incominglinks = new WebsiteNavigatorGroup(
+					Messages.NavigatorGroupName_EncapsulatedAssociation_3244_incominglinks,
+					"icons/incomingLinksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			Collection<View> connectedViews;
+			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(ViewAssociationEditPart.VISUAL_ID));
+			incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+			if (!incominglinks.isEmpty()) {
+				result.add(incominglinks);
+			}
+			return result.toArray();
+		}
+
 		case AssociationWithoutContainmentEditPart.VISUAL_ID: {
 			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
 			Edge sv = (Edge) view;
@@ -1159,6 +1187,31 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			target.addChildren(createNavigatorItems(connectedViews, target, true));
 			connectedViews = getLinksSourceByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(PageEditPart.VISUAL_ID));
+			source.addChildren(createNavigatorItems(connectedViews, source, true));
+			if (!target.isEmpty()) {
+				result.add(target);
+			}
+			if (!source.isEmpty()) {
+				result.add(source);
+			}
+			return result.toArray();
+		}
+
+		case ViewAssociationEditPart.VISUAL_ID: {
+			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
+			Edge sv = (Edge) view;
+			WebsiteNavigatorGroup target = new WebsiteNavigatorGroup(
+					Messages.NavigatorGroupName_ViewAssociation_4004_target, "icons/linkTargetNavigatorGroup.gif", //$NON-NLS-1$
+					parentElement);
+			WebsiteNavigatorGroup source = new WebsiteNavigatorGroup(
+					Messages.NavigatorGroupName_ViewAssociation_4004_source, "icons/linkSourceNavigatorGroup.gif", //$NON-NLS-1$
+					parentElement);
+			Collection<View> connectedViews;
+			connectedViews = getLinksTargetByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(EncapsulatedAssociationEditPart.VISUAL_ID));
+			target.addChildren(createNavigatorItems(connectedViews, target, true));
+			connectedViews = getLinksSourceByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(ViewEditPart.VISUAL_ID));
 			source.addChildren(createNavigatorItems(connectedViews, source, true));
 			if (!target.isEmpty()) {
 				result.add(target);

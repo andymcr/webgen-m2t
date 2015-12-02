@@ -276,7 +276,7 @@ public class EntityEditPart extends ShapeNodeEditPart {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.ModelLabelY_3237) {
+			if (type == WebsiteElementTypes.ModelLabel_3247) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityModelLabelsCompartmentEditPart.VISUAL_ID));
 			}

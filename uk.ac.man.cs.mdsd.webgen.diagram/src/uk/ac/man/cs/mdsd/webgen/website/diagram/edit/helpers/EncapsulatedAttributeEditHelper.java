@@ -3,5 +3,5 @@ package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers;
 /**
  * @generated
  */
-public class ModelLabelYEditHelper extends WebsiteBaseEditHelper {
+public class EncapsulatedAttributeEditHelper extends WebsiteBaseEditHelper {
 }

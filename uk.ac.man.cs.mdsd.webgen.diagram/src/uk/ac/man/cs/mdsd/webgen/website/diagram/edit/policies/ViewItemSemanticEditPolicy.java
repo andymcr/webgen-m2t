@@ -8,14 +8,20 @@ import org.eclipse.gmf.runtime.common.core.command.ICompositeCommand;
 import org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand;
 import org.eclipse.gmf.runtime.emf.commands.core.command.CompositeTransactionalCommand;
 import org.eclipse.gmf.runtime.emf.type.core.commands.DestroyElementCommand;
+import org.eclipse.gmf.runtime.emf.type.core.requests.CreateRelationshipRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
+import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
+import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelY2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ViewAssociationCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ViewAssociationReorientCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAttributeEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabel2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAssociationEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAttributeCompartmentEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewModelLabelsCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -39,6 +45,15 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 		View view = (View) getHost().getModel();
 		CompositeTransactionalCommand cmd = new CompositeTransactionalCommand(getEditingDomain(), null);
 		cmd.setTransactionNestingEnabled(false);
+		for (Iterator<?> it = view.getSourceEdges().iterator(); it.hasNext();) {
+			Edge outgoingLink = (Edge) it.next();
+			if (WebsiteVisualIDRegistry.getVisualID(outgoingLink) == ViewAssociationEditPart.VISUAL_ID) {
+				DestroyElementRequest r = new DestroyElementRequest(outgoingLink.getElement(), false);
+				cmd.add(new DestroyElementCommand(r));
+				cmd.add(new DeleteCommand(getEditingDomain(), outgoingLink));
+				continue;
+			}
+		}
 		EAnnotation annotation = view.getEAnnotation("Shortcut"); //$NON-NLS-1$
 		if (annotation == null) {
 			// there are indirectly referenced children, need extra commands: false
@@ -64,13 +79,23 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case ViewAttributeEditPart.VISUAL_ID:
+					case EncapsulatedAttributeEditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
-					case ViewAssociationEditPart.VISUAL_ID:
+					case EncapsulatedAssociationEditPart.VISUAL_ID:
+						for (Iterator<?> it = cnode.getTargetEdges().iterator(); it.hasNext();) {
+							Edge incomingLink = (Edge) it.next();
+							if (WebsiteVisualIDRegistry
+									.getVisualID(incomingLink) == ViewAssociationEditPart.VISUAL_ID) {
+								DestroyElementRequest r = new DestroyElementRequest(incomingLink.getElement(), false);
+								cmd.add(new DestroyElementCommand(r));
+								cmd.add(new DeleteCommand(getEditingDomain(), incomingLink));
+								continue;
+							}
+						}
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
@@ -83,7 +108,7 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case ModelLabelY2EditPart.VISUAL_ID:
+					case ModelLabel2EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
@@ -94,6 +119,49 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 				break;
 			}
 		}
+	}
+
+	/**
+	* @generated
+	*/
+	protected Command getCreateRelationshipCommand(CreateRelationshipRequest req) {
+		Command command = req.getTarget() == null ? getStartCreateRelationshipCommand(req)
+				: getCompleteCreateRelationshipCommand(req);
+		return command != null ? command : super.getCreateRelationshipCommand(req);
+	}
+
+	/**
+	* @generated
+	*/
+	protected Command getStartCreateRelationshipCommand(CreateRelationshipRequest req) {
+		if (WebsiteElementTypes.ViewAssociation_4004 == req.getElementType()) {
+			return getGEFWrapper(new ViewAssociationCreateCommand(req, req.getSource(), req.getTarget()));
+		}
+		return null;
+	}
+
+	/**
+	* @generated
+	*/
+	protected Command getCompleteCreateRelationshipCommand(CreateRelationshipRequest req) {
+		if (WebsiteElementTypes.ViewAssociation_4004 == req.getElementType()) {
+			return null;
+		}
+		return null;
+	}
+
+	/**
+	* Returns command to reorient EClass based link. New link target or source
+	* should be the domain model element associated with this node.
+	* 
+	* @generated
+	*/
+	protected Command getReorientRelationshipCommand(ReorientRelationshipRequest req) {
+		switch (getVisualID(req)) {
+		case ViewAssociationEditPart.VISUAL_ID:
+			return getGEFWrapper(new ViewAssociationReorientCommand(req));
+		}
+		return super.getReorientRelationshipCommand(req);
 	}
 
 }

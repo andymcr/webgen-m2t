@@ -177,21 +177,21 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case EntityModelLabelsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getModelLabelY().isSuperTypeOf(domainElement.eClass())) {
-				return ModelLabelYEditPart.VISUAL_ID;
+			if (WebsitePackage.eINSTANCE.getModelLabel().isSuperTypeOf(domainElement.eClass())) {
+				return ModelLabelEditPart.VISUAL_ID;
 			}
 			break;
 		case ViewAttributeCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getViewAttribute().isSuperTypeOf(domainElement.eClass())) {
-				return ViewAttributeEditPart.VISUAL_ID;
+			if (WebsitePackage.eINSTANCE.getEncapsulatedAttribute().isSuperTypeOf(domainElement.eClass())) {
+				return EncapsulatedAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getViewAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return ViewAssociationEditPart.VISUAL_ID;
+			if (WebsitePackage.eINSTANCE.getEncapsulatedAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return EncapsulatedAssociationEditPart.VISUAL_ID;
 			}
 			break;
 		case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getModelLabelY().isSuperTypeOf(domainElement.eClass())) {
-				return ModelLabelY2EditPart.VISUAL_ID;
+			if (WebsitePackage.eINSTANCE.getModelLabel().isSuperTypeOf(domainElement.eClass())) {
+				return ModelLabel2EditPart.VISUAL_ID;
 			}
 			break;
 		case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
@@ -726,23 +726,23 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ModelLabelYEditPart.VISUAL_ID:
-			if (ModelLabelYNameEditPart.VISUAL_ID == nodeVisualID) {
+		case ModelLabelEditPart.VISUAL_ID:
+			if (ModelLabelNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case ModelLabelY2EditPart.VISUAL_ID:
-			if (ModelLabelYName2EditPart.VISUAL_ID == nodeVisualID) {
+		case ModelLabel2EditPart.VISUAL_ID:
+			if (ModelLabelName2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case ViewAttributeEditPart.VISUAL_ID:
-			if (ViewAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+			if (EncapsulatedAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case ViewAssociationEditPart.VISUAL_ID:
-			if (ViewAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
+			if (EncapsulatedAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1363,20 +1363,20 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case EntityModelLabelsCompartmentEditPart.VISUAL_ID:
-			if (ModelLabelYEditPart.VISUAL_ID == nodeVisualID) {
+			if (ModelLabelEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case ViewAttributeCompartmentEditPart.VISUAL_ID:
-			if (ViewAttributeEditPart.VISUAL_ID == nodeVisualID) {
+			if (EncapsulatedAttributeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (ViewAssociationEditPart.VISUAL_ID == nodeVisualID) {
+			if (EncapsulatedAssociationEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
-			if (ModelLabelY2EditPart.VISUAL_ID == nodeVisualID) {
+			if (ModelLabel2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1783,6 +1783,9 @@ public class WebsiteVisualIDRegistry {
 		if (WebsitePackage.eINSTANCE.getAssociationWithContainment().isSuperTypeOf(domainElement.eClass())) {
 			return AssociationWithContainmentEditPart.VISUAL_ID;
 		}
+		if (WebsitePackage.eINSTANCE.getViewAssociation().isSuperTypeOf(domainElement.eClass())) {
+			return ViewAssociationEditPart.VISUAL_ID;
+		}
 		if (WebsitePackage.eINSTANCE.getPageLink().isSuperTypeOf(domainElement.eClass())) {
 			return PageLinkEditPart.VISUAL_ID;
 		}
@@ -1961,12 +1964,12 @@ public class WebsiteVisualIDRegistry {
 		case FeatureSupportActionEditPart.VISUAL_ID:
 		case ImageAttributeEditPart.VISUAL_ID:
 		case ActionMenuEntryEditPart.VISUAL_ID:
-		case ModelLabelYEditPart.VISUAL_ID:
-		case ModelLabelY2EditPart.VISUAL_ID:
-		case ViewAttributeEditPart.VISUAL_ID:
-		case ViewAssociationEditPart.VISUAL_ID:
 		case ServiceAttributeEditPart.VISUAL_ID:
 		case ServiceAssociationEditPart.VISUAL_ID:
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
+		case ModelLabelEditPart.VISUAL_ID:
+		case ModelLabel2EditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

@@ -22,7 +22,7 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelY2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabel2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -48,7 +48,7 @@ public class ViewModelLabelsCompartmentCanonicalEditPolicy extends CanonicalEdit
 	* @generated
 	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getEntityOrView_DisplayLabels();
+		return WebsitePackage.eINSTANCE.getEntityOrView_Labels();
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class ViewModelLabelsCompartmentCanonicalEditPolicy extends CanonicalEdit
 	* @generated
 	*/
 	private boolean isMyDiagramElement(View view) {
-		return ModelLabelY2EditPart.VISUAL_ID == WebsiteVisualIDRegistry.getVisualID(view);
+		return ModelLabel2EditPart.VISUAL_ID == WebsiteVisualIDRegistry.getVisualID(view);
 	}
 
 	/**
