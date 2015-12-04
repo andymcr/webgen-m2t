@@ -11,7 +11,7 @@
 [let controlUnit : ControlUnit = unit.oclAsType(ControlUnit)]
 $this->[controlUnit.instanceName()/] = ORM::factory('[controlUnit.modelName()/]');
 [if (controlUnit.hasDefaultValueFields())]
-[controlUnit.generateDefaultUnitValues()/]
+[controlUnit.unitDefaultValues()/]
 [/if]
 [/let]
 [/template]
@@ -34,7 +34,7 @@ $this->[controlUnit.templateInstanceName()/]->bind('[association.optionsName()/]
 [/template]
 
 
-[template public generateHandleCancel(unit : DynamicUnit) post(trim())]
+[template public handleCancel(unit : DynamicUnit) post(trim())]
 [let cancelDestination : Page = 
 	if unit.oclIsKindOf(ControlUnit) then
 		unit.oclAsType(ControlUnit).cancelDestination

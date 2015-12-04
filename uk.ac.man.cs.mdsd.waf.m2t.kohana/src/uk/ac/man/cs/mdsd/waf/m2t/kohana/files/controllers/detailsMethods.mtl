@@ -60,7 +60,7 @@ public function action_[unit.actionName()/]()
 	[/if]
 [/if]
 [if (unit.hasDefaultValueFields())]
-    [unit.generateDefaultUnitValues()/]
+    [unit.unitDefaultValues()/]
 [/if]
 }
 [/template]

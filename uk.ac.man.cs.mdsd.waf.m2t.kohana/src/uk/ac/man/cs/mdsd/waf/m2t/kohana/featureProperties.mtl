@@ -4,31 +4,19 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
 
-[query public hasParameterisedUnitsKohana(page : Page) : Boolean
-	= page.parameterisedUnitsKohana()->notEmpty()
-/]
-
-[query public parameterisedUnitsKohana(page : Page) : OrderedSet(DynamicUnit)
-	= page.units->select(u | u.isParameterisedKohana())
-/]
-
-[query public isParameterisedKohana(unit : ContentUnit) : Boolean 
-	= if unit.oclIsKindOf(DataUnit) then 
-			true -- unit.oclAsType(DataUnit).selection.oclIsUndefined() 
-		else 
-			unit.oclIsKindOf(EditUnit) 
-		endif 
-/]
-
-
 [query public uriPath(page : Page) : String
-	= let path : String = page.path
-		in if page.parentPage.oclIsUndefined() then
-			path
+	= if page.parentPage.oclIsUndefined() then
+			page.path
 		else if page.parentPage = page.partOf.homePage() then
-			path
+			page.path
 		else
-			page.parentPage.uriPath().concat(path)
+			let path : String
+				= if page.path.startsWith('/') then
+						page.path
+					else
+						'/'.concat(page.path)
+					endif
+			in page.parentPage.uriPath().concat(path)
 		endif endif
 /]
 
@@ -50,13 +38,17 @@
 /]
 
 [query public uriPath(unit : ContentUnit) : String
-	= unit.pageDisplayedOn().uriPath().concat(
-		if not unit.oclIsKindOf(Selectable) then
-			''
-		else
-			unit.oclAsType(Selectable).parameters->collect(f | f.name)->sep('/<', '>/<', '>')->toString()
-		endif).concat(
-			if unit.path.oclIsUndefined() then
+	= unit.uriPath(false)
+/]
+
+[query public uriPath(unit : ContentUnit, create : Boolean) : String
+	= unit.pageDisplayedOn().uriPath()
+		.concat(if not unit.oclIsKindOf(Selectable) or create then
+				''
+			else
+				unit.oclAsType(Selectable).parameters->collect(f | f.name)->sep('/<', '>/<', '>')->toString()
+			endif)
+		.concat(if unit.path.oclIsUndefined() then
 				''
 			else if unit.path = '' then
 				''

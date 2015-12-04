@@ -14,18 +14,16 @@ public function action_[actionUnit.actionName()/]()
 {
 	try
 	{
-		[unit.generateValuesFromFormToModel()/]
+		[unit.valuesFromFormToModel()/]
 	[if (unit.hasForcedValueFeatures())]
-		[unit.generateForcedFeatureValues()/]
+		[unit.forcedFeatureValues()/]
 	[/if]
 	[if (unit.hasCaptchaFields())]
-		[unit.generateCaptchaCheck()/]
-		else
-		{
+		[unit.captchaCheck()/]
 	[/if]
 	[if (unit.hasInterfaceFields())]
-		[unit.generateRememberInterfaceFields()/]
-		[unit.generateInterfaceFieldValidation()/]
+		[unit.rememberInterfaceFields()/]
+		[unit.interfaceFieldValidation()/]
 		[unit.generateValidateOnlyControlFields()/]
 	[/if]
 		$this->[unit.instanceName()/]->check([if (unit.hasInterfaceFields())]$extra_validation[/if]);
@@ -38,9 +36,6 @@ public function action_[actionUnit.actionName()/]()
 			 */
 		}
 	[/for]
-[if (unit.hasCaptchaFields())]
-		}
-[/if]
 	}
 	catch (ORM_Validation_Exception $e)
 	{
@@ -53,9 +48,12 @@ public function action_[actionUnit.actionName()/]()
 			$this->[unit.errorName()/] = print_r($unreported_field_errors, TRUE);
 	[/if]
 	[if (unit.hasEncryptedFeatures())]
-		[unit.generateClearEncryptedFeatures()/]
+		[unit.clearEncryptedFeatures()/]
 	[/if]
 	}
+[if (unit.hasCaptchaFields())]
+    [unit.catchCaptchaException()/]
+[/if]
 }
 [/let]
 [/template]

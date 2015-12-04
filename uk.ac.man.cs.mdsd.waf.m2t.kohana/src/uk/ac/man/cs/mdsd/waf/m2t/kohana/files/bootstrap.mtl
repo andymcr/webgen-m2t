@@ -143,6 +143,16 @@ Kohana::modules(array(
 // /if]
 	));
 
+[model.routes()/]
+
+/**
+ * Set the magic salt to add to a cookie
+ */
+Cookie::$salt = 'kjslkajdldlkdssslsdswe';
+[/file]
+[/template]
+
+[template private routes(model : WafModel)]
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
@@ -162,22 +172,12 @@ Route::set('[unit.routeName()/]', '[unit.uriPath()/]')->defaults(array(
     'controller' => '[page.controllerName()/]',
     'action' => '[unit.actionName()/]',
 ));
+		[if (unit.oclIsKindOf(EditUnit) and unit.oclIsKindOf(Selectable))]
+Route::set('[unit.routeName(true)/]', '[unit.uriPath(true)/]')->defaults(array(
+    'controller' => '[page.controllerName()/]',
+    'action' => '[unit.actionName()/]',
+));
+		[/if]
 	[/for]
 [/for]
-
-/**
- * Set the magic salt to add to a cookie
- */
-Cookie::$salt = 'kjslkajdldlkdssslsdswe';
-[/file]
-[/template]
-
-
-[template private routeParameters(parameters : OrderedSet(ServiceAttribute)) post(trim())]
-[if (parameters->size() > 0)]
-[let parameter : ServiceAttribute = parameters->first()]
-(/<[parameter.name/]>[if (parameters->size() > 1)]
-[parameters.routeParameters(parameters->subOrderedSet(2, parameters->size()))/][/if])
-[/let]
-[/if]
 [/template]

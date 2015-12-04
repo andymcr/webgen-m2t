@@ -7,82 +7,83 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
-[template public generateBaseController(model : WafModel)]
+[template public baseController(model : WafModel)]
 [file(model.controllersDirectory().concat('/Template/Base').concat(model.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
 class [model.baseControllerClassName()/] extends Controller_Template
 {
-	public $template = 'site';
+    public $template = 'site';
 
-	public function before()
-	{
-		parent::before();
+    public function before()
+    {
+        parent::before();
 
-		if ($this->auto_render === TRUE)
-		{
-			$this->template->title = '';
-			$this->template->metaTags =array();
-			$this->template->links = array();
-			$this->template->stylesheets = array();
-			$this->template->scripts = array([if (model.ajaxTechnology = AjaxTechnologies::jQuery)]
+        if ($this->auto_render === TRUE)
+        {
+            $this->template->title = '';
+            $this->template->metaTags =array();
+            $this->template->links = array();
+            $this->template->stylesheets = array();
+            $this->template->scripts = array([if (model.ajaxTechnology = AjaxTechnologies::jQuery)]
 '//code.jquery.com/jquery-2.1.3.min.js'[elseif (model.ajaxTechnology = AjaxTechnologies::AngularJS)]
 
-				'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js',
-				'/js/controllers.js'
+                'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js',
+                '/js/controllers.js'
 			[/if]);
 [if (not model.isAuthenticated())]
-			$topbar_template = View::factory('elements/topbar');
+            $topbar_template = View::factory('elements/topbar');
 [else]
-			if (Auth::instance()->logged_in()) 
-			{
-				$topbar_template = View::factory('elements/topbar_logged_in');
-				$topbar_template->user = Auth::instance()->get_user();
-			} else {
-				$topbar_template = View::factory('elements/topbar');
-			}
+            if (Auth::instance()->logged_in()) 
+            {
+                $topbar_template = View::factory('elements/topbar_logged_in');
+                $topbar_template->user = Auth::instance()->get_user();
+            } else {
+                $topbar_template = View::factory('elements/topbar');
+            }
 [/if]
-			$this->template->topbar = $topbar_template->render();
-			$this->template->page_message = '';
-			$this->template->unitViews = array();
-		}
-	}
+            $this->template->topbar = $topbar_template->render();
+            $this->template->page_message = '';
+            $this->template->unitViews = array();
+        }
+    }
 
-	public function after()
-	{
-		parent::after();
-	}
+    public function after()
+    {
+        parent::after();
+
+    }
 
 [if (model.hasCaptchaFields())]
-	public function isCaptchaValid($response, $client_ip)
-	{
-		try
-		{
-			$url = 'https://www.google.com/recaptcha/api/siteverify';
-			$data = ['['/]
-				'secret'   => '[model.captchaSecretKey/]',
-				'response' => $response,
-				'remoteip' => $client_ip
-			[']'/];
+    public function isCaptchaValid($response, $client_ip)
+    {
+        try
+        {
+            $url = 'https://www.google.com/recaptcha/api/siteverify';
+            $data = ['['/]
+                'secret'   => '[model.captchaSecretKey/]',
+                'response' => $response,
+                'remoteip' => $client_ip
+            [']'/];
 			$options = ['['/]
-				'http' => ['['/]
-					'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-					'method'  => 'POST',
-					'content' => http_build_query($data) 
-				[']'/]
-			[']'/];
-			$context  = stream_context_create($options);
-			$result = file_get_contents($url, false, $context);
-			return json_decode($result, TRUE);
+                'http' => ['['/]
+                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query($data) 
+                [']'/]
+            [']'/];
+            $context  = stream_context_create($options);
+            $result = file_get_contents($url, false, $context);
+            return json_decode($result, TRUE);
 		}
-		catch (Exception $e)
-		{
-			return ['['/]
-				'success' => FALSE,
-				'error-codes' => $e->message
-			[']'/];
-		}
-	}
+        catch (Exception $e)
+        {
+            return ['['/]
+                'success' => FALSE,
+                'error-codes' => $e->message
+            [']'/];
+        }
+    }
 
 [/if]
 }

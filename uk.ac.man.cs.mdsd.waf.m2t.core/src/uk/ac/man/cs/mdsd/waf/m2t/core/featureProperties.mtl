@@ -215,9 +215,9 @@
 		endif endif
 /]
 
-[query public isOwningEnd(feature : ServiceAssociation) : Boolean
-	= if association.oclIsTypeOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).owningEnd
+[query public isOwningEnd(association : ServiceAssociation) : Boolean
+	= if association.association.oclIsKindOf(EntityAssociation) then
+			association.association.oclAsType(EntityAssociation).owningEnd
 		else
 			false
 		endif
@@ -603,7 +603,7 @@
 		endif
 /]
 
-[query public nonResourceInputFeatures(unit : DynamicUnit) : Set(UnitField)
+[query public nonResourceInputFeatures(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f |
 		if f.oclIsKindOf(UnitFeature) then
 			f.oclAsType(UnitFeature).isModifiable() and not f.oclAsType(UnitFeature).isModifiableResource()

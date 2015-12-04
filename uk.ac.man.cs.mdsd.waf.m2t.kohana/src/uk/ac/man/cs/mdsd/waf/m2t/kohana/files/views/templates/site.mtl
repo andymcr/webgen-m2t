@@ -38,7 +38,7 @@
 <?php if (isset($sidebar)) echo $sidebar; ?>
 <main <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>id="content">
 <?php if (!empty($page_message)) { ?>
- <p><?php echo __($page_message); ?></p>
+ <div><?php echo __($page_message); ?></div>
 <?php } ?>
 <?php
 	foreach ($unitViews as $unitView) {

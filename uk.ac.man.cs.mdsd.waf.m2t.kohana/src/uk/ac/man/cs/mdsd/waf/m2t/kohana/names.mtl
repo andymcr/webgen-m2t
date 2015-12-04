@@ -157,7 +157,16 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
+	= unit.routeName(false)
+/]
+
+[query public routeName(unit : ContentUnit, create : Boolean) : String
 	= unit.uniqueName()
+		.concat(if create then
+				'x'
+			else
+				''
+			endif)
 /]
 
 [query public templateInstanceName(unit : ContentUnit) : String

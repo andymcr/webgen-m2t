@@ -24,7 +24,7 @@
 /]
 
 [query public modelName(association : Association) : String
-	= if association.oclIsTypeOf(EntityAssociation) then
+	= if association.oclIsKindOf(EntityAssociation) then
 			association.oclAsType(EntityAssociation).opposite.partOf.modelName()
 		else
 			'xxx'

@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module dataUnit(
+[module displayUnit(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
@@ -71,7 +71,7 @@
 		Route::get('[unit.displayedOn.oclAsType(Page).routeName()/]')->uri(array(
 			'action' => 'support',
 			'param' => 'submit'
-			[if (unit.pageDisplayedOn().hasParameterisedUnitsKohana())]
+			[if (unit.pageDisplayedOn().hasParameterisedUnits())]
 		)) . URL::query($query_parameters, FALSE),
 			[else]
 		)),
@@ -160,7 +160,7 @@
 [if (indexUnit.actions->notEmpty())]
 <span class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-		[action.generateAction('entry')/]
+		[action.generateAction('$entry')/]
 	[/for]</span>
 [else]
 
@@ -188,7 +188,7 @@
 [if (indexUnit.actions->notEmpty())]
   <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-		[action.generateAction('entry')/]
+		[action.generateAction('$entry')/]
 	[/for]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -227,7 +227,7 @@
 [if (indexUnit.actions->notEmpty())]
    <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-    [action.generateAction('entry')/]
+    [action.generateAction('$entry')/]
 	[/for]</td>
  [/if]
   </tr>
@@ -415,11 +415,11 @@ find_all()[else]
 [/template]
 
 
-[template private getValue(field : UnitField, accessor : String) post(trim())]
+[template public getValue(field : UnitField, accessor : String) post(trim())]
 [if (field.oclIsTypeOf(UnitFeature))]
 [field.oclAsType(UnitFeature).getValue(accessor)/]
 [else]
-
+NULL
 [/if]
 [/template]
 
@@ -501,15 +501,19 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
     echo HTML::anchor(
         Route::get('[targetUnit.routeName()/]')->uri(array(
             'action' => '[targetUnit.name/]',
-	[for (parameter : ServiceAttribute | targetUnit.oclAsType(Selectable).parameters)]
-            '[parameter.name/]' => $[accessor/]->[parameter.modelPropertyName()/],
-	[/for]
+            [targetUnit.oclAsType(Selectable).routeSelectionParameters(accessor)/]
 		)),
 		HTML::chars(__('[action.displayLabel/]')),
 		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . $[accessor/]->defaultLabel()),
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
 	));
 ?>
 [/let]
 [/let]
+[/template]
+
+[template public routeSelectionParameters(selectable : Selectable, accessor : String) post(trim())]
+[for (parameter : ServiceAttribute | selectable.parameters)]
+'[parameter.name/]' => [accessor/]->[parameter.modelPropertyName()/],
+[/for]
 [/template]

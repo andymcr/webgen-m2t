@@ -11,7 +11,7 @@
 
 [template protected generateAuthenticationStart(unit : DynamicUnit) post(trim())]
 [if (not unit.oclAsType(ControlUnit).cancelDestination.oclIsUndefined())]
-[unit.generateHandleCancel()/]
+[unit.handleCancel()/]
 [/if]
 if (Auth::instance()->logged_in())
 {
@@ -26,7 +26,7 @@ if (Auth::instance()->logged_in())
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 $this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.modelName()/]');
 [if (authenticationUnit.hasDefaultValueFields())]
-[authenticationUnit.generateDefaultUnitValues()/]
+[authenticationUnit.unitDefaultValues()/]
 [/if]
 [/let]
 [/template]
@@ -51,18 +51,18 @@ public function action_[registrationUnit.actionName()/]()
 {
 	[registrationUnit.generateAuthenticationStart()/]
 [if (not registrationUnit.cancelDestination.oclIsUndefined())]
-	[registrationUnit.generateHandleCancel()/]
+	[registrationUnit.handleCancel()/]
 [/if]
 	else if ($this->request->method() == HTTP_Request::POST)
 	{
 		try
 		{
 [if (registrationUnit.hasCaptchaFields())]
-			[registrationUnit.generateValuesFromFormToModel()/]
+			[registrationUnit.valuesFromFormToModel()/]
 [if (registrationUnit.hasForcedValueFeatures())]
-			[registrationUnit.generateForcedFeatureValues()/]
+			[registrationUnit.forcedFeatureValues()/]
 [/if]
-			[registrationUnit.generateCaptchaCheck()/]
+			[registrationUnit.captchaCheck()/]
 			else
 			{
 [/if]
@@ -72,7 +72,7 @@ public function action_[registrationUnit.actionName()/]()
 				$this->[registrationUnit.instanceName()/]->new_email_key = md5(rand().microtime());
 [/if]
 [if (registrationUnit.hasInterfaceFields())]
-				[registrationUnit.generateInterfaceFieldValidation()/]
+				[registrationUnit.interfaceFieldValidation()/]
 [/if]
 				$this->[registrationUnit.instanceName()/]->save([if (registrationUnit.hasInterfaceFields())]$extra_validation[/if]);
 	[if (authentication.useEmailActivation)]
@@ -122,7 +122,7 @@ public function action_[registrationUnit.actionName()/]()
 				$this->[registrationUnit.errorName()/] = print_r($unreported_field_errors, TRUE);
 	[/if]
 [if (registrationUnit.hasInterfaceFields())]
-			[registrationUnit.generateRememberInterfaceFields()/]
+			[registrationUnit.rememberInterfaceFields()/]
 [/if]
 		}
 	}
@@ -140,12 +140,12 @@ public function action_[loginUnit.actionName()/]()
 	[loginUnit.generateAuthenticationStart()/]
 	else if ($this->request->method() == HTTP_Request::POST)
 	{
-		[loginUnit.generateValuesFromFormToModel()/]
+		[loginUnit.valuesFromFormToModel()/]
 [if (loginUnit.hasForcedValueFeatures())]
-		[loginUnit.generateForcedFeatureValues()/]
+		[loginUnit.forcedFeatureValues()/]
 [/if]
 [if (loginUnit.hasCaptchaFields())]
-		[loginUnit.generateCaptchaCheck()/]
+		[loginUnit.captchaCheck()/]
 		else
 		{
 [/if]
@@ -170,7 +170,7 @@ public function action_[loginUnit.actionName()/]()
 			{
 				$this->[loginUnit.errorName()/] = Auth::instance()->message;
 [if (loginUnit.hasInterfaceFields())]
-				[loginUnit.generateRememberInterfaceFields()/]
+				[loginUnit.rememberInterfaceFields()/]
 [/if]
 			}
 [if (loginUnit.hasCaptchaFields())]
