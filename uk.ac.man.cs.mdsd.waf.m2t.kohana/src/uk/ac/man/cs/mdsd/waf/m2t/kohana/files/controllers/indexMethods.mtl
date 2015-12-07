@@ -6,13 +6,13 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 
 
-[template public unitBefore(unit : ContentUnit)
+[template public beforeMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [/let]
 [/template]
 
-[template public unitAfter(unit : ContentUnit)
+[template public afterMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [indexUnit.createAndBindTemplate()/]

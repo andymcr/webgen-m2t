@@ -24,10 +24,8 @@
 	echo HTML::anchor(
 		Route::get('[if (model.authentication.oclIsTypeOf(CasAuthentication))]
 TBC[elseif (model.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[model.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.routeName()/][else]
-TBC[/if]')->uri(array(
-			'action' => 'logout',
-		)),
+[model.authentication.oclAsType(LocalAuthenticationSystem).loginUnit.logoutRouteName()/][else]
+TBC[/if]')->uri(),
 		HTML::chars(__('[model.authentication.logoutLabel/]')));
 ?></li>
 [if (model.topMenuItems()->notEmpty() or model.isAuthenticated())]

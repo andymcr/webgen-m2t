@@ -132,8 +132,20 @@
 	= unit.instanceName().concat('_error')
 /]
 
+[query public fieldErrorsName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_field_errors')
+/]
+
 [query public instanceName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
+/]
+
+[query public logoutActionName(unit : LoginUnit) : String
+	= 'logout'
+/]
+
+[query public logoutRouteName(unit : LoginUnit) : String
+	= unit.uniqueName().replace(unit.instanceName(), 'logout')
 /]
 
 [query public modelName(unit : ContentUnit) : String

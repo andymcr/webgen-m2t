@@ -10,22 +10,23 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::controlMethods/]
 
 
-[template public unitBefore(unit : ContentUnit)
+[template public beforeMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
+$this->[editUnit.instanceName()/] = ORM::factory('[editUnit.modelName()/]');
+[if (editUnit.hasDefaultValueFields())]
 [editUnit.unitDefaultValues()/]
+[/if]
 [/let]
 [/template]
 
-[template public unitAfter(unit : ContentUnit)
+[template public afterMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.createAndBindTemplate()/]
 $[editUnit.templateInstanceName()/]->bind('[editUnit.instanceName()/]', $this->[editUnit.instanceName()/]);
-[if (editUnit.oclIsKindOf(Selectable))]
-[editUnit.oclAsType(Selectable).bindErrorMessage()/]
-[/if]
+[editUnit.bindErrorMessage()/]
+[editUnit.bindFieldErrors()/]
 [for (association : UnitAssociation | editUnit.inputAssociations())]
 $[association.optionsName()/] = $this->[association.optionsName()/]();
 $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[association.optionsName()/]);
@@ -117,9 +118,9 @@ public function action_[unit.actionName()/]()
 [template private catchValidationException(unit : EditUnit)]
 catch (ORM_Validation_Exception $e)
 {
-    $this->[unit.instanceName()/]_field_errors = $e->errors('');
+    $this->[unit.fieldErrorsName()/] = $e->errors('');
 [if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
-    $unreported_field_errors = array_diff_key($this->[unit.instanceName()/]_field_errors, array([for
+    $unreported_field_errors = array_diff_key($this->[unit.fieldErrorsName()/], array([for
     (field : UnitField | unit.inputFields())
         separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
     if (!empty($unreported_field_errors))

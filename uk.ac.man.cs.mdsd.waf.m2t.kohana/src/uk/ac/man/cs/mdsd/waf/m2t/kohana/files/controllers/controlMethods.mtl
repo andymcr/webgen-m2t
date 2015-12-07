@@ -20,8 +20,7 @@ $this->[controlUnit.instanceName()/] = ORM::factory('[controlUnit.modelName()/]'
 	? (unit.oclIsTypeOf(ActionUnit) or unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [let controlUnit : ControlUnit = unit.oclAsType(ControlUnit)]
 $this->[controlUnit.templateInstanceName()/]->bind('[controlUnit.instanceName()/]', $this->[controlUnit.instanceName()/]);
-if (isset($this->[controlUnit.instanceName()/]_field_errors))
-	$this->[controlUnit.templateInstanceName()/]->bind('[controlUnit.instanceName()/]_field_errors', $this->[controlUnit.instanceName()/]_field_errors);
+[controlUnit.bindFieldErrors()/]
 [for (association : UnitAssociation | controlUnit.associationFields())]
 $[association.optionsName()/] = array([if (association.isSingleton())]'' => __('Please select')[/if]);
 foreach (ORM::factory('[association.serviceFeature.modelName()/]')->[if (association.selection.oclIsUndefined())]

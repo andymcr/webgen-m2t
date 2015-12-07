@@ -6,14 +6,14 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 
 
-[template public unitBefore(unit : ContentUnit)
+[template public beforeMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
 [/let]
 [/template]
 
-[template public unitAfter(unit : ContentUnit)
+[template public afterMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.onlyDisplayWhenNotEmpty)]

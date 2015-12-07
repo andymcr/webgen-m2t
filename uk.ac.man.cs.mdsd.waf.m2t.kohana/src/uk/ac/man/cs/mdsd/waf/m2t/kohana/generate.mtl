@@ -17,6 +17,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::models::enumerationModel]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::models::extendedOrm]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::models::serviceModel]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::models::validationMessages]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::sitemap::createSitemap/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::sitemap::staticSitemapXML/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::elements::topnav/]
@@ -44,6 +45,7 @@
 [model.generatePagination()/]
 
 [model.generateExtendedOrm()/]
+[model.validationMessages()/]
 [model.persistence.dataTypes.generateModel()/]
 [if (model.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
 [model.services.model(model.authentication)/]

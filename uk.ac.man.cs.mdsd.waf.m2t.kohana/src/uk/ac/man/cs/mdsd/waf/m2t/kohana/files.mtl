@@ -88,6 +88,10 @@
 	= eObject.viewDirectory().concat('/').concat('menu')
 /]
 
+[query public messagesDirectory(eObject : EObject) : String
+	= eObject.applicationDirectory().concat('/').concat('messages')
+/]
+
 [query public modelsDirectory(eObject : EObject) : String
 	= eObject.classesDirectory().concat('/').concat('Model')
 /]

@@ -15,7 +15,7 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 <section class="[dynamicUnit.styleClass/]<?php
-    if (isset($[dynamicUnit.errorName()/]) || isset($[dynamicUnit.instanceName()/]_field_errors))
+    if (isset($[dynamicUnit.errorName()/]) || isset($[dynamicUnit.fieldErrorsName()/]))
         echo ' [dynamicUnit.errorClass/]';
 ?>" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
@@ -51,7 +51,7 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 <section class="[dynamicUnit.styleClass/]<?php
-	if (isset($[dynamicUnit.instanceName()/]_field_errors)) {
+	if (isset($[dynamicUnit.fieldErrorsName()/])) {
 		echo ' [dynamicUnit.errorClass/]';
 	}
 ?>" id="[dynamicUnit.instanceName()/]">
@@ -92,7 +92,9 @@
 [template private formOpen(unit : DynamicUnit, accessor : String)]
 <?php
     echo Form::open(
-        Route::get($[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]')->uri(array(
+        Route::get([if (unit.oclIsKindOf(Selectable))]
+$[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
+'[unit.routeName()/]'[/if])->uri(array(
 [if (unit.oclIsKindOf(Selectable))]
             [unit.oclAsType(Selectable).routeSelectionParameters(accessor)/]
 [else]
@@ -170,14 +172,14 @@
 [let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(field.modelPropertyName())]
 <li[if (unit.hasMessagesOnFeature())]<?php
 		unset($field_error);
-		if (!empty($[unit.instanceName()/]_field_errors))
+		if (!empty($[unit.fieldErrorsName()/]))
 		[if (field.oclIsKindOf(InterfaceField))]
-			if (array_key_exists('_external', $[unit.instanceName()/]_field_errors))
-				if (array_key_exists('[field.modelPropertyName()/]', $[unit.instanceName()/]_field_errors['['/]'_external'[']'/]))
-					$field_error = $[unit.instanceName()/]_field_errors['['/]'_external'[']'/]['['/]'[field.modelPropertyName()/]'[']'/];
+			if (array_key_exists('_external', $[unit.fieldErrorsName()/]))
+				if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]['['/]'_external'[']'/]))
+					$field_error = $[unit.fieldErrorsName()/]['['/]'_external'[']'/]['['/]'[field.modelPropertyName()/]'[']'/];
 		[else]
-			if (array_key_exists('[field.modelPropertyName()/]', $[unit.instanceName()/]_field_errors))
-				$field_error = $[unit.instanceName()/]_field_errors['['/]'[field.modelPropertyName()/]'[']'/];
+			if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]))
+				$field_error = $[unit.fieldErrorsName()/]['['/]'[field.modelPropertyName()/]'[']'/];
 		[/if]
 		if (isset($field_error))
 			echo ' class="[unit.errorClass/]"'; 

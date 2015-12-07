@@ -160,56 +160,9 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	}
 
 	[/if]
-	public function rules()
-	{
-	[if (service = userService)]
-		if ($this->validation_required(NULL)) 
-			return array(
-		[for (feature : Feature | entityOrView.validatedFeatures())]
-				'[feature.columnName()/]' => array(
-			[if (feature.isRequired())]
-					array('not_empty'),
-			[/if]
-				),
-		[/for]
-			);
-		else
-			return array();
-	[else]
-		[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->isEmpty())]
-		return array(
-			[for (feature : Feature | entityOrView.validatedFeatures())]
-			'[feature.columnName()/]' => array(
-				[if (feature.isRequired())]
-				array('not_empty'),
-				[/if]
-			),
-			[/for]
-		);
-		[else]
-		$rules = array(
-			[for (feature : Feature | entityOrView.validatedFeatures())]
-			'[feature.columnName()/]' => array(
-				[if (feature.isRequired())]
-				array('not_empty'),
-				[/if]
-			),
-			[/for]
-		);
-		return empty($this->_control_fields) ? $rules : array_intersect_key($rules, $this->_control_fields);
-		[/if]
-	[/if]
-	}
+    [service.rules(entityOrView, userService)/]
 
-	public function labels()
-	{
-		return array(
-	[for (feature : Feature | entityOrView.validatedFeatures())]
-			'[feature.columnName()/]' => '[feature.displayLabel/]',
-	[/for]
-		);
-	}
-
+    [service.labels(entityOrView)/]
 [/let]
 [/if]
 [if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
@@ -623,4 +576,58 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 }
 [/let]
 [/file]
+[/template]
+
+
+[template private rules(service : Service, entityOrView : EntityOrView, userService : Service) post(trim())]
+public function rules()
+{
+[if (service = userService)]
+    if ($this->validation_required(NULL)) 
+        return array(
+	[for (feature : Feature | entityOrView.validatedFeatures())]
+            [feature.fieldRules()/]
+	[/for]
+        );
+    else
+        return array();
+[else]
+	[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->isEmpty())]
+    return array(
+		[for (feature : Feature | entityOrView.validatedFeatures())]
+        [feature.fieldRules()/]
+		[/for]
+    );
+	[else]
+    $rules = array(
+		[for (feature : Feature | entityOrView.validatedFeatures())]
+        [feature.fieldRules()/]
+		[/for]
+    );
+    return empty($this->_control_fields) ? $rules : array_intersect_key($rules, $this->_control_fields);
+	[/if]
+[/if]
+}
+[/template]
+
+[template private fieldRules(feature : Feature) post(trim())]
+'[feature.columnName()/]' => array(
+[if (feature.isRequired())]
+    array('not_empty'),
+[/if]
+[if (feature.isUnique())]
+    array(array($this, 'unique'), array(':field', ':value')),
+[/if]
+),
+[/template]
+
+[template private labels(service : Service, entityOrView : EntityOrView) post(trim())]
+public function labels()
+{
+    return array(
+[for (feature : Feature | entityOrView.validatedFeatures())]
+        '[feature.columnName()/]' => '[feature.displayLabel/]',
+[/for]
+    );
+}
 [/template]

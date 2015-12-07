@@ -20,10 +20,6 @@
 [file(page.controllerFilename(), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-[if (page.hasCaptchaFields())]
-require_once(Kohana::find_file('vendor/recaptcha', 'recaptchalib'));
-
-[/if]
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
 
@@ -31,13 +27,13 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 
     [page.afterMethod()/]
 
-	public function action_index()
-	{
-	}
+    public function action_index()
+    {
+    }
 
 [for (unit : ContentUnit | page.units)]
 	[if (unit.hasUnitMethods())]
-	[unit.unitMethods()/]
+    [unit.unitMethods()/]
 
 	[/if]
 [/for]
@@ -61,13 +57,13 @@ public function before()
     $this->template->title = '[page.displayLabel/]';
     $this->template->id = '[page.instanceName()/]';
 [if (not page.styleClass.oclIsUndefined())]
-        $this->template->style_class = '[page.styleClass/]';
+    $this->template->style_class = '[page.styleClass/]';
 [/if]
 [if (page.hasMapUnits())]
-        $this->template->scripts['['/][']'/] = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places';
+    $this->template->scripts['['/][']'/] = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places';
 [/if]
 [if (page.hasCaptchaFields())]
-        $this->template->scripts['['/][']'/] = 'https://www.google.com/recaptcha/api.js';
+    $this->template->scripts['['/][']'/] = 'https://www.google.com/recaptcha/api.js';
 [/if]
 
 [if (page.hasParameterisedUnits())]
@@ -76,11 +72,11 @@ public function before()
 [/if]
 [if (page.partOf.staticUnitsEditable.oclAsType(Boolean))]
 	[for (unit : ContentUnit | page.units)]
-    [unit.unitBefore()/]
+    [unit.beforeMethod()/]
 	[/for]
 [else]
 	[for (unit : DynamicUnit | page.dynamicUnits()->select(u | not u.oclIsKindOf(IndexUnit)))]
-    [unit.unitBefore()/]
+    [unit.beforeMethod()/]
 	[/for]
 [/if]
 }
@@ -101,7 +97,7 @@ public function after()
 [/if]
 [for (unit : ContentUnit | page.units)]
 
-	    [unit.unitAfter()/]
+	    [unit.afterMethod()/]
 [/for]
 
         parent::after();

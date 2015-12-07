@@ -163,10 +163,12 @@ Route::set('default', '')
 		'action'  => 'index',
 	));
 [for (page : Page | model.pages)]
+	[if (page.hasIndexUnits() or page.units->size() = 0)]
 Route::set('[page.routeName()/]', '[page.uriPath()/]')->defaults(array(
     'controller' => '[page.controllerName()/]',
     'action'  => 'index',
 ));
+	[/if]
 	[for (unit : ContentUnit | page.units->select(u | not u.oclIsKindOf(IndexUnit)))]
 Route::set('[unit.routeName()/]', '[unit.uriPath()/]')->defaults(array(
     'controller' => '[page.controllerName()/]',
@@ -177,6 +179,14 @@ Route::set('[unit.routeName(true)/]', '[unit.uriPath(true)/]')->defaults(array(
     'controller' => '[page.controllerName()/]',
     'action' => '[unit.actionName()/]',
 ));
+		[/if]
+		[if (unit.oclIsTypeOf(LoginUnit))]
+		[let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
+Route::set('[loginUnit.logoutRouteName()/]', 'logout')->defaults(array(
+    'controller' => '[page.controllerName()/]',
+    'action' => '[loginUnit.logoutActionName()/]',
+));
+		[/let]
 		[/if]
 	[/for]
 [/for]

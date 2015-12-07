@@ -9,7 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::editMethods/]
 
 
-[template protected generateAuthenticationStart(unit : DynamicUnit) post(trim())]
+[template private authenticationStart(unit : DynamicUnit) post(trim())]
 [if (not unit.oclAsType(ControlUnit).cancelDestination.oclIsUndefined())]
 [unit.handleCancel()/]
 [/if]
@@ -21,35 +21,39 @@ if (Auth::instance()->logged_in())
 [/template]
 
 
-[template public generateUnitVariables(unit : ContentUnit)
-	? (unit.oclIsKindOf(RegistrationUnit)) post(trim())]
+[template public beforeMethod(unit : ContentUnit)
+	? (unit.oclIsKindOf(AuthenticationUnit)) post(trim())]
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 $this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.modelName()/]');
 [if (authenticationUnit.hasDefaultValueFields())]
 [authenticationUnit.unitDefaultValues()/]
 [/if]
+[if (unit.oclIsTypeOf(LoginUnit))]
+//TODO reload remember me
+[/if]
 [/let]
 [/template]
 
-[template public generateUnitDisplay(unit : ContentUnit)
+[template public afterMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(AuthenticationUnit) and not unit.oclIsKindOf(EditUnit)) post(trim())]
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-$this->[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.instanceName()/]', $this->[authenticationUnit.instanceName()/]);
+[authenticationUnit.createAndBindTemplate()/]
+$[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.instanceName()/]', $this->[authenticationUnit.instanceName()/]);
+[authenticationUnit.bindErrorMessage()/]
 [if (authenticationUnit.hasCaptchaFields())]
-if (isset($this->[authenticationUnit.instanceName()/]_field_errors))
-	$this->[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.instanceName()/]_field_errors', $this->[authenticationUnit.instanceName()/]_field_errors);
+[authenticationUnit.bindFieldErrors()/]
 [/if]
 [/let]
 [/template]
 
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(RegistrationUnit)) post(trim())]
 [let authentication : LocalAuthenticationSystem = unit.displayedOn.oclAsType(Page).partOf.authentication.oclAsType(LocalAuthenticationSystem)]
 [let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
 public function action_[registrationUnit.actionName()/]()
 {
-	[registrationUnit.generateAuthenticationStart()/]
+	[registrationUnit.authenticationStart()/]
 [if (not registrationUnit.cancelDestination.oclIsUndefined())]
 	[registrationUnit.handleCancel()/]
 [/if]
@@ -131,69 +135,80 @@ public function action_[registrationUnit.actionName()/]()
 [/let]
 [/template]
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(LoginUnit)) post(trim())]
 [let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
 [let localAuthentication : LocalAuthenticationSystem = loginUnit.authenticationSystem]
 public function action_[loginUnit.actionName()/]()
 {
-	[loginUnit.generateAuthenticationStart()/]
-	else if ($this->request->method() == HTTP_Request::POST)
-	{
-		[loginUnit.valuesFromFormToModel()/]
-[if (loginUnit.hasForcedValueFeatures())]
-		[loginUnit.forcedFeatureValues()/]
-[/if]
+    [loginUnit.authenticationStart()/]
+    else if ($this->request->method() == HTTP_Request::POST)
 [if (loginUnit.hasCaptchaFields())]
-		[loginUnit.captchaCheck()/]
-		else
-		{
+        try
+        {
+            [loginUnit.validateLogin()/]
+        }
+        [loginUnit.catchCaptchaException()/]
+[else]
+    {
+        [loginUnit.validateLogin()/]
+    }
 [/if]
-			$login_id = $this->request->post('[loginUnit.loginIdField.modelPropertyName()/]');
-			$password = $this->request->post('[loginUnit.passwordField.modelPropertyName()/]');
-[if (not localAuthentication.autoLoginService.oclIsUndefined())]
-			$remember_me = $this->request->post('[loginUnit.rememberMeField.modelPropertyName()/]');
-[/if]
-			$authentication = Auth::instance()->login($login_id, $password, [if (localAuthentication.autoLoginService.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
-			if ($authentication)
-			{
-				$referrer = Session::instance()->get('login_referrer');
-				if (!empty($referrer))
-				{
-					Session::instance()->delete('login_referrer');
-					$this->redirect($referrer);
-				}
-				else
-					$this->redirect();
-			}
-			else
-			{
-				$this->[loginUnit.errorName()/] = Auth::instance()->message;
-[if (loginUnit.hasInterfaceFields())]
-				[loginUnit.rememberInterfaceFields()/]
-[/if]
-			}
-[if (loginUnit.hasCaptchaFields())]
-		}
-[/if]
-	}
 }
 
-public function action_logout()
+public function action_[loginUnit.logoutActionName()/]()
 {
-		Auth::instance()->logout(FALSE);
+    Auth::instance()->logout(FALSE);
+    $this->redirect();
 }
 
 [/let]
 [/let]
 [/template]
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public validateLogin(unit : LoginUnit) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = unit.authenticationSystem]
+[unit.valuesFromFormToModel()/]
+[if (unit.hasForcedValueFeatures())]
+[unit.forcedFeatureValues()/]
+[/if]
+[if (unit.hasCaptchaFields())]
+[unit.captchaCheck()/]
+[/if]
+$login_id = $this->request->post('[unit.loginIdField.modelPropertyName()/]');
+$password = $this->request->post('[unit.passwordField.modelPropertyName()/]');
+[if (not localAuthentication.autoLoginService.oclIsUndefined())]
+$remember_me = $this->request->post('[unit.rememberMeField.modelPropertyName()/]');
+[/if]
+$authentication = Auth::instance()->login($login_id, $password, [if (localAuthentication.autoLoginService.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
+if ($authentication)
+{
+    $referrer = Session::instance()->get('login_referrer');
+    if (!empty($referrer))
+    {
+        Session::instance()->delete('login_referrer');
+        $this->redirect($referrer);
+    }
+    else
+        $this->redirect();
+    }
+ else
+{
+    $this->[unit.errorName()/] = Auth::instance()->message;
+[if (unit.hasInterfaceFields())]
+    [unit.rememberInterfaceFields()/]
+[/if]
+}
+[/let]
+[/template]
+
+
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(ForgottenPasswordUnit)) post(trim())]
 [let forgottenUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
 public function action_[forgottenUnit.actionName()/]() {
 	// based on code from tank_auth by Ilya Konyukhov (http://konyukhov.com/soft/tank_auth/)
-	[forgottenUnit.generateAuthenticationStart()/]
+	[forgottenUnit.authenticationStart()/]
 	else {
 		$this->[forgottenUnit.instanceName()/]->where('[forgottenUnit.loginIdField.modelPropertyName()/]', '=', $this->request->post('[forgottenUnit.loginIdField.modelPropertyName()/]'))->find();
 		if ($this->[forgottenUnit.instanceName()/]->loaded())

@@ -39,9 +39,9 @@ public function action_[actionUnit.actionName()/]()
 	}
 	catch (ORM_Validation_Exception $e)
 	{
-		$this->[unit.instanceName()/]_field_errors = $e->errors('');
+		$this->[unit.fieldErrorsName()/] = $e->errors('');
 	[if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
-		$unreported_field_errors = array_diff_key($this->[unit.instanceName()/]_field_errors, array([for
+		$unreported_field_errors = array_diff_key($this->[unit.fieldErrorsName()/], array([for
 		(field : UnitField | unit.inputFields())
 			separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
 		if (!empty($unreported_field_errors))
