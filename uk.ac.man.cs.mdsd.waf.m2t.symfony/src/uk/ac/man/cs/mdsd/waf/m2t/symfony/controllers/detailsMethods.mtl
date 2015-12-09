@@ -25,13 +25,13 @@
  * @Route("[unit.path()/]", name="[unit.routeName()/]")
  */
 public function [unit.actionName()/]([if (unit.hasFilterParameters())]
-Request $request[if (unit.parameters->notEmpty())], [/if][/if][unit.routeParameters()/])
+Request $request[if (unit.service.keys->notEmpty())], [/if][/if][unit.service.routeParameters()/])
 {
     $repository = $this->getDoctrine()
         ->getRepository('[unit.appBundleName()/]:[unit.service.name/]');
     $queryBuilder = $repository->createQueryBuilder('[unit.service.selectName()/]');
     $queryBuilder->where(
-[for (feature : ServiceAttribute | unit.parameters)]
+[for (feature : ServiceFeature | unit.service.keys)]
         $queryBuilder->expr()->eq([feature.featureReference()/], $queryBuilder->expr()->literal($[feature.name/]))
 [/for]
     );

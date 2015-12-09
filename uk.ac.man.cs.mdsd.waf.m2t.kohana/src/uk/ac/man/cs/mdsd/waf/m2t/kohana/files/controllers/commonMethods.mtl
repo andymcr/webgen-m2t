@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::criteria/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
@@ -33,26 +34,20 @@ TBC[/if]')->uri());
 [/template]
 
 
-[template public loadSelection(target : Selectable) post(trim())]
-[target.loadSelection(false)/]
+[template public loadSelection(unit : DynamicUnit) post(trim())]
+[unit.loadSelection(false)/]
 [/template]
 
-[template public loadSelection(target : Selectable, validate : Boolean) post(trim())]
-[let unit : DynamicUnit = target.oclAsType(DynamicUnit)]
-[if (target.parameters->size() > 0)]
-	[if (target.parameters->size() = 1)]
-	[let parameter : ServiceAttribute = target.parameters->first()]
-if (!empty($this->request->param('[parameter.name/]')))
-{
-    $this->[unit.instanceName()/]->where('[parameter.columnName()/]', '=', $this->request->param('[parameter.name/]'));
-	[/let]
+[template public loadSelection(unit : DynamicUnit, validate : Boolean) post(trim())]
+[if (unit.service.keys->size() > 0)]
+	[if (unit.service.keys->size() = 1)]
+[unit.service.keys->first().selectionParameter(unit, true)/]
 	[else]
-if ([for (parameter : ServiceAttribute | target.parameters) separator(' || ')]
-!empty($this->request->param('[parameter.name/]'))[/for])
+if ([for (key : ServiceFeatureReference | unit.service.keys) separator(' || ')]
+!empty($this->request->param('[key.routeParameterName(unit.routeParameterPrepend(unit.renameRouteParameters()))/]'))[/for])
 {
-		[for (parameter : ServiceAttribute | target.parameters)]
-    if (!empty($this->request->param('[parameter.name/]')))
-        $this->[unit.instanceName()/]->where('[parameter.columnName()/]', '=', $this->request->param('[parameter.name/]'));
+		[for (key : ServiceFeatureReference | unit.service.keys)]
+    [key.selectionParameter(unit, false)/]
 		[/for]
 	[/if]
     $this->[unit.instanceName()/]->find();
@@ -62,6 +57,29 @@ if ([for (parameter : ServiceAttribute | target.parameters) separator(' || ')]
     [unit.detectInvalidSelection()/]
 	[/if]
 }
+[/if]
+[/template]
+
+[template private selectionParameter(key : ServiceFeatureReference, unit : DynamicUnit, withinBlock : Boolean) post(trim())]
+[let keyName : String = key.routeParameterName(unit.routeParameterPrepend(unit.renameRouteParameters()))]
+if (!empty($this->request->param('[keyName/]')))
+[if (key.oclIsTypeOf(ServiceAttributeReference))]
+	[if (withinBlock)]
+{
+	[/if]
+    $this->[unit.instanceName()/]->where('[key.columnName()/]', '=', $this->request->param('[keyName/]'));
+[else]
+[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
+[let targetType : EntityOrView = associationKey.association.targetType()]
+{
+    $this->[unit.instanceName()/]->join('[targetType.tableName/]');
+    $this->[unit.instanceName()/]->on('[key.columnName()/]', '=', '[targetType.autoKeyName/]');
+    $this->[unit.instanceName()/]->where('[associationKey.childFeature.columnName()/]', '=', $this->request->param('[keyName/]'));
+	[if (not withinBlock)]
+}
+	[/if]
+[/let]
+[/let]
 [/if]
 [/let]
 [/template]

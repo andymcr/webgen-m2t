@@ -447,19 +447,25 @@ NULL
 [/if]
 [/template]
 
-[template private getValue(childFeature : UnitChildFeature, accessor : String)
-	? (childFeature.oclIsTypeOf(UnitChildElement)) post(trim())]
-[let childAttribute : UnitChildElement = childFeature.oclAsType(UnitChildElement)]
-[let childAccessor : String = accessor.concat('->').concat(childAttribute.serviceFeature.modelPropertyName())]
-[childAttribute.serviceFeature.attribute.getValue(childFeature.ancestors(UnitFeature)->first(), childAccessor)/]
+[template private getValue(childFeature : ServiceFeatureReference, accessor : String)
+	? (childFeature.oclIsTypeOf(ServiceAttributeReference)) post(trim())]
+[let childAttribute : ServiceAttributeReference = childFeature.oclAsType(ServiceAttributeReference)]
+[let childAccessor : String = accessor.concat('->').concat(childAttribute.attribute.modelPropertyName())]
+[let unitFeatures : Sequence(UnitFeature) = childFeature.ancestors(UnitFeature)]
+[if (unitFeatures->size() > 0)]
+[childAttribute.attribute.attribute.getValue(unitFeatures->first(), childAccessor)/]
+[else]
+[childAttribute.attribute.attribute.getValue(null, childAccessor)/]
+[/if]
+[/let]
 [/let]
 [/let]
 [/template]
 
-[template private getValue(childFeature : UnitChildFeature, accessor : String)
-	? (childFeature.oclIsTypeOf(UnitChildAssociation)) post(trim())]
-[let childAssociation : UnitChildAssociation = childFeature.oclAsType(UnitChildAssociation)]
-[let childAccessor : String = accessor.concat('->').concat(childAssociation.serviceFeature.modelPropertyName())]
+[template private getValue(childFeature : ServiceFeatureReference, accessor : String)
+	? (childFeature.oclIsTypeOf(ServiceAssociationReference)) post(trim())]
+[let childAssociation : ServiceAssociationReference = childFeature.oclAsType(ServiceAssociationReference)]
+[let childAccessor : String = accessor.concat('->').concat(childAssociation.association.modelPropertyName())]
 [if (childAssociation.childFeature.oclIsUndefined())]
 [childAccessor/]->defaultLabel()
 [else]
@@ -501,7 +507,7 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
     echo HTML::anchor(
         Route::get('[targetUnit.routeName()/]')->uri(array(
             'action' => '[targetUnit.name/]',
-            [targetUnit.oclAsType(Selectable).routeSelectionParameters(accessor)/]
+            [targetUnit.routeSelectionParameters(accessor)/]
 		)),
 		HTML::chars(__('[action.displayLabel/]')),
 		array(
@@ -512,8 +518,8 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/let]
 [/template]
 
-[template public routeSelectionParameters(selectable : Selectable, accessor : String) post(trim())]
-[for (parameter : ServiceAttribute | selectable.parameters)]
-'[parameter.name/]' => [accessor/]->[parameter.modelPropertyName()/],
+[template public routeSelectionParameters(unit : DynamicUnit, accessor : String) post(trim())]
+[for (key : ServiceFeatureReference | unit.service.keys)]
+'[key.routeParameterName(unit.routeParameterPrepend(unit.renameRouteParameters()))/]' => [key.getValue(accessor)/],
 [/for]
 [/template]

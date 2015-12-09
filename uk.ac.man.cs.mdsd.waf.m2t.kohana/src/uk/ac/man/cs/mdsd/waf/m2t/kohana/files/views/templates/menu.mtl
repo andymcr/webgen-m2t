@@ -57,12 +57,3 @@
 ?></li>
 [/let]
 [/template]
-
-[template private menuEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(FixedCommandMenuEntry)) post(trim())]
-[let fixedEntry : FixedCommandMenuEntry = entry.oclAsType(FixedCommandMenuEntry)]
-<li><?php
-		HTML::chars(__('[fixedEntry.displayLabel/]'));
-?></li>
-[/let]
-[/template]

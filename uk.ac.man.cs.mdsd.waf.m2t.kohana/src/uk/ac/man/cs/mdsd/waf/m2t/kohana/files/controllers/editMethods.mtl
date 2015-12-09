@@ -73,7 +73,7 @@ public function action_[unit.actionName()/]()
     try
     {
 [if (unit.oclIsKindOf(Selectable))]
-        [unit.oclAsType(Selectable).loadSelection(true)/]
+        [unit.loadSelection(true)/]
 [/if]
 [if (unit.hasDefaultValueFields())]
         [unit.unitDefaultValues()/]

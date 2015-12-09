@@ -46,9 +46,9 @@ $[detailsUnit.templateInstanceName()/]->bind('[detailsUnit.instanceName()/]', $t
 [template private actionMethod(unit : DetailsUnit)]
 public function action_[unit.actionName()/]()
 {
-    [unit.oclAsType(Selectable).loadSelection()/]
+    [unit.loadSelection()/]
 [if (not unit.defaultSelection.oclIsUndefined())]
-	[if (unit.oclAsType(Selectable).parameters->size() > 0)]
+	[if (unit.service.keys->size() > 0)]
     else
     {
         $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();

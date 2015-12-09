@@ -4,27 +4,62 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
 
+[query public uriPath(service : Service) : String
+	= service.uriPath('')
+/]
+
+[query public uriPath(service : Service, parameterNamePrepend : String) : String
+	= service.keys->collect(k | k.routeParameterName(parameterNamePrepend))->sep('/<', '>/<', '>')->toString()
+/]
+
+
+[query public routeParameterName(feature : ServiceFeatureReference) : String
+	= feature.routeParameterName('')
+/]
+
+[query public routeParameterName(feature : ServiceFeatureReference, prepend : String) : String
+	= let name : String 
+		= if feature.oclIsTypeOf(ServiceAttributeReference) then
+				feature.oclAsType(ServiceAttributeReference).attribute.name
+			else
+				let association : ServiceAssociationReference = feature.oclAsType(ServiceAssociationReference)
+				in if association.childFeature.oclIsUndefined() then
+						association.association.name
+					else
+						association.childFeature.routeParameterName(prepend)
+					endif
+			endif
+		in if prepend = '' then
+				name
+			else
+				prepend.concat(name.toUpperFirst())
+			endif
+/]
+
+
 [query public uriPath(page : Page) : String
 	= if page.parentPage.oclIsUndefined() then
-			page.path
+			page.uriElement
 		else if page.parentPage = page.partOf.homePage() then
-			page.path
+			page.uriElement
 		else
-			let path : String
-				= if page.path.startsWith('/') then
-						page.path
+			let uriElement : String
+				= if page.uriElement.oclIsUndefined() then
+						''
+					else if page.uriElement = '' then
+						''
+					else if page.uriElement.startsWith('/') then
+						page.uriElement
 					else
-						'/'.concat(page.path)
-					endif
-			in page.parentPage.uriPath().concat(path)
+						'/'.concat(page.uriElement)
+					endif endif endif
+			in page.parentPage.uriPath().concat(uriElement)
 		endif endif
 /]
 
 
 [query public hasUnitMethods(unit : ContentUnit) : Boolean
-	= if unit.oclIsTypeOf(CommandUnit) then
-			true
-		else if unit.oclIsKindOf(EditUnit) then
+	= if unit.oclIsKindOf(EditUnit) then
 			true
 		else if unit.oclIsKindOf(DataUnit) then
 			unit.oclAsType(DataUnit).hasUriActions() or unit.oclIsTypeOf(DetailsUnit)
@@ -34,7 +69,19 @@
 			true
 		else
 			false
-		endif endif endif endif endif
+		endif endif endif endif
+/]
+
+[query public renameRouteParameters(unit : ContentUnit) : Boolean
+	= unit.uriPathKeys()->size() <> Set{unit.uriPathKeys()}->size()
+/]
+
+[query public routeParameterPrepend(unit : ContentUnit, renameParameter : Boolean) : String
+	= if renameParameter then
+			unit.name.toLowerFirst()
+		else
+			''
+		endif
 /]
 
 [query public uriPath(unit : ContentUnit) : String
@@ -42,18 +89,38 @@
 /]
 
 [query public uriPath(unit : ContentUnit, create : Boolean) : String
-	= unit.pageDisplayedOn().uriPath()
-		.concat(if not unit.oclIsKindOf(Selectable) or create then
-				''
-			else
-				unit.oclAsType(Selectable).parameters->collect(f | f.name)->sep('/<', '>/<', '>')->toString()
-			endif)
-		.concat(if unit.path.oclIsUndefined() then
-				''
-			else if unit.path = '' then
-				''
-			else
-				'/'.concat(unit.path)
-			endif endif)
+	= unit.uriPath(create, unit.renameRouteParameters())
 /]
 
+[query public uriPath(unit : ContentUnit, create : Boolean, renameParameters : Boolean) : String
+	= let uriElement : String 
+		= if not unit.oclIsKindOf(Selectable) or create then
+					''
+				else
+					unit.oclAsType(DynamicUnit).service.uriPath(routeParameterPrepend(renameParameters))
+				endif
+			.concat(if unit.uriElement.oclIsUndefined() then
+					''
+				else if unit.uriElement = '' then
+					''
+				else
+					'/'.concat(unit.uriElement)
+				endif endif)
+		in if unit.uriParent.oclIsUndefined() then
+				unit.pageDisplayedOn().uriPath().concat(uriElement)
+			else
+				unit.uriParent.uriPath(false, renameParameters).concat(uriElement)
+			endif
+/]
+
+[query public uriPathKeys(unit : ContentUnit) : Sequence(ServiceFeature)
+	= if unit.oclIsKindOf(Selectable) then
+				unit.oclAsType(DynamicUnit).service.keys->asSequence()
+			else
+				Sequence{}
+			endif->union(if unit.uriParent.oclIsUndefined() then
+					Sequence{}
+				else
+					unit.uriParent.uriPathKeys()
+				endif)
+/]

@@ -205,15 +205,6 @@
 /]
 
 
-[query public actionName(command : Command) : String
-	= command.instanceName()
-/]
-
-[query public instanceName(command : Command) : String
-	= command.name.toLowerFirst()
-/]
-
-
 [query public actionName(action : InlineAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).instanceName()

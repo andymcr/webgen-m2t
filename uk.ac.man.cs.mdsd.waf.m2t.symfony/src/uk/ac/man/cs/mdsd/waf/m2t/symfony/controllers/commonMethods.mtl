@@ -9,8 +9,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public routeParameters(target : Selectable) post(trim())]
-[for (feature : ServiceAttribute | target.parameters) separator (', ')]
+[template public routeParameters(service : Service) post(trim())]
+[for (feature : ServiceFeature | service.keys) separator (', ')]
 $[feature.name/]
 [/for]
 [/template]

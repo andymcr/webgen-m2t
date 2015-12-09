@@ -332,3 +332,13 @@
 		endif endif endif
 /]
 
+[query public targetType(association : Association) : EntityOrView
+	= if association.oclIsKindOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).opposite.partOf
+		else if association.oclIsKindOf(EncapsulatedAssociation) then
+			association.oclAsType(EncapsulatedAssociation).association.targetType()
+		else
+			association.oclAsType(ViewAssociation).opposite.targetType()
+		endif endif
+/]
+

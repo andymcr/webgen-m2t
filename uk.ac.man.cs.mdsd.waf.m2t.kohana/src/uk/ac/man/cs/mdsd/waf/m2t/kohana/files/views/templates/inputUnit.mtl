@@ -96,7 +96,7 @@
 $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
 '[unit.routeName()/]'[/if])->uri(array(
 [if (unit.oclIsKindOf(Selectable))]
-            [unit.oclAsType(Selectable).routeSelectionParameters(accessor)/]
+            [unit.routeSelectionParameters(accessor)/]
 [else]
             'param' => 'submit'
 [/if]
