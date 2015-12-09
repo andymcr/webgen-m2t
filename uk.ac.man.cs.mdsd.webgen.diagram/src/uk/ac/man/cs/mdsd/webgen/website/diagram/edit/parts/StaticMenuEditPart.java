@@ -260,10 +260,6 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.FixedCommandMenuEntry_3231) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
-			}
 			if (type == WebsiteElementTypes.EditStaticTextMenuEntry_3156) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));

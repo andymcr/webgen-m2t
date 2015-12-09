@@ -152,8 +152,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case DataTypeFieldEditPart.VISUAL_ID:
 				case DateFieldEditPart.VISUAL_ID:
 				case UnitSupportActionEditPart.VISUAL_ID:
-				case CommandUnitEditPart.VISUAL_ID:
-				case UserCommandEditPart.VISUAL_ID:
 				case CreateUnitEditPart.VISUAL_ID:
 				case CreateUpdateUnitEditPart.VISUAL_ID:
 				case CreateSitemapUnitEditPart.VISUAL_ID:
@@ -167,7 +165,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case StaticUnitEditPart.VISUAL_ID:
 				case UpdateUnitEditPart.VISUAL_ID:
 				case ActionMenuEntryEditPart.VISUAL_ID:
-				case FixedCommandMenuEntryEditPart.VISUAL_ID:
 				case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 				case ServiceAttributeEditPart.VISUAL_ID:
 				case ServiceAssociationEditPart.VISUAL_ID:
@@ -267,8 +264,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				|| EncapsulatedAssociationEditPart.VISUAL_ID == visualID || ActionUnitEditPart.VISUAL_ID == visualID
 				|| UnitElementEditPart.VISUAL_ID == visualID || UnitAssociationEditPart.VISUAL_ID == visualID
 				|| DataTypeFieldEditPart.VISUAL_ID == visualID || DateFieldEditPart.VISUAL_ID == visualID
-				|| UnitSupportActionEditPart.VISUAL_ID == visualID || CommandUnitEditPart.VISUAL_ID == visualID
-				|| UserCommandEditPart.VISUAL_ID == visualID || CreateUnitEditPart.VISUAL_ID == visualID
+				|| UnitSupportActionEditPart.VISUAL_ID == visualID || CreateUnitEditPart.VISUAL_ID == visualID
 				|| UnitElement2EditPart.VISUAL_ID == visualID || UnitAssociation2EditPart.VISUAL_ID == visualID
 				|| DataTypeField2EditPart.VISUAL_ID == visualID || DateField2EditPart.VISUAL_ID == visualID
 				|| CreateUpdateUnitEditPart.VISUAL_ID == visualID || UnitElement3EditPart.VISUAL_ID == visualID
@@ -310,7 +306,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				|| UnitAssociation18EditPart.VISUAL_ID == visualID || SelectAction7EditPart.VISUAL_ID == visualID
 				|| DeleteAction3EditPart.VISUAL_ID == visualID || DataTypeField7EditPart.VISUAL_ID == visualID
 				|| DateField7EditPart.VISUAL_ID == visualID || ActionMenuEntryEditPart.VISUAL_ID == visualID
-				|| FixedCommandMenuEntryEditPart.VISUAL_ID == visualID
 				|| EditStaticTextMenuEntryEditPart.VISUAL_ID == visualID
 				|| ServiceAttributeEditPart.VISUAL_ID == visualID || ServiceAssociationEditPart.VISUAL_ID == visualID
 				|| SelectionEditPart.VISUAL_ID == visualID;
@@ -417,10 +412,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createDateField_3207(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitSupportActionEditPart.VISUAL_ID:
 			return createUnitSupportAction_3232(domainElement, containerView, index, persisted, preferencesHint);
-		case CommandUnitEditPart.VISUAL_ID:
-			return createCommandUnit_3225(domainElement, containerView, index, persisted, preferencesHint);
-		case UserCommandEditPart.VISUAL_ID:
-			return createUserCommand_3226(domainElement, containerView, index, persisted, preferencesHint);
 		case CreateUnitEditPart.VISUAL_ID:
 			return createCreateUnit_3103(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement2EditPart.VISUAL_ID:
@@ -587,8 +578,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createDateField_3218(domainElement, containerView, index, persisted, preferencesHint);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return createActionMenuEntry_3236(domainElement, containerView, index, persisted, preferencesHint);
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
-			return createFixedCommandMenuEntry_3231(domainElement, containerView, index, persisted, preferencesHint);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return createEditStaticTextMenuEntry_3156(domainElement, containerView, index, persisted, preferencesHint);
 		case ServiceAttributeEditPart.VISUAL_ID:
@@ -1626,74 +1615,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5239 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitSupportActionNameEditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createCommandUnit_3225(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(CommandUnitEditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5233 = createLabel(node, WebsiteVisualIDRegistry.getType(CommandUnitNameEditPart.VISUAL_ID));
-		createCompartment(node, WebsiteVisualIDRegistry.getType(CommandUnitCommandsCompartmentEditPart.VISUAL_ID),
-				false, false, true, true);
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createUserCommand_3226(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(UserCommandEditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5232 = createLabel(node, WebsiteVisualIDRegistry.getType(UserCommandNameEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -4536,36 +4457,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5196 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName11EditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	public Node createFixedCommandMenuEntry_3231(EObject domainElement, View containerView, int index,
-			boolean persisted, PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(FixedCommandMenuEntryEditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5238 = createLabel(node,
-				WebsiteVisualIDRegistry.getType(FixedCommandMenuEntryNameEditPart.VISUAL_ID));
 		return node;
 	}
 

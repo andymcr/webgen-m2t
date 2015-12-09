@@ -823,11 +823,6 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String CommandUnitCommandsCompartmentEditPart_title;
-
-	/**
-	 * @generated
-	 */
 	public static String CreateUnitUnitFieldCompartmentEditPart_title;
 
 	/**

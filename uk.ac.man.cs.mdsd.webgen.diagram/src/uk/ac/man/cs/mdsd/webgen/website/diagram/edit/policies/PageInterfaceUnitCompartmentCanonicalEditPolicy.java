@@ -23,7 +23,6 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ActionUnitEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CommandUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateSitemapUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnitEditPart;
@@ -90,7 +89,6 @@ public class PageInterfaceUnitCompartmentCanonicalEditPolicy extends CanonicalEd
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
 		switch (visualID) {
 		case ActionUnitEditPart.VISUAL_ID:
-		case CommandUnitEditPart.VISUAL_ID:
 		case CreateUnitEditPart.VISUAL_ID:
 		case CreateUpdateUnitEditPart.VISUAL_ID:
 		case CreateSitemapUnitEditPart.VISUAL_ID:

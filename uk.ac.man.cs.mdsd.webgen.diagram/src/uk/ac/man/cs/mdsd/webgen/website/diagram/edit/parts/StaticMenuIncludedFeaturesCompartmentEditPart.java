@@ -99,9 +99,6 @@ public class StaticMenuIncludedFeaturesCompartmentEditPart extends ListCompartme
 			if (type == WebsiteElementTypes.ActionMenuEntry_3236) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.FixedCommandMenuEntry_3231) {
-				return this;
-			}
 			if (type == WebsiteElementTypes.EditStaticTextMenuEntry_3156) {
 				return this;
 			}

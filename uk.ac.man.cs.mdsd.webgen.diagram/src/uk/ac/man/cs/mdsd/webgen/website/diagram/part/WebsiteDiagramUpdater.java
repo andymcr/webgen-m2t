@@ -18,8 +18,6 @@ import uk.ac.man.cs.mdsd.webgen.website.AssociationWithContainment;
 import uk.ac.man.cs.mdsd.webgen.website.AssociationWithoutContainment;
 import uk.ac.man.cs.mdsd.webgen.website.Authentication;
 import uk.ac.man.cs.mdsd.webgen.website.Classifier;
-import uk.ac.man.cs.mdsd.webgen.website.Command;
-import uk.ac.man.cs.mdsd.webgen.website.CommandUnit;
 import uk.ac.man.cs.mdsd.webgen.website.ContentUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUpdateUnit;
@@ -135,8 +133,6 @@ public class WebsiteDiagramUpdater {
 			return getActionUnitUnitFieldCompartment_7103SemanticChildren(view);
 		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
 			return getActionUnitActionCompartment_7104SemanticChildren(view);
-		case CommandUnitCommandsCompartmentEditPart.VISUAL_ID:
-			return getCommandUnitCommandsCompartment_7117SemanticChildren(view);
 		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			return getCreateUnitUnitFieldCompartment_7042SemanticChildren(view);
 		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
@@ -472,10 +468,6 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == CommandUnitEditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
-			}
 			if (visualID == CreateUnitEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -569,30 +561,6 @@ public class WebsiteDiagramUpdater {
 			UnitSupportAction childElement = (UnitSupportAction) it.next();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
 			if (visualID == UnitSupportActionEditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteNodeDescriptor> getCommandUnitCommandsCompartment_7117SemanticChildren(View view) {
-		if (false == view.eContainer() instanceof View) {
-			return Collections.emptyList();
-		}
-		View containerView = (View) view.eContainer();
-		if (!containerView.isSetElement()) {
-			return Collections.emptyList();
-		}
-		CommandUnit modelElement = (CommandUnit) containerView.getElement();
-		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getCommands().iterator(); it.hasNext();) {
-			Command childElement = (Command) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == UserCommandEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1599,10 +1567,6 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == FixedCommandMenuEntryEditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
-			}
 			if (visualID == EditStaticTextMenuEntryEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1724,10 +1688,6 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3207ContainedLinks(view);
 		case UnitSupportActionEditPart.VISUAL_ID:
 			return getUnitSupportAction_3232ContainedLinks(view);
-		case CommandUnitEditPart.VISUAL_ID:
-			return getCommandUnit_3225ContainedLinks(view);
-		case UserCommandEditPart.VISUAL_ID:
-			return getUserCommand_3226ContainedLinks(view);
 		case CreateUnitEditPart.VISUAL_ID:
 			return getCreateUnit_3103ContainedLinks(view);
 		case UnitElement2EditPart.VISUAL_ID:
@@ -1894,8 +1854,6 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3218ContainedLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236ContainedLinks(view);
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
-			return getFixedCommandMenuEntry_3231ContainedLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntry_3156ContainedLinks(view);
 		case ServiceAttributeEditPart.VISUAL_ID:
@@ -1975,10 +1933,6 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3207IncomingLinks(view);
 		case UnitSupportActionEditPart.VISUAL_ID:
 			return getUnitSupportAction_3232IncomingLinks(view);
-		case CommandUnitEditPart.VISUAL_ID:
-			return getCommandUnit_3225IncomingLinks(view);
-		case UserCommandEditPart.VISUAL_ID:
-			return getUserCommand_3226IncomingLinks(view);
 		case CreateUnitEditPart.VISUAL_ID:
 			return getCreateUnit_3103IncomingLinks(view);
 		case UnitElement2EditPart.VISUAL_ID:
@@ -2145,8 +2099,6 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3218IncomingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236IncomingLinks(view);
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
-			return getFixedCommandMenuEntry_3231IncomingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntry_3156IncomingLinks(view);
 		case ServiceAttributeEditPart.VISUAL_ID:
@@ -2226,10 +2178,6 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3207OutgoingLinks(view);
 		case UnitSupportActionEditPart.VISUAL_ID:
 			return getUnitSupportAction_3232OutgoingLinks(view);
-		case CommandUnitEditPart.VISUAL_ID:
-			return getCommandUnit_3225OutgoingLinks(view);
-		case UserCommandEditPart.VISUAL_ID:
-			return getUserCommand_3226OutgoingLinks(view);
 		case CreateUnitEditPart.VISUAL_ID:
 			return getCreateUnit_3103OutgoingLinks(view);
 		case UnitElement2EditPart.VISUAL_ID:
@@ -2396,8 +2344,6 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3218OutgoingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236OutgoingLinks(view);
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
-			return getFixedCommandMenuEntry_3231OutgoingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntry_3156OutgoingLinks(view);
 		case ServiceAttributeEditPart.VISUAL_ID:
@@ -2635,20 +2581,6 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getCommandUnit_3225ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getUserCommand_3226ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3229,13 +3161,6 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -3498,20 +3423,6 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getCommandUnit_3225IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getUserCommand_3226IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4092,13 +4003,6 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<WebsiteLinkDescriptor> getEditStaticTextMenuEntry_3156IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -4355,20 +4259,6 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getUnitSupportAction_3232OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getCommandUnit_3225OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getUserCommand_3226OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4943,13 +4833,6 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getUnitAssociation_3192OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getFixedCommandMenuEntry_3231OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

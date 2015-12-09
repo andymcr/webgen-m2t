@@ -532,40 +532,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	 * @generated
 	 */
-	private IParser commandUnitName_5233Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getCommandUnitName_5233Parser() {
-		if (commandUnitName_5233Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			commandUnitName_5233Parser = parser;
-		}
-		return commandUnitName_5233Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser userCommandName_5232Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUserCommandName_5232Parser() {
-		if (userCommandName_5232Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			userCommandName_5232Parser = parser;
-		}
-		return userCommandName_5232Parser;
-	}
-
-	/**
-	 * @generated
-	 */
 	private IParser createUpdateUnitName_5108Parser;
 
 	/**
@@ -1943,23 +1909,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	 * @generated
 	 */
-	private IParser fixedCommandMenuEntryName_5238Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getFixedCommandMenuEntryName_5238Parser() {
-		if (fixedCommandMenuEntryName_5238Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			fixedCommandMenuEntryName_5238Parser = parser;
-		}
-		return fixedCommandMenuEntryName_5238Parser;
-	}
-
-	/**
-	 * @generated
-	 */
 	private IParser editStaticTextMenuEntryName_5164Parser;
 
 	/**
@@ -2135,10 +2084,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getDateFieldName_5214Parser();
 		case UnitSupportActionNameEditPart.VISUAL_ID:
 			return getUnitSupportActionName_5239Parser();
-		case CommandUnitNameEditPart.VISUAL_ID:
-			return getCommandUnitName_5233Parser();
-		case UserCommandNameEditPart.VISUAL_ID:
-			return getUserCommandName_5232Parser();
 		case CreateUnitNameEditPart.VISUAL_ID:
 			return getCreateUnitName_5107Parser();
 		case UnitElementName2EditPart.VISUAL_ID:
@@ -2303,8 +2248,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getDateFieldName_5225Parser();
 		case ActionMenuEntryNameEditPart.VISUAL_ID:
 			return getActionMenuEntryName_5243Parser();
-		case FixedCommandMenuEntryNameEditPart.VISUAL_ID:
-			return getFixedCommandMenuEntryName_5238Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntryName_5164Parser();
 		case ServiceAttributeNameEditPart.VISUAL_ID:

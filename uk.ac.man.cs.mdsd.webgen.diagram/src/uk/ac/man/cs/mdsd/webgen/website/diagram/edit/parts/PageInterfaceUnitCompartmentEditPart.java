@@ -97,9 +97,6 @@ public class PageInterfaceUnitCompartmentEditPart extends ListCompartmentEditPar
 			if (type == WebsiteElementTypes.ActionUnit_3213) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.CommandUnit_3225) {
-				return this;
-			}
 			if (type == WebsiteElementTypes.CreateUnit_3103) {
 				return this;
 			}

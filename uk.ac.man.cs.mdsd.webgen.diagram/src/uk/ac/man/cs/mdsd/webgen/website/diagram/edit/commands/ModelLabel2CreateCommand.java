@@ -12,26 +12,26 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.CommandUnit;
-import uk.ac.man.cs.mdsd.webgen.website.UserCommand;
+import uk.ac.man.cs.mdsd.webgen.website.EntityOrView;
+import uk.ac.man.cs.mdsd.webgen.website.ModelLabel;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
  */
-public class UserCommandCreateCommand extends EditElementCommand {
+public class ModelLabel2CreateCommand extends EditElementCommand {
 
 	/**
-	 * @generated
-	 */
-	public UserCommandCreateCommand(CreateElementRequest req) {
+	* @generated
+	*/
+	public ModelLabel2CreateCommand(CreateElementRequest req) {
 		super(req.getLabel(), null, req);
 	}
 
 	/**
-	 * FIXME: replace with setElementToEdit()
-	 * @generated
-	 */
+	* FIXME: replace with setElementToEdit()
+	* @generated
+	*/
 	protected EObject getElementToEdit() {
 		EObject container = ((CreateElementRequest) getRequest()).getContainer();
 		if (container instanceof View) {
@@ -41,21 +41,21 @@ public class UserCommandCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean canExecute() {
 		return true;
 
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		UserCommand newElement = WebsiteFactory.eINSTANCE.createUserCommand();
+		ModelLabel newElement = WebsiteFactory.eINSTANCE.createModelLabel();
 
-		CommandUnit owner = (CommandUnit) getElementToEdit();
-		owner.getCommands().add(newElement);
+		EntityOrView owner = (EntityOrView) getElementToEdit();
+		owner.getLabels().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 
@@ -64,9 +64,9 @@ public class UserCommandCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void doConfigure(UserCommand newElement, IProgressMonitor monitor, IAdaptable info)
+	* @generated
+	*/
+	protected void doConfigure(ModelLabel newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);

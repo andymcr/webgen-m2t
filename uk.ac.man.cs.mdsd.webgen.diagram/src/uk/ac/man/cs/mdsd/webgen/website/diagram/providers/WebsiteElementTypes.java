@@ -257,18 +257,6 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType CommandUnit_3225 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.CommandUnit_3225"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType UserCommand_3226 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.UserCommand_3226"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
 	public static final IElementType CreateUpdateUnit_3104 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"); //$NON-NLS-1$
 	/**
@@ -729,12 +717,6 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType FixedCommandMenuEntry_3231 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.FixedCommandMenuEntry_3231"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
 	public static final IElementType EditStaticTextMenuEntry_3156 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"); //$NON-NLS-1$
 
@@ -864,10 +846,6 @@ public class WebsiteElementTypes {
 			elements.put(DateField_3207, WebsitePackage.eINSTANCE.getDateField());
 
 			elements.put(UnitSupportAction_3232, WebsitePackage.eINSTANCE.getUnitSupportAction());
-
-			elements.put(CommandUnit_3225, WebsitePackage.eINSTANCE.getCommandUnit());
-
-			elements.put(UserCommand_3226, WebsitePackage.eINSTANCE.getUserCommand());
 
 			elements.put(CreateUnit_3103, WebsitePackage.eINSTANCE.getCreateUnit());
 
@@ -1035,8 +1013,6 @@ public class WebsiteElementTypes {
 
 			elements.put(ActionMenuEntry_3236, WebsitePackage.eINSTANCE.getActionMenuEntry());
 
-			elements.put(FixedCommandMenuEntry_3231, WebsitePackage.eINSTANCE.getFixedCommandMenuEntry());
-
 			elements.put(EditStaticTextMenuEntry_3156, WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
 
 			elements.put(ServiceAttribute_3241, WebsitePackage.eINSTANCE.getServiceAttribute());
@@ -1098,8 +1074,6 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3201);
 			KNOWN_ELEMENT_TYPES.add(DateField_3207);
 			KNOWN_ELEMENT_TYPES.add(UnitSupportAction_3232);
-			KNOWN_ELEMENT_TYPES.add(CommandUnit_3225);
-			KNOWN_ELEMENT_TYPES.add(UserCommand_3226);
 			KNOWN_ELEMENT_TYPES.add(CreateUnit_3103);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3171);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3172);
@@ -1183,7 +1157,6 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3217);
 			KNOWN_ELEMENT_TYPES.add(DateField_3218);
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
-			KNOWN_ELEMENT_TYPES.add(FixedCommandMenuEntry_3231);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
 			KNOWN_ELEMENT_TYPES.add(ServiceAttribute_3241);
 			KNOWN_ELEMENT_TYPES.add(ServiceAssociation_3242);
@@ -1257,10 +1230,6 @@ public class WebsiteElementTypes {
 			return DateField_3207;
 		case UnitSupportActionEditPart.VISUAL_ID:
 			return UnitSupportAction_3232;
-		case CommandUnitEditPart.VISUAL_ID:
-			return CommandUnit_3225;
-		case UserCommandEditPart.VISUAL_ID:
-			return UserCommand_3226;
 		case CreateUnitEditPart.VISUAL_ID:
 			return CreateUnit_3103;
 		case UnitElement2EditPart.VISUAL_ID:
@@ -1427,8 +1396,6 @@ public class WebsiteElementTypes {
 			return DateField_3218;
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return ActionMenuEntry_3236;
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
-			return FixedCommandMenuEntry_3231;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return EditStaticTextMenuEntry_3156;
 		case ServiceAttributeEditPart.VISUAL_ID:

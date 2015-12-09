@@ -273,12 +273,10 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createUserCommand5CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.UserCommand5CreationTool_title,
-				Messages.UserCommand5CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.UserCommand_3226));
+		ToolEntry entry = new ToolEntry(Messages.UserCommand5CreationTool_title, Messages.UserCommand5CreationTool_desc,
+				null, null) {
+		};
 		entry.setId("createUserCommand5CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UserCommand_3226));
-		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
 
@@ -374,12 +372,10 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createFixedCommandEntry5CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.FixedCommandEntry5CreationTool_title,
-				Messages.FixedCommandEntry5CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.FixedCommandMenuEntry_3231));
+		ToolEntry entry = new ToolEntry(Messages.FixedCommandEntry5CreationTool_title,
+				Messages.FixedCommandEntry5CreationTool_desc, null, null) {
+		};
 		entry.setId("createFixedCommandEntry5CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.FixedCommandMenuEntry_3231));
-		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
 
@@ -539,12 +535,10 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createCommandUnit11CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.CommandUnit11CreationTool_title,
-				Messages.CommandUnit11CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.CommandUnit_3225));
+		ToolEntry entry = new ToolEntry(Messages.CommandUnit11CreationTool_title,
+				Messages.CommandUnit11CreationTool_desc, null, null) {
+		};
 		entry.setId("createCommandUnit11CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CommandUnit_3225));
-		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
 

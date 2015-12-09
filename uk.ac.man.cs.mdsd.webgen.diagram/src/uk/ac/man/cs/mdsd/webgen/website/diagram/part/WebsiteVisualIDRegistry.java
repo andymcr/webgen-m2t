@@ -198,9 +198,6 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getActionUnit().isSuperTypeOf(domainElement.eClass())) {
 				return ActionUnitEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getCommandUnit().isSuperTypeOf(domainElement.eClass())) {
-				return CommandUnitEditPart.VISUAL_ID;
-			}
 			if (WebsitePackage.eINSTANCE.getCreateUnit().isSuperTypeOf(domainElement.eClass())) {
 				return CreateUnitEditPart.VISUAL_ID;
 			}
@@ -246,11 +243,6 @@ public class WebsiteVisualIDRegistry {
 		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitSupportAction().isSuperTypeOf(domainElement.eClass())) {
 				return UnitSupportActionEditPart.VISUAL_ID;
-			}
-			break;
-		case CommandUnitCommandsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUserCommand().isSuperTypeOf(domainElement.eClass())) {
-				return UserCommandEditPart.VISUAL_ID;
 			}
 			break;
 		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
@@ -544,9 +536,6 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getActionMenuEntry().isSuperTypeOf(domainElement.eClass())) {
 				return ActionMenuEntryEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getFixedCommandMenuEntry().isSuperTypeOf(domainElement.eClass())) {
-				return FixedCommandMenuEntryEditPart.VISUAL_ID;
-			}
 			if (WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry().isSuperTypeOf(domainElement.eClass())) {
 				return EditStaticTextMenuEntryEditPart.VISUAL_ID;
 			}
@@ -779,19 +768,6 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case UnitSupportActionEditPart.VISUAL_ID:
 			if (UnitSupportActionNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case CommandUnitEditPart.VISUAL_ID:
-			if (CommandUnitNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (CommandUnitCommandsCompartmentEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UserCommandEditPart.VISUAL_ID:
-			if (UserCommandNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1307,11 +1283,6 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
-			if (FixedCommandMenuEntryNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			if (EditStaticTextMenuEntryNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1384,9 +1355,6 @@ public class WebsiteVisualIDRegistry {
 			if (ActionUnitEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (CommandUnitEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
 			if (CreateUnitEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1431,11 +1399,6 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
 			if (UnitSupportActionEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case CommandUnitCommandsCompartmentEditPart.VISUAL_ID:
-			if (UserCommandEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1730,9 +1693,6 @@ public class WebsiteVisualIDRegistry {
 			if (ActionMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (FixedCommandMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
 			if (EditStaticTextMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1838,7 +1798,6 @@ public class WebsiteVisualIDRegistry {
 		case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
 		case ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
-		case CommandUnitCommandsCompartmentEditPart.VISUAL_ID:
 		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID:
@@ -1955,10 +1914,8 @@ public class WebsiteVisualIDRegistry {
 		case UnitElement19EditPart.VISUAL_ID:
 		case UnitElement20EditPart.VISUAL_ID:
 		case UnitAssociation18EditPart.VISUAL_ID:
-		case UserCommandEditPart.VISUAL_ID:
 		case MapUnitEditPart.VISUAL_ID:
 		case LocationAttributeEditPart.VISUAL_ID:
-		case FixedCommandMenuEntryEditPart.VISUAL_ID:
 		case UnitSupportActionEditPart.VISUAL_ID:
 		case UnitSupportAction2EditPart.VISUAL_ID:
 		case FeatureSupportActionEditPart.VISUAL_ID:
