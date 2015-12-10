@@ -94,16 +94,16 @@ public class DetailsUnitUnitFieldCompartmentEditPart extends ListCompartmentEdit
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3175) {
+			if (type == WebsiteElementTypes.UnitElement_3173) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3176) {
+			if (type == WebsiteElementTypes.UnitAssociation_3174) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DataTypeField_3204) {
+			if (type == WebsiteElementTypes.DataTypeField_3203) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DateField_3210) {
+			if (type == WebsiteElementTypes.DateField_3209) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

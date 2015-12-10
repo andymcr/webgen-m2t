@@ -3,7 +3,7 @@ package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitSupportAction2CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitSupportActionCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
@@ -22,8 +22,8 @@ public class DetailsUnitActionCompartmentItemSemanticEditPolicy extends WebsiteB
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.UnitSupportAction_3233 == req.getElementType()) {
-			return getGEFWrapper(new UnitSupportAction2CreateCommand(req));
+		if (WebsiteElementTypes.UnitSupportAction_3232 == req.getElementType()) {
+			return getGEFWrapper(new UnitSupportActionCreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

@@ -236,7 +236,7 @@ public class UnitElementName15EditPart extends CompartmentEditPart implements IT
 	 * @generated
 	 */
 	protected boolean isEditable() {
-		return false;
+		return getParser() != null;
 	}
 
 	/**

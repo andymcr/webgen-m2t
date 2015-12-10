@@ -94,10 +94,10 @@ public class DetailsUnitUnitFieldCompartment5EditPart extends ListCompartmentEdi
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3185) {
+			if (type == WebsiteElementTypes.UnitElement_3183) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3186) {
+			if (type == WebsiteElementTypes.UnitAssociation_3184) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

@@ -231,7 +231,7 @@
       <viewProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteViewProvider">
          <Priority name="Lowest"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Website"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2008,2006,2003,2010,2005,2009,2004,3055,3029,3028,3054,3014,3152,3235,3230,3247,3248,3243,3244,3213,3169,3170,3201,3207,3232,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3234,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3236,3156,3241,3242,3150"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2002,2008,2006,2003,2010,2005,2009,2004,3055,3029,3028,3054,3014,3152,3235,3230,3247,3248,3243,3244,3103,3169,3170,3201,3207,3104,3171,3172,3202,3208,3157,3105,3173,3102,3174,3112,3175,3176,3113,3177,3106,3178,3114,3179,3180,3116,3181,3182,3129,3183,3184,3118,3185,3186,3120,3187,3188,3131,3189,3190,3133,3191,3192,3107,3101,3126,3203,3209,3232,3136,3193,3127,3194,3219,3195,3196,3143,3197,3198,3128,3204,3210,3146,3147,3234,3228,3109,3199,3200,3205,3211,3110,3111,3215,3216,3222,3220,3221,3153,3154,3206,3212,3236,3156,3241,3242,3150"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001,4002,4004,4003"/>
       </viewProvider>
    </extension>
@@ -244,16 +244,16 @@
             <method name="getType()" value="Website"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2002,2008,2006,2003,2010,2005,2009,2004,3055,3029,3028,3054,3014,3152,3235,3230,3247,3248,3243,3244,3213,3169,3170,3201,3207,3232,3103,3171,3172,3202,3208,3104,3173,3174,3203,3209,3157,3105,3175,3102,3176,3112,3177,3180,3113,3178,3106,3179,3114,3181,3182,3116,3183,3184,3129,3185,3186,3118,3187,3188,3120,3189,3190,3131,3191,3192,3133,3193,3194,3107,3101,3126,3204,3210,3233,3136,3195,3127,3196,3219,3197,3198,3143,3199,3200,3128,3205,3211,3146,3147,3234,3228,3109,3215,3216,3206,3212,3110,3111,3220,3221,3222,3223,3224,3153,3154,3217,3218,3236,3156,3241,3242,3150"/>
+            <method name="getType()" value="2001,2002,2008,2006,2003,2010,2005,2009,2004,3055,3029,3028,3054,3014,3152,3235,3230,3247,3248,3243,3244,3103,3169,3170,3201,3207,3104,3171,3172,3202,3208,3157,3105,3173,3102,3174,3112,3175,3176,3113,3177,3106,3178,3114,3179,3180,3116,3181,3182,3129,3183,3184,3118,3185,3186,3120,3187,3188,3131,3189,3190,3133,3191,3192,3107,3101,3126,3203,3209,3232,3136,3193,3127,3194,3219,3195,3196,3143,3197,3198,3128,3204,3210,3146,3147,3234,3228,3109,3199,3200,3205,3211,3110,3111,3215,3216,3222,3220,3221,3153,3154,3206,3212,3236,3156,3241,3242,3150"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4001,4002,4004,4003"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5054,5002,5155,5032,5004,5246,5014,5157,5005,5033,5059,5018,5160,5242,5237,5255,5256,5251,5252,5221,5176,5177,5208,5214,5239,5107,5178,5179,5209,5215,5108,5180,5199,5210,5216,5109,5181,5106,5184,5116,5182,5198,5117,5183,5112,5185,5123,5186,5191,5120,5187,5188,5133,5189,5190,5122,5192,5197,5125,5193,5194,5135,5195,5196,5138,5200,5201,5110,5105,5130,5211,5217,5240,5142,5202,5131,5203,5226,5204,5207,5149,5205,5206,5132,5212,5218,5150,5151,5241,5235,5113,5222,5223,5213,5219,5114,5115,5227,5231,5230,5228,5229,5161,5162,5224,5225,5243,5164,5249,5250,5158"/>
+            <method name="getType()" value="5054,5002,5155,5032,5004,5246,5014,5157,5005,5033,5059,5018,5160,5242,5237,5255,5256,5251,5252,5107,5176,5177,5208,5214,5108,5178,5179,5209,5215,5109,5180,5106,5199,5116,5181,5184,5117,5182,5112,5183,5123,5185,5198,5120,5186,5191,5133,5187,5188,5122,5189,5190,5125,5192,5197,5135,5193,5194,5138,5195,5196,5110,5105,5130,5210,5216,5239,5142,5200,5131,5201,5226,5202,5203,5149,5204,5207,5132,5211,5217,5150,5151,5241,5235,5113,5205,5206,5212,5218,5114,5115,5222,5223,5230,5227,5231,5161,5162,5213,5219,5243,5164,5249,5250,5158"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
-            <method name="getType()" value="7007,7081,7016,7001,7118,7119,7120,7002,7103,7104,7042,7043,7044,7087,7105,7096,7106,7051,7097,7053,7045,7054,7086,7098,7056,7107,7066,7057,7058,7108,7068,7069,7070,7071,7109,7110,7112,7113,7076,7047,7049,7114,7115,7116,7084,7006,7085"/>
+            <method name="getType()" value="7007,7081,7016,7001,7118,7119,7120,7002,7042,7043,7044,7087,7121,7122,7123,7051,7096,7053,7045,7054,7086,7097,7056,7098,7066,7057,7058,7124,7068,7069,7070,7071,7125,7126,7127,7113,7076,7047,7049,7128,7115,7116,7084,7006,7085"/>
          </object>
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>
@@ -371,10 +371,10 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAssociationEditPart" id="EncapsulatedAssociation_3244"/>
          <context elements="EncapsulatedAssociation_3244"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfActionUnitEditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfCreateUnitEditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ActionUnitEditPart" id="ActionUnit_3213"/>
-         <context elements="ActionUnit_3213"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUnitEditPart" id="CreateUnit_3103"/>
+         <context elements="CreateUnit_3103"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElementEditPart">
          <Priority name="Lowest"/>
@@ -396,15 +396,10 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateFieldEditPart" id="DateField_3207"/>
          <context elements="DateField_3207"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitSupportActionEditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfCreateUpdateUnitEditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitSupportActionEditPart" id="UnitSupportAction_3232"/>
-         <context elements="UnitSupportAction_3232"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfCreateUnitEditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUnitEditPart" id="CreateUnit_3103"/>
-         <context elements="CreateUnit_3103"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnitEditPart" id="CreateUpdateUnit_3104"/>
+         <context elements="CreateUpdateUnit_3104"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement2EditPart">
          <Priority name="Lowest"/>
@@ -426,31 +421,6 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField2EditPart" id="DateField_3208"/>
          <context elements="DateField_3208"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfCreateUpdateUnitEditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnitEditPart" id="CreateUpdateUnit_3104"/>
-         <context elements="CreateUpdateUnit_3104"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement3EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement3EditPart" id="UnitElement_3173"/>
-         <context elements="UnitElement_3173"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation3EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation3EditPart" id="UnitAssociation_3174"/>
-         <context elements="UnitAssociation_3174"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField3EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField3EditPart" id="DataTypeField_3203"/>
-         <context elements="DataTypeField_3203"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField3EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField3EditPart" id="DateField_3209"/>
-         <context elements="DateField_3209"/>
-      </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfCreateSitemapUnitEditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateSitemapUnitEditPart" id="CreateSitemapUnit_3157"/>
@@ -461,60 +431,75 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnitEditPart" id="DetailsUnit_3105"/>
          <context elements="DetailsUnit_3105"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement4EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement3EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement4EditPart" id="UnitElement_3175"/>
-         <context elements="UnitElement_3175"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement3EditPart" id="UnitElement_3173"/>
+         <context elements="UnitElement_3173"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfSelectActionEditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectActionEditPart" id="SelectAction_3102"/>
          <context elements="SelectAction_3102"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation4EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation3EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation4EditPart" id="UnitAssociation_3176"/>
-         <context elements="UnitAssociation_3176"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation3EditPart" id="UnitAssociation_3174"/>
+         <context elements="UnitAssociation_3174"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit2EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit2EditPart" id="DetailsUnit_3112"/>
          <context elements="DetailsUnit_3112"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement5EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement4EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement5EditPart" id="UnitElement_3177"/>
-         <context elements="UnitElement_3177"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement4EditPart" id="UnitElement_3175"/>
+         <context elements="UnitElement_3175"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation5EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation4EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation5EditPart" id="UnitAssociation_3180"/>
-         <context elements="UnitAssociation_3180"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation4EditPart" id="UnitAssociation_3176"/>
+         <context elements="UnitAssociation_3176"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit3EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit3EditPart" id="DetailsUnit_3113"/>
          <context elements="DetailsUnit_3113"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement6EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement5EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement6EditPart" id="UnitElement_3178"/>
-         <context elements="UnitElement_3178"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement5EditPart" id="UnitElement_3177"/>
+         <context elements="UnitElement_3177"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnitEditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitEditPart" id="IndexUnit_3106"/>
          <context elements="IndexUnit_3106"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement7EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement6EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement7EditPart" id="UnitElement_3179"/>
-         <context elements="UnitElement_3179"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement6EditPart" id="UnitElement_3178"/>
+         <context elements="UnitElement_3178"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit2EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit2EditPart" id="IndexUnit_3114"/>
          <context elements="IndexUnit_3114"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement7EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement7EditPart" id="UnitElement_3179"/>
+         <context elements="UnitElement_3179"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation5EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation5EditPart" id="UnitAssociation_3180"/>
+         <context elements="UnitAssociation_3180"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit4EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit4EditPart" id="DetailsUnit_3116"/>
+         <context elements="DetailsUnit_3116"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement8EditPart">
          <Priority name="Lowest"/>
@@ -526,10 +511,10 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation6EditPart" id="UnitAssociation_3182"/>
          <context elements="UnitAssociation_3182"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit4EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit5EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit4EditPart" id="DetailsUnit_3116"/>
-         <context elements="DetailsUnit_3116"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit5EditPart" id="DetailsUnit_3129"/>
+         <context elements="DetailsUnit_3129"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement9EditPart">
          <Priority name="Lowest"/>
@@ -541,10 +526,10 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation7EditPart" id="UnitAssociation_3184"/>
          <context elements="UnitAssociation_3184"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit5EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit3EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit5EditPart" id="DetailsUnit_3129"/>
-         <context elements="DetailsUnit_3129"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit3EditPart" id="IndexUnit_3118"/>
+         <context elements="IndexUnit_3118"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement10EditPart">
          <Priority name="Lowest"/>
@@ -556,10 +541,10 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation8EditPart" id="UnitAssociation_3186"/>
          <context elements="UnitAssociation_3186"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit3EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit4EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit3EditPart" id="IndexUnit_3118"/>
-         <context elements="IndexUnit_3118"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit4EditPart" id="IndexUnit_3120"/>
+         <context elements="IndexUnit_3120"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement11EditPart">
          <Priority name="Lowest"/>
@@ -571,10 +556,10 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation9EditPart" id="UnitAssociation_3188"/>
          <context elements="UnitAssociation_3188"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit4EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit6EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit4EditPart" id="IndexUnit_3120"/>
-         <context elements="IndexUnit_3120"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit6EditPart" id="DetailsUnit_3131"/>
+         <context elements="DetailsUnit_3131"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement12EditPart">
          <Priority name="Lowest"/>
@@ -586,10 +571,10 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation10EditPart" id="UnitAssociation_3190"/>
          <context elements="UnitAssociation_3190"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit6EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit5EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit6EditPart" id="DetailsUnit_3131"/>
-         <context elements="DetailsUnit_3131"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit5EditPart" id="IndexUnit_3133"/>
+         <context elements="IndexUnit_3133"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement13EditPart">
          <Priority name="Lowest"/>
@@ -600,21 +585,6 @@
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation11EditPart" id="UnitAssociation_3192"/>
          <context elements="UnitAssociation_3192"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit5EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit5EditPart" id="IndexUnit_3133"/>
-         <context elements="IndexUnit_3133"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement14EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement14EditPart" id="UnitElement_3193"/>
-         <context elements="UnitElement_3193"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation12EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation12EditPart" id="UnitAssociation_3194"/>
-         <context elements="UnitAssociation_3194"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfSelectAction2EditPart">
          <Priority name="Lowest"/>
@@ -631,45 +601,60 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction3EditPart" id="SelectAction_3126"/>
          <context elements="SelectAction_3126"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField4EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField3EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField4EditPart" id="DataTypeField_3204"/>
-         <context elements="DataTypeField_3204"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField3EditPart" id="DataTypeField_3203"/>
+         <context elements="DataTypeField_3203"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField4EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField3EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField4EditPart" id="DateField_3210"/>
-         <context elements="DateField_3210"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField3EditPart" id="DateField_3209"/>
+         <context elements="DateField_3209"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitSupportAction2EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitSupportActionEditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitSupportAction2EditPart" id="UnitSupportAction_3233"/>
-         <context elements="UnitSupportAction_3233"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitSupportActionEditPart" id="UnitSupportAction_3232"/>
+         <context elements="UnitSupportAction_3232"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit6EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart" id="IndexUnit_3136"/>
          <context elements="IndexUnit_3136"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement15EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement14EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement15EditPart" id="UnitElement_3195"/>
-         <context elements="UnitElement_3195"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement14EditPart" id="UnitElement_3193"/>
+         <context elements="UnitElement_3193"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfSelectAction4EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction4EditPart" id="SelectAction_3127"/>
          <context elements="SelectAction_3127"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation13EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation12EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation13EditPart" id="UnitAssociation_3196"/>
-         <context elements="UnitAssociation_3196"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation12EditPart" id="UnitAssociation_3194"/>
+         <context elements="UnitAssociation_3194"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDetailsUnit7EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit7EditPart" id="DetailsUnit_3219"/>
          <context elements="DetailsUnit_3219"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement15EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement15EditPart" id="UnitElement_3195"/>
+         <context elements="UnitElement_3195"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation13EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation13EditPart" id="UnitAssociation_3196"/>
+         <context elements="UnitAssociation_3196"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit7EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit7EditPart" id="IndexUnit_3143"/>
+         <context elements="IndexUnit_3143"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement16EditPart">
          <Priority name="Lowest"/>
@@ -681,35 +666,20 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation14EditPart" id="UnitAssociation_3198"/>
          <context elements="UnitAssociation_3198"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit7EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit7EditPart" id="IndexUnit_3143"/>
-         <context elements="IndexUnit_3143"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement17EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement17EditPart" id="UnitElement_3199"/>
-         <context elements="UnitElement_3199"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation15EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation15EditPart" id="UnitAssociation_3200"/>
-         <context elements="UnitAssociation_3200"/>
-      </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfSelectAction5EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction5EditPart" id="SelectAction_3128"/>
          <context elements="SelectAction_3128"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField5EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField4EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField5EditPart" id="DataTypeField_3205"/>
-         <context elements="DataTypeField_3205"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField4EditPart" id="DataTypeField_3204"/>
+         <context elements="DataTypeField_3204"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField5EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField4EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField5EditPart" id="DateField_3211"/>
-         <context elements="DateField_3211"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField4EditPart" id="DateField_3210"/>
+         <context elements="DateField_3210"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfSelectAction6EditPart">
          <Priority name="Lowest"/>
@@ -736,25 +706,25 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SearchUnitEditPart" id="SearchUnit_3109"/>
          <context elements="SearchUnit_3109"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement18EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement17EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement18EditPart" id="UnitElement_3215"/>
-         <context elements="UnitElement_3215"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement17EditPart" id="UnitElement_3199"/>
+         <context elements="UnitElement_3199"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation16EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation15EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation16EditPart" id="UnitAssociation_3216"/>
-         <context elements="UnitAssociation_3216"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation15EditPart" id="UnitAssociation_3200"/>
+         <context elements="UnitAssociation_3200"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField6EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField5EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField6EditPart" id="DataTypeField_3206"/>
-         <context elements="DataTypeField_3206"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField5EditPart" id="DataTypeField_3205"/>
+         <context elements="DataTypeField_3205"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField6EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField5EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField6EditPart" id="DateField_3212"/>
-         <context elements="DateField_3212"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField5EditPart" id="DateField_3211"/>
+         <context elements="DateField_3211"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfStaticUnitEditPart">
          <Priority name="Lowest"/>
@@ -766,6 +736,21 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitEditPart" id="UpdateUnit_3111"/>
          <context elements="UpdateUnit_3111"/>
       </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement18EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement18EditPart" id="UnitElement_3215"/>
+         <context elements="UnitElement_3215"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation16EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation16EditPart" id="UnitAssociation_3216"/>
+         <context elements="UnitAssociation_3216"/>
+      </modelingAssistantProvider>
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit8EditPart">
+         <Priority name="Lowest"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit8EditPart" id="IndexUnit_3222"/>
+         <context elements="IndexUnit_3222"/>
+      </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement19EditPart">
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement19EditPart" id="UnitElement_3220"/>
@@ -775,21 +760,6 @@
          <Priority name="Lowest"/>
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation17EditPart" id="UnitAssociation_3221"/>
          <context elements="UnitAssociation_3221"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfIndexUnit8EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit8EditPart" id="IndexUnit_3222"/>
-         <context elements="IndexUnit_3222"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitElement20EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement20EditPart" id="UnitElement_3223"/>
-         <context elements="UnitElement_3223"/>
-      </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfUnitAssociation18EditPart">
-         <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation18EditPart" id="UnitAssociation_3224"/>
-         <context elements="UnitAssociation_3224"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfSelectAction7EditPart">
          <Priority name="Lowest"/>
@@ -801,15 +771,15 @@
          <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction3EditPart" id="DeleteAction_3154"/>
          <context elements="DeleteAction_3154"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField7EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDataTypeField6EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField7EditPart" id="DataTypeField_3217"/>
-         <context elements="DataTypeField_3217"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField6EditPart" id="DataTypeField_3206"/>
+         <context elements="DataTypeField_3206"/>
       </modelingAssistantProvider>
-            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField7EditPart">
+            <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfDateField6EditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField7EditPart" id="DateField_3218"/>
-         <context elements="DateField_3218"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField6EditPart" id="DateField_3212"/>
+         <context elements="DateField_3212"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfActionMenuEntryEditPart">
          <Priority name="Lowest"/>
@@ -1076,12 +1046,12 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <metamodelType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"
-               name="%metatype.name.ActionUnit_3213"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"
+               name="%metatype.name.CreateUnit_3103"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="ActionUnit"
-               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ActionUnitEditHelper">
-            <param name="semanticHint" value="3213"/>
+               eclass="CreateUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CreateUnitEditHelper">
+            <param name="semanticHint" value="3103"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1126,22 +1096,12 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <metamodelType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"
-               name="%metatype.name.UnitSupportAction_3232"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"
+               name="%metatype.name.CreateUpdateUnit_3104"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="UnitSupportAction"
-               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.UnitSupportActionEditHelper">
-            <param name="semanticHint" value="3232"/>
-         </metamodelType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <metamodelType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"
-               name="%metatype.name.CreateUnit_3103"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="CreateUnit"
-               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CreateUnitEditHelper">
-            <param name="semanticHint" value="3103"/>
+               eclass="CreateUpdateUnit"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CreateUpdateUnitEditHelper">
+            <param name="semanticHint" value="3104"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1182,52 +1142,6 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <metamodelType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"
-               name="%metatype.name.CreateUpdateUnit_3104"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               eclass="CreateUpdateUnit"
-               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.CreateUpdateUnitEditHelper">
-            <param name="semanticHint" value="3104"/>
-         </metamodelType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"
-               name="%metatype.name.UnitElement_3173"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3173"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"
-               name="%metatype.name.UnitAssociation_3174"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3174"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"
-               name="%metatype.name.DataTypeField_3203"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
-            <param name="semanticHint" value="3203"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3209"
-               name="%metatype.name.DateField_3209"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
-            <param name="semanticHint" value="3209"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <metamodelType
                id="uk.ac.man.cs.mdsd.webgen.diagram.CreateSitemapUnit_3157"
                name="%metatype.name.CreateSitemapUnit_3157"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
@@ -1248,11 +1162,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"
-               name="%metatype.name.UnitElement_3175"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"
+               name="%metatype.name.UnitElement_3173"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3175"/>
+            <param name="semanticHint" value="3173"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1267,11 +1181,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"
-               name="%metatype.name.UnitAssociation_3176"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"
+               name="%metatype.name.UnitAssociation_3174"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3176"/>
+            <param name="semanticHint" value="3174"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1285,20 +1199,20 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"
-               name="%metatype.name.UnitElement_3177"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"
+               name="%metatype.name.UnitElement_3175"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3177"/>
+            <param name="semanticHint" value="3175"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"
-               name="%metatype.name.UnitAssociation_3180"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"
+               name="%metatype.name.UnitAssociation_3176"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3180"/>
+            <param name="semanticHint" value="3176"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1312,11 +1226,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"
-               name="%metatype.name.UnitElement_3178"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"
+               name="%metatype.name.UnitElement_3177"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3178"/>
+            <param name="semanticHint" value="3177"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1331,11 +1245,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"
-               name="%metatype.name.UnitElement_3179"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"
+               name="%metatype.name.UnitElement_3178"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3179"/>
+            <param name="semanticHint" value="3178"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1345,6 +1259,33 @@
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
             <param name="semanticHint" value="3114"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"
+               name="%metatype.name.UnitElement_3179"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3179"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"
+               name="%metatype.name.UnitAssociation_3180"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3180"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"
+               name="%metatype.name.DetailsUnit_3116"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3116"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1367,11 +1308,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"
-               name="%metatype.name.DetailsUnit_3116"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"
+               name="%metatype.name.DetailsUnit_3129"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
-            <param name="semanticHint" value="3116"/>
+            <param name="semanticHint" value="3129"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1394,11 +1335,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"
-               name="%metatype.name.DetailsUnit_3129"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3118"
+               name="%metatype.name.IndexUnit_3118"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
-            <param name="semanticHint" value="3129"/>
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3118"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1421,11 +1362,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3118"
-               name="%metatype.name.IndexUnit_3118"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3120"
+               name="%metatype.name.IndexUnit_3120"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
-            <param name="semanticHint" value="3118"/>
+            <param name="semanticHint" value="3120"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1448,11 +1389,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3120"
-               name="%metatype.name.IndexUnit_3120"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"
+               name="%metatype.name.DetailsUnit_3131"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
-            <param name="semanticHint" value="3120"/>
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
+            <param name="semanticHint" value="3131"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1475,11 +1416,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"
-               name="%metatype.name.DetailsUnit_3131"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3133"
+               name="%metatype.name.IndexUnit_3133"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
-            <param name="semanticHint" value="3131"/>
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3133"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1498,33 +1439,6 @@
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
             <param name="semanticHint" value="3192"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3133"
-               name="%metatype.name.IndexUnit_3133"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
-            <param name="semanticHint" value="3133"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"
-               name="%metatype.name.UnitElement_3193"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3193"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"
-               name="%metatype.name.UnitAssociation_3194"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3194"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1557,30 +1471,31 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"
-               name="%metatype.name.DataTypeField_3204"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"
+               name="%metatype.name.DataTypeField_3203"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
-            <param name="semanticHint" value="3204"/>
+            <param name="semanticHint" value="3203"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3210"
-               name="%metatype.name.DateField_3210"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3209"
+               name="%metatype.name.DateField_3209"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
-            <param name="semanticHint" value="3210"/>
+            <param name="semanticHint" value="3209"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3233"
-               name="%metatype.name.UnitSupportAction_3233"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"/>
-            <param name="semanticHint" value="3233"/>
-         </specializationType>
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"
+               name="%metatype.name.UnitSupportAction_3232"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="UnitSupportAction"
+               edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.UnitSupportActionEditHelper">
+            <param name="semanticHint" value="3232"/>
+         </metamodelType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
@@ -1593,11 +1508,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"
-               name="%metatype.name.UnitElement_3195"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"
+               name="%metatype.name.UnitElement_3193"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3195"/>
+            <param name="semanticHint" value="3193"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1611,11 +1526,11 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"
-               name="%metatype.name.UnitAssociation_3196"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"
+               name="%metatype.name.UnitAssociation_3194"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3196"/>
+            <param name="semanticHint" value="3194"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1625,6 +1540,33 @@
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
             <param name="semanticHint" value="3219"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"
+               name="%metatype.name.UnitElement_3195"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3195"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"
+               name="%metatype.name.UnitAssociation_3196"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3196"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3143"
+               name="%metatype.name.IndexUnit_3143"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3143"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1647,33 +1589,6 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3143"
-               name="%metatype.name.IndexUnit_3143"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
-            <param name="semanticHint" value="3143"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"
-               name="%metatype.name.UnitElement_3199"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3199"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"
-               name="%metatype.name.UnitAssociation_3200"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3200"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
                id="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3128"
                name="%metatype.name.SelectAction_3128"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
@@ -1683,20 +1598,20 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"
-               name="%metatype.name.DataTypeField_3205"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"
+               name="%metatype.name.DataTypeField_3204"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
-            <param name="semanticHint" value="3205"/>
+            <param name="semanticHint" value="3204"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3211"
-               name="%metatype.name.DateField_3211"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3210"
+               name="%metatype.name.DateField_3210"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
-            <param name="semanticHint" value="3211"/>
+            <param name="semanticHint" value="3210"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1749,38 +1664,38 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"
-               name="%metatype.name.UnitElement_3215"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"
+               name="%metatype.name.UnitElement_3199"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3215"/>
+            <param name="semanticHint" value="3199"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"
-               name="%metatype.name.UnitAssociation_3216"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"
+               name="%metatype.name.UnitAssociation_3200"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3216"/>
+            <param name="semanticHint" value="3200"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"
-               name="%metatype.name.DataTypeField_3206"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"
+               name="%metatype.name.DataTypeField_3205"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
-            <param name="semanticHint" value="3206"/>
+            <param name="semanticHint" value="3205"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3212"
-               name="%metatype.name.DateField_3212"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3211"
+               name="%metatype.name.DateField_3211"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
-            <param name="semanticHint" value="3212"/>
+            <param name="semanticHint" value="3211"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1805,6 +1720,33 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"
+               name="%metatype.name.UnitElement_3215"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
+            <param name="semanticHint" value="3215"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"
+               name="%metatype.name.UnitAssociation_3216"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
+            <param name="semanticHint" value="3216"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
+               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3222"
+               name="%metatype.name.IndexUnit_3222"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
+            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
+            <param name="semanticHint" value="3222"/>
+         </specializationType>
+      </metamodel>
+      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+         <specializationType
                id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3220"
                name="%metatype.name.UnitElement_3220"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
@@ -1819,33 +1761,6 @@
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
             <param name="semanticHint" value="3221"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3222"
-               name="%metatype.name.IndexUnit_3222"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
-            <param name="semanticHint" value="3222"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3223"
-               name="%metatype.name.UnitElement_3223"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
-            <param name="semanticHint" value="3223"/>
-         </specializationType>
-      </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
-         <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3224"
-               name="%metatype.name.UnitAssociation_3224"
-               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
-            <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
-            <param name="semanticHint" value="3224"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -1868,20 +1783,20 @@
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3217"
-               name="%metatype.name.DataTypeField_3217"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"
+               name="%metatype.name.DataTypeField_3206"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
-            <param name="semanticHint" value="3217"/>
+            <param name="semanticHint" value="3206"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
          <specializationType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3218"
-               name="%metatype.name.DateField_3218"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3212"
+               name="%metatype.name.DateField_3212"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType">
             <specializes id="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
-            <param name="semanticHint" value="3218"/>
+            <param name="semanticHint" value="3212"/>
          </specializationType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -2008,94 +1923,88 @@
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ModelLabel_3248"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAttribute_3243"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAssociation_3244"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3169"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3170"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3201"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3207"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateUnit_3103"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3171"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3172"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3202"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3208"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateUpdateUnit_3104"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3209"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CreateSitemapUnit_3157"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3105"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3173"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3102"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3174"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3112"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3175"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3176"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3113"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3177"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3106"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3178"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3114"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3179"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3180"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3181"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3182"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3116"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3183"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3184"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3129"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3118"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3185"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3186"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3118"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3120"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3187"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3188"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3120"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3189"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3190"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3131"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3133"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3191"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3192"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3133"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3107"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3126"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3210"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3233"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3203"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3209"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3232"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3136"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3193"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3127"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3194"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DetailsUnit_3219"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3195"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3196"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3143"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3197"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3198"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3143"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3128"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3211"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3204"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3210"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3146"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3147"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.FeatureSupportAction_3234"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.MapUnit_3228"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SearchUnit_3109"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3212"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3199"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3200"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3205"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3211"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.StaticUnit_3110"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UpdateUnit_3111"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3215"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3216"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3222"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3220"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3221"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.IndexUnit_3222"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3223"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3224"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3153"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3154"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3217"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3218"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3206"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.DateField_3212"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ActionMenuEntry_3236"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ServiceAttribute_3241"/>

@@ -22,10 +22,10 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField7EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField7EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation17EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement19EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField6EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField6EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation16EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement18EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -82,10 +82,10 @@ public class UpdateUnitUnitFieldCompartmentCanonicalEditPolicy extends Canonical
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
 		switch (visualID) {
-		case UnitElement19EditPart.VISUAL_ID:
-		case UnitAssociation17EditPart.VISUAL_ID:
-		case DataTypeField7EditPart.VISUAL_ID:
-		case DateField7EditPart.VISUAL_ID:
+		case UnitElement18EditPart.VISUAL_ID:
+		case UnitAssociation16EditPart.VISUAL_ID:
+		case DataTypeField6EditPart.VISUAL_ID:
+		case DateField6EditPart.VISUAL_ID:
 			return true;
 		}
 		return false;

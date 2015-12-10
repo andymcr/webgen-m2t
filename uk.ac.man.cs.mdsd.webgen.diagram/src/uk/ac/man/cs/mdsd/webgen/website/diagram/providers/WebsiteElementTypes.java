@@ -212,12 +212,6 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType ActionUnit_3213 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ActionUnit_3213"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
 	public static final IElementType Selection_3150 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Selection_3150"); //$NON-NLS-1$
 
 	/**
@@ -483,12 +477,6 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitSupportAction_3233 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.UnitSupportAction_3233"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
 	public static final IElementType SelectAction_3127 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3127"); //$NON-NLS-1$
 	/**
@@ -584,18 +572,6 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType UnitElement_3223 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3223"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType UnitAssociation_3224 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.UnitAssociation_3224"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
 	public static final IElementType UnitElement_3197 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.UnitElement_3197"); //$NON-NLS-1$
 
@@ -645,17 +621,6 @@ public class WebsiteElementTypes {
 	 */
 	public static final IElementType DeleteAction_3154 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3154"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType DataTypeField_3217 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeField_3217"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType DateField_3218 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DateField_3218"); //$NON-NLS-1$
 
 	/**
 	* @generated
@@ -835,7 +800,7 @@ public class WebsiteElementTypes {
 
 			elements.put(EncapsulatedAssociation_3244, WebsitePackage.eINSTANCE.getEncapsulatedAssociation());
 
-			elements.put(ActionUnit_3213, WebsitePackage.eINSTANCE.getActionUnit());
+			elements.put(CreateUnit_3103, WebsitePackage.eINSTANCE.getCreateUnit());
 
 			elements.put(UnitElement_3169, WebsitePackage.eINSTANCE.getUnitElement());
 
@@ -845,9 +810,7 @@ public class WebsiteElementTypes {
 
 			elements.put(DateField_3207, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(UnitSupportAction_3232, WebsitePackage.eINSTANCE.getUnitSupportAction());
-
-			elements.put(CreateUnit_3103, WebsitePackage.eINSTANCE.getCreateUnit());
+			elements.put(CreateUpdateUnit_3104, WebsitePackage.eINSTANCE.getCreateUpdateUnit());
 
 			elements.put(UnitElement_3171, WebsitePackage.eINSTANCE.getUnitElement());
 
@@ -857,81 +820,71 @@ public class WebsiteElementTypes {
 
 			elements.put(DateField_3208, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(CreateUpdateUnit_3104, WebsitePackage.eINSTANCE.getCreateUpdateUnit());
-
-			elements.put(UnitElement_3173, WebsitePackage.eINSTANCE.getUnitElement());
-
-			elements.put(UnitAssociation_3174, WebsitePackage.eINSTANCE.getUnitAssociation());
-
-			elements.put(DataTypeField_3203, WebsitePackage.eINSTANCE.getDataTypeField());
-
-			elements.put(DateField_3209, WebsitePackage.eINSTANCE.getDateField());
-
 			elements.put(CreateSitemapUnit_3157, WebsitePackage.eINSTANCE.getCreateSitemapUnit());
 
 			elements.put(DetailsUnit_3105, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(UnitElement_3175, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3173, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(SelectAction_3102, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(UnitAssociation_3176, WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3174, WebsitePackage.eINSTANCE.getUnitAssociation());
 
 			elements.put(DetailsUnit_3112, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(UnitElement_3177, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3175, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitAssociation_3180, WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3176, WebsitePackage.eINSTANCE.getUnitAssociation());
 
 			elements.put(DetailsUnit_3113, WebsitePackage.eINSTANCE.getDetailsUnit());
 
-			elements.put(UnitElement_3178, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3177, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(IndexUnit_3106, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(UnitElement_3179, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3178, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(IndexUnit_3114, WebsitePackage.eINSTANCE.getIndexUnit());
+
+			elements.put(UnitElement_3179, WebsitePackage.eINSTANCE.getUnitElement());
+
+			elements.put(UnitAssociation_3180, WebsitePackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(DetailsUnit_3116, WebsitePackage.eINSTANCE.getDetailsUnit());
 
 			elements.put(UnitElement_3181, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(UnitAssociation_3182, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(DetailsUnit_3116, WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(DetailsUnit_3129, WebsitePackage.eINSTANCE.getDetailsUnit());
 
 			elements.put(UnitElement_3183, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(UnitAssociation_3184, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(DetailsUnit_3129, WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(IndexUnit_3118, WebsitePackage.eINSTANCE.getIndexUnit());
 
 			elements.put(UnitElement_3185, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(UnitAssociation_3186, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(IndexUnit_3118, WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(IndexUnit_3120, WebsitePackage.eINSTANCE.getIndexUnit());
 
 			elements.put(UnitElement_3187, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(UnitAssociation_3188, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(IndexUnit_3120, WebsitePackage.eINSTANCE.getIndexUnit());
+			elements.put(DetailsUnit_3131, WebsitePackage.eINSTANCE.getDetailsUnit());
 
 			elements.put(UnitElement_3189, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(UnitAssociation_3190, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(DetailsUnit_3131, WebsitePackage.eINSTANCE.getDetailsUnit());
+			elements.put(IndexUnit_3133, WebsitePackage.eINSTANCE.getIndexUnit());
 
 			elements.put(UnitElement_3191, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(UnitAssociation_3192, WebsitePackage.eINSTANCE.getUnitAssociation());
-
-			elements.put(IndexUnit_3133, WebsitePackage.eINSTANCE.getIndexUnit());
-
-			elements.put(UnitElement_3193, WebsitePackage.eINSTANCE.getUnitElement());
-
-			elements.put(UnitAssociation_3194, WebsitePackage.eINSTANCE.getUnitAssociation());
 
 			elements.put(SelectAction_3107, WebsitePackage.eINSTANCE.getSelectAction());
 
@@ -939,37 +892,37 @@ public class WebsiteElementTypes {
 
 			elements.put(SelectAction_3126, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(DataTypeField_3204, WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DataTypeField_3203, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DateField_3210, WebsitePackage.eINSTANCE.getDateField());
+			elements.put(DateField_3209, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(UnitSupportAction_3233, WebsitePackage.eINSTANCE.getUnitSupportAction());
+			elements.put(UnitSupportAction_3232, WebsitePackage.eINSTANCE.getUnitSupportAction());
 
 			elements.put(IndexUnit_3136, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(UnitElement_3195, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3193, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(SelectAction_3127, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(UnitAssociation_3196, WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3194, WebsitePackage.eINSTANCE.getUnitAssociation());
 
 			elements.put(DetailsUnit_3219, WebsitePackage.eINSTANCE.getDetailsUnit());
+
+			elements.put(UnitElement_3195, WebsitePackage.eINSTANCE.getUnitElement());
+
+			elements.put(UnitAssociation_3196, WebsitePackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(IndexUnit_3143, WebsitePackage.eINSTANCE.getIndexUnit());
 
 			elements.put(UnitElement_3197, WebsitePackage.eINSTANCE.getUnitElement());
 
 			elements.put(UnitAssociation_3198, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(IndexUnit_3143, WebsitePackage.eINSTANCE.getIndexUnit());
-
-			elements.put(UnitElement_3199, WebsitePackage.eINSTANCE.getUnitElement());
-
-			elements.put(UnitAssociation_3200, WebsitePackage.eINSTANCE.getUnitAssociation());
-
 			elements.put(SelectAction_3128, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(DataTypeField_3205, WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DataTypeField_3204, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DateField_3211, WebsitePackage.eINSTANCE.getDateField());
+			elements.put(DateField_3210, WebsitePackage.eINSTANCE.getDateField());
 
 			elements.put(SelectAction_3146, WebsitePackage.eINSTANCE.getSelectAction());
 
@@ -981,35 +934,35 @@ public class WebsiteElementTypes {
 
 			elements.put(SearchUnit_3109, WebsitePackage.eINSTANCE.getSearchUnit());
 
-			elements.put(UnitElement_3215, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3199, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitAssociation_3216, WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3200, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(DataTypeField_3206, WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DataTypeField_3205, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DateField_3212, WebsitePackage.eINSTANCE.getDateField());
+			elements.put(DateField_3211, WebsitePackage.eINSTANCE.getDateField());
 
 			elements.put(StaticUnit_3110, WebsitePackage.eINSTANCE.getStaticUnit());
 
 			elements.put(UpdateUnit_3111, WebsitePackage.eINSTANCE.getUpdateUnit());
 
-			elements.put(UnitElement_3220, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3215, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitAssociation_3221, WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3216, WebsitePackage.eINSTANCE.getUnitAssociation());
 
 			elements.put(IndexUnit_3222, WebsitePackage.eINSTANCE.getIndexUnit());
 
-			elements.put(UnitElement_3223, WebsitePackage.eINSTANCE.getUnitElement());
+			elements.put(UnitElement_3220, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(UnitAssociation_3224, WebsitePackage.eINSTANCE.getUnitAssociation());
+			elements.put(UnitAssociation_3221, WebsitePackage.eINSTANCE.getUnitAssociation());
 
 			elements.put(SelectAction_3153, WebsitePackage.eINSTANCE.getSelectAction());
 
 			elements.put(DeleteAction_3154, WebsitePackage.eINSTANCE.getDeleteAction());
 
-			elements.put(DataTypeField_3217, WebsitePackage.eINSTANCE.getDataTypeField());
+			elements.put(DataTypeField_3206, WebsitePackage.eINSTANCE.getDataTypeField());
 
-			elements.put(DateField_3218, WebsitePackage.eINSTANCE.getDateField());
+			elements.put(DateField_3212, WebsitePackage.eINSTANCE.getDateField());
 
 			elements.put(ActionMenuEntry_3236, WebsitePackage.eINSTANCE.getActionMenuEntry());
 
@@ -1068,94 +1021,88 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(ModelLabel_3248);
 			KNOWN_ELEMENT_TYPES.add(EncapsulatedAttribute_3243);
 			KNOWN_ELEMENT_TYPES.add(EncapsulatedAssociation_3244);
-			KNOWN_ELEMENT_TYPES.add(ActionUnit_3213);
+			KNOWN_ELEMENT_TYPES.add(CreateUnit_3103);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3169);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3170);
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3201);
 			KNOWN_ELEMENT_TYPES.add(DateField_3207);
-			KNOWN_ELEMENT_TYPES.add(UnitSupportAction_3232);
-			KNOWN_ELEMENT_TYPES.add(CreateUnit_3103);
+			KNOWN_ELEMENT_TYPES.add(CreateUpdateUnit_3104);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3171);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3172);
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3202);
 			KNOWN_ELEMENT_TYPES.add(DateField_3208);
-			KNOWN_ELEMENT_TYPES.add(CreateUpdateUnit_3104);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3173);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3174);
-			KNOWN_ELEMENT_TYPES.add(DataTypeField_3203);
-			KNOWN_ELEMENT_TYPES.add(DateField_3209);
 			KNOWN_ELEMENT_TYPES.add(CreateSitemapUnit_3157);
 			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3105);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3175);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3173);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3102);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3176);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3174);
 			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3112);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3177);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3180);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3175);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3176);
 			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3113);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3178);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3177);
 			KNOWN_ELEMENT_TYPES.add(IndexUnit_3106);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3179);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3178);
 			KNOWN_ELEMENT_TYPES.add(IndexUnit_3114);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3179);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3180);
+			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3116);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3181);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3182);
-			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3116);
+			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3129);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3183);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3184);
-			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3129);
+			KNOWN_ELEMENT_TYPES.add(IndexUnit_3118);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3185);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3186);
-			KNOWN_ELEMENT_TYPES.add(IndexUnit_3118);
+			KNOWN_ELEMENT_TYPES.add(IndexUnit_3120);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3187);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3188);
-			KNOWN_ELEMENT_TYPES.add(IndexUnit_3120);
+			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3131);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3189);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3190);
-			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3131);
+			KNOWN_ELEMENT_TYPES.add(IndexUnit_3133);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3191);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3192);
-			KNOWN_ELEMENT_TYPES.add(IndexUnit_3133);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3193);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3194);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3107);
 			KNOWN_ELEMENT_TYPES.add(DeleteAction_3101);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3126);
-			KNOWN_ELEMENT_TYPES.add(DataTypeField_3204);
-			KNOWN_ELEMENT_TYPES.add(DateField_3210);
-			KNOWN_ELEMENT_TYPES.add(UnitSupportAction_3233);
+			KNOWN_ELEMENT_TYPES.add(DataTypeField_3203);
+			KNOWN_ELEMENT_TYPES.add(DateField_3209);
+			KNOWN_ELEMENT_TYPES.add(UnitSupportAction_3232);
 			KNOWN_ELEMENT_TYPES.add(IndexUnit_3136);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3195);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3193);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3127);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3196);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3194);
 			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3219);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3195);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3196);
+			KNOWN_ELEMENT_TYPES.add(IndexUnit_3143);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3197);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3198);
-			KNOWN_ELEMENT_TYPES.add(IndexUnit_3143);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3199);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3200);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3128);
-			KNOWN_ELEMENT_TYPES.add(DataTypeField_3205);
-			KNOWN_ELEMENT_TYPES.add(DateField_3211);
+			KNOWN_ELEMENT_TYPES.add(DataTypeField_3204);
+			KNOWN_ELEMENT_TYPES.add(DateField_3210);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3146);
 			KNOWN_ELEMENT_TYPES.add(DeleteAction_3147);
 			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3234);
 			KNOWN_ELEMENT_TYPES.add(MapUnit_3228);
 			KNOWN_ELEMENT_TYPES.add(SearchUnit_3109);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3215);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3216);
-			KNOWN_ELEMENT_TYPES.add(DataTypeField_3206);
-			KNOWN_ELEMENT_TYPES.add(DateField_3212);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3199);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3200);
+			KNOWN_ELEMENT_TYPES.add(DataTypeField_3205);
+			KNOWN_ELEMENT_TYPES.add(DateField_3211);
 			KNOWN_ELEMENT_TYPES.add(StaticUnit_3110);
 			KNOWN_ELEMENT_TYPES.add(UpdateUnit_3111);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3215);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3216);
+			KNOWN_ELEMENT_TYPES.add(IndexUnit_3222);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3220);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3221);
-			KNOWN_ELEMENT_TYPES.add(IndexUnit_3222);
-			KNOWN_ELEMENT_TYPES.add(UnitElement_3223);
-			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3224);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3153);
 			KNOWN_ELEMENT_TYPES.add(DeleteAction_3154);
-			KNOWN_ELEMENT_TYPES.add(DataTypeField_3217);
-			KNOWN_ELEMENT_TYPES.add(DateField_3218);
+			KNOWN_ELEMENT_TYPES.add(DataTypeField_3206);
+			KNOWN_ELEMENT_TYPES.add(DateField_3212);
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
 			KNOWN_ELEMENT_TYPES.add(ServiceAttribute_3241);
@@ -1218,8 +1165,8 @@ public class WebsiteElementTypes {
 			return EncapsulatedAttribute_3243;
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
 			return EncapsulatedAssociation_3244;
-		case ActionUnitEditPart.VISUAL_ID:
-			return ActionUnit_3213;
+		case CreateUnitEditPart.VISUAL_ID:
+			return CreateUnit_3103;
 		case UnitElementEditPart.VISUAL_ID:
 			return UnitElement_3169;
 		case UnitAssociationEditPart.VISUAL_ID:
@@ -1228,10 +1175,8 @@ public class WebsiteElementTypes {
 			return DataTypeField_3201;
 		case DateFieldEditPart.VISUAL_ID:
 			return DateField_3207;
-		case UnitSupportActionEditPart.VISUAL_ID:
-			return UnitSupportAction_3232;
-		case CreateUnitEditPart.VISUAL_ID:
-			return CreateUnit_3103;
+		case CreateUpdateUnitEditPart.VISUAL_ID:
+			return CreateUpdateUnit_3104;
 		case UnitElement2EditPart.VISUAL_ID:
 			return UnitElement_3171;
 		case UnitAssociation2EditPart.VISUAL_ID:
@@ -1240,120 +1185,110 @@ public class WebsiteElementTypes {
 			return DataTypeField_3202;
 		case DateField2EditPart.VISUAL_ID:
 			return DateField_3208;
-		case CreateUpdateUnitEditPart.VISUAL_ID:
-			return CreateUpdateUnit_3104;
-		case UnitElement3EditPart.VISUAL_ID:
-			return UnitElement_3173;
-		case UnitAssociation3EditPart.VISUAL_ID:
-			return UnitAssociation_3174;
-		case DataTypeField3EditPart.VISUAL_ID:
-			return DataTypeField_3203;
-		case DateField3EditPart.VISUAL_ID:
-			return DateField_3209;
 		case CreateSitemapUnitEditPart.VISUAL_ID:
 			return CreateSitemapUnit_3157;
 		case DetailsUnitEditPart.VISUAL_ID:
 			return DetailsUnit_3105;
-		case UnitElement4EditPart.VISUAL_ID:
-			return UnitElement_3175;
+		case UnitElement3EditPart.VISUAL_ID:
+			return UnitElement_3173;
 		case SelectActionEditPart.VISUAL_ID:
 			return SelectAction_3102;
-		case UnitAssociation4EditPart.VISUAL_ID:
-			return UnitAssociation_3176;
+		case UnitAssociation3EditPart.VISUAL_ID:
+			return UnitAssociation_3174;
 		case DetailsUnit2EditPart.VISUAL_ID:
 			return DetailsUnit_3112;
-		case UnitElement5EditPart.VISUAL_ID:
-			return UnitElement_3177;
-		case UnitAssociation5EditPart.VISUAL_ID:
-			return UnitAssociation_3180;
+		case UnitElement4EditPart.VISUAL_ID:
+			return UnitElement_3175;
+		case UnitAssociation4EditPart.VISUAL_ID:
+			return UnitAssociation_3176;
 		case DetailsUnit3EditPart.VISUAL_ID:
 			return DetailsUnit_3113;
-		case UnitElement6EditPart.VISUAL_ID:
-			return UnitElement_3178;
+		case UnitElement5EditPart.VISUAL_ID:
+			return UnitElement_3177;
 		case IndexUnitEditPart.VISUAL_ID:
 			return IndexUnit_3106;
-		case UnitElement7EditPart.VISUAL_ID:
-			return UnitElement_3179;
+		case UnitElement6EditPart.VISUAL_ID:
+			return UnitElement_3178;
 		case IndexUnit2EditPart.VISUAL_ID:
 			return IndexUnit_3114;
+		case UnitElement7EditPart.VISUAL_ID:
+			return UnitElement_3179;
+		case UnitAssociation5EditPart.VISUAL_ID:
+			return UnitAssociation_3180;
+		case DetailsUnit4EditPart.VISUAL_ID:
+			return DetailsUnit_3116;
 		case UnitElement8EditPart.VISUAL_ID:
 			return UnitElement_3181;
 		case UnitAssociation6EditPart.VISUAL_ID:
 			return UnitAssociation_3182;
-		case DetailsUnit4EditPart.VISUAL_ID:
-			return DetailsUnit_3116;
+		case DetailsUnit5EditPart.VISUAL_ID:
+			return DetailsUnit_3129;
 		case UnitElement9EditPart.VISUAL_ID:
 			return UnitElement_3183;
 		case UnitAssociation7EditPart.VISUAL_ID:
 			return UnitAssociation_3184;
-		case DetailsUnit5EditPart.VISUAL_ID:
-			return DetailsUnit_3129;
+		case IndexUnit3EditPart.VISUAL_ID:
+			return IndexUnit_3118;
 		case UnitElement10EditPart.VISUAL_ID:
 			return UnitElement_3185;
 		case UnitAssociation8EditPart.VISUAL_ID:
 			return UnitAssociation_3186;
-		case IndexUnit3EditPart.VISUAL_ID:
-			return IndexUnit_3118;
+		case IndexUnit4EditPart.VISUAL_ID:
+			return IndexUnit_3120;
 		case UnitElement11EditPart.VISUAL_ID:
 			return UnitElement_3187;
 		case UnitAssociation9EditPart.VISUAL_ID:
 			return UnitAssociation_3188;
-		case IndexUnit4EditPart.VISUAL_ID:
-			return IndexUnit_3120;
+		case DetailsUnit6EditPart.VISUAL_ID:
+			return DetailsUnit_3131;
 		case UnitElement12EditPart.VISUAL_ID:
 			return UnitElement_3189;
 		case UnitAssociation10EditPart.VISUAL_ID:
 			return UnitAssociation_3190;
-		case DetailsUnit6EditPart.VISUAL_ID:
-			return DetailsUnit_3131;
+		case IndexUnit5EditPart.VISUAL_ID:
+			return IndexUnit_3133;
 		case UnitElement13EditPart.VISUAL_ID:
 			return UnitElement_3191;
 		case UnitAssociation11EditPart.VISUAL_ID:
 			return UnitAssociation_3192;
-		case IndexUnit5EditPart.VISUAL_ID:
-			return IndexUnit_3133;
-		case UnitElement14EditPart.VISUAL_ID:
-			return UnitElement_3193;
-		case UnitAssociation12EditPart.VISUAL_ID:
-			return UnitAssociation_3194;
 		case SelectAction2EditPart.VISUAL_ID:
 			return SelectAction_3107;
 		case DeleteActionEditPart.VISUAL_ID:
 			return DeleteAction_3101;
 		case SelectAction3EditPart.VISUAL_ID:
 			return SelectAction_3126;
-		case DataTypeField4EditPart.VISUAL_ID:
-			return DataTypeField_3204;
-		case DateField4EditPart.VISUAL_ID:
-			return DateField_3210;
-		case UnitSupportAction2EditPart.VISUAL_ID:
-			return UnitSupportAction_3233;
+		case DataTypeField3EditPart.VISUAL_ID:
+			return DataTypeField_3203;
+		case DateField3EditPart.VISUAL_ID:
+			return DateField_3209;
+		case UnitSupportActionEditPart.VISUAL_ID:
+			return UnitSupportAction_3232;
 		case IndexUnit6EditPart.VISUAL_ID:
 			return IndexUnit_3136;
-		case UnitElement15EditPart.VISUAL_ID:
-			return UnitElement_3195;
+		case UnitElement14EditPart.VISUAL_ID:
+			return UnitElement_3193;
 		case SelectAction4EditPart.VISUAL_ID:
 			return SelectAction_3127;
-		case UnitAssociation13EditPart.VISUAL_ID:
-			return UnitAssociation_3196;
+		case UnitAssociation12EditPart.VISUAL_ID:
+			return UnitAssociation_3194;
 		case DetailsUnit7EditPart.VISUAL_ID:
 			return DetailsUnit_3219;
+		case UnitElement15EditPart.VISUAL_ID:
+			return UnitElement_3195;
+		case UnitAssociation13EditPart.VISUAL_ID:
+			return UnitAssociation_3196;
+		case IndexUnit7EditPart.VISUAL_ID:
+			return IndexUnit_3143;
 		case UnitElement16EditPart.VISUAL_ID:
 			return UnitElement_3197;
 		case UnitAssociation14EditPart.VISUAL_ID:
 			return UnitAssociation_3198;
-		case IndexUnit7EditPart.VISUAL_ID:
-			return IndexUnit_3143;
-		case UnitElement17EditPart.VISUAL_ID:
-			return UnitElement_3199;
-		case UnitAssociation15EditPart.VISUAL_ID:
-			return UnitAssociation_3200;
 		case SelectAction5EditPart.VISUAL_ID:
 			return SelectAction_3128;
-		case DataTypeField5EditPart.VISUAL_ID:
-			return DataTypeField_3205;
-		case DateField5EditPart.VISUAL_ID:
-			return DateField_3211;
+		case DataTypeField4EditPart.VISUAL_ID:
+			return DataTypeField_3204;
+		case DateField4EditPart.VISUAL_ID:
+			return DateField_3210;
 		case SelectAction6EditPart.VISUAL_ID:
 			return SelectAction_3146;
 		case DeleteAction2EditPart.VISUAL_ID:
@@ -1364,36 +1299,36 @@ public class WebsiteElementTypes {
 			return MapUnit_3228;
 		case SearchUnitEditPart.VISUAL_ID:
 			return SearchUnit_3109;
-		case UnitElement18EditPart.VISUAL_ID:
-			return UnitElement_3215;
-		case UnitAssociation16EditPart.VISUAL_ID:
-			return UnitAssociation_3216;
-		case DataTypeField6EditPart.VISUAL_ID:
-			return DataTypeField_3206;
-		case DateField6EditPart.VISUAL_ID:
-			return DateField_3212;
+		case UnitElement17EditPart.VISUAL_ID:
+			return UnitElement_3199;
+		case UnitAssociation15EditPart.VISUAL_ID:
+			return UnitAssociation_3200;
+		case DataTypeField5EditPart.VISUAL_ID:
+			return DataTypeField_3205;
+		case DateField5EditPart.VISUAL_ID:
+			return DateField_3211;
 		case StaticUnitEditPart.VISUAL_ID:
 			return StaticUnit_3110;
 		case UpdateUnitEditPart.VISUAL_ID:
 			return UpdateUnit_3111;
+		case UnitElement18EditPart.VISUAL_ID:
+			return UnitElement_3215;
+		case UnitAssociation16EditPart.VISUAL_ID:
+			return UnitAssociation_3216;
+		case IndexUnit8EditPart.VISUAL_ID:
+			return IndexUnit_3222;
 		case UnitElement19EditPart.VISUAL_ID:
 			return UnitElement_3220;
 		case UnitAssociation17EditPart.VISUAL_ID:
 			return UnitAssociation_3221;
-		case IndexUnit8EditPart.VISUAL_ID:
-			return IndexUnit_3222;
-		case UnitElement20EditPart.VISUAL_ID:
-			return UnitElement_3223;
-		case UnitAssociation18EditPart.VISUAL_ID:
-			return UnitAssociation_3224;
 		case SelectAction7EditPart.VISUAL_ID:
 			return SelectAction_3153;
 		case DeleteAction3EditPart.VISUAL_ID:
 			return DeleteAction_3154;
-		case DataTypeField7EditPart.VISUAL_ID:
-			return DataTypeField_3217;
-		case DateField7EditPart.VISUAL_ID:
-			return DateField_3218;
+		case DataTypeField6EditPart.VISUAL_ID:
+			return DataTypeField_3206;
+		case DateField6EditPart.VISUAL_ID:
+			return DateField_3212;
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return ActionMenuEntry_3236;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:

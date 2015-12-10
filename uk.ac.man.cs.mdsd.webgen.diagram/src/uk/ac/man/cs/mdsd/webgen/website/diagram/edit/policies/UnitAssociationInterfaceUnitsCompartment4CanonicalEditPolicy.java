@@ -22,8 +22,7 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit5EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit3EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit8EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -61,7 +60,7 @@ public class UnitAssociationInterfaceUnitsCompartment4CanonicalEditPolicy extend
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitAssociationInterfaceUnitsCompartment_7107SemanticChildren(viewObject);
+				.getUnitAssociationInterfaceUnitsCompartment_7128SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -79,8 +78,7 @@ public class UnitAssociationInterfaceUnitsCompartment4CanonicalEditPolicy extend
 	* @generated
 	*/
 	private boolean isMyDiagramElement(View view) {
-		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == DetailsUnit5EditPart.VISUAL_ID || visualID == IndexUnit3EditPart.VISUAL_ID;
+		return IndexUnit8EditPart.VISUAL_ID == WebsiteVisualIDRegistry.getVisualID(view);
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class UnitAssociationInterfaceUnitsCompartment4CanonicalEditPolicy extend
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitAssociationInterfaceUnitsCompartment_7107SemanticChildren((View) getHost().getModel());
+				.getUnitAssociationInterfaceUnitsCompartment_7128SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

@@ -15,7 +15,7 @@ public class UnitAssociationActionCompartmentItemSemanticEditPolicy extends Webs
 	 * @generated
 	 */
 	public UnitAssociationActionCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitAssociation_3176);
+		super(WebsiteElementTypes.UnitAssociation_3174);
 	}
 
 	/**

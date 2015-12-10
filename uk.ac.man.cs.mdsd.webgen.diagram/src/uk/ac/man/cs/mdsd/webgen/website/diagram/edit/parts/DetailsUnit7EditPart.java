@@ -257,11 +257,11 @@ public class DetailsUnit7EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3197) {
+			if (type == WebsiteElementTypes.UnitElement_3195) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3198) {
+			if (type == WebsiteElementTypes.UnitAssociation_3196) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID));
 			}

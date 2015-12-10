@@ -89,10 +89,10 @@ public class IndexUnitUnitFieldCompartment8EditPart extends ListCompartmentEditP
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3223) {
+			if (type == WebsiteElementTypes.UnitElement_3220) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3224) {
+			if (type == WebsiteElementTypes.UnitAssociation_3221) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

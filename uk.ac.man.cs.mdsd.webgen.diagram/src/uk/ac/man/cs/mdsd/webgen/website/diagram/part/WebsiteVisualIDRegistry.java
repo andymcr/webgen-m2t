@@ -195,9 +195,6 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getActionUnit().isSuperTypeOf(domainElement.eClass())) {
-				return ActionUnitEditPart.VISUAL_ID;
-			}
 			if (WebsitePackage.eINSTANCE.getCreateUnit().isSuperTypeOf(domainElement.eClass())) {
 				return CreateUnitEditPart.VISUAL_ID;
 			}
@@ -226,7 +223,7 @@ public class WebsiteVisualIDRegistry {
 				return UpdateUnitEditPart.VISUAL_ID;
 			}
 			break;
-		case ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElementEditPart.VISUAL_ID;
 			}
@@ -240,12 +237,7 @@ public class WebsiteVisualIDRegistry {
 				return DateFieldEditPart.VISUAL_ID;
 			}
 			break;
-		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitSupportAction().isSuperTypeOf(domainElement.eClass())) {
-				return UnitSupportActionEditPart.VISUAL_ID;
-			}
-			break;
-		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement2EditPart.VISUAL_ID;
 			}
@@ -259,7 +251,7 @@ public class WebsiteVisualIDRegistry {
 				return DateField2EditPart.VISUAL_ID;
 			}
 			break;
-		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement3EditPart.VISUAL_ID;
 			}
@@ -273,23 +265,9 @@ public class WebsiteVisualIDRegistry {
 				return DateField3EditPart.VISUAL_ID;
 			}
 			break;
-		case DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement4EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation4EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
-				return DataTypeField4EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
-				return DateField4EditPart.VISUAL_ID;
-			}
-			break;
 		case DetailsUnitActionCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitSupportAction().isSuperTypeOf(domainElement.eClass())) {
-				return UnitSupportAction2EditPart.VISUAL_ID;
+				return UnitSupportActionEditPart.VISUAL_ID;
 			}
 			break;
 		case UnitElementActionCompartmentEditPart.VISUAL_ID:
@@ -297,7 +275,7 @@ public class WebsiteVisualIDRegistry {
 				return SelectActionEditPart.VISUAL_ID;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit2EditPart.VISUAL_ID;
 			}
@@ -312,13 +290,13 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement5EditPart.VISUAL_ID;
+				return UnitElement4EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation5EditPart.VISUAL_ID;
+				return UnitAssociation4EditPart.VISUAL_ID;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit3EditPart.VISUAL_ID;
 			}
@@ -328,20 +306,20 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case DetailsUnitUnitFieldCompartment3EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement6EditPart.VISUAL_ID;
+				return UnitElement5EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement7EditPart.VISUAL_ID;
+				return UnitElement6EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement8EditPart.VISUAL_ID;
+				return UnitElement7EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation6EditPart.VISUAL_ID;
+				return UnitAssociation5EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitActionCompartment3EditPart.VISUAL_ID:
@@ -352,7 +330,7 @@ public class WebsiteVisualIDRegistry {
 				return DeleteActionEditPart.VISUAL_ID;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit4EditPart.VISUAL_ID;
 			}
@@ -362,13 +340,13 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement9EditPart.VISUAL_ID;
+				return UnitElement8EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation7EditPart.VISUAL_ID;
+				return UnitAssociation6EditPart.VISUAL_ID;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit5EditPart.VISUAL_ID;
 			}
@@ -378,13 +356,21 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement9EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation7EditPart.VISUAL_ID;
+			}
+			break;
+		case IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement10EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation8EditPart.VISUAL_ID;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID:
+		case IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement11EditPart.VISUAL_ID;
 			}
@@ -392,15 +378,7 @@ public class WebsiteVisualIDRegistry {
 				return UnitAssociation9EditPart.VISUAL_ID;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement12EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation10EditPart.VISUAL_ID;
-			}
-			break;
-		case UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit6EditPart.VISUAL_ID;
 			}
@@ -410,32 +388,32 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement12EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation10EditPart.VISUAL_ID;
+			}
+			break;
+		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement13EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation11EditPart.VISUAL_ID;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
+		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement14EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation12EditPart.VISUAL_ID;
 			}
-			break;
-		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement15EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation13EditPart.VISUAL_ID;
-			}
 			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
-				return DataTypeField5EditPart.VISUAL_ID;
+				return DataTypeField4EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
-				return DateField5EditPart.VISUAL_ID;
+				return DateField4EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitActionCompartmentEditPart.VISUAL_ID:
@@ -454,7 +432,7 @@ public class WebsiteVisualIDRegistry {
 				return SelectAction4EditPart.VISUAL_ID;
 			}
 			break;
-		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getDetailsUnit().isSuperTypeOf(domainElement.eClass())) {
 				return DetailsUnit7EditPart.VISUAL_ID;
 			}
@@ -462,12 +440,20 @@ public class WebsiteVisualIDRegistry {
 				return IndexUnit7EditPart.VISUAL_ID;
 			}
 			break;
-		case UnitAssociationActionCompartment3EditPart.VISUAL_ID:
+		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction5EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement15EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation13EditPart.VISUAL_ID;
+			}
+			break;
+		case IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement16EditPart.VISUAL_ID;
 			}
@@ -475,15 +461,21 @@ public class WebsiteVisualIDRegistry {
 				return UnitAssociation14EditPart.VISUAL_ID;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID:
+		case SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement17EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return UnitAssociation15EditPart.VISUAL_ID;
 			}
+			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
+				return DataTypeField5EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
+				return DateField5EditPart.VISUAL_ID;
+			}
 			break;
-		case SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement18EditPart.VISUAL_ID;
 			}
@@ -497,31 +489,17 @@ public class WebsiteVisualIDRegistry {
 				return DateField6EditPart.VISUAL_ID;
 			}
 			break;
-		case UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement19EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation17EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getDataTypeField().isSuperTypeOf(domainElement.eClass())) {
-				return DataTypeField7EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getDateField().isSuperTypeOf(domainElement.eClass())) {
-				return DateField7EditPart.VISUAL_ID;
-			}
-			break;
-		case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit8EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
-				return UnitElement20EditPart.VISUAL_ID;
+				return UnitElement19EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return UnitAssociation18EditPart.VISUAL_ID;
+				return UnitAssociation17EditPart.VISUAL_ID;
 			}
 			break;
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
@@ -735,14 +713,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ActionUnitEditPart.VISUAL_ID:
-			if (ActionUnitNameEditPart.VISUAL_ID == nodeVisualID) {
+		case CreateUnitEditPart.VISUAL_ID:
+			if (CreateUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (ActionUnitActionCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+			if (CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -766,16 +741,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitSupportActionEditPart.VISUAL_ID:
-			if (UnitSupportActionNameEditPart.VISUAL_ID == nodeVisualID) {
+		case CreateUpdateUnitEditPart.VISUAL_ID:
+			if (CreateUpdateUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			break;
-		case CreateUnitEditPart.VISUAL_ID:
-			if (CreateUnitNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+			if (CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -799,34 +769,6 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case CreateUpdateUnitEditPart.VISUAL_ID:
-			if (CreateUpdateUnitNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitElement3EditPart.VISUAL_ID:
-			if (UnitElementName3EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitAssociation3EditPart.VISUAL_ID:
-			if (UnitAssociationName3EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case DataTypeField3EditPart.VISUAL_ID:
-			if (DataTypeFieldName3EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case DateField3EditPart.VISUAL_ID:
-			if (DateFieldName3EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
 		case DetailsUnitEditPart.VISUAL_ID:
 			if (DetailsUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -838,8 +780,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement4EditPart.VISUAL_ID:
-			if (UnitElementName4EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement3EditPart.VISUAL_ID:
+			if (UnitElementName3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (UnitElementActionCompartmentEditPart.VISUAL_ID == nodeVisualID) {
@@ -851,11 +793,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitAssociation4EditPart.VISUAL_ID:
-			if (UnitAssociationName4EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitAssociation3EditPart.VISUAL_ID:
+			if (UnitAssociationName3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (UnitAssociationActionCompartmentEditPart.VISUAL_ID == nodeVisualID) {
@@ -870,16 +812,16 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement5EditPart.VISUAL_ID:
-			if (UnitElementName5EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement4EditPart.VISUAL_ID:
+			if (UnitElementName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case UnitAssociation5EditPart.VISUAL_ID:
-			if (UnitAssociationName5EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitAssociation4EditPart.VISUAL_ID:
+			if (UnitAssociationName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -891,8 +833,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement6EditPart.VISUAL_ID:
-			if (UnitElementName6EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement5EditPart.VISUAL_ID:
+			if (UnitElementName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -904,8 +846,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement7EditPart.VISUAL_ID:
-			if (UnitElementName7EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement6EditPart.VISUAL_ID:
+			if (UnitElementName6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -917,6 +859,27 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			if (IndexUnitActionCompartment3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement7EditPart.VISUAL_ID:
+			if (UnitElementName7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitAssociation5EditPart.VISUAL_ID:
+			if (UnitAssociationName5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case DetailsUnit4EditPart.VISUAL_ID:
+			if (DetailsUnitName4EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -933,11 +896,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case DetailsUnit4EditPart.VISUAL_ID:
-			if (DetailsUnitName4EditPart.VISUAL_ID == nodeVisualID) {
+		case DetailsUnit5EditPart.VISUAL_ID:
+			if (DetailsUnitName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID == nodeVisualID) {
+			if (DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -950,15 +913,12 @@ public class WebsiteVisualIDRegistry {
 			if (UnitAssociationName7EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
 			break;
-		case DetailsUnit5EditPart.VISUAL_ID:
-			if (DetailsUnitName5EditPart.VISUAL_ID == nodeVisualID) {
+		case IndexUnit3EditPart.VISUAL_ID:
+			if (IndexUnitName3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID == nodeVisualID) {
+			if (IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -972,11 +932,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case IndexUnit3EditPart.VISUAL_ID:
-			if (IndexUnitName3EditPart.VISUAL_ID == nodeVisualID) {
+		case IndexUnit4EditPart.VISUAL_ID:
+			if (IndexUnitName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID == nodeVisualID) {
+			if (IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -989,12 +949,15 @@ public class WebsiteVisualIDRegistry {
 			if (UnitAssociationName9EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			break;
-		case IndexUnit4EditPart.VISUAL_ID:
-			if (IndexUnitName4EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID == nodeVisualID) {
+			break;
+		case DetailsUnit6EditPart.VISUAL_ID:
+			if (DetailsUnitName6EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1007,15 +970,12 @@ public class WebsiteVisualIDRegistry {
 			if (UnitAssociationName10EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
 			break;
-		case DetailsUnit6EditPart.VISUAL_ID:
-			if (DetailsUnitName6EditPart.VISUAL_ID == nodeVisualID) {
+		case IndexUnit5EditPart.VISUAL_ID:
+			if (IndexUnitName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID == nodeVisualID) {
+			if (IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1026,24 +986,6 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case UnitAssociation11EditPart.VISUAL_ID:
 			if (UnitAssociationName11EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case IndexUnit5EditPart.VISUAL_ID:
-			if (IndexUnitName5EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitElement14EditPart.VISUAL_ID:
-			if (UnitElementName14EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitAssociation12EditPart.VISUAL_ID:
-			if (UnitAssociationName12EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1062,18 +1004,18 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case DataTypeField4EditPart.VISUAL_ID:
-			if (DataTypeFieldName4EditPart.VISUAL_ID == nodeVisualID) {
+		case DataTypeField3EditPart.VISUAL_ID:
+			if (DataTypeFieldName3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DateField4EditPart.VISUAL_ID:
-			if (DateFieldName4EditPart.VISUAL_ID == nodeVisualID) {
+		case DateField3EditPart.VISUAL_ID:
+			if (DateFieldName3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case UnitSupportAction2EditPart.VISUAL_ID:
-			if (UnitSupportActionName2EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitSupportActionEditPart.VISUAL_ID:
+			if (UnitSupportActionNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1088,8 +1030,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement15EditPart.VISUAL_ID:
-			if (UnitElementName15EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement14EditPart.VISUAL_ID:
+			if (UnitElementName14EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (UnitElementActionCompartment2EditPart.VISUAL_ID == nodeVisualID) {
@@ -1101,14 +1043,14 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitAssociation13EditPart.VISUAL_ID:
-			if (UnitAssociationName13EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitAssociation12EditPart.VISUAL_ID:
+			if (UnitAssociationName12EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (UnitAssociationActionCompartment2EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (UnitAssociationActionCompartment3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1117,6 +1059,24 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			if (DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement15EditPart.VISUAL_ID:
+			if (UnitElementName15EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitAssociation13EditPart.VISUAL_ID:
+			if (UnitAssociationName13EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case IndexUnit7EditPart.VISUAL_ID:
+			if (IndexUnitName7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1130,36 +1090,18 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case IndexUnit7EditPart.VISUAL_ID:
-			if (IndexUnitName7EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitElement17EditPart.VISUAL_ID:
-			if (UnitElementName17EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitAssociation15EditPart.VISUAL_ID:
-			if (UnitAssociationName15EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
 		case SelectAction5EditPart.VISUAL_ID:
 			if (SelectActionName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DataTypeField5EditPart.VISUAL_ID:
-			if (DataTypeFieldName5EditPart.VISUAL_ID == nodeVisualID) {
+		case DataTypeField4EditPart.VISUAL_ID:
+			if (DataTypeFieldName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DateField5EditPart.VISUAL_ID:
-			if (DateFieldName5EditPart.VISUAL_ID == nodeVisualID) {
+		case DateField4EditPart.VISUAL_ID:
+			if (DateFieldName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1191,23 +1133,23 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement18EditPart.VISUAL_ID:
-			if (UnitElementName18EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement17EditPart.VISUAL_ID:
+			if (UnitElementName17EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case UnitAssociation16EditPart.VISUAL_ID:
-			if (UnitAssociationName16EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitAssociation15EditPart.VISUAL_ID:
+			if (UnitAssociationName15EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DataTypeField6EditPart.VISUAL_ID:
-			if (DataTypeFieldName6EditPart.VISUAL_ID == nodeVisualID) {
+		case DataTypeField5EditPart.VISUAL_ID:
+			if (DataTypeFieldName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DateField6EditPart.VISUAL_ID:
-			if (DateFieldName6EditPart.VISUAL_ID == nodeVisualID) {
+		case DateField5EditPart.VISUAL_ID:
+			if (DateFieldName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1224,16 +1166,16 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement19EditPart.VISUAL_ID:
-			if (UnitElementName19EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement18EditPart.VISUAL_ID:
+			if (UnitElementName18EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case UnitAssociation17EditPart.VISUAL_ID:
-			if (UnitAssociationName17EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitAssociation16EditPart.VISUAL_ID:
+			if (UnitAssociationName16EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1248,13 +1190,13 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitElement20EditPart.VISUAL_ID:
-			if (UnitElementName20EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitElement19EditPart.VISUAL_ID:
+			if (UnitElementName19EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case UnitAssociation18EditPart.VISUAL_ID:
-			if (UnitAssociationName18EditPart.VISUAL_ID == nodeVisualID) {
+		case UnitAssociation17EditPart.VISUAL_ID:
+			if (UnitAssociationName17EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1268,13 +1210,13 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case DataTypeField7EditPart.VISUAL_ID:
-			if (DataTypeFieldName7EditPart.VISUAL_ID == nodeVisualID) {
+		case DataTypeField6EditPart.VISUAL_ID:
+			if (DataTypeFieldName6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DateField7EditPart.VISUAL_ID:
-			if (DateFieldName7EditPart.VISUAL_ID == nodeVisualID) {
+		case DateField6EditPart.VISUAL_ID:
+			if (DateFieldName6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1352,9 +1294,6 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
-			if (ActionUnitEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
 			if (CreateUnitEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1383,7 +1322,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (UnitElementEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1397,12 +1336,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
-			if (UnitSupportActionEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (UnitElement2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1416,7 +1350,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (UnitElement3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1430,22 +1364,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (UnitElement4EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (UnitAssociation4EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DataTypeField4EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DateField4EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
 		case DetailsUnitActionCompartmentEditPart.VISUAL_ID:
-			if (UnitSupportAction2EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitSupportActionEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1454,7 +1374,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
 			if (DetailsUnit2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1468,14 +1388,14 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID:
-			if (UnitElement5EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitElement4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociation5EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociation4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
 			if (DetailsUnit3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1484,20 +1404,20 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment3EditPart.VISUAL_ID:
-			if (UnitElement6EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitElement5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case IndexUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (UnitElement7EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitElement6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID:
-			if (UnitElement8EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitElement7EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociation6EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociation5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1509,7 +1429,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
 			if (DetailsUnit4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1518,14 +1438,14 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID:
-			if (UnitElement9EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitElement8EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociation7EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociation6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
 			if (DetailsUnit5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1534,6 +1454,14 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID:
+			if (UnitElement9EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitAssociation7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID:
 			if (UnitElement10EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1541,7 +1469,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID:
+		case IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID:
 			if (UnitElement11EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1549,15 +1477,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID:
-			if (UnitElement12EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (UnitAssociation10EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID:
 			if (DetailsUnit6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1566,6 +1486,14 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID:
+			if (UnitElement12EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitAssociation10EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
 			if (UnitElement13EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1573,25 +1501,17 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
+		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 			if (UnitElement14EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (UnitAssociation12EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			break;
-		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
-			if (UnitElement15EditPart.VISUAL_ID == nodeVisualID) {
+			if (DataTypeField4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociation13EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DataTypeField5EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DateField5EditPart.VISUAL_ID == nodeVisualID) {
+			if (DateField4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1611,7 +1531,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID:
 			if (DetailsUnit7EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1619,12 +1539,20 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UnitAssociationActionCompartment3EditPart.VISUAL_ID:
+		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
 			if (SelectAction5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID:
+			if (UnitElement15EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitAssociation13EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID:
 			if (UnitElement16EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1632,15 +1560,21 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID:
+		case SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (UnitElement17EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (UnitAssociation15EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (DataTypeField5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (DateField5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			break;
-		case SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID:
+		case UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (UnitElement18EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1654,30 +1588,16 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-			if (UnitElement19EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (UnitAssociation17EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DataTypeField7EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DateField7EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID:
 			if (IndexUnit8EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
-			if (UnitElement20EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitElement19EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (UnitAssociation18EditPart.VISUAL_ID == nodeVisualID) {
+			if (UnitAssociation17EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1796,40 +1716,38 @@ public class WebsiteVisualIDRegistry {
 		case ViewAttributeCompartmentEditPart.VISUAL_ID:
 		case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
 		case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
-		case ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-		case ActionUnitActionCompartmentEditPart.VISUAL_ID:
 		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case CreateUpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case DetailsUnitActionCompartmentEditPart.VISUAL_ID:
 		case UnitElementActionCompartmentEditPart.VISUAL_ID:
-		case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
 		case UnitAssociationActionCompartmentEditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID:
-		case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartment3EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID:
 		case IndexUnitActionCompartment3EditPart.VISUAL_ID:
-		case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID:
-		case UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID:
-		case UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 		case IndexUnitActionCompartmentEditPart.VISUAL_ID:
 		case UnitElementActionCompartment2EditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID:
 		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
-		case UnitAssociationActionCompartment3EditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID:
 		case SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 		case UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-		case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
+		case UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
@@ -1875,22 +1793,22 @@ public class WebsiteVisualIDRegistry {
 		case UnitAssociationEditPart.VISUAL_ID:
 		case UnitElement2EditPart.VISUAL_ID:
 		case UnitAssociation2EditPart.VISUAL_ID:
-		case UnitElement3EditPart.VISUAL_ID:
-		case UnitAssociation3EditPart.VISUAL_ID:
+		case UnitElement4EditPart.VISUAL_ID:
 		case UnitElement5EditPart.VISUAL_ID:
 		case UnitElement6EditPart.VISUAL_ID:
 		case UnitElement7EditPart.VISUAL_ID:
 		case UnitElement8EditPart.VISUAL_ID:
 		case UnitElement9EditPart.VISUAL_ID:
+		case UnitAssociation7EditPart.VISUAL_ID:
 		case UnitElement10EditPart.VISUAL_ID:
 		case UnitAssociation8EditPart.VISUAL_ID:
 		case UnitElement11EditPart.VISUAL_ID:
-		case UnitAssociation9EditPart.VISUAL_ID:
 		case UnitElement12EditPart.VISUAL_ID:
+		case UnitAssociation10EditPart.VISUAL_ID:
 		case UnitElement13EditPart.VISUAL_ID:
 		case UnitAssociation11EditPart.VISUAL_ID:
-		case UnitElement14EditPart.VISUAL_ID:
-		case UnitAssociation12EditPart.VISUAL_ID:
+		case UnitElement15EditPart.VISUAL_ID:
+		case UnitAssociation13EditPart.VISUAL_ID:
 		case UnitElement16EditPart.VISUAL_ID:
 		case UnitAssociation14EditPart.VISUAL_ID:
 		case UnitElement17EditPart.VISUAL_ID:
@@ -1908,16 +1826,11 @@ public class WebsiteVisualIDRegistry {
 		case DateField5EditPart.VISUAL_ID:
 		case DateField6EditPart.VISUAL_ID:
 		case UnitElement18EditPart.VISUAL_ID:
-		case UnitAssociation16EditPart.VISUAL_ID:
-		case DataTypeField7EditPart.VISUAL_ID:
-		case DateField7EditPart.VISUAL_ID:
 		case UnitElement19EditPart.VISUAL_ID:
-		case UnitElement20EditPart.VISUAL_ID:
-		case UnitAssociation18EditPart.VISUAL_ID:
+		case UnitAssociation17EditPart.VISUAL_ID:
 		case MapUnitEditPart.VISUAL_ID:
 		case LocationAttributeEditPart.VISUAL_ID:
 		case UnitSupportActionEditPart.VISUAL_ID:
-		case UnitSupportAction2EditPart.VISUAL_ID:
 		case FeatureSupportActionEditPart.VISUAL_ID:
 		case ImageAttributeEditPart.VISUAL_ID:
 		case ActionMenuEntryEditPart.VISUAL_ID:

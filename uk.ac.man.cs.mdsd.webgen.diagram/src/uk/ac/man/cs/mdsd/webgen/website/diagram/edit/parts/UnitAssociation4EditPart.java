@@ -256,17 +256,13 @@ public class UnitAssociation4EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DetailsUnit_3112) {
+			if (type == WebsiteElementTypes.DetailsUnit_3113) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.IndexUnit_3114) {
+			if (type == WebsiteElementTypes.IndexUnit_3106) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.SelectAction_3126) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);

@@ -29,7 +29,7 @@ public class UnitAssociationActionCompartment2EditPart extends ListCompartmentEd
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7110;
+	public static final int VISUAL_ID = 7127;
 
 	/**
 	 * @generated
@@ -89,10 +89,7 @@ public class UnitAssociationActionCompartment2EditPart extends ListCompartmentEd
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DetailsUnit_3219) {
-				return this;
-			}
-			if (type == WebsiteElementTypes.IndexUnit_3143) {
+			if (type == WebsiteElementTypes.SelectAction_3128) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

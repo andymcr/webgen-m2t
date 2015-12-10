@@ -207,7 +207,7 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createElement3CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(21);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(20);
 		types.add(WebsiteElementTypes.UnitElement_3169);
 		types.add(WebsiteElementTypes.UnitElement_3171);
 		types.add(WebsiteElementTypes.UnitElement_3173);
@@ -227,7 +227,6 @@ public class WebsitePaletteFactory {
 		types.add(WebsiteElementTypes.UnitElement_3199);
 		types.add(WebsiteElementTypes.UnitElement_3215);
 		types.add(WebsiteElementTypes.UnitElement_3220);
-		types.add(WebsiteElementTypes.UnitElement_3223);
 		types.add(WebsiteElementTypes.ServiceAttribute_3241);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Element3CreationTool_title,
 				Messages.Element3CreationTool_desc, types);
@@ -241,7 +240,7 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createAssociation4CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(19);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(18);
 		types.add(WebsiteElementTypes.UnitAssociation_3170);
 		types.add(WebsiteElementTypes.UnitAssociation_3172);
 		types.add(WebsiteElementTypes.UnitAssociation_3174);
@@ -259,7 +258,6 @@ public class WebsitePaletteFactory {
 		types.add(WebsiteElementTypes.UnitAssociation_3200);
 		types.add(WebsiteElementTypes.UnitAssociation_3216);
 		types.add(WebsiteElementTypes.UnitAssociation_3221);
-		types.add(WebsiteElementTypes.UnitAssociation_3224);
 		types.add(WebsiteElementTypes.ServiceAssociation_3242);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Association4CreationTool_title,
 				Messages.Association4CreationTool_desc, types);
@@ -284,13 +282,12 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createDatatypefield6CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(6);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(5);
 		types.add(WebsiteElementTypes.DataTypeField_3201);
 		types.add(WebsiteElementTypes.DataTypeField_3202);
 		types.add(WebsiteElementTypes.DataTypeField_3203);
 		types.add(WebsiteElementTypes.DataTypeField_3204);
 		types.add(WebsiteElementTypes.DataTypeField_3205);
-		types.add(WebsiteElementTypes.DataTypeField_3206);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datatypefield6CreationTool_title,
 				Messages.Datatypefield6CreationTool_desc, types);
 		entry.setId("createDatatypefield6CreationTool"); //$NON-NLS-1$
@@ -303,14 +300,13 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createDatefield7CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(7);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(6);
 		types.add(WebsiteElementTypes.DateField_3207);
 		types.add(WebsiteElementTypes.DateField_3208);
 		types.add(WebsiteElementTypes.DateField_3209);
 		types.add(WebsiteElementTypes.DateField_3210);
 		types.add(WebsiteElementTypes.DateField_3211);
 		types.add(WebsiteElementTypes.DateField_3212);
-		types.add(WebsiteElementTypes.DateField_3218);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datefield7CreationTool_title,
 				Messages.Datefield7CreationTool_desc, types);
 		entry.setId("createDatefield7CreationTool"); //$NON-NLS-1$
@@ -523,11 +519,10 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createActionUnit10CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ActionUnit10CreationTool_title,
-				Messages.ActionUnit10CreationTool_desc, Collections.singletonList(WebsiteElementTypes.ActionUnit_3213));
+		ToolEntry entry = new ToolEntry(Messages.ActionUnit10CreationTool_title, Messages.ActionUnit10CreationTool_desc,
+				null, null) {
+		};
 		entry.setId("createActionUnit10CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ActionUnit_3213));
-		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
 
@@ -582,9 +577,8 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createSupportAction3CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(3);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 		types.add(WebsiteElementTypes.UnitSupportAction_3232);
-		types.add(WebsiteElementTypes.UnitSupportAction_3233);
 		types.add(WebsiteElementTypes.FeatureSupportAction_3234);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.SupportAction3CreationTool_title,
 				Messages.SupportAction3CreationTool_desc, types);
@@ -639,7 +633,7 @@ public class WebsitePaletteFactory {
 	private ToolEntry createDatatype1CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 		types.add(WebsiteElementTypes.DataType_2002);
-		types.add(WebsiteElementTypes.DataTypeField_3217);
+		types.add(WebsiteElementTypes.DataTypeField_3206);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datatype1CreationTool_title,
 				Messages.Datatype1CreationTool_desc, types);
 		entry.setId("createDatatype1CreationTool"); //$NON-NLS-1$

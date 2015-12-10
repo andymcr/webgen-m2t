@@ -91,10 +91,10 @@ public class UnitAssociationInterfaceUnitCompartmentEditPart extends ListCompart
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DetailsUnit_3112) {
+			if (type == WebsiteElementTypes.DetailsUnit_3113) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.IndexUnit_3114) {
+			if (type == WebsiteElementTypes.IndexUnit_3106) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

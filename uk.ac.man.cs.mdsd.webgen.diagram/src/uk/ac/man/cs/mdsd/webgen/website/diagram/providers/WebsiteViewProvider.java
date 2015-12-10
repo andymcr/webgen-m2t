@@ -146,19 +146,18 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case ModelLabelEditPart.VISUAL_ID:
 				case EncapsulatedAttributeEditPart.VISUAL_ID:
 				case EncapsulatedAssociationEditPart.VISUAL_ID:
-				case ActionUnitEditPart.VISUAL_ID:
+				case CreateUnitEditPart.VISUAL_ID:
 				case UnitElementEditPart.VISUAL_ID:
 				case UnitAssociationEditPart.VISUAL_ID:
 				case DataTypeFieldEditPart.VISUAL_ID:
 				case DateFieldEditPart.VISUAL_ID:
-				case UnitSupportActionEditPart.VISUAL_ID:
-				case CreateUnitEditPart.VISUAL_ID:
 				case CreateUpdateUnitEditPart.VISUAL_ID:
 				case CreateSitemapUnitEditPart.VISUAL_ID:
 				case DetailsUnitEditPart.VISUAL_ID:
 				case SelectActionEditPart.VISUAL_ID:
 				case IndexUnitEditPart.VISUAL_ID:
 				case DeleteActionEditPart.VISUAL_ID:
+				case UnitSupportActionEditPart.VISUAL_ID:
 				case FeatureSupportActionEditPart.VISUAL_ID:
 				case MapUnitEditPart.VISUAL_ID:
 				case SearchUnitEditPart.VISUAL_ID:
@@ -176,70 +175,65 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case DateField2EditPart.VISUAL_ID:
 				case UnitElement3EditPart.VISUAL_ID:
 				case UnitAssociation3EditPart.VISUAL_ID:
-				case DataTypeField3EditPart.VISUAL_ID:
-				case DateField3EditPart.VISUAL_ID:
+				case DetailsUnit2EditPart.VISUAL_ID:
 				case UnitElement4EditPart.VISUAL_ID:
 				case UnitAssociation4EditPart.VISUAL_ID:
-				case DetailsUnit2EditPart.VISUAL_ID:
-				case UnitElement5EditPart.VISUAL_ID:
-				case UnitAssociation5EditPart.VISUAL_ID:
 				case DetailsUnit3EditPart.VISUAL_ID:
+				case UnitElement5EditPart.VISUAL_ID:
 				case UnitElement6EditPart.VISUAL_ID:
-				case UnitElement7EditPart.VISUAL_ID:
 				case IndexUnit2EditPart.VISUAL_ID:
+				case UnitElement7EditPart.VISUAL_ID:
+				case UnitAssociation5EditPart.VISUAL_ID:
+				case DetailsUnit4EditPart.VISUAL_ID:
 				case UnitElement8EditPart.VISUAL_ID:
 				case UnitAssociation6EditPart.VISUAL_ID:
-				case DetailsUnit4EditPart.VISUAL_ID:
+				case DetailsUnit5EditPart.VISUAL_ID:
 				case UnitElement9EditPart.VISUAL_ID:
 				case UnitAssociation7EditPart.VISUAL_ID:
-				case DetailsUnit5EditPart.VISUAL_ID:
+				case IndexUnit3EditPart.VISUAL_ID:
 				case UnitElement10EditPart.VISUAL_ID:
 				case UnitAssociation8EditPart.VISUAL_ID:
-				case IndexUnit3EditPart.VISUAL_ID:
+				case IndexUnit4EditPart.VISUAL_ID:
 				case UnitElement11EditPart.VISUAL_ID:
 				case UnitAssociation9EditPart.VISUAL_ID:
-				case IndexUnit4EditPart.VISUAL_ID:
+				case DetailsUnit6EditPart.VISUAL_ID:
 				case UnitElement12EditPart.VISUAL_ID:
 				case UnitAssociation10EditPart.VISUAL_ID:
-				case DetailsUnit6EditPart.VISUAL_ID:
+				case IndexUnit5EditPart.VISUAL_ID:
 				case UnitElement13EditPart.VISUAL_ID:
 				case UnitAssociation11EditPart.VISUAL_ID:
-				case IndexUnit5EditPart.VISUAL_ID:
-				case UnitElement14EditPart.VISUAL_ID:
-				case UnitAssociation12EditPart.VISUAL_ID:
 				case SelectAction2EditPart.VISUAL_ID:
 				case SelectAction3EditPart.VISUAL_ID:
-				case DataTypeField4EditPart.VISUAL_ID:
-				case DateField4EditPart.VISUAL_ID:
-				case UnitSupportAction2EditPart.VISUAL_ID:
+				case DataTypeField3EditPart.VISUAL_ID:
+				case DateField3EditPart.VISUAL_ID:
 				case IndexUnit6EditPart.VISUAL_ID:
-				case UnitElement15EditPart.VISUAL_ID:
+				case UnitElement14EditPart.VISUAL_ID:
 				case SelectAction4EditPart.VISUAL_ID:
-				case UnitAssociation13EditPart.VISUAL_ID:
+				case UnitAssociation12EditPart.VISUAL_ID:
 				case DetailsUnit7EditPart.VISUAL_ID:
+				case UnitElement15EditPart.VISUAL_ID:
+				case UnitAssociation13EditPart.VISUAL_ID:
+				case IndexUnit7EditPart.VISUAL_ID:
 				case UnitElement16EditPart.VISUAL_ID:
 				case UnitAssociation14EditPart.VISUAL_ID:
-				case IndexUnit7EditPart.VISUAL_ID:
-				case UnitElement17EditPart.VISUAL_ID:
-				case UnitAssociation15EditPart.VISUAL_ID:
 				case SelectAction5EditPart.VISUAL_ID:
-				case DataTypeField5EditPart.VISUAL_ID:
-				case DateField5EditPart.VISUAL_ID:
+				case DataTypeField4EditPart.VISUAL_ID:
+				case DateField4EditPart.VISUAL_ID:
 				case SelectAction6EditPart.VISUAL_ID:
 				case DeleteAction2EditPart.VISUAL_ID:
+				case UnitElement17EditPart.VISUAL_ID:
+				case UnitAssociation15EditPart.VISUAL_ID:
+				case DataTypeField5EditPart.VISUAL_ID:
+				case DateField5EditPart.VISUAL_ID:
 				case UnitElement18EditPart.VISUAL_ID:
 				case UnitAssociation16EditPart.VISUAL_ID:
-				case DataTypeField6EditPart.VISUAL_ID:
-				case DateField6EditPart.VISUAL_ID:
+				case IndexUnit8EditPart.VISUAL_ID:
 				case UnitElement19EditPart.VISUAL_ID:
 				case UnitAssociation17EditPart.VISUAL_ID:
-				case IndexUnit8EditPart.VISUAL_ID:
-				case UnitElement20EditPart.VISUAL_ID:
-				case UnitAssociation18EditPart.VISUAL_ID:
 				case SelectAction7EditPart.VISUAL_ID:
 				case DeleteAction3EditPart.VISUAL_ID:
-				case DataTypeField7EditPart.VISUAL_ID:
-				case DateField7EditPart.VISUAL_ID:
+				case DataTypeField6EditPart.VISUAL_ID:
+				case DateField6EditPart.VISUAL_ID:
 					if (domainElement == null || visualID != WebsiteVisualIDRegistry
 							.getNodeVisualID(op.getContainerView(), domainElement)) {
 						return false; // visual id in semantic hint should match visual id for domain element
@@ -261,51 +255,48 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				|| ImageAttributeEditPart.VISUAL_ID == visualID || LocationAttributeEditPart.VISUAL_ID == visualID
 				|| ModelLabelEditPart.VISUAL_ID == visualID || ModelLabel2EditPart.VISUAL_ID == visualID
 				|| EncapsulatedAttributeEditPart.VISUAL_ID == visualID
-				|| EncapsulatedAssociationEditPart.VISUAL_ID == visualID || ActionUnitEditPart.VISUAL_ID == visualID
+				|| EncapsulatedAssociationEditPart.VISUAL_ID == visualID || CreateUnitEditPart.VISUAL_ID == visualID
 				|| UnitElementEditPart.VISUAL_ID == visualID || UnitAssociationEditPart.VISUAL_ID == visualID
 				|| DataTypeFieldEditPart.VISUAL_ID == visualID || DateFieldEditPart.VISUAL_ID == visualID
-				|| UnitSupportActionEditPart.VISUAL_ID == visualID || CreateUnitEditPart.VISUAL_ID == visualID
-				|| UnitElement2EditPart.VISUAL_ID == visualID || UnitAssociation2EditPart.VISUAL_ID == visualID
-				|| DataTypeField2EditPart.VISUAL_ID == visualID || DateField2EditPart.VISUAL_ID == visualID
-				|| CreateUpdateUnitEditPart.VISUAL_ID == visualID || UnitElement3EditPart.VISUAL_ID == visualID
-				|| UnitAssociation3EditPart.VISUAL_ID == visualID || DataTypeField3EditPart.VISUAL_ID == visualID
-				|| DateField3EditPart.VISUAL_ID == visualID || CreateSitemapUnitEditPart.VISUAL_ID == visualID
-				|| DetailsUnitEditPart.VISUAL_ID == visualID || UnitElement4EditPart.VISUAL_ID == visualID
-				|| SelectActionEditPart.VISUAL_ID == visualID || UnitAssociation4EditPart.VISUAL_ID == visualID
-				|| DetailsUnit2EditPart.VISUAL_ID == visualID || UnitElement5EditPart.VISUAL_ID == visualID
-				|| UnitAssociation5EditPart.VISUAL_ID == visualID || DetailsUnit3EditPart.VISUAL_ID == visualID
-				|| UnitElement6EditPart.VISUAL_ID == visualID || IndexUnitEditPart.VISUAL_ID == visualID
-				|| UnitElement7EditPart.VISUAL_ID == visualID || IndexUnit2EditPart.VISUAL_ID == visualID
-				|| UnitElement8EditPart.VISUAL_ID == visualID || UnitAssociation6EditPart.VISUAL_ID == visualID
-				|| DetailsUnit4EditPart.VISUAL_ID == visualID || UnitElement9EditPart.VISUAL_ID == visualID
-				|| UnitAssociation7EditPart.VISUAL_ID == visualID || DetailsUnit5EditPart.VISUAL_ID == visualID
-				|| UnitElement10EditPart.VISUAL_ID == visualID || UnitAssociation8EditPart.VISUAL_ID == visualID
-				|| IndexUnit3EditPart.VISUAL_ID == visualID || UnitElement11EditPart.VISUAL_ID == visualID
-				|| UnitAssociation9EditPart.VISUAL_ID == visualID || IndexUnit4EditPart.VISUAL_ID == visualID
-				|| UnitElement12EditPart.VISUAL_ID == visualID || UnitAssociation10EditPart.VISUAL_ID == visualID
-				|| DetailsUnit6EditPart.VISUAL_ID == visualID || UnitElement13EditPart.VISUAL_ID == visualID
-				|| UnitAssociation11EditPart.VISUAL_ID == visualID || IndexUnit5EditPart.VISUAL_ID == visualID
-				|| UnitElement14EditPart.VISUAL_ID == visualID || UnitAssociation12EditPart.VISUAL_ID == visualID
+				|| CreateUpdateUnitEditPart.VISUAL_ID == visualID || UnitElement2EditPart.VISUAL_ID == visualID
+				|| UnitAssociation2EditPart.VISUAL_ID == visualID || DataTypeField2EditPart.VISUAL_ID == visualID
+				|| DateField2EditPart.VISUAL_ID == visualID || CreateSitemapUnitEditPart.VISUAL_ID == visualID
+				|| DetailsUnitEditPart.VISUAL_ID == visualID || UnitElement3EditPart.VISUAL_ID == visualID
+				|| SelectActionEditPart.VISUAL_ID == visualID || UnitAssociation3EditPart.VISUAL_ID == visualID
+				|| DetailsUnit2EditPart.VISUAL_ID == visualID || UnitElement4EditPart.VISUAL_ID == visualID
+				|| UnitAssociation4EditPart.VISUAL_ID == visualID || DetailsUnit3EditPart.VISUAL_ID == visualID
+				|| UnitElement5EditPart.VISUAL_ID == visualID || IndexUnitEditPart.VISUAL_ID == visualID
+				|| UnitElement6EditPart.VISUAL_ID == visualID || IndexUnit2EditPart.VISUAL_ID == visualID
+				|| UnitElement7EditPart.VISUAL_ID == visualID || UnitAssociation5EditPart.VISUAL_ID == visualID
+				|| DetailsUnit4EditPart.VISUAL_ID == visualID || UnitElement8EditPart.VISUAL_ID == visualID
+				|| UnitAssociation6EditPart.VISUAL_ID == visualID || DetailsUnit5EditPart.VISUAL_ID == visualID
+				|| UnitElement9EditPart.VISUAL_ID == visualID || UnitAssociation7EditPart.VISUAL_ID == visualID
+				|| IndexUnit3EditPart.VISUAL_ID == visualID || UnitElement10EditPart.VISUAL_ID == visualID
+				|| UnitAssociation8EditPart.VISUAL_ID == visualID || IndexUnit4EditPart.VISUAL_ID == visualID
+				|| UnitElement11EditPart.VISUAL_ID == visualID || UnitAssociation9EditPart.VISUAL_ID == visualID
+				|| DetailsUnit6EditPart.VISUAL_ID == visualID || UnitElement12EditPart.VISUAL_ID == visualID
+				|| UnitAssociation10EditPart.VISUAL_ID == visualID || IndexUnit5EditPart.VISUAL_ID == visualID
+				|| UnitElement13EditPart.VISUAL_ID == visualID || UnitAssociation11EditPart.VISUAL_ID == visualID
 				|| SelectAction2EditPart.VISUAL_ID == visualID || DeleteActionEditPart.VISUAL_ID == visualID
-				|| SelectAction3EditPart.VISUAL_ID == visualID || DataTypeField4EditPart.VISUAL_ID == visualID
-				|| DateField4EditPart.VISUAL_ID == visualID || UnitSupportAction2EditPart.VISUAL_ID == visualID
-				|| IndexUnit6EditPart.VISUAL_ID == visualID || UnitElement15EditPart.VISUAL_ID == visualID
-				|| SelectAction4EditPart.VISUAL_ID == visualID || UnitAssociation13EditPart.VISUAL_ID == visualID
-				|| DetailsUnit7EditPart.VISUAL_ID == visualID || UnitElement16EditPart.VISUAL_ID == visualID
-				|| UnitAssociation14EditPart.VISUAL_ID == visualID || IndexUnit7EditPart.VISUAL_ID == visualID
-				|| UnitElement17EditPart.VISUAL_ID == visualID || UnitAssociation15EditPart.VISUAL_ID == visualID
-				|| SelectAction5EditPart.VISUAL_ID == visualID || DataTypeField5EditPart.VISUAL_ID == visualID
-				|| DateField5EditPart.VISUAL_ID == visualID || SelectAction6EditPart.VISUAL_ID == visualID
+				|| SelectAction3EditPart.VISUAL_ID == visualID || DataTypeField3EditPart.VISUAL_ID == visualID
+				|| DateField3EditPart.VISUAL_ID == visualID || UnitSupportActionEditPart.VISUAL_ID == visualID
+				|| IndexUnit6EditPart.VISUAL_ID == visualID || UnitElement14EditPart.VISUAL_ID == visualID
+				|| SelectAction4EditPart.VISUAL_ID == visualID || UnitAssociation12EditPart.VISUAL_ID == visualID
+				|| DetailsUnit7EditPart.VISUAL_ID == visualID || UnitElement15EditPart.VISUAL_ID == visualID
+				|| UnitAssociation13EditPart.VISUAL_ID == visualID || IndexUnit7EditPart.VISUAL_ID == visualID
+				|| UnitElement16EditPart.VISUAL_ID == visualID || UnitAssociation14EditPart.VISUAL_ID == visualID
+				|| SelectAction5EditPart.VISUAL_ID == visualID || DataTypeField4EditPart.VISUAL_ID == visualID
+				|| DateField4EditPart.VISUAL_ID == visualID || SelectAction6EditPart.VISUAL_ID == visualID
 				|| DeleteAction2EditPart.VISUAL_ID == visualID || FeatureSupportActionEditPart.VISUAL_ID == visualID
 				|| MapUnitEditPart.VISUAL_ID == visualID || SearchUnitEditPart.VISUAL_ID == visualID
-				|| UnitElement18EditPart.VISUAL_ID == visualID || UnitAssociation16EditPart.VISUAL_ID == visualID
-				|| DataTypeField6EditPart.VISUAL_ID == visualID || DateField6EditPart.VISUAL_ID == visualID
+				|| UnitElement17EditPart.VISUAL_ID == visualID || UnitAssociation15EditPart.VISUAL_ID == visualID
+				|| DataTypeField5EditPart.VISUAL_ID == visualID || DateField5EditPart.VISUAL_ID == visualID
 				|| StaticUnitEditPart.VISUAL_ID == visualID || UpdateUnitEditPart.VISUAL_ID == visualID
-				|| UnitElement19EditPart.VISUAL_ID == visualID || UnitAssociation17EditPart.VISUAL_ID == visualID
-				|| IndexUnit8EditPart.VISUAL_ID == visualID || UnitElement20EditPart.VISUAL_ID == visualID
-				|| UnitAssociation18EditPart.VISUAL_ID == visualID || SelectAction7EditPart.VISUAL_ID == visualID
-				|| DeleteAction3EditPart.VISUAL_ID == visualID || DataTypeField7EditPart.VISUAL_ID == visualID
-				|| DateField7EditPart.VISUAL_ID == visualID || ActionMenuEntryEditPart.VISUAL_ID == visualID
+				|| UnitElement18EditPart.VISUAL_ID == visualID || UnitAssociation16EditPart.VISUAL_ID == visualID
+				|| IndexUnit8EditPart.VISUAL_ID == visualID || UnitElement19EditPart.VISUAL_ID == visualID
+				|| UnitAssociation17EditPart.VISUAL_ID == visualID || SelectAction7EditPart.VISUAL_ID == visualID
+				|| DeleteAction3EditPart.VISUAL_ID == visualID || DataTypeField6EditPart.VISUAL_ID == visualID
+				|| DateField6EditPart.VISUAL_ID == visualID || ActionMenuEntryEditPart.VISUAL_ID == visualID
 				|| EditStaticTextMenuEntryEditPart.VISUAL_ID == visualID
 				|| ServiceAttributeEditPart.VISUAL_ID == visualID || ServiceAssociationEditPart.VISUAL_ID == visualID
 				|| SelectionEditPart.VISUAL_ID == visualID;
@@ -335,6 +326,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public Diagram createDiagram(IAdaptable semanticAdapter, String diagramKind, PreferencesHint preferencesHint) {
 		Diagram diagram = NotationFactory.eINSTANCE.createDiagram();
 		diagram.getStyles().add(NotationFactory.eINSTANCE.createDiagramStyle());
@@ -400,8 +392,8 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createEncapsulatedAttribute_3243(domainElement, containerView, index, persisted, preferencesHint);
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
 			return createEncapsulatedAssociation_3244(domainElement, containerView, index, persisted, preferencesHint);
-		case ActionUnitEditPart.VISUAL_ID:
-			return createActionUnit_3213(domainElement, containerView, index, persisted, preferencesHint);
+		case CreateUnitEditPart.VISUAL_ID:
+			return createCreateUnit_3103(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElementEditPart.VISUAL_ID:
 			return createUnitElement_3169(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociationEditPart.VISUAL_ID:
@@ -410,10 +402,8 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createDataTypeField_3201(domainElement, containerView, index, persisted, preferencesHint);
 		case DateFieldEditPart.VISUAL_ID:
 			return createDateField_3207(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitSupportActionEditPart.VISUAL_ID:
-			return createUnitSupportAction_3232(domainElement, containerView, index, persisted, preferencesHint);
-		case CreateUnitEditPart.VISUAL_ID:
-			return createCreateUnit_3103(domainElement, containerView, index, persisted, preferencesHint);
+		case CreateUpdateUnitEditPart.VISUAL_ID:
+			return createCreateUpdateUnit_3104(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement2EditPart.VISUAL_ID:
 			return createUnitElement_3171(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation2EditPart.VISUAL_ID:
@@ -422,120 +412,110 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createDataTypeField_3202(domainElement, containerView, index, persisted, preferencesHint);
 		case DateField2EditPart.VISUAL_ID:
 			return createDateField_3208(domainElement, containerView, index, persisted, preferencesHint);
-		case CreateUpdateUnitEditPart.VISUAL_ID:
-			return createCreateUpdateUnit_3104(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement3EditPart.VISUAL_ID:
-			return createUnitElement_3173(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation3EditPart.VISUAL_ID:
-			return createUnitAssociation_3174(domainElement, containerView, index, persisted, preferencesHint);
-		case DataTypeField3EditPart.VISUAL_ID:
-			return createDataTypeField_3203(domainElement, containerView, index, persisted, preferencesHint);
-		case DateField3EditPart.VISUAL_ID:
-			return createDateField_3209(domainElement, containerView, index, persisted, preferencesHint);
 		case CreateSitemapUnitEditPart.VISUAL_ID:
 			return createCreateSitemapUnit_3157(domainElement, containerView, index, persisted, preferencesHint);
 		case DetailsUnitEditPart.VISUAL_ID:
 			return createDetailsUnit_3105(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement4EditPart.VISUAL_ID:
-			return createUnitElement_3175(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement3EditPart.VISUAL_ID:
+			return createUnitElement_3173(domainElement, containerView, index, persisted, preferencesHint);
 		case SelectActionEditPart.VISUAL_ID:
 			return createSelectAction_3102(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation4EditPart.VISUAL_ID:
-			return createUnitAssociation_3176(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitAssociation3EditPart.VISUAL_ID:
+			return createUnitAssociation_3174(domainElement, containerView, index, persisted, preferencesHint);
 		case DetailsUnit2EditPart.VISUAL_ID:
 			return createDetailsUnit_3112(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement5EditPart.VISUAL_ID:
-			return createUnitElement_3177(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation5EditPart.VISUAL_ID:
-			return createUnitAssociation_3180(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement4EditPart.VISUAL_ID:
+			return createUnitElement_3175(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitAssociation4EditPart.VISUAL_ID:
+			return createUnitAssociation_3176(domainElement, containerView, index, persisted, preferencesHint);
 		case DetailsUnit3EditPart.VISUAL_ID:
 			return createDetailsUnit_3113(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement6EditPart.VISUAL_ID:
-			return createUnitElement_3178(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement5EditPart.VISUAL_ID:
+			return createUnitElement_3177(domainElement, containerView, index, persisted, preferencesHint);
 		case IndexUnitEditPart.VISUAL_ID:
 			return createIndexUnit_3106(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement7EditPart.VISUAL_ID:
-			return createUnitElement_3179(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement6EditPart.VISUAL_ID:
+			return createUnitElement_3178(domainElement, containerView, index, persisted, preferencesHint);
 		case IndexUnit2EditPart.VISUAL_ID:
 			return createIndexUnit_3114(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement7EditPart.VISUAL_ID:
+			return createUnitElement_3179(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitAssociation5EditPart.VISUAL_ID:
+			return createUnitAssociation_3180(domainElement, containerView, index, persisted, preferencesHint);
+		case DetailsUnit4EditPart.VISUAL_ID:
+			return createDetailsUnit_3116(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement8EditPart.VISUAL_ID:
 			return createUnitElement_3181(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation6EditPart.VISUAL_ID:
 			return createUnitAssociation_3182(domainElement, containerView, index, persisted, preferencesHint);
-		case DetailsUnit4EditPart.VISUAL_ID:
-			return createDetailsUnit_3116(domainElement, containerView, index, persisted, preferencesHint);
+		case DetailsUnit5EditPart.VISUAL_ID:
+			return createDetailsUnit_3129(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement9EditPart.VISUAL_ID:
 			return createUnitElement_3183(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation7EditPart.VISUAL_ID:
 			return createUnitAssociation_3184(domainElement, containerView, index, persisted, preferencesHint);
-		case DetailsUnit5EditPart.VISUAL_ID:
-			return createDetailsUnit_3129(domainElement, containerView, index, persisted, preferencesHint);
+		case IndexUnit3EditPart.VISUAL_ID:
+			return createIndexUnit_3118(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement10EditPart.VISUAL_ID:
 			return createUnitElement_3185(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation8EditPart.VISUAL_ID:
 			return createUnitAssociation_3186(domainElement, containerView, index, persisted, preferencesHint);
-		case IndexUnit3EditPart.VISUAL_ID:
-			return createIndexUnit_3118(domainElement, containerView, index, persisted, preferencesHint);
+		case IndexUnit4EditPart.VISUAL_ID:
+			return createIndexUnit_3120(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement11EditPart.VISUAL_ID:
 			return createUnitElement_3187(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation9EditPart.VISUAL_ID:
 			return createUnitAssociation_3188(domainElement, containerView, index, persisted, preferencesHint);
-		case IndexUnit4EditPart.VISUAL_ID:
-			return createIndexUnit_3120(domainElement, containerView, index, persisted, preferencesHint);
+		case DetailsUnit6EditPart.VISUAL_ID:
+			return createDetailsUnit_3131(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement12EditPart.VISUAL_ID:
 			return createUnitElement_3189(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation10EditPart.VISUAL_ID:
 			return createUnitAssociation_3190(domainElement, containerView, index, persisted, preferencesHint);
-		case DetailsUnit6EditPart.VISUAL_ID:
-			return createDetailsUnit_3131(domainElement, containerView, index, persisted, preferencesHint);
+		case IndexUnit5EditPart.VISUAL_ID:
+			return createIndexUnit_3133(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement13EditPart.VISUAL_ID:
 			return createUnitElement_3191(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation11EditPart.VISUAL_ID:
 			return createUnitAssociation_3192(domainElement, containerView, index, persisted, preferencesHint);
-		case IndexUnit5EditPart.VISUAL_ID:
-			return createIndexUnit_3133(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement14EditPart.VISUAL_ID:
-			return createUnitElement_3193(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation12EditPart.VISUAL_ID:
-			return createUnitAssociation_3194(domainElement, containerView, index, persisted, preferencesHint);
 		case SelectAction2EditPart.VISUAL_ID:
 			return createSelectAction_3107(domainElement, containerView, index, persisted, preferencesHint);
 		case DeleteActionEditPart.VISUAL_ID:
 			return createDeleteAction_3101(domainElement, containerView, index, persisted, preferencesHint);
 		case SelectAction3EditPart.VISUAL_ID:
 			return createSelectAction_3126(domainElement, containerView, index, persisted, preferencesHint);
-		case DataTypeField4EditPart.VISUAL_ID:
-			return createDataTypeField_3204(domainElement, containerView, index, persisted, preferencesHint);
-		case DateField4EditPart.VISUAL_ID:
-			return createDateField_3210(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitSupportAction2EditPart.VISUAL_ID:
-			return createUnitSupportAction_3233(domainElement, containerView, index, persisted, preferencesHint);
+		case DataTypeField3EditPart.VISUAL_ID:
+			return createDataTypeField_3203(domainElement, containerView, index, persisted, preferencesHint);
+		case DateField3EditPart.VISUAL_ID:
+			return createDateField_3209(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitSupportActionEditPart.VISUAL_ID:
+			return createUnitSupportAction_3232(domainElement, containerView, index, persisted, preferencesHint);
 		case IndexUnit6EditPart.VISUAL_ID:
 			return createIndexUnit_3136(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement15EditPart.VISUAL_ID:
-			return createUnitElement_3195(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement14EditPart.VISUAL_ID:
+			return createUnitElement_3193(domainElement, containerView, index, persisted, preferencesHint);
 		case SelectAction4EditPart.VISUAL_ID:
 			return createSelectAction_3127(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation13EditPart.VISUAL_ID:
-			return createUnitAssociation_3196(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitAssociation12EditPart.VISUAL_ID:
+			return createUnitAssociation_3194(domainElement, containerView, index, persisted, preferencesHint);
 		case DetailsUnit7EditPart.VISUAL_ID:
 			return createDetailsUnit_3219(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement15EditPart.VISUAL_ID:
+			return createUnitElement_3195(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitAssociation13EditPart.VISUAL_ID:
+			return createUnitAssociation_3196(domainElement, containerView, index, persisted, preferencesHint);
+		case IndexUnit7EditPart.VISUAL_ID:
+			return createIndexUnit_3143(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement16EditPart.VISUAL_ID:
 			return createUnitElement_3197(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation14EditPart.VISUAL_ID:
 			return createUnitAssociation_3198(domainElement, containerView, index, persisted, preferencesHint);
-		case IndexUnit7EditPart.VISUAL_ID:
-			return createIndexUnit_3143(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement17EditPart.VISUAL_ID:
-			return createUnitElement_3199(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation15EditPart.VISUAL_ID:
-			return createUnitAssociation_3200(domainElement, containerView, index, persisted, preferencesHint);
 		case SelectAction5EditPart.VISUAL_ID:
 			return createSelectAction_3128(domainElement, containerView, index, persisted, preferencesHint);
-		case DataTypeField5EditPart.VISUAL_ID:
-			return createDataTypeField_3205(domainElement, containerView, index, persisted, preferencesHint);
-		case DateField5EditPart.VISUAL_ID:
-			return createDateField_3211(domainElement, containerView, index, persisted, preferencesHint);
+		case DataTypeField4EditPart.VISUAL_ID:
+			return createDataTypeField_3204(domainElement, containerView, index, persisted, preferencesHint);
+		case DateField4EditPart.VISUAL_ID:
+			return createDateField_3210(domainElement, containerView, index, persisted, preferencesHint);
 		case SelectAction6EditPart.VISUAL_ID:
 			return createSelectAction_3146(domainElement, containerView, index, persisted, preferencesHint);
 		case DeleteAction2EditPart.VISUAL_ID:
@@ -546,36 +526,36 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createMapUnit_3228(domainElement, containerView, index, persisted, preferencesHint);
 		case SearchUnitEditPart.VISUAL_ID:
 			return createSearchUnit_3109(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement18EditPart.VISUAL_ID:
-			return createUnitElement_3215(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation16EditPart.VISUAL_ID:
-			return createUnitAssociation_3216(domainElement, containerView, index, persisted, preferencesHint);
-		case DataTypeField6EditPart.VISUAL_ID:
-			return createDataTypeField_3206(domainElement, containerView, index, persisted, preferencesHint);
-		case DateField6EditPart.VISUAL_ID:
-			return createDateField_3212(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement17EditPart.VISUAL_ID:
+			return createUnitElement_3199(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitAssociation15EditPart.VISUAL_ID:
+			return createUnitAssociation_3200(domainElement, containerView, index, persisted, preferencesHint);
+		case DataTypeField5EditPart.VISUAL_ID:
+			return createDataTypeField_3205(domainElement, containerView, index, persisted, preferencesHint);
+		case DateField5EditPart.VISUAL_ID:
+			return createDateField_3211(domainElement, containerView, index, persisted, preferencesHint);
 		case StaticUnitEditPart.VISUAL_ID:
 			return createStaticUnit_3110(domainElement, containerView, index, persisted, preferencesHint);
 		case UpdateUnitEditPart.VISUAL_ID:
 			return createUpdateUnit_3111(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitElement18EditPart.VISUAL_ID:
+			return createUnitElement_3215(domainElement, containerView, index, persisted, preferencesHint);
+		case UnitAssociation16EditPart.VISUAL_ID:
+			return createUnitAssociation_3216(domainElement, containerView, index, persisted, preferencesHint);
+		case IndexUnit8EditPart.VISUAL_ID:
+			return createIndexUnit_3222(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElement19EditPart.VISUAL_ID:
 			return createUnitElement_3220(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitAssociation17EditPart.VISUAL_ID:
 			return createUnitAssociation_3221(domainElement, containerView, index, persisted, preferencesHint);
-		case IndexUnit8EditPart.VISUAL_ID:
-			return createIndexUnit_3222(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitElement20EditPart.VISUAL_ID:
-			return createUnitElement_3223(domainElement, containerView, index, persisted, preferencesHint);
-		case UnitAssociation18EditPart.VISUAL_ID:
-			return createUnitAssociation_3224(domainElement, containerView, index, persisted, preferencesHint);
 		case SelectAction7EditPart.VISUAL_ID:
 			return createSelectAction_3153(domainElement, containerView, index, persisted, preferencesHint);
 		case DeleteAction3EditPart.VISUAL_ID:
 			return createDeleteAction_3154(domainElement, containerView, index, persisted, preferencesHint);
-		case DataTypeField7EditPart.VISUAL_ID:
-			return createDataTypeField_3217(domainElement, containerView, index, persisted, preferencesHint);
-		case DateField7EditPart.VISUAL_ID:
-			return createDateField_3218(domainElement, containerView, index, persisted, preferencesHint);
+		case DataTypeField6EditPart.VISUAL_ID:
+			return createDataTypeField_3206(domainElement, containerView, index, persisted, preferencesHint);
+		case DateField6EditPart.VISUAL_ID:
+			return createDateField_3212(domainElement, containerView, index, persisted, preferencesHint);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return createActionMenuEntry_3236(domainElement, containerView, index, persisted, preferencesHint);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -619,6 +599,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createWebsiteProperties_2001(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -653,6 +634,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDataType_2002(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -683,6 +665,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unused", "unchecked" })
 	public Node createDynamicMenu_2008(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -715,7 +698,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createEnumerationType_2006(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -749,7 +732,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createEntity_2003(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -784,6 +767,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createView_2010(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -818,7 +802,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createService_2004(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -853,6 +837,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createPage_2005(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1133,6 +1118,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createImageAttribute_3235(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1168,6 +1154,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createLocationAttribute_3230(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1203,6 +1190,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createModelLabel_3247(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1237,6 +1225,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unused", "unchecked" })
 	public Node createModelLabel_3248(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1271,6 +1260,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createEncapsulatedAttribute_3243(EObject domainElement, View containerView, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1307,6 +1297,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createEncapsulatedAssociation_3244(EObject domainElement, View containerView, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1337,39 +1328,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 		}
 		Node label5252 = createLabel(node,
 				WebsiteVisualIDRegistry.getType(EncapsulatedAssociationNameEditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	public Node createActionUnit_3213(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(ActionUnitEditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5221 = createLabel(node, WebsiteVisualIDRegistry.getType(ActionUnitNameEditPart.VISUAL_ID));
-		createCompartment(node, WebsiteVisualIDRegistry.getType(ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID),
-				false, false, true, true);
-		createCompartment(node, WebsiteVisualIDRegistry.getType(ActionUnitActionCompartmentEditPart.VISUAL_ID), false,
-				false, true, true);
 		return node;
 	}
 
@@ -1444,6 +1402,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3169(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1479,6 +1438,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3170(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1586,6 +1546,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitSupportAction_3232(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1890,6 +1851,8 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5180 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitElementName3EditPart.VISUAL_ID));
+		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitElementActionCompartmentEditPart.VISUAL_ID), false,
+				false, true, true);
 		return node;
 	}
 
@@ -1962,6 +1925,11 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5199 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName3EditPart.VISUAL_ID));
+		createCompartment(node,
+				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID), false,
+				false, false, false);
+		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartmentEditPart.VISUAL_ID),
+				false, false, true, true);
 		return node;
 	}
 
@@ -2030,15 +1998,13 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5181 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitElementName4EditPart.VISUAL_ID));
-		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitElementActionCompartmentEditPart.VISUAL_ID), false,
-				false, true, true);
 		return node;
 	}
 
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "unchecked" })
 	public Node createUnitAssociation_3176(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2071,15 +2037,13 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 		createCompartment(node,
 				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID), false,
 				false, true, true);
-		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartmentEditPart.VISUAL_ID),
-				false, false, true, true);
 		return node;
 	}
 
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDetailsUnit_3113(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2147,6 +2111,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createIndexUnit_3106(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2178,6 +2143,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3178(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2213,7 +2179,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "unchecked" })
 	public Node createIndexUnit_3114(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2247,7 +2213,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3179(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2283,7 +2249,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3180(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2322,7 +2288,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDetailsUnit_3116(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2354,6 +2320,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3181(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2593,6 +2560,8 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5200 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitElementName14EditPart.VISUAL_ID));
+		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitElementActionCompartment2EditPart.VISUAL_ID), false,
+				false, true, true);
 		return node;
 	}
 
@@ -2695,6 +2664,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5197 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName9EditPart.VISUAL_ID));
+		createCompartment(node,
+				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID), false,
+				false, false, false);
 		return node;
 	}
 
@@ -2833,9 +2805,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5188 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName7EditPart.VISUAL_ID));
-		createCompartment(node,
-				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID), false,
-				false, true, true);
 		return node;
 	}
 
@@ -3054,41 +3023,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	public Node createUnitSupportAction_3233(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(UnitSupportAction2EditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5240 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitSupportActionName2EditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createSelectAction_3127(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
@@ -3154,6 +3088,11 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5201 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName12EditPart.VISUAL_ID));
+		createCompartment(node,
+				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID), false,
+				false, false, false);
+		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartment2EditPart.VISUAL_ID),
+				false, false, true, true);
 		return node;
 	}
 
@@ -3257,8 +3196,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5202 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitElementName15EditPart.VISUAL_ID));
-		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitElementActionCompartment2EditPart.VISUAL_ID), false,
-				false, true, true);
 		return node;
 	}
 
@@ -3294,10 +3231,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5203 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName13EditPart.VISUAL_ID));
-		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartment2EditPart.VISUAL_ID),
-				false, false, true, true);
-		createCompartment(node, WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartment3EditPart.VISUAL_ID),
-				false, false, true, true);
 		return node;
 	}
 
@@ -3501,9 +3434,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5194 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName10EditPart.VISUAL_ID));
-		createCompartment(node,
-				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID), false,
-				false, true, true);
 		return node;
 	}
 
@@ -3636,9 +3566,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5231 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName17EditPart.VISUAL_ID));
-		createCompartment(node,
-				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID), false,
-				false, false, false);
 		return node;
 	}
 
@@ -3672,76 +3599,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				false, false, true, true);
 		createCompartment(node, WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment2EditPart.VISUAL_ID), false,
 				false, true, true);
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	public Node createUnitElement_3223(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(UnitElement20EditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5228 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitElementName20EditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	public Node createUnitAssociation_3224(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(UnitAssociation18EditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5229 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName18EditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -3913,6 +3770,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5223 = createLabel(node, WebsiteVisualIDRegistry.getType(UnitAssociationName16EditPart.VISUAL_ID));
+		createCompartment(node,
+				WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID), false,
+				false, false, false);
 		return node;
 	}
 
@@ -4053,76 +3913,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
 		Node label5162 = createLabel(node, WebsiteVisualIDRegistry.getType(DeleteActionName3EditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	public Node createDataTypeField_3217(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(DataTypeField7EditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5224 = createLabel(node, WebsiteVisualIDRegistry.getType(DataTypeFieldName7EditPart.VISUAL_ID));
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	public Node createDateField_3218(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(DateField7EditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		Node label5225 = createLabel(node, WebsiteVisualIDRegistry.getType(DateFieldName7EditPart.VISUAL_ID));
 		return node;
 	}
 

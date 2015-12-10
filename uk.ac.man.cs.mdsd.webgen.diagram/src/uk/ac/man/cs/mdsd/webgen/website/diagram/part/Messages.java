@@ -813,16 +813,6 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String ActionUnitUnitFieldCompartmentEditPart_title;
-
-	/**
-	 * @generated
-	 */
-	public static String ActionUnitActionCompartmentEditPart_title;
-
-	/**
-	 * @generated
-	 */
 	public static String CreateUnitUnitFieldCompartmentEditPart_title;
 
 	/**
@@ -896,11 +886,6 @@ public class Messages extends NLS {
 	public static String DetailsUnitUnitFieldCompartment4EditPart_title;
 
 	/**
-	* @generated
-	*/
-	public static String UnitAssociationInterfaceUnitCompartment4EditPart_title;
-
-	/**
 	 * @generated
 	 */
 	public static String IndexUnitUnitFieldCompartment3EditPart_title;
@@ -913,7 +898,7 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String UnitAssociationInterfaceUnitCompartment5EditPart_title;
+	public static String UnitAssociationInterfaceUnitsCompartment2EditPart_title;
 
 	/**
 	 * @generated
@@ -941,14 +926,14 @@ public class Messages extends NLS {
 	public static String UnitElementActionCompartment2EditPart_title;
 
 	/**
+	* @generated
+	*/
+	public static String UnitAssociationInterfaceUnitsCompartment3EditPart_title;
+
+	/**
 	 * @generated
 	 */
 	public static String UnitAssociationActionCompartment2EditPart_title;
-
-	/**
-	* @generated
-	*/
-	public static String UnitAssociationActionCompartment3EditPart_title;
 
 	/**
 	 * @generated
@@ -969,6 +954,11 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String UpdateUnitUnitFieldCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String UnitAssociationInterfaceUnitsCompartment4EditPart_title;
 
 	/**
 	 * @generated

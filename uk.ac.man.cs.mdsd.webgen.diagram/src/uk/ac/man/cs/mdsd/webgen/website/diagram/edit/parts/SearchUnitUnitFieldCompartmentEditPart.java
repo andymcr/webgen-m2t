@@ -94,16 +94,16 @@ public class SearchUnitUnitFieldCompartmentEditPart extends ListCompartmentEditP
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3215) {
+			if (type == WebsiteElementTypes.UnitElement_3199) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3216) {
+			if (type == WebsiteElementTypes.UnitAssociation_3200) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DataTypeField_3206) {
+			if (type == WebsiteElementTypes.DataTypeField_3205) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DateField_3212) {
+			if (type == WebsiteElementTypes.DateField_3211) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

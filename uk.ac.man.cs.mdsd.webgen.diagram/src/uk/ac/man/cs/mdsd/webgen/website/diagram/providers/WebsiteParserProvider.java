@@ -396,23 +396,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	 * @generated
 	 */
-	private IParser actionUnitName_5221Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getActionUnitName_5221Parser() {
-		if (actionUnitName_5221Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			actionUnitName_5221Parser = parser;
-		}
-		return actionUnitName_5221Parser;
-	}
-
-	/**
-	 * @generated
-	 */
 	private IParser selectionName_5158Parser;
 
 	/**
@@ -1212,23 +1195,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	 * @generated
 	 */
-	private IParser unitSupportActionName_5240Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitSupportActionName_5240Parser() {
-		if (unitSupportActionName_5240Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitSupportActionName_5240Parser = parser;
-		}
-		return unitSupportActionName_5240Parser;
-	}
-
-	/**
-	 * @generated
-	 */
 	private IParser selectActionName_5131Parser;
 
 	/**
@@ -1518,40 +1484,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	 * @generated
 	 */
-	private IParser unitElementName_5228Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5228Parser() {
-		if (unitElementName_5228Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5228Parser = parser;
-		}
-		return unitElementName_5228Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5229Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5229Parser() {
-		if (unitAssociationName_5229Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitAssociation_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5229Parser = parser;
-		}
-		return unitAssociationName_5229Parser;
-	}
-
-	/**
-	 * @generated
-	 */
 	private IParser unitElementName_5204Parser;
 
 	/**
@@ -1700,40 +1632,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			deleteActionName_5162Parser = parser;
 		}
 		return deleteActionName_5162Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dataTypeFieldName_5224Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDataTypeFieldName_5224Parser() {
-		if (dataTypeFieldName_5224Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeFieldName_5224Parser = parser;
-		}
-		return dataTypeFieldName_5224Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateFieldName_5225Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateFieldName_5225Parser() {
-		if (dateFieldName_5225Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateFieldName_5225Parser = parser;
-		}
-		return dateFieldName_5225Parser;
 	}
 
 	/**
@@ -2072,8 +1970,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getEncapsulatedAttributeName_5251Parser();
 		case EncapsulatedAssociationNameEditPart.VISUAL_ID:
 			return getEncapsulatedAssociationName_5252Parser();
-		case ActionUnitNameEditPart.VISUAL_ID:
-			return getActionUnitName_5221Parser();
+		case CreateUnitNameEditPart.VISUAL_ID:
+			return getCreateUnitName_5107Parser();
 		case UnitElementNameEditPart.VISUAL_ID:
 			return getUnitElementName_5176Parser();
 		case UnitAssociationNameEditPart.VISUAL_ID:
@@ -2082,10 +1980,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getDataTypeFieldName_5208Parser();
 		case DateFieldNameEditPart.VISUAL_ID:
 			return getDateFieldName_5214Parser();
-		case UnitSupportActionNameEditPart.VISUAL_ID:
-			return getUnitSupportActionName_5239Parser();
-		case CreateUnitNameEditPart.VISUAL_ID:
-			return getCreateUnitName_5107Parser();
+		case CreateUpdateUnitNameEditPart.VISUAL_ID:
+			return getCreateUpdateUnitName_5108Parser();
 		case UnitElementName2EditPart.VISUAL_ID:
 			return getUnitElementName_5178Parser();
 		case UnitAssociationName2EditPart.VISUAL_ID:
@@ -2094,118 +1990,108 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getDataTypeFieldName_5209Parser();
 		case DateFieldName2EditPart.VISUAL_ID:
 			return getDateFieldName_5215Parser();
-		case CreateUpdateUnitNameEditPart.VISUAL_ID:
-			return getCreateUpdateUnitName_5108Parser();
-		case UnitElementName3EditPart.VISUAL_ID:
-			return getUnitElementName_5180Parser();
-		case UnitAssociationName3EditPart.VISUAL_ID:
-			return getUnitAssociationName_5199Parser();
-		case DataTypeFieldName3EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5210Parser();
-		case DateFieldName3EditPart.VISUAL_ID:
-			return getDateFieldName_5216Parser();
 		case DetailsUnitNameEditPart.VISUAL_ID:
 			return getDetailsUnitName_5109Parser();
-		case UnitElementName4EditPart.VISUAL_ID:
-			return getUnitElementName_5181Parser();
+		case UnitElementName3EditPart.VISUAL_ID:
+			return getUnitElementName_5180Parser();
 		case SelectActionNameEditPart.VISUAL_ID:
 			return getSelectActionName_5106Parser();
-		case UnitAssociationName4EditPart.VISUAL_ID:
-			return getUnitAssociationName_5184Parser();
+		case UnitAssociationName3EditPart.VISUAL_ID:
+			return getUnitAssociationName_5199Parser();
 		case DetailsUnitName2EditPart.VISUAL_ID:
 			return getDetailsUnitName_5116Parser();
-		case UnitElementName5EditPart.VISUAL_ID:
-			return getUnitElementName_5182Parser();
-		case UnitAssociationName5EditPart.VISUAL_ID:
-			return getUnitAssociationName_5198Parser();
+		case UnitElementName4EditPart.VISUAL_ID:
+			return getUnitElementName_5181Parser();
+		case UnitAssociationName4EditPart.VISUAL_ID:
+			return getUnitAssociationName_5184Parser();
 		case DetailsUnitName3EditPart.VISUAL_ID:
 			return getDetailsUnitName_5117Parser();
-		case UnitElementName6EditPart.VISUAL_ID:
-			return getUnitElementName_5183Parser();
+		case UnitElementName5EditPart.VISUAL_ID:
+			return getUnitElementName_5182Parser();
 		case IndexUnitNameEditPart.VISUAL_ID:
 			return getIndexUnitName_5112Parser();
-		case UnitElementName7EditPart.VISUAL_ID:
-			return getUnitElementName_5185Parser();
+		case UnitElementName6EditPart.VISUAL_ID:
+			return getUnitElementName_5183Parser();
 		case IndexUnitName2EditPart.VISUAL_ID:
 			return getIndexUnitName_5123Parser();
+		case UnitElementName7EditPart.VISUAL_ID:
+			return getUnitElementName_5185Parser();
+		case UnitAssociationName5EditPart.VISUAL_ID:
+			return getUnitAssociationName_5198Parser();
+		case DetailsUnitName4EditPart.VISUAL_ID:
+			return getDetailsUnitName_5120Parser();
 		case UnitElementName8EditPart.VISUAL_ID:
 			return getUnitElementName_5186Parser();
 		case UnitAssociationName6EditPart.VISUAL_ID:
 			return getUnitAssociationName_5191Parser();
-		case DetailsUnitName4EditPart.VISUAL_ID:
-			return getDetailsUnitName_5120Parser();
+		case DetailsUnitName5EditPart.VISUAL_ID:
+			return getDetailsUnitName_5133Parser();
 		case UnitElementName9EditPart.VISUAL_ID:
 			return getUnitElementName_5187Parser();
 		case UnitAssociationName7EditPart.VISUAL_ID:
 			return getUnitAssociationName_5188Parser();
-		case DetailsUnitName5EditPart.VISUAL_ID:
-			return getDetailsUnitName_5133Parser();
+		case IndexUnitName3EditPart.VISUAL_ID:
+			return getIndexUnitName_5122Parser();
 		case UnitElementName10EditPart.VISUAL_ID:
 			return getUnitElementName_5189Parser();
 		case UnitAssociationName8EditPart.VISUAL_ID:
 			return getUnitAssociationName_5190Parser();
-		case IndexUnitName3EditPart.VISUAL_ID:
-			return getIndexUnitName_5122Parser();
+		case IndexUnitName4EditPart.VISUAL_ID:
+			return getIndexUnitName_5125Parser();
 		case UnitElementName11EditPart.VISUAL_ID:
 			return getUnitElementName_5192Parser();
 		case UnitAssociationName9EditPart.VISUAL_ID:
 			return getUnitAssociationName_5197Parser();
-		case IndexUnitName4EditPart.VISUAL_ID:
-			return getIndexUnitName_5125Parser();
+		case DetailsUnitName6EditPart.VISUAL_ID:
+			return getDetailsUnitName_5135Parser();
 		case UnitElementName12EditPart.VISUAL_ID:
 			return getUnitElementName_5193Parser();
 		case UnitAssociationName10EditPart.VISUAL_ID:
 			return getUnitAssociationName_5194Parser();
-		case DetailsUnitName6EditPart.VISUAL_ID:
-			return getDetailsUnitName_5135Parser();
+		case IndexUnitName5EditPart.VISUAL_ID:
+			return getIndexUnitName_5138Parser();
 		case UnitElementName13EditPart.VISUAL_ID:
 			return getUnitElementName_5195Parser();
 		case UnitAssociationName11EditPart.VISUAL_ID:
 			return getUnitAssociationName_5196Parser();
-		case IndexUnitName5EditPart.VISUAL_ID:
-			return getIndexUnitName_5138Parser();
-		case UnitElementName14EditPart.VISUAL_ID:
-			return getUnitElementName_5200Parser();
-		case UnitAssociationName12EditPart.VISUAL_ID:
-			return getUnitAssociationName_5201Parser();
 		case SelectActionName2EditPart.VISUAL_ID:
 			return getSelectActionName_5110Parser();
 		case DeleteActionNameEditPart.VISUAL_ID:
 			return getDeleteActionName_5105Parser();
 		case SelectActionName3EditPart.VISUAL_ID:
 			return getSelectActionName_5130Parser();
-		case DataTypeFieldName4EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5211Parser();
-		case DateFieldName4EditPart.VISUAL_ID:
-			return getDateFieldName_5217Parser();
-		case UnitSupportActionName2EditPart.VISUAL_ID:
-			return getUnitSupportActionName_5240Parser();
+		case DataTypeFieldName3EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5210Parser();
+		case DateFieldName3EditPart.VISUAL_ID:
+			return getDateFieldName_5216Parser();
+		case UnitSupportActionNameEditPart.VISUAL_ID:
+			return getUnitSupportActionName_5239Parser();
 		case IndexUnitName6EditPart.VISUAL_ID:
 			return getIndexUnitName_5142Parser();
-		case UnitElementName15EditPart.VISUAL_ID:
-			return getUnitElementName_5202Parser();
+		case UnitElementName14EditPart.VISUAL_ID:
+			return getUnitElementName_5200Parser();
 		case SelectActionName4EditPart.VISUAL_ID:
 			return getSelectActionName_5131Parser();
-		case UnitAssociationName13EditPart.VISUAL_ID:
-			return getUnitAssociationName_5203Parser();
+		case UnitAssociationName12EditPart.VISUAL_ID:
+			return getUnitAssociationName_5201Parser();
 		case DetailsUnitName7EditPart.VISUAL_ID:
 			return getDetailsUnitName_5226Parser();
+		case UnitElementName15EditPart.VISUAL_ID:
+			return getUnitElementName_5202Parser();
+		case UnitAssociationName13EditPart.VISUAL_ID:
+			return getUnitAssociationName_5203Parser();
+		case IndexUnitName7EditPart.VISUAL_ID:
+			return getIndexUnitName_5149Parser();
 		case UnitElementName16EditPart.VISUAL_ID:
 			return getUnitElementName_5204Parser();
 		case UnitAssociationName14EditPart.VISUAL_ID:
 			return getUnitAssociationName_5207Parser();
-		case IndexUnitName7EditPart.VISUAL_ID:
-			return getIndexUnitName_5149Parser();
-		case UnitElementName17EditPart.VISUAL_ID:
-			return getUnitElementName_5205Parser();
-		case UnitAssociationName15EditPart.VISUAL_ID:
-			return getUnitAssociationName_5206Parser();
 		case SelectActionName5EditPart.VISUAL_ID:
 			return getSelectActionName_5132Parser();
-		case DataTypeFieldName5EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5212Parser();
-		case DateFieldName5EditPart.VISUAL_ID:
-			return getDateFieldName_5218Parser();
+		case DataTypeFieldName4EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5211Parser();
+		case DateFieldName4EditPart.VISUAL_ID:
+			return getDateFieldName_5217Parser();
 		case SelectActionName6EditPart.VISUAL_ID:
 			return getSelectActionName_5150Parser();
 		case DeleteActionName2EditPart.VISUAL_ID:
@@ -2216,36 +2102,36 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getMapUnitName_5235Parser();
 		case SearchUnitNameEditPart.VISUAL_ID:
 			return getSearchUnitName_5113Parser();
-		case UnitElementName18EditPart.VISUAL_ID:
-			return getUnitElementName_5222Parser();
-		case UnitAssociationName16EditPart.VISUAL_ID:
-			return getUnitAssociationName_5223Parser();
-		case DataTypeFieldName6EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5213Parser();
-		case DateFieldName6EditPart.VISUAL_ID:
-			return getDateFieldName_5219Parser();
+		case UnitElementName17EditPart.VISUAL_ID:
+			return getUnitElementName_5205Parser();
+		case UnitAssociationName15EditPart.VISUAL_ID:
+			return getUnitAssociationName_5206Parser();
+		case DataTypeFieldName5EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5212Parser();
+		case DateFieldName5EditPart.VISUAL_ID:
+			return getDateFieldName_5218Parser();
 		case StaticUnitNameEditPart.VISUAL_ID:
 			return getStaticUnitName_5114Parser();
 		case UpdateUnitNameEditPart.VISUAL_ID:
 			return getUpdateUnitName_5115Parser();
+		case UnitElementName18EditPart.VISUAL_ID:
+			return getUnitElementName_5222Parser();
+		case UnitAssociationName16EditPart.VISUAL_ID:
+			return getUnitAssociationName_5223Parser();
+		case IndexUnitName8EditPart.VISUAL_ID:
+			return getIndexUnitName_5230Parser();
 		case UnitElementName19EditPart.VISUAL_ID:
 			return getUnitElementName_5227Parser();
 		case UnitAssociationName17EditPart.VISUAL_ID:
 			return getUnitAssociationName_5231Parser();
-		case IndexUnitName8EditPart.VISUAL_ID:
-			return getIndexUnitName_5230Parser();
-		case UnitElementName20EditPart.VISUAL_ID:
-			return getUnitElementName_5228Parser();
-		case UnitAssociationName18EditPart.VISUAL_ID:
-			return getUnitAssociationName_5229Parser();
 		case SelectActionName7EditPart.VISUAL_ID:
 			return getSelectActionName_5161Parser();
 		case DeleteActionName3EditPart.VISUAL_ID:
 			return getDeleteActionName_5162Parser();
-		case DataTypeFieldName7EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5224Parser();
-		case DateFieldName7EditPart.VISUAL_ID:
-			return getDateFieldName_5225Parser();
+		case DataTypeFieldName6EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5213Parser();
+		case DateFieldName6EditPart.VISUAL_ID:
+			return getDateFieldName_5219Parser();
 		case ActionMenuEntryNameEditPart.VISUAL_ID:
 			return getActionMenuEntryName_5243Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:

@@ -257,19 +257,19 @@ public class CreateUnitEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3171) {
+			if (type == WebsiteElementTypes.UnitElement_3169) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3172) {
+			if (type == WebsiteElementTypes.UnitAssociation_3170) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DataTypeField_3202) {
+			if (type == WebsiteElementTypes.DataTypeField_3201) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DateField_3208) {
+			if (type == WebsiteElementTypes.DateField_3207) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}

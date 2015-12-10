@@ -29,7 +29,7 @@ public class UnitElementActionCompartmentEditPart extends ListCompartmentEditPar
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7105;
+	public static final int VISUAL_ID = 7121;
 
 	/**
 	 * @generated

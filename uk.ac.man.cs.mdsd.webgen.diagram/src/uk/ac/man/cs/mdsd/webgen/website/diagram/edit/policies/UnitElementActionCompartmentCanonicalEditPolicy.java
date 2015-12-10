@@ -59,7 +59,7 @@ public class UnitElementActionCompartmentCanonicalEditPolicy extends CanonicalEd
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitElementActionCompartment_7105SemanticChildren(viewObject);
+				.getUnitElementActionCompartment_7121SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -89,7 +89,7 @@ public class UnitElementActionCompartmentCanonicalEditPolicy extends CanonicalEd
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitElementActionCompartment_7105SemanticChildren((View) getHost().getModel());
+				.getUnitElementActionCompartment_7121SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

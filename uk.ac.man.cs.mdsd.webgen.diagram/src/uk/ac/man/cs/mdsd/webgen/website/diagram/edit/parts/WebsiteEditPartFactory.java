@@ -145,11 +145,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case EncapsulatedAssociationNameEditPart.VISUAL_ID:
 				return new EncapsulatedAssociationNameEditPart(view);
 
-			case ActionUnitEditPart.VISUAL_ID:
-				return new ActionUnitEditPart(view);
+			case CreateUnitEditPart.VISUAL_ID:
+				return new CreateUnitEditPart(view);
 
-			case ActionUnitNameEditPart.VISUAL_ID:
-				return new ActionUnitNameEditPart(view);
+			case CreateUnitNameEditPart.VISUAL_ID:
+				return new CreateUnitNameEditPart(view);
 
 			case UnitElementEditPart.VISUAL_ID:
 				return new UnitElementEditPart(view);
@@ -175,17 +175,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DateFieldNameEditPart.VISUAL_ID:
 				return new DateFieldNameEditPart(view);
 
-			case UnitSupportActionEditPart.VISUAL_ID:
-				return new UnitSupportActionEditPart(view);
+			case CreateUpdateUnitEditPart.VISUAL_ID:
+				return new CreateUpdateUnitEditPart(view);
 
-			case UnitSupportActionNameEditPart.VISUAL_ID:
-				return new UnitSupportActionNameEditPart(view);
-
-			case CreateUnitEditPart.VISUAL_ID:
-				return new CreateUnitEditPart(view);
-
-			case CreateUnitNameEditPart.VISUAL_ID:
-				return new CreateUnitNameEditPart(view);
+			case CreateUpdateUnitNameEditPart.VISUAL_ID:
+				return new CreateUpdateUnitNameEditPart(view);
 
 			case UnitElement2EditPart.VISUAL_ID:
 				return new UnitElement2EditPart(view);
@@ -211,36 +205,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DateFieldName2EditPart.VISUAL_ID:
 				return new DateFieldName2EditPart(view);
 
-			case CreateUpdateUnitEditPart.VISUAL_ID:
-				return new CreateUpdateUnitEditPart(view);
-
-			case CreateUpdateUnitNameEditPart.VISUAL_ID:
-				return new CreateUpdateUnitNameEditPart(view);
-
-			case UnitElement3EditPart.VISUAL_ID:
-				return new UnitElement3EditPart(view);
-
-			case UnitElementName3EditPart.VISUAL_ID:
-				return new UnitElementName3EditPart(view);
-
-			case UnitAssociation3EditPart.VISUAL_ID:
-				return new UnitAssociation3EditPart(view);
-
-			case UnitAssociationName3EditPart.VISUAL_ID:
-				return new UnitAssociationName3EditPart(view);
-
-			case DataTypeField3EditPart.VISUAL_ID:
-				return new DataTypeField3EditPart(view);
-
-			case DataTypeFieldName3EditPart.VISUAL_ID:
-				return new DataTypeFieldName3EditPart(view);
-
-			case DateField3EditPart.VISUAL_ID:
-				return new DateField3EditPart(view);
-
-			case DateFieldName3EditPart.VISUAL_ID:
-				return new DateFieldName3EditPart(view);
-
 			case CreateSitemapUnitEditPart.VISUAL_ID:
 				return new CreateSitemapUnitEditPart(view);
 
@@ -250,11 +214,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DetailsUnitNameEditPart.VISUAL_ID:
 				return new DetailsUnitNameEditPart(view);
 
-			case UnitElement4EditPart.VISUAL_ID:
-				return new UnitElement4EditPart(view);
+			case UnitElement3EditPart.VISUAL_ID:
+				return new UnitElement3EditPart(view);
 
-			case UnitElementName4EditPart.VISUAL_ID:
-				return new UnitElementName4EditPart(view);
+			case UnitElementName3EditPart.VISUAL_ID:
+				return new UnitElementName3EditPart(view);
 
 			case SelectActionEditPart.VISUAL_ID:
 				return new SelectActionEditPart(view);
@@ -262,11 +226,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case SelectActionNameEditPart.VISUAL_ID:
 				return new SelectActionNameEditPart(view);
 
-			case UnitAssociation4EditPart.VISUAL_ID:
-				return new UnitAssociation4EditPart(view);
+			case UnitAssociation3EditPart.VISUAL_ID:
+				return new UnitAssociation3EditPart(view);
 
-			case UnitAssociationName4EditPart.VISUAL_ID:
-				return new UnitAssociationName4EditPart(view);
+			case UnitAssociationName3EditPart.VISUAL_ID:
+				return new UnitAssociationName3EditPart(view);
 
 			case DetailsUnit2EditPart.VISUAL_ID:
 				return new DetailsUnit2EditPart(view);
@@ -274,17 +238,17 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DetailsUnitName2EditPart.VISUAL_ID:
 				return new DetailsUnitName2EditPart(view);
 
-			case UnitElement5EditPart.VISUAL_ID:
-				return new UnitElement5EditPart(view);
+			case UnitElement4EditPart.VISUAL_ID:
+				return new UnitElement4EditPart(view);
 
-			case UnitElementName5EditPart.VISUAL_ID:
-				return new UnitElementName5EditPart(view);
+			case UnitElementName4EditPart.VISUAL_ID:
+				return new UnitElementName4EditPart(view);
 
-			case UnitAssociation5EditPart.VISUAL_ID:
-				return new UnitAssociation5EditPart(view);
+			case UnitAssociation4EditPart.VISUAL_ID:
+				return new UnitAssociation4EditPart(view);
 
-			case UnitAssociationName5EditPart.VISUAL_ID:
-				return new UnitAssociationName5EditPart(view);
+			case UnitAssociationName4EditPart.VISUAL_ID:
+				return new UnitAssociationName4EditPart(view);
 
 			case DetailsUnit3EditPart.VISUAL_ID:
 				return new DetailsUnit3EditPart(view);
@@ -292,11 +256,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DetailsUnitName3EditPart.VISUAL_ID:
 				return new DetailsUnitName3EditPart(view);
 
-			case UnitElement6EditPart.VISUAL_ID:
-				return new UnitElement6EditPart(view);
+			case UnitElement5EditPart.VISUAL_ID:
+				return new UnitElement5EditPart(view);
 
-			case UnitElementName6EditPart.VISUAL_ID:
-				return new UnitElementName6EditPart(view);
+			case UnitElementName5EditPart.VISUAL_ID:
+				return new UnitElementName5EditPart(view);
 
 			case IndexUnitEditPart.VISUAL_ID:
 				return new IndexUnitEditPart(view);
@@ -304,17 +268,35 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case IndexUnitNameEditPart.VISUAL_ID:
 				return new IndexUnitNameEditPart(view);
 
-			case UnitElement7EditPart.VISUAL_ID:
-				return new UnitElement7EditPart(view);
+			case UnitElement6EditPart.VISUAL_ID:
+				return new UnitElement6EditPart(view);
 
-			case UnitElementName7EditPart.VISUAL_ID:
-				return new UnitElementName7EditPart(view);
+			case UnitElementName6EditPart.VISUAL_ID:
+				return new UnitElementName6EditPart(view);
 
 			case IndexUnit2EditPart.VISUAL_ID:
 				return new IndexUnit2EditPart(view);
 
 			case IndexUnitName2EditPart.VISUAL_ID:
 				return new IndexUnitName2EditPart(view);
+
+			case UnitElement7EditPart.VISUAL_ID:
+				return new UnitElement7EditPart(view);
+
+			case UnitElementName7EditPart.VISUAL_ID:
+				return new UnitElementName7EditPart(view);
+
+			case UnitAssociation5EditPart.VISUAL_ID:
+				return new UnitAssociation5EditPart(view);
+
+			case UnitAssociationName5EditPart.VISUAL_ID:
+				return new UnitAssociationName5EditPart(view);
+
+			case DetailsUnit4EditPart.VISUAL_ID:
+				return new DetailsUnit4EditPart(view);
+
+			case DetailsUnitName4EditPart.VISUAL_ID:
+				return new DetailsUnitName4EditPart(view);
 
 			case UnitElement8EditPart.VISUAL_ID:
 				return new UnitElement8EditPart(view);
@@ -328,11 +310,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitAssociationName6EditPart.VISUAL_ID:
 				return new UnitAssociationName6EditPart(view);
 
-			case DetailsUnit4EditPart.VISUAL_ID:
-				return new DetailsUnit4EditPart(view);
+			case DetailsUnit5EditPart.VISUAL_ID:
+				return new DetailsUnit5EditPart(view);
 
-			case DetailsUnitName4EditPart.VISUAL_ID:
-				return new DetailsUnitName4EditPart(view);
+			case DetailsUnitName5EditPart.VISUAL_ID:
+				return new DetailsUnitName5EditPart(view);
 
 			case UnitElement9EditPart.VISUAL_ID:
 				return new UnitElement9EditPart(view);
@@ -346,11 +328,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitAssociationName7EditPart.VISUAL_ID:
 				return new UnitAssociationName7EditPart(view);
 
-			case DetailsUnit5EditPart.VISUAL_ID:
-				return new DetailsUnit5EditPart(view);
+			case IndexUnit3EditPart.VISUAL_ID:
+				return new IndexUnit3EditPart(view);
 
-			case DetailsUnitName5EditPart.VISUAL_ID:
-				return new DetailsUnitName5EditPart(view);
+			case IndexUnitName3EditPart.VISUAL_ID:
+				return new IndexUnitName3EditPart(view);
 
 			case UnitElement10EditPart.VISUAL_ID:
 				return new UnitElement10EditPart(view);
@@ -364,11 +346,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitAssociationName8EditPart.VISUAL_ID:
 				return new UnitAssociationName8EditPart(view);
 
-			case IndexUnit3EditPart.VISUAL_ID:
-				return new IndexUnit3EditPart(view);
+			case IndexUnit4EditPart.VISUAL_ID:
+				return new IndexUnit4EditPart(view);
 
-			case IndexUnitName3EditPart.VISUAL_ID:
-				return new IndexUnitName3EditPart(view);
+			case IndexUnitName4EditPart.VISUAL_ID:
+				return new IndexUnitName4EditPart(view);
 
 			case UnitElement11EditPart.VISUAL_ID:
 				return new UnitElement11EditPart(view);
@@ -382,11 +364,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitAssociationName9EditPart.VISUAL_ID:
 				return new UnitAssociationName9EditPart(view);
 
-			case IndexUnit4EditPart.VISUAL_ID:
-				return new IndexUnit4EditPart(view);
+			case DetailsUnit6EditPart.VISUAL_ID:
+				return new DetailsUnit6EditPart(view);
 
-			case IndexUnitName4EditPart.VISUAL_ID:
-				return new IndexUnitName4EditPart(view);
+			case DetailsUnitName6EditPart.VISUAL_ID:
+				return new DetailsUnitName6EditPart(view);
 
 			case UnitElement12EditPart.VISUAL_ID:
 				return new UnitElement12EditPart(view);
@@ -400,11 +382,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitAssociationName10EditPart.VISUAL_ID:
 				return new UnitAssociationName10EditPart(view);
 
-			case DetailsUnit6EditPart.VISUAL_ID:
-				return new DetailsUnit6EditPart(view);
+			case IndexUnit5EditPart.VISUAL_ID:
+				return new IndexUnit5EditPart(view);
 
-			case DetailsUnitName6EditPart.VISUAL_ID:
-				return new DetailsUnitName6EditPart(view);
+			case IndexUnitName5EditPart.VISUAL_ID:
+				return new IndexUnitName5EditPart(view);
 
 			case UnitElement13EditPart.VISUAL_ID:
 				return new UnitElement13EditPart(view);
@@ -417,24 +399,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case UnitAssociationName11EditPart.VISUAL_ID:
 				return new UnitAssociationName11EditPart(view);
-
-			case IndexUnit5EditPart.VISUAL_ID:
-				return new IndexUnit5EditPart(view);
-
-			case IndexUnitName5EditPart.VISUAL_ID:
-				return new IndexUnitName5EditPart(view);
-
-			case UnitElement14EditPart.VISUAL_ID:
-				return new UnitElement14EditPart(view);
-
-			case UnitElementName14EditPart.VISUAL_ID:
-				return new UnitElementName14EditPart(view);
-
-			case UnitAssociation12EditPart.VISUAL_ID:
-				return new UnitAssociation12EditPart(view);
-
-			case UnitAssociationName12EditPart.VISUAL_ID:
-				return new UnitAssociationName12EditPart(view);
 
 			case SelectAction2EditPart.VISUAL_ID:
 				return new SelectAction2EditPart(view);
@@ -454,23 +418,23 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case SelectActionName3EditPart.VISUAL_ID:
 				return new SelectActionName3EditPart(view);
 
-			case DataTypeField4EditPart.VISUAL_ID:
-				return new DataTypeField4EditPart(view);
+			case DataTypeField3EditPart.VISUAL_ID:
+				return new DataTypeField3EditPart(view);
 
-			case DataTypeFieldName4EditPart.VISUAL_ID:
-				return new DataTypeFieldName4EditPart(view);
+			case DataTypeFieldName3EditPart.VISUAL_ID:
+				return new DataTypeFieldName3EditPart(view);
 
-			case DateField4EditPart.VISUAL_ID:
-				return new DateField4EditPart(view);
+			case DateField3EditPart.VISUAL_ID:
+				return new DateField3EditPart(view);
 
-			case DateFieldName4EditPart.VISUAL_ID:
-				return new DateFieldName4EditPart(view);
+			case DateFieldName3EditPart.VISUAL_ID:
+				return new DateFieldName3EditPart(view);
 
-			case UnitSupportAction2EditPart.VISUAL_ID:
-				return new UnitSupportAction2EditPart(view);
+			case UnitSupportActionEditPart.VISUAL_ID:
+				return new UnitSupportActionEditPart(view);
 
-			case UnitSupportActionName2EditPart.VISUAL_ID:
-				return new UnitSupportActionName2EditPart(view);
+			case UnitSupportActionNameEditPart.VISUAL_ID:
+				return new UnitSupportActionNameEditPart(view);
 
 			case IndexUnit6EditPart.VISUAL_ID:
 				return new IndexUnit6EditPart(view);
@@ -478,11 +442,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case IndexUnitName6EditPart.VISUAL_ID:
 				return new IndexUnitName6EditPart(view);
 
-			case UnitElement15EditPart.VISUAL_ID:
-				return new UnitElement15EditPart(view);
+			case UnitElement14EditPart.VISUAL_ID:
+				return new UnitElement14EditPart(view);
 
-			case UnitElementName15EditPart.VISUAL_ID:
-				return new UnitElementName15EditPart(view);
+			case UnitElementName14EditPart.VISUAL_ID:
+				return new UnitElementName14EditPart(view);
 
 			case SelectAction4EditPart.VISUAL_ID:
 				return new SelectAction4EditPart(view);
@@ -490,17 +454,35 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case SelectActionName4EditPart.VISUAL_ID:
 				return new SelectActionName4EditPart(view);
 
-			case UnitAssociation13EditPart.VISUAL_ID:
-				return new UnitAssociation13EditPart(view);
+			case UnitAssociation12EditPart.VISUAL_ID:
+				return new UnitAssociation12EditPart(view);
 
-			case UnitAssociationName13EditPart.VISUAL_ID:
-				return new UnitAssociationName13EditPart(view);
+			case UnitAssociationName12EditPart.VISUAL_ID:
+				return new UnitAssociationName12EditPart(view);
 
 			case DetailsUnit7EditPart.VISUAL_ID:
 				return new DetailsUnit7EditPart(view);
 
 			case DetailsUnitName7EditPart.VISUAL_ID:
 				return new DetailsUnitName7EditPart(view);
+
+			case UnitElement15EditPart.VISUAL_ID:
+				return new UnitElement15EditPart(view);
+
+			case UnitElementName15EditPart.VISUAL_ID:
+				return new UnitElementName15EditPart(view);
+
+			case UnitAssociation13EditPart.VISUAL_ID:
+				return new UnitAssociation13EditPart(view);
+
+			case UnitAssociationName13EditPart.VISUAL_ID:
+				return new UnitAssociationName13EditPart(view);
+
+			case IndexUnit7EditPart.VISUAL_ID:
+				return new IndexUnit7EditPart(view);
+
+			case IndexUnitName7EditPart.VISUAL_ID:
+				return new IndexUnitName7EditPart(view);
 
 			case UnitElement16EditPart.VISUAL_ID:
 				return new UnitElement16EditPart(view);
@@ -514,41 +496,23 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitAssociationName14EditPart.VISUAL_ID:
 				return new UnitAssociationName14EditPart(view);
 
-			case IndexUnit7EditPart.VISUAL_ID:
-				return new IndexUnit7EditPart(view);
-
-			case IndexUnitName7EditPart.VISUAL_ID:
-				return new IndexUnitName7EditPart(view);
-
-			case UnitElement17EditPart.VISUAL_ID:
-				return new UnitElement17EditPart(view);
-
-			case UnitElementName17EditPart.VISUAL_ID:
-				return new UnitElementName17EditPart(view);
-
-			case UnitAssociation15EditPart.VISUAL_ID:
-				return new UnitAssociation15EditPart(view);
-
-			case UnitAssociationName15EditPart.VISUAL_ID:
-				return new UnitAssociationName15EditPart(view);
-
 			case SelectAction5EditPart.VISUAL_ID:
 				return new SelectAction5EditPart(view);
 
 			case SelectActionName5EditPart.VISUAL_ID:
 				return new SelectActionName5EditPart(view);
 
-			case DataTypeField5EditPart.VISUAL_ID:
-				return new DataTypeField5EditPart(view);
+			case DataTypeField4EditPart.VISUAL_ID:
+				return new DataTypeField4EditPart(view);
 
-			case DataTypeFieldName5EditPart.VISUAL_ID:
-				return new DataTypeFieldName5EditPart(view);
+			case DataTypeFieldName4EditPart.VISUAL_ID:
+				return new DataTypeFieldName4EditPart(view);
 
-			case DateField5EditPart.VISUAL_ID:
-				return new DateField5EditPart(view);
+			case DateField4EditPart.VISUAL_ID:
+				return new DateField4EditPart(view);
 
-			case DateFieldName5EditPart.VISUAL_ID:
-				return new DateFieldName5EditPart(view);
+			case DateFieldName4EditPart.VISUAL_ID:
+				return new DateFieldName4EditPart(view);
 
 			case SelectAction6EditPart.VISUAL_ID:
 				return new SelectAction6EditPart(view);
@@ -580,29 +544,29 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case SearchUnitNameEditPart.VISUAL_ID:
 				return new SearchUnitNameEditPart(view);
 
-			case UnitElement18EditPart.VISUAL_ID:
-				return new UnitElement18EditPart(view);
+			case UnitElement17EditPart.VISUAL_ID:
+				return new UnitElement17EditPart(view);
 
-			case UnitElementName18EditPart.VISUAL_ID:
-				return new UnitElementName18EditPart(view);
+			case UnitElementName17EditPart.VISUAL_ID:
+				return new UnitElementName17EditPart(view);
 
-			case UnitAssociation16EditPart.VISUAL_ID:
-				return new UnitAssociation16EditPart(view);
+			case UnitAssociation15EditPart.VISUAL_ID:
+				return new UnitAssociation15EditPart(view);
 
-			case UnitAssociationName16EditPart.VISUAL_ID:
-				return new UnitAssociationName16EditPart(view);
+			case UnitAssociationName15EditPart.VISUAL_ID:
+				return new UnitAssociationName15EditPart(view);
 
-			case DataTypeField6EditPart.VISUAL_ID:
-				return new DataTypeField6EditPart(view);
+			case DataTypeField5EditPart.VISUAL_ID:
+				return new DataTypeField5EditPart(view);
 
-			case DataTypeFieldName6EditPart.VISUAL_ID:
-				return new DataTypeFieldName6EditPart(view);
+			case DataTypeFieldName5EditPart.VISUAL_ID:
+				return new DataTypeFieldName5EditPart(view);
 
-			case DateField6EditPart.VISUAL_ID:
-				return new DateField6EditPart(view);
+			case DateField5EditPart.VISUAL_ID:
+				return new DateField5EditPart(view);
 
-			case DateFieldName6EditPart.VISUAL_ID:
-				return new DateFieldName6EditPart(view);
+			case DateFieldName5EditPart.VISUAL_ID:
+				return new DateFieldName5EditPart(view);
 
 			case StaticUnitEditPart.VISUAL_ID:
 				return new StaticUnitEditPart(view);
@@ -616,6 +580,24 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UpdateUnitNameEditPart.VISUAL_ID:
 				return new UpdateUnitNameEditPart(view);
 
+			case UnitElement18EditPart.VISUAL_ID:
+				return new UnitElement18EditPart(view);
+
+			case UnitElementName18EditPart.VISUAL_ID:
+				return new UnitElementName18EditPart(view);
+
+			case UnitAssociation16EditPart.VISUAL_ID:
+				return new UnitAssociation16EditPart(view);
+
+			case UnitAssociationName16EditPart.VISUAL_ID:
+				return new UnitAssociationName16EditPart(view);
+
+			case IndexUnit8EditPart.VISUAL_ID:
+				return new IndexUnit8EditPart(view);
+
+			case IndexUnitName8EditPart.VISUAL_ID:
+				return new IndexUnitName8EditPart(view);
+
 			case UnitElement19EditPart.VISUAL_ID:
 				return new UnitElement19EditPart(view);
 
@@ -627,24 +609,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case UnitAssociationName17EditPart.VISUAL_ID:
 				return new UnitAssociationName17EditPart(view);
-
-			case IndexUnit8EditPart.VISUAL_ID:
-				return new IndexUnit8EditPart(view);
-
-			case IndexUnitName8EditPart.VISUAL_ID:
-				return new IndexUnitName8EditPart(view);
-
-			case UnitElement20EditPart.VISUAL_ID:
-				return new UnitElement20EditPart(view);
-
-			case UnitElementName20EditPart.VISUAL_ID:
-				return new UnitElementName20EditPart(view);
-
-			case UnitAssociation18EditPart.VISUAL_ID:
-				return new UnitAssociation18EditPart(view);
-
-			case UnitAssociationName18EditPart.VISUAL_ID:
-				return new UnitAssociationName18EditPart(view);
 
 			case SelectAction7EditPart.VISUAL_ID:
 				return new SelectAction7EditPart(view);
@@ -658,17 +622,17 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DeleteActionName3EditPart.VISUAL_ID:
 				return new DeleteActionName3EditPart(view);
 
-			case DataTypeField7EditPart.VISUAL_ID:
-				return new DataTypeField7EditPart(view);
+			case DataTypeField6EditPart.VISUAL_ID:
+				return new DataTypeField6EditPart(view);
 
-			case DataTypeFieldName7EditPart.VISUAL_ID:
-				return new DataTypeFieldName7EditPart(view);
+			case DataTypeFieldName6EditPart.VISUAL_ID:
+				return new DataTypeFieldName6EditPart(view);
 
-			case DateField7EditPart.VISUAL_ID:
-				return new DateField7EditPart(view);
+			case DateField6EditPart.VISUAL_ID:
+				return new DateField6EditPart(view);
 
-			case DateFieldName7EditPart.VISUAL_ID:
-				return new DateFieldName7EditPart(view);
+			case DateFieldName6EditPart.VISUAL_ID:
+				return new DateFieldName6EditPart(view);
 
 			case ActionMenuEntryEditPart.VISUAL_ID:
 				return new ActionMenuEntryEditPart(view);
@@ -724,12 +688,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
 				return new PageInterfaceUnitCompartmentEditPart(view);
 
-			case ActionUnitUnitFieldCompartmentEditPart.VISUAL_ID:
-				return new ActionUnitUnitFieldCompartmentEditPart(view);
-
-			case ActionUnitActionCompartmentEditPart.VISUAL_ID:
-				return new ActionUnitActionCompartmentEditPart(view);
-
 			case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 				return new CreateUnitUnitFieldCompartmentEditPart(view);
 
@@ -745,8 +703,8 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitElementActionCompartmentEditPart.VISUAL_ID:
 				return new UnitElementActionCompartmentEditPart(view);
 
-			case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartmentEditPart(view);
+			case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
+				return new UnitAssociationInterfaceUnitsCompartmentEditPart(view);
 
 			case UnitAssociationActionCompartmentEditPart.VISUAL_ID:
 				return new UnitAssociationActionCompartmentEditPart(view);
@@ -754,8 +712,8 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment2EditPart(view);
 
-			case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment2EditPart(view);
+			case UnitAssociationInterfaceUnitCompartmentEditPart.VISUAL_ID:
+				return new UnitAssociationInterfaceUnitCompartmentEditPart(view);
 
 			case DetailsUnitUnitFieldCompartment3EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment3EditPart(view);
@@ -769,14 +727,14 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case IndexUnitActionCompartment3EditPart.VISUAL_ID:
 				return new IndexUnitActionCompartment3EditPart(view);
 
-			case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment3EditPart(view);
+			case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
+				return new UnitAssociationInterfaceUnitCompartment2EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment4EditPart(view);
 
-			case UnitAssociationInterfaceUnitCompartment4EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment4EditPart(view);
+			case UnitAssociationInterfaceUnitCompartment3EditPart.VISUAL_ID:
+				return new UnitAssociationInterfaceUnitCompartment3EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment5EditPart(view);
@@ -787,8 +745,8 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID:
 				return new IndexUnitUnitFieldCompartment4EditPart(view);
 
-			case UnitAssociationInterfaceUnitCompartment5EditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitCompartment5EditPart(view);
+			case UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID:
+				return new UnitAssociationInterfaceUnitsCompartment2EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment6EditPart(view);
@@ -805,11 +763,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UnitElementActionCompartment2EditPart.VISUAL_ID:
 				return new UnitElementActionCompartment2EditPart(view);
 
+			case UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID:
+				return new UnitAssociationInterfaceUnitsCompartment3EditPart(view);
+
 			case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
 				return new UnitAssociationActionCompartment2EditPart(view);
-
-			case UnitAssociationActionCompartment3EditPart.VISUAL_ID:
-				return new UnitAssociationActionCompartment3EditPart(view);
 
 			case DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID:
 				return new DetailsUnitUnitFieldCompartment7EditPart(view);
@@ -823,8 +781,8 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 				return new UpdateUnitUnitFieldCompartmentEditPart(view);
 
-			case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
-				return new UnitAssociationInterfaceUnitsCompartmentEditPart(view);
+			case UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID:
+				return new UnitAssociationInterfaceUnitsCompartment4EditPart(view);
 
 			case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
 				return new IndexUnitUnitFieldCompartment8EditPart(view);

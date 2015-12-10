@@ -236,7 +236,7 @@ public class UnitAssociationName15EditPart extends CompartmentEditPart implement
 	 * @generated
 	 */
 	protected boolean isEditable() {
-		return getParser() != null;
+		return false;
 	}
 
 	/**

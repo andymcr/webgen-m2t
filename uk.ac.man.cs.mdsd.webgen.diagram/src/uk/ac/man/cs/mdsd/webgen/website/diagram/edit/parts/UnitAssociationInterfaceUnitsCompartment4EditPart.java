@@ -1,11 +1,10 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.figures.ResizableCompartmentFigure;
@@ -15,8 +14,8 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UnitAssociationInterfaceUnitCompartment5CanonicalEditPolicy;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UnitAssociationInterfaceUnitCompartment5ItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UnitAssociationInterfaceUnitsCompartment4CanonicalEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UnitAssociationInterfaceUnitsCompartment4ItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -24,37 +23,30 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 /**
  * @generated
  */
-public class UnitAssociationInterfaceUnitCompartment5EditPart extends ListCompartmentEditPart {
+public class UnitAssociationInterfaceUnitsCompartment4EditPart extends ShapeCompartmentEditPart {
 
 	/**
-	 * @generated
-	 */
-	public static final int VISUAL_ID = 7108;
+	* @generated
+	*/
+	public static final int VISUAL_ID = 7128;
 
 	/**
-	 * @generated
-	 */
-	public UnitAssociationInterfaceUnitCompartment5EditPart(View view) {
+	* @generated
+	*/
+	public UnitAssociationInterfaceUnitsCompartment4EditPart(View view) {
 		super(view);
 	}
 
 	/**
-	 * @generated
-	 */
-	protected boolean hasModelChildrenChanged(Notification evt) {
-		return false;
-	}
-
-	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public String getCompartmentName() {
-		return Messages.UnitAssociationInterfaceUnitCompartment5EditPart_title;
+		return Messages.UnitAssociationInterfaceUnitsCompartment4EditPart_title;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IFigure createFigure() {
 		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
 		result.setTitleVisibility(false);
@@ -62,22 +54,22 @@ public class UnitAssociationInterfaceUnitCompartment5EditPart extends ListCompar
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new UnitAssociationInterfaceUnitCompartment5ItemSemanticEditPolicy());
+				new UnitAssociationInterfaceUnitsCompartment4ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
-				new UnitAssociationInterfaceUnitCompartment5CanonicalEditPolicy());
+				new UnitAssociationInterfaceUnitsCompartment4CanonicalEditPolicy());
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setRatio(Double ratio) {
 		// nothing to do -- parent layout does not accept Double constraints as ratio
 		// super.setRatio(ratio); 
@@ -91,10 +83,7 @@ public class UnitAssociationInterfaceUnitCompartment5EditPart extends ListCompar
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DetailsUnit_3131) {
-				return this;
-			}
-			if (type == WebsiteElementTypes.IndexUnit_3133) {
+			if (type == WebsiteElementTypes.IndexUnit_3222) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);
