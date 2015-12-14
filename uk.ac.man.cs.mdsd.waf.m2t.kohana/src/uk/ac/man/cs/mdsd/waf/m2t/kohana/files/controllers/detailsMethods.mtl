@@ -10,6 +10,10 @@
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
+[if (detailsUnit.supportActions->notEmpty())]
+// in before so available to support action
+[detailsUnit.loadSelection()/]
+[/if]
 [/let]
 [/template]
 
@@ -46,9 +50,11 @@ $[detailsUnit.templateInstanceName()/]->bind('[detailsUnit.instanceName()/]', $t
 [template private actionMethod(unit : DetailsUnit)]
 public function action_[unit.actionName()/]()
 {
+[if (unit.supportActions->isEmpty())]
     [unit.loadSelection()/]
+[/if]
 [if (not unit.defaultSelection.oclIsUndefined())]
-	[if (unit.service.keys->size() > 0)]
+	[if (unit.service.keys->notEmpty())]
     else
     {
         $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();

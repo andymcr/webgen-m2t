@@ -6,7 +6,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::authenticationMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::actionMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::controlMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::detailsMethods/]
@@ -106,13 +105,15 @@ public function after()
 [/template]
 
 [template private supportActionMethods(page : Page)]
-[if (page.hasDataSupportActions())]
-public function action_support()
+[for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
+[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+	[if (dataUnit.supportActions->notEmpty())]
+public function action_[dataUnit.supportActionName()/]()
 {
-	[for (action : UnitSupportAction | page.dataSupportActions())]
-    if ($this->request->post('[action.name/]'))
+	[for (action : UnitSupportAction | dataUnit.supportActions)]
+    if ($this->request->post('[action.actionName()/]'))
     {
-        /* [protected ('support.'.concat(action.name))]
+        /* [protected ('support.'.concat(action.actionName()))]
          */
         /* [/protected]
          */
@@ -120,8 +121,10 @@ public function action_support()
 	[/for]
 }
 
-[/if]
-/* [protected (page.instanceName().concat('.support.'))]
+	[/if]
+[/let]
+[/for]
+/* [protected (page.instanceName().concat('.support'))]
  */
 /* [/protected]
  */

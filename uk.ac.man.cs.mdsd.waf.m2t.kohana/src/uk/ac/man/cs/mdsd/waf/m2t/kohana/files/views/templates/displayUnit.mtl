@@ -13,30 +13,31 @@
 [template public generateUnitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(DataUnit)) post(trim())]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+[let accessor : String = '$'.concat(dataUnit.instanceName())]
 [file(dataUnit.viewFilename(), false)]
 <section class="[dataUnit.styleClass/]<?php
 	if (isset($[dataUnit.errorName()/])) {
 		echo ' [dataUnit.errorClass/]';
 	}
 ?>" id="[dataUnit.instanceName()/]">
- <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.generateUnitTitle('$'.concat(dataUnit.instanceName()))/]</h1>
+ <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle('$'.concat(dataUnit.instanceName()))/]</h1>
  <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.errorName()/])) echo ' hidden'; ?>">
   <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.errorName()/]) ? $[dataUnit.errorName()/] : ''); ?></p>
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
- [dataUnit.generateViewContent('$'.concat(dataUnit.instanceName()))/]
+ [dataUnit.generateViewContent(accessor)/]
 	[if (dataUnit.supportActions->notEmpty())]
-  [dataUnit.generateSupportActions()/]
+  [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
  <div class="unit_padding">
-  [dataUnit.generateViewContent('$'.concat(dataUnit.instanceName()))/]
+  [dataUnit.generateViewContent(accessor)/]
 	[if (indexUnit.defaultPaginationSize > 0)]
 <?php echo $pagination; ?>
 	[/if]
 	[if (dataUnit.supportActions->notEmpty())]
-  [dataUnit.generateSupportActions()/]
+  [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
  </div>
 [/let]
@@ -44,15 +45,16 @@
 </section>
 [/file]
 [/let]
+[/let]
 [/template]
 
 
-[template private generateUnitTitle(unit : DataUnit, unitAccessor : String)
+[template private unitTitle(unit : DataUnit, unitAccessor : String)
 	? (unit.oclIsTypeOf(IndexGridUnit) or unit.title.oclIsUndefined())  post(trim())]
 [unit.displayLabel/]
 [/template]
 
-[template private generateUnitTitle(unit : DataUnit, unitAccessor : String)
+[template private unitTitle(unit : DataUnit, unitAccessor : String)
 	? (not unit.title.oclIsUndefined())  post(trim())]
 [let labelAccessor : String
 	= if unit.title.oclIsKindOf(Attribute) then
@@ -65,40 +67,39 @@
 [/template]
 
 
-[template private generateSupportActions(unit : DynamicUnit) post(trim())]
+[template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
  <?php
-	echo Form::open(
-		Route::get('[unit.displayedOn.oclAsType(Page).routeName()/]')->uri(array(
-			'action' => 'support',
-			'param' => 'submit'
-			[if (unit.pageDisplayedOn().hasParameterisedUnits())]
-		)) . URL::query($query_parameters, FALSE),
-			[else]
-		)),
-			[/if]
-		array(
-			'id' => '[unit.instanceName()/]',
-			'class' => '[unit.controlClass/]'
-		)) . PHP_EOL;
-?>
-			[for (action : UnitSupportAction | unit.supportActions)]
-  <?php
-		echo Form::submit('[action.name/]', '[action.displayLabel/]') . PHP_EOL;
-?>
-			[/for]
-  <?php
-	echo Form::close() . PHP_EOL;
+    echo Form::open(
+        Route::get('[unit.supportRouteName()/]')->uri(array(
+            [unit.routeSelectionParameters(accessor, unit.renameRouteParameters())/]
+        ))[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+ . URL::query($query_parameters, FALSE)[/if],
+        array(
+            'id' => '[unit.instanceName()/]',
+            'class' => '[unit.controlClass/]'
+        )) . PHP_EOL;
+[for (action : UnitSupportAction | unit.supportActions)]
+    [action.unitSupportLink()/] . PHP_EOL;
+[/for]
+    echo Form::close() . PHP_EOL;
 ?>
 [/template]
+
+[template public unitSupportLink(action : UnitSupportAction) post(trim())]
+echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not action.confirmMessage.oclIsUndefined())], array(
+        'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
+    )[/if])
+[/template]
+
 
 [template public generateViewContent(unit : ContentUnit, accessor : String)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[detailsUnit.generateDetailsContent(accessor)/]
+[detailsUnit.detailsContent(accessor)/]
 [/let]
 [/template]
 
-[template public generateDetailsContent(unit : DataUnit, accessor : String)
+[template public detailsContent(unit : DataUnit, accessor : String)
 	post(trim())]
 [if (unit.hasOmitFieldLabels())]
 <ul class="[unit.layoutClass/]">
@@ -140,7 +141,7 @@
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('$entry')/]</h1>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('$entry')/]</h1>
 [/if]
 [for (field : UnitField | indexUnit.displayFields) ]
 [let fieldAccessor : String = '$entry'.concat('->').concat(field.modelPropertyName())]
@@ -160,7 +161,7 @@
 [if (indexUnit.actions->notEmpty())]
 <span class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-		[action.generateAction('$entry')/]
+		[action.actionLink('$entry')/]
 	[/for]</span>
 [else]
 
@@ -182,13 +183,13 @@
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[indexUnit.captionClass/]">[indexUnit.generateUnitTitle('$entry')/]</h1>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('$entry')/]</h1>
 [/if]
-  [unit.generateDetailsContent('$entry')/]
+  [unit.detailsContent('$entry')/]
 [if (indexUnit.actions->notEmpty())]
   <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-		[action.generateAction('$entry')/]
+		[action.actionLink('$entry')/]
 	[/for]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -227,7 +228,7 @@
 [if (indexUnit.actions->notEmpty())]
    <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-    [action.generateAction('$entry')/]
+    [action.actionLink('$entry')/]
 	[/for]</td>
  [/if]
   </tr>
@@ -423,7 +424,7 @@ NULL
 [/if]
 [/template]
 
-[template private getValue(feature : UnitFeature, accessor : String) post(trim())]
+[template public getValue(feature : UnitFeature, accessor : String) post(trim())]
 [if (feature.oclIsTypeOf(UnitElement))]
 [feature.oclAsType(UnitElement).getValue(accessor)/]
 [else]
@@ -431,11 +432,11 @@ NULL
 [/if]
 [/template]
 
-[template private getValue(attribute : UnitElement, accessor : String) post(trim())]
+[template public getValue(attribute : UnitElement, accessor : String) post(trim())]
 [attribute.serviceFeature.attribute.getValue(attribute, accessor)/]
 [/template]
 
-[template private getValue(association : UnitAssociation, accessor : String) post(trim())]
+[template public getValue(association : UnitAssociation, accessor : String) post(trim())]
 [if (association.childFeature.oclIsUndefined())]
 	[if (not association.label.oclIsUndefined())]
 [association.label.label(accessor)/]
@@ -447,12 +448,12 @@ NULL
 [/if]
 [/template]
 
-[template private getValue(childFeature : ServiceFeatureReference, accessor : String)
+[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
 	? (childFeature.oclIsTypeOf(ServiceAttributeReference)) post(trim())]
 [let childAttribute : ServiceAttributeReference = childFeature.oclAsType(ServiceAttributeReference)]
 [let childAccessor : String = accessor.concat('->').concat(childAttribute.attribute.modelPropertyName())]
 [let unitFeatures : Sequence(UnitFeature) = childFeature.ancestors(UnitFeature)]
-[if (unitFeatures->size() > 0)]
+[if (unitFeatures->notEmpty())]
 [childAttribute.attribute.attribute.getValue(unitFeatures->first(), childAccessor)/]
 [else]
 [childAttribute.attribute.attribute.getValue(null, childAccessor)/]
@@ -462,7 +463,7 @@ NULL
 [/let]
 [/template]
 
-[template private getValue(childFeature : ServiceFeatureReference, accessor : String)
+[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
 	? (childFeature.oclIsTypeOf(ServiceAssociationReference)) post(trim())]
 [let childAssociation : ServiceAssociationReference = childFeature.oclAsType(ServiceAssociationReference)]
 [let childAccessor : String = accessor.concat('->').concat(childAssociation.association.modelPropertyName())]
@@ -476,12 +477,12 @@ NULL
 [/template]
 
 
-[template private getValue(feature : Feature, field : UnitField, accessor : String)
+[template public getValue(feature : Feature, field : UnitField, accessor : String)
 	? (feature.isDataTypeSingleton() or feature.isResource()) post(trim())]
 [accessor/]
 [/template]
 
-[template private getValue(feature : Feature, field : UnitField, accessor : String)
+[template public getValue(feature : Feature, field : UnitField, accessor : String)
 	? (feature.isDateSingleton()) post(trim())]
 [if (field.dateFormat.oclIsUndefined())]
 [accessor/];
@@ -490,7 +491,7 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/if]
 [/template]
 
-[template private getValue(feature : Feature, field : UnitField, accessor : String)
+[template public getValue(feature : Feature, field : UnitField, accessor : String)
 	? (feature.isEnumerationTypeSingleton()) post(trim())]
 [let enumerationType : EnumerationType
 	= feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
@@ -499,15 +500,14 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/template]
 
 
-[template public generateAction(action : InlineAction, accessor : String)
+[template public actionLink(action : InlineAction, accessor : String)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
 <?php
     echo HTML::anchor(
         Route::get('[targetUnit.routeName()/]')->uri(array(
-            'action' => '[targetUnit.name/]',
-            [targetUnit.routeSelectionParameters(accessor)/]
+            [targetUnit.routeSelectionParameters(accessor, targetUnit.renameRouteParameters())/]
 		)),
 		HTML::chars(__('[action.displayLabel/]')),
 		array(
@@ -518,8 +518,19 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/let]
 [/template]
 
-[template public routeSelectionParameters(unit : DynamicUnit, accessor : String) post(trim())]
-[for (key : ServiceFeatureReference | unit.service.keys)]
-'[key.routeParameterName(unit.routeParameterPrepend(unit.renameRouteParameters()))/]' => [key.getValue(accessor)/],
-[/for]
+[template public routeSelectionParameters(unit : DynamicUnit, accessor : String, renameParameters : Boolean) post(trim())]
+[if (not unit.uriParent.oclIsUndefined())]
+[let parentAccessor : String = if unit.parentAssociation.oclIsUndefined() then
+		accessor
+	else
+		accessor.concat('->').concat(unit.parentAssociation.modelPropertyName())
+	endif]
+[unit.uriParent.routeSelectionParameters(parentAccessor, renameParameters)/]
+[/let]
+[/if]
+[if (unit.oclIsKindOf(Selectable))]
+	[for (key : ServiceFeatureReference | unit.service.keys)]
+'[key.routeParameterName(unit.routeParameterPrepend(renameParameters))/]' => [key.getValue(accessor)/],
+	[/for]
+[/if]
 [/template]

@@ -39,7 +39,7 @@ TBC[/if]')->uri());
 [/template]
 
 [template public loadSelection(unit : DynamicUnit, validate : Boolean) post(trim())]
-[if (unit.service.keys->size() > 0)]
+[if (unit.service.keys->notEmpty())]
 	[if (unit.service.keys->size() = 1)]
 [unit.service.keys->first().selectionParameter(unit, true)/]
 	[else]
@@ -73,7 +73,7 @@ if (!empty($this->request->param('[keyName/]')))
 [let targetType : EntityOrView = associationKey.association.targetType()]
 {
     $this->[unit.instanceName()/]->join('[targetType.tableName/]');
-    $this->[unit.instanceName()/]->on('[key.columnName()/]', '=', '[targetType.autoKeyName/]');
+    $this->[unit.instanceName()/]->on('[key.columnName()/]', '=', '[targetType.tableName/].[targetType.autoKeyName/]');
     $this->[unit.instanceName()/]->where('[associationKey.childFeature.columnName()/]', '=', $this->request->param('[keyName/]'));
 	[if (not withinBlock)]
 }

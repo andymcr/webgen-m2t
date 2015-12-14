@@ -17,6 +17,9 @@ $this->[editUnit.instanceName()/] = ORM::factory('[editUnit.modelName()/]');
 [if (editUnit.hasDefaultValueFields())]
 [editUnit.unitDefaultValues()/]
 [/if]
+[if (not editUnit.uriParent.oclIsUndefined() and editUnit.displayedOn <> editUnit.uriParent.displayedOn)]
+// TODO load uri parent
+[/if]
 [/let]
 [/template]
 
@@ -27,6 +30,13 @@ $this->[editUnit.instanceName()/] = ORM::factory('[editUnit.modelName()/]');
 $[editUnit.templateInstanceName()/]->bind('[editUnit.instanceName()/]', $this->[editUnit.instanceName()/]);
 [editUnit.bindErrorMessage()/]
 [editUnit.bindFieldErrors()/]
+[if (not editUnit.uriParent.oclIsUndefined())]
+	[if (editUnit.displayedOn = editUnit.uriParent.displayedOn)]
+$[editUnit.templateInstanceName()/]->bind('[editUnit.uriParent.instanceName()/]', $this->[editUnit.uriParent.instanceName()/]);
+	[else]
+$[editUnit.templateInstanceName()/]->bind('[editUnit.uriParent.uniqueName()/]', $this->[editUnit.uriParent.uniqueName()/]);
+	[/if]
+[/if]
 [for (association : UnitAssociation | editUnit.inputAssociations())]
 $[association.optionsName()/] = $this->[association.optionsName()/]();
 $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[association.optionsName()/]);

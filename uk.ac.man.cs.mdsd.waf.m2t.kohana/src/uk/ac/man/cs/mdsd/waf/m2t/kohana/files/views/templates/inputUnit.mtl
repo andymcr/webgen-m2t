@@ -2,6 +2,7 @@
 [module inputUnit(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
@@ -25,7 +26,7 @@
    <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
-   [dynamicUnit.generateFormErrors()/]
+   [dynamicUnit.formErrors()/]
 [/if]
   </section>
 [if (dynamicUnit.hasInterfaceFields())]
@@ -62,7 +63,7 @@
    <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
-   [dynamicUnit.generateFormErrors()/]
+   [dynamicUnit.formErrors()/]
 [/if]
   </section>
 [if (dynamicUnit.hasInterfaceFields())]
@@ -96,9 +97,7 @@
 $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
 '[unit.routeName()/]'[/if])->uri(array(
 [if (unit.oclIsKindOf(Selectable))]
-            [unit.routeSelectionParameters(accessor)/]
-[else]
-            'param' => 'submit'
+            [unit.inputRouteSelectionParameters(accessor, null, unit.renameRouteParameters())/]
 [/if]
 [if (unit.pageDisplayedOn().hasParameterisedUnits())]
         )) . URL::query($query_parameters, FALSE),
@@ -113,88 +112,102 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
 ?>
 [/template]
 
+[template public inputRouteSelectionParameters(unit : DynamicUnit, accessor : String, parentAccessor : String, renameParameters : Boolean) post(trim())]
+[if (not unit.uriParent.oclIsUndefined())]
+[let accessor2 : String = if unit.parentAssociation.oclIsUndefined() then
+		accessor
+	else
+		accessor.concat('->').concat(unit.parentAssociation.modelPropertyName())
+	endif]
+[let parentAccessor2 : String = if not parentAccessor.oclIsUndefined() then
+		parentAccessor
+	else if unit.displayedOn = unit.uriParent.displayedOn then
+		'$'.concat(unit.uriParent.instanceName())
+	else
+		'$'.concat(unit.uriParent.uniqueName())
+	endif endif]
+[unit.uriParent.inputRouteSelectionParameters(accessor2, parentAccessor2, renameParameters)/]
+[/let]
+[/let]
+[/if]
+[if (unit.oclIsKindOf(Selectable))]
+	[for (key : ServiceFeatureReference | unit.service.keys)]
+		[if (parentAccessor.oclIsUndefined())]
+'[key.routeParameterName(unit.routeParameterPrepend(renameParameters))/]' => [key.getValue(accessor)/],
+		[else]
+'[key.routeParameterName(unit.routeParameterPrepend(renameParameters))/]' => [accessor/]->loaded()
+    ? [key.getValue(accessor)/]
+    : [key.getValue(parentAccessor)/],
+		[/if]
+	[/for]
+[/if]
+[/template]
+
 [template private formControlAndClose(unit : DynamicUnit)]
 [if (unit.hasMessagesOnFormFoot())]
 <?php if (isset($[unit.instanceName()/]->error->all)) { ?>
-   <div class="[unit.errorClass/]">
-[unit.generateFormErrors()/]
-   </div>
+<div class="[unit.errorClass/]">
+[unit.formErrors()/]
+</div>
 <?php } ?>
 [/if]
-   <div class="[unit.controlClass/]">
-[if (not unit.oclIsTypeOf(ActionUnit))]
-   <?php
-		echo Form::button('[unit.instanceName()/]', '[unit.submitLabel()/]', array(
-			'type' => 'submit'
-		)) . PHP_EOL;
-?>
-[else]
-			[for (action : UnitSupportAction | unit.oclAsType(ActionUnit).supportActions)]
-  <?php
-		echo Form::button('[action.name/]', '[action.displayLabel/]', array(
-			'type' => 'submit',
-[if (not action.confirmMessage.oclIsUndefined())]
-			'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
-[/if]
-		)) . PHP_EOL;
-?>
-			[/for]
-[/if]
+<div class="[unit.controlClass/]">
+<?php
+    echo Form::submit('[unit.instanceName()/]', '[unit.submitLabel()/]') . PHP_EOL;
+[for (action : UnitSupportAction | unit.supportActions)]
+    [action.unitSupportLink()/] . PHP_EOL;
+[/for]
 [if (unit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
 	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
 		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
-   <?php
-		echo Form::button('clear', '[createUpdateUnit.clearLabel/]', array(
-			'type' => 'submit'
-		)) . PHP_EOL;
-?>
+    echo Form::button('clear', '[createUpdateUnit.clearLabel/]', array(
+        'type' => 'submit'
+    )) . PHP_EOL;
 		[/if]
 	[/let]
 	[/if]
 	[if (not editUnit.cancelDestination.oclIsUndefined())]
-   <?php
-		echo Form::button('cancel', '[unit.cancelLabel()/]', array(
-			'type' => 'submit'
-		)) . PHP_EOL;
-?>
+    echo Form::button('cancel', '[unit.cancelLabel()/]', array(
+        'type' => 'submit'
+    )) . PHP_EOL;
 	[/if]
 [/let]
 [/if]
-   </div>
-  <?php
-	echo Form::close() . PHP_EOL;
+?>
+</div>
+<?php
+    echo Form::close() . PHP_EOL;
 ?>
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit)]
 [let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(field.modelPropertyName())]
 <li[if (unit.hasMessagesOnFeature())]<?php
-		unset($field_error);
-		if (!empty($[unit.fieldErrorsName()/]))
+    unset($field_error);
+    if (!empty($[unit.fieldErrorsName()/]))
 		[if (field.oclIsKindOf(InterfaceField))]
-			if (array_key_exists('_external', $[unit.fieldErrorsName()/]))
-				if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]['['/]'_external'[']'/]))
-					$field_error = $[unit.fieldErrorsName()/]['['/]'_external'[']'/]['['/]'[field.modelPropertyName()/]'[']'/];
+        if (array_key_exists('_external', $[unit.fieldErrorsName()/]))
+            if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]['['/]'_external'[']'/]))
+                $field_error = $[unit.fieldErrorsName()/]['['/]'_external'[']'/]['['/]'[field.modelPropertyName()/]'[']'/];
 		[else]
-			if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]))
-				$field_error = $[unit.fieldErrorsName()/]['['/]'[field.modelPropertyName()/]'[']'/];
+        if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]))
+            $field_error = $[unit.fieldErrorsName()/]['['/]'[field.modelPropertyName()/]'[']'/];
 		[/if]
-		if (isset($field_error))
-			echo ' class="[unit.errorClass/]"'; 
+    if (isset($field_error))
+        echo ' class="[unit.errorClass/]"'; 
 ?>[/if]>
 	[if (if not field.oclIsKindOf(UnitAssociation) then true else field.oclAsType(UnitAssociation).units->isEmpty() endif)]
  <?php
-		echo Form::label('[field.uniqueName()/]', '[field.displayLabel()/]',
-			array(
-				'class' => '[field.styleClass()/][if (field.isRequired() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
-		)) . PHP_EOL;
-	?>
-     [field.inputField(accessor)/]
+    echo Form::label('[field.uniqueName()/]', '[field.displayLabel()/]', array(
+        'class' => '[field.styleClass()/][if (field.isRequired() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
+    )) . PHP_EOL;
+?>
+    [field.inputField(accessor)/]
 	[else]
 	[let embeddedUnit : ContentUnit = field.oclAsType(UnitAssociation).units->first()]
-     <p class="[field.modelPropertyName()/]">[field.displayLabel()/]</p>
+<p class="[field.modelPropertyName()/]">[field.displayLabel()/]</p>
 <?php $[field.uniqueName()/] = $[unit.instanceName()/]->[field.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
 [if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
@@ -571,12 +584,12 @@ echo form_input('[field.modelPropertyName()/]');
 [/template]
 
 
-[template private generateFormErrors(dynamicUnit : DynamicUnit) post(trim())]
+[template private formErrors(unit : DynamicUnit) post(trim())]
 <?php
-	if ( isset($field_errors)) {
-		foreach ($field_errors AS $field => $message) {
+	if ( isset($[unit.fieldErrorsName()/])) {
+		foreach ($[unit.fieldErrorsName()/] AS $field => $message) {
 ?>
-<p class="[dynamicUnit.errorClass/]"><?php echo __($message); ?></p>
+<p class="[unit.errorClass/]"><?php echo __($message); ?></p>
 <?php
 		}
 	} 

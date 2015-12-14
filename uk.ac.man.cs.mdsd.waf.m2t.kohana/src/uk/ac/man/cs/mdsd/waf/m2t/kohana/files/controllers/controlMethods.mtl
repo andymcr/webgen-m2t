@@ -6,7 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 
 
-[template public generateUnitVariables(unit : ContentUnit)
+[template public unitBefore(unit : ContentUnit)
 	? (unit.oclIsKindOf(ControlUnit)) post(trim())]
 [let controlUnit : ControlUnit = unit.oclAsType(ControlUnit)]
 $this->[controlUnit.instanceName()/] = ORM::factory('[controlUnit.modelName()/]');
@@ -16,8 +16,8 @@ $this->[controlUnit.instanceName()/] = ORM::factory('[controlUnit.modelName()/]'
 [/let]
 [/template]
 
-[template public generateUnitDisplay(unit : ContentUnit)
-	? (unit.oclIsTypeOf(ActionUnit) or unit.oclIsTypeOf(SearchUnit)) post(trim())]
+[template public unitAfter(unit : ContentUnit)
+	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [let controlUnit : ControlUnit = unit.oclAsType(ControlUnit)]
 $this->[controlUnit.templateInstanceName()/]->bind('[controlUnit.instanceName()/]', $this->[controlUnit.instanceName()/]);
 [controlUnit.bindFieldErrors()/]
@@ -43,10 +43,4 @@ $this->[controlUnit.templateInstanceName()/]->bind('[association.optionsName()/]
 if ($this->request->post('cancel'))
 	$this->redirect(Route::get('[cancelDestination.routeName()/]')->uri());
 [/let]
-[/template]
-
-
-[template public generateValidateOnlyControlFields(unit : DynamicUnit) post(trim())]
-$this->[unit.instanceName()/]->control_fields(array([for (field : UnitField | unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))) separator(', ')]
-'[field.modelPropertyName()/]' => ''[/for]));
 [/template]

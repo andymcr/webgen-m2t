@@ -151,15 +151,6 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	}
 
 	[/if]
-	[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->notEmpty())]
-	protected $_control_fields = array();
-
-	public function control_fields($control_fields)
-	{
-		$this->_control_fields = $control_fields;
-	}
-
-	[/if]
     [service.rules(entityOrView, userService)/]
 
     [service.labels(entityOrView)/]
@@ -592,20 +583,11 @@ public function rules()
     else
         return array();
 [else]
-	[if (service.accessedBy->select(u | u.oclIsTypeOf(ActionUnit))->isEmpty())]
     return array(
 		[for (feature : Feature | entityOrView.validatedFeatures())]
         [feature.fieldRules()/]
 		[/for]
     );
-	[else]
-    $rules = array(
-		[for (feature : Feature | entityOrView.validatedFeatures())]
-        [feature.fieldRules()/]
-		[/for]
-    );
-    return empty($this->_control_fields) ? $rules : array_intersect_key($rules, $this->_control_fields);
-	[/if]
 [/if]
 }
 [/template]

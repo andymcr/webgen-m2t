@@ -2,6 +2,7 @@
 [module featureProperties(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
 [query public uriPath(service : Service) : String
@@ -63,13 +64,15 @@
 			true
 		else if unit.oclIsKindOf(DataUnit) then
 			unit.oclAsType(DataUnit).hasUriActions() or unit.oclIsTypeOf(DetailsUnit)
-		else if unit.oclIsTypeOf(ActionUnit) then
-			true
 		else if unit.oclIsKindOf(AuthenticationUnit) then
 			true
 		else
 			false
-		endif endif endif endif
+		endif endif endif
+/]
+
+[query public logoutUriPath(unit : LoginUnit) : String
+	= unit.logoutActionName()
 /]
 
 [query public renameRouteParameters(unit : ContentUnit) : Boolean
@@ -82,6 +85,10 @@
 		else
 			''
 		endif
+/]
+
+[query public supportUriPath(unit : ContentUnit) : String
+	= unit.uriPath().concat('/support')
 /]
 
 [query public uriPath(unit : ContentUnit) : String
@@ -106,21 +113,29 @@
 				else
 					'/'.concat(unit.uriElement)
 				endif endif)
-		in if unit.uriParent.oclIsUndefined() then
-				unit.pageDisplayedOn().uriPath().concat(uriElement)
-			else
-				unit.uriParent.uriPath(false, renameParameters).concat(uriElement)
+		in if not unit.oclIsKindOf(DynamicUnit) then
+				Sequence{}
+			else let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+				in if dynamicUnit.uriParent.oclIsUndefined() then
+					dynamicUnit.pageDisplayedOn().uriPath().concat(uriElement)
+				else
+					dynamicUnit.uriParent.uriPath(false, renameParameters).concat(uriElement)
+				endif
 			endif
 /]
 
 [query public uriPathKeys(unit : ContentUnit) : Sequence(ServiceFeature)
-	= if unit.oclIsKindOf(Selectable) then
-				unit.oclAsType(DynamicUnit).service.keys->asSequence()
-			else
-				Sequence{}
-			endif->union(if unit.uriParent.oclIsUndefined() then
-					Sequence{}
+	= if not unit.oclIsKindOf(DynamicUnit) then
+			Sequence{}
+		else let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+			in if unit.oclIsKindOf(Selectable) then
+					dynamicUnit.service.keys->asSequence()
 				else
-					unit.uriParent.uriPathKeys()
-				endif)
+					Sequence{}
+				endif->union(if dynamicUnit.uriParent.oclIsUndefined() then
+						Sequence{}
+					else
+						dynamicUnit.uriParent.uriPathKeys()
+					endif)
+		endif
 /]
