@@ -4,7 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -16,23 +16,23 @@
 [let accessor : String = '$'.concat(dataUnit.instanceName())]
 [file(dataUnit.viewFilename(), false)]
 <section class="[dataUnit.styleClass/]<?php
-	if (isset($[dataUnit.errorName()/])) {
+	if (isset($[dataUnit.service.errorName()/])) {
 		echo ' [dataUnit.errorClass/]';
 	}
 ?>" id="[dataUnit.instanceName()/]">
  <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle('$'.concat(dataUnit.instanceName()))/]</h1>
- <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.errorName()/])) echo ' hidden'; ?>">
-  <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.errorName()/]) ? $[dataUnit.errorName()/] : ''); ?></p>
+ <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.service.errorName()/])) echo ' hidden'; ?>">
+  <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.service.errorName()/]) ? $[dataUnit.service.errorName()/] : ''); ?></p>
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
- [dataUnit.generateViewContent(accessor)/]
+ [dataUnit.viewContent(accessor)/]
 	[if (dataUnit.supportActions->notEmpty())]
   [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
  <div class="unit_padding">
-  [dataUnit.generateViewContent(accessor)/]
+  [dataUnit.viewContent(accessor)/]
 	[if (indexUnit.defaultPaginationSize > 0)]
 <?php echo $pagination; ?>
 	[/if]
@@ -70,9 +70,8 @@
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
  <?php
     echo Form::open(
-        Route::get('[unit.supportRouteName()/]')->uri(array(
-            [unit.routeSelectionParameters(accessor, unit.renameRouteParameters())/]
-        ))[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters())]
+$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
@@ -92,7 +91,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template]
 
 
-[template public generateViewContent(unit : ContentUnit, accessor : String)
+[template public viewContent(unit : ContentUnit, accessor : String)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.detailsContent(accessor)/]
@@ -133,7 +132,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/if]
 [/template]
 
-[template protected generateViewContent(unit : DataUnit, accessor : String)
+[template protected viewContent(unit : DataUnit, accessor : String)
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
 <ul class="[indexUnit.layoutClass/]">
@@ -175,7 +174,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/let]
 [/template]
 
-[template protected generateViewContent(unit : DataUnit, instanceVariable : String)
+[template protected viewContent(unit : DataUnit, instanceVariable : String)
 	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
 [let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
 <ul class="[indexUnit.layoutClass/]">
@@ -201,7 +200,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/let]
 [/template]
 
-[template public generateViewContent(unit : DataUnit, instanceVariable : String)
+[template public viewContent(unit : DataUnit, instanceVariable : String)
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
 <table class="[indexUnit.layoutClass/]">
@@ -366,7 +365,7 @@ $[feature.name/][else]
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
-[association.units.generateViewContent(accessor)/]
+[association.units.viewContent(accessor)/]
 [/let]
 [/if]
 [/let]
@@ -409,7 +408,7 @@ find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(Inde
 find_all()[else]
 [embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
-[association.units.generateViewContent('$'.concat(field.displayedOn.uniqueName()))/]
+[association.units.viewContent('$'.concat(field.displayedOn.uniqueName()))/]
 [/let]
 [/if]
 [/let]
@@ -506,9 +505,7 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
 <?php
     echo HTML::anchor(
-        Route::get('[targetUnit.routeName()/]')->uri(array(
-            [targetUnit.routeSelectionParameters(accessor, targetUnit.renameRouteParameters())/]
-		)),
+        Route::get('[targetUnit.routeName()/]')->uri([action.routeParameters(accessor)/]),
 		HTML::chars(__('[action.displayLabel/]')),
 		array(
 			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
@@ -518,19 +515,37 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/let]
 [/template]
 
-[template public routeSelectionParameters(unit : DynamicUnit, accessor : String, renameParameters : Boolean) post(trim())]
-[if (not unit.uriParent.oclIsUndefined())]
-[let parentAccessor : String = if unit.parentAssociation.oclIsUndefined() then
-		accessor
-	else
-		accessor.concat('->').concat(unit.parentAssociation.modelPropertyName())
-	endif]
-[unit.uriParent.routeSelectionParameters(parentAccessor, renameParameters)/]
+[template public actionLink(action : InlineAction, accessor : String)
+	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
+[let delete : DeleteAction = action.oclAsType(DeleteAction)]
+<?php
+    echo HTML::anchor(
+        Route::get('[delete.routeName()/]')->uri([action.routeParameters(accessor)/]),
+        HTML::chars(__('[action.displayLabel/]')),
+        array(
+            'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
+            'onclick' => 'return confirm(\'' . [accessor/]->defaultLabel() . ' ' . __('[delete.confirmMessage/]') . '\');',
+    ));
+?>
 [/let]
-[/if]
-[if (unit.oclIsKindOf(Selectable))]
-	[for (key : ServiceFeatureReference | unit.service.keys)]
-'[key.routeParameterName(unit.routeParameterPrepend(renameParameters))/]' => [key.getValue(accessor)/],
-	[/for]
+[/template]
+
+
+[template private routeParameters(action : InlineAction, accessor : String) post(trim())]
+[if (action.immediateUnit().containingUnit().hasRouteParameters())]
+array_merge($route_parameters, array(
+    [action.immediateUnit().service.routeParameters(accessor)/]
+))
+[else]
+array(
+    [action.immediateUnit().service.routeParameters(accessor)/]
+)
 [/if]
 [/template]
+
+[template private routeParameters(service : Service, accessor : String) post(trim())]
+[for (key : ServiceFeatureReference | service.keys)]
+'[key.routeParameterName()/]' => [key.getValue(accessor)/],
+[/for]
+[/template]
+

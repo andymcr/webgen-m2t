@@ -126,7 +126,7 @@ FALSE
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [for (action : InlineAction | unit.uriActions())]
-[action.generateActionMethod('$this->'.concat(unit.instanceName()).concat('_error'))/]
+[action.actionMethod()/]
 
 [/for]
 [if (unit.pageDisplayedOn().partOf.ajaxTechnology = AjaxTechnologies::jQuery

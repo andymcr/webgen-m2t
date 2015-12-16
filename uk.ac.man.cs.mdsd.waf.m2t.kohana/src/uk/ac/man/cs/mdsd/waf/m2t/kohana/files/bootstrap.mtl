@@ -3,7 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
@@ -183,12 +183,20 @@ Route::set('[unit.routeName(true)/]', '[unit.uriPath(true)/]')->defaults(array(
 ));
 		[/if]
 		[if (unit.oclIsKindOf(DynamicUnit))]
-			[if (unit.oclAsType(DynamicUnit).supportActions->notEmpty())]
+		[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+			[if (dynamicUnit.supportActions->notEmpty())]
 Route::set('[unit.supportRouteName()/]', '[unit.supportUriPath()/]')->defaults(array(
     'controller' => '[page.controllerName()/]',
     'action' => '[unit.supportActionName()/]',
 ));
 			[/if]
+			[for (delete : DeleteAction | dynamicUnit.uriActions()->select(a | a.oclIsTypeOf(DeleteAction)).oclAsType(DeleteAction))]
+Route::set('[delete.routeName()/]', '[delete.uriPath()/]')->defaults(array(
+    'controller' => '[page.controllerName()/]',
+    'action' => '[delete.actionName()/]',
+));
+			[/for]
+		[/let]
 		[/if]
 		[if (unit.oclIsTypeOf(LoginUnit))]
 		[let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]

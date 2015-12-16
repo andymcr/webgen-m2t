@@ -9,11 +9,6 @@
 [template public beforeMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-$this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
-[if (detailsUnit.supportActions->notEmpty())]
-// in before so available to support action
-[detailsUnit.loadSelection()/]
-[/if]
 [/let]
 [/template]
 
@@ -21,16 +16,19 @@ $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.onlyDisplayWhenNotEmpty)]
-if ($this->[unit.instanceName()/]->loaded() || isset($this->[detailsUnit.errorName()/]))
+[detailsUnit.createVariableIfAbsent()/]
+if ($this->[unit.instanceName()/]->loaded() || isset($this->[detailsUnit.service.errorName()/]))
 {
     [detailsUnit.createAndBindTemplate()/]
-    $[detailsUnit.templateInstanceName()/]->bind('[detailsUnit.instanceName()/]', $this->[detailsUnit.instanceName()/]);
+    [detailsUnit.bindVariable(false)/]
     [detailsUnit.bindErrorMessage()/]
+    [detailsUnit.createAndBindRouteParameters()/]
 }
 [else]
 [detailsUnit.createAndBindTemplate()/]
-$[detailsUnit.templateInstanceName()/]->bind('[detailsUnit.instanceName()/]', $this->[detailsUnit.instanceName()/]);
+[detailsUnit.bindVariable(true)/]
 [detailsUnit.bindErrorMessage()/]
+[detailsUnit.createAndBindRouteParameters()/]
 [/if]
 [/let]
 [/template]
@@ -42,27 +40,25 @@ $[detailsUnit.templateInstanceName()/]->bind('[detailsUnit.instanceName()/]', $t
 [detailsUnit.actionMethod()/]
 
 [for (action : InlineAction | detailsUnit.uriActions())]
-[action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
+[action.actionMethod()/]
 [/for]
 [/let]
 [/template]
 
-[template private actionMethod(unit : DetailsUnit)]
+[template private actionMethod(unit : DetailsUnit) post(trim())]
 public function action_[unit.actionName()/]()
 {
-[if (unit.supportActions->isEmpty())]
-    [unit.loadSelection()/]
-[/if]
+    $this->[unit.service.loadMethodName()/]();
 [if (not unit.defaultSelection.oclIsUndefined())]
 	[if (unit.service.keys->notEmpty())]
-    else
+    if (!$this->[unit.service.instanceName()/]-loaded())
     {
         $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
-        [unit.detectInvalidSelection()/]
+        [unit.detectInvalidSelectionX()/]
     }
 	[else]
     $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
-    [unit.detectInvalidSelection()/]
+    [unit.detectInvalidSelectionX()/]
 	[/if]
 [/if]
 [if (unit.hasDefaultValueFields())]

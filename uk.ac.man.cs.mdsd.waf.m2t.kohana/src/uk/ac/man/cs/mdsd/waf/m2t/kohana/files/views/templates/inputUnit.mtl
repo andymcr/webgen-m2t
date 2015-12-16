@@ -4,7 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::views::templates::displayUnit/]
@@ -16,14 +16,14 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 <section class="[dynamicUnit.styleClass/]<?php
-    if (isset($[dynamicUnit.errorName()/]) || isset($[dynamicUnit.fieldErrorsName()/]))
+    if (isset($[dynamicUnit.service.errorName()/]) || isset($[dynamicUnit.fieldErrorsName()/]))
         echo ' [dynamicUnit.errorClass/]';
 ?>" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[dynamicUnit.errorName()/])) { ?>
-   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.service.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.service.errorName()/])) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.service.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.formErrors()/]
@@ -58,9 +58,9 @@
 ?>" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[dynamicUnit.errorName()/])) { ?>
-   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.service.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.service.errorName()/])) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.service.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.formErrors()/]
@@ -80,7 +80,7 @@
 [/template]
 
 
-[template private form(unit : DynamicUnit, accessor : String)]
+[template private form(unit : DynamicUnit, accessor : String) post(trim())]
 [unit.formOpen(accessor)/]
  <ul>
 [for (field : UnitField | unit.inputOrEmbeddedFields())]
@@ -90,60 +90,23 @@
 [unit.formControlAndClose()/]
 [/template]
 
-[template private formOpen(unit : DynamicUnit, accessor : String)]
+[template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
 <?php
     echo Form::open(
         Route::get([if (unit.oclIsKindOf(Selectable))]
 $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
-'[unit.routeName()/]'[/if])->uri(array(
-[if (unit.oclIsKindOf(Selectable))]
-            [unit.inputRouteSelectionParameters(accessor, null, unit.renameRouteParameters())/]
-[/if]
-[if (unit.pageDisplayedOn().hasParameterisedUnits())]
-        )) . URL::query($query_parameters, FALSE),
-[else]
-        )),
-[/if]
+'[unit.routeName()/]'[/if])
+            ->uri([if (unit.oclIsKindOf(Selectable) and unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+ . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
-            'class' => '[unit.layoutClass/]' . (isset($[unit.errorName()/]) ? ' [unit.errorClass/]' : ''),
+            'class' => '[unit.layoutClass/]' . (isset($[unit.service.errorName()/]) ? ' [unit.errorClass/]' : ''),
             'enctype' => 'multipart/form-data'
         )) . PHP_EOL;
 ?>
 [/template]
 
-[template public inputRouteSelectionParameters(unit : DynamicUnit, accessor : String, parentAccessor : String, renameParameters : Boolean) post(trim())]
-[if (not unit.uriParent.oclIsUndefined())]
-[let accessor2 : String = if unit.parentAssociation.oclIsUndefined() then
-		accessor
-	else
-		accessor.concat('->').concat(unit.parentAssociation.modelPropertyName())
-	endif]
-[let parentAccessor2 : String = if not parentAccessor.oclIsUndefined() then
-		parentAccessor
-	else if unit.displayedOn = unit.uriParent.displayedOn then
-		'$'.concat(unit.uriParent.instanceName())
-	else
-		'$'.concat(unit.uriParent.uniqueName())
-	endif endif]
-[unit.uriParent.inputRouteSelectionParameters(accessor2, parentAccessor2, renameParameters)/]
-[/let]
-[/let]
-[/if]
-[if (unit.oclIsKindOf(Selectable))]
-	[for (key : ServiceFeatureReference | unit.service.keys)]
-		[if (parentAccessor.oclIsUndefined())]
-'[key.routeParameterName(unit.routeParameterPrepend(renameParameters))/]' => [key.getValue(accessor)/],
-		[else]
-'[key.routeParameterName(unit.routeParameterPrepend(renameParameters))/]' => [accessor/]->loaded()
-    ? [key.getValue(accessor)/]
-    : [key.getValue(parentAccessor)/],
-		[/if]
-	[/for]
-[/if]
-[/template]
-
-[template private formControlAndClose(unit : DynamicUnit)]
+[template private formControlAndClose(unit : DynamicUnit) post(trim())]
 [if (unit.hasMessagesOnFormFoot())]
 <?php if (isset($[unit.instanceName()/]->error->all)) { ?>
 <div class="[unit.errorClass/]">
@@ -182,7 +145,7 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
 ?>
 [/template]
 
-[template private formField(field : UnitField, unit : DynamicUnit)]
+[template private formField(field : UnitField, unit : DynamicUnit) post(trim())]
 [let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(field.modelPropertyName())]
 <li[if (unit.hasMessagesOnFeature())]<?php
     unset($field_error);
@@ -215,7 +178,7 @@ find_all()[else]
 [embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
 ?>
      <div class="framed [field.modelPropertyName()/]">
-      [field.oclAsType(UnitAssociation).units.generateViewContent(field.uniqueName())/]
+      [field.oclAsType(UnitAssociation).units.viewContent(field.uniqueName())/]
      </div>
 	[/let]
 	[/if]

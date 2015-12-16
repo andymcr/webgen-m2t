@@ -172,7 +172,7 @@
 
 [query public viewFilename(unit : ContentUnit) : String
 	= unit.displayedOn.oclAsType(Page).pageViewsDirectory().concat('/')
-		.concat(unit.instanceName())
+		.concat(unit.viewName())
 		.concat(unit.executableExtension())
 /]
 

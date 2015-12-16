@@ -56,6 +56,10 @@
 	= not model.authentication.oclIsUndefined()
 /]
 
+[query public services(model : WafModel, entityOrView : EntityOrView) : OrderedSet(Service)
+	= services->select(s | s.encapsulates->includes(entityOrView))
+/]
+
 [query public servicesWithSelections(model : WafModel) : Sequence(Service)
 	= model.services->select(s | s.selections->notEmpty()).oclAsType(Service)
 /]
@@ -93,9 +97,33 @@
 /]
 
 
+[query public childAssociation(parentService : Service, childService : Service) : ServiceAssociation
+	= parentService.features
+		->select(f | f.isContainer()).oclAsType(ServiceAssociation)
+		->select(f | childService.encapsulates->includes(f.targetType()))
+		->first()
+/]
+
 [comment for Kohana/]
 [query public keyName(service : Service) : String
 	= service.encapsulates->first().autoKeyName
+/]
+
+[query public parentService(service : Service) : Service
+	= let parents : Sequence(EntityOrView) 
+		= service.encapsulates
+			->select(eor | eor.oclIsTypeOf(Entity)).oclAsType(Entity)
+			->collect(e | e.features)
+			->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+			->select(f | f.opposite.container)
+			->collect(f | f.opposite.partOf)
+		in let potentialServices : Sequence(Service)
+			= parents->collect(e | service.partOf.services(e))
+			in if potentialServices->size() > 0 then
+					potentialServices->first()
+				else
+					null
+				endif
 /]
 
 [comment for Kohana/]
@@ -166,6 +194,14 @@
 			feature.oclAsType(ServiceAttribute).attribute.isCaseInsensitive()
 		else
 			false
+		endif
+/]
+
+[query public isContainer(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			false
+		else
+			feature.oclAsType(ServiceAssociation).association.isContainer()
 		endif
 /]
 
@@ -258,6 +294,12 @@
 		else
 			feature.name
 		endif
+/]
+
+[query public targetService(association : ServiceAssociation) : Service
+	= let targetServices : OrderedSet(Service)
+		= association.partOf.partOf.services(association.targetType())
+		in targetServices->first()
 /]
 
 [query public targetType(association : ServiceAssociation) : EntityOrView
@@ -401,6 +443,14 @@
 
 [query public captchaFields(unit : DynamicUnit) : Sequence(CaptchaField)
 	= unit.displayFields->select(f | f.oclIsTypeOf(CaptchaField)).oclAsType(CaptchaField)
+/]
+
+[query public containingUnit(unit : DynamicUnit) : DynamicUnit
+	= if unit.displayedOn.oclIsTypeOf(Page) then
+			unit
+		else
+			unit.displayedOn.oclAsType(UnitAssociation).displayedOn.containingUnit()
+		endif
 /]
 
 [query public defaultValueFields(unit : DynamicUnit) : Set(UnitField)
@@ -1044,5 +1094,13 @@
 			else
 				null
 			endif
+		endif
+/]
+
+[query public immediateUnit(action : InlineAction) : DynamicUnit
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit)
+		else
+			action.usedBy.oclAsType(UnitFeature).displayedOn
 		endif
 /]

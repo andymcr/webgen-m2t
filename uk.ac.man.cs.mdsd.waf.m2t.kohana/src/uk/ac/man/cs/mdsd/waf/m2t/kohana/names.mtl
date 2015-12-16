@@ -52,10 +52,21 @@
 /]
 
 
+[query public errorName(service : Service) : String
+	= service.instanceName().concat('_error')
+/]
+
+[query public instanceName(service : Service) : String
+	= service.modelName().toLowerFirst()
+/]
+
+[query public loadMethodName(service : Service) : String
+	= 'load_'.concat(service.instanceName())
+/]
+
 [query public modelClassName(service : Service) : String
 	= 'Model_'.concat(service.modelName())
 /]
-
 
 [query public modelName(service : Service) : String
 	= let entityOrView : EntityOrView = service.encapsulates->first()
@@ -75,6 +86,26 @@
 	= selection.name.toLowerFirst()
 /]
 
+
+[query public findMethodName(feature : ServiceAssociation) : String
+	= 'find_'.concat(feature.association.name.toLowerFirst().replaceAll('([A-Z])', '_$1'))
+/]
+
+[query public instanceName(feature : ServiceFeature) : String
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.name.toLowerFirst()
+		else
+			feature.oclAsType(ServiceAssociation).association.name.toLowerFirst()
+		endif
+/]
+
+[query public instanceName(feature : ServiceFeatureReference) : String
+	= if feature.oclIsTypeOf(ServiceAttributeReference) then
+			feature.oclAsType(ServiceAttributeReference).attribute.instanceName()
+		else
+			feature.oclAsType(ServiceAssociationReference).association.instanceName()
+		endif
+/]
 
 [query public modelName(feature : ServiceFeature) : String
 	= if feature.oclIsTypeOf(ServiceAssociation) then
@@ -111,11 +142,6 @@
 /]
 
 
-[query public errorName(selectable : Selectable) : String
-	= selectable.oclAsType(DynamicUnit).errorName()
-/]
-
-
 [query public actionName(unit : ContentUnit) : String
 	= unit.instanceName()
 /]
@@ -128,16 +154,22 @@
 	= unit.instanceName().concat('_count')
 /]
 
-[query public errorName(unit : DynamicUnit) : String
-	= unit.instanceName().concat('_error')
-/]
-
 [query public fieldErrorsName(unit : DynamicUnit) : String
 	= unit.instanceName().concat('_field_errors')
 /]
 
 [query public instanceName(unit : ContentUnit) : String
-	= unit.name.toLowerFirst()
+	= let unitName : String = unit.name.toLowerFirst()
+		in if unit.oclIsKindOf(DynamicUnit) then
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+			in if dynamicUnit.uriParent.oclIsUndefined() then
+					dynamicUnit.service.instanceName()
+				else
+					unitName
+				endif
+			else
+				unitName
+			endif
 /]
 
 [query public logoutActionName(unit : LoginUnit) : String
@@ -203,6 +235,10 @@
 		in key.concat('_').concat(unit.instanceName())
 /]
 
+[query public viewName(unit : ContentUnit) : String
+	= unit.name.toLowerFirst()
+/]
+
 
 [query public optionsName(field : UnitField) : String
 	= field.uniqueName().concat('_options')
@@ -262,4 +298,13 @@
 
 [query public parameterName(action : InlineAction) : String
 	= action.actionName()
+/]
+
+[query public routeName(action : DeleteAction) : String
+	= if action.usedBy.oclIsKindOf(IndexUnit) then
+			action.usedBy.oclAsType(IndexUnit).routeName()
+				.concat('_').concat(action.actionName())
+		else
+			''
+		endif
 /]

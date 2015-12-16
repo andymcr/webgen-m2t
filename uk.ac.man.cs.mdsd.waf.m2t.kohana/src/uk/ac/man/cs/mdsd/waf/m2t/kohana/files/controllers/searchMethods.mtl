@@ -38,7 +38,7 @@ public function action_[searchUnit.actionName()/]()
 		(field : UnitField | unit.inputFields())
 			separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
 		if (!empty($unreported_field_errors))
-			$this->[unit.errorName()/] = print_r($unreported_field_errors, TRUE);
+			$this->[unit.service.errorName()/] = print_r($unreported_field_errors, TRUE);
 	[/if]
 	[if (unit.hasEncryptedFeatures())]
 		[unit.clearEncryptedFeatures()/]

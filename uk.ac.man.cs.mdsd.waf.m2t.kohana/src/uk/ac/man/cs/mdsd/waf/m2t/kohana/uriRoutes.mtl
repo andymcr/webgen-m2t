@@ -1,40 +1,29 @@
 [comment encoding = UTF-8 /]
-[module featureProperties(
+[module uriRoutes(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
 [query public uriPath(service : Service) : String
-	= service.uriPath('')
-/]
-
-[query public uriPath(service : Service, parameterNamePrepend : String) : String
-	= service.keys->collect(k | k.routeParameterName(parameterNamePrepend))->sep('/<', '>/<', '>')->toString()
+	= service.keys->collect(k | k.routeParameterName())->sep('/<', '>/<', '>')->toString()
 /]
 
 
 [query public routeParameterName(feature : ServiceFeatureReference) : String
-	= feature.routeParameterName('')
-/]
-
-[query public routeParameterName(feature : ServiceFeatureReference, prepend : String) : String
-	= let name : String 
-		= if feature.oclIsTypeOf(ServiceAttributeReference) then
-				feature.oclAsType(ServiceAttributeReference).attribute.name
-			else
-				let association : ServiceAssociationReference = feature.oclAsType(ServiceAssociationReference)
-				in if association.childFeature.oclIsUndefined() then
-						association.association.name
-					else
-						association.childFeature.routeParameterName(prepend)
-					endif
-			endif
-		in if prepend = '' then
-				name
-			else
-				prepend.concat(name.toUpperFirst())
-			endif
+	= if feature.oclIsTypeOf(ServiceAttributeReference) then
+			let reference : ServiceAttributeReference = feature.oclAsType(ServiceAttributeReference)
+			in reference.attribute.partOf.modelName().toLowerFirst()
+				.concat(reference.attribute.name.toUpperFirst())
+		else
+			let reference : ServiceAssociationReference = feature.oclAsType(ServiceAssociationReference)
+			in if reference.childFeature.oclIsUndefined() then
+					reference.association.partOf.modelName().toLowerFirst()
+						.concat(reference.association.name)
+				else
+					reference.childFeature.routeParameterName()
+				endif
+		endif
 /]
 
 
@@ -59,6 +48,10 @@
 /]
 
 
+[query public hasRouteParameters(unit : ContentUnit) : Boolean
+	= unit.uriPathKeys()->notEmpty()
+/]
+
 [query public hasUnitMethods(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(EditUnit) then
 			true
@@ -75,18 +68,6 @@
 	= unit.logoutActionName()
 /]
 
-[query public renameRouteParameters(unit : ContentUnit) : Boolean
-	= unit.uriPathKeys()->size() <> Set{unit.uriPathKeys()}->size()
-/]
-
-[query public routeParameterPrepend(unit : ContentUnit, renameParameter : Boolean) : String
-	= if renameParameter then
-			unit.name.toLowerFirst()
-		else
-			''
-		endif
-/]
-
 [query public supportUriPath(unit : ContentUnit) : String
 	= unit.uriPath().concat('/support')
 /]
@@ -96,15 +77,11 @@
 /]
 
 [query public uriPath(unit : ContentUnit, create : Boolean) : String
-	= unit.uriPath(create, unit.renameRouteParameters())
-/]
-
-[query public uriPath(unit : ContentUnit, create : Boolean, renameParameters : Boolean) : String
 	= let uriElement : String 
 		= if not unit.oclIsKindOf(Selectable) or create then
 					''
 				else
-					unit.oclAsType(DynamicUnit).service.uriPath(routeParameterPrepend(renameParameters))
+					unit.oclAsType(DynamicUnit).service.uriPath()
 				endif
 			.concat(if unit.uriElement.oclIsUndefined() then
 					''
@@ -119,7 +96,7 @@
 				in if dynamicUnit.uriParent.oclIsUndefined() then
 					dynamicUnit.pageDisplayedOn().uriPath().concat(uriElement)
 				else
-					dynamicUnit.uriParent.uriPath(false, renameParameters).concat(uriElement)
+					dynamicUnit.uriParent.uriPath(false).concat(uriElement)
 				endif
 			endif
 /]
@@ -139,3 +116,15 @@
 					endif)
 		endif
 /]
+
+[query public uriPath(action : DeleteAction) : String
+	= if action.usedBy.oclIsKindOf(IndexUnit) then
+		let indexUnit : IndexUnit
+			= action.usedBy.oclAsType(IndexUnit)
+			in indexUnit.containingUnit().uriPath()
+				.concat(indexUnit.service.uriPath()).concat('/delete')
+		else
+			''
+		endif
+/]
+

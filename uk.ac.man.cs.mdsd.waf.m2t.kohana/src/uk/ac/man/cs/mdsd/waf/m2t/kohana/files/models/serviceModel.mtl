@@ -129,6 +129,18 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 	}
 
 [/if]
+[if (service.keys->notEmpty())]
+    [service.find()/]
+
+[/if]
+[for (association : ServiceAssociation | service.features->select(f | f.oclIsKindOf(ServiceAssociation)).oclAsType(ServiceAssociation))]
+[let targetService : Service = association.targetService()]
+	[if (association.isContainer() and targetService.keys->notEmpty())]
+    [association.findChild()/]
+
+	[/if]
+[/let]
+[/for]
 [if (entityOrView.hasValidatedFeatures())]
 [let userService : Service
 	= if authentication.oclIsUndefined() then
@@ -612,4 +624,57 @@ public function labels()
 [/for]
     );
 }
+[/template]
+
+[template private find(service : Service) post(trim())]
+public function find([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+$[key.instanceName()/] = NULL[/for])
+{
+[for (key : ServiceFeatureReference | service.keys)]
+    if (!empty($[key.instanceName()/]))
+	[if (key.oclIsTypeOf(ServiceAttributeReference))]
+        $this->where('[key.columnName()/]', '=', $[key.instanceName()/]);
+	[else]
+	[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
+	[let targetType : EntityOrView = associationKey.association.targetType()]
+        $this->join('[targetType.tableName/]')
+            ->on('[key.columnName()/]', '=', '[targetType.tableName/].[targetType.autoKeyName/]')
+            ->where('[associationKey.childFeature.columnName()/]', '=', $[key.instanceName()/]);
+	[/let]
+	[/let]
+	[/if]
+[/for]
+
+    parent::find();
+
+    return $this;
+}
+[/template]
+
+[template private findChild(association : ServiceAssociation) post(trim())]
+[let service : Service = association.targetService()]
+public function [association.findMethodName()/]([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+$[key.instanceName()/] = NULL[/for])
+{
+    $[association.instanceName()/] = $this->[association.modelPropertyName()/];
+[for (key : ServiceFeatureReference | service.keys)]
+    if (!empty($[key.instanceName()/]))
+	[if (key.oclIsTypeOf(ServiceAttributeReference))]
+        $[association.instanceName()/]->where('[key.columnName()/]', '=', $[key.instanceName()/]);
+	[else]
+	[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
+	[let targetType : EntityOrView = associationKey.association.targetType()]
+        $[association.instanceName()/]->join('[targetType.tableName/]')
+            ->on('[key.columnName()/]', '=', '[targetType.tableName/].[targetType.autoKeyName/]')
+            ->where('[associationKey.childFeature.columnName()/]', '=', $[key.instanceName()/]);
+	[/let]
+	[/let]
+	[/if]
+[/for]
+
+    $[association.instanceName()/]->find();
+
+    return $[association.instanceName()/];
+}
+[/let]
 [/template]

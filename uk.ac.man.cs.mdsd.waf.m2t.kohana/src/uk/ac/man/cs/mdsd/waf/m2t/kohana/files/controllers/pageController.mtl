@@ -2,7 +2,7 @@
 [module pageController(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::authenticationMethods/]
@@ -110,7 +110,10 @@ public function after()
 	[if (dataUnit.supportActions->notEmpty())]
 public function action_[dataUnit.supportActionName()/]()
 {
-	[for (action : UnitSupportAction | dataUnit.supportActions)]
+		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
+    $this->[dataUnit.service.loadMethodName()/]();
+		[/if]
+		[for (action : UnitSupportAction | dataUnit.supportActions)]
     if ($this->request->post('[action.actionName()/]'))
     {
         /* [protected ('support.'.concat(action.actionName()))]
@@ -118,7 +121,7 @@ public function action_[dataUnit.supportActionName()/]()
         /* [/protected]
          */
     }
-	[/for]
+		[/for]
 }
 
 	[/if]

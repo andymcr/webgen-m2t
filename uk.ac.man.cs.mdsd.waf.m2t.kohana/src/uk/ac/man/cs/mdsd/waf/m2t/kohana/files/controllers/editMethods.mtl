@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::controlMethods/]
 
@@ -13,13 +14,6 @@
 [template public beforeMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-$this->[editUnit.instanceName()/] = ORM::factory('[editUnit.modelName()/]');
-[if (editUnit.hasDefaultValueFields())]
-[editUnit.unitDefaultValues()/]
-[/if]
-[if (not editUnit.uriParent.oclIsUndefined() and editUnit.displayedOn <> editUnit.uriParent.displayedOn)]
-// TODO load uri parent
-[/if]
 [/let]
 [/template]
 
@@ -27,15 +21,11 @@ $this->[editUnit.instanceName()/] = ORM::factory('[editUnit.modelName()/]');
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.createAndBindTemplate()/]
-$[editUnit.templateInstanceName()/]->bind('[editUnit.instanceName()/]', $this->[editUnit.instanceName()/]);
+[editUnit.bindVariable(true)/]
 [editUnit.bindErrorMessage()/]
 [editUnit.bindFieldErrors()/]
-[if (not editUnit.uriParent.oclIsUndefined())]
-	[if (editUnit.displayedOn = editUnit.uriParent.displayedOn)]
-$[editUnit.templateInstanceName()/]->bind('[editUnit.uriParent.instanceName()/]', $this->[editUnit.uriParent.instanceName()/]);
-	[else]
-$[editUnit.templateInstanceName()/]->bind('[editUnit.uriParent.uniqueName()/]', $this->[editUnit.uriParent.uniqueName()/]);
-	[/if]
+[if (unit.oclIsKindOf(Selectable))]
+[editUnit.createAndBindRouteParameters()/]
 [/if]
 [for (association : UnitAssociation | editUnit.inputAssociations())]
 $[association.optionsName()/] = $this->[association.optionsName()/]();
@@ -43,7 +33,6 @@ $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[asso
 [/for]
 [/let]
 [/template]
-
 
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsKindOf(AuthenticationUnit)) post(trim())]
@@ -58,7 +47,7 @@ $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[asso
 [association.associationOptions()/]
 [/for]
 [for (action : InlineAction | editUnit.uriActions())]
-[action.generateActionMethod('$this->'.concat(editUnit.instanceName()).concat('_error'))/]
+[action.actionMethod()/]
 
 [/for]
 [/let]
@@ -83,15 +72,15 @@ public function action_[unit.actionName()/]()
     try
     {
 [if (unit.oclIsKindOf(Selectable))]
-        [unit.loadSelection(true)/]
-[/if]
-[if (unit.hasDefaultValueFields())]
+        $this->[unit.service.loadMethodName()/](TRUE);
+[else]
+        $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
+	[if (unit.hasDefaultValueFields())]
         [unit.unitDefaultValues()/]
+	[/if]
 [/if]
-[if (unit.oclIsKindOf(Selectable) or unit.hasDefaultValueFields())]
 
-[/if]
-        if ($this->request->method() == HTTP_Request::POST)
+        if ($this->request->method() == HTTP_Request::POST && !isset($this->[unit.service.errorName()/]))
         {
             [unit.valuesFromFormToModel()/]
 [if (unit.hasForcedValueFeatures())]
@@ -134,7 +123,7 @@ catch (ORM_Validation_Exception $e)
     (field : UnitField | unit.inputFields())
         separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
     if (!empty($unreported_field_errors))
-        $this->[unit.errorName()/] = print_r($unreported_field_errors, TRUE);
+        $this->[unit.service.errorName()/] = print_r($unreported_field_errors, TRUE);
 [/if]
 [if (unit.hasEncryptedFeatures())]
     [unit.clearEncryptedFeatures()/]

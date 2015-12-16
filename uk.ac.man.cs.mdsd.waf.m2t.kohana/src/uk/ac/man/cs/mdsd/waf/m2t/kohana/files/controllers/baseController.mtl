@@ -1,13 +1,15 @@
 [comment encoding = UTF-8 /]
 [module baseController(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
-[template public baseController(model : WafModel)]
+[template public baseController(model : WafModel) post(trim())]
 [file(model.controllersDirectory().concat('/Template/Base').concat(model.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
@@ -19,6 +21,10 @@ class [model.baseControllerClassName()/] extends Controller_Template
 
     [model.afterMethod()/]
 
+[for (service : Service | model.services)]
+    [service.selectionLoadMethod()/]
+
+[/for]
 [if (model.hasCaptchaFields())]
     [model.captchaValidationMethod()/]
 
@@ -27,7 +33,7 @@ class [model.baseControllerClassName()/] extends Controller_Template
 [/file]
 [/template]
 
-[template private beforeMethod(model : WafModel)]
+[template private beforeMethod(model : WafModel) post(trim())]
 public function before()
 {
     parent::before();
@@ -51,9 +57,9 @@ public function before()
         {
             $topbar_template = View::factory('elements/topbar_logged_in');
             $topbar_template->user = Auth::instance()->get_user();
-        } else {
-            $topbar_template = View::factory('elements/topbar');
         }
+        else
+            $topbar_template = View::factory('elements/topbar');
 [/if]
         $this->template->topbar = $topbar_template->render();
         $this->template->page_message = '';
@@ -62,14 +68,46 @@ public function before()
 }
 [/template]
 
-[template private afterMethod(model : WafModel)]
+[template private afterMethod(model : WafModel) post(trim())]
 public function after()
 {
     parent::after();
 }
 [/template]
 
-[template private captchaValidationMethod(model : WafModel)]
+[template private selectionLoadMethod(service : Service) post(trim())]
+protected function [service.loadMethodName()/]($validate = FALSE)
+{
+    if (!isset($this->[service.instanceName()/]))
+    {
+[if (service.parentService().oclIsUndefined())]
+        [service.selectionLoadRoot()/]
+[else]
+        [service.selectionLoadChild()/]
+[/if]
+        if (!$this->[service.instanceName()/]->loaded())
+            $this->[service.errorName()/] = 'Invalid [service.modelName()/] selection';
+        else if ($validate)
+            $this->[service.instanceName()/]->check();
+    }
+}
+[/template]
+
+[template private selectionLoadRoot(service : Service) post(trim())]
+$this->[service.instanceName()/] = ORM::factory('[service.modelName()/]')
+    ->find([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+$this->request->param('[key.routeParameterName()/]')[/for]);
+[/template]
+
+[template private selectionLoadChild(service : Service) post(trim())]
+[let parentService : Service = service.parentService()]
+$this->[parentService.loadMethodName()/]();
+$this->[service.instanceName()/] = $this->[parentService.instanceName()/]->[parentService.childAssociation(service).findMethodName()/]([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+$this->request->param('[key.routeParameterName()/]')[/for]);
+[/let]
+[/template]
+
+[template private captchaValidationMethod(model : WafModel) post(trim())]
 public function isCaptchaValid($response, $client_ip)
 {
     try
