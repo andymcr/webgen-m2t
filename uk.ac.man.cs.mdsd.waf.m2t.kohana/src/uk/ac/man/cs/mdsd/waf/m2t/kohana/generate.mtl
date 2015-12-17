@@ -60,7 +60,7 @@
 [model.generateTopNav()/]
 [model.menus.menu()/]
 [model.pages.units.generateUnitView()/]
-[model.pages.indexUnits().generatePaginationView()/]
+[model.pages.indexUnits().paginationView()/]
 
 [if (model.isAuthenticated())]
 [model.generateTopbarLoggedIn()/]

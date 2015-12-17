@@ -6,7 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
-[template public generatePaginationView(indexUnit : IndexUnit)]
+[template public paginationView(indexUnit : IndexUnit)]
 [file(indexUnit.paginationViewFilename(), false)]
 <div class="[indexUnit.controlClass/]">
 <?php

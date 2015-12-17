@@ -160,7 +160,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [if (indexUnit.actions->notEmpty())]
 <span class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-		[action.actionLink('$entry')/]
+		[action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
 	[/for]</span>
 [else]
 
@@ -188,7 +188,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [if (indexUnit.actions->notEmpty())]
   <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-		[action.actionLink('$entry')/]
+		[action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
 	[/for]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -227,7 +227,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [if (indexUnit.actions->notEmpty())]
    <td class="actions">
 	[for (action : InlineAction | indexUnit.actions)]
-    [action.actionLink('$entry')/]
+    [action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
 	[/for]</td>
  [/if]
   </tr>
@@ -327,8 +327,14 @@ $[feature.name/][else]
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isAssociationSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (association.oclAsType(UnitAssociation).units->isEmpty())]
-	[if (association.actions->isEmpty())]
+[if (association.oclAsType(UnitAssociation).units->notEmpty())]
+[let embeddedUnit : ContentUnit = association.units->first()]
+[association.units.viewContent(accessor)/]
+[/let]
+[else]
+	[if (association.actions->notEmpty())]
+    [association.actions->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), association.getValue(accessor))/]
+	[else]
 <?php
 		[if (association.maximumDisplaySize > 0)]
 		[let maxSize : Integer = association.maximumDisplaySize]
@@ -341,32 +347,7 @@ $[feature.name/][else]
 	echo [association.getValue(accessor)/];
 		[/if]
 ?>
-	[else]
-	[let action : InlineAction = association.actions->first()]
-	[let targetController : Page = action.controller()]
-	[let targetUnit : DynamicUnit = action.oclAsType(SelectAction).target.oclAsType(DynamicUnit)]
-<?php
-	echo HTML::anchor(
-		Route::get('[targetController.routeName()/]')->uri() . URL::query(array(
-				'[targetUnit.parameterName()/]' => [if (field.displayedOn.oclIsTypeOf(DetailsUnit))]
-[accessor/]->[targetUnit.service.keyName()/]
-	[else]
-[accessor/]->[field.displayedOn.service.keyName()/]
 	[/if]
-			), FALSE),
-		HTML::chars([association.getValue(accessor)/]),
-		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [association.getValue(accessor)/]),
-	));
-?>
-	[/let]
-	[/let]
-	[/let]
-	[/if]
-[else]
-[let embeddedUnit : ContentUnit = association.units->first()]
-[association.units.viewContent(accessor)/]
-[/let]
 [/if]
 [/let]
 [/template]
@@ -384,18 +365,7 @@ $[feature.name/][else]
 		[if (association.actions->isEmpty())]
 	echo [association.getValue('$value')/];
 		[else]
-		[let action : InlineAction = association.actions->first()]
-		[let targetController : Page = action.controller()]
-	echo HTML::anchor(
-		Route::get('[targetController.routeName()/]')->uri() . URL::query(array(
-				'[action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).parameterName()/]' => $value->[field.displayedOn.service.keyName()/]
-			), FALSE),
-		HTML::chars([association.getValue('$value')/]),
-		array(
-			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [association.label.label('$value')/]),
-	));
-		[/let]
-		[/let]
+    [association.actions->first().actionLink(accessor, association.getValue('$value'))/]
 		[/if]
 ?></span><?php } ?>
 	[/if]
@@ -499,14 +469,14 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/template]
 
 
-[template public actionLink(action : InlineAction, accessor : String)
+[template public actionLink(action : InlineAction, accessor : String, label : String)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
 <?php
     echo HTML::anchor(
         Route::get('[targetUnit.routeName()/]')->uri([action.routeParameters(accessor)/]),
-		HTML::chars(__('[action.displayLabel/]')),
+		HTML::chars(__([label/])),
 		array(
 			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
 	));
@@ -515,13 +485,13 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, accessor : String)
+[template public actionLink(action : InlineAction, accessor : String, label : String)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
 <?php
     echo HTML::anchor(
         Route::get('[delete.routeName()/]')->uri([action.routeParameters(accessor)/]),
-        HTML::chars(__('[action.displayLabel/]')),
+        HTML::chars(__([label/])),
         array(
             'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
             'onclick' => 'return confirm(\'' . [accessor/]->defaultLabel() . ' ' . __('[delete.confirmMessage/]') . '\');',

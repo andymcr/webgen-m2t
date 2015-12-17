@@ -165,7 +165,7 @@
 
 [query public paginationViewFilename(unit : ContentUnit) : String
 	= unit.displayedOn.oclAsType(Page).pageViewsDirectory().concat('/')
-		.concat(unit.instanceName()).concat('_pagination')
+		.concat(unit.viewName()).concat('_pagination')
 		.concat(unit.executableExtension())
 /]
 
