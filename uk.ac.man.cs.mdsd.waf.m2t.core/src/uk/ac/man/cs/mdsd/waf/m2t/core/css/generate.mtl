@@ -7,9 +7,9 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::print/]
 
 
-[template public generateCSS(model : WafModel, cssDirectory : String)]
-[model.generateDefaultCSS(cssDirectory)/]
-[model.generateNonPrintCSS(cssDirectory)/]
-[model.generatePrintCSS(cssDirectory)/]
-[model.generateCustomCSS(cssDirectory)/]
+[template public css(model : WafModel, cssDirectory : String)]
+[model.defaultCSS(cssDirectory)/]
+[model.nonPrintCSS(cssDirectory)/]
+[model.printCSS(cssDirectory)/]
+[model.customCSS(cssDirectory)/]
 [/template]

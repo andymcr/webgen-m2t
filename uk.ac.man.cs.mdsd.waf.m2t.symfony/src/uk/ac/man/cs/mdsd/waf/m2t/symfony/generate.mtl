@@ -27,7 +27,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::topmenu/]
 
 
-[template public generateSymfony(model : WafModel)]
+[template public symfony(model : WafModel)]
 [model.generateParameters()/]
 [model.generateParametersDist()/]
 [model.generateConfig()/]
@@ -44,7 +44,7 @@
 [model.services.generateFormType()/]
 [model.pages.generateController()/]
 
-[model.generateCSS(model.cssDirectory())/]
+[model.css(model.cssDirectory())/]
 [model.generateMenu()/]
 [model.menus.generateMenu()/]
 [model.generatePage()/]

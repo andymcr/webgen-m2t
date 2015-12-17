@@ -30,7 +30,16 @@
 
 
 [query public modelClassName(service : Service) : String
-	= service.firstEntity().modelClassName()
+	= service.modelName()
+/]
+
+[query public modelName(service : Service) : String
+	= let entityOrView : EntityOrView = service.encapsulates->first()
+		in if not entityOrView.oclIsUndefined() then
+			entityOrView.modelName()
+			else
+				'????'
+			endif
 /]
 
 [query public serviceClassName(service : Service) : String

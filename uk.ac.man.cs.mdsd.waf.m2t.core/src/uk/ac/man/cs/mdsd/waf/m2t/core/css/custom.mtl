@@ -3,7 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 
 
-[template public generateCustomCSS(model : WafModel, cssDirectory : String)]
+[template public customCSS(model : WafModel, cssDirectory : String)]
 [file (cssDirectory.concat('/').concat('custom.css'), false)]
 /* [protected ('css.custom')]
  */

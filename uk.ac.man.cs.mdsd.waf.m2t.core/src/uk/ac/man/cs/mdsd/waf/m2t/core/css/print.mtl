@@ -3,7 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 
 
-[template public generatePrintCSS(model : WafModel, cssDirectory : String)]
+[template public printCSS(model : WafModel, cssDirectory : String)]
 [file (cssDirectory.concat('/').concat('print.css'), false)]
 #page {
 	width: 52em;

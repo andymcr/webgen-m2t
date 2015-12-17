@@ -3,7 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 
 
-[template public generateDefaultCSS(model : WafModel, cssDirectory : String)]
+[template public defaultCSS(model : WafModel, cssDirectory : String)]
 [file (cssDirectory.concat('/').concat('default.css'), false)]
 * {
 	margin: 0;

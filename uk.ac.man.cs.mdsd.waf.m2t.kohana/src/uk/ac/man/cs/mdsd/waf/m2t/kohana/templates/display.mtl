@@ -1,0 +1,495 @@
+[comment encoding = UTF-8 /]
+[module display(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
+
+
+[template public unitView(unit : ContentUnit)
+	? (unit.oclIsKindOf(DataUnit)) post(trim())]
+[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+[let accessor : String = '$'.concat(dataUnit.instanceName())]
+[file(dataUnit.viewFilename(), false)]
+<section class="[dataUnit.styleClass/]<?php
+	if (isset($[dataUnit.service.errorName()/])) {
+		echo ' [dataUnit.errorClass/]';
+	}
+?>" id="[dataUnit.instanceName()/]">
+ <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle('$'.concat(dataUnit.instanceName()))/]</h1>
+ <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.service.errorName()/])) echo ' hidden'; ?>">
+  <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.service.errorName()/]) ? $[dataUnit.service.errorName()/] : ''); ?></p>
+ </section>
+[if (not dataUnit.oclIsKindOf(IndexUnit))]
+ [dataUnit.viewContent(accessor)/]
+	[if (dataUnit.supportActions->notEmpty())]
+  [dataUnit.unitSupportLinks(accessor)/]
+	[/if]
+[else]
+[let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
+ <div class="unit_padding">
+  [dataUnit.viewContent(accessor)/]
+	[if (indexUnit.defaultPaginationSize > 0)]
+<?php echo $pagination; ?>
+	[/if]
+	[if (dataUnit.supportActions->notEmpty())]
+  [dataUnit.unitSupportLinks(accessor)/]
+	[/if]
+ </div>
+[/let]
+[/if]
+</section>
+[/file]
+[/let]
+[/let]
+[/template]
+
+
+[template private unitTitle(unit : DataUnit, unitAccessor : String)
+	? (unit.oclIsTypeOf(IndexGridUnit) or unit.title.oclIsUndefined())  post(trim())]
+[unit.displayLabel/]
+[/template]
+
+[template private unitTitle(unit : DataUnit, unitAccessor : String)
+	? (not unit.title.oclIsUndefined())  post(trim())]
+[let labelAccessor : String
+	= if unit.title.oclIsKindOf(Attribute) then
+			unitAccessor.concat('->').concat(unit.title.oclAsType(Attribute).modelPropertyName())
+		else
+			unitAccessor
+		endif]
+<?php echo HTML::chars([unit.title.label(labelAccessor)/]); ?>
+[/let]
+[/template]
+
+
+[template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
+ <?php
+    echo Form::open(
+        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters())]
+$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+ . URL::query($query_parameters, FALSE)[/if],
+        array(
+            'id' => '[unit.instanceName()/]',
+            'class' => '[unit.controlClass/]'
+        )) . PHP_EOL;
+[for (action : UnitSupportAction | unit.supportActions)]
+    [action.unitSupportLink()/] . PHP_EOL;
+[/for]
+    echo Form::close() . PHP_EOL;
+?>
+[/template]
+
+[template public unitSupportLink(action : UnitSupportAction) post(trim())]
+echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not action.confirmMessage.oclIsUndefined())], array(
+        'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
+    )[/if])
+[/template]
+
+
+[template public viewContent(unit : ContentUnit, accessor : String)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[detailsUnit.detailsContent(accessor)/]
+[/let]
+[/template]
+
+[template public detailsContent(unit : DataUnit, accessor : String)
+	post(trim())]
+[if (unit.hasOmitFieldLabels())]
+<ul class="[unit.layoutClass/]">
+[else]
+<dl class="[unit.layoutClass/]">
+[/if]
+[for (field : UnitField | unit.displayFields)]
+[let fieldAccessor : String = accessor.concat('->').concat(field.modelPropertyName())]
+	[if (field.conditionalDisplay())]
+		[if (field.oclIsKindOf(UnitElement))]
+ <?php if (!empty([field.getValue(accessor)/])) { ?>
+		[else]
+ <?php if ([field.getValue(accessor)/]) { ?>
+		[/if]
+	[/if]
+	[if (unit.hasOmitFieldLabels())]
+ <li class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</li>
+	[else]
+ <dt class="[field.displayClass()/]">[field.displayLabel()/]</dt>
+ <dd class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</dd>
+	[/if]
+	[if (field.conditionalDisplay())]
+  <?php } ?>
+	[/if]
+[/let]
+[/for]
+[if (unit.hasOmitFieldLabels())]
+</ul>
+[else]
+</dl>
+[/if]
+[/template]
+
+[template protected viewContent(unit : DataUnit, accessor : String)
+	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
+[let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
+<ul class="[indexUnit.layoutClass/]">
+<?php foreach ([accessor/] as $entry): ?>
+ <li>
+[if (not indexUnit.omitCaption)]
+  <section>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('$entry')/]</h1>
+[/if]
+[for (field : UnitField | indexUnit.displayFields) ]
+[let fieldAccessor : String = '$entry'.concat('->').concat(field.modelPropertyName())]
+	[if (field.conditionalDisplay())]
+		[if (field.oclIsKindOf(UnitElement))]
+<?php if (!empty([field.getValue(fieldAccessor)/])) { ?>
+		[else]
+<?php if ([field.getValue(fieldAccessor)/]) { ?>
+		[/if]
+	[/if]
+<span class="[field.modelPropertyName()/]">[field.displayValue(fieldAccessor)/]</span>
+	[if (field.conditionalDisplay())]
+<?php } ?>
+	[/if]
+[/let]
+[/for]
+[if (indexUnit.actions->notEmpty())]
+<span class="actions">
+	[for (action : InlineAction | indexUnit.actions)]
+		[action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
+	[/for]</span>
+[else]
+
+[/if]
+[if (not indexUnit.omitCaption)]
+  </section>
+[/if]
+ </li>
+<?php endforeach ?>
+</ul>
+[/let]
+[/template]
+
+[template protected viewContent(unit : DataUnit, instanceVariable : String)
+	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
+[let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
+<ul class="[indexUnit.layoutClass/]">
+<?php foreach ([instanceVariable/] as $entry): ?>
+ <li>
+[if (not indexUnit.omitCaption)]
+  <section>
+   <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('$entry')/]</h1>
+[/if]
+  [unit.detailsContent('$entry')/]
+[if (indexUnit.actions->notEmpty())]
+  <td class="actions">
+	[for (action : InlineAction | indexUnit.actions)]
+		[action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
+	[/for]</td>
+[/if]
+[if (not indexUnit.omitCaption)]
+  </section>
+[/if]
+ </li>
+<?php endforeach ?>
+</ul>
+[/let]
+[/template]
+
+[template public viewContent(unit : DataUnit, instanceVariable : String)
+	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
+[let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
+<table class="[indexUnit.layoutClass/]">
+[if (not indexUnit.omitColumnLabels)]
+ <thead class="[indexUnit.headerClass/]">
+  <tr>
+ 	[for (field : UnitField | indexUnit.displayFields)]
+   <th>[field.displayLabel()/]</th>
+ 	[/for]
+	[if (indexUnit.actions->notEmpty())]
+   <th><?php echo __('Actions'); ?></th>
+	[/if]
+  </tr>
+ </thead>
+[/if]
+ <tbody>
+<?php foreach ([instanceVariable/] as $entry): ?>
+  <tr class="<?php echo Text::alternate([for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
+ [for (field : UnitField | indexUnit.displayFields)]
+[let fieldAccessor : String = '$entry'.concat('->').concat(field.modelPropertyName())]
+   <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
+[/let]
+[/for]
+[if (indexUnit.actions->notEmpty())]
+   <td class="actions">
+	[for (action : InlineAction | indexUnit.actions)]
+    [action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
+	[/for]</td>
+ [/if]
+  </tr>
+<?php endforeach ?>
+ </tbody>
+</table>
+[/let]
+[/template]
+
+
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.isDataTypeSingleton() and not field.isBooleanDataType()) post(trim())]
+[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+[if (feature.actions->isEmpty())]
+<?php
+	[if (feature.maximumDisplaySize > 0)]
+    [feature.trimValue(feature.getValue(accessor))/]
+	[else]
+    echo HTML::chars([feature.getValue(accessor)/]);
+	[/if]
+?>
+[else]
+    [feature.actions->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor))/]
+[/if]
+[/let]
+[/template]
+
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.isDateSingleton() or field.isEnumerationTypeSingleton()) post(trim())]
+<?php
+[if (field.maximumDisplaySize > 0)]
+    [field.trimValue(field.getValue(accessor))/]
+[else]
+    echo [field.getValue(accessor)/];
+[/if]
+?>
+[/template]
+
+[template public displayValue(field : UnitField, accessor : String) 
+	? (field.isBooleanDataType()) post(trim())] 
+<?php
+	echo Form::checkbox('[field.modelPropertyName()/]', '1', (bool) [field.getValue(accessor)/], array( 
+		'class' => '[field.styleClass()/] [field.inputClass()/]', 
+		'disabled' => '' 
+	));
+?>
+[/template] 
+ 
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.isResourceSingleton()) post(trim())]
+[let attribute : UnitElement = field.oclAsType(UnitElement)]
+<?php
+[if (not attribute.conditionalDisplay())]
+    if (!empty([attribute.getValue(accessor)/]))
+[/if]
+        echo HTML::anchor(
+            [attribute.getValue(accessor)/],
+            '[attribute.displayLabel()/]',
+            NULL, NULL, FALSE);
+?>
+[/let]
+[/template]
+
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.isAssociationSingleton()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.oclAsType(UnitAssociation).units->notEmpty())]
+[let embeddedUnit : ContentUnit = association.units->first()]
+[association.units.viewContent(accessor)/]
+[/let]
+[else]
+	[if (association.actions->notEmpty())]
+    [association.actions->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), association.getValue(accessor))/]
+	[else]
+<?php
+		[if (association.maximumDisplaySize > 0)]
+    [association.trimValue(association.getValue(accessor))/]
+		[else]
+    echo [association.getValue(accessor)/];
+		[/if]
+?>
+	[/if]
+[/if]
+[/let]
+[/template]
+
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.oclIsKindOf(UnitAssociation) and not field.isSingleton()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.units->isEmpty())]
+[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
+<?php foreach ([accessor/]->find_all() as $value) {
+    ?><p><?php echo [association.getValue('$value')/]; ?></p>
+<?php } ?>
+	[else]
+<?php foreach ([accessor/]->find_all() as $value) { ?><span><?php 
+		[if (association.actions->notEmpty())]
+    [association.actions->first().actionLink(accessor, association.getValue('$value'))/]
+		[else]
+			[if (association.maximumDisplaySize > 0)]
+    [association.trimValue(association.getValue('$value'))/]
+			[else]
+    echo [association.getValue('$value')/];
+			[/if]
+		[/if]
+?></span><?php } ?>
+	[/if]
+[else]
+[let embeddedUnit : ContentUnit = association.units->first()]
+<?php
+	$[field.displayedOn.uniqueName()/] = [accessor/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
+find_all()[else]
+[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
+?>
+[association.units.viewContent('$'.concat(field.displayedOn.uniqueName()))/]
+[/let]
+[/if]
+[/let]
+[/template]
+
+
+[template public trimValue(field : UnitField, value : String) post(trim())]
+if (strlen([value/]) > [field.maximumDisplaySize/])
+    echo substr([value/], 0, [field.maximumDisplaySize/] - 3) . '...';
+else
+    echo [value/];
+[/template]
+
+
+[template public getValue(field : UnitField, accessor : String) post(trim())]
+[if (field.oclIsTypeOf(UnitFeature))]
+[field.oclAsType(UnitFeature).getValue(accessor)/]
+[else]
+NULL
+[/if]
+[/template]
+
+[template public getValue(feature : UnitFeature, accessor : String) post(trim())]
+[if (feature.oclIsTypeOf(UnitElement))]
+[feature.oclAsType(UnitElement).getValue(accessor)/]
+[else]
+[feature.oclAsType(UnitAssociation).getValue(accessor)/]
+[/if]
+[/template]
+
+[template public getValue(attribute : UnitElement, accessor : String) post(trim())]
+[attribute.serviceFeature.attribute.getValue(attribute, accessor)/]
+[/template]
+
+[template public getValue(association : UnitAssociation, accessor : String) post(trim())]
+[if (association.childFeature.oclIsUndefined())]
+	[if (not association.label.oclIsUndefined())]
+[association.label.label(accessor)/]
+	[else]
+[accessor/]->defaultLabel()
+	[/if]
+[else]
+[association.childFeature.getValue(accessor)/]
+[/if]
+[/template]
+
+[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
+	? (childFeature.oclIsTypeOf(ServiceAttributeReference)) post(trim())]
+[let childAttribute : ServiceAttributeReference = childFeature.oclAsType(ServiceAttributeReference)]
+[let childAccessor : String = accessor.concat('->').concat(childAttribute.attribute.modelPropertyName())]
+[let unitFeatures : Sequence(UnitFeature) = childFeature.ancestors(UnitFeature)]
+[if (unitFeatures->notEmpty())]
+[childAttribute.attribute.attribute.getValue(unitFeatures->first(), childAccessor)/]
+[else]
+[childAttribute.attribute.attribute.getValue(null, childAccessor)/]
+[/if]
+[/let]
+[/let]
+[/let]
+[/template]
+
+[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
+	? (childFeature.oclIsTypeOf(ServiceAssociationReference)) post(trim())]
+[let childAssociation : ServiceAssociationReference = childFeature.oclAsType(ServiceAssociationReference)]
+[let childAccessor : String = accessor.concat('->').concat(childAssociation.association.modelPropertyName())]
+[if (childAssociation.childFeature.oclIsUndefined())]
+[childAccessor/]->defaultLabel()
+[else]
+[childAssociation.childFeature.getValue(childAccessor)/]
+[/if]
+[/let]
+[/let]
+[/template]
+
+
+[template public getValue(feature : Feature, field : UnitField, accessor : String)
+	? (feature.isDataTypeSingleton() or feature.isResource()) post(trim())]
+[accessor/]
+[/template]
+
+[template public getValue(feature : Feature, field : UnitField, accessor : String)
+	? (feature.isDateSingleton()) post(trim())]
+[if (field.dateFormat.oclIsUndefined())]
+[accessor/];
+[else]
+Helpers_View::date([accessor/], '[field.dateFormat/]');
+[/if]
+[/template]
+
+[template public getValue(feature : Feature, field : UnitField, accessor : String)
+	? (feature.isEnumerationTypeSingleton()) post(trim())]
+[let enumerationType : EnumerationType
+	= feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+[enumerationType.modelClassName()/]::option([accessor/])
+[/let]
+[/template]
+
+
+[template public actionLink(action : InlineAction, accessor : String, label : String)
+	? (action.oclIsTypeOf(SelectAction))  post(trim())]
+[let select : SelectAction = action.oclAsType(SelectAction)]
+[let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
+<?php
+    echo HTML::anchor(
+        Route::get('[targetUnit.routeName()/]')->uri([action.routeParameters(accessor)/]),
+		HTML::chars(__([label/])),
+		array(
+			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
+	));
+?>
+[/let]
+[/let]
+[/template]
+
+[template public actionLink(action : InlineAction, accessor : String, label : String)
+	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
+[let delete : DeleteAction = action.oclAsType(DeleteAction)]
+<?php
+    echo HTML::anchor(
+        Route::get('[delete.routeName()/]')->uri([action.routeParameters(accessor)/]),
+        HTML::chars(__([label/])),
+        array(
+            'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
+            'onclick' => 'return confirm(\'' . [accessor/]->defaultLabel() . ' ' . __('[delete.confirmMessage/]') . '\');',
+    ));
+?>
+[/let]
+[/template]
+
+
+[template private routeParameters(action : InlineAction, accessor : String) post(trim())]
+[if (action.immediateUnit().containingUnit().hasRouteParameters())]
+array_merge($route_parameters, array(
+    [action.immediateUnit().service.routeParameters(accessor)/]
+))
+[else]
+array(
+    [action.immediateUnit().service.routeParameters(accessor)/]
+)
+[/if]
+[/template]
+
+[template private routeParameters(service : Service, accessor : String) post(trim())]
+[for (key : ServiceFeatureReference | service.keys)]
+'[key.routeParameterName()/]' => [key.getValue(accessor)/],
+[/for]
+[/template]
+

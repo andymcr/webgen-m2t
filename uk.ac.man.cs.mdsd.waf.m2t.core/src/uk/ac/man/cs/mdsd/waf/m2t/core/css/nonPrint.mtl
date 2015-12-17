@@ -3,7 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 
 
-[template public generateNonPrintCSS(model : WafModel, cssDirectory : String)]
+[template public nonPrintCSS(model : WafModel, cssDirectory : String)]
 [file (cssDirectory.concat('/').concat('non-print.css'), false)]
 @media only screen and (max-width: 60em) {
 	#page {
