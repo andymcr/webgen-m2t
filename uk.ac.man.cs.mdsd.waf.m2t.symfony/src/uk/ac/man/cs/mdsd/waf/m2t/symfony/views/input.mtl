@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module formUnit(
+[module input(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
@@ -300,24 +300,11 @@ find_all()[else]
 <?php } ?>
 [/if]
    <div class="[dynamicUnit.controlClass/]">
-[if (not dynamicUnit.oclIsTypeOf(ActionUnit))]
    <?php
 		echo Form::button('[dynamicUnit.instanceName()/]', '[dynamicUnit.submitLabel()/]', array(
 			'type' => 'submit'
 		)) . PHP_EOL;
 ?>
-[else]
-			[for (action : UnitSupportAction | dynamicUnit.oclAsType(ActionUnit).supportActions)]
-  <?php
-		echo Form::button('[action.name/]', '[action.displayLabel/]', array(
-			'type' => 'submit',
-[if (not action.confirmMessage.oclIsUndefined())]
-			'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
-[/if]
-		)) . PHP_EOL;
-?>
-			[/for]
-[/if]
 [if (dynamicUnit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = dynamicUnit.oclAsType(EditUnit)]
 	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]

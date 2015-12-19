@@ -64,7 +64,10 @@ public function action_[unit.actionName()/]()
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
 	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
     if ($this->request->post('clear'))
+    {
+        $this->redirect(Route::get('[unit.routeName(true)/]')->uri());
         return;
+    }
 
 	[/if]
 [/let]
@@ -72,13 +75,20 @@ public function action_[unit.actionName()/]()
     try
     {
 [if (unit.oclIsKindOf(Selectable))]
-        $this->[unit.service.loadMethodName()/](TRUE);
-[else]
-        $this->[unit.instanceName()/] = ORM::factory('[unit.modelName()/]');
-[/if]
+        if ([for (key : ServiceFeatureReference | unit.service.keys) separator(' || ')]
+!empty($this->request->param('[key.routeParameterName()/]'))[/for])
+            $this->[unit.service.loadMethodName()/](TRUE);
+        else
 	[if (unit.hasDefaultValueFields())]
-        [unit.unitDefaultValues()/]
+        {
+            [unit.createVariable()/]
+        }
+	[else]
+            [unit.createVariable()/]
 	[/if]
+[else]
+        [unit.createVariable()/]
+[/if]
 
         if ($this->request->method() == HTTP_Request::POST && !isset($this->[unit.service.errorName()/]))
         {
@@ -96,21 +106,33 @@ public function action_[unit.actionName()/]()
             // [protected ('customise.values.'.concat(unit.instanceName()))]
             // [/protected]
 [/if]
-            $this->[unit.instanceName()/]->save([if (unit.hasInterfaceFields())]$extra_validation[/if]);
+[if (not unit.service.parentService().oclIsUndefined())]
+[let parentService : Service = unit.service.parentService()]
+[let columnName : String = unit.service.parentAssociation(parentService).columnName()]
+            if (empty($this->[unit.service.instanceName()/]->[columnName/]))
+            {
+                $this->[parentService.loadMethodName()/]();
+                $this->[unit.service.instanceName()/]->[columnName/] = $this->[parentService.instanceName()/]->id;
+            }
+[/let]
+[/let]
+[/if]
+            $this->[unit.service.instanceName()/]->save([if (unit.hasInterfaceFields())]$extra_validation[/if]);
 [if (not unit.oclAsType(EditUnit).confirmDestination.oclIsUndefined())]
             $this->redirect(Route::get('[unit.oclAsType(EditUnit).confirmDestination.routeName()/]')->uri());
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-            $this->[unit.instanceName()/]->clear();
+            $this->[unit.service.instanceName()/]->clear();
 		[if (unit.hasInterfaceFields())]
 			[for (field : InterfaceField | unit.interfaceFields())]
-            unset($this->[unit.instanceName()/]->[field.modelPropertyName()/]);
+            unset($this->[unit.service.instanceName()/]->[field.modelPropertyName()/]);
 			[/for]
 		[/if]
 	[/if]
 [/if]
         }
     }
+    [unit.catchSelectionException()/]
     [unit.catchValidationException()/]
 [if (unit.hasCaptchaFields())]
     [unit.catchCaptchaException()/]
@@ -139,7 +161,9 @@ private function unit_rules
 public function [association.optionsName()/]()
 {
     $options = array();
+[if (association.isSingleton())]
     $options['['/][']'/] = "Please select";
+[/if]
     foreach (ORM::factory('[association.serviceFeature.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)

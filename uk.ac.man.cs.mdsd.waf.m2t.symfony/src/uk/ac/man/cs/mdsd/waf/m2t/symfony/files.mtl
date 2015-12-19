@@ -158,7 +158,7 @@
 
 [query public viewFilename(unit : ContentUnit) : String
 	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
-		.concat(unit.instanceName())
+		.concat(unit.viewName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 

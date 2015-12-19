@@ -279,13 +279,6 @@
 		endif
 /]
 
-[query public modelName(action : FeatureSupportAction) : String
-	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).service.modelName()
-		else
-			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
-		endif
-/]
 
 [query public modelName(action : SelectAction) : String
 	= let unit : DynamicUnit

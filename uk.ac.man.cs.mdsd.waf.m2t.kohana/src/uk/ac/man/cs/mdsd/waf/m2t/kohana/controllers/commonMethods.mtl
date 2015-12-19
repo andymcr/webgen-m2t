@@ -48,15 +48,21 @@ $[unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameter
 [/if]
 [/template]
 
+[template public createVariable(unit : DynamicUnit) post(trim())]
+$this->[unit.service.instanceName()/] = ORM::factory('[unit.modelName()/]');
+[if (unit.hasDefaultValueFields())]
+[unit.unitDefaultValues()/]
+[/if]
+[/template]
+
 [template public createVariableIfAbsent(unit : DynamicUnit) post(trim())]
 if (!isset($this->[unit.service.instanceName()/]))
 [if (unit.hasDefaultValueFields())]
 {
-[/if]
-    $this->[unit.service.instanceName()/] = ORM::factory('[unit.modelName()/]');
-[if (unit.hasDefaultValueFields())]
-[unit.unitDefaultValues()/]
+    [unit.createVariable()/]
 }
+[else]
+    [unit.createVariable()/]
 [/if]
 [/template]
 
@@ -78,34 +84,36 @@ if (!empty($this->[unit.fieldErrorsName()/]))
 [/template]
 
 [template public createAndBindRouteParameters(unit : DynamicUnit) post(trim())]
-$[unit.instanceName()/]_route_parameters = array(
-    [unit.service.routeParameters()/]
-);
+$[unit.instanceName()/]_route_parameters = array();
+if ($this->[service.instanceName()/]->loaded())
+{
+    [unit.service.routeParameters('$'.concat(unit.instanceName()).concat('_route_parameters'))/]
+}
 $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/]_route_parameters);
 [/template]
 
-[template private routeParameters(service : Service) post(trim())]
+[template private routeParameters(service : Service, variable : String) post(trim())]
 [if (not service.parentService().oclIsUndefined())]
-[service.parentService().routeParameters()/]
+[service.parentService().routeParameters(variable)/]
 [/if]
 [for (key : ServiceFeatureReference | service.keys)]
-'[key.routeParameterName()/]' => [key.getValue('$this->'.concat(service.instanceName()))/],
+[variable/]['['/]'[key.routeParameterName()/]'[']'/] = [key.getValue('$this->'.concat(service.instanceName()))/];
 [/for]
 [/template]
 
 [template public valuesFromFormToModel(unit : DynamicUnit) post(trim())]
-$this->[unit.instanceName()/]->values($this->request->post(), array([for
+$this->[unit.service.instanceName()/]->values($this->request->post(), array([for
 	(field : UnitField | unit.nonResourceInputFeatures()->select(f | not f.isEncrypted()))
 	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
 [/template]
 
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]
 [for (field : UnitField | unit.defaultValueFields())]
-if (empty($this->[unit.instanceName()/]->[field.modelPropertyName()/]))
+if (empty($this->[unit.service.instanceName()/]->[field.modelPropertyName()/]))
 [if (field.oclIsTypeOf(UnitElement))]
-    $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.generateCriteria()/];
+    $this->[unit.service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.generateCriteria()/];
 [else]
-    $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
+    $this->[unit.service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
 [/if]
 [/for]
 [/template]
@@ -114,9 +122,9 @@ if (empty($this->[unit.instanceName()/]->[field.modelPropertyName()/]))
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
 [for (feature : IncludedFeature | unit.forcedValueFeatures())]
 	[if (feature.oclIsTypeOf(IncludedAttribute))]
-$this->[unit.instanceName()/]->[feature.oclAsType(IncludedAttribute).attribute.columnName()/] = [feature.forcedValue.generateCriteria()/];
+$this->[unit.service.instanceName()/]->[feature.oclAsType(IncludedAttribute).attribute.columnName()/] = [feature.forcedValue.generateCriteria()/];
 	[else]
-$this->[unit.instanceName()/]->[feature.oclAsType(IncludedAssociation).association.columnName()/] = [feature.forcedValue.generateCriteria()/];
+$this->[unit.service.instanceName()/]->[feature.oclAsType(IncludedAssociation).association.columnName()/] = [feature.forcedValue.generateCriteria()/];
 	[/if]
 [/for]
 [/template]
@@ -127,10 +135,16 @@ $captcha = $this->isCaptchaValid(
     Request::$client_ip); 
 if (!$captcha['['/]'success'[']'/])
 	throw new Captcha_Exception($captcha['['/]'error-codes'[']'/]);
-[comment $this->login_field_errors 'captcha' = $captcha 'error-codes' 0 == 'missing-input-response'
-					? 'Not completed'
-					: 'reCAPTCHA cannot be verified';
-/]
+[/template]
+
+[template public catchSelectionException(unit : DynamicUnit)]
+catch (Controller_SelectionException $se)
+{
+    $this->[unit.service.errorName()/] = $se->message();
+[if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
+[unit.exceptionCleanup()/]
+[/if]
+}
 [/template]
 
 [template public catchValidationException(unit : DynamicUnit)]
@@ -144,8 +158,8 @@ catch (ORM_Validation_Exception $e)
     if (!empty($unreported_field_errors))
         $this->[unit.service.errorName()/] = print_r($unreported_field_errors, TRUE);
 [/if]
-[if (unit.hasEncryptedFeatures())]
-    [unit.clearEncryptedFeatures()/]
+[if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
+[unit.exceptionCleanup()/]
 [/if]
 }
 [/template]
@@ -159,13 +173,19 @@ catch (Captcha_Exception $e)
         ? $e->message()['['/]0[']'/]
         : print_r($e->message(), TRUE);
 [/for]
-[if (unit.hasEncryptedFeatures())]
-    [unit.clearEncryptedFeatures()/]
-[/if]
-[if (unit.hasInterfaceFields())]
-    [unit.rememberInterfaceFields()/]
+[if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
+[unit.exceptionCleanup()/]
 [/if]
 }
+[/template]
+
+[template private exceptionCleanup(unit : DynamicUnit) post(trim())]
+[if (unit.hasEncryptedFeatures())]
+[unit.clearEncryptedFeatures()/]
+[/if]
+[if (unit.hasInterfaceFields())]
+[unit.rememberInterfaceFields()/]
+[/if]
 [/template]
 
 [template public interfaceFieldValidation(unit : DynamicUnit) post(trim())]
@@ -203,16 +223,15 @@ $this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
 [let actionUnit : DynamicUnit = action.immediateUnit()]
 public function action_[deleteAction.actionName()/]()
 {
-	$this->[actionUnit.service.loadMethodName()/]();
-	if ($this->[actionUnit.service.instanceName()/]->loaded())
-[if (not deleteAction.destination.oclIsUndefined())]
-	{
-[/if]
+    try
+    {
+        $this->[actionUnit.service.loadMethodName()/]();
 		$this->[actionUnit.service.instanceName()/]->delete();
 [if (not deleteAction.destination.oclIsUndefined())]
-		$this->redirect(Route::get('[deleteAction.destination.routeName()/]')->uri());
-	}
+        $this->redirect(Route::get('[deleteAction.destination.routeName()/]')->uri());
 [/if]
+    }
+    [actionUnit.containingUnit().catchSelectionException()/]
 }
 [/let]
 [/let]
@@ -220,19 +239,16 @@ public function action_[deleteAction.actionName()/]()
 
 [template public actionMethod(action : InlineAction)
 	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
-[let supportAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+[let unit : DynamicUnit = action.immediateUnit().containingUnit()]
 public function action_[action.actionName()/]()
 {
-	$[supportAction.instanceName()/] = ORM::factory('[supportAction.modelName()/]', $this->request->param('param'));
-	if (!$[supportAction.instanceName()/]->loaded())
-		errorVariable/] = 'Invalid [supportAction.modelName()/] identifier';
-	else
-	{
-		/* [protected ('support.'.concat(supportAction.actionName()))]
-		 */
-		/* [/protected]
-		 */
-	}
+    try
+    {
+        $this->[action.immediateUnit().containingUnit().service.loadMethodName()/]();
+        // [protected ('support.'.concat(action.actionName()))]
+        // [/protected]
+    }
+    [unit.catchSelectionException()/]
 }
 [/let]
 [/template]

@@ -109,6 +109,15 @@
 	= service.encapsulates->first().autoKeyName
 /]
 
+[query public parentAssociation(childService : Service, parentService : Service) : ServiceAssociation
+	= childService.features
+		->select(f | f.oclIsTypeOf(ServiceAssociation)).oclAsType(ServiceAssociation)
+		->select(a | a.association.oclIsKindOf(EntityAssociation))
+		->select(a | a.association.oclAsType(EntityAssociation).opposite.isContainer())
+		->select(a | parentService.encapsulates->includes(a.targetType()))
+		->first()
+/]
+
 [query public parentService(service : Service) : Service
 	= let parents : Sequence(EntityOrView) 
 		= service.encapsulates

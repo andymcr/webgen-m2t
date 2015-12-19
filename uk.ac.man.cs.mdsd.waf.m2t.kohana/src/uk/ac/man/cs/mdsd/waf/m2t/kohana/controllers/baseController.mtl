@@ -86,8 +86,8 @@ protected function [service.loadMethodName()/]($validate = FALSE)
         [service.selectionLoadChild()/]
 [/if]
         if (!$this->[service.instanceName()/]->loaded())
-            $this->[service.errorName()/] = 'Invalid [service.modelName()/] selection';
-        else if ($validate)
+            throw new Controller_SelectionException('Invalid [service.modelName()/] selection');
+        if ($validate)
             $this->[service.instanceName()/]->check();
     }
 }

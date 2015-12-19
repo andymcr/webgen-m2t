@@ -7,7 +7,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::authenticationMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::commonMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::controlMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::detailsMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::editMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::indexMethods/]
@@ -111,17 +110,15 @@ public function after()
 public function action_[dataUnit.supportActionName()/]()
 {
 		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
-    $this->[dataUnit.service.loadMethodName()/]();
-		[/if]
-		[for (action : UnitSupportAction | dataUnit.supportActions)]
-    if ($this->request->post('[action.actionName()/]'))
+    try
     {
-        /* [protected ('support.'.concat(action.actionName()))]
-         */
-        /* [/protected]
-         */
+        $this->[dataUnit.service.loadMethodName()/]();
+        [dataUnit.supportActionHandlers()/]
     }
-		[/for]
+    [dataUnit.catchSelectionException()/]
+		[else]
+    [dataUnit.supportActionHandlers()/]
+		[/if]
 }
 
 	[/if]
@@ -131,4 +128,14 @@ public function action_[dataUnit.supportActionName()/]()
  */
 /* [/protected]
  */
+[/template]
+
+[template private supportActionHandlers(unit : DataUnit)]
+[for (action : UnitSupportAction | unit.supportActions)]
+if ($this->request->post('[action.actionName()/]'))
+{
+    // [protected ('support.'.concat(action.actionName()))]
+    // [/protected]
+    }
+[/for]
 [/template]

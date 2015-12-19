@@ -318,22 +318,10 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	? (field.oclIsKindOf(UnitAssociation) and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
-[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
-<?php foreach ([accessor/]->find_all() as $value) {
-    ?><p><?php echo [association.getValue('$value')/]; ?></p>
-<?php } ?>
+	[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
+<?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation(accessor)/]</p><?php } ?>
 	[else]
-<?php foreach ([accessor/]->find_all() as $value) { ?><span><?php 
-		[if (association.actions->notEmpty())]
-    [association.actions->first().actionLink(accessor, association.getValue('$value'))/]
-		[else]
-			[if (association.maximumDisplaySize > 0)]
-    [association.trimValue(association.getValue('$value'))/]
-			[else]
-    echo [association.getValue('$value')/];
-			[/if]
-		[/if]
-?></span><?php } ?>
+<?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation(accessor)/]</span><?php } ?>
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
@@ -348,6 +336,20 @@ find_all()[else]
 [/let]
 [/if]
 [/let]
+[/template]
+
+[template private displayAssociation(association : UnitAssociation, accessor : String) post(trim())]
+[if (association.actions->notEmpty())]
+[association.actions->first().actionLink(accessor, association.getValue('$value'))/]
+[else]
+	[if (association.maximumDisplaySize > 0)]
+<?php
+    [association.trimValue(association.getValue('$value'))/]
+?>
+[else]
+<?php echo [association.getValue('$value')/]; ?>
+	[/if]
+[/if]
 [/template]
 
 
@@ -488,6 +490,10 @@ array(
 [/template]
 
 [template private routeParameters(service : Service, accessor : String) post(trim())]
+[if (not service.parentService().oclIsUndefined())]
+// xx
+[service.parentService().routeParameters(accessor.concat('->').concat(service.parentAssociation(service.parentService()).modelPropertyName()))/]
+[/if]
 [for (key : ServiceFeatureReference | service.keys)]
 '[key.routeParameterName()/]' => [key.getValue(accessor)/],
 [/for]

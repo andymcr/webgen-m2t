@@ -50,10 +50,3 @@
 [entry.displayLabel/][/if]</li>
 [/let]
 [/template]
-
-[template private generateMenuEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(FixedCommandMenuEntry))]
-[let entry : FixedCommandMenuEntry = entry.oclAsType(FixedCommandMenuEntry)]
-<li><{{ entry.displayLabel() }}</li>
-[/let]
-[/template]

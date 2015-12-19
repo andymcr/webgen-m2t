@@ -14,6 +14,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::config::pagination]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::baseController]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::pageController]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::exceptions::captcha]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::exceptions::selection]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::models::enumerationModel]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::models::extendedOrm]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::models::serviceModel]
@@ -49,6 +51,8 @@
 
 [model.baseController()/]
 [model.pages.pageController()/]
+[model.captchaException()/]
+[model.selectionException()/]
 
 [model.css(model.cssDirectory())/]
 [model.page()/]

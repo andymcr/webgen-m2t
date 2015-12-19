@@ -17,7 +17,7 @@
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.onlyDisplayWhenNotEmpty)]
 [detailsUnit.createVariableIfAbsent()/]
-if ($this->[unit.instanceName()/]->loaded() || isset($this->[detailsUnit.service.errorName()/]))
+if ($this->[detailsUnit.service.instanceName()/]->loaded() || isset($this->[detailsUnit.service.errorName()/]))
 {
     [detailsUnit.createAndBindTemplate()/]
     [detailsUnit.bindVariable(false)/]
@@ -48,21 +48,16 @@ if ($this->[unit.instanceName()/]->loaded() || isset($this->[detailsUnit.service
 [template private actionMethod(unit : DetailsUnit) post(trim())]
 public function action_[unit.actionName()/]()
 {
-    $this->[unit.service.loadMethodName()/]();
-[if (not unit.defaultSelection.oclIsUndefined())]
-	[if (unit.service.keys->notEmpty())]
-    if (!$this->[unit.service.instanceName()/]-loaded())
+    try
     {
-        $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
-        [unit.detectInvalidSelectionX()/]
+        $this->[unit.service.loadMethodName()/]();
     }
-	[else]
-    $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
-    [unit.detectInvalidSelectionX()/]
-	[/if]
-[/if]
+    [unit.catchSelectionException()/]
+[if (not unit.defaultSelection.oclIsUndefined())]
+//        $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
 [if (unit.hasDefaultValueFields())]
-    [unit.unitDefaultValues()/]
+//    [unit.unitDefaultValues()/]
+[/if]
 [/if]
 }
 [/template]

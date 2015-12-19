@@ -111,6 +111,10 @@
 		in key.concat('_').concat(unit.instanceName())
 /]
 
+[query public viewName(unit : ContentUnit) : String
+	= unit.name.toLowerFirst()
+/]
+
 
 [query public actionName(action : InlineAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
