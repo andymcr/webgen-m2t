@@ -82,8 +82,7 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createUpdateUnit7CreationTool());
 		paletteContainer.add(createSearchUnit8CreationTool());
 		paletteContainer.add(createCreateSitemapUnit9CreationTool());
-		paletteContainer.add(createActionUnit10CreationTool());
-		paletteContainer.add(createCommandUnit11CreationTool());
+		paletteContainer.add(createCommandUnit10CreationTool());
 		return paletteContainer;
 	}
 
@@ -516,24 +515,13 @@ public class WebsitePaletteFactory {
 	}
 
 	/**
-	 * @generated
-	 */
-	private ToolEntry createActionUnit10CreationTool() {
-		ToolEntry entry = new ToolEntry(Messages.ActionUnit10CreationTool_title, Messages.ActionUnit10CreationTool_desc,
-				null, null) {
+	* @generated
+	*/
+	private ToolEntry createCommandUnit10CreationTool() {
+		ToolEntry entry = new ToolEntry(Messages.CommandUnit10CreationTool_title,
+				Messages.CommandUnit10CreationTool_desc, null, null) {
 		};
-		entry.setId("createActionUnit10CreationTool"); //$NON-NLS-1$
-		return entry;
-	}
-
-	/**
-	 * @generated
-	 */
-	private ToolEntry createCommandUnit11CreationTool() {
-		ToolEntry entry = new ToolEntry(Messages.CommandUnit11CreationTool_title,
-				Messages.CommandUnit11CreationTool_desc, null, null) {
-		};
-		entry.setId("createCommandUnit11CreationTool"); //$NON-NLS-1$
+		entry.setId("createCommandUnit10CreationTool"); //$NON-NLS-1$
 		return entry;
 	}
 

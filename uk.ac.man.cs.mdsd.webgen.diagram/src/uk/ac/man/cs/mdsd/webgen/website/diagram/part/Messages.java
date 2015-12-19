@@ -546,24 +546,14 @@ public class Messages extends NLS {
 	public static String CreateSitemapUnit9CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String ActionUnit10CreationTool_title;
+	* @generated
+	*/
+	public static String CommandUnit10CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String ActionUnit10CreationTool_desc;
-
-	/**
-	 * @generated
-	 */
-	public static String CommandUnit11CreationTool_title;
-
-	/**
-	 * @generated
-	 */
-	public static String CommandUnit11CreationTool_desc;
+	* @generated
+	*/
+	public static String CommandUnit10CreationTool_desc;
 
 	/**
 	 * @generated
