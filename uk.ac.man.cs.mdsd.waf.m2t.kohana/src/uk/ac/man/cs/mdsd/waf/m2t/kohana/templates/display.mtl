@@ -26,7 +26,7 @@
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.viewContent(accessor)/]
-	[if (dataUnit.supportActions->notEmpty())]
+	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
   [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [else]
@@ -36,7 +36,7 @@
 	[if (indexUnit.defaultPaginationSize > 0)]
 <?php echo $pagination; ?>
 	[/if]
-	[if (dataUnit.supportActions->notEmpty())]
+	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
   [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
  </div>
@@ -76,7 +76,7 @@
             'id' => '[unit.instanceName()/]',
             'class' => '[unit.controlClass/]'
         )) . PHP_EOL;
-[for (action : UnitSupportAction | unit.supportActions)]
+[for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
     [action.unitSupportLink()/] . PHP_EOL;
 [/for]
     echo Form::close() . PHP_EOL;
@@ -156,7 +156,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	[/if]
 [/let]
 [/for]
-[if (indexUnit.actions->notEmpty())]
+[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
 <span class="actions">[indexUnit.actions('$entry')/]</span>
 [else]
 
@@ -181,7 +181,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
    <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('$entry')/]</h1>
 [/if]
   [unit.detailsContent('$entry')/]
-[if (indexUnit.actions->notEmpty())]
+[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
   <td class="actions">[indexUnit.actions('$entry')/]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -203,7 +203,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
  	[for (field : UnitField | indexUnit.displayFields)]
    <th>[field.displayLabel()/]</th>
  	[/for]
-	[if (indexUnit.actions->notEmpty())]
+	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <th><?php echo __('Actions'); ?></th>
 	[/if]
   </tr>
@@ -217,7 +217,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
    <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
 [/let]
 [/for]
-[if (indexUnit.actions->notEmpty())]
+[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <td class="actions">[indexUnit.actions('$entry')/]</td>
  [/if]
   </tr>
@@ -228,7 +228,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template]
 
 [template private actions(unit : IndexUnit, accessor : String) post(trim())]
-[for (action : InlineAction | unit.actions)]
+[for (action : InlineAction | unit.actions->select(a | not a.disable))]
 [action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.service)/]
 [/for]
 [/template]
@@ -237,7 +237,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isDataTypeSingleton() and not field.isBooleanDataType()) post(trim())]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-[if (feature.actions->isEmpty())]
+[if (feature.actions->select(a | not a.disable)->isEmpty())]
 <?php
 	[if (feature.maximumDisplaySize > 0)]
     [feature.trimValue(feature.getValue(accessor))/]
@@ -246,7 +246,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	[/if]
 ?>
 [else]
-    [feature.actions->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.displayedOn.service)/]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.displayedOn.service)/]
 [/if]
 [/let]
 [/template]
@@ -294,7 +294,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [if (association.units->isEmpty())]
 [association.displayAssociation(accessor, parentAccessor, association.service())/]
 [else]
-[association.units->first().viewContent(parentAccessor)/]
+[association.units->first().viewContent(accessor)/]
 [/if]
 [/let]
 [/let]
@@ -325,8 +325,8 @@ find_all()[else]
 [/template]
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String, service : Service) post(trim())]
-[if (association.actions->notEmpty())]
-[association.actions->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
+[if (association.actions->select(a | not a.disable)->notEmpty())]
+[association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
 [else]
 	[if (association.maximumDisplaySize > 0)]
 <?php

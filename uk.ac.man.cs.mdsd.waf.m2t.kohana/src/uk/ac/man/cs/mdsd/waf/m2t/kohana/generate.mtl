@@ -16,6 +16,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::controllers::pageController]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::exceptions::captcha]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::exceptions::selection]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::helpers::view]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::models::enumerationModel]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::models::extendedOrm]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::models::serviceModel]
@@ -61,6 +62,8 @@
 [model.menus.menu()/]
 [model.pages.units.unitView()/]
 [model.pages.indexUnits().paginationView()/]
+
+[model.viewHelper()/]
 
 [if (model.isAuthenticated())]
 [model.topbarLoggedIn()/]
