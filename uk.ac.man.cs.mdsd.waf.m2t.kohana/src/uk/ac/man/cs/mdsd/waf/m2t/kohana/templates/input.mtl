@@ -443,7 +443,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
     echo Form::select(
         '[field.formName()/]',
         [enumerationType.modelClassName()/]::options([field.isRequired()/]),
-        [field.getValue(accessor)/],
+        [accessor/],
         array(
             'id' => '[field.uniqueName()/]',
             'class' => '[field.styleClass()/] [field.inputClass()/]',

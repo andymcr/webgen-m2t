@@ -162,7 +162,7 @@ Route::set('default', '')
 		'controller' => '[model.homePage().controllerName()/]',
 		'action'  => '[model.homePage().units->first().actionName()/]',
 	));
-[for (page : Page | model.pages->sortedBy(p | p.uriPath()))]
+[for (page : Page | model.pages)]
 	[if (page.units->size() = 0)]
 Route::set('[page.routeName()/]', '[page.uriPath()/]')->defaults(array(
     'controller' => '[page.controllerName()/]',

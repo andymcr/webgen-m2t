@@ -424,10 +424,7 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 
 [template public getValue(feature : Feature, field : UnitField, accessor : String)
 	? (feature.isEnumerationTypeSingleton()) post(trim())]
-[let enumerationType : EnumerationType
-	= feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
-[enumerationType.modelClassName()/]::option([accessor/])
-[/let]
+[feature.enumerationType().modelClassName()/]::option([accessor/])
 [/template]
 
 

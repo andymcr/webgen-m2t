@@ -1095,7 +1095,7 @@
 
 [query public service(association : UnitAssociation) : Service
 	= let services : OrderedSet(Service)
-		= association.pageDisplayedOn().partOf.services(association.association.type())
+		= association.pageDisplayedOn().partOf.services(association.association.sourceType())
 		in services->first()
 /]
 

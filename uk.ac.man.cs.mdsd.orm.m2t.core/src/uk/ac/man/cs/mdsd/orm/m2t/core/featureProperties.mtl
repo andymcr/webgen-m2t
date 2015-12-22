@@ -114,6 +114,16 @@
 		endif endif endif
 /]
 
+[query public enumerationType(feature : Feature) : EnumerationType
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.enumerationType()
+		else if feature.oclIsKindOf(SingletonElement) then
+			feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)
+		else
+			null
+		endif endif
+/]
+
 [query public hasColumn(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(SingletonAttribute) then
 			true
@@ -332,6 +342,16 @@
 		endif endif endif
 /]
 
+[query public sourceType(association : Association) : EntityOrView
+	= if association.oclIsKindOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).partOf
+		else if association.oclIsKindOf(EncapsulatedAssociation) then
+			association.oclAsType(EncapsulatedAssociation).association.sourceType()
+		else
+			'???' -- association.oclAsType(ViewAssociation).
+		endif endif
+/]
+
 [query public targetType(association : Association) : EntityOrView
 	= if association.oclIsKindOf(EntityAssociation) then
 			association.oclAsType(EntityAssociation).opposite.partOf
@@ -341,4 +361,3 @@
 			association.oclAsType(ViewAssociation).opposite.targetType()
 		endif endif
 /]
-

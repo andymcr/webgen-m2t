@@ -13,30 +13,30 @@
 <?php
 class [enumerationType.modelClassName()/] {
 [for (literal : EnumerationLiteral | enumerationType.enumerations)]
-	const [literal.name()/] = [i/];
+    const [literal.name()/] = [i/];
 [/for]
 
-	public static function options($required = FALSE) {
-		$options = array();
-		if (!$required) {
-			$options['['/][']'/] = '';
-		}
+    public static function options($required = FALSE)
+    {
+        $options = array();
+        if (!$required)
+            $options['['/][']'/] = '';
 [for (literal : EnumerationLiteral | enumerationType.enumerations)]
-		$options['['/]self::[literal.name()/][']'/] = '[literal.displayLabel/]';
+        $options['['/]self::[literal.name()/][']'/] = '[literal.displayLabel/]';
 [/for]
 
-		return $options;
-	}
+        return $options;
+    }
 
-	public static function option($value = null, $default = '') {
-		$options = [enumerationType.modelClassName()/]::options();
+    public static function option($value = null, $default = '')
+    {
+        $options = [enumerationType.modelClassName()/]::options();
 
-		if (array_key_exists($value, $options)) {
-			return $options['['/]$value[']'/];
-		}
+        if (array_key_exists($value, $options))
+            return $options['['/]$value[']'/];
 
-		return $default;
-	}
+        return $default;
+    }
 
 }
 [/file]

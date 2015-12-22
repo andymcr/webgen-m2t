@@ -138,7 +138,11 @@
 /]
 
 [query public routeName(page : Page) : String
-	= page.units->select(u | u.oclIsKindOf(IndexUnit))->first().routeName()
+	= if page.units->size() = 0 then
+			page.name
+		else
+			page.units->select(u | u.oclIsKindOf(IndexUnit))->first().routeName()
+		endif
 /]
 
 
