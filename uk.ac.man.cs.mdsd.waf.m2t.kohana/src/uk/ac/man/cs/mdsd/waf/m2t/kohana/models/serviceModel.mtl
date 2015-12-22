@@ -115,12 +115,10 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 
 [/if]
 [for (association : ServiceAssociation | service.features->select(f | f.oclIsKindOf(ServiceAssociation)).oclAsType(ServiceAssociation))]
-[let targetService : Service = association.targetService()]
 	[if (association.isContainer())]
     [association.findChild()/]
 
 	[/if]
-[/let]
 [/for]
 [if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
 	[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]

@@ -25,15 +25,15 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 
     [page.afterMethod()/]
 
+[if (page.units->size() = 0)]
     public function action_index()
     {
     }
 
+[/if]
 [for (unit : ContentUnit | page.units)]
-	[if (unit.hasUnitMethods())]
     [unit.unitMethods()/]
 
-	[/if]
 [/for]
 [if (page.hasSupportActions())]
     [page.supportActionMethods()/]

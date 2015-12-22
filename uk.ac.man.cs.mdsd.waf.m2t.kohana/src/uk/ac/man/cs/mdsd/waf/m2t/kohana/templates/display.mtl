@@ -70,8 +70,7 @@
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
  <?php
     echo Form::open(
-        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters())]
-$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
@@ -148,7 +147,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 		[if (field.oclIsKindOf(UnitElement))]
 <?php if (!empty([field.getValue(fieldAccessor)/])) { ?>
 		[else]
-<?php if ([field.getValue(fieldAccessor)/]) { ?>
+<?php if ([field.getValue(fieldAccessor)/]->loaded()) { ?>
 		[/if]
 	[/if]
 <span class="[field.modelPropertyName()/]">[field.displayValue(fieldAccessor)/]</span>
@@ -158,10 +157,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/let]
 [/for]
 [if (indexUnit.actions->notEmpty())]
-<span class="actions">
-	[for (action : InlineAction | indexUnit.actions)]
-		[action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
-	[/for]</span>
+<span class="actions">[indexUnit.actions('$entry')/]</span>
 [else]
 
 [/if]
@@ -186,10 +182,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/if]
   [unit.detailsContent('$entry')/]
 [if (indexUnit.actions->notEmpty())]
-  <td class="actions">
-	[for (action : InlineAction | indexUnit.actions)]
-		[action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
-	[/for]</td>
+  <td class="actions">[indexUnit.actions('$entry')/]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
   </section>
@@ -225,16 +218,19 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/let]
 [/for]
 [if (indexUnit.actions->notEmpty())]
-   <td class="actions">
-	[for (action : InlineAction | indexUnit.actions)]
-    [action.actionLink('$entry', '\''.concat(action.displayLabel).concat('\''))/]
-	[/for]</td>
+   <td class="actions">[indexUnit.actions('$entry')/]</td>
  [/if]
   </tr>
 <?php endforeach ?>
  </tbody>
 </table>
 [/let]
+[/template]
+
+[template private actions(unit : IndexUnit, accessor : String) post(trim())]
+[for (action : InlineAction | unit.actions)]
+[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.service)/]
+[/for]
 [/template]
 
 
@@ -250,7 +246,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	[/if]
 ?>
 [else]
-    [feature.actions->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor))/]
+    [feature.actions->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.displayedOn.service)/]
 [/if]
 [/let]
 [/template]
@@ -294,23 +290,13 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isAssociationSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (association.oclAsType(UnitAssociation).units->notEmpty())]
-[let embeddedUnit : ContentUnit = association.units->first()]
-[association.units.viewContent(accessor)/]
-[/let]
+[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('->') - 1)]
+[if (association.units->isEmpty())]
+[association.displayAssociation(accessor, parentAccessor, association.service())/]
 [else]
-	[if (association.actions->notEmpty())]
-    [association.actions->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), association.getValue(accessor))/]
-	[else]
-<?php
-		[if (association.maximumDisplaySize > 0)]
-    [association.trimValue(association.getValue(accessor))/]
-		[else]
-    echo [association.getValue(accessor)/];
-		[/if]
-?>
-	[/if]
+[association.units->first().viewContent(parentAccessor)/]
 [/if]
+[/let]
 [/let]
 [/template]
 
@@ -319,9 +305,9 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
 	[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
-<?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation(accessor)/]</p><?php } ?>
+<?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation('$value', '$value', association.serviceFeature.targetService())/]</p><?php } ?>
 	[else]
-<?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation(accessor)/]</span><?php } ?>
+<?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation('$value', '$value', association.serviceFeature.targetService())/]</span><?php } ?>
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
@@ -338,16 +324,16 @@ find_all()[else]
 [/let]
 [/template]
 
-[template private displayAssociation(association : UnitAssociation, accessor : String) post(trim())]
+[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String, service : Service) post(trim())]
 [if (association.actions->notEmpty())]
-[association.actions->first().actionLink(accessor, association.getValue('$value'))/]
+[association.actions->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
 [else]
 	[if (association.maximumDisplaySize > 0)]
 <?php
-    [association.trimValue(association.getValue('$value'))/]
+    [association.trimValue(association.getValue(accessor))/]
 ?>
 [else]
-<?php echo [association.getValue('$value')/]; ?>
+<?php echo [association.getValue(accessor)/]; ?>
 	[/if]
 [/if]
 [/template]
@@ -445,13 +431,15 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/template]
 
 
-[template public actionLink(action : InlineAction, accessor : String, label : String)
+[template public actionLink(action : InlineAction, accessor : String, label : String, service : Service)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
 <?php
     echo HTML::anchor(
-        Route::get('[targetUnit.routeName()/]')->uri([action.routeParameters(accessor)/]),
+        Route::get('[targetUnit.routeName()/]')->uri(array(
+            [service.routeParameters(accessor)/]
+        )),
 		HTML::chars(__([label/])),
 		array(
 			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
@@ -461,12 +449,14 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, accessor : String, label : String)
+[template public actionLink(action : InlineAction, accessor : String, label : String, service : Service)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
 <?php
     echo HTML::anchor(
-        Route::get('[delete.routeName()/]')->uri([action.routeParameters(accessor)/]),
+        Route::get('[delete.routeName()/]')->uri(array(
+            [service.routeParameters(accessor)/]
+        )),
         HTML::chars(__([label/])),
         array(
             'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
@@ -477,21 +467,8 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/template]
 
 
-[template private routeParameters(action : InlineAction, accessor : String) post(trim())]
-[if (action.immediateUnit().containingUnit().hasRouteParameters())]
-array_merge($route_parameters, array(
-    [action.immediateUnit().service.routeParameters(accessor)/]
-))
-[else]
-array(
-    [action.immediateUnit().service.routeParameters(accessor)/]
-)
-[/if]
-[/template]
-
 [template private routeParameters(service : Service, accessor : String) post(trim())]
 [if (not service.parentService().oclIsUndefined())]
-// xx
 [service.parentService().routeParameters(accessor.concat('->').concat(service.parentAssociation(service.parentService()).modelPropertyName()))/]
 [/if]
 [for (key : ServiceFeatureReference | service.keys)]

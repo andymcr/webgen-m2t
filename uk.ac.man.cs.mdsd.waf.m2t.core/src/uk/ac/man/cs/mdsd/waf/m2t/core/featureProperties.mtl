@@ -1093,6 +1093,12 @@
 		in className.replaceAll('([A-Z])', '_$1').toLowerCase()
 /]
 
+[query public service(association : UnitAssociation) : Service
+	= let services : OrderedSet(Service)
+		= association.pageDisplayedOn().partOf.services(association.association.type())
+		in services->first()
+/]
+
 
 [query public controller(action : InlineAction) : Page
 	= if action.oclIsTypeOf(SelectAction) then

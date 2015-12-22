@@ -138,7 +138,7 @@
 /]
 
 [query public routeName(page : Page) : String
-	= page.instanceName()
+	= page.units->select(u | u.oclIsKindOf(IndexUnit))->first().routeName()
 /]
 
 
@@ -159,17 +159,7 @@
 /]
 
 [query public instanceName(unit : ContentUnit) : String
-	= let unitName : String = unit.name.toLowerFirst()
-		in if unit.oclIsKindOf(DynamicUnit) then
-			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-			in if dynamicUnit.uriParent.oclIsUndefined() then
-					dynamicUnit.service.instanceName()
-				else
-					unitName
-				endif
-			else
-				unitName
-			endif
+	= unit.name.toLowerFirst()
 /]
 
 [query public logoutActionName(unit : LoginUnit) : String
@@ -207,7 +197,7 @@
 [query public routeName(unit : ContentUnit, create : Boolean) : String
 	= unit.uniqueName()
 		.concat(if create then
-				'x'
+				'_create'
 			else
 				''
 			endif)
@@ -294,10 +284,6 @@
 /]
 
 [query public routeName(action : DeleteAction) : String
-	= if action.usedBy.oclIsKindOf(IndexUnit) then
-			action.usedBy.oclAsType(IndexUnit).routeName()
-				.concat('_').concat(action.actionName())
-		else
-			''
-		endif
+	= action.immediateUnit().containingUnit().routeName()
+		.concat('_').concat(action.name.toLowerFirst())
 /]

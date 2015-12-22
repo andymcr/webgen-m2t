@@ -125,9 +125,17 @@ FALSE
 [template public unitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
+[indexUnit.actionMethod()/]
+
 [for (action : InlineAction | unit.uriActions())]
 [action.actionMethod()/]
 
 [/for]
 [/let]
+[/template]
+
+[template private actionMethod(unit : IndexUnit) post(trim())]
+public function action_[unit.actionName()/]()
+{
+}
 [/template]

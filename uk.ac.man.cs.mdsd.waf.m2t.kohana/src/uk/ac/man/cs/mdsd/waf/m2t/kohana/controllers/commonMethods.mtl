@@ -84,12 +84,20 @@ if (!empty($this->[unit.fieldErrorsName()/]))
 [/template]
 
 [template public createAndBindRouteParameters(unit : DynamicUnit) post(trim())]
+[let parametersVariable : String = '$'.concat(unit.instanceName()).concat('_route_parameters')]
 $[unit.instanceName()/]_route_parameters = array();
-if ($this->[service.instanceName()/]->loaded())
+if ($this->[unit.service.instanceName()/]->loaded())
 {
-    [unit.service.routeParameters('$'.concat(unit.instanceName()).concat('_route_parameters'))/]
+    [unit.service.routeParameters(parametersVariable)/]
 }
+[if (not unit.service.parentService().oclIsUndefined())]
+else
+{
+    [unit.service.parentService().routeParameters(parametersVariable)/]
+}
+[/if]
 $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/]_route_parameters);
+[/let]
 [/template]
 
 [template private routeParameters(service : Service, variable : String) post(trim())]
