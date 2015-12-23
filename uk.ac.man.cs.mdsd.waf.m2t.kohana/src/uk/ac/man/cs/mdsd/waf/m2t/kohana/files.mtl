@@ -65,7 +65,7 @@
 /]
 
 [query public helpersDirectory(eObject : EObject) : String
-	= eObject.classesDirectory().concat('/').concat('helpers')
+	= eObject.classesDirectory().concat('/').concat('Helpers')
 /]
 
 [query public jsDirectory(eObject : EObject) : String
