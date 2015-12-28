@@ -9,6 +9,6 @@
 
 
 [template public generateDoctrine(model : WafModel)]
-[model.persistence.enumerationTypes().generateModel()/]
-[model.persistence.entitiesAndViews->select(e | e.oclIsTypeOf(Entity)).oclAsType(Entity).model()/]
+[model.persistence.enumerationTypes().model()/]
+[model.persistence.entitiesAndViews.model()/]
 [/template]

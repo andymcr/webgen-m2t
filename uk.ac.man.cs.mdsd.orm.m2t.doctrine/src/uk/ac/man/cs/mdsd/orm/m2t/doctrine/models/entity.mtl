@@ -8,33 +8,33 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 
-[template public model(entity : Entity)]
-[file(entity.modelFilename(), false)]
+[template public model(entityOrView : EntityOrView)]
+[file(entityOrView.modelFilename(), false)]
 <?php
-namespace [entity.modelsNamespace()/];
+namespace [entityOrView.modelsNamespace()/];
 
 use Doctrine\ORM\Mapping as ORM;
-[if (entity.hasCollectionAssociations())]
+[if (entityOrView.hasCollectionAssociations())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (entity.hasValidatedFeatures())]
+[if (entityOrView.hasValidatedFeatures())]
 use Symfony\Component\Validator\Constraints as Assert;
 [/if]
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="[entity.tableName/]")
+ * @ORM\Table(name="[entityOrView.tableName/]")
  **/
-class [entity.modelClassName()/]
+class [entityOrView.modelClassName()/]
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      **/
-    protected $[entity.autoKeyName/];
+    protected $[entityOrView.autoKeyName/];
 
-[for (feature : Feature | entity.features)]
+[for (feature : Feature | entityOrView.features)]
 	[comment TODO sortout location features /]
 	[if (not feature.isLocation())]
     /**
@@ -47,8 +47,8 @@ class [entity.modelClassName()/]
 
 	[/if]
 [/for]
-[if (entity.hasDefaultValueFeatures() or entity.hasCollectionAssociations())]
-    [entity.constructor()/]
+[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations())]
+    [entityOrView.constructor()/]
 
 [/if]
     public function getId()
@@ -56,54 +56,22 @@ class [entity.modelClassName()/]
         return $id;
     }
 
-[for (feature : Feature | entity.features)]
+[for (feature : Feature | entityOrView.features)]
     [feature.featureMethods()/]
 
 [/for]
-[for (label : ModelLabel | entity.displayLabels)]
-    [label.modelLabel()/]
+[for (label : ModelLabel | entityOrView.labels)]
+    [label.label()/]
 
 [/for]
-[for (feature : SingletonResource | entity.resourceAttributes())]
-	private function _save_[feature.modelPropertyName()/]()
-	{
-		$validation = Validation::factory($_FILES);
-		$validation
-			->rules('[feature.modelPropertyName()/]', array(
-[if (feature.isRequired())]
-				array('not_empty'),
-				array('Upload::not_empty'),
-[/if]
-				array('Upload::valid'),
-				array('Upload::size', array(':value', [comment resource.maximumUploadSize/])),
-[comment if (resource.validUploadExtensions->notEmpty())/]
-				array('Upload::type', array(':value', array([comment for (extension : String | resource.validUploadExtensions) separator(', ')/]'[comment extension/]'[comment /for/]))),
-[comment /if/]
-			));
-		if ($validation->check() === FALSE)
-			throw new ORM_Validation_Exception($this->errors_filename(), $validation);
-
-		if ($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
-			return;
-
-		if (!empty($this->[comment resource.columnName/])) 
-			$filename = str_replace(' ', '_', pathinfo($this->[comment resource.columnName/], PATHINFO_FILENAME));
-		else
-			$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
-		$extension = pathinfo($_FILES['['/]'[feature.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
-[comment if (resource.uploadsWithinWebsite = true) /]
-		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[comment resource.relativeUploadDirectory/]');
-		$this->[comment feature.columnName()/] = '[comment resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
-[comment else/]
-		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
-[comment /if/]
-	}
+[for (resource : SingletonResource | entityOrView.resourceAttributes())]
+	[resource.resourceSaveMethod()/]
 
 [/for]
-[if (entity.hasResourceAttributes())]
+[if (entityOrView.hasResourceAttributes())]
 /*	public function save(Validation $validation = NULL)
 	{
-[for (feature : SingletonResource | entity.resourceAttributes())]
+[for (feature : SingletonResource | entityOrView.resourceAttributes())]
 		$this->_save_[feature.modelPropertyName()/]();
 [/for]
 		parent::save($validation);
@@ -114,7 +82,16 @@ class [entity.modelClassName()/]
 [/file]
 [/template]
 
-[template private ormAnnotation(feature : Feature) post(trim())]
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(ViewFeature)) post(trim())]
+[if (feature.oclIsTypeOf(EncapsulatedAttribute))]
+* @ORM\Column(type="[feature.oclAsType(EncapsulatedAttribute).attribute.ormType()/]")
+[elseif (feature.oclIsKindOf(EncapsulatedAssociation))]
+[/if]
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(EntityFeature)) post(trim())]
 [if (feature.oclIsKindOf(EntityAttribute))]
 * @ORM\Column(type="[feature.oclAsType(EntityAttribute).ormType/]")
 [elseif (feature.oclIsKindOf(EntityAssociation))]
@@ -132,7 +109,7 @@ class [entity.modelClassName()/]
 		[if (association.owningEnd)]
 * @ORM\JoinTable(name="[association.pivotTableName/]",
     joinColumns={@ORM\JoinColumn(name="[association.opposite.columnName/]")},
-    inverseJoinColumns={@ORM\JoinColumn(name="[feature.columnName/]")})
+    inverseJoinColumns={@ORM\JoinColumn(name="[feature.columnName()/]")})
 		[/if]
 	[/let]
 	[/if]
@@ -148,10 +125,10 @@ class [entity.modelClassName()/]
 		[/if]
 [/template]
 
-[template private constructor(entity : Entity)]
+[template private constructor(entityOrView : EntityOrView) post(trim())]
 public function __construct()
 {
-[for (feature : Feature | entity.features)]
+[for (feature : Feature | entityOrView.features)]
 	[if (feature.hasDefaultValue())]
 	$this->[feature.modelPropertyName()/] = [feature.oclAsType(SingletonAttribute).defaultValue.valueExpression()/];
 	[/if]
@@ -203,7 +180,7 @@ public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.model
 [/if]
 [/template]
 
-[template private modelLabel(label : ModelLabel)]
+[template private label(label : ModelLabel) post(trim())]
 public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if]()
 {
         return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
@@ -212,5 +189,41 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
 [association.association.modelPropertyName()/]->get[if (association.dynamicLabel.oclIsUndefined())]Default[else][association.dynamicLabel.name.toUpperFirst()/][/if]Label()[/let]
 [/if][/for]);
+}
+[/template]
+
+[template private resourceSaveMethod(resource : SingletonResource) post(trim())]
+private function _save_[resource.modelPropertyName()/]()
+{
+	$validation = Validation::factory($_FILES);
+	$validation
+		->rules('[resource.modelPropertyName()/]', array(
+[if (resource.isRequired())]
+			array('not_empty'),
+			array('Upload::not_empty'),
+[/if]
+			array('Upload::valid'),
+			array('Upload::size', array(':value', [comment resource.maximumUploadSize/])),
+[comment if (resource.validUploadExtensions->notEmpty())/]
+			array('Upload::type', array(':value', array([comment for (extension : String | resource.validUploadExtensions) separator(', ')/]'[comment extension/]'[comment /for/]))),
+[comment /if/]
+		));
+	if ($validation->check() === FALSE)
+		throw new ORM_Validation_Exception($this->errors_filename(), $validation);
+
+	if ($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
+		return;
+
+	if (!empty($this->[resource.columnName/])) 
+		$filename = str_replace(' ', '_', pathinfo($this->[resource.columnName/], PATHINFO_FILENAME));
+	else
+		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
+	$extension = pathinfo($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
+[comment if (resource.uploadsWithinWebsite = true) /]
+	$filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[comment resource.relativeUploadDirectory/]');
+	$this->[resource.columnName()/] = '[comment resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
+[comment else/]
+	$filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
+[comment /if/]
 }
 [/template]

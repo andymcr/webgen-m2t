@@ -6,7 +6,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
 
-[template public generateModel(type : EnumerationType)]
+[template public model(type : EnumerationType)]
 [file(type.modelFilename(), false)]
 <?php
 namespace [type.modelsNamespace()/];

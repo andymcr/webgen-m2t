@@ -10,8 +10,8 @@
 /]
 
 
-[query public modelClassName(entity : Entity) : String
-	= entity.name
+[query public modelClassName(entityOrView : EntityOrView) : String
+	= entityOrView.name
 /]
 
 [query public modelName(entityOrView : EntityOrView) : String
@@ -30,10 +30,3 @@
 			'xxx'
 		endif
 /]
-
-
-[comment TODO remove?/]
-[query public instanceName(feature : ServiceFeature) : String
-	= 'xxx' -- feature.modelPropertyName()
-/]
-
