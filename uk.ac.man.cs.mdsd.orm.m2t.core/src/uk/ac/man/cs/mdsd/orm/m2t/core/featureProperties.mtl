@@ -330,6 +330,16 @@
 		endif endif endif
 /]
 
+[query public ormType(feature : Attribute) : String
+	= if feature.oclIsKindOf(EntityAttribute) then
+			feature.oclAsType(EntityAttribute).ormType
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.ormType()
+		else
+			'Unhandled Attribute'
+		endif endif
+/]
+
 [query public pivotTableName(feature : Feature) : String
 	= if feature.oclIsKindOf(EntityAssociation) then
 			feature.oclAsType(EntityAssociation).pivotTableName
