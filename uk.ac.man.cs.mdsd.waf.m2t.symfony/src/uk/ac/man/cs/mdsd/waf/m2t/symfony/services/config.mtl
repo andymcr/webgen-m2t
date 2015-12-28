@@ -9,9 +9,18 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public generateConfigServices(model : WafModel)]
+[template public configServices(model : WafModel)]
 [file (model.configDirectory().concat('/').concat('services').concat(model.ymlExtension()), false)]
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
 services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ['['/]"@another_service_name", "plain_value", "%parameter_name%"[']'/]
+
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:

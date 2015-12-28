@@ -4,9 +4,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
-[template public generateUnitMethods(unit : DynamicUnit)
+[template public unitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [indexUnit.mainAction()/]
@@ -21,7 +22,7 @@
 [template private mainAction(unit : IndexUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- * @Route("[unit.path()/]", name="[unit.routeName()/]")
+ * @Route("[unit.uriPath()/]", name="[unit.routeName()/]")
  */
 public function [unit.actionName()/]([if (unit.hasFilterParameters())]
 Request $request[/if])

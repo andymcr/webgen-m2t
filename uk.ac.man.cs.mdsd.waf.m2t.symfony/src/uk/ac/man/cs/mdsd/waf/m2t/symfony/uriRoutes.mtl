@@ -1,0 +1,141 @@
+[comment encoding = UTF-8 /]
+[module uriRoutes(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[query public uriPath(service : Service) : String
+	= let uriElement : String
+		= service.name.toLowerFirst()
+			.concat(service.keys->collect(k | k.routeParameterName())->sep('/<', '>/<', '>')->toString())
+		in if service.parentService().oclIsUndefined() then
+				uriElement
+			else
+				service.parentService().uriPath().concat('/').concat(uriElement)
+			endif
+/]
+
+[query public uriPathKeys(service : Service) : Set(ServiceFeature)
+	= if service.parentService().oclIsUndefined() then
+			service.keys
+		else
+			service.parentService().uriPathKeys()->union(service.keys)
+		endif
+/]
+
+
+[query public routeParameterName(feature : ServiceFeatureReference) : String
+	= if feature.oclIsTypeOf(ServiceAttributeReference) then
+			let reference : ServiceAttributeReference = feature.oclAsType(ServiceAttributeReference)
+			in reference.attribute.partOf.modelName().toLowerFirst()
+				.concat(reference.attribute.name.toUpperFirst())
+		else
+			let reference : ServiceAssociationReference = feature.oclAsType(ServiceAssociationReference)
+			in if reference.childFeature.oclIsUndefined() then
+					reference.association.partOf.modelName().toLowerFirst()
+						.concat(reference.association.name)
+				else
+					reference.childFeature.routeParameterName()
+				endif
+		endif
+/]
+
+
+[query public uriPath(page : Page) : String
+	= if page.parentPage.oclIsUndefined() then
+			page.uriElement
+		else
+			let parentUri : String = page.parentPage.uriPath()
+			in if parentUri = '' then
+					page.uriElement
+				else if page.uriElement = '' then
+					parentUri
+				else
+					parentUri.concat('/').concat(page.uriElement)
+				endif endif
+		endif
+/]
+
+
+[query public hasRouteParameters(unit : ContentUnit) : Boolean
+	= unit.uriPathKeys()->notEmpty()
+/]
+
+[query public logoutUriPath(unit : LoginUnit) : String
+	= unit.logoutActionName()
+/]
+
+[query public pageUriPath(unit : ContentUnit) : String
+	= unit.pageDisplayedOn().uriPath()
+/]
+
+[query public parentUriPath(pageUriPath : String, serviceUriPath : String) : String
+	= if pageUriPath = '' then
+			serviceUriPath
+		else if serviceUriPath = '' then
+			pageUriPath
+		else
+			pageUriPath.concat('/').concat(serviceUriPath)
+		endif endif
+/]
+
+[query public serviceUriPath(unit : ContentUnit, create : Boolean) : String
+	= if not unit.oclIsKindOf(DynamicUnit) then
+			''
+		else if unit.oclIsKindOf(Selectable) and not create then
+			unit.oclAsType(DynamicUnit).service.uriPath()
+		else if not unit.oclAsType(DynamicUnit).service.parentService().oclIsUndefined() then
+			unit.oclAsType(DynamicUnit).service.parentService().uriPath()
+		else
+			unit.oclAsType(DynamicUnit).service.name.toLowerFirst()
+		endif endif endif
+/]
+
+[query public supportUriPath(unit : ContentUnit) : String
+	= unit.uriPath().concat('/support')
+/]
+
+[query public uriPath(unit : ContentUnit) : String
+	= unit.uriPath(false)
+/]
+
+[query public uriPath(unit : ContentUnit, create : Boolean) : String
+	= let parentUriPath : String
+		= unit.pageUriPath().parentUriPath(unit.serviceUriPath(create))
+		in let uriElement : String
+			= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
+					unit.oclAsType(CreateUpdateUnit).createUriElement
+				else
+					unit.uriElement
+				endif
+			in if parentUriPath = '' then
+					uriElement
+				else if uriElement = '' then
+					parentUriPath
+				else
+					parentUriPath.concat('/').concat(uriElement)
+				endif endif
+/]
+
+[query public uriPathKeys(unit : ContentUnit) : Set(ServiceFeature)
+	= if not unit.oclIsKindOf(DynamicUnit) then
+			Set{}
+		else 
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+				in if unit.oclIsKindOf(Selectable) then
+						dynamicUnit.service.uriPathKeys()
+					else if dynamicUnit.service.parentService().oclIsUndefined() then
+						Set{}
+					else
+						dynamicUnit.service.parentService().uriPathKeys()
+					endif endif
+		endif
+/]
+
+[query public uriPath(action : DeleteAction) : String
+	= action.immediateUnit().containingUnit().pageUriPath().parentUriPath(
+			action.immediateUnit().service.uriPath())
+		.concat('/').concat(action.uriElement)
+/]
+

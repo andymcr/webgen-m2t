@@ -1,0 +1,351 @@
+[comment encoding = UTF-8 /]
+[module input-old(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[comment import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::dataUnit/]
+
+
+[template public generateUnitView(unit : ContentUnit)
+	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[file(dynamicUnit.viewFilename(), false)]
+<section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.instanceName()/]_error is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
+ <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[dynamicUnit.displayLabel/]</h1>
+  <div class="unit_padding">
+ <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.instanceName()/]_error is defined %}[if (dynamicUnit.hasMessagesOnFormHead())] and empty($field_errors)[/if] hidden{% endif %}">
+{% if [dynamicUnit.instanceName()/]_error is defined %}
+   <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.instanceName()/]_error }}</p>
+{% endif %}
+[if (dynamicUnit.hasMessagesOnFormHead())]
+  [dynamicUnit.generateFormErrors()/]
+[/if]
+  </section>
+{# [if (dynamicUnit.hasInterfaceFields())]
+  <?php
+	$unit_fields = $[dynamicUnit.instanceName()/]->unit_fields();
+?>
+[/if] #}
+  [dynamicUnit.generateUnitBody()/]
+ </div>
+</section>
+[/file]
+[/let]
+[/template]
+
+[template public generateUnitBody(unit : DynamicUnit)
+	? (not unit.oclIsTypeOf(MapUnit))]
+{{ form_start([unit.instanceName()/]) }}
+[for (field : UnitField | unit.inputOrEmbeddedFields())]
+{{ form_row([unit.instanceName()/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
+[/for]
+{{ form_end([unit.instanceName()/], {'render_rest': false}) }}
+[/template]
+
+[template public generateUnitBody(unit : DynamicUnit)
+	? (unit.oclIsTypeOf(MapUnit))]
+[let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
+<div id="[unit.uniqueName()/]">
+ <?php
+	echo Form::input('[mapUnit.uniqueName()/]_autocomplete', NULL,
+		array(
+			'id' => '[mapUnit.uniqueName()/]_autocomplete',
+//			'class' => 'field.styleClass()/] field.inputClass()/]',
+	)) . PHP_EOL;
+?>
+ <div id="[mapUnit.uniqueName()/]_map" class="map-canvas"></div>
+ <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+ <script>
+var map;
+[if (not mapUnit.readOnly)]
+var marker;
+var infoWindow;
+var autocomplete;
+var geocoder;
+[/if]
+
+function initialize() {
+	var mapOptions = {
+		zoom: 12
+	};
+	map = new google.maps.Map(document.getElementById('[unit.uniqueName()/]_map'), mapOptions);
+[if (mapUnit.readOnly)]
+[else]
+	input = document.getElementById('[unit.uniqueName()/]_autocomplete');
+	map.controls['['/]google.maps.ControlPosition.TOP_LEFT[']'/].push(input);
+	marker = new google.maps.Marker();
+	infoWindow = new google.maps.InfoWindow();
+	autocomplete = new google.maps.places.Autocomplete(input);
+	autocomplete.bindTo('bounds', map);
+	geocoder = new google.maps.Geocoder();
+
+	if(navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(
+			function(position) {
+				map.setCenter(new google.maps.LatLng(
+					position.coords.latitude, position.coords.longitude));
+			},
+			function() {
+				handleNoGeolocation(true);
+		});
+	} else {
+		handleNoGeolocation(false);
+	}
+
+	google.maps.event.addListener(map, 'click', function(event) {
+		geocoder.geocode({'latLng': event.latLng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results['['/]1[']'/]) {
+					var contentString = $('<div class="marker-info-win">' +
+						'<p class="place-address">' + results['['/]1[']'/].formatted_address + '</p>' +
+						'<?php
+							echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
+								'type' => 'submit',
+								'class' => 'save-marker'
+							));
+						?></div>');    
+					showPlace(results['['/]1[']'/].formatted_address, event.latLng, contentString);
+ 				} else {
+					setMarker(event.latLng);
+				}
+			} else {
+				setMarker(event.latLng);
+			}
+		});
+	});
+
+	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		var place = autocomplete.getPlace();
+		if (place.geometry) {
+			var contentString = $('<div class="marker-info-win">' +
+				'<h1 class="place-name">' + place.name + '</h1>' +
+				'<p class="place-address">' + place.formatted_address + '</p>' +
+				'<?php
+					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
+						'type' => 'submit',
+						'class' => 'save-marker'
+					));
+				?></div>');    
+			showPlace(place.name, place.geometry.location, contentString);
+		} else {
+			document.getElementById('[mapUnit.uniqueName()/]_input').placeholder = 'Enter a location';
+		}
+	});
+}
+
+function setMarker(latLng) {
+	marker.setMap(map);
+	marker.setPosition(latLng);
+}
+
+function showPlace(name, latLng, contentString) {
+	infoWindow.setContent(contentString['['/]0[']'/]);
+	infoWindow.setPosition(latLng);
+	infoWindow.set('name', name);
+	infoWindow.open(map);
+  
+  	var saveBtn = contentString.find('button.save-marker')['['/]0[']'/];
+		
+	if(typeof saveBtn !== 'undefined') {
+		google.maps.event.addDomListener(saveBtn, 'click', function(event) {
+			saveMarker();
+		});
+	}
+}
+
+function saveMarker() {
+	var myData = {
+[if (not mapUnit.placeName.oclIsUndefined())]
+		[mapUnit.placeName.modelPropertyName()/]: infoWindow.get('name'),
+[/if]
+		[mapUnit.location.modelPropertyName()/]_latitude: infoWindow.getPosition().lat(),
+		[mapUnit.location.modelPropertyName()/]_longitude: infoWindow.getPosition().lng()
+	};
+	$.ajax({
+		type: "POST",
+		url: "<?php
+			echo Route::get('[mapUnit.displayedOn.oclAsType(Page).controllerName()/]')->uri(array(
+				'action' => '[comment mapUnit.actionName()/]',
+				'param' => 'submit'
+			));
+?>",
+		data: myData,
+		success: function(data) {
+			marker.setMap(map);
+			marker.setPosition(infoWindow.getPosition());
+			infoWindow.close();
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError);
+		}
+	});
+}
+
+function handleNoGeolocation(errorFlag) {
+  if (errorFlag) {
+    var content = 'Error: The Geolocation service failed.';
+  } else {
+    var content = 'Error: Your browser doesn\'t support geolocation.';
+  }
+
+  var options = {
+    map: map,
+    position: new google.maps.LatLng(60, 105),
+    content: content
+  };
+
+  var infowindow = new google.maps.InfoWindow(options);
+  map.setCenter(options.position);
+[/if]
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+ </script>
+</div>
+[/let]
+[/template]
+
+
+[template public generateUnitView(unit : ContentUnit)
+	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[file(dynamicUnit.viewFilename(), false)]
+<section class="[dynamicUnit.styleClass/]<?php
+	if (isset($[dynamicUnit.instanceName()/]_field_errors)) {
+		echo ' [dynamicUnit.errorClass/]';
+	}
+?>" id="[dynamicUnit.instanceName()/]">
+ <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
+ <div class="unit_padding">
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.instanceName()/]_error)[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.instanceName()/]_error)) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.instanceName()/]_error)); ?></p>
+<?php } ?>
+[if (dynamicUnit.hasMessagesOnFormHead())]
+   [dynamicUnit.generateFormErrors()/]
+[/if]
+  </section>
+  <?php
+[if (dynamicUnit.hasInterfaceFields())]
+	$unit_fields = $[dynamicUnit.instanceName()/]->unit_fields();
+[/if]
+	echo Form::open(
+		Route::get('[dynamicUnit.displayedOn.oclAsType(Page).controllerName()/]')->uri(array(
+			'action' => '[comment dynamicUnit.actionName()/]',
+			'param' => 'submit'
+[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+		)) . URL::query($query_parameters, FALSE),
+[else]
+		)),
+[/if]
+		array(
+			'id' => '[dynamicUnit.instanceName()/]',
+			'class' => '[dynamicUnit.layoutClass/]' . (isset($[dynamicUnit.instanceName()/]_error) ? ' [dynamicUnit.errorClass/]' : ''),
+			'enctype' => 'multipart/form-data'
+		)) . PHP_EOL;
+?>
+   <ul>
+[for (displayField : UnitField | dynamicUnit.inputOrEmbeddedFields())]
+    <li[if (dynamicUnit.hasMessagesOnFeature())]<?php
+		unset($field_error);
+		if (!empty($[dynamicUnit.instanceName()/]_field_errors))
+		[if (displayField.oclIsKindOf(InterfaceField))]
+			if (array_key_exists('_external', $[dynamicUnit.instanceName()/]_field_errors))
+				if (array_key_exists('[displayField.modelPropertyName()/]', $[dynamicUnit.instanceName()/]_field_errors['['/]'_external'[']'/]))
+					$field_error = $[dynamicUnit.instanceName()/]_field_errors['['/]'_external'[']'/]['['/]'[displayField.modelPropertyName()/]'[']'/];
+		[else]
+			if (array_key_exists('[displayField.modelPropertyName()/]', $[dynamicUnit.instanceName()/]_field_errors))
+				$field_error = $[dynamicUnit.instanceName()/]_field_errors['['/]'[displayField.modelPropertyName()/]'[']'/];
+		[/if]
+		if (isset($field_error))
+			echo ' class="[dynamicUnit.errorClass/]"'; 
+?>[/if]>
+	[if (if not displayField.oclIsKindOf(UnitAssociation) then true else displayField.oclAsType(UnitAssociation).units->isEmpty() endif)]
+     <?php
+		echo Form::label('[comment displayField.uniqueName()/]', '[displayField.displayLabel()/]',
+			array(
+				'class' => '[displayField.styleClass()/][if (displayField.isRequired() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
+		)) . PHP_EOL;
+	?>
+     [comment displayField.generateInput(dynamicUnit.instanceName())/]
+	[else]
+	[let embeddedUnit : ContentUnit = displayField.oclAsType(UnitAssociation).units->first()]
+     <p class="[displayField.modelPropertyName()/]">[displayField.displayLabel()/]</p>
+<?php $[comment displayField.uniqueName()/] = $[dynamicUnit.instanceName()/]->[displayField.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
+find_all()[else]
+[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
+?>
+     <div class="framed [displayField.modelPropertyName()/]">
+      [comment displayField.oclAsType(UnitAssociation).units.generateViewContent(displayField.uniqueName())/]
+     </div>
+	[/let]
+	[/if]
+	[if (dynamicUnit.hasMessagesOnFeature())]
+<?php if (isset($field_error)) { ?>
+     <p class="[dynamicUnit.errorClass/]"><?php echo __($field_error); ?></p>
+<?php } ?>
+	[/if]
+    </li>
+[/for]
+   </ul>
+[if (dynamicUnit.hasMessagesOnFormFoot())]
+<?php if (isset($[dynamicUnit.instanceName()/]->error->all)) { ?>
+   <div class="[dynamicUnit.errorClass/]">
+[dynamicUnit.generateFormErrors()/]
+   </div>
+<?php } ?>
+[/if]
+   <div class="[dynamicUnit.controlClass/]">
+   <?php
+		echo Form::button('[dynamicUnit.instanceName()/]', '[dynamicUnit.submitLabel()/]', array(
+			'type' => 'submit'
+		)) . PHP_EOL;
+?>
+[if (dynamicUnit.oclIsKindOf(EditUnit))]
+[let editUnit : EditUnit = dynamicUnit.oclAsType(EditUnit)]
+	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
+	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
+		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
+   <?php
+		echo Form::button('clear', '[createUpdateUnit.clearLabel/]', array(
+			'type' => 'submit'
+		)) . PHP_EOL;
+?>
+		[/if]
+	[/let]
+	[/if]
+	[if (not editUnit.cancelDestination.oclIsUndefined())]
+   <?php
+		echo Form::button('cancel', '[dynamicUnit.cancelLabel()/]', array(
+			'type' => 'submit'
+		)) . PHP_EOL;
+?>
+	[/if]
+[/let]
+[/if]
+   </div>
+  <?php
+	echo Form::close() . PHP_EOL;
+?>
+ </div>
+</section>
+[/file]
+[/let]
+[/template]
+
+
+[template protected generateFormErrors(dynamicUnit : DynamicUnit) post(trim())]
+<?php
+	if ( isset($field_errors)) {
+		foreach ($field_errors AS $field => $message) {
+?>
+<p class="[dynamicUnit.errorClass/]"><?php echo __($message); ?></p>
+<?php
+		}
+	} 
+?>
+[/template]

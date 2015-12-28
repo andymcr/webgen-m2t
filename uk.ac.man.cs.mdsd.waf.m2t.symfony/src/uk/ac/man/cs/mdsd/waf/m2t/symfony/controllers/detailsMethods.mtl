@@ -4,11 +4,12 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
 
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.mainAction()/]
@@ -22,7 +23,7 @@
 [template private mainAction(unit : DetailsUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- * @Route("[unit.path()/]", name="[unit.routeName()/]")
+ * @Route("[unit.uriPath()/]", name="[unit.routeName()/]")
  */
 public function [unit.actionName()/]([if (unit.hasFilterParameters())]
 Request $request[if (unit.service.keys->notEmpty())], [/if][/if][unit.service.routeParameters()/])
@@ -31,8 +32,8 @@ Request $request[if (unit.service.keys->notEmpty())], [/if][/if][unit.service.ro
         ->getRepository('[unit.appBundleName()/]:[unit.service.name/]');
     $queryBuilder = $repository->createQueryBuilder('[unit.service.selectName()/]');
     $queryBuilder->where(
-[for (feature : ServiceFeature | unit.service.keys)]
-        $queryBuilder->expr()->eq([feature.featureReference()/], $queryBuilder->expr()->literal($[feature.name/]))
+[for (key : ServiceFeatureReference | unit.service.keys)]
+        $queryBuilder->expr()->eq([key.instanceName()/], $queryBuilder->expr()->literal($[key.routeParameterName()/]))
 [/for]
     );
 	$[unit.instanceName()/] = $queryBuilder->getQuery()->getSingleResult();

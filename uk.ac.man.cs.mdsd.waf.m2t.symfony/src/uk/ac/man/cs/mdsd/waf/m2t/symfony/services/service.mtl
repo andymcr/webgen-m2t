@@ -36,7 +36,7 @@ class [service.serviceClassName()/]
 public function [selection.name/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
-    $repository = $this->doctrine->getRepository('[service.appBundleName()/]:[service.name/]');
+    $repository = $this->doctrine->getRepository('[service.appBundleName()/]:[service.encapsulates->first().name/]');
 	$queryBuilder = $repository->createQueryBuilder('[service.selectName()/]');
 [if (not selection.filter.oclIsUndefined())]
     $queryBuilder->where([selection.filter.doctrineExpression()/]);

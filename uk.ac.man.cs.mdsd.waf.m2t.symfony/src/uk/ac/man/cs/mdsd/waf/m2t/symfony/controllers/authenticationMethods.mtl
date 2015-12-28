@@ -40,7 +40,7 @@ if (Auth::instance()->logged_in())
 [/template]
 
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(RegistrationUnit)) post(trim())]
 [let authentication : LocalAuthenticationSystem = unit.displayedOn.oclAsType(Page).partOf.authentication.oclAsType(LocalAuthenticationSystem)]
 [let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
@@ -128,7 +128,7 @@ public function action_[comment registrationUnit.actionName()/]()
 [/let]
 [/template]
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(LoginUnit)) post(trim())]
 [let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
 [let localAuthentication : LocalAuthenticationSystem = loginUnit.authenticationSystem]
@@ -144,7 +144,7 @@ public function loginCheckAction()
 [/let]
 [/template]
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(ForgottenPasswordUnit)) post(trim())]
 [let forgottenUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
 public function action_[comment forgottenUnit.actionName()/]() {

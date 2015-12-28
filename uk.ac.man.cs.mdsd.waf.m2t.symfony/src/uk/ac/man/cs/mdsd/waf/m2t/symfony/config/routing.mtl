@@ -1,0 +1,15 @@
+[comment encoding = UTF-8 /]
+[module routing(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public routing(model : WafModel)]
+[file (model.configDirectory().concat('/').concat('routing').concat(model.ymlExtension()), false)]
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+[/file]
+[/template]

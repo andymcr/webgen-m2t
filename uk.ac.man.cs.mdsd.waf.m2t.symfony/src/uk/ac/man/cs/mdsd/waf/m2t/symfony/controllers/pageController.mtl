@@ -31,7 +31,7 @@ use [service.formTypeNamespace()/]\[service.typeClassName()/];
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
 [for (unit : ContentUnit | page.units)]
-    [unit.generateUnitMethods()/]
+    [unit.unitMethods()/]
 
 [/for]
 [if (page.hasSupportActions())]

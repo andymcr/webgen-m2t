@@ -6,21 +6,16 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
-[template public generateConfigSecurity(model : WafModel)]
+[template public configSecurity(model : WafModel)]
 [file (model.configDirectory().concat('/').concat('security').concat(model.ymlExtension()), false)]
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
-    encoders:
-[if (model.authentication.useLocalAuthentication() and false)]
-[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
-[/let]
-[else]
-        Symfony\Component\Security\Core\User\User: plaintext
-[/if]
 
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
 [if (model.authentication.useLocalAuthentication() and false)]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
@@ -46,22 +41,28 @@ security:
 
         main:
             anonymous: ~
+            # activate different ways to authenticate
+
 [if (model.authentication.useLocalAuthentication() and false)]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
             form_login: ~
-                login_path: [localAuthentication.loginUnit.path()/]
+                login_path: [localAuthentication.loginUnit.uriPath()/]
                 check_path: /login_check
 [/let]
 [else]
-            http_basic: ~
+            # http_basic: ~
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
 [/if]
 
-    access_control:
+#    access_control:
 [if (model.authentication.useLocalAuthentication())]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
-        - { path: ^[localAuthentication.loginUnit.path()/], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^[localAuthentication.loginUnit.uriPath()/], roles: IS_AUTHENTICATED_ANONYMOUSLY }
 [/let]
 [/if]
-        - { path: ^/, roles: ROLE_USER }
+#        - { path: ^/, roles: ROLE_USER }
 [/file]
 [/template]

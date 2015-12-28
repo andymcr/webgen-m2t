@@ -7,11 +7,12 @@
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
 [template public routeParameters(service : Service) post(trim())]
-[for (feature : ServiceFeature | service.keys) separator (', ')]
-$[feature.name/]
+[for (key : ServiceFeatureReference | service.keys) separator (', ')]
+$[key.routeParameterName()/]
 [/for]
 [/template]
 

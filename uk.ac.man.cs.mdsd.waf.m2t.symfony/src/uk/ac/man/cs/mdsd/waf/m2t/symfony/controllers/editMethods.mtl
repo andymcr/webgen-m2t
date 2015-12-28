@@ -30,7 +30,7 @@ $[editUnit.instanceName()/]_form = $this->createForm(new [editUnit.service.typeC
 [/let]
 [/template]
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethodsX(unit : ContentUnit)
 	? (unit.oclIsTypeOf(CreateUnit)) post(trim())]
 [let createUnit : CreateUnit = unit.oclAsType(CreateUnit)]
 [if (createUnit.hasInterfaceFields())]
@@ -52,7 +52,7 @@ public function [createUnit.actionName()/]Action()
 [/let]
 [/template]
 
-[template public generateUnitMethods(unit : ContentUnit)
+[template public unitMethodsX(unit : ContentUnit)
 	? (unit.oclIsKindOf(CreateUpdateUnit) or unit.oclIsKindOf(UpdateUnit) or unit.oclIsKindOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.hasInterfaceFields())]
@@ -112,9 +112,9 @@ find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 		$options['['/][']'/] = array(
 			'id' => $option->id,
-			'label' => $option->[if (association.dynamicLabel.oclIsUndefined())]
+			'label' => $option->[if (association.label.oclIsUndefined())]
 defaultLabel()[else]
-[association.dynamicLabel.name/]()[/if],
+[association.label.name/]()[/if],
 		);
 
 	$this->auto_render = FALSE;

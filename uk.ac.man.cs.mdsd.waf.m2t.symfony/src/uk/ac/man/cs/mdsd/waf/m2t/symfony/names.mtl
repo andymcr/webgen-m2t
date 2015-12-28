@@ -29,6 +29,14 @@
 /]
 
 
+[query public errorName(service : Service) : String
+	= service.instanceName().concat('_error')
+/]
+
+[query public instanceName(service : Service) : String
+	= service.modelName().toLowerFirst()
+/]
+
 [query public modelClassName(service : Service) : String
 	= service.modelName()
 /]
@@ -47,7 +55,7 @@
 /]
 
 [query public selectName(service : Service) : String
-	= service.name
+	= service.name.toLowerFirst()
 /]
 
 [query public typeClassName(service : Service) : String
@@ -58,6 +66,22 @@
 	= 'App'
 /]
 
+
+[query public instanceName(feature : ServiceFeature) : String
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.name.toLowerFirst()
+		else
+			feature.oclAsType(ServiceAssociation).association.name.toLowerFirst()
+		endif
+/]
+
+[query public instanceName(feature : ServiceFeatureReference) : String
+	= if feature.oclIsTypeOf(ServiceAttributeReference) then
+			feature.oclAsType(ServiceAttributeReference).attribute.instanceName()
+		else
+			feature.oclAsType(ServiceAssociationReference).association.instanceName()
+		endif
+/]
 
 [query public modelName(feature : ServiceAssociation) : String
 	= feature.association.modelName()
@@ -97,8 +121,16 @@
 	= unit.name.toLowerFirst()
 /]
 
+[query public logoutActionName(unit : LoginUnit) : String
+	= 'logout'
+/]
+
 [query public routeName(unit : ContentUnit) : String
 	= unit.uniqueName()
+/]
+
+[query public supportRouteName(unit : ContentUnit) : String
+	= unit.uniqueName().concat('_support')
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
@@ -113,6 +145,11 @@
 
 [query public viewName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
+/]
+
+
+[query public actionName(action : UnitSupportAction) : String
+	= action.name.toLowerFirst()
 /]
 
 
@@ -147,6 +184,11 @@
 		else
 			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
 		endif
+/]
+
+[query public routeName(action : DeleteAction) : String
+	= action.immediateUnit().containingUnit().routeName()
+		.concat('_').concat(action.name.toLowerFirst())
 /]
 
 
