@@ -112,22 +112,12 @@ public function isCaptchaValid($response, $client_ip)
 {
     try
     {
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $data = ['['/]
-            'secret'   => '[model.captchaSecretKey/]',
-            'response' => $response,
-            'remoteip' => $client_ip
-        [']'/];
-        $options = ['['/]
-            'http' => ['['/]
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data) 
-            [']'/]
-        [']'/];
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        return json_decode($result, TRUE);
+        return json_decode(
+            file_get_contents('https://www.google.com/recaptcha/api/siteverify'
+                . '?secret=[model.captchaSecretKey/]'
+                . '&response=' . $response
+                . '&remoteip=' . $client_ip),
+            TRUE);
     }
     catch (Exception $e)
     {

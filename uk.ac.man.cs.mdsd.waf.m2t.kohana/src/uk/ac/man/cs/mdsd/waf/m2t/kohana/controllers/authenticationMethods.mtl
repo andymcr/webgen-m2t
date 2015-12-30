@@ -146,11 +146,13 @@ public function action_[loginUnit.actionName()/]()
 [if (loginUnit.hasCaptchaFields())]
         try
         {
+            [loginUnit.createVariable()/]
             [loginUnit.validateLogin()/]
         }
         [loginUnit.catchCaptchaException()/]
 [else]
     {
+        [loginUnit.createVariable()/]
         [loginUnit.validateLogin()/]
     }
 [/if]

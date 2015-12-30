@@ -228,18 +228,18 @@ $this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
 [template public actionMethod(action : InlineAction)
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let actionUnit : DynamicUnit = action.immediateUnit()]
+[let unit : DynamicUnit = action.immediateUnit()]
 public function action_[deleteAction.actionName()/]()
 {
     try
     {
-        $this->[actionUnit.service.loadMethodName()/]();
-		$this->[actionUnit.service.instanceName()/]->delete();
+        $this->[unit.service.loadMethodName()/]();
+		$this->[unit.service.instanceName()/]->delete();
 [if (not deleteAction.destination.oclIsUndefined())]
         $this->redirect(Route::get('[deleteAction.destination.routeName()/]')->uri());
 [/if]
     }
-    [actionUnit.containingUnit().catchSelectionException()/]
+    [unit.containingUnit().catchSelectionException()/]
 }
 [/let]
 [/let]
