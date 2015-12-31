@@ -115,10 +115,10 @@
 /]
 
 [query public enumerationType(feature : Feature) : EnumerationType
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.enumerationType()
-		else if feature.oclIsKindOf(SingletonElement) then
+	= if feature.oclIsKindOf(SingletonElement) then
 			feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.enumerationType()
 		else
 			null
 		endif endif
@@ -309,10 +309,10 @@
 /]
 
 [query public modelPropertyName(feature : Feature) : String
-	= if feature.oclIsKindOf(SingletonElement) then
-			feature.oclAsType(SingletonElement).columnName
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.name
 		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).columnName
+			feature.oclAsType(EncapsulatedAttribute).attribute.modelPropertyName()
 		else
 			feature.name
 		endif endif
