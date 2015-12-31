@@ -43,7 +43,11 @@ class [entityOrView.modelClassName()/]
       [feature.validationAnnotation()/]
 [/if]
     **/
+[if (feature.oclIsKindOf(Attribute))]
+    protected $[feature.columnName()/];
+[else]
     protected $[feature.modelPropertyName()/];
+[/if]
 
 	[/if]
 [/for]
@@ -85,8 +89,9 @@ class [entityOrView.modelClassName()/]
 [template private ormAnnotation(feature : Feature)
 	? (feature.oclIsKindOf(ViewFeature)) post(trim())]
 [if (feature.oclIsTypeOf(EncapsulatedAttribute))]
-* @ORM\Column(type="[feature.oclAsType(EncapsulatedAttribute).attribute.ormType()/]")
+[feature.oclAsType(EncapsulatedAttribute).attribute.ormAnnotation()/]
 [elseif (feature.oclIsKindOf(EncapsulatedAssociation))]
+[feature.oclAsType(EncapsulatedAssociation).association.ormAnnotation()/]
 [/if]
 [/template]
 
@@ -144,22 +149,25 @@ public function __construct()
 [template private featureMethods(feature : Feature) post(trim())]
 public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.modelPropertyName().toUpperFirst()/]()
 {
+[if (feature.oclIsKindOf(Attribute))]
+    return $this->[feature.columnName()/];
+[else]
     return $this->[feature.modelPropertyName()/];
+[/if]
 }
 
 [if (feature.isSingleton())]
 public function set[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/]) {
-//				array('trim'),
 	[if (feature.oclIsKindOf(SingletonAttribute))]
 	[let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
 		[if (attribute.oclIsTypeOf(SingletonElement))]
 		[let element : SingletonElement = attribute.oclAsType(SingletonElement)]
 			[if (element.caseInsensitive)]
-    $this->[element.modelPropertyName()/] = strtolower(trim($[element.instanceName()/]));
+    $this->[element.columnName()/] = strtolower(trim($[element.instanceName()/]));
 			[elseif (element.encrypt)]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
 			[else]
-    $this->[element.modelPropertyName()/] = trim($[element.instanceName()/]);
+    $this->[element.columnName()/] = trim($[element.instanceName()/]);
 			[/if]
 		[/let]
 		[elseif (attribute.oclIsTypeOf(SingletonDate))]
