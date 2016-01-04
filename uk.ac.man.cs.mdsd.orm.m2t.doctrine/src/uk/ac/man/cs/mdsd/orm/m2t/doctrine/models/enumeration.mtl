@@ -20,7 +20,7 @@ class [type.modelClassName()/]
 	{
 		$options = array();
 [for (literal : EnumerationLiteral | type.enumerations)]
-		$options['['/]self::[literal.name/][']'/] = '[literal.displayLabel/]';
+		$options['['/]'[literal.displayLabel/]'[']'/] = self::[literal.name/];
 [/for]
 
 		return $options;
