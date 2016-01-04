@@ -148,17 +148,22 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit) post(trim())]
-[let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(field.modelPropertyName())]
+[let fieldName : String = if field.oclIsKindOf(UnitElement) then
+		field.oclAsType(UnitElement).serviceFeature.columnName()
+	else
+		field.modelPropertyName()
+	endif]
+[let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(fieldName)]
 <li[if (unit.hasMessagesOnFeature())]<?php
     unset($field_error);
     if (!empty($[unit.fieldErrorsName()/]))
 		[if (field.oclIsKindOf(InterfaceField))]
         if (array_key_exists('_external', $[unit.fieldErrorsName()/]))
-            if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]['['/]'_external'[']'/]))
-                $field_error = $[unit.fieldErrorsName()/]['['/]'_external'[']'/]['['/]'[field.modelPropertyName()/]'[']'/];
+            if (array_key_exists('[fieldName/]', $[unit.fieldErrorsName()/]['['/]'_external'[']'/]))
+                $field_error = $[unit.fieldErrorsName()/]['['/]'_external'[']'/]['['/]'[fieldName/]'[']'/];
 		[else]
-        if (array_key_exists('[field.modelPropertyName()/]', $[unit.fieldErrorsName()/]))
-            $field_error = $[unit.fieldErrorsName()/]['['/]'[field.modelPropertyName()/]'[']'/];
+        if (array_key_exists('[fieldName/]', $[unit.fieldErrorsName()/]))
+            $field_error = $[unit.fieldErrorsName()/]['['/]'[fieldName/]'[']'/];
 		[/if]
     if (isset($field_error))
         echo ' class="[unit.errorClass/]"'; 
@@ -169,7 +174,7 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
         'class' => '[field.styleClass()/][if (field.isRequired() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
     )) . PHP_EOL;
 ?>
-    [field.inputField(accessor)/]
+ [field.inputField(accessor)/]
 	[else]
 	[let embeddedUnit : ContentUnit = field.oclAsType(UnitAssociation).units->first()]
 <p class="[field.modelPropertyName()/]">[field.displayLabel()/]</p>
@@ -190,6 +195,7 @@ find_all()[else]
 <?php } ?>
 	[/if]
     </li>
+[/let]
 [/let]
 [/template]
 
@@ -438,7 +444,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [template private inputField(field : UnitField, accessor : String)
 	? (field.isEnumerationTypeSingleton()) post(trim())]
 [let enumerationType : EnumerationType
-	= field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)]
+	= field.oclAsType(UnitElement).serviceFeature.enumerationType()]
 <?php
     echo Form::select(
         '[field.formName()/]',

@@ -58,7 +58,7 @@
 	? (not unit.title.oclIsUndefined())  post(trim())]
 [let labelAccessor : String
 	= if unit.title.oclIsKindOf(Attribute) then
-			unitAccessor.concat('->').concat(unit.title.oclAsType(Attribute).modelPropertyName())
+			unitAccessor.concat('->').concat(unit.title.oclAsType(Attribute).columnName())
 		else
 			unitAccessor
 		endif]
@@ -105,7 +105,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 <dl class="[unit.layoutClass/]">
 [/if]
 [for (field : UnitField | unit.displayFields)]
-[let fieldAccessor : String = accessor.concat('->').concat(field.modelPropertyName())]
+[let fieldAccessor : String = accessor.concat('->').concat(if field.oclIsKindOf(UnitElement) then field.oclAsType(UnitElement).serviceFeature.columnName() else field.modelPropertyName() endif)]
 	[if (field.conditionalDisplay())]
 		[if (field.oclIsKindOf(UnitElement))]
  <?php if (!empty([field.getValue(accessor)/])) { ?>
@@ -142,7 +142,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
    <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('$entry')/]</h1>
 [/if]
 [for (field : UnitField | indexUnit.displayFields) ]
-[let fieldAccessor : String = '$entry'.concat('->').concat(field.modelPropertyName())]
+[let fieldAccessor : String = '$entry'.concat('->').concat(if field.oclIsKindOf(UnitElement) then field.oclAsType(UnitElement).serviceFeature.columnName() else field.modelPropertyName() endif)]
 	[if (field.conditionalDisplay())]
 		[if (field.oclIsKindOf(UnitElement))]
 <?php if (!empty([field.getValue(fieldAccessor)/])) { ?>
@@ -213,7 +213,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 <?php foreach ([instanceVariable/] as $entry): ?>
   <tr class="<?php echo Text::alternate([for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
  [for (field : UnitField | indexUnit.displayFields)]
-[let fieldAccessor : String = '$entry'.concat('->').concat(field.modelPropertyName())]
+[let fieldAccessor : String = '$entry'.concat('->').concat(if field.oclIsKindOf(UnitElement) then field.oclAsType(UnitElement).serviceFeature.columnName() else field.modelPropertyName() endif)]
    <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
 [/let]
 [/for]
@@ -312,11 +312,17 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
 <?php
-	$[field.displayedOn.uniqueName()/] = [accessor/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
-find_all()[else]
-[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
+	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+	$[field.displayedOn.uniqueName()/] = [accessor/]->find_all();
+	[else]
+	[let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+		[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
+	$[field.displayedOn.uniqueName()/] = [accessor/]->find_all();
+		[else]
+	$[field.displayedOn.uniqueName()/] = [accessor/]->[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE);
+		[/if]
+	[/let]
+	[/if]
 ?>
 [association.units.viewContent('$'.concat(field.displayedOn.uniqueName()))/]
 [/let]
@@ -382,7 +388,7 @@ NULL
 [template public getValue(childFeature : ServiceFeatureReference, accessor : String)
 	? (childFeature.oclIsTypeOf(ServiceAttributeReference)) post(trim())]
 [let childAttribute : ServiceAttributeReference = childFeature.oclAsType(ServiceAttributeReference)]
-[let childAccessor : String = accessor.concat('->').concat(childAttribute.attribute.modelPropertyName())]
+[let childAccessor : String = accessor.concat('->').concat(childAttribute.attribute.columnName())]
 [let unitFeatures : Sequence(UnitFeature) = childFeature.ancestors(UnitFeature)]
 [if (unitFeatures->notEmpty())]
 [childAttribute.attribute.attribute.getValue(unitFeatures->first(), childAccessor)/]

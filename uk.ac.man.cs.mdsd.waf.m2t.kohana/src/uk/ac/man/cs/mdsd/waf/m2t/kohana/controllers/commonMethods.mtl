@@ -162,7 +162,11 @@ catch (ORM_Validation_Exception $e)
 [if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
     $unreported_field_errors = array_diff_key($this->[unit.fieldErrorsName()/], array([for
     (field : UnitField | unit.inputFields())
-        separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
+        separator (', ')][let fieldName : String = if field.oclIsKindOf(UnitElement) then
+		field.oclAsType(UnitElement).serviceFeature.columnName()
+	else
+		field.modelPropertyName()
+	endif]'[fieldName/]' => ''[/let][/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
     if (!empty($unreported_field_errors))
         $this->[unit.service.errorName()/] = print_r($unreported_field_errors, TRUE);
 [/if]

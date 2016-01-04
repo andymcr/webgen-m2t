@@ -345,8 +345,8 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 	public function authentication_save()
 	{
 		[for (feature : Feature | entityOrView.features->select(f | f.isRequired()))]
-		if (!isset($this->[feature.modelPropertyName()/])) {
-			$this->[feature.modelPropertyName()/] = '';
+		if (!isset($this->[feature.columnName()/])) {
+			$this->[feature.columnName()/] = '';
 		}
 		[/for]
 
@@ -554,7 +554,7 @@ public function [label.name/]Label()
 {
     return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
 $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
-[feature.oclAsType(ModelLabelAttribute).attribute.modelPropertyName()/][else]
+[feature.oclAsType(ModelLabelAttribute).attribute.columnName()/][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
 [association.association.modelPropertyName()/]->[if (association.dynamicLabel.oclIsUndefined())]default[else][association.dynamicLabel.name/][/if]Label()[/let]
 [/if][/for]);
