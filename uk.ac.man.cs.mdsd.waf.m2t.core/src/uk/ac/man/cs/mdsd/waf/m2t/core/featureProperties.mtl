@@ -157,6 +157,14 @@
 		endif
 /]
 
+[query public enumerationType(feature : ServiceFeature) : EnumerationType
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.enumerationType()
+		else 
+			feature.oclAsType(ServiceAssociation).association.enumerationType()
+		endif
+/]
+
 [query public formName(feature : ServiceFeature) : String
 	= if feature.oclIsTypeOf(ServiceAttribute) then
 			feature.oclAsType(ServiceAttribute).attribute.columnName()
@@ -299,9 +307,9 @@
 
 [query public modelPropertyName(feature : ServiceFeature) : String
 	= if feature.oclIsKindOf(ServiceAttribute) then
-			feature.columnName()
+			feature.oclAsType(ServiceAttribute).attribute.modelPropertyName()
 		else
-			feature.name
+			feature.oclAsType(ServiceAssociation).association.modelPropertyName()
 		endif
 /]
 
@@ -339,6 +347,11 @@
 
 [query public dynamicUnits(page : Page) : Sequence(DynamicUnit)
 	= page.units->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+/]
+
+[query public editUnits(page : Page) : Sequence(EditUnit)
+	= page.units
+		->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
 /]
 
 [query public formUnits(page : Page) : Sequence(DynamicUnit)
