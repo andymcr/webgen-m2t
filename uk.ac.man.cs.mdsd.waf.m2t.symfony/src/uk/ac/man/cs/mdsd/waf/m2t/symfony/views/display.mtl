@@ -66,25 +66,16 @@
 
 
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
- <?php
-    echo Form::open(
-        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
- . URL::query($query_parameters, FALSE)[/if],
-        array(
-            'id' => '[unit.instanceName()/]',
-            'class' => '[unit.controlClass/]'
-        )) . PHP_EOL;
+<form action="" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
-    [action.unitSupportLink()/] . PHP_EOL;
+ [action.unitSupportLink()/]
 [/for]
-    echo Form::close() . PHP_EOL;
-?>
+</form>
 [/template]
 
 [template public unitSupportLink(action : UnitSupportAction) post(trim())]
-echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not action.confirmMessage.oclIsUndefined())], array(
-        'onclick' => 'return confirm(\'' . __('[action.confirmMessage/]') . '\');'
-    )[/if])
+<input type="submit" name="[action.actionName()/]" value="[action.displayLabel/]"[if (not action.confirmMessage.oclIsUndefined())]
+onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 [template private pagination(unit : IndexUnit)]
@@ -313,7 +304,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
 [if (association.units->isEmpty())]
-xxx [comment association.displayAssociation(accessor, parentAccessor, association.service())/]
+[association.displayAssociation(accessor, parentAccessor, association.service())/]
 [else]
 [association.units->first().viewContent(accessor)/]
 [/if]
@@ -346,8 +337,8 @@ xxx [comment association.displayAssociation(accessor, parentAccessor, associatio
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
 [else]
-{{ [association.getValue(accessor)/][if (association.maximumDisplaySize > 0)]
- | truncate([association.maximumDisplaySize/]) [/if] }}
+{{ [association.getValue(accessor)/]| default('')[if (association.maximumDisplaySize > 0)]
+ | truncate([association.maximumDisplaySize/] - 3) [/if] }}
 [/if]
 [/template]
 
