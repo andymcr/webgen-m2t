@@ -50,6 +50,9 @@
 <footer>
  <p>[model.copyrightText/]</p>
 </footer>
+[if (model.developmentVersion)]
+<?php echo View::factory('profiler/stats') ?>
+[/if]
 </body>
 </html>
 [/file]
