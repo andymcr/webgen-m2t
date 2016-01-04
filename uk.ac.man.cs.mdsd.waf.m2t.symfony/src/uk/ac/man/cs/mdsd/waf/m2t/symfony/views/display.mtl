@@ -240,7 +240,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/if]
  <tbody>
 {% for entry in [accessor/] %}
-  <tr class="<?php echo Text::alternate([for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
+  <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
  [for (field : UnitField | indexUnit.displayFields)]
 [let fieldAccessor : String = 'entry'.concat('.').concat(field.modelPropertyName())]
    <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
