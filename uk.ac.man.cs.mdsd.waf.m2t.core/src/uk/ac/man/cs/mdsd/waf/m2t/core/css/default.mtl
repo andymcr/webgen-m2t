@@ -193,12 +193,6 @@ ul.unit_control > li > a {
 	width: 100%;
 }
 
-form > ul {
-	list-style: none;
-	padding-top: 0.5em;
-}
-
-form li,
 form > div {
 	padding: 0.25em 0em 0.25em 0em;
 }
@@ -214,14 +208,13 @@ form p.error {
 	color: FireBrick;
 }
 
-form > ul > li > label,
-form > ul > li > p,
 form > div > label,
 dt.field_label {
 	display: inline-block;
 	width: 15%;
 	vertical-align: top;
 	text-align: right;
+    margin-right: 0.5em;
 }
 
 label.required {
@@ -234,13 +227,7 @@ label.required:after {
 	display:inline;
 }
 
-form > ul > li > input['['/]type="date"[']'/],
-form > ul > li > input['['/]type="email"[']'/],
-form > ul > li > input['['/]type="integer"[']'/],
-form > ul > li > input['['/]type="password"[']'/],
-form > ul > li > input['['/]type="text"[']'/],
-form > ul > li > select,
-form > ul > li > div,
+form > div > div,
 form > div > input['['/]type="date"[']'/],
 form > div > input['['/]type="email"[']'/],
 form > div > input['['/]type="integer"[']'/],
@@ -264,11 +251,14 @@ form > ul > li > p['['/]class="error"[']'/] {
 .input_association {
 }
 
-form > ul > li > input['['/]type="checkbox"[']'/],
 form > div > input['['/]type="checkbox"[']'/],
- .input_checkbox {
+.input_checkbox {
 	width: 1em;
 	vertical-align: baseline;
+}
+
+form > div > div > input {
+	margin-right: 0.5em;
 }
 
 form > input['['/]type="submit"[']'/] {

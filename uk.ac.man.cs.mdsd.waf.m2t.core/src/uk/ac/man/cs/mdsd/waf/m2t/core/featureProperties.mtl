@@ -194,6 +194,15 @@
 		endif
 /]
 
+[query public hasHtml5Attributes(feature : ServiceFeature) : Boolean
+	= if feature.oclIsKindOf(ServiceAttribute) then
+			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
+				in not attribute.placeholder.oclIsUndefined() or not attribute.validationPattern.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
 [query public isBooleanDataType(feature : ServiceFeature) : Boolean
 	= if not feature.oclIsTypeOf(ServiceAttribute) then
 			false
