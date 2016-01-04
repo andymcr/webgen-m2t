@@ -7,7 +7,7 @@
 
 
 [template public routingDev(model : WafModel)]
-[file (model.configDirectory().concat('/').concat('routing_dev').concat(model.ymlExtension()), false)]
+[file (model.routingBaseFilename().concat('_dev').concat(model.ymlExtension()), false)]
 _wdt:
     resource: "@WebProfilerBundle/Resources/config/routing/wdt.xml"
     prefix:   /_wdt

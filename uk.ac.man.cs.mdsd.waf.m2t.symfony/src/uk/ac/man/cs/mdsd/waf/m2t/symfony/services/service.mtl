@@ -6,9 +6,10 @@
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
 
-[template public generateService(service : Service)]
+[template public service(service : Service)]
 [file(service.serviceFilename(), false)]
 <?php
 namespace [service.servicesNamespace()/];
@@ -24,20 +25,45 @@ class [service.serviceClassName()/]
         $this->doctrine = $doctrine;
     }
 
+    [service.findMethod()/]
+
 [for (selection : Selection | service.selections)]
-    [selection.generateSelectionMethod(service)/]
+    [selection.selectionMethod(service)/]
 
 [/for]
+
+    [service.getRepositoryMethod()/]
+
+    [service.createQueryBuilderMethod()/]
 }
 [/file]
 [/template]
 
-[template private generateSelectionMethod(selection : Selection, service : Service)]
+[template private findMethod(service : Service) post(trim())]
+public function find([service.routeParameters()/])
+{
+	[service.createQueryBuilder()/]
+    $queryBuilder->where(
+[for (key : ServiceFeatureReference | service.keys)]
+        $queryBuilder->expr()->eq('[service.selectName()/].[key.columnName()/]', $queryBuilder->expr()->literal($[key.routeParameterName()/]))
+[/for]
+    );
+	return $queryBuilder->getQuery()->getSingleResult();
+}
+[/template]
+
+[template private findAllMethod(service : Service) post(trim())]
+public function findAll()
+{
+	return $this->getRepository()->findAll();
+}
+[/template]
+
+[template private selectionMethod(selection : Selection, service : Service) post(trim())]
 public function [selection.name/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
-    $repository = $this->doctrine->getRepository('[service.appBundleName()/]:[service.encapsulates->first().name/]');
-	$queryBuilder = $repository->createQueryBuilder('[service.selectName()/]');
+    [service.createQueryBuilder()/]
 [if (not selection.filter.oclIsUndefined())]
     $queryBuilder->where([selection.filter.doctrineExpression()/]);
 [/if]
@@ -68,4 +94,29 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
     else
         return $query->getResult();
 }
+[/template]
+
+[template private getRepositoryMethod(service : Service) post(trim())]
+public function getRepository()
+{
+    return $this->doctrine->getRepository('[service.appBundleName()/]:[service.modelName()/]');
+}
+[/template]
+
+[template private createQueryBuilderMethod(service : Service) post(trim())]
+public function createQueryBuilder()
+{
+    return $this->getRepository()->createQueryBuilder('[service.selectName()/]');
+}
+[/template]
+
+
+[template public routeParameters(service : Service) post(trim())]
+[for (key : ServiceFeatureReference | service.keys) separator (', ')]
+$[key.routeParameterName()/]
+[/for]
+[/template]
+
+[template public createQueryBuilder(service : Service) post(trim())]
+$queryBuilder = $this->createQueryBuilder();
 [/template]

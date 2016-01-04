@@ -313,7 +313,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
 [if (association.units->isEmpty())]
-[association.displayAssociation(accessor, parentAccessor, association.service())/]
+xxx [comment association.displayAssociation(accessor, parentAccessor, association.service())/]
 [else]
 [association.units->first().viewContent(accessor)/]
 [/if]
@@ -330,14 +330,13 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 <span>[association.displayAssociation('value', 'value', association.serviceFeature.targetService())/]</span>[/if]{% endfor %}
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
-<?php
-	$[field.displayedOn.uniqueName()/] = [accessor/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-find_all()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
-find_all()[else]
-[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
-?>
-[association.units.viewContent(field.displayedOn.uniqueName())/]
+	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+[association.units.viewContent(accessor)/]
+	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
+[association.units.viewContent(accessor)/]
+	[else]
+[association.units.viewContent(accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)'))/]
+	[/if]
 [/let]
 [/if]
 [/let]
@@ -347,7 +346,7 @@ find_all()[else]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
 [else]
-{{ [accessor/][if (association.maximumDisplaySize > 0)]
+{{ [association.getValue(accessor)/][if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/]) [/if] }}
 [/if]
 [/template]
@@ -429,7 +428,7 @@ NULL
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
-<a href="{{ path('[targetUnit.routeName()/]') }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
+<a href="{{ path('[targetUnit.routeName()/]', { [service.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
 [/let]
 [/let]
 [/template]
@@ -437,7 +436,7 @@ NULL
 [template public actionLink(action : InlineAction, accessor : String, label : String, service : Service)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
-<a href="{{ path('[delete.routeName()/]') }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('{{ [accessor/].defaultLabel() }} [delete.confirmMessage/]');">{{ [label/] }}</a>
+<a href="{{ path('[delete.routeName()/]', { [service.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('{{ [accessor/].defaultLabel() }} [delete.confirmMessage/]');">{{ [label/] }}</a>
 [/let]
 [/template]
 
@@ -447,7 +446,7 @@ NULL
 [service.parentService().routeParameters(accessor.concat('.').concat(service.parentAssociation(service.parentService()).modelPropertyName()))/]
 [/if]
 [for (key : ServiceFeatureReference | service.keys)]
-'[key.routeParameterName()/]' => [key.getValue(accessor)/],
+'[key.routeParameterName()/]': [key.getValue(accessor)/],
 [/for]
 [/template]
 

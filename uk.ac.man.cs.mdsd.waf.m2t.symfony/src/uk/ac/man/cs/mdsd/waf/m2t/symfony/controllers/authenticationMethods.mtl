@@ -2,9 +2,11 @@
 [module authenticationMethods(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
-[comment import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [comment import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::controlMethods/]
 [comment import uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::editMethods/]
 
@@ -27,15 +29,6 @@ if (Auth::instance()->logged_in())
     $authenticationUtils = $this->get('security.authentication_utils');
     $[loginUnit.instanceName()/]_error = $authenticationUtils->getLastAuthenticationError();
     $lastUsername = $authenticationUtils->getLastUsername();
-[/let]
-[/template]
-
-
-[template public generateUnitTemplateParameters(unit : ContentUnit)
-	? (unit.oclIsTypeOf(LoginUnit)) post(trim())]
-[let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
-'[loginUnit.instanceName()/]_error' => $[loginUnit.instanceName()/]_error,
-'last_username' => $lastUsername,
 [/let]
 [/template]
 
@@ -131,18 +124,40 @@ public function action_[comment registrationUnit.actionName()/]()
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(LoginUnit)) post(trim())]
 [let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
-[let localAuthentication : LocalAuthenticationSystem = loginUnit.authenticationSystem]
+[loginUnit.actionMethod()/]
+
+[loginUnit.loginCheckMethod()/]
+[/let]
+[/template]
+
+[template public actionMethod(unit : LoginUnit) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = unit.authenticationSystem]
 /**
- * @Route("/login_check", name="login_check")
+ * [unit.routeAnnotation()/]
+ */
+public function [unit.actionName()/](Request $request)
+{
+    $authenticationUtils = $this->get('security.authentication_utils');
+    $error = $authenticationUtils->getLastAuthenticationError();
+    $lastUsername = $authenticationUtils->getLastUsername();
+
+    return $this->renderPage();
+}
+[/let]
+[/template]
+
+[template public loginCheckMethod(unit : LoginUnit) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = unit.authenticationSystem]
+/**
+ * @Route("/[unit.loginCheckUriPath()/]", name="login_check")
  */
 public function loginCheckAction()
 {
-    // this controller will not be executed,
-    // as the route is handled by the Security system
+    // as the route is handled by the Security system, this controller will not be executed
 }
 [/let]
-[/let]
 [/template]
+
 
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(ForgottenPasswordUnit)) post(trim())]
@@ -160,3 +175,14 @@ public function action_[comment forgottenUnit.actionName()/]() {
 }
 [/let]
 [/template]
+
+
+[template public templateParameters(unit : ContentUnit)
+	? (unit.oclIsTypeOf(LoginUnit)) post(trim())]
+[let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
+// $parameters['['/]'[loginUnit.instanceName()/]_error'[']'/] = $[loginUnit.instanceName()/]_error;
+//$parameters['['/]'last_username'[']'/] = $lastUsername;
+[/let]
+[/template]
+
+

@@ -59,7 +59,7 @@
 /]
 
 [query public typeClassName(service : Service) : String
-	= service.typePrefix().concat(service.name).concat('Type')
+	= service.typePrefix().concat(service.modelName()).concat('Type')
 /]
 
 [query public typePrefix(eObject : EObject) : String
@@ -75,16 +75,8 @@
 		endif
 /]
 
-[query public instanceName(feature : ServiceFeatureReference) : String
-	= if feature.oclIsTypeOf(ServiceAttributeReference) then
-			feature.oclAsType(ServiceAttributeReference).attribute.instanceName()
-		else
-			feature.oclAsType(ServiceAssociationReference).association.instanceName()
-		endif
-/]
-
 [query public modelName(feature : ServiceAssociation) : String
-	= feature.association.modelName()
+	= feature.targetService().modelName()
 /]
 
 
@@ -117,6 +109,10 @@
 	= unit.pageDisplayedOn().controllerName()
 /]
 
+[query public fieldErrorsName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_field_errors')
+/]
+
 [query public instanceName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
 /]
@@ -126,7 +122,16 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
+	= unit.routeName(false)
+/]
+
+[query public routeName(unit : ContentUnit, create : Boolean) : String
 	= unit.uniqueName()
+		.concat(if create then
+				'_create'
+			else
+				''
+			endif)
 /]
 
 [query public supportRouteName(unit : ContentUnit) : String
@@ -145,6 +150,15 @@
 
 [query public viewName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
+/]
+
+
+[query public optionsName(field : UnitField) : String
+	= field.uniqueName().concat('_options')
+/]
+
+[query public uniqueName(field : UnitField) : String
+	= field.displayedOn.instanceName().concat('_').concat(field.modelPropertyName())
 /]
 
 

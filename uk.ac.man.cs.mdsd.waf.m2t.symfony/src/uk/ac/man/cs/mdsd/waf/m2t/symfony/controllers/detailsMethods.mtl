@@ -12,40 +12,38 @@
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[detailsUnit.mainAction()/]
+[detailsUnit.actionMethod()/]
 
 [for (action : InlineAction | detailsUnit.uriActions())]
 [comment action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
+
 [/for]
 [/let]
 [/template]
 
-[template private mainAction(unit : DetailsUnit) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
+[template private actionMethod(unit : DetailsUnit) post(trim())]
 /**
- * @Route("[unit.uriPath()/]", name="[unit.routeName()/]")
+ * [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]([if (unit.hasFilterParameters())]
 Request $request[if (unit.service.keys->notEmpty())], [/if][/if][unit.service.routeParameters()/])
 {
-    $repository = $this->getDoctrine()
-        ->getRepository('[unit.appBundleName()/]:[unit.service.name/]');
-    $queryBuilder = $repository->createQueryBuilder('[unit.service.selectName()/]');
-    $queryBuilder->where(
-[for (key : ServiceFeatureReference | unit.service.keys)]
-        $queryBuilder->expr()->eq([key.instanceName()/], $queryBuilder->expr()->literal($[key.routeParameterName()/]))
-[/for]
-    );
-	$[unit.instanceName()/] = $queryBuilder->getQuery()->getSingleResult();
+    $this->[unit.instanceName()/] = [unit.loadInstance()/];
 
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', array(
-        'title' => '[page.displayLabel/]',
-        [unit.templateParameters()/]
-    ));
+    return $this->renderPage();
 }
-[/let]
 [/template]
 
-[template private templateParameters(unit : DetailsUnit) post(trim())]
-'[unit.instanceName()/]' => $[unit.instanceName()/],
+[template private templateParameters(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.onlyDisplayWhenNotEmpty)]
+if (isset($this->[detailsUnit.instanceName()/]))
+    $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
+[else]
+if (!isset($this->[detailsUnit.instanceName()/]))
+    $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/]
+$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+[/if]
+[/let]
 [/template]

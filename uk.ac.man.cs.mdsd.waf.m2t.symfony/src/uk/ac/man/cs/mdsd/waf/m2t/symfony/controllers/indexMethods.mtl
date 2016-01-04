@@ -5,49 +5,43 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 
 
 [template public unitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
-[indexUnit.mainAction()/]
+[indexUnit.actionMethod()/]
 
 [for (action : InlineAction | unit.uriActions())]
-[comment action.generateActionMethod('$this->'.concat(unit.instanceName()).concat('_error'))/]
+[action.actionMethod()/]
 
 [/for]
 [/let]
 [/template]
 
-[template private mainAction(unit : IndexUnit) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
+[template private actionMethod(unit : IndexUnit) post(trim())]
 /**
- * @Route("[unit.uriPath()/]", name="[unit.routeName()/]")
+ * [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]([if (unit.hasFilterParameters())]
 Request $request[/if])
 {
 [if (not unit.pagination.oclIsUndefined())]
-    $page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
+    $this->page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
 [/if]
 [if (unit.hasFilters())]
     [unit.filterSelect()/]
     else
 [/if]
 [if (not unit.defaultSelection.oclIsUndefined())]
-        [unit.selectionCall(unit.defaultSelection, null)/]
+    [unit.selectionCall(unit.defaultSelection, null)/]
 [else]
-    $[unit.instanceName()/] = $this->getDoctrine()
-        ->getRepository('[unit.appBundleName()/]:[unit.service.name/]')
-        ->findAll();
+    $this->[unit.instanceName()/] = [unit.getService()/]->findAll();
 [/if]
 
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', array(
-        'title' => '[page.displayLabel/]',
-        [unit.templateParameters()/]
-    ));
+    return $this->renderPage();
 }
-[/let]
 [/template]
 
 [template private filterSelect(unit : IndexUnit) post(trim())]
@@ -82,7 +76,7 @@ $request->query->has('[parameter.name/]')
 [/template]
 
 [template private selectionCall(unit : IndexUnit, selection : Selection, f : Filter)]
-$[unit.instanceName()/] = $this->get('[unit.service.name/]')->[selection.instanceName()/]([unit.selectionActuals(f)/]);
+$this->[unit.instanceName()/] = $this->get('[unit.service.name/]')->[selection.instanceName()/]([unit.selectionActuals(f)/]);
 [/template]
 
 [template private selectionActuals(unit : IndexUnit, f : Filter) post(trim())]
@@ -92,13 +86,14 @@ $[unit.instanceName()/] = $this->get('[unit.service.name/]')->[selection.instanc
 $[parameter.name/][/for], [/if]
 [/if]
 [if (unit.pagination.oclIsUndefined())]
-NULL[else]$page[/if], [unit.defaultPaginationSize/]
+NULL[else]$this->page[/if], [unit.defaultPaginationSize/]
 [/template]
 
+
 [template private templateParameters(unit : IndexUnit) post(trim())]
-'[unit.instanceName()/]' => $[unit.instanceName()/],
+$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (not unit.pagination.oclIsUndefined())]
-'currentPage' => $page,
-'pageCount' => ceil($[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]),
+$parameters['['/]'currentPage'[']'/] = $this->page;
+$parameters['['/]'pageCount'[']'/] = ceil($this->[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]);
 [/if]
 [/template]

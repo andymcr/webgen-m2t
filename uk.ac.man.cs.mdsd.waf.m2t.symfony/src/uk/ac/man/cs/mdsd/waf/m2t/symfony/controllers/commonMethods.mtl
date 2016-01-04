@@ -10,20 +10,34 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
+[template public routeAnnotation(unit : ContentUnit) post(trim())]
+[unit.routeAnnotation(false)/]
+[/template]
+
+[template public routeAnnotation(unit : ContentUnit, create : Boolean) post(trim())]
+@Route("[unit.uriPath(create)/]", name="[unit.routeName()/]")
+[/template]
+
 [template public routeParameters(service : Service) post(trim())]
 [for (key : ServiceFeatureReference | service.keys) separator (', ')]
 $[key.routeParameterName()/]
 [/for]
 [/template]
 
-
-[template public generateValuesFromFormToModel(unit : DynamicUnit) post(trim())]
-$this->[unit.instanceName()/]->values($this->request->post(), array([for
-	(field : UnitField | unit.nonResourceInputFeatures())
-	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
+[template public getService(unit : DynamicUnit) post(trim())]
+$this->get('[unit.service.name/]')
 [/template]
 
-[template public generateDefaultUnitValues(unit : DynamicUnit) post(trim())]
+[template public loadInstance(unit : DynamicUnit) post(trim())]
+[unit.getService()/]->find([unit.service.routeParameters()/])
+[/template]
+
+[template public createInstance(unit : DynamicUnit) post(trim())]
+new [unit.service.modelName()/]();
+[/template]
+
+
+[template public unitDefaultValues(unit : DynamicUnit) post(trim())]
 [for (field : UnitField | unit.defaultValueFields())]
 [if (field.oclIsTypeOf(UnitElement))]
 $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.valueExpression()/];
@@ -33,8 +47,7 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(I
 [/for]
 [/template]
 
-
-[template public generateForcedFeatureValues(unit : DynamicUnit) post(trim())]
+[template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
 [for (feature : UnitField | unit.forcedValueFeatures())]
 [let value : Expression = feature.oclAsType(UnitFeature).forcedValue]
 $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/];
@@ -42,15 +55,14 @@ $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/
 [/for]
 [/template]
 
-[template public generateCaptchaCheck(unit : DynamicUnit) post(trim())]
-require_once(Kohana::find_file('vendor/recaptcha', 'recaptchalib'));
-$reCaptcha = new ReCaptcha('[unit.pageDisplayedOn().partOf.captchaSecretKey/]');
-$resp = $reCaptcha->verifyResponse(
-	$_SERVER['['/]"REMOTE_ADDR"[']'/], 
-	$this->request->post('g-recaptcha-response') 
-	); 
-if ($resp == NULL || !$resp->success)
-	throw new Captcha_Exception($resp->errorCodes);
+[template public catchSelectionException(unit : DynamicUnit)]
+catch (QueryException $qe)
+{
+    $this->[unit.service.errorName()/] = $se->message();
+[if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
+[unit.exceptionCleanup()/]
+[/if]
+}
 [/template]
 
 [template public generateCatchCaptchaException(unit : DynamicUnit) post(trim())]
@@ -142,3 +154,47 @@ public function action_[action.actionName()/]()
 [template public generateRemoveParameter(eObject : EObject, parameterName : String) post(trim())]
 unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 [/template]
+
+
+[template public actionMethod(action : InlineAction)
+	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
+[let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
+[let unit : DynamicUnit = action.immediateUnit()]
+/**
+ * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
+ */
+public function action_[deleteAction.actionName()/]()
+{
+//    try
+    {
+        $[deleteAction.instanceName()/] = [unit.loadInstance()/];
+		$[deleteAction.instanceName()/]->remove();
+[if (not deleteAction.destination.oclIsUndefined())]
+        $this->redirect(Route::get('[comment deleteAction.destination.routeName()/]')->uri());
+[/if]
+    }
+    [comment actionUnit.containingUnit().catchSelectionException()/]
+}
+[/let]
+[/let]
+[/template]
+
+[template public actionMethod(action : InlineAction)
+	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
+[let unit : DynamicUnit = action.immediateUnit().containingUnit()]
+/**
+ * @Route("[unit.supportUriPath()/]", name="[unit.routeName()/]")
+ */
+public function action_[action.actionName()/]()
+{
+//    try
+    {
+        $[action.instanceName()/] = [unit.loadInstance()/];
+        // [protected ('support.'.concat(action.actionName()))]
+        // [/protected]
+    }
+    [comment unit.catchSelectionException()/]
+}
+[/let]
+[/template]
+

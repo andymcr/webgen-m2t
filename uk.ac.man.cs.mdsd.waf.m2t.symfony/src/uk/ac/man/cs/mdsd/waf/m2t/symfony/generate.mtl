@@ -34,8 +34,6 @@
 [model.configDev()/]
 [model.configProd()/]
 [model.configTest()/]
-[model.config()/]
-[model.configDev()/]
 [model.routing()/]
 [model.routingDev()/]
 [model.configSecurity()/]
@@ -43,7 +41,7 @@
 [model.parametersDist()/]
 
 [model.configServices()/]
-[model.servicesWithSelections().generateService()/]
+[model.servicesWithSelections().service()/]
 
 [model.generateAppBundle()/]
 [model.persistence.enumerationTypes().generateFormType()/]

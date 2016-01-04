@@ -18,14 +18,17 @@
 <?php
 namespace [page.controllersNamespace()/];
 
+[for (service : Service | page.editUnits().service->asSet())]
+use [service.modelsNamespace()/]\[service.modelName()/];
+[/for]
+[for (service : Service | page.formUnits().service->asSet())]
+use [service.formTypeNamespace()/]\[service.typeClassName()/];
+[/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 [if (page.hasFilterParameters())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
-[for (service : Service | page.formUnits().service->asSet())]
-use [service.formTypeNamespace()/]\[service.typeClassName()/];
-[/for]
 
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
@@ -55,6 +58,23 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 	/* [/protected]
 	 */
 [/if]
+
+    [page.renderMethod()/]
 }
 [/file]
+[/template]
+
+
+[template renderMethod(page : Page) post(trim())]
+private function renderPage()
+{
+    $parameters = array(
+        'title' => '[page.displayLabel/]',
+    );
+[for (unit : ContentUnit | page.units)]
+    [unit.templateParameters()/]
+[/for]
+    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+
+}
 [/template]

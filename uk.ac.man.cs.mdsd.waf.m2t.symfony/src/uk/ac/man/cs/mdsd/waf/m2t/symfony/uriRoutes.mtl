@@ -5,10 +5,14 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
+[query public hasRouteParameters(service : Service) : Boolean
+	= service.uriPathKeys()->notEmpty()
+/]
+
 [query public uriPath(service : Service) : String
 	= let uriElement : String
 		= service.name.toLowerFirst()
-			.concat(service.keys->collect(k | k.routeParameterName())->sep('/<', '>/<', '>')->toString())
+			.concat(service.keys->collect(k | k.routeParameterName())->sep('/{', '}/{', '}')->toString())
 		in if service.parentService().oclIsUndefined() then
 				uriElement
 			else
@@ -60,6 +64,10 @@
 
 [query public hasRouteParameters(unit : ContentUnit) : Boolean
 	= unit.uriPathKeys()->notEmpty()
+/]
+
+[query public loginCheckUriPath(unit : LoginUnit) : String
+	= unit.logoutActionName()
 /]
 
 [query public logoutUriPath(unit : LoginUnit) : String

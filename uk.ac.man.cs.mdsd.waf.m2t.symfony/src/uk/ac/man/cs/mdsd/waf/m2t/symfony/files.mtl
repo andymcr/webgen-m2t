@@ -122,7 +122,7 @@
 
 [query public formTypeFilename(service : Service) : String
 	= service.formTypeDirectory().concat('/')
-		.concat(service.typePrefix()).concat(service.name).concat('Type')
+		.concat(service.typePrefix()).concat(service.modelName()).concat('Type')
 		.concat(service.executableExtension())
 /]
 
@@ -148,6 +148,10 @@
 	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
 		.concat(genUnit.instanceName()).concat('_pagination')
 		.concat(genUnit.executableExtension())
+/]
+
+[query public routingBaseFilename(eObject : EObject) : String
+	= eObject.configDirectory().concat('/').concat('routing')
 /]
 
 [query public serviceFilename(service : Service) : String
