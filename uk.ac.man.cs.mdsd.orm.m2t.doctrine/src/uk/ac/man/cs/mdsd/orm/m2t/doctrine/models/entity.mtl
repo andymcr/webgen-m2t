@@ -147,6 +147,16 @@ public function __construct()
 [/template]
 
 [template private featureMethods(feature : Feature) post(trim())]
+[feature.getMethod()/]
+
+[if (feature.isSingleton())]
+[feature.setMethod()/]
+[else]
+[feature.addMethod()/]
+[/if]
+[/template]
+
+[template private getMethod(feature : Feature) post(trim())]
 public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.modelPropertyName().toUpperFirst()/]()
 {
 [if (feature.oclIsKindOf(Attribute))]
@@ -155,37 +165,42 @@ public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.model
     return $this->[feature.modelPropertyName()/];
 [/if]
 }
+[/template]
 
-[if (feature.isSingleton())]
-public function set[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/]) {
-	[if (feature.oclIsKindOf(SingletonAttribute))]
-	[let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
-		[if (attribute.oclIsTypeOf(SingletonElement))]
-		[let element : SingletonElement = attribute.oclAsType(SingletonElement)]
-			[if (element.caseInsensitive)]
+[template private setMethod(feature : Feature)
+	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
+[let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
+public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]) {
+[if (attribute.oclIsTypeOf(SingletonElement))]
+[let element : SingletonElement = attribute.oclAsType(SingletonElement)]
+	[if (element.caseInsensitive)]
     $this->[element.columnName()/] = strtolower(trim($[element.instanceName()/]));
-			[elseif (element.encrypt)]
+	[elseif (element.encrypt)]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-			[else]
-    $this->[element.columnName()/] = trim($[element.instanceName()/]);
-			[/if]
-		[/let]
-		[elseif (attribute.oclIsTypeOf(SingletonDate))]
-    if (trim($[attribute.instanceName()/]) == FALSE) {
-        $this->[attribute.modelPropertyName()/] = NULL;
-    } else {
-    }
-		[/if]
-	[/let]
-	[/if]
-}
-
 	[else]
+    $this->[element.columnName()/] = trim($[element.instanceName()/]);
+	[/if]
+[/let]
+[elseif (attribute.oclIsTypeOf(SingletonDate))]
+    $this->[attribute.columnName()/] = $[attribute.instanceName()/];
+[/if]
+}
+[/let]
+[/template]
+
+[template private setMethod(feature : Feature)
+	? (feature.oclIsTypeOf(SingletonAssociation)) post(trim())]
+[let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)]
+public function set[association.modelPropertyName().toUpperFirst()/]($[association.instanceName()/]) {
+    $this->[association.modelPropertyName()/] = $[association.instanceName()/];
+}
+[/let]
+[/template]
+
+[template private addMethod(feature : Feature) post(trim())]
 public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/])
 {
 }
-
-[/if]
 [/template]
 
 [template private label(label : ModelLabel) post(trim())]
