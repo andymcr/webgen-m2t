@@ -82,11 +82,9 @@
 
 [template private form(unit : DynamicUnit, accessor : String) post(trim())]
 [unit.formOpen(accessor)/]
- <ul>
 [for (field : UnitField | unit.inputOrEmbeddedFields())]
-  [field.formField(unit)/]
+ [field.formField(unit)/]
 [/for]
- </ul>
 [unit.formControlAndClose()/]
 [/template]
 
@@ -154,7 +152,7 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
 		field.modelPropertyName()
 	endif]
 [let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(fieldName)]
-<li[if (unit.hasMessagesOnFeature())]<?php
+<div[if (unit.hasMessagesOnFeature())]<?php
     unset($field_error);
     if (!empty($[unit.fieldErrorsName()/]))
 		[if (field.oclIsKindOf(InterfaceField))]
@@ -194,7 +192,7 @@ find_all()[else]
      <p class="[unit.errorClass/]"><?php echo __($field_error); ?></p>
 <?php } ?>
 	[/if]
-    </li>
+    </div>
 [/let]
 [/let]
 [/template]
