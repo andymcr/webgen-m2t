@@ -40,6 +40,10 @@
 	= eObject.formDirectory().concat('/').concat('Type')
 /]
 
+[query public formViewDirectory(eObject : EObject) : String
+	= eObject.viewsDirectory().concat('/').concat('form')
+/]
+
 [query public menuDirectory(eObject : EObject) : String
 	= eObject.viewsDirectory().concat('/').concat('Menu')
 /]

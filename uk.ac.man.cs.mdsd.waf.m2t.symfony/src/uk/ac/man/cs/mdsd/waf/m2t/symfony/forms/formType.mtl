@@ -16,6 +16,7 @@ namespace [service.formTypeNamespace()/];
 [service.associationTypeUse()/]
 use Symfony\Component\Form\AbstractType;
 [service.attributeTypeUse()/]
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,10 +24,9 @@ class [service.typeClassName()/] extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder
 [for (feature : ServiceFeature | service.features)]
-            [feature.formFeature()/]
-[/for];
+		$builder->[feature.formFeature()/];
+[/for]
 [for (feature : ServiceFeature | service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'time'))]
         $builder->get('[feature.modelPropertyName()/]')
             ->addModelTransformer(new CallbackTransformer(
@@ -38,11 +38,7 @@ class [service.typeClassName()/] extends AbstractType
                 },
 // TODO
                 function ($submittedDescription) {
-                    // remove most HTML tags (but not br,p)
-                    $cleaned = strip_tags($submittedDescription, '<br><br/><p>');
-
-                    // transform any \n to real <br/>
-                    return str_replace("\n", '<br/>', $cleaned);
+                    return $submittedDescription;
                 }
             ));
 [/for]
@@ -101,34 +97,34 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [template private formFeature(feature : ServiceFeature)
 	? (feature.oclIsTypeOf(ServiceAttribute)) post(trim())]
 [let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)]
-->add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
-        'label' => '[attribute.displayLabel/]',
+add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
+    'label' => '[attribute.displayLabel/]',
 [if (not attribute.isRequired())]
-        'required' => FALSE,
+    'required' => FALSE,
 [/if]
 [if (attribute.interfaceType = 'datetime')]
-        'date_widget' => 'single_text',
-        'time_widget' => 'single_text',
+    'date_widget' => 'single_text',
+    'time_widget' => 'single_text',
 [elseif (attribute.interfaceType = 'date' or attribute.interfaceType = 'time')]
-        'widget' => 'single_text',
+    'widget' => 'single_text',
 	[if (attribute.interfaceType = 'time')]
-        'with_seconds' => TRUE,
+    'with_seconds' => TRUE,
 	[/if]
 [elseif (attribute.isEnumerationTypeSingleton())]
-        'choices' => [attribute.enumerationType().modelClassName()/]::options(),
-        'placeholder' => 'Please select one',
+    'choices' => [attribute.enumerationType().modelClassName()/]::options(),
+    'placeholder' => 'Please select one',
 [/if]
 [if (attribute.hasHtml5Attributes())]
-        'attr' => array(
+    'attr' => array(
 	[if (not attribute.placeholder.oclIsUndefined())]
-            'placeholder' => '[attribute.placeholder/]',
+        'placeholder' => '[attribute.placeholder/]',
 	[/if]
 	[if (not attribute.validationPattern.oclIsUndefined())]
-            'pattern' => '[attribute.validationPattern/]',
+        'pattern' => '[attribute.validationPattern/]',
 	[/if]
-        ),
+    ),
 [/if]
-    ))
+))
 [/let]
 [/template]
 
@@ -161,16 +157,16 @@ TextType::class
 [template private formFeature(feature : ServiceFeature)
 	? (feature.oclIsTypeOf(ServiceAssociation)) post(trim())]
 [let association : ServiceAssociation = feature.oclAsType(ServiceAssociation)]
-->add('[association.modelPropertyName()/]', EntityType::class, array(
-        'label' => '[association.displayLabel/]',
+add('[association.modelPropertyName()/]', EntityType::class, array(
+    'label' => '[association.displayLabel/]',
 [if (not association.isRequired())]
-        'required' => FALSE,
+    'required' => FALSE,
 [/if]
-        'class' => '[association.appBundleName()/]:[association.modelName()/]',
-        'choice_label' => 'defaultLabel',
+    'class' => '[association.appBundleName()/]:[association.modelName()/]',
+    'choice_label' => 'defaultLabel',
 [if (association.isSingleton())]
-        'placeholder' => 'Please select one',
+    'placeholder' => 'Please select one',
 [/if]
-    ))
+))
 [/let]
 [/template]

@@ -27,6 +27,10 @@ class [service.serviceClassName()/]
 
     [service.findMethod()/]
 
+    [service.findAllMethod()/]
+
+    [service.saveMethod()/]
+
 [for (selection : Selection | service.selections)]
     [selection.selectionMethod(service)/]
 
@@ -56,6 +60,16 @@ public function find([service.routeParameters()/])
 public function findAll()
 {
 	return $this->getRepository()->findAll();
+}
+[/template]
+
+[template private saveMethod(service : Service) post(trim())]
+public function save($entity, $flush = false)
+{
+	$entityManager = $this->doctrine->getEntityManager();
+    $entityManager->persist($entity);
+    if ($flush)
+        $entityManager->flush();
 }
 [/template]
 

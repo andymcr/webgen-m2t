@@ -26,7 +26,7 @@
  * [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]([if (unit.hasFilterParameters())]
-Request $request[if (unit.service.keys->notEmpty())], [/if][/if][unit.service.routeParameters()/])
+Request $request[if (unit.service.keys->notEmpty())], [/if][/if][unit.routeParameters(true)/])
 {
     $this->[unit.instanceName()/] = [unit.loadInstance()/];
 
@@ -42,7 +42,7 @@ if (isset($this->[detailsUnit.instanceName()/]))
     $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [else]
 if (!isset($this->[detailsUnit.instanceName()/]))
-    $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/]
+    $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [/if]
 [/let]

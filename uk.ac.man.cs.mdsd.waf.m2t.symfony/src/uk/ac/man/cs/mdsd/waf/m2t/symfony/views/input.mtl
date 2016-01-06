@@ -82,10 +82,29 @@
 [/template]
 
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
+{% form_theme [unit.instanceName()/] 'form/messages_on_fields.html.twig' %}
 {{ form_start([unit.instanceName()/]) }}
 [/template]
 
 [template private formControlAndClose(unit : DynamicUnit) post(trim())]
+<div class="[unit.controlClass/]">
+ <input type="submit" name="save" value="[unit.submitLabel()/]"/>
+[if (unit.oclIsKindOf(EditUnit))]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
+	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
+		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
+ <input type="submit" name="save" value="[createUpdateUnit.clearLabel/]"/>
+		[/if]
+	[/let]
+	[/if]
+	[if (not editUnit.cancelDestination.oclIsUndefined())]
+ <input type="submit" name="save" value="[editUnit.cancelLabel/]"/>
+	[/if]
+[/let]
+[/if]
+</div>
+{{ form_row([unit.instanceName()/]._token) }}
 {{ form_end([unit.instanceName()/], {'render_rest': false}) }}
 [/template]
 

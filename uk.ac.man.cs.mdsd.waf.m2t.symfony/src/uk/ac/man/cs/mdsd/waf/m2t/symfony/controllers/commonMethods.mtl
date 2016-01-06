@@ -15,25 +15,37 @@
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit, create : Boolean) post(trim())]
-@Route("[unit.uriPath(create)/]", name="[unit.routeName()/]")
+@Route("[unit.uriPath(create)/]", name="[unit.routeName(create)/]")
 [/template]
 
-[template public routeParameters(service : Service) post(trim())]
-[for (key : ServiceFeatureReference | service.keys) separator (', ')]
-$[key.routeParameterName()/]
+[template public routeParameters(unit : DynamicUnit) post(trim())]
+[unit.routeParameters(false)/]
+[/template]
+
+[template public routeParameters(unit : DynamicUnit, formals : Boolean) post(trim())]
+[for (key : ServiceFeatureReference | unit.service.keys) separator (', ')]
+$[key.routeParameterName()/][if (formals and unit.oclIsTypeOf(CreateUpdateUnit))] = null[/if]
 [/for]
 [/template]
 
 [template public getService(unit : DynamicUnit) post(trim())]
-$this->get('[unit.service.name/]')
+$this->get[unit.service.modelName()/]Service()
+
+[/template]
+
+[template public getServiceMethod(unit : DynamicUnit) post(trim())]
+public function get[unit.service.modelName()/]Service()
+{
+    return $this->get('[unit.service.name/]');
+}
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.service.routeParameters()/])
+$this->getService()->find([unit.routeParameters()/])
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]
-new [unit.service.modelName()/]();
+new [unit.service.modelName()/]()
 [/template]
 
 
@@ -45,6 +57,18 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(I
 $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
 [/if]
 [/for]
+[/template]
+
+[template public handleCancel(unit : DynamicUnit) post(trim())]
+[let cancelDestination : Page = 
+	if unit.oclIsKindOf(ControlUnit) then
+		unit.oclAsType(ControlUnit).cancelDestination
+	else
+		unit.oclAsType(EditUnit).cancelDestination
+	endif]
+if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->get('cancel')->isClicked())
+	return $this->redirectToRoute('[cancelDestination.routeName()/]');
+[/let]
 [/template]
 
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]

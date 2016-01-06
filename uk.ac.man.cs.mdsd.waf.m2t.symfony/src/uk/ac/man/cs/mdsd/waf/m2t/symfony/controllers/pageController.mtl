@@ -44,10 +44,8 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 	[for (action : UnitSupportAction | page.dataSupportActions())]
 		if ($this->request->post('[action.name/]'))
 		{
-			/* [protected ('support.'.concat(action.name))]
-			 */
-			/* [/protected]
-			 */
+			// [protected ('support.'.concat(action.name))]
+			// [/protected]
 		}
 	[/for]
 	}

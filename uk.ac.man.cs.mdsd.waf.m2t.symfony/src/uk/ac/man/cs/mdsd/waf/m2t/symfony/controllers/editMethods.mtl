@@ -4,29 +4,25 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[comment uk::ac::man::cs::mdsd::waf::m2t::kohana::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
-[comment uk::ac::man::cs::mdsd::waf::m2t::kohana::files::controllers::controlMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::display/]
 
 
 [template public unitMethods(unit : ContentUnit)
-	? (unit.oclIsTypeOf(CreateUnit)) post(trim())]
-[let createUnit : CreateUnit = unit.oclAsType(CreateUnit)]
-[createUnit.actionMethod()/]
-
-[for (action : InlineAction | createUnit.uriActions())]
-[action.actionMethod()/]
-
-[/for]
-[/let]
-[/template]
-
-[template public unitMethods(unit : ContentUnit)
-	? (unit.oclIsKindOf(CreateUpdateUnit) or unit.oclIsKindOf(UpdateUnit) or unit.oclIsKindOf(MapUnit)) post(trim())]
+	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[editUnit.actionMethod()/]
+[editUnit.getServiceMethod()/]
 
+[if (not editUnit.oclIsTypeOf(UpdateUnit))]
+[editUnit.actionAddMethod()/]
+
+[/if]
+[if (not editUnit.oclIsTypeOf(CreateUnit))]
+[editUnit.actionEditMethod()/]
+
+[/if]
 [if (editUnit.hasInterfaceFields())]
 [editUnit.generateUnitRules()/]
 [/if]
@@ -38,55 +34,76 @@
 [/let]
 [/template]
 
-[template private actionMethod(unit : EditUnit)
-	? (not unit.oclIsTypeOf(MapUnit)) post(trim())]
+[template private actionAddMethod(unit : EditUnit) post(trim())]
 /**
  * [unit.routeAnnotation(true)/]
+ */
+public function [unit.actionName()/](Request $request, [unit.routeParameters(true)/])
+{
+    $[unit.instanceName()/] = [unit.createInstance()/];
+[if (unit.hasDefaultValueFields())]
+    [unit.unitDefaultValues()/]
+[/if]
+    $this->[unit.instanceName()/] = [unit.createForm(true)/];
+    $this->[unit.instanceName()/]->handleRequest($request);
+[if (not unit.cancelDestination.oclIsUndefined())]
+    [unit.handleCancel()/]
+[/if]
+    if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid())
+    {
+[if (unit.hasForcedValueFeatures())]
+	    [comment unit.forcedFeatureValues()/]
+[/if]
+        [unit.getService()/]->save($[unit.instanceName()/], true);
+[if (not unit.confirmDestination.oclIsUndefined())]
+	    return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
+[else]
+	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+        $[unit.instanceName()/] = [unit.createInstance()/];
+		[if (unit.hasDefaultValueFields())]
+        [unit.unitDefaultValues()/]
+		[/if]
+		[if (unit.hasInterfaceFields())]
+	    [comment unit.generateClearInterfaceFields()/]
+		[/if]
+        $this->[unit.instanceName()/]->setData($[unit.instanceName()/]);
+	[else]
+	[/if]
+[/if]
+    }
+
+    return $this->renderPage();
+}
+[/template]
+
+[template private actionEditMethod(unit : EditUnit) post(trim())]
+/**
  * [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]Action(Request $request, [unit.service.routeParameters()/])
+public function [unit.actionName()/]X(Request $request, [unit.routeParameters(true)/])
 {
-[if (not unit.cancelDestination.oclIsUndefined())]
-    [comment unit.handleCancel()/]
-
-[/if]
     try
     {
-[if (unit.oclIsTypeOf(CreateUpdateUnit))]
-[let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
-	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
-		[if (unit.oclIsKindOf(Selectable))]
-        if ($request->post('clear'))
-            $[unit.instanceName()/] = [unit.createInstance()/]
-        else
-            $[unit.instanceName()/] = [unit.getService()/]->find([unit.service.routeParameters()/]);
-		[else]
-        $[unit.instanceName()/] = [unit.createInstance()/]
-		[/if]
-	[/if]
-[/let]
-[else]
-	[if (unit.oclIsKindOf(Selectable))]
-        $[unit.instanceName()/] = [unit.getService()/]->find([unit.service.routeParameters()/]);
-	[else]
-        $[unit.instanceName()/] = [unit.createInstance()/]
-	[/if]
-[/if]
+        $[unit.instanceName()/] = $this->getService()->find([unit.routeParameters()/]);
 [if (unit.hasDefaultValueFields())]
         [unit.unitDefaultValues()/]
 [/if]
-        $this->[unit.instanceName()/] = [unit.createForm()/];
+        $this->[unit.instanceName()/] = [unit.createForm(false)/];
         $this->[unit.instanceName()/]->handleRequest($request);
+[if (not unit.cancelDestination.oclIsUndefined())]
+        [unit.handleCancel()/]
+[/if]
         if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid())
         {
 [if (unit.hasForcedValueFeatures())]
 	        [comment unit.forcedFeatureValues()/]
 [/if]
+            $this->getService()->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
 	        return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-            $[unit.instanceName()/] = [unit.createInstance()/]
+            $[unit.instanceName()/] = [unit.createInstance()/];
 		[if (unit.hasDefaultValueFields())]
             [unit.unitDefaultValues()/]
 		[/if]
@@ -120,55 +137,6 @@ $this->[unit.instanceName()/]->validation['['/]'[field.modelPropertyName()/]'[']
 	}
 [/template]
 
-
-
-[template private generateSaveCode(unit : EditUnit) post(trim())]
-try
-{
-	[comment unit.generateValuesFromFormToModel()/]
-[if (unit.hasForcedValueFeatures())]
-	[comment unit.generateForcedFeatureValues()/]
-[/if]
-[if (unit.hasCaptchaFields())]
-	[comment unit.generateCaptchaCheck()/]
-	else
-	{
-[/if]
-[if (unit.hasInterfaceFields())]
-		[comment unit.generateInterfaceFieldValidation()/]
-[/if]
-	$this->[unit.instanceName()/]->save([if (unit.hasInterfaceFields())]$extra_validation[/if]);
-[if (not unit.oclAsType(EditUnit).confirmDestination.oclIsUndefined())]
-	$this->redirect(Route::get('[unit.oclAsType(EditUnit).confirmDestination.controllerName()/]')->uri());
-[else]
-	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-	$this->[unit.instanceName()/]->clear();
-		[if (unit.hasInterfaceFields())]
-	[unit.generateClearInterfaceFields()/]
-		[/if]
-	[comment unit.generateRemoveParameter(unit.parameterName())/]
-	[/if]
-[/if]
-}
-[if (unit.hasCaptchaFields())]
-		}
-[/if]
-catch (ORM_Validation_Exception $e)
-{
-	$this->[unit.instanceName()/]_field_errors = $e->errors('');
-[if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
-	$unreported_field_errors = array_diff_key($this->[unit.instanceName()/]_field_errors, array([for
-	(field : UnitField | unit.inputFields())
-		separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
-	if (!empty($unreported_field_errors))
-		$this->[unit.instanceName()/]_error = print_r($unreported_field_errors, TRUE);
-[/if]
-[if (unit.hasEncryptedFeatures())]
-	[comment unit.generateClearEncryptedFeatures()/]
-[/if]
-}
-[/template]
-
 [template public generateClearInterfaceFields(unit : DynamicUnit) post(trim())]
 [for (field : InterfaceField | unit.interfaceFields())]
 unset($this->[unit.instanceName()/]->[field.modelPropertyName()/]);
@@ -176,8 +144,27 @@ unset($this->[unit.instanceName()/]->[field.modelPropertyName()/]);
 [/template]
 
 
-[template public createForm(unit : EditUnit) post(trim())]
-$this->createForm([service.typeClassName()/]::class, $[unit.instanceName()/])
+[template public createForm(unit : EditUnit, create : Boolean) post(trim())]
+$this->createForm([service.typeClassName()/]::class, $[unit.instanceName()/], array(
+    'action' => $this->generateUrl('[unit.routeName(create)/]', array(
+[if (create)]
+	[if (not service.parentService().oclIsUndefined())]
+        [unit.service.parentService().routeParameters('$'.concat(unit.instanceName()))/]
+	[/if]
+[else]
+        [unit.service.routeParameters('$'.concat(unit.instanceName()))/]
+[/if]
+    )),
+))
+[/template]
+
+[template private routeParameters(service : Service, accessor : String) post(trim())]
+[if (not service.parentService().oclIsUndefined())]
+[service.parentService().routeParameters(accessor)/]
+[/if]
+[for (key : ServiceFeatureReference | service.keys)]
+'[key.routeParameterName()/]' => $[key.routeParameterName()/],
+[/for]
 [/template]
 
 [template public templateParameters(unit : ContentUnit)
@@ -185,8 +172,8 @@ $this->createForm([service.typeClassName()/]::class, $[unit.instanceName()/])
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 if (!isset($this->[editUnit.instanceName()/]))
 {
-    $[editUnit.instanceName()/] = [editUnit.createInstance()/]
-    $this->[editUnit.instanceName()/] = [editUnit.createForm()/];
+    $[editUnit.instanceName()/] = [editUnit.createInstance()/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm(true)/];
 }
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
 [/let]

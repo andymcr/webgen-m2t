@@ -27,6 +27,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::sidemenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::site/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::topmenu/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form::form/]
 
 
 [template public symfony(model : WafModel)]
@@ -54,4 +55,5 @@
 [model.generatePage()/]
 [model.pages.generatePage()/]
 [model.pages.units.unitView()/]
+[model.formViews()/]
 [/template]
