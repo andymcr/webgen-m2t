@@ -170,7 +170,8 @@ public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.model
 [template private setMethod(feature : Feature)
 	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
 [let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
-public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]) {
+public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/])
+{
 [if (attribute.oclIsTypeOf(SingletonElement))]
 [let element : SingletonElement = attribute.oclAsType(SingletonElement)]
 	[if (element.caseInsensitive)]
@@ -191,7 +192,8 @@ public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.i
 [template private setMethod(feature : Feature)
 	? (feature.oclIsTypeOf(SingletonAssociation)) post(trim())]
 [let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)]
-public function set[association.modelPropertyName().toUpperFirst()/]($[association.instanceName()/]) {
+public function set[association.modelPropertyName().toUpperFirst()/]($[association.instanceName()/])
+{
     $this->[association.modelPropertyName()/] = $[association.instanceName()/];
 }
 [/let]
