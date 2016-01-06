@@ -16,22 +16,22 @@ class [type.modelClassName()/]
 	const [literal.name/] = [i/];
 [/for]
 
-	public static function options()
+	public static function values()
 	{
-		$options = array();
+		$values = array();
 [for (literal : EnumerationLiteral | type.enumerations)]
-		$options['['/]'[literal.displayLabel/]'[']'/] = self::[literal.name/];
+		$values['['/]'[literal.displayLabel/]'[']'/] = self::[literal.name/];
 [/for]
 
-		return $options;
+		return $values;
 	}
 
-	public static function option($value = null, $default = '')
+	public static function value($value = null, $default = '')
 	{
-		$options = [type.modelClassName()/]::options();
+		$values = [type.modelClassName()/]::values();
 
-		if (array_key_exists($value, $options)) {
-			return $options['['/]$value[']'/];
+		if (array_key_exists($value, $values)) {
+			return $values['['/]$value[']'/];
 		}
 
 		return $default;
