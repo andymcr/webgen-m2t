@@ -150,11 +150,13 @@ protected $updated;
 [/template]
 
 [template private validationAnnotation(feature : Feature) post(trim())]
-		[if (feature.isValidated())]
-			[if (feature.isRequired())]
-	 * @Assert\NotBlank
-			[/if]
-		[/if]
+[if (feature.isRequired())]
+	[if (feature.oclIsKindOf(Attribute))]
+* @Assert\NotBlank
+	[else]
+* @Assert\NotNull
+	[/if]
+[/if]
 [/template]
 
 [template private constructor(entityOrView : EntityOrView) post(trim())]
