@@ -32,18 +32,24 @@ class [entityOrView.modelClassName()/]
 
     [entityOrView.features()/]
 
+[if (entityOrView.oclIsTypeOf(Entity))]
     [entityOrView.timestampFeatures()/]
 
+[/if]
+[if (entityOrView.oclIsTypeOf(Entity) or entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations())]
     [entityOrView.constructor()/]
 
+[/if]
     [entityOrView.idMethods()/]
 
 [for (feature : Feature | entityOrView.features)]
     [feature.featureMethods()/]
 
 [/for]
+[if (entityOrView.oclIsTypeOf(Entity))]
     [entityOrView.timestampMethods()/]
 
+[/if]
 [for (label : ModelLabel | entityOrView.labels)]
     [label.label()/]
 
@@ -164,8 +170,10 @@ public function __construct()
 		[/if]
 	[/if]
 [/for]
+[if (entityOrView.oclIsTypeOf(Entity))]
 
     $this->created = new \DateTime();
+[/if]
 }
 [/template]
 
