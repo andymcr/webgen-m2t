@@ -24,46 +24,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="[entityOrView.tableName/]")
+ * @ORM\HasLifecycleCallbacks
  **/
 class [entityOrView.modelClassName()/]
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     **/
-    protected $[entityOrView.autoKeyName/];
+    [entityOrView.idFeature()/]
 
-[for (feature : Feature | entityOrView.features)]
-	[comment TODO sortout location features /]
-	[if (not feature.isLocation())]
-    /**
-      [feature.ormAnnotation()/]
-[if (feature.isValidated())]
-      [feature.validationAnnotation()/]
-[/if]
-    **/
-[if (feature.oclIsKindOf(Attribute))]
-    protected $[feature.columnName()/];
-[else]
-    protected $[feature.modelPropertyName()/];
-[/if]
+    [entityOrView.features()/]
 
-	[/if]
-[/for]
-[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations())]
+    [entityOrView.timestampFeatures()/]
+
     [entityOrView.constructor()/]
 
-[/if]
-    public function getId()
-    {
-        return $id;
-    }
+    [entityOrView.idMethods()/]
 
 [for (feature : Feature | entityOrView.features)]
     [feature.featureMethods()/]
 
 [/for]
+    [entityOrView.timestampMethods()/]
+
 [for (label : ModelLabel | entityOrView.labels)]
     [label.label()/]
 
@@ -84,6 +64,47 @@ class [entityOrView.modelClassName()/]
 [/if]
 }
 [/file]
+[/template]
+
+[template private idFeature(entityOrView : EntityOrView) post(trim())]
+/**
+ * @ORM\Id
+ * @ORM\Column(type="integer")
+ * @ORM\GeneratedValue
+ **/
+protected $[entityOrView.autoKeyName/];
+[/template]
+
+[template private features(entityOrView : EntityOrView) post(trim())]
+[for (feature : Feature | entityOrView.features)]
+[comment TODO sortout location features /]
+	[if (not feature.isLocation())]
+/**
+  [feature.ormAnnotation()/]
+	[if (feature.isValidated())]
+  [feature.validationAnnotation()/]
+	[/if]
+  **/
+	[if (feature.oclIsKindOf(Attribute))]
+protected $[feature.columnName()/];
+	[else]
+protected $[feature.modelPropertyName()/];
+	[/if]
+
+	[/if]
+[/for]
+[/template]
+
+[template private timestampFeatures(entityOrView : EntityOrView) post(trim())]
+/**
+ * @ORM\Column(type="datetime")
+ **/
+protected $created;
+
+/**
+ * @ORM\Column(type="datetime")
+ **/
+protected $updated;
 [/template]
 
 [template private ormAnnotation(feature : Feature)
@@ -143,6 +164,15 @@ public function __construct()
 		[/if]
 	[/if]
 [/for]
+
+    $this->created = new \DateTime();
+}
+[/template]
+
+[template private idMethods(entityOrView : EntityOrView) post(trim())]
+public function getId()
+{
+    return $this->id;
 }
 [/template]
 
@@ -178,6 +208,8 @@ public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.i
     $this->[element.columnName()/] = strtolower(trim($[element.instanceName()/]));
 	[elseif (element.encrypt)]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
+	[elseif (element.isEnumerationTypeSingleton() or element.dataType.name = 'Boolean')]
+    $this->[element.columnName()/] = $[element.instanceName()/];
 	[else]
     $this->[element.columnName()/] = trim($[element.instanceName()/]);
 	[/if]
@@ -202,6 +234,26 @@ public function set[association.modelPropertyName().toUpperFirst()/]($[associati
 [template private addMethod(feature : Feature) post(trim())]
 public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/])
 {
+}
+[/template]
+
+[template private timestampMethods(entityOrView : EntityOrView) post(trim())]
+public function getCreated()
+{
+    return $this->created;
+}
+
+public function getUpdated()
+{
+    return $this->updated;
+}
+
+/**
+ * ORM\@PreUpdate
+ **/
+public function updateUpdated($updated)
+{
+    $this->updated = new \DateTime();
 }
 [/template]
 
