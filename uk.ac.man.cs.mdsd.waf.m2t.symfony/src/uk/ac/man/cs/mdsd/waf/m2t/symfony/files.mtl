@@ -32,6 +32,10 @@
 	= eObject.webDirectory().concat('/css')
 /]
 
+[query public extensionsDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Extensions')
+/]
+
 [query public formDirectory(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/').concat('Form')
 /]
@@ -68,6 +72,10 @@
 	= 'src'
 /]
 
+[query public twigExtensionsDirectory(eObject : EObject) : String
+	= eObject.extensionsDirectory().concat('/').concat('Twig')
+/]
+
 [query public viewsDirectory(eObject : EObject) : String
 	= eObject.resourcesDirectory().concat('/').concat('views')
 /]
@@ -85,6 +93,10 @@
 	= eObject.appBundleNamespace().concat('\\').concat('Controller')
 /]
 
+[query public extensionsNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Extensions')
+/]
+
 [query public formNamespace(eObject : EObject) : String
 	= eObject.appBundleNamespace().concat('\\').concat('Form')
 /]
@@ -99,6 +111,10 @@
 
 [query public servicesNamespace(eObject : EObject) : String
 	= eObject.appBundleNamespace().concat('\\').concat('Service')
+/]
+
+[query public twigExtensionsNamespace(eObject : EObject) : String
+	= eObject.extensionsNamespace().concat('\\').concat('Twig')
 /]
 
 

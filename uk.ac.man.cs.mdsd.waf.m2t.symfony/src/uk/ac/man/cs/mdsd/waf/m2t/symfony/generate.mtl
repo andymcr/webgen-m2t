@@ -16,6 +16,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::routing/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::routingDev/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::pageController/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::extensions::extensions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::enumerationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::formType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::config/]
@@ -56,4 +57,6 @@
 [model.pages.generatePage()/]
 [model.pages.units.unitView()/]
 [model.formViews()/]
+
+[model.extensions()/]
 [/template]

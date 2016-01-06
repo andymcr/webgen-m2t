@@ -13,8 +13,6 @@
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[editUnit.getServiceMethod()/]
-
 [if (not editUnit.oclIsTypeOf(UpdateUnit))]
 [editUnit.actionAddMethod()/]
 
@@ -72,7 +70,7 @@ public function [unit.actionName()/](Request $request, [unit.routeParameters(tru
 [/if]
     }
 
-    return $this->renderPage();
+    return $this->renderPage([if (unit.pageDisplayedOn().hasFilterParameters())]$request[/if]);
 }
 [/template]
 
@@ -114,7 +112,7 @@ public function [unit.actionName()/]X(Request $request, [unit.routeParameters(tr
 [/if]
         }
 
-        return $this->renderPage();
+        return $this->renderPage([if (unit.pageDisplayedOn().hasFilterParameters())]$request[/if]);
     }
     [unit.catchSelectionException()/]
 

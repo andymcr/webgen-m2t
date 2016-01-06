@@ -20,7 +20,7 @@
 	[if (not attribute.isEnumerationTypeSingleton())]
 [accessor/]
 	[else]
-[attribute.enumerationType().modelClassName()/]::option([accessor/])
+[accessor/] | [attribute.enumerationType().filterName()/]
 	[/if]
 [/let]
 [/template]

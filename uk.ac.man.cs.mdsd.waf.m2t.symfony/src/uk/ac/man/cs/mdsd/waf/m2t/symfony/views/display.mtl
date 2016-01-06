@@ -411,7 +411,7 @@ NULL
 
 [template public getValue(feature : Feature, field : UnitField, accessor : String)
 	? (feature.isEnumerationTypeSingleton()) post(trim())]
-[feature.enumerationType().modelClassName()/]::option([accessor/])
+[accessor/] | [feature.enumerationType().filterName()/]
 [/template]
 
 

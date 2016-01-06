@@ -33,15 +33,8 @@ $this->get[unit.service.modelName()/]Service()
 
 [/template]
 
-[template public getServiceMethod(unit : DynamicUnit) post(trim())]
-public function get[unit.service.modelName()/]Service()
-{
-    return $this->get('[unit.service.name/]');
-}
-[/template]
-
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-$this->getService()->find([unit.routeParameters()/])
+[unit.getService()/]->find([unit.routeParameters()/])
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]

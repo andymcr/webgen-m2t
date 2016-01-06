@@ -12,6 +12,10 @@
 /]
 
 
+[query public filterName(type : EnumerationType) : String
+	= type.name.toLowerFirst()
+/]
+
 [query public formTypeName(type : EnumerationType) : String
 	= type.name.toLowerFirst()
 /]
@@ -132,6 +136,10 @@
 			else
 				''
 			endif)
+/]
+
+[query public selectName(unit : ContentUnit) : String
+	= unit.instanceName().concat('Select')
 /]
 
 [query public supportRouteName(unit : ContentUnit) : String

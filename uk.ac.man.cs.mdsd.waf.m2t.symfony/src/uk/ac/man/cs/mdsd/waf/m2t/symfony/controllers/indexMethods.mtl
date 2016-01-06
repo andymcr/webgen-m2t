@@ -13,6 +13,10 @@
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [indexUnit.actionMethod()/]
 
+[if (unit.pageDisplayedOn().units->size() > 1)]
+[indexUnit.selectMethod()/]
+
+[/if]
 [for (action : InlineAction | unit.uriActions())]
 [action.actionMethod()/]
 
@@ -21,27 +25,50 @@
 [/template]
 
 [template private actionMethod(unit : IndexUnit) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
 /**
  * [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([if (unit.hasFilterParameters())]
+public function [unit.actionName()/]([if (page.hasFilterParameters())]
 Request $request[/if])
 {
+[if (page.units->size() = 1)]
+    [unit.selectCode()/]
+
+[/if]
+[if (page.units->size() > 1)]
+    return $this->renderPage([if (page.hasFilterParameters())]$request[/if]);
+[else]
+    $parameters = array();
+    $parameters['['/]'title'[']'/] = '[page.displayLabel/]';
+    [unit.templateParameters()/]
+    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+[/if]
+}
+[/let]
+[/template]
+
+[template private selectMethod(unit : IndexUnit) post(trim())]
+private function [unit.selectName()/]([if (unit.hasFilterParameters())]
+Request $request[/if])
+{
+    [unit.selectCode()/]
+}
+[/template]
+
+[template private selectCode(unit : IndexUnit) post(trim())]
 [if (not unit.pagination.oclIsUndefined())]
-    $this->page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
+$this->page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
 [/if]
 [if (unit.hasFilters())]
-    [unit.filterSelect()/]
-    else
+[unit.filterSelect()/]
+else
 [/if]
 [if (not unit.defaultSelection.oclIsUndefined())]
-    [unit.selectionCall(unit.defaultSelection, null)/]
+[unit.selectionCall(unit.defaultSelection, null)/]
 [else]
-    $this->[unit.instanceName()/] = [unit.getService()/]->findAll();
+$this->[unit.instanceName()/] = [unit.getService()/]->findAll();
 [/if]
-
-    return $this->renderPage();
-}
 [/template]
 
 [template private filterSelect(unit : IndexUnit) post(trim())]
@@ -76,7 +103,7 @@ $request->query->has('[parameter.name/]')
 [/template]
 
 [template private selectionCall(unit : IndexUnit, selection : Selection, f : Filter)]
-$this->[unit.instanceName()/] = $this->get('[unit.service.name/]')->[selection.instanceName()/]([unit.selectionActuals(f)/]);
+$this->[unit.instanceName()/] = [unit.getService()/]->[selection.instanceName()/]([unit.selectionActuals(f)/]);
 [/template]
 
 [template private selectionActuals(unit : IndexUnit, f : Filter) post(trim())]
@@ -91,6 +118,9 @@ NULL[else]$this->page[/if], [unit.defaultPaginationSize/]
 
 
 [template private templateParameters(unit : IndexUnit) post(trim())]
+[if (unit.pageDisplayedOn().units->size() > 1)]
+$this->[unit.selectName()/]([if (unit.hasFilterParameters())]$request[/if]);
+[/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (not unit.pagination.oclIsUndefined())]
 $parameters['['/]'currentPage'[']'/] = $this->page;
