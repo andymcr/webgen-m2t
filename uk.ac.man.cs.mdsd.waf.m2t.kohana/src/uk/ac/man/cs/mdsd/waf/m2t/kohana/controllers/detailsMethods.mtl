@@ -39,9 +39,6 @@ if ($this->[detailsUnit.service.instanceName()/]->loaded() || isset($this->[deta
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.actionMethod()/]
 
-[for (action : InlineAction | detailsUnit.uriActions())]
-[action.actionMethod()/]
-[/for]
 [/let]
 [/template]
 

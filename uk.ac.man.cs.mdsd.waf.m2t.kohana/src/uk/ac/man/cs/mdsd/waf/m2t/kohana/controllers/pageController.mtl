@@ -34,6 +34,11 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [for (unit : ContentUnit | page.units)]
     [unit.unitMethods()/]
 
+	[if (unit.oclIsKindOf(DynamicUnit))]
+		[for (action : InlineAction | unit.oclAsType(DynamicUnit).uriActions())]
+    [action.actionMethod()/]
+		[/for]
+	[/if]
 [/for]
 [if (page.hasSupportActions())]
     [page.supportActionMethods()/]
@@ -138,4 +143,40 @@ if ($this->request->post('[action.actionName()/]'))
     // [/protected]
     }
 [/for]
+[/template]
+
+[template private actionMethod(action : InlineAction)
+	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
+[let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
+[let unit : DynamicUnit = action.immediateUnit()]
+public function action_[deleteAction.actionName()/]()
+{
+    try
+    {
+        $this->[unit.service.loadMethodName()/]();
+		$this->[unit.service.instanceName()/]->delete();
+[if (not deleteAction.destination.oclIsUndefined())]
+        $this->redirect(Route::get('[deleteAction.destination.routeName()/]')->uri());
+[/if]
+    }
+    [unit.containingUnit().catchSelectionException()/]
+}
+[/let]
+[/let]
+[/template]
+
+[template private actionMethod(action : InlineAction)
+	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
+[let unit : DynamicUnit = action.immediateUnit().containingUnit()]
+public function action_[action.actionName()/]()
+{
+    try
+    {
+        $this->[action.immediateUnit().containingUnit().service.loadMethodName()/]();
+        // [protected ('support.'.concat(action.actionName()))]
+        // [/protected]
+    }
+    [unit.catchSelectionException()/]
+}
+[/let]
 [/template]

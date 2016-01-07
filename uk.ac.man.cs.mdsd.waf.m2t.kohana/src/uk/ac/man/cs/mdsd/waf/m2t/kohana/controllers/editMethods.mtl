@@ -46,10 +46,6 @@ $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[asso
 
 [association.associationOptions()/]
 [/for]
-[for (action : InlineAction | editUnit.uriActions())]
-[action.actionMethod()/]
-
-[/for]
 [/let]
 [/template]
 
