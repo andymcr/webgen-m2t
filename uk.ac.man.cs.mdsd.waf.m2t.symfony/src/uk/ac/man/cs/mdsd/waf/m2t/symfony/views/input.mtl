@@ -358,7 +358,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 	= field.oclAsType(UnitElement).serviceFeature.enumerationType()]
 <select id="[field.uniqueName()/]" name="[field.formName()/]" class="[field.styleClass()/] [field.inputClass()/]"[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
  required=""[/if]>
-(% foreach option in [enumerationType.modelClassName()/]::options([field.isRequired()/])%}
+(% foreach option in [enumerationType.modelClassName()/]::values([field.isRequired()/])%}
 <option value="x">y</option>
 {% endforeach %}
 </select>

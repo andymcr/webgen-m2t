@@ -1,6 +1,5 @@
 [comment encoding = UTF-8 /]
 [module formType(
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
@@ -111,7 +110,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'with_seconds' => TRUE,
 	[/if]
 [elseif (attribute.isEnumerationTypeSingleton())]
-    'choices' => [attribute.enumerationType().modelClassName()/]::options(),
+    'choices' => [attribute.enumerationType().modelClassName()/]::values(),
     'placeholder' => 'Please select one',
 [/if]
 [if (attribute.hasHtml5Attributes())]

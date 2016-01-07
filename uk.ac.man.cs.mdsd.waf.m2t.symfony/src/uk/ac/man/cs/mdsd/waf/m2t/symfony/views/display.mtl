@@ -326,7 +326,15 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
 [association.units.viewContent(accessor)/]
 	[else]
-[association.units.viewContent(accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)'))/]
+[let old : String = accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)')]
+[/let]
+[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
+[let new : String = association.serviceFeature.partOf.serviceClassName().toLowerFirst()
+	.concat('.').concat(association.name).concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName().toUpperFirst())
+	.concat('(').concat(parentAccessor).concat(')')]
+[association.units.viewContent(new)/]
+[/let]
+[/let]
 	[/if]
 [/let]
 [/if]

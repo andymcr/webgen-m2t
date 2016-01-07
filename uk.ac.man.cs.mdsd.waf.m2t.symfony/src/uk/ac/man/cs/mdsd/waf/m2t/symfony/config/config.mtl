@@ -49,6 +49,12 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+[if (model.hasServicesWithSelections())]
+    globals:
+	[for (service : Service | model.servicesWithSelections())]
+        [service.serviceClassName().toLowerFirst()/]: "@[service.name/]"
+	[/for]
+[/if]
 
 # Doctrine Configuration
 doctrine:

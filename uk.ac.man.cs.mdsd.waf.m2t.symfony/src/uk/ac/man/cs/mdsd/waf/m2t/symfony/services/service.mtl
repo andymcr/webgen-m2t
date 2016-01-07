@@ -14,6 +14,7 @@
 <?php
 namespace [service.servicesNamespace()/];
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class [service.serviceClassName()/]
@@ -36,6 +37,8 @@ class [service.serviceClassName()/]
 
 [/for]
 
+    [service.childSelectionMethods()/]
+
     [service.getRepositoryMethod()/]
 
     [service.createQueryBuilderMethod()/]
@@ -46,13 +49,24 @@ class [service.serviceClassName()/]
 [template private findMethod(service : Service) post(trim())]
 public function find([service.routeParameters()/])
 {
-	[service.createQueryBuilder()/]
-    $queryBuilder->where(
+	$queryBuilder = $this->createQueryBuilder();
+	return $queryBuilder
 [for (key : ServiceFeatureReference | service.keys)]
-        $queryBuilder->expr()->eq('[service.selectName()/].[key.columnName()/]', $queryBuilder->expr()->literal($[key.routeParameterName()/]))
+	[if (key.oclIsTypeOf(ServiceAttributeReference))]
+        ->where($queryBuilder->expr()->eq('[service.selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]'))
+	[else]
+	[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
+	[let targetService : Service = associationKey.association.targetService()]
+        ->join('[service.selectName()/].[key.modelPropertyName()/]', '[targetService.selectName()/]')
+        ->where($queryBuilder->expr()->eq('[targetService.selectName()/].[associationKey.childFeature.columnName()/]', ':[key.routeParameterName()/]'))
+	[/let]
+	[/let]
+	[/if]
 [/for]
-    );
-	return $queryBuilder->getQuery()->getSingleResult();
+[for (key : ServiceFeatureReference | service.keys)]
+        ->setParameter('[key.routeParameterName()/]', $[key.routeParameterName()/])
+[/for]
+        ->getQuery()->getSingleResult();
 }
 [/template]
 
@@ -77,7 +91,7 @@ public function save($entity, $flush = false)
 public function [selection.name/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
-    [service.createQueryBuilder()/]
+    $queryBuilder = $this->createQueryBuilder();
 [if (not selection.filter.oclIsUndefined())]
     $queryBuilder->where([selection.filter.doctrineExpression()/]);
 [/if]
@@ -110,6 +124,25 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 }
 [/template]
 
+[template private childSelectionMethods(service : Service) post(trim())]
+[for (association : ServiceAssociation | service.associations())]
+	[if (not association.isSingleton())]
+	    [for (selection : Selection | association.targetService().selections)]
+[service.childSelectionMethod(association, selection)/]
+
+		[/for]
+	[/if]
+[/for]
+[/template]
+
+[template private childSelectionMethod(service : Service, association : ServiceAssociation, selection : Selection) post(trim())]
+public function [association.name/][selection.instanceName().toUpperFirst()/]($[service.instanceName()/])
+{
+    $criteria = Criteria::create();
+    return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->matching($criteria);
+}
+[/template]
+
 [template private getRepositoryMethod(service : Service) post(trim())]
 public function getRepository()
 {
@@ -129,8 +162,4 @@ public function createQueryBuilder()
 [for (key : ServiceFeatureReference | service.keys) separator (', ')]
 $[key.routeParameterName()/]
 [/for]
-[/template]
-
-[template public createQueryBuilder(service : Service) post(trim())]
-$queryBuilder = $this->createQueryBuilder();
 [/template]
