@@ -104,6 +104,7 @@ protected $[feature.modelPropertyName()/];
 [template private timestampFeatures(entityOrView : EntityOrView) post(trim())]
 /**
  * @ORM\Column(type="datetime")
+ * @Assert\NotBlank
  **/
 protected $created;
 
