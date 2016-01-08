@@ -19,36 +19,22 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+
 class [service.typeClassName()/] extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
 [for (feature : ServiceFeature | service.features)]
-		$builder->[feature.formFeature()/];
+        $builder->[feature.formFeature()/];
 [/for]
-[for (feature : ServiceFeature | service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'time'))]
-        $builder->get('[feature.modelPropertyName()/]')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($originalDescription) {
-                	if (empty($originalDescription))
-                		return;
-                	
-                    return new \DateTime($originalDescription);
-                },
-// TODO
-                function ($submittedDescription) {
-                    return $submittedDescription;
-                }
-            ));
-[/for]
-	}
+    }
 
-	public function configureOptions(OptionsResolver $resolver)
-	{
-		$resolver->setDefaults(array(
-			'data_class' => '[service.modelsNamespace()/]\[service.modelName()/]'
-		));
-	}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => '[service.modelsNamespace()/]\[service.modelName()/]'
+        ));
+    }
 }
 [/file]
 [/template]

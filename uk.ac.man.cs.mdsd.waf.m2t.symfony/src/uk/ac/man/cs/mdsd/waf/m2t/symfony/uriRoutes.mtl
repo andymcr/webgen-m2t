@@ -20,11 +20,11 @@
 			endif
 /]
 
-[query public uriPathKeys(service : Service) : Set(ServiceFeature)
+[query public uriPathKeys(service : Service) : OrderedSet(ServiceFeatureReference)
 	= if service.parentService().oclIsUndefined() then
 			service.keys
 		else
-			service.parentService().uriPathKeys()->union(service.keys)
+			service.keys->iterate(k; j : OrderedSet(ServiceFeatureReference) = service.parentService().uriPathKeys() | j->append(k))
 		endif
 /]
 
@@ -45,6 +45,18 @@
 		endif
 /]
 
+
+[query public uriCommonPathKeys(page : Page) : OrderedSet(ServiceFeatureReference)
+	= if page.units->isEmpty() then
+			OrderedSet{}
+		else if page.units->size() = 1 then
+			page.units->first().uriPathKeys()
+		else
+			page.units->subOrderedSet(2, page.units->size())->iterate(u;
+				common : OrderedSet(ServiceFeatureReference) = page.units->first().uriPathKeys()
+				| common->select(k | u.uriPathKeys()->includes(k)))
+		endif endif
+/]
 
 [query public uriPath(page : Page) : String
 	= if page.parentPage.oclIsUndefined() then
@@ -126,15 +138,15 @@
 				endif endif
 /]
 
-[query public uriPathKeys(unit : ContentUnit) : Set(ServiceFeature)
+[query public uriPathKeys(unit : ContentUnit) : OrderedSet(ServiceFeatureReference)
 	= if not unit.oclIsKindOf(DynamicUnit) then
-			Set{}
+			OrderedSet{}
 		else 
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
 				in if unit.oclIsKindOf(Selectable) then
 						dynamicUnit.service.uriPathKeys()
 					else if dynamicUnit.service.parentService().oclIsUndefined() then
-						Set{}
+						OrderedSet{}
 					else
 						dynamicUnit.service.parentService().uriPathKeys()
 					endif endif

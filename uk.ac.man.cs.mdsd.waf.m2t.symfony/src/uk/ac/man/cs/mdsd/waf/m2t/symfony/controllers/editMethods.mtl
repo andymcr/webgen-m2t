@@ -24,19 +24,15 @@
 [if (editUnit.hasInterfaceFields())]
 [editUnit.generateUnitRules()/]
 [/if]
-
-[for (action : InlineAction | editUnit.uriActions())]
-[action.actionMethod()/]
-
-[/for]
 [/let]
 [/template]
 
 [template private actionAddMethod(unit : EditUnit) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
 /**
  * [unit.routeAnnotation(true)/]
  */
-public function [unit.actionName()/](Request $request, [unit.routeParameters(true)/])
+public function [unit.actionName()/]([unit.actionMethodParameters(page)/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
 [if (unit.hasDefaultValueFields())]
@@ -70,19 +66,21 @@ public function [unit.actionName()/](Request $request, [unit.routeParameters(tru
 [/if]
     }
 
-    return $this->renderPage([if (unit.pageDisplayedOn().hasFilterParameters())]$request[/if]);
+    return $this->renderPage([page.renderMethodParameters()/]);
 }
+[/let]
 [/template]
 
 [template private actionEditMethod(unit : EditUnit) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
 /**
  * [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]X(Request $request, [unit.routeParameters(true)/])
+public function [unit.actionName()/]X([unit.actionMethodParameters(page)/])
 {
     try
     {
-        $[unit.instanceName()/] = $this->getService()->find([unit.routeParameters()/]);
+        $[unit.instanceName()/] = [unit.loadInstance()/];
 [if (unit.hasDefaultValueFields())]
         [unit.unitDefaultValues()/]
 [/if]
@@ -112,11 +110,12 @@ public function [unit.actionName()/]X(Request $request, [unit.routeParameters(tr
 [/if]
         }
 
-        return $this->renderPage([if (unit.pageDisplayedOn().hasFilterParameters())]$request[/if]);
+        return $this->renderPage([page.renderMethodParameters()/]);
     }
     [unit.catchSelectionException()/]
 
 }
+[/let]
 [/template]
 
 [template public generateUnitRules(unit : DynamicUnit) post(trim())]

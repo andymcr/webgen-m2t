@@ -17,6 +17,7 @@ namespace [service.servicesNamespace()/];
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
+
 class [service.serviceClassName()/]
 {
     private $doctrine;
@@ -29,6 +30,8 @@ class [service.serviceClassName()/]
     [service.findMethod()/]
 
     [service.findAllMethod()/]
+
+    [service.deleteMethod()/]
 
     [service.saveMethod()/]
 
@@ -51,29 +54,94 @@ public function find([service.routeParameters()/])
 {
 	$queryBuilder = $this->createQueryBuilder();
 	return $queryBuilder
+[if (service.keys->select(k | k.oclIsTypeOf(ServiceAssociationReference))->notEmpty())]
+        [service.selectJoin()/]
+[/if]
+[if (not service.parentService().oclIsUndefined())]
+        [service.parentJoin()/]
+[/if]
+        ->where([if (service.uriPathKeys()->size() < 2)][service.uriPathKeys()->first().selectWhere()/][else]
+
+            [service.selectWhere()/]
+        [/if])
+        [service.setParameters()/]
+        ->getQuery()->getSingleResult();
+}
+[/template]
+
+[template private selectJoin(service : Service) post(trim())]
 [for (key : ServiceFeatureReference | service.keys)]
-	[if (key.oclIsTypeOf(ServiceAttributeReference))]
-        ->where($queryBuilder->expr()->eq('[service.selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]'))
-	[else]
+	[if (key.oclIsTypeOf(ServiceAssociationReference))]
 	[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
 	[let targetService : Service = associationKey.association.targetService()]
-        ->join('[service.selectName()/].[key.modelPropertyName()/]', '[targetService.selectName()/]')
-        ->where($queryBuilder->expr()->eq('[targetService.selectName()/].[associationKey.childFeature.columnName()/]', ':[key.routeParameterName()/]'))
+->join('[service.selectName()/].[key.modelPropertyName()/]', '[targetService.selectName()/]')
 	[/let]
 	[/let]
 	[/if]
 [/for]
-[for (key : ServiceFeatureReference | service.keys)]
-        ->setParameter('[key.routeParameterName()/]', $[key.routeParameterName()/])
+[/template]
+
+[template private parentJoin(service : Service) post(trim())]
+[if (not service.parentService().oclIsUndefined())]
+[let parentService : Service = service.parentService()]
+->join('[service.selectName()/].[service.parentAssociation(parentService).modelPropertyName()/]', '[parentService.selectName()/]')
+	[if (parentService.keys->select(k | k.oclIsTypeOf(ServiceAssociationReference))->notEmpty())]
+[parentService.selectJoin()/]
+	[/if]
+	[if (not parentService.parentService().oclIsUndefined())]
+[parentService.parentJoin()/]
+	[/if]
+[/let]
+[/if]
+[/template]
+
+[template private selectWhere(service : Service) post(trim())]
+[let keys : OrderedSet(ServiceFeatureReference) = service.uriPathKeys()]
+[for (key : ServiceFeatureReference | keys->subOrderedSet(1, keys->size() - 1))]
+$queryBuilder->expr()->andX([key.selectWhere()/],
 [/for]
-        ->getQuery()->getSingleResult();
-}
+[keys->last().selectWhere()/]
+[for (key : ServiceFeatureReference | keys->subOrderedSet(1, keys->size() - 1))])[/for]
+[/let]
+[/template]
+
+[template private selectWhere(key : ServiceFeatureReference) post(trim())]
+[if (key.oclIsTypeOf(ServiceAttributeReference))]
+[let attributeKey : ServiceAttributeReference = key.oclAsType(ServiceAttributeReference)]
+$queryBuilder->expr()->eq('[attributeKey.attribute.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]')
+[/let]
+[else]
+[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
+[let targetService : Service = associationKey.association.targetService()]
+$queryBuilder->expr()->eq('[targetService.selectName()/].[associationKey.childFeature.columnName()/]', ':[key.routeParameterName()/]')
+[/let]
+[/let]
+[/if]
+[/template]
+
+[template private setParameters(service : Service) post(trim())]
+[if (not service.parentService().oclIsUndefined())]
+[service.parentService().setParameters()/]
+[/if]
+[for (key : ServiceFeatureReference | service.keys)]
+->setParameter('[key.routeParameterName()/]', $[key.routeParameterName()/])
+[/for]
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
 public function findAll()
 {
 	return $this->getRepository()->findAll();
+}
+[/template]
+
+[template private deleteMethod(service : Service) post(trim())]
+public function delete($entity, $flush = false)
+{
+	$entityManager = $this->doctrine->getEntityManager();
+    $entityManager->delete($entity);
+    if ($flush)
+        $entityManager->flush();
 }
 [/template]
 
@@ -158,7 +226,9 @@ public function createQueryBuilder()
 [/template]
 
 
-[template public routeParameters(service : Service) post(trim())]
+[template private routeParameters(service : Service) post(trim())]
+[if (not service.parentService().oclIsUndefined())]
+[service.parentService().routeParameters()/][if (service.keys->notEmpty())], [/if][/if]
 [for (key : ServiceFeatureReference | service.keys) separator (', ')]
 $[key.routeParameterName()/]
 [/for]

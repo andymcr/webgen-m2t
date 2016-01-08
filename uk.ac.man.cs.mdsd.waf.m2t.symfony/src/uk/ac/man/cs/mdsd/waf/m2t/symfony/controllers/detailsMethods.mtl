@@ -26,13 +26,12 @@
 /**
  * [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([if (page.hasFilterParameters())]
-Request $request[if (unit.service.keys->notEmpty())], [/if][/if][unit.routeParameters(true)/])
+public function [unit.actionName()/]([unit.actionMethodParameters(page)/])
 {
     $this->[unit.instanceName()/] = [unit.loadInstance()/];
 
 [if (page.units->size() > 1)]
-    return $this->renderPage([if (page.hasFilterParameters())]$request[/if]);
+    return $this->renderPage([page.renderMethodParameters()/]);
 [else]
     $parameters = array();
     $parameters['['/]'title'[']'/] = '[page.displayLabel/]';

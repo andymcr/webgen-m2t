@@ -18,13 +18,23 @@
 @Route("[unit.uriPath(create)/]", name="[unit.routeName(create)/]")
 [/template]
 
-[template public routeParameters(unit : DynamicUnit) post(trim())]
-[unit.routeParameters(false)/]
+[template public actionMethodParameters(unit : DynamicUnit, page : Page) post(trim())]
+[if (page.hasFilterParameters())]Request $request[if (unit.service.hasRouteParameters())]
+, [/if][/if][unit.service.routeParameters()/]
 [/template]
 
-[template public routeParameters(unit : DynamicUnit, formals : Boolean) post(trim())]
-[for (key : ServiceFeatureReference | unit.service.keys) separator (', ')]
-$[key.routeParameterName()/][if (formals and unit.oclIsTypeOf(CreateUpdateUnit))] = null[/if]
+[template public renderMethodParameters(page : Page) post(trim())]
+[if (page.hasFilterParameters())]
+$request[if (page.uriCommonPathKeys()->notEmpty())]
+, [/if][/if][for (key : ServiceFeatureReference | page.uriCommonPathKeys()) separator(', ')]
+$[key.routeParameterName()/][/for]
+[/template]
+
+[template private routeParameters(service : Service) post(trim())]
+[if (not service.parentService().oclIsUndefined())]
+[service.parentService().routeParameters()/][if (service.keys->notEmpty())], [/if][/if]
+[for (key : ServiceFeatureReference | service.keys) separator (', ')]
+$[key.routeParameterName()/]
 [/for]
 [/template]
 
@@ -34,7 +44,7 @@ $this->get[unit.service.modelName()/]Service()
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.routeParameters()/])
+[unit.getService()/]->find([unit.service.routeParameters()/])
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]
@@ -127,91 +137,6 @@ $this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
 [/template]
 
 
-[template public generateActionMethod(action : InlineAction, errorVariable : String)
-	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
-[let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-public function action_[deleteAction.actionName()/]()
-{
-	$[deleteAction.instanceName()/] = ORM::factory('[deleteAction.modelName()/]', $this->request->param('param'));
-	if ($[deleteAction.instanceName()/]->loaded())
-	{
-		$[deleteAction.instanceName()/]->delete();
-[if (deleteAction.destination.oclIsUndefined())]
-		[comment deleteAction.generateRemoveParameter(action.routeParameterName())/]
-[else]
-		$this->redirect(Route::get('[deleteAction.destination.controllerName()/]')->uri());
-[/if]
-	}
-	else
-		[errorVariable/] = 'Invalid [deleteAction.modelName()/] identifier';
-}
-[/let]
-[/template]
-
-[template public generateActionMethod(action : InlineAction, errorVariable : String)
-	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
-[let supportAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-public function action_[action.actionName()/]()
-{
-	$[supportAction.instanceName()/] = ORM::factory('[supportAction.modelName()/]', $this->request->param('param'));
-	if (!$[supportAction.instanceName()/]->loaded())
-		[errorVariable/] = 'Invalid [supportAction.modelName()/] identifier';
-	else
-	{
-		/* [protected ('support.'.concat(supportAction.actionName()))]
-		 */
-		/* [/protected]
-		 */
-	}
-}
-[/let]
-[/template]
-
-
 [template public generateRemoveParameter(eObject : EObject, parameterName : String) post(trim())]
 unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 [/template]
-
-
-[template public actionMethod(action : InlineAction)
-	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
-[let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : DynamicUnit = action.immediateUnit()]
-/**
- * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
- */
-public function action_[deleteAction.actionName()/]()
-{
-//    try
-    {
-        $[deleteAction.instanceName()/] = [unit.loadInstance()/];
-		$[deleteAction.instanceName()/]->remove();
-[if (not deleteAction.destination.oclIsUndefined())]
-        $this->redirect(Route::get('[comment deleteAction.destination.routeName()/]')->uri());
-[/if]
-    }
-    [comment actionUnit.containingUnit().catchSelectionException()/]
-}
-[/let]
-[/let]
-[/template]
-
-[template public actionMethod(action : InlineAction)
-	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
-[let unit : DynamicUnit = action.immediateUnit().containingUnit()]
-/**
- * @Route("[unit.supportUriPath()/]", name="[unit.routeName()/]")
- */
-public function action_[action.actionName()/]()
-{
-//    try
-    {
-        $[action.instanceName()/] = [unit.loadInstance()/];
-        // [protected ('support.'.concat(action.actionName()))]
-        // [/protected]
-    }
-    [comment unit.catchSelectionException()/]
-}
-[/let]
-[/template]
-

@@ -17,10 +17,6 @@
 [indexUnit.selectMethod()/]
 
 [/if]
-[for (action : InlineAction | unit.uriActions())]
-[action.actionMethod()/]
-
-[/for]
 [/let]
 [/template]
 
@@ -37,7 +33,7 @@ Request $request[/if])
 
 [/if]
 [if (page.units->size() > 1)]
-    return $this->renderPage([if (page.hasFilterParameters())]$request[/if]);
+    return $this->renderPage([page.renderMethodParameters()/]);
 [else]
     $parameters = array();
     $parameters['['/]'title'[']'/] = '[page.displayLabel/]';

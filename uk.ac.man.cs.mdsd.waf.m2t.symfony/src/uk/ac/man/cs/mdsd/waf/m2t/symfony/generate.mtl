@@ -43,7 +43,7 @@
 [model.parametersDist()/]
 
 [model.configServices()/]
-[model.servicesWithSelections().service()/]
+[model.services.service()/]
 
 [model.generateAppBundle()/]
 [model.persistence.enumerationTypes().generateFormType()/]

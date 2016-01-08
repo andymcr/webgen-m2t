@@ -142,6 +142,10 @@
 	= unit.instanceName().concat('Select')
 /]
 
+[query public supportActionName(unit : ContentUnit) : String
+	= unit.instanceName().concat('Support').concat('Action')
+/]
+
 [query public supportRouteName(unit : ContentUnit) : String
 	= unit.uniqueName().concat('_support')
 /]
@@ -176,16 +180,18 @@
 
 
 [query public actionName(action : InlineAction) : String
-	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).instanceName()
-				.concat(action.name.toUpperFirst())
-		else
-			let association : UnitAssociation
-					= action.usedBy.oclAsType(UnitAssociation)
-				in association.displayedOn.instanceName()
-				.concat(association.name.toUpperFirst())
-				.concat(action.name.toUpperFirst())
-		endif
+	= let name : String
+		= if action.usedBy.oclIsKindOf(DynamicUnit) then
+				action.usedBy.oclAsType(DynamicUnit).instanceName()
+					.concat(action.name.toUpperFirst())
+			else
+				let association : UnitAssociation
+						= action.usedBy.oclAsType(UnitAssociation)
+					in association.displayedOn.instanceName()
+					.concat(association.name.toUpperFirst())
+					.concat(action.name.toUpperFirst())
+			endif
+		in name.concat('Action')
 /]
 
 [query public instanceName(action : InlineAction) : String

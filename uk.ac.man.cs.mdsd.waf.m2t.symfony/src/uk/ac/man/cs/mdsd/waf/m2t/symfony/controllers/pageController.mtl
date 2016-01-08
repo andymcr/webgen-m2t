@@ -5,7 +5,9 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::authenticationMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::detailsMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::editMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::indexMethods/]
@@ -36,47 +38,40 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [for (unit : ContentUnit | page.units)]
     [unit.unitMethods()/]
 
+	[if (unit.oclIsKindOf(DynamicUnit))]
+		[for (action : InlineAction | unit.oclAsType(DynamicUnit).uriActions())]
+    [action.actionMethod(page)/]
+
+		[/for]
+	[/if]
 [/for]
 [for (service : Service | page.dynamicUnits()->collect(u | u.service)->asSet())]
     [service.getServiceMethod()/]
 
 [/for]
 [if (page.hasSupportActions())]
-	[if (page.hasDataSupportActions())]
-    public function action_support()
-    {
-	[for (action : UnitSupportAction | page.dataSupportActions())]
-		if ($this->request->post('[action.name/]'))
-		{
-			// [protected ('support.'.concat(action.name))]
-			// [/protected]
-		}
-	[/for]
-	}
+    [page.supportActionMethods()/]
 
-	[/if]
-	/* [protected (page.instanceName().concat('.support.'))]
-	 */
-	/* [/protected]
-	 */
 [/if]
 [if (page.units->size() > 1)]
-
     [page.renderMethod()/]
 [/if]
 }
 [/file]
 [/template]
 
-[template public getServiceMethod(service : Service) post(trim())]
+[template private getServiceMethod(service : Service) post(trim())]
 public function get[service.modelName()/]Service()
 {
     return $this->get('[service.name/]');
 }
 [/template]
 
-[template renderMethod(page : Page) post(trim())]
-private function renderPage([if (page.hasFilterParameters())]Request $request[/if])
+[template private renderMethod(page : Page) post(trim())]
+private function renderPage([if (page.hasFilterParameters())]
+Request $request[if (page.uriCommonPathKeys()->notEmpty())]
+, [/if][/if][for (key : ServiceFeatureReference | page.uriCommonPathKeys()) separator(', ')]
+$[key.routeParameterName()/][/for])
 {
     $parameters = array(
         'title' => '[page.displayLabel/]',
@@ -87,4 +82,83 @@ private function renderPage([if (page.hasFilterParameters())]Request $request[/i
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 
 }
+[/template]
+
+[template private actionMethod(action : InlineAction, page : Page)
+	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
+[let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
+[let unit : DynamicUnit = action.immediateUnit()]
+/**
+ * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
+ */
+public function [deleteAction.actionName()/]([unit.actionMethodParameters(page)/])
+{
+    try
+    {
+        $[deleteAction.instanceName()/] = [unit.loadInstance()/];
+		$[deleteAction.instanceName()/]->remove();
+[if (not deleteAction.destination.oclIsUndefined())]
+        $this->redirectToRoute('[deleteAction.destination.routeName()/]');
+[/if]
+    }
+    [unit.catchSelectionException()/]
+}
+[/let]
+[/let]
+[/template]
+
+[template private actionMethod(action : InlineAction, page : Page)
+	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
+[let unit : DynamicUnit = action.immediateUnit().containingUnit()]
+/**
+ * @Route("[unit.supportUriPath()/]", name="[unit.routeName()/]")
+ */
+public function [action.actionName()/]([unit.actionMethodParameters(page)/])
+{
+    try
+    {
+        $[action.instanceName()/] = [unit.loadInstance()/];
+        // [protected ('support.'.concat(action.actionName()))]
+        // [/protected]
+    }
+    [unit.catchSelectionException()/]
+}
+[/let]
+[/template]
+
+[template private supportActionMethods(page : Page) post(trim())]
+[for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
+[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+	[if (dataUnit.supportActions->notEmpty())]
+public function [dataUnit.supportActionName()/]()
+{
+		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
+    try
+    {
+        $[dataUnit.instanceName()/] = [dataUnit.loadInstance()/];
+        [dataUnit.supportActionHandlers()/]
+    }
+    [dataUnit.catchSelectionException()/]
+		[else]
+    [dataUnit.supportActionHandlers()/]
+		[/if]
+}
+	[/if]
+[/let]
+[/for]
+
+/* [protected (page.instanceName().concat('.support'))]
+ */
+/* [/protected]
+ */
+[/template]
+
+[template private supportActionHandlers(unit : DataUnit) post(trim())]
+[for (action : UnitSupportAction | unit.supportActions)]
+if ($this->request->post('[action.actionName()/]'))
+{
+    // [protected ('support.'.concat(action.actionName()))]
+    // [/protected]
+    }
+[/for]
 [/template]
