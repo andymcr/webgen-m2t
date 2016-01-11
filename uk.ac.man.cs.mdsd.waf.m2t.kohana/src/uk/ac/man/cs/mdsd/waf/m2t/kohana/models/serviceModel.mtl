@@ -239,18 +239,10 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 [if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or entityOrView.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
 	{
-[if (entityOrView.hasResourceAttributes())]
-		if (!empty($_FILES))
-	[if (entityOrView.resourceAttributes()->size() > 1)]
-		{
-	[/if]
-	[for (feature : SingletonResource | entityOrView.resourceAttributes())]
-			$this->_save_[feature.modelPropertyName()/]();
-	[/for]
-	[if (entityOrView.resourceAttributes()->size() > 1)]
-		}
-	[/if]
-[/if]
+[for (resource : SingletonResource | entityOrView.resourceAttributes())]
+		if (isset($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'name'[']'/]))
+			$this->_save_[resource.modelPropertyName()/]();
+[/for]
 		parent::save($validation);
 [for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
 
@@ -583,7 +575,18 @@ public function filters()
                 return empty($value) ? NULL : $value;
             })
 	[else]
+		[if (feature.oclIsTypeOf(SingletonElement))]
+		[let element : SingletonElement = feature.oclAsType(SingletonElement)]
+			[if (element.dataType.name = 'Email' or element.dataType.name = 'String')]
             array('trim'),
+			[/if]
+			[if (element.dataType.name = 'Integer')]
+            array(function($value) {
+                return empty($value) ? 0 : $value;
+            })
+			[/if]
+		[/let]
+		[/if]
 		[if (feature.isCaseInsensitive())]
             array('strtolower'),
 		[/if]
