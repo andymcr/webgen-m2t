@@ -19,7 +19,7 @@
 [/template]
 
 [template public actionMethodParameters(unit : DynamicUnit, page : Page) post(trim())]
-[if (page.hasFilterParameters())]Request $request[if (unit.service.hasRouteParameters())]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (unit.service.hasRouteParameters())]
 , [/if][/if][unit.service.routeParameters()/]
 [/template]
 

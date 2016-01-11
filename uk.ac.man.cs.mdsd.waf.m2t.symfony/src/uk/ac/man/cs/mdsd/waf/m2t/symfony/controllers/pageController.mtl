@@ -28,7 +28,7 @@ use [service.formTypeNamespace()/]\[service.typeClassName()/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-[if (page.hasFilterParameters())]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 

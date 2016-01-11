@@ -44,8 +44,9 @@ public function [unit.actionName()/]([unit.actionMethodParameters(page)/])
 
 [template private templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[if (unit.pageDisplayedOn().units->size() = 1)]
+[if (page.units->size() = 1)]
 $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [else]
 	[if (detailsUnit.onlyDisplayWhenNotEmpty)]
@@ -53,9 +54,14 @@ if (isset($this->[detailsUnit.instanceName()/]))
     $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 	[else]
 if (!isset($this->[detailsUnit.instanceName()/]))
+[if (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()))]
+    $this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance()/];
+[else]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
+[/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 	[/if]
 [/if]
+[/let]
 [/let]
 [/template]
