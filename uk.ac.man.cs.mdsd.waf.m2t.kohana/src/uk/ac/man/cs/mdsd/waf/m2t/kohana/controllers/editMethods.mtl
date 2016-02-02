@@ -163,9 +163,9 @@ public function [association.optionsName()/]()
     foreach (ORM::factory('[association.serviceFeature.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
-        $options['['/]$option->id[']'/] = $option->[if (association.label.oclIsUndefined())]
-defaultLabel()[else]
-[association.label.label('$option')/]()[/if];
+        $options['['/]$option->id[']'/] = [if (association.label.oclIsUndefined())]
+$option->defaultLabel()[else]
+[association.label.label('$option')/][/if];
     return $options;
 }
 [/template]
