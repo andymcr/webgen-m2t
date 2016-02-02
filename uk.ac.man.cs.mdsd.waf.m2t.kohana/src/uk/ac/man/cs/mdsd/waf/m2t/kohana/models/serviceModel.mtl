@@ -127,63 +127,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 [/if]
 [if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty())]
 
-	public function values(array $values, array $expected = NULL)
-	{
-		parent::values($values, array_diff($expected, array([for
-(association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))
-separator (', ')]'[association.modelPropertyName()/]'[/for])));
-[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
-
-		$this->_[association.modelPropertyName()/]_changes = array();
-		if (in_array('[association.modelPropertyName()/]', $expected)
-				&& array_key_exists('[association.modelPropertyName()/]', $values))
-		{
-	[if (association.isSingleton())]
-			if ($this->loaded() && $this->[association.modelPropertyName()/]->loaded())
-			{
-				if ($values['['/]'[association.modelPropertyName()/]'[']'/] != $this->[association.modelPropertyName()/]->id)
-				{
-					$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-						'op' => 'remove',
-						'id' => $this->[association.modelPropertyName()/]->id,
-					);
-					if (!empty($values['['/]'[association.modelPropertyName()/]'[']'/]))
-						$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-							'op' => 'set',
-							'id' => $values['['/]'[association.modelPropertyName()/]'[']'/],
-						);
-				}
-			}
-			else
-				if (!empty($values['['/]'[association.modelPropertyName()/]'[']'/]))
-					$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-						'op' => 'set',
-						'id' => $values['['/]'[association.modelPropertyName()/]'[']'/],
-					);
-	[else]
-			$current = array();
-			foreach ($this->[association.modelPropertyName()/]_as_array() AS $value)
-				$current['['/][']'/] = $value->id;
-			foreach ($values['['/]'[association.modelPropertyName()/]'[']'/] AS $selected)
-			{
-				$key = array_search($selected, $current);
-				if ($key !== FALSE)
-					unset($current['['/]$key[']'/]);
-				else
-					$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-						'op' => 'add',
-						'id' => $selected,
-					);
-			}
-			foreach ($current AS $removed)
-				$this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
-					'op' => 'remove',
-					'id' => $removed,
-				);
-	[/if]
-		}
-[/for]
-	}
+	[entityOrView.values()/]
 
 [/if]
 [for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton()))]
@@ -200,41 +144,8 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 
 [/for]
 [for (feature : Feature | entityOrView.resourceAttributes())]
-[let resource : SingletonResource = feature.oclAsType(SingletonResource)]
-	private function _save_[feature.modelPropertyName()/]()
-	{
-		$validation = Validation::factory($_FILES);
-		$validation
-			->rules('[feature.columnName()/]', array(
-[if (feature.isRequired())]
-				array('not_empty'),
-				array('Upload::not_empty'),
-[/if]
-				array('Upload::valid'),
-				array('Upload::size', array(':value', [resource.maximumUploadSize/])),
-[if (resource.validUploadExtensions->notEmpty())]
-				array('Upload::type', array(':value', array([for (extension : String | resource.validUploadExtensions) separator(', ')]'[extension/]'[/for]))),
-[/if]
-			));
-		if ($validation->check() === FALSE)
-			throw new ORM_Validation_Exception($this->errors_filename(), $validation);
+    [feature.oclAsType(SingletonResource).saveResource()/]
 
-		if ($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
-			return;
-
-		if (!empty($this->[resource.columnName/])) 
-			unlink($this->[resource.columnName/]);
-		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[feature.columnName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
-		$extension = pathinfo($_FILES['['/]'[feature.columnName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
-[if (resource.uploadsWithinWebsite)]
-		$filepath = Upload::save($_FILES['['/]'[feature.columnName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[resource.relativeUploadDirectory/]');
-		$this->[feature.columnName()/] = '[resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
-[else]
-		$filepath = Upload::save($_FILES['['/]'[feature.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
-[/if]
-	}
-
-[/let]
 [/for]
 [if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or entityOrView.hasResourceAttributes())]
 	public function save(Validation $validation = NULL)
@@ -577,23 +488,22 @@ public function filters()
 	[else]
 		[if (feature.oclIsTypeOf(SingletonElement))]
 		[let element : SingletonElement = feature.oclAsType(SingletonElement)]
-			[if (element.dataType.name = 'Email' or element.dataType.name = 'String')]
             array('trim'),
-			[/if]
 			[if (element.dataType.name = 'Integer')]
             array(function($value) {
                 return empty($value) ? 0 : $value;
             })
 			[/if]
+			[if (element.isCaseInsensitive())]
+            array('strtolower'),
+			[/if]
+			[if (element.isEncrypted())]
+            array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
+			[/if]
 		[/let]
 		[/if]
-		[if (feature.isCaseInsensitive())]
-            array('strtolower'),
-		[/if]
-		[if (feature.isEncrypted())]
-            array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-		[/if]
 		[if (feature.oclIsTypeOf(SingletonDate))]
+            array('trim'),
             array('date'),
             array(function($value) {
                 return empty($value) ? NULL : $value;
@@ -690,4 +600,109 @@ $[key.instanceName()/] = NULL[/for])
     return $[association.instanceName()/];
 }
 [/let]
+[/template]
+
+
+[template private values(entityOrView : EntityOrView) post(trim())]
+public function values(array $values, array $expected = NULL)
+{
+    parent::values($values, array_diff($expected, array([for
+(association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))
+separator (', ')]'[association.modelPropertyName()/]'[/for])));
+[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+
+    $this->_[association.modelPropertyName()/]_changes = array();
+    if (in_array('[association.modelPropertyName()/]', $expected))
+    {
+	[if (association.isSingleton())]
+        if ($this->loaded() && $this->[association.modelPropertyName()/]->loaded())
+        {
+            if ($values['['/]'[association.modelPropertyName()/]'[']'/] != $this->[association.modelPropertyName()/]->id)
+            {
+                $this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+                    'op' => 'remove',
+                    'id' => $this->[association.modelPropertyName()/]->id,
+                );
+                if (!empty($values['['/]'[association.modelPropertyName()/]'[']'/]))
+                    $this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+                        'op' => 'set',
+                        'id' => $values['['/]'[association.modelPropertyName()/]'[']'/],
+                    );
+            }
+        }
+        else
+            if (!empty($values['['/]'[association.modelPropertyName()/]'[']'/]))
+                $this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+                    'op' => 'set',
+                    'id' => $values['['/]'[association.modelPropertyName()/]'[']'/],
+                );
+	[else]
+        $current = array();
+        foreach ($this->[association.modelPropertyName()/]_as_array() AS $value)
+            $current['['/][']'/] = $value->id;
+        if (array_key_exists('[association.modelPropertyName()/]', $values))
+            foreach ($values['['/]'[association.modelPropertyName()/]'[']'/] AS $selected)
+            {
+                $key = array_search($selected, $current);
+                if ($key !== FALSE)
+                    unset($current['['/]$key[']'/]);
+                else
+                    $this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+                        'op' => 'add',
+                        'id' => $selected,
+                    );
+            }
+        foreach ($current AS $removed)
+            $this->_[association.modelPropertyName()/]_changes['['/][']'/] = array(
+                'op' => 'remove',
+                'id' => $removed,
+            );
+	[/if]
+    }
+[/for]
+}
+[/template]
+
+[template private saveResource(resource : SingletonResource) post(trim())]
+private function _save_[resource.modelPropertyName()/]()
+{
+    $validation = Validation::factory($_FILES)->rules('[resource.columnName()/]', array(
+[if (resource.isRequired())]
+        array('not_empty'),
+        array('Upload::not_empty'),
+[/if]
+        array('Upload::valid'),
+        array('Upload::size', array(':value', [resource.maximumUploadSize/])),
+[if (resource.validUploadExtensions->notEmpty())]
+        array('Upload::type', array(':value', array([for (extension : String | resource.validUploadExtensions) separator(', ')]'[extension/]'[/for]))),
+[/if]
+[if (resource.oclIsTypeOf(SingletonImage))]
+        array('Upload::image'),
+[/if]
+    ));
+    if ($validation->check() === FALSE)
+        throw new ORM_Validation_Exception($this->errors_filename(), $validation);
+
+    if ($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
+        return;
+
+    if (!empty($this->[resource.columnName/])) 
+        unlink($this->[resource.columnName/]);
+
+    $now = new Date();
+    $directoryPath = [for (element : PathElement | resource.uploadPath) separator(' . DIRECTORY_SEPARATOR . ')][if (element.oclIsTypeOf(StaticPathElement))]
+'[element.oclAsType(StaticPathElement).element/]'[else]
+$now->format('[element.oclAsType(DatePathElement).format/]')[/if][/for];
+    if (!is_dir($directoryPath)) {
+        mkdir($directoryPath, 0777, true);
+    }
+    $filename = text::random('hexdec', 8);
+    $extension = pathinfo($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
+[if (resource.uploadsWithinWebsite)]
+    $filepath = Upload::save($_FILES['['/]'[resource.columnName()/]'[']'/], $filename . '.' . $extension, DOCROOT . $directoryPath);
+    $this->[resource.columnName()/] = $directoryPath . DIRECTORY_SEPARATOR . $filename . '.' . $extension;
+[else]
+    $filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
+[/if]
+}
 [/template]
