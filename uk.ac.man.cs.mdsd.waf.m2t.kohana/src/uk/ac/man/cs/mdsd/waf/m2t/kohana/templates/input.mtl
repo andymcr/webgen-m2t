@@ -421,7 +421,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [/if]
 [else]
 <?php
-	echo Form::input('[field.modelPropertyName()/]', [if (field.oclIsKindOf(DataTypeField))]
+	echo Form::input('[field.formName()/]', [if (field.oclIsKindOf(DataTypeField))]
 array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[else]
 [instanceVariable/][/if],
 		array(
