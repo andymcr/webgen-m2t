@@ -16,12 +16,18 @@
 			endif
 /]
 
-[query public uriPathKeys(service : Service) : Set(ServiceFeature)
+[query public uriPathKeys(service : Service) : Set(ServiceFeatureReference)
 	= if service.parentService().oclIsUndefined() then
 			service.keys
 		else
 			service.parentService().uriPathKeys()->union(service.keys)
 		endif
+/]
+
+[query public uriPathKeysWithPattern(service : Service) : Set(ServiceAttributeReference)
+	= service.uriPathKeys()
+		->select(k | k.oclIsTypeOf(ServiceAttributeReference)).oclAsType(ServiceAttributeReference)
+		->select(k | not k.attribute.validationPattern.oclIsUndefined())
 /]
 
 
