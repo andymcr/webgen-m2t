@@ -367,7 +367,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
         'id' => '[field.uniqueName()/]',
         'class' => '[field.styleClass()/] [field.inputClass()/]',
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-        'required' => ''
+        'required' => '',
 [/if]
     )) . PHP_EOL;
 ?>
@@ -381,7 +381,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
         'id' => '[field.uniqueName()/]',
         'class' => '[field.styleClass()/] [field.inputClass()/]',
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-        'required' => ''
+        'required' => '',
 [/if]
     )) . PHP_EOL;
 ?>
@@ -411,7 +411,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 			'class' => 'full_width',
 [/if]
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-			'required' => ''
+			'required' => 'required',
 [/if]
 	)) . PHP_EOL;
 ?>
@@ -431,7 +431,14 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 			'type' => '[dataType.name.toLower()/]',
 [/if]
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-			'required' => ''
+			'required' => 'required',
+[/if]
+[if (field.oclIsTypeOf(UnitElement))]
+[let element : UnitElement = field.oclAsType(UnitElement)]
+	[if (not element.validationPattern.oclIsUndefined())]
+			'pattern' => '[element.validationPattern/]'
+	[/if]
+[/let]
 [/if]
 	)) . PHP_EOL;
 ?>
