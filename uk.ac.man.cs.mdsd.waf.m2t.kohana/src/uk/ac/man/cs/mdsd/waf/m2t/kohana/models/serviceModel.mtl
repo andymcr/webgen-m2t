@@ -143,45 +143,14 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	}
 
 [/for]
+[if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or entityOrView.hasResourceAttributes())]
+	[entityOrView.save()/]
+
+[/if]
 [for (feature : Feature | entityOrView.resourceAttributes())]
     [feature.oclAsType(SingletonResource).saveResource()/]
 
 [/for]
-[if (entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd())->notEmpty() or entityOrView.hasResourceAttributes())]
-	public function save(Validation $validation = NULL)
-	{
-[for (resource : SingletonResource | entityOrView.resourceAttributes())]
-		if (isset($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'name'[']'/]))
-			$this->_save_[resource.modelPropertyName()/]();
-[/for]
-		parent::save($validation);
-[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
-
-		foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
-	[if (not association.isOppositeSingleton())]
-			if ($change['['/]'op'[']'/] == 'add')
-				$this->add('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
-			else
-				$this->remove('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
-	[else]
-		{
-			$opposite = ORM::factory('[association.modelName()/]', $change['['/]'id'[']'/]);
-			if (!$opposite->loaded())
-				Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'id'[']'/]));
-			else
-			{
-				if (($change['['/]'op'[']'/] == 'add') || ($change['['/]'op'[']'/] == 'set'))
-					$opposite->[association.oppositeColumnName()/] = $this->id;
-				else
-					$opposite->[association.oppositeColumnName()/] = NULL;
-				$opposite->save();
-			}
-		}
-	[/if]
-[/for]
-	}
-
-[/if]
 [for (selection : Selection | service.selections)]
 	public function [selection.instanceName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if][if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
@@ -663,10 +632,45 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 }
 [/template]
 
+[template private save(entityOrView : EntityOrView) post(trim())]
+public function save(Validation $validation = NULL)
+{
+[for (resource : SingletonResource | entityOrView.resourceAttributes())]
+	if (isset($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/]))
+		$this->_save_[resource.modelPropertyName()/]();
+[/for]
+	parent::save($validation);
+[for (association : Association | entityOrView.modifiableAssociations()->select(a | not a.isSingleton() or not a.isOwningEnd()))]
+
+	foreach ($this->_[association.modelPropertyName()/]_changes AS $change)
+	[if (not association.isOppositeSingleton())]
+		if ($change['['/]'op'[']'/] == 'add')
+			$this->add('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
+		else
+			$this->remove('[association.modelPropertyName()/]', $change['['/]'id'[']'/]);
+	[else]
+	{
+		$opposite = ORM::factory('[association.modelName()/]', $change['['/]'id'[']'/]);
+		if (!$opposite->loaded())
+			Log::instance()->add(Log::DEBUG, 'add :x', array(':x'=>$change['['/]'id'[']'/]));
+		else
+		{
+			if (($change['['/]'op'[']'/] == 'add') || ($change['['/]'op'[']'/] == 'set'))
+				$opposite->[association.oppositeColumnName()/] = $this->id;
+			else
+				$opposite->[association.oppositeColumnName()/] = NULL;
+			$opposite->save();
+		}
+	}
+	[/if]
+[/for]
+}
+[/template]
+
 [template private saveResource(resource : SingletonResource) post(trim())]
 private function _save_[resource.modelPropertyName()/]()
 {
-    $validation = Validation::factory($_FILES)->rules('[resource.columnName()/]', array(
+    $validation = Validation::factory($_FILES)->rules('[resource.modelPropertyName()/]', array(
 [if (resource.isRequired())]
         array('not_empty'),
         array('Upload::not_empty'),
@@ -683,23 +687,23 @@ private function _save_[resource.modelPropertyName()/]()
     if ($validation->check() === FALSE)
         throw new ORM_Validation_Exception($this->errors_filename(), $validation);
 
-    if ($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
+    if ($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
         return;
 
     if (!empty($this->[resource.columnName/])) 
         unlink($this->[resource.columnName/]);
 
-    $now = new Date();
+    $now = new DateTime();
     $directoryPath = [for (element : PathElement | resource.uploadPath) separator(' . DIRECTORY_SEPARATOR . ')][if (element.oclIsTypeOf(StaticPathElement))]
 '[element.oclAsType(StaticPathElement).element/]'[else]
 $now->format('[element.oclAsType(DatePathElement).format/]')[/if][/for];
     if (!is_dir($directoryPath)) {
         mkdir($directoryPath, 0777, true);
     }
-    $filename = text::random('hexdec', 8);
-    $extension = pathinfo($_FILES['['/]'[resource.columnName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
+    $filename = Text::random('hexdec', 8);
+    $extension = pathinfo($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [if (resource.uploadsWithinWebsite)]
-    $filepath = Upload::save($_FILES['['/]'[resource.columnName()/]'[']'/], $filename . '.' . $extension, DOCROOT . $directoryPath);
+    $filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . $directoryPath);
     $this->[resource.columnName()/] = $directoryPath . DIRECTORY_SEPARATOR . $filename . '.' . $extension;
 [else]
     $filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
