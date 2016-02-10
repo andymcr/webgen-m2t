@@ -13,16 +13,17 @@
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(DataUnit)) post(trim())]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+[let service : Service = dataUnit.services->first()]
 [let accessor : String = '$'.concat(dataUnit.instanceName())]
 [file(dataUnit.viewFilename(), false)]
 <section class="[dataUnit.styleClass/]<?php
-	if (isset($[dataUnit.service.errorName()/])) {
+	if (isset($[dataUnit.errorName()/])) {
 		echo ' [dataUnit.errorClass/]';
 	}
 ?>" id="[dataUnit.instanceName()/]">
  <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle('$'.concat(dataUnit.instanceName()))/]</h1>
- <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.service.errorName()/])) echo ' hidden'; ?>">
-  <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.service.errorName()/]) ? $[dataUnit.service.errorName()/] : ''); ?></p>
+ <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.errorName()/])) echo ' hidden'; ?>">
+  <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.errorName()/]) ? $[dataUnit.errorName()/] : ''); ?></p>
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.viewContent(accessor)/]
@@ -44,6 +45,7 @@
 [/if]
 </section>
 [/file]
+[/let]
 [/let]
 [/let]
 [/template]
@@ -228,9 +230,11 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template]
 
 [template private actions(unit : IndexUnit, accessor : String) post(trim())]
+[let service : Service = unit.services->first()]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.service)/]
+[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), service)/]
 [/for]
+[/let]
 [/template]
 
 
@@ -246,7 +250,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	[/if]
 ?>
 [else]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.displayedOn.service)/]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.displayedOn.services->first())/]
 [/if]
 [/let]
 [/template]

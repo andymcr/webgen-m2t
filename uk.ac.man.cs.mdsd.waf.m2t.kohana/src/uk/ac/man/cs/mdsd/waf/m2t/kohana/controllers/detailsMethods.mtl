@@ -15,9 +15,10 @@
 [template public afterMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[let service : Service = detailsUnit.services->first()]
 [if (detailsUnit.onlyDisplayWhenNotEmpty)]
 [detailsUnit.createVariableIfAbsent()/]
-if ($this->[detailsUnit.service.instanceName()/]->loaded() || isset($this->[detailsUnit.service.errorName()/]))
+if ($this->[service.instanceName()/]->loaded() || isset($this->[detailsUnit.errorName()/]))
 {
     [detailsUnit.createAndBindTemplate()/]
     [detailsUnit.bindVariable(false)/]
@@ -31,6 +32,7 @@ if ($this->[detailsUnit.service.instanceName()/]->loaded() || isset($this->[deta
 [detailsUnit.createAndBindRouteParameters()/]
 [/if]
 [/let]
+[/let]
 [/template]
 
 
@@ -43,11 +45,12 @@ if ($this->[detailsUnit.service.instanceName()/]->loaded() || isset($this->[deta
 [/template]
 
 [template private actionMethod(unit : DetailsUnit) post(trim())]
+[let service : Service = unit.services->first()]
 public function action_[unit.actionName()/]()
 {
     try
     {
-        $this->[unit.service.loadMethodName()/]();
+        $this->[service.loadMethodName()/]();
     }
     [unit.catchSelectionException()/]
 [if (not unit.defaultSelection.oclIsUndefined())]
@@ -57,4 +60,5 @@ public function action_[unit.actionName()/]()
 [/if]
 [/if]
 }
+[/let]
 [/template]

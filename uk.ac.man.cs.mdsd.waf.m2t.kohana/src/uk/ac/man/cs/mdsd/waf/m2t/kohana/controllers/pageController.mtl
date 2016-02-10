@@ -111,13 +111,14 @@ public function after()
 [template private supportActionMethods(page : Page)]
 [for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+[let service : Service = dataUnit.services->first()]
 	[if (dataUnit.supportActions->notEmpty())]
 public function action_[dataUnit.supportActionName()/]()
 {
 		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
     try
     {
-        $this->[dataUnit.service.loadMethodName()/]();
+        $this->[service.loadMethodName()/]();
         [dataUnit.supportActionHandlers()/]
     }
     [dataUnit.catchSelectionException()/]
@@ -127,6 +128,7 @@ public function action_[dataUnit.supportActionName()/]()
 }
 
 	[/if]
+[/let]
 [/let]
 [/for]
 /* [protected (page.instanceName().concat('.support'))]
@@ -149,18 +151,20 @@ if ($this->request->post('[action.actionName()/]'))
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
 [let unit : DynamicUnit = action.immediateUnit()]
+[let service : Service = unit.services->first()]
 public function action_[deleteAction.actionName()/]()
 {
     try
     {
-        $this->[unit.service.loadMethodName()/]();
-		$this->[unit.service.instanceName()/]->delete();
+        $this->[service.loadMethodName()/]();
+		$this->[service.instanceName()/]->delete();
 [if (not deleteAction.destination.oclIsUndefined())]
         $this->redirect(Route::get('[deleteAction.destination.routeName()/]')->uri());
 [/if]
     }
     [unit.containingUnit().catchSelectionException()/]
 }
+[/let]
 [/let]
 [/let]
 [/template]
@@ -172,7 +176,7 @@ public function action_[action.actionName()/]()
 {
     try
     {
-        $this->[action.immediateUnit().containingUnit().service.loadMethodName()/]();
+        $this->[action.immediateUnit().containingUnit().services->first().loadMethodName()/]();
         // [protected ('support.'.concat(action.actionName()))]
         // [/protected]
     }

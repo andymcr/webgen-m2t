@@ -90,11 +90,11 @@
 	= if not unit.oclIsKindOf(DynamicUnit) then
 			''
 		else if unit.oclIsKindOf(Selectable) and not create then
-			unit.oclAsType(DynamicUnit).service.uriPath()
-		else if not unit.oclAsType(DynamicUnit).service.parentService().oclIsUndefined() then
-			unit.oclAsType(DynamicUnit).service.parentService().uriPath()
+			unit.oclAsType(DynamicUnit).services->first().uriPath()
+		else if not unit.oclAsType(DynamicUnit).services->first().parentService().oclIsUndefined() then
+			unit.oclAsType(DynamicUnit).services->first().parentService().uriPath()
 		else
-			unit.oclAsType(DynamicUnit).service.name.toLowerFirst()
+			unit.oclAsType(DynamicUnit).services->first().name.toLowerFirst()
 		endif endif endif
 /]
 
@@ -130,18 +130,18 @@
 		else 
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
 				in if unit.oclIsKindOf(Selectable) then
-						dynamicUnit.service.uriPathKeys()
-					else if dynamicUnit.service.parentService().oclIsUndefined() then
+						dynamicUnit.services->first().uriPathKeys()
+					else if dynamicUnit.services->first().parentService().oclIsUndefined() then
 						Set{}
 					else
-						dynamicUnit.service.parentService().uriPathKeys()
+						dynamicUnit.services->first().parentService().uriPathKeys()
 					endif endif
 		endif
 /]
 
 [query public uriPath(action : DeleteAction) : String
 	= action.immediateUnit().containingUnit().pageUriPath().parentUriPath(
-			action.immediateUnit().service.uriPath())
+			action.immediateUnit().services->first().uriPath())
 		.concat('/').concat(action.uriElement)
 /]
 

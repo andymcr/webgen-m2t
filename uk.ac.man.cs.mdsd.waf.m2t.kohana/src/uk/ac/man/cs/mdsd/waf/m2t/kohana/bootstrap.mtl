@@ -225,13 +225,15 @@ Route::set('[loginUnit.logoutRouteName()/]', '[loginUnit.logoutUriPath()/]')->de
 [template private elementPatterns(unit : ContentUnit) post(trim())]
 [if (unit.oclIsKindOf(DynamicUnit))]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-	[if (dynamicUnit.service.uriPathKeysWithPattern()->notEmpty())]
+[let service : Service = dynamicUnit.services->first()]
+	[if (service.uriPathKeysWithPattern()->notEmpty())]
 , array(
-		[for (key : ServiceAttributeReference | dynamicUnit.service.uriPathKeysWithPattern())]
+		[for (key : ServiceAttributeReference | service.uriPathKeysWithPattern())]
     '[key.routeParameterName()/]' => '[key.attribute.validationPattern/]',
 		[/for]
 )
 	[/if]
+[/let]
 [/let]
 [/if]
 [/template]

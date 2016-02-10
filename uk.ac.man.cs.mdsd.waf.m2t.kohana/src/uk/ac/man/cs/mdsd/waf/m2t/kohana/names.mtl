@@ -52,10 +52,6 @@
 /]
 
 
-[query public errorName(service : Service) : String
-	= service.instanceName().concat('_error')
-/]
-
 [query public instanceName(service : Service) : String
 	= service.modelName().toLowerFirst()
 /]
@@ -158,6 +154,10 @@
 	= unit.instanceName().concat('_count')
 /]
 
+[query public errorName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_error')
+/]
+
 [query public fieldErrorsName(unit : DynamicUnit) : String
 	= unit.instanceName().concat('_field_errors')
 /]
@@ -182,7 +182,7 @@
 				unit.oclAsType(StaticUnit).service.modelName()
 			endif
 		else
-			unit.oclAsType(DynamicUnit).service.modelName()
+			unit.oclAsType(DynamicUnit).services->first().modelName()
 		endif
 /]
 
@@ -281,7 +281,7 @@
 			else
 				action.usedBy.oclAsType(UnitAssociation).displayedOn
 			endif
-		in unit.service.modelName()/]
+		in unit.services->first().modelName()/]
 
 [query public parameterName(action : InlineAction) : String
 	= action.actionName()

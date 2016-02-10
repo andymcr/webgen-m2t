@@ -34,12 +34,6 @@ TBC[/if]')->uri());
 [/if]
 [/template]
 
-
-[template public detectInvalidSelectionX(unit : DynamicUnit) post(trim())]
-if (!$this->[instanceName()/]->loaded())
-    $this->[unit.service.errorName()/] = 'Invalid [unit.modelName()/] selection';
-[/template]
-
 [template public createAndBindTemplate(unit : ContentUnit) post(trim())]
 $[unit.templateInstanceName()/] = View::factory('[unit.pageDisplayedOn().controllerName()/]/[unit.viewName()/]');
 $this->template->unitViews['['/][']'/] = $[unit.templateInstanceName()/];
@@ -49,14 +43,17 @@ $[unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameter
 [/template]
 
 [template public createVariable(unit : DynamicUnit) post(trim())]
-$this->[unit.service.instanceName()/] = ORM::factory('[unit.modelName()/]');
+[for (service : Service | unit.services)]
+$this->[service.instanceName()/] = ORM::factory('[service.modelName()/]');
+[/for]
 [if (unit.hasDefaultValueFields())]
 [unit.unitDefaultValues()/]
 [/if]
 [/template]
 
 [template public createVariableIfAbsent(unit : DynamicUnit) post(trim())]
-if (!isset($this->[unit.service.instanceName()/]))
+[let service : Service = unit.services->first()]
+if (!isset($this->[service.instanceName()/]))
 [if (unit.hasDefaultValueFields())]
 {
     [unit.createVariable()/]
@@ -64,18 +61,22 @@ if (!isset($this->[unit.service.instanceName()/]))
 [else]
     [unit.createVariable()/]
 [/if]
+[/let]
+
 [/template]
 
 [template public bindVariable(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
+[let service : Service = unit.services->first()]
 [if (createIfAbsent)]
 [unit.createVariableIfAbsent()/]
 [/if]
-$[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[unit.service.instanceName()/]);
+$[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[service.instanceName()/]);
+[/let]
 [/template]
 
 [template public bindErrorMessage(unit : DynamicUnit) post(trim())]
-if (!empty($this->[unit.service.errorName()/]))
-    $[unit.templateInstanceName()/]->bind('[unit.service.errorName()/]', $this->[unit.service.errorName()/]);
+if (!empty($this->[unit.errorName()/]))
+    $[unit.templateInstanceName()/]->bind('[unit.errorName()/]', $this->[unit.errorName()/]);
 [/template]
 
 [template public bindFieldErrors(unit : DynamicUnit) post(trim())]
@@ -84,19 +85,21 @@ if (!empty($this->[unit.fieldErrorsName()/]))
 [/template]
 
 [template public createAndBindRouteParameters(unit : DynamicUnit) post(trim())]
+[let service : Service = unit.services->first()]
 [let parametersVariable : String = '$'.concat(unit.instanceName()).concat('_route_parameters')]
 $[unit.instanceName()/]_route_parameters = array();
-if ($this->[unit.service.instanceName()/]->loaded())
+if ($this->[service.instanceName()/]->loaded())
 {
-    [unit.service.routeParameters(parametersVariable)/]
+    [service.routeParameters(parametersVariable)/]
 }
-[if (not unit.service.parentService().oclIsUndefined())]
+[if (not service.parentService().oclIsUndefined())]
 else
 {
-    [unit.service.parentService().routeParameters(parametersVariable)/]
+    [service.parentService().routeParameters(parametersVariable)/]
 }
 [/if]
 $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/]_route_parameters);
+[/let]
 [/let]
 [/template]
 
@@ -109,32 +112,54 @@ $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/
 [/for]
 [/template]
 
-[template public valuesFromFormToModel(unit : DynamicUnit) post(trim())]
-$this->[unit.service.instanceName()/]->values($this->request->post(), array([for
-	(field : UnitField | unit.nonResourceInputFeatures()->select(f | not f.isEncrypted()))
+[query private activeFeatures(unit : DynamicUnit, service : Service) : OrderedSet(UnitField)
+	= unit.nonResourceInputFeatures()
+		->select(f | not f.isEncrypted())
+		->select(f | if f.oclIsTypeOf(UnitElement) then
+				f.oclAsType(UnitElement).serviceFeature.partOf = service
+			else if f.oclIsTypeOf(UnitAssociation) then
+				f.oclAsType(UnitAssociation).serviceFeature.partOf = service
+			else
+				false
+			endif endif)
+/]
+
+[template public valuesFromFormToModel(unit : DynamicUnit, service : Service) post(trim())]
+$this->[service.instanceName()/]->values($this->request->post(), array([for (field : UnitField | unit.activeFeatures(service))
 	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
 [/template]
 
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]
 [for (field : UnitField | unit.defaultValueFields())]
-if (empty($this->[unit.service.instanceName()/]->[field.modelPropertyName()/]))
+[let service : Service
+	= if field.oclIsTypeOf(UnitElement) then
+			field.oclAsType(UnitElement).serviceFeature.partOf
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).serviceFeature.partOf
+		else
+			unit.services->first()
+		endif endif]
+if (empty($this->[service.instanceName()/]->[field.modelPropertyName()/]))
 [if (field.oclIsTypeOf(UnitElement))]
-    $this->[unit.service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.generateCriteria()/];
+    $this->[service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.generateCriteria()/];
 [else]
-    $this->[unit.service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
+    $this->[service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
 [/if]
+[/let]
 [/for]
 [/template]
 
 
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
+[let service : Service = unit.services->first()]
 [for (feature : IncludedFeature | unit.forcedValueFeatures())]
 	[if (feature.oclIsTypeOf(IncludedAttribute))]
-$this->[unit.service.instanceName()/]->[feature.oclAsType(IncludedAttribute).attribute.columnName()/] = [feature.forcedValue.generateCriteria()/];
+$this->[service.instanceName()/]->[feature.oclAsType(IncludedAttribute).attribute.columnName()/] = [feature.forcedValue.generateCriteria()/];
 	[else]
-$this->[unit.service.instanceName()/]->[feature.oclAsType(IncludedAssociation).association.columnName()/] = [feature.forcedValue.generateCriteria()/];
+$this->[service.instanceName()/]->[feature.oclAsType(IncludedAssociation).association.columnName()/] = [feature.forcedValue.generateCriteria()/];
 	[/if]
 [/for]
+[/let]
 [/template]
 
 [template public captchaCheck(unit : DynamicUnit) post(trim())]
@@ -145,17 +170,17 @@ if (!$captcha['['/]'success'[']'/])
 	throw new Captcha_Exception($captcha['['/]'error-codes'[']'/]);
 [/template]
 
-[template public catchSelectionException(unit : DynamicUnit)]
+[template public catchSelectionException(unit : DynamicUnit) post(trim())]
 catch (Controller_SelectionException $se)
 {
-    $this->[unit.service.errorName()/] = $se->message();
+    $this->[unit.errorName()/] = $se->message();
 [if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
 [unit.exceptionCleanup()/]
 [/if]
 }
 [/template]
 
-[template public catchValidationException(unit : DynamicUnit)]
+[template public catchValidationException(unit : DynamicUnit) post(trim())]
 catch (ORM_Validation_Exception $e)
 {
     $this->[unit.fieldErrorsName()/] = $e->errors('');
@@ -168,7 +193,7 @@ catch (ORM_Validation_Exception $e)
 		field.modelPropertyName()
 	endif]'[fieldName/]' => ''[/let][/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));
     if (!empty($unreported_field_errors))
-        $this->[unit.service.errorName()/] = print_r($unreported_field_errors, TRUE);
+        $this->[unit.errorName()/] = print_r($unreported_field_errors, TRUE);
 [/if]
 [if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
 [unit.exceptionCleanup()/]

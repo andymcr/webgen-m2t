@@ -15,6 +15,7 @@
 [/template]
 
 [template private actionMethod(unit : SearchUnit)]
+[let service : Service = unit.services->first()]
 public function action_[unit.actionName()/]()
 {
 [if (not unit.cancelDestination.oclIsUndefined())]
@@ -23,7 +24,7 @@ public function action_[unit.actionName()/]()
 [/if]
     try
     {
-        [unit.valuesFromFormToModel()/]
+        [unit.valuesFromFormToModel(service)/]
 [if (unit.hasForcedValueFeatures())]
         [unit.forcedFeatureValues()/]
 [/if]
@@ -33,7 +34,7 @@ public function action_[unit.actionName()/]()
 [if (unit.hasInterfaceFields())]
         [unit.interfaceFieldValidation()/]
 [/if]
-        $this->[unit.service.instanceName()/]->check([if (unit.hasInterfaceFields())]$extra_validation[/if]);
+        $this->[service.instanceName()/]->check([if (unit.hasInterfaceFields())]$extra_validation[/if]);
 		// [protected ('search.'.concat(unit.instanceName()))]
 		// [/protected]
 //	$this->redirect(Route::get('[unit.displayedOn.oclAsType(Page).routeName()/]')->uri());
@@ -49,4 +50,5 @@ public function action_[unit.actionName()/]()
     [unit.catchCaptchaException()/]
 [/if]
 }
+[/let]
 [/template]

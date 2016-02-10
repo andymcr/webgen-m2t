@@ -14,16 +14,17 @@
 	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[let service : Service = dynamicUnit.services->first()]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 <section class="[dynamicUnit.styleClass/]<?php
-    if (isset($[dynamicUnit.service.errorName()/]) || isset($[dynamicUnit.fieldErrorsName()/]))
+    if (isset($[dynamicUnit.errorName()/]) || isset($[dynamicUnit.fieldErrorsName()/]))
         echo ' [dynamicUnit.errorClass/]';
 ?>" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.service.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[dynamicUnit.service.errorName()/])) { ?>
-   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.service.errorName()/])); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.errorName()/])) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.formErrors()/]
@@ -43,6 +44,7 @@
 </section>
 [/let]
 [/let]
+[/let]
 [/file]
 [/template]
 
@@ -50,6 +52,7 @@
 	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[let service : Service = dynamicUnit.services->first()]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 <section class="[dynamicUnit.styleClass/]<?php
 	if (isset($[dynamicUnit.fieldErrorsName()/])) {
@@ -58,9 +61,9 @@
 ?>" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]"><?php echo __('[dynamicUnit.displayLabel/]'); ?></h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.service.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-<?php if (!empty($[dynamicUnit.service.errorName()/])) { ?>
-   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.service.errorName()/])); ?></p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+<?php if (!empty($[dynamicUnit.errorName()/])) { ?>
+   <p class="[dynamicUnit.errorClass/]"><?php echo html::chars(__($[dynamicUnit.errorName()/])); ?></p>
 <?php } ?>
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.formErrors()/]
@@ -76,6 +79,7 @@
 </section>
 [/let]
 [/let]
+[/let]
 [/file]
 [/template]
 
@@ -89,6 +93,7 @@
 [/template]
 
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
+[let service : Service = unit.services->first()]
 <?php
     echo Form::open(
         Route::get([if (unit.oclIsKindOf(Selectable))]
@@ -98,10 +103,11 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
  . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
-            'class' => '[unit.layoutClass/]' . (isset($[unit.service.errorName()/]) ? ' [unit.errorClass/]' : ''),
+            'class' => '[unit.layoutClass/]' . (isset($[unit.errorName()/]) ? ' [unit.errorClass/]' : ''),
             'enctype' => 'multipart/form-data'
         )) . PHP_EOL;
 ?>
+[/let]
 [/template]
 
 [template private formControlAndClose(unit : DynamicUnit) post(trim())]

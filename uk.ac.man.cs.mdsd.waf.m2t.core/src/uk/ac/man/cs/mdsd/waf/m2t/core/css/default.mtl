@@ -197,15 +197,9 @@ form > div {
 	padding: 0.25em 0em 0.25em 0em;
 }
 
-form li.error {
+form div.error {
 	border: 1px solid FireBrick;
 	border-radius: 0.5em;
-}
-
-form p.error {
-	margin-left: 16%;
-	padding-top: 0.25em;
-	color: FireBrick;
 }
 
 form > div > label,
@@ -239,10 +233,16 @@ form > div > select {
 	vertical-align: top;
 }
 
-form > ul > li > p['['/]class="error"[']'/] {
-	display: inline-block;
+form > div.error > ul {
+	list-style: none;
 	width: 83%;
 	text-align: left;
+}
+
+form > div.error > ul > li {
+	margin-left: 20%;
+	padding-top: 0.25em;
+	color: FireBrick;
 }
 
 .input_attribute {

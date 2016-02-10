@@ -62,7 +62,7 @@ public function action_[registrationUnit.actionName()/]()
 		try
 		{
 [if (registrationUnit.hasCaptchaFields())]
-			[registrationUnit.valuesFromFormToModel()/]
+			[registrationUnit.valuesFromFormToModel(registrationUnit.services->first())/]
 [if (registrationUnit.hasForcedValueFeatures())]
 			[registrationUnit.forcedFeatureValues()/]
 [/if]
@@ -123,7 +123,7 @@ public function action_[registrationUnit.actionName()/]()
 	(field : UnitField | registrationUnit.inputFields())
 		separator (', ')]'[field.modelPropertyName()/]' => ''[/for][if (registrationUnit.hasInterfaceFields())], '_external' => ''[/if]));
 			if (!empty($unreported_field_errors))
-				$this->[registrationUnit.service.errorName()/] = print_r($unreported_field_errors, TRUE);
+				$this->[registrationUnit.errorName()/] = print_r($unreported_field_errors, TRUE);
 	[/if]
 [if (registrationUnit.hasInterfaceFields())]
 			[registrationUnit.rememberInterfaceFields()/]
@@ -170,7 +170,7 @@ public function action_[loginUnit.logoutActionName()/]()
 
 [template public validateLogin(unit : LoginUnit) post(trim())]
 [let localAuthentication : LocalAuthenticationSystem = unit.authenticationSystem]
-[unit.valuesFromFormToModel()/]
+[unit.valuesFromFormToModel(unit.services->first())/]
 [if (unit.hasForcedValueFeatures())]
 [unit.forcedFeatureValues()/]
 [/if]
@@ -196,7 +196,7 @@ if ($authentication)
     }
  else
 {
-    $this->[unit.service.errorName()/] = Auth::instance()->message;
+    $this->[unit.errorName()/] = Auth::instance()->message;
 [if (unit.hasInterfaceFields())]
     [unit.rememberInterfaceFields()/]
 [/if]

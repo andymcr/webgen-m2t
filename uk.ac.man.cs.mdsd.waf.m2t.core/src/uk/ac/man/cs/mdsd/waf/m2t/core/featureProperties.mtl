@@ -19,10 +19,6 @@
 /]
 
 
-[comment query public enumerationTypes(model : WafModel) : Sequence(EnumerationType)
-	= model.persistence.enumerationTypes()
-/]
-
 [query public hasCaptchaFields(model : WafModel) : Boolean
 	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
 /]
@@ -97,6 +93,10 @@
 /]
 
 
+[query public associations(service : Service) : Sequence(ServiceAssociation)
+	= service.features->select(f | f.oclIsTypeOf(ServiceAssociation)).oclAsType(ServiceAssociation)
+/]
+
 [query public childAssociation(parentService : Service, childService : Service) : ServiceAssociation
 	= parentService.features
 		->select(f | f.isContainer()).oclAsType(ServiceAssociation)
@@ -121,7 +121,7 @@
 [query public parentService(service : Service) : Service
 	= let parents : Sequence(EntityOrView) 
 		= service.encapsulates
-			->select(eor | eor.oclIsTypeOf(Entity)).oclAsType(Entity)
+			->select(eov | eov.oclIsTypeOf(Entity)).oclAsType(Entity)
 			->collect(e | e.features)
 			->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
 			->select(f | f.opposite.container)
@@ -322,6 +322,14 @@
 		endif
 /]
 
+[query public modelPropertyName(feature : ServiceFeatureReference) : String
+	= if feature.oclIsTypeOf(ServiceAttributeReference) then
+			feature.oclAsType(ServiceAttributeReference).attribute.modelPropertyName()
+		else 
+			feature.oclAsType(ServiceAssociationReference).association.modelPropertyName()
+		endif
+/]
+
 [query public targetService(association : ServiceAssociation) : Service
 	= let targetServices : OrderedSet(Service)
 		= association.partOf.partOf.services(association.targetType())
@@ -416,6 +424,10 @@
 	= page.supportActions()->notEmpty()
 /]
 
+[query public hasUpdateUnits(page : Page) : Boolean
+	= page.updateUnits()->notEmpty()
+/]
+
 [query public hasUriActions(page : Page) : Boolean
 	= page.uriActions()->notEmpty()
 /]
@@ -446,6 +458,10 @@
 
 [query public supportActions(page : Page) : Sequence(UnitSupportAction)
 	= page.dynamicUnits()->collect(u | u.supportActions)
+/]
+
+[query public updateUnits(page : Page) : OrderedSet(ContentUnit)
+	= page.units->select(u | u.oclIsTypeOf(CreateUpdateUnit) or u.oclIsTypeOf(UpdateUnit))
 /]
 
 [query public uriActions(page : Page) : Sequence(InlineAction)
@@ -678,7 +694,7 @@
 
 [query public isParameterised(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(Selectable) then
-			unit.oclAsType(DynamicUnit).service.keys->notEmpty()
+			unit.oclAsType(DynamicUnit).services->first().keys->notEmpty()
 		else
 			false
 		endif
