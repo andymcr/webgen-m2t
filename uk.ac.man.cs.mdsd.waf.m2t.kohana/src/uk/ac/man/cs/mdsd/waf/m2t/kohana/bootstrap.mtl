@@ -122,8 +122,9 @@ Kohana::init(array(
 [if (model.rewriteURLs)]
 	'index_file'   => FALSE,
 [/if]
-[if (not model.developmentVersion)]
+[if (model.developmentVersion)]
     'profile'    => Kohana::$environment !== Kohana::PRODUCTION,
+[else]
 //    'caching'    => Kohana::$environment === Kohana::PRODUCTION,
 [/if]
 ));

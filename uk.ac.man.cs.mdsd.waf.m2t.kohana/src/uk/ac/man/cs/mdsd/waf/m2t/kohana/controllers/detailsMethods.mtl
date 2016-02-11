@@ -56,7 +56,7 @@ public function action_[unit.actionName()/]()
 [if (not unit.defaultSelection.oclIsUndefined())]
 //        $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
 [if (unit.hasDefaultValueFields())]
-//    [unit.unitDefaultValues()/]
+//    [unit.unitDefaultValues(unit.services->first())/]
 [/if]
 [/if]
 }

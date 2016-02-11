@@ -14,8 +14,6 @@
 	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[let service : Service = dynamicUnit.services->first()]
-[let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 <section class="[dynamicUnit.styleClass/]<?php
     if (isset($[dynamicUnit.errorName()/]) || isset($[dynamicUnit.fieldErrorsName()/]))
         echo ' [dynamicUnit.errorClass/]';
@@ -38,12 +36,10 @@
 [if (unit.oclIsTypeOf(MapUnit))]
   [dynamicUnit.map()/]
 [else]
-  [dynamicUnit.form(accessor)/]
+  [dynamicUnit.form()/]
 [/if]
  </div>
 </section>
-[/let]
-[/let]
 [/let]
 [/file]
 [/template]
@@ -52,8 +48,7 @@
 	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[let service : Service = dynamicUnit.services->first()]
-[let accessor : String = '$'.concat(dynamicUnit.instanceName())]
+[let accessor : String = '$'.concat(dynamicUnit.modelInstanceName())]
 <section class="[dynamicUnit.styleClass/]<?php
 	if (isset($[dynamicUnit.fieldErrorsName()/])) {
 		echo ' [dynamicUnit.errorClass/]';
@@ -74,30 +69,28 @@
 	$unit_fields = [accessor/]->unit_fields();
 ?>
 [/if]
-[dynamicUnit.form(accessor)/]
+[dynamicUnit.form()/]
  </div>
 </section>
-[/let]
 [/let]
 [/let]
 [/file]
 [/template]
 
 
-[template private form(unit : DynamicUnit, accessor : String) post(trim())]
-[unit.formOpen(accessor)/]
+[template private form(unit : DynamicUnit) post(trim())]
+[unit.formOpen()/]
 [for (field : UnitField | unit.inputOrEmbeddedFields())]
  [field.formField(unit)/]
 [/for]
 [unit.formControlAndClose()/]
 [/template]
 
-[template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
-[let service : Service = unit.services->first()]
+[template private formOpen(unit : DynamicUnit) post(trim())]
 <?php
     echo Form::open(
         Route::get([if (unit.oclIsKindOf(Selectable))]
-$[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
+$[unit.modelInstanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
 '[unit.routeName()/]'[/if])
             ->uri([if (unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],
@@ -107,7 +100,6 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
             'enctype' => 'multipart/form-data'
         )) . PHP_EOL;
 ?>
-[/let]
 [/template]
 
 [template private formControlAndClose(unit : DynamicUnit) post(trim())]
@@ -157,7 +149,10 @@ $[unit.instanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(tru
 	else
 		field.modelPropertyName()
 	endif]
-[let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(fieldName)]
+[let accessor : String = '$'.concat(unit.modelInstanceName(field.service())).concat('->').concat(fieldName)]
+[if (field.service() <> unit.services->first())]
+<?php if (!empty($[unit.modelInstanceName(field.service())/])) { ?>
+[/if]
 <div[if (unit.hasMessagesOnFeature())]<?php
     unset($field_error);
     if (!empty($[unit.fieldErrorsName()/]))
@@ -199,6 +194,9 @@ find_all()[else]
 <?php } ?>
 	[/if]
     </div>
+[if (field.service() <> unit.services->first())]
+<?php } ?>
+[/if]
 [/let]
 [/let]
 [/template]

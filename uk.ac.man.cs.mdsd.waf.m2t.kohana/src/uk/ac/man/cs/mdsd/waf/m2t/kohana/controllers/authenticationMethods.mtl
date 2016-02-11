@@ -26,7 +26,7 @@ if (Auth::instance()->logged_in())
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 $this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.modelName()/]');
 [if (authenticationUnit.hasDefaultValueFields())]
-[authenticationUnit.unitDefaultValues()/]
+[authenticationUnit.unitDefaultValues(authenticationUnit.services->first())/]
 [/if]
 [if (unit.oclIsTypeOf(LoginUnit))]
 //TODO reload remember me

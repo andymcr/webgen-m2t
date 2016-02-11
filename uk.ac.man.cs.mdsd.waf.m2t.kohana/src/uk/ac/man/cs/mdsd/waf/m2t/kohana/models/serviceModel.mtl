@@ -636,7 +636,7 @@ separator (', ')]'[association.modelPropertyName()/]'[/for])));
 public function save(Validation $validation = NULL)
 {
 [for (resource : SingletonResource | entityOrView.resourceAttributes())]
-	if (isset($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/]))
+	if (($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'size'[']'/] > 0) && ($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'error'[']'/] == UPLOAD_ERR_OK))
 		$this->_save_[resource.modelPropertyName()/]();
 [/for]
 	parent::save($validation);

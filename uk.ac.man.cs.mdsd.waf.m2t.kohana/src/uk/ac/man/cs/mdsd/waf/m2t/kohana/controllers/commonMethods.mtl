@@ -45,10 +45,10 @@ $[unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameter
 [template public createVariable(unit : DynamicUnit) post(trim())]
 [for (service : Service | unit.services)]
 $this->[service.instanceName()/] = ORM::factory('[service.modelName()/]');
-[/for]
-[if (unit.hasDefaultValueFields())]
-[unit.unitDefaultValues()/]
+[if (unit.hasDefaultValueFields(service))]
+[unit.unitDefaultValues(service)/]
 [/if]
+[/for]
 [/template]
 
 [template public createVariableIfAbsent(unit : DynamicUnit) post(trim())]
@@ -66,12 +66,12 @@ if (!isset($this->[service.instanceName()/]))
 [/template]
 
 [template public bindVariable(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
-[let service : Service = unit.services->first()]
 [if (createIfAbsent)]
 [unit.createVariableIfAbsent()/]
 [/if]
-$[unit.templateInstanceName()/]->bind('[unit.instanceName()/]', $this->[service.instanceName()/]);
-[/let]
+[for (service : Service | unit.services)]
+$[unit.templateInstanceName()/]->bind('[unit.modelInstanceName(service)/]', $this->[service.instanceName()/]);
+[/for]
 [/template]
 
 [template public bindErrorMessage(unit : DynamicUnit) post(trim())]
@@ -129,23 +129,14 @@ $this->[service.instanceName()/]->values($this->request->post(), array([for (fie
 	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
 [/template]
 
-[template public unitDefaultValues(unit : DynamicUnit) post(trim())]
-[for (field : UnitField | unit.defaultValueFields())]
-[let service : Service
-	= if field.oclIsTypeOf(UnitElement) then
-			field.oclAsType(UnitElement).serviceFeature.partOf
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).serviceFeature.partOf
-		else
-			unit.services->first()
-		endif endif]
+[template public unitDefaultValues(unit : DynamicUnit, service : Service) post(trim())]
+[for (field : UnitField | unit.defaultValueFields(service))]
 if (empty($this->[service.instanceName()/]->[field.modelPropertyName()/]))
 [if (field.oclIsTypeOf(UnitElement))]
     $this->[service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.generateCriteria()/];
 [else]
     $this->[service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
 [/if]
-[/let]
 [/for]
 [/template]
 

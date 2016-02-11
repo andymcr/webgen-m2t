@@ -108,6 +108,7 @@ public function action_[unit.actionName()/]()
             $this->redirect(Route::get('[unit.oclAsType(EditUnit).confirmDestination.routeName()/]')->uri());
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+		    [unit.clearModels()/]
 		[if (unit.hasInterfaceFields())]
 			[for (field : InterfaceField | unit.interfaceFields())]
             unset($this->[firstService.instanceName()/]->[field.modelPropertyName()/]);
@@ -151,8 +152,20 @@ if (empty($this->[service.instanceName()/]->[columnName/]))
 [/let]
 [/if]
 $this->[service.instanceName()/]->save([if (unit.hasInterfaceFields() and firstModel)]$extra_validation[/if]);
-[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-$this->[service.instanceName()/]->clear();
+[/template]
+
+[template private clearModels(unit : DynamicUnit) post(trim())]
+$this->[unit.services->first().instanceName()/]->clear();
+[if (unit.services->size() > 1)]
+	[for (service : Service | unit.services->subOrderedSet(2, unit.services->size()))]
+if (isset($this->[service.instanceName()/]))
+{
+    $this->[service.instanceName()/]->clear();
+		[if (unit.hasDefaultValueFields(service))]
+    [unit.unitDefaultValues(service)/]
+		[/if]
+}
+	[/for]
 [/if]
 [/template]
 

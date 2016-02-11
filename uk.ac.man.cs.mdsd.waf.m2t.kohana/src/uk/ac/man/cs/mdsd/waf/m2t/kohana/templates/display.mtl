@@ -13,15 +13,14 @@
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(DataUnit)) post(trim())]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
-[let service : Service = dataUnit.services->first()]
-[let accessor : String = '$'.concat(dataUnit.instanceName())]
+[let accessor : String = '$'.concat(dataUnit.modelInstanceName())]
 [file(dataUnit.viewFilename(), false)]
 <section class="[dataUnit.styleClass/]<?php
 	if (isset($[dataUnit.errorName()/])) {
 		echo ' [dataUnit.errorClass/]';
 	}
 ?>" id="[dataUnit.instanceName()/]">
- <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle('$'.concat(dataUnit.instanceName()))/]</h1>
+ <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle(accessor)/]</h1>
  <section class="[dataUnit.errorClass/]<?php if (empty($[dataUnit.errorName()/])) echo ' hidden'; ?>">
   <p class="[dataUnit.errorClass/]"><?php echo __(!empty($[dataUnit.errorName()/]) ? $[dataUnit.errorName()/] : ''); ?></p>
  </section>
@@ -45,7 +44,6 @@
 [/if]
 </section>
 [/file]
-[/let]
 [/let]
 [/let]
 [/template]
@@ -250,7 +248,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	[/if]
 ?>
 [else]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.displayedOn.services->first())/]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.service())/]
 [/if]
 [/let]
 [/template]
