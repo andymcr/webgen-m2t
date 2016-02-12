@@ -479,7 +479,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 			field.oclAsType(DateField).details
 		endif]
 <?php
-    echo Form::input('[field.modelPropertyName()/]', [if (field.oclIsKindOf(UnitFeature))]
+    echo Form::input('[field.formName()/]', [if (field.oclIsKindOf(UnitFeature))]
 [accessor/][else]
 array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[/if],
         array(
