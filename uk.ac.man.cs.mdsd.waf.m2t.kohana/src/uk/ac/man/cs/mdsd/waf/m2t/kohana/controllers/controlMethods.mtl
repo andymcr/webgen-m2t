@@ -15,7 +15,7 @@
 [template public unitAfter(unit : ContentUnit)
 	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [let controlUnit : ControlUnit = unit.oclAsType(ControlUnit)]
-[controlUnit.bindVariable(true)/]
+[controlUnit.bindModelVariable(true)/]
 [controlUnit.bindErrorMessage()/]
 [controlUnit.bindFieldErrors()/]
 [for (association : UnitAssociation | controlUnit.associationFields())]

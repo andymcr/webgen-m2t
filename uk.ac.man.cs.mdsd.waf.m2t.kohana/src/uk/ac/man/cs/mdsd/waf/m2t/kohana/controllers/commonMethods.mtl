@@ -65,7 +65,14 @@ if (!isset($this->[service.instanceName()/]))
 
 [/template]
 
-[template public bindVariable(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
+[template public bindModelVariable(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
+[if (createIfAbsent)]
+[unit.createVariableIfAbsent()/]
+[/if]
+$[unit.templateInstanceName()/]->bind('[unit.modelInstanceName()/]', $this->[unit.services->first().instanceName()/]);
+[/template]
+
+[template public bindModelVariables(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
 [if (createIfAbsent)]
 [unit.createVariableIfAbsent()/]
 [/if]

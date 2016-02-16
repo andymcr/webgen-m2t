@@ -175,7 +175,7 @@
 /]
 
 [query public modelInstanceName(unit : DynamicUnit) : String
-	= unit.modelInstanceName(unit.services->first())
+	= unit.instanceName()
 /]
 
 [query public modelInstanceName(unit : DynamicUnit, service : Service) : String

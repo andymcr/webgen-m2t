@@ -21,7 +21,7 @@
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.createAndBindTemplate()/]
-[editUnit.bindVariable(true)/]
+[editUnit.bindModelVariables(true)/]
 [editUnit.bindErrorMessage()/]
 [editUnit.bindFieldErrors()/]
 [if (unit.oclIsKindOf(Selectable))]

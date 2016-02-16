@@ -25,43 +25,15 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	[/if]
 [/if]
 [if (entityOrView.hasOwnedSingletonAssociations())]
-	protected $_belongs_to = array(
-	[for (association : Association | entityOrView.ownedSingletonAssociations())
-			separator (',')]
-		'[association.modelPropertyName()/]' => array(
-			'model' => '[association.modelName()/]',
-			'foreign_key' => '[association.columnName()/]'
-		)
-	[/for]
-	);
+    [entityOrView.ownedSingletonAssociationsConfig()/]
 
 [/if]
 [if (entityOrView.hasInverseSingletonAssociations())]
-	protected $_has_one = array(
-	[for (association : Association | entityOrView.inverseSingletonAssociations())
-			separator (',')]
-		'[association.modelPropertyName()/]' => array(
-			'model' => '[association.modelName()/]',
-			'foreign_key' => '[association.oppositeColumnName()/]'
-		)
-	[/for]
-	);
+    [entityOrView.inverseSingletonAssociationsConfig()/]
 
 [/if]
 [if (entityOrView.hasCollectionAssociations())]
-	protected $_has_many = array(
-	[for (association : Association | entityOrView.collectionAssociations())
-			separator (',')]
-		'[association.modelPropertyName()/]' => array(
-			'model' => '[association.modelName()/]',
-		[if (not association.isOppositeSingleton())]
-			'through' => '[association.pivotTableName()/]',
-			'far_key' => '[association.columnName()/]',
-		[/if]
-			'foreign_key' => '[association.oppositeColumnName()/]'
-		)
-	[/for]
-	);
+    [entityOrView.collectionAssociationsConfig()/]
 
 [/if]
 [if (entityOrView.hasDefaultValueFeatures())]
@@ -152,42 +124,8 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 
 [/for]
 [for (selection : Selection | service.selections)]
-	public function [selection.instanceName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
-$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if][if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
-	{
-	[for (association : ServiceAssociation | selection.joins)]
-		$this->join('')->on([if (association.isOwningEnd())]
-'[association.columnName()/]'[else]'id'[/if], '=', [if (association.isOwningEnd())]
-'b'[else]'id'[/if]);
-	[/for]
-	[if (not selection.filter.oclIsUndefined())]
-		[selection.filter.generateCriteria()/]
-	[/if]
-	[for (order : Order | selection.ordering)]
-		$this->order_by('[order.path.generateOrderPath()/]', '[if (order.oclIsTypeOf(Asc))]asc[else]desc[/if]');
-	[/for]
-[if (selection.limit <= 0)]
-		if ($paging)
-			return $this->limit($pageSize)->offset(($page - 1) * $pageSize)->find_all();
-		else
-			return $this->find_all();
-[else]
-		$this->limit([selection.limit/]);
-		return $this->[if (selection.limit = 1)]find()[else]find_all()[/if];
-[/if]
-	}
+    [selection.selection()/]
 
-	[if (selection.limit <> 1)]
-	public function [selection.countName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
-$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for])
-	{
-		[if (not selection.filter.oclIsUndefined())]
-		[selection.filter.generateCriteria()/]
-		[/if]
-		return $this->count_all();
-	}
-
-	[/if]
 [/for]
 	public function paginated($page = 1, $pageSize = 10)
 	{
@@ -405,6 +343,42 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 [/file]
 [/template]
 
+[template private ownedSingletonAssociationsConfig(entityOrView : EntityOrView) post(trim())]
+protected $_belongs_to = array(
+[for (association : Association | entityOrView.ownedSingletonAssociations()) separator (',')]
+	'[association.modelPropertyName()/]' => array(
+		'model' => '[association.modelName()/]',
+		'foreign_key' => '[association.columnName()/]'
+	)
+[/for]
+);
+[/template]
+
+[template private inverseSingletonAssociationsConfig(entityOrView : EntityOrView) post(trim())]
+protected $_has_one = array(
+[for (association : Association | entityOrView.inverseSingletonAssociations()) separator (',')]
+	'[association.modelPropertyName()/]' => array(
+		'model' => '[association.modelName()/]',
+		'foreign_key' => '[association.oppositeColumnName()/]'
+	)
+[/for]
+);
+[/template]
+
+[template private collectionAssociationsConfig(entityOrView : EntityOrView) post(trim())]
+protected $_has_many = array(
+[for (association : Association | entityOrView.collectionAssociations()) separator (',')]
+	'[association.modelPropertyName()/]' => array(
+		'model' => '[association.modelName()/]',
+	[if (not association.isOppositeSingleton())]
+		'through' => '[association.pivotTableName()/]',
+		'far_key' => '[association.columnName()/]',
+	[/if]
+		'foreign_key' => '[association.oppositeColumnName()/]'
+	)
+[/for]
+);
+[/template]
 
 [template private constructor(service : Service, entityOrView : EntityOrView, authentication : Authentication) post(trim())]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
@@ -571,6 +545,41 @@ $[key.instanceName()/] = NULL[/for])
 [/let]
 [/template]
 
+[template private selection(selection : Selection) post(trim())]
+public function [selection.instanceName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if][if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
+{
+[for (association : ServiceAssociation | selection.joins)]
+	$this->join('[association.targetService().tableName()/]')->on('[association.columnName()/]', '=', '[association.targetService().tableName()/].[association.targetService().keyName()/]');
+[/for]
+[if (not selection.filter.oclIsUndefined())]
+	[selection.filter.generateCriteria()/]
+[/if]
+[for (order : Order | selection.ordering)]
+	$this->order_by('[order.path.generateOrderPath()/]', '[if (order.oclIsTypeOf(Asc))]asc[else]desc[/if]');
+[/for]
+[if (selection.limit <= 0)]
+	if ($paging)
+		return $this->limit($pageSize)->offset(($page - 1) * $pageSize)->find_all();
+	else
+		return $this->find_all();
+[else]
+	$this->limit([selection.limit/]);
+	return $this->[if (selection.limit = 1)]find()[else]find_all()[/if];
+[/if]
+}
+
+[if (selection.limit <> 1)]
+public function [selection.countName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for])
+{
+	[if (not selection.filter.oclIsUndefined())]
+	[selection.filter.generateCriteria()/]
+	[/if]
+	return $this->count_all();
+}
+[/if]
+[/template]
 
 [template private values(entityOrView : EntityOrView) post(trim())]
 public function values(array $values, array $expected = NULL)

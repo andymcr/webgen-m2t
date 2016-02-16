@@ -30,7 +30,7 @@
   </section>
 [if (dynamicUnit.hasInterfaceFields())]
   <?php
-	$unit_fields = $[dynamicUnit.instanceName()/]->unit_fields();
+	$unit_fields = $[dynamicUnit.modelInstanceName(dynamicUnit.services->first())/]->unit_fields();
 ?>
 [/if]
 [if (unit.oclIsTypeOf(MapUnit))]
@@ -90,7 +90,7 @@
 <?php
     echo Form::open(
         Route::get([if (unit.oclIsKindOf(Selectable))]
-$[unit.modelInstanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
+$[unit.modelInstanceName(unit.services->first())/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
 '[unit.routeName()/]'[/if])
             ->uri([if (unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],

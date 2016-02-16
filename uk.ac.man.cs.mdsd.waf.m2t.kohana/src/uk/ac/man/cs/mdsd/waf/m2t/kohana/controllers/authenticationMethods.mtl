@@ -38,7 +38,7 @@ $this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.
 	? (unit.oclIsKindOf(AuthenticationUnit) and not unit.oclIsKindOf(EditUnit)) post(trim())]
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [authenticationUnit.createAndBindTemplate()/]
-$[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.instanceName()/]', $this->[authenticationUnit.instanceName()/]);
+$[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.modelInstanceName(authenticationUnit.services->first())/]', $this->[authenticationUnit.instanceName()/]);
 [authenticationUnit.bindErrorMessage()/]
 [if (authenticationUnit.hasCaptchaFields())]
 [authenticationUnit.bindFieldErrors()/]

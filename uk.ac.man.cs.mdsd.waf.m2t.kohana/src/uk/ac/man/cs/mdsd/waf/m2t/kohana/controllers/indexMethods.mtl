@@ -42,7 +42,7 @@ else
 }
 	[/if]
 [/if]
-$[indexUnit.templateInstanceName()/]->bind('[indexUnit.modelInstanceName(indexUnit.services->first())/]', $[indexUnit.instanceName()/]);
+$[indexUnit.templateInstanceName()/]->bind('[indexUnit.modelInstanceName()/]', $[indexUnit.instanceName()/]);
 [if (indexUnit.defaultPaginationSize > 0)]
 $[indexUnit.paginationName()/] = Pagination::factory(array(
 	'group' => '[indexUnit.uniqueName()/]',

@@ -21,13 +21,13 @@
 if ($this->[service.instanceName()/]->loaded() || isset($this->[detailsUnit.errorName()/]))
 {
     [detailsUnit.createAndBindTemplate()/]
-    [detailsUnit.bindVariable(false)/]
+    [detailsUnit.bindModelVariable(false)/]
     [detailsUnit.bindErrorMessage()/]
     [detailsUnit.createAndBindRouteParameters()/]
 }
 [else]
 [detailsUnit.createAndBindTemplate()/]
-[detailsUnit.bindVariable(true)/]
+[detailsUnit.bindModelVariable(true)/]
 [detailsUnit.bindErrorMessage()/]
 [detailsUnit.createAndBindRouteParameters()/]
 [/if]
