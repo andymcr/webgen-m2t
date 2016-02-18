@@ -52,6 +52,14 @@
 	= not model.authentication.oclIsUndefined()
 /]
 
+[query public isLocallyAuthenticated(model : WafModel) : Boolean
+	= if model.isAuthenticated() then
+			model.authentication.oclIsTypeOf(LocalAuthenticationSystem)
+		else
+			false
+		endif
+/]
+
 [query public services(model : WafModel, entityOrView : EntityOrView) : OrderedSet(Service)
 	= services->select(s | s.encapsulates->includes(entityOrView))
 /]
@@ -124,6 +132,7 @@
 			->select(eov | eov.oclIsTypeOf(Entity)).oclAsType(Entity)
 			->collect(e | e.features)
 			->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+			->select(f | not f.opposite.oclIsUndefined())
 			->select(f | f.opposite.container)
 			->collect(f | f.opposite.partOf)
 		in let potentialServices : Sequence(Service)
@@ -504,6 +513,10 @@
 	= unit.displayFields->select(f | f.hasDefaultValue())
 /]
 
+[query public defaultValueFields(unit : DynamicUnit, service : Service) : Set(UnitField)
+	= unit.defaultValueFields()->select(f | f.service() = service)
+/]
+
 [query public encryptedFeatures(unit : DynamicUnit) : Set(UnitField)
 	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f | f.isEncrypted())
 /]
@@ -535,6 +548,10 @@
 
 [query public hasDefaultValueFields(unit : DynamicUnit) : Boolean
 	= unit.defaultValueFields()->notEmpty()
+/]
+
+[query public hasDefaultValueFields(unit : DynamicUnit, service : Service) : Boolean
+	= unit.defaultValueFields(service)->notEmpty()
 /]
 
 [query public hasEncryptedFeatures(unit : DynamicUnit) : Boolean
@@ -1108,6 +1125,16 @@
 
 [query public pageDisplayedOn(field : UnitField) : Page
 	= field.displayedOn.pageDisplayedOn()
+/]
+
+[query public service(field : UnitField) : Service
+	= if field.oclIsTypeOf(UnitElement) then
+			field.oclAsType(UnitElement).serviceFeature.partOf
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).serviceFeature.partOf
+		else
+			field.displayedOn.services->first()
+		endif endif
 /]
 
 [comment TODO what if field has a selection?/]
