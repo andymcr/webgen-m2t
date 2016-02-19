@@ -1,11 +1,15 @@
 [comment encoding = UTF-8 /]
 [module appBundle(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public generateAppBundle(model : WafModel)]
-[file(model.appBundleFilename(), false)]
+[template public appBundle(model : WafModel)]
+[file(model.appBundleDirectory().concat('/')
+	.concat(model.appBundleName())
+	.concat(model.executableExtension()), false)]
 <?php
 
 namespace [model.appBundleNamespace()/];

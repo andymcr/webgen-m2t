@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module routing(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
@@ -10,5 +11,10 @@
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+[if (model.isLocallyAuthenticated())]
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+[/if]
 [/file]
 [/template]

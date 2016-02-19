@@ -118,12 +118,6 @@
 /]
 
 
-[query public appBundleFilename(eObject : EObject) : String
-	= eObject.appBundleDirectory().concat('/')
-		.concat(eObject.appBundleName())
-		.concat(eObject.executableExtension())
-/]
-
 [query public configBaseFilename(eObject : EObject) : String
 	= eObject.configDirectory().concat('/').concat('config')
 /]

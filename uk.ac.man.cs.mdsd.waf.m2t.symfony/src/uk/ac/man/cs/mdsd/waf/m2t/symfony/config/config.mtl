@@ -81,6 +81,15 @@ pdo_oci[/if]
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+[if (model.isLocallyAuthenticated())]
+[let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: [model.modelsNamespace()/]\[authentication.authenticationService.modelClassName()/]
+
+[/let]
+[/if]
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

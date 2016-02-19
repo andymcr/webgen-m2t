@@ -19,8 +19,10 @@
 [/template]
 
 [template public actionMethodParameters(unit : DynamicUnit, page : Page) post(trim())]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (unit.service.hasRouteParameters())]
-, [/if][/if][unit.service.routeParameters()/]
+[let service : Service = unit.services->first()]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (service.hasRouteParameters())]
+, [/if][/if][service.routeParameters()/]
+[/let]
 [/template]
 
 [template public renderMethodParameters(page : Page) post(trim())]
@@ -39,16 +41,16 @@ $[key.routeParameterName()/]
 [/template]
 
 [template public getService(unit : DynamicUnit) post(trim())]
-$this->get[unit.service.modelName()/]Service()
+$this->get[unit.modelName()/]Service()
 
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.service.routeParameters()/])
+[unit.getService()/]->find([unit.services->first().routeParameters()/])
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]
-new [unit.service.modelName()/]()
+new [unit.modelName()/]()
 [/template]
 
 
@@ -85,7 +87,7 @@ $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/
 [template public catchSelectionException(unit : DynamicUnit)]
 catch (QueryException $qe)
 {
-    $this->[unit.service.errorName()/] = $se->message();
+    $this->[unit.errorName()/] = $se->message();
 [if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
 [unit.exceptionCleanup()/]
 [/if]

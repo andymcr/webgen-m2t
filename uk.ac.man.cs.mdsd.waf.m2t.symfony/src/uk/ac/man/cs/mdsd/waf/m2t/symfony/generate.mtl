@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::generate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::app::kernel/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::bundle::appBundle/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::config/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::configDev/]
@@ -32,6 +33,8 @@
 
 
 [template public symfony(model : WafModel)]
+[model.appKernel()/]
+
 [model.config()/]
 [model.configDev()/]
 [model.configProd()/]
@@ -45,7 +48,7 @@
 [model.configServices()/]
 [model.services.service()/]
 
-[model.generateAppBundle()/]
+[model.appBundle()/]
 [model.persistence.enumerationTypes().generateFormType()/]
 [model.services.generateFormType()/]
 [model.pages.generateController()/]

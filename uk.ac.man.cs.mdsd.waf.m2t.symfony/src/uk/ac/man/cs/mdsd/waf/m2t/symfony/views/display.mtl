@@ -15,11 +15,11 @@
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 [let accessor : String = dataUnit.instanceName()]
 [file(dataUnit.viewFilename(), false)]
-<section class="[dataUnit.styleClass/]{%if [dataUnit.service.errorName()/] is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
+<section class="[dataUnit.styleClass/]{%if [dataUnit.errorName()/] is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
  <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle(dataUnit.instanceName())/]</h1>
- <section class="[dataUnit.errorClass/]{% if not [dataUnit.service.errorName()/] is defined %} hidden{% endif %}">
-{% if [dataUnit.service.errorName()/] is defined %}
-   <p class="[dataUnit.errorClass/]">{{ [dataUnit.service.errorName()/] }}</p>
+ <section class="[dataUnit.errorClass/]{% if not [dataUnit.errorName()/] is defined %} hidden{% endif %}">
+{% if [dataUnit.errorName()/] is defined %}
+   <p class="[dataUnit.errorClass/]">{{ [dataUnit.errorName()/] }}</p>
 {% endif %}
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
@@ -249,7 +249,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private actions(unit : IndexUnit, accessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.service)/]
+[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.services->first())/]
 [/for]
 [/template]
 
@@ -258,10 +258,10 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	? (field.isDataTypeSingleton() and not field.isBooleanDataType()) post(trim())]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 [if (feature.actions->select(a | not a.disable)->isEmpty())]
-{{ [feature.getValue(accessor)/][if (feature.maximumDisplaySize > 0)]
- | truncate([feature.maximumDisplaySize/]) [/if] }}
+{{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
+ | truncate([feature.maximumDisplaySize/])[/if] }}
 [else]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('.') - 1), feature.getValue(accessor), field.displayedOn.service)/]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('.') - 1), feature.getValue(accessor), field.displayedOn.services->first())/]
 [/if]
 [/let]
 [/template]
@@ -269,14 +269,14 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isEnumerationTypeSingleton()) post(trim())]
 {{ [field.getValue(accessor)/][if (field.maximumDisplaySize > 0)]
- | truncate([field.maximumDisplaySize/]) [/if] }}
+ | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isDateSingleton()) post(trim())]
 {{ [field.getValue(accessor)/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
- | truncate([field.maximumDisplaySize/]) [/if] }}
+ | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String) 
@@ -346,7 +346,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
 [else]
 {{ [association.getValue(accessor)/]| default('')[if (association.maximumDisplaySize > 0)]
- | truncate([association.maximumDisplaySize/] - 3) [/if] }}
+ | truncate([association.maximumDisplaySize/] - 3)[/if] }}
 [/if]
 [/template]
 

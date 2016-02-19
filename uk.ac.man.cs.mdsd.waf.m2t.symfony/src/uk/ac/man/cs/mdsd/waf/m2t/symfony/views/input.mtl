@@ -15,12 +15,12 @@
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
-<section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.service.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
+<section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.service.errorName()/] is defined %} hidden{% endif %}">
-{% if [dynamicUnit.service.errorName()/] is defined %}
-   <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.service.errorName()/] }}</p>
+  <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.errorName()/] is defined %} hidden{% endif %}">
+{% if [dynamicUnit.errorName()/] is defined %}
+   <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.errorName()/] }}</p>
 {% endif %}
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.formErrors()/]
@@ -48,12 +48,12 @@
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
-<section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.service.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
+<section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h1>
  <div class="unit_padding">
-  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.service.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
-{% if [dynamicUnit.service.errorName()/] is defined %}
-   <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.service.errorName()/] }}</p>
+  <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
+{% if [dynamicUnit.errorName()/] is defined %}
+   <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.errorName()/] }}</p>
 {% endif %}
 [if (dynamicUnit.hasMessagesOnFormHead())]
    [dynamicUnit.formErrors()/]

@@ -33,10 +33,6 @@
 /]
 
 
-[query public errorName(service : Service) : String
-	= service.instanceName().concat('_error')
-/]
-
 [query public instanceName(service : Service) : String
 	= service.modelName().toLowerFirst()
 /]
@@ -113,12 +109,28 @@
 	= unit.pageDisplayedOn().controllerName()
 /]
 
+[query public errorName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_error')
+/]
+
 [query public fieldErrorsName(unit : DynamicUnit) : String
 	= unit.instanceName().concat('_field_errors')
 /]
 
 [query public instanceName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
+/]
+
+[query public modelName(unit : ContentUnit) : String
+	= if unit.oclIsTypeOf(StaticUnit) then
+			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
+				'None'
+			else
+				unit.oclAsType(StaticUnit).service.modelName()
+			endif
+		else
+			unit.oclAsType(DynamicUnit).services->first().modelName()
+		endif
 /]
 
 [query public logoutActionName(unit : LoginUnit) : String
@@ -200,7 +212,7 @@
 
 [query public modelName(action : DeleteAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).service.name
+			action.usedBy.oclAsType(DynamicUnit).services->first().name
 		else
 			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
 		endif
@@ -208,7 +220,7 @@
 
 [query public modelName(action : FeatureSupportAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).service.name
+			action.usedBy.oclAsType(DynamicUnit).services->first().name
 		else
 			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
 		endif

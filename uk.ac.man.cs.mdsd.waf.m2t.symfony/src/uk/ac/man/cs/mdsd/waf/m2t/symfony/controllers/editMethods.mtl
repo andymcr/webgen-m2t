@@ -142,17 +142,19 @@ unset($this->[unit.instanceName()/]->[field.modelPropertyName()/]);
 
 
 [template public createForm(unit : EditUnit, create : Boolean) post(trim())]
+[let service : Service = unit.services->first()]
 $this->createForm([service.typeClassName()/]::class, $[unit.instanceName()/], array(
     'action' => $this->generateUrl('[unit.routeName(create)/]', array(
 [if (create)]
 	[if (not service.parentService().oclIsUndefined())]
-        [unit.service.parentService().routeParameters('$'.concat(unit.instanceName()))/]
+        [service.parentService().routeParameters('$'.concat(unit.instanceName()))/]
 	[/if]
 [else]
-        [unit.service.routeParameters('$'.concat(unit.instanceName()))/]
+        [service.routeParameters('$'.concat(unit.instanceName()))/]
 [/if]
     )),
 ))
+[/let]
 [/template]
 
 [template private routeParameters(service : Service, accessor : String) post(trim())]

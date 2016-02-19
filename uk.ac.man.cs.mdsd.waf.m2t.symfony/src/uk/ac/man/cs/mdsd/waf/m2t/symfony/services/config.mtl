@@ -17,6 +17,9 @@ parameters:
 #    parameter_name: value
 
 services:
+    app.encoder.legacy:
+        class: AppBundle\Security\Encoder\LegacyEncoder
+
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
