@@ -15,7 +15,7 @@
 [if (not model.metaDescription.oclIsUndefined())]
  <meta name="description" content="[model.metaDescription/]">
 [/if]
- <title>[model.siteTitle/]: {{ title }}</title>
+ <title>[model.siteTitle/]{% if title is defined %}: {{ title }}{% endif %}</title>
  <link rel="stylesheet" type="text/css" href="{{ asset('css/default.css') }}"/>
  <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}"/>
  <link rel="stylesheet" type="text/css" media="not print" href="{{ asset('css/non-print.css') }}"/>
@@ -23,6 +23,8 @@
 [if (not model.textEditorURL.oclIsUndefined())]
  <script type="text/javascript" src="[model.textEditorURL/]"></script>
 [/if]
+{% if scripts is defined %}
+{% endif %}
 </head>
 <body id="page" class="framed">
 <header>

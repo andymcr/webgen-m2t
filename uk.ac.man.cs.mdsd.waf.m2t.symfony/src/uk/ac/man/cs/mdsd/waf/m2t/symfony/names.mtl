@@ -11,6 +11,10 @@
 	= 'AppBundle'
 /]
 
+[query public fosUserBundleName(eObject : EObject) : String
+	= 'FOSUserBundle'
+/]
+
 
 [query public filterName(type : EnumerationType) : String
 	= type.name.toLowerFirst()
@@ -119,6 +123,10 @@
 
 [query public instanceName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
+/]
+
+[query public modelClassName(unit : DynamicUnit) : String
+	= 'Unit'.concat(unit.name)
 /]
 
 [query public modelName(unit : ContentUnit) : String

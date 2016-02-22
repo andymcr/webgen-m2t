@@ -27,10 +27,13 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+[if (model.hasCaptchaFields())]
+            new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
+[/if]
 [if (model.isLocallyAuthenticated())]
 			new FOS\UserBundle\FOSUserBundle(),
 [/if]
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
         [']'/];
 

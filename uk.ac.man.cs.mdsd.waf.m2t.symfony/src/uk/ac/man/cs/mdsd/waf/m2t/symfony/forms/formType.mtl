@@ -7,7 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public generateFormType(service : Service)]
+[template public formType(service : Service)]
 [file(service.formTypeFilename(), false)]
 <?php
 namespace [service.formTypeNamespace()/];

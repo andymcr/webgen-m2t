@@ -7,7 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public generateFormType(type : EnumerationType)]
+[template public formType(type : EnumerationType)]
 [file(type.formTypeFilename(), false)]
 <?php
 namespace [type.formTypeNamespace()/];

@@ -84,6 +84,14 @@
 	= 'web'
 /]
 
+[query public fosResourcesDirectory(eObject : EObject) : String
+	= eObject.resourcesDirectory().concat('/').concat(eObject.fosUserBundleName())
+/]
+
+[query public fosViewsDirectory(eObject : EObject) : String
+	= eObject.fosResourcesDirectory().concat('/').concat('views')
+/]
+
 
 [query public appBundleNamespace(eObject : EObject) : String
 	= eObject.appBundleName()
@@ -146,22 +154,10 @@
 		.concat(menu.htmlExtension()).concat(menu.twigExtension())
 /]
 
-[comment query public modelFilename(enumerationType : EnumerationType) : String
-	= enumerationType.modelsDirectory().concat('/')
-		.concat(enumerationType.modelName())
-		.concat(enumerationType.executableExtension())
-/]
-
-[comment query public modelLanguageFilename(genService : GenService) : String
-	= genService.languageEnglishDirectory().concat('/')
-		.concat('model_').concat(genService.modelName()).concat('_lang')
-		.concat(genService.executableExtension())
-/]
-
-[comment query public paginationViewFilename(genUnit : GenContentUnit) : String
-	= genUnit.genDisplayedOn.oclAsType(GenPage).pageViewsDirectory().concat('/')
-		.concat(genUnit.instanceName()).concat('_pagination')
-		.concat(genUnit.executableExtension())
+[query public modelFilename(unit : DynamicUnit) : String
+	= unit.modelsDirectory().concat('/')
+		.concat(unit.modelClassName())
+		.concat(unit.executableExtension())
 /]
 
 [query public routingBaseFilename(eObject : EObject) : String
