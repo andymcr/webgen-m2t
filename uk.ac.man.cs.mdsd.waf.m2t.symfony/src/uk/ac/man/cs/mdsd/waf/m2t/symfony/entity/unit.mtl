@@ -41,9 +41,9 @@ public function __construct()
 {
 [for (field : UnitField | unit.defaultValueFields())]
 	[if (field.oclIsTypeOf(UnitElement))]
-	$this->[field.modelPropertyName()/] = [field.oclAsType(UnitElement).defaultValue.valueExpression()/];
+//	$this->[field.modelPropertyName()/] = [field.oclAsType(UnitElement).defaultValue.valueExpression()/];
 	[else]
-	$this->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
+//	$this->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
 	[/if]
 [/for]
 }
