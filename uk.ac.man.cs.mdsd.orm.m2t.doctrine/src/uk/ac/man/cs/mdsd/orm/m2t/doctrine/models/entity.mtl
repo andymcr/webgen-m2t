@@ -14,12 +14,8 @@
 namespace [entityOrView.modelsNamespace()/];
 
 use Doctrine\ORM\Mapping as ORM;
-[if (entityOrView.hasCollectionAssociations())]
+[if (entityOrView.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
-[/if]
-[if (entityOrView.name = 'Authentication')]
-use FOS\UserBundle\Model\User as BaseUser;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 [/if]
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,14 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="[entityOrView.tableName/]")
  * @ORM\HasLifecycleCallbacks
  **/
-class [entityOrView.modelClassName()/][if (entityOrView.name = 'Authentication')] extends BaseUser implements EncoderAwareInterface[/if]
+class [entityOrView.modelClassName()/]
 {
     [entityOrView.idFeature()/]
 
-[if (entityOrView.name <> 'Authentication')]
     [entityOrView.features()/]
 
-[/if]
 [if (entityOrView.oclIsTypeOf(Entity))]
     [entityOrView.timestampFeatures()/]
 
@@ -44,18 +38,12 @@ class [entityOrView.modelClassName()/][if (entityOrView.name = 'Authentication')
     [entityOrView.constructor()/]
 
 [/if]
-[if (entityOrView.name = 'Authentication')]
-    [entityOrView.encoderSelectionMethod()/]
-
-[/if]
     [entityOrView.idMethods()/]
 
-[if (entityOrView.name <> 'Authentication')]
-	[for (feature : Feature | entityOrView.features)]
+[for (feature : Feature | entityOrView.features)]
     [feature.featureMethods()/]
 
-	[/for]
-[/if]
+[/for]
 [if (entityOrView.oclIsTypeOf(Entity))]
     [entityOrView.timestampMethods()/]
 
@@ -175,20 +163,16 @@ protected $updated;
 [template private constructor(entityOrView : EntityOrView) post(trim())]
 public function __construct()
 {
-[if (entityOrView.name = 'Authentication')]
-    parent::__construct();
-[else]
-	[for (feature : Feature | entityOrView.features)]
-		[if (feature.hasDefaultValue())]
-	$this->[feature.modelPropertyName()/] = [feature.oclAsType(SingletonAttribute).defaultValue.valueExpression()/];
-		[/if]
-		[if (feature.oclIsTypeOf(CollectionAssociation))]
-			[if (feature.oclAsType(CollectionAssociation).owningEnd)]
+[for (feature : Feature | entityOrView.features)]
+	[if (feature.hasDefaultValue())]
+//	$this->[feature.modelPropertyName()/] = [feature.oclAsType(SingletonAttribute).defaultValue.valueExpression()/];
+	[/if]
+	[if (feature.oclIsTypeOf(CollectionAssociation))]
+		[if (feature.oclAsType(CollectionAssociation).owningEnd)]
 	$this->[feature.modelPropertyName()/] = new ArrayCollection();
-			[/if]
 		[/if]
-	[/for]
-[/if]
+	[/if]
+[/for]
 [if (entityOrView.oclIsTypeOf(Entity))]
 
     $this->created = new \DateTime();
