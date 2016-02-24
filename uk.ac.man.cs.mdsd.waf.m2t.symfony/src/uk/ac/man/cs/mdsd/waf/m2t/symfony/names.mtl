@@ -15,6 +15,22 @@
 	= 'FOSUserBundle'
 /]
 
+[query public authPrefix(eObject : EObject) : String
+	= 'Auth'
+/]
+
+[query public typePrefix(eObject : EObject) : String
+	= 'App'
+/]
+
+[query public typeSuffix(eObject : EObject) : String
+	= 'Type'
+/]
+
+[query public unitPrefix(eObject : EObject) : String
+	= 'Unit'
+/]
+
 
 [query public filterName(type : EnumerationType) : String
 	= type.name.toLowerFirst()
@@ -25,7 +41,7 @@
 /]
 
 [query public typeClassName(type : EnumerationType) : String
-	= type.typePrefix().concat(type.name).concat('Type')
+	= type.typePrefix().concat(type.name).concat(type.typeSuffix())
 /]
 
 [query public modelClassName(type : EnumerationType) : String
@@ -34,6 +50,15 @@
 
 [comment query public name(enumerationLiteral : EnumerationLiteral) : String
 	= enumerationLiteral.name.toUpper()
+/]
+
+
+[query public modelClassName(authentication : LocalAuthenticationSystem) : String
+	= authentication.authPrefix().concat('Authentication')
+/]
+
+[query public typeClassName(authentication : LocalAuthenticationSystem, element : String) : String
+	= authentication.authPrefix().concat(element).concat(authentication.typeSuffix())
 /]
 
 
@@ -63,11 +88,7 @@
 /]
 
 [query public typeClassName(service : Service) : String
-	= service.typePrefix().concat(service.modelName()).concat('Type')
-/]
-
-[query public typePrefix(eObject : EObject) : String
-	= 'App'
+	= service.typePrefix().concat(service.modelName()).concat(service.typeSuffix())
 /]
 
 
@@ -97,7 +118,7 @@
 /]
 
 [query public controllerClassName(page : Page) : String
-	= page.controllerName().concat('Controller')
+	= page.controllerName().concat('Controller').toUpperFirst()
 /]
 
 [query public instanceName(page : Page) : String
@@ -115,6 +136,10 @@
 
 [query public errorName(unit : DynamicUnit) : String
 	= unit.instanceName().concat('_error')
+/]
+
+[query public formTypeName(unit : DynamicUnit) : String
+	= unit.instanceName().concat('_field_errors')
 /]
 
 [query public fieldErrorsName(unit : DynamicUnit) : String
@@ -168,6 +193,10 @@
 
 [query public supportRouteName(unit : ContentUnit) : String
 	= unit.uniqueName().concat('_support')
+/]
+
+[query public typeClassName(unit : DynamicUnit) : String
+	= 'Unit'.concat(unit.pageDisplayedOn().name).concat(unit.name).concat(unit.typeSuffix())
 /]
 
 [query public uniqueName(unit : ContentUnit) : String

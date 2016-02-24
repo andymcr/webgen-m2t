@@ -29,7 +29,7 @@ security:
     providers:
 	[if (model.isLocallyAuthenticated())]
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 	[else]
         in_memory:
             memory:

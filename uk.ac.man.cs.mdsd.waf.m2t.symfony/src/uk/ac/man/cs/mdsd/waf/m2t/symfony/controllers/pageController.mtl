@@ -15,7 +15,7 @@
 [comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::staticMethods/]
 
 
-[template public generateController(page : Page)]
+[template public controller(page : Page)]
 [file(page.controllerFilename(), false)]
 <?php
 namespace [page.controllersNamespace()/];

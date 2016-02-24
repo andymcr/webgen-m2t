@@ -23,6 +23,9 @@
 [template private actionMethod(unit : IndexUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
+[if (unit.isHomeUnit())]
+ * [unit.homeRouteAnnotation()/]
+[/if]
  * [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]([if (page.hasFilterParameters())]

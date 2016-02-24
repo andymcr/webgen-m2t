@@ -15,7 +15,6 @@ namespace [service.formTypeNamespace()/];
 [service.associationTypeUse()/]
 use Symfony\Component\Form\AbstractType;
 [service.attributeTypeUse()/]
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -66,7 +65,6 @@ use Symfony\Component\Form\Extension\Core\Type\TestareaType;
 [/if]
 [if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'time')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\CallbackTransformer;
 [/if]
 [/template]
 

@@ -10,6 +10,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
+[template public homeRouteAnnotation(unit : ContentUnit) post(trim())]
+@Route("/", name="app.home")
+[/template]
+
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
 [unit.routeAnnotation(false)/]
 [/template]

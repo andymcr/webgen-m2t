@@ -32,6 +32,10 @@
 	= eObject.webDirectory().concat('/css')
 /]
 
+[query public encoderDirectory(eObject : EObject) : String
+	= eObject.securityDirectory().concat('/').concat('Encoder')
+/]
+
 [query public extensionsDirectory(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/').concat('Extensions')
 /]
@@ -62,6 +66,10 @@
 
 [query public resourcesDirectory(eObject : EObject) : String
 	= eObject.applicationDirectory().concat('/').concat('Resources')
+/]
+
+[query public securityDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Security')
 /]
 
 [query public servicesDirectory(eObject : EObject) : String
@@ -132,20 +140,32 @@
 
 [query public controllerFilename(page : Page) : String
 	= page.controllersDirectory().concat('/')
-		.concat(page.controllerClassName().toUpperFirst())
+		.concat(page.controllerClassName())
 		.concat(page.executableExtension())
 /]
 
 [query public formTypeFilename(type : EnumerationType) : String
 	= type.formTypeDirectory().concat('/')
-		.concat(type.typePrefix()).concat(type.name).concat('Type')
+		.concat(type.typeClassName())
 		.concat(type.executableExtension())
+/]
+
+[query public formTypeFilename(authentication : LocalAuthenticationSystem, element : String) : String
+	= authentication.formTypeDirectory().concat('/')
+		.concat(authentication.typeClassName(element))
+		.concat(authentication.executableExtension())
 /]
 
 [query public formTypeFilename(service : Service) : String
 	= service.formTypeDirectory().concat('/')
-		.concat(service.typePrefix()).concat(service.modelName()).concat('Type')
+		.concat(service.typeClassName())
 		.concat(service.executableExtension())
+/]
+
+[query public formTypeFilename(unit : DynamicUnit) : String
+	= unit.formTypeDirectory().concat('/')
+		.concat(unit.typeClassName())
+		.concat(unit.executableExtension())
 /]
 
 [query public menuFilename(menu : Menu) : String

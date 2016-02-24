@@ -45,6 +45,17 @@ services:
         class: [type.formTypeNamespace()/]\[type.typeClassName()/]
         tags:
             - { name: form.type, alias: [type.formTypeName()/] }
+
 [/for]
+[if (model.isLocallyAuthenticated())]
+[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
+	[if (authentication.useCaptcha)]
+    app.form.registration:
+        class: [authentication.formTypeNamespace()/]\[authentication.typeClassName('Registration')/]
+        tags:
+            - { name: form.type, alias: app_user_registration }
+	[/if]
+[/let]
+[/if]
 [/file]
 [/template]

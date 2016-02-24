@@ -27,7 +27,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-[if (model.hasCaptchaFields())]
+[if (model.hasCaptchaFields() or model.isLocallyAuthenticated())]
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
 [/if]
 [if (model.isLocallyAuthenticated())]

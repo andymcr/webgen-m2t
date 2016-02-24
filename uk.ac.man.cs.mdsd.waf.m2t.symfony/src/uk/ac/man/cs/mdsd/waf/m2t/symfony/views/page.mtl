@@ -6,7 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public generatePage(page : Page)]
+[template public page(page : Page)]
 [file(page.pageViewDirectory().concat('/page').concat(page.htmlExtension()).concat(page.twigExtension()), false)]
 {% extends 'site.html.twig' %}
 

@@ -60,6 +60,10 @@
 		endif
 /]
 
+[query public localAuthentication(model : WafModel) : LocalAuthenticationSystem
+	= model.authentication.oclAsType(LocalAuthenticationSystem)
+/]
+
 [query public services(model : WafModel, entityOrView : EntityOrView) : OrderedSet(Service)
 	= services->select(s | s.encapsulates->includes(entityOrView))
 /]
@@ -453,6 +457,10 @@
 	= page.authenticated and page.partOf.isAuthenticated()
 /]
 
+[query public isHomePage(page : Page) : Boolean
+	= page.partOf.topMenuItems()->first() = page
+/]
+
 [query public mapUnits(page : Page) : Sequence(MapUnit)
 	= page.units->select(u | u.oclIsKindOf(MapUnit)).oclAsType(MapUnit)
 /]
@@ -546,8 +554,12 @@
 		endif
 /]
 
-[query public hasDefaultValueFields(unit : DynamicUnit) : Boolean
-	= unit.defaultValueFields()->notEmpty()
+[query public hasDefaultValueFields(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(DynamicUnit) then
+			unit.oclAsType(DynamicUnit).defaultValueFields()->notEmpty()
+		else
+			false
+		endif
 /]
 
 [query public hasDefaultValueFields(unit : DynamicUnit, service : Service) : Boolean
@@ -667,24 +679,24 @@
 	= unit.uriActions()->notEmpty()
 /]
 
-[query public inputAssociations(unit : DynamicUnit) : Sequence(UnitAssociation)
+[query public inputAssociations(unit : DynamicUnit) : OrderedSet(UnitAssociation)
 	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
 			unit.inputFields()->select(f | f.oclIsTypeOf(UnitAssociation))
 		else
-			Sequence{}
+			OrderedSet{}
 		endif
 /]
 
-[query public inputCollectionAssociations(unit : DynamicUnit) : Sequence(UnitField)
+[query public inputCollectionAssociations(unit : DynamicUnit) : OrderedSet(UnitField)
 	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
 			unit.inputFields()->select(f | f.oclIsTypeOf(UnitAssociation) and not f.isSingleton())
 		else
-			Sequence{}
+			OrderedSet{}
 		endif
 /]
 
-[query public inputFields(unit : DynamicUnit) : Sequence(UnitField)
-	= unit.displayFields->asSequence()->select(f |
+[query public inputFields(unit : DynamicUnit) : OrderedSet(UnitField)
+	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then
 			f.oclAsType(UnitFeature).isModifiable()
 		else
@@ -707,6 +719,10 @@
 
 [query public isAuthenticated(unit : ContentUnit) : Boolean
 	= unit.pageDisplayedOn().isAuthenticated()
+/]
+
+[query public isHomeUnit(unit : ContentUnit) : Boolean
+	= unit.pageDisplayedOn().isHomePage() and unit.pageDisplayedOn().units->first() = unit
 /]
 
 [query public isParameterised(unit : ContentUnit) : Boolean

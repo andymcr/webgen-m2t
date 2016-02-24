@@ -20,11 +20,18 @@
 [/for]
 [if (model.isAuthenticated())]
 	[if (model.isLocallyAuthenticated())]
-	[let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
+	[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
 {% if app.user %}
   <li id="authentication">Logged in as {{ app.user.username }} <a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
 {% else %}
   <li id="authentication"><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
+[if (model.isLocallyAuthenticated())]
+[let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
+	[if (authentication.allowSelfRegistration)]
+  <li id="authentication"><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
+	[/if]
+[/let]
+[/if]
 {% endif %}
 	[/let]
 	[/if]
