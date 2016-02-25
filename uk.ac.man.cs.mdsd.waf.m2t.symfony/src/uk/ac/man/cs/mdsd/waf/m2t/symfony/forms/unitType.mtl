@@ -1,0 +1,103 @@
+[comment encoding = UTF-8 /]
+[module unitType(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public formType(unit : DynamicUnit)]
+[file(unit.formTypeFilename(), false)]
+<?php
+namespace [unit.formTypeNamespace()/];
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+[if (unit.hasCaptchaFields())]
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+[/if]
+
+
+class [unit.typeClassName()/] extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+[for (field : InterfaceField | unit.interfaceFields())]
+        $builder->[field.formFeature()/];
+[/for]
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => '[unit.modelsNamespace()/]\[unit.modelClassName()/]'
+        ));
+    }
+}
+[/file]
+[/template]
+
+[template private formFeature(field : InterfaceField)
+	? (not field.oclIsTypeOf(CaptchaField)) post(trim())]
+add('[field.modelPropertyName()/]', [field.interfaceType()/], array(
+    'label' => '[field.displayLabel/]',
+[if (not field.isRequired())]
+    'required' => FALSE,
+[/if]
+[if (field.oclIsTypeOf(DataTypeField))]
+[elseif (field.oclIsTypeOf(DateField))]
+[let dateField : DateField = field.oclAsType(DateField)]
+	[if (dateField.details = DateDetails::DateAndTime)]
+    'date_widget' => 'single_text',
+    'time_widget' => 'single_text',
+	[else]
+    'widget' => 'single_text',
+		[if (dateField.details = DateDetails::TimeOnly)]
+    'with_seconds' => TRUE,
+		[/if]
+	[/if]
+[/let]
+[/if]
+))
+[/template]
+
+[template private interfaceType(field : InterfaceField) post(trim())]
+[if (field.isEnumerationTypeSingleton())]
+ChoiceType::class
+[comment elseif (attribute.isEnumerationTypeSingleton())/]
+[comment PasswordType::class /]
+[elseif (field.oclIsTypeOf(DataTypeField))]
+[let dataTypeField : DataTypeField = field.oclAsType(DataTypeField)]
+	[if (dataTypeField.interfaceType = 'checkbox')]
+CheckboxType::class
+	[elseif (dataTypeField.interfaceType = 'email')]
+EmailType::class
+	[elseif (dataTypeField.interfaceType = 'integer')]
+IntegerType::class
+	[elseif (dataTypeField.interfaceType = 'text')]
+TextType::class
+	[elseif (dataTypeField.interfaceType = 'textarea')]
+TextareaType::class
+	[elseif (dataTypeField.interfaceType = 'time')]
+TimeType::class
+	[else]
+TextType::class
+	[/if]
+[/let]
+[/if]
+[/template]
+
+[template private formFeature(field : InterfaceField)
+	? (field.oclIsTypeOf(CaptchaField)) post(trim())]
+add('[field.modelPropertyName()/]', EWZRecaptchaType::class, array(
+    'label' => '[field.displayLabel/]',
+    'mapped' => FALSE,
+    'constraints' => array(
+        new RecaptchaTrue()
+    )
+))
+[/template]
