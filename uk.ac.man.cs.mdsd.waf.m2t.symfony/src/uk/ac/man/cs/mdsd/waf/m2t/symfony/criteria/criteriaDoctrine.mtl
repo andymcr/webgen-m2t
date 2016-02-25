@@ -35,7 +35,7 @@ NULL
 [template public doctrineExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
 [let path : ModelReference = criteria.oclAsType(ModelReference)]
-$this->[path.unit.instanceName()/]->[path.unit.service.keyName()/]
+$this->[path.unit.instanceName()/]->[path.unit.services->first().keyName()/]
 [/let]
 [/template]
 
