@@ -40,7 +40,7 @@
  </div>
  </noscript>
 [/if]
- <div class="control">
+ <div class="unit_control">
   <input type="submit" value="{{ 'resetting.request.submit'|trans }}"/>
  </div>
 </form>

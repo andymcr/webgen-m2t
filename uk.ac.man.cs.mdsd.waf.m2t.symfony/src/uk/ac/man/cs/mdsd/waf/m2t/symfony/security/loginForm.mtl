@@ -33,7 +33,7 @@
   <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
   <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
  </div>
- <div class="control">
+ <div class="unit_control">
   <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
  </div>
  <div>

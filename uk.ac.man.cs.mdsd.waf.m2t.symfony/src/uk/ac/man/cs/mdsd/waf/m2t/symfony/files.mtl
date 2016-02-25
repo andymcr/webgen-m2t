@@ -92,8 +92,12 @@
 	= 'web'
 /]
 
-[query public fosChangePasswordesDirectory(eObject : EObject) : String
-	= eObject.fosResourcesDirectory().concat('/').concat('ChangePassword')
+[query public fosChangePasswordDirectory(eObject : EObject) : String
+	= eObject.fosViewsDirectory().concat('/').concat('ChangePassword')
+/]
+
+[query public fosProfileDirectory(eObject : EObject) : String
+	= eObject.fosViewsDirectory().concat('/').concat('Profile')
 /]
 
 [query public fosResourcesDirectory(eObject : EObject) : String
