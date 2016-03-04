@@ -366,34 +366,24 @@ public class Messages extends NLS {
 	public static String Association4CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String UserCommand5CreationTool_title;
+	* @generated
+	*/
+	public static String Datatypefield5CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String UserCommand5CreationTool_desc;
+	* @generated
+	*/
+	public static String Datatypefield5CreationTool_desc;
 
 	/**
-	 * @generated
-	 */
-	public static String Datatypefield6CreationTool_title;
+	* @generated
+	*/
+	public static String Datefield6CreationTool_title;
 
 	/**
-	 * @generated
-	 */
-	public static String Datatypefield6CreationTool_desc;
-
-	/**
-	 * @generated
-	 */
-	public static String Datefield7CreationTool_title;
-
-	/**
-	 * @generated
-	 */
-	public static String Datefield7CreationTool_desc;
+	* @generated
+	*/
+	public static String Datefield6CreationTool_desc;
 
 	/**
 	 * @generated
@@ -534,26 +524,6 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String SearchUnit8CreationTool_desc;
-
-	/**
-	 * @generated
-	 */
-	public static String CreateSitemapUnit9CreationTool_title;
-
-	/**
-	 * @generated
-	 */
-	public static String CreateSitemapUnit9CreationTool_desc;
-
-	/**
-	* @generated
-	*/
-	public static String CommandUnit10CreationTool_title;
-
-	/**
-	* @generated
-	*/
-	public static String CommandUnit10CreationTool_desc;
 
 	/**
 	 * @generated
@@ -809,6 +779,16 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String CreateUpdateUnitUnitFieldCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String UnitAssociationInterfaceUnitsCompartment5EditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String CreateUpdateUnitUnitFieldCompartment2EditPart_title;
 
 	/**
 	 * @generated

@@ -12,26 +12,26 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.DynamicUnit;
-import uk.ac.man.cs.mdsd.webgen.website.UnitAssociation;
+import uk.ac.man.cs.mdsd.webgen.website.CreateUpdateUnit;
+import uk.ac.man.cs.mdsd.webgen.website.UnitContainer;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
  */
-public class UnitAssociation18CreateCommand extends EditElementCommand {
+public class CreateUpdateUnit2CreateCommand extends EditElementCommand {
 
 	/**
-	 * @generated
-	 */
-	public UnitAssociation18CreateCommand(CreateElementRequest req) {
+	* @generated
+	*/
+	public CreateUpdateUnit2CreateCommand(CreateElementRequest req) {
 		super(req.getLabel(), null, req);
 	}
 
 	/**
-	 * FIXME: replace with setElementToEdit()
-	 * @generated
-	 */
+	* FIXME: replace with setElementToEdit()
+	* @generated
+	*/
 	protected EObject getElementToEdit() {
 		EObject container = ((CreateElementRequest) getRequest()).getContainer();
 		if (container instanceof View) {
@@ -41,21 +41,21 @@ public class UnitAssociation18CreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public boolean canExecute() {
 		return true;
 
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		UnitAssociation newElement = WebsiteFactory.eINSTANCE.createUnitAssociation();
+		CreateUpdateUnit newElement = WebsiteFactory.eINSTANCE.createCreateUpdateUnit();
 
-		DynamicUnit owner = (DynamicUnit) getElementToEdit();
-		owner.getDisplayFields().add(newElement);
+		UnitContainer owner = (UnitContainer) getElementToEdit();
+		owner.getUnits().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 
@@ -64,9 +64,9 @@ public class UnitAssociation18CreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void doConfigure(UnitAssociation newElement, IProgressMonitor monitor, IAdaptable info)
+	* @generated
+	*/
+	protected void doConfigure(CreateUpdateUnit newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);

@@ -14,6 +14,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement6EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement7EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -61,7 +62,7 @@ public class IndexUnitItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdit
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case UnitElement6EditPart.VISUAL_ID:
+					case UnitElement7EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

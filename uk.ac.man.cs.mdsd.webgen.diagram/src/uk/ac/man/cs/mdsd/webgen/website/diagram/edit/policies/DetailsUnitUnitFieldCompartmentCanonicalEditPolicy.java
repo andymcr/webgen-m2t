@@ -26,6 +26,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField3EditPar
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement3EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement4EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -82,7 +83,7 @@ public class DetailsUnitUnitFieldCompartmentCanonicalEditPolicy extends Canonica
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
 		switch (visualID) {
-		case UnitElement3EditPart.VISUAL_ID:
+		case UnitElement4EditPart.VISUAL_ID:
 		case UnitAssociation3EditPart.VISUAL_ID:
 		case DataTypeField3EditPart.VISUAL_ID:
 		case DateField3EditPart.VISUAL_ID:

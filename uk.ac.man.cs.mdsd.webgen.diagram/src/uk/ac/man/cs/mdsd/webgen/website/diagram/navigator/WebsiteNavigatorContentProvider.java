@@ -549,7 +549,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement3EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement4EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartmentEditPart.VISUAL_ID));
@@ -581,7 +581,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement6EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement7EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
@@ -593,7 +593,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement17EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement18EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(SearchUnitUnitFieldCompartmentEditPart.VISUAL_ID));
@@ -620,7 +620,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement18EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement19EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(UpdateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
@@ -647,7 +647,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement4EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement5EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID));
@@ -664,7 +664,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment3EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement5EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement6EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
@@ -676,7 +676,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement7EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement8EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID));
@@ -703,7 +703,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement8EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement9EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment4EditPart.VISUAL_ID));
@@ -720,7 +720,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement10EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement11EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment3EditPart.VISUAL_ID));
@@ -737,7 +737,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement11EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement12EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment4EditPart.VISUAL_ID));
@@ -754,7 +754,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement9EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement10EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID));
@@ -771,7 +771,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement12EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement13EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID));
@@ -788,7 +788,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement13EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement14EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID));
@@ -805,7 +805,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement14EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement15EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
@@ -847,7 +847,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement16EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement17EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment7EditPart.VISUAL_ID));
@@ -857,14 +857,14 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			return result.toArray();
 		}
 
-		case UnitElement3EditPart.VISUAL_ID: {
+		case UnitAssociation2EditPart.VISUAL_ID: {
 			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
 			Node sv = (Node) view;
 			Collection<View> connectedViews;
 			connectedViews = getChildrenByType(Collections.singleton(sv),
-					WebsiteVisualIDRegistry.getType(UnitElementActionCompartmentEditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitAssociationInterfaceUnitsCompartment5EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(SelectActionEditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(CreateUpdateUnit2EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
@@ -887,6 +887,18 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 					WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
 					WebsiteVisualIDRegistry.getType(SelectAction3EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case UnitElement4EditPart.VISUAL_ID: {
+			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(UnitElementActionCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry.getType(SelectActionEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
@@ -959,18 +971,6 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			return result.toArray();
 		}
 
-		case UnitElement14EditPart.VISUAL_ID: {
-			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			Collection<View> connectedViews;
-			connectedViews = getChildrenByType(Collections.singleton(sv),
-					WebsiteVisualIDRegistry.getType(UnitElementActionCompartment2EditPart.VISUAL_ID));
-			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(SelectAction4EditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
-			return result.toArray();
-		}
-
 		case UnitAssociation12EditPart.VISUAL_ID: {
 			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
 			Node sv = (Node) view;
@@ -989,6 +989,18 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 					WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartment2EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
 					WebsiteVisualIDRegistry.getType(SelectAction5EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case UnitElement15EditPart.VISUAL_ID: {
+			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(UnitElementActionCompartment2EditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry.getType(SelectAction4EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
@@ -1012,7 +1024,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement15EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement16EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID));
@@ -1029,7 +1041,7 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(UnitElement19EditPart.VISUAL_ID));
+					WebsiteVisualIDRegistry.getType(UnitElement20EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID));
@@ -1062,6 +1074,18 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			if (!incominglinks.isEmpty()) {
 				result.add(incominglinks);
 			}
+			return result.toArray();
+		}
+
+		case CreateUpdateUnit2EditPart.VISUAL_ID: {
+			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(CreateUpdateUnitUnitFieldCompartment2EditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry.getType(UnitElement3EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
 

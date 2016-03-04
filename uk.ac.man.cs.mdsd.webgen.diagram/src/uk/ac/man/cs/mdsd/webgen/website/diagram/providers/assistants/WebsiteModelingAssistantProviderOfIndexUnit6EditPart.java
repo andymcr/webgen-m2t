@@ -21,7 +21,7 @@ public class WebsiteModelingAssistantProviderOfIndexUnit6EditPart extends Websit
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(7);
-		types.add(WebsiteElementTypes.UnitElement_3193);
+		types.add(WebsiteElementTypes.UnitElement_3195);
 		types.add(WebsiteElementTypes.UnitAssociation_3194);
 		types.add(WebsiteElementTypes.DataTypeField_3204);
 		types.add(WebsiteElementTypes.DateField_3210);

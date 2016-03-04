@@ -236,7 +236,7 @@ public class ServiceAssociationNameEditPart extends CompartmentEditPart implemen
 	* @generated
 	*/
 	protected boolean isEditable() {
-		return getParser() != null;
+		return false;
 	}
 
 	/**

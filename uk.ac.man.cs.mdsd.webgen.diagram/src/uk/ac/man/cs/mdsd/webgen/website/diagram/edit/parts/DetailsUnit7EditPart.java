@@ -257,7 +257,7 @@ public class DetailsUnit7EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3195) {
+			if (type == WebsiteElementTypes.UnitElement_3197) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID));
 			}

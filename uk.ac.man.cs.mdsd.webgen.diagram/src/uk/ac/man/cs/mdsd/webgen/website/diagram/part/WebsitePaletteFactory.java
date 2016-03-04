@@ -42,9 +42,8 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createParentpage2CreationTool());
 		paletteContainer.add(createElement3CreationTool());
 		paletteContainer.add(createAssociation4CreationTool());
-		paletteContainer.add(createUserCommand5CreationTool());
-		paletteContainer.add(createDatatypefield6CreationTool());
-		paletteContainer.add(createDatefield7CreationTool());
+		paletteContainer.add(createDatatypefield5CreationTool());
+		paletteContainer.add(createDatefield6CreationTool());
 		return paletteContainer;
 	}
 
@@ -81,8 +80,6 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createMapUnit6CreationTool());
 		paletteContainer.add(createUpdateUnit7CreationTool());
 		paletteContainer.add(createSearchUnit8CreationTool());
-		paletteContainer.add(createCreateSitemapUnit9CreationTool());
-		paletteContainer.add(createCommandUnit10CreationTool());
 		return paletteContainer;
 	}
 
@@ -206,7 +203,7 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createElement3CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(20);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(21);
 		types.add(WebsiteElementTypes.UnitElement_3169);
 		types.add(WebsiteElementTypes.UnitElement_3171);
 		types.add(WebsiteElementTypes.UnitElement_3173);
@@ -226,6 +223,7 @@ public class WebsitePaletteFactory {
 		types.add(WebsiteElementTypes.UnitElement_3199);
 		types.add(WebsiteElementTypes.UnitElement_3215);
 		types.add(WebsiteElementTypes.UnitElement_3220);
+		types.add(WebsiteElementTypes.UnitElement_3250);
 		types.add(WebsiteElementTypes.ServiceAttribute_3241);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Element3CreationTool_title,
 				Messages.Element3CreationTool_desc, types);
@@ -267,38 +265,27 @@ public class WebsitePaletteFactory {
 	}
 
 	/**
-	 * @generated
-	 */
-	private ToolEntry createUserCommand5CreationTool() {
-		ToolEntry entry = new ToolEntry(Messages.UserCommand5CreationTool_title, Messages.UserCommand5CreationTool_desc,
-				null, null) {
-		};
-		entry.setId("createUserCommand5CreationTool"); //$NON-NLS-1$
-		return entry;
-	}
-
-	/**
-	 * @generated
-	 */
-	private ToolEntry createDatatypefield6CreationTool() {
+	* @generated
+	*/
+	private ToolEntry createDatatypefield5CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(5);
 		types.add(WebsiteElementTypes.DataTypeField_3201);
 		types.add(WebsiteElementTypes.DataTypeField_3202);
 		types.add(WebsiteElementTypes.DataTypeField_3203);
 		types.add(WebsiteElementTypes.DataTypeField_3204);
 		types.add(WebsiteElementTypes.DataTypeField_3205);
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datatypefield6CreationTool_title,
-				Messages.Datatypefield6CreationTool_desc, types);
-		entry.setId("createDatatypefield6CreationTool"); //$NON-NLS-1$
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datatypefield5CreationTool_title,
+				Messages.Datatypefield5CreationTool_desc, types);
+		entry.setId("createDatatypefield5CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DataTypeField_3201));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
 
 	/**
-	 * @generated
-	 */
-	private ToolEntry createDatefield7CreationTool() {
+	* @generated
+	*/
+	private ToolEntry createDatefield6CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(6);
 		types.add(WebsiteElementTypes.DateField_3207);
 		types.add(WebsiteElementTypes.DateField_3208);
@@ -306,9 +293,9 @@ public class WebsitePaletteFactory {
 		types.add(WebsiteElementTypes.DateField_3210);
 		types.add(WebsiteElementTypes.DateField_3211);
 		types.add(WebsiteElementTypes.DateField_3212);
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datefield7CreationTool_title,
-				Messages.Datefield7CreationTool_desc, types);
-		entry.setId("createDatefield7CreationTool"); //$NON-NLS-1$
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datefield6CreationTool_title,
+				Messages.Datefield6CreationTool_desc, types);
+		entry.setId("createDatefield6CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DateField_3207));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
@@ -456,9 +443,11 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createCreateUpdateUnit5CreationTool() {
+		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+		types.add(WebsiteElementTypes.CreateUpdateUnit_3104);
+		types.add(WebsiteElementTypes.CreateUpdateUnit_3249);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.CreateUpdateUnit5CreationTool_title,
-				Messages.CreateUpdateUnit5CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.CreateUpdateUnit_3104));
+				Messages.CreateUpdateUnit5CreationTool_desc, types);
 		entry.setId("createCreateUpdateUnit5CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CreateUpdateUnit_3104));
 		entry.setLargeIcon(entry.getSmallIcon());
@@ -498,30 +487,6 @@ public class WebsitePaletteFactory {
 		entry.setId("createSearchUnit8CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SearchUnit_3109));
 		entry.setLargeIcon(entry.getSmallIcon());
-		return entry;
-	}
-
-	/**
-	 * @generated
-	 */
-	private ToolEntry createCreateSitemapUnit9CreationTool() {
-		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.CreateSitemapUnit9CreationTool_title,
-				Messages.CreateSitemapUnit9CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.CreateSitemapUnit_3157));
-		entry.setId("createCreateSitemapUnit9CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CreateSitemapUnit_3157));
-		entry.setLargeIcon(entry.getSmallIcon());
-		return entry;
-	}
-
-	/**
-	* @generated
-	*/
-	private ToolEntry createCommandUnit10CreationTool() {
-		ToolEntry entry = new ToolEntry(Messages.CommandUnit10CreationTool_title,
-				Messages.CommandUnit10CreationTool_desc, null, null) {
-		};
-		entry.setId("createCommandUnit10CreationTool"); //$NON-NLS-1$
 		return entry;
 	}
 

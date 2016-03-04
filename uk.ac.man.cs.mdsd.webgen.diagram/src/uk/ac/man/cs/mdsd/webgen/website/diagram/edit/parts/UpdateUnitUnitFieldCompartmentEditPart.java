@@ -94,7 +94,7 @@ public class UpdateUnitUnitFieldCompartmentEditPart extends ListCompartmentEditP
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3215) {
+			if (type == WebsiteElementTypes.UnitElement_3220) {
 				return this;
 			}
 			if (type == WebsiteElementTypes.UnitAssociation_3216) {

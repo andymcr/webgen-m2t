@@ -12,7 +12,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteModelingAssista
 /**
  * @generated
  */
-public class WebsiteModelingAssistantProviderOfActionUnitEditPart extends WebsiteModelingAssistantProvider {
+public class WebsiteModelingAssistantProviderOfCreateUpdateUnit2EditPart extends WebsiteModelingAssistantProvider {
 
 	/**
 	* @generated
@@ -20,12 +20,8 @@ public class WebsiteModelingAssistantProviderOfActionUnitEditPart extends Websit
 	@Override
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
-		List<IElementType> types = new ArrayList<IElementType>(5);
-		types.add(WebsiteElementTypes.UnitElement_3169);
-		types.add(WebsiteElementTypes.UnitAssociation_3170);
-		types.add(WebsiteElementTypes.DataTypeField_3201);
-		types.add(WebsiteElementTypes.DateField_3207);
-		types.add(WebsiteElementTypes.UnitSupportAction_3232);
+		List<IElementType> types = new ArrayList<IElementType>(1);
+		types.add(WebsiteElementTypes.UnitElement_3173);
 		return types;
 	}
 

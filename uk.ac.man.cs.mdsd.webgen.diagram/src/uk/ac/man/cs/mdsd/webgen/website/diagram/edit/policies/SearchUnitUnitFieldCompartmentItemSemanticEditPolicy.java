@@ -7,6 +7,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DataTypeField5Crea
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DateField5CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitAssociation15CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitElement17CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitElement18CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
@@ -25,8 +26,8 @@ public class SearchUnitUnitFieldCompartmentItemSemanticEditPolicy extends Websit
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.UnitElement_3199 == req.getElementType()) {
-			return getGEFWrapper(new UnitElement17CreateCommand(req));
+		if (WebsiteElementTypes.UnitElement_3215 == req.getElementType()) {
+			return getGEFWrapper(new UnitElement18CreateCommand(req));
 		}
 		if (WebsiteElementTypes.UnitAssociation_3200 == req.getElementType()) {
 			return getGEFWrapper(new UnitAssociation15CreateCommand(req));

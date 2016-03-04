@@ -5,6 +5,7 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitAssociation5CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitElement7CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitElement8CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
@@ -23,8 +24,8 @@ public class IndexUnitUnitFieldCompartment2ItemSemanticEditPolicy extends Websit
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.UnitElement_3179 == req.getElementType()) {
-			return getGEFWrapper(new UnitElement7CreateCommand(req));
+		if (WebsiteElementTypes.UnitElement_3181 == req.getElementType()) {
+			return getGEFWrapper(new UnitElement8CreateCommand(req));
 		}
 		if (WebsiteElementTypes.UnitAssociation_3180 == req.getElementType()) {
 			return getGEFWrapper(new UnitAssociation5CreateCommand(req));

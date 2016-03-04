@@ -15,7 +15,7 @@ public class UnitElementActionCompartment2ItemSemanticEditPolicy extends Website
 	 * @generated
 	 */
 	public UnitElementActionCompartment2ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitElement_3193);
+		super(WebsiteElementTypes.UnitElement_3195);
 	}
 
 	/**

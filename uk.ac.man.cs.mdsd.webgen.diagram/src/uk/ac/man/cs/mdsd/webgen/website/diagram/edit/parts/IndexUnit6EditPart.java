@@ -257,7 +257,7 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3193) {
+			if (type == WebsiteElementTypes.UnitElement_3195) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
 			}

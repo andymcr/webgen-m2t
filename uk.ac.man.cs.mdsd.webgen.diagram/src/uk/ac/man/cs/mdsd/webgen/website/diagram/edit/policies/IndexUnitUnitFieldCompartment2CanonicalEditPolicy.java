@@ -24,6 +24,7 @@ import org.eclipse.gmf.runtime.notation.View;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation5EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement7EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement8EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -79,7 +80,7 @@ public class IndexUnitUnitFieldCompartment2CanonicalEditPolicy extends Canonical
 	 */
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == UnitElement7EditPart.VISUAL_ID || visualID == UnitAssociation5EditPart.VISUAL_ID;
+		return visualID == UnitElement8EditPart.VISUAL_ID || visualID == UnitAssociation5EditPart.VISUAL_ID;
 	}
 
 	/**

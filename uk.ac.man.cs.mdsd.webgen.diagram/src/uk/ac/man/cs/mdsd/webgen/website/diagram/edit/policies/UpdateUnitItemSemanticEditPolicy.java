@@ -16,6 +16,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField6EditPar
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation16EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement18EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement19EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -64,7 +65,7 @@ public class UpdateUnitItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case UnitElement18EditPart.VISUAL_ID:
+					case UnitElement19EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

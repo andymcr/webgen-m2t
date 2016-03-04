@@ -464,6 +464,20 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
+		case CreateUpdateUnit2EditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(WebsiteDiagramUpdater.getCreateUpdateUnit_3249ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
+		case UnitElement3EditPart.VISUAL_ID: {
+			if (!domain2NotationMap.containsKey(view.getElement())) {
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3173ContainedLinks(view));
+			}
+			domain2NotationMap.putView(view.getElement(), view);
+			break;
+		}
 		case DataTypeField2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
 				result.addAll(WebsiteDiagramUpdater.getDataTypeField_3202ContainedLinks(view));
@@ -492,9 +506,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement3EditPart.VISUAL_ID: {
+		case UnitElement4EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3173ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3175ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -520,9 +534,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement4EditPart.VISUAL_ID: {
+		case UnitElement5EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3175ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3177ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -541,9 +555,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement5EditPart.VISUAL_ID: {
+		case UnitElement6EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3177ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3178ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -555,9 +569,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement6EditPart.VISUAL_ID: {
+		case UnitElement7EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3178ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3179ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -569,9 +583,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement7EditPart.VISUAL_ID: {
+		case UnitElement8EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3179ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3181ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -590,9 +604,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement8EditPart.VISUAL_ID: {
+		case UnitElement9EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3181ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3183ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -611,9 +625,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement9EditPart.VISUAL_ID: {
+		case UnitElement10EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3183ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3185ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -632,9 +646,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement10EditPart.VISUAL_ID: {
+		case UnitElement11EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3185ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3187ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -653,9 +667,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement11EditPart.VISUAL_ID: {
+		case UnitElement12EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3187ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3189ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -674,9 +688,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement12EditPart.VISUAL_ID: {
+		case UnitElement13EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3189ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3191ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -695,9 +709,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement13EditPart.VISUAL_ID: {
+		case UnitElement14EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3191ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3193ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -758,9 +772,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement14EditPart.VISUAL_ID: {
+		case UnitElement15EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3193ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3195ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -786,9 +800,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement15EditPart.VISUAL_ID: {
+		case UnitElement16EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3195ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3197ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -807,9 +821,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement16EditPart.VISUAL_ID: {
+		case UnitElement17EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3197ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3199ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -877,9 +891,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement17EditPart.VISUAL_ID: {
+		case UnitElement18EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3199ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3215ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -919,9 +933,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement18EditPart.VISUAL_ID: {
+		case UnitElement19EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3215ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3220ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -940,9 +954,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case UnitElement19EditPart.VISUAL_ID: {
+		case UnitElement20EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUnitElement_3220ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUnitElement_3250ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
