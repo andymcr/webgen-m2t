@@ -116,7 +116,7 @@ else
 Kohana::init(array(
 [if (not model.baseURL.oclIsUndefined())]
 	[if (model.baseURL <> '')]
-	'base_url'   => '/[model.baseURL/]',
+	'base_url'   => '[if (not model.baseURL.startsWith('/'))]/[/if][model.baseURL/]',
 	[/if]
 [/if]
 [if (model.rewriteURLs)]
