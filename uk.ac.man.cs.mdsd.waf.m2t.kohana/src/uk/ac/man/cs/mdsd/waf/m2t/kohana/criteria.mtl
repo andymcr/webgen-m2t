@@ -52,7 +52,9 @@ $this->[path.unit.instanceName()/]->[path.unit.services->first().keyName()/]
 [if (path.feature.isDateSingleton())]
 new Database_Expression('UNIX_TIMESTAMP([path.feature.columnName()/])')
 [else]
-	[if (path.feature.oclIsKindOf(IncludedAssociation))]
+	[if (path.feature.oclIsKindOf(ServiceFeature))]
+[path.feature.oclAsType(ServiceFeature).featureReference()/]
+	[elseif (path.feature.oclIsKindOf(IncludedAssociation))]
 '[path.feature.columnName()/]'
 	[else]
 '[path.feature.modelPropertyName()/]'
@@ -60,6 +62,11 @@ new Database_Expression('UNIX_TIMESTAMP([path.feature.columnName()/])')
 [/if]
 [/let]
 [/template]
+
+[template public featureReference(feature : ServiceFeature) post(trim())]
+'[feature.columnName()/]'
+[/template]
+
 
 [template public generateCriteria(criteria : Expression)
 	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]

@@ -196,7 +196,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template public viewContent(unit : DataUnit, instanceVariable : String)
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
-<table class="[indexUnit.layoutClass/]">
+<table class="[indexUnit.layoutClass/] framed">
 [if (not indexUnit.omitColumnLabels)]
  <thead class="[indexUnit.headerClass/]">
   <tr>

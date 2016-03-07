@@ -53,12 +53,6 @@ public function action_[unit.actionName()/]()
         $this->[service.loadMethodName()/]();
     }
     [unit.catchSelectionException()/]
-[if (not unit.defaultSelection.oclIsUndefined())]
-//        $this->[unit.instanceName()/]->[unit.defaultSelection.instanceName()/]();
-[if (unit.hasDefaultValueFields())]
-//    [unit.unitDefaultValues(unit.services->first())/]
-[/if]
-[/if]
 }
 [/let]
 [/template]

@@ -550,7 +550,7 @@ public function [selection.instanceName()/]([for (parameter : SelectionParameter
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if][if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 {
 [for (association : ServiceAssociation | selection.joins)]
-	$this->join('[association.targetService().tableName()/]')->on('[association.columnName()/]', '=', '[association.targetService().tableName()/].[association.targetService().keyName()/]');
+	$this->join('[association.targetService().selectName()/]')->on('[association.columnName()/]', '=', '[association.targetService().tableName()/].[association.targetService().keyName()/]');
 [/for]
 [if (not selection.filter.oclIsUndefined())]
 	[selection.filter.generateCriteria()/]
@@ -573,6 +573,9 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 public function [selection.countName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for])
 {
+[for (association : ServiceAssociation | selection.joins)]
+	$this->join('[association.targetService().selectName()/]')->on('[association.columnName()/]', '=', '[association.targetService().tableName()/].[association.targetService().keyName()/]');
+[/for]
 	[if (not selection.filter.oclIsUndefined())]
 	[selection.filter.generateCriteria()/]
 	[/if]

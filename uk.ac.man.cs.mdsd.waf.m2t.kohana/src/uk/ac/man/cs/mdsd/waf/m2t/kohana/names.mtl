@@ -73,6 +73,10 @@
 			endif
 /]
 
+[query public selectName(service : Service) : String
+	= service.tableName()
+/]
+
 
 [query public countName(selection : Selection) : String
 	= selection.instanceName().concat('_count')
