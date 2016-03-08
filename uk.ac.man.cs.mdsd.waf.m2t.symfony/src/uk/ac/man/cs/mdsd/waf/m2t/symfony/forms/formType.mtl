@@ -70,7 +70,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 [template private associationTypeUse(service : Service) post(trim())]
 [for (feature : ServiceFeature | service.features->select(f | f.isEnumerationTypeSingleton()))]
-use [service.modelsNamespace()/]\[feature.enumerationType().modelClassName()/];
+use [service.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
 [if (service.features->select(f | f.oclIsTypeOf(ServiceAssociation))->notEmpty())]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -94,7 +94,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'with_seconds' => TRUE,
 	[/if]
 [elseif (attribute.isEnumerationTypeSingleton())]
-    'choices' => [attribute.enumerationType().modelClassName()/]::values(),
+    'choices' => [attribute.enumerationType().modelName()/]::values(),
     'placeholder' => 'Please select one',
 [/if]
 [if (attribute.hasHtml5Attributes())]
@@ -138,7 +138,7 @@ TextType::class
 [/template]
 
 [template private formFeature(feature : ServiceFeature)
-	? (feature.oclIsTypeOf(ServiceAssociation)) post(trim())]
+	? (feature.oclIsTypeOf(ServiceAssociation) and not feature.isContainer()) post(trim())]
 [let association : ServiceAssociation = feature.oclAsType(ServiceAssociation)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
     'label' => '[association.displayLabel/]',
@@ -151,5 +151,19 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     'placeholder' => 'Please select one',
 [/if]
 ))
+[/let]
+[/template]
+
+[template private formFeature(feature : ServiceFeature)
+	? (feature.oclIsTypeOf(ServiceAssociation) and feature.isContainer()) post(trim())]
+[let association : ServiceAssociation = feature.oclAsType(ServiceAssociation)]
+[if (association.isSingleton())]
+add('[association.modelPropertyName()/]', [association.targetService().typeClassName()/]::class)
+[else]
+add('[association.modelPropertyName()/]', CollectionType::class, array(
+    'entity_type' => [association.targetService().typeClassName()/]::class,
+    'allow_add' => true,
+))
+[/if]
 [/let]
 [/template]

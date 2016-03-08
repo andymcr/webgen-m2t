@@ -78,6 +78,12 @@
 		->sortedBy(p | p.topMenuRank).oclAsType(Page)
 /]
 
+[query public unitsNeedingModels(model : WafModel) : Sequence(DynamicUnit)
+	= model.pages->collect(p | p.units)
+	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields())
+/]
+
 
 [query public useLocalAuthentication(authentication : Authentication) : Boolean
 	= if authentication.oclIsUndefined() then
@@ -318,6 +324,14 @@
 				else
 					false
 				endif
+		else
+			false
+		endif
+/]
+
+[query public isUrlSingleton(feature : ServiceFeature) : Boolean
+	= if feature.oclIsTypeOf(ServiceAttribute) then
+			feature.oclAsType(ServiceAttribute).attribute.isUrlSingleton()
 		else
 			false
 		endif
@@ -924,6 +938,14 @@
 		endif endif
 /]
 
+[query public isContainer(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).serviceFeature.isContainer()
+		else
+			false
+		endif
+/]
+
 [query public isDataTypeSingleton(field : UnitField) : Boolean
 	= if field.oclIsTypeOf(UnitElement) then
 			field.oclAsType(UnitElement).serviceFeature.isDataTypeSingleton()
@@ -1112,6 +1134,32 @@
 			endif
 		else
 			false
+		endif
+/]
+
+[query public isUrlSingleton(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitElement) then
+			field.oclAsType(UnitElement).serviceFeature.isUrlSingleton()
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isUrlSingletonElement()
+				endif
+		endif
+/]
+
+[query public isUrlSingletonElement(child : ServiceFeatureReference) : Boolean
+	= if child.oclIsTypeOf(ServiceAttributeReference) then
+			child.oclAsType(ServiceAttributeReference).attribute.isUrlSingleton()
+		else
+			let association : ServiceAssociationReference = child.oclAsType(ServiceAssociationReference)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isUrlSingletonElement()
+				endif
 		endif
 /]
 

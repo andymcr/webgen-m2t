@@ -96,7 +96,7 @@ $[unit.modelInstanceName(unit.services->first())/]->loaded() ? '[unit.routeName(
  . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
-            'class' => '[unit.layoutClass/]' . (isset($[unit.errorName()/]) ? ' [unit.errorClass/]' : ''),
+            'class' => '[unit.contentClass/]' . (isset($[unit.errorName()/]) ? ' [unit.errorClass/]' : ''),
             'enctype' => 'multipart/form-data'
         )) . PHP_EOL;
 ?>
@@ -381,7 +381,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	? (field.isBooleanDataType() and not field.isObfuscated()) post(trim())]
 <?php
     echo Form::hidden('[field.modelPropertyName()/]', '0') .PHP_EOL;
-    echo Form::checkbox('[field.modelPropertyName()/]', '1', [field.getValue(accessor)/], array(
+    echo Form::checkbox('[field.modelPropertyName()/]', '1', (bool) [field.getValue(accessor)/], array(
         'id' => '[field.uniqueName()/]',
         'class' => '[field.styleClass()/] [field.inputClass()/]',
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
@@ -495,6 +495,28 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [/template]
 
 [template private inputField(field : UnitField, instanceVariable : String)
+	? (field.isUrlSingleton()) post(trim())]
+<?php
+	echo Form::input('[field.formName()/]', [instanceVariable/],
+		array(
+			'id' => '[field.uniqueName()/]',
+			'class' => '[field.styleClass()/] [field.inputClass()/]',
+			'type' => 'url',
+[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
+			'required' => 'required',
+[/if]
+[if (field.oclIsTypeOf(UnitElement))]
+[let element : UnitElement = field.oclAsType(UnitElement)]
+	[if (not element.validationPattern.oclIsUndefined())]
+			'pattern' => '[element.validationPattern/]'
+	[/if]
+[/let]
+[/if]
+	)) . PHP_EOL;
+?>
+[/template]
+
+[template private inputField(field : UnitField, instanceVariable : String)
 	? (field.isResourceSingleton()) post(trim())]
 [let resource : SingletonResource = field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonResource)]
 <?php
@@ -503,7 +525,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 			'id' => '[field.uniqueName()/]',
 			'class' => '[field.styleClass()/] [field.inputClass()/]',
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-			'required' => '',
+			'required' => 'required',
 [/if]
 	[if (resource.validUploadMimeTypes->notEmpty())]
 			'accept' => '[resource.validUploadMimeTypes->first()/]', // array([for (type : String | resource.validUploadMimeTypes) separator(', ')]'[type/]'[/for]),
@@ -532,7 +554,7 @@ echo form_input('[field.modelPropertyName()/]');
             'multiple' => 'multiple',
 [/if]
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-            'required' => '',
+            'required' => 'required',
 [/if]
     )) . PHP_EOL;
 ?>

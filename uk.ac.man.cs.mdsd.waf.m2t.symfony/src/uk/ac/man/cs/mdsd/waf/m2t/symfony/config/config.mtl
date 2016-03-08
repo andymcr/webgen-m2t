@@ -52,7 +52,7 @@ twig:
 [if (model.hasServicesWithSelections())]
     globals:
 	[for (service : Service | model.servicesWithSelections())]
-        [service.serviceClassName().toLowerFirst()/]: "@[service.name/]"
+        [service.className().toLowerFirst()/]: "@[service.name/]"
 	[/for]
 [/if]
 
@@ -93,7 +93,7 @@ ewz_recaptcha:
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
-    user_class: [model.modelsNamespace()/]\[authentication.modelClassName()/]
+    user_class: [model.modelsNamespace()/]\[authentication.modelName()/]
 	[if (authentication.useCaptcha)]
     registration:
         form:

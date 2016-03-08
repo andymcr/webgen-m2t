@@ -1,13 +1,10 @@
 [comment encoding = UTF-8 /]
 [module input(
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::display/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -109,24 +106,27 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit) post(trim())]
-[let accessor : String = '$'.concat(unit.instanceName()).concat('->').concat(field.modelPropertyName())]
-[if (if not field.oclIsKindOf(UnitAssociation) then true else field.oclAsType(UnitAssociation).units->isEmpty() endif)]
+[if (not field.isContainer())]
 {{ form_row([unit.instanceName()/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
 [else]
-[let embeddedUnit : ContentUnit = field.oclAsType(UnitAssociation).units->first()]
-<p class="[field.modelPropertyName()/]">[field.displayLabel()/]</p>
-<?php $[field.uniqueName()/] = $[unit.instanceName()/]->[field.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
-find_all()[else]
-[embeddedIndexUnit.defaultSelection.instanceName()/](FALSE)[/if][/let][/if];
-?>
-     <div class="framed [field.modelPropertyName()/]">
-      [field.oclAsType(UnitAssociation).units.viewContent(field.uniqueName())/]
-     </div>
+[let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
+	[if (field.isSingleton())]
+		[for (childField : UnitField | embeddedUnit.displayFields)]
+{{ form_row([unit.instanceName()/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
+		[/for]
+	[else]
+<ul>
+{% for x in [unit.instanceName()/].[field.modelPropertyName()/] %}
+ <li>
+		[for (childField : UnitField | embeddedUnit.displayFields)]
+  {{ form_row([unit.instanceName()/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
+		[/for]
+ </li>
+{% endfor %}
+</ul>
+	[/if]
 [/let]
 [/if]
-[/let]
 [/template]
 
 [template public map(unit : DynamicUnit)]
@@ -290,165 +290,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 </div>
 [/let]
 [/template]
-
-
-[template private inputField(field : UnitField, accessor : String)
-	? (field.isObfuscated()) post(trim())]
-<?php
-    echo Form::password('[field.modelPropertyName()/]', [field.getValue(accessor)/], array(
-        'id' => '[field.uniqueName()/]',
-        'class' => '[field.styleClass()/] [field.inputClass()/]',
-[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-        'required' => ''
-[/if]
-    )) . PHP_EOL;
-?>
-[/template]
-
-[template private inputField(field : UnitField, accessor : String)
-	? (field.isBooleanDataType() and not field.isObfuscated()) post(trim())]
-<?php
-    echo Form::hidden('[field.modelPropertyName()/]', '0') .PHP_EOL;
-    echo Form::checkbox('[field.modelPropertyName()/]', '1', [field.getValue(accessor)/], array(
-        'id' => '[field.uniqueName()/]',
-        'class' => '[field.styleClass()/] [field.inputClass()/]',
-[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-        'required' => ''
-[/if]
-    )) . PHP_EOL;
-?>
-[/template]
-
-[template private inputField(field : UnitField, instanceVariable : String)
-	? ((field.isDataTypeSingleton() or field.oclIsTypeOf(DataTypeField)) and not field.isBooleanDataType() and not field.isObfuscated()) post(trim())]
-[let dataType : DataType = 
-	if field.oclIsTypeOf(UnitElement) then
-		field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonElement).dataType
-	else
-		field.oclAsType(DataTypeField).dataType
-	endif]
-[if (dataType.name = 'TextBlock')]
-[if (not field.pageDisplayedOn().partOf.textEditorURL.oclIsUndefined())]
-<div class="[field.modelPropertyName()/] [field.inputClass()/]">
-[/if]
- <textarea id="[field.uniqueName()/]" name="[field.formName()/]"[if (dataType.name <> 'String')]
- type="[dataType.name.toLower()/]" [/if][if (field.pageDisplayedOn().partOf.textEditorURL.oclIsUndefined())]
-class="full_width"[else]
-class="[field.styleClass()/] [field.inputClass()/]"[/if][if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
- required="required"[/if]/>
-<!--
-	echo Form::textarea('', [if (field.oclIsKindOf(DataTypeField))]
-array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[else]
-[instanceVariable/][/if], -->
-[if (not field.pageDisplayedOn().partOf.textEditorURL.oclIsUndefined())]
- <script>CKEDITOR.replace('[field.uniqueName()/]');</script>
-</div>
-[/if]
-[else]
-<input id="[field.uniqueName()/]" name="[field.formName()/]"[if (dataType.name <> 'String')]
- type="[dataType.name.toLower()/]" [/if]class="[field.styleClass()/] [field.inputClass()/]"[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
- required="required"[/if]/>
-[/if]
-[/let]
-[/template]
-
-[template private inputField(field : UnitField, accessor : String)
-	? (field.isEnumerationTypeSingleton()) post(trim())]
-[let enumerationType : EnumerationType
-	= field.oclAsType(UnitElement).serviceFeature.enumerationType()]
-<select id="[field.uniqueName()/]" name="[field.formName()/]" class="[field.styleClass()/] [field.inputClass()/]"[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
- required=""[/if]>
-(% foreach option in [enumerationType.modelClassName()/]::values([field.isRequired()/])%}
-<option value="x">y</option>
-{% endforeach %}
-</select>
-[/let]
-[/template]
-
-[template private inputField(field : UnitField, accessor : String)
-	? (field.isDateSingleton() or field.oclIsTypeOf(DateField)) post(trim())]
-[let dateDetails : DateDetails
-	= if field.isDateSingleton() then
-			field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonDate).details
-		else
-			field.oclAsType(DateField).details
-		endif]
-<?php
-    echo Form::input('[field.modelPropertyName()/]', [if (field.oclIsKindOf(UnitFeature))]
-[accessor/][else]
-array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['['/]'[field.modelPropertyName()/]'[']'/] : NULL[/if],
-        array(
-            'id' => '[field.uniqueName()/]',
-            'class' => '[field.styleClass()/] [field.inputClass()/]',
-[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-            'required' => '',
-[/if]
-            'type' => '[if (dateDetails = DateDetails::DateOnly)]date[elseif (dateDetails = DateDetails::TimeOnly)]time[else]datetime[/if]'
-    )) . PHP_EOL;
-?>
-[/let]
-[/template]
-
-[template private inputField(field : UnitField, instanceVariable : String)
-	? (field.isResourceSingleton()) post(trim())]
-[let resource : SingletonResource = field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonResource)]
-<?php
-	echo Form::file('[field.modelPropertyName()/]',
-		array(
-			'id' => '[field.uniqueName()/]',
-			'class' => '[field.styleClass()/] [field.inputClass()/]',
-[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-			'required' => '',
-[/if]
-	[if (resource.validUploadMimeTypes->notEmpty())]
-			'accept' => '[resource.validUploadMimeTypes->first()/]', // array([for (type : String | resource.validUploadMimeTypes) separator(', ')]'[type/]'[/for]),
-	[/if]
-	)) . PHP_EOL;
-?>
-[/let]
-[/template]
-
-[template private inputField(field : UnitField, instanceVariable : String)
-	? (field.oclIsTypeOf(UnitElement) and not field.isSingleton()) post(trim())]
-echo form_input('[field.modelPropertyName()/]');
-[/template]
-
-[template private inputField(field : UnitField, accessor : String)
-	? (field.oclIsKindOf(UnitAssociation)) post(trim())]
-<select id="[field.uniqueName()/]" name="[field.formName()/][if (not field.isSingleton())]['['/][']'/][/if]" class="[field.styleClass()/] [field.inputClass()/]"[if (not field.isSingleton())]
- multiple="multiple"[/if][if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
- required="required"[/if]>
-(% foreach option in [field.optionsName()/] %}
-<option value="{{ option.id }}">{{ option.defaulltLabel() }}</option>
-{% endforeach %}
-</select>
-[/template]
-
-[template private inputField(field : UnitField, instanceVariable : String)
-	? (field.oclIsTypeOf(CaptchaField)) post(trim())]
-<div class="g-recaptcha" data-sitekey="[field.displayedOn.pageDisplayedOn().partOf.captchaSiteKey/]"></div>
-<noscript>
-<div style="width: 302px; height: 352px;">
- <div style="width: 302px; height: 352px; position: relative;">
-  <div style="width: 302px; height: 352px; position: absolute;">
-   <iframe src="https://www.google.com/recaptcha/api/fallback?k=[field.displayedOn.pageDisplayedOn().partOf.captchaSiteKey/]"
-                frameborder="0" scrolling="no"
-                style="width: 302px; height:352px; border-style: none;">
-   </iframe>
-  </div>
-  <div style="width: 250px; height: 80px; position: absolute; border-style: none;
-                  bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">
-   <textarea id="g-recaptcha-response" name="g-recaptcha-response"
-                  class="g-recaptcha-response"
-                  style="width: 250px; height: 80px; border: 1px solid #c1c1c1;
-                         margin: 0px; padding: 0px; resize: none;" value="">
-   </textarea>
-  </div>
- </div>
-</div>
-</noscript>
-[/template]
-
 
 [template private formErrors(unit : DynamicUnit) post(trim())]
 <?php

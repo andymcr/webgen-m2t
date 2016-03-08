@@ -15,7 +15,7 @@
   <h1 class="[staticUnit.captionClass/]">[staticUnit.displayLabel/]</h1>
 [/if]
 [if (staticUnit.pageDisplayedOn().partOf.staticUnitsEditable)]
-  <div class="[staticUnit.layoutClass/]"><?php
+  <div class="[staticUnit.contentClass/]"><?php
 	if ($[staticUnit.instanceName()/]->loaded())
 		echo $[staticUnit.instanceName()/]->content;
 	else
@@ -24,7 +24,7 @@
 	}
 ?></div>
 [else]
-  <div class="[staticUnit.layoutClass/]">[staticUnit.content/]</div>
+  <div class="[staticUnit.contentClass/]">[staticUnit.content/]</div>
 [/if]
  </section>
 [/file]

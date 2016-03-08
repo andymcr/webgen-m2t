@@ -6,7 +6,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::authenticationMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::detailsMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::editMethods/]
@@ -45,10 +44,8 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		[/for]
 	[/if]
 [/for]
-[for (service : Service | page.dynamicUnits()->collect(u | u.services)->asSet())]
-    [service.getServiceMethod()/]
+    [page.getServiceMethod()/]
 
-[/for]
 [if (page.hasSupportActions())]
     [page.supportActionMethods()/]
 
@@ -60,10 +57,10 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/file]
 [/template]
 
-[template private getServiceMethod(service : Service) post(trim())]
-public function get[service.modelName()/]Service()
+[template private getServiceMethod(page : Page) post(trim())]
+public function getService($name)
 {
-    return $this->get('[service.name/]');
+    return $this->get($name);
 }
 [/template]
 

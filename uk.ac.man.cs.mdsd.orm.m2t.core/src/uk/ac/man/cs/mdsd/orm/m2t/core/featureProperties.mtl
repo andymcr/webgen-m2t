@@ -290,6 +290,14 @@
 		endif endif
 /]
 
+[query public isUrlSingleton(feature : Feature) : Boolean
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isUrlSingleton()
+		else
+			feature.oclIsTypeOf(SingletonURL)
+		endif
+/]
+
 [query public isValidated(feature : Feature) : Boolean
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isValidated()

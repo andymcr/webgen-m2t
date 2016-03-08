@@ -11,7 +11,7 @@
 <?php
 namespace [unit.modelsNamespace()/];
 
-class [unit.modelClassName()/] extends [unit.services->first().modelClassName()/]
+class [unit.modelName()/] extends [unit.services->first().modelName()/]
 {
 [for (field : InterfaceField | unit.interfaceFields())]
     [field.fieldFeature()/]

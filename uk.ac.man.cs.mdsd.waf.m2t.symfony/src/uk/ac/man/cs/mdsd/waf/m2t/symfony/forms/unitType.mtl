@@ -34,7 +34,7 @@ class [unit.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '[unit.modelsNamespace()/]\[unit.modelClassName()/]'
+            'data_class' => '[unit.modelsNamespace()/]\[unit.modelName()/]'
         ));
     }
 }

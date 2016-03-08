@@ -14,14 +14,14 @@ namespace [type.formTypeNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use [type.modelsNamespace()/]\[type.modelClassName()/];
+use [type.modelsNamespace()/]\[type.modelName()/];
 
 class [type.typeClassName()/] extends AbstractType
 {
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
-			'choices' => [type.modelClassName()/]::options()
+			'choices' => [type.modelName()/]::options()
 		));
 	}
 

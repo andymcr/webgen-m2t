@@ -7,7 +7,7 @@
 
 
 [template public model(authentication  : LocalAuthenticationSystem)]
-[file (authentication.modelsDirectory().concat('/').concat(authentication.modelClassName()).concat(authentication.executableExtension()), false)]
+[file (authentication.modelsDirectory().concat('/').concat(authentication.modelName()).concat(authentication.executableExtension()), false)]
 <?php
 namespace [authentication.modelsNamespace()/];
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="authentications")
  **/
-class [authentication.modelClassName()/] extends BaseUser implements EncoderAwareInterface
+class [authentication.modelName()/] extends BaseUser implements EncoderAwareInterface
 {
     /**
      * @ORM\Id

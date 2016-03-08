@@ -196,7 +196,7 @@
 
 [query public modelFilename(unit : DynamicUnit) : String
 	= unit.modelsDirectory().concat('/')
-		.concat(unit.modelClassName())
+		.concat(unit.modelName())
 		.concat(unit.executableExtension())
 /]
 
@@ -206,7 +206,7 @@
 
 [query public serviceFilename(service : Service) : String
 	= service.servicesDirectory().concat('/')
-		.concat(service.serviceClassName())
+		.concat(service.className())
 		.concat(service.executableExtension())
 /]
 

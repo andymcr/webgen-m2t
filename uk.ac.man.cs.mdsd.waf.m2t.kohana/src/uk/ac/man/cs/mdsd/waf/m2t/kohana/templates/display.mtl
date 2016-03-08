@@ -100,9 +100,9 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template public detailsContent(unit : DataUnit, accessor : String)
 	post(trim())]
 [if (unit.hasOmitFieldLabels())]
-<ul class="[unit.layoutClass/]">
+<ul class="[unit.contentClass/]">
 [else]
-<dl class="[unit.layoutClass/]">
+<dl class="[unit.contentClass/]">
 [/if]
 [for (field : UnitField | unit.displayFields)]
 [let fieldAccessor : String = accessor.concat('->').concat(if field.oclIsKindOf(UnitElement) then field.oclAsType(UnitElement).serviceFeature.columnName() else field.modelPropertyName() endif)]
@@ -134,7 +134,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template protected viewContent(unit : DataUnit, accessor : String)
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
-<ul class="[indexUnit.layoutClass/]">
+<ul class="[indexUnit.contentClass/]">
 <?php foreach ([accessor/] as $entry): ?>
  <li>
 [if (not indexUnit.omitCaption)]
@@ -173,7 +173,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template protected viewContent(unit : DataUnit, instanceVariable : String)
 	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
 [let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
-<ul class="[indexUnit.layoutClass/]">
+<ul class="[indexUnit.contentClass/]">
 <?php foreach ([instanceVariable/] as $entry): ?>
  <li>
 [if (not indexUnit.omitCaption)]
@@ -196,7 +196,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template public viewContent(unit : DataUnit, instanceVariable : String)
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
-<table class="[indexUnit.layoutClass/] framed">
+<table class="[indexUnit.contentClass/]">
 [if (not indexUnit.omitColumnLabels)]
  <thead class="[indexUnit.headerClass/]">
   <tr>
@@ -253,6 +253,16 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/let]
 [/template]
 
+[template public displayValue(field : UnitField, accessor : String) 
+	? (field.isBooleanDataType()) post(trim())] 
+<?php
+	echo Form::checkbox('[field.modelPropertyName()/]', '1', (bool) [field.getValue(accessor)/], array( 
+		'class' => '[field.styleClass()/] [field.inputClass()/]', 
+		'disabled' => '' 
+	));
+?>
+[/template] 
+ 
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isDateSingleton() or field.isEnumerationTypeSingleton()) post(trim())]
 <?php
@@ -264,16 +274,24 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 ?>
 [/template]
 
-[template public displayValue(field : UnitField, accessor : String) 
-	? (field.isBooleanDataType()) post(trim())] 
+[template public displayValue(field : UnitField, accessor : String)
+	? (field.isUrlSingleton()) post(trim())]
+[let attribute : SingletonURL = field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonURL)]
+<?php if (!empty([field.getValue(accessor)/])) { ?><a href="<?php echo [field.getValue(accessor)/]; ?>">[if (attribute.displayValue.oclIsUndefined())]
+[if (field.maximumDisplaySize > 0)]
 <?php
-	echo Form::checkbox('[field.modelPropertyName()/]', '1', (bool) [field.getValue(accessor)/], array( 
-		'class' => '[field.styleClass()/] [field.inputClass()/]', 
-		'disabled' => '' 
-	));
-?>
-[/template] 
- 
+	[field.trimValue(field.getValue(accessor))/]
+?>[else]
+<?php echo [field.getValue(accessor)/]; ?>[/if]
+[else]
+[if (field.maximumDisplaySize > 0)]
+[if (attribute.displayValue.size() > field.maximumDisplaySize)][attribute.displayValue/][else]
+[attribute.displayValue/][/if][else]
+[attribute.displayValue/][/if]
+[/if]</a><?php } ?>
+[/let]
+[/template]
+
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isResourceSingleton()) post(trim())]
 [let attribute : UnitElement = field.oclAsType(UnitElement)]
@@ -417,7 +435,7 @@ NULL
 
 
 [template public getValue(feature : Feature, field : UnitField, accessor : String)
-	? (feature.isDataTypeSingleton() or feature.isResource()) post(trim())]
+	? (feature.isDataTypeSingleton() or feature.isUrlSingleton() or feature.isResource()) post(trim())]
 [accessor/]
 [/template]
 

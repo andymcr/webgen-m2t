@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
-class [service.serviceClassName()/]
+class [service.className()/]
 {
     private $doctrine;
 
@@ -160,6 +160,9 @@ public function [selection.name/]([for (parameter : SelectionParameter | selecti
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
     $queryBuilder = $this->createQueryBuilder();
+[for (join : ServiceAssociation | selection.joins)]
+    $queryBuilder->join('[service.selectName()/].[join.modelPropertyName()/]', '[join.targetService().selectName()/]');
+[/for]
 [if (not selection.filter.oclIsUndefined())]
     $queryBuilder->where([selection.filter.doctrineExpression()/]);
 [/if]

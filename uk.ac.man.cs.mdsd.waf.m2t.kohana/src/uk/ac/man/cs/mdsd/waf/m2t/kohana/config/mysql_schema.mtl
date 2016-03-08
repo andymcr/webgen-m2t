@@ -87,6 +87,14 @@ DATETIME[/if][if (element.required)] NOT NULL[/if][if
 [/template]
 
 [template protected generateColumn(feature : Feature)
+	? (feature.oclIsTypeOf(SingletonURL)) post(trim())]
+[let element : SingletonURL = feature.oclAsType(SingletonURL)]
+`[element.columnName/]` VARCHAR(255)[if (element.required)] NOT NULL[/if][if
+	(not element.defaultValue.oclIsUndefined())] DEFAULT [element.defaultValue.generateCriteria()/][/if]
+[/let]
+[/template]
+
+[template protected generateColumn(feature : Feature)
 	? (feature.oclIsKindOf(SingletonResource)) post(trim())]
 [let element : SingletonResource = feature.oclAsType(SingletonResource)]
 `[element.columnName/]` varchar(255)[if (element.required)] NOT NULL[/if][if

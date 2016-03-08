@@ -26,7 +26,7 @@ class EnumerationTypes extends Twig_Extension
     {
         return array(
 [for (enumerationType : EnumerationType | model.enumerationTypes())]
-            '[enumerationType.filterName()/]' => new Twig_SimpleFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelClassName()/]', 'value')),
+            '[enumerationType.filterName()/]' => new Twig_SimpleFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelName()/]', 'value')),
 [/for]
         );
     }

@@ -35,7 +35,7 @@ services:
 [if (model.hasServicesWithSelections())]
 	[for (service : Service | model.servicesWithSelections())]
     [service.name/]:
-        class: [service.appBundleName()/]\Service\[service.serviceClassName()/]
+        class: [service.appBundleName()/]\Service\[service.className()/]
         arguments: ['['/]"@doctrine"[']'/]
 
 	[/for]

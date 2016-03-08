@@ -35,38 +35,7 @@
 public function [unit.actionName()/]([unit.actionMethodParameters(page)/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
-[if (unit.hasDefaultValueFields())]
-    [unit.unitDefaultValues()/]
-[/if]
-    $this->[unit.instanceName()/] = [unit.createForm(true)/];
-    $this->[unit.instanceName()/]->handleRequest($request);
-[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancel()/]
-[/if]
-    if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid())
-    {
-[if (unit.hasForcedValueFeatures())]
-	    [comment unit.forcedFeatureValues()/]
-[/if]
-        [unit.getService()/]->save($[unit.instanceName()/], true);
-[if (not unit.confirmDestination.oclIsUndefined())]
-	    return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
-[else]
-	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-        $[unit.instanceName()/] = [unit.createInstance()/];
-		[if (unit.hasDefaultValueFields())]
-        [unit.unitDefaultValues()/]
-		[/if]
-		[if (unit.hasInterfaceFields())]
-	    [comment unit.generateClearInterfaceFields()/]
-		[/if]
-        $this->[unit.instanceName()/]->setData($[unit.instanceName()/]);
-	[else]
-	[/if]
-[/if]
-    }
-
-    return $this->renderPage([page.renderMethodParameters()/]);
+    [unit.saveBody(true)/]
 }
 [/let]
 [/template]
@@ -81,41 +50,37 @@ public function [unit.actionName()/]X([unit.actionMethodParameters(page)/])
     try
     {
         $[unit.instanceName()/] = [unit.loadInstance()/];
-[if (unit.hasDefaultValueFields())]
-        [unit.unitDefaultValues()/]
-[/if]
-        $this->[unit.instanceName()/] = [unit.createForm(false)/];
-        $this->[unit.instanceName()/]->handleRequest($request);
-[if (not unit.cancelDestination.oclIsUndefined())]
-        [unit.handleCancel()/]
-[/if]
-        if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid())
-        {
-[if (unit.hasForcedValueFeatures())]
-	        [comment unit.forcedFeatureValues()/]
-[/if]
-            $this->getService()->save($[unit.instanceName()/], true);
-[if (not unit.confirmDestination.oclIsUndefined())]
-	        return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
-[else]
-	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-            $[unit.instanceName()/] = [unit.createInstance()/];
-		[if (unit.hasDefaultValueFields())]
-            [unit.unitDefaultValues()/]
-		[/if]
-		[if (unit.hasInterfaceFields())]
-	        [comment unit.generateClearInterfaceFields()/]
-		[/if]
-	[/if]
-[/if]
-        }
-
-        return $this->renderPage([page.renderMethodParameters()/]);
+        [unit.saveBody(false)/]
     }
     [unit.catchSelectionException()/]
-
 }
 [/let]
+[/template]
+
+[template private saveBody(unit : EditUnit, create : Boolean) post(trim())]
+$this->[unit.instanceName()/] = [unit.createForm(create)/];
+$this->[unit.instanceName()/]->handleRequest($request);
+[if (not unit.cancelDestination.oclIsUndefined())]
+[unit.handleCancel()/]
+[/if]
+if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid())
+{
+[if (unit.hasForcedValueFeatures())]
+ [comment unit.forcedFeatureValues()/]
+[/if]
+    [unit.getService()/]->save($[unit.instanceName()/], true);
+[if (not unit.confirmDestination.oclIsUndefined())]
+    return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
+[else]
+	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+    $[unit.instanceName()/] = [unit.createInstance()/];
+    $this->[unit.instanceName()/]->setData($[unit.instanceName()/]);
+	[else]
+	[/if]
+[/if]
+}
+
+return $this->renderPage([unit.pageDisplayedOn().renderMethodParameters()/]);
 [/template]
 
 [template public generateUnitRules(unit : DynamicUnit) post(trim())]
@@ -133,13 +98,6 @@ $this->[unit.instanceName()/]->validation['['/]'[field.modelPropertyName()/]'[']
 [/for]
 	}
 [/template]
-
-[template public generateClearInterfaceFields(unit : DynamicUnit) post(trim())]
-[for (field : InterfaceField | unit.interfaceFields())]
-unset($this->[unit.instanceName()/]->[field.modelPropertyName()/]);
-[/for]
-[/template]
-
 
 [template public createForm(unit : EditUnit, create : Boolean) post(trim())]
 [let service : Service = unit.services->first()]

@@ -45,7 +45,7 @@ $[key.routeParameterName()/]
 [/template]
 
 [template public getService(unit : DynamicUnit) post(trim())]
-$this->get[unit.modelName()/]Service()
+$this->getService('[unit.services->first().name/]')
 
 [/template]
 

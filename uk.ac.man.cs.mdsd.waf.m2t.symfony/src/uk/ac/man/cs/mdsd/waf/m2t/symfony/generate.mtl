@@ -61,14 +61,10 @@
 [model.services.service()/]
 
 [model.appBundle()/]
-[model.pages->collect(p | p.units)
-	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
-	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields()).model()/]
+[model.unitsNeedingModels().model()/]
 [model.persistence.enumerationTypes().formType()/]
 [model.services.formType()/]
-[model.pages->collect(p | p.units)
-	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
-	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields()).formType()/]
+[model.unitsNeedingModels().formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller()/]
 
 [model.css(model.cssDirectory())/]

@@ -44,16 +44,12 @@
 	= type.typePrefix().concat(type.name).concat(type.typeSuffix())
 /]
 
-[query public modelClassName(type : EnumerationType) : String
+[query public modelName(type : EnumerationType) : String
 	= type.name
 /]
 
-[comment query public name(enumerationLiteral : EnumerationLiteral) : String
-	= enumerationLiteral.name.toUpper()
-/]
 
-
-[query public modelClassName(authentication : LocalAuthenticationSystem) : String
+[query public modelName(authentication : LocalAuthenticationSystem) : String
 	= authentication.authPrefix().concat('Authentication')
 /]
 
@@ -62,12 +58,12 @@
 /]
 
 
-[query public instanceName(service : Service) : String
-	= service.modelName().toLowerFirst()
+[query public className(service : Service) : String
+	= service.name.concat('Service')
 /]
 
-[query public modelClassName(service : Service) : String
-	= service.modelName()
+[query public instanceName(service : Service) : String
+	= service.modelName().toLowerFirst()
 /]
 
 [query public modelName(service : Service) : String
@@ -77,10 +73,6 @@
 			else
 				'????'
 			endif
-/]
-
-[query public serviceClassName(service : Service) : String
-	= service.name.concat('Service')
 /]
 
 [query public selectName(service : Service) : String
@@ -150,10 +142,6 @@
 	= unit.name.toLowerFirst()
 /]
 
-[query public modelClassName(unit : DynamicUnit) : String
-	= 'Unit'.concat(unit.name)
-/]
-
 [query public modelName(unit : ContentUnit) : String
 	= if unit.oclIsTypeOf(StaticUnit) then
 			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
@@ -162,7 +150,11 @@
 				unit.oclAsType(StaticUnit).service.modelName()
 			endif
 		else
-			unit.oclAsType(DynamicUnit).services->first().modelName()
+			if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
+				unit.unitPrefix().concat(unit.pageDisplayedOn().name).concat(unit.name)
+			else
+				unit.oclAsType(DynamicUnit).services->first().modelName()
+			endif
 		endif
 /]
 

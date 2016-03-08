@@ -128,9 +128,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template public detailsContent(unit : DataUnit, accessor : String) post(trim())]
 [if (unit.hasOmitFieldLabels())]
-<ul class="[unit.layoutClass/]">
+<ul class="[unit.contentClass/]">
 [else]
-<dl class="[unit.layoutClass/]">
+<dl class="[unit.contentClass/]">
 [/if]
 [for (field : UnitField | unit.displayFields)]
 [let fieldAccessor : String = accessor.concat('.').concat(field.modelPropertyName())]
@@ -158,7 +158,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template protected viewContent(unit : DataUnit, accessor : String)
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
-<ul class="[indexUnit.layoutClass/]">
+<ul class="[indexUnit.contentClass/]">
 {% for entry in [accessor/] %}
  <li>
 [if (not indexUnit.omitCaption)]
@@ -193,7 +193,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template protected viewContent(unit : DataUnit, accessor : String)
 	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
 [let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
-<ul class="[indexUnit.layoutClass/]">
+<ul class="[indexUnit.contentClass/]">
 {% for entry in [accessor/] %}
  <li>
 [if (not indexUnit.omitCaption)]
@@ -216,7 +216,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template public viewContent(unit : DataUnit, accessor : String)
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
-<table class="[indexUnit.layoutClass/]">
+<table class="[indexUnit.contentClass/]">
 [if (not indexUnit.omitColumnLabels)]
  <thead class="[indexUnit.headerClass/]">
   <tr>
@@ -329,7 +329,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let old : String = accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)')]
 [/let]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
-[let new : String = association.serviceFeature.partOf.serviceClassName().toLowerFirst()
+[let new : String = association.serviceFeature.partOf.className().toLowerFirst()
 	.concat('.').concat(association.name).concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName().toUpperFirst())
 	.concat('(').concat(parentAccessor).concat(')')]
 [association.units.viewContent(new)/]
