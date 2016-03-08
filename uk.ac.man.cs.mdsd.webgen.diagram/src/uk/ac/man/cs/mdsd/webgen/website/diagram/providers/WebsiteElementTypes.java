@@ -168,6 +168,12 @@ public class WebsiteElementTypes {
 	public static final IElementType DateAttribute_3014 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3014"); //$NON-NLS-1$
 	/**
+	* @generated
+	*/
+	public static final IElementType UrlAttribute_3251 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UrlAttribute_3251"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType FileAttribute_3152 = getElementType(
@@ -798,6 +804,8 @@ public class WebsiteElementTypes {
 
 			elements.put(DateAttribute_3014, WebsitePackage.eINSTANCE.getDateAttribute());
 
+			elements.put(UrlAttribute_3251, WebsitePackage.eINSTANCE.getUrlAttribute());
+
 			elements.put(FileAttribute_3152, WebsitePackage.eINSTANCE.getFileAttribute());
 
 			elements.put(ImageAttribute_3235, WebsitePackage.eINSTANCE.getImageAttribute());
@@ -1030,6 +1038,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(EnumerationLiteral_3028);
 			KNOWN_ELEMENT_TYPES.add(DataTypeAttribute_3054);
 			KNOWN_ELEMENT_TYPES.add(DateAttribute_3014);
+			KNOWN_ELEMENT_TYPES.add(UrlAttribute_3251);
 			KNOWN_ELEMENT_TYPES.add(FileAttribute_3152);
 			KNOWN_ELEMENT_TYPES.add(ImageAttribute_3235);
 			KNOWN_ELEMENT_TYPES.add(LocationAttribute_3230);
@@ -1169,6 +1178,8 @@ public class WebsiteElementTypes {
 			return DataTypeAttribute_3054;
 		case DateAttributeEditPart.VISUAL_ID:
 			return DateAttribute_3014;
+		case UrlAttributeEditPart.VISUAL_ID:
+			return UrlAttribute_3251;
 		case FileAttributeEditPart.VISUAL_ID:
 			return FileAttribute_3152;
 		case ImageAttributeEditPart.VISUAL_ID:

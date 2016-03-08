@@ -8,6 +8,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DateAttributeCreat
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.FileAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ImageAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.LocationAttributeCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UrlAttributeCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
@@ -31,6 +32,9 @@ public class EntityAttributeCompartmentItemSemanticEditPolicy extends WebsiteBas
 		}
 		if (WebsiteElementTypes.DateAttribute_3014 == req.getElementType()) {
 			return getGEFWrapper(new DateAttributeCreateCommand(req));
+		}
+		if (WebsiteElementTypes.UrlAttribute_3251 == req.getElementType()) {
+			return getGEFWrapper(new UrlAttributeCreateCommand(req));
 		}
 		if (WebsiteElementTypes.FileAttribute_3152 == req.getElementType()) {
 			return getGEFWrapper(new FileAttributeCreateCommand(req));

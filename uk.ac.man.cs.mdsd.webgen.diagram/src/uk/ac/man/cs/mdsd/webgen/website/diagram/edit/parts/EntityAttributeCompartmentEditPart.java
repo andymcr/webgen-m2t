@@ -100,6 +100,9 @@ public class EntityAttributeCompartmentEditPart extends ListCompartmentEditPart 
 			if (type == WebsiteElementTypes.DateAttribute_3014) {
 				return this;
 			}
+			if (type == WebsiteElementTypes.UrlAttribute_3251) {
+				return this;
+			}
 			if (type == WebsiteElementTypes.FileAttribute_3152) {
 				return this;
 			}

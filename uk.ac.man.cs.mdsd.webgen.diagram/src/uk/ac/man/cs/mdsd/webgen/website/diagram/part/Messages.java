@@ -658,77 +658,87 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String FileAttribute8CreationTool_title;
+	public static String URLAttribute8CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String FileAttribute8CreationTool_desc;
+	public static String URLAttribute8CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String ImageAttribute9CreationTool_title;
+	public static String FileAttribute9CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String LocationAttribute10CreationTool_title;
+	public static String FileAttribute9CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String LocationAttribute10CreationTool_desc;
+	public static String ImageAttribute10CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String UncontainedAssociation11CreationTool_title;
+	public static String LocationAttribute11CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String UncontainedAssociation11CreationTool_desc;
+	public static String LocationAttribute11CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String ContainedAssociation12CreationTool_title;
+	public static String UncontainedAssociation12CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String ContainedAssociation12CreationTool_desc;
+	public static String UncontainedAssociation12CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String EncapsulatedAttribute13CreationTool_title;
+	public static String ContainedAssociation13CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String EncapsulatedAttribute13CreationTool_desc;
+	public static String ContainedAssociation13CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String EncapsulatedAssociation14CreationTool_title;
+	public static String EncapsulatedAttribute14CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String EncapsulatedAssociation14CreationTool_desc;
+	public static String EncapsulatedAttribute14CreationTool_desc;
 
 	/**
 	* @generated
 	*/
-	public static String ViewAssociation15CreationTool_title;
+	public static String EncapsulatedAssociation15CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String ViewAssociation15CreationTool_desc;
+	public static String EncapsulatedAssociation15CreationTool_desc;
+
+	/**
+	* @generated
+	*/
+	public static String ViewAssociation16CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ViewAssociation16CreationTool_desc;
 
 	/**
 	 * @generated

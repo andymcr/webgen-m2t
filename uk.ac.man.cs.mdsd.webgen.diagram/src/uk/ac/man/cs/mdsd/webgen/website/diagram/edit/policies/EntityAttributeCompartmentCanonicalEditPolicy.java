@@ -27,6 +27,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateAttributeEditPart
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FileAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocationAttributeEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UrlAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -85,6 +86,7 @@ public class EntityAttributeCompartmentCanonicalEditPolicy extends CanonicalEdit
 		switch (visualID) {
 		case DataTypeAttributeEditPart.VISUAL_ID:
 		case DateAttributeEditPart.VISUAL_ID:
+		case UrlAttributeEditPart.VISUAL_ID:
 		case FileAttributeEditPart.VISUAL_ID:
 		case ImageAttributeEditPart.VISUAL_ID:
 		case LocationAttributeEditPart.VISUAL_ID:

@@ -166,6 +166,9 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getDateAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return DateAttributeEditPart.VISUAL_ID;
 			}
+			if (WebsitePackage.eINSTANCE.getUrlAttribute().isSuperTypeOf(domainElement.eClass())) {
+				return UrlAttributeEditPart.VISUAL_ID;
+			}
 			if (WebsitePackage.eINSTANCE.getFileAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return FileAttributeEditPart.VISUAL_ID;
 			}
@@ -685,6 +688,11 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case DateAttributeEditPart.VISUAL_ID:
 			if (DateAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UrlAttributeEditPart.VISUAL_ID:
+			if (UrlAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1291,6 +1299,9 @@ public class WebsiteVisualIDRegistry {
 			if (DateAttributeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (UrlAttributeEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (FileAttributeEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1878,6 +1889,7 @@ public class WebsiteVisualIDRegistry {
 		case ModelLabelEditPart.VISUAL_ID:
 		case ModelLabel2EditPart.VISUAL_ID:
 		case UnitElement20EditPart.VISUAL_ID:
+		case UrlAttributeEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

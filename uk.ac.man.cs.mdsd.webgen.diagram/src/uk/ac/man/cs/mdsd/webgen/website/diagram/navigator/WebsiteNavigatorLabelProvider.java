@@ -412,6 +412,9 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 		case UnitElement20EditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?UnitElement", //$NON-NLS-1$
 					WebsiteElementTypes.UnitElement_3250);
+		case UrlAttributeEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?UrlAttribute", //$NON-NLS-1$
+					WebsiteElementTypes.UrlAttribute_3251);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?http://www.cs.man.ac.uk/mdsd/2010/Website?AssociationWithoutContainment", //$NON-NLS-1$
 					WebsiteElementTypes.AssociationWithoutContainment_4001);
@@ -696,6 +699,8 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 			return getCreateUpdateUnit_3249Text(view);
 		case UnitElement20EditPart.VISUAL_ID:
 			return getUnitElement_3250Text(view);
+		case UrlAttributeEditPart.VISUAL_ID:
+			return getUrlAttribute_3251Text(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001Text(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -2462,6 +2467,22 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 					ParserOptions.NONE.intValue());
 		} else {
 			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5258); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUrlAttribute_3251Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.UrlAttribute_3251,
+				view.getElement() != null ? view.getElement() : view,
+				WebsiteVisualIDRegistry.getType(UrlAttributeNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5259); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}

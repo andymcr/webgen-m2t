@@ -353,6 +353,10 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
+			if (visualID == UrlAttributeEditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
 			if (visualID == FileAttributeEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -1646,6 +1650,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeAttribute_3054ContainedLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
 			return getDateAttribute_3014ContainedLinks(view);
+		case UrlAttributeEditPart.VISUAL_ID:
+			return getUrlAttribute_3251ContainedLinks(view);
 		case FileAttributeEditPart.VISUAL_ID:
 			return getFileAttribute_3152ContainedLinks(view);
 		case ImageAttributeEditPart.VISUAL_ID:
@@ -1883,6 +1889,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeAttribute_3054IncomingLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
 			return getDateAttribute_3014IncomingLinks(view);
+		case UrlAttributeEditPart.VISUAL_ID:
+			return getUrlAttribute_3251IncomingLinks(view);
 		case FileAttributeEditPart.VISUAL_ID:
 			return getFileAttribute_3152IncomingLinks(view);
 		case ImageAttributeEditPart.VISUAL_ID:
@@ -2120,6 +2128,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeAttribute_3054OutgoingLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
 			return getDateAttribute_3014OutgoingLinks(view);
+		case UrlAttributeEditPart.VISUAL_ID:
+			return getUrlAttribute_3251OutgoingLinks(view);
 		case FileAttributeEditPart.VISUAL_ID:
 			return getFileAttribute_3152OutgoingLinks(view);
 		case ImageAttributeEditPart.VISUAL_ID:
@@ -2436,6 +2446,13 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getDateAttribute_3014ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getUrlAttribute_3251ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3249,6 +3266,13 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getUrlAttribute_3251IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getFileAttribute_3152IncomingLinks(View view) {
@@ -4058,6 +4082,13 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getDateAttribute_3014OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getUrlAttribute_3251OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

@@ -29,6 +29,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FileAttributeEditPart
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocationAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UrlAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -113,6 +114,12 @@ public class EntityItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPol
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
 					case DateAttributeEditPart.VISUAL_ID:
+						cmd.add(new DestroyElementCommand(
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
+						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
+						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
+						break;
+					case UrlAttributeEditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

@@ -264,6 +264,10 @@ public class EntityEditPart extends ShapeNodeEditPart {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
+			if (type == WebsiteElementTypes.UrlAttribute_3251) {
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
+			}
 			if (type == WebsiteElementTypes.FileAttribute_3152) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));

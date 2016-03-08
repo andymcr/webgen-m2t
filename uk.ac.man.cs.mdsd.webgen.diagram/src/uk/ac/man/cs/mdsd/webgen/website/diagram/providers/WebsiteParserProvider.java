@@ -275,6 +275,23 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser urlAttributeName_5259Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUrlAttributeName_5259Parser() {
+		if (urlAttributeName_5259Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			urlAttributeName_5259Parser = parser;
+		}
+		return urlAttributeName_5259Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	private IParser fileAttributeName_5160Parser;
@@ -1990,6 +2007,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getDataTypeAttributeName_5059Parser();
 		case DateAttributeNameEditPart.VISUAL_ID:
 			return getDateAttributeName_5018Parser();
+		case UrlAttributeNameEditPart.VISUAL_ID:
+			return getUrlAttributeName_5259Parser();
 		case FileAttributeNameEditPart.VISUAL_ID:
 			return getFileAttributeName_5160Parser();
 		case ImageAttributeNameEditPart.VISUAL_ID:
