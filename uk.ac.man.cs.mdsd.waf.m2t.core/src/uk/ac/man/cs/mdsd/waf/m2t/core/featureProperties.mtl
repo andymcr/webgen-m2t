@@ -64,8 +64,14 @@
 	= model.authentication.oclAsType(LocalAuthenticationSystem)
 /]
 
-[query public services(model : WafModel, entityOrView : EntityOrView) : OrderedSet(Service)
-	= services->select(s | s.encapsulates->includes(entityOrView))
+[query public service(model : WafModel, entityOrView : EntityOrView) : Service
+	= let services : OrderedSet(Service)
+		= model.services->select(s | s.serves = entityOrView)
+		in if services->isEmpty() then
+				null
+			else
+				services->first()
+			endif
 /]
 
 [query public servicesWithSelections(model : WafModel) : Sequence(Service)
@@ -94,23 +100,6 @@
 /]
 
 
-[query public hasDefaultValue(feature : IncludedFeature) : Boolean
-	= if feature.oclIsKindOf(IncludedAttribute) then
-			not feature.oclAsType(IncludedAttribute).defaultValue.oclIsUndefined()
-		else
-			false
-		endif
-/]
-
-[query public hasForcedValue(feature : IncludedFeature) : Boolean
-	= not feature.forcedValue.oclIsUndefined()
-/]
-
-[query public isAssociation(feature : IncludedFeature) : Boolean
-	= feature.oclIsKindOf(IncludedAssociation)
-/]
-
-
 [query public associations(service : Service) : Sequence(ServiceAssociation)
 	= service.features->select(f | f.oclIsTypeOf(ServiceAssociation)).oclAsType(ServiceAssociation)
 /]
@@ -120,6 +109,10 @@
 		->select(f | f.isContainer()).oclAsType(ServiceAssociation)
 		->select(f | childService.encapsulates->includes(f.targetType()))
 		->first()
+/]
+
+[query public entityService(service : Service, entityOrView : EntityOrView) : Service
+	= service.partOf.service(entityOrView)
 /]
 
 [comment for Kohana/]
@@ -134,24 +127,6 @@
 		->select(a | a.association.oclAsType(EntityAssociation).opposite.isContainer())
 		->select(a | parentService.encapsulates->includes(a.targetType()))
 		->first()
-/]
-
-[query public parentService(service : Service) : Service
-	= let parents : Sequence(EntityOrView) 
-		= service.encapsulates
-			->select(eov | eov.oclIsTypeOf(Entity)).oclAsType(Entity)
-			->collect(e | e.features)
-			->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
-			->select(f | not f.opposite.oclIsUndefined())
-			->select(f | f.opposite.container)
-			->collect(f | f.opposite.partOf)
-		in let potentialServices : Sequence(Service)
-			= parents->collect(e | service.partOf.services(e))
-			in if potentialServices->size() > 0 then
-					potentialServices->first()
-				else
-					null
-				endif
 /]
 
 [comment for Kohana/]
@@ -194,22 +169,6 @@
 				else
 					association.modelPropertyName()
 				endif
-		endif
-/]
-
-[query public hasDefaultValue(feature : ServiceFeature) : Boolean
-	= if feature.oclIsKindOf(IncludedAttribute) then
-			feature.oclAsType(IncludedAttribute).hasDefaultValue()
-		else
-			false
-		endif
-/]
-
-[query public hasForcedValue(feature : ServiceFeature) : Boolean
-	= if feature.oclIsKindOf(IncludedFeature) then
-			feature.oclAsType(IncludedFeature).hasForcedValue()
-		else
-			false
 		endif
 /]
 
@@ -355,12 +314,6 @@
 		else 
 			feature.oclAsType(ServiceAssociationReference).association.modelPropertyName()
 		endif
-/]
-
-[query public targetService(association : ServiceAssociation) : Service
-	= let targetServices : OrderedSet(Service)
-		= association.partOf.partOf.services(association.targetType())
-		in targetServices->first()
 /]
 
 [query public targetType(association : ServiceAssociation) : EntityOrView
@@ -551,9 +504,9 @@
 	= unit.filters->select(q | not q.selection.oclIsUndefined()).oclAsType(Filter)
 /]
 
-[query public forcedValueFeatures(unit : DynamicUnit) : Sequence(IncludedFeature)
+[query public forcedValueFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
 	= unit.displayFields
-		->select(f | f.hasForcedValue()).oclAsType(IncludedFeature)
+		->select(f | f.hasForcedValue()).oclAsType(UnitFeature)
 /]
 
 [query public hasCaptchaFields(unit : DynamicUnit) : Boolean
@@ -741,7 +694,7 @@
 
 [query public isParameterised(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(Selectable) then
-			unit.oclAsType(DynamicUnit).services->first().keys->notEmpty()
+			unit.oclAsType(DynamicUnit).entities->first().keys->notEmpty()
 		else
 			false
 		endif
@@ -826,8 +779,8 @@
 
 [query public formName(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitElement) then
-				field.oclAsType(UnitElement).serviceFeature.formName()
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.formName()
 			else
 				field.oclAsType(UnitAssociation).serviceFeature.formName()
 			endif
@@ -841,8 +794,8 @@
 /]
 
 [query public hasDefaultValue(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(IncludedFeature).hasDefaultValue()
+	= if field.oclIsKindOf(UnitAttribute) then
+			not field.oclAsType(UnitAttribute).defaultValue.oclIsUndefined()
 		else if field.oclIsKindOf(InterfaceField) then
 			not field.oclAsType(InterfaceField).defaultValue.oclIsUndefined()
 		else
@@ -851,8 +804,8 @@
 /]
 
 [query public hasForcedValue(field : UnitField) : Boolean
-	= if field.oclIsKindOf(IncludedFeature) then
-			field.oclAsType(IncludedFeature).hasForcedValue()
+	= if field.oclIsKindOf(UnitFeature) then
+			not field.oclAsType(UnitFeature).forcedValue.oclIsUndefined()
 		else
 			false
 		endif
@@ -873,7 +826,7 @@
 /]
 
 [query public isAssociationSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitElement) then
+	= if field.oclIsTypeOf(UnitAttribute) then
 			false
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
@@ -899,8 +852,8 @@
 /]
 
 [query public isBooleanDataType(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitElement) then
-			field.oclAsType(UnitElement).serviceFeature.isBooleanDataType()
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.isBooleanDataType()
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.childFeature.oclIsUndefined() then
@@ -926,8 +879,8 @@
 
 [query public isCaseInsensitive(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitElement) then
-				field.oclAsType(UnitElement).serviceFeature.isCaseInsensitive()
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isCaseInsensitive()
 			else
 				false
 			endif
@@ -940,15 +893,15 @@
 
 [query public isContainer(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).serviceFeature.isContainer()
+			field.oclAsType(UnitAssociation).association.isContainer()
 		else
 			false
 		endif
 /]
 
 [query public isDataTypeSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitElement) then
-			field.oclAsType(UnitElement).serviceFeature.isDataTypeSingleton()
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.isDataTypeSingleton()
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.childFeature.oclIsUndefined() then
@@ -973,8 +926,8 @@
 /]
 
 [query public isDateSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitElement) then
-			field.oclAsType(UnitElement).serviceFeature.isDateSingleton()
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.isDateSingleton()
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.childFeature.oclIsUndefined() then
@@ -1000,8 +953,8 @@
 
 [query public isEncrypted(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitElement) then
-				field.oclAsType(UnitElement).serviceFeature.isEncrypted()
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isEncrypted()
 			else
 				false
 			endif
@@ -1013,8 +966,8 @@
 /]
 
 [query public isEnumerationTypeSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitElement) then
-			field.oclAsType(UnitElement).serviceFeature.isEnumerationTypeSingleton()
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.isEnumerationTypeSingleton()
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.childFeature.oclIsUndefined() then
@@ -1049,8 +1002,8 @@
 
 [query public isLocation(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitElement) then
-				field.oclAsType(UnitElement).serviceFeature.isLocation()
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isLocation()
 			else
 				false
 			endif
@@ -1062,17 +1015,17 @@
 [query public isModifiable(feature : UnitFeature) : Boolean
 	= if feature.oclIsKindOf(UnitFeature) and feature.isSingleton() then
 			if feature.oclAsType(UnitFeature).forcedValue.oclIsUndefined() then
-				if feature.oclIsTypeOf(UnitElement) then
-					feature.oclAsType(UnitElement).serviceFeature.isModifiable()
+				if feature.oclIsTypeOf(UnitAttribute) then
+					feature.oclAsType(UnitAttribute).attribute.isModifiable()
 				else
-					feature.oclAsType(UnitAssociation).serviceFeature.isModifiable()
+					feature.oclAsType(UnitAssociation).association.isModifiable()
 				endif
 			else
 				false
 			endif
 		else if feature.oclIsTypeOf(UnitAssociation) and not feature.isSingleton() then
 			if feature.oclAsType(UnitAssociation).units->isEmpty() then
-				feature.oclAsType(UnitAssociation).serviceFeature.isModifiable()
+				feature.oclAsType(UnitAssociation).association.isModifiable()
 			else
 				false
 			endif
@@ -1083,8 +1036,8 @@
 
 [query public isObfuscated(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitElement) then
-				field.oclAsType(UnitElement).obfuscateFormFields
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).obfuscateFormFields
 			else
 				false
 			endif
@@ -1100,18 +1053,18 @@
 /]
 
 [query public isResourceSingleton(field : UnitField) : Boolean
-	= if not field.oclIsTypeOf(UnitElement) then
+	= if not field.oclIsTypeOf(UnitAttribute) then
 			false
-		else let attribute : UnitElement = field.oclAsType(UnitElement)
-			in attribute.serviceFeature.attribute.oclIsKindOf(SingletonResource)
+		else let attribute : UnitAttribute = field.oclAsType(UnitAttribute)
+			in attribute.attribute.oclIsKindOf(SingletonResource)
 		endif
 /]
 
 [query public isResourceAttribute(feature : UnitFeature) : Boolean
-	= if not feature.oclIsTypeOf(UnitElement) then
+	= if not feature.oclIsTypeOf(UnitAttribute) then
 			false
 		else
-			feature.oclAsType(UnitElement).serviceFeature.attribute.oclIsKindOf(SingletonResource)
+			feature.oclAsType(UnitAttribute).attribute.oclIsKindOf(SingletonResource)
 		endif
 /]
 
@@ -1127,10 +1080,10 @@
 
 [query public isUnique(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitElement) then
-				field.oclAsType(UnitElement).serviceFeature.isUnique()
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isUnique()
 			else
-				field.oclAsType(UnitAssociation).serviceFeature.isUnique()
+				field.oclAsType(UnitAssociation).association.isUnique()
 			endif
 		else
 			false
@@ -1138,8 +1091,8 @@
 /]
 
 [query public isUrlSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitElement) then
-			field.oclAsType(UnitElement).serviceFeature.isUrlSingleton()
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.isUrlSingleton()
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.childFeature.oclIsUndefined() then
@@ -1164,19 +1117,19 @@
 /]
 
 [query public isValidated(feature : UnitFeature) : Boolean
-	= if feature.oclIsTypeOf(UnitElement) then
-			feature.oclAsType(UnitElement).serviceFeature.isValidated()
+	= if feature.oclIsTypeOf(UnitAttribute) then
+			feature.oclAsType(UnitAttribute).attribute.isValidated()
 		else 
-			feature.oclAsType(UnitAssociation).serviceFeature.isValidated()
+			feature.oclAsType(UnitAssociation).association.isValidated()
 		endif
 /]
 
 [query public modelPropertyName(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitElement) then
-				field.oclAsType(UnitElement).serviceFeature.modelPropertyName()
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.modelPropertyName()
 			else
-				field.oclAsType(UnitAssociation).serviceFeature.modelPropertyName()
+				field.oclAsType(UnitAssociation).association.modelPropertyName()
 			endif
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name
@@ -1189,16 +1142,6 @@
 
 [query public pageDisplayedOn(field : UnitField) : Page
 	= field.displayedOn.pageDisplayedOn()
-/]
-
-[query public service(field : UnitField) : Service
-	= if field.oclIsTypeOf(UnitElement) then
-			field.oclAsType(UnitElement).serviceFeature.partOf
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).serviceFeature.partOf
-		else
-			field.displayedOn.services->first()
-		endif endif
 /]
 
 [comment TODO what if field has a selection?/]
@@ -1220,12 +1163,6 @@
 [query public styleClass(field : UnitField) : String
 	= let className : String = field.modelPropertyName()
 		in className.replaceAll('([A-Z])', '_$1').toLowerCase()
-/]
-
-[query public service(association : UnitAssociation) : Service
-	= let services : OrderedSet(Service)
-		= association.pageDisplayedOn().partOf.services(association.association.sourceType())
-		in services->first()
 /]
 
 

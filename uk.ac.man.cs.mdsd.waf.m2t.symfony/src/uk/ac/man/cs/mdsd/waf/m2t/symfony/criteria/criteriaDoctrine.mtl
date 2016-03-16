@@ -3,43 +3,43 @@
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
+[comment import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(NullLiteral)) post(trim())]
 NULL
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(IntegerLiteral)) post(trim())]
 [let literal : IntegerLiteral = criteria.oclAsType(IntegerLiteral)]
 [literal.value/]
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(StringLiteral)) post(trim())]
 [let literal : StringLiteral = criteria.oclAsType(StringLiteral)]
 '[literal.value/]'
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
 ':now'
 [/template]
 
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
 [let path : ModelReference = criteria.oclAsType(ModelReference)]
 $this->[path.unit.instanceName()/]->[path.unit.services->first().keyName()/]
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
 [path.feature.featureReference()/]
@@ -47,17 +47,17 @@ $this->[path.unit.instanceName()/]->[path.unit.services->first().keyName()/]
 [/template]
 
 [template public featureReference(feature : ServiceFeature) post(trim())]
-'[feature.partOf.selectName()/].[feature.columnName()/]'
+'[feature.columnName()/]'
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]
 [let path : ParameterReference = criteria.oclAsType(ParameterReference)]
 ':[path.parameter.name/]'
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
 [let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
 Auth::instance()->get_actual_user()->id
@@ -65,62 +65,62 @@ Auth::instance()->get_actual_user()->id
 [/template]
 
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = criteria.oclAsType(PredicateBooleanOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
+Criteria::expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
 [for (expression : Expression | predicate.expressions) separator (',')]
 
-    [expression.doctrineExpression()/][/for]
+    [expression.criteriaExpression()/][/for]
 
 )
 [else]
 [for (expression : Expression | predicate.expressions) separator (', ')]
-[expression.doctrineExpression()/]
+[expression.criteriaExpression()/]
 [/for]
 [/if]
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = criteria.oclAsType(PredicateEqualityOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(Predicate) or predicate.right.oclIsKindOf(Predicate))]
+Criteria::expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(Predicate) or predicate.right.oclIsKindOf(Predicate))]
 
-    [predicate.left.doctrineExpression()/],
-    [predicate.right.doctrineExpression()/]
+    [predicate.left.criteriaExpression()/],
+    [predicate.right.criteriaExpression()/]
 )
 [else]
-[predicate.left.doctrineExpression()/], [predicate.right.doctrineExpression()/])
+[predicate.left.criteriaExpression()/], [predicate.right.criteriaExpression()/])
 [/if]
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([predicate.left.doctrineExpression()/], [predicate.right.doctrineExpression()/])
+Criteria::expr()->[predicate.operator()/]([predicate.left.criteriaExpression()/], [predicate.right.criteriaExpression()/])
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateIsOperator)) post(trim())]
 [let predicate : PredicateIsOperator = criteria.oclAsType(PredicateIsOperator)]
-[predicate.left.doctrineExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.doctrineExpression()/]
+[predicate.left.criteriaExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.criteriaExpression()/]
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
 [let predicate : PredicateLikeOperator = criteria.oclAsType(PredicateLikeOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([predicate.left.doctrineExpression()/], [predicate.right.doctrineExpression()/])
+Criteria::expr()->[predicate.operator()/]([predicate.left.criteriaExpression()/], [predicate.right.criteriaExpression()/])
 [/let]
 [/template]
 
-[template public doctrineExpression(criteria : Expression)
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.doctrineExpression()/], '0')
+Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.criteriaExpression()/], '0')
 [/let]
 [/template]
 

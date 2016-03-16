@@ -145,6 +145,9 @@
 	color: SteelBlue;
 }
 
+table.index_content > tbody > tr > td > a:hover  {
+	color: blue;
+}
 [/file]
 [/template]
 

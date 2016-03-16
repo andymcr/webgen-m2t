@@ -1,29 +1,32 @@
 [comment encoding = UTF-8 /]
 [module formType(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public formType(service : Service)]
-[file(service.formTypeFilename(), false)]
+[template public formType(entityOrView : EntityOrView)]
+[file(entityOrView.formTypeFilename(), false)]
 <?php
-namespace [service.formTypeNamespace()/];
+namespace [entityOrView.formTypeNamespace()/];
 
-[service.associationTypeUse()/]
+[entityOrView.associationTypeUse()/]
 use Symfony\Component\Form\AbstractType;
-[service.attributeTypeUse()/]
 use Symfony\Component\Form\FormBuilderInterface;
+[entityOrView.conditionalFormTypeUse()/]
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class [service.typeClassName()/] extends AbstractType
+class [entityOrView.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-[for (feature : ServiceFeature | service.features)]
+[for (feature : Feature | entityOrView.features)]
         $builder->[feature.formFeature()/];
 [/for]
     }
@@ -31,55 +34,59 @@ class [service.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '[service.modelsNamespace()/]\[service.modelName()/]'
+            'data_class' => '[entityOrView.modelsNamespace()/]\[entityOrView.modelName()/]'
         ));
     }
 }
 [/file]
 [/template]
 
-[template private attributeTypeUse(service : Service) post(trim())]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'checkbox')->notEmpty())]
+[template private conditionalFormTypeUse(entityOrView : EntityOrView) post(trim())]
+[if (entityOrView.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'checkbox')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (service.features->select(f | f.isEnumerationTypeSingleton())->notEmpty())]
+[if (entityOrView.features->select(f | f.isEnumerationTypeSingleton())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'date')->notEmpty())]
+[if (entityOrView.associations()->select(a | not a.isSingleton())->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+[/if]
+[if (entityOrView.attributes()->select(a | a.interfaceType = 'date')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'datetime')->notEmpty())]
+[if (entityOrView.attributes()->select(a | a.interfaceType = 'datetime')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'email')->notEmpty())]
+[if (entityOrView.attributes()->select(a | a.interfaceType = 'email')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'integer')->notEmpty())]
+[if (entityOrView.attributes()->select(a | a.interfaceType = 'integer')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'text')->notEmpty())]
+[if (entityOrView.attributes()->select(a | a.interfaceType = 'text')->notEmpty()
+		or entityOrView.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.attribute.oclIsTypeOf(SingletonURL))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'textarea')->notEmpty())]
+[if (entityOrView.attributes()->select(a | a.interfaceType = 'textarea')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TestareaType;
 [/if]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'time')->notEmpty())]
+[if (entityOrView.attributes()->select(a | a.interfaceType = 'time')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 [/template]
 
-[template private associationTypeUse(service : Service) post(trim())]
-[for (feature : ServiceFeature | service.features->select(f | f.isEnumerationTypeSingleton()))]
-use [service.modelsNamespace()/]\[feature.enumerationType().modelName()/];
+[template private associationTypeUse(entityOrView : EntityOrView) post(trim())]
+[for (feature : Feature | entityOrView.features->select(f | f.isEnumerationTypeSingleton()))]
+use [entityOrView.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
-[if (service.features->select(f | f.oclIsTypeOf(ServiceAssociation))->notEmpty())]
+[if (entityOrView.features->select(f | f.oclIsTypeOf(ServiceAssociation))->notEmpty())]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
 [/template]
 
-[template private formFeature(feature : ServiceFeature)
-	? (feature.oclIsTypeOf(ServiceAttribute)) post(trim())]
-[let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)]
+[template private formFeature(feature : Feature)
+	? (feature.oclIsTypeOf(Attribute)) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'label' => '[attribute.displayLabel/]',
 [if (not attribute.isRequired())]
@@ -111,7 +118,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/let]
 [/template]
 
-[template private interfaceType(attribute : ServiceAttribute) post(trim())]
+[template private interfaceType(attribute : Attribute) post(trim())]
 [if (attribute.isEnumerationTypeSingleton())]
 ChoiceType::class
 [comment elseif (attribute.isEnumerationTypeSingleton())/]
@@ -161,7 +168,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 add('[association.modelPropertyName()/]', [association.targetService().typeClassName()/]::class)
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(
-    'entity_type' => [association.targetService().typeClassName()/]::class,
+    'entry_type' => [association.targetService().typeClassName()/]::class,
     'allow_add' => true,
 ))
 [/if]

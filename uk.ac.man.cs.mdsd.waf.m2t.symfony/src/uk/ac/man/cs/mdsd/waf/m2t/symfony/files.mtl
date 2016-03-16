@@ -176,10 +176,10 @@
 		.concat(authentication.executableExtension())
 /]
 
-[query public formTypeFilename(service : Service) : String
-	= service.formTypeDirectory().concat('/')
-		.concat(service.typeClassName())
-		.concat(service.executableExtension())
+[query public formTypeFilename(entityOrView : EntityOrView) : String
+	= entityOrView.formTypeDirectory().concat('/')
+		.concat(entityOrView.typeClassName())
+		.concat(entityOrView.executableExtension())
 /]
 
 [query public formTypeFilename(unit : DynamicUnit) : String

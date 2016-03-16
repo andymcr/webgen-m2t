@@ -65,29 +65,21 @@ add('[field.modelPropertyName()/]', [field.interfaceType()/], array(
 ))
 [/template]
 
-[template private interfaceType(field : InterfaceField) post(trim())]
-[if (field.isEnumerationTypeSingleton())]
-ChoiceType::class
-[comment elseif (attribute.isEnumerationTypeSingleton())/]
-[comment PasswordType::class /]
-[elseif (field.oclIsTypeOf(DataTypeField))]
-[let dataTypeField : DataTypeField = field.oclAsType(DataTypeField)]
-	[if (dataTypeField.interfaceType = 'checkbox')]
+[template public interfaceType(field : InterfaceField) post(trim())]
+[if (field.interfaceType = 'checkbox')]
 CheckboxType::class
-	[elseif (dataTypeField.interfaceType = 'email')]
+[elseif (field.interfaceType = 'email')]
 EmailType::class
-	[elseif (dataTypeField.interfaceType = 'integer')]
+[elseif (field.interfaceType = 'integer')]
 IntegerType::class
-	[elseif (dataTypeField.interfaceType = 'text')]
+[elseif (field.interfaceType = 'text')]
 TextType::class
-	[elseif (dataTypeField.interfaceType = 'textarea')]
+[elseif (field.interfaceType = 'textarea')]
 TextareaType::class
-	[elseif (dataTypeField.interfaceType = 'time')]
+[elseif (field.interfaceType = 'time')]
 TimeType::class
-	[else]
+[else]
 TextType::class
-	[/if]
-[/let]
 [/if]
 [/template]
 

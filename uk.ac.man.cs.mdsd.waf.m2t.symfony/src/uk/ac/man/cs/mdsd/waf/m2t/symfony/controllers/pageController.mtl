@@ -1,6 +1,8 @@
 [comment encoding = UTF-8 /]
 [module pageController(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -19,11 +21,11 @@
 <?php
 namespace [page.controllersNamespace()/];
 
-[for (service : Service | page.editUnits()->collect(u | u.services)->asSet())]
-use [service.modelsNamespace()/]\[service.modelName()/];
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet())]
+use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
-[for (service : Service | page.formUnits()->collect(u | u.services)->asSet())]
-use [service.formTypeNamespace()/]\[service.typeClassName()/];
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet())]
+use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -44,8 +46,6 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		[/for]
 	[/if]
 [/for]
-    [page.getServiceMethod()/]
-
 [if (page.hasSupportActions())]
     [page.supportActionMethods()/]
 
@@ -57,17 +57,10 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/file]
 [/template]
 
-[template private getServiceMethod(page : Page) post(trim())]
-public function getService($name)
-{
-    return $this->get($name);
-}
-[/template]
-
 [template private renderMethod(page : Page) post(trim())]
 private function renderPage([if (page.hasFilterParameters())]
 Request $request[if (page.uriCommonPathKeys()->notEmpty())]
-, [/if][/if][for (key : ServiceFeatureReference | page.uriCommonPathKeys()) separator(', ')]
+, [/if][/if][for (key : EntityAttribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName()/][/for])
 {
     $parameters = array(
@@ -93,12 +86,14 @@ public function [deleteAction.actionName()/]([unit.actionMethodParameters(page)/
     try
     {
         $[deleteAction.instanceName()/] = [unit.loadInstance()/];
-		$[deleteAction.instanceName()/]->remove();
-[if (not deleteAction.destination.oclIsUndefined())]
-        $this->redirectToRoute('[deleteAction.destination.routeName()/]');
+		$this->get('[deleteAction.usedBy.oclAsType(IndexUnit).services->first().instanceName()/]')->remove($[deleteAction.instanceName()/], true);
+[if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
+        $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
 [/if]
     }
     [unit.catchSelectionException()/]
+
+    return $this->renderPage([unit.pageDisplayedOn().renderMethodParameters()/]);
 }
 [/let]
 [/let]

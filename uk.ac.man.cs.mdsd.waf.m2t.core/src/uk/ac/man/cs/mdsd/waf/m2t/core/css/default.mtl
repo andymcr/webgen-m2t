@@ -181,6 +181,15 @@ table.index_content > tbody > tr {
 	vertical-align: text-top;
 }
 
+table.index_content > tbody > tr > td {
+	padding-left: 0.5em;
+}
+
+table.index_content > tbody > tr > td > a:link,
+table.index_content > tbody > tr > td > a:visited  {
+	color: black;
+}
+
 ul.index_content,
 ul.details_content > li > ul.index_content,
 dl.details_content > dd > ul.index_content {
@@ -190,9 +199,6 @@ dl.details_content > dd > ul.index_content {
 
 main > section > ul.index_content {
 	padding: 0em 0.5em 0em 0.5em;
-}
-
-table.index_content {
 }
 
 ul.unit_control {
@@ -246,6 +252,7 @@ form > div > input['['/]type="email"[']'/],
 form > div > input['['/]type="integer"[']'/],
 form > div > input['['/]type="password"[']'/],
 form > div > input['['/]type="text"[']'/],
+form > div > input['['/]type="url"[']'/],
 form > div > select {
 	display: inline-block;
 	width: 83%;
@@ -264,12 +271,6 @@ form > div.error > ul > li {
 	color: FireBrick;
 }
 
-.input_attribute {
-}
-
-.input_association {
-}
-
 form > div > input['['/]type="checkbox"[']'/],
 .input_checkbox {
 	width: 1em;
@@ -280,6 +281,7 @@ form > div > div > input {
 	margin-right: 0.5em;
 }
 
+form > input['['/]type="submit"[']'/],
 form > div > input['['/]type="submit"[']'/] {
 	padding: 0.2em;
 }
@@ -320,10 +322,6 @@ div .map-canvas {
 
 table.embedded {
 	width: 100%;
-}
-
-.input_button {
-	padding: 1px;	
 }
 [/file]
 [/template]

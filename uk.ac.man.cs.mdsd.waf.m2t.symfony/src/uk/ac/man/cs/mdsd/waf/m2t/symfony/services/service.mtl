@@ -1,13 +1,17 @@
 [comment encoding = UTF-8 /]
 [module service(
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::queryDoctrine/]
 
 [template public service(service : Service)]
 [file(service.serviceFilename(), false)]
@@ -33,6 +37,8 @@ class [service.className()/]
 
     [service.deleteMethod()/]
 
+    [service.removeMethod()/]
+
     [service.saveMethod()/]
 
 [for (selection : Selection | service.selections)]
@@ -50,82 +56,55 @@ class [service.className()/]
 [/template]
 
 [template private findMethod(service : Service) post(trim())]
-public function find([service.routeParameters()/])
+public function find([service.serves.routeParameters()/])
 {
 	$queryBuilder = $this->createQueryBuilder();
 	return $queryBuilder
-[if (service.keys->select(k | k.oclIsTypeOf(ServiceAssociationReference))->notEmpty())]
-        [service.selectJoin()/]
+[if (service.serves.isContained() or service.serves.hasAssociationKeys())]
+        [service.keyJoin(service.serves)/]
 [/if]
-[if (not service.parentService().oclIsUndefined())]
-        [service.parentJoin()/]
+[if (service.serves.uriPathKeys()->size() < 2)]
+        ->where([service.serves.uriPathKeys()->first().findWhere(service)/])
+[else]
+        ->where(
+            [service.serves.findWhere(service) /]
+        )
 [/if]
-        ->where([if (service.uriPathKeys()->size() < 2)][service.uriPathKeys()->first().selectWhere()/][else]
-
-            [service.selectWhere()/]
-        [/if])
-        [service.setParameters()/]
+[for (key : EntityAttribute | service.serves.uriPathKeys())]
+        ->setParameter('[key.routeParameterName()/]', $[key.routeParameterName()/])
+[/for]
         ->getQuery()->getSingleResult();
 }
 [/template]
 
-[template private selectJoin(service : Service) post(trim())]
-[for (key : ServiceFeatureReference | service.keys)]
-	[if (key.oclIsTypeOf(ServiceAssociationReference))]
-	[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
-	[let targetService : Service = associationKey.association.targetService()]
-->join('[service.selectName()/].[key.modelPropertyName()/]', '[targetService.selectName()/]')
-	[/let]
-	[/let]
-	[/if]
-[/for]
-[/template]
-
-[template private parentJoin(service : Service) post(trim())]
-[if (not service.parentService().oclIsUndefined())]
-[let parentService : Service = service.parentService()]
-->join('[service.selectName()/].[service.parentAssociation(parentService).modelPropertyName()/]', '[parentService.selectName()/]')
-	[if (parentService.keys->select(k | k.oclIsTypeOf(ServiceAssociationReference))->notEmpty())]
-[parentService.selectJoin()/]
-	[/if]
-	[if (not parentService.parentService().oclIsUndefined())]
-[parentService.parentJoin()/]
-	[/if]
-[/let]
-[/if]
-[/template]
-
-[template private selectWhere(service : Service) post(trim())]
-[let keys : OrderedSet(ServiceFeatureReference) = service.uriPathKeys()]
-[for (key : ServiceFeatureReference | keys->subOrderedSet(1, keys->size() - 1))]
-$queryBuilder->expr()->andX([key.selectWhere()/],
-[/for]
-[keys->last().selectWhere()/]
-[for (key : ServiceFeatureReference | keys->subOrderedSet(1, keys->size() - 1))])[/for]
-[/let]
-[/template]
-
-[template private selectWhere(key : ServiceFeatureReference) post(trim())]
-[if (key.oclIsTypeOf(ServiceAttributeReference))]
-[let attributeKey : ServiceAttributeReference = key.oclAsType(ServiceAttributeReference)]
-$queryBuilder->expr()->eq('[attributeKey.attribute.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]')
-[/let]
-[else]
-[let associationKey : ServiceAssociationReference = key.oclAsType(ServiceAssociationReference)]
-[let targetService : Service = associationKey.association.targetService()]
-$queryBuilder->expr()->eq('[targetService.selectName()/].[associationKey.childFeature.columnName()/]', ':[key.routeParameterName()/]')
+[template private keyJoin(service : Service, entityOrView : EntityOrView) post(trim())]
+[if (service.serves.isContained())]
+[let container : EntityOrView = service.serves.container()]
+[let containerService : Service = service.entityService(container)]
+->join('[service.selectName()/].[service.serves.containingAssociation().modelPropertyName()/]', '[containerService.selectName()/]')
+[containerService.keyJoin(container)/]
 [/let]
 [/let]
 [/if]
+[for (key : EntityAssociation | service.serves.associationKeys()->select(k | not k.container))]
+[let targetService : Service = service.entityService(key.targetType())]
+->join('[service.selectName()/].[key.modelPropertyName(entityOrView)/]', '[targetService.selectName()/]')
+[/let]
+[/for]
 [/template]
 
-[template private setParameters(service : Service) post(trim())]
-[if (not service.parentService().oclIsUndefined())]
-[service.parentService().setParameters()/]
-[/if]
-[for (key : ServiceFeatureReference | service.keys)]
-->setParameter('[key.routeParameterName()/]', $[key.routeParameterName()/])
+[template private findWhere(entityOrView : EntityOrView, service : Service) post(trim())]
+[let keys : Sequence(EntityAttribute) = entityOrView.uriPathKeys()]
+[for (key : EntityAttribute | keys->subSequence(1, keys->size() - 1))]
+$queryBuilder->expr()->andX([key.findWhere(service)/],
 [/for]
+[keys->last().findWhere(service)/]
+[for (key : EntityAttribute | keys->subSequence(1, keys->size() - 1))])[/for]
+[/let]
+[/template]
+
+[template private findWhere(key : EntityAttribute, service : Service) post(trim())]
+$queryBuilder->expr()->eq('[service.entityService(key.partOf).selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]')
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
@@ -145,6 +124,16 @@ public function delete($entity, $flush = false)
 }
 [/template]
 
+[template private removeMethod(service : Service) post(trim())]
+public function remove($entity, $flush = false)
+{
+	$entityManager = $this->doctrine->getEntityManager();
+    $entityManager->remove($entity);
+    if ($flush)
+        $entityManager->flush();
+}
+[/template]
+
 [template private saveMethod(service : Service) post(trim())]
 public function save($entity, $flush = false)
 {
@@ -156,21 +145,21 @@ public function save($entity, $flush = false)
 [/template]
 
 [template private selectionMethod(selection : Selection, service : Service) post(trim())]
-public function [selection.name/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+public function [selection.methodName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
     $queryBuilder = $this->createQueryBuilder();
-[for (join : ServiceAssociation | selection.joins)]
-    $queryBuilder->join('[service.selectName()/].[join.modelPropertyName()/]', '[join.targetService().selectName()/]');
+[for (join : Association | selection.joins)]
+    $queryBuilder->join('[service.selectName()/].[join.modelPropertyName(service.serves)/]', '[join.selectName(service)/]');
 [/for]
 [if (not selection.filter.oclIsUndefined())]
-    $queryBuilder->where([selection.filter.doctrineExpression()/]);
+    $queryBuilder->where([selection.filter.queryExpression()/]);
 [/if]
 [if (selection.ordering->size() > 0)]
-    $queryBuilder->orderBy([selection.ordering->first().path.doctrineExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
+    $queryBuilder->orderBy([selection.ordering->first().path.queryExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
 	[if (selection.ordering->size() > 1)]
 		[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-    $queryBuilder->addOrderBy([selection.ordering->first().path.doctrineExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
+    $queryBuilder->addOrderBy([selection.ordering->first().path.queryExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
 		[/for]
 	[/if]
 [/if]
@@ -185,7 +174,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 [/if]
     $query = $queryBuilder->getQuery();
 [if (not selection.filter.oclIsUndefined())]
-    [selection.filter.criteriaParameter()/]
+    [selection.filter.queryParameter()/]
 [/if]
 
     if ($page)
@@ -196,7 +185,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 [/template]
 
 [template private childSelectionMethods(service : Service) post(trim())]
-[for (association : ServiceAssociation | service.associations())]
+[for (association : Association | service.serves.associations())]
 	[if (not association.isSingleton())]
 	    [for (selection : Selection | association.targetService().selections)]
 [service.childSelectionMethod(association, selection)/]
@@ -210,6 +199,17 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 public function [association.name/][selection.instanceName().toUpperFirst()/]($[service.instanceName()/])
 {
     $criteria = Criteria::create();
+[if (not selection.filter.oclIsUndefined())]
+    $criteria->where([selection.filter.criteriaExpression()/]);
+[/if]
+[if (selection.ordering->size() > 0)]
+    $criteria->orderBy(array(
+	[for (order : Order | selection.ordering)]
+        [order.path.criteriaExpression()/] => [if (selection.ordering->first().oclIsTypeOf(Asc))]Criteria::ASC[else]Criteria::DESC[/if],
+	[/for]
+    ));
+[/if]
+
     return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->matching($criteria);
 }
 [/template]
@@ -217,7 +217,7 @@ public function [association.name/][selection.instanceName().toUpperFirst()/]($[
 [template private getRepositoryMethod(service : Service) post(trim())]
 public function getRepository()
 {
-    return $this->doctrine->getRepository('[service.appBundleName()/]:[service.modelName()/]');
+    return $this->doctrine->getRepository('[service.appBundleName()/]:[service.serves.modelName()/]');
 }
 [/template]
 
@@ -226,13 +226,4 @@ public function createQueryBuilder()
 {
     return $this->getRepository()->createQueryBuilder('[service.selectName()/]');
 }
-[/template]
-
-
-[template private routeParameters(service : Service) post(trim())]
-[if (not service.parentService().oclIsUndefined())]
-[service.parentService().routeParameters()/][if (service.keys->notEmpty())], [/if][/if]
-[for (key : ServiceFeatureReference | service.keys) separator (', ')]
-$[key.routeParameterName()/]
-[/for]
 [/template]

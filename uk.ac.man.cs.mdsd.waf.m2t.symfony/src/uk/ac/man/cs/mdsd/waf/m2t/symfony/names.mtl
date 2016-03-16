@@ -49,6 +49,25 @@
 /]
 
 
+[query public typeClassName(entityOrView : EntityOrView) : String
+	= entityOrView.typePrefix().concat(entityOrView.modelName()).concat(entityOrView.typeSuffix())
+/]
+
+
+[query public selectName(association : Association, service : Service) : String
+	= let entityOrView : EntityOrView
+		= if service.serves.features->includes(association) then
+				if association.oclIsKindOf(EntityAssociation) then
+					association.oclAsType(EntityAssociation).opposite.partOf
+				else
+					association.partOf -- TODO fix
+				endif
+			else
+				association.partOf
+			endif
+		in service.entityService(entityOrView).selectName()
+/]
+
 [query public modelName(authentication : LocalAuthenticationSystem) : String
 	= authentication.authPrefix().concat('Authentication')
 /]
@@ -63,37 +82,11 @@
 /]
 
 [query public instanceName(service : Service) : String
-	= service.modelName().toLowerFirst()
-/]
-
-[query public modelName(service : Service) : String
-	= let entityOrView : EntityOrView = service.encapsulates->first()
-		in if not entityOrView.oclIsUndefined() then
-			entityOrView.modelName()
-			else
-				'????'
-			endif
+	= service.name.toLowerFirst()
 /]
 
 [query public selectName(service : Service) : String
 	= service.name.toLowerFirst()
-/]
-
-[query public typeClassName(service : Service) : String
-	= service.typePrefix().concat(service.modelName()).concat(service.typeSuffix())
-/]
-
-
-[query public instanceName(feature : ServiceFeature) : String
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.name.toLowerFirst()
-		else
-			feature.oclAsType(ServiceAssociation).association.name.toLowerFirst()
-		endif
-/]
-
-[query public modelName(feature : ServiceAssociation) : String
-	= feature.targetService().modelName()
 /]
 
 
@@ -147,13 +140,13 @@
 			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
 				'None'
 			else
-				unit.oclAsType(StaticUnit).service.modelName()
+				unit.oclAsType(StaticUnit).service.serves.modelName()
 			endif
 		else
 			if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
 				unit.unitPrefix().concat(unit.pageDisplayedOn().name).concat(unit.name)
 			else
-				unit.oclAsType(DynamicUnit).services->first().modelName()
+				unit.oclAsType(DynamicUnit).entities->first().modelName()
 			endif
 		endif
 /]
@@ -243,7 +236,7 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).services->first().name
 		else
-			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
+			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif
 /]
 
@@ -251,7 +244,7 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).services->first().name
 		else
-			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
+			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif
 /]
 
@@ -261,10 +254,18 @@
 /]
 
 
+[query public criteriaMethodName(selection : Selection) : String
+	= selection.instanceName().concat('Criteria')
+/]
+
 [query public countName(selection : Selection) : String
 	= selection.instanceName().concat('_count')
 /]
 
 [query public instanceName(selection : Selection) : String
 	= selection.name.toLowerFirst()
+/]
+
+[query public methodName(selection : Selection) : String
+	= selection.instanceName()
 /]

@@ -28,7 +28,7 @@ class [type.modelClassName()/]
 
 	public static function value($value = null, $default = '')
 	{
-		$values = [type.modelClassName()/]::values();
+		$values = array_flip([type.modelClassName()/]::values());
 
 		if (array_key_exists($value, $values)) {
 			return $values['['/]$value[']'/];

@@ -80,7 +80,7 @@
 
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
 {% form_theme [unit.instanceName()/] 'form/messages_on_fields.html.twig' %}
-{{ form_start([unit.instanceName()/]) }}
+{{ form_start([unit.instanceName()/], { 'attr': {'class': '[unit.contentClass/]'} }) }}
 [/template]
 
 [template private formControlAndClose(unit : DynamicUnit) post(trim())]

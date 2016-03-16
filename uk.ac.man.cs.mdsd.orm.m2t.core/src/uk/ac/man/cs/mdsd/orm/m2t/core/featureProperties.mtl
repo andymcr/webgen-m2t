@@ -32,17 +32,53 @@
 	= entityOrView.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
 /]
 
+[query public associationKeys(entityOrView : EntityOrView) : Sequence(EntityAssociation)
+	= entityOrView.keys->select(k | k.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+/]
+
+[query public attributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.features->select(f | f.oclIsKindOf(Attribute)).oclAsType(Attribute)
+/]
+
 [query public attributesAndSingletons(entityOrView : EntityOrView) : Sequence(Feature)
 	= entityOrView.features
 		->select(f | f.oclIsKindOf(Attribute) or f.isSingleton() and f.isVisible()).oclAsType(Feature)
+/]
+
+[query public attributeKeys(entityOrView : EntityOrView) : Sequence(EntityAttribute)
+	= entityOrView.keys->select(k | k.oclIsKindOf(EntityAttribute)).oclAsType(EntityAttribute)
 /]
 
 [query public collectionAssociations(entityOrView : EntityOrView) : Sequence(Association)
 	= entityOrView.associations()->select(a | not a.isSingleton() and a.isVisible())
 /]
 
+[query public container(entityOrView : EntityOrView) : EntityOrView
+	= entityOrView.containingAssociation().opposite.partOf
+/]
+
+[query public containingAssociation(entityOrView : EntityOrView) : EntityAssociation
+	= let associations : Sequence(EntityAssociation)
+		= entityOrView.features
+			->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+			->select(a | a.container)
+		in if associations->size() = 0 then
+				null
+			else
+				associations->first()
+			endif
+/]
+
 [query public defaultValueFeatures(entityOrView : EntityOrView) : Sequence(Attribute)
 	= entityOrView.features->select(f | f.hasDefaultValue()).oclAsType(Attribute)
+/]
+
+[query public isContained(entityOrView : EntityOrView) : Boolean
+	= not entityOrView.container().oclIsUndefined()
+/]
+
+[query public hasAssociationKeys(entityOrView : EntityOrView) : Boolean
+	= entityOrView.associationKeys()->notEmpty()
 /]
 
 [query public hasAttributesOrSingletons(entityOrView : EntityOrView) : Boolean
@@ -112,6 +148,18 @@
 		else
 			feature.oclAsType(ViewAssociation).opposite.oppositeColumnName()
 		endif endif endif
+/]
+
+[query public columnName(association : Association, entityOrView : EntityOrView) : String
+	= if association.oclIsKindOf(EntityAssociation) then
+			if entityOrView.features->includes(association) then
+				association.columnName()
+			else
+				association.oclAsType(EntityAssociation).opposite.columnName()
+			endif
+		else
+			association.columnName()
+		endif
 /]
 
 [query public enumerationType(feature : Feature) : EnumerationType
@@ -324,6 +372,18 @@
 		else
 			feature.name
 		endif endif
+/]
+
+[query public modelPropertyName(association : Association, entityOrView : EntityOrView) : String
+	= if association.oclIsKindOf(EntityAssociation) then
+			if entityOrView.features->includes(association) then
+				association.modelPropertyName()
+			else
+				association.oclAsType(EntityAssociation).opposite.modelPropertyName()
+			endif
+		else
+			association.modelPropertyName()
+		endif
 /]
 
 [query public oppositeColumnName(feature : Association) : String

@@ -63,7 +63,7 @@
 [model.appBundle()/]
 [model.unitsNeedingModels().model()/]
 [model.persistence.enumerationTypes().formType()/]
-[model.services.formType()/]
+[model.persistence.entitiesAndViews.formType()/]
 [model.unitsNeedingModels().formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller()/]
 

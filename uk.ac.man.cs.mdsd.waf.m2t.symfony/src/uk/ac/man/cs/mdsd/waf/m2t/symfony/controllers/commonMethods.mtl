@@ -23,34 +23,26 @@
 [/template]
 
 [template public actionMethodParameters(unit : DynamicUnit, page : Page) post(trim())]
-[let service : Service = unit.services->first()]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (service.hasRouteParameters())]
-, [/if][/if][service.routeParameters()/]
+[let entityOrView : EntityOrView = unit.entities->first()]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (entityOrView.hasRouteParameters())]
+, [/if][/if][entityOrView.routeParameters()/]
 [/let]
 [/template]
 
 [template public renderMethodParameters(page : Page) post(trim())]
 [if (page.hasFilterParameters())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
-, [/if][/if][for (key : ServiceFeatureReference | page.uriCommonPathKeys()) separator(', ')]
+, [/if][/if][for (key : EntityAttribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName()/][/for]
 [/template]
 
-[template private routeParameters(service : Service) post(trim())]
-[if (not service.parentService().oclIsUndefined())]
-[service.parentService().routeParameters()/][if (service.keys->notEmpty())], [/if][/if]
-[for (key : ServiceFeatureReference | service.keys) separator (', ')]
-$[key.routeParameterName()/]
-[/for]
-[/template]
-
 [template public getService(unit : DynamicUnit) post(trim())]
-$this->getService('[unit.services->first().name/]')
+$this->get('[unit.services->first().name/]')
 
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.services->first().routeParameters()/])
+[unit.getService()/]->find([unit.entities->first().routeParameters()/])
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]
@@ -60,8 +52,8 @@ new [unit.modelName()/]()
 
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]
 [for (field : UnitField | unit.defaultValueFields())]
-[if (field.oclIsTypeOf(UnitElement))]
-$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.valueExpression()/];
+[if (field.oclIsTypeOf(UnitAttribute))]
+$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
 [else]
 $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
 [/if]

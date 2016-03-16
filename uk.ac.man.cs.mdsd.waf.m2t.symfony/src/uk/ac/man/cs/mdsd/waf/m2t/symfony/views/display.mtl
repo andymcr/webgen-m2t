@@ -29,15 +29,13 @@
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
- <div class="unit_padding">
-  [dataUnit.viewContent(accessor)/]
+ [dataUnit.viewContent(accessor)/]
 	[if (not indexUnit.pagination.oclIsUndefined())]
-[indexUnit.pagination()/]
+ [indexUnit.pagination()/]
 	[/if]
 	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
-  [dataUnit.unitSupportLinks(accessor)/]
+ [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
- </div>
 [/let]
 [/if]
 </section>
@@ -249,7 +247,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private actions(unit : IndexUnit, accessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.services->first())/]
+[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.entities->first())/]
 [/for]
 [/template]
 
@@ -261,7 +259,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 {{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
  | truncate([feature.maximumDisplaySize/])[/if] }}
 [else]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('.') - 1), feature.getValue(accessor), field.displayedOn.services->first())/]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('.') - 1), feature.getValue(accessor), field.displayedOn.entities->first())/]
 [/if]
 [/let]
 [/template]
@@ -286,7 +284,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isResourceSingleton()) post(trim())]
-[let attribute : UnitElement = field.oclAsType(UnitElement)]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 <?php
 [if (not attribute.conditionalDisplay())]
     if (!empty([attribute.getValue(accessor)/]))
@@ -304,7 +302,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
 [if (association.units->isEmpty())]
-[association.displayAssociation(accessor, parentAccessor, association.service())/]
+[association.displayAssociation(accessor, parentAccessor)/]
 [else]
 [association.units->first().viewContent(accessor)/]
 [/if]
@@ -317,8 +315,8 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
 {% for value in [accessor/] %}[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
-<p>[association.displayAssociation('value', 'value', association.serviceFeature.targetService())/]</p>[else]
-<span>[association.displayAssociation('value', 'value', association.serviceFeature.targetService())/]</span>[/if]{% endfor %}
+<p>[association.displayAssociation('value', 'value')/]</p>[else]
+<span>[association.displayAssociation('value', 'value')/]</span>[/if]{% endfor %}
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
@@ -341,9 +339,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String, service : Service) post(trim())]
+[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
-[association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
+[association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), association.association.targetType())/]
 [else]
 {{ [association.getValue(accessor)/]| default('')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
@@ -360,15 +358,15 @@ NULL
 [/template]
 
 [template public getValue(feature : UnitFeature, accessor : String) post(trim())]
-[if (feature.oclIsTypeOf(UnitElement))]
-[feature.oclAsType(UnitElement).getValue(accessor)/]
+[if (feature.oclIsTypeOf(UnitAttribute))]
+[feature.oclAsType(UnitAttribute).getValue(accessor)/]
 [else]
 [feature.oclAsType(UnitAssociation).getValue(accessor)/]
 [/if]
 [/template]
 
-[template public getValue(attribute : UnitElement, accessor : String) post(trim())]
-[attribute.serviceFeature.attribute.getValue(attribute, accessor)/]
+[template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
+[attribute.attribute.getValue(attribute, accessor)/]
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
@@ -412,39 +410,36 @@ NULL
 [/template]
 
 
-[template public getValue(feature : Feature, field : UnitField, accessor : String)
+[template public getValue(feature : Feature, accessor : String)
 	? (feature.isDataTypeSingleton() or feature.isDateSingleton() or feature.isResource()) post(trim())]
 [accessor/]
 [/template]
 
-[template public getValue(feature : Feature, field : UnitField, accessor : String)
+[template public getValue(feature : Feature, accessor : String)
 	? (feature.isEnumerationTypeSingleton()) post(trim())]
 [accessor/] | [feature.enumerationType().filterName()/]
 [/template]
 
 
-[template public actionLink(action : InlineAction, accessor : String, label : String, service : Service)
+[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
-<a href="{{ path('[targetUnit.routeName()/]', { [service.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
+<a href="{{ path('[targetUnit.routeName()/]', { [entityOrView.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
 [/let]
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, accessor : String, label : String, service : Service)
+[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
-<a href="{{ path('[delete.routeName()/]', { [service.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('{{ [accessor/].defaultLabel() }} [delete.confirmMessage/]');">{{ [label/] }}</a>
+<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
 [/let]
 [/template]
 
 
-[template private routeParameters(service : Service, accessor : String) post(trim())]
-[if (not service.parentService().oclIsUndefined())]
-[service.parentService().routeParameters(accessor.concat('.').concat(service.parentAssociation(service.parentService()).modelPropertyName()))/]
-[/if]
-[for (key : ServiceFeatureReference | service.keys)]
+[template private routeParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
+[for (key : EntityAttribute | entityOrView.uriPathKeys())]
 '[key.routeParameterName()/]': [key.getValue(accessor)/],
 [/for]
 [/template]
