@@ -84,12 +84,6 @@
 		->sortedBy(p | p.topMenuRank).oclAsType(Page)
 /]
 
-[query public unitsNeedingModels(model : WafModel) : Sequence(DynamicUnit)
-	= model.pages->collect(p | p.units)
-	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
-	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields())
-/]
-
 
 [query public useLocalAuthentication(authentication : Authentication) : Boolean
 	= if authentication.oclIsUndefined() then
@@ -100,33 +94,8 @@
 /]
 
 
-[query public associations(service : Service) : Sequence(ServiceAssociation)
-	= service.features->select(f | f.oclIsTypeOf(ServiceAssociation)).oclAsType(ServiceAssociation)
-/]
-
-[query public childAssociation(parentService : Service, childService : Service) : ServiceAssociation
-	= parentService.features
-		->select(f | f.isContainer()).oclAsType(ServiceAssociation)
-		->select(f | childService.encapsulates->includes(f.targetType()))
-		->first()
-/]
-
 [query public entityService(service : Service, entityOrView : EntityOrView) : Service
 	= service.partOf.service(entityOrView)
-/]
-
-[comment for Kohana/]
-[query public keyName(service : Service) : String
-	= service.encapsulates->first().autoKeyName
-/]
-
-[query public parentAssociation(childService : Service, parentService : Service) : ServiceAssociation
-	= childService.features
-		->select(f | f.oclIsTypeOf(ServiceAssociation)).oclAsType(ServiceAssociation)
-		->select(a | a.association.oclIsKindOf(EntityAssociation))
-		->select(a | a.association.oclAsType(EntityAssociation).opposite.isContainer())
-		->select(a | parentService.encapsulates->includes(a.targetType()))
-		->first()
 /]
 
 [comment for Kohana/]
@@ -135,43 +104,6 @@
 /]
 
 
-[query public columnName(feature : ServiceFeature) : String
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.columnName()
-		else 
-			feature.oclAsType(ServiceAssociation).association.columnName()
-		endif
-/]
-
-[query public columnName(feature : ServiceFeatureReference) : String
-	= if feature.oclIsTypeOf(ServiceAttributeReference) then
-			feature.oclAsType(ServiceAttributeReference).attribute.columnName()
-		else 
-			feature.oclAsType(ServiceAssociationReference).association.columnName()
-		endif
-/]
-
-[query public enumerationType(feature : ServiceFeature) : EnumerationType
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.enumerationType()
-		else 
-			feature.oclAsType(ServiceAssociation).association.enumerationType()
-		endif
-/]
-
-[query public formName(feature : ServiceFeature) : String
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.columnName()
-		else let association : ServiceAssociation
-			= feature.oclAsType(ServiceAssociation)
-			in if association.isSingleton() and association.isOwningEnd() then
-					association.association.columnName()
-				else
-					association.modelPropertyName()
-				endif
-		endif
-/]
-
 [query public hasHtml5Attributes(feature : ServiceFeature) : Boolean
 	= if feature.oclIsKindOf(ServiceAttribute) then
 			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
@@ -179,145 +111,6 @@
 		else
 			false
 		endif
-/]
-
-[query public isBooleanDataType(feature : ServiceFeature) : Boolean
-	= if not feature.oclIsTypeOf(ServiceAttribute) then
-			false
-		else let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
-			in if not attribute.attribute.oclIsTypeOf(SingletonElement) then
-					false
-				else let singleton : SingletonElement = attribute.attribute.oclAsType(SingletonElement)
-					in singleton.dataType.name = 'Boolean'
-				endif
-		endif
-/]
-
-[query public isCaseInsensitive(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isCaseInsensitive()
-		else
-			false
-		endif
-/]
-
-[query public isContainer(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			false
-		else
-			feature.oclAsType(ServiceAssociation).association.isContainer()
-		endif
-/]
-
-[query public isDataTypeSingleton(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isDataTypeSingleton()
-		else
-			false
-		endif
-/]
-
-[query public isDateSingleton(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isDateSingleton()
-		else
-			false
-		endif
-/]
-
-[query public isEncrypted(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isEncrypted()
-		else
-			false
-		endif
-/]
-
-[query public isEnumerationTypeSingleton(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isEnumerationTypeSingleton()
-		else
-			false
-		endif
-/]
-
-[query public isLocation(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.oclIsTypeOf(SingletonLocation)
-		else
-			false
-		endif
-/]
-
-[query public isModifiable(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isModifiable()
-		else if feature.oclIsTypeOf(ServiceAssociation) then
-			feature.oclAsType(ServiceAssociation).association.isModifiable()
-		else
-			false
-		endif endif
-/]
-
-[query public isOwningEnd(association : ServiceAssociation) : Boolean
-	= if association.association.oclIsKindOf(EntityAssociation) then
-			association.association.oclAsType(EntityAssociation).owningEnd
-		else
-			false
-		endif
-/]
-
-[query public isRequired(feature : ServiceFeature) : Boolean
-	= feature.cardinality = Cardinality::Required
-/]
-
-[query public isSingleton(feature : ServiceFeature) : Boolean
-	= feature.cardinality <> Cardinality::Many
-/]
-
-[query public isUnique(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
-			in if attribute.attribute.oclIsKindOf(SingletonAttribute) then
-					attribute.attribute.oclAsType(SingletonAttribute).unique
-				else
-					false
-				endif
-		else
-			false
-		endif
-/]
-
-[query public isUrlSingleton(feature : ServiceFeature) : Boolean
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.isUrlSingleton()
-		else
-			false
-		endif
-/]
-
-[query public isValidated(feature : ServiceFeature) : Boolean
-	= feature.isRequired() or feature.isUnique()
-/]
-
-[query public modelPropertyName(feature : ServiceFeature) : String
-	= if feature.oclIsKindOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.modelPropertyName()
-		else
-			feature.oclAsType(ServiceAssociation).association.modelPropertyName()
-		endif
-/]
-
-[query public modelPropertyName(feature : ServiceFeatureReference) : String
-	= if feature.oclIsTypeOf(ServiceAttributeReference) then
-			feature.oclAsType(ServiceAttributeReference).attribute.modelPropertyName()
-		else 
-			feature.oclAsType(ServiceAssociationReference).association.modelPropertyName()
-		endif
-/]
-
-[query public targetType(association : ServiceAssociation) : EntityOrView
-	= association.association.targetType()
 /]
 
 
@@ -417,7 +210,7 @@
 /]
 
 [query public inputAssociations(page : Page) : Sequence(UnitAssociation)
-	= page.dynamicUnits()->collect(u | u.inputAssociations())
+	= page.dynamicUnits()->collect(u | u.inputAssociationsXX())
 /]
 
 [query public isAuthenticated(page : Page) : Boolean
@@ -553,12 +346,12 @@
 	= unit.forcedValueFeatures()->notEmpty()
 /]
 
-[query public hasInputAssociations(unit : DynamicUnit) : Boolean
-	= unit.inputAssociations()->notEmpty()
+[query public hasInputAssociationsXX(unit : DynamicUnit) : Boolean
+	= unit.inputAssociationsXX()->notEmpty()
 /]
 
-[query public hasInputFields(unit : DynamicUnit) : Boolean
-	= unit.inputFields()->notEmpty()
+[query public hasInputFieldsXX(unit : DynamicUnit) : Boolean
+	= unit.inputFieldsXX()->notEmpty()
 /]
 
 [query public hasOmitFieldLabels(unit : DataUnit) : Boolean
@@ -646,23 +439,23 @@
 	= unit.uriActions()->notEmpty()
 /]
 
-[query public inputAssociations(unit : DynamicUnit) : OrderedSet(UnitAssociation)
+[query public inputAssociationsXX(unit : DynamicUnit) : OrderedSet(UnitAssociation)
 	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
-			unit.inputFields()->select(f | f.oclIsTypeOf(UnitAssociation))
+			unit.inputFieldsXX()->select(f | f.oclIsTypeOf(UnitAssociation))
 		else
 			OrderedSet{}
 		endif
 /]
 
-[query public inputCollectionAssociations(unit : DynamicUnit) : OrderedSet(UnitField)
+[query public inputCollectionAssociationsXX(unit : DynamicUnit) : OrderedSet(UnitField)
 	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
-			unit.inputFields()->select(f | f.oclIsTypeOf(UnitAssociation) and not f.isSingleton())
+			unit.inputFieldsXX()->select(f | f.oclIsTypeOf(UnitAssociation) and not f.isSingleton())
 		else
 			OrderedSet{}
 		endif
 /]
 
-[query public inputFields(unit : DynamicUnit) : OrderedSet(UnitField)
+[query public inputFieldsXX(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then
 			f.oclAsType(UnitFeature).isModifiable()
@@ -671,8 +464,8 @@
 		endif)
 /]
 
-[query public inputOrEmbeddedFields(unit : DynamicUnit) : Sequence(UnitField)
-	= unit.displayFields->asSequence()->select(f |
+[query public inputOrEmbeddedFields(unit : DynamicUnit) : OrderedSet(UnitField)
+	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then
 			f.oclAsType(UnitFeature).isModifiableOrEmbedded()
 		else
@@ -700,10 +493,10 @@
 		endif
 /]
 
-[query public nonResourceInputFeatures(unit : DynamicUnit) : OrderedSet(UnitField)
+[query public nonResourceInputFeaturesXX(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f |
 		if f.oclIsKindOf(UnitFeature) then
-			f.oclAsType(UnitFeature).isModifiable() and not f.oclAsType(UnitFeature).isModifiableResource()
+			f.oclAsType(UnitFeature).isModifiable() and not f.oclAsType(UnitFeature).isModifiableResourceXX()
 		else
 			true
 		endif)
@@ -773,16 +566,30 @@
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).displayLabel
 		else 
-			field.oclAsType(CaptchaField).displayLabel
+			'UnhandledField'
 		endif endif
+/]
+
+[query public formName(feature : ServiceFeature) : String
+	= ''
+--	= if feature.oclIsTypeOf(ServiceAttribute) then
+--			feature.oclAsType(ServiceAttribute).attribute.columnName()
+--		else let association : ServiceAssociation
+--			= feature.oclAsType(ServiceAssociation)
+--			in if association.isSingleton() and association.isOwningEnd() then
+--					association.association.columnName()
+--				else
+--					association.modelPropertyName()
+--				endif
+--		endif
 /]
 
 [query public formName(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
-				field.oclAsType(UnitAttribute).attribute.formName()
+				field.oclAsType(UnitAttribute).attribute.columnName()
 			else
-				field.oclAsType(UnitAssociation).serviceFeature.formName()
+				'?????' -- field.oclAsType(UnitAssociation).serviceFeature.formName()
 			endif
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name
@@ -825,50 +632,54 @@
 		endif endif
 /]
 
-[query public isAssociationSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
+[query public isAssociation(field : UnitField) : Boolean
+	= if not field.oclIsTypeOf(UnitAssociation) then
 			false
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.childFeature.oclIsUndefined() then
-					association.isSingleton()
+					true
 				else
-					association.childFeature.isAssociationSingletonElement()
+					association.childFeature.isAssociationElement()
 				endif
 		endif
 /]
 
-[query public isAssociationSingletonElement(child : ServiceFeatureReference) : Boolean
-	= if child.oclIsTypeOf(ServiceAttributeReference) then
+[query public isAssociationElement(child : ChildFeature) : Boolean
+	= if child.oclIsTypeOf(ChildAttribute) then
 			false
 		else
-			let association : ServiceAssociationReference = child.oclAsType(ServiceAssociationReference)
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
 			in if association.childFeature.oclIsUndefined() then
-					association.association.isSingleton()
+					true
 				else
-					association.childFeature.isAssociationSingletonElement()
+					association.childFeature.isAssociationElement()
 				endif
 		endif
 /]
 
 [query public isBooleanDataType(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.isBooleanDataType()
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isBooleanDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isBooleanDataTypeElement()
+					endif
+			endif
 		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
-			in if association.childFeature.oclIsUndefined() then
-					false
-				else
-					association.childFeature.isBooleanDataTypeElement()
-				endif
+			false -- TODO implement
 		endif
 /]
 
-[query public isBooleanDataTypeElement(child : ServiceFeatureReference) : Boolean
-	= if child.oclIsTypeOf(ServiceAttributeReference) then
-			child.oclAsType(ServiceAttributeReference).attribute.isBooleanDataType()
+[query public isBooleanDataTypeElement(child : ChildFeature) : Boolean
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.isBooleanDataType()
 		else
-			let association : ServiceAssociationReference = child.oclAsType(ServiceAssociationReference)
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
@@ -891,62 +702,70 @@
 		endif endif
 /]
 
-[query public isContainer(field : UnitField) : Boolean
+[query public isContains(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).association.isContainer()
+			field.oclAsType(UnitAssociation).association.isContains()
 		else
 			false
 		endif
 /]
 
-[query public isDataTypeSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.isDataTypeSingleton()
+[query public isDataType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isDataTypeElement()
+					endif
+			endif
 		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			field.oclIsTypeOf(DataTypeField)
+		endif
+/]
+
+[query public isDataTypeElement(child : ChildFeature) : Boolean
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.isDataType()
+		else
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
-					association.childFeature.isDataTypeSingletonElement()
+					association.childFeature.isDataTypeElement()
 				endif
 		endif
 /]
 
-[query public isDataTypeSingletonElement(child : ServiceFeatureReference) : Boolean
-	= if child.oclIsTypeOf(ServiceAttributeReference) then
-			child.oclAsType(ServiceAttributeReference).attribute.isDataTypeSingleton()
+[query public isDate(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isDate()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isDateElement()
+					endif
+			endif
 		else
-			let association : ServiceAssociationReference = child.oclAsType(ServiceAssociationReference)
-			in if association.childFeature.oclIsUndefined() then
-					false
-				else
-					association.childFeature.isDataTypeSingletonElement()
-				endif
+			field.oclIsTypeOf(DateField)
 		endif
 /]
 
-[query public isDateSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.isDateSingleton()
+[query public isDateElement(child : ChildFeature) : Boolean
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.isDate()
 		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
-					association.childFeature.isDateSingletonElement()
-				endif
-		endif
-/]
-
-[query public isDateSingletonElement(child : ServiceFeatureReference) : Boolean
-	= if child.oclIsTypeOf(ServiceAttributeReference) then
-			child.oclAsType(ServiceAttributeReference).attribute.isDateSingleton()
-		else
-			let association : ServiceAssociationReference = child.oclAsType(ServiceAssociationReference)
-			in if association.childFeature.oclIsUndefined() then
-					false
-				else
-					association.childFeature.isDateSingletonElement()
+					association.childFeature.isDateElement()
 				endif
 		endif
 /]
@@ -965,50 +784,33 @@
 		endif endif
 /]
 
-[query public isEnumerationTypeSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.isEnumerationTypeSingleton()
-		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
-			in if association.childFeature.oclIsUndefined() then
-					false
-				else
-					association.childFeature.isEnumerationTypeSingletonElement()
-				endif
-		endif
-/]
-
-[query public isEnumerationTypeSingletonElement(child : ServiceFeatureReference) : Boolean
-	= if child.oclIsTypeOf(ServiceAttributeReference) then
-			child.oclAsType(ServiceAttributeReference).attribute.isEnumerationTypeSingleton()
-		else
-			let association : ServiceAssociationReference = child.oclAsType(ServiceAssociationReference)
-			in if association.childFeature.oclIsUndefined() then
-					false
-				else
-					association.childFeature.isEnumerationTypeSingletonElement()
-				endif
-		endif
-/]
-
-[query public isModifiableOrEmbedded(feature : UnitFeature) : Boolean
-	= feature.isModifiable() or
-		if not feature.oclIsTypeOf(UnitAssociation) then
-			false
-		else
-			feature.oclAsType(UnitAssociation).units->notEmpty()
-		endif
-/]
-
-[query public isLocation(field : UnitField) : Boolean
+[query public isEnumerationType(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
-				field.oclAsType(UnitAttribute).attribute.isLocation()
+				field.oclAsType(UnitAttribute).attribute.isEnumerationType()
 			else
-				false
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isEnumerationTypeElement()
+					endif
 			endif
 		else
 			false
+		endif
+/]
+
+[query public isEnumerationTypeElement(child : ChildFeature) : Boolean
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.isEnumerationType()
+		else
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isEnumerationTypeElement()
+				endif
 		endif
 /]
 
@@ -1034,6 +836,27 @@
 		endif endif
 /]
 
+[query public isModifiableOrEmbedded(feature : UnitFeature) : Boolean
+	= feature.isModifiable() or
+		if not feature.oclIsTypeOf(UnitAssociation) then
+			false
+		else
+			feature.oclAsType(UnitAssociation).units->notEmpty()
+		endif
+/]
+
+[query public isLocation(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isLocation()
+			else
+				false
+			endif
+		else
+			false
+		endif
+/]
+
 [query public isObfuscated(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
@@ -1049,10 +872,18 @@
 /]
 
 [query public isRequired(field : UnitField) : Boolean
-	= field.cardinality = Cardinality::Required
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isRequired()
+			else
+				field.oclAsType(UnitAssociation).association.isRequired()
+			endif
+		else 
+			field.oclAsType(InterfaceField).required
+		endif
 /]
 
-[query public isResourceSingleton(field : UnitField) : Boolean
+[query public isResource(field : UnitField) : Boolean
 	= if not field.oclIsTypeOf(UnitAttribute) then
 			false
 		else let attribute : UnitAttribute = field.oclAsType(UnitAttribute)
@@ -1060,7 +891,7 @@
 		endif
 /]
 
-[query public isResourceAttribute(feature : UnitFeature) : Boolean
+[query public isResourceAttributeXX(feature : UnitFeature) : Boolean
 	= if not feature.oclIsTypeOf(UnitAttribute) then
 			false
 		else
@@ -1068,14 +899,22 @@
 		endif
 /]
 
-[query public isModifiableResource(feature : UnitFeature) : Boolean
-	= feature.isModifiable() and feature.isResourceAttribute()
+[query public isModifiableResourceXX(feature : UnitFeature) : Boolean
+	= feature.isModifiable() and feature.isResourceAttributeXX()
 /]
 
 
 
 [query public isSingleton(field : UnitField) : Boolean
-	= field.cardinality <> Cardinality::Many
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isSingleton()
+			else
+				field.oclAsType(UnitAssociation).association.isSingleton()
+			endif
+		else 
+			true
+		endif
 /]
 
 [query public isUnique(field : UnitField) : Boolean
@@ -1090,28 +929,32 @@
 		endif
 /]
 
-[query public isUrlSingleton(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.isUrlSingleton()
+[query public isUrl(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isUrl()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isUrlElement()
+					endif
+			endif
 		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
-			in if association.childFeature.oclIsUndefined() then
-					false
-				else
-					association.childFeature.isUrlSingletonElement()
-				endif
+			false
 		endif
 /]
 
-[query public isUrlSingletonElement(child : ServiceFeatureReference) : Boolean
-	= if child.oclIsTypeOf(ServiceAttributeReference) then
-			child.oclAsType(ServiceAttributeReference).attribute.isUrlSingleton()
+[query public isUrlElement(child : ChildFeature) : Boolean
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.isUrl()
 		else
-			let association : ServiceAssociationReference = child.oclAsType(ServiceAssociationReference)
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
-					association.childFeature.isUrlSingletonElement()
+					association.childFeature.isUrlElement()
 				endif
 		endif
 /]
@@ -1133,11 +976,9 @@
 			endif
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name
-		else if field.oclIsTypeOf(CaptchaField) then
-			field.oclAsType(CaptchaField).name
 		else
 			'UnhandledFeature'
-		endif endif endif
+		endif endif
 /]
 
 [query public pageDisplayedOn(field : UnitField) : Page

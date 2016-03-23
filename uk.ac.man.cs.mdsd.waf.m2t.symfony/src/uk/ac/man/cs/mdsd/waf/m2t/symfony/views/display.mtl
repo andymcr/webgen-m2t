@@ -230,14 +230,14 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  <tbody>
 {% for entry in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
- [for (field : UnitField | indexUnit.displayFields)]
+[for (field : UnitField | indexUnit.displayFields)]
 [let fieldAccessor : String = 'entry'.concat('.').concat(field.modelPropertyName())]
    <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
 [/let]
 [/for]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <td class="actions">[indexUnit.actions('entry')/]</td>
- [/if]
+[/if]
   </tr>
 {% endfor %}
  </tbody>
@@ -253,25 +253,37 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isDataTypeSingleton() and not field.isBooleanDataType()) post(trim())]
+	? (field.isDataType() and not field.isBooleanDataType()) post(trim())]
+[if (field.oclIsKindOf(InterfaceField))]
+{{ [field.getValue(accessor)/] | default('') }}
+[else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-[if (feature.actions->select(a | not a.disable)->isEmpty())]
+	[if (feature.actions->select(a | not a.disable)->isEmpty())]
 {{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
  | truncate([feature.maximumDisplaySize/])[/if] }}
-[else]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('.') - 1), feature.getValue(accessor), field.displayedOn.entities->first())/]
-[/if]
+	[else]
+	[let parentEntityOrView : EntityOrView
+		= if feature.oclIsKindOf(UnitAttribute) then 
+				feature.oclAsType(UnitAttribute).attribute.partOf
+			else
+				feature.oclAsType(UnitAssociation).association.partOf
+			endif]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1,
+		accessor.lastIndex('.') - 1), feature.getValue(accessor), parentEntityOrView)/]
+	[/let]
+	[/if]
 [/let]
+[/if]
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isEnumerationTypeSingleton()) post(trim())]
+	? (field.isEnumerationType()) post(trim())]
 {{ [field.getValue(accessor)/][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isDateSingleton()) post(trim())]
+	? (field.isDate()) post(trim())]
 {{ [field.getValue(accessor)/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
@@ -283,7 +295,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template] 
  
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isResourceSingleton()) post(trim())]
+	? (field.isResource() and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 <?php
 [if (not attribute.conditionalDisplay())]
@@ -298,7 +310,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isAssociationSingleton()) post(trim())]
+	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
 [if (association.units->isEmpty())]
@@ -311,7 +323,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.oclIsKindOf(UnitAssociation) and not field.isSingleton()) post(trim())]
+	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
 {% for value in [accessor/] %}[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
@@ -327,7 +339,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let old : String = accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)')]
 [/let]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
-[let new : String = association.serviceFeature.partOf.className().toLowerFirst()
+[let new : String = field.pageDisplayedOn().partOf.service(association.association.partOf).className().toLowerFirst()
 	.concat('.').concat(association.name).concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName().toUpperFirst())
 	.concat('(').concat(parentAccessor).concat(')')]
 [association.units.viewContent(new)/]
@@ -341,13 +353,13 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
-[association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), association.association.targetType())/]
+[association.actions->select(a | not a.disable)
+	->first().actionLink(accessor,  association.getValue(accessor), association.association.targetType())/]
 [else]
 {{ [association.getValue(accessor)/]| default('')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
 [/if]
 [/template]
-
 
 [template public getValue(field : UnitField, accessor : String) post(trim())]
 [if (field.oclIsTypeOf(UnitFeature))]
@@ -366,13 +378,14 @@ NULL
 [/template]
 
 [template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
-[attribute.attribute.getValue(attribute, accessor)/]
+[attribute.attribute.getValue(accessor)/]
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
+[association.valueDisplay/]
 [if (association.childFeature.oclIsUndefined())]
-	[if (not association.label.oclIsUndefined())]
-[association.label.label(accessor)/]
+	[if (not association.valueDisplay.oclIsUndefined())]
+[association.valueDisplay.label(accessor)/]
 	[else]
 [accessor/].defaultLabel()
 	[/if]
@@ -381,24 +394,24 @@ NULL
 [/if]
 [/template]
 
-[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
-	? (childFeature.oclIsTypeOf(ServiceAttributeReference)) post(trim())]
-[let childAttribute : ServiceAttributeReference = childFeature.oclAsType(ServiceAttributeReference)]
+[template public getValue(childFeature : ChildFeature, accessor : String)
+	? (childFeature.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let childAttribute : ChildAttribute = childFeature.oclAsType(ChildAttribute)]
 [let childAccessor : String = accessor.concat('.').concat(childAttribute.attribute.modelPropertyName())]
 [let unitFeatures : Sequence(UnitFeature) = childFeature.ancestors(UnitFeature)]
 [if (unitFeatures->notEmpty())]
-[childAttribute.attribute.attribute.getValue(unitFeatures->first(), childAccessor)/]
+[childAttribute.attribute.getValue(childAccessor)/]
 [else]
-[childAttribute.attribute.attribute.getValue(null, childAccessor)/]
+[childAttribute.attribute.getValue(childAccessor)/]
 [/if]
 [/let]
 [/let]
 [/let]
 [/template]
 
-[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
-	? (childFeature.oclIsTypeOf(ServiceAssociationReference)) post(trim())]
-[let childAssociation : ServiceAssociationReference = childFeature.oclAsType(ServiceAssociationReference)]
+[template public getValue(childFeature : ChildFeature, accessor : String)
+	? (childFeature.oclIsTypeOf(ChildAssociation)) post(trim())]
+[let childAssociation : ChildAssociation = childFeature.oclAsType(ChildAssociation)]
 [let childAccessor : String = accessor.concat('.').concat(childAssociation.association.modelPropertyName())]
 [if (childAssociation.childFeature.oclIsUndefined())]
 [childAccessor/].defaultLabel()
@@ -410,22 +423,22 @@ NULL
 [/template]
 
 
-[template public getValue(feature : Feature, accessor : String)
-	? (feature.isDataTypeSingleton() or feature.isDateSingleton() or feature.isResource()) post(trim())]
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isDataType() or attribute.isDate() or attribute.isResource()) post(trim())]
 [accessor/]
 [/template]
 
-[template public getValue(feature : Feature, accessor : String)
-	? (feature.isEnumerationTypeSingleton()) post(trim())]
-[accessor/] | [feature.enumerationType().filterName()/]
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isEnumerationType()) post(trim())]
+[accessor/] | [attribute.enumerationType().filterName()/]
 [/template]
 
 
-[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
+[template public actionLink(action : InlineAction, accessor : String, label : String, dummy : EntityOrView)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
-<a href="{{ path('[targetUnit.routeName()/]', { [entityOrView.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
+<a href="{{ path('[targetUnit.routeName()/]', { [targetUnit.entities->first().routeActualParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
 [/let]
 [/let]
 [/template]
@@ -433,14 +446,19 @@ NULL
 [template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
-<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
+<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeActualParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
 [/let]
 [/template]
 
 
-[template private routeParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
-[for (key : EntityAttribute | entityOrView.uriPathKeys())]
-'[key.routeParameterName()/]': [key.getValue(accessor)/],
+[template private routeActualParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
+[if (entityOrView.isContained())]
+[entityOrView.container().routeActualParameters(accessor.concat('.').concat(entityOrView.containingAssociation().modelPropertyName()))/]
+[/if]
+[for (key : EntityAttribute | entityOrView.attributeKeys())]
+[let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
+'[key.routeParameterName()/]': [key.getValue(keyAccessor)/],
+[/let]
 [/for]
 [/template]
 

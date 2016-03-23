@@ -68,7 +68,7 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(I
 		unit.oclAsType(EditUnit).cancelDestination
 	endif]
 if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->get('cancel')->isClicked())
-	return $this->redirectToRoute('[cancelDestination.routeName()/]');
+	return $this->redirectToRoute('[comment cancelDestination routeName()/]');
 [/let]
 [/template]
 
@@ -85,7 +85,7 @@ catch (QueryException $qe)
 {
     $this->[unit.errorName()/] = $se->message();
 [if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
-[unit.exceptionCleanup()/]
+[comment unit exceptionCleanup()/]
 [/if]
 }
 [/template]

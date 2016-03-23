@@ -229,7 +229,7 @@ public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.i
     $this->[element.columnName()/] = strtolower(trim($[element.instanceName()/]));
 	[elseif (element.encrypt)]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-	[elseif (element.isEnumerationTypeSingleton() or element.dataType.name = 'Boolean')]
+	[elseif (element.isEnumerationType() or element.dataType.name = 'Boolean')]
     $this->[element.columnName()/] = $[element.instanceName()/];
 	[else]
     $this->[element.columnName()/] = trim($[element.instanceName()/]);

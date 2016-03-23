@@ -11,7 +11,7 @@
 <?php
 namespace [unit.modelsNamespace()/];
 
-class [unit.modelName()/] extends [unit.services->first().modelName()/]
+class [unit.modelName()/] extends [comment unit services->first() modelName()/]
 {
 [for (field : InterfaceField | unit.interfaceFields())]
     [field.fieldFeature()/]
@@ -40,8 +40,8 @@ protected $[field.modelPropertyName()/];
 public function __construct()
 {
 [for (field : UnitField | unit.defaultValueFields())]
-	[if (field.oclIsTypeOf(UnitElement))]
-//	$this->[field.modelPropertyName()/] = [field.oclAsType(UnitElement).defaultValue.valueExpression()/];
+	[if (field.oclIsTypeOf(UnitAttribute))]
+//	$this->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
 	[else]
 //	$this->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
 	[/if]

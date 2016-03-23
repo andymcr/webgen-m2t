@@ -45,7 +45,7 @@ class [entityOrView.typeClassName()/] extends AbstractType
 [if (entityOrView.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'checkbox')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (entityOrView.features->select(f | f.isEnumerationTypeSingleton())->notEmpty())]
+[if (entityOrView.features->select(f | f.isEnumerationType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
 [if (entityOrView.associations()->select(a | not a.isSingleton())->notEmpty())]
@@ -119,7 +119,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/template]
 
 [template private interfaceType(attribute : Attribute) post(trim())]
-[if (attribute.isEnumerationTypeSingleton())]
+[if (attribute.isEnumerationType())]
 ChoiceType::class
 [comment elseif (attribute.isEnumerationTypeSingleton())/]
 [comment PasswordType::class /]

@@ -68,6 +68,7 @@
 		in service.entityService(entityOrView).selectName()
 /]
 
+
 [query public modelName(authentication : LocalAuthenticationSystem) : String
 	= authentication.authPrefix().concat('Authentication')
 /]

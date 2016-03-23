@@ -95,21 +95,22 @@ $[key.routeParameterName()/][/for]
 /]
 
 [query public uriPath(unit : ContentUnit, create : Boolean) : String
-	= let parentUriPath : String
-		= unit.pageUriPath().parentUriPath(unit.serviceUriPath(create))
-		in let uriElement : String
-			= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
-					unit.oclAsType(CreateUpdateUnit).createUriElement
-				else
-					unit.uriElement
-				endif
-			in if parentUriPath = '' then
-					uriElement
-				else if uriElement = '' then
-					parentUriPath
-				else
-					parentUriPath.concat('/').concat(uriElement)
-				endif endif
+	= ''
+--	= let parentUriPath : String
+--		= unit.pageUriPath().parentUriPath(unit.serviceUriPath(create))
+--		in let uriElement : String
+--			= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
+--					unit.oclAsType(CreateUpdateUnit).createUriElement
+--				else
+--					unit.uriElement
+--				endif
+--			in if parentUriPath = '' then
+--					uriElement
+--				else if uriElement = '' then
+--					parentUriPath
+--				else
+--					parentUriPath.concat('/').concat(uriElement)
+--				endif endif
 /]
 
 [query public uriPathKeys(unit : ContentUnit) : Sequence(EntityAttribute)
@@ -126,8 +127,9 @@ $[key.routeParameterName()/][/for]
 /]
 
 [query public uriPath(action : DeleteAction) : String
-	= action.immediateUnit().containingUnit().pageUriPath().parentUriPath(
-			action.immediateUnit().services->first().uriPath())
-		.concat('/').concat(action.uriElement)
+	= ''
+--	= action.immediateUnit().containingUnit().pageUriPath().parentUriPath(
+--			action.immediateUnit().services->first().uriPath())
+--		.concat('/').concat(action.uriElement)
 /]
 

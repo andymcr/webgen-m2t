@@ -17,7 +17,7 @@
 [template public label(label : Label, accessor : String)
 	? (label.oclIsKindOf(Attribute))  post(trim())]
 [let attribute : Attribute = label.oclAsType(Attribute)]
-	[if (not attribute.isEnumerationTypeSingleton())]
+	[if (not attribute.isEnumerationType())]
 [accessor/]
 	[else]
 [accessor/] | [attribute.enumerationType().filterName()/]

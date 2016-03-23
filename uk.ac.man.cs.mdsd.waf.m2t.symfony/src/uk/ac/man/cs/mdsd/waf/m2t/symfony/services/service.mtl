@@ -88,7 +88,7 @@ public function find([service.serves.routeParameters()/])
 [/if]
 [for (key : EntityAssociation | service.serves.associationKeys()->select(k | not k.container))]
 [let targetService : Service = service.entityService(key.targetType())]
-->join('[service.selectName()/].[key.modelPropertyName(entityOrView)/]', '[targetService.selectName()/]')
+->join('[service.selectName()/].[key.modelPropertyName()/]', '[targetService.selectName()/]')
 [/let]
 [/for]
 [/template]
@@ -150,7 +150,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 {
     $queryBuilder = $this->createQueryBuilder();
 [for (join : Association | selection.joins)]
-    $queryBuilder->join('[service.selectName()/].[join.modelPropertyName(service.serves)/]', '[join.selectName(service)/]');
+    $queryBuilder->join('[service.selectName()/].[join.modelPropertyName()/]', '[join.selectName(service)/]');
 [/for]
 [if (not selection.filter.oclIsUndefined())]
     $queryBuilder->where([selection.filter.queryExpression()/]);
@@ -186,16 +186,18 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 
 [template private childSelectionMethods(service : Service) post(trim())]
 [for (association : Association | service.serves.associations())]
-	[if (not association.isSingleton())]
-	    [for (selection : Selection | association.targetService().selections)]
+	[if (not association.isSingleton(service.serves))]
+	[let targetService : Service = service.entityService(association.targetType())]
+	    [for (selection : Selection | targetService.selections)]
 [service.childSelectionMethod(association, selection)/]
 
 		[/for]
+	[/let]
 	[/if]
 [/for]
 [/template]
 
-[template private childSelectionMethod(service : Service, association : ServiceAssociation, selection : Selection) post(trim())]
+[template private childSelectionMethod(service : Service, association : Association, selection : Selection) post(trim())]
 public function [association.name/][selection.instanceName().toUpperFirst()/]($[service.instanceName()/])
 {
     $criteria = Criteria::create();

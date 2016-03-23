@@ -21,7 +21,7 @@
 [if (dynamicMenu.dynamicTitle.oclIsUndefined())]
 <h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">[dynamicMenu.displayLabel/]</h1>
 [else]
-<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">{{ [dynamicMenu.instanceName()/].[dynamicMenu.dynamicTitle.modelPropertyName()/] }}</h1>
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">{{ [dynamicMenu.instanceName()/].[comment dynamicMenu dynamicTitle modelPropertyName()/] }}</h1>
 [/if]
 <ul class="[dynamicMenu.layoutClass/]">
  [menu.entries.generateMenuEntry()/]

@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module input(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -106,7 +107,7 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit) post(trim())]
-[if (not field.isContainer())]
+[if (not field.isContains())]
 {{ form_row([unit.instanceName()/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
 [else]
 [let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
