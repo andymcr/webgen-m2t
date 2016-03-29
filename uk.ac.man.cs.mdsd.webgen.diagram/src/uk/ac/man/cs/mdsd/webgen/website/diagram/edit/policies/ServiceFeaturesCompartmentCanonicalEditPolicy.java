@@ -22,8 +22,7 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceAssociationEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceAttributeEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -34,8 +33,8 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 public class ServiceFeaturesCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void refreshOnActivate() {
 		// Need to activate editpart children before invoking the canonical refresh for EditParts to add event listeners
 		List<?> c = getHost().getChildren();
@@ -46,21 +45,22 @@ public class ServiceFeaturesCompartmentCanonicalEditPolicy extends CanonicalEdit
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getService_Features();
+		return WebsitePackage.eINSTANCE.getService_Selections();
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	@SuppressWarnings("rawtypes")
+
 	protected List getSemanticChildrenList() {
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getServiceServiceFeaturesCompartment_7006SemanticChildren(viewObject);
+				.getServiceSelectionsCompartment_7006SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -68,30 +68,29 @@ public class ServiceFeaturesCompartmentCanonicalEditPolicy extends CanonicalEdit
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
 		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private boolean isMyDiagramElement(View view) {
-		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == ServiceAttributeEditPart.VISUAL_ID || visualID == ServiceAssociationEditPart.VISUAL_ID;
+		return SelectionEditPart.VISUAL_ID == WebsiteVisualIDRegistry.getVisualID(view);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void refreshSemantic() {
 		if (resolveSemanticElement() == null) {
 			return;
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getServiceServiceFeaturesCompartment_7006SemanticChildren((View) getHost().getModel());
+				.getServiceSelectionsCompartment_7006SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

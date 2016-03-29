@@ -14,7 +14,6 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnitUnitFieldCompartment6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation10EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement12EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement13EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;

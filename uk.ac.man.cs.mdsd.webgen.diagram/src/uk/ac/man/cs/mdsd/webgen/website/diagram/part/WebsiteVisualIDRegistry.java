@@ -532,14 +532,6 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getServiceAttribute().isSuperTypeOf(domainElement.eClass())) {
-				return ServiceAttributeEditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getServiceAssociation().isSuperTypeOf(domainElement.eClass())) {
-				return ServiceAssociationEditPart.VISUAL_ID;
-			}
-			break;
-		case ServiceSelectionCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getSelection().isSuperTypeOf(domainElement.eClass())) {
 				return SelectionEditPart.VISUAL_ID;
 			}
@@ -670,9 +662,6 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			if (ServiceFeaturesCompartmentEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (ServiceSelectionCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1264,16 +1253,6 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ServiceAttributeEditPart.VISUAL_ID:
-			if (ServiceAttributeNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case ServiceAssociationEditPart.VISUAL_ID:
-			if (ServiceAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
 		case SelectionEditPart.VISUAL_ID:
 			if (SelectionNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1665,14 +1644,6 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-			if (ServiceAttributeEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (ServiceAssociationEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case ServiceSelectionCompartmentEditPart.VISUAL_ID:
 			if (SelectionEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1801,7 +1772,6 @@ public class WebsiteVisualIDRegistry {
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-		case ServiceSelectionCompartmentEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;
@@ -1882,8 +1852,6 @@ public class WebsiteVisualIDRegistry {
 		case FeatureSupportActionEditPart.VISUAL_ID:
 		case ImageAttributeEditPart.VISUAL_ID:
 		case ActionMenuEntryEditPart.VISUAL_ID:
-		case ServiceAttributeEditPart.VISUAL_ID:
-		case ServiceAssociationEditPart.VISUAL_ID:
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
 		case ModelLabelEditPart.VISUAL_ID:

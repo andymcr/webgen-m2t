@@ -704,18 +704,6 @@ public class WebsiteElementTypes {
 			"uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"); //$NON-NLS-1$
 
 	/**
-	* @generated
-	*/
-	public static final IElementType ServiceAttribute_3241 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceAttribute_3241"); //$NON-NLS-1$
-
-	/**
-	* @generated
-	*/
-	public static final IElementType ServiceAssociation_3242 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ServiceAssociation_3242"); //$NON-NLS-1$
-
-	/**
 	 * @generated
 	 */
 	public static final IElementType AssociationWithoutContainment_4001 = getElementType(
@@ -992,10 +980,6 @@ public class WebsiteElementTypes {
 
 			elements.put(EditStaticTextMenuEntry_3156, WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
 
-			elements.put(ServiceAttribute_3241, WebsitePackage.eINSTANCE.getServiceAttribute());
-
-			elements.put(ServiceAssociation_3242, WebsitePackage.eINSTANCE.getServiceAssociation());
-
 			elements.put(Selection_3150, WebsitePackage.eINSTANCE.getSelection());
 
 			elements.put(AssociationWithoutContainment_4001,
@@ -1132,8 +1116,6 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(DateField_3212);
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
-			KNOWN_ELEMENT_TYPES.add(ServiceAttribute_3241);
-			KNOWN_ELEMENT_TYPES.add(ServiceAssociation_3242);
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithoutContainment_4001);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithContainment_4002);
@@ -1366,10 +1348,6 @@ public class WebsiteElementTypes {
 			return ActionMenuEntry_3236;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return EditStaticTextMenuEntry_3156;
-		case ServiceAttributeEditPart.VISUAL_ID:
-			return ServiceAttribute_3241;
-		case ServiceAssociationEditPart.VISUAL_ID:
-			return ServiceAssociation_3242;
 		case SelectionEditPart.VISUAL_ID:
 			return Selection_3150;
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:

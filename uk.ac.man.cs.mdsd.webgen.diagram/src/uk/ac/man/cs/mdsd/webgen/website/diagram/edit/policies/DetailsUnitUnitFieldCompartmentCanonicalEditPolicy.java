@@ -25,7 +25,6 @@ import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation3EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement4EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;

@@ -971,11 +971,6 @@ public class Messages extends NLS {
 	public static String ServiceFeaturesCompartmentEditPart_title;
 
 	/**
-	* @generated
-	*/
-	public static String ServiceSelectionCompartmentEditPart_title;
-
-	/**
 	 * @generated
 	 */
 	public static String CommandName_OpenDiagram;

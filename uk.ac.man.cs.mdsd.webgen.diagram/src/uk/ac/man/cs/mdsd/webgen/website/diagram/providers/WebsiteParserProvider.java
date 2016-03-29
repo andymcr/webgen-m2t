@@ -1873,40 +1873,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	* @generated
-	*/
-	private IParser serviceAttributeName_5249Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getServiceAttributeName_5249Parser() {
-		if (serviceAttributeName_5249Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getServiceAttribute_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			serviceAttributeName_5249Parser = parser;
-		}
-		return serviceAttributeName_5249Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser serviceAssociationName_5250Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getServiceAssociationName_5250Parser() {
-		if (serviceAssociationName_5250Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getServiceAssociation_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			serviceAssociationName_5250Parser = parser;
-		}
-		return serviceAssociationName_5250Parser;
-	}
-
-	/**
 	 * @generated
 	 */
 	private IParser associationWithoutContainmentName_6001Parser;
@@ -2193,10 +2159,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getActionMenuEntryName_5243Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntryName_5164Parser();
-		case ServiceAttributeNameEditPart.VISUAL_ID:
-			return getServiceAttributeName_5249Parser();
-		case ServiceAssociationNameEditPart.VISUAL_ID:
-			return getServiceAssociationName_5250Parser();
 		case SelectionNameEditPart.VISUAL_ID:
 			return getSelectionName_5158Parser();
 		case AssociationWithoutContainmentNameEditPart.VISUAL_ID:
