@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
@@ -12,8 +13,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::detailsMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::editMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::indexMethods/]
-[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::searchMethods/]
-[comment import uk::ac::man::cs::mdsd::jsf::m2t::symfony::files::controllers::staticMethods/]
 
 
 [template public controller(page : Page)]
@@ -21,10 +20,10 @@
 <?php
 namespace [page.controllersNamespace()/];
 
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet())]
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet())]
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -86,7 +85,7 @@ public function [deleteAction.actionName()/]([unit.actionMethodParameters(page)/
     try
     {
         $[deleteAction.instanceName()/] = [unit.loadInstance()/];
-		$this->get('[deleteAction.usedBy.oclAsType(IndexUnit).services->first().instanceName()/]')->remove($[deleteAction.instanceName()/], true);
+		$this->get('[deleteAction.usedBy.oclAsType(IndexUnit).service().instanceName()/]')->remove($[deleteAction.instanceName()/], true);
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
         $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
 [/if]

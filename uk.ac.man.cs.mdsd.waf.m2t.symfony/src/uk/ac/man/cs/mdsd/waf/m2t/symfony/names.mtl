@@ -235,7 +235,7 @@
 
 [query public modelName(action : DeleteAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).services->first().name
+			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
 			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif
@@ -243,7 +243,7 @@
 
 [query public modelName(action : FeatureSupportAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit).services->first().name
+			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
 			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif

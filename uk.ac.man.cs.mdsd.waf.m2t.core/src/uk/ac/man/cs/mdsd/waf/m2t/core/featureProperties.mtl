@@ -98,21 +98,6 @@
 	= service.partOf.service(entityOrView)
 /]
 
-[comment for Kohana/]
-[query public tableName(service : Service) : String
-	= service.encapsulates->first().tableName
-/]
-
-
-[query public hasHtml5Attributes(feature : ServiceFeature) : Boolean
-	= if feature.oclIsKindOf(ServiceAttribute) then
-			let attribute : ServiceAttribute = feature.oclAsType(ServiceAttribute)
-				in not attribute.placeholder.oclIsUndefined() or not attribute.validationPattern.oclIsUndefined()
-		else
-			false
-		endif
-/]
-
 
 [query public matchingActual(f : Filter, parameter : SelectionParameter) : FilterParameter
 	= f.parameters->any(p | if p.formal.oclIsUndefined() then
@@ -518,6 +503,14 @@
 	= unit->collect(targettingSearches.displayFields)
 /]
 
+[query public service(unit : DynamicUnit) : Service
+	= if unit.entities->size() > 0 then
+			unit.pageDisplayedOn().partOf.service(unit.entities->first())
+		else
+			null
+		endif
+/]
+
 [query public submitLabel(unit : DynamicUnit) : String
 	= if unit.oclIsKindOf(EditUnit) then
 			unit.oclAsType(EditUnit).confirmLabel
@@ -568,20 +561,6 @@
 		else 
 			'UnhandledField'
 		endif endif
-/]
-
-[query public formName(feature : ServiceFeature) : String
-	= ''
---	= if feature.oclIsTypeOf(ServiceAttribute) then
---			feature.oclAsType(ServiceAttribute).attribute.columnName()
---		else let association : ServiceAssociation
---			= feature.oclAsType(ServiceAssociation)
---			in if association.isSingleton() and association.isOwningEnd() then
---					association.association.columnName()
---				else
---					association.modelPropertyName()
---				endif
---		endif
 /]
 
 [query public formName(field : UnitField) : String

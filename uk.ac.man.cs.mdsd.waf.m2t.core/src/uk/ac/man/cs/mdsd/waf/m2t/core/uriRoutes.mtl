@@ -1,0 +1,80 @@
+[comment encoding = UTF-8 /]
+[module uriRoutes(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+
+
+[query public uriPathKeys(entityOrView : EntityOrView) : Sequence(EntityAttribute)
+	= let localKeys : Sequence(EntityAttribute) = entityOrView.attributeKeys()
+		in if entityOrView.isContained() then
+			let parentKeys : Sequence(EntityAttribute) = entityOrView.container().uriPathKeys()
+				in if localKeys->isEmpty() then
+						parentKeys
+					else if parentKeys->isEmpty() then
+						localKeys
+					else
+						localKeys->iterate(k; j : Sequence(EntityAttribute) = parentKeys | j->append(k))
+					endif endif
+			else
+				localKeys
+			endif
+/]
+
+[query public keyEntity(entityOrView : EntityOrView) : EntityOrView
+	= if entityOrView.attributeKeys()->notEmpty() then
+			entityOrView
+		else if entityOrView.isContained() then
+			entityOrView.container().keyEntity()
+		else
+			null
+		endif endif
+/]
+
+[query private parentUriPathKeys(entityOrView : EntityOrView) : Sequence(EntityAttribute)
+	= let keyEntity : EntityOrView
+		= entityOrView.keyEntity()
+		in if keyEntity.oclIsUndefined() then
+				Sequence{}
+			else if not keyEntity.isContained() then
+				Sequence{}
+			else
+				keyEntity.container().uriPathKeys()
+			endif endif
+/]
+
+[query public hasRouteParameters(entityOrView : EntityOrView) : Boolean
+	= entityOrView.uriPathKeys()->notEmpty()
+/]
+
+[query public uriCommonPathKeys(page : Page) : Sequence(EntityAttribute)
+	= if page.units->isEmpty() then
+			Sequence{}
+		else if page.units->size() = 1 then
+			page.units->first().uriPathKeys()
+		else
+			page.units->subOrderedSet(2, page.units->size())->iterate(u;
+				common : Sequence(EntityAttribute) = page.units->first().uriPathKeys()
+				| common->select(k | u.uriPathKeys()->includes(k)))
+		endif endif
+/]
+
+[query public uriPathKeys(unit : ContentUnit) : Sequence(EntityAttribute)
+	= if not unit.oclIsKindOf(DynamicUnit) then
+			Sequence{}
+		else 
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+				in if dynamicUnit.entities->isEmpty() then
+						Sequence{}
+					else
+						let entityOrView : EntityOrView
+							= dynamicUnit.entities->first()
+							in if unit.oclIsKindOf(Selectable) then
+									entityOrView.uriPathKeys()
+								else
+									entityOrView.parentUriPathKeys()
+								endif
+					endif
+		endif
+/]

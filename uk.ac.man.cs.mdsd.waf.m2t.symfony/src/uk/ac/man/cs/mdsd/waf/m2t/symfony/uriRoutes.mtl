@@ -5,8 +5,13 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
+[template public routeParameters(entityOrView : EntityOrView) post(trim())]
+[for (key : EntityAttribute | entityOrView.uriPathKeys()) separator (', ')]
+$[key.routeParameterName()/][/for]
+[/template]
 
 [query public routeParameterName(attribute : EntityAttribute) : String
 	= attribute.partOf.modelName().toLowerFirst()
@@ -14,42 +19,44 @@
 /]
 
 
-[query public hasRouteParameters(entityOrView : EntityOrView) : Boolean
-	= entityOrView.uriPathKeys()->notEmpty()
-/]
-
-[template public routeParameters(entityOrView : EntityOrView) post(trim())]
-[for (key : EntityAttribute | entityOrView.uriPathKeys()) separator (', ')]
-$[key.routeParameterName()/][/for]
-[/template]
-
-[query public uriPathKeys(entityOrView : EntityOrView) : Sequence(EntityAttribute)
-	= let localKeys : Sequence(EntityAttribute) = entityOrView.attributeKeys()
-		in if entityOrView.isContained() then
-			let parentKeys : Sequence(EntityAttribute) = entityOrView.container().uriPathKeys()
-				in if localKeys->isEmpty() then
-						parentKeys
-					else if parentKeys->isEmpty() then
-						localKeys
-					else
-						localKeys->iterate(k; j : Sequence(EntityAttribute) = parentKeys | j->append(k))
-					endif endif
+[query private parentUriPath(entityOrView : EntityOrView) : String
+	= let keyEntity : EntityOrView
+		= entityOrView.keyEntity()
+		in if keyEntity.oclIsUndefined() then
+				''
+			else if not keyEntity.isContained() then
+				''
 			else
-				localKeys
-			endif
+				keyEntity.container().uriPath()
+			endif endif
 /]
 
-
-[query public uriCommonPathKeys(page : Page) : Sequence(EntityAttribute)
-	= if page.units->isEmpty() then
-			Sequence{}
-		else if page.units->size() = 1 then
-			page.units->first().uriPathKeys()
-		else
-			page.units->subOrderedSet(2, page.units->size())->iterate(u;
-				common : Sequence(EntityAttribute) = page.units->first().uriPathKeys()
-				| common->select(k | u.uriPathKeys()->includes(k)))
-		endif endif
+[query public uriPath(entityOrView : EntityOrView) : String
+	= let keyEntity : EntityOrView = entityOrView.keyEntity()
+		in if keyEntity.oclIsUndefined() then
+				''
+			else
+				let keyPath : String
+					= keyEntity.attributeKeys()
+						->collect(k | k.routeParameterName())->sep('{', '}/{', '}')->toString()
+					in if not keyEntity.isContained() then
+							keyPath
+						else
+							let parentPath : String
+								= keyEntity.container().uriPath()
+								in if parentPath = '' then
+										keyEntity.containingAssociation().opposite.name
+											.concat('/')
+											.concat(keyPath)
+									else
+										parentPath
+											.concat('/')
+											.concat(keyEntity.containingAssociation().opposite.name)
+											.concat('/')
+											.concat(keyPath)
+									endif
+						endif
+			endif
 /]
 
 [query public uriPath(page : Page) : String
@@ -67,27 +74,24 @@ $[key.routeParameterName()/][/for]
 		endif
 /]
 
-
-[query public hasRouteParameters(unit : ContentUnit) : Boolean
-	= unit.uriPathKeys()->notEmpty()
-/]
-
-[query public pageUriPath(unit : ContentUnit) : String
-	= unit.pageDisplayedOn().uriPath()
-/]
-
-[query public parentUriPath(pageUriPath : String, serviceUriPath : String) : String
-	= if pageUriPath = '' then
-			serviceUriPath
-		else if serviceUriPath = '' then
-			pageUriPath
+[query private entityUriPath(unit : ContentUnit, create : Boolean) : String
+	= if not unit.oclIsKindOf(DynamicUnit) then
+			''
 		else
-			pageUriPath.concat('/').concat(serviceUriPath)
-		endif endif
-/]
-
-[query public supportUriPath(unit : ContentUnit) : String
-	= unit.uriPath().concat('/support')
+			let dynamicUnit : DynamicUnit
+				= unit.oclAsType(DynamicUnit)
+				in if dynamicUnit.entities->isEmpty() then
+						''
+					else
+						let entityOrView : EntityOrView
+							= dynamicUnit.entities->first()
+							in if unit.oclIsKindOf(Selectable) and not create then
+									entityOrView.uriPath()
+								else
+									entityOrView.parentUriPath()
+								endif
+					endif
+		endif
 /]
 
 [query public uriPath(unit : ContentUnit) : String
@@ -95,41 +99,48 @@ $[key.routeParameterName()/][/for]
 /]
 
 [query public uriPath(unit : ContentUnit, create : Boolean) : String
-	= ''
---	= let parentUriPath : String
---		= unit.pageUriPath().parentUriPath(unit.serviceUriPath(create))
---		in let uriElement : String
---			= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
---					unit.oclAsType(CreateUpdateUnit).createUriElement
---				else
---					unit.uriElement
---				endif
---			in if parentUriPath = '' then
---					uriElement
---				else if uriElement = '' then
---					parentUriPath
---				else
---					parentUriPath.concat('/').concat(uriElement)
---				endif endif
+	= let localPath : String
+		= let entityPath : String
+			= unit.entityUriPath(create)
+			in let uriElement : String
+				= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
+						'create'
+					else
+						unit.uriElement
+					endif
+				in if uriElement = '' then
+						entityPath
+					else if entityPath = ''  then
+						uriElement
+					else
+						entityPath.concat('/').concat(uriElement)
+					endif endif
+		in let pagePath : String
+			= unit.pageDisplayedOn().uriPath()
+			in if localPath = '' then
+					pagePath
+				else if pagePath = '' then
+					localPath
+				else
+					pagePath.concat('/').concat(localPath)
+				endif endif
 /]
 
-[query public uriPathKeys(unit : ContentUnit) : Sequence(EntityAttribute)
-	= if not unit.oclIsKindOf(DynamicUnit) then
-			Sequence{}
-		else 
-			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-				in if dynamicUnit.entities->isEmpty() then
-						Sequence{}
-					else
-						dynamicUnit.entities->first().uriPathKeys()
-					endif
-		endif
+[query public supportUriPath(unit : ContentUnit) : String
+	= unit.uriPath().concat('/support')
 /]
 
 [query public uriPath(action : DeleteAction) : String
-	= ''
---	= action.immediateUnit().containingUnit().pageUriPath().parentUriPath(
---			action.immediateUnit().services->first().uriPath())
---		.concat('/').concat(action.uriElement)
+	= let localPath : String
+		= action.immediateUnit().entities->first().uriPath()
+			.concat('/').concat(action.uriElement)
+		in let pagePath : String
+			= action.immediateUnit().pageDisplayedOn().uriPath()
+			in if localPath = '' then
+					pagePath
+				else if pagePath = '' then
+					localPath
+				else
+					pagePath.concat('/').concat(localPath)
+				endif endif
 /]
-

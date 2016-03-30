@@ -18,7 +18,7 @@
 [template private generateMenuEntries(menu : Menu)
 	? (menu.oclIsTypeOf(DynamicMenu)) post(trim())]
 [let dynamicMenu : DynamicMenu = menu.oclAsType(DynamicMenu)]
-[if (dynamicMenu.dynamicTitle.oclIsUndefined())]
+[if (dynamicMenu.title.oclIsUndefined())]
 <h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">[dynamicMenu.displayLabel/]</h1>
 [else]
 <h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">{{ [dynamicMenu.instanceName()/].[comment dynamicMenu dynamicTitle modelPropertyName()/] }}</h1>

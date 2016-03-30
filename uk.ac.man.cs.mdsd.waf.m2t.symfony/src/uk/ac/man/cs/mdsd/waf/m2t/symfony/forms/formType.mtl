@@ -42,7 +42,7 @@ class [entityOrView.typeClassName()/] extends AbstractType
 [/template]
 
 [template private conditionalFormTypeUse(entityOrView : EntityOrView) post(trim())]
-[if (entityOrView.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.interfaceType = 'checkbox')->notEmpty())]
+[if (entityOrView.features->select(f | f.isBooleanDataType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
 [if (entityOrView.features->select(f | f.isEnumerationType())->notEmpty())]
@@ -51,32 +51,32 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [if (entityOrView.associations()->select(a | not a.isSingleton())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
-[if (entityOrView.attributes()->select(a | a.interfaceType = 'date')->notEmpty())]
+[if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::DateOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (entityOrView.attributes()->select(a | a.interfaceType = 'datetime')->notEmpty())]
+[if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (entityOrView.attributes()->select(a | a.interfaceType = 'email')->notEmpty())]
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'email')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (entityOrView.attributes()->select(a | a.interfaceType = 'integer')->notEmpty())]
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'integer')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (entityOrView.attributes()->select(a | a.interfaceType = 'text')->notEmpty()
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'text')->notEmpty()
 		or entityOrView.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.attribute.oclIsTypeOf(SingletonURL))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (entityOrView.attributes()->select(a | a.interfaceType = 'textarea')->notEmpty())]
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'textarea')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TestareaType;
 [/if]
-[if (entityOrView.attributes()->select(a | a.interfaceType = 'time')->notEmpty())]
+[if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 [/template]
 
 [template private associationTypeUse(entityOrView : EntityOrView) post(trim())]
-[for (feature : Feature | entityOrView.features->select(f | f.isEnumerationTypeSingleton()))]
+[for (feature : Feature | entityOrView.features->select(f | f.isEnumerationType()))]
 use [entityOrView.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
 [if (entityOrView.features->select(f | f.oclIsTypeOf(ServiceAssociation))->notEmpty())]
@@ -92,15 +92,17 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [if (not attribute.isRequired())]
     'required' => FALSE,
 [/if]
-[if (attribute.interfaceType = 'datetime')]
+[if (attribute.isDate())]
+	[if (attribute.dateDetails() = DateDetails::DateAndTime)]
     'date_widget' => 'single_text',
     'time_widget' => 'single_text',
-[elseif (attribute.interfaceType = 'date' or attribute.interfaceType = 'time')]
+	[elseif (attribute.dateDetails() <> DateDetails::DateAndTime)]
     'widget' => 'single_text',
-	[if (attribute.interfaceType = 'time')]
+		[if (attribute.dateDetails() = DateDetails::TimeOnly)]
     'with_seconds' => TRUE,
+		[/if]
 	[/if]
-[elseif (attribute.isEnumerationTypeSingleton())]
+[elseif (attribute.isEnumerationType())]
     'choices' => [attribute.enumerationType().modelName()/]::values(),
     'placeholder' => 'Please select one',
 [/if]
@@ -123,22 +125,28 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 ChoiceType::class
 [comment elseif (attribute.isEnumerationTypeSingleton())/]
 [comment PasswordType::class /]
-[elseif (attribute.interfaceType = 'checkbox')]
+[elseif (attribute.isDataType())]
+	[if (attribute.dataType().name = 'checkbox')]
 CheckboxType::class
-[elseif (attribute.interfaceType = 'date')]
-DateType::class
-[elseif (attribute.interfaceType = 'datetime')]
-DateTimeType::class
-[elseif (attribute.interfaceType = 'email')]
+	[elseif (attribute.dataType().name = 'email')]
 EmailType::class
-[elseif (attribute.interfaceType = 'integer')]
+	[elseif (attribute.dataType().name = 'integer')]
 IntegerType::class
-[elseif (attribute.interfaceType = 'text')]
+	[elseif (attribute.dataType().name = 'text')]
 TextType::class
-[elseif (attribute.interfaceType = 'textarea')]
+	[elseif (attribute.dataType().name = 'textarea')]
 TextareaType::class
-[elseif (attribute.interfaceType = 'time')]
+	[else]
+TextType::class
+	[/if]
+[elseif (attribute.isDate())]
+	[if (attribute.dateDetails() = DateDetails::DateOnly)]
+DateType::class
+	[elseif (attribute.dateDetails() = DateDetails::DateAndTime)]
+DateTimeType::class
+	[else]
 TimeType::class
+	[/if]
 [else]
 TextType::class
 [/if]
