@@ -23,7 +23,7 @@ class [entityOrView.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-[for (feature : Feature | entityOrView.features->select(f | f.isVisible())->sortedBy(f | f.name))]
+[for (feature : Feature | entityOrView.features()->sortedBy(f | f.name))]
         $builder->[feature.formFeature()/];
 [/for]
     }
@@ -47,7 +47,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [if (entityOrView.features->select(f | f.isEnumerationType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (entityOrView.associations()->select(a | not a.isSingleton())->notEmpty())]
+[if (entityOrView.associations()->select(a | a.isContains() and not a.isSingleton())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
 [if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::DateOnly)->notEmpty())]
