@@ -47,8 +47,8 @@
 		->select(f | f.oclIsKindOf(Attribute) or f.isSingleton() and f.isVisible()).oclAsType(Feature)
 /]
 
-[query public attributeKeys(entityOrView : EntityOrView) : Sequence(EntityAttribute)
-	= entityOrView.keys->select(k | k.oclIsKindOf(EntityAttribute)).oclAsType(EntityAttribute)
+[query public attributeKeys(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.keys->select(k | k.oclIsKindOf(Attribute)).oclAsType(Attribute)
 /]
 
 [query public collectionAssociations(entityOrView : EntityOrView) : Sequence(Association)
@@ -75,6 +75,14 @@
 			else
 				associations->first()
 			endif
+/]
+
+[query public dataTypeAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.features->select(f | f.isDataType()).oclAsType(Attribute)
+/]
+
+[query public dateAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.features->select(f | f.isDate()).oclAsType(Attribute)
 /]
 
 [query public defaultValueFeatures(entityOrView : EntityOrView) : Sequence(Attribute)
@@ -158,6 +166,26 @@
 		endif endif endif
 /]
 
+[query public dataType(feature : Feature) : DataType
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.dataType()
+		else if feature.oclIsTypeOf(SingletonElement) then
+			feature.oclAsType(SingletonElement).dataType
+		else
+			null
+		endif endif
+/]
+
+[query public dateDetails(feature : Feature) : DateDetails
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.dateDetails()
+		else if feature.oclIsKindOf(DateAttribute) then
+			feature.oclAsType(DateAttribute).details
+		else
+			null
+		endif endif
+/]
+
 [query public enumerationType(feature : Feature) : EnumerationType
 	= if feature.oclIsKindOf(SingletonElement) then
 			feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)
@@ -237,11 +265,9 @@
 [query public isDataType(feature : Feature) : Boolean
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isDataType()
-		else if not feature.oclIsKindOf(SingletonElement) then
-			false
-		else let element : SingletonElement = feature.oclAsType(SingletonElement)
-			in element.dataType.oclIsTypeOf(DataType)
-		endif endif
+		else
+			feature.oclIsTypeOf(SingletonElement)
+		endif
 /]
 
 [query public isDate(feature : Feature) : Boolean
@@ -319,9 +345,11 @@
 			feature.oclAsType(SingletonAssociation).required
 		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isRequired()
+		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.isRequired()
 		else
 			false
-		endif endif endif
+		endif endif endif endif
 /]
 
 [query public isSingleton(feature : Feature) : Boolean

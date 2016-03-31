@@ -26,7 +26,9 @@
 [query public modelName(association : Association) : String
 	= if association.oclIsKindOf(EntityAssociation) then
 			association.oclAsType(EntityAssociation).opposite.partOf.modelName()
+		else if association.oclIsTypeOf(EncapsulatedAssociation) then
+			association.oclAsType(EncapsulatedAssociation).association.modelName()
 		else
 			'xxx'
-		endif
+		endif endif
 /]

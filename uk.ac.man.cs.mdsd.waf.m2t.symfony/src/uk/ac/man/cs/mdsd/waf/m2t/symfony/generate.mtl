@@ -46,10 +46,6 @@
 
 
 [template public symfony(model : WafModel)]
-[file ('xyyy.txt', false)]
-model [model/]
-pages [model.pages->size()/]
-[/file]
 [model.appKernel()/]
 
 [model.config()/]
@@ -68,7 +64,7 @@ pages [model.pages->size()/]
 [model.appBundle()/]
 [comment model.unitsNeedingModels().model()/]
 [model.persistence.enumerationTypes().formType()/]
-[comment model.persistence.entitiesAndViews.formType()/]
+[model.persistence.entitiesAndViews.formType()/]
 [comment model.unitsNeedingModels().formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller()/]
 

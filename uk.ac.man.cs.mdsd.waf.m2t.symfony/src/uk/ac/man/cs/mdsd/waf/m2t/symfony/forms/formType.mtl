@@ -16,17 +16,14 @@
 namespace [entityOrView.formTypeNamespace()/];
 
 [entityOrView.associationTypeUse()/]
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-[entityOrView.conditionalFormTypeUse()/]
-use Symfony\Component\OptionsResolver\OptionsResolver;
+[entityOrView.useStatements()/]
 
 
 class [entityOrView.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-[for (feature : Feature | entityOrView.features)]
+[for (feature : Feature | entityOrView.features->select(f | f.isVisible())->sortedBy(f | f.name))]
         $builder->[feature.formFeature()/];
 [/for]
     }
@@ -41,7 +38,9 @@ class [entityOrView.typeClassName()/] extends AbstractType
 [/file]
 [/template]
 
-[template private conditionalFormTypeUse(entityOrView : EntityOrView) post(trim())]
+[template private useStatements(entityOrView : EntityOrView) post(trim())]
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 [if (entityOrView.features->select(f | f.isBooleanDataType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
@@ -57,35 +56,36 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 [if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'email')->notEmpty())]
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'integer')->notEmpty())]
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'text')->notEmpty()
-		or entityOrView.features->select(f | f.oclIsTypeOf(ServiceAttribute)).oclAsType(ServiceAttribute)->select(a | a.attribute.oclIsTypeOf(SingletonURL))->notEmpty())]
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'string')->notEmpty()
+		or entityOrView.features->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name = 'textarea')->notEmpty())]
+[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'textarea')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TestareaType;
 [/if]
 [if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
+use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private associationTypeUse(entityOrView : EntityOrView) post(trim())]
 [for (feature : Feature | entityOrView.features->select(f | f.isEnumerationType()))]
 use [entityOrView.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
-[if (entityOrView.features->select(f | f.oclIsTypeOf(ServiceAssociation))->notEmpty())]
+[if (entityOrView.associations()->notEmpty())]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
 [/template]
 
 [template private formFeature(feature : Feature)
-	? (feature.oclIsTypeOf(Attribute)) post(trim())]
+	? (feature.oclIsKindOf(Attribute)) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'label' => '[attribute.displayLabel/]',
@@ -106,7 +106,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'choices' => [attribute.enumerationType().modelName()/]::values(),
     'placeholder' => 'Please select one',
 [/if]
-[if (attribute.hasHtml5Attributes())]
+[if (false)] [comment attribute.hasHtml5Attributes())/]
     'attr' => array(
 	[if (not attribute.placeholder.oclIsUndefined())]
         'placeholder' => '[attribute.placeholder/]',
@@ -123,18 +123,16 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [template private interfaceType(attribute : Attribute) post(trim())]
 [if (attribute.isEnumerationType())]
 ChoiceType::class
-[comment elseif (attribute.isEnumerationTypeSingleton())/]
-[comment PasswordType::class /]
-[elseif (attribute.isDataType())]
-	[if (attribute.dataType().name = 'checkbox')]
+[elseif (attribute.isBooleanDataType())]
 CheckboxType::class
-	[elseif (attribute.dataType().name = 'email')]
+[elseif (attribute.isDataType())]
+	[if (attribute.dataType().name.toLowerCase() = 'email')]
 EmailType::class
-	[elseif (attribute.dataType().name = 'integer')]
+	[elseif (attribute.dataType().name.toLowerCase() = 'integer')]
 IntegerType::class
-	[elseif (attribute.dataType().name = 'text')]
+	[elseif (attribute.dataType().name.toLowerCase() = 'text')]
 TextType::class
-	[elseif (attribute.dataType().name = 'textarea')]
+	[elseif (attribute.dataType().name.toLowerCase() = 'textarea')]
 TextareaType::class
 	[else]
 TextType::class
@@ -152,9 +150,9 @@ TextType::class
 [/if]
 [/template]
 
-[template private formFeature(feature : ServiceFeature)
-	? (feature.oclIsTypeOf(ServiceAssociation) and not feature.isContainer()) post(trim())]
-[let association : ServiceAssociation = feature.oclAsType(ServiceAssociation)]
+[template private formFeature(feature : Feature)
+	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
     'label' => '[association.displayLabel/]',
 [if (not association.isRequired())]
@@ -169,14 +167,14 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 [/let]
 [/template]
 
-[template private formFeature(feature : ServiceFeature)
-	? (feature.oclIsTypeOf(ServiceAssociation) and feature.isContainer()) post(trim())]
-[let association : ServiceAssociation = feature.oclAsType(ServiceAssociation)]
+[template private formFeature(feature : Feature)
+	? (feature.oclIsKindOf(Association) and feature.isContains()) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
 [if (association.isSingleton())]
-add('[association.modelPropertyName()/]', [association.targetService().typeClassName()/]::class)
+add('[association.modelPropertyName()/]', [association.targetType().typeClassName()/]::class)
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(
-    'entry_type' => [association.targetService().typeClassName()/]::class,
+    'entry_type' => [association.targetType().typeClassName()/]::class,
     'allow_add' => true,
 ))
 [/if]
