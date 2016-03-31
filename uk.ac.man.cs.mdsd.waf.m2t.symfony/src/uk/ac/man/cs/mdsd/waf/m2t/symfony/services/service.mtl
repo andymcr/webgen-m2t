@@ -64,14 +64,16 @@ public function find([service.serves.routeParameters()/])
 [if (service.serves.isContained() or service.serves.hasAssociationKeys())]
         [service.keyJoin(service.serves)/]
 [/if]
-[if (service.serves.uriPathKeys()->size() < 2)]
+[if (service.serves.uriPathKeys()->notEmpty())]
+	[if (service.serves.uriPathKeys()->size() < 2)]
         ->where([service.serves.uriPathKeys()->first().findWhere(service)/])
-[else]
+	[else]
         ->where(
             [service.serves.findWhere(service) /]
         )
+	[/if]
 [/if]
-[for (key : EntityAttribute | service.serves.uriPathKeys())]
+[for (key : Attribute | service.serves.uriPathKeys())]
         ->setParameter('[key.routeParameterName()/]', $[key.routeParameterName()/])
 [/for]
         ->getQuery()->getSingleResult();
@@ -95,16 +97,16 @@ public function find([service.serves.routeParameters()/])
 [/template]
 
 [template private findWhere(entityOrView : EntityOrView, service : Service) post(trim())]
-[let keys : Sequence(EntityAttribute) = entityOrView.uriPathKeys()]
-[for (key : EntityAttribute | keys->subSequence(1, keys->size() - 1))]
+[let keys : Sequence(Attribute) = entityOrView.uriPathKeys()]
+[for (key : Attribute | keys->subSequence(1, keys->size() - 1))]
 $queryBuilder->expr()->andX([key.findWhere(service)/],
 [/for]
 [keys->last().findWhere(service)/]
-[for (key : EntityAttribute | keys->subSequence(1, keys->size() - 1))])[/for]
+[for (key : Attribute | keys->subSequence(1, keys->size() - 1))])[/for]
 [/let]
 [/template]
 
-[template private findWhere(key : EntityAttribute, service : Service) post(trim())]
+[template private findWhere(key : Attribute, service : Service) post(trim())]
 $queryBuilder->expr()->eq('[service.entityService(key.partOf).selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]')
 [/template]
 

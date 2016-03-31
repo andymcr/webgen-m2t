@@ -9,11 +9,11 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 [template public routeParameters(entityOrView : EntityOrView) post(trim())]
-[for (key : EntityAttribute | entityOrView.uriPathKeys()) separator (', ')]
+[for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
 $[key.routeParameterName()/][/for]
 [/template]
 
-[query public routeParameterName(attribute : EntityAttribute) : String
+[query public routeParameterName(attribute : Attribute) : String
 	= attribute.partOf.modelName().toLowerFirst()
 		.concat(attribute.name.toUpperFirst())
 /]
