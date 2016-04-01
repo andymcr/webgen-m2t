@@ -72,7 +72,7 @@ public class ViewAssociationCreateCommand extends EditElementCommand {
 		}
 
 		ViewAssociation newElement = WebsiteFactory.eINSTANCE.createViewAssociation();
-		getSource().getFeatures().add(newElement);
+		getSource().getViewFeatures().add(newElement);
 		newElement.setOpposite(getTarget());
 		doConfigure(newElement, monitor, info);
 		((CreateElementRequest) getRequest()).setNewElement(newElement);

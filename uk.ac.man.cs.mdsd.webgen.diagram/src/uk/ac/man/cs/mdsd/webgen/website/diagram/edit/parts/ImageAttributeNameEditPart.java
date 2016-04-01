@@ -57,7 +57,7 @@ public class ImageAttributeNameEditPart extends CompartmentEditPart implements I
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5242;
+	public static final int VISUAL_ID = 5264;
 
 	/**
 	 * @generated
@@ -291,7 +291,7 @@ public class ImageAttributeNameEditPart extends CompartmentEditPart implements I
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ImageAttribute_3235, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ImageAttribute_3256, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageAttributeNameEditPart.VISUAL_ID));
 		}

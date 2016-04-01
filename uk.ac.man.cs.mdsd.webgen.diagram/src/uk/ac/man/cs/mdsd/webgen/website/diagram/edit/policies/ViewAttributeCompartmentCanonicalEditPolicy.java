@@ -49,7 +49,7 @@ public class ViewAttributeCompartmentCanonicalEditPolicy extends CanonicalEditPo
 	* @generated
 	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getView_Features();
+		return WebsitePackage.eINSTANCE.getView_ViewFeatures();
 	}
 
 	/**

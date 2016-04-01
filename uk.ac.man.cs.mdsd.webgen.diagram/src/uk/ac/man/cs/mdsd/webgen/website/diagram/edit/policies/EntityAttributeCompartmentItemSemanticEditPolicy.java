@@ -27,22 +27,22 @@ public class EntityAttributeCompartmentItemSemanticEditPolicy extends WebsiteBas
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.DataTypeAttribute_3054 == req.getElementType()) {
+		if (WebsiteElementTypes.DataTypeAttribute_3252 == req.getElementType()) {
 			return getGEFWrapper(new DataTypeAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.DateAttribute_3014 == req.getElementType()) {
+		if (WebsiteElementTypes.DateAttribute_3253 == req.getElementType()) {
 			return getGEFWrapper(new DateAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.UrlAttribute_3251 == req.getElementType()) {
+		if (WebsiteElementTypes.UrlAttribute_3254 == req.getElementType()) {
 			return getGEFWrapper(new UrlAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.FileAttribute_3152 == req.getElementType()) {
+		if (WebsiteElementTypes.FileAttribute_3255 == req.getElementType()) {
 			return getGEFWrapper(new FileAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.ImageAttribute_3235 == req.getElementType()) {
+		if (WebsiteElementTypes.ImageAttribute_3256 == req.getElementType()) {
 			return getGEFWrapper(new ImageAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.LocationAttribute_3230 == req.getElementType()) {
+		if (WebsiteElementTypes.LocationAttribute_3257 == req.getElementType()) {
 			return getGEFWrapper(new LocationAttributeCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

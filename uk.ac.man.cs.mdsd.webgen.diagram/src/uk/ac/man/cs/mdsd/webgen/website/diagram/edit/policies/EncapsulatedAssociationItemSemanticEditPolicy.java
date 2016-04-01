@@ -27,7 +27,7 @@ public class EncapsulatedAssociationItemSemanticEditPolicy extends WebsiteBaseIt
 	* @generated
 	*/
 	public EncapsulatedAssociationItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.EncapsulatedAssociation_3244);
+		super(WebsiteElementTypes.EncapsulatedAssociation_3259);
 	}
 
 	/**

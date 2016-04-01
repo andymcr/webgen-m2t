@@ -1008,7 +1008,7 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_EncapsulatedAssociation_3244_incominglinks;
+	public static String NavigatorGroupName_EncapsulatedAssociation_3259_incominglinks;
 
 	/**
 	 * @generated

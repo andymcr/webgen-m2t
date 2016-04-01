@@ -57,7 +57,7 @@ public class UrlAttributeNameEditPart extends CompartmentEditPart implements ITe
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5259;
+	public static final int VISUAL_ID = 5262;
 
 	/**
 	* @generated
@@ -291,7 +291,7 @@ public class UrlAttributeNameEditPart extends CompartmentEditPart implements ITe
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.UrlAttribute_3251, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.UrlAttribute_3254, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UrlAttributeNameEditPart.VISUAL_ID));
 		}
@@ -519,6 +519,7 @@ public class UrlAttributeNameEditPart extends CompartmentEditPart implements ITe
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class key) {
 		if (ILabelDelegate.class.equals(key)) {

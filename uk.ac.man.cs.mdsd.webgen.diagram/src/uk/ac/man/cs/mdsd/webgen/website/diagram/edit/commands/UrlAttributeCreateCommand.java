@@ -55,7 +55,7 @@ public class UrlAttributeCreateCommand extends EditElementCommand {
 		UrlAttribute newElement = WebsiteFactory.eINSTANCE.createUrlAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
-		owner.getFeatures().add(newElement);
+		owner.getEntityFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

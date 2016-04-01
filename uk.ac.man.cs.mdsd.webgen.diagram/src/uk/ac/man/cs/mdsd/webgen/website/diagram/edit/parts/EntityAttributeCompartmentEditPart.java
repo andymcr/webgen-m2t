@@ -75,7 +75,7 @@ public class EntityAttributeCompartmentEditPart extends ListCompartmentEditPart 
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new EntityAttributeCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.ENTITY__FEATURES));
+				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.ENTITY__ENTITY_FEATURES));
 	}
 
 	/**
@@ -94,22 +94,22 @@ public class EntityAttributeCompartmentEditPart extends ListCompartmentEditPart 
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DataTypeAttribute_3054) {
+			if (type == WebsiteElementTypes.DataTypeAttribute_3252) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DateAttribute_3014) {
+			if (type == WebsiteElementTypes.DateAttribute_3253) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UrlAttribute_3251) {
+			if (type == WebsiteElementTypes.UrlAttribute_3254) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.FileAttribute_3152) {
+			if (type == WebsiteElementTypes.FileAttribute_3255) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.ImageAttribute_3235) {
+			if (type == WebsiteElementTypes.ImageAttribute_3256) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.LocationAttribute_3230) {
+			if (type == WebsiteElementTypes.LocationAttribute_3257) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

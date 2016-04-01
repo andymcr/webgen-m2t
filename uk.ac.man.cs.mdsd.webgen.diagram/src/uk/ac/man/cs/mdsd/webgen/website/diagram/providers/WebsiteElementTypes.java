@@ -158,38 +158,40 @@ public class WebsiteElementTypes {
 	public static final IElementType EnumerationLiteral_3028 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3028"); //$NON-NLS-1$
 	/**
-	 * @generated
-	 */
-	public static final IElementType DataTypeAttribute_3054 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeAttribute_3054"); //$NON-NLS-1$
-	/**
-	 * @generated
-	 */
-	public static final IElementType DateAttribute_3014 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3014"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType DataTypeAttribute_3252 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DataTypeAttribute_3252"); //$NON-NLS-1$
+
 	/**
 	* @generated
 	*/
-	public static final IElementType UrlAttribute_3251 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.UrlAttribute_3251"); //$NON-NLS-1$
+	public static final IElementType DateAttribute_3253 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DateAttribute_3253"); //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
-	public static final IElementType FileAttribute_3152 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.FileAttribute_3152"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType UrlAttribute_3254 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.UrlAttribute_3254"); //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
-	public static final IElementType ImageAttribute_3235 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.ImageAttribute_3235"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType FileAttribute_3255 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.FileAttribute_3255"); //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
-	public static final IElementType LocationAttribute_3230 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3230"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType ImageAttribute_3256 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ImageAttribute_3256"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType LocationAttribute_3257 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.LocationAttribute_3257"); //$NON-NLS-1$
 
 	/**
 	* @generated
@@ -206,14 +208,14 @@ public class WebsiteElementTypes {
 	/**
 	* @generated
 	*/
-	public static final IElementType EncapsulatedAttribute_3243 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAttribute_3243"); //$NON-NLS-1$
+	public static final IElementType EncapsulatedAttribute_3258 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAttribute_3258"); //$NON-NLS-1$
 
 	/**
 	* @generated
 	*/
-	public static final IElementType EncapsulatedAssociation_3244 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAssociation_3244"); //$NON-NLS-1$
+	public static final IElementType EncapsulatedAssociation_3259 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAssociation_3259"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -788,25 +790,25 @@ public class WebsiteElementTypes {
 
 			elements.put(EnumerationLiteral_3028, WebsitePackage.eINSTANCE.getEnumerationLiteral());
 
-			elements.put(DataTypeAttribute_3054, WebsitePackage.eINSTANCE.getDataTypeAttribute());
+			elements.put(DataTypeAttribute_3252, WebsitePackage.eINSTANCE.getDataTypeAttribute());
 
-			elements.put(DateAttribute_3014, WebsitePackage.eINSTANCE.getDateAttribute());
+			elements.put(DateAttribute_3253, WebsitePackage.eINSTANCE.getDateAttribute());
 
-			elements.put(UrlAttribute_3251, WebsitePackage.eINSTANCE.getUrlAttribute());
+			elements.put(UrlAttribute_3254, WebsitePackage.eINSTANCE.getUrlAttribute());
 
-			elements.put(FileAttribute_3152, WebsitePackage.eINSTANCE.getFileAttribute());
+			elements.put(FileAttribute_3255, WebsitePackage.eINSTANCE.getFileAttribute());
 
-			elements.put(ImageAttribute_3235, WebsitePackage.eINSTANCE.getImageAttribute());
+			elements.put(ImageAttribute_3256, WebsitePackage.eINSTANCE.getImageAttribute());
 
-			elements.put(LocationAttribute_3230, WebsitePackage.eINSTANCE.getLocationAttribute());
+			elements.put(LocationAttribute_3257, WebsitePackage.eINSTANCE.getLocationAttribute());
 
 			elements.put(ModelLabel_3247, WebsitePackage.eINSTANCE.getModelLabel());
 
 			elements.put(ModelLabel_3248, WebsitePackage.eINSTANCE.getModelLabel());
 
-			elements.put(EncapsulatedAttribute_3243, WebsitePackage.eINSTANCE.getEncapsulatedAttribute());
+			elements.put(EncapsulatedAttribute_3258, WebsitePackage.eINSTANCE.getEncapsulatedAttribute());
 
-			elements.put(EncapsulatedAssociation_3244, WebsitePackage.eINSTANCE.getEncapsulatedAssociation());
+			elements.put(EncapsulatedAssociation_3259, WebsitePackage.eINSTANCE.getEncapsulatedAssociation());
 
 			elements.put(CreateUnit_3103, WebsitePackage.eINSTANCE.getCreateUnit());
 
@@ -1020,16 +1022,16 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(CasAuthentication_3055);
 			KNOWN_ELEMENT_TYPES.add(LocalAuthenticationSystem_3029);
 			KNOWN_ELEMENT_TYPES.add(EnumerationLiteral_3028);
-			KNOWN_ELEMENT_TYPES.add(DataTypeAttribute_3054);
-			KNOWN_ELEMENT_TYPES.add(DateAttribute_3014);
-			KNOWN_ELEMENT_TYPES.add(UrlAttribute_3251);
-			KNOWN_ELEMENT_TYPES.add(FileAttribute_3152);
-			KNOWN_ELEMENT_TYPES.add(ImageAttribute_3235);
-			KNOWN_ELEMENT_TYPES.add(LocationAttribute_3230);
+			KNOWN_ELEMENT_TYPES.add(DataTypeAttribute_3252);
+			KNOWN_ELEMENT_TYPES.add(DateAttribute_3253);
+			KNOWN_ELEMENT_TYPES.add(UrlAttribute_3254);
+			KNOWN_ELEMENT_TYPES.add(FileAttribute_3255);
+			KNOWN_ELEMENT_TYPES.add(ImageAttribute_3256);
+			KNOWN_ELEMENT_TYPES.add(LocationAttribute_3257);
 			KNOWN_ELEMENT_TYPES.add(ModelLabel_3247);
 			KNOWN_ELEMENT_TYPES.add(ModelLabel_3248);
-			KNOWN_ELEMENT_TYPES.add(EncapsulatedAttribute_3243);
-			KNOWN_ELEMENT_TYPES.add(EncapsulatedAssociation_3244);
+			KNOWN_ELEMENT_TYPES.add(EncapsulatedAttribute_3258);
+			KNOWN_ELEMENT_TYPES.add(EncapsulatedAssociation_3259);
 			KNOWN_ELEMENT_TYPES.add(CreateUnit_3103);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3169);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3170);
@@ -1157,25 +1159,25 @@ public class WebsiteElementTypes {
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return EnumerationLiteral_3028;
 		case DataTypeAttributeEditPart.VISUAL_ID:
-			return DataTypeAttribute_3054;
+			return DataTypeAttribute_3252;
 		case DateAttributeEditPart.VISUAL_ID:
-			return DateAttribute_3014;
+			return DateAttribute_3253;
 		case UrlAttributeEditPart.VISUAL_ID:
-			return UrlAttribute_3251;
+			return UrlAttribute_3254;
 		case FileAttributeEditPart.VISUAL_ID:
-			return FileAttribute_3152;
+			return FileAttribute_3255;
 		case ImageAttributeEditPart.VISUAL_ID:
-			return ImageAttribute_3235;
+			return ImageAttribute_3256;
 		case LocationAttributeEditPart.VISUAL_ID:
-			return LocationAttribute_3230;
+			return LocationAttribute_3257;
 		case ModelLabelEditPart.VISUAL_ID:
 			return ModelLabel_3247;
 		case ModelLabel2EditPart.VISUAL_ID:
 			return ModelLabel_3248;
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
-			return EncapsulatedAttribute_3243;
+			return EncapsulatedAttribute_3258;
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
-			return EncapsulatedAssociation_3244;
+			return EncapsulatedAssociation_3259;
 		case CreateUnitEditPart.VISUAL_ID:
 			return CreateUnit_3103;
 		case UnitElementEditPart.VISUAL_ID:

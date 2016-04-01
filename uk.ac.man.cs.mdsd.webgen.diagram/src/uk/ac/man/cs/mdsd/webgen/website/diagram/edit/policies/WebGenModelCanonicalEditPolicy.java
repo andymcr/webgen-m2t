@@ -347,42 +347,42 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case DataTypeAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getDataTypeAttribute_3054ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getDataTypeAttribute_3252ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case DateAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getDateAttribute_3014ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getDateAttribute_3253ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case UrlAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUrlAttribute_3251ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUrlAttribute_3254ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case FileAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getFileAttribute_3152ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getFileAttribute_3255ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case ImageAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getImageAttribute_3235ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getImageAttribute_3256ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case LocationAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getLocationAttribute_3230ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getLocationAttribute_3257ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -403,14 +403,14 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case EncapsulatedAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAttribute_3243ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAttribute_3258ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case EncapsulatedAssociationEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAssociation_3244ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAssociation_3259ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

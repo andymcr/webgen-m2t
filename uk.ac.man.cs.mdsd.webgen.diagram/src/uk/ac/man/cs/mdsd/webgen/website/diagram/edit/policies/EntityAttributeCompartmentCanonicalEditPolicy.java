@@ -53,7 +53,7 @@ public class EntityAttributeCompartmentCanonicalEditPolicy extends CanonicalEdit
 	 * @generated
 	 */
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getEntity_Features();
+		return WebsitePackage.eINSTANCE.getEntity_EntityFeatures();
 	}
 
 	/**

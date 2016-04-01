@@ -57,7 +57,7 @@ public class EncapsulatedAttributeNameEditPart extends CompartmentEditPart imple
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5251;
+	public static final int VISUAL_ID = 5266;
 
 	/**
 	* @generated
@@ -291,7 +291,7 @@ public class EncapsulatedAttributeNameEditPart extends CompartmentEditPart imple
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EncapsulatedAttribute_3243, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EncapsulatedAttribute_3258, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAttributeNameEditPart.VISUAL_ID));
 		}

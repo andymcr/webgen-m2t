@@ -519,6 +519,7 @@ public class UnitElementName20EditPart extends CompartmentEditPart implements IT
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class key) {
 		if (ILabelDelegate.class.equals(key)) {

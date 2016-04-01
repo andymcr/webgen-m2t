@@ -105,8 +105,8 @@ public class AssociationWithoutContainmentReorientCommand extends EditElementCom
 	 * @generated
 	 */
 	protected CommandResult reorientSource() throws ExecutionException {
-		getOldSource().getFeatures().remove(getLink());
-		getNewSource().getFeatures().add(getLink());
+		getOldSource().getEntityFeatures().remove(getLink());
+		getNewSource().getEntityFeatures().add(getLink());
 		return CommandResult.newOKCommandResult(getLink());
 	}
 

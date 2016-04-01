@@ -55,7 +55,7 @@ public class FileAttributeCreateCommand extends EditElementCommand {
 		FileAttribute newElement = WebsiteFactory.eINSTANCE.createFileAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
-		owner.getFeatures().add(newElement);
+		owner.getEntityFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

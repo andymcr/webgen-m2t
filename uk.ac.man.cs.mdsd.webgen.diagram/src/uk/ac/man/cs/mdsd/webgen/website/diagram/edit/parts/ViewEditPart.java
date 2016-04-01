@@ -256,11 +256,11 @@ public class ViewEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.EncapsulatedAttribute_3243) {
+			if (type == WebsiteElementTypes.EncapsulatedAttribute_3258) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ViewAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.EncapsulatedAssociation_3244) {
+			if (type == WebsiteElementTypes.EncapsulatedAssociation_3259) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ViewAttributeCompartmentEditPart.VISUAL_ID));
 			}

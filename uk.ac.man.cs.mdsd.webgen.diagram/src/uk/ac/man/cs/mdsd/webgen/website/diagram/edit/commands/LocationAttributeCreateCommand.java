@@ -55,7 +55,7 @@ public class LocationAttributeCreateCommand extends EditElementCommand {
 		LocationAttribute newElement = WebsiteFactory.eINSTANCE.createLocationAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
-		owner.getFeatures().add(newElement);
+		owner.getEntityFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

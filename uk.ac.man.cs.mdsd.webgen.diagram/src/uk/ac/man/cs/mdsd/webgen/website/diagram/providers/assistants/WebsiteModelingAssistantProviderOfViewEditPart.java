@@ -25,8 +25,8 @@ public class WebsiteModelingAssistantProviderOfViewEditPart extends WebsiteModel
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(3);
-		types.add(WebsiteElementTypes.EncapsulatedAttribute_3243);
-		types.add(WebsiteElementTypes.EncapsulatedAssociation_3244);
+		types.add(WebsiteElementTypes.EncapsulatedAttribute_3258);
+		types.add(WebsiteElementTypes.EncapsulatedAssociation_3259);
 		types.add(WebsiteElementTypes.ModelLabel_3248);
 		return types;
 	}
@@ -88,7 +88,7 @@ public class WebsiteModelingAssistantProviderOfViewEditPart extends WebsiteModel
 	public List<IElementType> doGetTypesForTarget(ViewEditPart source, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
 		if (relationshipType == WebsiteElementTypes.ViewAssociation_4004) {
-			types.add(WebsiteElementTypes.EncapsulatedAssociation_3244);
+			types.add(WebsiteElementTypes.EncapsulatedAssociation_3259);
 		}
 		return types;
 	}

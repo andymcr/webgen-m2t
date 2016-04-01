@@ -24,12 +24,12 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(7);
-		types.add(WebsiteElementTypes.DataTypeAttribute_3054);
-		types.add(WebsiteElementTypes.DateAttribute_3014);
-		types.add(WebsiteElementTypes.UrlAttribute_3251);
-		types.add(WebsiteElementTypes.FileAttribute_3152);
-		types.add(WebsiteElementTypes.ImageAttribute_3235);
-		types.add(WebsiteElementTypes.LocationAttribute_3230);
+		types.add(WebsiteElementTypes.DataTypeAttribute_3252);
+		types.add(WebsiteElementTypes.DateAttribute_3253);
+		types.add(WebsiteElementTypes.UrlAttribute_3254);
+		types.add(WebsiteElementTypes.FileAttribute_3255);
+		types.add(WebsiteElementTypes.ImageAttribute_3256);
+		types.add(WebsiteElementTypes.LocationAttribute_3257);
 		types.add(WebsiteElementTypes.ModelLabel_3247);
 		return types;
 	}

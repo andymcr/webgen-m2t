@@ -375,25 +375,25 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return createEnumerationLiteral_3028(domainElement, containerView, index, persisted, preferencesHint);
 		case DataTypeAttributeEditPart.VISUAL_ID:
-			return createDataTypeAttribute_3054(domainElement, containerView, index, persisted, preferencesHint);
+			return createDataTypeAttribute_3252(domainElement, containerView, index, persisted, preferencesHint);
 		case DateAttributeEditPart.VISUAL_ID:
-			return createDateAttribute_3014(domainElement, containerView, index, persisted, preferencesHint);
+			return createDateAttribute_3253(domainElement, containerView, index, persisted, preferencesHint);
 		case UrlAttributeEditPart.VISUAL_ID:
-			return createUrlAttribute_3251(domainElement, containerView, index, persisted, preferencesHint);
+			return createUrlAttribute_3254(domainElement, containerView, index, persisted, preferencesHint);
 		case FileAttributeEditPart.VISUAL_ID:
-			return createFileAttribute_3152(domainElement, containerView, index, persisted, preferencesHint);
+			return createFileAttribute_3255(domainElement, containerView, index, persisted, preferencesHint);
 		case ImageAttributeEditPart.VISUAL_ID:
-			return createImageAttribute_3235(domainElement, containerView, index, persisted, preferencesHint);
+			return createImageAttribute_3256(domainElement, containerView, index, persisted, preferencesHint);
 		case LocationAttributeEditPart.VISUAL_ID:
-			return createLocationAttribute_3230(domainElement, containerView, index, persisted, preferencesHint);
+			return createLocationAttribute_3257(domainElement, containerView, index, persisted, preferencesHint);
 		case ModelLabelEditPart.VISUAL_ID:
 			return createModelLabel_3247(domainElement, containerView, index, persisted, preferencesHint);
 		case ModelLabel2EditPart.VISUAL_ID:
 			return createModelLabel_3248(domainElement, containerView, index, persisted, preferencesHint);
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
-			return createEncapsulatedAttribute_3243(domainElement, containerView, index, persisted, preferencesHint);
+			return createEncapsulatedAttribute_3258(domainElement, containerView, index, persisted, preferencesHint);
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
-			return createEncapsulatedAssociation_3244(domainElement, containerView, index, persisted, preferencesHint);
+			return createEncapsulatedAssociation_3259(domainElement, containerView, index, persisted, preferencesHint);
 		case CreateUnitEditPart.VISUAL_ID:
 			return createCreateUnit_3103(domainElement, containerView, index, persisted, preferencesHint);
 		case UnitElementEditPart.VISUAL_ID:
@@ -1008,10 +1008,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createDataTypeAttribute_3054(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createDataTypeAttribute_3252(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1039,15 +1038,14 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5059 = createLabel(node, WebsiteVisualIDRegistry.getType(DataTypeAttributeNameEditPart.VISUAL_ID));
+		Node label5260 = createLabel(node, WebsiteVisualIDRegistry.getType(DataTypeAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createDateAttribute_3014(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createDateAttribute_3253(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1075,15 +1073,14 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5018 = createLabel(node, WebsiteVisualIDRegistry.getType(DateAttributeNameEditPart.VISUAL_ID));
+		Node label5261 = createLabel(node, WebsiteVisualIDRegistry.getType(DateAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
 	* @generated
 	*/
-	@SuppressWarnings("unchecked")
-	public Node createUrlAttribute_3251(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createUrlAttribute_3254(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1111,15 +1108,14 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5259 = createLabel(node, WebsiteVisualIDRegistry.getType(UrlAttributeNameEditPart.VISUAL_ID));
+		Node label5262 = createLabel(node, WebsiteVisualIDRegistry.getType(UrlAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createFileAttribute_3152(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createFileAttribute_3255(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1147,15 +1143,14 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5160 = createLabel(node, WebsiteVisualIDRegistry.getType(FileAttributeNameEditPart.VISUAL_ID));
+		Node label5263 = createLabel(node, WebsiteVisualIDRegistry.getType(FileAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createImageAttribute_3235(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createImageAttribute_3256(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1183,15 +1178,14 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5242 = createLabel(node, WebsiteVisualIDRegistry.getType(ImageAttributeNameEditPart.VISUAL_ID));
+		Node label5264 = createLabel(node, WebsiteVisualIDRegistry.getType(ImageAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createLocationAttribute_3230(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createLocationAttribute_3257(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1219,7 +1213,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5237 = createLabel(node, WebsiteVisualIDRegistry.getType(LocationAttributeNameEditPart.VISUAL_ID));
+		Node label5265 = createLabel(node, WebsiteVisualIDRegistry.getType(LocationAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -1296,8 +1290,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createEncapsulatedAttribute_3243(EObject domainElement, View containerView, int index,
+	public Node createEncapsulatedAttribute_3258(EObject domainElement, View containerView, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1325,7 +1318,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5251 = createLabel(node,
+		Node label5266 = createLabel(node,
 				WebsiteVisualIDRegistry.getType(EncapsulatedAttributeNameEditPart.VISUAL_ID));
 		return node;
 	}
@@ -1333,8 +1326,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createEncapsulatedAssociation_3244(EObject domainElement, View containerView, int index,
+	public Node createEncapsulatedAssociation_3259(EObject domainElement, View containerView, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1362,7 +1354,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5252 = createLabel(node,
+		Node label5267 = createLabel(node,
 				WebsiteVisualIDRegistry.getType(EncapsulatedAssociationNameEditPart.VISUAL_ID));
 		return node;
 	}

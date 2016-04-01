@@ -57,7 +57,7 @@ public class LocationAttributeNameEditPart extends CompartmentEditPart implement
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5237;
+	public static final int VISUAL_ID = 5265;
 
 	/**
 	 * @generated
@@ -291,7 +291,7 @@ public class LocationAttributeNameEditPart extends CompartmentEditPart implement
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.LocationAttribute_3230, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.LocationAttribute_3257, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.LocationAttributeNameEditPart.VISUAL_ID));
 		}

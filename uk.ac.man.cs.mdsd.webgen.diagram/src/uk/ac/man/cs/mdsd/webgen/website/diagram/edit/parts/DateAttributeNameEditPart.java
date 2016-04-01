@@ -57,7 +57,7 @@ public class DateAttributeNameEditPart extends CompartmentEditPart implements IT
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5018;
+	public static final int VISUAL_ID = 5261;
 
 	/**
 	 * @generated
@@ -291,7 +291,7 @@ public class DateAttributeNameEditPart extends CompartmentEditPart implements IT
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DateAttribute_3014, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DateAttribute_3253, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateAttributeNameEditPart.VISUAL_ID));
 		}

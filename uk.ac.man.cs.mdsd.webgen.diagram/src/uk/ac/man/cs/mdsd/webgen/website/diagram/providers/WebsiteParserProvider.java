@@ -241,105 +241,105 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser dataTypeAttributeName_5059Parser;
+	* @generated
+	*/
+	private IParser dataTypeAttributeName_5260Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getDataTypeAttributeName_5059Parser() {
-		if (dataTypeAttributeName_5059Parser == null) {
+	* @generated
+	*/
+	private IParser getDataTypeAttributeName_5260Parser() {
+		if (dataTypeAttributeName_5260Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeAttributeName_5059Parser = parser;
+			dataTypeAttributeName_5260Parser = parser;
 		}
-		return dataTypeAttributeName_5059Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateAttributeName_5018Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateAttributeName_5018Parser() {
-		if (dateAttributeName_5018Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateAttributeName_5018Parser = parser;
-		}
-		return dateAttributeName_5018Parser;
+		return dataTypeAttributeName_5260Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser urlAttributeName_5259Parser;
+	private IParser dateAttributeName_5261Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getUrlAttributeName_5259Parser() {
-		if (urlAttributeName_5259Parser == null) {
+	private IParser getDateAttributeName_5261Parser() {
+		if (dateAttributeName_5261Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			urlAttributeName_5259Parser = parser;
+			dateAttributeName_5261Parser = parser;
 		}
-		return urlAttributeName_5259Parser;
+		return dateAttributeName_5261Parser;
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser fileAttributeName_5160Parser;
+	* @generated
+	*/
+	private IParser urlAttributeName_5262Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getFileAttributeName_5160Parser() {
-		if (fileAttributeName_5160Parser == null) {
+	* @generated
+	*/
+	private IParser getUrlAttributeName_5262Parser() {
+		if (urlAttributeName_5262Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			fileAttributeName_5160Parser = parser;
+			urlAttributeName_5262Parser = parser;
 		}
-		return fileAttributeName_5160Parser;
+		return urlAttributeName_5262Parser;
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser imageAttributeName_5242Parser;
+	* @generated
+	*/
+	private IParser fileAttributeName_5263Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getImageAttributeName_5242Parser() {
-		if (imageAttributeName_5242Parser == null) {
+	* @generated
+	*/
+	private IParser getFileAttributeName_5263Parser() {
+		if (fileAttributeName_5263Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			imageAttributeName_5242Parser = parser;
+			fileAttributeName_5263Parser = parser;
 		}
-		return imageAttributeName_5242Parser;
+		return fileAttributeName_5263Parser;
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser locationAttributeName_5237Parser;
+	* @generated
+	*/
+	private IParser imageAttributeName_5264Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getLocationAttributeName_5237Parser() {
-		if (locationAttributeName_5237Parser == null) {
+	* @generated
+	*/
+	private IParser getImageAttributeName_5264Parser() {
+		if (imageAttributeName_5264Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			locationAttributeName_5237Parser = parser;
+			imageAttributeName_5264Parser = parser;
 		}
-		return locationAttributeName_5237Parser;
+		return imageAttributeName_5264Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser locationAttributeName_5265Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getLocationAttributeName_5265Parser() {
+		if (locationAttributeName_5265Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			locationAttributeName_5265Parser = parser;
+		}
+		return locationAttributeName_5265Parser;
 	}
 
 	/**
@@ -379,35 +379,35 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	* @generated
 	*/
-	private IParser encapsulatedAttributeName_5251Parser;
+	private IParser encapsulatedAttributeName_5266Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getEncapsulatedAttributeName_5251Parser() {
-		if (encapsulatedAttributeName_5251Parser == null) {
+	private IParser getEncapsulatedAttributeName_5266Parser() {
+		if (encapsulatedAttributeName_5266Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getEncapsulatedAttribute_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			encapsulatedAttributeName_5251Parser = parser;
+			encapsulatedAttributeName_5266Parser = parser;
 		}
-		return encapsulatedAttributeName_5251Parser;
+		return encapsulatedAttributeName_5266Parser;
 	}
 
 	/**
 	* @generated
 	*/
-	private IParser encapsulatedAssociationName_5252Parser;
+	private IParser encapsulatedAssociationName_5267Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getEncapsulatedAssociationName_5252Parser() {
-		if (encapsulatedAssociationName_5252Parser == null) {
+	private IParser getEncapsulatedAssociationName_5267Parser() {
+		if (encapsulatedAssociationName_5267Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getEncapsulatedAssociation_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			encapsulatedAssociationName_5252Parser = parser;
+			encapsulatedAssociationName_5267Parser = parser;
 		}
-		return encapsulatedAssociationName_5252Parser;
+		return encapsulatedAssociationName_5267Parser;
 	}
 
 	/**
@@ -1970,25 +1970,25 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 		case EnumerationLiteralNameEditPart.VISUAL_ID:
 			return getEnumerationLiteralName_5033Parser();
 		case DataTypeAttributeNameEditPart.VISUAL_ID:
-			return getDataTypeAttributeName_5059Parser();
+			return getDataTypeAttributeName_5260Parser();
 		case DateAttributeNameEditPart.VISUAL_ID:
-			return getDateAttributeName_5018Parser();
+			return getDateAttributeName_5261Parser();
 		case UrlAttributeNameEditPart.VISUAL_ID:
-			return getUrlAttributeName_5259Parser();
+			return getUrlAttributeName_5262Parser();
 		case FileAttributeNameEditPart.VISUAL_ID:
-			return getFileAttributeName_5160Parser();
+			return getFileAttributeName_5263Parser();
 		case ImageAttributeNameEditPart.VISUAL_ID:
-			return getImageAttributeName_5242Parser();
+			return getImageAttributeName_5264Parser();
 		case LocationAttributeNameEditPart.VISUAL_ID:
-			return getLocationAttributeName_5237Parser();
+			return getLocationAttributeName_5265Parser();
 		case ModelLabelNameEditPart.VISUAL_ID:
 			return getModelLabelName_5255Parser();
 		case ModelLabelName2EditPart.VISUAL_ID:
 			return getModelLabelName_5256Parser();
 		case EncapsulatedAttributeNameEditPart.VISUAL_ID:
-			return getEncapsulatedAttributeName_5251Parser();
+			return getEncapsulatedAttributeName_5266Parser();
 		case EncapsulatedAssociationNameEditPart.VISUAL_ID:
-			return getEncapsulatedAssociationName_5252Parser();
+			return getEncapsulatedAssociationName_5267Parser();
 		case CreateUnitNameEditPart.VISUAL_ID:
 			return getCreateUnitName_5107Parser();
 		case UnitElementNameEditPart.VISUAL_ID:

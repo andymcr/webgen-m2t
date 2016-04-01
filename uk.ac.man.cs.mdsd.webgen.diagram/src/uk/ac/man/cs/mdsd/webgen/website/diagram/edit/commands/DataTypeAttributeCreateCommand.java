@@ -55,7 +55,7 @@ public class DataTypeAttributeCreateCommand extends EditElementCommand {
 		DataTypeAttribute newElement = WebsiteFactory.eINSTANCE.createDataTypeAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
-		owner.getFeatures().add(newElement);
+		owner.getEntityFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

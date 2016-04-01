@@ -77,7 +77,7 @@ public class ViewAttributeCompartmentEditPart extends ListCompartmentEditPart {
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new ViewAttributeCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.VIEW__FEATURES));
+				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.VIEW__VIEW_FEATURES));
 	}
 
 	/**
@@ -96,10 +96,10 @@ public class ViewAttributeCompartmentEditPart extends ListCompartmentEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.EncapsulatedAttribute_3243) {
+			if (type == WebsiteElementTypes.EncapsulatedAttribute_3258) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.EncapsulatedAssociation_3244) {
+			if (type == WebsiteElementTypes.EncapsulatedAssociation_3259) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

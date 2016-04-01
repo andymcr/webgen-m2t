@@ -54,7 +54,7 @@ public class EncapsulatedAssociationCreateCommand extends EditElementCommand {
 		EncapsulatedAssociation newElement = WebsiteFactory.eINSTANCE.createEncapsulatedAssociation();
 
 		uk.ac.man.cs.mdsd.webgen.website.View owner = (uk.ac.man.cs.mdsd.webgen.website.View) getElementToEdit();
-		owner.getFeatures().add(newElement);
+		owner.getViewFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

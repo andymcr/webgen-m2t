@@ -32,7 +32,7 @@ public class FileAttributeEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3152;
+	public static final int VISUAL_ID = 3255;
 
 	/**
 	 * @generated

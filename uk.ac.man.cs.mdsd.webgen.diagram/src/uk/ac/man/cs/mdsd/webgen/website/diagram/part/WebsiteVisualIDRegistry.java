@@ -1788,10 +1788,8 @@ public class WebsiteVisualIDRegistry {
 			return false;
 		case DataTypeEditPart.VISUAL_ID:
 		case DynamicMenuEditPart.VISUAL_ID:
-		case DateAttributeEditPart.VISUAL_ID:
 		case EnumerationLiteralEditPart.VISUAL_ID:
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-		case DataTypeAttributeEditPart.VISUAL_ID:
 		case CasAuthenticationEditPart.VISUAL_ID:
 		case DeleteActionEditPart.VISUAL_ID:
 		case SelectActionEditPart.VISUAL_ID:
@@ -1803,7 +1801,6 @@ public class WebsiteVisualIDRegistry {
 		case SelectAction6EditPart.VISUAL_ID:
 		case DeleteAction2EditPart.VISUAL_ID:
 		case SelectionEditPart.VISUAL_ID:
-		case FileAttributeEditPart.VISUAL_ID:
 		case SelectAction7EditPart.VISUAL_ID:
 		case DeleteAction3EditPart.VISUAL_ID:
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -1847,17 +1844,20 @@ public class WebsiteVisualIDRegistry {
 		case UnitElement19EditPart.VISUAL_ID:
 		case UnitAssociation17EditPart.VISUAL_ID:
 		case MapUnitEditPart.VISUAL_ID:
-		case LocationAttributeEditPart.VISUAL_ID:
 		case UnitSupportActionEditPart.VISUAL_ID:
 		case FeatureSupportActionEditPart.VISUAL_ID:
-		case ImageAttributeEditPart.VISUAL_ID:
 		case ActionMenuEntryEditPart.VISUAL_ID:
-		case EncapsulatedAttributeEditPart.VISUAL_ID:
-		case EncapsulatedAssociationEditPart.VISUAL_ID:
 		case ModelLabelEditPart.VISUAL_ID:
 		case ModelLabel2EditPart.VISUAL_ID:
 		case UnitElement20EditPart.VISUAL_ID:
+		case DataTypeAttributeEditPart.VISUAL_ID:
+		case DateAttributeEditPart.VISUAL_ID:
 		case UrlAttributeEditPart.VISUAL_ID:
+		case FileAttributeEditPart.VISUAL_ID:
+		case ImageAttributeEditPart.VISUAL_ID:
+		case LocationAttributeEditPart.VISUAL_ID:
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

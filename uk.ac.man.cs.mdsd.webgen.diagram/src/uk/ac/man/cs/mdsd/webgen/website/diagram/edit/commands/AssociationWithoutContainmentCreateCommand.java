@@ -72,7 +72,7 @@ public class AssociationWithoutContainmentCreateCommand extends EditElementComma
 		}
 
 		AssociationWithoutContainment newElement = WebsiteFactory.eINSTANCE.createAssociationWithoutContainment();
-		getSource().getFeatures().add(newElement);
+		getSource().getEntityFeatures().add(newElement);
 		newElement.setTargetEntity(getTarget());
 		doConfigure(newElement, monitor, info);
 		((CreateElementRequest) getRequest()).setNewElement(newElement);

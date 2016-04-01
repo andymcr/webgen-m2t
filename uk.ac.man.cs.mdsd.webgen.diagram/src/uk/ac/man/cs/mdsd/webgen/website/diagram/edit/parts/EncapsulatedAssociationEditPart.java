@@ -32,7 +32,7 @@ public class EncapsulatedAssociationEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3244;
+	public static final int VISUAL_ID = 3259;
 
 	/**
 	* @generated

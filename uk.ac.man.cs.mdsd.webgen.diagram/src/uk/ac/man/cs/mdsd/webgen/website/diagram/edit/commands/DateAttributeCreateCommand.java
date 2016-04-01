@@ -55,7 +55,7 @@ public class DateAttributeCreateCommand extends EditElementCommand {
 		DateAttribute newElement = WebsiteFactory.eINSTANCE.createDateAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
-		owner.getFeatures().add(newElement);
+		owner.getEntityFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

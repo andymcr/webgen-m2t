@@ -22,10 +22,10 @@ public class ViewAttributeCompartmentItemSemanticEditPolicy extends WebsiteBaseI
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.EncapsulatedAttribute_3243 == req.getElementType()) {
+		if (WebsiteElementTypes.EncapsulatedAttribute_3258 == req.getElementType()) {
 			return getGEFWrapper(new EncapsulatedAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.EncapsulatedAssociation_3244 == req.getElementType()) {
+		if (WebsiteElementTypes.EncapsulatedAssociation_3259 == req.getElementType()) {
 			return getGEFWrapper(new EncapsulatedAssociationCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

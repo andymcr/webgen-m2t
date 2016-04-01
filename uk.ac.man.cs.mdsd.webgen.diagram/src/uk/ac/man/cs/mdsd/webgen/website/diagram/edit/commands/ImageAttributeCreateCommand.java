@@ -55,7 +55,7 @@ public class ImageAttributeCreateCommand extends EditElementCommand {
 		ImageAttribute newElement = WebsiteFactory.eINSTANCE.createImageAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
-		owner.getFeatures().add(newElement);
+		owner.getEntityFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);
 

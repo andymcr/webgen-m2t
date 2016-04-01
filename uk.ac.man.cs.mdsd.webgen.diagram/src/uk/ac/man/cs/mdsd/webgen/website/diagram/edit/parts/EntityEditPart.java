@@ -256,27 +256,27 @@ public class EntityEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DataTypeAttribute_3054) {
+			if (type == WebsiteElementTypes.DataTypeAttribute_3252) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DateAttribute_3014) {
+			if (type == WebsiteElementTypes.DateAttribute_3253) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UrlAttribute_3251) {
+			if (type == WebsiteElementTypes.UrlAttribute_3254) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.FileAttribute_3152) {
+			if (type == WebsiteElementTypes.FileAttribute_3255) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.ImageAttribute_3235) {
+			if (type == WebsiteElementTypes.ImageAttribute_3256) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.LocationAttribute_3230) {
+			if (type == WebsiteElementTypes.LocationAttribute_3257) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}

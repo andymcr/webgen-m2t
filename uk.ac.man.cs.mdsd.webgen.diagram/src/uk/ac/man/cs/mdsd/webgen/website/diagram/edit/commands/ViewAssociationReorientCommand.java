@@ -106,8 +106,8 @@ public class ViewAssociationReorientCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult reorientSource() throws ExecutionException {
-		getOldSource().getFeatures().remove(getLink());
-		getNewSource().getFeatures().add(getLink());
+		getOldSource().getViewFeatures().remove(getLink());
+		getNewSource().getViewFeatures().add(getLink());
 		return CommandResult.newOKCommandResult(getLink());
 	}
 

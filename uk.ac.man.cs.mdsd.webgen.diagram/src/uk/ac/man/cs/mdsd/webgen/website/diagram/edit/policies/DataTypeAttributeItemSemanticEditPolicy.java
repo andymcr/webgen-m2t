@@ -19,7 +19,7 @@ public class DataTypeAttributeItemSemanticEditPolicy extends WebsiteBaseItemSema
 	 * @generated
 	 */
 	public DataTypeAttributeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DataTypeAttribute_3054);
+		super(WebsiteElementTypes.DataTypeAttribute_3252);
 	}
 
 	/**
