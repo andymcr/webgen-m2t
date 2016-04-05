@@ -158,10 +158,6 @@
 	= page.indexUnits()->notEmpty()
 /]
 
-[query public hasInputAssociations(page : Page) : Boolean
-	= page.inputAssociations()->notEmpty()
-/]
-
 [query public hasMapUnits(page : Page) : Boolean
 	= page.mapUnits()->notEmpty()
 /]
@@ -192,10 +188,6 @@
 
 [query public indexUnits(page : Page) : Sequence(IndexUnit)
 	= page.units->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
-/]
-
-[query public inputAssociations(page : Page) : Sequence(UnitAssociation)
-	= page.dynamicUnits()->collect(u | u.inputAssociationsXX())
 /]
 
 [query public isAuthenticated(page : Page) : Boolean
@@ -266,10 +258,6 @@
 	= unit.displayFields->select(f | f.hasDefaultValue())
 /]
 
-[query public defaultValueFields(unit : DynamicUnit, service : Service) : Set(UnitField)
-	= unit.defaultValueFields()->select(f | f.service() = service)
-/]
-
 [query public encryptedFeatures(unit : DynamicUnit) : Set(UnitField)
 	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f | f.isEncrypted())
 /]
@@ -307,10 +295,6 @@
 		endif
 /]
 
-[query public hasDefaultValueFields(unit : DynamicUnit, service : Service) : Boolean
-	= unit.defaultValueFields(service)->notEmpty()
-/]
-
 [query public hasEncryptedFeatures(unit : DynamicUnit) : Boolean
 	= unit.encryptedFeatures()->notEmpty()
 /]
@@ -329,14 +313,6 @@
 
 [query public hasForcedValueFeatures(unit : DynamicUnit) : Boolean
 	= unit.forcedValueFeatures()->notEmpty()
-/]
-
-[query public hasInputAssociationsXX(unit : DynamicUnit) : Boolean
-	= unit.inputAssociationsXX()->notEmpty()
-/]
-
-[query public hasInputFieldsXX(unit : DynamicUnit) : Boolean
-	= unit.inputFieldsXX()->notEmpty()
 /]
 
 [query public hasOmitFieldLabels(unit : DataUnit) : Boolean
@@ -424,23 +400,7 @@
 	= unit.uriActions()->notEmpty()
 /]
 
-[query public inputAssociationsXX(unit : DynamicUnit) : OrderedSet(UnitAssociation)
-	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
-			unit.inputFieldsXX()->select(f | f.oclIsTypeOf(UnitAssociation))
-		else
-			OrderedSet{}
-		endif
-/]
-
-[query public inputCollectionAssociationsXX(unit : DynamicUnit) : OrderedSet(UnitField)
-	= if unit.oclIsKindOf(ControlUnit) or unit.oclIsKindOf(EditUnit) then
-			unit.inputFieldsXX()->select(f | f.oclIsTypeOf(UnitAssociation) and not f.isSingleton())
-		else
-			OrderedSet{}
-		endif
-/]
-
-[query public inputFieldsXX(unit : DynamicUnit) : OrderedSet(UnitField)
+[query public inputFields(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then
 			f.oclAsType(UnitFeature).isModifiable()
@@ -472,19 +432,15 @@
 
 [query public isParameterised(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(Selectable) then
-			unit.oclAsType(DynamicUnit).entities->first().keys->notEmpty()
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+			in if dynamicUnit.entities->notEmpty() then
+					dynamicUnit.entities->first().keys->notEmpty()
+				else
+					false
+				endif
 		else
 			false
 		endif
-/]
-
-[query public nonResourceInputFeaturesXX(unit : DynamicUnit) : OrderedSet(UnitField)
-	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f |
-		if f.oclIsKindOf(UnitFeature) then
-			f.oclAsType(UnitFeature).isModifiable() and not f.oclAsType(UnitFeature).isModifiableResourceXX()
-		else
-			true
-		endif)
 /]
 
 [query public pageDisplayedOn(unit : ContentUnit) : Page
@@ -563,12 +519,36 @@
 		endif endif
 /]
 
+[query public entityOrView(field : UnitField) : EntityOrView
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.partOf
+		else if field.oclIsKindOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).association.partOf
+		else 
+			null
+		endif endif
+/]
+
+[query public firstEntityOrView(field : UnitField) : Boolean
+	= if field.entityOrView().oclIsUndefined() or field.displayedOn.entities->isEmpty() then
+			false
+		else 
+			field.entityOrView() = field.displayedOn.entities->first()
+		endif
+/]
+
 [query public formName(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
 				field.oclAsType(UnitAttribute).attribute.columnName()
 			else
-				'?????' -- field.oclAsType(UnitAssociation).serviceFeature.formName()
+				let association : Association
+					= field.oclAsType(UnitAssociation).association
+					in if association.isSingleton() and association.isOwningEnd() then 
+	 						association.columnName() 
+						else 
+							association.modelPropertyName() 
+						endif 
 			endif
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name
@@ -869,19 +849,6 @@
 			in attribute.attribute.oclIsKindOf(SingletonResource)
 		endif
 /]
-
-[query public isResourceAttributeXX(feature : UnitFeature) : Boolean
-	= if not feature.oclIsTypeOf(UnitAttribute) then
-			false
-		else
-			feature.oclAsType(UnitAttribute).attribute.oclIsKindOf(SingletonResource)
-		endif
-/]
-
-[query public isModifiableResourceXX(feature : UnitFeature) : Boolean
-	= feature.isModifiable() and feature.isResourceAttributeXX()
-/]
-
 
 
 [query public isSingleton(field : UnitField) : Boolean

@@ -20,7 +20,7 @@
 [controlUnit.bindFieldErrors()/]
 [for (association : UnitAssociation | controlUnit.associationFields())]
 $[association.optionsName()/] = array([if (association.isSingleton())]'' => __('Please select')[/if]);
-foreach (ORM::factory('[association.serviceFeature.modelName()/]')->[if (association.selection.oclIsUndefined())]
+foreach (ORM::factory('[association.association.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
 	$[association.optionsName()/]['['/]$option->id[']'/] = $option->defaultLabel();

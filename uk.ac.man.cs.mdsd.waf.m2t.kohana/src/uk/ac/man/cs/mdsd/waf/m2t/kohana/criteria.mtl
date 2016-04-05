@@ -3,6 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
@@ -42,28 +43,22 @@ Time()
 [template public generateCriteria(criteria : Expression)
 	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
 [let path : ModelReference = criteria.oclAsType(ModelReference)]
-$this->[path.unit.instanceName()/]->[path.unit.services->first().keyName()/]
+$this->[path.unit.instanceName()/]->[comment path.unit.services->first().keyName()/]
 [/let]
 [/template]
 
 [template public generateCriteria(criteria : Expression)
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
-[if (path.feature.isDateSingleton())]
+[if (path.feature.isDate())]
 new Database_Expression('UNIX_TIMESTAMP([path.feature.columnName()/])')
 [else]
-	[if (path.feature.oclIsKindOf(ServiceFeature))]
-[path.feature.oclAsType(ServiceFeature).featureReference()/]
-	[elseif (path.feature.oclIsKindOf(IncludedAssociation))]
-'[path.feature.columnName()/]'
-	[else]
-'[path.feature.modelPropertyName()/]'
-	[/if]
+[path.feature.featureReference()/]
 [/if]
 [/let]
 [/template]
 
-[template public featureReference(feature : ServiceFeature) post(trim())]
+[template public featureReference(feature : Feature) post(trim())]
 '[feature.columnName()/]'
 [/template]
 

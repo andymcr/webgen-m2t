@@ -35,19 +35,19 @@
 
 [template public kohana(model : WafModel)]
 [model.htaccess()/]
-[model.bootstrap()/]
+[comment model.bootstrap()/]
 
-[model.staticSitemapXML()/]
+[comment model.staticSitemapXML()/]
 
-[model.database()/]
-[model.mySqlSchema()/]
+[comment model.database()/]
+[comment model.mySqlSchema()/]
 [model.pagination()/]
 
 [model.extendedOrm()/]
 [model.validationMessages()/]
 [model.persistence.dataTypes.model()/]
 [if (model.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
-[model.services.model(model.authentication)/]
+[comment model.services.model(model.authentication)/]
 [/if]
 
 [model.baseController()/]
@@ -55,7 +55,7 @@
 [model.captchaException()/]
 [model.selectionException()/]
 
-[model.css(model.cssDirectory())/]
+[ model.css(model.cssDirectory())/]
 [model.page()/]
 [model.newPage()/]
 [model.topNav()/]
@@ -66,9 +66,9 @@
 [model.viewHelper()/]
 
 [if (model.isAuthenticated())]
-[model.topbarLoggedIn()/]
-[model.authentication.authenticationConfig()/]
-[model.authentication.authenticationModule()/]
+[comment model.topbarLoggedIn()/]
+[comment model.authentication.authenticationConfig()/]
+[comment model.authentication.authenticationModule()/]
 [comment model.authentication.generateEmailActivate()/]
 [comment model.authentication.generateEmailChangeEmail()/]
 [comment model.authentication.generateEmailForgottenEmail()/]

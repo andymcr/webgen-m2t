@@ -18,10 +18,10 @@
 [template private menuEntries(menu : Menu)
 	? (menu.oclIsTypeOf(DynamicMenu)) post(trim())]
 [let dynamicMenu : DynamicMenu = menu.oclAsType(DynamicMenu)]
-[if (dynamicMenu.dynamicTitle.oclIsUndefined())]
+[if (dynamicMenu.title.oclIsUndefined())]
 <h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">[dynamicMenu.displayLabel/]</h1>
 [else]
-<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]"><?php echo $[dynamicMenu.instanceName()/]->[dynamicMenu.dynamicTitle.modelPropertyName()/]; ?></h1>
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]"><?php echo $[dynamicMenu.instanceName()/]->[dynamicMenu.title.modelPropertyName()/]; ?></h1>
 [/if]
 <ul class="[dynamicMenu.layoutClass/]">
  [menu.entries.menuEntry()/]

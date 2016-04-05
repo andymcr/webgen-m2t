@@ -28,6 +28,18 @@
 /]
 
 
+[query public instanceName(entityOrView : EntityOrView) : String
+	= entityOrView.name.toLowerFirst()
+/]
+
+[query public loadMethodName(entityOrView : EntityOrView) : String
+	= 'load_'.concat(entityOrView.instanceName())
+/]
+
+[query public modelClassName(entityOrView : EntityOrView) : String
+	= 'Model_'.concat(entityOrView.modelName())
+/]
+
 [query public modelName(entityOrView : EntityOrView) : String
 	= entityOrView.name
 /]
@@ -36,6 +48,18 @@
 	= entityOrView.name
 /]
 
+
+[query public findMethodName(association : Association) : String
+	= 'find_'.concat(association.name.toLowerFirst().replaceAll('([A-Z])', '_$1'))
+/]
+
+[query public instanceName(attribute : Attribute) : String
+	= if attribute.oclIsTypeOf(EncapsulatedAttribute) then
+			attribute.oclAsType(EncapsulatedAttribute).name
+		else
+			attribute.oclAsType(EntityAttribute).name
+		endif
+/]
 
 [query public modelName(association : Association) : String
 	= if association.oclIsKindOf(EntityAssociation) then
@@ -52,29 +76,8 @@
 /]
 
 
-[query public instanceName(service : Service) : String
-	= service.modelName().toLowerFirst()
-/]
-
-[query public loadMethodName(service : Service) : String
-	= 'load_'.concat(service.instanceName())
-/]
-
-[query public modelClassName(service : Service) : String
-	= 'Model_'.concat(service.modelName())
-/]
-
-[query public modelName(service : Service) : String
-	= let entityOrView : EntityOrView = service.encapsulates->first()
-		in if not entityOrView.oclIsUndefined() then
-			entityOrView.modelName()
-			else
-				'????'
-			endif
-/]
-
 [query public selectName(service : Service) : String
-	= service.tableName()
+	= service.name.toLowerFirst()
 /]
 
 
@@ -84,39 +87,6 @@
 
 [query public instanceName(selection : Selection) : String
 	= selection.name.toLowerFirst()
-/]
-
-
-[query public findMethodName(feature : ServiceAssociation) : String
-	= 'find_'.concat(feature.association.name.toLowerFirst().replaceAll('([A-Z])', '_$1'))
-/]
-
-[query public instanceName(feature : ServiceFeature) : String
-	= if feature.oclIsTypeOf(ServiceAttribute) then
-			feature.oclAsType(ServiceAttribute).attribute.name.toLowerFirst()
-		else
-			feature.oclAsType(ServiceAssociation).association.name.toLowerFirst()
-		endif
-/]
-
-[query public instanceName(feature : ServiceFeatureReference) : String
-	= if feature.oclIsTypeOf(ServiceAttributeReference) then
-			feature.oclAsType(ServiceAttributeReference).attribute.instanceName()
-		else
-			feature.oclAsType(ServiceAssociationReference).association.instanceName()
-		endif
-/]
-
-[query public modelName(feature : ServiceFeature) : String
-	= if feature.oclIsTypeOf(ServiceAssociation) then
-			feature.oclAsType(ServiceAssociation).modelName()
-		else
-			'unknown'
-		endif
-/]
-
-[query public modelName(feature : ServiceAssociation) : String
-	= feature.association.modelName()
 /]
 
 
@@ -138,7 +108,7 @@
 /]
 
 [query public routeName(page : Page) : String
-	= if page.units->size() = 0 then
+	= if page.indexUnits()->isEmpty() then
 			page.name
 		else
 			page.units->select(u | u.oclIsKindOf(IndexUnit))->first().routeName()
@@ -179,11 +149,15 @@
 /]
 
 [query public modelInstanceName(unit : DynamicUnit) : String
-	= unit.instanceName()
+	= if unit.entities->size() < 2 then
+			unit.instanceName()
+		else
+			unit.modelInstanceName(unit.entities->first())
+		endif
 /]
 
-[query public modelInstanceName(unit : DynamicUnit, service : Service) : String
-	= unit.instanceName().concat('_').concat(service.instanceName())
+[query public modelInstanceName(unit : DynamicUnit, entityOrView : EntityOrView) : String
+	= unit.instanceName().concat('_').concat(entityOrView.instanceName())
 /]
 
 [query public modelName(unit : ContentUnit) : String
@@ -191,10 +165,15 @@
 			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
 				'None'
 			else
-				unit.oclAsType(StaticUnit).service.modelName()
+				unit.oclAsType(StaticUnit).service.serves.modelName()
 			endif
 		else
-			unit.oclAsType(DynamicUnit).services->first().modelName()
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+				in if dynamicUnit.entities->isEmpty() then
+						'????????'
+					else
+						dynamicUnit.entities->first().modelName()
+					endif
 		endif
 /]
 
@@ -281,7 +260,7 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
-			action.usedBy.oclAsType(UnitAssociation).serviceFeature.modelName()
+			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif
 /]
 
@@ -293,7 +272,7 @@
 			else
 				action.usedBy.oclAsType(UnitAssociation).displayedOn
 			endif
-		in unit.services->first().modelName()/]
+		in unit.entities->first().modelName()/]
 
 [query public parameterName(action : InlineAction) : String
 	= action.actionName()

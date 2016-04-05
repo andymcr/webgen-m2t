@@ -6,6 +6,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -42,42 +43,45 @@ $[unit.templateInstanceName()/]->bind('query_parameters', $this->query_parameter
 [/if]
 [/template]
 
-[template public createVariable(unit : DynamicUnit) post(trim())]
-[for (service : Service | unit.services)]
-$this->[service.instanceName()/] = ORM::factory('[service.modelName()/]');
-[if (unit.hasDefaultValueFields(service))]
-[unit.unitDefaultValues(service)/]
+[template public createVariables(unit : DynamicUnit) post(trim())]
+[for (entityOrView : EntityOrView | unit.entities)]
+$this->[entityOrView.instanceName()/] = ORM::factory('[entityOrView.modelName()/]');
+[if (unit.hasDefaultValueFields())]
+[unit.unitDefaultValues()/]
 [/if]
 [/for]
 [/template]
 
 [template public createVariableIfAbsent(unit : DynamicUnit) post(trim())]
-[let service : Service = unit.services->first()]
-if (!isset($this->[service.instanceName()/]))
-[if (unit.hasDefaultValueFields())]
+[if (unit.entities->notEmpty())]
+[let entityOrView : EntityOrView = unit.entities->first()]
+if (!isset($this->[entityOrView.instanceName()/]))
+	[if (unit.entities->size() > 1 or unit.hasDefaultValueFields())]
 {
-    [unit.createVariable()/]
+    [unit.createVariables()/]
 }
-[else]
-    [unit.createVariable()/]
-[/if]
+	[else]
+    [unit.createVariables()/]
+	[/if]
 [/let]
-
+[/if]
 [/template]
 
 [template public bindModelVariable(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
 [if (createIfAbsent)]
 [unit.createVariableIfAbsent()/]
 [/if]
-$[unit.templateInstanceName()/]->bind('[unit.modelInstanceName()/]', $this->[unit.services->first().instanceName()/]);
+[if (unit.entities->notEmpty())]
+$[unit.templateInstanceName()/]->bind('[unit.modelInstanceName()/]', $this->[unit.entities->first().instanceName()/]);
+[/if]
 [/template]
 
 [template public bindModelVariables(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
 [if (createIfAbsent)]
 [unit.createVariableIfAbsent()/]
 [/if]
-[for (service : Service | unit.services)]
-$[unit.templateInstanceName()/]->bind('[unit.modelInstanceName(service)/]', $this->[service.instanceName()/]);
+[for (entityOrView : EntityOrView | unit.entities)]
+$[unit.templateInstanceName()/]->bind('[unit.modelInstanceName(entityOrView)/]', $this->[entityOrView.instanceName()/]);
 [/for]
 [/template]
 
@@ -92,72 +96,89 @@ if (!empty($this->[unit.fieldErrorsName()/]))
 [/template]
 
 [template public createAndBindRouteParameters(unit : DynamicUnit) post(trim())]
-[let service : Service = unit.services->first()]
+[if (unit.entities->notEmpty())]
+[let entityOrView : EntityOrView = unit.entities->first()]
+[let keyEntity : EntityOrView = entityOrView.keyEntity()]
 [let parametersVariable : String = '$'.concat(unit.instanceName()).concat('_route_parameters')]
 $[unit.instanceName()/]_route_parameters = array();
-if ($this->[service.instanceName()/]->loaded())
+if ($this->[entityOrView.instanceName()/]->loaded())
 {
-    [service.routeParameters(parametersVariable)/]
+    [entityOrView.routeActualParameters(parametersVariable, '$this->'.concat(entityOrView.instanceName()))/]
 }
-[if (not service.parentService().oclIsUndefined())]
+	[if (keyEntity.isContained())]
 else
 {
-    [service.parentService().routeParameters(parametersVariable)/]
+    [keyEntity.container().routeActualParameters(parametersVariable, '$this->'.concat(keyEntity.container().instanceName()))/]
 }
-[/if]
+	[/if]
 $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/]_route_parameters);
 [/let]
 [/let]
+[/let]
+[/if]
 [/template]
 
-[template private routeParameters(service : Service, variable : String) post(trim())]
-[if (not service.parentService().oclIsUndefined())]
-[service.parentService().routeParameters(variable)/]
+[template private routeActualParameters(entityOrView : EntityOrView, variable : String, accessor : String) post(trim())]
+[if (entityOrView.isContained())]
+	[if (entityOrView.keyEntity() = entityOrView)]
+[entityOrView.container().routeActualParameters(variable, '$this->'.concat(entityOrView.container().instanceName()))/]
+	[else]
+[entityOrView.container().routeActualParameters(variable, accessor.concat('->').concat(entityOrView.containingAssociation().modelPropertyName()))/]
+	[/if]
 [/if]
-[for (key : ServiceFeatureReference | service.keys)]
-[variable/]['['/]'[key.routeParameterName()/]'[']'/] = [key.getValue('$this->'.concat(service.instanceName()))/];
+[for (key : Attribute | entityOrView.attributeKeys())]
+[variable/]['['/]'[key.routeParameterName()/]'[']'/] = [key.getValue(accessor.concat('->').concat(key.columnName()), '')/];
 [/for]
 [/template]
 
-[query private activeFeatures(unit : DynamicUnit, service : Service) : OrderedSet(UnitField)
-	= unit.nonResourceInputFeatures()
-		->select(f | not f.isEncrypted())
-		->select(f | if f.oclIsTypeOf(UnitElement) then
-				f.oclAsType(UnitElement).serviceFeature.partOf = service
+[query private activeFeatures(unit : DynamicUnit, entityOrView : EntityOrView) : OrderedSet(UnitField)
+	= unit.inputFields()
+		->select(f | not f.isEncrypted() and (not f.isResource() or f.isUrl()))
+		->select(f | if f.oclIsTypeOf(UnitAttribute) then
+				f.oclAsType(UnitAttribute).attribute.partOf = entityOrView
 			else if f.oclIsTypeOf(UnitAssociation) then
-				f.oclAsType(UnitAssociation).serviceFeature.partOf = service
+				f.oclAsType(UnitAssociation).association.partOf = entityOrView
 			else
 				false
 			endif endif)
 /]
 
-[template public valuesFromFormToModel(unit : DynamicUnit, service : Service) post(trim())]
-$this->[service.instanceName()/]->values($this->request->post(), array([for (field : UnitField | unit.activeFeatures(service))
+[template public valuesFromFormToModels(unit : DynamicUnit) post(trim())]
+[if (unit.entities->notEmpty())]
+	[for (entityOrView : EntityOrView | unit.entities->first())]
+$this->[entityOrView.instanceName()/]->values($this->request->post(), array([for (field : UnitField | unit.activeFeatures(entityOrView))
 	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
+	[/for]
+[/if]
 [/template]
 
-[template public unitDefaultValues(unit : DynamicUnit, service : Service) post(trim())]
-[for (field : UnitField | unit.defaultValueFields(service))]
-if (empty($this->[service.instanceName()/]->[field.modelPropertyName()/]))
-[if (field.oclIsTypeOf(UnitElement))]
-    $this->[service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(IncludedAttribute).defaultValue.generateCriteria()/];
-[else]
-    $this->[service.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
-[/if]
+[template public unitDefaultValues(unit : DynamicUnit) post(trim())]
+[for (field : UnitField | unit.defaultValueFields())]
+	[if (field.oclIsTypeOf(UnitAttribute))]
+	[let partOf : EntityOrView = field.oclAsType(UnitAttribute).attribute.partOf]
+if (empty($this->[partOf.instanceName()/]->[field.modelPropertyName()/]))
+    $this->[partOf.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.generateCriteria()/];
+	[/let]
+	[else]
+if (empty($this->[field.modelPropertyName()/]))
+    $this->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.generateCriteria()/];
+	[/if]
 [/for]
 [/template]
 
 
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
-[let service : Service = unit.services->first()]
-[for (feature : IncludedFeature | unit.forcedValueFeatures())]
-	[if (feature.oclIsTypeOf(IncludedAttribute))]
-$this->[service.instanceName()/]->[feature.oclAsType(IncludedAttribute).attribute.columnName()/] = [feature.forcedValue.generateCriteria()/];
+[for (feature : UnitFeature | unit.forcedValueFeatures())]
+	[if (feature.oclIsTypeOf(UnitAttribute))]
+	[let attribute : Attribute = feature.oclAsType(UnitAttribute).attribute]
+$this->[attribute.partOf.instanceName()/]->[attribute.columnName()/] = [feature.forcedValue.generateCriteria()/];
+	[/let]
 	[else]
-$this->[service.instanceName()/]->[feature.oclAsType(IncludedAssociation).association.columnName()/] = [feature.forcedValue.generateCriteria()/];
+	[let association : Association = feature.oclAsType(UnitAssociation).association]
+$this->[association.partOf.instanceName()/]->[association.columnName()/] = [feature.forcedValue.generateCriteria()/];
+	[/let]
 	[/if]
 [/for]
-[/let]
 [/template]
 
 [template public captchaCheck(unit : DynamicUnit) post(trim())]
@@ -185,8 +206,8 @@ catch (ORM_Validation_Exception $e)
 [if (unit.displayedOn.oclAsType(Page).partOf.developmentVersion)]
     $unreported_field_errors = array_diff_key($this->[unit.fieldErrorsName()/], array([for
     (field : UnitField | unit.inputFields())
-        separator (', ')][let fieldName : String = if field.oclIsKindOf(UnitElement) then
-		field.oclAsType(UnitElement).serviceFeature.columnName()
+        separator (', ')][let fieldName : String = if field.oclIsKindOf(UnitAttribute) then
+		field.oclAsType(UnitAttribute).attribute.columnName()
 	else
 		field.modelPropertyName()
 	endif]'[fieldName/]' => ''[/let][/for][if (unit.hasInterfaceFields())], '_external' => ''[/if]));

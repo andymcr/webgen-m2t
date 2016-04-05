@@ -9,12 +9,11 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
-[template public model(service : Service, authentication : Authentication)]
-[file(service.modelFilename(), false)]
-[let entityOrView : EntityOrView = service.encapsulates->first()]
+[template public model(entityOrView : EntityOrView, authentication : Authentication)]
+[file(entityOrView.modelFilename(), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-class [service.modelClassName()/] extends Model_ExtendedORM
+class [entityOrView.modelClassName()/] extends Model_ExtendedORM
 {
 	protected $_table_name = '[entityOrView.tableName/]';
 
@@ -37,7 +36,7 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 
 [/if]
 [if (entityOrView.hasDefaultValueFeatures())]
-    [service.constructor(entityOrView, authentication)/]
+    [entityOrView.constructor(authentication)/]
 
 [/if]
 [if (not entityOrView.hasDefaultLabel())]
@@ -56,15 +55,15 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 
 [/if]
 [if (entityOrView.hasValidatedFeatures())]
-[let userService : Service
+[let user : EntityOrView
 	= if authentication.oclIsUndefined() then
 			null
 		else if not authentication.oclIsTypeOf(LocalAuthenticationSystem) then
 			null
 		else
-			authentication.oclAsType(LocalAuthenticationSystem).userService
+			authentication.oclAsType(LocalAuthenticationSystem).user
 	endif endif]
-	[if (service = userService)]
+	[if (entityOrView = user)]
 	protected $_validation_required = TRUE;
 
 	public function validation_required($required = TRUE)
@@ -77,16 +76,16 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 	}
 
 	[/if]
-    [service.rules(entityOrView, userService)/]
+    [entityOrView.rules(user)/]
 
-    [service.labels(entityOrView)/]
+    [entityOrView.labels()/]
 [/let]
 [/if]
-[if (service.keys->notEmpty())]
-    [service.find()/]
+[if (entityOrView.attributeKeys()->notEmpty())]
+    [entityOrView.find()/]
 
 [/if]
-[for (association : ServiceAssociation | service.features->select(f | f.oclIsKindOf(ServiceAssociation)).oclAsType(ServiceAssociation))]
+[for (association : Association | entityOrView.associations())]
 	[if (association.isContainer())]
     [association.findChild()/]
 
@@ -339,7 +338,6 @@ class [service.modelClassName()/] extends Model_ExtendedORM
 [/let]
 [/if]
 }
-[/let]
 [/file]
 [/template]
 
@@ -380,7 +378,7 @@ protected $_has_many = array(
 );
 [/template]
 
-[template private constructor(service : Service, entityOrView : EntityOrView, authentication : Authentication) post(trim())]
+[template private constructor(entityOrView : EntityOrView, authentication : Authentication) post(trim())]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 public function __construct($id = NULL)
 {
@@ -407,7 +405,7 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 }
 [/template]
 
-[template private labels(service : Service, entityOrView : EntityOrView) post(trim())]
+[template private labels(entityOrView : EntityOrView) post(trim())]
 public function labels()
 {
     return array(
@@ -459,10 +457,10 @@ public function filters()
 }
 [/template]
 
-[template private rules(service : Service, entityOrView : EntityOrView, userService : Service) post(trim())]
+[template private rules(entityOrView : EntityOrView, user : EntityOrView) post(trim())]
 public function rules()
 {
-[if (service = userService)]
+[if (entityOrView = user)]
     if ($this->validation_required(NULL)) 
         return array(
 	[for (feature : Feature | entityOrView.validatedFeatures())]
@@ -492,11 +490,11 @@ public function rules()
 ),
 [/template]
 
-[template private find(service : Service) post(trim())]
-public function find([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+[template private find(entityOrView : EntityOrView) post(trim())]
+public function find([for (key : Attribute | entityOrView.attributeKeys()) separator(', ')]
 $[key.instanceName()/] = NULL[/for])
 {
-[for (key : ServiceFeatureReference | service.keys)]
+[for (key : Attribute | entityOrView.attributeKeys())]
     if (!empty($[key.instanceName()/]))
 	[if (key.oclIsTypeOf(ServiceAttributeReference))]
         $this->where('[key.columnName()/]', '=', $[key.instanceName()/]);
@@ -517,13 +515,13 @@ $[key.instanceName()/] = NULL[/for])
 }
 [/template]
 
-[template private findChild(association : ServiceAssociation) post(trim())]
+[template private findChild(association : Association) post(trim())]
 [let service : Service = association.targetService()]
-public function [association.findMethodName()/]([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+public function [association.findMethodName()/]([for (key : Attribute | service.keys) separator(', ')]
 $[key.instanceName()/] = NULL[/for])
 {
     $[association.instanceName()/] = $this->[association.modelPropertyName()/];
-[for (key : ServiceFeatureReference | service.keys)]
+[for (key : Attribute | service.keys)]
     if (!empty($[key.instanceName()/]))
 	[if (key.oclIsTypeOf(ServiceAttributeReference))]
         $[association.instanceName()/]->where('[key.columnName()/]', '=', $[key.instanceName()/]);
@@ -549,7 +547,7 @@ $[key.instanceName()/] = NULL[/for])
 public function [selection.instanceName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if][if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 {
-[for (association : ServiceAssociation | selection.joins)]
+[for (association : Association | selection.joins)]
 	$this->join('[association.targetService().selectName()/]')->on('[association.columnName()/]', '=', '[association.targetService().tableName()/].[association.targetService().keyName()/]');
 [/for]
 [if (not selection.filter.oclIsUndefined())]
@@ -573,7 +571,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 public function [selection.countName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for])
 {
-[for (association : ServiceAssociation | selection.joins)]
+[for (association : Association | selection.joins)]
 	$this->join('[association.targetService().selectName()/]')->on('[association.columnName()/]', '=', '[association.targetService().tableName()/].[association.targetService().keyName()/]');
 [/for]
 	[if (not selection.filter.oclIsUndefined())]

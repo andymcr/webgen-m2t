@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module detailsMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -15,10 +16,10 @@
 [template public afterMethod(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[let service : Service = detailsUnit.services->first()]
+[let entityOrView : EntityOrView = detailsUnit.entities->first()]
 [if (detailsUnit.onlyDisplayWhenNotEmpty)]
 [detailsUnit.createVariableIfAbsent()/]
-if ($this->[service.instanceName()/]->loaded() || isset($this->[detailsUnit.errorName()/]))
+if ($this->[entityOrView.instanceName()/]->loaded() || isset($this->[detailsUnit.errorName()/]))
 {
     [detailsUnit.createAndBindTemplate()/]
     [detailsUnit.bindModelVariable(false)/]
@@ -45,12 +46,12 @@ if ($this->[service.instanceName()/]->loaded() || isset($this->[detailsUnit.erro
 [/template]
 
 [template private actionMethod(unit : DetailsUnit) post(trim())]
-[let service : Service = unit.services->first()]
+[let entityOrView : EntityOrView = unit.entities->first()]
 public function action_[unit.actionName()/]()
 {
     try
     {
-        $this->[service.loadMethodName()/]();
+        $this->[entityOrView.loadMethodName()/]();
     }
     [unit.catchSelectionException()/]
 }

@@ -1,8 +1,11 @@
 [comment encoding = UTF-8 /]
 [module editMethods(
 	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -27,7 +30,7 @@
 [if (unit.oclIsKindOf(Selectable))]
 [editUnit.createAndBindRouteParameters()/]
 [/if]
-[for (association : UnitAssociation | editUnit.inputAssociations())]
+[for (association : UnitAssociation | editUnit.associationFields()->select(a | a.isModifiable()))]
 $[association.optionsName()/] = $this->[association.optionsName()/]();
 $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[association.optionsName()/]);
 [/for]
@@ -42,7 +45,7 @@ $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[asso
 
 [editUnit.unitRules()/]
 [/if]
-[for (association : UnitAssociation | editUnit.inputAssociations())]
+[for (association : UnitAssociation | editUnit.associationFields()->select(a | a.isModifiable()))]
 
 [association.associationOptions()/]
 [/for]
@@ -50,122 +53,116 @@ $[editUnit.templateInstanceName()/]->bind('[association.optionsName()/]', $[asso
 [/template]
 
 [template private actionMethod(unit : EditUnit) post(trim())]
-[let firstService : Service = unit.services->first()]
+[if (unit.entities->notEmpty())]
+[let entityOrView : EntityOrView = unit.entities->first()]
 public function action_[unit.actionName()/]()
 {
-[if (not unit.cancelDestination.oclIsUndefined())]
+	[if (not unit.cancelDestination.oclIsUndefined())]
     [unit.handleCancel()/]
 
-[/if]
-[if (unit.oclIsTypeOf(CreateUpdateUnit))]
-[let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
-	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
+	[/if]
+	[if (unit.oclIsTypeOf(CreateUpdateUnit))]
+	[let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
+		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
     if ($this->request->post('clear'))
     {
         $this->redirect(Route::get('[unit.routeName(true)/]')->uri());
         return;
     }
 
+		[/if]
+	[/let]
 	[/if]
-[/let]
-[/if]
     try
     {
-[if (unit.oclIsKindOf(Selectable))]
-        if ([for (key : ServiceFeatureReference | firstService.keys) separator(' || ')]
+	[if (unit.oclIsKindOf(Selectable))]
+        if ([for (key : Attribute | entityOrView.keyEntity().attributeKeys()) separator(' || ')]
 !empty($this->request->param('[key.routeParameterName()/]'))[/for])
-            $this->[firstService.loadMethodName()/](TRUE);
+            $this->[entityOrView.loadMethodName()/](TRUE);
         else
-	[if (unit.hasDefaultValueFields())]
+		[if (unit.entities->size() > 1 or unit.hasDefaultValueFields())]
         {
-            [unit.createVariable()/]
+            [unit.createVariables()/]
         }
+		[else]
+            [unit.createVariables()/]
+		[/if]
 	[else]
-            [unit.createVariable()/]
+        [unit.createVariables()/]
 	[/if]
-[else]
-        [unit.createVariable()/]
-[/if]
 
         if ($this->request->method() == HTTP_Request::POST)
         {
-[if (unit.hasCaptchaFields())]
+	[if (unit.hasCaptchaFields())]
             [unit.captchaCheck()/]
-[/if]
-[if (unit.hasInterfaceFields())]
+	[/if]
+	[if (unit.hasInterfaceFields())]
             [unit.interfaceFieldValidation()/]
-[/if]
-            [unit.saveModel(firstService, true)/]
-[if (unit.services->size() > 1)]
-	[for (service : Service | unit.services->subOrderedSet(2, unit.services->size()))]
-            if (isset($this->[service.instanceName()/]))
+	[/if]
+            [unit.valuesFromFormToModels()/]
+	[if (unit.hasForcedValueFeatures())]
+            [unit.forcedFeatureValues()/]
+	[/if]
+            [entityOrView.saveModel(true, unit)/]
+	[if (unit.entities->size() > 1)]
+		[for (entityOrView : EntityOrView | unit.entities->subOrderedSet(2, unit.entities->size()))]
+            if (isset($this->[entityOrView.instanceName()/]))
             {
-                [unit.saveModel(service, false)/]
+                [entityOrView.saveModel(false, unit)/]
             }
-	[/for]
-[/if]
-[if (not unit.oclAsType(EditUnit).confirmDestination.oclIsUndefined())]
+		[/for]
+	[/if]
+	[if (not unit.oclAsType(EditUnit).confirmDestination.oclIsUndefined())]
             $this->redirect(Route::get('[unit.oclAsType(EditUnit).confirmDestination.routeName()/]')->uri());
-[else]
-	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+	[else]
+		[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 		    [unit.clearModels()/]
-		[if (unit.hasInterfaceFields())]
-			[for (field : InterfaceField | unit.interfaceFields())]
-            unset($this->[firstService.instanceName()/]->[field.modelPropertyName()/]);
-			[/for]
+			[if (unit.hasInterfaceFields())]
+				[for (field : InterfaceField | unit.interfaceFields())]
+            unset($this->[entityOrView.instanceName()/]->[field.modelPropertyName()/]);
+				[/for]
+			[/if]
 		[/if]
 	[/if]
-[/if]
         }
     }
-[if (unit.hasCaptchaFields())]
+	[if (unit.hasCaptchaFields())]
     [unit.catchCaptchaException()/]
-[/if]
+	[/if]
     [unit.catchSelectionException()/]
     [unit.catchValidationException()/]
 }
 [/let]
+[/if]
 [/template]
 
-[template private saveModel(unit : EditUnit, service : Service, firstModel : Boolean) post(trim())]
-[unit.valuesFromFormToModel(service)/]
-[if (unit.hasForcedValueFeatures())]
-[unit.forcedFeatureValues()/]
-[/if]
+[template private saveModel(entityOrView : EntityOrView, firstModel : Boolean, unit : EditUnit) post(trim())]
 [if (unit.customiseValues)]
 // [protected ('customise.values.'.concat(unit.instanceName()))]
 // [/protected]
 [/if]
-[if (not service.parentService().oclIsUndefined())]
-[let parentService : Service = service.parentService()]
-[let columnName : String = service.parentAssociation(parentService).columnName()]
-if (empty($this->[service.instanceName()/]->[columnName/]))
-[if (firstModel)]
+[if (entityOrView.keyEntity().isContained())]
+[let columnName : String = entityOrView.containingAssociation().columnName()]
+if (empty($this->[entityOrView.instanceName()/]->[columnName/]))
+	[if (firstModel)]
 {
-    $this->[parentService.loadMethodName()/]();
-[/if]
-    $this->[service.instanceName()/]->[columnName/] = $this->[parentService.instanceName()/]->id;
-[if (firstModel)]
+    $this->[entityOrView.container().loadMethodName()/]();
+	[/if]
+    $this->[entityOrView.instanceName()/]->[columnName/] = $this->[entityOrView.container().instanceName()/]->id;
+	[if (firstModel)]
 }
-[/if]
+	[/if]
 [/let]
-[/let]
 [/if]
-$this->[service.instanceName()/]->save([if (unit.hasInterfaceFields() and firstModel)]$extra_validation[/if]);
+$this->[entityOrView.instanceName()/]->save([if (unit.hasInterfaceFields() and firstModel)]$extra_validation[/if]);
 [/template]
 
 [template private clearModels(unit : DynamicUnit) post(trim())]
-$this->[unit.services->first().instanceName()/]->clear();
-[if (unit.services->size() > 1)]
-	[for (service : Service | unit.services->subOrderedSet(2, unit.services->size()))]
-if (isset($this->[service.instanceName()/]))
-{
-    $this->[service.instanceName()/]->clear();
-		[if (unit.hasDefaultValueFields(service))]
-    [unit.unitDefaultValues(service)/]
-		[/if]
-}
-	[/for]
+[for (entityOrView : EntityOrView | unit.entities)]
+$this->[entityOrView.instanceName()/]->clear();
+[/for]
+[if (unit.hasDefaultValueFields())]
+[unit.unitDefaultValues()/]
 [/if]
 [/template]
 
@@ -193,12 +190,12 @@ public function [association.optionsName()/]()
 [if (association.isSingleton())]
     $options['['/][']'/] = "Please select";
 [/if]
-    foreach (ORM::factory('[association.serviceFeature.modelName()/]')->[if (association.selection.oclIsUndefined())]
+    foreach (ORM::factory('[association.association.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
-        $options['['/]$option->id[']'/] = [if (association.label.oclIsUndefined())]
+        $options['['/]$option->id[']'/] = [if (association.valueDisplay.oclIsUndefined())]
 $option->defaultLabel()[else]
-[association.label.label('$option')/][/if];
+[association.valueDisplay.label('$option')/][/if];
     return $options;
 }
 [/template]

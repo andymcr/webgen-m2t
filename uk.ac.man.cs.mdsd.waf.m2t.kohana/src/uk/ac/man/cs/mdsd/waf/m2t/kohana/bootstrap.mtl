@@ -1,8 +1,10 @@
 [comment encoding = UTF-8 /]
 [module bootstrap(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -226,10 +228,10 @@ Route::set('[loginUnit.logoutRouteName()/]', '[loginUnit.logoutUriPath()/]')->de
 [template private elementPatterns(unit : ContentUnit) post(trim())]
 [if (unit.oclIsKindOf(DynamicUnit))]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[let service : Service = dynamicUnit.services->first()]
-	[if (service.uriPathKeysWithPattern()->notEmpty())]
+[let entityOrView : EntityOrView = dynamicUnit.entities->first()]
+	[if (entityOrView.hasRouteParameters())]
 , array(
-		[for (key : ServiceAttributeReference | service.uriPathKeysWithPattern())]
+		[for (key : Attribute | entityOrView.uriPathKeys())]
     '[key.routeParameterName()/]' => '[key.attribute.validationPattern/]',
 		[/for]
 )

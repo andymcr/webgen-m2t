@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -30,7 +31,7 @@
   </section>
 [if (dynamicUnit.hasInterfaceFields())]
   <?php
-	$unit_fields = $[dynamicUnit.modelInstanceName(dynamicUnit.services->first())/]->unit_fields();
+	$unit_fields = $[dynamicUnit.modelInstanceName()/]->unit_fields();
 ?>
 [/if]
 [if (unit.oclIsTypeOf(MapUnit))]
@@ -90,7 +91,7 @@
 <?php
     echo Form::open(
         Route::get([if (unit.oclIsKindOf(Selectable))]
-$[unit.modelInstanceName(unit.services->first())/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
+$[unit.modelInstanceName(unit.entities->first())/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
 '[unit.routeName()/]'[/if])
             ->uri([if (unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],
@@ -144,14 +145,14 @@ $[unit.modelInstanceName(unit.services->first())/]->loaded() ? '[unit.routeName(
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit) post(trim())]
-[let fieldName : String = if field.oclIsKindOf(UnitElement) then
-		field.oclAsType(UnitElement).serviceFeature.columnName()
+[let fieldName : String = if field.oclIsKindOf(UnitAttribute) then
+		field.oclAsType(UnitAttribute).attribute.columnName()
 	else
 		field.modelPropertyName()
 	endif]
-[let accessor : String = '$'.concat(unit.modelInstanceName(field.service())).concat('->').concat(fieldName)]
-[if (field.service() <> unit.services->first())]
-<?php if (!empty($[unit.modelInstanceName(field.service())/])) { ?>
+[let accessor : String = '$'.concat(unit.modelInstanceName(unit.entities->first())).concat('->').concat(fieldName)]
+[if (not field.firstEntityOrView())]
+<?php if (!empty($[unit.modelInstanceName(field.entityOrView())/])) { ?>
 [/if]
 <div[if (unit.hasMessagesOnFeature())]<?php
     unset($field_error);
@@ -194,7 +195,7 @@ find_all()[else]
 <?php } ?>
 	[/if]
     </div>
-[if (field.service() <> unit.services->first())]
+[if (not field.firstEntityOrView())]
 <?php } ?>
 [/if]
 [/let]
@@ -392,10 +393,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 [/template]
 
 [template private inputField(field : UnitField, instanceVariable : String)
-	? ((field.isDataTypeSingleton() or field.oclIsTypeOf(DataTypeField)) and not field.isBooleanDataType() and not field.isObfuscated()) post(trim())]
+	? ((field.isDataType() or field.oclIsTypeOf(DataTypeField)) and not field.isBooleanDataType() and not field.isEnumerationType() and not field.isObfuscated()) post(trim())]
 [let dataType : DataType = 
-	if field.oclIsTypeOf(UnitElement) then
-		field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonElement).dataType
+	if field.oclIsTypeOf(UnitAttribute) then
+		field.oclAsType(UnitAttribute).attribute.dataType()
 	else
 		field.oclAsType(DataTypeField).dataType
 	endif]
@@ -437,10 +438,10 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => 'required',
 [/if]
-[if (field.oclIsTypeOf(UnitElement))]
-[let element : UnitElement = field.oclAsType(UnitElement)]
-	[if (not element.validationPattern.oclIsUndefined())]
-			'pattern' => '[element.validationPattern/]'
+[if (field.oclIsTypeOf(UnitAttribute))]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+	[if (not attribute.validationPattern.oclIsUndefined())]
+			'pattern' => '[attribute.validationPattern/]'
 	[/if]
 [/let]
 [/if]
@@ -451,9 +452,9 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [/template]
 
 [template private inputField(field : UnitField, accessor : String)
-	? (field.isEnumerationTypeSingleton()) post(trim())]
+	? (field.isEnumerationType()) post(trim())]
 [let enumerationType : EnumerationType
-	= field.oclAsType(UnitElement).serviceFeature.enumerationType()]
+	= field.oclAsType(UnitAttribute).attribute.enumerationType()]
 <?php
     echo Form::select(
         '[field.formName()/]',
@@ -471,10 +472,10 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [/template]
 
 [template private inputField(field : UnitField, accessor : String)
-	? (field.isDateSingleton() or field.oclIsTypeOf(DateField)) post(trim())]
+	? (field.isDate() or field.oclIsTypeOf(DateField)) post(trim())]
 [let dateDetails : DateDetails
-	= if field.isDateSingleton() then
-			field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonDate).details
+	= if field.isDate() then
+			field.oclAsType(UnitAttribute).attribute.dateDetails()
 		else
 			field.oclAsType(DateField).details
 		endif]
@@ -495,7 +496,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [/template]
 
 [template private inputField(field : UnitField, instanceVariable : String)
-	? (field.isUrlSingleton()) post(trim())]
+	? (field.isUrl()) post(trim())]
 <?php
 	echo Form::input('[field.formName()/]', [instanceVariable/],
 		array(
@@ -505,10 +506,10 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
 			'required' => 'required',
 [/if]
-[if (field.oclIsTypeOf(UnitElement))]
-[let element : UnitElement = field.oclAsType(UnitElement)]
-	[if (not element.validationPattern.oclIsUndefined())]
-			'pattern' => '[element.validationPattern/]'
+[if (field.oclIsTypeOf(UnitAttribute))]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+	[if (not attribute.validationPattern.oclIsUndefined())]
+			'pattern' => '[attribute.validationPattern/]'
 	[/if]
 [/let]
 [/if]
@@ -517,8 +518,8 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [/template]
 
 [template private inputField(field : UnitField, instanceVariable : String)
-	? (field.isResourceSingleton()) post(trim())]
-[let resource : SingletonResource = field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonResource)]
+	? (field.isResource()) post(trim())]
+[let resource : SingletonResource = field.oclAsType(UnitAttribute).attribute.oclAsType(SingletonResource)]
 <?php
 	echo Form::file('[field.modelPropertyName()/]',
 		array(
@@ -536,7 +537,7 @@ array_key_exists('[field.modelPropertyName()/]', $unit_fields) ? $unit_fields['[
 [/template]
 
 [template private inputField(field : UnitField, instanceVariable : String)
-	? (field.oclIsTypeOf(UnitElement) and not field.isSingleton()) post(trim())]
+	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton()) post(trim())]
 echo form_input('[field.modelPropertyName()/]');
 [/template]
 

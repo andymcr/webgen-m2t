@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module pageController(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
@@ -94,7 +95,7 @@ public function after()
         $this->template->sidebar = View::factory('menu/[page.sideMenu.instanceName()/]');
 	[if (page.sideMenu.oclIsTypeOf(DynamicMenu))]
 	[let dynamicMenu : DynamicMenu = page.sideMenu.oclAsType(DynamicMenu)]
-        $this->template->sidebar->[page.sideMenu.instanceName()/] = ORM::factory('[dynamicMenu.service.modelName()/]')->[dynamicMenu.selection.instanceName()/]();
+        $this->template->sidebar->[page.sideMenu.instanceName()/] = ORM::factory('[dynamicMenu.entityOrView.modelName()/]')->[dynamicMenu.selection.instanceName()/]();
 	[/let]
 	[/if]
 [/if]
@@ -111,14 +112,14 @@ public function after()
 [template private supportActionMethods(page : Page)]
 [for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
-[let service : Service = dataUnit.services->first()]
+[let entityOrView : EntityOrView = dataUnit.entities->first()]
 	[if (dataUnit.supportActions->notEmpty())]
 public function action_[dataUnit.supportActionName()/]()
 {
 		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
     try
     {
-        $this->[service.loadMethodName()/]();
+        $this->[entityOrView.loadMethodName()/]();
         [dataUnit.supportActionHandlers()/]
     }
     [dataUnit.catchSelectionException()/]
@@ -151,13 +152,13 @@ if ($this->request->post('[action.actionName()/]'))
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
 [let unit : DynamicUnit = action.immediateUnit()]
-[let service : Service = unit.services->first()]
+[let entityOrView : EntityOrView = unit.entities->first()]
 public function action_[deleteAction.actionName()/]()
 {
     try
     {
-        $this->[service.loadMethodName()/]();
-		$this->[service.instanceName()/]->delete();
+        $this->[entityOrView.loadMethodName()/]();
+		$this->[entityOrView.instanceName()/]->delete();
 [if (not deleteAction.destination.oclIsUndefined())]
         $this->redirect(Route::get('[deleteAction.destination.routeName()/]')->uri());
 [/if]
@@ -176,7 +177,7 @@ public function action_[action.actionName()/]()
 {
     try
     {
-        $this->[action.immediateUnit().containingUnit().services->first().loadMethodName()/]();
+        $this->[action.immediateUnit().containingUnit().entities->first().loadMethodName()/]();
         // [protected ('support.'.concat(action.actionName()))]
         // [/protected]
     }

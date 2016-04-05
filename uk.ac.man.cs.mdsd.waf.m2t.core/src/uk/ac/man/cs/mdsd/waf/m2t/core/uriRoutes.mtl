@@ -52,15 +52,27 @@
 	= if page.units->isEmpty() then
 			Sequence{}
 		else if page.units->size() = 1 then
-			page.units->first().uriPathKeys()
+			page.units->first().uriPathKeys(false)
 		else
 			page.units->subOrderedSet(2, page.units->size())->iterate(u;
-				common : Sequence(Attribute) = page.units->first().uriPathKeys()
-				| common->select(k | u.uriPathKeys()->includes(k)))
+				common : Sequence(Attribute) = page.units->first().uriPathKeys(false)
+				| common->select(k | u.uriPathKeys(false)->includes(k)))
 		endif endif
 /]
 
+[query public hasRouteParameters(unit : ContentUnit) : Boolean
+	= unit.uriPathKeys()->notEmpty()
+/]
+
+[query public hasRouteParameters(unit : ContentUnit, parentPath : Boolean) : Boolean
+	= unit.uriPathKeys(parentPath)->notEmpty()
+/]
+
 [query public uriPathKeys(unit : ContentUnit) : Sequence(Attribute)
+	= unit.uriPathKeys(false)
+/]
+
+[query public uriPathKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
 	= if not unit.oclIsKindOf(DynamicUnit) then
 			Sequence{}
 		else 
@@ -70,10 +82,10 @@
 					else
 						let entityOrView : EntityOrView
 							= dynamicUnit.entities->first()
-							in if unit.oclIsKindOf(Selectable) then
-									entityOrView.uriPathKeys()
-								else
+							in if parentPath then
 									entityOrView.parentUriPathKeys()
+								else
+									entityOrView.uriPathKeys()
 								endif
 					endif
 		endif

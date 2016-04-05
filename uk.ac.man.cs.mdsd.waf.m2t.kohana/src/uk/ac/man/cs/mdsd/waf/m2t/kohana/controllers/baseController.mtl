@@ -1,8 +1,10 @@
 [comment encoding = UTF-8 /]
 [module baseController(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
@@ -21,8 +23,8 @@ class [model.baseControllerClassName()/] extends Controller_Template
 
     [model.afterMethod()/]
 
-[for (service : Service | model.services)]
-    [service.selectionLoadMethod()/]
+[for (entityOrView : EntityOrView | model.persistence.entitiesAndViews)]
+    [entityOrView.selectionLoadMethod()/]
 
 [/for]
 [if (model.hasCaptchaFields())]
@@ -75,35 +77,39 @@ public function after()
 }
 [/template]
 
-[template private selectionLoadMethod(service : Service) post(trim())]
-protected function [service.loadMethodName()/]($validate = FALSE)
+[template private selectionLoadMethod(entityOrView : EntityOrView) post(trim())]
+protected function [entityOrView.loadMethodName()/]($validate = FALSE)
 {
-    if (!isset($this->[service.instanceName()/]))
+[if (not entityOrView.keyEntity().oclIsUndefined())]
+    if (!isset($this->[entityOrView.instanceName()/]))
     {
-[if (service.parentService().oclIsUndefined())]
-        [service.selectionLoadRoot()/]
-[else]
-        [service.selectionLoadChild()/]
-[/if]
-        if (!$this->[service.instanceName()/]->loaded())
-            throw new Controller_SelectionException('Invalid [service.modelName()/] selection');
+	[if (entityOrView.keyEntity().isContained())]
+        [entityOrView.selectionLoadChild()/]
+	[else]
+        [entityOrView.selectionLoadRoot()/]
+	[/if]
+        if (!$this->[entityOrView.instanceName()/]->loaded())
+            throw new Controller_SelectionException('Invalid [entityOrView.modelName()/] selection');
         if ($validate)
-            $this->[service.instanceName()/]->check();
+            $this->[entityOrView.instanceName()/]->check();
     }
+[/if]
 }
 [/template]
 
-[template private selectionLoadRoot(service : Service) post(trim())]
-$this->[service.instanceName()/] = ORM::factory('[service.modelName()/]')
-    ->find([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+[template private selectionLoadRoot(entityOrView : EntityOrView) post(trim())]
+$this->[entityOrView.instanceName()/] = ORM::factory('[entityOrView.modelName()/]')
+    ->find([for (key : Attribute | entityOrView.keyEntity().attributeKeys()) separator(', ')]
 $this->request->param('[key.routeParameterName()/]')[/for]);
 [/template]
 
-[template private selectionLoadChild(service : Service) post(trim())]
-[let parentService : Service = service.parentService()]
-$this->[parentService.loadMethodName()/]();
-$this->[service.instanceName()/] = $this->[parentService.instanceName()/]->[parentService.childAssociation(service).findMethodName()/]([for (key : ServiceFeatureReference | service.keys) separator(', ')]
+[template private selectionLoadChild(entityOrView : EntityOrView) post(trim())]
+[let keyEntity : EntityOrView = entityOrView.keyEntity()]
+[let parent : EntityOrView = keyEntity.container()]
+$this->[parent.loadMethodName()/]();
+$this->[entityOrView.instanceName()/] = $this->[parent.instanceName()/]->[keyEntity.containingAssociation().findMethodName()/]([for (key : Attribute | parent.attributeKeys()) separator(', ')]
 $this->request->param('[key.routeParameterName()/]')[/for]);
+[/let]
 [/let]
 [/template]
 

@@ -1,6 +1,8 @@
 [comment encoding = UTF-8 /]
 [module authenticationMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -26,7 +28,7 @@ if (Auth::instance()->logged_in())
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 $this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.modelName()/]');
 [if (authenticationUnit.hasDefaultValueFields())]
-[authenticationUnit.unitDefaultValues(authenticationUnit.services->first())/]
+[authenticationUnit.unitDefaultValues()/]
 [/if]
 [if (unit.oclIsTypeOf(LoginUnit))]
 //TODO reload remember me
@@ -38,7 +40,7 @@ $this->[authenticationUnit.instanceName()/] = ORM::factory('[authenticationUnit.
 	? (unit.oclIsKindOf(AuthenticationUnit) and not unit.oclIsKindOf(EditUnit)) post(trim())]
 [let authenticationUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [authenticationUnit.createAndBindTemplate()/]
-$[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.modelInstanceName(authenticationUnit.services->first())/]', $this->[authenticationUnit.instanceName()/]);
+$[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.modelInstanceName()/]', $this->[authenticationUnit.instanceName()/]);
 [authenticationUnit.bindErrorMessage()/]
 [if (authenticationUnit.hasCaptchaFields())]
 [authenticationUnit.bindFieldErrors()/]
@@ -62,7 +64,7 @@ public function action_[registrationUnit.actionName()/]()
 		try
 		{
 [if (registrationUnit.hasCaptchaFields())]
-			[registrationUnit.valuesFromFormToModel(registrationUnit.services->first())/]
+			[registrationUnit.valuesFromFormToModels()/]
 [if (registrationUnit.hasForcedValueFeatures())]
 			[registrationUnit.forcedFeatureValues()/]
 [/if]
@@ -91,9 +93,9 @@ public function action_[registrationUnit.actionName()/]()
 //				$this->page_message = 'Activation email sent';
 	[else]
 		[let authentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
-				$user = ORM::factory('[authentication.userService.modelName()/]');
+				$user = ORM::factory('[authentication.user.modelName()/]');
 				$user->[authentication.userAuthenticationKey.columnName()/] = $this->[registrationUnit.instanceName()/]->[authentication.loginUnit.loginIdField.modelPropertyName()/];
-			[for (userFeature : ServiceFeature | authentication.userService.features->select(f | f.isRequired())->select(f | f <> authentication.userAuthenticationKey))]
+			[for (userFeature : Feature | authentication.user.features->select(f | f.isRequired())->select(f | f <> authentication.userAuthenticationKey))]
 				$user->[userFeature.columnName()/] = '';
 			[/for]
 				$user->validation_required(FALSE)->save();
@@ -146,13 +148,13 @@ public function action_[loginUnit.actionName()/]()
 [if (loginUnit.hasCaptchaFields())]
         try
         {
-            [loginUnit.createVariable()/]
+            [loginUnit.createVariables()/]
             [loginUnit.validateLogin()/]
         }
         [loginUnit.catchCaptchaException()/]
 [else]
     {
-        [loginUnit.createVariable()/]
+        [loginUnit.createVariables()/]
         [loginUnit.validateLogin()/]
     }
 [/if]
@@ -170,7 +172,7 @@ public function action_[loginUnit.logoutActionName()/]()
 
 [template public validateLogin(unit : LoginUnit) post(trim())]
 [let localAuthentication : LocalAuthenticationSystem = unit.authenticationSystem]
-[unit.valuesFromFormToModel(unit.services->first())/]
+[unit.valuesFromFormToModels()/]
 [if (unit.hasForcedValueFeatures())]
 [unit.forcedFeatureValues()/]
 [/if]

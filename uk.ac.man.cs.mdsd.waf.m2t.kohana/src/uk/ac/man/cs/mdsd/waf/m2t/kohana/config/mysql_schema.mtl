@@ -52,7 +52,7 @@ FROM [for (entityOrView : EntityOrView | view.encapsulates) separator(', ')][ent
 
 
 [template protected generateColumn(feature : Feature)
-	? (feature.isDataTypeSingleton()) post(trim())]
+	? (feature.isDataType()) post(trim())]
 [let element : SingletonElement = feature.oclAsType(SingletonElement)]
 `[element.columnName/]` [if (element.persistentType = 'String')]
 varchar(255)[elseif (element.persistentType = 'TextBlock')]
@@ -67,7 +67,7 @@ tinyint(1)[else]
 [/template]
 
 [template protected generateColumn(feature : Feature)
-	? (feature.isEnumerationTypeSingleton()) post(trim())]
+	? (feature.isEnumerationType()) post(trim())]
 [let element : SingletonElement = feature.oclAsType(SingletonElement)]
 `[element.columnName/]` int(8) [if 
 	(element.required)] NOT NULL[/if][if

@@ -3,6 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
@@ -70,7 +71,7 @@
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
  <?php
     echo Form::open(
-        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters(unit.oclIsKindOf(IndexUnit)))]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
@@ -105,9 +106,9 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 <dl class="[unit.contentClass/]">
 [/if]
 [for (field : UnitField | unit.displayFields)]
-[let fieldAccessor : String = accessor.concat('->').concat(if field.oclIsKindOf(UnitElement) then field.oclAsType(UnitElement).serviceFeature.columnName() else field.modelPropertyName() endif)]
+[let fieldAccessor : String = accessor.concat('->').concat(if field.oclIsKindOf(UnitAttribute) then field.oclAsType(UnitAttribute).attribute.columnName() else field.modelPropertyName() endif)]
 	[if (field.conditionalDisplay())]
-		[if (field.oclIsKindOf(UnitElement))]
+		[if (field.oclIsKindOf(UnitAttribute))]
  <?php if (!empty([field.getValue(accessor)/])) { ?>
 		[else]
  <?php if ([field.getValue(accessor)/]) { ?>
@@ -142,9 +143,9 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
    <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('$entry')/]</h1>
 [/if]
 [for (field : UnitField | indexUnit.displayFields) ]
-[let fieldAccessor : String = '$entry'.concat('->').concat(if field.oclIsKindOf(UnitElement) then field.oclAsType(UnitElement).serviceFeature.columnName() else field.modelPropertyName() endif)]
+[let fieldAccessor : String = '$entry'.concat('->').concat(if field.oclIsKindOf(UnitAttribute) then field.oclAsType(UnitAttribute).attribute.columnName() else field.modelPropertyName() endif)]
 	[if (field.conditionalDisplay())]
-		[if (field.oclIsKindOf(UnitElement))]
+		[if (field.oclIsKindOf(UnitAttribute))]
 <?php if (!empty([field.getValue(fieldAccessor)/])) { ?>
 		[else]
 <?php if ([field.getValue(fieldAccessor)/]->loaded()) { ?>
@@ -213,7 +214,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 <?php foreach ([instanceVariable/] as $entry): ?>
   <tr class="<?php echo Text::alternate([for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for]); ?>">
  [for (field : UnitField | indexUnit.displayFields)]
-[let fieldAccessor : String = '$entry'.concat('->').concat(if field.oclIsKindOf(UnitElement) then field.oclAsType(UnitElement).serviceFeature.columnName() else field.modelPropertyName() endif)]
+[let fieldAccessor : String = '$entry'.concat('->').concat(if field.oclIsKindOf(UnitAttribute) then field.oclAsType(UnitAttribute).attribute.columnName() else field.modelPropertyName() endif)]
    <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
 [/let]
 [/for]
@@ -228,16 +229,14 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template]
 
 [template private actions(unit : IndexUnit, accessor : String) post(trim())]
-[let service : Service = unit.services->first()]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), service)/]
+[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.entities->first())/]
 [/for]
-[/let]
 [/template]
 
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isDataTypeSingleton() and not field.isBooleanDataType()) post(trim())]
+	? (field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType() and not field.isUrl()) post(trim())]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 [if (feature.actions->select(a | not a.disable)->isEmpty())]
 <?php
@@ -248,7 +247,15 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	[/if]
 ?>
 [else]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1, accessor.lastIndex('->') - 1), feature.getValue(accessor), field.service())/]
+	[let parentEntityOrView : EntityOrView
+		= if feature.oclIsKindOf(UnitAttribute) then 
+				feature.oclAsType(UnitAttribute).attribute.partOf
+			else
+				feature.oclAsType(UnitAssociation).association.partOf
+			endif]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1,
+		accessor.lastIndex('->') - 1), feature.getValue(accessor), parentEntityOrView)/]
+	[/let]
 [/if]
 [/let]
 [/template]
@@ -264,7 +271,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template] 
  
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isDateSingleton() or field.isEnumerationTypeSingleton()) post(trim())]
+	? (field.isDate() or field.isEnumerationType()) post(trim())]
 <?php
 [if (field.maximumDisplaySize > 0)]
     [field.trimValue(field.getValue(accessor))/]
@@ -275,8 +282,8 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isUrlSingleton()) post(trim())]
-[let attribute : SingletonURL = field.oclAsType(UnitElement).serviceFeature.attribute.oclAsType(SingletonURL)]
+	? (field.isUrl()) post(trim())]
+[let attribute : SingletonURL = field.oclAsType(UnitAttribute).attribute.oclAsType(SingletonURL)]
 <?php if (!empty([field.getValue(accessor)/])) { ?><a href="<?php echo [field.getValue(accessor)/]; ?>">[if (attribute.displayValue.oclIsUndefined())]
 [if (field.maximumDisplaySize > 0)]
 <?php
@@ -293,8 +300,8 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isResourceSingleton()) post(trim())]
-[let attribute : UnitElement = field.oclAsType(UnitElement)]
+	? (field.isResource()) post(trim())]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 <?php
 [if (not attribute.conditionalDisplay())]
     if (!empty([attribute.getValue(accessor)/]))
@@ -308,11 +315,11 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/template]
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isAssociationSingleton()) post(trim())]
+	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('->') - 1)]
 [if (association.units->isEmpty())]
-[association.displayAssociation(accessor, parentAccessor, association.service())/]
+[association.displayAssociation(accessor, parentAccessor)/]
 [else]
 [association.units->first().viewContent(accessor)/]
 [/if]
@@ -325,9 +332,9 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
 	[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
-<?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation('$value', '$value', association.serviceFeature.targetService())/]</p><?php } ?>
+<?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation('$value', '$value')/]</p><?php } ?>
 	[else]
-<?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation('$value', '$value', association.serviceFeature.targetService())/]</span><?php } ?>
+<?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation('$value', '$value')/]</span><?php } ?>
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
@@ -350,9 +357,10 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/let]
 [/template]
 
-[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String, service : Service) post(trim())]
+[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
-[association.actions->select(a | not a.disable)->first().actionLink(parentAccessor, association.getValue(accessor), service)/]
+[association.actions->select(a | not a.disable)
+	->first().actionLink(parentAccessor, association.getValue(accessor), association.association.targetType())/]
 [else]
 	[if (association.maximumDisplaySize > 0)]
 <?php
@@ -382,86 +390,80 @@ NULL
 [/template]
 
 [template public getValue(feature : UnitFeature, accessor : String) post(trim())]
-[if (feature.oclIsTypeOf(UnitElement))]
-[feature.oclAsType(UnitElement).getValue(accessor)/]
+[if (feature.oclIsTypeOf(UnitAttribute))]
+[feature.oclAsType(UnitAttribute).getValue(accessor)/]
 [else]
 [feature.oclAsType(UnitAssociation).getValue(accessor)/]
 [/if]
 [/template]
 
-[template public getValue(attribute : UnitElement, accessor : String) post(trim())]
-[attribute.serviceFeature.attribute.getValue(attribute, accessor)/]
+[template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
+[attribute.attribute.getValue(accessor, attribute.dateFormat)/]
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
 [if (association.childFeature.oclIsUndefined())]
-	[if (not association.label.oclIsUndefined())]
-[association.label.label(accessor)/]
+	[if (not association.valueDisplay.oclIsUndefined())]
+[association.valueDisplay.label(accessor)/]
 	[else]
 [accessor/]->defaultLabel()
 	[/if]
 [else]
-[association.childFeature.getValue(accessor)/]
+[association.childFeature.getValue(accessor, association.dateFormat)/]
 [/if]
 [/template]
 
-[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
-	? (childFeature.oclIsTypeOf(ServiceAttributeReference)) post(trim())]
-[let childAttribute : ServiceAttributeReference = childFeature.oclAsType(ServiceAttributeReference)]
+[template public getValue(childFeature : ChildFeature, accessor : String, dateFormat : String)
+	? (childFeature.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let childAttribute : ChildAttribute = childFeature.oclAsType(ChildAttribute)]
 [let childAccessor : String = accessor.concat('->').concat(childAttribute.attribute.columnName())]
-[let unitFeatures : Sequence(UnitFeature) = childFeature.ancestors(UnitFeature)]
-[if (unitFeatures->notEmpty())]
-[childAttribute.attribute.attribute.getValue(unitFeatures->first(), childAccessor)/]
-[else]
-[childAttribute.attribute.attribute.getValue(null, childAccessor)/]
-[/if]
-[/let]
+[childAttribute.attribute.getValue(childAccessor, dateFormat)/]
 [/let]
 [/let]
 [/template]
 
-[template public getValue(childFeature : ServiceFeatureReference, accessor : String)
-	? (childFeature.oclIsTypeOf(ServiceAssociationReference)) post(trim())]
-[let childAssociation : ServiceAssociationReference = childFeature.oclAsType(ServiceAssociationReference)]
+[template public getValue(childFeature : ChildFeature, accessor : String, dateFormat : String)
+	? (childFeature.oclIsTypeOf(ChildAssociation)) post(trim())]
+[let childAssociation : ChildAssociation = childFeature.oclAsType(ChildAssociation)]
 [let childAccessor : String = accessor.concat('->').concat(childAssociation.association.modelPropertyName())]
 [if (childAssociation.childFeature.oclIsUndefined())]
 [childAccessor/]->defaultLabel()
 [else]
-[childAssociation.childFeature.getValue(childAccessor)/]
+[childAssociation.childFeature.getValue(childAccessor, dateFormat)/]
 [/if]
 [/let]
 [/let]
 [/template]
 
 
-[template public getValue(feature : Feature, field : UnitField, accessor : String)
-	? (feature.isDataTypeSingleton() or feature.isUrlSingleton() or feature.isResource()) post(trim())]
+[template public getValue(attribute : Attribute, accessor : String, dummy : String)
+	? (attribute.isDataType() and not attribute.isEnumerationType() or attribute.isUrl() or attribute.isResource()) post(trim())]
 [accessor/]
 [/template]
 
-[template public getValue(feature : Feature, field : UnitField, accessor : String)
-	? (feature.isDateSingleton()) post(trim())]
-[if (field.dateFormat.oclIsUndefined())]
+[template public getValue(attribute : Attribute, accessor : String, dateFormat : String)
+	? (attribute.isDate()) post(trim())]
+[if (dateFormat.oclIsUndefined())]
 [accessor/];
 [else]
-Helpers_View::date([accessor/], '[field.dateFormat/]');
+Helpers_View::date([accessor/], '[dateFormat/]');
 [/if]
 [/template]
 
-[template public getValue(feature : Feature, field : UnitField, accessor : String)
-	? (feature.isEnumerationTypeSingleton()) post(trim())]
-[feature.enumerationType().modelClassName()/]::option([accessor/])
+[template public getValue(attribute : Attribute, accessor : String, dummy : String)
+	? (attribute.isEnumerationType()) post(trim())]
+[attribute.enumerationType().modelClassName()/]::option([accessor/])
 [/template]
 
 
-[template public actionLink(action : InlineAction, accessor : String, label : String, service : Service)
+[template public actionLink(action : InlineAction, accessor : String, label : String, dummy : EntityOrView)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
 <?php
     echo HTML::anchor(
         Route::get('[targetUnit.routeName()/]')->uri(array(
-            [service.routeParameters(accessor)/]
+            [targetUnit.entities->first().routeActualParameters(accessor)/]
         )),
 		HTML::chars(__([label/])),
 		array(
@@ -472,13 +474,13 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, accessor : String, label : String, service : Service)
+[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
 <?php
     echo HTML::anchor(
         Route::get('[delete.routeName()/]')->uri(array(
-            [service.routeParameters(accessor)/]
+            [entityOrView.routeActualParameters(accessor)/]
         )),
         HTML::chars(__([label/])),
         array(
@@ -490,12 +492,14 @@ Helpers_View::date([accessor/], '[field.dateFormat/]');
 [/template]
 
 
-[template private routeParameters(service : Service, accessor : String) post(trim())]
-[if (not service.parentService().oclIsUndefined())]
-[service.parentService().routeParameters(accessor.concat('->').concat(service.parentAssociation(service.parentService()).modelPropertyName()))/]
+[template private routeActualParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
+[if (entityOrView.isContained())]
+[entityOrView.container().routeActualParameters(accessor.concat('->').concat(entityOrView.containingAssociation().modelPropertyName()))/]
 [/if]
-[for (key : ServiceFeatureReference | service.keys)]
-'[key.routeParameterName()/]' => [key.getValue(accessor)/],
+[for (key : Attribute | entityOrView.attributeKeys())]
+[let keyAccessor : String = accessor.concat('->').concat(key.columnName())]
+'[key.routeParameterName()/]' => [key.getValue(keyAccessor, '')/],
+[/let]
 [/for]
 [/template]
 

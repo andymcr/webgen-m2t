@@ -151,10 +151,10 @@
 		.concat(enumerationType.executableExtension())
 /]
 
-[query public modelFilename(service : Service) : String
-	= service.modelsDirectory().concat('/')
-		.concat(service.modelName())
-		.concat(service.executableExtension())
+[query public modelFilename(entityOrView : EntityOrView) : String
+	= entityOrView.modelsDirectory().concat('/')
+		.concat(entityOrView.modelName())
+		.concat(entityOrView.executableExtension())
 /]
 
 [query public modelLanguageFilename(service : Service) : String

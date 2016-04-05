@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module searchMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
@@ -15,7 +16,7 @@
 [/template]
 
 [template private actionMethod(unit : SearchUnit)]
-[let service : Service = unit.services->first()]
+[let entityOrView : EntityOrView = unit.entities->first()]
 public function action_[unit.actionName()/]()
 {
 [if (not unit.cancelDestination.oclIsUndefined())]
@@ -24,7 +25,7 @@ public function action_[unit.actionName()/]()
 [/if]
     try
     {
-        [unit.valuesFromFormToModel(service)/]
+        [unit.valuesFromFormToModels()/]
 [if (unit.hasForcedValueFeatures())]
         [unit.forcedFeatureValues()/]
 [/if]
@@ -34,7 +35,7 @@ public function action_[unit.actionName()/]()
 [if (unit.hasInterfaceFields())]
         [unit.interfaceFieldValidation()/]
 [/if]
-        $this->[service.instanceName()/]->check([if (unit.hasInterfaceFields())]$extra_validation[/if]);
+        $this->[entityOrView.instanceName()/]->check([if (unit.hasInterfaceFields())]$extra_validation[/if]);
 		// [protected ('search.'.concat(unit.instanceName()))]
 		// [/protected]
 //	$this->redirect(Route::get('[unit.displayedOn.oclAsType(Page).routeName()/]')->uri());
