@@ -50,7 +50,17 @@ $[authenticationUnit.templateInstanceName()/]->bind('[authenticationUnit.modelIn
 
 
 [template public unitMethods(unit : ContentUnit)
-	? (unit.oclIsTypeOf(RegistrationUnit)) post(trim())]
+	? (unit.oclIsKindOf(AuthenticationUnit)) post(trim())]
+[if (unit.oclIsTypeOf(RegistrationUnit))]
+[unit.oclAsType(RegistrationUnit).actionMethod()/]
+[elseif (unit.oclIsTypeOf(LoginUnit))]
+[unit.oclAsType(LoginUnit).actionMethods()/]
+[elseif (unit.oclIsTypeOf(ForgottenPasswordUnit))]
+[unit.oclAsType(ForgottenPasswordUnit).actionMethod()/]
+[/if]
+[/template]
+
+[template public actionMethod(unit : RegistrationUnit) post(trim())]
 [let authentication : LocalAuthenticationSystem = unit.displayedOn.oclAsType(Page).partOf.authentication.oclAsType(LocalAuthenticationSystem)]
 [let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
 public function action_[registrationUnit.actionName()/]()
@@ -94,8 +104,8 @@ public function action_[registrationUnit.actionName()/]()
 	[else]
 		[let authentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 				$user = ORM::factory('[authentication.user.modelName()/]');
-				$user->[authentication.userAuthenticationKey.columnName()/] = $this->[registrationUnit.instanceName()/]->[authentication.loginUnit.loginIdField.modelPropertyName()/];
-			[for (userFeature : Feature | authentication.user.features->select(f | f.isRequired())->select(f | f <> authentication.userAuthenticationKey))]
+				$user->[authentication.userKey.columnName()/] = $this->[registrationUnit.instanceName()/]->[authentication.loginUnit.loginIdField.modelPropertyName()/];
+			[for (userFeature : Feature | authentication.user.features->select(f | f.isRequired())->select(f | f <> authentication.userKey))]
 				$user->[userFeature.columnName()/] = '';
 			[/for]
 				$user->validation_required(FALSE)->save();
@@ -137,37 +147,42 @@ public function action_[registrationUnit.actionName()/]()
 [/let]
 [/template]
 
-[template public unitMethods(unit : ContentUnit)
-	? (unit.oclIsTypeOf(LoginUnit)) post(trim())]
-[let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
-[let localAuthentication : LocalAuthenticationSystem = loginUnit.authenticationSystem]
-public function action_[loginUnit.actionName()/]()
+[template private actionMethods(unit : LoginUnit) post(trim())]
+[unit.loginMethod()/]
+
+[unit.logoutMethod()/]
+[/template]
+
+[template private loginMethod(unit : LoginUnit) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = unit.authenticationSystem]
+public function action_[unit.actionName()/]()
 {
-    [loginUnit.authenticationStart()/]
+    [unit.authenticationStart()/]
     else if ($this->request->method() == HTTP_Request::POST)
-[if (loginUnit.hasCaptchaFields())]
+[if (unit.hasCaptchaFields())]
         try
         {
-            [loginUnit.createVariables()/]
-            [loginUnit.validateLogin()/]
+            [unit.createVariables()/]
+            [unit.validateLogin()/]
         }
-        [loginUnit.catchCaptchaException()/]
+        [unit.catchCaptchaException()/]
 [else]
     {
-        [loginUnit.createVariables()/]
-        [loginUnit.validateLogin()/]
+        [unit.createVariables()/]
+        [unit.validateLogin()/]
     }
 [/if]
 }
+[/let]
+[/template]
 
-public function action_[loginUnit.logoutActionName()/]()
+[template private logoutMethod(unit : LoginUnit) post(trim())]
+public function action_[unit.logoutActionName()/]()
 {
     Auth::instance()->logout(FALSE);
     $this->redirect();
 }
 
-[/let]
-[/let]
 [/template]
 
 [template public validateLogin(unit : LoginUnit) post(trim())]
@@ -181,10 +196,10 @@ public function action_[loginUnit.logoutActionName()/]()
 [/if]
 $login_id = $this->request->post('[unit.loginIdField.modelPropertyName()/]');
 $password = $this->request->post('[unit.passwordField.modelPropertyName()/]');
-[if (not localAuthentication.autoLoginService.oclIsUndefined())]
+[if (not localAuthentication.autoLogin.oclIsUndefined())]
 $remember_me = $this->request->post('[unit.rememberMeField.modelPropertyName()/]');
 [/if]
-$authentication = Auth::instance()->login($login_id, $password, [if (localAuthentication.autoLoginService.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
+$authentication = Auth::instance()->login($login_id, $password, [if (localAuthentication.autoLogin.oclIsUndefined())]FALSE[else]isset($remember_me)[/if]);
 if ($authentication)
 {
     $referrer = Session::instance()->get('login_referrer');
@@ -207,8 +222,7 @@ if ($authentication)
 [/template]
 
 
-[template public unitMethods(unit : ContentUnit)
-	? (unit.oclIsTypeOf(ForgottenPasswordUnit)) post(trim())]
+[template public actionMethod(unit : ForgottenPasswordUnit) post(trim())]
 [let forgottenUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
 public function action_[forgottenUnit.actionName()/]() {
 	// based on code from tank_auth by Ilya Konyukhov (http://konyukhov.com/soft/tank_auth/)

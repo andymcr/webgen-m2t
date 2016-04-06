@@ -71,7 +71,7 @@
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
  <?php
     echo Form::open(
-        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters(unit.oclIsKindOf(IndexUnit)))]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+        Route::get('[unit.supportRouteName()/]')->uri([if (unit.hasRouteParameters(unit.oclIsKindOf(IndexUnit) or unit.oclIsKindOf(AuthenticationUnit)))]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
@@ -444,9 +444,9 @@ NULL
 [template public getValue(attribute : Attribute, accessor : String, dateFormat : String)
 	? (attribute.isDate()) post(trim())]
 [if (dateFormat.oclIsUndefined())]
-[accessor/];
+[accessor/]
 [else]
-Helpers_View::date([accessor/], '[dateFormat/]');
+Helpers_View::date([accessor/], '[dateFormat/]')
 [/if]
 [/template]
 
@@ -460,16 +460,18 @@ Helpers_View::date([accessor/], '[dateFormat/]');
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
+[let targetEntityOrView : EntityOrView = targetUnit.entities->first()]
 <?php
     echo HTML::anchor(
         Route::get('[targetUnit.routeName()/]')->uri(array(
-            [targetUnit.entities->first().routeActualParameters(accessor)/]
+            [targetEntityOrView.routeActualParameters(targetEntityOrView, accessor)/]
         )),
 		HTML::chars(__([label/])),
 		array(
 			'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
 	));
 ?>
+[/let]
 [/let]
 [/let]
 [/template]
@@ -480,7 +482,7 @@ Helpers_View::date([accessor/], '[dateFormat/]');
 <?php
     echo HTML::anchor(
         Route::get('[delete.routeName()/]')->uri(array(
-            [entityOrView.routeActualParameters(accessor)/]
+            [entityOrView.routeActualParameters(entityOrView, accessor)/]
         )),
         HTML::chars(__([label/])),
         array(
@@ -492,13 +494,13 @@ Helpers_View::date([accessor/], '[dateFormat/]');
 [/template]
 
 
-[template private routeActualParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
+[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String) post(trim())]
 [if (entityOrView.isContained())]
-[entityOrView.container().routeActualParameters(accessor.concat('->').concat(entityOrView.containingAssociation().modelPropertyName()))/]
+[entityOrView.container().routeActualParameters(base, accessor.concat('->').concat(entityOrView.containingAssociation().modelPropertyName()))/]
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('->').concat(key.columnName())]
-'[key.routeParameterName()/]' => [key.getValue(keyAccessor, '')/],
+'[key.routeParameterName(base)/]' => [key.getValue(keyAccessor, '')/],
 [/let]
 [/for]
 [/template]

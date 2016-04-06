@@ -23,7 +23,8 @@ class [model.baseControllerClassName()/] extends Controller_Template
 
     [model.afterMethod()/]
 
-[for (entityOrView : EntityOrView | model.persistence.entitiesAndViews)]
+[for (entityOrView : EntityOrView
+		| model.persistence.entitiesAndViews->select(eov | eov.keys->notEmpty())->sortedBy(eov | eov.name))]
     [entityOrView.selectionLoadMethod()/]
 
 [/for]
@@ -100,15 +101,17 @@ protected function [entityOrView.loadMethodName()/]($validate = FALSE)
 [template private selectionLoadRoot(entityOrView : EntityOrView) post(trim())]
 $this->[entityOrView.instanceName()/] = ORM::factory('[entityOrView.modelName()/]')
     ->find([for (key : Attribute | entityOrView.keyEntity().attributeKeys()) separator(', ')]
-$this->request->param('[key.routeParameterName()/]')[/for]);
+$this->request->param('[key.routeParameterName(entityOrView)/]')[/for]);
 [/template]
 
 [template private selectionLoadChild(entityOrView : EntityOrView) post(trim())]
 [let keyEntity : EntityOrView = entityOrView.keyEntity()]
 [let parent : EntityOrView = keyEntity.container()]
+[let parentAssociation : Association = keyEntity.containingAssociation().opposite()]
 $this->[parent.loadMethodName()/]();
-$this->[entityOrView.instanceName()/] = $this->[parent.instanceName()/]->[keyEntity.containingAssociation().findMethodName()/]([for (key : Attribute | parent.attributeKeys()) separator(', ')]
-$this->request->param('[key.routeParameterName()/]')[/for]);
+$this->[entityOrView.instanceName()/] = $this->[parent.instanceName()/]->[parentAssociation.findMethodName()/]([for (key : Attribute | keyEntity.attributeKeys()) separator(', ')]
+$this->request->param('[key.routeParameterName(entityOrView)/]')[/for]);
+[/let]
 [/let]
 [/let]
 [/template]

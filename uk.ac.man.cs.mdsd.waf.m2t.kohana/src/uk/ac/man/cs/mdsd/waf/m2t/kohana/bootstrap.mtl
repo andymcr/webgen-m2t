@@ -5,9 +5,9 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 
 
 [template public bootstrap(model : WafModel)]
@@ -165,7 +165,7 @@ Kohana::modules(array(
 /**
  * Set the magic salt to add to a cookie
  */
-Cookie::$salt = 'kjslkajdldlkdssslsdswe';
+Cookie::$salt = 'kjslkajdldlkdsseftsdswe';
 [/file]
 [/template]
 
@@ -226,17 +226,16 @@ Route::set('[loginUnit.logoutRouteName()/]', '[loginUnit.logoutUriPath()/]')->de
 [/template]
 
 [template private elementPatterns(unit : ContentUnit) post(trim())]
-[if (unit.oclIsKindOf(DynamicUnit))]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[let entityOrView : EntityOrView = dynamicUnit.entities->first()]
-	[if (entityOrView.hasRouteParameters())]
+[let keysWithPattern : Sequence(Attribute)
+	= unit.uriPathKeys(unit.oclIsKindOf(IndexUnit))
+		->select(k | not k.validationPattern.oclIsUndefined())
+		->select(k | k.validationPattern <> '[^/.,;?\\n]++')]
+[if (keysWithPattern->notEmpty())]
 , array(
-		[for (key : Attribute | entityOrView.uriPathKeys())]
-    '[key.routeParameterName()/]' => '[key.attribute.validationPattern/]',
-		[/for]
+	[for (key : Attribute | keysWithPattern)]
+    '[key.routeParameterName(unit.oclAsType(DynamicUnit).entities->first())/]' => '[key.validationPattern/]',
+	[/for]
 )
-	[/if]
-[/let]
-[/let]
 [/if]
+[/let]
 [/template]

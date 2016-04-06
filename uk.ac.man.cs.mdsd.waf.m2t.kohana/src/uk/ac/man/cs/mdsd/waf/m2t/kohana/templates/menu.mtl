@@ -3,6 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::kohana::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
@@ -21,7 +22,7 @@
 [if (dynamicMenu.title.oclIsUndefined())]
 <h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">[dynamicMenu.displayLabel/]</h1>
 [else]
-<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]"><?php echo $[dynamicMenu.instanceName()/]->[dynamicMenu.title.modelPropertyName()/]; ?></h1>
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]"><?php echo $[dynamicMenu.instanceName()/]->[dynamicMenu.title.label()/]; ?></h1>
 [/if]
 <ul class="[dynamicMenu.layoutClass/]">
  [menu.entries.menuEntry()/]

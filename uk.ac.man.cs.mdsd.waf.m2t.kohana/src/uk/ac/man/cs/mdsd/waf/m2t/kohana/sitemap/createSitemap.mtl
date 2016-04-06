@@ -6,7 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
 
-[template public generateCreateSitemap(model : WafModel)]
+[template public createSitemap(model : WafModel)]
 [file (model.sitemapClassesDirectory().concat('/Sitemap').concat(model.executableExtension()), false)]
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
@@ -36,7 +36,7 @@ class Sitemap
 		$home_url->appendChild($priority);
 		
 		[for (page : Page | model.topMenuItems())]
-		[page.generatePageEntry(0.5)/]
+		[page.pageEntry(0.5)/]
 		[/for]
 		
 		$sitemap->save($filename);
@@ -45,8 +45,8 @@ class Sitemap
 [/file]
 [/template]
 
-[template private generatePageEntry(page : Page, priority : Real)]
-[page.generateSingleEntry(priority, '', null)/]
+[template private pageEntry(page : Page, priority : Real)]
+[page.singleEntry(priority, '', null)/]
 [for (unit : ContentUnit | page.units)]
 	[if (unit.oclIsKindOf(IndexUnit))]
 	[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
@@ -58,7 +58,7 @@ $i = 1;
 while ($i < ($entries / [indexUnit.defaultPaginationSize/]))
 {
 	$i++;
-	[page.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(indexUnit.parameterName()).concat('\' => $i)'))/]
+	[page.singleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(indexUnit.parameterName()).concat('\' => $i)'))/]
 }
 		[/if]
 	[/let]
@@ -68,19 +68,19 @@ while ($i < ($entries / [indexUnit.defaultPaginationSize/]))
 $entries = ORM::factory('[unit.modelName()/]')->find_all();
 foreach ($entries AS $entry)
 {
-	[page.generateSingleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(detailsUnit.parameterName()).concat('\' => $entry->'.concat(detailsUnit.services->first().keyName()).concat(')')))/]
+	[page.singleEntry((priority - 0.1).max(0.1), '', 'array(\''.concat(detailsUnit.parameterName()).concat('\' => $entry->'.concat(detailsUnit.entities->first().keyName()).concat(')')))/]
 }
 		[/if]
 	[/let]
 	[/if]
 [/for]
 [for (childPage : Page | page.childPages)]
-[childPage.generatePageEntry((priority - 0.1).max(0.1))/]
+[childPage.pageEntry((priority - 0.1).max(0.1))/]
 [/for]
 
 [/template]
 
-[template private generateSingleEntry(page : Page, priority : Real, routeParameter : String, queryString : String)]
+[template private singleEntry(page : Page, priority : Real, routeParameter : String, queryString : String)]
 $url = $sitemap->createElement('url');
 $urlset->appendChild($url);
 $loc = $sitemap->createElement('loc', $deployed_url . Route::get('[page.routeName()/]')->uri([routeParameter/])[if (not queryString.oclIsUndefined())]

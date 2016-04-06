@@ -103,12 +103,12 @@ if (!empty($this->[unit.fieldErrorsName()/]))
 $[unit.instanceName()/]_route_parameters = array();
 if ($this->[entityOrView.instanceName()/]->loaded())
 {
-    [entityOrView.routeActualParameters(parametersVariable, '$this->'.concat(entityOrView.instanceName()))/]
+    [entityOrView.routeActualParameters(keyEntity, parametersVariable, '$this->'.concat(entityOrView.instanceName()))/]
 }
 	[if (keyEntity.isContained())]
 else
 {
-    [keyEntity.container().routeActualParameters(parametersVariable, '$this->'.concat(keyEntity.container().instanceName()))/]
+    [keyEntity.container().routeActualParameters(keyEntity, parametersVariable, '$this->'.concat(keyEntity.container().instanceName()))/]
 }
 	[/if]
 $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/]_route_parameters);
@@ -118,16 +118,16 @@ $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/
 [/if]
 [/template]
 
-[template private routeActualParameters(entityOrView : EntityOrView, variable : String, accessor : String) post(trim())]
+[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, variable : String, accessor : String) post(trim())]
 [if (entityOrView.isContained())]
 	[if (entityOrView.keyEntity() = entityOrView)]
-[entityOrView.container().routeActualParameters(variable, '$this->'.concat(entityOrView.container().instanceName()))/]
+[entityOrView.container().routeActualParameters(base, variable, '$this->'.concat(entityOrView.container().instanceName()))/]
 	[else]
-[entityOrView.container().routeActualParameters(variable, accessor.concat('->').concat(entityOrView.containingAssociation().modelPropertyName()))/]
+[entityOrView.container().routeActualParameters(base, variable, accessor.concat('->').concat(entityOrView.containingAssociation().modelPropertyName()))/]
 	[/if]
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
-[variable/]['['/]'[key.routeParameterName()/]'[']'/] = [key.getValue(accessor.concat('->').concat(key.columnName()), '')/];
+[variable/]['['/]'[key.routeParameterName(base)/]'[']'/] = [key.getValue(accessor.concat('->').concat(key.columnName()), '')/];
 [/for]
 [/template]
 
@@ -144,12 +144,19 @@ $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/
 /]
 
 [template public valuesFromFormToModels(unit : DynamicUnit) post(trim())]
-[if (unit.entities->notEmpty())]
-	[for (entityOrView : EntityOrView | unit.entities->first())]
+[for (entityOrView : EntityOrView | unit.entities)]
+	[if (i = 1)]
+[entityOrView.valuesFromFormToModel(unit)/]
+	[else]
+if (isset($this->[entityOrView.instanceName()/]))
+    [entityOrView.valuesFromFormToModel(unit)/]
+	[/if]
+[/for]
+[/template]
+
+[template private valuesFromFormToModel(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
 $this->[entityOrView.instanceName()/]->values($this->request->post(), array([for (field : UnitField | unit.activeFeatures(entityOrView))
 	separator (', ')][if (field.isLocation())]'[field.formName()/]_latitude', '[field.formName()/]_longitude'[else]'[field.formName()/]'[/if][/for]));
-	[/for]
-[/if]
 [/template]
 
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]

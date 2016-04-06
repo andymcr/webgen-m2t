@@ -77,7 +77,7 @@ public function action_[unit.actionName()/]()
     {
 	[if (unit.oclIsKindOf(Selectable))]
         if ([for (key : Attribute | entityOrView.keyEntity().attributeKeys()) separator(' || ')]
-!empty($this->request->param('[key.routeParameterName()/]'))[/for])
+!empty($this->request->param('[key.routeParameterName(entityOrView)/]'))[/for])
             $this->[entityOrView.loadMethodName()/](TRUE);
         else
 		[if (unit.entities->size() > 1 or unit.hasDefaultValueFields())]

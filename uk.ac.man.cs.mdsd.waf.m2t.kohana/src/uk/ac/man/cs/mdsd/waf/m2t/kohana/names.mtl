@@ -45,7 +45,7 @@
 /]
 
 [query public selectName(entityOrView : EntityOrView) : String
-	= entityOrView.name
+	= entityOrView.tableName
 /]
 
 
@@ -53,11 +53,11 @@
 	= 'find_'.concat(association.name.toLowerFirst().replaceAll('([A-Z])', '_$1'))
 /]
 
-[query public instanceName(attribute : Attribute) : String
-	= if attribute.oclIsTypeOf(EncapsulatedAttribute) then
-			attribute.oclAsType(EncapsulatedAttribute).name
+[query public instanceName(feature : Feature) : String
+	= if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).name
 		else
-			attribute.oclAsType(EntityAttribute).name
+			feature.oclAsType(Association).name
 		endif
 /]
 
@@ -157,7 +157,11 @@
 /]
 
 [query public modelInstanceName(unit : DynamicUnit, entityOrView : EntityOrView) : String
-	= unit.instanceName().concat('_').concat(entityOrView.instanceName())
+	= if entityOrView.oclIsUndefined() then
+			unit.instanceName()
+		else
+			unit.instanceName().concat('_').concat(entityOrView.instanceName())
+		endif
 /]
 
 [query public modelName(unit : ContentUnit) : String

@@ -31,7 +31,7 @@
   </section>
 [if (dynamicUnit.hasInterfaceFields())]
   <?php
-	$unit_fields = $[dynamicUnit.modelInstanceName()/]->unit_fields();
+	$unit_fields = $[dynamicUnit.modelInstanceName(dynamicUnit.entities->first())/]->unit_fields();
 ?>
 [/if]
 [if (unit.oclIsTypeOf(MapUnit))]
@@ -93,7 +93,7 @@
         Route::get([if (unit.oclIsKindOf(Selectable))]
 $[unit.modelInstanceName(unit.entities->first())/]->loaded() ? '[unit.routeName()/]' : '[unit.routeName(true)/]'[else]
 '[unit.routeName()/]'[/if])
-            ->uri([if (unit.hasRouteParameters())]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
+            ->uri([if (unit.hasRouteParameters(unit.oclIsKindOf(AuthenticationUnit)))]$route_parameters[/if])[if (unit.pageDisplayedOn().hasParameterisedUnits())]
  . URL::query($query_parameters, FALSE)[/if],
         array(
             'id' => '[unit.instanceName()/]',
@@ -171,7 +171,7 @@ $[unit.modelInstanceName(unit.entities->first())/]->loaded() ? '[unit.routeName(
 	[if (if not field.oclIsKindOf(UnitAssociation) then true else field.oclAsType(UnitAssociation).units->isEmpty() endif)]
  <?php
     echo Form::label('[field.uniqueName()/]', '[field.displayLabel()/]', array(
-        'class' => '[field.styleClass()/][if (field.isRequired() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
+        'class' => '[field.styleClass()/][if (field.isRequired() and not field.isBooleanDataType() and not unit.oclIsTypeOf(SearchUnit))] required[/if]'
     )) . PHP_EOL;
 ?>
  [field.inputField(accessor)/]
@@ -385,9 +385,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
     echo Form::checkbox('[field.modelPropertyName()/]', '1', (bool) [field.getValue(accessor)/], array(
         'id' => '[field.uniqueName()/]',
         'class' => '[field.styleClass()/] [field.inputClass()/]',
-[if (field.isRequired() and not field.displayedOn.oclIsTypeOf(SearchUnit))]
-        'required' => '',
-[/if]
     )) . PHP_EOL;
 ?>
 [/template]
