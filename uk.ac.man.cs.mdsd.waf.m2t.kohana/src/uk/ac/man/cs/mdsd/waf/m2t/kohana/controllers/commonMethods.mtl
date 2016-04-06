@@ -77,12 +77,16 @@ $[unit.templateInstanceName()/]->bind('[unit.modelInstanceName()/]', $this->[uni
 [/template]
 
 [template public bindModelVariables(unit : DynamicUnit, createIfAbsent : Boolean) post(trim())]
-[if (createIfAbsent)]
+[if (unit.entities->size() < 2)]
+[unit.bindModelVariable(createIfAbsent)/]
+[else]
+	[if (createIfAbsent)]
 [unit.createVariableIfAbsent()/]
-[/if]
-[for (entityOrView : EntityOrView | unit.entities)]
+	[/if]
+	[for (entityOrView : EntityOrView | unit.entities)]
 $[unit.templateInstanceName()/]->bind('[unit.modelInstanceName(entityOrView)/]', $this->[entityOrView.instanceName()/]);
-[/for]
+	[/for]
+[/if]
 [/template]
 
 [template public bindErrorMessage(unit : DynamicUnit) post(trim())]
