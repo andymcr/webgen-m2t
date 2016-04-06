@@ -314,7 +314,7 @@ public function rules()
 [/template]
 
 [template private find(entityOrView : EntityOrView) post(trim())]
-public function find([for (key : Attribute | entityOrView.uriPathKeys()) separator(', ')]
+public function find_by_name([for (key : Attribute | entityOrView.uriPathKeys()) separator(', ')]
 $[key.routeParameterName(entityOrView)/][/for])
 {
     [entityOrView.entityFind(entityOrView)/]

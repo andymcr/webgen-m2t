@@ -100,7 +100,7 @@ protected function [entityOrView.loadMethodName()/]($validate = FALSE)
 
 [template private selectionLoadRoot(entityOrView : EntityOrView) post(trim())]
 $this->[entityOrView.instanceName()/] = ORM::factory('[entityOrView.modelName()/]')
-    ->find([for (key : Attribute | entityOrView.keyEntity().attributeKeys()) separator(', ')]
+    ->find_by_name([for (key : Attribute | entityOrView.keyEntity().attributeKeys()) separator(', ')]
 $this->request->param('[key.routeParameterName(entityOrView)/]')[/for]);
 [/template]
 
