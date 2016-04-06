@@ -500,7 +500,7 @@ Helpers_View::date([accessor/], '[dateFormat/]')
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('->').concat(key.columnName())]
-'[key.routeParameterName(base)/]' => [key.getValue(keyAccessor, '')/],
+'[key.routeParameterName(base)/]' => rawurlencode([key.getValue(keyAccessor, '')/]),
 [/let]
 [/for]
 [/template]

@@ -127,7 +127,7 @@ $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/
 	[/if]
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
-[variable/]['['/]'[key.routeParameterName(base)/]'[']'/] = [key.getValue(accessor.concat('->').concat(key.columnName()), '')/];
+[variable/]['['/]'[key.routeParameterName(base)/]'[']'/] = rawurlencode([key.getValue(accessor.concat('->').concat(key.columnName()), '')/]);
 [/for]
 [/template]
 
