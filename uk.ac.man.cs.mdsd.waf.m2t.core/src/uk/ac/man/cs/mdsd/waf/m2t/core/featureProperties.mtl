@@ -64,14 +64,8 @@
 	= model.authentication.oclAsType(LocalAuthenticationSystem)
 /]
 
-[query public service(model : WafModel, entityOrView : EntityOrView) : Service
-	= let services : OrderedSet(Service)
-		= model.services->select(s | s.serves = entityOrView)
-		in if services->isEmpty() then
-				null
-			else
-				services->first()
-			endif
+[query public services(model : WafModel, entityOrView : EntityOrView) : OrderedSet(Service)
+	= model.services->select(s | s.serves = entityOrView)
 /]
 
 [query public servicesWithSelections(model : WafModel) : Sequence(Service)
@@ -94,8 +88,8 @@
 /]
 
 
-[query public entityService(service : Service, entityOrView : EntityOrView) : Service
-	= service.partOf.service(entityOrView)
+[query public services(entityOrView : EntityOrView, model : WafModel) : OrderedSet(Service)
+	= model.services(entityOrView)
 /]
 
 
@@ -530,11 +524,13 @@
 /]
 
 [query public firstEntityOrView(field : UnitField) : Boolean
-	= if field.entityOrView().oclIsUndefined() or field.displayedOn.entities->isEmpty() then
+	= if field.oclIsKindOf(InterfaceField) then
+			true
+		else if field.entityOrView().oclIsUndefined() or field.displayedOn.entities->isEmpty() then
 			false
 		else 
 			field.entityOrView() = field.displayedOn.entities->first()
-		endif
+		endif endif
 /]
 
 [query public formName(field : UnitField) : String
@@ -817,12 +813,8 @@
 /]
 
 [query public isObfuscated(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitAttribute) then
-				field.oclAsType(UnitAttribute).obfuscateFormFields
-			else
-				false
-			endif
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).obfuscateFormFields
 		else if field.oclIsTypeOf(DataTypeField) then
 			field.oclAsType(DataTypeField).obfuscateFormFields
 		else
