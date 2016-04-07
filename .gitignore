@@ -1,5 +1,7 @@
 /.metadata
 bin/
+uk.ac.man.cs.mdsd.waf.editor/
+uk.ac.man.cs.mdsd.webgen.model.edit2/
 uk.ac.man.cs.mdsd.web.m2t/tasks/generateTarget.xml
 uk.ac.man.cs.mdsd.web.m2t/tasks/generate.xml
 uk.ac.man.cs.mdsd.web.m2t/tasks/generateTarget.xml
