@@ -89,8 +89,8 @@
 	= entityOrView.features->select(f | f.hasDefaultValue()).oclAsType(Attribute)
 /]
 
-[query public isContained(entityOrView : EntityOrView) : Boolean
-	= not entityOrView.container().oclIsUndefined()
+[query public features(entityOrView : EntityOrView) : OrderedSet(Feature)
+	= entityOrView.features->select(a | a.isVisible())
 /]
 
 [query public hasAssociationKeys(entityOrView : EntityOrView) : Boolean
@@ -131,6 +131,10 @@
 
 [query public inverseSingletonAssociations(entityOrView : EntityOrView) : Sequence(Association)
 	= entityOrView.associations()->select(a | a.isSingleton() and not a.isOwningEnd() and a.isVisible())
+/]
+
+[query public isContained(entityOrView : EntityOrView) : Boolean
+	= not entityOrView.container().oclIsUndefined()
 /]
 
 [query public modifiableAssociations(entityOrView : EntityOrView) : Sequence(Association)
@@ -214,6 +218,22 @@
 		else
 			false
 		endif endif
+/]
+
+[query public hasHtml5Attributes(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).hasValidationPattern()
+		else
+			false
+		endif
+/]
+
+[query public hasValidationPattern(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(Attribute) then
+			not feature.oclAsType(Attribute).validationPattern.oclIsUndefined()
+		else
+			false
+		endif
 /]
 
 [query public isBooleanDataType(feature : Feature) : Boolean
@@ -422,16 +442,27 @@
 		endif endif
 /]
 
-[query public oppositeColumnName(feature : Association) : String
-	= if feature.oclIsTypeOf(SingletonAssociation) then
-			feature.oclAsType(SingletonAssociation).opposite.columnName
-		else if feature.oclIsTypeOf(CollectionAssociation) then
-			feature.oclAsType(CollectionAssociation).opposite.columnName
-		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.oppositeColumnName()
+[query public opposite(association : Association) : Association
+	= if association.oclIsTypeOf(EncapsulatedAssociation) then
+			association.oclAsType(EncapsulatedAssociation).association.opposite()
+		else if association.oclIsKindOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).opposite
 		else
-			'Unhandled Association'
-		endif endif endif
+			null
+		endif endif
+/]
+
+[query public oppositeColumnName(feature : Association) : String
+	= if not feature.oclIsKindOf(Association) then
+			'Invalid association'
+		else
+			let opposite : Association = feature.oclAsType(Association).opposite()
+				in if opposite.oclIsUndefined() then
+						'Unhandled Association'
+					else
+						opposite.columnName()
+					endif
+		endif
 /]
 
 [query public ormType(feature : Attribute) : String
