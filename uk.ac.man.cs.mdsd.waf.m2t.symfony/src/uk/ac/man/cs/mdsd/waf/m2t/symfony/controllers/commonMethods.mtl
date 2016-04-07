@@ -29,7 +29,7 @@
 [template public renderMethodParameters(page : Page) post(trim())]
 [if (page.hasFilterParameters())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
-, [/if][/if][for (key : EntityAttribute | page.uriCommonPathKeys()) separator(', ')]
+, [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName()/][/for]
 [/template]
 
@@ -39,7 +39,7 @@ $this->get('[unit.service().name/]')
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.entities->first().routeParameters()/])
+[unit.getService()/]->find([unit.entities->first().routeParametersDecoded()/])
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]

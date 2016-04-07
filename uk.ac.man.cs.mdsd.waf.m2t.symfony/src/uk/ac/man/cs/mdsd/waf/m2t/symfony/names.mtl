@@ -65,7 +65,7 @@
 			else
 				association.partOf
 			endif
-		in service.entityService(entityOrView).selectName()
+		in entityOrView.services(service.partOf)->first().selectName()
 /]
 
 

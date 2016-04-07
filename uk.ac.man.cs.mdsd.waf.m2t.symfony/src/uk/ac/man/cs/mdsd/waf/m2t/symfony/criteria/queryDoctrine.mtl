@@ -51,7 +51,7 @@ $this->[path.unit.instanceName()/]->[comment path unit services->first() keyName
 [/template]
 
 [template public featureReference(feature : Feature, model : WafModel) post(trim())]
- '[model.service(feature.partOf).selectName()/].[feature.columnName()/]'
+ '[feature.partOf.services(model)->first().selectName()/].[feature.columnName()/]'
 [/template]
 
 [template public queryExpression(criteria : Expression)

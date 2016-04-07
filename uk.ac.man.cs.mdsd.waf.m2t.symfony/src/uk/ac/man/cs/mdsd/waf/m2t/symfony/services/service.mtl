@@ -83,14 +83,14 @@ public function find([service.serves.routeParameters()/])
 [template private keyJoin(service : Service, entityOrView : EntityOrView) post(trim())]
 [if (service.serves.isContained())]
 [let container : EntityOrView = service.serves.container()]
-[let containerService : Service = service.entityService(container)]
+[let containerService : Service = container.services(service.partOf)->first()]
 ->join('[service.selectName()/].[service.serves.containingAssociation().modelPropertyName()/]', '[containerService.selectName()/]')
 [containerService.keyJoin(container)/]
 [/let]
 [/let]
 [/if]
 [for (key : EntityAssociation | service.serves.associationKeys()->select(k | not k.container))]
-[let targetService : Service = service.entityService(key.targetType())]
+[let targetService : Service = key.targetType().services(service.partOf)->first()]
 ->join('[service.selectName()/].[key.modelPropertyName()/]', '[targetService.selectName()/]')
 [/let]
 [/for]
@@ -107,7 +107,7 @@ $queryBuilder->expr()->andX([key.findWhere(service)/],
 [/template]
 
 [template private findWhere(key : Attribute, service : Service) post(trim())]
-$queryBuilder->expr()->eq('[service.entityService(key.partOf).selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]')
+$queryBuilder->expr()->eq('[key.partOf.services(service.partOf)->first().selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]')
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
@@ -190,7 +190,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 [template private childSelectionMethods(service : Service) post(trim())]
 [for (association : Association | service.serves.associations())]
 	[if (not association.isSingleton(service.serves))]
-	[let targetService : Service = service.entityService(association.targetType())]
+	[let targetService : Service = association.targetType().services(service.partOf)->first()]
 	    [for (selection : Selection | targetService.selections)]
 [service.childSelectionMethod(association, selection)/]
 

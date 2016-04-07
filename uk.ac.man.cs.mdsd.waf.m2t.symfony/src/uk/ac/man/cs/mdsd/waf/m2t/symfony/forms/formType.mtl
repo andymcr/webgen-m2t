@@ -106,12 +106,12 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'choices' => [attribute.enumerationType().modelName()/]::values(),
     'placeholder' => 'Please select one',
 [/if]
-[if (false)] [comment attribute.hasHtml5Attributes())/]
+[if (attribute.hasHtml5Attributes())]
     'attr' => array(
-	[if (not attribute.placeholder.oclIsUndefined())]
-        'placeholder' => '[attribute.placeholder/]',
+	[if (false)] [comment not attribute.placeholder.oclIsUndefined())/]
+        'placeholder' => '[comment attribute.placeholder/]',
 	[/if]
-	[if (not attribute.validationPattern.oclIsUndefined())]
+	[if (attribute.hasValidationPattern())]
         'pattern' => '[attribute.validationPattern/]',
 	[/if]
     ),

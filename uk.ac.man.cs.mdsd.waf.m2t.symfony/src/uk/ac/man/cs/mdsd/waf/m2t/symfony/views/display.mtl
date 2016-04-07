@@ -253,7 +253,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isDataType() and not field.isBooleanDataType()) post(trim())]
+	? (field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(accessor)/] | default('') }}
 [else]
@@ -339,7 +339,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let old : String = accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)')]
 [/let]
 [let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
-[let new : String = field.pageDisplayedOn().partOf.service(association.association.partOf).className().toLowerFirst()
+[let new : String = association.association.partOf.services(field.pageDisplayedOn().partOf)->first().className().toLowerFirst()
 	.concat('.').concat(association.name).concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName().toUpperFirst())
 	.concat('(').concat(parentAccessor).concat(')')]
 [association.units.viewContent(new)/]
@@ -455,7 +455,7 @@ NULL
 [if (entityOrView.isContained())]
 [entityOrView.container().routeActualParameters(accessor.concat('.').concat(entityOrView.containingAssociation().modelPropertyName()))/]
 [/if]
-[for (key : EntityAttribute | entityOrView.attributeKeys())]
+[for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
 '[key.routeParameterName()/]': [key.getValue(keyAccessor)/],
 [/let]

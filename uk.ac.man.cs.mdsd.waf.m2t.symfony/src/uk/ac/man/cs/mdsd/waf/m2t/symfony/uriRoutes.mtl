@@ -6,7 +6,11 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+[template public routeParametersDecoded(entityOrView : EntityOrView) post(trim())]
+[for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
+rawurldecode($[key.routeParameterName()/])[/for]
+[/template]
 
 [template public routeParameters(entityOrView : EntityOrView) post(trim())]
 [for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]

@@ -73,7 +73,7 @@
 [model.menus.generateMenu()/]
 [model.generatePage()/]
 [model.pages->select(p | p.units->notEmpty()).page()/]
-[comment model.pages.units.unitView()/]
+[model.pages.units.unitView()/]
 [model.formViews()/]
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.localAuthentication()]

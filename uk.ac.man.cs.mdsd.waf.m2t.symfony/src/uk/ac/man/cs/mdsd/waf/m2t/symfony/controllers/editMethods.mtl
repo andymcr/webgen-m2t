@@ -100,7 +100,7 @@ $this->createForm([entity.typeClassName()/]::class, $[unit.instanceName()/], arr
 [/template]
 
 [template private routeActualParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
-[for (key : EntityAttribute | entityOrView.uriPathKeys())]
+[for (key : Attribute | entityOrView.uriPathKeys())]
 '[key.routeParameterName()/]' => $[key.routeParameterName()/],
 [/for]
 [/template]

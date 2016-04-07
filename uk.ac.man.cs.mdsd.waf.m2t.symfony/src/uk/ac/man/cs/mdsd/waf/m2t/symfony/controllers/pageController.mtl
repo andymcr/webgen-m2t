@@ -59,7 +59,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [template private renderMethod(page : Page) post(trim())]
 private function renderPage([if (page.hasFilterParameters())]
 Request $request[if (page.uriCommonPathKeys()->notEmpty())]
-, [/if][/if][for (key : EntityAttribute | page.uriCommonPathKeys()) separator(', ')]
+, [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName()/][/for])
 {
     $parameters = array(

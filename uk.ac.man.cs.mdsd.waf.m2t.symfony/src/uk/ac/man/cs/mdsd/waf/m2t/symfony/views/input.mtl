@@ -251,7 +251,7 @@ function saveMarker() {
 	$.ajax({
 		type: "POST",
 		url: "<?php
-			echo Route::get('[mapUnit.displayedOn.oclAsType(Page).routeName()/]')->uri(array(
+			echo Route::get('[comment mapUnit.displayedOn.oclAsType(Page).routeName()/]')->uri(array(
 				'action' => '[mapUnit.actionName()/]',
 				'param' => 'submit'
 			));
