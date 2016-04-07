@@ -253,8 +253,9 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 			else
 				feature.oclAsType(UnitAssociation).association.partOf
 			endif]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1,
-		accessor.lastIndex('->') - 1), feature.getValue(accessor), parentEntityOrView)/]
+	[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('->') - 1)]
+    [feature.actions->select(a | not a.disable)->first().actionLink(parentAccessor, feature.getValue(accessor), parentEntityOrView)/]
+	[/let]
 	[/let]
 [/if]
 [/let]
@@ -317,13 +318,11 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('->') - 1)]
 [if (association.units->isEmpty())]
-[association.displayAssociation(accessor, parentAccessor)/]
+[association.displayAssociation(accessor)/]
 [else]
 [association.units->first().viewContent(accessor)/]
 [/if]
-[/let]
 [/let]
 [/template]
 
@@ -332,9 +331,9 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
 	[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
-<?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation('$value', '$value')/]</p><?php } ?>
+<?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation('$value')/]</p><?php } ?>
 	[else]
-<?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation('$value', '$value')/]</span><?php } ?>
+<?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation('$value')/]</span><?php } ?>
 	[/if]
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
@@ -357,10 +356,10 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [/let]
 [/template]
 
-[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
+[template private displayAssociation(association : UnitAssociation, accessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(parentAccessor, association.getValue(accessor), association.association.targetType())/]
+	->first().actionLink(accessor, association.getValue(accessor), association.association.targetType())/]
 [else]
 	[if (association.maximumDisplaySize > 0)]
 <?php
