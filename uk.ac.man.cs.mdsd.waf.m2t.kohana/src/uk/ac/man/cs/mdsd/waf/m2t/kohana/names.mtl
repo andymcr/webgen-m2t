@@ -229,6 +229,14 @@
 /]
 
 
+[query public modelInstanceName(field : UnitField) : String
+	= if field.firstEntityOrView() then
+			field.displayedOn.modelInstanceName()
+		else
+			field.displayedOn.modelInstanceName(field.entityOrView())
+		endif
+/]
+
 [query public optionsName(field : UnitField) : String
 	= field.uniqueName().concat('_options')
 /]

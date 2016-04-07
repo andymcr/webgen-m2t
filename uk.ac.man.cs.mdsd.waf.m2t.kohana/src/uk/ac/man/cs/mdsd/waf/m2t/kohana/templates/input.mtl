@@ -150,9 +150,9 @@ $[unit.modelInstanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeNam
 	else
 		field.modelPropertyName()
 	endif]
-[let accessor : String = '$'.concat(unit.modelInstanceName()).concat('->').concat(fieldName)]
+[let accessor : String = '$'.concat(field.modelInstanceName()).concat('->').concat(fieldName)]
 [if (not field.firstEntityOrView())]
-<?php if (!empty($[unit.modelInstanceName()/])) { ?>
+<?php if (!empty($[field.modelInstanceName()/])) { ?>
 [/if]
 <div[if (unit.hasMessagesOnFeature())]<?php
     unset($field_error);
@@ -178,7 +178,7 @@ $[unit.modelInstanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeNam
 	[else]
 	[let embeddedUnit : ContentUnit = field.oclAsType(UnitAssociation).units->first()]
 <p class="[field.modelPropertyName()/]">[field.displayLabel()/]</p>
-<?php $[field.uniqueName()/] = $[unit.instanceName()/]->[field.modelPropertyName()/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+<?php $[field.uniqueName()/] = [accessor/]->[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 find()[else][let embeddedIndexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
 [if (embeddedIndexUnit.defaultSelection.oclIsUndefined())]
 find_all()[else]

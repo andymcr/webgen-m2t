@@ -99,7 +99,7 @@ protected function [entityOrView.loadMethodName()/]($validate = FALSE)
 [template private selectionLoadRoot(entityOrView : EntityOrView) post(trim())]
 $this->[entityOrView.instanceName()/] = ORM::factory('[entityOrView.modelName()/]')
     ->find_by_name([for (key : Attribute | entityOrView.uriPathKeys()) separator(', ')]
-$this->request->param('[key.routeParameterName(entityOrView)/]')[/for]);
+rawurldecode($this->request->param('[key.routeParameterName(entityOrView)/]'))[/for]);
 [/template]
 
 [template private selectionLoadChild(entityOrView : EntityOrView) post(trim())]
@@ -108,7 +108,7 @@ $this->request->param('[key.routeParameterName(entityOrView)/]')[/for]);
 [let parentAssociation : Association = keyEntity.containingAssociation().opposite()]
 $this->[parent.loadMethodName()/]();
 $this->[entityOrView.instanceName()/] = $this->[parent.instanceName()/]->[parentAssociation.findMethodName()/]([for (key : Attribute | keyEntity.attributeKeys()) separator(', ')]
-$this->request->param('[key.routeParameterName(entityOrView)/]')[/for]);
+rawurldecode($this->request->param('[key.routeParameterName(entityOrView)/]'))[/for]);
 [/let]
 [/let]
 [/let]
