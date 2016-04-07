@@ -27,15 +27,15 @@ $[key.routeParameterName(entityOrView)/][/for]
 /]
 
 
-[query private parentUriPath(entityOrView : EntityOrView) : String
+[query private parentUriPath(yyy : EntityOrView) : String
 	= let keyEntity : EntityOrView
-		= entityOrView.keyEntity()
+		= yyy.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
 			else if not keyEntity.isContained() then
 				''
 			else
-				keyEntity.container().uriPath()
+				keyEntity.container().uriPath(yyy)
 			endif endif
 /]
 
@@ -50,7 +50,8 @@ $[key.routeParameterName(entityOrView)/][/for]
 			else
 				let keyPath : String
 					= keyEntity.attributeKeys()
-						->collect(k | k.routeParameterName(base))->sep('<', '>/<', '>')->toString()
+						-- should pass base to routeParameterName, but causes problems with shared paths on a page
+						->collect(k | k.routeParameterName(entityOrView))->sep('<', '>/<', '>')->toString()
 					in if not keyEntity.isContained() then
 							keyPath
 						else

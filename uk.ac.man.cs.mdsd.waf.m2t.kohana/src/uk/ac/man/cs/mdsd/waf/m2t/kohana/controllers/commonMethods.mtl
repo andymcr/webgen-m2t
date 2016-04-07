@@ -131,7 +131,8 @@ $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/
 	[/if]
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
-[variable/]['['/]'[key.routeParameterName(base)/]'[']'/] = rawurlencode([key.getValue(accessor.concat('->').concat(key.columnName()), '')/]);
+[comment should pass base to routeParameterName, but causes problems with shared paths on a page/]
+[variable/]['['/]'[key.routeParameterName(entityOrView)/]'[']'/] = rawurlencode([key.getValue(accessor.concat('->').concat(key.columnName()), '')/]);
 [/for]
 [/template]
 

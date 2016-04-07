@@ -500,7 +500,8 @@ Helpers_View::date([accessor/], '[dateFormat/]')
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('->').concat(key.columnName())]
-'[key.routeParameterName(base)/]' => rawurlencode([key.getValue(keyAccessor, '')/]),
+[comment should pass base to routeParameterName, but causes problems with shared paths on a page/]
+'[key.routeParameterName(entityOrView)/]' => rawurlencode([key.getValue(keyAccessor, '')/]),
 [/let]
 [/for]
 [/template]
