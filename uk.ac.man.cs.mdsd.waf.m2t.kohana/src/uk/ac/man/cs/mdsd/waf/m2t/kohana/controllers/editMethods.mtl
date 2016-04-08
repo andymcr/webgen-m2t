@@ -159,7 +159,12 @@ $this->[entityOrView.instanceName()/]->save([if (unit.hasInterfaceFields() and f
 
 [template private clearModels(unit : DynamicUnit) post(trim())]
 [for (entityOrView : EntityOrView | unit.entities)]
+	[if (i = 1)]
 $this->[entityOrView.instanceName()/]->clear();
+	[else]
+if (isset($this->[entityOrView.instanceName()/]))
+    $this->[entityOrView.instanceName()/]->clear();
+	[/if]
 [/for]
 [if (unit.hasDefaultValueFields())]
 [unit.unitDefaultValues()/]
