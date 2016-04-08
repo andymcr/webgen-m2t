@@ -455,7 +455,7 @@
 
 [query public service(unit : DynamicUnit) : Service
 	= if unit.entities->size() > 0 then
-			unit.pageDisplayedOn().partOf.service(unit.entities->first())
+			unit.pageDisplayedOn().partOf.services(unit.entities->first())->first()
 		else
 			null
 		endif
