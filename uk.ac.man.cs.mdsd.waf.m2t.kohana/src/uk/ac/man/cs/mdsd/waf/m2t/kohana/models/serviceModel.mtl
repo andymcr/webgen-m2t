@@ -74,7 +74,7 @@ class [entityOrView.modelClassName()/] extends Model_ExtendedORM
 [/let]
 [/if]
 [if (entityOrView.hasRouteParameters())]
-    [entityOrView.find()/]
+    [entityOrView.findByName()/]
 
 [/if]
 [for (association : Association | entityOrView.associations()->select(a | a.isContains() and not a.isSingleton()))]
@@ -313,7 +313,7 @@ public function rules()
 ),
 [/template]
 
-[template private find(entityOrView : EntityOrView) post(trim())]
+[template private findByName(entityOrView : EntityOrView) post(trim())]
 public function find_by_name([for (key : Attribute | entityOrView.uriPathKeys()) separator(', ')]
 $[key.routeParameterName(entityOrView)/][/for])
 {

@@ -79,7 +79,7 @@ array_key_exists('[parameter.name/]', $this->request->query())
 [/template]
 
 [template private findAllPaginated(unit : IndexUnit)]
-$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->paginated([unit.paginationParameters()/]);
+$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->paginated($page, [unit.defaultPaginationSize/]);
 $[unit.countName()/] = ORM::factory('[unit.modelName()/]')->count_all();
 [/template]
 
