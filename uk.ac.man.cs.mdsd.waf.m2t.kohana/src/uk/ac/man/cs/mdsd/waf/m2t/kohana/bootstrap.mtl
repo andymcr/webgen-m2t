@@ -177,7 +177,11 @@ Cookie::$salt = 'kjslkajdldlkdsseftsdswe';
 Route::set('default', '')
 	->defaults(array(
 		'controller' => '[model.homePage().controllerName()/]',
+[if (model.homePage().units->notEmpty())]
+        'action' => '[model.homePage().units->first().actionName()/]',
+[else]
 		'action'  => 'index',
+[/if]
 	));
 [for (page : Page | model.pages->sortedBy(p | p.name))]
 	[if (page.units->size() = 0)]

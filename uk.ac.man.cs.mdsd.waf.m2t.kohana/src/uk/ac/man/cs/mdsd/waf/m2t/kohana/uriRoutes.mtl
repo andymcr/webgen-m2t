@@ -7,11 +7,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]
 
-[template public routeParametersDecoded(entityOrView : EntityOrView) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
-rawurldecode($[key.routeParameterName(entityOrView)/])[/for]
-[/template]
-
 [template public routeParameters(entityOrView : EntityOrView) post(trim())]
 [for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
 $[key.routeParameterName(entityOrView)/][/for]
@@ -114,7 +109,13 @@ $[key.routeParameterName(entityOrView)/][/for]
 [query public uriPath(unit : ContentUnit, create : Boolean) : String
 	= let localPath : String
 		= let entityPath : String
-			= unit.entityUriPath(create)
+			= if not unit.oclIsKindOf(DynamicUnit) then
+					unit.entityUriPath(create)
+				else if unit.oclAsType(DynamicUnit).noRouteParameters then
+					''
+				else
+					unit.entityUriPath(create)
+				endif endif
 			in let uriElement : String
 				= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
 						'create'
@@ -123,7 +124,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 					endif
 				in if uriElement = '' then
 						entityPath
-					else if entityPath = ''  then
+					else if entityPath = '' then
 						uriElement
 					else
 						entityPath.concat('/').concat(uriElement)
