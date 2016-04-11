@@ -32,15 +32,12 @@ else
     [indexUnit.defaultSelectionCountCall()/]
 }
 	[/if]
-[else]
- 	[if (indexUnit.defaultPaginationSize > 0)]
+[elseif (indexUnit.defaultPaginationSize > 0)]
 {
-	[/if]
-    [indexUnit.findAllCall()/]
-	[if (indexUnit.defaultPaginationSize > 0)]
-    [indexUnit.findAllCountCall()/]
+    [indexUnit.findAllPaginated()/]
 }
-	[/if]
+[else]
+$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->find_all();
 [/if]
 $[indexUnit.templateInstanceName()/]->bind('[indexUnit.modelInstanceName()/]', $[indexUnit.instanceName()/]);
 [if (indexUnit.defaultPaginationSize > 0)]
@@ -81,11 +78,8 @@ array_key_exists('[parameter.name/]', $this->request->query())
 [/if]
 [/template]
 
-[template private findAllCall(unit : IndexUnit)]
-$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->find_all([unit.paginationParameters()/]);
-[/template]
-
-[template private findAllCountCall(unit : IndexUnit)]
+[template private findAllPaginated(unit : IndexUnit)]
+$[unit.instanceName()/] = ORM::factory('[unit.modelName()/]')->paginated([unit.paginationParameters()/]);
 $[unit.countName()/] = ORM::factory('[unit.modelName()/]')->count_all();
 [/template]
 
