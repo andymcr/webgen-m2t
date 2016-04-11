@@ -563,11 +563,21 @@ public function record_last_login()
 }
 [/template]
 
+[query private authenticationJoinProperty(authentication : LocalAuthenticationSystem) : String
+	= if authentication.authenticationKey = AuthenticationKeyType::Email then
+			'email'
+		else if authentication.authenticationKey = AuthenticationKeyType::Username then
+			'username'
+		else
+			'unhandled'
+		endif endif
+/]
+
 [template private authenticatedUser(authentication : LocalAuthenticationSystem) post(trim())]
 public static function authenticated_user($authentication)
 {
     $user = ORM::factory('[authentication.user.modelName()/]');
-    $user->where('[authentication.userKey.columnName()/]', '=', $authentication->email);
+    $user->where('[authentication.userKey.columnName()/]', '=', $authentication->[authentication.authenticationJoinProperty()/]);
     return $user->find();
 }
 [/template]
