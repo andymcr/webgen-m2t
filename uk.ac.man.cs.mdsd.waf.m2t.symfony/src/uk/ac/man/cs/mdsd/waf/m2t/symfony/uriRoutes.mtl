@@ -100,7 +100,13 @@ $[key.routeParameterName()/][/for]
 [query public uriPath(unit : ContentUnit, create : Boolean) : String
 	= let localPath : String
 		= let entityPath : String
-			= unit.entityUriPath(create)
+			= if not unit.oclIsKindOf(DynamicUnit) then
+					unit.entityUriPath(create)
+				else if unit.oclAsType(DynamicUnit).noRouteParameters then
+					''
+				else
+					unit.entityUriPath(create)
+				endif endif
 			in let uriElement : String
 				= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
 						'create'
