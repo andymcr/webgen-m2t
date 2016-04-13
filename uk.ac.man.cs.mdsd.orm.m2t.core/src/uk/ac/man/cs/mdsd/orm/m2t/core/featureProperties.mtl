@@ -436,7 +436,7 @@
 	= if feature.oclIsKindOf(SingletonAttribute) then
 			feature.name
 		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.modelPropertyName()
+			feature.oclAsType(EncapsulatedAttribute).name
 		else
 			feature.name
 		endif endif
