@@ -564,9 +564,9 @@ public function record_last_login()
 [/template]
 
 [query private authenticationJoinProperty(authentication : LocalAuthenticationSystem) : String
-	= if authentication.authenticationKey = AuthenticationKeyType::Email then
+	= if authentication.authenticationKey = AuthenticationKeyTypes::Email then
 			'email'
-		else if authentication.authenticationKey = AuthenticationKeyType::Username then
+		else if authentication.authenticationKey = AuthenticationKeyTypes::Username then
 			'username'
 		else
 			'unhandled'
