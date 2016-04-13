@@ -11,7 +11,6 @@
 [template public config(model : WafModel)]
 [file (model.configBaseFilename().concat(model.ymlExtension()), false)]
 imports:
-    - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
 
