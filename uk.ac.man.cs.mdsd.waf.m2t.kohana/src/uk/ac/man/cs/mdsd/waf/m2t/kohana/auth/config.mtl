@@ -14,7 +14,7 @@
 return array(
 	'driver'				=> '[authentication.webgenAuthName()/]',
 	'hash_method'			=> 'sha256',
-	'hash_key'				=> 'slsklsklsklwaasu',
+	'hash_key'				=> 'slsklsdefsklwaasu',
 	'lifetime'				=> 1209600,
 	'attempt_expiry_period'	=> 1800,
 	'maximum_attempts'		=> 3,

@@ -45,11 +45,11 @@ class [authentication.webgenAuthClassName()/] extends Auth
 
  		if ($authentication->password === $password_hashed)
 		{
-			if ($authentication->activated == '0')
+			if ($authentication->enabled == '0')
 			{
 				$this->message = 'Your account has not yet been activated';
 			}
-			else if ($authentication->banned == '1')
+			else if ($authentication->locked == '1')
 			{
 				$this->message = 'Your account is currently locked out';
 			}

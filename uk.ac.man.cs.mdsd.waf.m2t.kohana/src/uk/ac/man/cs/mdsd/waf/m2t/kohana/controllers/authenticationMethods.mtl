@@ -83,7 +83,7 @@ public function action_[registrationUnit.actionName()/]()
 			{
 [/if]
 				$this->[registrationUnit.instanceName()/]->salt = md5(uniqid(rand(), true));
-				$this->[registrationUnit.instanceName()/]->activated = [if (authentication.useEmailActivation)]'0'[else]'1'[/if];
+				$this->[registrationUnit.instanceName()/]->enabled = [if (authentication.useEmailActivation)]'0'[else]'1'[/if];
 [if (authentication.useEmailActivation)]
 				$this->[registrationUnit.instanceName()/]->new_email_key = md5(rand().microtime());
 [/if]
