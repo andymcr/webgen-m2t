@@ -9,40 +9,49 @@
 
 [template public routeParameters(entityOrView : EntityOrView) post(trim())]
 [for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
-$[key.routeParameterName()/][/for]
+$[key.routeParameterName(entityOrView)/][/for]
 [/template]
 
-[query public routeParameterName(attribute : Attribute) : String
-	= attribute.partOf.modelName().toLowerFirst()
-		.concat(attribute.name.toUpperFirst())
+[query public routeParameterName(attribute : Attribute, entityOrView : EntityOrView) : String
+	= if entityOrView.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
+			attribute.name
+		else
+			attribute.partOf.modelName().toLowerFirst()
+				.concat(attribute.name.toUpperFirst())
+		endif
 /]
 
 
-[query private parentUriPath(entityOrView : EntityOrView) : String
+[query private parentUriPath(yyy : EntityOrView) : String
 	= let keyEntity : EntityOrView
-		= entityOrView.keyEntity()
+		= yyy.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
 			else if not keyEntity.isContained() then
 				''
 			else
-				keyEntity.container().uriPath()
+				keyEntity.container().uriPath(yyy)
 			endif endif
 /]
 
 [query public uriPath(entityOrView : EntityOrView) : String
+	= entityOrView.uriPath(entityOrView)
+/]
+
+[query private uriPath(entityOrView : EntityOrView, base : EntityOrView) : String
 	= let keyEntity : EntityOrView = entityOrView.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
 			else
 				let keyPath : String
 					= keyEntity.attributeKeys()
-						->collect(k | k.routeParameterName())->sep('{', '}/{', '}')->toString()
+						-- should pass base to routeParameterName, but causes problems with shared paths on a page
+						->collect(k | k.routeParameterName(entityOrView))->sep('{', '}/{', '}')->toString()
 					in if not keyEntity.isContained() then
 							keyPath
 						else
 							let parentPath : String
-								= keyEntity.container().uriPath()
+								= keyEntity.container().uriPath(base)
 								in if parentPath = '' then
 										keyEntity.containingAssociation().opposite.name
 											.concat('/')
@@ -115,7 +124,7 @@ $[key.routeParameterName()/][/for]
 					endif
 				in if uriElement = '' then
 						entityPath
-					else if entityPath = ''  then
+					else if entityPath = '' then
 						uriElement
 					else
 						entityPath.concat('/').concat(uriElement)

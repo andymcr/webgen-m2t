@@ -439,7 +439,9 @@ NULL
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
-<a href="{{ path('[targetUnit.routeName()/]', { [targetUnit.entities->first().routeActualParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
+[let targetEntityOrView : EntityOrView = targetUnit.entities->first()]
+<a href="{{ path('[targetUnit.routeName()/]', { [targetEntityOrView.routeActualParameters(targetEntityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
+[/let]
 [/let]
 [/let]
 [/template]
@@ -447,18 +449,19 @@ NULL
 [template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
-<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeActualParameters(accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
+<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeActualParameters(entityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
 [/let]
 [/template]
 
 
-[template private routeActualParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
+[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String) post(trim())]
 [if (entityOrView.isContained())]
-[entityOrView.container().routeActualParameters(accessor.concat('.').concat(entityOrView.containingAssociation().modelPropertyName()))/]
+[entityOrView.container().routeActualParameters(base, accessor.concat('.').concat(entityOrView.containingAssociation().modelPropertyName()))/]
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
-'[key.routeParameterName()/]': [key.getValue(keyAccessor)/],
+[comment should pass base to routeParameterName, but causes problems with shared paths on a page/]
+'[key.routeParameterName(entityOrView)/]': [key.getValue(keyAccessor)/],
 [/let]
 [/for]
 [/template]

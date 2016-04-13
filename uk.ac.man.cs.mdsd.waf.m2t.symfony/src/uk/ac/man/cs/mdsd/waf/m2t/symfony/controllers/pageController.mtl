@@ -60,7 +60,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 private function renderPage([if (page.hasFilterParameters())]
 Request $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
-$[key.routeParameterName()/][/for])
+$[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 {
     $parameters = array(
         'title' => '[page.displayLabel/]',

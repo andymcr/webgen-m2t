@@ -84,24 +84,25 @@ return $this->renderPage([unit.pageDisplayedOn().renderMethodParameters()/]);
 [/template]
 
 [template public createForm(unit : EditUnit, create : Boolean) post(trim())]
-[let entity : EntityOrView = unit.entities->first()]
-$this->createForm([entity.typeClassName()/]::class, $[unit.instanceName()/], array(
+[let entityOrView : EntityOrView = unit.entities->first()]
+$this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/], array(
     'action' => $this->generateUrl('[unit.routeName(create)/]', array(
 [if (create)]
-	[if (entity.isContained())]
-        [entity.container().routeActualParameters('$'.concat(unit.instanceName()))/]
+	[if (entityOrView.keyEntity().isContained())]
+        [entityOrView.keyEntity().container().routeActualParameters(entityOrView, '$'.concat(unit.instanceName()))/]
 	[/if]
 [else]
-        [entity.routeActualParameters('$'.concat(unit.instanceName()))/]
+        [entityOrView.routeActualParameters(entityOrView, '$'.concat(unit.instanceName()))/]
 [/if]
     )),
 ))
 [/let]
 [/template]
 
-[template private routeActualParameters(entityOrView : EntityOrView, accessor : String) post(trim())]
+[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String) post(trim())]
 [for (key : Attribute | entityOrView.uriPathKeys())]
-'[key.routeParameterName()/]' => $[key.routeParameterName()/],
+[comment should pass base to routeParameterName, but causes problems with shared paths on a page/]
+'[key.routeParameterName(entityOrView)/]' => $[key.routeParameterName(entityOrView)/],
 [/for]
 [/template]
 

@@ -30,7 +30,7 @@
 [if (page.hasFilterParameters())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
-$[key.routeParameterName()/][/for]
+$[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for]
 [/template]
 
 [template public getService(unit : DynamicUnit) post(trim())]

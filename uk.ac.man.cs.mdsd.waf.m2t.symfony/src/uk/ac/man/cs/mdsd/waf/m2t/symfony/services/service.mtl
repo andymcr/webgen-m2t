@@ -74,7 +74,7 @@ public function find([service.serves.routeParameters()/])
 	[/if]
 [/if]
 [for (key : Attribute | service.serves.uriPathKeys())]
-        ->setParameter('[key.routeParameterName()/]', $[key.routeParameterName()/])
+        ->setParameter('[key.routeParameterName(service.serves)/]', $[key.routeParameterName(service.serves)/])
 [/for]
         ->getQuery()->getSingleResult();
 }
@@ -107,7 +107,7 @@ $queryBuilder->expr()->andX([key.findWhere(service)/],
 [/template]
 
 [template private findWhere(key : Attribute, service : Service) post(trim())]
-$queryBuilder->expr()->eq('[key.partOf.services(service.partOf)->first().selectName()/].[key.columnName()/]', ':[key.routeParameterName()/]')
+$queryBuilder->expr()->eq('[key.partOf.services(service.partOf)->first().selectName()/].[key.columnName()/]', ':[key.routeParameterName(service.serves)/]')
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
