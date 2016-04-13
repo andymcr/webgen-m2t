@@ -39,7 +39,7 @@ $this->get('[unit.service().name/]')
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.entities->first().routeParametersDecoded()/])
+[unit.getService()/]->find([unit.entities->first().routeParameters()/])
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]
