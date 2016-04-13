@@ -340,11 +340,11 @@
 		endif endif
 /]
 
-[query public isOwningEnd(association : Association) : Boolean
-	= if association.oclIsKindOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).owningEnd
-		else if association.oclIsKindOf(EncapsulatedAssociation) then
-			association.oclAsType(EncapsulatedAssociation).association.isOwningEnd()
+[query public isOwningEnd(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAssociation) then
+			feature.oclAsType(EntityAssociation).owningEnd
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.isOwningEnd()
 		else
 			false
 		endif endif
