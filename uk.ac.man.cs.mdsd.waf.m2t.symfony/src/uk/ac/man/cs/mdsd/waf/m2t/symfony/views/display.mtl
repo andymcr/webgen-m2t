@@ -424,7 +424,8 @@ NULL
 
 
 [template public getValue(attribute : Attribute, accessor : String)
-	? (attribute.isDataType() or attribute.isDate() or attribute.isResource()) post(trim())]
+	? (attribute.isDataType() and not attribute.isEnumerationType()
+		or attribute.isDate() or attribute.isUrl() or attribute.isResource()) post(trim())]
 [accessor/]
 [/template]
 
