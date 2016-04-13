@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module parametersDev(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public parametersDev(model : WafModel)]
+[file (model.configDirectory().concat('/').concat('parameters_dev').concat(model.ymlExtension()), false)]
+# This file is auto-generated during the composer install
+parameters:
+    database_host: localhost
+    database_port: null
+    database_name: [model.persistence.databaseName/]
+    database_user: [model.persistence.databaseUsername/]
+    database_password: [model.persistence.databasePassword/]
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 1ec446a4907a8a138704482ea9b59521ac31883e
+[/file]
+[/template]
