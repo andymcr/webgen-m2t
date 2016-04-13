@@ -80,7 +80,7 @@ protected $[entityOrView.autoKeyName/];
 [/template]
 
 [template private features(entityOrView : EntityOrView) post(trim())]
-[for (feature : Feature | entityOrView.features)]
+[for (feature : Feature | entityOrView.features->select(f | f.isVisible() or f.isOwningEnd()))]
 [comment TODO sortout location features /]
 	[if (not feature.isLocation())]
 /**
@@ -122,32 +122,39 @@ protected $updated;
 [/template]
 
 [template private ormAnnotation(feature : Feature)
-	? (feature.oclIsKindOf(EntityFeature)) post(trim())]
-[if (feature.oclIsKindOf(EntityAttribute))]
+	? (feature.oclIsKindOf(EntityAttribute)) post(trim())]
 * @ORM\Column(type="[feature.oclAsType(EntityAttribute).ormType/]"[if (not feature.isRequired())], nullable=true[/if])
-[elseif (feature.oclIsKindOf(EntityAssociation))]
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(EntityAssociation)) post(trim())]
 [let association : EntityAssociation = feature.oclAsType(EntityAssociation)]
+[let opposite : EntityAssociation = association.opposite]
 	[if (association.oclIsTypeOf(SingletonAssociation))]
 	[let singleton : SingletonAssociation = association.oclAsType(SingletonAssociation)]
-* @ORM\[singleton.associationRelationship/](targetEntity="[association.modelName()/]", [if (singleton.isOwningEnd())]inversedBy[else]mappedBy[/if]="[association.opposite.modelPropertyName()/]")
+* @ORM\[singleton.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
+, [if (singleton.isOwningEnd())]
+inversedBy[else]
+mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 		[if (singleton.isOwningEnd())]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[association.opposite.partOf.oclAsType(Entity).autoKeyName/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName/]"[if (association.isRequired())], nullable=false[/if])
 		[/if]
 	[/let]
 	[else]
 	[let collection : CollectionAssociation = association.oclAsType(CollectionAssociation)]
-* @ORM\[collection.associationRelationship/](targetEntity="[association.modelName()/]"[if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd())]
-, mappedBy="[association.opposite.modelPropertyName()/]"[else]
-, inversedBy="[association.opposite.modelPropertyName()/]"[/if])
+* @ORM\[collection.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
+, [if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd())]
+mappedBy[else]
+inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 		[if (association.owningEnd)]
 * @ORM\JoinTable(name="[association.pivotTableName/]",
-    joinColumns={@ORM\JoinColumn(name="[association.opposite.columnName/]")},
+    joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
     inverseJoinColumns={@ORM\JoinColumn(name="[association.columnName()/]")})
 		[/if]
 	[/let]
 	[/if]
 [/let]
-[/if]
+[/let]
 [/template]
 
 [template private validationAnnotation(feature : Feature) post(trim())]
