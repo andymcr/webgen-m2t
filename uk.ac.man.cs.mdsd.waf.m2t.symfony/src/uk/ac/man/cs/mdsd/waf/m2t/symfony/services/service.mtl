@@ -152,9 +152,9 @@ public function [selection.methodName()/]([for (parameter : SelectionParameter |
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
     $queryBuilder = $this->createQueryBuilder();
-[for (join : Association | selection.joins)]
-    $queryBuilder->join('[service.selectName()/].[join.modelPropertyName()/]', '[join.selectName(service)/]');
-[/for]
+[if (selection.joins->notEmpty())]
+    [selection.selectionJoins()/]
+[/if]
 [if (not selection.filter.oclIsUndefined())]
     $queryBuilder->where([selection.filter.queryExpression()/]);
 [/if]
@@ -187,14 +187,49 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 }
 [/template]
 
+[query private entitiesAndViews(selection : Selection, length : Integer) : Set(EntityOrView)
+	= if length = 1 then
+			Set{selection.partOf.serves}
+		else
+			selection.joins
+				->subOrderedSet(1, length - 1)
+				->iterate(j;
+					eavs : Set(EntityOrView) = Set{selection.partOf.serves}
+					| eavs->union(if eavs->includes(j.partOf) then
+							Set{j.targetType()}
+						else
+							Set{j.partOf}
+						endif))
+
+		endif
+/]
+
+[template private selectionJoins(selection : Selection) post(trim())]
+[for (join : Association | selection.joins)]
+[let sourceService : Service = join.partOf.services(selection.partOf.partOf)->first()]
+[let targetService : Service = join.targetType().services(selection.partOf.partOf)->first()]
+	[if (selection.entitiesAndViews(i)->includes(join.partOf))]
+$queryBuilder->join('[sourceService.selectName()/].[join.modelPropertyName()/]', '[targetService.selectName()/]');
+	[else]
+$queryBuilder->join('[targetService.selectName()/].[join.opposite().modelPropertyName()/]', '[sourceService.selectName()/]');
+	[/if]
+[/let]
+[/let]
+[/for]
+[/template]
+
 [template private childSelectionMethods(service : Service) post(trim())]
 [for (association : Association | service.serves.associations())]
 	[if (not association.isSingleton(service.serves))]
-	[let targetService : Service = association.targetType().services(service.partOf)->first()]
-	    [for (selection : Selection | targetService.selections)]
+	[let targetType : EntityOrView = association.targetType()]
+		[if (not targetType.oclIsUndefined())]
+		[let targetService : Service = targetType.services(service.partOf)->first()]
+			[for (selection : Selection | targetService.selections)]
 [service.childSelectionMethod(association, selection)/]
 
-		[/for]
+			[/for]
+		[/let]
+		[/if]
 	[/let]
 	[/if]
 [/for]

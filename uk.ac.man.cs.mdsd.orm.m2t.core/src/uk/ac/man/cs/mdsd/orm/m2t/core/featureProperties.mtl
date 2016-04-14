@@ -331,13 +331,7 @@
 /]
 
 [query public isOppositeSingleton(association : Association) : Boolean
-	= if association.oclIsKindOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).opposite.isSingleton()
-		else if association.oclIsKindOf(EncapsulatedAssociation) then
-			association.oclAsType(EncapsulatedAssociation).association.isOppositeSingleton()
-		else
-			association.oclAsType(ViewAssociation).opposite.isOppositeSingleton()
-		endif endif
+	= association.opposite().isSingleton()
 /]
 
 [query public isOwningEnd(feature : Feature) : Boolean
@@ -452,17 +446,8 @@
 		endif endif
 /]
 
-[query public oppositeColumnName(feature : Association) : String
-	= if not feature.oclIsKindOf(Association) then
-			'Invalid association'
-		else
-			let opposite : Association = feature.oclAsType(Association).opposite()
-				in if opposite.oclIsUndefined() then
-						'Unhandled Association'
-					else
-						opposite.columnName()
-					endif
-		endif
+[query public oppositeColumnName(association : Association) : String
+	= association.opposite().columnName()
 /]
 
 [query public ormType(feature : Attribute) : String
@@ -498,11 +483,10 @@
 /]
 
 [query public targetType(association : Association) : EntityOrView
-	= if association.oclIsKindOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).opposite.partOf
-		else if association.oclIsKindOf(EncapsulatedAssociation) then
-			association.oclAsType(EncapsulatedAssociation).association.targetType()
-		else
-			association.oclAsType(ViewAssociation).opposite.targetType()
-		endif endif
+	= let opposite : Association = association.opposite()
+		in if not opposite.oclIsUndefined() then
+				opposite.partOf
+			else
+				null
+			endif
 /]
