@@ -8,8 +8,9 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::queryDoctrine/]
@@ -27,9 +28,21 @@ class [service.className()/]
 {
     private $doctrine;
 
-    public function __construct($doctrine)
+[if (service = service.partOf.userService())]
+    private $securityTokenStorage;
+[else]
+    private $[service.partOf.userService().instanceName()/];
+[/if]
+
+    public function __construct($doctrine, [if (service = service.partOf.userService())]
+$securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if])
     {
         $this->doctrine = $doctrine;
+[if (service = service.partOf.userService())]
+        $this->securityTokenStorage = $securityTokenStorage;
+[else]
+        $this->[service.partOf.userService().instanceName()/] = $[service.partOf.userService().instanceName()/];
+[/if]
     }
 
     [service.findMethod()/]
@@ -42,6 +55,16 @@ class [service.className()/]
 
     [service.saveMethod()/]
 
+[if (service.partOf.isLocallyAuthenticated())]
+[let authentication : LocalAuthenticationSystem = service.partOf.localAuthentication()]
+[let userService : Service = authentication.user.services(service.partOf)->first()]
+	[if (userService = service)]
+    [authentication.getUserMethod()/]
+
+	[/if]
+[/let]
+[/let]
+[/if]
 [for (selection : Selection | service.selections)]
     [selection.selectionMethod(service)/]
 
@@ -135,6 +158,27 @@ public function remove($entity, $flush = false)
     if ($flush)
         $entityManager->flush();
 }
+[/template]
+
+[query private joinProperty(authentication : LocalAuthenticationSystem) : String
+	= if authentication.authenticationKey = AuthenticationKeyTypes::Email then
+			'getEmail()'
+		else if authentication.authenticationKey = AuthenticationKeyTypes::Username then
+			'getUsername()'
+		else
+			'unhandled'
+		endif endif
+/]
+
+[template private getUserMethod(authentication : LocalAuthenticationSystem) post(trim())]
+public function getUser()
+{
+    $user = $this->securityTokenStorage->getToken()->getUser();
+    if (empty($user))
+        return null;
+
+    return $this->find($user->[authentication.joinProperty()/]);
+ }
 [/template]
 
 [template private saveMethod(service : Service) post(trim())]

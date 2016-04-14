@@ -4,6 +4,14 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
+[query public userService(model : WafModel) : Service
+	= if not model.isLocallyAuthenticated() then
+			null
+		else
+			model.localAuthentication().user.services(model)->first()
+		endif
+/]
+
 [query public unitsNeedingModels(model : WafModel) : Sequence(DynamicUnit)
 	= model.pages->collect(p | p.units)
 	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)

@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
@@ -50,8 +51,16 @@ $this->[path.unit.instanceName()/]->[comment path unit services->first() keyName
 [/let]
 [/template]
 
-[template public featureReference(feature : Feature, model : WafModel) post(trim())]
+[template private featureReference(feature : Feature, model : WafModel) 
+	? (feature.oclIsKindOf(Attribute)) post(trim())]
  '[feature.partOf.services(model)->first().selectName()/].[feature.columnName()/]'
+[/template]
+
+[template private featureReference(feature : Feature, model : WafModel) 
+	? (feature.oclIsKindOf(Association)) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
+ '[association.targetType().services(model)->first().selectName()/].[feature.partOf.autoKeyName/]'
+[/let]
 [/template]
 
 [template public queryExpression(criteria : Expression)
@@ -64,7 +73,7 @@ $this->[path.unit.instanceName()/]->[comment path unit services->first() keyName
 [template public queryExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
 [let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
-Auth::instance()->get_actual_user()->id
+':user'
 [/let]
 [/template]
 
@@ -231,4 +240,15 @@ $query->setParameter('[path.parameter.name/]', $[path.parameter.name/]);
 [template public queryParameter(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
 $query->setParameter('now', new \DateTime('now'));
+[/template]
+
+[template public queryParameter(criteria : Expression)
+	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
+[let containedIn : WafModel = criteria.ancestors()->select(a | a.oclIsTypeOf(WafModel)).oclAsType(WafModel)->first()]
+[if (containedIn.isLocallyAuthenticated())]
+$query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser()->getId());
+[else]
+$query->setParameter('user', '????');
+[/if]
+[/let]
 [/template]

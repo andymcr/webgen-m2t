@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
@@ -32,14 +33,13 @@ services:
             - {name:twig.extension }
 
 [/if]
-[if (model.hasServicesWithSelections())]
-	[for (service : Service | model.servicesWithSelections()->sortedBy(s | s.name))]
+[for (service : Service | model.services->sortedBy(s | s.name))]
     [service.instanceName()/]:
         class: [service.appBundleName()/]\Service\[service.className()/]
-        arguments: ['['/]"@doctrine"[']'/]
+        arguments: ['['/]"@doctrine"[if (service = model.userService())]
+, "@security.token_storage"[else], "@[model.userService().instanceName()/]"[/if][']'/]
 
-	[/for]
-[/if]
+[/for]
 [for (type : EnumerationType | model.persistence.enumerationTypes())]
     app.form.type.[type.formTypeName()/]:
         class: [type.formTypeNamespace()/]\[type.typeClassName()/]

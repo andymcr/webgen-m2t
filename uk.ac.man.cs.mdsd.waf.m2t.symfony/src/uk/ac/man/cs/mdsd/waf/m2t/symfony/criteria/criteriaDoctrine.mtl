@@ -61,7 +61,7 @@ $this->[path.unit.instanceName()/]->[comment path unit  services->first() keyNam
 [template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
 [let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
-Auth::instance()->get_actual_user()->id
+$this->get('people')->getId()
 [/let]
 [/template]
 
