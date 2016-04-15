@@ -331,7 +331,12 @@
 /]
 
 [query public isOppositeSingleton(association : Association) : Boolean
-	= association.opposite().isSingleton()
+	= let opposite : Association = association.opposite()
+		in if not opposite.oclIsUndefined() then
+				opposite.isSingleton()
+			else
+				false
+			endif
 /]
 
 [query public isOwningEnd(feature : Feature) : Boolean
@@ -447,7 +452,12 @@
 /]
 
 [query public oppositeColumnName(association : Association) : String
-	= association.opposite().columnName()
+	= let opposite : Association = association.opposite()
+		in if not opposite.oclIsUndefined() then
+				opposite.columnName()
+			else
+				'Unknown opposite'
+			endif
 /]
 
 [query public ormType(feature : Attribute) : String
