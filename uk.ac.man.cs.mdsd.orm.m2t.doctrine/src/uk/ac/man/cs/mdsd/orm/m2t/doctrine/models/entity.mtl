@@ -207,7 +207,8 @@ public function getId()
 [template private featureMethods(feature : Feature) post(trim())]
 [feature.getMethod()/]
 
-[if (feature.isSingleton())]
+[comment TODO decide correct thing to do /]
+[if (feature.isSingleton() or true)]
 [feature.setMethod()/]
 [else]
 [feature.addMethod()/]
@@ -250,8 +251,8 @@ public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.i
 [/template]
 
 [template private setMethod(feature : Feature)
-	? (feature.oclIsTypeOf(SingletonAssociation)) post(trim())]
-[let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)]
+	? (feature.oclIsKindOf(Association)) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
 public function set[association.modelPropertyName().toUpperFirst()/]($[association.instanceName()/])
 {
     $this->[association.modelPropertyName()/] = $[association.instanceName()/];
