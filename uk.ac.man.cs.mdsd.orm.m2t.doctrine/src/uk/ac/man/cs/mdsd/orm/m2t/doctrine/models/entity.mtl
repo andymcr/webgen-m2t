@@ -200,7 +200,7 @@ public function getEncoderName()
 [template private idMethods(entityOrView : EntityOrView) post(trim())]
 public function getId()
 {
-    return $this->id;
+    return $this->[entityOrView.autoKeyName/];
 }
 [/template]
 
