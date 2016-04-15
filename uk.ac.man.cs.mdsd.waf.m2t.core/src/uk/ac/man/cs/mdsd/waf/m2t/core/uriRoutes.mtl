@@ -7,19 +7,27 @@
 
 
 [query public uriPathKeys(entityOrView : EntityOrView) : Sequence(Attribute)
-	= let localKeys : Sequence(Attribute) = entityOrView.attributeKeys()
-		in if entityOrView.isContained() then
-			let parentKeys : Sequence(Attribute) = entityOrView.container().uriPathKeys()
-				in if localKeys->isEmpty() then
-						parentKeys
-					else if parentKeys->isEmpty() then
-						localKeys
+	=entityOrView.uriPathKeys(false)
+/]
+
+[query public uriPathKeys(entityOrView : EntityOrView, parentPath : Boolean) : Sequence(Attribute)
+	= if parentPath then
+			entityOrView.parentUriPathKeys()
+		else
+			let localKeys : Sequence(Attribute) = entityOrView.attributeKeys()
+				in if entityOrView.isContained() then
+					let parentKeys : Sequence(Attribute) = entityOrView.container().uriPathKeys()
+						in if localKeys->isEmpty() then
+								parentKeys
+							else if parentKeys->isEmpty() then
+								localKeys
+							else
+								localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
+							endif endif
 					else
-						localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
-					endif endif
-			else
-				localKeys
-			endif
+						localKeys
+					endif
+		endif
 /]
 
 [query public keyEntity(entityOrView : EntityOrView) : EntityOrView
@@ -45,7 +53,11 @@
 /]
 
 [query public hasRouteParameters(entityOrView : EntityOrView) : Boolean
-	= entityOrView.uriPathKeys()->notEmpty()
+	= entityOrView.hasRouteParameters(false)
+/]
+
+[query public hasRouteParameters(entityOrView : EntityOrView, parentPath : Boolean) : Boolean
+	= entityOrView.uriPathKeys(parentPath)->notEmpty()
 /]
 
 [query public uriCommonPathKeys(page : Page) : Sequence(Attribute)
@@ -80,13 +92,7 @@
 				in if dynamicUnit.entities->isEmpty() then
 						Sequence{}
 					else
-						let entityOrView : EntityOrView
-							= dynamicUnit.entities->first()
-							in if parentPath then
-									entityOrView.parentUriPathKeys()
-								else
-									entityOrView.uriPathKeys()
-								endif
+						dynamicUnit.entities->first().uriPathKeys(parentPath)
 					endif
 		endif
 /]
