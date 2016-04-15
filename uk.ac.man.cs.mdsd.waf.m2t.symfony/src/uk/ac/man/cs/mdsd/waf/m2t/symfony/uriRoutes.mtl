@@ -8,7 +8,11 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
 [template public routeParameters(entityOrView : EntityOrView) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
+[entityOrView.routeParameters(false)/]
+[/template]
+
+[template public routeParameters(entityOrView : EntityOrView, parentPath : Boolean) post(trim())]
+[for (key : Attribute | entityOrView.uriPathKeys(parentPath)) separator (', ')]
 $[key.routeParameterName(entityOrView)/][/for]
 [/template]
 

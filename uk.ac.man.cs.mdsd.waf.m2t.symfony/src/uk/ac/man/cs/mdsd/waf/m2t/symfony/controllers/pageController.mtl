@@ -80,7 +80,7 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 /**
  * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
  */
-public function [deleteAction.actionName()/]([unit.actionMethodParameters(page)/])
+public function [deleteAction.actionName()/]([unit.actionMethodParameters()/])
 {
     try
     {
@@ -104,7 +104,7 @@ public function [deleteAction.actionName()/]([unit.actionMethodParameters(page)/
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.routeName()/]")
  */
-public function [action.actionName()/]([unit.actionMethodParameters(page)/])
+public function [action.actionName()/]([unit.actionMethodParameters()/])
 {
     try
     {

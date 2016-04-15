@@ -32,10 +32,31 @@
 /**
  * [unit.routeAnnotation(true)/]
  */
-public function [unit.actionName()/]([unit.actionMethodParameters(page)/])
+public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
 {
-    $[unit.instanceName()/] = [unit.createInstance()/];
-    [unit.saveBody(true)/]
+    try {
+        $[unit.instanceName()/] = [unit.createInstance()/];
+[if (unit.hasForcedValueFeatures())]
+        [comment unit.forcedFeatureValues()/]
+[/if]
+[if (unit.customiseValues)]
+        // [protected ('customise.values.'.concat(unit.instanceName()))]
+        // [/protected]
+[/if]
+[if (unit.entities->notEmpty())]
+[let entityOrView : EntityOrView = unit.entities->first()]
+	[if (entityOrView.keyEntity().isContained())]
+	[let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
+	[let parentService : Service = entityOrView.keyEntity().container().services(unit.pageDisplayedOn().partOf)->first()]
+        $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name/]')->find([entityOrView.routeParameters(true)/]));
+	[/let]
+	[/let]
+	[/if]
+[/let]
+[/if]
+        [unit.saveBody(true)/]
+    }
+    [unit.catchSelectionException()/]
 }
 [/let]
 [/template]
@@ -45,11 +66,17 @@ public function [unit.actionName()/]([unit.actionMethodParameters(page)/])
 /**
  * [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]X([unit.actionMethodParameters(page)/])
+public function [unit.actionName()/]X([unit.actionMethodParameters()/])
 {
-    try
-    {
+    try {
         $[unit.instanceName()/] = [unit.loadInstance()/];
+[if (unit.hasForcedValueFeatures())]
+[comment unit.forcedFeatureValues()/]
+[/if]
+[if (unit.customiseValues)]
+        // [protected ('customise.values.'.concat(unit.instanceName()))]
+        // [/protected]
+[/if]
         [unit.saveBody(false)/]
     }
     [unit.catchSelectionException()/]
@@ -59,25 +86,23 @@ public function [unit.actionName()/]X([unit.actionMethodParameters(page)/])
 
 [template private saveBody(unit : EditUnit, create : Boolean) post(trim())]
 $this->[unit.instanceName()/] = [unit.createForm(create)/];
-$this->[unit.instanceName()/]->handleRequest($request);
+if ($request->isMethod('POST')) {
 [if (not unit.cancelDestination.oclIsUndefined())]
-[unit.handleCancel()/]
+    [unit.handleCancel()/]
 [/if]
-if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid())
-{
-[if (unit.hasForcedValueFeatures())]
- [comment unit.forcedFeatureValues()/]
-[/if]
-    [unit.getService()/]->save($[unit.instanceName()/], true);
+    $this->edit->submit($request->request->get($this->edit->getName()), false);
+    if ($this->edit->isValid()) {
+        [unit.getService()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
-    return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
+        return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-    $[unit.instanceName()/] = [unit.createInstance()/];
-    $this->[unit.instanceName()/] = [unit.createForm(create)/];
+        $[unit.instanceName()/] = [unit.createInstance()/];
+        $this->[unit.instanceName()/] = [unit.createForm(create)/];
 	[else]
 	[/if]
 [/if]
+    }
 }
 
 return $this->renderPage([unit.pageDisplayedOn().renderMethodParameters()/]);

@@ -19,10 +19,16 @@
 @Route("[unit.uriPath(create)/]", name="[unit.routeName(create)/]")
 [/template]
 
-[template public actionMethodParameters(unit : DynamicUnit, page : Page) post(trim())]
+[template public actionMethodParameters(unit : DynamicUnit) post(trim())]
+[unit.actionMethodParameters(false)/]
+[/template]
+
+[template public actionMethodParameters(unit : DynamicUnit, parentPath : Boolean) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
 [let entityOrView : EntityOrView = unit.entities->first()]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (entityOrView.hasRouteParameters())]
-, [/if][/if][entityOrView.routeParameters()/]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (entityOrView.hasRouteParameters(parentPath))]
+, [/if][/if][entityOrView.routeParameters(parentPath)/]
+[/let]
 [/let]
 [/template]
 
