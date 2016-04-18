@@ -80,57 +80,57 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if])
 [/template]
 
 [template private findMethod(service : Service) post(trim())]
+[let entityOrView : EntityOrView = service.serves]
 public function find([service.serves.routeParameters()/])
 {
 	$queryBuilder = $this->createQueryBuilder();
 	return $queryBuilder
-[if (service.serves.isContained() or service.serves.hasAssociationKeys())]
+[if (entityOrView.isContained() or entityOrView.hasAssociationKeys())]
         [service.keyJoin(service.serves)/]
 [/if]
-[if (service.serves.uriPathKeys()->notEmpty())]
-	[if (service.serves.uriPathKeys()->size() < 2)]
-        ->where([service.serves.uriPathKeys()->first().findWhere(service)/])
+[if (entityOrView.uriPathKeys()->notEmpty())]
+	[if (entityOrView.uriPathKeys()->size() < 2)]
+        ->where([entityOrView.uriPathKeys()->first().findWhere(entityOrView)/])
 	[else]
         ->where(
-            [service.serves.findWhere(service) /]
+            [entityOrView.findWhere(entityOrView) /]
         )
 	[/if]
 [/if]
-[for (key : Attribute | service.serves.uriPathKeys())]
-        ->setParameter('[key.routeParameterName(service.serves)/]', $[key.routeParameterName(service.serves)/])
+[for (key : Attribute | entityOrView.uriPathKeys())]
+        ->setParameter('[key.routeParameterName(entityOrView)/]', $[key.routeParameterName(entityOrView)/])
 [/for]
         ->getQuery()->getSingleResult();
 }
+[/let]
 [/template]
 
 [template private keyJoin(service : Service, entityOrView : EntityOrView) post(trim())]
 [if (service.serves.isContained())]
 [let container : EntityOrView = service.serves.container()]
 [let containerService : Service = container.services(service.partOf)->first()]
-->join('[service.selectName()/].[service.serves.containingAssociation().modelPropertyName()/]', '[containerService.selectName()/]')
+->join('[service.serves.selectName()/].[service.serves.containingAssociation().modelPropertyName()/]', '[container.selectName()/]')
 [containerService.keyJoin(container)/]
 [/let]
 [/let]
 [/if]
 [for (key : EntityAssociation | service.serves.associationKeys()->select(k | not k.container))]
-[let targetService : Service = key.targetType().services(service.partOf)->first()]
-->join('[service.selectName()/].[key.modelPropertyName()/]', '[targetService.selectName()/]')
-[/let]
+->join('[service.serves.selectName()/].[key.modelPropertyName()/]', '[key.targetType().selectName()/]')
 [/for]
 [/template]
 
-[template private findWhere(entityOrView : EntityOrView, service : Service) post(trim())]
+[template private findWhere(entityOrView : EntityOrView, base : EntityOrView) post(trim())]
 [let keys : Sequence(Attribute) = entityOrView.uriPathKeys()]
 [for (key : Attribute | keys->subSequence(1, keys->size() - 1))]
-$queryBuilder->expr()->andX([key.findWhere(service)/],
+$queryBuilder->expr()->andX([key.findWhere(base)/],
 [/for]
-[keys->last().findWhere(service)/]
+[keys->last().findWhere(base)/]
 [for (key : Attribute | keys->subSequence(1, keys->size() - 1))])[/for]
 [/let]
 [/template]
 
-[template private findWhere(key : Attribute, service : Service) post(trim())]
-$queryBuilder->expr()->eq('[key.partOf.services(service.partOf)->first().selectName()/].[key.columnName()/]', ':[key.routeParameterName(service.serves)/]')
+[template private findWhere(key : Attribute, base : EntityOrView) post(trim())]
+$queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(base)/]')
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
@@ -184,7 +184,7 @@ public function getUser()
 [template private saveMethod(service : Service) post(trim())]
 public function save($entity, $flush = false)
 {
-	$entityManager = $this->doctrine->getEntityManager();
+	$entityManager = $this->doctrine->getManager();
     $entityManager->persist($entity);
     if ($flush)
         $entityManager->flush();
@@ -196,19 +196,17 @@ public function [selection.methodName()/]([for (parameter : SelectionParameter |
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
 {
     $queryBuilder = $this->createQueryBuilder();
+[if (selection.fields->notEmpty())]
+    [selection.fields()/]
+[/if]
 [if (selection.joins->notEmpty())]
-    [selection.selectionJoins()/]
+    [selection.joins()/]
 [/if]
 [if (not selection.filter.oclIsUndefined())]
     $queryBuilder->where([selection.filter.queryExpression()/]);
 [/if]
 [if (selection.ordering->size() > 0)]
-    $queryBuilder->orderBy([selection.ordering->first().path.queryExpression()/], [if (selection.ordering->first().oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
-	[if (selection.ordering->size() > 1)]
-		[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-    $queryBuilder->addOrderBy([selection.ordering->first().path.queryExpression()/], [if (order.oclIsTypeOf(Asc))]'ASC'[else]'DESC'[/if]);
-		[/for]
-	[/if]
+    [selection.orderBy()/]
 [/if]
     if ($page)
     {
@@ -231,6 +229,27 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 }
 [/template]
 
+[template private fields(selection : Selection) post(trim())]
+$queryBuilder->select([selection.fields->first().field()/]);
+[if (selection.fields->size() > 1)]
+	[for (field : SelectionField | selection.fields->subOrderedSet(2, selection.fields->size()))]
+$queryBuilder->addSelect([field.field()/]);
+	[/for]
+[/if]
+[/template]
+
+[template private field(field : SelectionField)
+	? (field.oclIsTypeOf(SelectEntityOrView)) post(trim())]
+'[field.oclAsType(SelectEntityOrView).entityOrView.selectName()/]'
+[/template]
+
+[template private field(field : SelectionField)
+	? (field.oclIsTypeOf(SelectAttribute)) post(trim())]
+[let attribute : Attribute = field.oclAsType(SelectAttribute).attribute]
+'[attribute.partOf.selectName()/].[attribute.name/]'
+[/let]
+[/template]
+
 [query private entitiesAndViews(selection : Selection, length : Integer) : Set(EntityOrView)
 	= if length = 1 then
 			Set{selection.partOf.serves}
@@ -248,18 +267,31 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 		endif
 /]
 
-[template private selectionJoins(selection : Selection) post(trim())]
+[template private joins(selection : Selection) post(trim())]
 [for (join : Association | selection.joins)]
-[let sourceService : Service = join.partOf.services(selection.partOf.partOf)->first()]
-[let targetService : Service = join.targetType().services(selection.partOf.partOf)->first()]
 	[if (selection.entitiesAndViews(i)->includes(join.partOf))]
-$queryBuilder->join('[sourceService.selectName()/].[join.modelPropertyName()/]', '[targetService.selectName()/]');
+$queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
 	[else]
-$queryBuilder->join('[targetService.selectName()/].[join.opposite().modelPropertyName()/]', '[sourceService.selectName()/]');
+$queryBuilder->join('[join.targetType().selectName()/].[join.opposite().modelPropertyName()/]', '[join.partOf.selectName()/]');
 	[/if]
-[/let]
-[/let]
 [/for]
+[/template]
+
+[template private orderBy(selection : Selection) post(trim())]
+$queryBuilder->orderBy([selection.ordering->first().path.queryExpression()/], [selection.ordering->first().order()/]);
+[if (selection.ordering->size() > 1)]
+	[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
+$queryBuilder->addOrderBy([selection.ordering->first().path.queryExpression()/], [order.order()/]);
+	[/for]
+[/if]
+[/template]
+
+[template private order(order : Order) post(trim())]
+[if (order.oclIsTypeOf(Asc))]
+'ASC'
+[else]
+'DESC'
+[/if]
 [/template]
 
 [template private childSelectionMethods(service : Service) post(trim())]
@@ -308,6 +340,6 @@ public function getRepository()
 [template private createQueryBuilderMethod(service : Service) post(trim())]
 public function createQueryBuilder()
 {
-    return $this->getRepository()->createQueryBuilder('[service.selectName()/]');
+    return $this->getRepository()->createQueryBuilder('[service.serves.selectName()/]');
 }
 [/template]

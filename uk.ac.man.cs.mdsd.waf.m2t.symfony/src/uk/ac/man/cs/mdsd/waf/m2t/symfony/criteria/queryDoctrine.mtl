@@ -45,21 +45,19 @@ $this->[path.unit.instanceName()/]->[comment path unit services->first() keyName
 [template public queryExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
-[let containedIn : WafModel = path.ancestors()->select(a | a.oclIsTypeOf(WafModel)).oclAsType(WafModel)->first()]
-[path.feature.featureReference(containedIn)/]
-[/let]
+[path.feature.featureReference()/]
 [/let]
 [/template]
 
-[template private featureReference(feature : Feature, model : WafModel) 
+[template private featureReference(feature : Feature) 
 	? (feature.oclIsKindOf(Attribute)) post(trim())]
- '[feature.partOf.services(model)->first().selectName()/].[feature.columnName()/]'
+ '[feature.partOf.selectName()/].[feature.columnName()/]'
 [/template]
 
-[template private featureReference(feature : Feature, model : WafModel) 
+[template private featureReference(feature : Feature) 
 	? (feature.oclIsKindOf(Association)) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
- '[association.targetType().services(model)->first().selectName()/].[feature.partOf.autoKeyName/]'
+ '[association.targetType().selectName()/].[feature.partOf.autoKeyName/]'
 [/let]
 [/template]
 

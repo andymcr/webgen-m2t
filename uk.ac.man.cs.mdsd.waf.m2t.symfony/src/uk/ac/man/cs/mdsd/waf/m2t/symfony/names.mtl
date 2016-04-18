@@ -49,6 +49,10 @@
 /]
 
 
+[query public selectName(entityOrView : EntityOrView) : String
+	= entityOrView.name.toLowerFirst()
+/]
+
 [query public typeClassName(entityOrView : EntityOrView) : String
 	= entityOrView.typePrefix().concat(entityOrView.modelName()).concat(entityOrView.typeSuffix())
 /]
@@ -65,7 +69,7 @@
 			else
 				association.partOf
 			endif
-		in entityOrView.services(service.partOf)->first().selectName()
+		in entityOrView.selectName()
 /]
 
 
@@ -83,10 +87,6 @@
 /]
 
 [query public instanceName(service : Service) : String
-	= service.name.toLowerFirst()
-/]
-
-[query public selectName(service : Service) : String
 	= service.name.toLowerFirst()
 /]
 
