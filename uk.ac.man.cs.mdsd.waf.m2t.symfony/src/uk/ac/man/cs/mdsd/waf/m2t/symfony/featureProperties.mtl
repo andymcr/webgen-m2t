@@ -3,6 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 [query public userService(model : WafModel) : Service
 	= if not model.isLocallyAuthenticated() then
@@ -16,5 +17,29 @@
 	= model.pages->collect(p | p.units)
 	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
 	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields())
+/]
+
+
+[query private fieldName(field : SelectField) : String
+	= if field.oclIsTypeOf(SelectAttribute) then
+			field.oclAsType(SelectAttribute).attribute.name
+		else
+			''
+		endif
+/]
+
+[query public alias(field : SelectField, selection : Selection) : String
+	= if not field.oclIsTypeOf(SelectAttribute) then
+			null
+		else 
+			let attribute : Attribute = field.oclAsType(SelectAttribute).attribute
+				in let fieldNames : Sequence(String)
+					= selection.fields->collect(f | f.fieldName())
+					in if fieldNames->select(n | n = field.fieldName())->size() > 1 then
+							attribute.partOf.selectName().concat(attribute.name.toUpperFirst())
+						else
+							null
+						endif
+		endif
 /]
 

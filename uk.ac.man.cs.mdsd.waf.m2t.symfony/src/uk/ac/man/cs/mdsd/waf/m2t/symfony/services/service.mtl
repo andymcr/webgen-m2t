@@ -230,23 +230,26 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 [/template]
 
 [template private fields(selection : Selection) post(trim())]
-$queryBuilder->select([selection.fields->first().field()/]);
+[let first : SelectField = selection.fields->first()]
+$queryBuilder->select([first.field(first.alias(selection))/]);
+[/let]
 [if (selection.fields->size() > 1)]
-	[for (field : SelectionField | selection.fields->subOrderedSet(2, selection.fields->size()))]
-$queryBuilder->addSelect([field.field()/]);
+	[for (field : SelectField | selection.fields->subOrderedSet(2, selection.fields->size()))]
+$queryBuilder->addSelect([field.field(field.alias(selection))/]);
 	[/for]
 [/if]
 [/template]
 
-[template private field(field : SelectionField)
+[template private field(field : SelectField, alias : String)
 	? (field.oclIsTypeOf(SelectEntityOrView)) post(trim())]
 '[field.oclAsType(SelectEntityOrView).entityOrView.selectName()/]'
 [/template]
 
-[template private field(field : SelectionField)
+[template private field(field : SelectField, alias : String)
 	? (field.oclIsTypeOf(SelectAttribute)) post(trim())]
 [let attribute : Attribute = field.oclAsType(SelectAttribute).attribute]
-'[attribute.partOf.selectName()/].[attribute.name/]'
+'[attribute.partOf.selectName()/].[attribute.name/][if (not alias.oclIsUndefined())]
+ [alias/][/if]'
 [/let]
 [/template]
 

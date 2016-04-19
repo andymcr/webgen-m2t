@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -230,11 +231,13 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  <tbody>
 {% for entry in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
-[for (field : UnitField | indexUnit.displayFields)]
-[let fieldAccessor : String = 'entry'.concat('.').concat(field.modelPropertyName())]
-   <td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
-[/let]
-[/for]
+[if (unit.defaultSelection.oclIsUndefined())]
+   [indexUnit.objectData()/]
+[elseif (indexUnit.defaultSelection.fields->select(f | f.oclIsTypeOf(SelectAttribute))->isEmpty())]
+   [indexUnit.objectData()/]
+[else]
+   [indexUnit.arrayData()/]
+[/if]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <td class="actions">[indexUnit.actions('entry')/]</td>
 [/if]
@@ -243,6 +246,20 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  </tbody>
 </table>
 [/let]
+[/template]
+
+[template private objectData(unit : IndexGridUnit) post(trim())]
+[for (field : UnitField | unit.displayFields)]
+[let fieldAccessor : String = 'entry'.concat('.').concat(field.modelPropertyName())]
+<td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
+[/let]
+[/for]
+[/template]
+
+[template private arrayData(unit : IndexGridUnit) post(trim())]
+[for (field : UnitField | unit.displayFields)]
+<td class="[field.styleClass()/]">{{ entry['['/]'[field.modelPropertyName()/]'[']'/] }}</td>
+[/for]
 [/template]
 
 [template private actions(unit : IndexUnit, accessor : String) post(trim())]

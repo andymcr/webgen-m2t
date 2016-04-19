@@ -7,7 +7,7 @@
 
 
 [template public parametersProd(model : WafModel)]
-[file (model.configDirectory().concat('/').concat('parameters').concat(model.ymlExtension()), false)]
+[file (model.configDirectory().concat('/').concat('parameters_prod').concat(model.ymlExtension()), false)]
 # This file is auto-generated during the composer install
 parameters:
     database_host: [model.persistence.databaseHost/]
