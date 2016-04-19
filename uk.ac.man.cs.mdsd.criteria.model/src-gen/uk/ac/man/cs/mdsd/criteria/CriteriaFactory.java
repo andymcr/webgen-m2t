@@ -31,6 +31,15 @@ public interface CriteriaFactory extends EFactory {
 	NullLiteral createNullLiteral();
 
 	/**
+	 * Returns a new object of class '<em>Boolean Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Boolean Literal</em>'.
+	 * @generated
+	 */
+	BooleanLiteral createBooleanLiteral();
+
+	/**
 	 * Returns a new object of class '<em>Integer Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -47,6 +56,15 @@ public interface CriteriaFactory extends EFactory {
 	 * @generated
 	 */
 	StringLiteral createStringLiteral();
+
+	/**
+	 * Returns a new object of class '<em>Time Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Time Literal</em>'.
+	 * @generated
+	 */
+	TimeLiteral createTimeLiteral();
 
 	/**
 	 * Returns a new object of class '<em>Current Time</em>'.

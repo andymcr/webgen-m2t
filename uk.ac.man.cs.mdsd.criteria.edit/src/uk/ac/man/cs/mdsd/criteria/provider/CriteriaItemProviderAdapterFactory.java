@@ -112,6 +112,29 @@ public class CriteriaItemProviderAdapterFactory extends CriteriaAdapterFactory i
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected BooleanLiteralItemProvider booleanLiteralItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createBooleanLiteralAdapter() {
+		if (booleanLiteralItemProvider == null) {
+			booleanLiteralItemProvider = new BooleanLiteralItemProvider(this);
+		}
+
+		return booleanLiteralItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.criteria.PredicateBooleanOperator} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -342,6 +365,29 @@ public class CriteriaItemProviderAdapterFactory extends CriteriaAdapterFactory i
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.criteria.TimeLiteral} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected TimeLiteralItemProvider timeLiteralItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.ac.man.cs.mdsd.criteria.TimeLiteral}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createTimeLiteralAdapter() {
+		if (timeLiteralItemProvider == null) {
+			timeLiteralItemProvider = new TimeLiteralItemProvider(this);
+		}
+
+		return timeLiteralItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.criteria.CurrentTime} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -514,8 +560,10 @@ public class CriteriaItemProviderAdapterFactory extends CriteriaAdapterFactory i
 	 */
 	public void dispose() {
 		if (nullLiteralItemProvider != null) nullLiteralItemProvider.dispose();
+		if (booleanLiteralItemProvider != null) booleanLiteralItemProvider.dispose();
 		if (integerLiteralItemProvider != null) integerLiteralItemProvider.dispose();
 		if (stringLiteralItemProvider != null) stringLiteralItemProvider.dispose();
+		if (timeLiteralItemProvider != null) timeLiteralItemProvider.dispose();
 		if (currentTimeItemProvider != null) currentTimeItemProvider.dispose();
 		if (functionItemProvider != null) functionItemProvider.dispose();
 		if (predicateBooleanOperatorItemProvider != null) predicateBooleanOperatorItemProvider.dispose();

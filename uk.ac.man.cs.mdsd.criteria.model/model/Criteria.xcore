@@ -29,11 +29,19 @@ interface Literal extends Expression {
 class NullLiteral extends Literal {
 }
 
+class BooleanLiteral extends Literal {
+	Boolean[1] value
+}
+
 class IntegerLiteral extends Literal {
 	int[1] value
 }
 
 class StringLiteral extends Literal {
+	String[1] value
+}
+
+class TimeLiteral extends Literal {
 	String[1] value
 }
 

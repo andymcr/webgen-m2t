@@ -87,6 +87,14 @@ public class CriteriaSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CriteriaPackage.BOOLEAN_LITERAL: {
+				BooleanLiteral booleanLiteral = (BooleanLiteral)theEObject;
+				T result = caseBooleanLiteral(booleanLiteral);
+				if (result == null) result = caseLiteral(booleanLiteral);
+				if (result == null) result = caseExpression(booleanLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CriteriaPackage.INTEGER_LITERAL: {
 				IntegerLiteral integerLiteral = (IntegerLiteral)theEObject;
 				T result = caseIntegerLiteral(integerLiteral);
@@ -100,6 +108,14 @@ public class CriteriaSwitch<T> extends Switch<T> {
 				T result = caseStringLiteral(stringLiteral);
 				if (result == null) result = caseLiteral(stringLiteral);
 				if (result == null) result = caseExpression(stringLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CriteriaPackage.TIME_LITERAL: {
+				TimeLiteral timeLiteral = (TimeLiteral)theEObject;
+				T result = caseTimeLiteral(timeLiteral);
+				if (result == null) result = caseLiteral(timeLiteral);
+				if (result == null) result = caseExpression(timeLiteral);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -250,6 +266,21 @@ public class CriteriaSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Boolean Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Boolean Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBooleanLiteral(BooleanLiteral object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Integer Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -276,6 +307,21 @@ public class CriteriaSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseStringLiteral(StringLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Time Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Time Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTimeLiteral(TimeLiteral object) {
 		return null;
 	}
 

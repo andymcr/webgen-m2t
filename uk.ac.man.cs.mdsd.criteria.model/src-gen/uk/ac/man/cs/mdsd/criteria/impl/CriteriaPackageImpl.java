@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import uk.ac.man.cs.mdsd.criteria.Asc;
+import uk.ac.man.cs.mdsd.criteria.BooleanLiteral;
 import uk.ac.man.cs.mdsd.criteria.BooleanOperator;
 import uk.ac.man.cs.mdsd.criteria.ComparisionOperator;
 import uk.ac.man.cs.mdsd.criteria.CriteriaFactory;
@@ -33,6 +34,7 @@ import uk.ac.man.cs.mdsd.criteria.PredicateIsEmpty;
 import uk.ac.man.cs.mdsd.criteria.PredicateIsOperator;
 import uk.ac.man.cs.mdsd.criteria.PredicateLikeOperator;
 import uk.ac.man.cs.mdsd.criteria.StringLiteral;
+import uk.ac.man.cs.mdsd.criteria.TimeLiteral;
 
 /**
  * <!-- begin-user-doc -->
@@ -67,6 +69,13 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass booleanLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass integerLiteralEClass = null;
 
 	/**
@@ -75,6 +84,13 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 	 * @generated
 	 */
 	private EClass stringLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass timeLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -277,6 +293,24 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getBooleanLiteral() {
+		return booleanLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getBooleanLiteral_Value() {
+		return (EAttribute)booleanLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getIntegerLiteral() {
 		return integerLiteralEClass;
 	}
@@ -306,6 +340,24 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 	 */
 	public EAttribute getStringLiteral_Value() {
 		return (EAttribute)stringLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getTimeLiteral() {
+		return timeLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTimeLiteral_Value() {
+		return (EAttribute)timeLiteralEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -612,11 +664,17 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 
 		nullLiteralEClass = createEClass(NULL_LITERAL);
 
+		booleanLiteralEClass = createEClass(BOOLEAN_LITERAL);
+		createEAttribute(booleanLiteralEClass, BOOLEAN_LITERAL__VALUE);
+
 		integerLiteralEClass = createEClass(INTEGER_LITERAL);
 		createEAttribute(integerLiteralEClass, INTEGER_LITERAL__VALUE);
 
 		stringLiteralEClass = createEClass(STRING_LITERAL);
 		createEAttribute(stringLiteralEClass, STRING_LITERAL__VALUE);
+
+		timeLiteralEClass = createEClass(TIME_LITERAL);
+		createEAttribute(timeLiteralEClass, TIME_LITERAL__VALUE);
 
 		currentTimeEClass = createEClass(CURRENT_TIME);
 
@@ -697,8 +755,10 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 		// Add supertypes to classes
 		literalEClass.getESuperTypes().add(this.getExpression());
 		nullLiteralEClass.getESuperTypes().add(this.getLiteral());
+		booleanLiteralEClass.getESuperTypes().add(this.getLiteral());
 		integerLiteralEClass.getESuperTypes().add(this.getLiteral());
 		stringLiteralEClass.getESuperTypes().add(this.getLiteral());
+		timeLiteralEClass.getESuperTypes().add(this.getLiteral());
 		currentTimeEClass.getESuperTypes().add(this.getLiteral());
 		functionEClass.getESuperTypes().add(this.getExpression());
 		pathEClass.getESuperTypes().add(this.getExpression());
@@ -719,11 +779,17 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 
 		initEClass(nullLiteralEClass, NullLiteral.class, "NullLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(booleanLiteralEClass, BooleanLiteral.class, "BooleanLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBooleanLiteral_Value(), theEcorePackage.getEBooleanObject(), "value", null, 1, 1, BooleanLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(integerLiteralEClass, IntegerLiteral.class, "IntegerLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIntegerLiteral_Value(), theEcorePackage.getEInt(), "value", null, 1, 1, IntegerLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(stringLiteralEClass, StringLiteral.class, "StringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStringLiteral_Value(), theEcorePackage.getEString(), "value", null, 1, 1, StringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(timeLiteralEClass, TimeLiteral.class, "TimeLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getTimeLiteral_Value(), theEcorePackage.getEString(), "value", null, 1, 1, TimeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(currentTimeEClass, CurrentTime.class, "CurrentTime", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

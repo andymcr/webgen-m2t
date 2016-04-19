@@ -80,12 +80,20 @@ public class CriteriaAdapterFactory extends AdapterFactoryImpl {
 				return createNullLiteralAdapter();
 			}
 			@Override
+			public Adapter caseBooleanLiteral(BooleanLiteral object) {
+				return createBooleanLiteralAdapter();
+			}
+			@Override
 			public Adapter caseIntegerLiteral(IntegerLiteral object) {
 				return createIntegerLiteralAdapter();
 			}
 			@Override
 			public Adapter caseStringLiteral(StringLiteral object) {
 				return createStringLiteralAdapter();
+			}
+			@Override
+			public Adapter caseTimeLiteral(TimeLiteral object) {
+				return createTimeLiteralAdapter();
 			}
 			@Override
 			public Adapter caseCurrentTime(CurrentTime object) {
@@ -202,6 +210,20 @@ public class CriteriaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral <em>Boolean Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.ac.man.cs.mdsd.criteria.BooleanLiteral
+	 * @generated
+	 */
+	public Adapter createBooleanLiteralAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.criteria.IntegerLiteral <em>Integer Literal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -226,6 +248,20 @@ public class CriteriaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createStringLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.criteria.TimeLiteral <em>Time Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.ac.man.cs.mdsd.criteria.TimeLiteral
+	 * @generated
+	 */
+	public Adapter createTimeLiteralAdapter() {
 		return null;
 	}
 

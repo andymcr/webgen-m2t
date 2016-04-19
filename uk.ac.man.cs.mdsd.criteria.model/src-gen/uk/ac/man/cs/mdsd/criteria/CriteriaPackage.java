@@ -143,6 +143,43 @@ public interface CriteriaPackage extends EPackage {
 	int NULL_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.ac.man.cs.mdsd.criteria.impl.BooleanLiteralImpl
+	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getBooleanLiteral()
+	 * @generated
+	 */
+	int BOOLEAN_LITERAL = 3;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOLEAN_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Boolean Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOLEAN_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Boolean Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOLEAN_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.impl.IntegerLiteralImpl <em>Integer Literal</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -150,7 +187,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getIntegerLiteral()
 	 * @generated
 	 */
-	int INTEGER_LITERAL = 3;
+	int INTEGER_LITERAL = 4;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -187,7 +224,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getStringLiteral()
 	 * @generated
 	 */
-	int STRING_LITERAL = 4;
+	int STRING_LITERAL = 5;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -217,6 +254,43 @@ public interface CriteriaPackage extends EPackage {
 	int STRING_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.impl.TimeLiteralImpl <em>Time Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uk.ac.man.cs.mdsd.criteria.impl.TimeLiteralImpl
+	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getTimeLiteral()
+	 * @generated
+	 */
+	int TIME_LITERAL = 6;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Time Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Time Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.impl.CurrentTimeImpl <em>Current Time</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -224,7 +298,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getCurrentTime()
 	 * @generated
 	 */
-	int CURRENT_TIME = 5;
+	int CURRENT_TIME = 7;
 
 	/**
 	 * The number of structural features of the '<em>Current Time</em>' class.
@@ -252,7 +326,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getFunction()
 	 * @generated
 	 */
-	int FUNCTION = 6;
+	int FUNCTION = 8;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -289,7 +363,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPath()
 	 * @generated
 	 */
-	int PATH = 7;
+	int PATH = 9;
 
 	/**
 	 * The number of structural features of the '<em>Path</em>' class.
@@ -317,7 +391,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicate()
 	 * @generated
 	 */
-	int PREDICATE = 8;
+	int PREDICATE = 10;
 
 	/**
 	 * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -354,7 +428,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateBooleanOperator()
 	 * @generated
 	 */
-	int PREDICATE_BOOLEAN_OPERATOR = 9;
+	int PREDICATE_BOOLEAN_OPERATOR = 11;
 
 	/**
 	 * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -409,7 +483,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateEqualityOperator()
 	 * @generated
 	 */
-	int PREDICATE_EQUALITY_OPERATOR = 10;
+	int PREDICATE_EQUALITY_OPERATOR = 12;
 
 	/**
 	 * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -464,7 +538,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateComparisonOperator()
 	 * @generated
 	 */
-	int PREDICATE_COMPARISON_OPERATOR = 11;
+	int PREDICATE_COMPARISON_OPERATOR = 13;
 
 	/**
 	 * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -528,7 +602,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateIsOperator()
 	 * @generated
 	 */
-	int PREDICATE_IS_OPERATOR = 12;
+	int PREDICATE_IS_OPERATOR = 14;
 
 	/**
 	 * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -583,7 +657,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateLikeOperator()
 	 * @generated
 	 */
-	int PREDICATE_LIKE_OPERATOR = 13;
+	int PREDICATE_LIKE_OPERATOR = 15;
 
 	/**
 	 * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -638,7 +712,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getPredicateIsEmpty()
 	 * @generated
 	 */
-	int PREDICATE_IS_EMPTY = 14;
+	int PREDICATE_IS_EMPTY = 16;
 
 	/**
 	 * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -684,7 +758,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getOrder()
 	 * @generated
 	 */
-	int ORDER = 15;
+	int ORDER = 17;
 
 	/**
 	 * The feature id for the '<em><b>Path</b></em>' containment reference.
@@ -721,7 +795,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getAsc()
 	 * @generated
 	 */
-	int ASC = 16;
+	int ASC = 18;
 
 	/**
 	 * The feature id for the '<em><b>Path</b></em>' containment reference.
@@ -758,7 +832,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getDesc()
 	 * @generated
 	 */
-	int DESC = 17;
+	int DESC = 19;
 
 	/**
 	 * The feature id for the '<em><b>Path</b></em>' containment reference.
@@ -795,7 +869,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getBooleanOperator()
 	 * @generated
 	 */
-	int BOOLEAN_OPERATOR = 18;
+	int BOOLEAN_OPERATOR = 20;
 
 	/**
 	 * The meta object id for the '{@link uk.ac.man.cs.mdsd.criteria.ComparisionOperator <em>Comparision Operator</em>}' enum.
@@ -805,7 +879,7 @@ public interface CriteriaPackage extends EPackage {
 	 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getComparisionOperator()
 	 * @generated
 	 */
-	int COMPARISION_OPERATOR = 19;
+	int COMPARISION_OPERATOR = 21;
 
 
 	/**
@@ -837,6 +911,27 @@ public interface CriteriaPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getNullLiteral();
+
+	/**
+	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral <em>Boolean Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Boolean Literal</em>'.
+	 * @see uk.ac.man.cs.mdsd.criteria.BooleanLiteral
+	 * @generated
+	 */
+	EClass getBooleanLiteral();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see uk.ac.man.cs.mdsd.criteria.BooleanLiteral#getValue()
+	 * @see #getBooleanLiteral()
+	 * @generated
+	 */
+	EAttribute getBooleanLiteral_Value();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.criteria.IntegerLiteral <em>Integer Literal</em>}'.
@@ -879,6 +974,27 @@ public interface CriteriaPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getStringLiteral_Value();
+
+	/**
+	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.criteria.TimeLiteral <em>Time Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Time Literal</em>'.
+	 * @see uk.ac.man.cs.mdsd.criteria.TimeLiteral
+	 * @generated
+	 */
+	EClass getTimeLiteral();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.criteria.TimeLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see uk.ac.man.cs.mdsd.criteria.TimeLiteral#getValue()
+	 * @see #getTimeLiteral()
+	 * @generated
+	 */
+	EAttribute getTimeLiteral_Value();
 
 	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.criteria.CurrentTime <em>Current Time</em>}'.
@@ -1249,6 +1365,24 @@ public interface CriteriaPackage extends EPackage {
 		EClass NULL_LITERAL = eINSTANCE.getNullLiteral();
 
 		/**
+		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.criteria.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.ac.man.cs.mdsd.criteria.impl.BooleanLiteralImpl
+		 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getBooleanLiteral()
+		 * @generated
+		 */
+		EClass BOOLEAN_LITERAL = eINSTANCE.getBooleanLiteral();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BOOLEAN_LITERAL__VALUE = eINSTANCE.getBooleanLiteral_Value();
+
+		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.criteria.impl.IntegerLiteralImpl <em>Integer Literal</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1283,6 +1417,24 @@ public interface CriteriaPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute STRING_LITERAL__VALUE = eINSTANCE.getStringLiteral_Value();
+
+		/**
+		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.criteria.impl.TimeLiteralImpl <em>Time Literal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uk.ac.man.cs.mdsd.criteria.impl.TimeLiteralImpl
+		 * @see uk.ac.man.cs.mdsd.criteria.impl.CriteriaPackageImpl#getTimeLiteral()
+		 * @generated
+		 */
+		EClass TIME_LITERAL = eINSTANCE.getTimeLiteral();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TIME_LITERAL__VALUE = eINSTANCE.getTimeLiteral_Value();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.criteria.impl.CurrentTimeImpl <em>Current Time</em>}' class.

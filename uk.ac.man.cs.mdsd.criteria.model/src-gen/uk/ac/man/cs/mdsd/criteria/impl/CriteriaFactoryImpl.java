@@ -58,8 +58,10 @@ public class CriteriaFactoryImpl extends EFactoryImpl implements CriteriaFactory
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case CriteriaPackage.NULL_LITERAL: return createNullLiteral();
+			case CriteriaPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
 			case CriteriaPackage.INTEGER_LITERAL: return createIntegerLiteral();
 			case CriteriaPackage.STRING_LITERAL: return createStringLiteral();
+			case CriteriaPackage.TIME_LITERAL: return createTimeLiteral();
 			case CriteriaPackage.CURRENT_TIME: return createCurrentTime();
 			case CriteriaPackage.FUNCTION: return createFunction();
 			case CriteriaPackage.PREDICATE_BOOLEAN_OPERATOR: return createPredicateBooleanOperator();
@@ -124,6 +126,16 @@ public class CriteriaFactoryImpl extends EFactoryImpl implements CriteriaFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public BooleanLiteral createBooleanLiteral() {
+		BooleanLiteralImpl booleanLiteral = new BooleanLiteralImpl();
+		return booleanLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public IntegerLiteral createIntegerLiteral() {
 		IntegerLiteralImpl integerLiteral = new IntegerLiteralImpl();
 		return integerLiteral;
@@ -137,6 +149,16 @@ public class CriteriaFactoryImpl extends EFactoryImpl implements CriteriaFactory
 	public StringLiteral createStringLiteral() {
 		StringLiteralImpl stringLiteral = new StringLiteralImpl();
 		return stringLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TimeLiteral createTimeLiteral() {
+		TimeLiteralImpl timeLiteral = new TimeLiteralImpl();
+		return timeLiteral;
 	}
 
 	/**

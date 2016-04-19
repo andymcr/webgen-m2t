@@ -168,12 +168,22 @@ public class PredicateComparisonOperatorItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__LEFT,
+				 CriteriaFactory.eINSTANCE.createBooleanLiteral()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__LEFT,
 				 CriteriaFactory.eINSTANCE.createIntegerLiteral()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__LEFT,
 				 CriteriaFactory.eINSTANCE.createStringLiteral()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__LEFT,
+				 CriteriaFactory.eINSTANCE.createTimeLiteral()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -223,12 +233,22 @@ public class PredicateComparisonOperatorItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__RIGHT,
+				 CriteriaFactory.eINSTANCE.createBooleanLiteral()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__RIGHT,
 				 CriteriaFactory.eINSTANCE.createIntegerLiteral()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__RIGHT,
 				 CriteriaFactory.eINSTANCE.createStringLiteral()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_COMPARISON_OPERATOR__RIGHT,
+				 CriteriaFactory.eINSTANCE.createTimeLiteral()));
 
 		newChildDescriptors.add
 			(createChildParameter
