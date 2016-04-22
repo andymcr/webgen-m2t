@@ -31,6 +31,8 @@ $[key.routeParameterName(entityOrView)/][/for]
 				''
 			else
 				keyEntity.container().uriPath(yyy)
+					.concat('/')
+					.concat(keyEntity.containingAssociation().opposite.name)
 			endif endif
 /]
 
