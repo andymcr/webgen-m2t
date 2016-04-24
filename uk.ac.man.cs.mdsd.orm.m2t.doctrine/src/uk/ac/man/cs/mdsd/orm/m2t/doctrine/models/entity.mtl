@@ -17,12 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
 [if (entityOrView.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="[entityOrView.tableName/]")
- * @ORM\HasLifecycleCallbacks
  **/
 class [entityOrView.modelClassName()/]
 {
@@ -34,7 +34,7 @@ class [entityOrView.modelClassName()/]
     [entityOrView.timestampFeatures()/]
 
 [/if]
-[if (entityOrView.oclIsTypeOf(Entity) or entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations())]
+[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations())]
     [entityOrView.constructor()/]
 
 [/if]
@@ -102,12 +102,14 @@ protected $[feature.modelPropertyName()/];
 [template private timestampFeatures(entityOrView : EntityOrView) post(trim())]
 /**
  * @ORM\Column(type="datetime")
+ * @Gedmo\Timestampable(on="create")
  * @Assert\NotBlank
  **/
 protected $created;
 
 /**
  * @ORM\Column(type="datetime", nullable=true)
+ * @Gedmo\Timestampable(on="update")
  **/
 protected $updated;
 [/template]
@@ -172,18 +174,14 @@ public function __construct()
 {
 [for (feature : Feature | entityOrView.features)]
 	[if (feature.hasDefaultValue())]
-//	$this->[feature.modelPropertyName()/] = [feature.oclAsType(SingletonAttribute).defaultValue.valueExpression()/];
+    $this->[feature.modelPropertyName()/] = [feature.defaultValue().valueExpression()/];
 	[/if]
 	[if (feature.oclIsTypeOf(CollectionAssociation))]
 		[if (feature.oclAsType(CollectionAssociation).owningEnd)]
-	$this->[feature.modelPropertyName()/] = new ArrayCollection();
+    $this->[feature.modelPropertyName()/] = new ArrayCollection();
 		[/if]
 	[/if]
 [/for]
-[if (entityOrView.oclIsTypeOf(Entity))]
-
-    $this->created = new \DateTime();
-[/if]
 }
 [/template]
 
@@ -275,14 +273,6 @@ public function getCreated()
 public function getUpdated()
 {
     return $this->updated;
-}
-
-/**
- * ORM\@PreUpdate
- **/
-public function updateUpdated($updated)
-{
-    $this->updated = new \DateTime();
 }
 [/template]
 
