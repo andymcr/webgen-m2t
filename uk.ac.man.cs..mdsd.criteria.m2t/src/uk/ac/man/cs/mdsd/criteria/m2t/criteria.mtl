@@ -9,6 +9,17 @@ NULL
 [/template]
 
 [template public valueExpression(criteria : Expression)
+	? (criteria.oclIsTypeOf(BooleanLiteral)) post(trim())]
+[let literal : BooleanLiteral = criteria.oclAsType(BooleanLiteral)]
+[if (literal.value)]
+true
+[else]
+false
+[/if]
+[/let]
+[/template]
+
+[template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(IntegerLiteral)) post(trim())]
 [let literal : IntegerLiteral = criteria.oclAsType(IntegerLiteral)]
 [literal.value/]
@@ -19,6 +30,13 @@ NULL
 	? (criteria.oclIsTypeOf(StringLiteral)) post(trim())]
 [let literal : StringLiteral = criteria.oclAsType(StringLiteral)]
 '[literal.value/]'
+[/let]
+[/template]
+
+[template public valueExpression(criteria : Expression)
+	? (criteria.oclIsTypeOf(TimeLiteral)) post(trim())]
+[let literal : TimeLiteral = criteria.oclAsType(TimeLiteral)]
+new \Time('[literal.value/]')
 [/let]
 [/template]
 
