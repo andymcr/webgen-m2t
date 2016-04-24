@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
+	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 
 
@@ -185,6 +186,16 @@
 			feature.oclAsType(EncapsulatedAttribute).attribute.dateDetails()
 		else if feature.oclIsKindOf(DateAttribute) then
 			feature.oclAsType(DateAttribute).details
+		else
+			null
+		endif endif
+/]
+
+[query public defaultValue(feature : Feature) : Expression
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.defaultValue()
+		else if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).defaultValue
 		else
 			null
 		endif endif
