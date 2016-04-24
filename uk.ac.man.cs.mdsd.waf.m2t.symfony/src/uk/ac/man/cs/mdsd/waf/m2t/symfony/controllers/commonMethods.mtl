@@ -32,11 +32,11 @@
 [/let]
 [/template]
 
-[template public renderMethodParameters(page : Page) post(trim())]
+[template public renderActualParameters(page : Page, unit : DynamicUnit) post(trim())]
 [if (page.hasFilterParameters())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
-$[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for]
+$[key.routeParameterName(unit.entities->first())/][/for]
 [/template]
 
 [template public getService(unit : DynamicUnit) post(trim())]

@@ -36,25 +36,38 @@ public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
 {
     try {
         $[unit.instanceName()/] = [unit.createInstance()/];
-[if (unit.hasForcedValueFeatures())]
-        [comment unit.forcedFeatureValues()/]
-[/if]
-[if (unit.customiseValues)]
-        // [protected ('customise.values.'.concat(unit.instanceName()))]
-        // [/protected]
-[/if]
-[if (unit.entities->notEmpty())]
-[let entityOrView : EntityOrView = unit.entities->first()]
-	[if (entityOrView.keyEntity().isContained())]
-	[let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
-	[let parentService : Service = entityOrView.keyEntity().container().services(unit.pageDisplayedOn().partOf)->first()]
-        $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name/]')->find([entityOrView.routeParameters(true)/]));
-	[/let]
-	[/let]
+        $this->[unit.instanceName()/] = [unit.createForm(true)/];
+[if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.isContained())]
+        if ($request->isMethod('POST')) {
+            $this->edit->submit($request->request->get($this->edit->getName()), false);
+	[if (not unit.cancelDestination.oclIsUndefined())]
+            [unit.handleCancel()/]
 	[/if]
-[/let]
+	[if (unit.customiseValues)]
+            // [protected ('customise.values.'.concat(unit.instanceName()).concat('.add'))]
+            // [/protected]
+	[/if]
+	[if (unit.hasForcedValueFeatures())]
+            // forced values [comment unit.forcedFeatureValues()/]
+	[/if]
+	[if (unit.isContained())]
+            [unit.setContainer()/]
+	[/if]
+            if ($this->edit->isValid()) {
+                [unit.saveBody(true)/]
+            }
+        }
+[else]
+        $this->[unit.instanceName()/]->handleRequest($request);
+	[if (not unit.cancelDestination.oclIsUndefined())]
+        [unit.handleCancel()/]
+	[/if]
+        if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+            [unit.saveBody(true)/]
+        }
 [/if]
-        [unit.saveBody(true)/]
+
+        return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
     }
     [unit.catchSelectionException()/]
 }
@@ -70,42 +83,39 @@ public function [unit.actionName()/]X([unit.actionMethodParameters()/])
 {
     try {
         $[unit.instanceName()/] = [unit.loadInstance()/];
-[if (unit.hasForcedValueFeatures())]
-[comment unit.forcedFeatureValues()/]
+        $this->[unit.instanceName()/] = [unit.createForm(false)/];
+[if (unit.customiseValues or unit.hasForcedValueFeatures())]
+        if ($request->isMethod('POST')) {
+            $this->edit->submit($request->request->get($this->edit->getName()), false);
+	[if (not unit.cancelDestination.oclIsUndefined())]
+            [unit.handleCancel()/]
+	[/if]
+	[if (unit.customiseValues)]
+            // [protected ('customise.values.'.concat(unit.instanceName()).concat('.edit'))]
+            // [/protected]
+	[/if]
+	[if (unit.hasForcedValueFeatures())]
+            // forced values [comment unit.forcedFeatureValues()/]
+	[/if]
+            if ($this->edit->isValid()) {
+                [unit.saveBody(false)/]
+            }
+        }
+[else]
+        $this->[unit.instanceName()/]->handleRequest($request);
+	[if (not unit.cancelDestination.oclIsUndefined())]
+        [unit.handleCancel()/]
+	[/if]
+        if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+            [unit.saveBody(false)/]
+        }
 [/if]
-[if (unit.customiseValues)]
-        // [protected ('customise.values.'.concat(unit.instanceName()))]
-        // [/protected]
-[/if]
-        [unit.saveBody(false)/]
+
+        return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
     }
     [unit.catchSelectionException()/]
 }
 [/let]
-[/template]
-
-[template private saveBody(unit : EditUnit, create : Boolean) post(trim())]
-$this->[unit.instanceName()/] = [unit.createForm(create)/];
-if ($request->isMethod('POST')) {
-[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancel()/]
-[/if]
-    $this->edit->submit($request->request->get($this->edit->getName()), false);
-    if ($this->edit->isValid()) {
-        [unit.getService()/]->save($[unit.instanceName()/], true);
-[if (not unit.confirmDestination.oclIsUndefined())]
-        return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
-[else]
-	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-        $[unit.instanceName()/] = [unit.createInstance()/];
-        $this->[unit.instanceName()/] = [unit.createForm(create)/];
-	[else]
-	[/if]
-[/if]
-    }
-}
-
-return $this->renderPage([unit.pageDisplayedOn().renderMethodParameters()/]);
 [/template]
 
 [template public createForm(unit : EditUnit, create : Boolean) post(trim())]
@@ -124,10 +134,31 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
 [/let]
 [/template]
 
+[template public setContainer(unit : EditUnit) post(trim())]
+[let entityOrView : EntityOrView = unit.entities->first()]
+[let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
+[let parentService : Service = entityOrView.container().services(unit.pageDisplayedOn().partOf)->first()]
+            $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name/]')->find([entityOrView.routeParameters(true)/]));
+[/let]
+[/let]
+[/let]
+[/template]
+
+[template private saveBody(unit : EditUnit, create : Boolean) post(trim())]
+[unit.getService()/]->save($[unit.instanceName()/], true);
+[if (not unit.confirmDestination.oclIsUndefined())]
+return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
+[else]
+	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+$[unit.instanceName()/] = [unit.createInstance()/];
+$this->[unit.instanceName()/] = [unit.createForm(create)/];
+	[/if]
+[/if]
+[/template]
+
 [template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String) post(trim())]
 [for (key : Attribute | entityOrView.uriPathKeys())]
-[comment should pass base to routeParameterName, but causes problems with shared paths on a page/]
-'[key.routeParameterName(entityOrView)/]' => $[key.routeParameterName(entityOrView)/],
+'[key.routeParameterName(base)/]' => $[key.routeParameterName(entityOrView)/],
 [/for]
 [/template]
 

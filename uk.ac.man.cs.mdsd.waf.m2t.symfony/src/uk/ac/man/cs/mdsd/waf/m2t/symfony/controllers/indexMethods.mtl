@@ -33,7 +33,7 @@ Request $request[/if])
 
 [/if]
 [if (page.units->size() > 1)]
-    return $this->renderPage([page.renderMethodParameters()/]);
+    return $this->renderPage([page.renderActualParameters(unit)/]);
 [else]
     $parameters = array();
     $parameters['['/]'title'[']'/] = '[page.displayLabel/]';

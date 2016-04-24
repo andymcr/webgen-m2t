@@ -92,7 +92,7 @@ public function [deleteAction.actionName()/]([unit.actionMethodParameters()/])
     }
     [unit.catchSelectionException()/]
 
-    return $this->renderPage([unit.pageDisplayedOn().renderMethodParameters()/]);
+    return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
 }
 [/let]
 [/let]
