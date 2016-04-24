@@ -420,6 +420,14 @@
 	= unit.pageDisplayedOn().isAuthenticated()
 /]
 
+[query public isContained(unit : DynamicUnit) : Boolean
+	= if unit.entities->isEmpty() then
+			false
+		else
+			unit.entities->first().isContained()
+		endif
+/]
+
 [query public isHomeUnit(unit : ContentUnit) : Boolean
 	= unit.pageDisplayedOn().isHomePage() and unit.pageDisplayedOn().units->first() = unit
 /]
