@@ -477,8 +477,7 @@ NULL
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
-[comment should pass base to routeParameterName, but causes problems with shared paths on a page/]
-'[key.routeParameterName(entityOrView)/]': [key.getValue(keyAccessor)/],
+'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/],
 [/let]
 [/for]
 [/template]
