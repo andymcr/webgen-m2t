@@ -162,6 +162,8 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     'choice_label' => 'defaultLabel',
 [if (association.isSingleton())]
     'placeholder' => 'Please select one',
+[else]
+    'multiple' => true,
 [/if]
 ))
 [/let]
