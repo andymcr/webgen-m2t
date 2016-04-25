@@ -150,8 +150,12 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
 return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+		[if (create)]
 $[unit.instanceName()/] = [unit.createInstance()/];
-$this->[unit.instanceName()/] = [unit.createForm(create)/];
+$this->[unit.instanceName()/] = [unit.createForm(true)/];
+		[else]
+return $this->redirectToRoute('[unit.routeName(true)/]');
+		[/if]
 	[/if]
 [/if]
 [/template]
