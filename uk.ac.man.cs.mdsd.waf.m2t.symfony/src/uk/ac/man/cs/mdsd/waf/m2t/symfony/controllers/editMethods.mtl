@@ -37,7 +37,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
     try {
         $[unit.instanceName()/] = [unit.createInstance()/];
         $this->[unit.instanceName()/] = [unit.createForm(true)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.isContained())]
+[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
         if ($request->isMethod('POST')) {
             $this->edit->submit($request->request->get($this->edit->getName()), false);
 	[if (not unit.cancelDestination.oclIsUndefined())]
