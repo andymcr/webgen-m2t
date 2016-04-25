@@ -49,8 +49,6 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if])
 
     [service.findAllMethod()/]
 
-    [service.deleteMethod()/]
-
     [service.removeMethod()/]
 
     [service.saveMethod()/]
@@ -140,20 +138,10 @@ public function findAll()
 }
 [/template]
 
-[template private deleteMethod(service : Service) post(trim())]
-public function delete($entity, $flush = false)
-{
-	$entityManager = $this->doctrine->getEntityManager();
-    $entityManager->delete($entity);
-    if ($flush)
-        $entityManager->flush();
-}
-[/template]
-
 [template private removeMethod(service : Service) post(trim())]
 public function remove($entity, $flush = false)
 {
-	$entityManager = $this->doctrine->getEntityManager();
+	$entityManager = $this->doctrine->getManager();
     $entityManager->remove($entity);
     if ($flush)
         $entityManager->flush();
