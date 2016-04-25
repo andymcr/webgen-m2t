@@ -103,7 +103,6 @@ protected $[feature.modelPropertyName()/];
 /**
  * @ORM\Column(type="datetime")
  * @Gedmo\Timestampable(on="create")
- * @Assert\NotBlank
  **/
 protected $created;
 
