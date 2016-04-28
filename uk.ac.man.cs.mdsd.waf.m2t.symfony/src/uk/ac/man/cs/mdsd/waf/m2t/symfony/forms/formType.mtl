@@ -88,7 +88,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 	? (feature.oclIsKindOf(Attribute)) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
-    'label' => '[attribute.displayLabel/]',
+    'label' => '[attribute.partOf.id()/].labels.[attribute.id()/]',
+    'translation_domain' => 'entity',
 [if (not attribute.isRequired())]
     'required' => FALSE,
 [/if]
@@ -104,7 +105,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 	[/if]
 [elseif (attribute.isEnumerationType())]
     'choices' => [attribute.enumerationType().modelName()/]::values(),
-    'placeholder' => 'Please select one',
+    'placeholder' => 'actions.labels.select_one',
 [/if]
 [if (attribute.hasHtml5Attributes())]
     'attr' => array(
@@ -154,14 +155,16 @@ TextType::class
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
-    'label' => '[association.displayLabel/]',
+    'label' => '[association.partOf.id()/].labels.[association.id()/]',
+    'translation_domain' => 'entity',
 [if (not association.isRequired())]
     'required' => FALSE,
 [/if]
     'class' => '[association.appBundleName()/]:[association.modelName()/]',
     'choice_label' => 'defaultLabel',
+    'choice_translation_domain' => false,
 [if (association.isSingleton())]
-    'placeholder' => 'Please select one',
+    'placeholder' => 'actions.labels.select_one',
 [else]
     'multiple' => true,
 [/if]

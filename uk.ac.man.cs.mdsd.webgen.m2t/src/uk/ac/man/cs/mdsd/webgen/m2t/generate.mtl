@@ -14,7 +14,7 @@
 [elseif (model.persistence.ormTechnology = OrmTechnologies::Idiorm)]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::Kohana)]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::DoctrineORM)]
-[model.generateDoctrine()/]
+[model.doctrine(true)/]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::DoctrineODM)]
 [/if]
 

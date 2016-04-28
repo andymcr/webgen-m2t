@@ -1,0 +1,50 @@
+[comment encoding = UTF-8 /]
+[module section(
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public sectionsTranslations(model : WafModel)]
+[for (page : Page | model.pages->select(p | p.parentPage.oclIsUndefined()))]
+[page.sectionTranslations()/]
+[/for]
+[/template]
+
+[template private sectionTranslations(page : Page) post(trim())]
+[file (page.transDirectory().concat('/').concat(page.translationDomain()).concat('.en').concat(page.xlfExtension()), false)]
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+ <file source-language="en" datatype="plaintext" original="file.ext">
+  <body>
+   [page.translations()/]
+  </body>
+ </file>
+</xliff>
+[/file]
+[/template]
+
+[template private translations(page : Page) post(trim())]
+<trans-unit id="label.[page.id()/]">
+ <source>label.[page.id()/]</source>
+ <target>[page.displayLabel.validXML()/]</target>
+</trans-unit>
+[for (unit : ContentUnit | page.units)]
+<trans-unit id="[page.id()/].labels.[unit.id()/]">
+ <source>[page.id()/].labels.[unit.id()/]</source>
+ <target>[unit.displayLabel.validXML()/]</target>
+</trans-unit>
+	[if (unit.oclIsKindOf(DataUnit))]
+		[for (field : UnitField | unit.oclAsType(DataUnit).displayFields)]
+<trans-unit id="[page.id()/].[unit.id()/].labels.[field.id()/]">
+ <source>[page.id()/].[unit.id()/].labels.[field.id()/]</source>
+ <target>[field.displayLabel.validXML()/]</target>
+</trans-unit>
+		[/for]
+	[/if]
+[/for]
+[for (child : Page | page.childPages)]
+[child.translations()/]
+[/for]
+[/template]

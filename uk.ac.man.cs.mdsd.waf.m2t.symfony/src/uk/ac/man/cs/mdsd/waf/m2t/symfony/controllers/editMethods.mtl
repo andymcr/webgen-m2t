@@ -84,7 +84,7 @@ public function [unit.actionName()/]X([unit.actionMethodParameters()/])
     try {
         $[unit.instanceName()/] = [unit.loadInstance()/];
         $this->[unit.instanceName()/] = [unit.createForm(false)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures())]
+[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
         if ($request->isMethod('POST')) {
             $this->edit->submit($request->request->get($this->edit->getName()), false);
 	[if (not unit.cancelDestination.oclIsUndefined())]
@@ -124,10 +124,10 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
     'action' => $this->generateUrl('[unit.routeName(create)/]', array(
 [if (create)]
 	[if (entityOrView.keyEntity().isContained())]
-        [entityOrView.keyEntity().container().routeActualParameters(entityOrView, '$'.concat(unit.instanceName()))/]
+        [entityOrView.keyEntity().container().routeActualParameters(entityOrView)/]
 	[/if]
 [else]
-        [entityOrView.routeActualParameters(entityOrView, '$'.concat(unit.instanceName()))/]
+        [entityOrView.routeActualParameters(entityOrView)/]
 [/if]
     )),
 ))
@@ -154,13 +154,17 @@ return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
 $[unit.instanceName()/] = [unit.createInstance()/];
 $this->[unit.instanceName()/] = [unit.createForm(true)/];
 		[else]
-return $this->redirectToRoute('[unit.routeName(true)/]');
+		[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
+return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContained())], array(
+    [keyEntity.container().routeActualParameters(unit.entities->first())/]
+)[/if]);
+		[/let]
 		[/if]
 	[/if]
 [/if]
 [/template]
 
-[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String) post(trim())]
+[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView) post(trim())]
 [for (key : Attribute | entityOrView.uriPathKeys())]
 '[key.routeParameterName(base)/]' => $[key.routeParameterName(entityOrView)/],
 [/for]

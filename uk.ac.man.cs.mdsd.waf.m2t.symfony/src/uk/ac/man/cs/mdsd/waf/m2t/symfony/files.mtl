@@ -7,6 +7,14 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
+[query public twigExtension(eObject : EObject) : String
+	= '.twig'
+/]
+
+[query public xlfExtension(eObject : EObject) : String
+	= '.xlf'
+/]
+
 [query public ymlExtension(eObject : EObject) : String
 	= '.yml'
 /]
@@ -78,6 +86,10 @@
 
 [query public sourceDirectory(eObject : EObject) : String
 	= 'src'
+/]
+
+[query public transDirectory(eObject : EObject) : String
+	= eObject.resourcesDirectory().concat('/').concat('translations')
 /]
 
 [query public twigExtensionsDirectory(eObject : EObject) : String

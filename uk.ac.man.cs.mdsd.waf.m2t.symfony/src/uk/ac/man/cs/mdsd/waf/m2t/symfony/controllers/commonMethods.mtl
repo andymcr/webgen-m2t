@@ -11,6 +11,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
+[template public translate(message : String) post(trim())]
+$this->get('translator')->trans('[message/]')
+[/template]
+
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
 [unit.routeAnnotation(false)/]
 [/template]

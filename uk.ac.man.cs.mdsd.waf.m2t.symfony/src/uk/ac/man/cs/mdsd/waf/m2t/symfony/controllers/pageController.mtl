@@ -63,7 +63,7 @@ Request $request[if (page.uriCommonPathKeys()->notEmpty())]
 $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 {
     $parameters = array(
-        'title' => '[page.displayLabel/]',
+        'title' => $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]'),
     );
 [for (unit : ContentUnit | page.units)]
     [unit.templateParameters()/]

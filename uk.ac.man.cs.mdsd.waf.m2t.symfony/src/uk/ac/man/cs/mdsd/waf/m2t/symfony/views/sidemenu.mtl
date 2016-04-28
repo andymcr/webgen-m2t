@@ -8,6 +8,7 @@
 
 [template public generateMenu(menu : Menu)]
 [file(menu.menuFilename(), false)]
+{% trans_default_domain "navigation" %}
 <section  class="[menu.styleClass()/]" id="[menu.instanceName()/]">
  [menu.generateMenuEntries()/]
 </section>
@@ -19,7 +20,7 @@
 	? (menu.oclIsTypeOf(DynamicMenu)) post(trim())]
 [let dynamicMenu : DynamicMenu = menu.oclAsType(DynamicMenu)]
 [if (dynamicMenu.title.oclIsUndefined())]
-<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">[dynamicMenu.displayLabel/]</h1>
+<h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">{{ 'label.[dynamicMenu.id()/]' | trans }}</h1>
 [else]
 <h1 class="[dynamicMenu.captionClass/][if (dynamicMenu.omitCaption)] hidden[/if]">{{ [dynamicMenu.instanceName()/].[comment dynamicMenu dynamicTitle modelPropertyName()/] }}</h1>
 [/if]
@@ -32,7 +33,7 @@
 [template private generateMenuEntries(menu : Menu)
 	? (menu.oclIsTypeOf(StaticMenu)) post(trim())]
 [let staticMenu : StaticMenu = menu.oclAsType(StaticMenu)]
-<h1 class="[staticMenu.captionClass/][if (staticMenu.omitCaption)] hidden[/if]">[staticMenu.displayLabel/]</h1>
+<h1 class="[staticMenu.captionClass/][if (staticMenu.omitCaption)] hidden[/if]">{{ 'label.[staticMenu.id()/]' | trans }}</h1>
 <ul class="[staticMenu.layoutClass/]">
  [menu.entries.generateMenuEntry()/]
 </ul>
@@ -46,7 +47,7 @@
 <li>[if (not entry.action.oclIsUndefined())]
 <a href="{{ path('[entry.action.routeName()/]'[if (not entry.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | entry.query.parameters) separator(', ')]
-'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">[entry.displayLabel/]</a>[else]
-[entry.displayLabel/][/if]</li>
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>[else]
+{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}[/if]</li>
 [/let]
 [/template]

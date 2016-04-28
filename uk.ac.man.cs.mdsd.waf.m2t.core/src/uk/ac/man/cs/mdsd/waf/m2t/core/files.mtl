@@ -14,10 +14,6 @@
 	= '.js'
 /]
 
-[query public twigExtension(eObject : EObject) : String
-	= '.twig'
-/]
-
 [query public xmlExtension(eObject : EObject) : String
 	= '.xml'
 /]

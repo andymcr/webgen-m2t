@@ -5,11 +5,6 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
 
 
-[query public escapeQuotes(string : String) : String
-	= string.replaceAll('(\')', '\\\\$1')
-/]
-
-
 [query public entry(entries : Sequence(String), index : Integer) : String
 	= if entries->size() < index then
 			''
@@ -92,6 +87,15 @@
 	= model.services(entityOrView)
 /]
 
+[query public id(entityOrView : EntityOrView) : String
+	= entityOrView.name.asId()
+/]
+
+
+[query public id(feature : Feature) : String
+	= feature.name.asId()
+/]
+
 
 [query public matchingActual(f : Filter, parameter : SelectionParameter) : FilterParameter
 	= f.parameters->any(p | if p.formal.oclIsUndefined() then
@@ -99,6 +103,21 @@
 							else
 								p.formal.name = parameter.name
 							endif)
+/]
+
+
+[query public id(menu : Menu) : String
+	= menu.name.asId()
+/]
+
+[query public id(menuEntry : MenuEntry) : String
+	= if menuEntry.oclIsKindOf(ActionMenuEntry) then
+			menuEntry.oclAsType(ActionMenuEntry).name.asId()
+		else if menuEntry.oclIsKindOf(EditStaticTextMenuEntry) then
+			menuEntry.oclAsType(EditStaticTextMenuEntry).name.asId()
+		else
+			'Unhandled'
+		endif endif
 /]
 
 
@@ -180,6 +199,10 @@
 	= page.uriActions()->notEmpty()
 /]
 
+[query public id(page : Page) : String
+	= page.name.asId()
+/]
+
 [query public indexUnits(page : Page) : Sequence(IndexUnit)
 	= page.units->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
 /]
@@ -206,6 +229,18 @@
 
 [query public supportActions(page : Page) : Sequence(UnitSupportAction)
 	= page.dynamicUnits()->collect(u | u.supportActions)
+/]
+
+[query public translationDomain(page : Page) : String
+	= if page.parentPage.oclIsUndefined() then
+			if page.uriElement <> '' then
+				page.uriElement
+			else
+				'default'
+			endif
+		else
+			page.parentPage.translationDomain()
+		endif
 /]
 
 [query public updateUnits(page : Page) : OrderedSet(ContentUnit)
@@ -240,6 +275,14 @@
 	= unit.displayFields->select(f | f.oclIsTypeOf(CaptchaField)).oclAsType(CaptchaField)
 /]
 
+[query public containingAssociation(unit : DynamicUnit) : Association
+	= if unit.entities->isEmpty() then
+			null
+		else
+			unit.entities->first().containingAssociation()
+		endif
+/]
+
 [query public containingUnit(unit : DynamicUnit) : DynamicUnit
 	= if unit.displayedOn.oclIsTypeOf(Page) then
 			unit
@@ -250,6 +293,12 @@
 
 [query public defaultValueFields(unit : DynamicUnit) : Set(UnitField)
 	= unit.displayFields->select(f | f.hasDefaultValue())
+/]
+
+[query public displayedAssociations(unit : DynamicUnit) : Sequence(Association)
+	= unit.displayFields
+		->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
+		->collect(a | a.association)
 /]
 
 [query public encryptedFeatures(unit : DynamicUnit) : Set(UnitField)
@@ -394,6 +443,10 @@
 	= unit.uriActions()->notEmpty()
 /]
 
+[query public id(unit : ContentUnit) : String
+	= unit.name.asId()
+/]
+
 [query public inputFields(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then
@@ -477,6 +530,10 @@
 		else
 			'unexpectedUnit'
 		endif endif
+/]
+
+[query public translationDomain(unit : ContentUnit) : String
+	= unit.pageDisplayedOn().translationDomain()
 /]
 
 [query public uriActions(unit : DynamicUnit) : Sequence(InlineAction)
@@ -583,6 +640,39 @@
 
 [query public hasSelection(field : UnitField) : Boolean
 	= not field.selection().oclIsUndefined()
+/]
+
+[query public id(field : UnitField) : String
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).name.asId()
+		else if field.oclIsKindOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).id()
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name.asId()
+		else
+			'Unhandled'
+		endif endif endif
+/]
+
+[query public id(association : UnitAssociation) : String
+	= if association.childFeature.oclIsUndefined() then
+			association.name.asId()
+		else
+			association.name.asId().concat('.').concat(association.childFeature.id())
+		endif
+/]
+
+[query public id(child : ChildFeature) : String
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.id()
+		else
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					association.name.asId()
+				else
+					association.name.asId().concat('.').concat(association.childFeature.id())
+				endif
+		endif
 /]
 
 [query public inputClass(field : UnitField) : String
@@ -948,8 +1038,7 @@
 /]
 
 [query public styleClass(field : UnitField) : String
-	= let className : String = field.modelPropertyName()
-		in className.replaceAll('([A-Z])', '_$1').toLowerCase()
+	= field.modelPropertyName().asId()
 /]
 
 

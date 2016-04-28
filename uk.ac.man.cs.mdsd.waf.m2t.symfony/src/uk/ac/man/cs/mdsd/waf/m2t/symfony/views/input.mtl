@@ -13,8 +13,9 @@
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
+{% trans_default_domain "[unit.translationDomain()/]" %}
 <section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
- <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h1>
+ <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.pageDisplayedOn().id()/].labels.[unit.id()/]' | trans }}</h1>
  <div class="unit_padding">
   <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.errorName()/] is defined %} hidden{% endif %}">
 {% if [dynamicUnit.errorName()/] is defined %}
@@ -46,6 +47,7 @@
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let accessor : String = '$'.concat(dynamicUnit.instanceName())]
+{% trans_default_domain "[unit.translationDomain()/]" %}
 <section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h1>
  <div class="unit_padding">
