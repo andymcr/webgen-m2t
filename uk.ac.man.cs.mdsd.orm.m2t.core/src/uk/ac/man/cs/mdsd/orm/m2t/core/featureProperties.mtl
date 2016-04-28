@@ -4,6 +4,16 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 
 
+[query public asId(string : String) : String
+	= if self.size() < 2 then
+			self.toLowerCase()
+		else
+			self.substring(1, 1)
+				.concat(self.substring(2, self.size()).replaceAll('([A-Z][^A-Z])', '_$1'))
+				.toLowerCase()
+		endif
+/]
+
 [query public escapeQuotes(string : String) : String
 	= string.replaceAll('(\')', '\\\\$1')
 /]
@@ -26,6 +36,16 @@
 	= model.entitiesAndViews->select(e | e.oclIsTypeOf(Entity)).oclAsType(Entity)
 		->collect(e | e.associations()).oclAsType(EntityAssociation)
 		->select(a | not a.isSingleton() and not a.opposite.isSingleton())
+/]
+
+
+[query public id(enumerationType : EnumerationType) : String
+	= enumerationType.name.asId()
+/]
+
+
+[query public id(literal : EnumerationLiteral) : String
+	= literal.name.asId()
 /]
 
 
