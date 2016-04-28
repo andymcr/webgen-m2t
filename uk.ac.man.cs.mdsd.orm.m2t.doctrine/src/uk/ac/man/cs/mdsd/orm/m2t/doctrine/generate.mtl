@@ -8,7 +8,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::enumeration/]
 
 
-[template public generateDoctrine(model : WafModel)]
-[model.persistence.enumerationTypes().model()/]
+[template public doctrine(model : WafModel, supportTranslation : Boolean)]
+[model.persistence.enumerationTypes().model(supportTranslation)/]
 [model.persistence.entitiesAndViews.model()/]
 [/template]

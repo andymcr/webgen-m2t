@@ -7,6 +7,10 @@
 
 
 [template public model(type : EnumerationType)]
+[type.model(false)/]
+[/template]
+
+[template public model(type : EnumerationType, supportTranslation : Boolean)]
 [file(type.modelFilename(), false)]
 <?php
 namespace [type.modelsNamespace()/];
@@ -20,7 +24,11 @@ class [type.modelClassName()/]
 	{
 		$values = array();
 [for (literal : EnumerationLiteral | type.enumerations)]
+	[if (supportTranslation)]
+		$values['['/]'[type.id()/].labels.[literal.id()/]'[']'/] = self::[literal.name/];
+	[else]
 		$values['['/]'[literal.displayLabel/]'[']'/] = self::[literal.name/];
+	[/if]
 [/for]
 
 		return $values;
