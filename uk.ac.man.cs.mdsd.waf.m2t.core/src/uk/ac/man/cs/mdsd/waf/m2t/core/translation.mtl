@@ -14,6 +14,7 @@
 			field.displayLabel <> field.oclAsType(UnitAttribute).attribute.displayLabel
 		else if field.oclIsTypeOf(UnitAssociation) then
 			field.displayLabel <> field.oclAsType(UnitAssociation).association.displayLabel
+				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
 		else
 			field.oclIsKindOf(InterfaceField)
 		endif endif
