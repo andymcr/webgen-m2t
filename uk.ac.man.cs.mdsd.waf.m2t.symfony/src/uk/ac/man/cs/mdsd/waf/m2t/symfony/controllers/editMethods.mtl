@@ -53,7 +53,8 @@ public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
 	[if (unit.isContained())]
             [unit.setContainer()/]
 	[/if]
-            if ($this->edit->isValid()) {
+            $errors = $this->get('validator')->validate($[unit.instanceName()/]);
+            if (count($errors) == 0) {
                 [unit.saveBody(true)/]
             }
         }
@@ -97,7 +98,8 @@ public function [unit.actionName()/]X([unit.actionMethodParameters()/])
 	[if (unit.hasForcedValueFeatures())]
             // forced values [comment unit.forcedFeatureValues()/]
 	[/if]
-            if ($this->edit->isValid()) {
+            $errors = $this->get('validator')->validate($[unit.instanceName()/]);
+            if (count($errors) == 0) {
                 [unit.saveBody(false)/]
             }
         }
