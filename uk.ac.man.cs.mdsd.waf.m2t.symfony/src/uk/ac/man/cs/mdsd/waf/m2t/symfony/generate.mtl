@@ -74,7 +74,7 @@
 [model.sectionsTranslations()/]
 [comment model.unitsNeedingModels().model()/]
 [model.persistence.enumerationTypes().formType()/]
-[model.persistence.entitiesAndViews.formType()/]
+[model.persistence.entitiesAndViews.formType(model)/]
 [comment model.unitsNeedingModels().formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller()/]
 

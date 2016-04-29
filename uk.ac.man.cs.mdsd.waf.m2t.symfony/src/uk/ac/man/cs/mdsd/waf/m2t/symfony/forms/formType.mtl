@@ -10,20 +10,21 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public formType(entityOrView : EntityOrView)]
+[template public formType(entityOrView : EntityOrView, model : WafModel)]
 [file(entityOrView.formTypeFilename(), false)]
 <?php
 namespace [entityOrView.formTypeNamespace()/];
 
-[entityOrView.associationTypeUse()/]
-[entityOrView.useStatements()/]
+[entityOrView.useStatements(model)/]
 
 
 class [entityOrView.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-[for (feature : Feature | entityOrView.features()->sortedBy(f | f.name))]
+[comment Only features that are used by forms are included to minimise number of db queries. Including
+others can result in queries for associated entities that are not used. /]
+[for (feature : Feature | entityOrView.featuresUsed(model)->sortedBy(f | f.name))]
         $builder->[feature.formFeature()/];
 [/for]
     }
@@ -38,50 +39,49 @@ class [entityOrView.typeClassName()/] extends AbstractType
 [/file]
 [/template]
 
-[template private useStatements(entityOrView : EntityOrView) post(trim())]
+[template private useStatements(entityOrView : EntityOrView, model : WafModel) post(trim())]
+[let featuresUsed : Sequence(Feature) = entityOrView.featuresUsed(model)]
+[for (feature : Feature | featuresUsed->select(f | f.isEnumerationType()))]
+use [entityOrView.modelsNamespace()/]\[feature.enumerationType().modelName()/];
+[/for]
+[if (featuresUsed->select(f | f.oclIsKindOf(Association))->notEmpty())]
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+[/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (entityOrView.features->select(f | f.isBooleanDataType())->notEmpty())]
+[if (featuresUsed->select(f | f.isBooleanDataType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (entityOrView.features->select(f | f.isEnumerationType())->notEmpty())]
+[if (featuresUsed->select(f | f.isEnumerationType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (entityOrView.associations()->select(a | a.isContains() and not a.isSingleton())->notEmpty())]
+[if (featuresUsed->select(a | a.isContains() and not a.isSingleton())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
-[if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::DateOnly)->notEmpty())]
+[if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::DateOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
+[if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty())]
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty())]
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'string')->notEmpty()
-		or entityOrView.features->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty())]
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'string')->notEmpty()
+		or featuresUsed->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (entityOrView.dataTypeAttributes()->select(a | a.dataType().name.toLowerCase() = 'textarea')->notEmpty())]
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textarea')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TestareaType;
 [/if]
-[if (entityOrView.dateAttributes()->select(a | a.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
+[if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
-[/template]
-
-[template private associationTypeUse(entityOrView : EntityOrView) post(trim())]
-[for (feature : Feature | entityOrView.features->select(f | f.isEnumerationType()))]
-use [entityOrView.modelsNamespace()/]\[feature.enumerationType().modelName()/];
-[/for]
-[if (entityOrView.associations()->notEmpty())]
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-[/if]
+[/let]
 [/template]
 
 [template private formFeature(feature : Feature)
@@ -185,3 +185,59 @@ add('[association.modelPropertyName()/]', CollectionType::class, array(
 [/if]
 [/let]
 [/template]
+
+
+[query private featuresUsed(entityOrView : EntityOrView, model : WafModel) : Sequence(Feature)
+	= entityOrView.usersOf(model)->iterate(u;
+		features : Sequence(Feature) = Sequence{}
+		| features->union(entityOrView.featuresUsed(u)))
+/]
+
+[query private featuresUsed(entityOrView : EntityOrView, unit : EditUnit) : Sequence(Feature)
+	= unit.displayFields->iterate(f;
+		features : Sequence(Feature) = Sequence{}
+		| features->union(entityOrView.featuresUsed(f)))
+/]
+
+[query private featuresUsed(entityOrView : EntityOrView, field : UnitField) : Sequence(Feature)
+	= if field.oclIsTypeOf(UnitAttribute) then
+			let attribute : Attribute
+				= field.oclAsType(UnitAttribute).attribute
+				in if entityOrView.features->includes(attribute) then
+						Sequence{attribute}
+					else
+						Sequence{}
+					endif
+		else if field.oclIsTypeOf(UnitAssociation) then
+			let association : Association
+				= field.oclAsType(UnitAssociation).association
+				in if entityOrView.features->includes(association) then
+						Sequence{association}
+					else
+						Sequence{}
+					endif
+		else
+			Sequence{}
+		endif endif
+/]
+
+
+[query private usersOf(entityOrView : EntityOrView, model : WafModel) : Sequence(EditUnit)
+	= model.pages->iterate(p;
+		units : Sequence(EditUnit) = Sequence{}
+		| units->union(entityOrView.usersOf(p)))
+/]
+
+[query private usersOf(entityOrView : EntityOrView, page : Page) : Sequence(EditUnit)
+	= page.units->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)->iterate(u;
+		units : Sequence(EditUnit) = Sequence{}
+		| units->union(entityOrView.usersOf(u)))
+/]
+
+[query private usersOf(entityOrView : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+	= if unit.entities->includes(entityOrView) then
+			Sequence{unit}
+		else
+			Sequence{}
+		endif
+/]

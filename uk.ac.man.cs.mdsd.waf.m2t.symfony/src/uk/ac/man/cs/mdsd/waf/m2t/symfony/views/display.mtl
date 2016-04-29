@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
@@ -16,7 +17,7 @@
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 [let accessor : String = dataUnit.instanceName()]
 [file(dataUnit.viewFilename(), false)]
-{% trans_default_domain "[unit.translationDomain()/]" %}
+{% trans_default_domain "entity" %}
 <section class="[dataUnit.styleClass/]{%if [dataUnit.errorName()/] is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
  <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle(dataUnit.instanceName())/]</h1>
  <section class="[dataUnit.errorClass/]{% if not [dataUnit.errorName()/] is defined %} hidden{% endif %}">
@@ -49,7 +50,7 @@
 
 [template private unitTitle(unit : DataUnit, unitAccessor : String)
 	? (unit.oclIsTypeOf(IndexGridUnit) or unit.title.oclIsUndefined())  post(trim())]
-{{ '[unit.pageDisplayedOn().id()/].labels.[unit.id()/]' | trans }}
+{{ '[unit.id()/]' | trans({}, '[unit.translationDomain()/]') }}
 [/template]
 
 [template private unitTitle(unit : DataUnit, unitAccessor : String)
@@ -140,7 +141,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	[if (unit.hasOmitFieldLabels())]
  <li class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</li>
 	[else]
- <dt class="[field.displayClass()/]">{{ '[unit.pageDisplayedOn().id()/].[unit.id()/].labels.[field.id()/]' | trans }}</dt>
+ <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.entities->first().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</dd>
 	[/if]
 	[if (field.conditionalDisplay())]
@@ -221,7 +224,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  <thead class="[indexUnit.headerClass/]">
   <tr>
  	[for (field : UnitField | indexUnit.displayFields)]
-   <th>{{ '[unit.pageDisplayedOn().id()/].[unit.id()/].labels.[field.id()/]' | trans }}</th>
+   <th>[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.entities->first().id()/].labels.[field.id()/]' | trans }}[/if]</th>
  	[/for]
 	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <th>Actions</th>

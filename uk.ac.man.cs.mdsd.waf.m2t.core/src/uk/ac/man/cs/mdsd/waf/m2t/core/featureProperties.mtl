@@ -252,6 +252,15 @@
 /]
 
 
+[query private containerId(container : UnitContainer) : String
+	= if container.oclIsTypeOf(Page) then
+			container.oclAsType(Page).id()
+		else
+			container.oclAsType(UnitAssociation).displayedOn.containedId()
+		endif
+/]
+
+
 [query public styleClass(menu : Menu) : String
 	= menu.styleClass
 /]
@@ -273,6 +282,10 @@
 
 [query public captchaFields(unit : DynamicUnit) : Sequence(CaptchaField)
 	= unit.displayFields->select(f | f.oclIsTypeOf(CaptchaField)).oclAsType(CaptchaField)
+/]
+
+[query public containedId(unit : ContentUnit) : String
+	= unit.displayedOn.containerId().concat('.').concat(unit.name.asId())
 /]
 
 [query public containingAssociation(unit : DynamicUnit) : Association
@@ -444,7 +457,7 @@
 /]
 
 [query public id(unit : ContentUnit) : String
-	= unit.name.asId()
+	= unit.displayedOn.containerId().concat('.labels.').concat(unit.name.asId())
 /]
 
 [query public inputFields(unit : DynamicUnit) : OrderedSet(UnitField)

@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module section(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
@@ -31,20 +32,48 @@
  <target>[page.displayLabel.validXML()/]</target>
 </trans-unit>
 [for (unit : ContentUnit | page.units)]
-<trans-unit id="[page.id()/].labels.[unit.id()/]">
- <source>[page.id()/].labels.[unit.id()/]</source>
- <target>[unit.displayLabel.validXML()/]</target>
-</trans-unit>
-	[if (unit.oclIsKindOf(DataUnit))]
-		[for (field : UnitField | unit.oclAsType(DataUnit).displayFields)]
-<trans-unit id="[page.id()/].[unit.id()/].labels.[field.id()/]">
- <source>[page.id()/].[unit.id()/].labels.[field.id()/]</source>
- <target>[field.displayLabel.validXML()/]</target>
-</trans-unit>
-		[/for]
-	[/if]
+[unit.translations(page)/]
 [/for]
 [for (child : Page | page.childPages)]
 [child.translations()/]
 [/for]
+[/template]
+
+[query public entityLabel(field : UnitField) : String
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.displayLabel
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).association.displayLabel
+		else
+			field.displayLabel
+		endif endif
+/]
+[template private translations(unit : ContentUnit, page : Page) post(trim())]
+[if (not unit.omitCaption)]
+<trans-unit id="[unit.id()/]">
+ <source>[unit.id()/]</source>
+ <target>[unit.displayLabel.validXML()/]</target>
+</trans-unit>
+[/if]
+[if (unit.oclIsKindOf(DataUnit))]
+	[for (field : UnitField | unit.oclAsType(DataUnit).displayFields)]
+		[if (field.hasCustomisedLabel())]
+<trans-unit id="[unit.containedId()/].labels.[field.id()/]">
+ <source>[unit.containedId()/].labels.[field.id()/]</source>
+ <target>[field.displayLabel.validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (field.oclIsTypeOf(UnitAssociation))]
+		[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+			[if (association.units->notEmpty())]
+[association.translations(page)/]
+			[/if]
+		[/let]
+		[/if]
+	[/for]
+[/if]
+[/template]
+
+[template private translations(association : UnitAssociation, page : Page) post(trim())]
+[association.units->first().translations(page)/]
 [/template]

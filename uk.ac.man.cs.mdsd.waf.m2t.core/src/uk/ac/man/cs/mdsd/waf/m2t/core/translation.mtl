@@ -7,3 +7,14 @@
 [query public validXML(string : String) : String
 	= string.replaceAll('&', '&amp;')
 /]
+
+
+[query public hasCustomisedLabel(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.displayLabel <> field.oclAsType(UnitAttribute).attribute.displayLabel
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.displayLabel <> field.oclAsType(UnitAssociation).association.displayLabel
+		else
+			field.oclIsKindOf(InterfaceField)
+		endif endif
+/]
