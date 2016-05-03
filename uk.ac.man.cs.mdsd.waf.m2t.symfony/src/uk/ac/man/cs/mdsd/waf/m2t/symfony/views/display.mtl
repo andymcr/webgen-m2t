@@ -458,6 +458,22 @@ NULL
 [/template]
 
 
+[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
+	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
+[let delete : DeleteAction = action.oclAsType(DeleteAction)]
+<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeActualParameters(entityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
+[/let]
+[/template]
+
+
+[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
+	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
+[let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+<a href="{{ path('[feature.routeName()/]', { [entityOrView.routeActualParameters(entityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}"[if (not feature.confirmMessage.oclIsUndefined())]
+ onclick="return confirm('[feature.confirmMessage/] {{ [accessor/].defaultLabel() }}');"[/if]>{{ [label/] }}</a>
+[/let]
+[/template]
+
 [template public actionLink(action : InlineAction, accessor : String, label : String, dummy : EntityOrView)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
@@ -466,13 +482,6 @@ NULL
 <a href="{{ path('[targetUnit.routeName()/]', { [targetEntityOrView.routeActualParameters(targetEntityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
 [/let]
 [/let]
-[/let]
-[/template]
-
-[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
-	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
-[let delete : DeleteAction = action.oclAsType(DeleteAction)]
-<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeActualParameters(entityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
 [/let]
 [/template]
 

@@ -26,6 +26,16 @@ $[key.routeParameterName(entityOrView)/][/for]
 /]
 
 
+[query private combinePaths(path1 : String, path2 : String) : String
+	= if path1 = '' then
+			path2
+		else if path2 = '' then
+			path1
+		else
+			path1.concat('/').concat(path2)
+		endif endif
+/]
+
 [query private parentUriPath(yyy : EntityOrView) : String
 	= let keyEntity : EntityOrView
 		= yyy.keyEntity()
@@ -76,18 +86,11 @@ $[key.routeParameterName(entityOrView)/][/for]
 	= if page.parentPage.oclIsUndefined() then
 			page.uriElement
 		else
-			let parentUri : String = page.parentPage.uriPath()
-			in if parentUri = '' then
-					page.uriElement
-				else if page.uriElement = '' then
-					parentUri
-				else
-					parentUri.concat('/').concat(page.uriElement)
-				endif endif
+			page.parentPage.uriPath().combinePaths(page.uriElement)
 		endif
 /]
 
-[query private entityUriPath(unit : ContentUnit, create : Boolean) : String
+[query private entityUriPath(unit : ContentUnit, parentPath : Boolean) : String
 	= if not unit.oclIsKindOf(DynamicUnit) then
 			''
 		else
@@ -98,10 +101,10 @@ $[key.routeParameterName(entityOrView)/][/for]
 					else
 						let entityOrView : EntityOrView
 							= dynamicUnit.entities->first()
-							in if unit.oclIsKindOf(Selectable) and not create then
-									entityOrView.uriPath()
-								else
+							in if parentPath then
 									entityOrView.parentUriPath()
+								else
+									entityOrView.uriPath()
 								endif
 					endif
 		endif
@@ -119,7 +122,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 				else if unit.oclAsType(DynamicUnit).noRouteParameters then
 					''
 				else
-					unit.entityUriPath(create)
+					unit.entityUriPath(not unit.oclIsKindOf(Selectable) or create)
 				endif endif
 			in let uriElement : String
 				= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
@@ -134,15 +137,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 					else
 						entityPath.concat('/').concat(uriElement)
 					endif endif
-		in let pagePath : String
-			= unit.pageDisplayedOn().uriPath()
-			in if localPath = '' then
-					pagePath
-				else if pagePath = '' then
-					localPath
-				else
-					pagePath.concat('/').concat(localPath)
-				endif endif
+		in unit.pageDisplayedOn().uriPath().combinePaths(localPath)
 /]
 
 [query public supportUriPath(unit : ContentUnit) : String
@@ -151,15 +146,18 @@ $[key.routeParameterName(entityOrView)/][/for]
 
 [query public uriPath(action : DeleteAction) : String
 	= let localPath : String
-		= action.immediateUnit().entities->first().uriPath()
+		= action.immediateUnit().entityUriPath(false)
 			.concat('/').concat(action.uriElement)
 		in let pagePath : String
 			= action.immediateUnit().pageDisplayedOn().uriPath()
-			in if localPath = '' then
-					pagePath
-				else if pagePath = '' then
-					localPath
-				else
-					pagePath.concat('/').concat(localPath)
-				endif endif
+			in pagePath.combinePaths(localPath)
+/]
+
+[query public uriPath(action : FeatureSupportAction) : String
+	= let localPath : String
+		= action.immediateUnit().entityUriPath(false)
+			.concat('/').concat(action.uriElement)
+		in let pagePath : String
+			= action.immediateUnit().pageDisplayedOn().uriPath()
+			in pagePath.combinePaths(localPath)
 /]

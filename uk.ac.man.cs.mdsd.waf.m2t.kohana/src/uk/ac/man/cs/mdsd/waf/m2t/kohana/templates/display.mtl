@@ -483,6 +483,9 @@ Helpers_View::date([accessor/], '[dateFormat/]')
         HTML::chars(__([label/])),
         array(
             'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
+[if (not feature.confirmMessage.oclIsUndefined())]
+            'onclick' => 'return confirm(\'' . [accessor/]->defaultLabel() . ' ' . __('[feature.confirmMessage/]') . '\');',
+[/if]
     ));
 ?>
 [/let]

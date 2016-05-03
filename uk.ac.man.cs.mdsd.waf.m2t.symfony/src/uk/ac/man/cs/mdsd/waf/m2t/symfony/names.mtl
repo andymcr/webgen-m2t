@@ -249,7 +249,7 @@
 		endif
 /]
 
-[query public routeName(action : DeleteAction) : String
+[query public routeName(action : InlineAction) : String
 	= action.immediateUnit().containingUnit().routeName()
 		.concat('_').concat(action.name.toLowerFirst())
 /]
