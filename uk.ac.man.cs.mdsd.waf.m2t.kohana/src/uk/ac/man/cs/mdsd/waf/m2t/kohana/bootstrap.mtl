@@ -209,6 +209,12 @@ Route::set('[unit.supportRouteName()/]', '[unit.supportUriPath()/]')->defaults(a
     'action' => '[unit.supportActionName()/]',
 ));
 			[/if]
+			[for (feature : FeatureSupportAction | dynamicUnit.uriActions()->select(a | a.oclIsTypeOf(FeatureSupportAction)).oclAsType(FeatureSupportAction))]
+Route::set('[feature.routeName()/]', '[feature.uriPath()/]')->defaults(array(
+    'controller' => '[page.controllerName()/]',
+    'action' => '[feature.actionName()/]',
+));
+			[/for]
 			[for (delete : DeleteAction | dynamicUnit.uriActions()->select(a | a.oclIsTypeOf(DeleteAction)).oclAsType(DeleteAction))]
 Route::set('[delete.routeName()/]', '[delete.uriPath()/]')->defaults(array(
     'controller' => '[page.controllerName()/]',

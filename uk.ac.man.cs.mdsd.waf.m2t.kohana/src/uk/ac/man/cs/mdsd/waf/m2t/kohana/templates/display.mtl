@@ -455,6 +455,39 @@ Helpers_View::date([accessor/], '[dateFormat/]')
 [/template]
 
 
+[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
+	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
+[let delete : DeleteAction = action.oclAsType(DeleteAction)]
+<?php
+    echo HTML::anchor(
+        Route::get('[delete.routeName()/]')->uri(array(
+            [entityOrView.routeActualParameters(entityOrView, accessor)/]
+        )),
+        HTML::chars(__([label/])),
+        array(
+            'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
+            'onclick' => 'return confirm(\'' . [accessor/]->defaultLabel() . ' ' . __('[delete.confirmMessage/]') . '\');',
+    ));
+?>
+[/let]
+[/template]
+
+[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
+	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
+[let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+<?php
+    echo HTML::anchor(
+        Route::get('[feature.routeName()/]')->uri(array(
+            [entityOrView.routeActualParameters(entityOrView, accessor)/]
+        )),
+        HTML::chars(__([label/])),
+        array(
+            'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
+    ));
+?>
+[/let]
+[/template]
+
 [template public actionLink(action : InlineAction, accessor : String, label : String, dummy : EntityOrView)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
@@ -472,23 +505,6 @@ Helpers_View::date([accessor/], '[dateFormat/]')
 ?>
 [/let]
 [/let]
-[/let]
-[/template]
-
-[template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
-	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
-[let delete : DeleteAction = action.oclAsType(DeleteAction)]
-<?php
-    echo HTML::anchor(
-        Route::get('[delete.routeName()/]')->uri(array(
-            [entityOrView.routeActualParameters(entityOrView, accessor)/]
-        )),
-        HTML::chars(__([label/])),
-        array(
-            'title' => HTML::chars(__('[action.displayLabel/]') . ' ' . [accessor/]->defaultLabel()),
-            'onclick' => 'return confirm(\'' . [accessor/]->defaultLabel() . ' ' . __('[delete.confirmMessage/]') . '\');',
-    ));
-?>
 [/let]
 [/template]
 

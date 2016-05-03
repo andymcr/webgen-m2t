@@ -294,3 +294,8 @@
 	= action.immediateUnit().containingUnit().routeName()
 		.concat('_').concat(action.name.toLowerFirst())
 /]
+
+[query public routeName(action : FeatureSupportAction) : String
+	= action.immediateUnit().containingUnit().routeName()
+		.concat('_').concat(action.name.toLowerFirst())
+/]

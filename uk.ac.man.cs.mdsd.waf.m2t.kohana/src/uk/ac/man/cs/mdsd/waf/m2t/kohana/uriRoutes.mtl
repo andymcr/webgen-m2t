@@ -170,3 +170,18 @@ $[key.routeParameterName(entityOrView)/][/for]
 					pagePath.concat('/').concat(localPath)
 				endif endif
 /]
+
+[query public uriPath(action : FeatureSupportAction) : String
+	= let localPath : String
+		= action.immediateUnit().entities->first().uriPath()
+			.concat('/').concat(action.uriElement)
+		in let pagePath : String
+			= action.immediateUnit().pageDisplayedOn().uriPath()
+			in if localPath = '' then
+					pagePath
+				else if pagePath = '' then
+					localPath
+				else
+					pagePath.concat('/').concat(localPath)
+				endif endif
+/]
