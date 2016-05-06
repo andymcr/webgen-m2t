@@ -586,6 +586,16 @@ public class Messages extends NLS {
 	public static String Selection3CreationTool_desc;
 
 	/**
+	* @generated
+	*/
+	public static String Operation4CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String Operation4CreationTool_desc;
+
+	/**
 	 * @generated
 	 */
 	public static String Datatype1CreationTool_title;
@@ -969,6 +979,11 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String ServiceFeaturesCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String ServiceOperationsCompartmentEditPart_title;
 
 	/**
 	 * @generated

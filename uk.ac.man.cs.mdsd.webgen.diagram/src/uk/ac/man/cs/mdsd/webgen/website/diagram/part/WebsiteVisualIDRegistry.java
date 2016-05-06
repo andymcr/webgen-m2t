@@ -536,6 +536,11 @@ public class WebsiteVisualIDRegistry {
 				return SelectionEditPart.VISUAL_ID;
 			}
 			break;
+		case ServiceOperationsCompartmentEditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getBusinessOperation().isSuperTypeOf(domainElement.eClass())) {
+				return BusinessOperationEditPart.VISUAL_ID;
+			}
+			break;
 		}
 		return -1;
 	}
@@ -662,6 +667,9 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			if (ServiceFeaturesCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ServiceOperationsCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1258,6 +1266,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
+		case BusinessOperationEditPart.VISUAL_ID:
+			if (BusinessOperationNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
 			if (CasAuthenticationEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1648,6 +1661,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
+		case ServiceOperationsCompartmentEditPart.VISUAL_ID:
+			if (BusinessOperationEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			if (AssociationWithoutContainmentNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1772,6 +1790,7 @@ public class WebsiteVisualIDRegistry {
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
+		case ServiceOperationsCompartmentEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;
@@ -1858,6 +1877,7 @@ public class WebsiteVisualIDRegistry {
 		case LocationAttributeEditPart.VISUAL_ID:
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
+		case BusinessOperationEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

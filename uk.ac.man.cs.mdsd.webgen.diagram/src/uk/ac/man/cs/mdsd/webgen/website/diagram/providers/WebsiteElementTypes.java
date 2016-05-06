@@ -223,6 +223,12 @@ public class WebsiteElementTypes {
 	public static final IElementType Selection_3150 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Selection_3150"); //$NON-NLS-1$
 
 	/**
+	* @generated
+	*/
+	public static final IElementType BusinessOperation_3260 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.BusinessOperation_3260"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType CreateUnit_3103 = getElementType(
@@ -984,6 +990,8 @@ public class WebsiteElementTypes {
 
 			elements.put(Selection_3150, WebsitePackage.eINSTANCE.getSelection());
 
+			elements.put(BusinessOperation_3260, WebsitePackage.eINSTANCE.getBusinessOperation());
+
 			elements.put(AssociationWithoutContainment_4001,
 					WebsitePackage.eINSTANCE.getAssociationWithoutContainment());
 
@@ -1119,6 +1127,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
+			KNOWN_ELEMENT_TYPES.add(BusinessOperation_3260);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithoutContainment_4001);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithContainment_4002);
 			KNOWN_ELEMENT_TYPES.add(ViewAssociation_4004);
@@ -1352,6 +1361,8 @@ public class WebsiteElementTypes {
 			return EditStaticTextMenuEntry_3156;
 		case SelectionEditPart.VISUAL_ID:
 			return Selection_3150;
+		case BusinessOperationEditPart.VISUAL_ID:
+			return BusinessOperation_3260;
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return AssociationWithoutContainment_4001;
 		case AssociationWithContainmentEditPart.VISUAL_ID:

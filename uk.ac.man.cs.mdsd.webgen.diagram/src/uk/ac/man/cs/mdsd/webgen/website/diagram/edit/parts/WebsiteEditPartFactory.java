@@ -670,6 +670,12 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case SelectionNameEditPart.VISUAL_ID:
 				return new SelectionNameEditPart(view);
 
+			case BusinessOperationEditPart.VISUAL_ID:
+				return new BusinessOperationEditPart(view);
+
+			case BusinessOperationNameEditPart.VISUAL_ID:
+				return new BusinessOperationNameEditPart(view);
+
 			case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
 				return new WebsitePropertiesAuthenticationCompartmentEditPart(view);
 
@@ -807,6 +813,9 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
 				return new ServiceFeaturesCompartmentEditPart(view);
+
+			case ServiceOperationsCompartmentEditPart.VISUAL_ID:
+				return new ServiceOperationsCompartmentEditPart(view);
 
 			case AssociationWithoutContainmentEditPart.VISUAL_ID:
 				return new AssociationWithoutContainmentEditPart(view);

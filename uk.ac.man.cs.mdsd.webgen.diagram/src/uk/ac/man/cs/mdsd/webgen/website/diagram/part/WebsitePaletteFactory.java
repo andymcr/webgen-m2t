@@ -108,6 +108,7 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createService1CreationTool());
 		paletteContainer.add(createModelLabel2CreationTool());
 		paletteContainer.add(createSelection3CreationTool());
+		paletteContainer.add(createOperation4CreationTool());
 		return paletteContainer;
 	}
 
@@ -575,6 +576,19 @@ public class WebsitePaletteFactory {
 				Messages.Selection3CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Selection_3150));
 		entry.setId("createSelection3CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Selection_3150));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	* @generated
+	*/
+	private ToolEntry createOperation4CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Operation4CreationTool_title,
+				Messages.Operation4CreationTool_desc,
+				Collections.singletonList(WebsiteElementTypes.BusinessOperation_3260));
+		entry.setId("createOperation4CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.BusinessOperation_3260));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

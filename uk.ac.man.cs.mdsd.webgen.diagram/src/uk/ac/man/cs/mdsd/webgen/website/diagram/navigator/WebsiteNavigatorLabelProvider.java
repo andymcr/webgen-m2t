@@ -409,6 +409,9 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?EncapsulatedAssociation", //$NON-NLS-1$
 					WebsiteElementTypes.EncapsulatedAssociation_3259);
+		case BusinessOperationEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?BusinessOperation", //$NON-NLS-1$
+					WebsiteElementTypes.BusinessOperation_3260);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?http://www.cs.man.ac.uk/mdsd/2010/Website?AssociationWithoutContainment", //$NON-NLS-1$
 					WebsiteElementTypes.AssociationWithoutContainment_4001);
@@ -691,6 +694,8 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 			return getEncapsulatedAttribute_3258Text(view);
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
 			return getEncapsulatedAssociation_3259Text(view);
+		case BusinessOperationEditPart.VISUAL_ID:
+			return getBusinessOperation_3260Text(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001Text(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -2441,6 +2446,22 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 					ParserOptions.NONE.intValue());
 		} else {
 			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5267); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getBusinessOperation_3260Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.BusinessOperation_3260,
+				view.getElement() != null ? view.getElement() : view,
+				WebsiteVisualIDRegistry.getType(BusinessOperationNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5268); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}

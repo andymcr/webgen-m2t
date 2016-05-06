@@ -35,11 +35,17 @@
     <genClasses image="false" ecoreClass="Criteria.ecore#//Expression"/>
     <genClasses image="false" ecoreClass="Criteria.ecore#//Literal"/>
     <genClasses ecoreClass="Criteria.ecore#//NullLiteral"/>
+    <genClasses ecoreClass="Criteria.ecore#//BooleanLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//BooleanLiteral/value"/>
+    </genClasses>
     <genClasses ecoreClass="Criteria.ecore#//IntegerLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//IntegerLiteral/value"/>
     </genClasses>
     <genClasses ecoreClass="Criteria.ecore#//StringLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//StringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Criteria.ecore#//TimeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Criteria.ecore#//TimeLiteral/value"/>
     </genClasses>
     <genClasses ecoreClass="Criteria.ecore#//CurrentTime"/>
     <genClasses ecoreClass="Criteria.ecore#//Function">

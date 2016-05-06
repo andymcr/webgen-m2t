@@ -16,6 +16,7 @@ import org.eclipse.gmf.tooling.runtime.update.DiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.AssociationWithContainment;
 import uk.ac.man.cs.mdsd.webgen.website.AssociationWithoutContainment;
 import uk.ac.man.cs.mdsd.webgen.website.Authentication;
+import uk.ac.man.cs.mdsd.webgen.website.BusinessOperation;
 import uk.ac.man.cs.mdsd.webgen.website.Classifier;
 import uk.ac.man.cs.mdsd.webgen.website.ContentUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUnit;
@@ -203,6 +204,8 @@ public class WebsiteDiagramUpdater {
 			return getStaticMenuMenuEntriesCompartment_7084SemanticChildren(view);
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
 			return getServiceSelectionsCompartment_7006SemanticChildren(view);
+		case ServiceOperationsCompartmentEditPart.VISUAL_ID:
+			return getServiceOperationsCompartment_7133SemanticChildren(view);
 		}
 		return Collections.emptyList();
 	}
@@ -1585,6 +1588,30 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteNodeDescriptor> getServiceOperationsCompartment_7133SemanticChildren(View view) {
+		if (false == view.eContainer() instanceof View) {
+			return Collections.emptyList();
+		}
+		View containerView = (View) view.eContainer();
+		if (!containerView.isSetElement()) {
+			return Collections.emptyList();
+		}
+		Service modelElement = (Service) containerView.getElement();
+		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
+		for (Iterator<?> it = modelElement.getOperations().iterator(); it.hasNext();) {
+			BusinessOperation childElement = (BusinessOperation) it.next();
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
+			if (visualID == BusinessOperationEditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getContainedLinks(View view) {
@@ -1809,6 +1836,8 @@ public class WebsiteDiagramUpdater {
 			return getEditStaticTextMenuEntry_3156ContainedLinks(view);
 		case SelectionEditPart.VISUAL_ID:
 			return getSelection_3150ContainedLinks(view);
+		case BusinessOperationEditPart.VISUAL_ID:
+			return getBusinessOperation_3260ContainedLinks(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001ContainedLinks(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -2044,6 +2073,8 @@ public class WebsiteDiagramUpdater {
 			return getEditStaticTextMenuEntry_3156IncomingLinks(view);
 		case SelectionEditPart.VISUAL_ID:
 			return getSelection_3150IncomingLinks(view);
+		case BusinessOperationEditPart.VISUAL_ID:
+			return getBusinessOperation_3260IncomingLinks(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001IncomingLinks(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -2279,6 +2310,8 @@ public class WebsiteDiagramUpdater {
 			return getEditStaticTextMenuEntry_3156OutgoingLinks(view);
 		case SelectionEditPart.VISUAL_ID:
 			return getSelection_3150OutgoingLinks(view);
+		case BusinessOperationEditPart.VISUAL_ID:
+			return getBusinessOperation_3260OutgoingLinks(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001OutgoingLinks(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -2466,6 +2499,13 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getSelection_3150ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getBusinessOperation_3260ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3277,6 +3317,13 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getBusinessOperation_3260IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getCreateUnit_3103IncomingLinks(View view) {
@@ -4074,6 +4121,13 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getSelection_3150OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getBusinessOperation_3260OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

@@ -428,6 +428,23 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser businessOperationName_5268Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getBusinessOperationName_5268Parser() {
+		if (businessOperationName_5268Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			businessOperationName_5268Parser = parser;
+		}
+		return businessOperationName_5268Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	private IParser createUnitName_5107Parser;
@@ -2161,6 +2178,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getEditStaticTextMenuEntryName_5164Parser();
 		case SelectionNameEditPart.VISUAL_ID:
 			return getSelectionName_5158Parser();
+		case BusinessOperationNameEditPart.VISUAL_ID:
+			return getBusinessOperationName_5268Parser();
 		case AssociationWithoutContainmentNameEditPart.VISUAL_ID:
 			return getAssociationWithoutContainmentName_6001Parser();
 		case AssociationWithoutContainmentCardinalityTargetCardinEditPart.VISUAL_ID:
