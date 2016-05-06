@@ -22,7 +22,10 @@ namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-
+[if (service.operations->notEmpty())]
+// [protected ('operations')]
+// [/protected]
+[/if]
 
 class [service.className()/]
 {
@@ -73,6 +76,11 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if])
     [service.getRepositoryMethod()/]
 
     [service.createQueryBuilderMethod()/]
+
+[for (operation : BusinessOperation | service.operations)]
+    [operation.businessOperation()/]
+
+[/for]
 }
 [/file]
 [/template]
@@ -332,5 +340,13 @@ public function getRepository()
 public function createQueryBuilder()
 {
     return $this->getRepository()->createQueryBuilder('[service.serves.selectName()/]');
+}
+[/template]
+
+[template private businessOperation(operation : BusinessOperation) post(trim())]
+public function [operation.methodName()/]($[operation.partOf.instanceName()/])
+{
+    // [protected ('customise.values.'.concat(operation.methodName()))]
+    // [/protected]
 }
 [/template]

@@ -171,6 +171,10 @@
 	= page.indexUnits()->notEmpty()
 /]
 
+[query public hasInlineFileActions(page : Page) : Boolean
+	= page.inlineFileActions()->notEmpty()
+/]
+
 [query public hasMapUnits(page : Page) : Boolean
 	= page.mapUnits()->notEmpty()
 /]
@@ -187,8 +191,8 @@
 	= page.dynamicUnits()->select(u | u.hasFilterParameters())->notEmpty()
 /]
 
-[query public hasSupportActions(page : Page) : Boolean
-	= page.supportActions()->notEmpty()
+[query public hasUnitActions(page : Page) : Boolean
+	= page.unitActions()->notEmpty()
 /]
 
 [query public hasUpdateUnits(page : Page) : Boolean
@@ -205,6 +209,18 @@
 
 [query public indexUnits(page : Page) : Sequence(IndexUnit)
 	= page.units->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
+/]
+
+[query public inlineActions(page : Page) : Sequence(InlineAction)
+	= page.units
+		->select(u | u.oclIsKindOf(InlineActionContainer)).oclAsType(InlineActionContainer)
+		->collect(c | c.actions)
+/]
+
+[query public inlineFileActions(page : Page) : Sequence(FeatureSupportAction)
+	= page.inlineActions()
+		->select(a | a.oclIsTypeOf(FeatureSupportAction)).oclAsType(FeatureSupportAction)
+		->select(a | a.operation.resultType = OperationResultTypes::File)
 /]
 
 [query public isAuthenticated(page : Page) : Boolean
@@ -227,10 +243,6 @@
 	= page.units->select(u | u.isParameterised())
 /]
 
-[query public supportActions(page : Page) : Sequence(UnitSupportAction)
-	= page.dynamicUnits()->collect(u | u.supportActions)
-/]
-
 [query public translationDomain(page : Page) : String
 	= if page.parentPage.oclIsUndefined() then
 			if page.uriElement <> '' then
@@ -241,6 +253,10 @@
 		else
 			page.parentPage.translationDomain()
 		endif
+/]
+
+[query public unitActions(page : Page) : Sequence(UnitSupportAction)
+	= page.dynamicUnits()->collect(u | u.supportActions)
 /]
 
 [query public updateUnits(page : Page) : OrderedSet(ContentUnit)

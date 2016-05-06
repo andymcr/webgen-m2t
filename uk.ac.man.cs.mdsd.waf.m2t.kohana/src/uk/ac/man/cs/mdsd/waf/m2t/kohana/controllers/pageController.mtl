@@ -41,8 +41,8 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		[/for]
 	[/if]
 [/for]
-[if (page.hasSupportActions())]
-    [page.supportActionMethods()/]
+[if (page.hasUnitActions())]
+    [page.actionMethods()/]
 [/if]
 }
 [/file]
@@ -109,7 +109,7 @@ public function after()
 }
 [/template]
 
-[template private supportActionMethods(page : Page)]
+[template private actionMethods(page : Page)]
 [for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 [let entityOrView : EntityOrView = dataUnit.entities->first()]
@@ -120,11 +120,11 @@ public function action_[dataUnit.supportActionName()/]()
     try
     {
         $this->[entityOrView.loadMethodName()/]();
-        [dataUnit.supportActionHandlers()/]
+        [dataUnit.actionHandlers()/]
     }
     [dataUnit.catchSelectionException()/]
 		[else]
-    [dataUnit.supportActionHandlers()/]
+    [dataUnit.actionHandlers()/]
 		[/if]
 }
 
@@ -138,7 +138,7 @@ public function action_[dataUnit.supportActionName()/]()
  */
 [/template]
 
-[template private supportActionHandlers(unit : DataUnit)]
+[template private actionHandlers(unit : DataUnit)]
 [for (action : UnitSupportAction | unit.supportActions)]
 if ($this->request->post('[action.actionName()/]'))
 {

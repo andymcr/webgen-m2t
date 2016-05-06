@@ -28,8 +28,14 @@ use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+[if (page.hasInlineFileActions())]
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+[/if]
 [if (page.hasFilterParameters() or page.hasUpdateUnits())]
 use Symfony\Component\HttpFoundation\Request;
+[/if]
+[if (page.hasInlineFileActions())]
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 [/if]
 
 
@@ -45,8 +51,8 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		[/for]
 	[/if]
 [/for]
-[if (page.hasSupportActions())]
-    [page.supportActionMethods()/]
+[if (page.hasUnitActions())]
+    [page.actionMethods()/]
 
 [/if]
 [if (page.units->size() > 1)]
@@ -71,6 +77,43 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 
 }
+[/template]
+
+[template private actionMethods(page : Page) post(trim())]
+[for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
+[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+	[if (dataUnit.supportActions->notEmpty())]
+public function [dataUnit.supportActionName()/]()
+{
+		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
+    try
+    {
+        $[dataUnit.instanceName()/] = [dataUnit.loadInstance()/];
+        [dataUnit.actionHandlers()/]
+    }
+    [dataUnit.catchSelectionException()/]
+		[else]
+    [dataUnit.actionHandlers()/]
+		[/if]
+}
+	[/if]
+[/let]
+[/for]
+
+/* [protected (page.instanceName().concat('.support'))]
+ */
+/* [/protected]
+ */
+[/template]
+
+[template private actionHandlers(unit : DataUnit) post(trim())]
+[for (action : UnitSupportAction | unit.supportActions)]
+if ($this->request->post('[action.actionName()/]'))
+{
+    // [protected ('support.'.concat(action.actionName()))]
+    // [/protected]
+    }
+[/for]
 [/template]
 
 [template private actionMethod(action : InlineAction, page : Page)
@@ -100,56 +143,33 @@ public function [deleteAction.actionName()/]([unit.actionMethodParameters()/])
 
 [template private actionMethod(action : InlineAction, page : Page)
 	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
+[let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
 [let unit : DynamicUnit = action.immediateUnit().containingUnit()]
 /**
- * @Route("[unit.supportUriPath()/]", name="[unit.routeName()/]")
+ * @Route("[feature.uriPath()/]", name="[feature.routeName()/]")
  */
 public function [action.actionName()/]([unit.actionMethodParameters()/])
 {
     try
     {
-        $[action.instanceName()/] = [unit.loadInstance()/];
-        // [protected ('support.'.concat(action.actionName()))]
-        // [/protected]
+        [if (feature.operation.resultType <> OperationResultTypes::None)]$result = [/if]$this->get('[feature.operation.partOf.instanceName()/]')
+            ->[feature.operation.methodName()/]([unit.loadInstance()/]);
+[if (feature.operation.resultType = OperationResultTypes::File)]
+        $response = new BinaryFileResponse($result);
+        // $response->setContentDisposition(
+        //     ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        //     'file_name.txt'
+        //  );
+        return $response;
+[/if]
     }
     [unit.catchSelectionException()/]
+[if (feature.operation.resultType = OperationResultTypes::None)]
+
+    return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
+[/if]
 }
+[/let]
 [/let]
 [/template]
 
-[template private supportActionMethods(page : Page) post(trim())]
-[for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
-[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
-	[if (dataUnit.supportActions->notEmpty())]
-public function [dataUnit.supportActionName()/]()
-{
-		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
-    try
-    {
-        $[dataUnit.instanceName()/] = [dataUnit.loadInstance()/];
-        [dataUnit.supportActionHandlers()/]
-    }
-    [dataUnit.catchSelectionException()/]
-		[else]
-    [dataUnit.supportActionHandlers()/]
-		[/if]
-}
-	[/if]
-[/let]
-[/for]
-
-/* [protected (page.instanceName().concat('.support'))]
- */
-/* [/protected]
- */
-[/template]
-
-[template private supportActionHandlers(unit : DataUnit) post(trim())]
-[for (action : UnitSupportAction | unit.supportActions)]
-if ($this->request->post('[action.actionName()/]'))
-{
-    // [protected ('support.'.concat(action.actionName()))]
-    // [/protected]
-    }
-[/for]
-[/template]

@@ -91,6 +91,11 @@
 /]
 
 
+[query public methodName(operation : BusinessOperation) : String
+	= operation.name.toLowerFirst()
+/]
+
+
 [query public baseControllerClassName(eObject : EObject) : String
 	= 'Controller'
 /]
@@ -217,8 +222,17 @@
 [query public actionName(action : InlineAction) : String
 	= let name : String
 		= if action.usedBy.oclIsKindOf(DynamicUnit) then
-				action.usedBy.oclAsType(DynamicUnit).instanceName()
-					.concat(action.name.toUpperFirst())
+				let actions : Sequence(InlineAction)
+					= action.controller().units
+						->select(u | u.oclIsKindOf(InlineActionContainer)).oclAsType(InlineActionContainer)
+						->collect(c | c.actions)
+					in 
+				if actions->select(a | a.name.toLowerCase() = action.name.toLowerCase())->size() < 2  then
+					action.name.toLowerFirst()
+				else
+					action.usedBy.oclAsType(DynamicUnit).instanceName()
+						.concat(action.name.toUpperFirst())
+				endif
 			else
 				let association : UnitAssociation
 						= action.usedBy.oclAsType(UnitAssociation)
