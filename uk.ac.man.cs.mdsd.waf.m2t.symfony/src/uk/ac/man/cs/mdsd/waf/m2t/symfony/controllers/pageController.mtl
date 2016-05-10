@@ -152,14 +152,19 @@ public function [action.actionName()/]([unit.actionMethodParameters()/])
 {
     try
     {
-        [if (feature.operation.resultType <> OperationResultTypes::None)]$result = [/if]$this->get('[feature.operation.partOf.instanceName()/]')
+[if (feature.operation.resultType = OperationResultTypes::None)]
+        $this->get('[feature.operation.partOf.instanceName()/]')
             ->[feature.operation.methodName()/]([unit.loadInstance()/]);
-[if (feature.operation.resultType = OperationResultTypes::File)]
-        $response = new BinaryFileResponse($result);
-        // $response->setContentDisposition(
-        //     ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-        //     'file_name.txt'
-        //  );
+[elseif (feature.operation.resultType = OperationResultTypes::File)]
+        $tempFilename = $this->get('[feature.operation.partOf.instanceName()/]')
+            ->[feature.operation.methodName()/]([unit.loadInstance()/], '[feature.fileExtension/]');
+        $response = new BinaryFileResponse($tempFilename);
+        $filename = $[unit.uriPathKeys()->first().routeParameterName(unit.entities->first())/] . '[feature.fileExtension/]';
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+        $response->headers->set('Content-type', mime_content_type($tempFilename));
         return $response;
 [/if]
     }

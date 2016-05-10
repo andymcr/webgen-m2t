@@ -81,6 +81,12 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if])
     [operation.businessOperation()/]
 
 [/for]
+[if (service.operations->notEmpty())]
+/*
+ * [protected ('operations.support')]
+ */
+// [/protected]
+[/if]
 }
 [/file]
 [/template]
@@ -344,9 +350,9 @@ public function createQueryBuilder()
 [/template]
 
 [template private businessOperation(operation : BusinessOperation) post(trim())]
-public function [operation.methodName()/]($[operation.partOf.instanceName()/])
+public function [operation.methodName()/]($[operation.partOf.instanceName()/][if (operation.resultType = OperationResultTypes::File)], $fileExtension = null[/if])
 {
-    // [protected ('customise.values.'.concat(operation.methodName()))]
+    // [protected ('operation.'.concat(operation.methodName()))]
     // [/protected]
 }
 [/template]
