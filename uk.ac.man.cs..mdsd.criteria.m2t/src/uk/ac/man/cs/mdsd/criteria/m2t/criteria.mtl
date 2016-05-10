@@ -36,7 +36,7 @@ false
 [template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(TimeLiteral)) post(trim())]
 [let literal : TimeLiteral = criteria.oclAsType(TimeLiteral)]
-new \Time('[literal.value/]')
+new \DateTime('[literal.value/]')
 [/let]
 [/template]
 
