@@ -7,6 +7,14 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
+[query public hasValidatedRouteParameters(unit : ContentUnit) : Boolean
+	= unit.hasValidatedRouteParameters(false)
+/]
+
+[query public hasValidatedRouteParameters(unit : ContentUnit, parentPath : Boolean) : Boolean
+	= unit.uriPathValidatedKeys(parentPath)->notEmpty()
+/]
+
 [template public routeParameters(entityOrView : EntityOrView) post(trim())]
 [entityOrView.routeParameters(false)/]
 [/template]
@@ -23,6 +31,17 @@ $[key.routeParameterName(entityOrView)/][/for]
 			attribute.partOf.modelName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif
+/]
+
+
+[query public uriPathValidatedKeys(unit : ContentUnit) : Sequence(Attribute)
+	= unit.uriPathValidatedKeys(false)
+/]
+
+[query public uriPathValidatedKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
+	= unit.uriPathKeys(parentPath)
+		->select(k | not k .validationPattern.oclIsUndefined())
+		->select(k | k.validationPattern <> '[^/]+')
 /]
 
 

@@ -73,7 +73,7 @@
 /]
 
 [query public hasRouteParameters(unit : ContentUnit) : Boolean
-	= unit.uriPathKeys()->notEmpty()
+	= unit.hasRouteParameters(false)
 /]
 
 [query public hasRouteParameters(unit : ContentUnit, parentPath : Boolean) : Boolean
