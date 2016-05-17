@@ -20,7 +20,8 @@ $this->get('translator')->trans('[message/]')
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit, create : Boolean) post(trim())]
-@Route("[unit.uriPath(create)/]", name="[unit.routeName(create)/]")
+@Route("[unit.uriPath(create)/]", name="[unit.routeName(create)/]"[if (unit.hasValidatedRouteParameters(create))]
+, requirements={[for (key : Attribute | unit.uriPathValidatedKeys()) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).entities->first())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
 
 [template public actionMethodParameters(unit : DynamicUnit) post(trim())]

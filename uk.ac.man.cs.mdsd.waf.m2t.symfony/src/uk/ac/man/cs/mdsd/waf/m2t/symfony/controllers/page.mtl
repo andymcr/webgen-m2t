@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module pageController(
+[module page(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -18,7 +18,7 @@
 [template public controller(page : Page)]
 [file(page.controllerFilename(), false)]
 <?php
-namespace [page.controllersNamespace()/];
+namespace [page.webControllersNamespace()/];
 
 [for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
