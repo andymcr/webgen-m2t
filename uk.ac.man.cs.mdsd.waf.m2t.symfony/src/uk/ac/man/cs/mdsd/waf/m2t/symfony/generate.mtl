@@ -19,7 +19,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::parametersTest/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::routing/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::routingDev/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::pageController/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::page/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::rest/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::extensions::extensions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::authenticationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::enumerationType/]
@@ -67,6 +68,7 @@
 
 [model.configServices()/]
 [model.services.service()/]
+[model.persistence.entitiesAndViews.controller(model)/]
 
 [model.appBundle()/]
 [model.entityTranslations()/]

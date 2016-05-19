@@ -49,6 +49,18 @@
 /]
 
 
+[query public controllerName(entityOrView : EntityOrView) : String
+	= entityOrView.name
+/]
+
+[query public controllerClassName(entityOrView : EntityOrView) : String
+	= entityOrView.controllerName().concat('Controller').toUpperFirst()
+/]
+
+[query public routeName(entityOrView : EntityOrView) : String
+	= entityOrView.name.toLowerFirst()
+/]
+
 [query public selectName(entityOrView : EntityOrView) : String
 	= entityOrView.name.toLowerFirst()
 /]

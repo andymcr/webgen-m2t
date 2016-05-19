@@ -30,9 +30,12 @@ class AppKernel extends Kernel
 [if (model.hasCaptchaFields() or model.isLocallyAuthenticated())]
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
 [/if]
+            new FOS\RestBundle\FOSRestBundle(),
 [if (model.isLocallyAuthenticated())]
-			new FOS\UserBundle\FOSUserBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
 [/if]
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
         [']'/];

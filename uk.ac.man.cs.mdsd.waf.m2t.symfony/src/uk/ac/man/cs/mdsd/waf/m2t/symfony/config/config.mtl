@@ -44,6 +44,10 @@ framework:
     http_method_override: true
     assets: ~
 
+sensio_framework_extra:
+    view: { annotations: false }
+    router: { annotations: true }
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
@@ -87,6 +91,22 @@ ewz_recaptcha:
     locale_key:  %kernel.default_locale%
 
 [/if]
+fos_rest:
+    allowed_methods_listener: true
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener:
+        enabled: true
+        rules:
+            - { path: '^/api', priorities: ['['/]'json', 'xml'[']'/], fallback_format: json }
+            - { path: '^/', stop: true } 
+    view:
+        formats:
+            json: true
+        view_response_listener: 'force'
+
+nelmio_api_doc: ~
+
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
 fos_user:
