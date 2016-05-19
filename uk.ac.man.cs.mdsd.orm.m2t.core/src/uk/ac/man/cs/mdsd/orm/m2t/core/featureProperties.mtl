@@ -259,6 +259,16 @@
 		endif
 /]
 
+[query public hasSerializationControl(feature : Feature) : Boolean
+	= let hasMaxDepth : Boolean
+		= if not feature.oclIsKindOf(Association) then
+				false
+			else
+				feature.oclAsType(Association).serializationMaxDepth > 0
+			endif
+		in feature.serializationExpose or feature.serializationGroups->notEmpty() or hasMaxDepth
+/]
+
 [query public hasValidationPattern(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(Attribute) then
 			not feature.oclAsType(Attribute).validationPattern.oclIsUndefined()

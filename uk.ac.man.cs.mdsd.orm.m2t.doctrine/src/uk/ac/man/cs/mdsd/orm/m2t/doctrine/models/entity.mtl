@@ -13,16 +13,15 @@
 <?php
 namespace [entityOrView.modelsNamespace()/];
 
-use Doctrine\ORM\Mapping as ORM;
-[if (entityOrView.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
-use Doctrine\Common\Collections\ArrayCollection;
-[/if]
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
+[entityOrView.useStatements()/]
+
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="[entityOrView.tableName/]")
+[if (entityOrView.serializationExcludeAll)]
+ * @ExclusionPolicy("all")
+[/if]
  **/
 class [entityOrView.modelClassName()/]
 {
@@ -70,6 +69,27 @@ class [entityOrView.modelClassName()/]
 [/file]
 [/template]
 
+[template private useStatements(entityOrView : EntityOrView) post(trim())]
+use Doctrine\ORM\Mapping as ORM;
+[if (entityOrView.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
+use Doctrine\Common\Collections\ArrayCollection;
+[/if]
+use Gedmo\Mapping\Annotation as Gedmo;
+[if (entityOrView.serializationExcludeAll)]
+use JMS\Serializer\Annotation\ExclusionPolicy;
+[/if]
+[if (entityOrView.features->select(f | f.serializationExpose)->notEmpty())]
+use JMS\Serializer\Annotation\Expose;
+[/if]
+[if (entityOrView.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
+use JMS\Serializer\Annotation\Groups;
+[/if]
+[if (entityOrView.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)->select(a | a.serializationMaxDepth > 0)->notEmpty())]
+use JMS\Serializer\Annotation\MaxDepth;
+[/if]
+use Symfony\Component\Validator\Constraints as Assert;
+[/template]
+
 [template private idFeature(entityOrView : EntityOrView) post(trim())]
 /**
  * @ORM\Id
@@ -87,6 +107,9 @@ protected $[entityOrView.autoKeyName/];
   [feature.ormAnnotation()/]
 	[if (feature.isValidated())]
   [feature.validationAnnotation()/]
+	[/if]
+	[if (feature.hasSerializationControl())]
+  [feature.serializationAnnotation()/]
 	[/if]
   **/
 	[if (feature.oclIsKindOf(Attribute))]
@@ -165,6 +188,22 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 	[else]
 * @Assert\NotNull
 	[/if]
+[/if]
+[/template]
+
+[template private serializationAnnotation(feature : Feature) post(trim())]
+[if (feature.serializationExpose)]
+* @Expose
+[/if]
+[if (feature.serializationGroups->notEmpty())]
+* @Groups([for (group : String | feature.serializationGroups) separator(', ')]"[group/]"[/for])
+[/if]
+[if (feature.oclIsKindOf(Association))]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.serializationMaxDepth > 0)]
+* @MaxDepth([association.serializationMaxDepth/])
+	[/if]
+[/let]
 [/if]
 [/template]
 
