@@ -43,8 +43,8 @@ services:
 [for (service : Service | model.services->sortedBy(s | s.name))]
     [service.instanceName()/]:
         class: [service.appBundleName()/]\Service\[service.className()/]
-        arguments: ['['/]"@doctrine"[if (service = model.userService())]
-, "@security.token_storage"[else], "@[model.userService().instanceName()/]"[/if][']'/]
+        arguments: ['['/]"@doctrine"[if (model.isAuthenticated())][if (service = model.userService())]
+, "@security.token_storage"[else], "@[model.userService().instanceName()/]"[/if][/if][']'/]
 
 [/for]
 [for (type : EnumerationType | model.persistence.enumerationTypes())]

@@ -31,20 +31,24 @@ class [service.className()/]
 {
     private $doctrine;
 
-[if (service = service.partOf.userService())]
+[if (service.partOf.isAuthenticated())]
+	[if (service = service.partOf.userService())]
     private $securityTokenStorage;
-[else]
+	[else]
     private $[service.partOf.userService().instanceName()/];
-[/if]
+	[/if]
 
-    public function __construct($doctrine, [if (service = service.partOf.userService())]
-$securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if])
+[/if]
+    public function __construct($doctrine[if (service.partOf.isAuthenticated())], [if (service = service.partOf.userService())]
+$securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][/if])
     {
         $this->doctrine = $doctrine;
-[if (service = service.partOf.userService())]
+[if (service.partOf.isAuthenticated())]
+	[if (service = service.partOf.userService())]
         $this->securityTokenStorage = $securityTokenStorage;
-[else]
+	[else]
         $this->[service.partOf.userService().instanceName()/] = $[service.partOf.userService().instanceName()/];
+	[/if]
 [/if]
     }
 
