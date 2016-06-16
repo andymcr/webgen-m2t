@@ -29,7 +29,7 @@ class [entityOrView.modelClassName()/]
 
     [entityOrView.features()/]
 
-[if (entityOrView.oclIsTypeOf(Entity))]
+[if (entityOrView.oclIsTypeOf(Entity) and entityOrView.partOf.logChanges)]
     [entityOrView.timestampFeatures()/]
 
 [/if]
@@ -43,7 +43,7 @@ class [entityOrView.modelClassName()/]
     [feature.featureMethods()/]
 
 [/for]
-[if (entityOrView.oclIsTypeOf(Entity))]
+[if (entityOrView.oclIsTypeOf(Entity) and entityOrView.partOf.logChanges)]
     [entityOrView.timestampMethods()/]
 
 [/if]
@@ -188,6 +188,9 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 	[else]
 * @Assert\NotNull
 	[/if]
+[/if]
+[if (feature.isUnique())]
+* Unique
 [/if]
 [/template]
 
