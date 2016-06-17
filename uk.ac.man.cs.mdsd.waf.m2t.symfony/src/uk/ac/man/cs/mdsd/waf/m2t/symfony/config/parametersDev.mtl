@@ -10,8 +10,16 @@
 [file (model.configDirectory().concat('/').concat('parameters_dev').concat(model.ymlExtension()), false)]
 # This file is auto-generated during the composer install
 parameters:
+[if (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
+    database_host: [model.persistence.databaseHost/]
+[else]
     database_host: localhost
+[/if]
+[if (model.persistence.databasePort.oclIsUndefined())]
     database_port: null
+[else]
+    database_port: [model.persistence.databasePort/]
+[/if]
     database_name: [model.persistence.databaseName/]
     database_user: [model.persistence.databaseUsername/]
     database_password: [model.persistence.databasePassword/]

@@ -11,7 +11,11 @@
 # This file is auto-generated during the composer install
 parameters:
     database_host: [model.persistence.databaseHost/]
+[if (model.persistence.databasePort.oclIsUndefined())]
     database_port: null
+[else]
+    database_port: [model.persistence.databasePort/]
+[/if]
     database_name: [model.persistence.databaseName/]
     database_user: [model.persistence.databaseUsername/]
     database_password: [model.persistence.databasePassword/]

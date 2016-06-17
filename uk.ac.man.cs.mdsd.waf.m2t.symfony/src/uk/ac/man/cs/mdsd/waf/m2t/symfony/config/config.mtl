@@ -64,11 +64,14 @@ doctrine:
     dbal:
         driver:   [if (model.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
 pdo_mysql[elseif (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
-pdo_oci[/if]
+oci8[/if]
 
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
+[if (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
+        service:   true
+[/if]
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8

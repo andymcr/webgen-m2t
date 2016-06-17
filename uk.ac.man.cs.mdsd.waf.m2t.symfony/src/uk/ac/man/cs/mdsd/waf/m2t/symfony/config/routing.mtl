@@ -8,18 +8,22 @@
 
 [template public routing(model : WafModel)]
 [file (model.routingBaseFilename().concat(model.ymlExtension()), false)]
-app_web:
-    resource: "@AppBundle/Controller/Web/"
-    type: annotation
+[if (model.restApi->notEmpty())]
 app_api:
     resource: "@AppBundle/Controller/Api/"
     type: annotation
     prefix: /api
+[/if]
+app_web:
+    resource: "@AppBundle/Controller/"
+    type: annotation
 
+[if (model.restApi->notEmpty())]
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix: /api/doc
 
+[/if]
 [if (model.isLocallyAuthenticated())]
 	[if (model.localAuthentication().allowSelfRegistration)]
 fos_user:
