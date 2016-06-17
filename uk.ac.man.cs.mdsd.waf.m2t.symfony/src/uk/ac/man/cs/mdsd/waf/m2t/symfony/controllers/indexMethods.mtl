@@ -64,7 +64,8 @@ else
 [if (not unit.defaultSelection.oclIsUndefined())]
 [unit.selectionCall(unit.defaultSelection, null)/]
 [else]
-$this->[unit.instanceName()/] = [unit.getService()/]->findAll();
+$this->[unit.instanceName()/] = [unit.getService()/]->findAll([if (not unit.pagination.oclIsUndefined())]
+$this->page, [unit.defaultPaginationSize/][/if]);
 [/if]
 [/template]
 
