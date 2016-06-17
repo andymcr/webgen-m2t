@@ -150,9 +150,18 @@ $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[k
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
-public function findAll()
+public function findAll($page = NULL, $pageSize = 10)
 {
-	return $this->getRepository()->findAll();
+    if ($page == NULL)
+	    return $this->getRepository()->findAll();
+    else
+    {
+        $queryBuilder = $this->createQueryBuilder();
+        $queryBuilder->setFirstResult(($page - 1) * $pageSize);
+        $queryBuilder->setMaxResults($pageSize);
+        $query = $queryBuilder->getQuery();
+        return new Paginator($query);
+    }
 }
 [/template]
 
