@@ -14,10 +14,12 @@ app_api:
     type: annotation
     prefix: /api
 [/if]
+[if (model.pages->select(p | p.units->notEmpty())->notEmpty())]
 app_web:
     resource: "@AppBundle/Controller/"
     type: annotation
 
+[/if]
 [if (model.restApi->notEmpty())]
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
