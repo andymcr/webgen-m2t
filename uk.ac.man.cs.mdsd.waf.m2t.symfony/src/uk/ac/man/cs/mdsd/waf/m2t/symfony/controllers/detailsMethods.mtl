@@ -29,7 +29,11 @@
  */
 public function [unit.actionName()/]([unit.actionMethodParameters()/])
 {
+[if (unit.defaultSelection.oclIsUndefined())]
     $this->[unit.instanceName()/] = [unit.loadInstance()/];
+[else]
+    $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+[/if]
 
 [if (page.units->size() > 1)]
     return $this->renderPage([page.renderActualParameters(unit)/]);

@@ -36,8 +36,8 @@ class [service.className()/]
     private $securityTokenStorage;
 	[else]
     private $[service.partOf.userService().instanceName()/];
-	[/if]
 
+	[/if]
 [/if]
     public function __construct($doctrine[if (service.partOf.isAuthenticated())], [if (service = service.partOf.userService())]
 $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][/if])
@@ -65,6 +65,15 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][
 [let userService : Service = authentication.user.services(service.partOf)->first()]
 	[if (userService = service)]
     [authentication.getUserMethod()/]
+
+	[/if]
+[/let]
+[/let]
+[elseif (service.partOf.isCasAuthenticated())]
+[let authentication : CasAuthentication = service.partOf.casAuthentication()]
+[let userService : Service = authentication.user.services(service.partOf)->first()]
+	[if (userService = service)]
+    [authentication.getUserMethod(userService)/]
 
 	[/if]
 [/let]
@@ -185,6 +194,22 @@ public function remove($entity, $flush = false)
 		endif endif
 /]
 
+[template private getUserMethod(authentication : CasAuthentication, service : Service) post(trim())]
+public function getUser()
+{
+    $user = $this->securityTokenStorage->getToken()->getUser();
+    if (empty($user))
+        return null;
+
+    $queryBuilder = $this->createQueryBuilder();
+    return $queryBuilder
+        ->where($queryBuilder->expr()->eq(
+            'LOWER([service.serves.selectName()/].[authentication.userKey.columnName()/])',
+            $queryBuilder->expr()->literal($user->getUsername())))
+        ->getQuery()->getSingleResult();
+}
+[/template]
+
 [template private getUserMethod(authentication : LocalAuthenticationSystem) post(trim())]
 public function getUser()
 {
@@ -208,7 +233,7 @@ public function save($entity, $flush = false)
 
 [template private selectionMethod(selection : Selection, service : Service) post(trim())]
 public function [selection.methodName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
-$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10)
+$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())][if (selection.limit <> 1)], [/if][/if][if (selection.limit <> 1)]$page = NULL, $pageSize = 10[/if])
 {
     $queryBuilder = $this->createQueryBuilder();
 [if (selection.fields->notEmpty())]
@@ -223,24 +248,32 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 [if (selection.ordering->size() > 0)]
     [selection.orderBy()/]
 [/if]
+[if (selection.limit = 1)]
+    $queryBuilder->setMaxResults([selection.limit/]);
+[else]
     if ($page)
     {
         $queryBuilder->setFirstResult(($page - 1) * $pageSize);
         $queryBuilder->setMaxResults($pageSize);
     }
-[if (selection.limit > 0)]
+	[if (selection.limit > 0)]
     else
         $queryBuilder->setMaxResults([selection.limit/]);
+	[/if]
 [/if]
     $query = $queryBuilder->getQuery();
 [if (not selection.filter.oclIsUndefined())]
     [selection.filter.queryParameter()/]
 [/if]
 
+[if (selection.limit = 1)]
+    return $query->getSingleResult();
+[else]
     if ($page)
         return new Paginator($query);
     else
         return $query->getResult();
+[/if]
 }
 [/template]
 

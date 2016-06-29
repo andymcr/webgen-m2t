@@ -30,7 +30,12 @@ class AppKernel extends Kernel
 [if (model.hasCaptchaFields() or model.isLocallyAuthenticated())]
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
 [/if]
+[if (model.isCasAuthenticated())]
+            new McrCsMdsd\CasBundle\McrCsMdsdCasBundle(),
+[/if]
+[if (model.restApi->notEmpty())]
             new FOS\RestBundle\FOSRestBundle(),
+[/if]
 [if (model.isLocallyAuthenticated())]
             new FOS\UserBundle\FOSUserBundle(),
 [/if]

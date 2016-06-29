@@ -94,6 +94,7 @@ ewz_recaptcha:
     locale_key:  %kernel.default_locale%
 
 [/if]
+[if (model.restApi->notEmpty())]
 fos_rest:
     allowed_methods_listener: true
     param_fetcher_listener: true
@@ -110,6 +111,7 @@ fos_rest:
 
 nelmio_api_doc: ~
 
+[/if]
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
 fos_user:
@@ -123,6 +125,8 @@ fos_user:
 	[/if]
 
 [/let]
+[/if]
+[if (model.isCasAuthenticated())]
 [/if]
 # Swiftmailer Configuration
 swiftmailer:

@@ -27,11 +27,12 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::formType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::unitType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::models::unit/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::authenticationModel/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::casAuthenticationModel/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::changePasswordForm/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::config/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::layout/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::legacyEncoder/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::localAuthenticationModel/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::loginForm/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::resetRequestForm/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::resettingForm/]
@@ -68,7 +69,6 @@
 
 [model.configServices()/]
 [model.services.service()/]
-[model.persistence.entitiesAndViews.controller(model)/]
 
 [model.appBundle()/]
 [model.entityTranslations()/]
@@ -79,6 +79,10 @@
 [model.persistence.entitiesAndViews.formType(model)/]
 [comment model.unitsNeedingModels().formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller()/]
+
+[if (model.restApi->notEmpty())]
+[model.persistence.entitiesAndViews.controller(model)/]
+[/if]
 
 [model.css(model.cssDirectory())/]
 [model.generateMenu()/]
@@ -101,6 +105,10 @@
 	[/if]
 [authentication.resetRequestForm()/]
 [authentication.resettingForm()/]
+[/let]
+[elseif (model.isCasAuthenticated())]
+[let authentication : CasAuthentication = model.casAuthentication()]
+[authentication.model()/]
 [/let]
 [/if]
 

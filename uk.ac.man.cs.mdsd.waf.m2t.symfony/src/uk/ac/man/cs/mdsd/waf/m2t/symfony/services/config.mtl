@@ -18,9 +18,26 @@ parameters:
 #    parameter_name: value
 
 services:
+[if (model.isLocallyAuthenticated())]
+[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
     app.encoder.legacy:
         class: AppBundle\Security\Encoder\LegacyEncoder
 
+	[if (authentication.useCaptcha)]
+    app.form.registration:
+        class: [authentication.formTypeNamespace()/]\[authentication.typeClassName('Registration')/]
+        tags:
+            - { name: form.type, alias: app_user_registration }
+
+	[/if]
+[/let]
+[elseif (model.isCasAuthenticated())]
+    app.cas_authenticator:
+        class: McrCsMdsd\CasBundle\Security\CasAuthenticator
+        arguments: ['['/] "@logger" [']'/]
+
+[/if]
+[if (model.persistence.timestampCreation or model.persistence.timestampUpdates)]
     gedmo.listener.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:
@@ -28,6 +45,7 @@ services:
         calls:
             - ['['/] setAnnotationReader, ['['/] "@annotation_reader" [']'/] [']'/]
 
+[/if]
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
@@ -54,15 +72,5 @@ services:
             - { name: form.type, alias: [type.formTypeName()/] }
 
 [/for]
-[if (model.isLocallyAuthenticated())]
-[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
-	[if (authentication.useCaptcha)]
-    app.form.registration:
-        class: [authentication.formTypeNamespace()/]\[authentication.typeClassName('Registration')/]
-        tags:
-            - { name: form.type, alias: app_user_registration }
-	[/if]
-[/let]
-[/if]
 [/file]
 [/template]

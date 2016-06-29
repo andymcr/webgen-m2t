@@ -6,11 +6,13 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 [query public userService(model : WafModel) : Service
-	= if not model.isLocallyAuthenticated() then
-			null
-		else
+	= if model.isLocallyAuthenticated() then
 			model.localAuthentication().user.services(model)->first()
-		endif
+		else if model.isCasAuthenticated() then
+			model.casAuthentication().user.services(model)->first()
+		else
+			null
+		endif endif
 /]
 
 [query public unitsNeedingModels(model : WafModel) : Sequence(DynamicUnit)

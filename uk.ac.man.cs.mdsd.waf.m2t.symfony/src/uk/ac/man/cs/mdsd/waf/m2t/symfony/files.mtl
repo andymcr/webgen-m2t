@@ -105,7 +105,7 @@
 /]
 
 [query public webControllersDirectory(eObject : EObject) : String
-	= eObject.controllersDirectory().concat('/').concat('Web')
+	= eObject.controllersDirectory() -- TODO remove? .concat('/').concat('Web')
 /]
 
 [query public webDirectory(eObject : EObject) : String
@@ -178,7 +178,7 @@
 /]
 
 [query public webControllersNamespace(eObject : EObject) : String
-	= eObject.controllersNamespace().concat('\\').concat('Web')
+	= eObject.controllersNamespace() -- TODO remove? .concat('\\').concat('Web')
 /]
 
 

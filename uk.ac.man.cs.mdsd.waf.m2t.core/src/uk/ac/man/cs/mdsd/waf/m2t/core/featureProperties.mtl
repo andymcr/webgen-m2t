@@ -47,6 +47,18 @@
 	= not model.authentication.oclIsUndefined()
 /]
 
+[query public isCasAuthenticated(model : WafModel) : Boolean
+	= if model.isAuthenticated() then
+			model.authentication.oclIsTypeOf(CasAuthentication)
+		else
+			false
+		endif
+/]
+
+[query public casAuthentication(model : WafModel) : CasAuthentication
+	= model.authentication.oclAsType(CasAuthentication)
+/]
+
 [query public isLocallyAuthenticated(model : WafModel) : Boolean
 	= if model.isAuthenticated() then
 			model.authentication.oclIsTypeOf(LocalAuthenticationSystem)
@@ -71,15 +83,6 @@
 	= model.pages
 		->select(p | p.topMenuOption <> PageTopMenuOptions::NeverInclude)
 		->sortedBy(p | p.topMenuRank).oclAsType(Page)
-/]
-
-
-[query public useLocalAuthentication(authentication : Authentication) : Boolean
-	= if authentication.oclIsUndefined() then
-			false
-		else
-			authentication.oclIsTypeOf(LocalAuthenticationSystem)
-		endif
 /]
 
 

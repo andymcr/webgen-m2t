@@ -85,7 +85,7 @@
 /]
 
 
-[query public modelName(authentication : LocalAuthenticationSystem) : String
+[query public modelName(authentication : Authentication) : String
 	= authentication.authPrefix().concat('Authentication')
 /]
 
