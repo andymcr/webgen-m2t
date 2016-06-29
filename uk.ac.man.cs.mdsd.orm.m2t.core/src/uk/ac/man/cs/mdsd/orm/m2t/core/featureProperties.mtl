@@ -142,6 +142,10 @@
 	= entityOrView.ownedSingletonAssociations()->notEmpty()
 /]
 
+[query public hasPrimaryKeys(entityOrView : EntityOrView) : Boolean
+	= entityOrView.primaryKeys()->notEmpty()
+/]
+
 [query public hasResourceAttributes(entityOrView : EntityOrView) : Boolean
 	= entityOrView.resourceAttributes()->notEmpty()
 /]
@@ -164,6 +168,10 @@
 
 [query public ownedSingletonAssociations(entityOrView : EntityOrView) : Sequence(Association)
 	= entityOrView.associations()->select(a | a.isSingleton() and a.isOwningEnd())
+/]
+
+[query public primaryKeys(entityOrView : EntityOrView) : Sequence(EntityAttribute)
+	= entityOrView.features->select(f | f.isPrimaryKey()).oclAsType(EntityAttribute)
 /]
 
 [query public resourceAttributes(entityOrView : EntityOrView) : Sequence(SingletonResource)
@@ -388,6 +396,14 @@
 		else
 			false
 		endif endif
+/]
+
+[query public isPrimaryKey(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAttribute) then
+			feature.oclAsType(EntityAttribute).primaryKey
+		else
+			false
+		endif
 /]
 
 [query public isResource(feature : Feature) : Boolean
