@@ -363,11 +363,14 @@ $queryBuilder->addOrderBy([selection.ordering->first().path.queryExpression()/],
 [/template]
 
 [template private childSelectionMethod(service : Service, association : Association, selection : Selection) post(trim())]
-public function [association.name/][selection.instanceName().toUpperFirst()/]($[service.instanceName()/])
+public function [association.childSelectionName(selection)/]($[service.instanceName()/])
 {
     $criteria = Criteria::create();
 [if (not selection.filter.oclIsUndefined())]
     $criteria->where([selection.filter.criteriaExpression()/]);
+[/if]
+[if (selection.limit > 0)]
+    $criteria->setMaxResults([selection.limit/]);
 [/if]
 [if (selection.ordering->size() > 0)]
     $criteria->orderBy(array(

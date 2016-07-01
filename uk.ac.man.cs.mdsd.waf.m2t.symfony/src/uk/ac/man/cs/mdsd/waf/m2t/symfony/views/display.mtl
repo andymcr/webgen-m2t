@@ -349,7 +349,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
-{% for value in [accessor/] %}[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
+{% for value in [association.collectionAccessor(accessor)/] %}[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
 <p>[association.displayAssociation('value', 'value')/]</p>[else]
 <span>[association.displayAssociation('value', 'value')/]</span>[/if]{% endfor %}
 [else]
@@ -373,6 +373,22 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [/let]
 [/template]
+
+[query private collectionAccessor(association : UnitAssociation, accessor : String) : String
+	= if association.selection.oclIsUndefined() then
+			accessor
+		else
+			let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)
+			in 
+				association.association.partOf.services(association.pageDisplayedOn().partOf)
+						->first().className().toLowerFirst()
+					.concat('.')
+.concat(association.association.name)
+.concat(association.selection.instanceName().toUpperFirst())
+-- .concat(association.association.childSelectionName(association.selection))
+					.concat('(').concat(parentAccessor).concat(')')
+		endif
+/]
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]

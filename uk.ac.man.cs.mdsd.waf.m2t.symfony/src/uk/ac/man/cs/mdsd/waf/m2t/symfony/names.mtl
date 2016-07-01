@@ -70,6 +70,10 @@
 /]
 
 
+[query public childSelectionName(association : Association, selection : Selection) : String
+	= association.name.concat(selection.instanceName().toUpperFirst())
+/]
+
 [query public selectName(association : Association, service : Service) : String
 	= let entityOrView : EntityOrView
 		= if service.serves.features->includes(association) then
