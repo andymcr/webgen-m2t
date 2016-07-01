@@ -171,6 +171,9 @@ protected $updated;
 [let opposite : EntityAssociation = association.opposite]
 	[if (association.oclIsTypeOf(SingletonAssociation))]
 	[let singleton : SingletonAssociation = association.oclAsType(SingletonAssociation)]
+		[if (singleton.primaryKey)]
+* @ORM\Id
+		[/if]
 * @ORM\[singleton.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
 , [if (singleton.isOwningEnd())]
 inversedBy[else]
