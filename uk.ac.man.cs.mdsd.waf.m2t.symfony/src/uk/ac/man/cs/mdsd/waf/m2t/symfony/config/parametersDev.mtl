@@ -18,7 +18,7 @@ parameters:
 [if (model.persistence.databasePort.oclIsUndefined())]
     database_port: null
 [else]
-    database_port: [model.persistence.databasePort/]
+    database_port: [model.persistence.databasePort/] #
 [/if]
     database_name: [model.persistence.databaseName/]
     database_user: [model.persistence.databaseUsername/]

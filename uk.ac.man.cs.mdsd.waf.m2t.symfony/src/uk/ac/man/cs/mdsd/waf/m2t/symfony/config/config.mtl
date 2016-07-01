@@ -81,6 +81,11 @@ oci8[/if]
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
+[if (model.persistence.hasCustomOrmTypes)]
+        types:
+            # [protected ('Custom types')]
+            # [/protected]
+[/if]
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
