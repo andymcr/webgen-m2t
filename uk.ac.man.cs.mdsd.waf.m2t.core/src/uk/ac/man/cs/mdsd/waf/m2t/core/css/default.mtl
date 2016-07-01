@@ -147,9 +147,24 @@ button {
 .details_unit {
 }
 
-ul.details_content, dl.details_content {
+ul.details_content,
+dl.details_content {
 	padding: 0em 0.5em 0em 0.5em;
 	list-style: none;
+}
+
+dl.details_content > dt {
+	float: left;
+	clear: left;
+	width: 15%;
+}
+
+dl.details_content > dt:after {
+	content: ":";
+}
+
+dl.details_content > dd {
+	float: left;
 }
 
 ul.details_content > li > ul,
