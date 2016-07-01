@@ -47,12 +47,12 @@ class [authentication.modelName()/] implements UserInterface
     { 
         return $this->username;
     } 
-  
+
     public function getRoles() 
     { 
         return $this->roles; 
     } 
-  
+
     public function getPassword() 
     { 
         return null; 

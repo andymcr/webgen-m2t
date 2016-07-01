@@ -55,6 +55,7 @@ security:
 
         main:
             anonymous: ~
+            switch_user: true
             # activate different ways to authenticate
 	[if (model.isLocallyAuthenticated())]
             form_login:
@@ -66,7 +67,7 @@ security:
             guard:
                 authenticators:
                     - app.cas_authenticator
-            stateless: true
+#            stateless: true
 	[else]
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
             http_basic:
