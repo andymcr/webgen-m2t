@@ -169,7 +169,7 @@ public function findAll($page = NULL, $pageSize = 10)
         $queryBuilder->setFirstResult(($page - 1) * $pageSize);
         $queryBuilder->setMaxResults($pageSize);
         $query = $queryBuilder->getQuery();
-        return new Paginator($query);
+        return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
     }
 }
 [/template]
@@ -270,7 +270,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
     return $query->getSingleResult();
 [else]
     if ($page)
-        return new Paginator($query);
+        return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
     else
         return $query->getResult();
 [/if]
