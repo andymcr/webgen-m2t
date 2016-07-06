@@ -26,7 +26,7 @@ namespace [entityOrView.modelsNamespace()/];
 class [entityOrView.modelClassName()/]
 {
 [if (not entityOrView.hasPrimaryKeys())]
-    [entityOrView.idFeature()/]
+    [entityOrView.autoIdFeature()/]
 
 [/if]
     [entityOrView.features()/]
@@ -96,11 +96,11 @@ use JMS\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 [/template]
 
-[template private idFeature(entityOrView : EntityOrView) post(trim())]
+[template private autoIdFeature(entityOrView : EntityOrView) post(trim())]
 /**
  * @ORM\Id
- * @ORM\Column(type="integer")
- * @ORM\GeneratedValue
+ * @ORM\Column(type="[entityOrView.autoKeyPersistentType/]")
+ * @ORM\GeneratedValue[if (not entityOrView.autoKeyGenerationStrategy.oclIsUndefined())](strategy="[entityOrView.autoKeyGenerationStrategy/]")[/if]
  **/
 protected $[entityOrView.autoKeyName/];
 [/template]
