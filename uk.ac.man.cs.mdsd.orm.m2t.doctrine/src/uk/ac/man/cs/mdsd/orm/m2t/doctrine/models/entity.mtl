@@ -184,7 +184,7 @@ mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 			[else]
 				[if (singleton.opposite.keys->size() = 1)]
 					[let key : AssociationKey = singleton.opposite.keys->first()]
-* @ORM\JoinColumn(name="[key.targetFeature.columnName/]", referencedColumnName="[key.sourceFeature.columnName/]", nullable=false)
+* @ORM\JoinColumn(name="[key.targetFeature.columnName/]", referencedColumnName="[key.sourceFeature.columnName.toLowerCase()/]", nullable=false)
 					[/let]
 				[else]
 * @ORM\JoinColumns({[for (key : AssociationKey | singleton.opposite.keys) separator(',')]
