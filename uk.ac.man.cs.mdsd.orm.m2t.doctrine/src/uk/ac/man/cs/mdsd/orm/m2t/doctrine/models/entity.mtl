@@ -358,7 +358,8 @@ public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Lab
 {
         return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
 $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
-[feature.oclAsType(ModelLabelAttribute).attribute.columnName()/][else]
+[let attribute : ModelLabelAttribute = feature.oclAsType(ModelLabelAttribute)]
+[attribute.attribute.columnName()/][if (attribute.attribute.isDate())]->format('[attribute.dateFormat/]')[/if][/let][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
 [association.association.modelPropertyName()/]->get[if (association.dynamicLabel.oclIsUndefined())]Default[else][association.dynamicLabel.name.toUpperFirst()/][/if]Label()[/let]
 [/if][/for]);
