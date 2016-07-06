@@ -180,7 +180,7 @@ inversedBy[else]
 mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 		[if (singleton.isOwningEnd())]
 			[if (singleton.opposite.keys->isEmpty())]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 			[else]
 				[if (singleton.opposite.keys->size() = 1)]
 					[let key : AssociationKey = singleton.opposite.keys->first()]
