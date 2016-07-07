@@ -79,6 +79,10 @@ footer {
 	padding: 0em;
 }
 
+main > section {
+	clear: left;
+}
+
 main > section > h1.unit_caption {
 	color: SteelBlue;
 	font-size: 1em;
