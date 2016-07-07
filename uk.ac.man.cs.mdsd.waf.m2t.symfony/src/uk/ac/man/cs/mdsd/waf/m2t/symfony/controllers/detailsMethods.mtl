@@ -59,11 +59,13 @@ if (isset($this->[detailsUnit.instanceName()/]))
     $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 	[else]
 if (!isset($this->[detailsUnit.instanceName()/]))
-[if (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()))]
+		[if (not detailsUnit.defaultSelection.oclIsUndefined())]
+    $this->[detailsUnit.instanceName()/] = [detailsUnit.getService()/]->[detailsUnit.defaultSelection.methodName()/]();
+		[elseif (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()))]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance()/];
-[else]
+		[else]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
-[/if]
+		[/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 	[/if]
 [/if]
