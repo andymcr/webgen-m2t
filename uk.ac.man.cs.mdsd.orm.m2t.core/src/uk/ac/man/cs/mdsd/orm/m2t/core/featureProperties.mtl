@@ -478,6 +478,14 @@
 		endif
 /]
 
+[query public isVirtual(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAttribute) then
+			false
+		else
+			feature.oclAsType(Association).virtual
+		endif
+/]
+
 [query public isVisible(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(EntityAttribute) then
 			true
