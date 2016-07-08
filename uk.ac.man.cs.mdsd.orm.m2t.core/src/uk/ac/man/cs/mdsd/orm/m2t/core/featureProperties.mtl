@@ -154,6 +154,10 @@
 	= entityOrView.validatedFeatures()->notEmpty()
 /]
 
+[query public hasVirtualAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.virtualAssociations()->notEmpty()
+/]
+
 [query public inverseSingletonAssociations(entityOrView : EntityOrView) : Sequence(Association)
 	= entityOrView.associations()->select(a | a.isSingleton() and not a.isOwningEnd() and a.isVisible())
 /]
@@ -170,8 +174,8 @@
 	= entityOrView.associations()->select(a | a.isSingleton() and a.isOwningEnd())
 /]
 
-[query public primaryKeys(entityOrView : EntityOrView) : Sequence(EntityAttribute)
-	= entityOrView.features->select(f | f.isPrimaryKey()).oclAsType(EntityAttribute)
+[query public primaryKeys(entityOrView : EntityOrView) : Sequence(EntityFeature)
+	= entityOrView.features->select(f | f.isPrimaryKey()).oclAsType(EntityFeature)
 /]
 
 [query public resourceAttributes(entityOrView : EntityOrView) : Sequence(SingletonResource)
@@ -184,6 +188,10 @@
 
 [query public validatedFeatures(entityOrView : EntityOrView) : Sequence(Feature)
 	= entityOrView.features->select(f | f.isValidated()).oclAsType(Feature)
+/]
+
+[query public virtualAssociations(entityOrView : EntityOrView) : Sequence(EntityAssociation)
+	= entityOrView.features->select(f | f.isVirtual()).oclAsType(EntityAssociation)
 /]
 
 
@@ -399,8 +407,8 @@
 /]
 
 [query public isPrimaryKey(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityAttribute) then
-			feature.oclAsType(EntityAttribute).primaryKey
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).primaryKey
 		else
 			false
 		endif
@@ -494,6 +502,14 @@
 		else
 			true
 		endif endif
+/]
+
+[query public keys(association : EntityAssociation) : OrderedSet(AssociationKey)
+	= if association.keys->notEmpty() then
+			association.keys
+		else
+			association.opposite.keys
+		endif
 /]
 
 [query public modelPropertyName(feature : Feature) : String

@@ -19,6 +19,15 @@
 /]
 
 
+[query public getMethodName(feature : Feature) : String
+	= if feature.isBooleanDataType() then
+			'is'
+		else
+			'get'
+		endif
+		.concat(feature.modelPropertyName().toUpperFirst())
+/]
+
 [query public instanceName(feature : Feature) : String
 	= feature.modelPropertyName()
 /]

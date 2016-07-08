@@ -287,7 +287,7 @@ public function getId()
 [/template]
 
 [template private getMethod(feature : Feature) post(trim())]
-public function [if (feature.isBooleanDataType())]is[else]get[/if][feature.modelPropertyName().toUpperFirst()/]()
+public function [feature.getMethodName()/]()
 {
 [if (feature.oclIsKindOf(Attribute))]
     return $this->[feature.columnName()/];

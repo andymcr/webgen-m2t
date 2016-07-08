@@ -335,16 +335,36 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
 [if (association.units->isEmpty())]
-[association.displayAssociation(accessor, parentAccessor)/]
+	[if (not association.association.isVirtual())]
+[association.displayAssociation(accessor, accessor.parentAccessor())/]
+	[else]
+[association.displayAssociation(association.virtualAccessor(accessor), accessor.parentAccessor())/]
+	[/if]
 [else]
+	[if (not association.association.isVirtual())]
 [association.units->first().viewContent(accessor)/]
+	[else]
+[association.units->first().viewContent(association.virtualAccessor(accessor))/]
+	[/if]
 [/if]
-[/let]
 [/let]
 [/template]
 
+[query private parentAccessor(accessor : String) : String
+	= accessor.substring(1, accessor.lastIndex('.') - 1)
+/]
+ 
+[query private serviceAccessor(association : UnitAssociation) : String
+	= association.association.partOf.services(association.pageDisplayedOn().partOf)->first().className().toLowerFirst()
+/]
+ 
+[query private virtualAccessor(association : UnitAssociation, accessor : String) : String
+	= association.serviceAccessor()
+		.concat('.').concat(association.name)
+		.concat('(').concat(accessor.parentAccessor()).concat(')')
+/]
+ 
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
@@ -355,9 +375,17 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+		[if (not association.association.isVirtual())]
 [association.units.viewContent(accessor)/]
+		[else]
+[association.units.viewContent(association.virtualAccessor(accessor))/]
+		[/if]
 	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
+		[if (not association.association.isVirtual())]
 [association.units.viewContent(accessor)/]
+		[else]
+[association.units.viewContent(association.virtualAccessor(accessor))/]
+		[/if]
 	[else]
 [let old : String = accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)')]
 [/let]

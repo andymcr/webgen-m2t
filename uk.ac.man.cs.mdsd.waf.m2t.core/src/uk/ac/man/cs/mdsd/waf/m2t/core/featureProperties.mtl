@@ -978,10 +978,28 @@
 			if field.oclIsTypeOf(UnitAttribute) then
 				field.oclAsType(UnitAttribute).attribute.isSingleton()
 			else
-				field.oclAsType(UnitAssociation).association.isSingleton()
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						association.association.isSingleton()
+					else
+						association.childFeature.isSingletonElement()
+					endif
 			endif
 		else 
 			true
+		endif
+/]
+
+[query public isSingletonElement(child : ChildFeature) : Boolean
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.isSingleton()
+		else
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					association.association.isSingleton()
+				else
+					association.childFeature.isSingletonElement()
+				endif
 		endif
 /]
 

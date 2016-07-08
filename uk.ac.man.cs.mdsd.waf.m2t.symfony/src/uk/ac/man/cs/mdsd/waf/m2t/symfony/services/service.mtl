@@ -21,6 +21,9 @@
 namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
+[if (service.serves.hasVirtualAssociations())]
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+[/if]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [if (service.operations->notEmpty())]
 // [protected ('operations')]
@@ -31,6 +34,10 @@ class [service.className()/]
 {
     private $doctrine;
 
+[if (service.serves.hasVirtualAssociations())]
+    private $entityManager;
+
+[/if]
 [if (service.partOf.isAuthenticated())]
 	[if (service = service.partOf.userService())]
     private $securityTokenStorage;
@@ -39,10 +46,13 @@ class [service.className()/]
 
 	[/if]
 [/if]
-    public function __construct($doctrine[if (service.partOf.isAuthenticated())], [if (service = service.partOf.userService())]
+    public function __construct($doctrine[if (service.serves.hasVirtualAssociations())], $entityManager[/if][if (service.partOf.isAuthenticated())], [if (service = service.partOf.userService())]
 $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][/if])
     {
         $this->doctrine = $doctrine;
+[if (service.serves.hasVirtualAssociations())]
+        $this->entityManager = $entityManager;
+[/if]
 [if (service.partOf.isAuthenticated())]
 	[if (service = service.partOf.userService())]
         $this->securityTokenStorage = $securityTokenStorage;
@@ -86,6 +96,10 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][
 
     [service.childSelectionMethods()/]
 
+[if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isVirtual())->notEmpty())]
+    [service.virtualAssociationMethods()/]
+
+[/if]
     [service.getRepositoryMethod()/]
 
     [service.createQueryBuilderMethod()/]
@@ -382,6 +396,66 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 
     return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->matching($criteria);
 }
+[/template]
+
+[template private virtualAssociationMethods(service : Service) post(trim())]
+[for (association : Association | service.serves.associations())]
+	[if (association.oclIsKindOf(EntityAssociation) and association.isVirtual())]
+	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
+[entityAssociation.virtualAssociationMethod()/]
+	[/let]
+	[/if]
+[/for]
+[/template]
+
+[template private virtualAssociationMethod(association : EntityAssociation) post(trim())]
+[let sourceEntity : EntityOrView = association.partOf]
+[let targetEntity : EntityOrView = association.opposite.partOf]
+public function [association.name/]($[sourceEntity.selectName()/])
+{
+    $builder = new ResultSetMappingBuilder($this->entityManager);
+    $builder->addEntityResult('AppBundle:[targetEntity.modelClassName()/]', '[targetEntity.selectName()/]');
+[if (not targetEntity.hasPrimaryKeys())]
+    $builder->addFieldResult('[targetEntity.selectName()/]', '[targetEntity.autoKeyName/]', '[targetEntity.autoKeyName/]');
+[else]
+	[for (key : EntityFeature | targetEntity.primaryKeys())]
+    $builder->addFieldResult('[targetEntity.selectName()/]', '[key.columnName/]', '[key.columnName/]');
+	[/for]
+[/if]
+[for (attribute : Attribute | targetEntity.attributes())]
+    $builder->addFieldResult('[targetEntity.selectName()/]', '[attribute.columnName()/]', '[attribute.columnName()/]');
+[/for]
+    $sql = 'SELECT DISTINCT ' . (String) $builder
+        . ' FROM [sourceEntity.tableName/] [sourceEntity.selectName()/]'
+        . ' INNER JOIN [targetEntity.tableName/] [targetEntity.selectName()/] ON'
+[for (key : AssociationKey | association.keys())]
+            . ' [if (i > 1)]AND [/if][key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/] = [key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]'
+[/for]
+        . ' WHERE'
+[if (not sourceEntity.hasPrimaryKeys())]
+            . ' [sourceEntity.selectName()/].[sourceEntity.autoKeyName/] = :[sourceEntity.autoKeyName/]'
+[else]
+	[for (key : EntityFeature | sourceEntity.primaryKeys())]
+            . ' [if (i > 1)]AND [/if][sourceEntity.selectName()/].[key.columnName/] = :[key.instanceName()/]'
+	[/for]
+[/if];
+    $query = $this->entityManager->createNativeQuery($sql, $builder);
+[for (key : EntityFeature | sourceEntity.primaryKeys())]
+    $query->setParameter('[key.instanceName()/]', $[sourceEntity.selectName()/]->[key.getMethodName()/]());
+[/for]
+
+[if (association.isSingleton())]
+	[if (association.isRequired())]
+    return $query->getSingleResult();
+	[else]
+    return $query->getOneOrNullResult();
+	[/if]
+[else]
+    return $query->getResult();
+[/if]
+}
+[/let]
+[/let]
 [/template]
 
 [template private getRepositoryMethod(service : Service) post(trim())]
