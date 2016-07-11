@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -33,7 +34,7 @@
 [if (unit.oclIsTypeOf(MapUnit))]
   [dynamicUnit.map()/]
 [else]
-  [dynamicUnit.form(accessor)/]
+  [dynamicUnit.unitContent(accessor)/]
 [/if]
  </div>
 </section>
@@ -64,244 +65,10 @@
 	$unit_fields = [accessor/]->unit_fields();
 ?>
 [/if]
-[dynamicUnit.form(accessor)/]
+[dynamicUnit.unitContent(accessor)/]
  </div>
 </section>
 [/let]
 [/let]
 [/file]
-[/template]
-
-
-[template private form(unit : DynamicUnit, accessor : String) post(trim())]
-[unit.formOpen(accessor)/]
-[for (field : UnitField | unit.inputOrEmbeddedFields())]
- [field.formField(unit)/]
-[/for]
-[unit.formControlAndClose()/]
-[/template]
-
-[template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
-{% form_theme [unit.instanceName()/] 'form/messages_on_fields.html.twig' %}
-{{ form_start([unit.instanceName()/], { 'attr': {'class': '[unit.contentClass/]'} }) }}
-[/template]
-
-[template private formControlAndClose(unit : DynamicUnit) post(trim())]
-<div class="[unit.controlClass/]">
- <input type="submit" name="save" value="[unit.submitLabel()/]"/>
-[if (unit.oclIsKindOf(EditUnit))]
-[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
-	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
-		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
- <input type="submit" name="save" value="[createUpdateUnit.clearLabel/]"/>
-		[/if]
-	[/let]
-	[/if]
-	[if (not editUnit.cancelDestination.oclIsUndefined())]
- <input type="submit" name="save" value="[editUnit.cancelLabel/]"/>
-	[/if]
-[/let]
-[/if]
-</div>
-{{ form_row([unit.instanceName()/]._token) }}
-{{ form_end([unit.instanceName()/], {'render_rest': false}) }}
-[/template]
-
-[template private formField(field : UnitField, unit : DynamicUnit) post(trim())]
-[if (not field.isContains())]
-{{ form_row([unit.instanceName()/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
-[else]
-[let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
-	[if (field.isSingleton())]
-		[for (childField : UnitField | embeddedUnit.displayFields)]
-{{ form_row([unit.instanceName()/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
-		[/for]
-	[else]
-<ul>
-{% for x in [unit.instanceName()/].[field.modelPropertyName()/] %}
- <li>
-		[for (childField : UnitField | embeddedUnit.displayFields)]
-  {{ form_row([unit.instanceName()/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
-		[/for]
- </li>
-{% endfor %}
-</ul>
-	[/if]
-[/let]
-[/if]
-[/template]
-
-[template public map(unit : DynamicUnit)]
-[let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
-<div id="[unit.uniqueName()/]">
- <?php
-	echo Form::input('[mapUnit.uniqueName()/]_autocomplete', NULL,
-		array(
-			'id' => '[mapUnit.uniqueName()/]_autocomplete',
-//			'class' => 'field.styleClass()/] field.inputClass()/]',
-	)) . PHP_EOL;
-?>
- <div id="[mapUnit.uniqueName()/]_map" class="map-canvas"></div>
- <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
- <script>
-var map;
-[if (not mapUnit.readOnly)]
-var marker;
-var infoWindow;
-var autocomplete;
-var geocoder;
-[/if]
-
-function initialize() {
-	var mapOptions = {
-		zoom: 12
-	};
-	map = new google.maps.Map(document.getElementById('[unit.uniqueName()/]_map'), mapOptions);
-[if (mapUnit.readOnly)]
-[else]
-	input = document.getElementById('[unit.uniqueName()/]_autocomplete');
-	map.controls['['/]google.maps.ControlPosition.TOP_LEFT[']'/].push(input);
-	marker = new google.maps.Marker();
-	infoWindow = new google.maps.InfoWindow();
-	autocomplete = new google.maps.places.Autocomplete(input);
-	autocomplete.bindTo('bounds', map);
-	geocoder = new google.maps.Geocoder();
-
-	if(navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(
-			function(position) {
-				map.setCenter(new google.maps.LatLng(
-					position.coords.latitude, position.coords.longitude));
-			},
-			function() {
-				handleNoGeolocation(true);
-		});
-	} else {
-		handleNoGeolocation(false);
-	}
-
-	google.maps.event.addListener(map, 'click', function(event) {
-		geocoder.geocode({'latLng': event.latLng}, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				if (results['['/]1[']'/]) {
-					var contentString = $('<div class="marker-info-win">' +
-						'<p class="place-address">' + results['['/]1[']'/].formatted_address + '</p>' +
-						'<?php
-							echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
-								'type' => 'submit',
-								'class' => 'save-marker'
-							));
-						?></div>');    
-					showPlace(results['['/]1[']'/].formatted_address, event.latLng, contentString);
- 				} else {
-					setMarker(event.latLng);
-				}
-			} else {
-				setMarker(event.latLng);
-			}
-		});
-	});
-
-	google.maps.event.addListener(autocomplete, 'place_changed', function() {
-		var place = autocomplete.getPlace();
-		if (place.geometry) {
-			var contentString = $('<div class="marker-info-win">' +
-				'<h1 class="place-name">' + place.name + '</h1>' +
-				'<p class="place-address">' + place.formatted_address + '</p>' +
-				'<?php
-					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
-						'type' => 'submit',
-						'class' => 'save-marker'
-					));
-				?></div>');    
-			showPlace(place.name, place.geometry.location, contentString);
-		} else {
-			document.getElementById('[mapUnit.uniqueName()/]_input').placeholder = 'Enter a location';
-		}
-	});
-}
-
-function setMarker(latLng) {
-	marker.setMap(map);
-	marker.setPosition(latLng);
-}
-
-function showPlace(name, latLng, contentString) {
-	infoWindow.setContent(contentString['['/]0[']'/]);
-	infoWindow.setPosition(latLng);
-	infoWindow.set('name', name);
-	infoWindow.open(map);
-  
-  	var saveBtn = contentString.find('button.save-marker')['['/]0[']'/];
-		
-	if(typeof saveBtn !== 'undefined') {
-		google.maps.event.addDomListener(saveBtn, 'click', function(event) {
-			saveMarker();
-		});
-	}
-}
-
-function saveMarker() {
-	var myData = {
-[if (not mapUnit.placeName.oclIsUndefined())]
-		[mapUnit.placeName.modelPropertyName()/]: infoWindow.get('name'),
-[/if]
-		[mapUnit.location.modelPropertyName()/]_latitude: infoWindow.getPosition().lat(),
-		[mapUnit.location.modelPropertyName()/]_longitude: infoWindow.getPosition().lng()
-	};
-	$.ajax({
-		type: "POST",
-		url: "<?php
-			echo Route::get('[comment mapUnit.displayedOn.oclAsType(Page).routeName()/]')->uri(array(
-				'action' => '[mapUnit.actionName()/]',
-				'param' => 'submit'
-			));
-?>",
-		data: myData,
-		success: function(data) {
-			marker.setMap(map);
-			marker.setPosition(infoWindow.getPosition());
-			infoWindow.close();
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError);
-		}
-	});
-}
-
-function handleNoGeolocation(errorFlag) {
-  if (errorFlag) {
-    var content = 'Error: The Geolocation service failed.';
-  } else {
-    var content = 'Error: Your browser doesn\'t support geolocation.';
-  }
-
-  var options = {
-    map: map,
-    position: new google.maps.LatLng(60, 105),
-    content: content
-  };
-
-  var infowindow = new google.maps.InfoWindow(options);
-  map.setCenter(options.position);
-[/if]
-}
-
-google.maps.event.addDomListener(window, 'load', initialize);
- </script>
-</div>
-[/let]
-[/template]
-
-[template private formErrors(unit : DynamicUnit) post(trim())]
-<?php
-	if ( isset($[unit.fieldErrorsName()/])) {
-		foreach ($[unit.fieldErrorsName()/] AS $field => $message) {
-?>
-<p class="[unit.errorClass/]"><?php echo __($message); ?></p>
-<?php
-		}
-	} 
-?>
 [/template]
