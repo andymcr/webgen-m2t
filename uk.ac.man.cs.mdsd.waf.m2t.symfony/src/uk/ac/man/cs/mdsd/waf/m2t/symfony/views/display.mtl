@@ -336,35 +336,14 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
-	[if (not association.association.isVirtual())]
-[association.displayAssociation(accessor, accessor.parentAccessor())/]
-	[else]
-[association.displayAssociation(association.virtualAccessor(accessor), accessor.parentAccessor())/]
-	[/if]
+[association.displayAssociation(association.accessor(accessor), accessor.parentAccessor())/]
 [else]
-	[if (not association.association.isVirtual())]
-[association.units->first().viewContent(accessor)/]
-	[else]
-[association.units->first().viewContent(association.virtualAccessor(accessor))/]
-	[/if]
+<!-- content -->
+[association.units->first().viewContent(association.accessor(accessor))/]
 [/if]
 [/let]
 [/template]
 
-[query private parentAccessor(accessor : String) : String
-	= accessor.substring(1, accessor.lastIndex('.') - 1)
-/]
- 
-[query private serviceAccessor(association : UnitAssociation) : String
-	= association.association.partOf.services(association.pageDisplayedOn().partOf)->first().className().toLowerFirst()
-/]
- 
-[query private virtualAccessor(association : UnitAssociation, accessor : String) : String
-	= association.serviceAccessor()
-		.concat('.').concat(association.name)
-		.concat('(').concat(accessor.parentAccessor()).concat(')')
-/]
- 
 [template public displayValue(field : UnitField, accessor : String)
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
@@ -375,48 +354,23 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-		[if (not association.association.isVirtual())]
-[association.units.viewContent(accessor)/]
-		[else]
-[association.units.viewContent(association.virtualAccessor(accessor))/]
-		[/if]
+[association.units.viewContent(association.accessor(accessor))/]
+	[elseif (not association.selection.oclIsUndefined())]
+[association.units.viewContent(association.collectionAccessor(accessor))/]
 	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
-		[if (not association.association.isVirtual())]
-[association.units.viewContent(accessor)/]
-		[else]
-[association.units.viewContent(association.virtualAccessor(accessor))/]
-		[/if]
+[association.units.viewContent(association.accessor(accessor))/]
 	[else]
-[let old : String = accessor.concat('.').concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName()).concat('(FALSE)')]
-[/let]
-[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)]
-[let new : String = association.association.partOf.services(field.pageDisplayedOn().partOf)->first().className().toLowerFirst()
-	.concat('.').concat(association.name).concat(embeddedUnit.oclAsType(IndexUnit).defaultSelection.instanceName().toUpperFirst())
-	.concat('(').concat(parentAccessor).concat(')')]
-[association.units.viewContent(new)/]
-[/let]
-[/let]
+	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+[association.units.viewContent(
+	association.serviceAccessor()
+		.concat('.').concat(association.name).concat(indexUnit.defaultSelection.instanceName().toUpperFirst())
+		.concat('(').concat(accessor.parentAccessor()).concat(')'))/]
+	[/let]
 	[/if]
 [/let]
 [/if]
 [/let]
 [/template]
-
-[query private collectionAccessor(association : UnitAssociation, accessor : String) : String
-	= if association.selection.oclIsUndefined() then
-			accessor
-		else
-			let parentAccessor : String = accessor.substring(1, accessor.lastIndex('.') - 1)
-			in 
-				association.association.partOf.services(association.pageDisplayedOn().partOf)
-						->first().className().toLowerFirst()
-					.concat('.')
-.concat(association.association.name)
-.concat(association.selection.instanceName().toUpperFirst())
--- .concat(association.association.childSelectionName(association.selection))
-					.concat('(').concat(parentAccessor).concat(')')
-		endif
-/]
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
@@ -436,6 +390,76 @@ NULL
 [/if]
 [/template]
 
+[query private accessor(association : UnitAssociation, accessor : String) : String
+	= if not association.childFeature.oclIsUndefined() then
+			association.childFeature.accessor(accessor)
+		else if not association.oclIsKindOf(EntityAssociation) then
+			accessor
+		else if association.isVirtual() then
+			association.virtualAccessor(accessor)
+		else
+			accessor
+		endif endif endif
+/]
+
+[query private accessor(child : ChildFeature, parentAccessor : String) : String
+	=  if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).accessor(parentAccessor)
+		else
+			child.oclAsType(ChildAssociation).accessor(parentAccessor)
+		endif
+/]
+[query private accessor(child : ChildAttribute, parentAccessor : String) : String
+	=  parentAccessor.concat('.').concat(child.attribute.modelPropertyName())
+/]
+
+[query private accessor(child : ChildAssociation, parentAccessor : String) : String
+	=  let childAccessor : String
+		= parentAccessor.concat('.').concat(child.association.modelPropertyName())
+		in if child.childFeature.oclIsUndefined() then
+			childAccessor
+		else
+			child.childFeature.accessor(childAccessor)
+		endif
+/]
+
+[query private virtualAccessor(association : UnitAssociation, accessor : String) : String
+	= association.serviceAccessor()
+		.concat('.').concat(association.name)
+		.concat('(').concat(accessor.parentAccessor()).concat(')')
+/]
+
+[query private virtualAccessor(association : ChildAssociation, accessor : String) : String
+	= association.serviceAccessor()
+		.concat('.').concat(association.name)
+		.concat('(').concat(accessor.parentAccessor()).concat(')')
+/]
+
+[query private collectionAccessor(association : UnitAssociation, accessor : String) : String
+	= if association.selection.oclIsUndefined() then
+			association.accessor(accessor)
+		else
+			association.serviceAccessor()
+				.concat('.')
+.concat(association.association.name)
+.concat(association.selection.instanceName().toUpperFirst())
+-- .concat(association.association.childSelectionName(association.selection))
+				.concat('(').concat(accessor.parentAccessor()).concat(')')
+		endif
+/]
+
+[query private serviceAccessor(association : UnitAssociation) : String
+	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
+/]
+ 
+[query private serviceAccessor(association : ChildAssociation) : String
+	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
+/]
+ 
+[query private parentAccessor(accessor : String) : String
+	= accessor.substring(1, accessor.lastIndex('.') - 1)
+/]
+ 
 [template public getValue(feature : UnitFeature, accessor : String) post(trim())]
 [if (feature.oclIsTypeOf(UnitAttribute))]
 [feature.oclAsType(UnitAttribute).getValue(accessor)/]
@@ -449,43 +473,48 @@ NULL
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
-[association.valueDisplay/]
-[if (association.childFeature.oclIsUndefined())]
+[if (association.isVirtual())]
+[association.virtualAccessor(accessor)/][if (not association.childFeature.oclIsUndefined())]
+[if (association.childFeature.oclIsTypeOf(ChildAttribute))]
+.[association.childFeature.oclAsType(ChildAttribute).attribute.modelPropertyName()/][else]
+.[association.childFeature.oclAsType(ChildAssociation).association.modelPropertyName()/][/if][/if]
+[elseif (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(accessor)/]
+[else]
 	[if (not association.valueDisplay.oclIsUndefined())]
 [association.valueDisplay.label(accessor)/]
 	[else]
 [accessor/].defaultLabel()
 	[/if]
-[else]
-[association.childFeature.getValue(accessor)/]
 [/if]
 [/template]
 
-[template public getValue(childFeature : ChildFeature, accessor : String)
-	? (childFeature.oclIsTypeOf(ChildAttribute)) post(trim())]
-[let childAttribute : ChildAttribute = childFeature.oclAsType(ChildAttribute)]
-[let childAccessor : String = accessor.concat('.').concat(childAttribute.attribute.modelPropertyName())]
-[let unitFeatures : Sequence(UnitFeature) = childFeature.ancestors(UnitFeature)]
+[template public getValue(child : ChildFeature, accessor : String)
+	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
+[let unitFeatures : Sequence(UnitFeature) = attribute.ancestors(UnitFeature)]
 [if (unitFeatures->notEmpty())]
-[childAttribute.attribute.getValue(childAccessor)/]
+[attribute.attribute.getValue(attribute.accessor(accessor))/]
 [else]
-[childAttribute.attribute.getValue(childAccessor)/]
+[attribute.attribute.getValue(attribute.accessor(accessor))/]
 [/if]
-[/let]
 [/let]
 [/let]
 [/template]
 
-[template public getValue(childFeature : ChildFeature, accessor : String)
-	? (childFeature.oclIsTypeOf(ChildAssociation)) post(trim())]
-[let childAssociation : ChildAssociation = childFeature.oclAsType(ChildAssociation)]
-[let childAccessor : String = accessor.concat('.').concat(childAssociation.association.modelPropertyName())]
-[if (childAssociation.childFeature.oclIsUndefined())]
-[childAccessor/].defaultLabel()
+[template public getValue(child : ChildFeature, accessor : String)
+	? (child.oclIsTypeOf(ChildAssociation)) post(trim())]
+[let association : ChildAssociation = child.oclAsType(ChildAssociation)]
+[if (association.association.isVirtual())]
+[association.virtualAccessor(accessor)/][if (not association.childFeature.oclIsUndefined())]
+[if (association.childFeature.oclIsTypeOf(ChildAttribute))]
+.[association.childFeature.oclAsType(ChildAttribute).attribute.modelPropertyName()/][else]
+.[association.childFeature.oclAsType(ChildAssociation).association.modelPropertyName()/][/if][/if]
+[elseif (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(association.accessor(accessor))/]
 [else]
-[childAssociation.childFeature.getValue(childAccessor)/]
+[association.accessor(accessor)/].defaultLabel()
 [/if]
-[/let]
 [/let]
 [/template]
 

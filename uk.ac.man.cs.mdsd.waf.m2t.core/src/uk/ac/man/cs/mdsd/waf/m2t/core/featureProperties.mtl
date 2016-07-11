@@ -1053,6 +1053,26 @@
 		endif
 /]
 
+[query public isVirtual(association : UnitAssociation) : Boolean
+	= if association.association.oclIsKindOf(EntityAssociation) then
+			association.association.oclAsType(EntityAssociation).isVirtual()
+		else 
+			false
+		endif
+/]
+
+[query public model(field : UnitField) : WafModel
+	= field.pageDisplayedOn().partOf
+/]
+
+[query public model(child : ChildAssociation) : WafModel
+	= if child.eContainer().oclIsTypeOf(UnitAssociation) then
+			child.eContainer().oclAsType(UnitAssociation).model()
+		else
+			child.eContainer().oclAsType(ChildAssociation).model()
+		endif
+/]
+
 [query public modelPropertyName(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
