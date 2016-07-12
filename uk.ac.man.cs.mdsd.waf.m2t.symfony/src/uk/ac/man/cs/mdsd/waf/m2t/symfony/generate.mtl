@@ -108,7 +108,7 @@
 [/let]
 [elseif (model.isCasAuthenticated())]
 [let authentication : CasAuthentication = model.casAuthentication()]
-[authentication.model()/]
+[comment authentication.model()/]
 [/let]
 [/if]
 
