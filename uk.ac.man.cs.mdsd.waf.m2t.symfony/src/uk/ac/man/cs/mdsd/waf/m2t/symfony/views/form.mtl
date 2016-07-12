@@ -24,23 +24,23 @@
 [/template]
 
 [template private formControlAndClose(unit : DynamicUnit) post(trim())]
-<div class="[unit.controlClass/]">
- <input type="submit" name="save" value="[unit.submitLabel()/]"/>
+ <div class="[unit.controlClass/]">
+  <input type="submit" name="save" value="[unit.submitLabel()/]"/>
 [if (unit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
 	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
 		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
- <input type="submit" name="save" value="[createUpdateUnit.clearLabel/]"/>
+  <input type="submit" name="clear" value="[createUpdateUnit.clearLabel/]"/>
 		[/if]
 	[/let]
 	[/if]
 	[if (not editUnit.cancelDestination.oclIsUndefined())]
- <input type="submit" name="save" value="[editUnit.cancelLabel/]"/>
+  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"/>
 	[/if]
 [/let]
 [/if]
-</div>
+ </div>
 {{ form_row([unit.instanceName()/]._token) }}
 {{ form_end([unit.instanceName()/], {'render_rest': false}) }}
 [/template]
