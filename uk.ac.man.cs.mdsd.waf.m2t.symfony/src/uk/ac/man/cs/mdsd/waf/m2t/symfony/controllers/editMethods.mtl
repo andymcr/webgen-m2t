@@ -178,7 +178,7 @@ return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContaine
 if (!isset($this->[editUnit.instanceName()/]))
 {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
-    $this->[editUnit.instanceName()/] = [editUnit.createForm(true)/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm(not editUnit.oclIsTypeOf(UpdateUnit))/];
 }
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
 [/let]
