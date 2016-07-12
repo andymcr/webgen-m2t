@@ -91,7 +91,7 @@ $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/
 [template public catchSelectionException(unit : DynamicUnit)]
 catch (QueryException $qe)
 {
-    $this->[unit.errorName()/] = $se->message();
+    $this->[unit.errorName()/] = $qe->message();
 [if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
 [comment unit exceptionCleanup()/]
 [/if]
