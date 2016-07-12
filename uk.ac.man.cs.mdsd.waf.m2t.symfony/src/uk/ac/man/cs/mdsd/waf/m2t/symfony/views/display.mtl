@@ -339,7 +339,6 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [if (association.units->isEmpty())]
 [association.displayAssociation(association.accessor(accessor), accessor.parentAccessor())/]
 [else]
-<!-- content -->
 [association.units->first().unitContent(association.accessor(accessor))/]
 [/if]
 [/let]
