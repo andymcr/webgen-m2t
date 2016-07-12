@@ -83,11 +83,13 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 [for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 	[if (dataUnit.supportActions->notEmpty())]
+/**
+ * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
+ */
 public function [dataUnit.supportActionName()/]()
 {
 		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
-    try
-    {
+    try {
         $[dataUnit.instanceName()/] = [dataUnit.loadInstance()/];
         [dataUnit.actionHandlers()/]
     }
@@ -108,7 +110,7 @@ public function [dataUnit.supportActionName()/]()
 
 [template private actionHandlers(unit : DataUnit) post(trim())]
 [for (action : UnitSupportAction | unit.supportActions)]
-if ($this->request->post('[action.actionName()/]'))
+if ($request->query->has('[action.actionName()/]'))
 {
     // [protected ('support.'.concat(action.actionName()))]
     // [/protected]
