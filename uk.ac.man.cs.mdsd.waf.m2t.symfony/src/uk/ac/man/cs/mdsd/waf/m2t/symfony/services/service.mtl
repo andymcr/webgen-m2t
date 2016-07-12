@@ -211,16 +211,7 @@ public function remove($entity, $flush = false)
 [template private getUserMethod(authentication : CasAuthentication, service : Service) post(trim())]
 public function getUser()
 {
-    $user = $this->securityTokenStorage->getToken()->getUser();
-    if (empty($user))
-        return null;
-
-    $queryBuilder = $this->createQueryBuilder();
-    return $queryBuilder
-        ->where($queryBuilder->expr()->eq(
-            'LOWER([service.serves.selectName()/].[authentication.userKey.columnName()/])',
-            $queryBuilder->expr()->literal($user->getUsername())))
-        ->getQuery()->getSingleResult();
+    return $this->securityTokenStorage->getToken()->getUser();
 }
 [/template]
 
