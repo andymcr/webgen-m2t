@@ -2,6 +2,7 @@
 [module config(
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -33,8 +34,8 @@ security:
 	[elseif (model.isCasAuthenticated())]
         cas:
             entity:
-                class: AppBundle:[authentication.modelName()/]
-                property: username
+                class: AppBundle:[authentication.user.modelName()/]
+                property: [authentication.userKey.columnName()/]
 	[else]
         in_memory:
             memory:
@@ -84,8 +85,12 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
 	[/if]
+	[if (model.isLocallyAuthenticated())]
+        # [protected('authorisation')]
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/, role: ROLE_USER }
+        # [/protected]
+	[/if]
 [/if]
 [/file]
 [/template]
