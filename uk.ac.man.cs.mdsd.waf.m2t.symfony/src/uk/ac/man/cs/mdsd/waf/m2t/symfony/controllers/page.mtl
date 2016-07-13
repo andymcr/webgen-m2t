@@ -60,7 +60,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [if (page.hasFilterParameters() or page.hasUpdateUnits())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
-[if (page.dataUnitsWithSupportActions()->notEmpty())]
+[if (page.unitsWithSupportActions()->notEmpty())]
 use Symfony\Component\HttpFoundation\Response;
 // [protected ('support.use')]
 // [/protected]
@@ -88,7 +88,7 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 [/template]
 
 [template private actionMethods(page : Page) post(trim())]
-[for (unit : DataUnit | page.dataUnitsWithSupportActions())]
+[for (unit : DynamicUnit | page.unitsWithSupportActions())]
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
  */
@@ -112,7 +112,7 @@ public function [unit.supportActionName()/](Request $request)
  */
 [/template]
 
-[template private actionHandlers(unit : DataUnit) post(trim())]
+[template private actionHandlers(unit : DynamicUnit) post(trim())]
 [for (action : UnitSupportAction | unit.supportActions)]
 if ($request->query->has('[action.actionName()/]')) {
     // [protected ('support.'.concat(action.actionName()))]
