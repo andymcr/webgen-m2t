@@ -46,6 +46,7 @@ class TimeLiteral extends Literal {
 }
 
 class CurrentTime extends Literal {
+	String format
 }
 
 class Function extends Expression {

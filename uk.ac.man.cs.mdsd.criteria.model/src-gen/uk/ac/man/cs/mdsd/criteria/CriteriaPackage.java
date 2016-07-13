@@ -301,13 +301,22 @@ public interface CriteriaPackage extends EPackage {
 	int CURRENT_TIME = 7;
 
 	/**
+	 * The feature id for the '<em><b>Format</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CURRENT_TIME__FORMAT = LITERAL_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Current Time</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CURRENT_TIME_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 0;
+	int CURRENT_TIME_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Current Time</em>' class.
@@ -1007,6 +1016,17 @@ public interface CriteriaPackage extends EPackage {
 	EClass getCurrentTime();
 
 	/**
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.criteria.CurrentTime#getFormat <em>Format</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Format</em>'.
+	 * @see uk.ac.man.cs.mdsd.criteria.CurrentTime#getFormat()
+	 * @see #getCurrentTime()
+	 * @generated
+	 */
+	EAttribute getCurrentTime_Format();
+
+	/**
 	 * Returns the meta object for class '{@link uk.ac.man.cs.mdsd.criteria.Function <em>Function</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1445,6 +1465,14 @@ public interface CriteriaPackage extends EPackage {
 		 * @generated
 		 */
 		EClass CURRENT_TIME = eINSTANCE.getCurrentTime();
+
+		/**
+		 * The meta object literal for the '<em><b>Format</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CURRENT_TIME__FORMAT = eINSTANCE.getCurrentTime_Format();
 
 		/**
 		 * The meta object literal for the '{@link uk.ac.man.cs.mdsd.criteria.impl.FunctionImpl <em>Function</em>}' class.

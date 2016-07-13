@@ -374,6 +374,15 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getCurrentTime_Format() {
+		return (EAttribute)currentTimeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getFunction() {
 		return functionEClass;
 	}
@@ -677,6 +686,7 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 		createEAttribute(timeLiteralEClass, TIME_LITERAL__VALUE);
 
 		currentTimeEClass = createEClass(CURRENT_TIME);
+		createEAttribute(currentTimeEClass, CURRENT_TIME__FORMAT);
 
 		functionEClass = createEClass(FUNCTION);
 		createEAttribute(functionEClass, FUNCTION__NAME);
@@ -792,6 +802,7 @@ public class CriteriaPackageImpl extends EPackageImpl implements CriteriaPackage
 		initEAttribute(getTimeLiteral_Value(), theEcorePackage.getEString(), "value", null, 1, 1, TimeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(currentTimeEClass, CurrentTime.class, "CurrentTime", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCurrentTime_Format(), theEcorePackage.getEString(), "format", null, 0, 1, CurrentTime.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(functionEClass, Function.class, "Function", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFunction_Name(), theEcorePackage.getEString(), "name", null, 1, 1, Function.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
