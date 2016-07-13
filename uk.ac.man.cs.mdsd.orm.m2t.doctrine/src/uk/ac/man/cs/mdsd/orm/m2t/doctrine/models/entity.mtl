@@ -23,7 +23,7 @@ namespace [entityOrView.modelsNamespace()/];
  * @ExclusionPolicy("all")
 [/if]
  **/
-class [entityOrView.modelClassName()/]
+class [entityOrView.modelClassName()/][if (entityOrView.implementsUserInterface)] implements UserInterface[/if]
 {
 [if (not entityOrView.hasPrimaryKeys())]
     [entityOrView.autoIdFeature()/]
@@ -35,7 +35,7 @@ class [entityOrView.modelClassName()/]
     [entityOrView.timestampFeatures()/]
 
 [/if]
-[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations())]
+[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations()or entityOrView.implementsUserInterface)]
     [entityOrView.constructor()/]
 
 [/if]
@@ -49,6 +49,10 @@ class [entityOrView.modelClassName()/]
 [/for]
 [if (entityOrView.oclIsTypeOf(Entity) and (entityOrView.partOf.timestampCreation or entityOrView.partOf.timestampUpdates))]
     [entityOrView.timestampMethods()/]
+
+[/if]
+[if (entityOrView.implementsUserInterface)]
+    [entityOrView.userInterfaceMethods()/]
 
 [/if]
 [for (label : ModelLabel | entityOrView.labels)]
@@ -92,6 +96,9 @@ use JMS\Serializer\Annotation\Groups;
 [/if]
 [if (entityOrView.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)->select(a | a.serializationMaxDepth > 0)->notEmpty())]
 use JMS\Serializer\Annotation\MaxDepth;
+[/if]
+[if (entityOrView.implementsUserInterface)]
+use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
 use Symfony\Component\Validator\Constraints as Assert;
 [/template]
@@ -179,20 +186,28 @@ protected $updated;
 inversedBy[else]
 mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 		[if (singleton.isOwningEnd())]
-			[if (singleton.opposite.keys->isEmpty())]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
-			[else]
-				[if (singleton.opposite.keys->size() = 1)]
-					[let key : AssociationKey = singleton.opposite.keys->first()]
+			[if (singleton.opposite.keys->size() = 1)]
+			[let key : AssociationKey = singleton.opposite.keys->first()]
 * @ORM\JoinColumn(name="[key.targetFeature.columnName/]", referencedColumnName="[key.sourceFeature.columnName.toLowerCase()/]", nullable=false)
-					[/let]
-				[else]
+			[/let]
+			[elseif (singleton.opposite.keys->size() > 1)]
 * @ORM\JoinColumns({[for (key : AssociationKey | singleton.opposite.keys) separator(',')]
 
 *     @ORM\JoinColumn(name="[key.targetFeature.columnName/]", referencedColumnName="[key.sourceFeature.columnName.toLowerCase()/]", nullable=false)[/for]
 
 * })
-				[/if]
+			[elseif (singleton.opposite.partOf.primaryKeys()->size() = 1)]
+			[let key : EntityFeature = singleton.opposite.partOf.primaryKeys()->first()]
+* @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)
+			[/let]
+			[elseif (singleton.opposite.partOf.primaryKeys()->size() > 1)]
+* @ORM\JoinColumns({[for (key : EntityFeature | singleton.opposite.partOf.primaryKeys()) separator(',')]
+
+*     @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
+
+* })
+			[else]
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 			[/if]
 		[/if]
 	[/let]
@@ -249,6 +264,9 @@ public function __construct()
 	[if (feature.hasDefaultValue())]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue().valueExpression()/];
 	[/if]
+	[if (feature.oclIsTypeOf(CollectionAttribute))]
+    $this->[feature.modelPropertyName()/] = Array();
+	[/if]
 	[if (feature.oclIsTypeOf(CollectionAssociation))]
 		[if (feature.oclAsType(CollectionAssociation).owningEnd)]
     $this->[feature.modelPropertyName()/] = new ArrayCollection();
@@ -278,10 +296,10 @@ public function getId()
 [template private featureMethods(feature : Feature) post(trim())]
 [feature.getMethod()/]
 
-[comment TODO decide correct thing to do /]
-[if (feature.isSingleton() or true)]
 [feature.setMethod()/]
-[else]
+[comment TODO decide correct thing to do /]
+[if (not feature.isSingleton())]
+
 [feature.addMethod()/]
 [/if]
 [/template]
@@ -331,10 +349,53 @@ public function set[association.modelPropertyName().toUpperFirst()/]($[associati
 [/let]
 [/template]
 
-[template private addMethod(feature : Feature) post(trim())]
-public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.modelPropertyName()/])
+[template private addMethod(feature : Feature)
+	? (feature.oclIsKindOf(Attribute)) post(trim())]
+public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/])
 {
+[if (feature.isUnique())]
+    if (!in_array($[feature.instanceName()/], $this->[feature.columnName()/], true)) {
+        $this->[feature.columnName()/]['['/][']'/] = $[feature.instanceName()/];
+    }
+[else]
+    $this->[feature.columnName()/]['['/][']'/] = $[feature.instanceName()/];
+[/if]
 }
+[/template]
+
+[template private addMethod(feature : Feature)
+	? (feature.oclIsKindOf(Association)) post(trim())]
+public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/])
+{
+[if (feature.isUnique())]
+    if (!in_array($[feature.instanceName()/], $this->[feature.modelPropertyName()/], true)) {
+        $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.instanceName()/];
+    }
+[else]
+    $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.instanceName()/];
+[/if]
+}
+[/template]
+
+[template private userInterfaceMethods(entityOrView : EntityOrView) post(trim())]
+public function getUsername() 
+{ 
+    return $this->getUsernameUni(); 
+} 
+
+public function getPassword() 
+{ 
+    return null; 
+} 
+
+public function getSalt() 
+{ 
+    return null; 
+} 
+
+public function eraseCredentials() 
+{ 
+} 
 [/template]
 
 [template private timestampMethods(entityOrView : EntityOrView) post(trim())]
@@ -356,7 +417,7 @@ public function getUpdated()
 [template private label(label : ModelLabel) post(trim())]
 public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if]()
 {
-        return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
+    return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
 $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 [let attribute : ModelLabelAttribute = feature.oclAsType(ModelLabelAttribute)]
 [attribute.attribute.columnName()/][if (attribute.attribute.isDate())]->format('[attribute.dateFormat/]')[/if][/let][else]
