@@ -132,8 +132,8 @@
 	= page.units->select(u | u.oclIsKindOf(ControlUnit)).oclAsType(DynamicUnit)
 /]
 
-[query public dataSupportActions(page : Page) : Sequence(UnitSupportAction)
-	= page.dynamicUnits()->select(u | u.oclIsKindOf(DataUnit))->collect(u | u.supportActions)
+[query public unitsWithSupportActions(page : Page) : Sequence(DynamicUnit)
+	= page.dynamicUnits()->select(u | u.supportActions->notEmpty())
 /]
 
 [query public dynamicUnits(page : Page) : Sequence(DynamicUnit)
@@ -160,10 +160,6 @@
 
 [query public hasControlUnits(page : Page) : Boolean
 	= page.controlUnits()->notEmpty()
-/]
-
-[query public hasDataSupportActions(page : Page) : Boolean
-	= page.dataSupportActions()->notEmpty()
 /]
 
 [query public hasFormUnits(page : Page) : Boolean
