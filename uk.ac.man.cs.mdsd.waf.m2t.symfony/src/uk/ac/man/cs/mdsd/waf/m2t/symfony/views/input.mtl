@@ -13,7 +13,6 @@
 	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}</h1>
@@ -34,11 +33,10 @@
 [if (unit.oclIsTypeOf(MapUnit))]
   [dynamicUnit.map()/]
 [else]
-  [dynamicUnit.unitContent(accessor)/]
+  [dynamicUnit.unitContent(dynamicUnit.instanceName())/]
 [/if]
  </div>
 </section>
-[/let]
 [/let]
 [/file]
 [/template]
@@ -47,7 +45,6 @@
 	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[let accessor : String = '$'.concat(dynamicUnit.instanceName())]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h1>
@@ -61,14 +58,15 @@
 [/if]
   </section>
 [if (dynamicUnit.hasInterfaceFields())]
+[let accessor : String = '?']
   <?php
 	$unit_fields = [accessor/]->unit_fields();
 ?>
+[/let]
 [/if]
-[dynamicUnit.unitContent(accessor)/]
+[dynamicUnit.unitContent(dynamicUnit.instanceName())/]
  </div>
 </section>
-[/let]
 [/let]
 [/file]
 [/template]

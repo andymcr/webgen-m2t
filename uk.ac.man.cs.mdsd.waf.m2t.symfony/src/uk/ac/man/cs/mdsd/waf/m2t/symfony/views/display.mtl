@@ -68,7 +68,7 @@
 
 
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+<form action="[unit.supportUriPath()/]" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
  [action.unitSupportLink()/]
 [/for]

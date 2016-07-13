@@ -12,18 +12,18 @@
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.formOpen(accessor)/]
 [for (field : UnitField | editUnit.inputOrEmbeddedFields())]
- [field.formField(editUnit)/]
+ [field.formField(editUnit, accessor)/]
 [/for]
-[editUnit.formControlAndClose()/]
+[editUnit.formControlAndClose(accessor)/]
 [/let]
 [/template]
 
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
-{% form_theme [unit.instanceName()/] 'form/messages_on_fields.html.twig' %}
-{{ form_start([unit.instanceName()/], { 'attr': {'class': '[unit.contentClass/]'} }) }}
+{% form_theme [accessor/] 'form/messages_on_fields.html.twig' %}
+{{ form_start([accessor/], { 'attr': {'class': '[unit.contentClass/]'} }) }}
 [/template]
 
-[template private formControlAndClose(unit : DynamicUnit) post(trim())]
+[template private formControlAndClose(unit : DynamicUnit, accessor : String) post(trim())]
  <div class="[unit.controlClass/]">
   <input type="submit" name="save" value="[unit.submitLabel()/]"/>
 [if (unit.oclIsKindOf(EditUnit))]
@@ -41,25 +41,25 @@
 [/let]
 [/if]
  </div>
-{{ form_row([unit.instanceName()/]._token) }}
-{{ form_end([unit.instanceName()/], {'render_rest': false}) }}
+{{ form_row([accessor/]._token) }}
+{{ form_end([accessor/], {'render_rest': false}) }}
 [/template]
 
-[template private formField(field : UnitField, unit : DynamicUnit) post(trim())]
+[template private formField(field : UnitField, unit : DynamicUnit, accessor : String) post(trim())]
 [if (not field.isContains())]
-{{ form_row([unit.instanceName()/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
+{{ form_row([accessor/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
 [else]
 [let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
 	[if (field.isSingleton())]
 		[for (childField : UnitField | embeddedUnit.displayFields)]
-{{ form_row([unit.instanceName()/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
+{{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
 		[/for]
 	[else]
 <ul>
-{% for x in [unit.instanceName()/].[field.modelPropertyName()/] %}
+{% for x in [accessor/].[field.modelPropertyName()/] %}
  <li>
 		[for (childField : UnitField | embeddedUnit.displayFields)]
-  {{ form_row([unit.instanceName()/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
+  {{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
 		[/for]
  </li>
 {% endfor %}

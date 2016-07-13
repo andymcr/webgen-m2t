@@ -20,24 +20,7 @@
 <?php
 namespace [page.webControllersNamespace()/];
 
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
-use [entity.modelsNamespace()/]\[entity.modelName()/];
-[/for]
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
-use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
-[/for]
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-[if (page.hasInlineFileActions())]
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-[/if]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]
-use Symfony\Component\HttpFoundation\Request;
-[/if]
-[if (page.hasInlineFileActions())]
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-[/if]
-
+[page.useStatements()/]
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
@@ -62,6 +45,31 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/file]
 [/template]
 
+[template private useStatements(page : Page) post(trim())]
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
+use [entity.modelsNamespace()/]\[entity.modelName()/];
+[/for]
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
+use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
+[/for]
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+[if (page.hasInlineFileActions())]
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+[/if]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]
+use Symfony\Component\HttpFoundation\Request;
+[/if]
+[if (page.dataUnitsWithSupportActions()->notEmpty())]
+use Symfony\Component\HttpFoundation\Response;
+// [protected ('support.use')]
+// [/protected]
+[/if]
+[if (page.hasInlineFileActions())]
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+[/if]
+[/template]
+
 [template private renderMethod(page : Page) post(trim())]
 private function renderPage([if (page.hasFilterParameters())]
 Request $request[if (page.uriCommonPathKeys()->notEmpty())]
@@ -80,26 +88,22 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 [/template]
 
 [template private actionMethods(page : Page) post(trim())]
-[for (unit : ContentUnit | page.units->select(u | u.oclIsKindOf(DataUnit)))]
-[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
-	[if (dataUnit.supportActions->notEmpty())]
+[for (unit : DataUnit | page.dataUnitsWithSupportActions())]
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
  */
-public function [dataUnit.supportActionName()/]()
+public function [unit.supportActionName()/](Request $request)
 {
-		[if (dataUnit.oclIsTypeOf(DetailsUnit))]
+		[if (unit.oclIsTypeOf(DetailsUnit))]
     try {
-        $[dataUnit.instanceName()/] = [dataUnit.loadInstance()/];
-        [dataUnit.actionHandlers()/]
+        $[unit.instanceName()/] = [unit.loadInstance()/];
+        [unit.actionHandlers()/]
     }
-    [dataUnit.catchSelectionException()/]
+    [unit.catchSelectionException()/]
 		[else]
-    [dataUnit.actionHandlers()/]
+    [unit.actionHandlers()/]
 		[/if]
 }
-	[/if]
-[/let]
 [/for]
 
 /* [protected (page.instanceName().concat('.support'))]
@@ -110,12 +114,13 @@ public function [dataUnit.supportActionName()/]()
 
 [template private actionHandlers(unit : DataUnit) post(trim())]
 [for (action : UnitSupportAction | unit.supportActions)]
-if ($request->query->has('[action.actionName()/]'))
-{
+if ($request->query->has('[action.actionName()/]')) {
     // [protected ('support.'.concat(action.actionName()))]
     // [/protected]
-    }
+}
+
 [/for]
+return new Response("No action taken", 200);
 [/template]
 
 [template private actionMethod(action : InlineAction, page : Page)

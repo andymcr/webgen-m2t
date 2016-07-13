@@ -18,9 +18,13 @@
 
 {% block content %}
 [for (unit : ContentUnit | page.units)]
+	[if (not unit.oclIsTypeOf(StaticUnit))]
 {% if [unit.instanceName()/] is defined %}
+	[/if]
 {{ include('[page.name/]/[unit.instanceName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
+	[if (not unit.oclIsTypeOf(StaticUnit))]
 {% endif %}
+	[/if]
 [/for]
 {% endblock %}
 [/file]
