@@ -157,7 +157,7 @@ TextType::class
 add('[association.modelPropertyName()/]', EntityType::class, array(
     'label' => '[association.partOf.id()/].labels.[association.id()/]',
     'translation_domain' => 'entity',
-[if (not association.isRequired())]
+[if (not association.isRequired() and association.isSingleton())]
     'required' => FALSE,
 [/if]
     'class' => '[association.appBundleName()/]:[association.modelName()/]',

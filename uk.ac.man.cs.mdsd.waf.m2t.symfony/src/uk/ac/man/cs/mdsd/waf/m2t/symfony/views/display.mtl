@@ -68,7 +68,7 @@
 
 
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="[unit.supportUriPath()/]" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+<form action="{{ path('[unit.supportRouteName()/]') }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
  [action.unitSupportLink()/]
 [/for]
@@ -277,7 +277,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 
 [template public displayValue(field : UnitField, accessor : String)
-	? (field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) post(trim())]
+	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(accessor)/] | default('') }}
 [else]
@@ -292,8 +292,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 			else
 				feature.oclAsType(UnitAssociation).association.partOf
 			endif]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.substring(1,
-		accessor.lastIndex('.') - 1), feature.getValue(accessor), parentEntityOrView)/]
+    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.parentAccessor(), feature.getValue(accessor), parentEntityOrView)/]
 	[/let]
 	[/if]
 [/let]
@@ -391,15 +390,11 @@ NULL
 [/template]
 
 [query private accessor(association : UnitAssociation, accessor : String) : String
-	= if not association.childFeature.oclIsUndefined() then
-			association.childFeature.accessor(accessor)
-		else if not association.oclIsKindOf(EntityAssociation) then
-			accessor
-		else if association.isVirtual() then
-			association.virtualAccessor(accessor)
+	= if association.isPseudo() then
+			association.pseudoAccessor(accessor)
 		else
 			accessor
-		endif endif endif
+		endif
 /]
 
 [query private accessor(child : ChildFeature, parentAccessor : String) : String
@@ -423,13 +418,13 @@ NULL
 		endif
 /]
 
-[query private virtualAccessor(association : UnitAssociation, accessor : String) : String
+[query private pseudoAccessor(association : UnitAssociation, accessor : String) : String
 	= association.serviceAccessor()
 		.concat('.').concat(association.name)
 		.concat('(').concat(accessor.parentAccessor()).concat(')')
 /]
 
-[query private virtualAccessor(association : ChildAssociation, accessor : String) : String
+[query private pseudoAccessor(association : ChildAssociation, accessor : String) : String
 	= association.serviceAccessor()
 		.concat('.').concat(association.name)
 		.concat('(').concat(accessor.parentAccessor()).concat(')')
@@ -473,13 +468,8 @@ NULL
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
-[if (association.isVirtual())]
-[association.virtualAccessor(accessor)/][if (not association.childFeature.oclIsUndefined())]
-[if (association.childFeature.oclIsTypeOf(ChildAttribute))]
-.[association.childFeature.oclAsType(ChildAttribute).attribute.modelPropertyName()/][else]
-.[association.childFeature.oclAsType(ChildAssociation).association.modelPropertyName()/][/if][/if]
-[elseif (not association.childFeature.oclIsUndefined())]
-[association.childFeature.getValue(accessor)/]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(association.childFeature.accessor(accessor))/]
 [else]
 	[if (not association.valueDisplay.oclIsUndefined())]
 [association.valueDisplay.label(accessor)/]
@@ -492,28 +482,17 @@ NULL
 [template public getValue(child : ChildFeature, accessor : String)
 	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
 [let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
-[let unitFeatures : Sequence(UnitFeature) = attribute.ancestors(UnitFeature)]
-[if (unitFeatures->notEmpty())]
-[attribute.attribute.getValue(attribute.accessor(accessor))/]
-[else]
-[attribute.attribute.getValue(attribute.accessor(accessor))/]
-[/if]
-[/let]
+[attribute.attribute.getValue(accessor)/]
 [/let]
 [/template]
 
 [template public getValue(child : ChildFeature, accessor : String)
 	? (child.oclIsTypeOf(ChildAssociation)) post(trim())]
 [let association : ChildAssociation = child.oclAsType(ChildAssociation)]
-[if (association.association.isVirtual())]
-[association.virtualAccessor(accessor)/][if (not association.childFeature.oclIsUndefined())]
-[if (association.childFeature.oclIsTypeOf(ChildAttribute))]
-.[association.childFeature.oclAsType(ChildAttribute).attribute.modelPropertyName()/][else]
-.[association.childFeature.oclAsType(ChildAssociation).association.modelPropertyName()/][/if][/if]
-[elseif (not association.childFeature.oclIsUndefined())]
-[association.childFeature.getValue(association.accessor(accessor))/]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(association.childFeature.accessor(accessor))/]
 [else]
-[association.accessor(accessor)/].defaultLabel()
+[accessor/].defaultLabel()
 [/if]
 [/let]
 [/template]

@@ -391,7 +391,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 [template private inputField(field : UnitField, instanceVariable : String)
 	? ((field.isDataType() or field.oclIsTypeOf(DataTypeField)) and not field.isBooleanDataType() and not field.isEnumerationType() and not field.isObfuscated()) post(trim())]
-[let dataType : DataType = 
+[let dataType : Classifier = 
 	if field.oclIsTypeOf(UnitAttribute) then
 		field.oclAsType(UnitAttribute).attribute.dataType()
 	else

@@ -46,8 +46,7 @@ Request $request[/if])
 [/template]
 
 [template private selectMethod(unit : IndexUnit) post(trim())]
-private function [unit.selectName()/]([if (unit.hasFilterParameters())]
-Request $request[/if])
+private function [unit.selectName()/]([if (unit.hasFilterParameters())]Request $request[/if])
 {
     [unit.selectCode()/]
 }

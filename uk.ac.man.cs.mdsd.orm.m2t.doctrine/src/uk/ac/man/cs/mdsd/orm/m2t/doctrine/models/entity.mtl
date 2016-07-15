@@ -113,7 +113,7 @@ protected $[entityOrView.autoKeyName/];
 [/template]
 
 [template private features(entityOrView : EntityOrView) post(trim())]
-[for (feature : Feature | entityOrView.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isVirtual()))]
+[for (feature : Feature | entityOrView.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isPseudo()))]
 [comment TODO sortout location features /]
 	[if (not feature.isLocation())]
 /**

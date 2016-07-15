@@ -221,6 +221,16 @@
 /]
 
 
+[query public instanceName(field : UnitField) : String
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).name
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).name
+		else
+			field.oclAsType(InterfaceField).name
+		endif endif.toLowerFirst()
+/]
+
 [query public optionsName(field : UnitField) : String
 	= field.uniqueName().concat('_options')
 /]

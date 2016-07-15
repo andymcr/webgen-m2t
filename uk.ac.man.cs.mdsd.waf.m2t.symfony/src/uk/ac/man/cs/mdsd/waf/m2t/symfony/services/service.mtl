@@ -21,7 +21,7 @@
 namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
-[if (service.serves.hasVirtualAssociations())]
+[if (service.serves.hasPseudoAssociations())]
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 [/if]
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -34,7 +34,7 @@ class [service.className()/]
 {
     private $doctrine;
 
-[if (service.serves.hasVirtualAssociations())]
+[if (service.serves.hasPseudoAssociations())]
     private $entityManager;
 
 [/if]
@@ -46,11 +46,11 @@ class [service.className()/]
 
 	[/if]
 [/if]
-    public function __construct($doctrine[if (service.serves.hasVirtualAssociations())], $entityManager[/if][if (service.partOf.isAuthenticated())], [if (service = service.partOf.userService())]
+    public function __construct($doctrine[if (service.serves.hasPseudoAssociations())], $entityManager[/if][if (service.partOf.isAuthenticated())], [if (service = service.partOf.userService())]
 $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][/if])
     {
         $this->doctrine = $doctrine;
-[if (service.serves.hasVirtualAssociations())]
+[if (service.serves.hasPseudoAssociations())]
         $this->entityManager = $entityManager;
 [/if]
 [if (service.partOf.isAuthenticated())]
@@ -96,8 +96,8 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][
 
     [service.childSelectionMethods()/]
 
-[if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isVirtual())->notEmpty())]
-    [service.virtualAssociationMethods()/]
+[if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isPseudo())->notEmpty())]
+    [service.pseudoAssociationMethods()/]
 
 [/if]
     [service.getRepositoryMethod()/]
@@ -389,17 +389,17 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 }
 [/template]
 
-[template private virtualAssociationMethods(service : Service) post(trim())]
+[template private pseudoAssociationMethods(service : Service) post(trim())]
 [for (association : Association | service.serves.associations())]
-	[if (association.oclIsKindOf(EntityAssociation) and association.isVirtual())]
+	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
 	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
-[entityAssociation.virtualAssociationMethod()/]
+[entityAssociation.pseudoAssociationMethod()/]
 	[/let]
 	[/if]
 [/for]
 [/template]
 
-[template private virtualAssociationMethod(association : EntityAssociation) post(trim())]
+[template private pseudoAssociationMethod(association : EntityAssociation) post(trim())]
 [let sourceEntity : EntityOrView = association.partOf]
 [let targetEntity : EntityOrView = association.opposite.partOf]
 public function [association.name/]($[sourceEntity.selectName()/])
@@ -431,9 +431,13 @@ public function [association.name/]($[sourceEntity.selectName()/])
 	[/for]
 [/if];
     $query = $this->entityManager->createNativeQuery($sql, $builder);
-[for (key : EntityFeature | sourceEntity.primaryKeys())]
+[if (not sourceEntity.hasPrimaryKeys())]
+    $query->setParameter('[sourceEntity.autoKeyName/]', $[sourceEntity.selectName()/]->getId());
+[else]
+	[for (key : EntityFeature | sourceEntity.primaryKeys())]
     $query->setParameter('[key.instanceName()/]', $[sourceEntity.selectName()/]->[key.getMethodName()/]());
-[/for]
+	[/for]
+[/if]
 
 [if (association.isSingleton())]
 	[if (association.isRequired())]

@@ -948,6 +948,14 @@
 		endif endif
 /]
 
+[query public isPseudo(association : UnitAssociation) : Boolean
+	= if association.association.oclIsKindOf(EntityAssociation) then
+			association.association.oclAsType(EntityAssociation).isPseudo()
+		else 
+			false
+		endif
+/]
+
 [query public isRequired(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
@@ -1046,14 +1054,6 @@
 			feature.oclAsType(UnitAttribute).attribute.isValidated()
 		else 
 			feature.oclAsType(UnitAssociation).association.isValidated()
-		endif
-/]
-
-[query public isVirtual(association : UnitAssociation) : Boolean
-	= if association.association.oclIsKindOf(EntityAssociation) then
-			association.association.oclAsType(EntityAssociation).isVirtual()
-		else 
-			false
 		endif
 /]
 

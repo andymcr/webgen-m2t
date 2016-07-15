@@ -146,16 +146,16 @@
 	= entityOrView.primaryKeys()->notEmpty()
 /]
 
+[query public hasPseudoAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.pseudoAssociations()->notEmpty()
+/]
+
 [query public hasResourceAttributes(entityOrView : EntityOrView) : Boolean
 	= entityOrView.resourceAttributes()->notEmpty()
 /]
 
 [query public hasValidatedFeatures(entityOrView : EntityOrView) : Boolean
 	= entityOrView.validatedFeatures()->notEmpty()
-/]
-
-[query public hasVirtualAssociations(entityOrView : EntityOrView) : Boolean
-	= entityOrView.virtualAssociations()->notEmpty()
 /]
 
 [query public inverseSingletonAssociations(entityOrView : EntityOrView) : Sequence(Association)
@@ -178,6 +178,10 @@
 	= entityOrView.features->select(f | f.isPrimaryKey()).oclAsType(EntityFeature)
 /]
 
+[query public pseudoAssociations(entityOrView : EntityOrView) : Sequence(EntityAssociation)
+	= entityOrView.features->select(f | f.isPseudo()).oclAsType(EntityAssociation)
+/]
+
 [query public resourceAttributes(entityOrView : EntityOrView) : Sequence(SingletonResource)
 	= entityOrView.features->select(f | f.isResource()).oclAsType(SingletonResource)
 /]
@@ -188,10 +192,6 @@
 
 [query public validatedFeatures(entityOrView : EntityOrView) : Sequence(Feature)
 	= entityOrView.features->select(f | f.isValidated()).oclAsType(Feature)
-/]
-
-[query public virtualAssociations(entityOrView : EntityOrView) : Sequence(EntityAssociation)
-	= entityOrView.features->select(f | f.isVirtual()).oclAsType(EntityAssociation)
 /]
 
 
@@ -207,14 +207,16 @@
 		endif endif endif
 /]
 
-[query public dataType(feature : Feature) : DataType
+[query public dataType(feature : Feature) : Classifier
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.dataType()
 		else if feature.oclIsTypeOf(SingletonElement) then
 			feature.oclAsType(SingletonElement).dataType
+		else if feature.oclIsTypeOf(CollectionElement) then
+			feature.oclAsType(CollectionElement).collectionType.elementType
 		else
 			null
-		endif endif
+		endif endif endif
 /]
 
 [query public dateDetails(feature : Feature) : DateDetails
@@ -343,7 +345,7 @@
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isDataType()
 		else
-			feature.oclIsTypeOf(SingletonElement)
+			feature.oclIsTypeOf(SingletonElement) or feature.oclIsTypeOf(CollectionElement)
 		endif
 /]
 
@@ -351,7 +353,7 @@
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isDate()
 		else
-			feature.oclIsTypeOf(SingletonDate)
+			feature.oclIsKindOf(DateAttribute)
 		endif
 /]
 
@@ -411,6 +413,14 @@
 			feature.oclAsType(EntityFeature).primaryKey
 		else
 			false
+		endif
+/]
+
+[query public isPseudo(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAttribute) then
+			false
+		else
+			feature.oclAsType(Association).pseudo
 		endif
 /]
 
@@ -483,14 +493,6 @@
 			feature.oclAsType(EncapsulatedAttribute).attribute.isValidated()
 		else
 			feature.isRequired() or feature.isUnique()
-		endif
-/]
-
-[query public isVirtual(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityAttribute) then
-			false
-		else
-			feature.oclAsType(Association).virtual
 		endif
 /]
 
