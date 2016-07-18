@@ -263,9 +263,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/for]
 [/template]
 
-[template private actions(unit : IndexUnit, accessor : String) post(trim())]
+[template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(accessor, '\''.concat(action.displayLabel).concat('\''), unit.entities->first())/]
+[action.actionLink(rowAccessor, '\''.concat(action.displayLabel).concat('\''), unit.entities->first())/]
 [/for]
 [/template]
 
@@ -379,7 +379,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 				feature.oclAsType(UnitAssociation).association.partOf
 			endif]
 [feature.actions->select(a | not a.disable)
-	->first().actionLink(parentAccessor, feature.getValue(accessor), parentEntityOrView)/]
+	->first().actionLink(feature.getValue(accessor), parentAccessor, parentEntityOrView)/]
 [/let]
 [else]
 {{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
@@ -390,7 +390,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private displayAssociation(association : UnitAssociation, accessor : String, parenAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(accessor,  accessor, association.association.targetType())/]
+	->first().actionLink(accessor,  accessor.concat('.defaultLabel()'), association.association.targetType())/]
 [else]
 {{ [accessor/].defaultLabel()| default('')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
@@ -598,7 +598,7 @@ NULL
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
-'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/],
+'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if],
 [/let]
 [/for]
 [/template]
