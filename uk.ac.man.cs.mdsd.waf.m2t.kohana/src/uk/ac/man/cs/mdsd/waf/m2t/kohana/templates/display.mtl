@@ -330,7 +330,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 	? (field.oclIsKindOf(UnitAssociation) and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.units->isEmpty())]
-	[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
+	[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <?php foreach ([accessor/]->find_all() as $value) { ?><p>[association.displayAssociation('$value')/]</p><?php } ?>
 	[else]
 <?php foreach ([accessor/]->find_all() as $value) { ?><span>[association.displayAssociation('$value')/]</span><?php } ?>

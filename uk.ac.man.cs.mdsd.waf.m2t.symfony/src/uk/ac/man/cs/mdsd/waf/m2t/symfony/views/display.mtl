@@ -135,22 +135,20 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 <dl class="[unit.contentClass/]">
 [/if]
 [for (field : UnitField | unit.displayFields)]
-[let fieldAccessor : String = accessor.concat('.').concat(field.modelPropertyName())]
 	[if (field.conditionalDisplay())]
-{% if [field.getValue(accessor)/] %}
+{% if [field.getValue(accessor.concat('.').concat(field.modelPropertyName()))/] %}
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
- <li class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</li>
+ <li class="[field.displayClass()/]">[field.displayValue(accessor)/]</li>
 	[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.entities->first().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
- <dd class="[field.displayClass()/]">[field.displayValue(fieldAccessor)/]</dd>
+ <dd class="[field.displayClass()/]">[field.displayValue(accessor)/]</dd>
 	[/if]
 	[if (field.conditionalDisplay())]
 {% endif %}
 	[/if]
-[/let]
 [/for]
 [if (unit.hasOmitFieldLabels())]
 </ul>
@@ -170,15 +168,13 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
    <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('entry')/]</h1>
 [/if]
 [for (field : UnitField | indexUnit.displayFields) ]
-[let fieldAccessor : String = 'entry'.concat('.').concat(field.modelPropertyName())]
 	[if (field.conditionalDisplay())]
-{% if [field.getValue(fieldAccessor)/] %}
+{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] %}
 	[/if]
-<span class="[field.modelPropertyName()/]">[field.displayValue(fieldAccessor)/]</span>
+<span class="[field.modelPropertyName()/]">[field.displayValue('entry')/]</span>
 	[if (field.conditionalDisplay())]
 {% endif %}
 	[/if]
-[/let]
 [/for]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
 <span class="actions">[indexUnit.actions('entry')/]</span>
@@ -239,11 +235,11 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 {% for entry in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
 [if (unit.defaultSelection.oclIsUndefined())]
-   [indexUnit.objectData()/]
+   [indexUnit.objectData('entry')/]
 [elseif (indexUnit.defaultSelection.fields->select(f | f.oclIsTypeOf(SelectAttribute))->isEmpty())]
-   [indexUnit.objectData()/]
+   [indexUnit.objectData('entry')/]
 [else]
-   [indexUnit.arrayData()/]
+   [indexUnit.arrayData('entry')/]
 [/if]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <td class="actions">[indexUnit.actions('entry')/]</td>
@@ -255,17 +251,15 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template private objectData(unit : IndexGridUnit) post(trim())]
+[template private objectData(unit : IndexGridUnit, accessor : String) post(trim())]
 [for (field : UnitField | unit.displayFields)]
-[let fieldAccessor : String = 'entry'.concat('.').concat(field.modelPropertyName())]
-<td class="[field.styleClass()/]">[field.displayValue(fieldAccessor)/]</td>
-[/let]
+<td class="[field.styleClass()/]">[field.displayValue(accessor)/]</td>
 [/for]
 [/template]
 
-[template private arrayData(unit : IndexGridUnit) post(trim())]
+[template private arrayData(unit : IndexGridUnit, accessor : String) post(trim())]
 [for (field : UnitField | unit.displayFields)]
-<td class="[field.styleClass()/]">{{ entry['['/]'[field.modelPropertyName()/]'[']'/] }}</td>
+<td class="[field.styleClass()/]">{{ [accessor/]['['/]'[field.modelPropertyName()/]'[']'/] }}</td>
 [/for]
 [/template]
 
@@ -276,50 +270,52 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 
-[template public displayValue(field : UnitField, accessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(accessor)/] | default('') }}
+{{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-	[if (feature.actions->select(a | not a.disable)->isEmpty())]
-{{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
- | truncate([feature.maximumDisplaySize/])[/if] }}
-	[else]
-	[let parentEntityOrView : EntityOrView
-		= if feature.oclIsKindOf(UnitAttribute) then 
-				feature.oclAsType(UnitAttribute).attribute.partOf
-			else
-				feature.oclAsType(UnitAssociation).association.partOf
-			endif]
-    [feature.actions->select(a | not a.disable)->first().actionLink(accessor.parentAccessor(), feature.getValue(accessor), parentEntityOrView)/]
-	[/let]
-	[/if]
+[feature.displayAttribute(feature.accessor(parentAccessor), parentAccessor)/]
 [/let]
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, accessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String)
+	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and not field.isSingleton()) post(trim())]
+[if (field.oclIsKindOf(InterfaceField))]
+{{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
+[else]
+[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+{% for value in [feature.accessor(parentAccessor)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+<p>[feature.displayAttribute('value', parentAccessor)/]</p>[else]
+<span>[feature.displayAttribute('value', parentAccessor)/]</span>[/if]{% endfor %}
+[/let]
+[/if]
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isEnumerationType()) post(trim())]
-{{ [field.getValue(accessor)/][if (field.maximumDisplaySize > 0)]
+{{ [field.getValue(field.accessor(parentAccessor))/][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
-[template public displayValue(field : UnitField, accessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isDate()) post(trim())]
-{{ [field.getValue(accessor)/] | date[if (not field.dateFormat.oclIsUndefined())]
+{{ [field.getValue(field.accessor(parentAccessor))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
-[template public displayValue(field : UnitField, accessor : String) 
+[template public displayValue(field : UnitField, parentAccessor : String) 
 	? (field.isBooleanDataType()) post(trim())] 
-<input type="checkbox"{% if [accessor/] %} checked="checked"{% endif %} disabled=""/>
+<input type="checkbox"{% if [field.accessor(parentAccessor)/] %} checked="checked"{% endif %} disabled="disabled"/>
 [/template] 
  
-[template public displayValue(field : UnitField, accessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isResource() and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[let accessor : String = field.accessor(parentAccessor)]
 <?php
 [if (not attribute.conditionalDisplay())]
     if (!empty([attribute.getValue(accessor)/]))
@@ -330,48 +326,68 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
             NULL, NULL, FALSE);
 ?>
 [/let]
-[/template]
-
-[template public displayValue(field : UnitField, accessor : String)
-	? (field.isAssociation() and field.isSingleton()) post(trim())]
-[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (association.units->isEmpty())]
-[association.displayAssociation(association.accessor(accessor), accessor.parentAccessor())/]
-[else]
-[association.units->first().unitContent(association.accessor(accessor))/]
-[/if]
 [/let]
 [/template]
 
-[template public displayValue(field : UnitField, accessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String)
+	? (field.isAssociation() and field.isSingleton()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[let accessor : String = association.accessor(parentAccessor)]
+[if (association.units->isEmpty())]
+[association.displayAssociation(accessor, parentAccessor)/]
+[else]
+[association.units->first().unitContent(accessor)/]
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[let accessor : String = association.accessor(parentAccessor)]
 [if (association.units->isEmpty())]
-{% for value in [association.collectionAccessor(accessor)/] %}[if (association.displayOption = CollectionDisplayOptions::PageDirection)]
+{% for value in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[association.displayAssociation('value', 'value')/]</p>[else]
 <span>[association.displayAssociation('value', 'value')/]</span>[/if]{% endfor %}
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-[association.units.unitContent(association.accessor(accessor))/]
-	[elseif (not association.selection.oclIsUndefined())]
-[association.units.unitContent(association.collectionAccessor(accessor))/]
+[association.units.unitContent(accessor)/]
 	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
-[association.units.unitContent(association.accessor(accessor))/]
+[association.units.unitContent(accessor)/]
 	[else]
 	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
 [association.units.unitContent(
 	association.serviceAccessor()
 		.concat('.').concat(association.name).concat(indexUnit.defaultSelection.instanceName().toUpperFirst())
-		.concat('(').concat(accessor.parentAccessor()).concat(')'))/]
+		.concat('(').concat(parentAccessor).concat(')'))/]
 	[/let]
 	[/if]
 [/let]
 [/if]
 [/let]
+[/let]
 [/template]
 
-[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
+[template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
+[if (feature.actions->select(a | not a.disable)->notEmpty())]
+[let parentEntityOrView : EntityOrView
+		= if feature.oclIsKindOf(UnitAttribute) then 
+				feature.oclAsType(UnitAttribute).attribute.partOf
+			else
+				feature.oclAsType(UnitAssociation).association.partOf
+			endif]
+[feature.actions->select(a | not a.disable)
+	->first().actionLink(parentAccessor, feature.getValue(accessor), parentEntityOrView)/]
+[/let]
+[else]
+{{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
+ | truncate([feature.maximumDisplaySize/])[/if] }}
+[/if]
+[/template]
+
+[template private displayAssociation(association : UnitAssociation, accessor : String, parenAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
 	->first().actionLink(accessor,  association.getValue(accessor), association.association.targetType())/]
@@ -381,6 +397,110 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [/template]
 
+[query private accessor(field : UnitField, parentAccessor : String) : String
+	= if field.oclIsTypeOf(InterfaceField) then
+			field.oclAsType(InterfaceField).accessor(parentAccessor)
+		else if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).accessor(parentAccessor)
+		else
+			field.oclAsType(UnitAssociation).accessor(parentAccessor)
+		endif endif
+/]
+
+[query private accessor(field : InterfaceField, parentAccessor : String) : String
+	= parentAccessor.concat('.').concat(field.modelPropertyName())
+/]
+
+[query private accessor(attribute : UnitAttribute, parentAccessor : String) : String
+	= parentAccessor.concat('.').concat(attribute.modelPropertyName())
+/]
+
+[query private accessor(association : UnitAssociation, parentAccessor : String) : String
+	= if association.isPseudo() then
+			association.pseudoAccessor(parentAccessor)
+		else if not association.selection.oclIsUndefined() then
+			association.collectionAccessor(parentAccessor)
+		else
+			let accessor : String 
+				= parentAccessor.concat('.').concat(association.modelPropertyName())
+				in if not association.childFeature.oclIsUndefined() then
+						association.childFeature.accessor(accessor)
+					else
+						accessor
+					endif 
+		endif endif
+/]
+
+[query private pseudoAccessor(association : UnitAssociation, parentAccessor : String) : String
+	= let accessor : String
+		= association.serviceAccessor()
+			.concat('.').concat(association.name)
+			.concat('(').concat(parentAccessor).concat(')')
+		in -- if not association.selection.oclIsUndefined() then
+				-- association.collectionAccessor(accessor)
+			-- else 
+if not association.childFeature.oclIsUndefined() then
+				association.childFeature.accessor(accessor)
+			else
+				accessor
+			endif -- endif
+/]
+
+[query private collectionAccessor(association : UnitAssociation, parentAccessor : String) : String
+	= association.serviceAccessor()
+				.concat('.')
+.concat(association.association.name)
+.concat(association.selection.instanceName().toUpperFirst())
+-- .concat(association.association.childSelectionName(association.selection))
+				.concat('(').concat(parentAccessor).concat(')')
+/]
+
+[query private serviceAccessor(association : UnitAssociation) : String
+	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
+/]
+ 
+[query private accessor(child : ChildFeature, parentAccessor : String) : String
+	=  if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).accessor(parentAccessor)
+		else
+			child.oclAsType(ChildAssociation).accessor(parentAccessor)
+		endif
+/]
+
+[query private accessor(child : ChildAttribute, parentAccessor : String) : String
+	=  parentAccessor.concat('.').concat(child.attribute.modelPropertyName())
+/]
+
+[query private accessor(child : ChildAssociation, parentAccessor : String) : String
+	=  if child.isPseudo() then
+			child.pseudoAccessor(parentAccessor)
+		else
+			let childAccessor : String
+				= parentAccessor.concat('.').concat(child.association.modelPropertyName())
+				in if child.childFeature.oclIsUndefined() then
+					childAccessor
+				else
+					child.childFeature.accessor(childAccessor)
+				endif
+		endif
+/]
+
+[query private pseudoAccessor(association : ChildAssociation, parentAccessor : String) : String
+	= let accessor : String
+		= association.serviceAccessor()
+			.concat('.').concat(association.name)
+			.concat('(').concat(parentAccessor).concat(')')
+		in if not association.childFeature.oclIsUndefined() then
+				association.childFeature.accessor(accessor)
+			else
+				accessor
+			endif
+/]
+
+[query private serviceAccessor(association : ChildAssociation) : String
+	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
+/]
+ 
 [template public getValue(field : UnitField, accessor : String) post(trim())]
 [if (field.oclIsTypeOf(UnitFeature))]
 [field.oclAsType(UnitFeature).getValue(accessor)/]
@@ -389,72 +509,6 @@ NULL
 [/if]
 [/template]
 
-[query private accessor(association : UnitAssociation, accessor : String) : String
-	= if association.isPseudo() then
-			association.pseudoAccessor(accessor)
-		else
-			accessor
-		endif
-/]
-
-[query private accessor(child : ChildFeature, parentAccessor : String) : String
-	=  if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).accessor(parentAccessor)
-		else
-			child.oclAsType(ChildAssociation).accessor(parentAccessor)
-		endif
-/]
-[query private accessor(child : ChildAttribute, parentAccessor : String) : String
-	=  parentAccessor.concat('.').concat(child.attribute.modelPropertyName())
-/]
-
-[query private accessor(child : ChildAssociation, parentAccessor : String) : String
-	=  let childAccessor : String
-		= parentAccessor.concat('.').concat(child.association.modelPropertyName())
-		in if child.childFeature.oclIsUndefined() then
-			childAccessor
-		else
-			child.childFeature.accessor(childAccessor)
-		endif
-/]
-
-[query private pseudoAccessor(association : UnitAssociation, accessor : String) : String
-	= association.serviceAccessor()
-		.concat('.').concat(association.name)
-		.concat('(').concat(accessor.parentAccessor()).concat(')')
-/]
-
-[query private pseudoAccessor(association : ChildAssociation, accessor : String) : String
-	= association.serviceAccessor()
-		.concat('.').concat(association.name)
-		.concat('(').concat(accessor.parentAccessor()).concat(')')
-/]
-
-[query private collectionAccessor(association : UnitAssociation, accessor : String) : String
-	= if association.selection.oclIsUndefined() then
-			association.accessor(accessor)
-		else
-			association.serviceAccessor()
-				.concat('.')
-.concat(association.association.name)
-.concat(association.selection.instanceName().toUpperFirst())
--- .concat(association.association.childSelectionName(association.selection))
-				.concat('(').concat(accessor.parentAccessor()).concat(')')
-		endif
-/]
-
-[query private serviceAccessor(association : UnitAssociation) : String
-	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
-/]
- 
-[query private serviceAccessor(association : ChildAssociation) : String
-	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
-/]
- 
-[query private parentAccessor(accessor : String) : String
-	= accessor.substring(1, accessor.lastIndex('.') - 1)
-/]
- 
 [template public getValue(feature : UnitFeature, accessor : String) post(trim())]
 [if (feature.oclIsTypeOf(UnitAttribute))]
 [feature.oclAsType(UnitAttribute).getValue(accessor)/]
