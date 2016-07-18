@@ -393,16 +393,16 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [for (association : Association | service.serves.associations())]
 	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
 	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
-[entityAssociation.pseudoAssociationMethod()/]
+[entityAssociation.pseudoAssociationMethod(service)/]
 	[/let]
 	[/if]
 [/for]
 [/template]
 
-[template private pseudoAssociationMethod(association : EntityAssociation) post(trim())]
+[template private pseudoAssociationMethod(association : EntityAssociation, service : Service) post(trim())]
 [let sourceEntity : EntityOrView = association.partOf]
 [let targetEntity : EntityOrView = association.opposite.partOf]
-public function [association.name/]($[sourceEntity.selectName()/])
+public function [association.name/]($[sourceEntity.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])
 {
     $builder = new ResultSetMappingBuilder($this->entityManager);
     $builder->addEntityResult('AppBundle:[targetEntity.modelClassName()/]', '[targetEntity.selectName()/]');
@@ -416,12 +416,25 @@ public function [association.name/]($[sourceEntity.selectName()/])
 [for (attribute : Attribute | targetEntity.attributes())]
     $builder->addFieldResult('[targetEntity.selectName()/]', '[attribute.columnName()/]', '[attribute.columnName()/]');
 [/for]
+[comment TODO short term fix/]
+// [protected (association.name.concat('.join.custonise'))]
+// [/protected]
     $sql = 'SELECT DISTINCT ' . (String) $builder
         . ' FROM [sourceEntity.tableName/] [sourceEntity.selectName()/]'
         . ' INNER JOIN [targetEntity.tableName/] [targetEntity.selectName()/] ON'
 [for (key : AssociationKey | association.keys())]
             . ' [if (i > 1)]AND [/if][key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/] = [key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]'
 [/for]
+[comment for (selection : Selection | service.selections)]
+    [if (selection.joins->notEmpty())]
+    if ($selection == self::xx) {
+		[for (join : Association | selection.joins)]
+// [join/]
+        . ' JOIN ' . [join.targetType().tableName/] . ' ' . [join.targetType().selectName()/]
+		[/for]
+    }
+	[/if]
+[/comment]
         . ' WHERE'
 [if (not sourceEntity.hasPrimaryKeys())]
             . ' [sourceEntity.selectName()/].[sourceEntity.autoKeyName/] = :[sourceEntity.autoKeyName/]'
