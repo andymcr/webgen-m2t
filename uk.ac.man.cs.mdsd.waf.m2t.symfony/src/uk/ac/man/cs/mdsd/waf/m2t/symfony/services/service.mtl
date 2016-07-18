@@ -417,7 +417,7 @@ public function [association.name/]($[sourceEntity.selectName()/][if (service.se
     $builder->addFieldResult('[targetEntity.selectName()/]', '[attribute.columnName()/]', '[attribute.columnName()/]');
 [/for]
 [comment TODO short term fix/]
-// [protected (association.name.concat('.join.custonise'))]
+// [protected (association.name.concat('.custonise.fields'))]
 // [/protected]
     $sql = 'SELECT DISTINCT ' . (String) $builder
         . ' FROM [sourceEntity.tableName/] [sourceEntity.selectName()/]'
@@ -435,6 +435,9 @@ public function [association.name/]($[sourceEntity.selectName()/][if (service.se
     }
 	[/if]
 [/comment]
+[comment TODO short term fix/]
+// [protected (association.name.concat('.custonise.join'))]
+// [/protected]
         . ' WHERE'
 [if (not sourceEntity.hasPrimaryKeys())]
             . ' [sourceEntity.selectName()/].[sourceEntity.autoKeyName/] = :[sourceEntity.autoKeyName/]'
