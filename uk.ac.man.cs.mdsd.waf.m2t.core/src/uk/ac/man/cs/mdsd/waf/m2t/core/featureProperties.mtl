@@ -896,25 +896,17 @@
 /]
 
 [query public isModifiable(feature : UnitFeature) : Boolean
-	= if feature.oclIsKindOf(UnitFeature) and feature.isSingleton() then
-			if feature.oclAsType(UnitFeature).forcedValue.oclIsUndefined() then
-				if feature.oclIsTypeOf(UnitAttribute) then
-					feature.oclAsType(UnitAttribute).attribute.isModifiable()
-				else
-					feature.oclAsType(UnitAssociation).association.isModifiable()
-				endif
-			else
-				false
-			endif
-		else if feature.oclIsTypeOf(UnitAssociation) and not feature.isSingleton() then
-			if feature.oclAsType(UnitAssociation).units->isEmpty() then
-				feature.oclAsType(UnitAssociation).association.isModifiable()
-			else
-				false
-			endif
+	= if feature.oclIsTypeOf(UnitAttribute) then
+			let attribute : UnitAttribute = feature.oclAsType(UnitAttribute)
+				in attribute.forcedValue.oclIsUndefined() and attribute.attribute.isModifiable()
 		else
-			false
-		endif endif
+			let association : UnitAssociation = feature.oclAsType(UnitAssociation)
+				in if association.units->notEmpty() then
+						false
+					else
+						association.forcedValue.oclIsUndefined() and association.association.isModifiable()
+					endif
+		endif
 /]
 
 [query public isModifiableOrEmbedded(feature : UnitFeature) : Boolean
