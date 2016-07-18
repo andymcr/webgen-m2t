@@ -390,9 +390,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private displayAssociation(association : UnitAssociation, accessor : String, parenAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(accessor,  association.getValue(accessor), association.association.targetType())/]
+	->first().actionLink(accessor,  accessor, association.association.targetType())/]
 [else]
-{{ [association.getValue(accessor)/]| default('')[if (association.maximumDisplaySize > 0)]
+{{ [accessor/].defaultLabel()| default('')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
 [/if]
 [/template]
