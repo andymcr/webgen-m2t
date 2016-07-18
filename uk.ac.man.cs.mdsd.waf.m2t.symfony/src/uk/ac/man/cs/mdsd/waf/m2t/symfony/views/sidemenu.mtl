@@ -35,19 +35,24 @@
 [let staticMenu : StaticMenu = menu.oclAsType(StaticMenu)]
 <h1 class="[staticMenu.captionClass/][if (staticMenu.omitCaption)] hidden[/if]">{{ 'label.[staticMenu.id()/]' | trans }}</h1>
 <ul class="[staticMenu.layoutClass/]">
- [menu.entries.generateMenuEntry()/]
+[for (entry : MenuEntry | menu.entries)]
+ [entry.generateMenuEntry()/]
+[/for]
 </ul>
 [/let]
 [/template]
 
 
 [template private generateMenuEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(ActionMenuEntry))]
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
 [let entry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-<li>[if (not entry.action.oclIsUndefined())]
+[if (not entry.requiresRole.oclIsUndefined())]
+{% if is_granted('[entry.requiresRole/]') %}[/if]<li>[if (not entry.action.oclIsUndefined())]
 <a href="{{ path('[entry.action.routeName()/]'[if (not entry.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | entry.query.parameters) separator(', ')]
 '[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>[else]
-{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}[/if]</li>
+{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}[/if]</li>[if (not entry.requiresRole.oclIsUndefined())]
+{% endif %}
+[/if]
 [/let]
 [/template]
