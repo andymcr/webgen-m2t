@@ -378,11 +378,6 @@ public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.insta
 [/template]
 
 [template private userInterfaceMethods(entityOrView : EntityOrView) post(trim())]
-public function getUsername() 
-{ 
-    return $this->getUsernameUni(); 
-} 
-
 public function getPassword() 
 { 
     return null; 
