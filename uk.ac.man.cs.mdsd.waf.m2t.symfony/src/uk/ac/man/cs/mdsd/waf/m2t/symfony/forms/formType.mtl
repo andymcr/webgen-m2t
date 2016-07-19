@@ -55,7 +55,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [if (featuresUsed->select(f | f.isEnumerationType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (featuresUsed->select(a | a.isContains() and not a.isSingleton())->notEmpty())]
+[if (featuresUsed->select(a | (a.oclIsKindOf(EntityAttribute) or a.isContains()) and not a.isSingleton())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
 [if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::DateOnly)->notEmpty())]
@@ -90,10 +90,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'label' => '[attribute.partOf.id()/].labels.[attribute.id()/]',
     'translation_domain' => 'entity',
-[if (not attribute.isRequired())]
+[if (attribute.isSingleton() and not attribute.isRequired())]
     'required' => FALSE,
 [/if]
-[if (attribute.isDate())]
+[if (not attribute.isSingleton())]
+    'entry_type' => [attribute.interfaceType(true)/],
+    'allow_add' => true,
+    'allow_delete' => true,
+[elseif (attribute.isDate())]
 	[if (attribute.dateDetails() = DateDetails::DateAndTime)]
     'date_widget' => 'single_text',
     'time_widget' => 'single_text',
@@ -122,7 +126,13 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/template]
 
 [template private interfaceType(attribute : Attribute) post(trim())]
-[if (attribute.isEnumerationType())]
+[attribute.interfaceType(false)/]
+[/template]
+
+[template private interfaceType(attribute : Attribute, elementType : Boolean) post(trim())]
+[if (not attribute.isSingleton() and not elementType)]
+CollectionType::class
+[elseif (attribute.isEnumerationType())]
 ChoiceType::class
 [elseif (attribute.isBooleanDataType())]
 CheckboxType::class
