@@ -36,7 +36,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
 {
     try {
         $[unit.instanceName()/] = [unit.createInstance()/];
-        $this->[unit.instanceName()/] = [unit.createForm(true)/];
+        $this->[unit.instanceName()/] = [unit.createForm(true, false)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
         if ($request->isMethod('POST')) {
             $this->edit->submit($request->request->get($this->edit->getName()), false);
@@ -84,7 +84,7 @@ public function [unit.actionName()/]X([unit.actionMethodParameters()/])
 {
     try {
         $[unit.instanceName()/] = [unit.loadInstance()/];
-        $this->[unit.instanceName()/] = [unit.createForm(false)/];
+        $this->[unit.instanceName()/] = [unit.createForm(false, false)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
         if ($request->isMethod('POST')) {
             $this->edit->submit($request->request->get($this->edit->getName()), false);
@@ -120,9 +120,9 @@ public function [unit.actionName()/]X([unit.actionMethodParameters()/])
 [/let]
 [/template]
 
-[template public createForm(unit : EditUnit, create : Boolean) post(trim())]
+[template public createForm(unit : EditUnit, create : Boolean, placeholder : Boolean) post(trim())]
 [let entityOrView : EntityOrView = unit.entities->first()]
-$this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/], array(
+$this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(create)/]', array(
 [if (create)]
 	[if (entityOrView.keyEntity().isContained())]
@@ -132,7 +132,7 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
         [entityOrView.routeActualParameters(entityOrView)/]
 [/if]
     )),
-))
+)[/if])
 [/let]
 [/template]
 
@@ -154,7 +154,7 @@ return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 		[if (create)]
 $[unit.instanceName()/] = [unit.createInstance()/];
-$this->[unit.instanceName()/] = [unit.createForm(true)/];
+$this->[unit.instanceName()/] = [unit.createForm(true, false)/];
 		[else]
 		[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
 return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContained())], array(
@@ -178,7 +178,8 @@ return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContaine
 if (!isset($this->[editUnit.instanceName()/]))
 {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
-    $this->[editUnit.instanceName()/] = [editUnit.createForm(not editUnit.oclIsTypeOf(UpdateUnit))/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm(not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
+    $parameters['['/]'[editUnit.instanceName()/]_disabled'[']'/] = true;
 }
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
 [/let]
