@@ -394,6 +394,7 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
 	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
 [entityAssociation.pseudoAssociationMethod(service)/]
+
 	[/let]
 	[/if]
 [/for]
@@ -445,7 +446,11 @@ public function [association.name/]($[sourceEntity.selectName()/][if (service.se
 	[for (key : EntityFeature | sourceEntity.primaryKeys())]
             . ' [if (i > 1)]AND [/if][sourceEntity.selectName()/].[key.columnName/] = :[key.instanceName()/]'
 	[/for]
-[/if];
+[/if]
+[comment TODO short term fix/]
+// [protected (association.name.concat('.customise.where'))]
+// [/protected]
+;
     $query = $this->entityManager->createNativeQuery($sql, $builder);
 [if (not sourceEntity.hasPrimaryKeys())]
     $query->setParameter('[sourceEntity.autoKeyName/]', $[sourceEntity.selectName()/]->getId());
