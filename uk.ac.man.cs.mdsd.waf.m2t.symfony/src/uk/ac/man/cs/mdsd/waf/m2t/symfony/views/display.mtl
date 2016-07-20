@@ -496,7 +496,7 @@ NULL
 [/if]
 [for (key : Attribute | entityOrView.attributeKeys())]
 [let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
-'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if],
+'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
 [/let]
 [/for]
 [/template]

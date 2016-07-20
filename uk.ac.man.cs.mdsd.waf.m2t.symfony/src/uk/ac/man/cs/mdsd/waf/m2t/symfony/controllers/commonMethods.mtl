@@ -49,8 +49,15 @@ $this->get('[unit.service().name/]')
 
 [/template]
 
+[template public findActualParameters(entityOrView : EntityOrView) post(trim())]
+[for (key : Attribute | entityOrView.uriPathKeys(false)) separator (', ')]
+[if (key.encodeUriKey)]
+urldecode($[key.routeParameterName(entityOrView)/])[else]
+$[key.routeParameterName(entityOrView)/][/if][/for]
+[/template]
+
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.entities->first().routeParameters()/])
+[unit.getService()/]->find([unit.entities->first().findActualParameters()/])
 [/template]
 
 [template public loadSelectedInstance(unit : DataUnit) post(trim())]
