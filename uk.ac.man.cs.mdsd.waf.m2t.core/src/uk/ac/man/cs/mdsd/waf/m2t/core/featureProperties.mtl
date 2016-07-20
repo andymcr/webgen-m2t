@@ -484,7 +484,7 @@
 		endif)
 /]
 
-[query public inputOrEmbeddedFields(unit : DynamicUnit) : OrderedSet(UnitField)
+[query public inputAndEmbeddedFields(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then
 			f.oclAsType(UnitFeature).isModifiableOrEmbedded()
@@ -851,6 +851,15 @@
 		endif
 /]
 
+[query public hasEmbedded(feature : UnitField) : Boolean
+	= if feature.oclIsTypeOf(UnitAssociation) then
+			let association : UnitAssociation = feature.oclAsType(UnitAssociation)
+				in association.units->notEmpty()
+		else
+			false
+		endif
+/]
+
 [query public isEncrypted(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
@@ -910,12 +919,7 @@
 /]
 
 [query public isModifiableOrEmbedded(feature : UnitFeature) : Boolean
-	= feature.isModifiable() or
-		if not feature.oclIsTypeOf(UnitAssociation) then
-			false
-		else
-			feature.oclAsType(UnitAssociation).units->notEmpty()
-		endif
+	= feature.isModifiable() or feature.hasEmbedded()
 /]
 
 [query public isLocation(field : UnitField) : Boolean

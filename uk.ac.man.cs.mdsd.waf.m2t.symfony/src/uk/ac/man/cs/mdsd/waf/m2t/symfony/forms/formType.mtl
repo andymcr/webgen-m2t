@@ -249,5 +249,12 @@ add('[association.modelPropertyName()/]', CollectionType::class, array(
 			Sequence{unit}
 		else
 			Sequence{}
-		endif
+		endif->union(entityOrView.nestedUsersOf(unit))
+/]
+
+[query private nestedUsersOf(entityOrView : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+	= unit.displayFields
+		->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
+		->select(a | a.units->notEmpty())
+		->collect(a | entityOrView.usersOf(a.units->first().oclAsType(EditUnit)))
 /]

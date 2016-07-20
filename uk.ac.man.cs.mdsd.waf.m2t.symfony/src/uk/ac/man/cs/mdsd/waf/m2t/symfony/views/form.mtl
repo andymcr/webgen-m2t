@@ -11,9 +11,7 @@
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.formOpen(accessor)/]
-[for (field : UnitField | editUnit.inputOrEmbeddedFields())]
- [field.formField(editUnit, accessor)/]
-[/for]
+ [editUnit.formFields(accessor)/]
 [editUnit.formControlAndClose(accessor)/]
 [/let]
 [/template]
@@ -21,6 +19,12 @@
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
 {% form_theme [accessor/] 'form/messages_on_fields.html.twig' %}
 {{ form_start([accessor/], { 'attr': {'class': '[unit.contentClass/]'} }) }}
+[/template]
+
+[template private formFields(unit : EditUnit, accessor : String) post(trim())]
+[for (field : UnitField | unit.inputAndEmbeddedFields())]
+[field.formField(unit, accessor)/]
+[/for]
 [/template]
 
 [template private formControlAndClose(unit : DynamicUnit, accessor : String) post(trim())]
@@ -45,10 +49,29 @@
 {{ form_end([accessor/], {'render_rest': false}) }}
 [/template]
 
-[template private formField(field : UnitField, unit : DynamicUnit, accessor : String) post(trim())]
-[if (not field.isContains())]
+[template private formField(field : UnitField, unit : DynamicUnit, accessor : String)
+	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
 {{ form_row([accessor/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
+[/template]
+
+[template private formField(field : UnitField, unit : DynamicUnit, accessor : String)
+	? (field.hasEmbedded()) post(trim())]
+[let embeddedUnit : EditUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(EditUnit)]
+[if (field.isSingleton())]
+[embeddedUnit.formFields(accessor.concat('.').concat(field.modelPropertyName()))/]
 [else]
+[let elementAccessor : String = embeddedUnit.entities->first().name]
+{% for [elementAccessor/] in [accessor/] %}
+[embeddedUnit.formFields(elementAccessor)/]
+{% endfor %}
+[/let]
+[/if]
+[/let]
+[/template]
+
+[comment this could be left from an experiment /]
+[template private formField(field : UnitField, unit : DynamicUnit, accessor : String)
+	? (field.isContains()) post(trim())]
 [let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
 	[if (field.isSingleton())]
 		[for (childField : UnitField | embeddedUnit.displayFields)]
@@ -66,7 +89,6 @@
 </ul>
 	[/if]
 [/let]
-[/if]
 [/template]
 
 [template public map(unit : DynamicUnit)]

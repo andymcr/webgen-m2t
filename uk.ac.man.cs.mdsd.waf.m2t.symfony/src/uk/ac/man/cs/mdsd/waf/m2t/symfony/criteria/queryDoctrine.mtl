@@ -246,7 +246,7 @@ $query->setParameter('now', new \DateTime('now'));
 [if (containedIn.isLocallyAuthenticated())]
 $query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser()->getId());
 [elseif (containedIn.isCasAuthenticated())]
-$query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser()->getUsernameUni());
+$query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser()->getUsername());
 [else]
 $query->setParameter('user', '????');
 [/if]

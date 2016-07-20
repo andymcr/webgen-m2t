@@ -81,7 +81,7 @@
 
 [template private form(unit : DynamicUnit) post(trim())]
 [unit.formOpen()/]
-[for (field : UnitField | unit.inputOrEmbeddedFields())]
+[for (field : UnitField | unit.inputAndEmbeddedFields())]
  [field.formField(unit)/]
 [/for]
 [unit.formControlAndClose()/]
