@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
 
 
 [template public unitContent(unit : ContentUnit, accessor : String)
@@ -49,23 +50,25 @@
 {{ form_end([accessor/], {'render_rest': false}) }}
 [/template]
 
-[template private formField(field : UnitField, unit : DynamicUnit, accessor : String)
+[template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
-{{ form_row([accessor/].[field.modelPropertyName()/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
+{{ form_row([field.accessor(parentAccessor)/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
 [/template]
 
-[template private formField(field : UnitField, unit : DynamicUnit, accessor : String)
+[template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (field.hasEmbedded()) post(trim())]
-[let embeddedUnit : EditUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(EditUnit)]
-[if (field.isSingleton())]
-[embeddedUnit.formFields(accessor.concat('.').concat(field.modelPropertyName()))/]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[let embeddedUnit : EditUnit = association.units->first().oclAsType(EditUnit)]
+[if (association.isSingleton())]
+[embeddedUnit.formFields(association.accessor(parentAccessor))/]
 [else]
 [let elementAccessor : String = embeddedUnit.entities->first().name]
-{% for [elementAccessor/] in [accessor/] %}
+{% for [elementAccessor/] in [association.accessor(parentAccessor)/] %}
 [embeddedUnit.formFields(elementAccessor)/]
 {% endfor %}
 [/let]
 [/if]
+[/let]
 [/let]
 [/template]
 

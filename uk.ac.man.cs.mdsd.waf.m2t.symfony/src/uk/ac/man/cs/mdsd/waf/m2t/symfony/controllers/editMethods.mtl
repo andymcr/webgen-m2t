@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
@@ -83,7 +84,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
 public function [unit.actionName()/]X([unit.actionMethodParameters()/])
 {
     try {
-        $[unit.instanceName()/] = [unit.loadInstance()/];
+        [unit.loadSelectedInstance()/]
         $this->[unit.instanceName()/] = [unit.createForm(false, false)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
         if ($request->isMethod('POST')) {
@@ -113,7 +114,14 @@ public function [unit.actionName()/]X([unit.actionMethodParameters()/])
         }
 [/if]
 
-        return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
+[if (page.units->size() > 1)]
+        return $this->renderPage([page.renderActualParameters(unit)/]);
+[else]
+        $parameters = array();
+        $parameters['['/]'title'[']'/] = '[page.displayLabel/]';
+        [unit.templateParameters()/]
+        return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+[/if]
     }
     [unit.catchSelectionException()/]
 }

@@ -53,6 +53,22 @@ $this->get('[unit.service().name/]')
 [unit.getService()/]->find([unit.entities->first().routeParameters()/])
 [/template]
 
+[template public loadSelectedInstance(unit : DataUnit) post(trim())]
+[if (unit.defaultSelection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.loadInstance()/];
+[else]
+$this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+[/if]
+[/template]
+
+[template public loadSelectedInstance(unit : EditUnit) post(trim())]
+[if (unit.defaultSelection.oclIsUndefined())]
+$[unit.instanceName()/] = [unit.loadInstance()/];
+[else]
+$[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+[/if]
+[/template]
+
 [template public createInstance(unit : DynamicUnit) post(trim())]
 new [unit.modelName()/]()
 [/template]

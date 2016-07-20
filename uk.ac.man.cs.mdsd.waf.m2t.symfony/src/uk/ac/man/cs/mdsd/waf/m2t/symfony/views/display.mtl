@@ -10,6 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
 
 
@@ -397,110 +398,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [/template]
 
-[query private accessor(field : UnitField, parentAccessor : String) : String
-	= if field.oclIsTypeOf(InterfaceField) then
-			field.oclAsType(InterfaceField).accessor(parentAccessor)
-		else if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).accessor(parentAccessor)
-		else
-			field.oclAsType(UnitAssociation).accessor(parentAccessor)
-		endif endif
-/]
 
-[query private accessor(field : InterfaceField, parentAccessor : String) : String
-	= parentAccessor.concat('.').concat(field.modelPropertyName())
-/]
-
-[query private accessor(attribute : UnitAttribute, parentAccessor : String) : String
-	= parentAccessor.concat('.').concat(attribute.modelPropertyName())
-/]
-
-[query private accessor(association : UnitAssociation, parentAccessor : String) : String
-	= if association.isPseudo() then
-			association.pseudoAccessor(parentAccessor)
-		else if not association.selection.oclIsUndefined() then
-			association.collectionAccessor(parentAccessor)
-		else
-			let accessor : String 
-				= parentAccessor.concat('.').concat(association.modelPropertyName())
-				in if not association.childFeature.oclIsUndefined() then
-						association.childFeature.accessor(accessor)
-					else
-						accessor
-					endif 
-		endif endif
-/]
-
-[query private pseudoAccessor(association : UnitAssociation, parentAccessor : String) : String
-	= let accessor : String
-		= association.serviceAccessor()
-			.concat('.').concat(association.name)
-			.concat('(').concat(parentAccessor).concat(')')
-		in -- if not association.selection.oclIsUndefined() then
-				-- association.collectionAccessor(accessor)
-			-- else 
-if not association.childFeature.oclIsUndefined() then
-				association.childFeature.accessor(accessor)
-			else
-				accessor
-			endif -- endif
-/]
-
-[query private collectionAccessor(association : UnitAssociation, parentAccessor : String) : String
-	= association.serviceAccessor()
-				.concat('.')
-.concat(association.association.name)
-.concat(association.selection.instanceName().toUpperFirst())
--- .concat(association.association.childSelectionName(association.selection))
-				.concat('(').concat(parentAccessor).concat(')')
-/]
-
-[query private serviceAccessor(association : UnitAssociation) : String
-	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
-/]
- 
-[query private accessor(child : ChildFeature, parentAccessor : String) : String
-	=  if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).accessor(parentAccessor)
-		else
-			child.oclAsType(ChildAssociation).accessor(parentAccessor)
-		endif
-/]
-
-[query private accessor(child : ChildAttribute, parentAccessor : String) : String
-	=  parentAccessor.concat('.').concat(child.attribute.modelPropertyName())
-/]
-
-[query private accessor(child : ChildAssociation, parentAccessor : String) : String
-	=  if child.isPseudo() then
-			child.pseudoAccessor(parentAccessor)
-		else
-			let childAccessor : String
-				= parentAccessor.concat('.').concat(child.association.modelPropertyName())
-				in if child.childFeature.oclIsUndefined() then
-					childAccessor
-				else
-					child.childFeature.accessor(childAccessor)
-				endif
-		endif
-/]
-
-[query private pseudoAccessor(association : ChildAssociation, parentAccessor : String) : String
-	= let accessor : String
-		= association.serviceAccessor()
-			.concat('.').concat(association.name)
-			.concat('(').concat(parentAccessor).concat(')')
-		in if not association.childFeature.oclIsUndefined() then
-				association.childFeature.accessor(accessor)
-			else
-				accessor
-			endif
-/]
-
-[query private serviceAccessor(association : ChildAssociation) : String
-	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
-/]
- 
 [template public getValue(field : UnitField, accessor : String) post(trim())]
 [if (field.oclIsTypeOf(UnitFeature))]
 [field.oclAsType(UnitFeature).getValue(accessor)/]
