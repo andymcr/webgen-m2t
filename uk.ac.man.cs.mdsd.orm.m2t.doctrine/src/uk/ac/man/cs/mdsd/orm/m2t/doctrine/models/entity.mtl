@@ -44,7 +44,7 @@ class [entityOrView.modelClassName()/][if (entityOrView.implementsUserInterface)
 
 [/if]
 [for (feature : Feature | entityOrView.features)]
-    [feature.featureMethods()/]
+    [feature->select(f | not f.isPseudo()).featureMethods()/]
 
 [/for]
 [if (entityOrView.oclIsTypeOf(Entity) and (entityOrView.partOf.timestampCreation or entityOrView.partOf.timestampUpdates))]
@@ -296,11 +296,22 @@ public function getId()
 [template private featureMethods(feature : Feature) post(trim())]
 [feature.getMethod()/]
 
+[if (feature.isSingleton())]
 [feature.setMethod()/]
-[comment TODO decide correct thing to do /]
-[if (not feature.isSingleton())]
 
+[else]
+	[if (feature.oclIsKindOf(EntityFeature))]
+	[let feature2 : EntityFeature = feature.oclAsType(EntityFeature)]
+		[if (feature2.collectionAllowAdd)]
 [feature.addMethod()/]
+
+		[/if]
+		[if (feature2.collectionAllowRemove)]
+[feature.removeMethod()/]
+
+		[/if]
+	[/let]
+	[/if]
 [/if]
 [/template]
 
@@ -363,17 +374,23 @@ public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.insta
 }
 [/template]
 
-[template private addMethod(feature : Feature)
-	? (feature.oclIsKindOf(Association)) post(trim())]
+[template private addMethod(feature : Feature) post(trim())]
 public function add[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/])
 {
 [if (feature.isUnique())]
     if (!in_array($[feature.instanceName()/], $this->[feature.modelPropertyName()/], true)) {
-        $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.instanceName()/];
+        $this->[feature.modelPropertyName()/]->add($[feature.instanceName()/]);
     }
 [else]
-    $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.instanceName()/];
+    $this->[feature.modelPropertyName()/]->add($[feature.instanceName()/]);
 [/if]
+}
+[/template]
+
+[template private removeMethod(feature : Feature) post(trim())]
+public function remove[feature.modelPropertyName().toUpperFirst()/]($[feature.instanceName()/])
+{
+    $this->[feature.modelPropertyName()/]->removeElement($[feature.instanceName()/]);
 }
 [/template]
 
