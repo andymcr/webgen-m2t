@@ -21,7 +21,17 @@
 
 [query public getMethodName(feature : Feature) : String
 	= if feature.isBooleanDataType() then
-			'is'
+			if feature.oclIsKindOf(EntityFeature) then
+				if feature.oclAsType(EntityFeature).booleanIsHasChoice = IsHasChoices::isA then
+					'is'
+				else
+					'has'
+				endif
+			else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+				feature.oclAsType(EncapsulatedAttribute).attribute.getMethodName()
+			else
+				feature.oclAsType(EncapsulatedAssociation).association.getMethodName()
+			endif endif
 		else
 			'get'
 		endif
