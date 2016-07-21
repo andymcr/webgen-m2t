@@ -139,6 +139,15 @@ public interface CriteriaFactory extends EFactory {
 	PredicateIsEmpty createPredicateIsEmpty();
 
 	/**
+	 * Returns a new object of class '<em>Predicate Is Null</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Predicate Is Null</em>'.
+	 * @generated
+	 */
+	PredicateIsNull createPredicateIsNull();
+
+	/**
 	 * Returns a new object of class '<em>Asc</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -187,6 +187,11 @@ public class PredicateBooleanOperatorItemProvider
 			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_BOOLEAN_OPERATOR__EXPRESSIONS,
 				 CriteriaFactory.eINSTANCE.createPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_BOOLEAN_OPERATOR__EXPRESSIONS,
+				 CriteriaFactory.eINSTANCE.createPredicateIsNull()));
 	}
 
 }

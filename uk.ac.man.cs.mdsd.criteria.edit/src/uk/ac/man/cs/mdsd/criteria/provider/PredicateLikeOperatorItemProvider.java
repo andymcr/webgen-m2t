@@ -199,6 +199,11 @@ public class PredicateLikeOperatorItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_LIKE_OPERATOR__LEFT,
+				 CriteriaFactory.eINSTANCE.createPredicateIsNull()));
+
+		newChildDescriptors.add
+			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_LIKE_OPERATOR__RIGHT,
 				 CriteriaFactory.eINSTANCE.createNullLiteral()));
 
@@ -261,6 +266,11 @@ public class PredicateLikeOperatorItemProvider
 			(createChildParameter
 				(CriteriaPackage.Literals.PREDICATE_LIKE_OPERATOR__RIGHT,
 				 CriteriaFactory.eINSTANCE.createPredicateIsEmpty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CriteriaPackage.Literals.PREDICATE_LIKE_OPERATOR__RIGHT,
+				 CriteriaFactory.eINSTANCE.createPredicateIsNull()));
 	}
 
 	/**

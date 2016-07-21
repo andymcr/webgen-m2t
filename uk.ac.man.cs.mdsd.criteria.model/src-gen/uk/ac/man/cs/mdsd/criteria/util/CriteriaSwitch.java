@@ -196,6 +196,14 @@ public class CriteriaSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CriteriaPackage.PREDICATE_IS_NULL: {
+				PredicateIsNull predicateIsNull = (PredicateIsNull)theEObject;
+				T result = casePredicateIsNull(predicateIsNull);
+				if (result == null) result = casePredicate(predicateIsNull);
+				if (result == null) result = caseExpression(predicateIsNull);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CriteriaPackage.ORDER: {
 				Order order = (Order)theEObject;
 				T result = caseOrder(order);
@@ -472,6 +480,21 @@ public class CriteriaSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T casePredicateIsEmpty(PredicateIsEmpty object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Predicate Is Null</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Predicate Is Null</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePredicateIsNull(PredicateIsNull object) {
 		return null;
 	}
 

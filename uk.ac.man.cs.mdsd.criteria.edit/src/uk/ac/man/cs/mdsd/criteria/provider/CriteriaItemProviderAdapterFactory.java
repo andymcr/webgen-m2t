@@ -273,6 +273,29 @@ public class CriteriaItemProviderAdapterFactory extends CriteriaAdapterFactory i
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.criteria.PredicateIsNull} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PredicateIsNullItemProvider predicateIsNullItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link uk.ac.man.cs.mdsd.criteria.PredicateIsNull}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createPredicateIsNullAdapter() {
+		if (predicateIsNullItemProvider == null) {
+			predicateIsNullItemProvider = new PredicateIsNullItemProvider(this);
+		}
+
+		return predicateIsNullItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link uk.ac.man.cs.mdsd.criteria.Asc} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -572,6 +595,7 @@ public class CriteriaItemProviderAdapterFactory extends CriteriaAdapterFactory i
 		if (predicateIsOperatorItemProvider != null) predicateIsOperatorItemProvider.dispose();
 		if (predicateLikeOperatorItemProvider != null) predicateLikeOperatorItemProvider.dispose();
 		if (predicateIsEmptyItemProvider != null) predicateIsEmptyItemProvider.dispose();
+		if (predicateIsNullItemProvider != null) predicateIsNullItemProvider.dispose();
 		if (ascItemProvider != null) ascItemProvider.dispose();
 		if (descItemProvider != null) descItemProvider.dispose();
 	}

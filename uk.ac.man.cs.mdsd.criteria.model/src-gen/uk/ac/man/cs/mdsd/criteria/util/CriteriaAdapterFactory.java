@@ -136,6 +136,10 @@ public class CriteriaAdapterFactory extends AdapterFactoryImpl {
 				return createPredicateIsEmptyAdapter();
 			}
 			@Override
+			public Adapter casePredicateIsNull(PredicateIsNull object) {
+				return createPredicateIsNullAdapter();
+			}
+			@Override
 			public Adapter caseOrder(Order object) {
 				return createOrderAdapter();
 			}
@@ -402,6 +406,20 @@ public class CriteriaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPredicateIsEmptyAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uk.ac.man.cs.mdsd.criteria.PredicateIsNull <em>Predicate Is Null</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uk.ac.man.cs.mdsd.criteria.PredicateIsNull
+	 * @generated
+	 */
+	public Adapter createPredicateIsNullAdapter() {
 		return null;
 	}
 

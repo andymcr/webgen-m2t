@@ -70,6 +70,7 @@ public class CriteriaFactoryImpl extends EFactoryImpl implements CriteriaFactory
 			case CriteriaPackage.PREDICATE_IS_OPERATOR: return createPredicateIsOperator();
 			case CriteriaPackage.PREDICATE_LIKE_OPERATOR: return createPredicateLikeOperator();
 			case CriteriaPackage.PREDICATE_IS_EMPTY: return createPredicateIsEmpty();
+			case CriteriaPackage.PREDICATE_IS_NULL: return createPredicateIsNull();
 			case CriteriaPackage.ASC: return createAsc();
 			case CriteriaPackage.DESC: return createDesc();
 			default:
@@ -239,6 +240,16 @@ public class CriteriaFactoryImpl extends EFactoryImpl implements CriteriaFactory
 	public PredicateIsEmpty createPredicateIsEmpty() {
 		PredicateIsEmptyImpl predicateIsEmpty = new PredicateIsEmptyImpl();
 		return predicateIsEmpty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PredicateIsNull createPredicateIsNull() {
+		PredicateIsNullImpl predicateIsNull = new PredicateIsNullImpl();
+		return predicateIsNull;
 	}
 
 	/**

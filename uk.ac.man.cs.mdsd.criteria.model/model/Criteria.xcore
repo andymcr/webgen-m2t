@@ -90,6 +90,10 @@ class PredicateIsEmpty extends Predicate {
 	contains Path feature
 }
 
+class PredicateIsNull extends Predicate {
+	contains Path feature
+}
+
 abstract class Order {
 	@GenModel(propertyCategory="")
 	contains Path[1] path
