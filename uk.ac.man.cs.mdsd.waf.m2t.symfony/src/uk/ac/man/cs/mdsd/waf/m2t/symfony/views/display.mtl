@@ -10,6 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::guardDoctrine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
 
@@ -465,7 +466,7 @@ NULL
 [template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
-<a href="{{ path('[delete.routeName()/]', { [entityOrView.routeActualParameters(entityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}" onclick="return confirm('[delete.confirmMessage/] {{ [accessor/].defaultLabel() }}');">{{ [label/] }}</a>
+[action.anchor(accessor, delete.routeName(), delete.confirmMessage, label, entityOrView)/]
 [/let]
 [/template]
 
@@ -473,8 +474,7 @@ NULL
 [template public actionLink(action : InlineAction, accessor : String, label : String, entityOrView : EntityOrView)
 	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
 [let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-<a href="{{ path('[feature.routeName()/]', { [entityOrView.routeActualParameters(entityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}"[if (not feature.confirmMessage.oclIsUndefined())]
- onclick="return confirm('[feature.confirmMessage/] {{ [accessor/].defaultLabel() }}');"[/if]>{{ [label/] }}</a>
+[action.anchor(accessor, feature.routeName(), feature.confirmMessage, label, entityOrView)/]
 [/let]
 [/template]
 
@@ -483,12 +483,26 @@ NULL
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
 [let targetEntityOrView : EntityOrView = targetUnit.entities->first()]
-<a href="{{ path('[targetUnit.routeName()/]', { [targetEntityOrView.routeActualParameters(targetEntityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}">{{ [label/] }}</a>
+[action.anchor(accessor, targetUnit.routeName(), null, label, targetEntityOrView)/]
 [/let]
 [/let]
 [/let]
 [/template]
 
+[template private anchor(action : InlineAction, accessor : String, routeName : String, confirmMessage : String, label : String, entityOrView : EntityOrView) post(trim())]
+[if (not action.removeWhen.oclIsUndefined())]
+{% if not [action.removeWhen.guardExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% endif %}
+[elseif (not action.disableWhen.oclIsUndefined())]
+{% if [action.disableWhen.guardExpression(accessor)/] %}{{ [label/] }}{% else %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% endif %}
+[else]
+[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]
+[/if]
+[/template]
+
+[template private anchor2(action : InlineAction, accessor : String, routeName : String, confirmMessage : String, label : String, entityOrView : EntityOrView) post(trim())]
+<a href="{{ path('[routeName/]', { [entityOrView.routeActualParameters(entityOrView, accessor)/] }) }}" title="[action.displayLabel/] {{ [accessor/].defaultLabel() }}"[if (not confirmMessage.oclIsUndefined())]
+ onclick="return confirm('[confirmMessage/] {{ [accessor/].defaultLabel() }}');"[/if]>{{ [label/] }}</a>
+[/template]
 
 [template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String) post(trim())]
 [if (entityOrView.isContained())]

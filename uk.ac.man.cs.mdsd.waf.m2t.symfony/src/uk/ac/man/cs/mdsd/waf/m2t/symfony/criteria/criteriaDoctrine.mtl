@@ -119,6 +119,13 @@ Criteria::expr()->[predicate.operator()/]([predicate.left.criteriaExpression()/]
 [/template]
 
 [template public criteriaExpression(criteria : Expression)
+	? (criteria.oclIsTypeOf(PredicateIsNull)) post(trim())]
+[let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
+Criteria::expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.criteriaExpression()/], '0')
+[/let]
+[/template]
+
+[template public criteriaExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
 Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.criteriaExpression()/], '0')
