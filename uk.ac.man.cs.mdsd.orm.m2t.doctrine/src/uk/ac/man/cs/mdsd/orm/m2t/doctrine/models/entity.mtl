@@ -43,8 +43,8 @@ class [entityOrView.modelClassName()/][if (entityOrView.implementsUserInterface)
     [entityOrView.idMethods()/]
 
 [/if]
-[for (feature : Feature | entityOrView.features)]
-    [feature->select(f | not f.isPseudo()).featureMethods()/]
+[for (feature : Feature | entityOrView.features->select(f | not f.isPseudo()))]
+    [feature.featureMethods()/]
 
 [/for]
 [if (entityOrView.oclIsTypeOf(Entity) and (entityOrView.partOf.timestampCreation or entityOrView.partOf.timestampUpdates))]
@@ -173,57 +173,78 @@ protected $updated;
 [/template]
 
 [template private ormAnnotation(feature : Feature)
-	? (feature.oclIsKindOf(EntityAssociation)) post(trim())]
-[let association : EntityAssociation = feature.oclAsType(EntityAssociation)]
+	? (feature.oclIsKindOf(EntityAssociation) and feature.isSingleton()) post(trim())]
+[let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)]
 [let opposite : EntityAssociation = association.opposite]
-	[if (association.oclIsTypeOf(SingletonAssociation))]
-	[let singleton : SingletonAssociation = association.oclAsType(SingletonAssociation)]
-		[if (singleton.primaryKey)]
+[if (association.primaryKey)]
 * @ORM\Id
-		[/if]
-* @ORM\[singleton.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
-, [if (singleton.isOwningEnd())]
+[/if]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
+, [if (association.isOwningEnd())]
 inversedBy[else]
 mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
-		[if (singleton.isOwningEnd())]
-			[if (singleton.opposite.keys->size() = 1)]
-			[let key : AssociationKey = singleton.opposite.keys->first()]
+[if (association.isOwningEnd())]
+	[if (opposite.keys->size() = 1)]
+	[let key : AssociationKey = opposite.keys->first()]
 * @ORM\JoinColumn(name="[key.targetFeature.columnName/]", referencedColumnName="[key.sourceFeature.columnName.toLowerCase()/]", nullable=false)
-			[/let]
-			[elseif (singleton.opposite.keys->size() > 1)]
-* @ORM\JoinColumns({[for (key : AssociationKey | singleton.opposite.keys) separator(',')]
+	[/let]
+	[elseif (opposite.keys->size() > 1)]
+* @ORM\JoinColumns({[for (key : AssociationKey | opposite.keys) separator(',')]
 
 *     @ORM\JoinColumn(name="[key.targetFeature.columnName/]", referencedColumnName="[key.sourceFeature.columnName.toLowerCase()/]", nullable=false)[/for]
 
 * })
-			[elseif (singleton.opposite.partOf.primaryKeys()->size() = 1)]
-			[let key : EntityFeature = singleton.opposite.partOf.primaryKeys()->first()]
+	[elseif (opposite.partOf.primaryKeys()->size() = 1)]
+	[let key : EntityFeature = opposite.partOf.primaryKeys()->first()]
 * @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)
-			[/let]
-			[elseif (singleton.opposite.partOf.primaryKeys()->size() > 1)]
-* @ORM\JoinColumns({[for (key : EntityFeature | singleton.opposite.partOf.primaryKeys()) separator(',')]
+	[/let]
+	[elseif (opposite.partOf.primaryKeys()->size() > 1)]
+* @ORM\JoinColumns({[for (key : EntityFeature | opposite.partOf.primaryKeys()) separator(',')]
 
 *     @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
 
 * })
-			[else]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
-			[/if]
-		[/if]
-	[/let]
 	[else]
-	[let collection : CollectionAssociation = association.oclAsType(CollectionAssociation)]
-* @ORM\[collection.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
-, [if (collection.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd())]
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+	[/if]
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(EntityAssociation) and not feature.isSingleton()) post(trim())]
+[let association : CollectionAssociation = feature.oclAsType(CollectionAssociation)]
+[let opposite : EntityAssociation = association.opposite]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
+, [if (association.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd())]
 mappedBy[else]
 inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
-		[if (association.owningEnd)]
+[if (association.owningEnd)]
 * @ORM\JoinTable(name="[association.pivotTableName/]",
-    joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
-    inverseJoinColumns={@ORM\JoinColumn(name="[association.columnName()/]")})
-		[/if]
-	[/let]
+	[if (association.partOf.primaryKeys()->isEmpty())]
+*     joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
+	[elseif (association.partOf.primaryKeys()->size() = 1)]
+*     joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
+	[else]
+*     joinColumns={[for (key : Feature | association.partOf.primaryKeys()) separator(',')]
+
+*         @ORM\JoinColumn(name="[key.columnName()/]", referencedColumnName="[key.columnName().toLowerCase()/]", nullable=false)[/for]
+
+*     },
 	[/if]
+	[if (opposite.partOf.primaryKeys()->isEmpty())]
+*     inverseJoinColumns={@ORM\JoinColumn(name="[association.columnName/]")})
+	[elseif (association.partOf.primaryKeys()->size() = 1)]
+*     inverseJoinColumns={@ORM\JoinColumn(name="[association.columnName/]")},
+	[else]
+*     inverseJoinColumns={[for (key : Feature | opposite.partOf.primaryKeys()) separator(',')]
+
+*         @ORM\JoinColumn(name="[key.columnName()/]", referencedColumnName="[key.columnName().toLowerCase()/]", nullable=false)[/for]
+
+*     },
+	[/if]
+[/if]
 [/let]
 [/let]
 [/template]
