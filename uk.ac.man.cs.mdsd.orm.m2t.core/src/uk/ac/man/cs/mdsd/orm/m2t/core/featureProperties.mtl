@@ -565,6 +565,26 @@
 		endif endif endif
 /]
 
+[query public pluralisedPropertyName(feature : Feature) : String
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.pluralisedName
+		else if feature.oclIsKindOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).pluralisedName
+		else
+			feature.pluralisedName
+		endif endif
+/]
+
+[query public singletonPropertyName(feature : Feature) : String
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.singletonName
+		else if feature.oclIsKindOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).singletonName
+		else
+			feature.singletonName
+		endif endif
+/]
+
 [query public sourceType(association : Association) : EntityOrView
 	= if association.oclIsKindOf(EntityAssociation) then
 			association.oclAsType(EntityAssociation).partOf
