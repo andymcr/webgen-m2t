@@ -238,7 +238,7 @@ public function save($entity, $flush = false)
 
 [template private selectionMethod(selection : Selection, service : Service) post(trim())]
 public function [selection.methodName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
-$[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())][if (selection.limit <> 1)], [/if][/if][if (selection.limit <> 1)]$page = NULL, $pageSize = 10[/if])
+$[parameter.name/][if (parameter.optional)] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/if][/for][if (selection.parameters->notEmpty())][if (selection.limit <> 1)], [/if][/if][if (selection.limit <> 1)]$page = NULL, $pageSize = 10[/if])
 {
     $queryBuilder = $this->createQueryBuilder();
 [if (selection.fields->notEmpty())]
@@ -253,9 +253,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 [if (selection.ordering->size() > 0)]
     [selection.orderBy()/]
 [/if]
-[if (selection.limit = 1)]
-    $queryBuilder->setMaxResults([selection.limit/]);
-[else]
+[if (selection.limit <> 1)]
     if ($page)
     {
         $queryBuilder->setFirstResult(($page - 1) * $pageSize);
