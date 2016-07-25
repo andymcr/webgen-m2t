@@ -178,6 +178,8 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 [else]
     'multiple' => true,
 [/if]
+// [protected ('custom.'.concat(association.modelPropertyName()))]
+// [/protected]
 ))
 [/let]
 [/template]
@@ -196,52 +198,35 @@ add('[association.modelPropertyName()/]', CollectionType::class, array(
 [/let]
 [/template]
 
-
+[comment TODO nested units not currently being handled/]
 [query private featuresUsed(entityOrView : EntityOrView, model : WafModel) : Sequence(Feature)
-	= entityOrView.usersOf(model)->iterate(u;
-		features : Sequence(Feature) = Sequence{}
-		| features->union(entityOrView.featuresUsed(u)))
+	= entityOrView.usersOf(model)
+		->collect(u | u.displayFields)
+        ->select(f | not f.oclIsTypeOf(UnitField))
+		->iterate(f;
+			xxx : Sequence(Feature) = Sequence{}
+			| let x : Feature = entityOrView.feature(f)
+				in if xxx->includes(x) or not entityOrView.features->includes(x) then
+					xxx
+				else
+					xxx->append(x)
+				endif)
 /]
 
-[query private featuresUsed(entityOrView : EntityOrView, unit : EditUnit) : Sequence(Feature)
-	= unit.displayFields->iterate(f;
-		features : Sequence(Feature) = Sequence{}
-		| features->union(entityOrView.featuresUsed(f)))
-/]
-
-[query private featuresUsed(entityOrView : EntityOrView, field : UnitField) : Sequence(Feature)
+[query private feature(field : UnitField) : Feature
 	= if field.oclIsTypeOf(UnitAttribute) then
-			let attribute : Attribute
-				= field.oclAsType(UnitAttribute).attribute
-				in if entityOrView.features->includes(attribute) then
-						Sequence{attribute}
-					else
-						Sequence{}
-					endif
-		else if field.oclIsTypeOf(UnitAssociation) then
-			let association : Association
-				= field.oclAsType(UnitAssociation).association
-				in if entityOrView.features->includes(association) then
-						Sequence{association}
-					else
-						Sequence{}
-					endif
+			field.oclAsType(UnitAttribute).attribute
 		else
-			Sequence{}
-		endif endif
+			field.oclAsType(UnitAssociation).association
+		endif
 /]
 
 
 [query private usersOf(entityOrView : EntityOrView, model : WafModel) : Sequence(EditUnit)
-	= model.pages->iterate(p;
-		units : Sequence(EditUnit) = Sequence{}
-		| units->union(entityOrView.usersOf(p)))
-/]
-
-[query private usersOf(entityOrView : EntityOrView, page : Page) : Sequence(EditUnit)
-	= page.units->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)->iterate(u;
-		units : Sequence(EditUnit) = Sequence{}
-		| units->union(entityOrView.usersOf(u)))
+	= model.pages->collect(
+		p | p.units
+			->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
+			->select(u | u.entities->includes(entityOrView)))
 /]
 
 [query private usersOf(entityOrView : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
