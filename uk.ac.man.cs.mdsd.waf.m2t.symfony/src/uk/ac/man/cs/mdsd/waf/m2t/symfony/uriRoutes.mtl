@@ -24,6 +24,11 @@
 $[key.routeParameterName(entityOrView)/][/for]
 [/template]
 
+[template public actionRouteParameters(unit : DynamicUnit, parentPath : Boolean) post(trim())]
+[for (key : Attribute | unit.uriActivePathKeys(parentPath)) separator (', ')]
+$[key.routeParameterName(unit.entities->first())/][/for]
+[/template]
+
 [query public routeParameterName(attribute : Attribute, entityOrView : EntityOrView) : String
 	= if entityOrView.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
@@ -55,7 +60,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 		endif endif
 /]
 
-[query private parentUriPath(yyy : EntityOrView) : String
+[query private parentUriPath(yyy : EntityOrView, unit : DynamicUnit) : String
 	= let keyEntity : EntityOrView
 		= yyy.keyEntity()
 		in if keyEntity.oclIsUndefined() then
@@ -63,29 +68,30 @@ $[key.routeParameterName(entityOrView)/][/for]
 			else if not keyEntity.isContained() then
 				''
 			else
-				keyEntity.container().uriPath(yyy)
+				keyEntity.container().uriPath(unit, yyy)
 					.concat('/')
 					.concat(keyEntity.containingAssociation().opposite.name)
 			endif endif
 /]
 
-[query public uriPath(entityOrView : EntityOrView) : String
-	= entityOrView.uriPath(entityOrView)
+[query public uriPath(entityOrView : EntityOrView, unit : DynamicUnit) : String
+	= entityOrView.uriPath(unit, entityOrView)
 /]
 
-[query private uriPath(entityOrView : EntityOrView, base : EntityOrView) : String
+[query private uriPath(entityOrView : EntityOrView, unit : DynamicUnit, base : EntityOrView) : String
 	= let keyEntity : EntityOrView = entityOrView.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
 			else
 				let keyPath : String
-					= keyEntity.attributeKeys()
+--					= keyEntity.attributeKeys()
+					= keyEntity.routeElementKeys(unit)
 						->collect(k | k.routeParameterName(base))->sep('{', '}/{', '}')->toString()
 					in if not keyEntity.isContained() then
 							keyPath
 						else
 							let parentPath : String
-								= keyEntity.container().uriPath(base)
+								= keyEntity.container().uriPath(unit, base)
 								in if parentPath = '' then
 										keyEntity.containingAssociation().opposite.name
 											.concat('/')
@@ -99,6 +105,11 @@ $[key.routeParameterName(entityOrView)/][/for]
 									endif
 						endif
 			endif
+/]
+
+[query private routeElementKeys(entityOrView : EntityOrView, unit : DynamicUnit) : Sequence(Attribute)
+	= entityOrView.attributeKeys()
+			->select(k | nonRoutedKeys(unit)->excludes(k))
 /]
 
 [query public uriPath(page : Page) : String
@@ -121,9 +132,9 @@ $[key.routeParameterName(entityOrView)/][/for]
 						let entityOrView : EntityOrView
 							= dynamicUnit.entities->first()
 							in if parentPath then
-									entityOrView.parentUriPath()
+									entityOrView.parentUriPath(dynamicUnit)
 								else
-									entityOrView.uriPath()
+									entityOrView.uriPath(dynamicUnit)
 								endif
 					endif
 		endif

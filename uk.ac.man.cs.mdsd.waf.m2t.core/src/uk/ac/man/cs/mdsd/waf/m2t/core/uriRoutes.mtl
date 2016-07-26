@@ -30,6 +30,14 @@
 		endif
 /]
 
+[query public uriActivePathKeys(entityOrView : EntityOrView, unit : DynamicUnit) : Sequence(Attribute)
+	=entityOrView.uriActivePathKeys(unit, false)
+/]
+
+[query public uriActivePathKeys(entityOrView : EntityOrView, unit : DynamicUnit, parentPath : Boolean) : Sequence(Attribute)
+	= entityOrView.uriPathKeys()->select(k |  nonRoutedKeys(unit)->excludes(k))
+/]
+
 [query public keyEntity(entityOrView : EntityOrView) : EntityOrView
 	= if entityOrView.attributeKeys()->notEmpty() then
 			entityOrView
@@ -95,4 +103,31 @@
 						dynamicUnit.entities->first().uriPathKeys(parentPath)
 					endif
 		endif
+/]
+
+[query public uriActivePathKeys(unit : ContentUnit) : Sequence(Attribute)
+	= unit.uriActivePathKeys(false)
+/]
+
+[query public uriActivePathKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
+	= if not unit.oclIsKindOf(DynamicUnit) then
+			Sequence{}
+		else 
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+				in if dynamicUnit.entities->isEmpty() then
+						Sequence{}
+					else
+						dynamicUnit.entities->first().uriActivePathKeys(dynamicUnit, parentPath)
+					endif
+		endif
+/]
+
+[query public nonRoutedKeys(unit : DynamicUnit) : Sequence(Attribute)
+	= unit.keyActuals
+		->select(a | if a.actual.oclIsUndefined() then
+							true
+						else
+							not a.actual.oclIsTypeOf(RouteParameterReference)
+						endif)
+		->collect(a | a.feature)
 /]

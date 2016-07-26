@@ -39,7 +39,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
     $this->[unit.instanceName()/] = [unit.createForm(true, false)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
     if ($request->isMethod('POST')) {
-        $this->edit->submit($request->request->get($this->edit->getName()), false);
+        $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
 	[if (not unit.cancelDestination.oclIsUndefined())]
         [unit.handleCancel()/]
 	[/if]
@@ -82,9 +82,9 @@ public function [unit.actionName()/]X([unit.actionMethodParameters()/])
 {
     [unit.loadSelectedInstance()/]
     $this->[unit.instanceName()/] = [unit.createForm(false, false)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+[if (unit.customiseValues or unit.hasForcedValueFeatures())]
     if ($request->isMethod('POST')) {
-        $this->edit->submit($request->request->get($this->edit->getName()), false);
+        $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
 	[if (not unit.cancelDestination.oclIsUndefined())]
         [unit.handleCancel()/]
 	[/if]
@@ -128,10 +128,10 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
     'action' => $this->generateUrl('[unit.routeName(create)/]', array(
 [if (create)]
 	[if (entityOrView.keyEntity().isContained())]
-        [entityOrView.keyEntity().container().routeActualParameters(entityOrView)/]
+        [entityOrView.keyEntity().container().routeActualParameters(unit, entityOrView)/]
 	[/if]
 [else]
-        [entityOrView.routeActualParameters(entityOrView)/]
+        [entityOrView.routeActualParameters(unit, entityOrView)/]
 [/if]
     )),
 )[/if])
@@ -160,7 +160,7 @@ $this->[unit.instanceName()/] = [unit.createForm(true, false)/];
 		[else]
 		[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
 return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContained())], array(
-    [keyEntity.container().routeActualParameters(unit.entities->first())/]
+    [keyEntity.container().routeActualParameters(unit, unit.entities->first())/]
 )[/if]);
 		[/let]
 		[/if]
@@ -168,8 +168,8 @@ return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContaine
 [/if]
 [/template]
 
-[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys())]
+[template private routeActualParameters(entityOrView : EntityOrView, unit : DynamicUnit, base : EntityOrView) post(trim())]
+[for (key : Attribute | entityOrView.uriActivePathKeys(unit))]
 '[key.routeParameterName(base)/]' => $[key.routeParameterName(entityOrView)/],
 [/for]
 [/template]

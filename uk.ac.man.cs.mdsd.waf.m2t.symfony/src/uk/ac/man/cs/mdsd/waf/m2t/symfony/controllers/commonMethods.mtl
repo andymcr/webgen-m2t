@@ -32,7 +32,7 @@ $this->get('translator')->trans('[message/]')
 [let page : Page = unit.pageDisplayedOn()]
 [let entityOrView : EntityOrView = unit.entities->first()]
 [if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (entityOrView.hasRouteParameters(parentPath))]
-, [/if][/if][entityOrView.routeParameters(parentPath)/]
+, [/if][/if][unit.actionRouteParameters(parentPath)/]
 [/let]
 [/let]
 [/template]
