@@ -491,7 +491,9 @@ NULL
 
 [template private anchor(action : InlineAction, accessor : String, routeName : String, confirmMessage : String, label : String, entityOrView : EntityOrView) post(trim())]
 [if (not action.removeWhen.oclIsUndefined())]
-{% if not [action.removeWhen.guardExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% endif %}
+{% if not [action.removeWhen.guardExpression(accessor)/] %}[if (not action.disableWhen.oclIsUndefined())]
+{% if [action.disableWhen.guardExpression(accessor)/] %}{{ [label/] }}{% else %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% endif %}[else]
+[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/][/if]{% endif %}
 [elseif (not action.disableWhen.oclIsUndefined())]
 {% if [action.disableWhen.guardExpression(accessor)/] %}{{ [label/] }}{% else %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% endif %}
 [else]
