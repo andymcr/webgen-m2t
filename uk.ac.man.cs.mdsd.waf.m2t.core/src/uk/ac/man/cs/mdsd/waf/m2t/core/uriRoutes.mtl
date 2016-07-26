@@ -129,5 +129,5 @@
 						else
 							not a.actual.oclIsTypeOf(RouteParameterReference)
 						endif)
-		->collect(a | a.feature)
+		->collect(a | a.key)
 /]
