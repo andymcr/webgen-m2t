@@ -8,67 +8,72 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(NullLiteral)) post(trim())]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(NullLiteral)) post(trim())]
 NULL
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(IntegerLiteral)) post(trim())]
-[let literal : IntegerLiteral = criteria.oclAsType(IntegerLiteral)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(IntegerLiteral)) post(trim())]
+[let literal : IntegerLiteral = guard.oclAsType(IntegerLiteral)]
 [literal.value/]
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(StringLiteral)) post(trim())]
-[let literal : StringLiteral = criteria.oclAsType(StringLiteral)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(StringLiteral)) post(trim())]
+[let literal : StringLiteral = guard.oclAsType(StringLiteral)]
 '[literal.value/]'
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
-':now'
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(TimeLiteral)) post(trim())]
+"[guard.oclAsType(TimeLiteral).value/]" | date()
+[/template]
+
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(CurrentTime)) post(trim())]
+"now" | date()
 [/template]
 
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
-[let path : ModelReference = criteria.oclAsType(ModelReference)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(ModelReference)) post(trim())]
+[let path : ModelReference = guard.oclAsType(ModelReference)]
 $this->[path.unit.instanceName()/]->[comment path unit  services->first() keyName()/]
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
-[let path : FeatureReference = criteria.oclAsType(FeatureReference)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(FeatureReference)) post(trim())]
+[let path : FeatureReference = guard.oclAsType(FeatureReference)]
 [accessor/].[path.feature.modelPropertyName()/]
 [/let]
 [/template]
 
-[template public featureRference(feature : Feature, accessor : String) post(trim())]
+[template public featureReference(feature : Feature, accessor : String) post(trim())]
 '[feature.columnName()/]'
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = criteria.oclAsType(ParameterReference)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(ParameterReference)) post(trim())]
+[let path : ParameterReference = guard.oclAsType(ParameterReference)]
 ':[path.parameter.name/]'
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(CurrentUserReference)) post(trim())]
+[let path : CurrentUserReference = guard.oclAsType(CurrentUserReference)]
 $this->get('people')->getId()
 [/let]
 [/template]
 
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
-[let predicate : PredicateBooleanOperator = criteria.oclAsType(PredicateBooleanOperator)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
+[let predicate : PredicateBooleanOperator = guard.oclAsType(PredicateBooleanOperator)]
 Criteria::expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
 [for (expression : Expression | predicate.expressions) separator (',')]
 
@@ -83,44 +88,44 @@ Criteria::expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
-[let predicate : PredicateEqualityOperator = criteria.oclAsType(PredicateEqualityOperator)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
+[let predicate : PredicateEqualityOperator = guard.oclAsType(PredicateEqualityOperator)]
 [predicate.left.guardExpression(accessor)/] [predicate.operator()/] [predicate.right.guardExpression(accessor)/]
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
-[let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
+[let predicate : PredicateComparisonOperator = guard.oclAsType(PredicateComparisonOperator)]
 [predicate.left.guardExpression(accessor)/] [predicate.operator()/] [predicate.right.guardExpression(accessor)/]
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = criteria.oclAsType(PredicateIsOperator)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateIsOperator)) post(trim())]
+[let predicate : PredicateIsOperator = guard.oclAsType(PredicateIsOperator)]
 [predicate.left.guardExpression(accessor)/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.guardExpression(accessor)/]
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
-[let predicate : PredicateLikeOperator = criteria.oclAsType(PredicateLikeOperator)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
+[let predicate : PredicateLikeOperator = guard.oclAsType(PredicateLikeOperator)]
 Criteria::expr()->[predicate.operator()/]([predicate.left.guardExpression(accessor)/], [predicate.right.guardExpression(accessor)/])
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(PredicateIsNull)) post(trim())]
-[let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateIsNull)) post(trim())]
+[let predicate : PredicateIsEmpty = guard.oclAsType(PredicateIsEmpty)]
 Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.guardExpression(accessor)/], '0')
 [/let]
 [/template]
 
-[template public guardExpression(criteria : Expression, accessor : String)
-	? (criteria.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
-[let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
+[template public guardExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
+[let predicate : PredicateIsEmpty = guard.oclAsType(PredicateIsEmpty)]
 Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.guardExpression(accessor)/], '0')
 [/let]
 [/template]

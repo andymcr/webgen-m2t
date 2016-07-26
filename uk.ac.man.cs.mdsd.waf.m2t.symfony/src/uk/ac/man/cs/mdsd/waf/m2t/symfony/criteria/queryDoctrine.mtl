@@ -130,8 +130,8 @@ $queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()
 
 [template public queryExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateIsNull)) post(trim())]
-[let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.queryExpression()/], '0')
+[let predicate : PredicateIsNull = criteria.oclAsType(PredicateIsNull)]
+$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.queryExpression()/])
 [/let]
 [/template]
 
