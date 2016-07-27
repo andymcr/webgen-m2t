@@ -68,6 +68,14 @@
 	= entityOrView.uriPathKeys(parentPath)->notEmpty()
 /]
 
+[query public hasActiveRouteParameters(entityOrView : EntityOrView, unit : DynamicUnit) : Boolean
+	= entityOrView.hasActiveRouteParameters(unit, false)
+/]
+
+[query public hasActiveRouteParameters(entityOrView : EntityOrView, unit : DynamicUnit, parentPath : Boolean) : Boolean
+	= entityOrView.uriActivePathKeys(unit, parentPath)->notEmpty()
+/]
+
 [query public uriCommonPathKeys(page : Page) : Sequence(Attribute)
 	= if page.units->isEmpty() then
 			Sequence{}
