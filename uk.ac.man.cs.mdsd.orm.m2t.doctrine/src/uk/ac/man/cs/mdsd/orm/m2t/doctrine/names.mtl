@@ -10,6 +10,10 @@
 /]
 
 
+[query public instanceName(entityOrView : EntityOrView) : String
+	= entityOrView.name.toLowerFirst()
+/]
+
 [query public modelClassName(entityOrView : EntityOrView) : String
 	= entityOrView.name
 /]

@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::controller/]
 
 
 [template public translate(message : String) post(trim())]
@@ -49,15 +50,24 @@ $this->get('[unit.service().name/]')
 
 [/template]
 
-[template public findActualParameters(entityOrView : EntityOrView) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys(false)) separator (', ')]
-[if (key.encodeUriKey)]
-urldecode($[key.routeParameterName(entityOrView)/])[else]
-$[key.routeParameterName(entityOrView)/][/if][/for]
+[template public findActualParameters(unit : DynamicUnit) post(trim())]
+[for (key : Attribute | unit.uriPathKeys(false)) separator (', ')]
+[if (unit.nonRoutedKeys()->excludes(key))]
+[let parameterName : String = key.routeParameterName(unit.entities->first())]
+	[if (key.encodeUriKey)]
+urldecode($[parameterName/])[else]
+$[parameterName/][/if][/let][else]
+[unit.keyActuals->any(a | a.key = key).actualExpression()/][/if][/for]
+[/template]
+
+[template private actualExpression(path : PathReferenceElement) post(trim())]
+[path.actual.controllerExpression()/][if (not path.childReference.oclIsUndefined())]
+[path.childReference.actualExpression()/]
+[/if]
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.entities->first().findActualParameters()/])
+[unit.getService()/]->find([unit.findActualParameters()/])
 [/template]
 
 [template public loadSelectedInstance(unit : DataUnit) post(trim())]

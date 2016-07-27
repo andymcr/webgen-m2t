@@ -33,7 +33,7 @@
 /**
  * [unit.routeAnnotation(true)/]
  */
-public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
+public function [unit.actionName()/]X([unit.actionMethodParameters(true)/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
     $this->[unit.instanceName()/] = [unit.createForm(true, false)/];
@@ -78,7 +78,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters(true)/])
 /**
  * [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]X([unit.actionMethodParameters()/])
+public function [unit.actionName()/]([unit.actionMethodParameters()/])
 {
     [unit.loadSelectedInstance()/]
     $this->[unit.instanceName()/] = [unit.createForm(false, false)/];
