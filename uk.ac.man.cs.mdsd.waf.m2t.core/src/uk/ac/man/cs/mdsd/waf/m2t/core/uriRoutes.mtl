@@ -35,7 +35,7 @@
 /]
 
 [query public uriActivePathKeys(entityOrView : EntityOrView, unit : DynamicUnit, parentPath : Boolean) : Sequence(Attribute)
-	= entityOrView.uriPathKeys()->select(k |  nonRoutedKeys(unit)->excludes(k))
+	= entityOrView.uriPathKeys(parentPath)->select(k |  nonRoutedKeys(unit)->excludes(k))
 /]
 
 [query public keyEntity(entityOrView : EntityOrView) : EntityOrView

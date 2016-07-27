@@ -84,9 +84,12 @@ $[key.routeParameterName(unit.entities->first())/][/for]
 				''
 			else
 				let keyPath : String
---					= keyEntity.attributeKeys()
-					= keyEntity.routeElementKeys(unit)
-						->collect(k | k.routeParameterName(base))->sep('{', '}/{', '}')->toString()
+					= if keyEntity.routeElementKeys(unit)->isEmpty() then
+							''
+						else
+							keyEntity.routeElementKeys(unit)
+								->collect(k | k.routeParameterName(base))->sep('{', '}/{', '}')->toString()
+						endif
 					in if not keyEntity.isContained() then
 							keyPath
 						else
@@ -149,11 +152,9 @@ $[key.routeParameterName(unit.entities->first())/][/for]
 		= let entityPath : String
 			= if not unit.oclIsKindOf(DynamicUnit) then
 					unit.entityUriPath(create)
-				else if unit.oclAsType(DynamicUnit).noRouteParameters then
-					''
 				else
 					unit.entityUriPath(not unit.oclIsKindOf(Selectable) or create)
-				endif endif
+				endif
 			in let uriElement : String
 				= if unit.oclIsTypeOf(CreateUpdateUnit) and create then
 						'create'
