@@ -490,14 +490,17 @@ NULL
 [/template]
 
 [template private anchor(action : InlineAction, accessor : String, routeName : String, confirmMessage : String, label : String, entityOrView : EntityOrView) post(trim())]
-[if (not action.removeWhen.oclIsUndefined())]
-{% if not [action.removeWhen.guardExpression(accessor)/] %}[if (not action.disableWhen.oclIsUndefined())]
-{% if [action.disableWhen.guardExpression(accessor)/] %}{{ [label/] }}{% else %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% endif %}[else]
-[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/][/if]{% endif %}
-[elseif (not action.disableWhen.oclIsUndefined())]
-{% if [action.disableWhen.guardExpression(accessor)/] %}{{ [label/] }}{% else %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% endif %}
-[else]
+[if (action.displayWhen.oclIsUndefined())]
+	[if (action.enableWhen.oclIsUndefined())]
 [anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]
+	[else]
+{% if [action.enableWhen.guardExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% else %}{{ [label/] }}{% endif %}
+	[/if]
+[else]
+{% if [action.displayWhen.guardExpression(accessor)/] %}[if (action.enableWhen.oclIsUndefined())]
+[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/][else]
+{% if [action.enableWhen.guardExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% else %}{{ [label/] }}{% endif %}[/if]
+{% endif %}
 [/if]
 [/template]
 
