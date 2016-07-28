@@ -182,12 +182,16 @@
 /]
 
 [query public routeName(unit : ContentUnit, create : Boolean) : String
-	= unit.uniqueName()
-		.concat(if create then
-				'_create'
-			else
-				''
-			endif)
+	= if unit.displayedOn.oclIsTypeOf(Page) and unit.pageDisplayedOn().units->size() = 1 then
+			unit.pageDisplayedOn().instanceName()
+		else
+			unit.uniqueName()
+			.concat(if create then
+					'_create'
+				else
+					''
+				endif)
+		endif
 /]
 
 [query public selectName(unit : ContentUnit) : String
