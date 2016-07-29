@@ -158,6 +158,10 @@
 	= page.dynamicUnits()->select(u | u.hasCaptchaFields())->notEmpty()
 /]
 
+[query public hasChangableCollections(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasChangableCollections())->notEmpty()
+/]
+
 [query public hasControlUnits(page : Page) : Boolean
 	= page.controlUnits()->notEmpty()
 /]
@@ -172,6 +176,10 @@
 
 [query public hasInlineFileActions(page : Page) : Boolean
 	= page.inlineFileActions()->notEmpty()
+/]
+
+[query public hasJavascript(page : Page) : Boolean
+	= page.hasChangableCollections()
 /]
 
 [query public hasMapUnits(page : Page) : Boolean
@@ -348,6 +356,17 @@
 
 [query public hasCaptchaFields(unit : DynamicUnit) : Boolean
 	= unit.captchaFields()->notEmpty()
+/]
+
+[query public hasChangableCollections(unit : DynamicUnit) : Boolean
+	= if not unit.oclIsKindOf(EditUnit) then
+			false
+		else
+			unit.displayFields
+				->select(f | not f.isSingleton())
+				->select(f | f.collectionAllowAdd or f.collectionAllowRemove)
+				->notEmpty()
+		endif
 /]
 
 [query public hasClearLabel(unit : EditUnit) : Boolean

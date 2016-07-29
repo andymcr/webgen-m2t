@@ -64,6 +64,10 @@
 	= eObject.viewsDirectory().concat('/').concat('form')
 /]
 
+[query public javascriptDirectory(eObject : EObject) : String
+	= eObject.webDirectory().concat('/js')
+/]
+
 [query public menuDirectory(eObject : EObject) : String
 	= eObject.viewsDirectory().concat('/').concat('Menu')
 /]
@@ -220,6 +224,12 @@
 	= unit.formTypeDirectory().concat('/')
 		.concat(unit.typeClassName())
 		.concat(unit.executableExtension())
+/]
+
+[query public javascriptFilename(page : Page) : String
+	= page.javascriptDirectory().concat('/')
+		.concat(page.instanceName())
+		.concat(page.javascriptExtension())
 /]
 
 [query public menuFilename(menu : Menu) : String
