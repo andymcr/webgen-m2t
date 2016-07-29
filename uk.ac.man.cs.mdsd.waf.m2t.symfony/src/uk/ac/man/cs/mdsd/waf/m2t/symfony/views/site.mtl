@@ -23,11 +23,10 @@
 [if (not model.textEditorURL.oclIsUndefined())]
  <script type="text/javascript" src="[model.textEditorURL/]"></script>
 [/if]
-[if (model.ajaxTechnology = AjaxTechnologies::jQuery)]
- <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-[else]
-[/if]
 {% if scripts is defined %}
+{% for scrips as script %}
+ <script type="text/javascript" src="{{ script }}"></script>
+{% endfor %}
 {% endif %}
 </head>
 <body id="page" class="framed">

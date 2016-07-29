@@ -78,6 +78,12 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 {
     $parameters = array(
         'title' => $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]'),
+[if (page.hasJavascript())]
+        'scripts' => array(
+            'https://code.jquery.com/jquery-3.1.0.min.js',
+            '[page.javascriptFilename()/]',
+        ),
+[/if]
     );
 [for (unit : ContentUnit | page.units)]
     [unit.templateParameters()/]
