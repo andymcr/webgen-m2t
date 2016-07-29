@@ -30,18 +30,18 @@
 
 [template private formControlAndClose(unit : DynamicUnit, accessor : String) post(trim())]
  <div class="[unit.controlClass/]">
-  <input type="submit" name="save" value="[unit.submitLabel()/]" [unit.disable()/]/>
+  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable()/]/>
 [if (unit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
 	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
 		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
-  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]" [editUnit.disable()/]/>
+  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable()/]/>
 		[/if]
 	[/let]
 	[/if]
 	[if (not editUnit.cancelDestination.oclIsUndefined())]
-  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]" [editUnit.disable()/]/>
+  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable()/]/>
 	[/if]
 [/let]
 [/if]
@@ -52,16 +52,16 @@
 
 [template private disable(unit : DynamicUnit) post(trim())]
 [if (not unit.oclIsKindOf(EditUnit))]
-{% if [unit.instanceName()/]_disabled is defined %} disabled="disabled"{% endif %}
+{% if [unit.instanceName()/].data.vars.id is null %} disabled="disabled"{% endif %}
 [else]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.enableWhen.oclIsUndefined())]
 		[if (editUnit.oclIsTypeOf(UpdateUnit))]
-{% if [editUnit.instanceName()/]_disabled is defined %} disabled="disabled"{% endif %}
+{% if [editUnit.instanceName()/].vars.data.id is null %} disabled="disabled"{% endif %}
 		[/if]
 	[else] 
 		[if (editUnit.oclIsTypeOf(UpdateUnit))]
-{% if [editUnit.instanceName()/]_disabled is defined or not [editUnit.instanceName()/]_enabled %} disabled="disabled"{% endif %}
+{% if [editUnit.instanceName()/].vars.data.id is null or not [editUnit.instanceName()/]_enabled %} disabled="disabled"{% endif %}
 		[else]
 {% if not [editUnit.instanceName()/]_enabled %} disabled="disabled"{% endif %}
 		[/if]

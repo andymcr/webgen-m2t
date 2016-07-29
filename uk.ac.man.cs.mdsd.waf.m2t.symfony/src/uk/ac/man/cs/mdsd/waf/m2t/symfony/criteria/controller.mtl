@@ -84,7 +84,7 @@ $queryBuilder->expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(P
 	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
 [if (predicate.left.oclIsTypeOf(CurrentTime) or predicate.left.oclIsTypeOf(TimeLiteral))]
-[predicate.left.controllerExpression()/]->diff([predicate.right.controllerExpression()/])->format('%R') == '[if (predicate.operator = ComparisionOperator::GreaterThan)]+[else]-[/if]'
+[predicate.left.controllerExpression()/]->diff([predicate.right.controllerExpression()/])->format('%R') == '[if (predicate.operator = ComparisionOperator::GreaterThan)]-[else]+[/if]'
 [else]
 [predicate.left.controllerExpression()/] [predicate.operator()/] [predicate.right.controllerExpression()/]
 [/if]

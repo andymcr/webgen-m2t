@@ -152,7 +152,7 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
 [template private saveBody(unit : EditUnit, create : Boolean) post(trim())]
 [unit.getService()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
-return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
+return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 	[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
@@ -181,7 +181,6 @@ if (!isset($this->[editUnit.instanceName()/]))
 {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
     $this->[editUnit.instanceName()/] = [editUnit.createForm(not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
-    $parameters['['/]'[editUnit.instanceName()/]_disabled'[']'/] = true;
 }
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
 [/let]
