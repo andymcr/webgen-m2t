@@ -132,6 +132,14 @@
 	= page.name.toLowerFirst()
 /]
 
+[query public routeName(page : Page) : String
+	= if page.dynamicUnits()->isEmpty() then
+			''
+		else
+			page.dynamicUnits()->first().routeName()
+		endif
+/]
+
 
 [query public actionName(unit : ContentUnit) : String
 	= unit.instanceName().concat('Action')
