@@ -24,7 +24,7 @@
  <script type="text/javascript" src="[model.textEditorURL/]"></script>
 [/if]
 {% if scripts is defined %}
-{% for scrips as script %}
+{% for script in scripts  %}
  <script type="text/javascript" src="{{ script }}"></script>
 {% endfor %}
 {% endif %}
