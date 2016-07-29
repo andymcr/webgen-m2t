@@ -494,12 +494,12 @@ NULL
 	[if (action.enableWhen.oclIsUndefined())]
 [anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]
 	[else]
-{% if [action.enableWhen.guardExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% else %}{{ [label/] }}{% endif %}
+{% if [action.enableWhen.twigExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% else %}{{ [label/] }}{% endif %}
 	[/if]
 [else]
-{% if [action.displayWhen.guardExpression(accessor)/] %}[if (action.enableWhen.oclIsUndefined())]
+{% if [action.displayWhen.twigExpression(accessor)/] %}[if (action.enableWhen.oclIsUndefined())]
 [anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/][else]
-{% if [action.enableWhen.guardExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% else %}{{ [label/] }}{% endif %}[/if]
+{% if [action.enableWhen.twigExpression(accessor)/] %}[anchor2(action, accessor, routeName, confirmMessage, label, entityOrView)/]{% else %}{{ [label/] }}{% endif %}[/if]
 {% endif %}
 [/if]
 [/template]

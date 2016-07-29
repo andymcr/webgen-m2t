@@ -11,6 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::controller/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::display/]
 
 
@@ -154,16 +155,11 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
 return $this->redirectToRoute('[unit.confirmDestination.controllerName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-		[if (create)]
-$[unit.instanceName()/] = [unit.createInstance()/];
-$this->[unit.instanceName()/] = [unit.createForm(true, false)/];
-		[else]
-		[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
+	[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
 return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContained())], array(
     [keyEntity.container().routeActualParameters(unit, unit.entities->first())/]
 )[/if]);
-		[/let]
-		[/if]
+	[/let]
 	[/if]
 [/if]
 [/template]
@@ -177,6 +173,10 @@ return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContaine
 [template public templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[if (not editUnit.enableWhen.oclIsUndefined())]
+[editUnit.enableWhen.controllerVariable()/]
+$parameters['['/]'[editUnit.instanceName()/]_enabled'[']'/] = [editUnit.enableWhen.controllerExpression()/];
+[/if]
 if (!isset($this->[editUnit.instanceName()/]))
 {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
