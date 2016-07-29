@@ -29,12 +29,12 @@ NULL
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(TimeLiteral)) post(trim())]
-"[guard.oclAsType(TimeLiteral).value/]" | date()
+date('[guard.oclAsType(TimeLiteral).value/]')
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(CurrentTime)) post(trim())]
-"now" | date()
+date()
 [/template]
 
 
