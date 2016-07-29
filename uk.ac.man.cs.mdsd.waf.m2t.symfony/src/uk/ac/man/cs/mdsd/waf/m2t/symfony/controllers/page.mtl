@@ -22,6 +22,7 @@ namespace [page.webControllersNamespace()/];
 
 [page.useStatements()/]
 
+
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
 [for (unit : ContentUnit | page.units)]
