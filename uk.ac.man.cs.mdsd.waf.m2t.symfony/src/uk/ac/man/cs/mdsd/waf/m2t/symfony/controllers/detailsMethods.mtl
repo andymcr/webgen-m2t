@@ -58,7 +58,7 @@ if (!isset($this->[detailsUnit.instanceName()/]))
 		[if (not detailsUnit.defaultSelection.oclIsUndefined())]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.getService()/]->[detailsUnit.defaultSelection.methodName()/]();
 		[elseif (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()))]
-    $this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance()/];
+    $this->[detailsUnit.instanceName()/] = [detailsUnit.loadFilteredInstance()/];
 		[else]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
 		[/if]

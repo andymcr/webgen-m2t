@@ -38,6 +38,11 @@ $this->get('translator')->trans('[message/]')
 [/let]
 [/template]
 
+[template public inlineActionMethodParameters(unit : DynamicUnit, page : Page) post(trim())]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (unit.hasRouteParameters())]
+, [/if][/if][unit.entities->first().routeParameters()/]
+[/template]
+
 [template public renderActualParameters(page : Page, unit : DynamicUnit) post(trim())]
 [if (page.hasFilterParameters())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
@@ -51,6 +56,16 @@ $this->get('[unit.service().name/]')
 [/template]
 
 [template public findActualParameters(unit : DynamicUnit) post(trim())]
+[for (key : Attribute | unit.uriPathKeys(false)) separator (', ')]
+[let parameterName : String = key.routeParameterName(unit.entities->first())]
+	[if (key.encodeUriKey)]
+urldecode($[parameterName/])[else]
+$[parameterName/][/if]
+[/let]
+[/for]
+[/template]
+
+[template public findFilteredActualParameters(unit : DynamicUnit) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(false)) separator (', ')]
 [if (unit.nonRoutedPathKeys()->excludes(key))]
 [let parameterName : String = key.routeParameterName(unit.entities->first())]
@@ -70,9 +85,13 @@ $[parameterName/][/if][/let][else]
 [unit.getService()/]->find([unit.findActualParameters()/])
 [/template]
 
+[template public loadFilteredInstance(unit : DynamicUnit) post(trim())]
+[unit.getService()/]->find([unit.findFilteredActualParameters()/])
+[/template]
+
 [template public loadSelectedInstance(unit : DataUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.loadInstance()/];
+$this->[unit.instanceName()/] = [unit.loadFilteredInstance()/];
 [else]
 $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
@@ -80,7 +99,7 @@ $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.ins
 
 [template public loadSelectedInstance(unit : EditUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$[unit.instanceName()/] = [unit.loadInstance()/];
+$[unit.instanceName()/] = [unit.loadFilteredInstance()/];
 [else]
 $[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
@@ -119,32 +138,6 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/];
 [/let]
 [/for]
-[/template]
-
-[template public catchSelectionException(unit : DynamicUnit)]
-catch (QueryException $qe)
-{
-    $this->[unit.errorName()/] = $qe->message();
-[if (unit.hasEncryptedFeatures() or unit.hasInterfaceFields())]
-[comment unit exceptionCleanup()/]
-[/if]
-}
-[/template]
-
-[template public generateCatchCaptchaException(unit : DynamicUnit) post(trim())]
-catch (Captcha_Exception $e)
-{
-	$this->[unit.instanceName()/]_field_errors = ['['/][']'/];
-[for (field : UnitField | unit.captchaFields())]
-	$this->[unit.instanceName()/]_field_errors['['/]'[field.modelPropertyName()/]'[']'/] = $e->message();
-[/for]
-[if (unit.hasEncryptedFeatures())]
-	[unit.generateClearEncryptedFeatures()/]
-[/if]
-[if (unit.hasInterfaceFields())]
-	[unit.generateRememberInterfaceFields()/]
-[/if]
-}
 [/template]
 
 [template public generateInterfaceFieldValidation(unit : DynamicUnit) post(trim())]

@@ -101,15 +101,12 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
  */
 public function [unit.supportActionName()/](Request $request)
 {
-		[if (unit.oclIsTypeOf(DetailsUnit))]
-    try {
-        $[unit.instanceName()/] = [unit.loadInstance()/];
-        [unit.actionHandlers()/]
-    }
-    [unit.catchSelectionException()/]
-		[else]
+	[if (unit.oclIsTypeOf(DetailsUnit))]
+    $[unit.instanceName()/] = [unit.loadInstance()/];
     [unit.actionHandlers()/]
-		[/if]
+	[else]
+    [unit.actionHandlers()/]
+	[/if]
 }
 [/for]
 
@@ -137,19 +134,16 @@ return new Response("No action taken", 200);
 /**
  * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
  */
-public function [deleteAction.actionName()/]([unit.actionMethodParameters()/])
+public function [deleteAction.actionName()/]([unit.inlineActionMethodParameters(page)/])
 {
-    try
-    {
-        $[deleteAction.instanceName()/] = [unit.loadInstance()/];
-		$this->get('[deleteAction.usedBy.oclAsType(IndexUnit).service().instanceName()/]')->remove($[deleteAction.instanceName()/], true);
+    $[deleteAction.instanceName()/] = [unit.loadInstance()/];
+    $this->get('[deleteAction.usedBy.oclAsType(IndexUnit).service().instanceName()/]')->remove($[deleteAction.instanceName()/], true);
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
-        $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
-[/if]
-    }
-    [unit.catchSelectionException()/]
+    $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
+[else]
 
     return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
+[/if]
 }
 [/let]
 [/let]
@@ -162,27 +156,23 @@ public function [deleteAction.actionName()/]([unit.actionMethodParameters()/])
 /**
  * @Route("[feature.uriPath()/]", name="[feature.routeName()/]")
  */
-public function [action.actionName()/]([unit.actionMethodParameters()/])
+public function [action.actionName()/]([unit.inlineActionMethodParameters(page)/])
 {
-    try
-    {
 [if (feature.operation.resultType = OperationResultTypes::None)]
-        $this->get('[feature.operation.partOf.instanceName()/]')
-            ->[feature.operation.methodName()/]([unit.loadInstance()/]);
+    $this->get('[feature.operation.partOf.instanceName()/]')
+        ->[feature.operation.methodName()/]([unit.loadInstance()/]);
 [elseif (feature.operation.resultType = OperationResultTypes::File)]
-        $tempFilename = $this->get('[feature.operation.partOf.instanceName()/]')
-            ->[feature.operation.methodName()/]([unit.loadInstance()/], '[feature.fileExtension/]');
-        $response = new BinaryFileResponse($tempFilename);
-        $filename = $[unit.uriPathKeys()->first().routeParameterName(unit.entities->first())/] . '[feature.fileExtension/]';
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $filename
-        );
-        $response->headers->set('Content-type', mime_content_type($tempFilename));
-        return $response;
+    $tempFilename = $this->get('[feature.operation.partOf.instanceName()/]')
+        ->[feature.operation.methodName()/]([unit.loadInstance()/], '[feature.fileExtension/]');
+    $response = new BinaryFileResponse($tempFilename);
+    $filename = $[unit.uriPathKeys()->first().routeParameterName(unit.entities->first())/] . '[feature.fileExtension/]';
+    $response->setContentDisposition(
+        ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        $filename
+    );
+    $response->headers->set('Content-type', mime_content_type($tempFilename));
+    return $response;
 [/if]
-    }
-    [unit.catchSelectionException()/]
 [if (feature.operation.resultType = OperationResultTypes::None)]
 
     return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
