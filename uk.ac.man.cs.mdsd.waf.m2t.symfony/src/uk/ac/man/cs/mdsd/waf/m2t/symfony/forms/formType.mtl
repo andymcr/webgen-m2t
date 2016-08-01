@@ -25,11 +25,13 @@ class [entityOrView.typeClassName()/] extends AbstractType
 [comment Only features that are used by forms are included to minimise number of db queries. Including
 others can result in queries for associated entities that are not used. /]
 [for (feature : Feature | entityOrView.featuresUsed(model)->sortedBy(f | f.name))]
-        $builder->[feature.formFeature()/];
+        $builder->[feature.formFeature(model)/];
 [/for]
 
+[if (model.allowTypeCustomisation->includes(entityOrView))]
     // [protected (entityOrView.instanceName())]
     // [/protected]
+[/if]
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -85,11 +87,13 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
 [/let]
+[if (model.allowTypeCustomisation->includes(entityOrView))]
 // [protected ('custom.uses')]
 // [/protected]
+[/if]
 [/template]
 
-[template private formFeature(feature : Feature)
+[template private formFeature(feature : Feature, model : WafModel)
 	? (feature.oclIsKindOf(Attribute)) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
@@ -170,7 +174,7 @@ TextType::class
 [/if]
 [/template]
 
-[template private formFeature(feature : Feature)
+[template private formFeature(feature : Feature, model : WafModel)
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
@@ -187,13 +191,15 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 [else]
     'multiple' => true,
 [/if]
+[if (model.allowTypeCustomisation->includes(association.partOf))]
 // [protected ('custom.'.concat(association.modelPropertyName()))]
 // [/protected]
+[/if]
 ))
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature)
+[template private formFeature(feature : Feature, model : WafModel)
 	? (feature.oclIsKindOf(Association) and feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 [if (association.isSingleton())]
