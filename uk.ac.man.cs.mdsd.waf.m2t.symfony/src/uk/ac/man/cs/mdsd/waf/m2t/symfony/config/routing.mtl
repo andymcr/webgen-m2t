@@ -11,13 +11,13 @@
 [if (model.restApi->notEmpty())]
 app_api:
     resource: "@AppBundle/Controller/Api/"
-    type: annotation
+    type:     annotation
     prefix: /api
 [/if]
 [if (model.pages->select(p | p.units->notEmpty())->notEmpty())]
-app_web:
+app[if (model.restApi->notEmpty())]_web[/if]:
     resource: "@AppBundle/Controller/"
-    type: annotation
+    type:     annotation
 
 [/if]
 [if (model.restApi->notEmpty())]
