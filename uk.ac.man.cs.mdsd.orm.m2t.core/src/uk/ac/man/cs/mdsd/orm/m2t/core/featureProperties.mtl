@@ -178,8 +178,8 @@
 	= entityOrView.features->select(f | f.isPrimaryKey()).oclAsType(EntityFeature)
 /]
 
-[query public pseudoAssociations(entityOrView : EntityOrView) : Sequence(EntityAssociation)
-	= entityOrView.features->select(f | f.isPseudo()).oclAsType(EntityAssociation)
+[query public pseudoAssociations(entityOrView : EntityOrView) : Sequence(Association)
+	= entityOrView.features->select(f | f.isPseudo()).oclAsType(Association)
 /]
 
 [query public resourceAttributes(entityOrView : EntityOrView) : Sequence(SingletonResource)
@@ -417,7 +417,7 @@
 /]
 
 [query public isPseudo(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityAttribute) then
+	= if not feature.oclIsKindOf(Association) then
 			false
 		else
 			feature.oclAsType(Association).pseudo

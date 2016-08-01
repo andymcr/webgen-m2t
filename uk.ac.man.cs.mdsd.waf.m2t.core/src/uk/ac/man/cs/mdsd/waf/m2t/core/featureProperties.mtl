@@ -964,11 +964,7 @@
 /]
 
 [query public isPseudo(association : UnitAssociation) : Boolean
-	= if association.association.oclIsKindOf(EntityAssociation) then
-			association.association.oclAsType(EntityAssociation).isPseudo()
-		else 
-			false
-		endif
+	= association.association.isPseudo()
 /]
 
 [query public isPseudo(association : ChildAssociation) : Boolean
