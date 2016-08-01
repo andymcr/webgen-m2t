@@ -100,8 +100,12 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/if]
 [if (not attribute.isSingleton())]
     'entry_type' => [attribute.interfaceType(true)/],
+	[if (attribute.collectionAllowAdd)]
     'allow_add' => true,
+	[/if]
+	[if (attribute.collectionAllowRemove)]
     'allow_delete' => true,
+	[/if]
 [elseif (attribute.isDate())]
 	[if (attribute.dateDetails() = DateDetails::DateAndTime)]
     'date_widget' => 'single_text',
