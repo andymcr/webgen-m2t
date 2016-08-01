@@ -165,7 +165,7 @@ return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContaine
 [/template]
 
 [template private routeActualParameters(entityOrView : EntityOrView, unit : DynamicUnit, base : EntityOrView) post(trim())]
-[for (key : Attribute | entityOrView.uriActivePathKeys(unit))]
+[for (key : Attribute | entityOrView.filteredUriPathKeys(unit))]
 '[key.routeParameterName(base)/]' => $[key.routeParameterName(entityOrView)/],
 [/for]
 [/template]

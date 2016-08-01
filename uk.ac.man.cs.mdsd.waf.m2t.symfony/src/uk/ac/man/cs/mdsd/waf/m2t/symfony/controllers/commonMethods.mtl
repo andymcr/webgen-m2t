@@ -21,7 +21,7 @@ $this->get('translator')->trans('[message/]')
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit, create : Boolean) post(trim())]
-@Route("[unit.uriPath(create)/]", name="[unit.routeName(create)/]"[if (unit.hasValidatedRouteParameters(create))]
+@Route("[unit.uriPath(true, create)/]", name="[unit.routeName(create)/]"[if (unit.hasValidatedRouteParameters(create))]
 , requirements={[for (key : Attribute | unit.uriPathValidatedKeys()) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).entities->first())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
 
@@ -32,8 +32,8 @@ $this->get('translator')->trans('[message/]')
 [template public actionMethodParameters(unit : DynamicUnit, parentPath : Boolean) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [let entityOrView : EntityOrView = unit.entities->first()]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (entityOrView.hasActiveRouteParameters(unit, parentPath))]
-, [/if][/if][unit.actionRouteParameters(parentPath)/]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (entityOrView.hasFilteredRouteParameters(unit, parentPath))]
+, [/if][/if][unit.filteredRouteParameters(parentPath)/]
 [/let]
 [/let]
 [/template]
@@ -52,7 +52,7 @@ $this->get('[unit.service().name/]')
 
 [template public findActualParameters(unit : DynamicUnit) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(false)) separator (', ')]
-[if (unit.nonRoutedKeys()->excludes(key))]
+[if (unit.nonRoutedPathKeys()->excludes(key))]
 [let parameterName : String = key.routeParameterName(unit.entities->first())]
 	[if (key.encodeUriKey)]
 urldecode($[parameterName/])[else]
