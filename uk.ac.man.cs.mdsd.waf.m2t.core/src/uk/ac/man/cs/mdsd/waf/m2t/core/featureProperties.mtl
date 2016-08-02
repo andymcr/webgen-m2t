@@ -179,7 +179,7 @@
 /]
 
 [query public hasJavascript(page : Page) : Boolean
-	= page.hasChangableCollections()
+	= page.hasChangableCollections() or page.partOf.responsiveTopMenu
 /]
 
 [query public hasMapUnits(page : Page) : Boolean

@@ -81,8 +81,17 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
         'title' => $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]'),
 [if (page.hasJavascript())]
         'scripts' => array(
-            'https://code.jquery.com/jquery-3.1.0.min.js',
+	[if (page.hasChangableCollections())]
+            array(
+                'src'=>'https://code.jquery.com/jquery-3.1.0.min.js',
+                'integrity' => 'sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=',
+                'crossorigin' => 'anonymous',
+            )
             '[page.javascriptFilename()/]',
+	[/if]
+	[if (page.partOf.responsiveTopMenu)]
+			'/js/responsive-nav.min.js',
+	[/if]
         ),
 [/if]
     );

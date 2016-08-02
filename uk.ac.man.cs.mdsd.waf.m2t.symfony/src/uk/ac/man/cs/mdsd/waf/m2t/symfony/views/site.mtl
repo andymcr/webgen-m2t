@@ -25,7 +25,11 @@
 [/if]
 {% if scripts is defined %}
 {% for script in scripts  %}
+{% if script is iterable %}
+ <script type="text/javascript"{% for key, value in script %} {{ key }}="{{ value }}"{% endfor %}"></script>
+{% else %}
  <script type="text/javascript" src="{{ script }}"></script>
+{% endif %}
 {% endfor %}
 {% endif %}
 </head>
