@@ -139,7 +139,7 @@ $[key.routeParameterName(unit.entities->first())/][/for]
 			endif
 /]
 
-[query public parentEntityUriPath(entityOrView : EntityOrView, unit : DynamicUnit, filter : Boolean) : String
+[query private parentEntityUriPath(entityOrView : EntityOrView, unit : DynamicUnit, filter : Boolean) : String
 	= let keyEntity : EntityOrView = entityOrView.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''

@@ -27,8 +27,8 @@ others can result in queries for associated entities that are not used. /]
 [for (feature : Feature | entityOrView.featuresUsed(model)->sortedBy(f | f.name))]
         $builder->[feature.formFeature(model)/];
 [/for]
-
 [if (model.allowTypeCustomisation->includes(entityOrView))]
+
     // [protected (entityOrView.instanceName())]
     // [/protected]
 [/if]
