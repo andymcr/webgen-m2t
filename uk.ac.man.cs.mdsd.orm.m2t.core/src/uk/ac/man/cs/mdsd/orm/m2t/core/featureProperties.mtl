@@ -566,23 +566,27 @@
 /]
 
 [query public pluralisedPropertyName(feature : Feature) : String
-	= if feature.oclIsKindOf(SingletonAttribute) then
-			feature.pluralisedName
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).pluralisedName
 		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).pluralisedName
+			feature.oclAsType(EncapsulatedAttribute).attribute.pluralisedPropertyName()
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.pluralisedPropertyName()
 		else
-			feature.pluralisedName
-		endif endif
+			feature.modelPropertyName()
+		endif endif endif
 /]
 
 [query public singletonPropertyName(feature : Feature) : String
-	= if feature.oclIsKindOf(SingletonAttribute) then
-			feature.singletonName
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).singletonName
 		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).singletonName
+			feature.oclAsType(EncapsulatedAttribute).attribute.singletonPropertyName()
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.singletonPropertyName()
 		else
-			feature.singletonName
-		endif endif
+			feature.modelPropertyName()
+		endif endif endif
 /]
 
 [query public sourceType(association : Association) : EntityOrView
