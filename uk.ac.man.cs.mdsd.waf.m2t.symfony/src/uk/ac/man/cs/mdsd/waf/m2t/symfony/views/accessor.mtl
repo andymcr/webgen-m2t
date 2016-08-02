@@ -6,6 +6,24 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
+[query public propertyAccessor(field : UnitField, parentAccessor : String) : String
+	= if field.oclIsTypeOf(InterfaceField) then
+			null
+		else if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor)
+		else
+			field.oclAsType(UnitAssociation).propertyAccessor(parentAccessor)
+		endif endif
+/]
+
+[query public propertyAccessor(attribute : UnitAttribute, parentAccessor : String) : String
+	= attribute.accessor(parentAccessor)
+/]
+
+[query public propertyAccessor(association : UnitAssociation, parentAccessor : String) : String
+	= parentAccessor.concat('.').concat(association.modelPropertyName())
+/]
+
 [query public accessor(field : UnitField, parentAccessor : String) : String
 	= if field.oclIsTypeOf(InterfaceField) then
 			field.oclAsType(InterfaceField).accessor(parentAccessor)
@@ -30,8 +48,8 @@
 		else if not association.selection.oclIsUndefined() then
 			association.collectionAccessor(parentAccessor)
 		else
-			let accessor : String 
-				= parentAccessor.concat('.').concat(association.modelPropertyName())
+			let accessor : String
+				= association.propertyAccessor(parentAccessor)
 				in if not association.childFeature.oclIsUndefined() then
 						association.childFeature.accessor(accessor)
 					else
