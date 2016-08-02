@@ -225,6 +225,9 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getUpdateUnit().isSuperTypeOf(domainElement.eClass())) {
 				return UpdateUnitEditPart.VISUAL_ID;
 			}
+			if (WebsitePackage.eINSTANCE.getSliderUnit().isSuperTypeOf(domainElement.eClass())) {
+				return SliderUnitEditPart.VISUAL_ID;
+			}
 			break;
 		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
@@ -1251,6 +1254,11 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
+		case SliderUnitEditPart.VISUAL_ID:
+			if (SliderUnitNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			if (ActionMenuEntryNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1348,6 +1356,9 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			if (UpdateUnitEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (SliderUnitEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1878,6 +1889,7 @@ public class WebsiteVisualIDRegistry {
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
 		case BusinessOperationEditPart.VISUAL_ID:
+		case SliderUnitEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

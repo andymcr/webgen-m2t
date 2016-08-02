@@ -652,6 +652,12 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case DateFieldName6EditPart.VISUAL_ID:
 				return new DateFieldName6EditPart(view);
 
+			case SliderUnitEditPart.VISUAL_ID:
+				return new SliderUnitEditPart(view);
+
+			case SliderUnitNameEditPart.VISUAL_ID:
+				return new SliderUnitNameEditPart(view);
+
 			case ActionMenuEntryEditPart.VISUAL_ID:
 				return new ActionMenuEntryEditPart(view);
 

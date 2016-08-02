@@ -666,6 +666,12 @@ public class WebsiteElementTypes {
 	public static final IElementType DateField_3212 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DateField_3212"); //$NON-NLS-1$
 
 	/**
+	* @generated
+	*/
+	public static final IElementType SliderUnit_3261 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SliderUnit_3261"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType SelectAction_3146 = getElementType(
@@ -984,6 +990,8 @@ public class WebsiteElementTypes {
 
 			elements.put(DateField_3212, WebsitePackage.eINSTANCE.getDateField());
 
+			elements.put(SliderUnit_3261, WebsitePackage.eINSTANCE.getSliderUnit());
+
 			elements.put(ActionMenuEntry_3236, WebsitePackage.eINSTANCE.getActionMenuEntry());
 
 			elements.put(EditStaticTextMenuEntry_3156, WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
@@ -1124,6 +1132,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(DeleteAction_3154);
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3206);
 			KNOWN_ELEMENT_TYPES.add(DateField_3212);
+			KNOWN_ELEMENT_TYPES.add(SliderUnit_3261);
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
@@ -1355,6 +1364,8 @@ public class WebsiteElementTypes {
 			return DataTypeField_3206;
 		case DateField6EditPart.VISUAL_ID:
 			return DateField_3212;
+		case SliderUnitEditPart.VISUAL_ID:
+			return SliderUnit_3261;
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return ActionMenuEntry_3236;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:

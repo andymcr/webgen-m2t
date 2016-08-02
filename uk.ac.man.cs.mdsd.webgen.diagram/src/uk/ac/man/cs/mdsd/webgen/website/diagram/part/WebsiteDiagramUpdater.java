@@ -503,6 +503,10 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
+			if (visualID == SliderUnitEditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
 		}
 		return result;
 	}
@@ -1830,6 +1834,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeField_3206ContainedLinks(view);
 		case DateField6EditPart.VISUAL_ID:
 			return getDateField_3212ContainedLinks(view);
+		case SliderUnitEditPart.VISUAL_ID:
+			return getSliderUnit_3261ContainedLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236ContainedLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2067,6 +2073,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeField_3206IncomingLinks(view);
 		case DateField6EditPart.VISUAL_ID:
 			return getDateField_3212IncomingLinks(view);
+		case SliderUnitEditPart.VISUAL_ID:
+			return getSliderUnit_3261IncomingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236IncomingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2304,6 +2312,8 @@ public class WebsiteDiagramUpdater {
 			return getDataTypeField_3206OutgoingLinks(view);
 		case DateField6EditPart.VISUAL_ID:
 			return getDateField_3212OutgoingLinks(view);
+		case SliderUnitEditPart.VISUAL_ID:
+			return getSliderUnit_3261OutgoingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236OutgoingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -3052,6 +3062,13 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getDateField_3212ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSliderUnit_3261ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3870,6 +3887,13 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSliderUnit_3261IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getSelectAction_3146IncomingLinks(View view) {
@@ -4674,6 +4698,13 @@ public class WebsiteDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getDateField_3212OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSliderUnit_3261OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

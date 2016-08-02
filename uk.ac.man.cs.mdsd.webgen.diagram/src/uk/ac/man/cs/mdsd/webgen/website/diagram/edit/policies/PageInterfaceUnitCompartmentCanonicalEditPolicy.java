@@ -29,6 +29,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MapUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SearchUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SliderUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
@@ -96,6 +97,7 @@ public class PageInterfaceUnitCompartmentCanonicalEditPolicy extends CanonicalEd
 		case SearchUnitEditPart.VISUAL_ID:
 		case StaticUnitEditPart.VISUAL_ID:
 		case UpdateUnitEditPart.VISUAL_ID:
+		case SliderUnitEditPart.VISUAL_ID:
 			return true;
 		}
 		return false;

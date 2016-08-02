@@ -1754,6 +1754,23 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser sliderUnitName_5269Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSliderUnitName_5269Parser() {
+		if (sliderUnitName_5269Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			sliderUnitName_5269Parser = parser;
+		}
+		return sliderUnitName_5269Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	private IParser selectActionName_5150Parser;
@@ -2172,6 +2189,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getDataTypeFieldName_5213Parser();
 		case DateFieldName6EditPart.VISUAL_ID:
 			return getDateFieldName_5219Parser();
+		case SliderUnitNameEditPart.VISUAL_ID:
+			return getSliderUnitName_5269Parser();
 		case ActionMenuEntryNameEditPart.VISUAL_ID:
 			return getActionMenuEntryName_5243Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
