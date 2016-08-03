@@ -12,6 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::detailsMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::editMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::imageMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::indexMethods/]
 
 
@@ -77,29 +78,13 @@ Request $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 {
-    $parameters = array(
-        'title' => $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]'),
-[if (page.hasJavascript())]
-        'scripts' => array(
-	[if (page.hasChangableCollections())]
-            array(
-                'src'=>'https://code.jquery.com/jquery-3.1.0.min.js',
-                'integrity' => 'sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=',
-                'crossorigin' => 'anonymous',
-            )
-            '[page.javascriptFilename()/]',
-	[/if]
-	[if (page.partOf.responsiveTopMenu)]
-			'/js/responsive-nav.min.js',
-	[/if]
-        ),
-[/if]
-    );
+    $parameters = array();
+    [page.templateParameters()/]
 [for (unit : ContentUnit | page.units)]
     [unit.templateParameters()/]
 [/for]
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 
+    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 }
 [/template]
 

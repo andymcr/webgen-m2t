@@ -37,7 +37,7 @@ Request $request[/if])
     return $this->renderPage([page.renderActualParameters(unit)/]);
 [else]
     $parameters = array();
-    $parameters['['/]'title'[']'/] = '[page.displayLabel/]';
+    [page.templateParameters()/]
     [unit.templateParameters()/]
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/if]

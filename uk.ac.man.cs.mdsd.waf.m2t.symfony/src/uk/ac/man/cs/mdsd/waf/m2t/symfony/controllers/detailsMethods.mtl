@@ -35,7 +35,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters()/])
     return $this->renderPage([page.renderActualParameters(unit)/]);
 [else]
     $parameters = array();
-    $parameters['['/]'title'[']'/] = '[page.displayLabel/]';
+    [page.templateParameters()/]
     [unit.templateParameters()/]
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/if]
@@ -62,7 +62,7 @@ if (!isset($this->[detailsUnit.instanceName()/]))
 		[else]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
 		[/if]
-$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+$parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 	[/if]
 [/if]
 [/let]

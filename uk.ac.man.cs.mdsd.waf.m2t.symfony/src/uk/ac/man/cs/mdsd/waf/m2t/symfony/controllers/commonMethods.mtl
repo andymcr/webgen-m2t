@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::controller/]
@@ -31,10 +32,8 @@ $this->get('translator')->trans('[message/]')
 
 [template public actionMethodParameters(unit : DynamicUnit, parentPath : Boolean) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-[let entityOrView : EntityOrView = unit.entities->first()]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (entityOrView.hasFilteredRouteParameters(unit, parentPath))]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (unit.hasFilteredRouteParameters(parentPath))]
 , [/if][/if][unit.filteredRouteParameters(parentPath)/]
-[/let]
 [/let]
 [/template]
 
@@ -98,6 +97,14 @@ $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.ins
 [/template]
 
 [template public loadSelectedInstance(unit : EditUnit) post(trim())]
+[if (unit.defaultSelection.oclIsUndefined())]
+$[unit.instanceName()/] = [unit.loadFilteredInstance()/];
+[else]
+$[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+[/if]
+[/template]
+
+[template public loadSelectedInstance(unit : ImageUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
 $[unit.instanceName()/] = [unit.loadFilteredInstance()/];
 [else]
@@ -171,4 +178,26 @@ $this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
 
 [template public generateRemoveParameter(eObject : EObject, parameterName : String) post(trim())]
 unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
+[/template]
+
+
+[template public templateParameters(page : Page) post(trim())]
+$parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
+[if (page.hasJavascript())]
+$parameters['['/]'scripts'[']'/] = array(
+	[if (page.hasChangableCollections())]
+    array(
+        'src'=>'https://code.jquery.com/jquery-3.1.0.min.js',
+        'integrity' => 'sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=',
+        'crossorigin' => 'anonymous',
+    )
+    '[page.javascriptFilename()/]',
+	[/if]
+	[if (page.hasSliderUnits())]
+	[/if]
+	[if (page.partOf.responsiveTopMenu)]
+    '/sps/SPS.symfony3/web/js/responsive-nav.min.js',
+	[/if]
+);
+[/if]
 [/template]
