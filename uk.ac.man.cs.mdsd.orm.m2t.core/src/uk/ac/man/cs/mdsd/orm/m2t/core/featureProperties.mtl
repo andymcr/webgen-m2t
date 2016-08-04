@@ -561,7 +561,7 @@
 		else if feature.oclIsTypeOf(ViewAssociation) then
 			feature.oclAsType(ViewAssociation).opposite.pivotTableName()
 		else
-			'invalid'
+			'invalidPivotTableName'
 		endif endif endif
 /]
 

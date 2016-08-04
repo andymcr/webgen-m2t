@@ -24,22 +24,27 @@
 
 
 [query public getMethodName(feature : Feature) : String
-	= if feature.isBooleanDataType() then
-			if feature.oclIsKindOf(EntityFeature) then
-				if feature.oclAsType(EntityFeature).booleanIsHasChoice = IsHasChoices::isA then
-					'is'
-				else
-					'has'
-				endif
-			else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-				feature.oclAsType(EncapsulatedAttribute).attribute.getMethodName()
+	= let prefix : String
+		= if feature.isBooleanDataType() then
+				feature.booleanPrefix()
 			else
-				feature.oclAsType(EncapsulatedAssociation).association.getMethodName()
-			endif endif
+				'get'
+			endif
+		in prefix.concat(feature.modelPropertyName().toUpperFirst())
+/]
+
+[query private booleanPrefix(feature : Feature) : String
+	= if feature.oclIsKindOf(EntityFeature) then
+			if feature.oclAsType(EntityFeature).booleanIsHasChoice = IsHasChoices::isA then
+				'is'
+			else
+				'has'
+			endif
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.booleanPrefix()
 		else
-			'get'
-		endif
-		.concat(feature.modelPropertyName().toUpperFirst())
+			feature.oclAsType(EncapsulatedAssociation).association.booleanPrefix()
+		endif endif
 /]
 
 [query public instanceName(feature : Feature) : String
