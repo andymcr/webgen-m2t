@@ -300,8 +300,10 @@ form > div > div > input {
 	margin-right: 0.5em;
 }
 
+form > input['['/]type="reset"[']'/],
 form > input['['/]type="submit"[']'/],
-form > div > input['['/]type="submit"[']'/] {
+form > div > input['['/]type="submit"[']'/],
+form > div > input['['/]type="reset"[']'/] {
 	padding: 0.2em;
 }
 
