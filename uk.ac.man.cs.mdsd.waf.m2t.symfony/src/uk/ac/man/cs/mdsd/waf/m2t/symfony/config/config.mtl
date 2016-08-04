@@ -99,6 +99,14 @@ ewz_recaptcha:
     locale_key:  %kernel.default_locale%
 
 [/if]
+[if (model.hasJavascript() or model.hasSliderUnits())]
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+
+[/if]
 [if (model.restApi->notEmpty())]
 fos_rest:
     allowed_methods_listener: true

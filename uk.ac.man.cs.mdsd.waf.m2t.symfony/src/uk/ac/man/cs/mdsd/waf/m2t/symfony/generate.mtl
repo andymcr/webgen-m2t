@@ -49,6 +49,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::sidemenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::site/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::slider/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::staticView/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::topmenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form::form/]

@@ -10,7 +10,7 @@
 [template public generateMenu(model : WafModel)]
 [file(model.menuDirectory().concat('/topbar').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 {% trans_default_domain "navigation" %}
-<nav id="[model.topNavigationId/]">
+<nav id="[model.topNavigationId/]"[if (model.responsiveTopMenu)] class="nav-collapse"[/if]>
 [if (model.topMenuItems()->notEmpty() or model.isAuthenticated())]
  <ul>
 [/if]

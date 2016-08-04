@@ -185,18 +185,19 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
 [if (page.hasJavascript())]
 $parameters['['/]'scripts'[']'/] = array(
-	[if (page.hasChangableCollections())]
+	[if (page.hasSliderUnits())]
     array(
-        'src'=>'https://code.jquery.com/jquery-3.1.0.min.js',
-        'integrity' => 'sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=',
+        'src'=>'https://code.jquery.com/jquery-1.12.4.min.js',
+        'integrity' => 'sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=',
         'crossorigin' => 'anonymous',
-    )
+    ),
+    'js/jssor.slider.mini.js',
+	[/if]
+	[if (page.hasChangableCollections() or page.hasSliderUnits())]
     '[page.javascriptFilename()/]',
 	[/if]
-	[if (page.hasSliderUnits())]
-	[/if]
 	[if (page.partOf.responsiveTopMenu)]
-    '/sps/SPS.symfony3/web/js/responsive-nav.min.js',
+    'js/responsive-nav.min.js',
 	[/if]
 );
 [/if]

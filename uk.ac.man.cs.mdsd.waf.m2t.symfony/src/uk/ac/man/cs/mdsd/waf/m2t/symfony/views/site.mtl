@@ -26,9 +26,9 @@
 {% if scripts is defined %}
 {% for script in scripts  %}
 {% if script is iterable %}
- <script type="text/javascript"{% for key, value in script %} {{ key }}="{{ value }}"{% endfor %}"></script>
+ <script type="text/javascript"{% for key, value in script %} {{ key }}="{{ value }}"{% endfor %}></script>
 {% else %}
- <script type="text/javascript" src="{{ script }}"></script>
+ <script type="text/javascript" src="{{ asset(script) }}"></script>
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -55,6 +55,11 @@
 <footer>
  <p>[model.copyrightText/]</p>
 </footer>
+[if (model.responsiveTopMenu)]
+<script>
+  var nav = responsiveNav(".nav-collapse");
+</script>
+[/if]
 </body>
 </html>
 [/file]
