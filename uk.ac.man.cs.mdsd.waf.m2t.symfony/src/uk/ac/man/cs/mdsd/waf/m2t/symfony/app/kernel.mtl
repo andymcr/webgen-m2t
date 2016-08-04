@@ -39,9 +39,14 @@ class AppKernel extends Kernel
 [if (model.isLocallyAuthenticated())]
             new FOS\UserBundle\FOSUserBundle(),
 [/if]
+[if (model.restApi->notEmpty())]
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+[/if]
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+[if (model.hasJavascript() or model.hasSliderUnits())]
+            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+[/if]
             new AppBundle\AppBundle(),
         [']'/];
 
