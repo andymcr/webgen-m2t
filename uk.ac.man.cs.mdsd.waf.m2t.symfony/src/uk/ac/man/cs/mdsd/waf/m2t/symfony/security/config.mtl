@@ -63,12 +63,10 @@ security:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
             logout: true
-            anonymous: true
 	[elseif (model.isCasAuthenticated())]
             guard:
                 authenticators:
                     - app.cas_authenticator
-#            stateless: true
 	[else]
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
             http_basic:
