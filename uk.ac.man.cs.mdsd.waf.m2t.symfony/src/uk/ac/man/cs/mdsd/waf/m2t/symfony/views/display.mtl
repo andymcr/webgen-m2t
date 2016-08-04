@@ -70,7 +70,7 @@
 
 
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="{{ path('[unit.supportRouteName()/]') }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+<form action="{{ path('[unit.supportRouteName()/]', { [unit.entities->first().routeActualParameters(unit.entities->first(), accessor)/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
  [action.unitSupportLink()/]
 [/for]
