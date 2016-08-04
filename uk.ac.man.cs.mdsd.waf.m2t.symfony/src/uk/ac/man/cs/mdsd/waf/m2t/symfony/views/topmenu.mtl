@@ -15,16 +15,20 @@
  <ul>
 [/if]
 [for (page : Page | model.topMenuItems())]
-  <li>[if (page.units->notEmpty())]
-<a href="{{ path('[page.units->first().routeName()/]') }}">{{ 'top.labels.[page.id()/]' | trans }}</a>[else]
-{{ 'top.labels.[page.id()/]' | trans }}[/if]</li>
+	[if (page.topMenuOption = PageTopMenuOptions::IncludeWhenAuthenticated)]
+{% if app.user %}
+	[/if]
+  <li><a href="{{ path('[page.routeName()/]') }}">{{ 'top.labels.[page.id()/]' | trans }}</a></li>
+	[if (page.topMenuOption = PageTopMenuOptions::IncludeWhenAuthenticated)]
+{% endif %}
+	[/if]
 [/for]
 [if (model.isAuthenticated())]
 	[if (model.isLocallyAuthenticated())]
 	[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
 {% if app.user %}
   <li id="authentication">Logged in as {{ app.user.username }} <a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
-{% else %}
+{% elseif not app.user %}
   <li id="authentication"><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
