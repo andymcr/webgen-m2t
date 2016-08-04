@@ -134,7 +134,7 @@
 
 [query public routeName(page : Page) : String
 	= if page.dynamicUnits()->isEmpty() then
-			''
+			page.instanceName()
 		else
 			page.dynamicUnits()->first().routeName()
 		endif
