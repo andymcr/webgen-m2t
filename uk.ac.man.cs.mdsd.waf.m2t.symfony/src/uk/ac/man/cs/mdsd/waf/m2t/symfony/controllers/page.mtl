@@ -14,6 +14,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::editMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::imageMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::indexMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::staticMethods/]
 
 
 [template public controller(page : Page)]
