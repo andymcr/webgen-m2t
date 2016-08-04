@@ -18,8 +18,16 @@
 	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
 /]
 
+[query public hasJavascript(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasJavascript())->notEmpty()
+/]
+
 [query public hasServicesWithSelections(model : WafModel) : Boolean
 	= model.servicesWithSelections()->notEmpty()
+/]
+
+[query public hasSliderUnits(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasSliderUnits())->notEmpty()
 /]
 
 [query public homePage(model : WafModel) : Page
@@ -179,7 +187,7 @@
 /]
 
 [query public hasJavascript(page : Page) : Boolean
-	= page.hasChangableCollections() or page.partOf.responsiveTopMenu
+	= page.hasChangableCollections() or page.partOf.responsiveTopMenu or page.hasSliderUnits()
 /]
 
 [query public hasMapUnits(page : Page) : Boolean
@@ -196,6 +204,10 @@
 
 [query public hasFilterParameters(page : Page) : Boolean
 	= page.dynamicUnits()->select(u | u.hasFilterParameters())->notEmpty()
+/]
+
+[query public hasSliderUnits(page : Page) : Boolean
+	= page.units->select(u | u.oclIsTypeOf(SliderUnit))->notEmpty()
 /]
 
 [query public hasUnitActions(page : Page) : Boolean
