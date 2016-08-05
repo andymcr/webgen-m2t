@@ -150,8 +150,11 @@ $[key.routeParameterName(unit.entities->first())/][/for]
 						else
 							keyEntity.parentPath(entityOrView)
 						endif
-					in
-						parentPath.appendContainingAssociation(keyEntity)
+					in if parentPath = '' then
+							''
+						else
+							parentPath.appendContainingAssociation(keyEntity)
+						endif
 		endif
 /]
 
