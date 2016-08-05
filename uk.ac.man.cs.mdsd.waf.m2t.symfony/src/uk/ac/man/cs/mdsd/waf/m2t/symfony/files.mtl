@@ -65,7 +65,7 @@
 /]
 
 [query public javascriptDirectory(eObject : EObject) : String
-	= eObject.webDirectory().concat('/js')
+	= 'js'
 /]
 
 [query public menuDirectory(eObject : EObject) : String

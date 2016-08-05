@@ -8,7 +8,7 @@
 
 
 [template public javascript(page : Page)]
-[file(page.javascriptFilename(), false)]
+[file(page.webDirectory().concat('/').concat(page.javascriptFilename()), false)]
 [comment var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
 var $newLinkLi = $('<li></li>').append($addTagLink);
 
