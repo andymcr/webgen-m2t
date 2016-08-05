@@ -3,7 +3,6 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
@@ -17,14 +16,7 @@
   <h1 class="[staticUnit.captionClass/]">[staticUnit.displayLabel/]</h1>
 [/if]
 [if (staticUnit.pageDisplayedOn().partOf.staticUnitsEditable)]
-  <div class="[staticUnit.contentClass/]"><?php
-	if ($[staticUnit.instanceName()/]->loaded())
-		echo $[staticUnit.instanceName()/]->content;
-	else
-	{
-		?>[staticUnit.content/]<?php
-	}
-?></div>
+  <div class="[staticUnit.contentClass/]">{{ [staticUnit.instanceName()/].content }}</div>
 [else]
   <div class="[staticUnit.contentClass/]">[staticUnit.content/]</div>
 [/if]
