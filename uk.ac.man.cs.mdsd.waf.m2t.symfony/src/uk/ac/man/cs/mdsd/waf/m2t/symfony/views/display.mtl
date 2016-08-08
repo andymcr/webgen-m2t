@@ -96,13 +96,15 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 {% else %}
  <li><a href="[unit.pageHref('currentPage - 1')/]">[unit.previousPageLabel/]</a></li>
 {% endif %}
-{% for page in 1..pageCount %}
+[if (unit.nextNpages > 2 or unit.previousNpages > 2)]
+{% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
  {% if page == currentPage %}
  <li>{{ page }}</li>
  {% else %}
  <li><a href="[unit.pageHref('page')/]">{{ page }}</a></li>
  {% endif %}
 {% endfor %}
+[/if]
 {% if currentPage == pageCount %}
  <li>[unit.nextPageLabel/]</li>
 {% else %}
