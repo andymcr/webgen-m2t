@@ -179,16 +179,16 @@ $[key.routeParameterName(unit.entities->first())/][/for]
 	= unit.uriPath(filter, false)
 /]
 
-[query public uriPath(unit : ContentUnit, filter : Boolean, create : Boolean) : String
+[query public uriPath(unit : ContentUnit, filter : Boolean, parentPath : Boolean) : String
 	= let localPath : String
 		= let entityPath : String
 			= if not unit.oclIsKindOf(DynamicUnit) then
 					''
 				else
-					unit.oclAsType(DynamicUnit).entityUriPath(filter, not unit.oclIsKindOf(Selectable) or create)
+					unit.oclAsType(DynamicUnit).entityUriPath(filter, not unit.oclIsKindOf(Selectable) or parentPath)
 				endif
 			in entityPath.combinePaths(
-					if unit.oclIsTypeOf(CreateUpdateUnit) and create then
+					if unit.oclIsTypeOf(CreateUpdateUnit) and parentPath then
 						'create'
 					else
 						unit.uriElement
@@ -205,7 +205,7 @@ $[key.routeParameterName(unit.entities->first())/][/for]
 /]
 
 [query public supportUriPath(unit : ContentUnit) : String
-	= unit.uriPath(false).combinePaths('support')
+	= unit.uriPath(false, unit.oclIsTypeOf(IndexUnit)).combinePaths('support')
 /]
 
 [query public uriPath(action : DeleteAction) : String
