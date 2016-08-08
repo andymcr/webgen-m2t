@@ -459,7 +459,7 @@ NULL
 
 [template public getValue(attribute : Attribute, accessor : String)
 	? (attribute.isEnumerationType()) post(trim())]
-[accessor/] | [attribute.enumerationType().filterName()/]
+[accessor/] | [attribute.enumerationType().filterName()/] | trans({}, 'entity')
 [/template]
 
 
