@@ -72,7 +72,7 @@
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor)/], { 'attr': { 'class': '[field.inputClass()/]'}}) }}
+{{ form_row([field.propertyAccessor(parentAccessor)/], { 'attr': { 'class': '[field.jQueryClasses(unit)/][field.inputClass()/]'}}) }}
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
@@ -92,8 +92,21 @@
 [/let]
 [/template]
 
+[template private jQueryClasses(field : UnitField, unit : DynamicUnit)]
+[if (field.isDataType())]
+	[if (field.dataType().name <> 'Integer')]
+		[if (unit.pageDisplayedOn().partOf.inputTechnology = InputTechnologies::jQueryUI)]
+[field.jQueryClasses()/][/if]
+	[/if]
+[elseif (field.isDate() or field.isUrl())]
+[field.jQueryClasses()/][/if]
+[/template]
+
+[template private jQueryClasses(field : UnitField)]
+ui-corner-all ui-widget ui-widget-content [/template]
+
 [comment this could be left from an experiment /]
-[template private formField(field : UnitField, unit : DynamicUnit, accessor : String)
+[template private formFie(field : UnitField, unit : DynamicUnit, accessor : String)
 	? (field.isContains()) post(trim())]
 [let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
 	[if (field.isSingleton())]

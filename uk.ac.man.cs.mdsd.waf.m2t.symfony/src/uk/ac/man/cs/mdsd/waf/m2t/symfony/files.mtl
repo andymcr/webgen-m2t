@@ -226,6 +226,12 @@
 		.concat(unit.executableExtension())
 /]
 
+[query public javascriptFilename(entityOrView : EntityOrView) : String
+	= entityOrView.javascriptDirectory().concat('/')
+		.concat(entityOrView.instanceName())
+		.concat(entityOrView.javascriptExtension())
+/]
+
 [query public javascriptFilename(page : Page) : String
 	= page.javascriptDirectory().concat('/')
 		.concat(page.instanceName())

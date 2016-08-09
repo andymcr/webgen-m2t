@@ -22,7 +22,7 @@
 [else]
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}]</h1>
 [/if]
- <div class="unit_padding">
+[comment <div class="unit_padding"> /]
   <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.errorName()/] is defined %} hidden{% endif %}">
 {% if [dynamicUnit.errorName()/] is defined %}
    <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.errorName()/] }}</p>
@@ -31,17 +31,12 @@
    [dynamicUnit.formErrors()/]
 [/if]
   </section>
-[if (dynamicUnit.hasInterfaceFields())]
-  <?php
-	$unit_fields = $[dynamicUnit.instanceName()/]->unit_fields();
-?>
-[/if]
 [if (unit.oclIsTypeOf(MapUnit))]
   [dynamicUnit.map()/]
 [else]
   [dynamicUnit.unitContent(dynamicUnit.instanceName())/]
 [/if]
- </div>
+[comment </div> /]
 </section>
 [/let]
 [/file]

@@ -20,6 +20,11 @@
  <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}"/>
  <link rel="stylesheet" type="text/css" media="not print" href="{{ asset('css/non-print.css') }}"/>
  <link rel="stylesheet" type="text/css" media="print" href="{{ asset('css/print.css') }}"/>
+{% if styles is defined %}
+{% for style in styles  %}
+ <link rel="stylesheet" type="text/css" href="{{ style }}"/>
+{% endfor %}
+{% endif %}
 [if (not model.textEditorURL.oclIsUndefined())]
  <script type="text/javascript" src="[model.textEditorURL/]"></script>
 [/if]

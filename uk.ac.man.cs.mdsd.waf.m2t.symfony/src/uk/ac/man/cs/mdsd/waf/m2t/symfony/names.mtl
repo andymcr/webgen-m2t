@@ -57,6 +57,10 @@
 	= entityOrView.controllerName().concat('Controller').toUpperFirst()
 /]
 
+[query public instanceName(entityOrView : EntityOrView) : String
+	= entityOrView.name.toLowerFirst()
+/]
+
 [query public routeName(entityOrView : EntityOrView) : String
 	= entityOrView.name.toLowerFirst()
 /]

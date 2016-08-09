@@ -183,14 +183,35 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
-[if (page.hasJavascript())]
+[if (page.useInputJQuery())]
+$parameters['['/]'styles'[']'/] = array(
+    'https://code.jquery.com/ui/1.12.0/themes/cupertino/jquery-ui.css',
+	[if (page.formUnits()->collect(u | u.displayFields)->select(f | f.isDate())->notEmpty())]
+    'css/wickedpicker.css',
+	[/if]
+);
+[/if]
+[if (page.hasJavascript() or page.useInputJQuery())]
 $parameters['['/]'scripts'[']'/] = array(
-	[if (page.hasSliderUnits())]
     array(
         'src'=>'https://code.jquery.com/jquery-1.12.4.min.js',
         'integrity' => 'sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=',
         'crossorigin' => 'anonymous',
     ),
+	[if (page.useInputJQuery())]
+    array(
+        'src'=>'https://code.jquery.com/ui/1.12.0/jquery-ui.min.js',
+        'integrity' => 'sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=',
+        'crossorigin' => 'anonymous',
+    ),
+		[for (unit : DynamicUnit | page.formUnits()->select(u | u.entities->notEmpty()))]
+    '[unit.entities->first().javascriptFilename()/]',
+		[/for]
+	[if (page.formUnits()->collect(u | u.displayFields)->select(f | f.isDate())->notEmpty())]
+    'js/wickedpicker.js',
+	[/if]
+	[/if]
+	[if (page.hasSliderUnits())]
     'js/jssor.slider.mini.js',
 	[/if]
 	[if (page.hasChangableCollections() or page.hasSliderUnits())]

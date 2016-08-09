@@ -26,6 +26,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::enumerationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::formType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::unitType/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::entity/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::models::unit/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::casAuthenticationModel/]
@@ -93,8 +94,13 @@
 [model.generatePage()/]
 [model.pages->select(p | p.units->notEmpty()).page()/]
 [model.pages.units.unitView()/]
-[model.pages->select(p | p.hasJavascript()).javascript()/]
 [model.formViews()/]
+
+[if (model.inputTechnology <> InputTechnologies::Html)]
+[model.persistence.entitiesAndViews->select(eov | eov.featuresUsed(model)->notEmpty()).javascript(model)/]
+[/if]
+[model.pages->select(p | p.hasJavascript()).javascript()/]
+
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.localAuthentication()]
 [authentication.model()/]
