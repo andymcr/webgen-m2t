@@ -9,7 +9,7 @@
 	width: 52em;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 0em 1em 0em 1em;
+	padding: 0em 0em 0em 0em;
 }
 
 #topnav {
@@ -20,7 +20,7 @@
 	display: none;
 }
 
-#content {
+maiin {
 	width: 100%;
 	float: none;
 	margin: 1em;

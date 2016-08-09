@@ -10,18 +10,22 @@
 		width: 100%;
 	}
 
+[if (not model.topNavigationId.oclIsUndefined())]
+	#[model.topNavigationId/] {
+		width: 100%;
+	}
+
+[/if]
 	.menu {
 		width: 100%;
-		float: none;
-		margin: 1em 0em 1em 1em;
 	}
 
 	main {
-		width: 100%;
-		float: none;
-		margin: 1em 1em 1em 0em;
+		width: 90%;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
 	}
-
 }
 
 @media only screen and (min-width: 60em) {
@@ -31,100 +35,75 @@
 		margin-right: auto;
 	}
 
+[if (not model.topNavigationId.oclIsUndefined())]
+	#[model.topNavigationId/] {
+		width: 100%;
+	}
+
+[/if]
 	.menu {
-		width: 7em;
-		float: left;
-		margin: 1em 0em 1em 1em;
+		width: 100%;
 	}
 
 	main {
-		width: 50em;
-		float: right;
-		margin: 1em 1em 1em 0em;
+		width: 90%;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
 	}
-
 }
 
 [if (not model.topNavigationId.oclIsUndefined())]
-#[model.topNavigationId/] {
-	width: 100%;
-	padding: 0.5em 0em 0.5em 0em;
-	color: white;
-	background-color: SteelBlue;
+nav#[model.topNavigationId/] {
+	color: SteelBlue;
+	background-color: white;
+	border-style: solid none none none;
+	border-width: 1px;
 }
 
-#[model.topNavigationId/] ul {
+nav#[model.topNavigationId/] ul {
 	list-style: none;
 	overflow: auto;
 }
 
-#[model.topNavigationId/] ul li {
+nav#[model.topNavigationId/] ul li {
+	width: 6em;
+	padding: 0.25em 0em 0.25em 0em;
 	display: inline-block;
 	float: left;
 	text-align: center;
 }
 
-@media only screen and (min-width: 60em) {
-	#[model.topNavigationId/] ul li {
-		width: 10%;
-	}
-}
-
-@media only screen and (min-width: 40em) and (max-width: 60em) {
-	#[model.topNavigationId/] ul li {
-		width: 15%;
-	}
-}
-
-@media only screen and (min-width: 30em) and (max-width: 40em) {
-	#[model.topNavigationId/] ul li {
-		width: 25%;
-	}
-}
-
-@media only screen and (min-width: 20em) and (max-width: 30em) {
-	#[model.topNavigationId/] ul li {
-		width: 33%;
-	}
-}
-
-@media only screen and (min-width: 10em) and (max-width: 20em) {
-	#[model.topNavigationId/] ul li {
-		width: 50%;
-	}
-}
-
-
-#[model.topNavigationId/] a {
+nav#[model.topNavigationId/] a {
 	text-decoration: none;
-	color: white;
+	color: SteelBlue;
 }
 
-#[model.topNavigationId/] a:hover {
+nav#[model.topNavigationId/] a:hover {
 	font-weight: bold;
 }
 
-#[model.topNavigationId/] #authentication {
-	width: 20%;
+nav#[model.topNavigationId/] #authentication {
+	width: 12em;
 	display: inline-block;
 	float: right;
 	margin-right: 0.5em;
 	text-align: right;
 }
 
+
 [/if]
+.menu {
+	background-color: AliceBlue;
+}
+
 .menu > h1.menu_caption {
-	color: SteelBlue;
-	font-size: 1em;
-	text-align: left;
-	margin-bottom: 0.5em;
-	padding: 0.5em;
+	display: none;
 }
 
 .menu ul {
 	list-style: none;
-	padding: 0em;
-	margin: 0em;
+	overflow: auto;
 }
 
 .menu ul ul {
@@ -132,7 +111,11 @@
 }
 
 .menu li {
-	padding-bottom: 0.5em;
+	width: 6em;
+	padding: 0.25em 0em 0.25em 0em;
+	display: inline-block;
+	float: left;
+	text-align: center;
 }
 
 .menu a {
@@ -143,6 +126,85 @@
 .menu a:hover {
 	font-weight: bold;
 	color: SteelBlue;
+}
+
+
+form > div {
+	padding: 0.25em 0em 0.25em 0em;
+}
+
+form div.error {
+	border: 1px solid FireBrick;
+	border-radius: 0.5em;
+}
+
+form > div > label {
+	display: inline-block;
+	width: 15%;
+	padding: 0.5em 0.5em 0.25em 0em;
+	vertical-align: top;
+	text-align: right;
+}
+
+form > div > label:after {
+	content: ':';
+}
+
+form > div > label.required {
+	font-weight: bold;
+}
+
+form > div > label.required:after {
+	color: FireBrick;
+	content: '*:';
+	display:inline;
+}
+
+form > div > div,
+form > div > input['['/]type="email"[']'/],
+form > div > input['['/]type="integer"[']'/],
+form > div > input['['/]type="password"[']'/],
+form > div > input['['/]type="text"[']'/],
+form > div > input['['/]type="url"[']'/],
+[if (model.inputTechnology = InputTechnologies::jQueryUI)]
+form > div > input.ui-widget-content,
+form > div > span.ui-widget-content,
+form > div > span.ui-selectmenu-button,
+[/if]
+form > div > select {
+	display: inline-block;
+	width: 80%;
+	padding: 0.5em 0.5em 0.5em 0.5em;
+	vertical-align: top;
+}
+
+form > div.error > ul {
+	list-style: none;
+	width: 80%;
+	text-align: left;
+}
+
+form > div.error > ul > li {
+	margin-left: 20%;
+	padding-top: 0.25em;
+	color: FireBrick;
+}
+
+form > div > input['['/]type="checkbox"[']'/] {
+	width: 1em;
+	padding: 0.5em 0.5em 0.5em 0.5em;
+	vertical-align: baseline;
+}
+
+form > div > div > input {
+	margin-right: 0.5em;
+}
+
+form > input['['/]type="reset"[']'/],
+form > input['['/]type="submit"[']'/],
+form > div > input['['/]type="submit"[']'/],
+form > div > input['['/]type="reset"[']'/] {
+	padding: 0.2em;
 }
 
 table.index_content > tbody > tr > td > a:hover  {

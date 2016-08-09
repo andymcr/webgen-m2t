@@ -41,26 +41,43 @@ li > span:after{
 	border-style: none;
 }
 
-.full_width {
-	width: 100%;
-}
 
 header {
 	width: 100%;
 	padding-top: 0.5em;
-	color: white;
-	background-color: SteelBlue;
+	color: SteelBlue;
+	background-color: white;
 }
 
 header > h1 {
 	font-size: 2em;
 	font-weight: bold;
-	text-align: center;
+	text-align: left;
 }
 
-.content {
-	color: white;
+
+main {
 }
+
+main > section {
+	width: 100%;
+	margin: 0em 0em 0.5em 0em;
+}
+
+main > section > h1 {
+	color: SteelBlue;
+	font-size: 1.2em;
+	text-align: left;
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+}
+
+main > section section > h1.unit_caption {
+	color: SteelBlue;
+	font-size: 1em;
+	text-align: left;
+}
+
 
 footer {
 	width: 100%;
@@ -72,30 +89,6 @@ footer {
 	background-color: SteelBlue;
 }
 
-.unit {
-	width: 100% - 1em;
-	background-color: white;
-	margin: 0em 0em 0.5em 0em;
-	padding: 0em;
-}
-
-main > section {
-	clear: left;
-}
-
-main > section > h1.unit_caption {
-	color: SteelBlue;
-	font-size: 1em;
-	text-align: left;
-	margin-bottom: 0.5em;
-	padding: 0.5em;
-}
-
-main > section section > h1.unit_caption {
-	color: SteelBlue;
-	font-size: 1em;
-	text-align: left;
-}
 
 section.error {
 	border: 1px solid FireBrick;
@@ -110,19 +103,12 @@ section p.error {
 	color: FireBrick;
 }
 
-.unit_header {
-	margin: 0em;
-	}
-
-.unit_padding {
-	margin: 0em;
-	padding: 0em 0.5em 0em 0.5em;
+.unit {
 }
 
 .unit_control {
 	width: 95%;
 	text-align: right;
-	margin: 0em;
 	padding: 0.25em 0em 0.5em 0em;
 }
 
@@ -134,8 +120,6 @@ button {
 	margin: 0em;
 }
 
-.create_unit {
-}
 
 .static_unit {
 }
@@ -147,6 +131,7 @@ button {
 .static_content > p {
 	padding-bottom: 0.5em;
 }
+
 
 .details_unit {
 }
@@ -177,14 +162,15 @@ dl.details_content > dd > ul {
 	margin: 0.5em;
 }
 
+
 .index_unit {
 }
 
 .index_content {
-	width: 100%;
 }
 
 table.index_content {
+	width: 100%;
 	border-collapse: collapse;
 }
 
@@ -216,6 +202,25 @@ dl.details_content > dd > ul.index_content {
 	margin: 0em;
 }
 
+
+.create_unit {
+}
+
+.update_unit {
+}
+
+.search_unit {
+}
+
+.register_unit {
+}
+
+.login_unit {
+}
+
+.forgotten_password_unit {
+}
+
 main > section > ul.index_content {
 	padding: 0em 0.5em 0em 0.5em;
 }
@@ -233,20 +238,6 @@ ul.unit_control > li > a {
 	text-decoration: none;
 }
 
-.input_form, .control_form {
-	width: 100%;
-}
-
-form > div {
-	padding: 0.25em 0em 0.25em 0em;
-}
-
-form div.error {
-	border: 1px solid FireBrick;
-	border-radius: 0.5em;
-}
-
-form > div > label,
 dt.field_label {
 	display: inline-block;
 	width: 15%;
@@ -255,75 +246,13 @@ dt.field_label {
     margin-right: 0.5em;
 }
 
-label.required {
-	font-weight: bold;
-}
-
-label.required:after {
-	color: FireBrick;
-	content: '*';
-	display:inline;
-}
-
-form > div > div,
-form > div > input['['/]type="date"[']'/],
-form > div > input['['/]type="email"[']'/],
-form > div > input['['/]type="integer"[']'/],
-form > div > input['['/]type="password"[']'/],
-form > div > input['['/]type="text"[']'/],
-form > div > input['['/]type="url"[']'/],
-form > div > select {
-	display: inline-block;
-	width: 83%;
-	vertical-align: top;
-}
-
-form > div.error > ul {
-	list-style: none;
-	width: 83%;
-	text-align: left;
-}
-
-form > div.error > ul > li {
-	margin-left: 20%;
-	padding-top: 0.25em;
-	color: FireBrick;
-}
-
-form > div > input['['/]type="checkbox"[']'/],
-.input_checkbox {
-	width: 1em;
-	vertical-align: baseline;
-}
-
-form > div > div > input {
-	margin-right: 0.5em;
-}
-
-form > input['['/]type="reset"[']'/],
-form > input['['/]type="submit"[']'/],
-form > div > input['['/]type="submit"[']'/],
-form > div > input['['/]type="reset"[']'/] {
-	padding: 0.2em;
-}
-
 div .map-canvas {
 	height: 300px;
 }
 
-.update_unit {
-}
-
-.search_unit {
-}
-
-.register_unit {
-}
-
-.login_unit {
-}
-
-.forgotten_password_unit {
+form, .control_form {
+	width: 99%;
+	padding: 1em 0.5em 1em 0.5em;
 }
 
 

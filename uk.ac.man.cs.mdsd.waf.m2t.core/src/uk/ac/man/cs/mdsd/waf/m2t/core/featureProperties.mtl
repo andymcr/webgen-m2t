@@ -94,12 +94,51 @@
 /]
 
 
-[query public services(entityOrView : EntityOrView, model : WafModel) : OrderedSet(Service)
-	= model.services(entityOrView)
+[comment TODO nested units not currently being handled/]
+[query public featuresUsed(entityOrView : EntityOrView, model : WafModel) : Sequence(Feature)
+	= entityOrView.usersOf(model)
+		->collect(u | u.displayFields)
+        ->select(f | not f.oclIsTypeOf(UnitField))
+		->iterate(f;
+			xxx : Sequence(Feature) = Sequence{}
+			| let x : Feature = f.feature()
+				in if xxx->includes(x) or not entityOrView.features->includes(x) then
+					xxx
+				else
+					xxx->append(x)
+				endif)
 /]
 
 [query public id(entityOrView : EntityOrView) : String
 	= entityOrView.name.asId()
+/]
+
+[query public services(entityOrView : EntityOrView, model : WafModel) : OrderedSet(Service)
+	= model.services(entityOrView)
+/]
+
+[query private usersOf(entityOrView : EntityOrView, model : WafModel) : Sequence(EditUnit)
+	= model.pages->collect(
+		p | p.units
+			->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
+			->select(u | u.entities->includes(entityOrView)))
+/]
+
+[query private usersOf(entityOrView : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+	= if unit.entities->includes(entityOrView) then
+			Sequence{unit}
+		else
+			Sequence{}
+		endif->union(entityOrView.nestedUsersOf(unit))
+/]
+
+[query private nestedUsersOf(entityOrView : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+	= unit.displayFields
+		->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
+		->select(a | a.units->notEmpty())
+		->iterate(a;
+			units : Sequence(EditUnit) = Sequence{}
+			| units->union(entityOrView.usersOf(a.units->first().oclAsType(EditUnit))))
 /]
 
 
@@ -187,7 +226,9 @@
 /]
 
 [query public hasJavascript(page : Page) : Boolean
-	= page.hasChangableCollections() or page.partOf.responsiveTopMenu or page.hasSliderUnits()
+	= page.hasChangableCollections()
+		or page.hasSliderUnits()
+		or page.partOf.responsiveTopMenu
 /]
 
 [query public hasMapUnits(page : Page) : Boolean
@@ -284,6 +325,11 @@
 
 [query public uriActions(page : Page) : Sequence(InlineAction)
 	= page.dynamicUnits()->collect(u | u.uriActions())
+/]
+
+[query public useInputJQuery(page : Page) : Boolean
+	= page.hasFormUnits()
+		and page.partOf.inputTechnology <> InputTechnologies::Html
 /]
 
 
@@ -614,6 +660,36 @@
 		endif
 /]
 
+[query public dataType(field : UnitField) : Classifier
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.dataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						null
+					else
+						association.childFeature.dataTypeElement()
+					endif
+			endif
+		else
+			null
+		endif
+/]
+
+[query public dataTypeElement(child : ChildFeature) : Classifier
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).attribute.dataType()
+		else
+			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					null
+				else
+					association.childFeature.dataTypeElement()
+				endif
+		endif
+/]
+
 [query public displayClass(field : UnitField) : String
 	= if not field.oclIsTypeOf(UnitAssociation) or field.isSingleton() then
 			field.modelPropertyName()
@@ -655,6 +731,14 @@
 		else 
 			field.entityOrView() = field.displayedOn.entities->first()
 		endif endif
+/]
+
+[query private feature(field : UnitField) : Feature
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute
+		else
+			field.oclAsType(UnitAssociation).association
+		endif
 /]
 
 [query public formName(field : UnitField) : String
