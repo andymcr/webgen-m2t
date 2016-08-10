@@ -22,21 +22,19 @@
 [else]
  <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}]</h1>
 [/if]
-[comment <div class="unit_padding"> /]
-  <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.errorName()/] is defined %} hidden{% endif %}">
+ <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.errorName()/] is defined %} hidden{% endif %}">
 {% if [dynamicUnit.errorName()/] is defined %}
-   <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.errorName()/] }}</p>
+  <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.errorName()/] }}</p>
 {% endif %}
 [if (dynamicUnit.hasMessagesOnFormHead())]
-   [dynamicUnit.formErrors()/]
+  [dynamicUnit.formErrors()/]
 [/if]
-  </section>
+ </section>
 [if (unit.oclIsTypeOf(MapUnit))]
-  [dynamicUnit.map()/]
+ [dynamicUnit.map()/]
 [else]
-  [dynamicUnit.unitContent(dynamicUnit.instanceName())/]
+ [dynamicUnit.unitContent(dynamicUnit.instanceName())/]
 [/if]
-[comment </div> /]
 </section>
 [/let]
 [/file]

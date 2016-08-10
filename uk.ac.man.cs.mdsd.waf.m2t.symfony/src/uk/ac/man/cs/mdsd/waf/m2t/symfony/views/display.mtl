@@ -85,18 +85,25 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private pagination(unit : IndexUnit)]
 <ul class="unit_control">
 [if (unit.useFirstLastPageLinks)]
-{% if currentPage == 1 %}
- <li>[unit.firstPageLabel/]</li>
-{% else %}
+{% if currentPage != 1 %}
  <li><a href="[unit.pageHref('1')/]">[unit.firstPageLabel/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li>[unit.firstPageLabel/]</li>
+[/if]
 {% endif %}
 [/if]
-{% if currentPage == 1 %}
- <li>[unit.previousPageLabel/]</li>
-{% else %}
+{% if currentPage != 1 %}
  <li><a href="[unit.pageHref('currentPage - 1')/]">[unit.previousPageLabel/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li>[unit.previousPageLabel/]</li>
+[/if]
 {% endif %}
-[if (unit.nextNpages > 2 or unit.previousNpages > 2)]
+[if (unit.previousNpages > 1 and unit.useDisabledPageLinks)]
+{% if max(1, currentPage - [unit.previousNpages/]) > 1 %}<li>&hellip;</li>{% endif %}
+[/if]
+[if (unit.nextNpages > 1 or unit.previousNpages > 1)]
 {% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
  {% if page == currentPage %}
  <li>{{ page }}</li>
@@ -105,16 +112,23 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  {% endif %}
 {% endfor %}
 [/if]
-{% if currentPage == pageCount %}
- <li>[unit.nextPageLabel/]</li>
-{% else %}
+[if (unit.nextNpages > 1 and unit.useDisabledPageLinks)]
+{% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li>&hellip;</li>{% endif %}
+[/if]
+{% if currentPage != pageCount %}
  <li><a href="[unit.pageHref('currentPage + 1')/]">[unit.nextPageLabel/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li>[unit.nextPageLabel/]</li>
+[/if]
 {% endif %}
 [if (unit.useFirstLastPageLinks)]
-{% if currentPage == pageCount %}
- <li>[unit.lastPageLabel/]</li>
-{% else %}
+{% if currentPage != pageCount %}
  <li><a href="[unit.pageHref('pageCount')/]">[unit.lastPageLabel/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li>[unit.lastPageLabel/]</li>
+[/if]
 {% endif %}
 [/if]
 </ul>

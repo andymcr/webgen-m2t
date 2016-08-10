@@ -26,14 +26,14 @@
 {% endfor %}
 {% endif %}
 [if (not model.textEditorURL.oclIsUndefined())]
- <script type="text/javascript" src="[model.textEditorURL/]"></script>
+ <script src="[model.textEditorURL/]"></script>
 [/if]
 {% if scripts is defined %}
 {% for script in scripts  %}
 {% if script is iterable %}
- <script type="text/javascript"{% for key, value in script %} {{ key }}="{{ value }}"{% endfor %}></script>
+ <script{% for key, value in script %} {{ key }}="{{ value }}"{% endfor %}></script>
 {% else %}
- <script type="text/javascript" src="{{ asset(script) }}"></script>
+ <script src="{{ asset(script) }}"></script>
 {% endif %}
 {% endfor %}
 {% endif %}
