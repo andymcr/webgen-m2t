@@ -42,6 +42,9 @@
   <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
  </div>
 </form>
+<div>
+ <a href="{{ path('fos_user_resetting_request') }}">Forgot password ?</a>
+</div>
 {% endblock fos_user_content %}
 [/file]
 [/template]
