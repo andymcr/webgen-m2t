@@ -63,6 +63,11 @@ security:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
             logout: true
+		[if (model.localAuthentication().allowRememberMe)]
+            remember_me:
+                secret:   '%secret%'
+                lifetime: 1209600 # 14 days
+		[/if]
 	[elseif (model.isCasAuthenticated())]
             guard:
                 authenticators:
