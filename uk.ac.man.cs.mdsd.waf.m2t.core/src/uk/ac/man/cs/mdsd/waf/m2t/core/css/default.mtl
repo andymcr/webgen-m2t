@@ -44,7 +44,7 @@ li > span:after{
 
 header {
 	width: 100%;
-	padding-top: 0.5em;
+	padding: 0.5em 1em 0.5em 1em;
 	color: SteelBlue;
 	background-color: white;
 }
@@ -206,6 +206,10 @@ dl.details_content > dd > ul.index_content {
 }
 
 .update_unit {
+}
+
+.slider_unit {
+	padding: 1em 0em 0em 0em;
 }
 
 .search_unit {
