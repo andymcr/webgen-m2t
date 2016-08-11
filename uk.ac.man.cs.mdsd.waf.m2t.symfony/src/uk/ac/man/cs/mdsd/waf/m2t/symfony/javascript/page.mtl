@@ -67,22 +67,5 @@ jQuery(document).ready(function ($) {
 });
 
 [/for]
-[if (page.hasFormUnits())]
-$( function() {
-	[for (field : UnitField | page.formUnits()->collect(u | u.displayFields))]
-    [field.formField()/]
-	[/for]
-  } );
-
-[/if]
 [/file]
-[/template]
-
-[query private id(field : UnitField) : String
-	= 'app_'.concat(field.displayedOn.entities->first().name.toLowerCase()).concat('_').concat(field.name().toLowerCase())
-/]
-
-[template private formField(field : UnitField)
-	? (field.isDate()) post(trim())]
-    $( "#[field.id()/]" ).datepicker();
 [/template]

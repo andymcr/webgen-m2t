@@ -1,0 +1,62 @@
+[comment encoding = UTF-8 /]
+[module entity(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public javascript(entityOrView : EntityOrView, model : WafModel)]
+[file(entityOrView.webDirectory().concat('/').concat(entityOrView.javascriptFilename()), false)]
+$( function() {
+[for (feature : Feature | entityOrView.featuresUsed(model)->sortedBy(f | f.name))]
+    [feature.formField()/]
+[/for]
+} );
+[/file]
+[/template]
+
+[query private id(feature : Feature) : String
+	= 'app_'.concat(feature.partOf.name.asId()).concat('_').concat(feature.modelPropertyName())
+/]
+
+[template private formField(feature : Feature)
+	? ((feature.isDataType() and not feature.isBooleanDataType() and not feature.isEnumerationType())) post(trim())]
+[let dataType : Classifier = feature.dataType()]
+[if (dataType.name = 'Integer')]
+$("#[feature.id()/]").spinner();
+[/if]
+[/let]
+[/template]
+
+[template private formField(feature : Feature)
+	? (feature.isBooleanDataType()) post(trim())]
+// $("#[feature.id()/]").checkboxradio();
+[/template]
+
+[template private formField(feature : Feature)
+	? (feature.isEnumerationType()) post(trim())]
+$("#[feature.id()/]").selectmenu();
+[/template]
+
+[template private formField(feature : Feature)
+	? (feature.isDate()) post(trim())]
+[if (feature.dateDetails() <> DateDetails::TimeOnly)]
+$("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[/if]").datepicker();
+[/if]
+[if (feature.dateDetails() <> DateDetails::DateOnly)]
+// $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").timepicker();
+[/if]
+[/template]
+
+[template private formField(feature : Feature)
+	? (feature.oclIsKindOf(Association) and feature.isSingleton()) post(trim())]
+if ($("#[feature.id()/] option").length < 15) {
+	$("#[feature.id()/]").selectmenu();
+} else {
+    $("#[feature.id()/]").autocompletesingleton({
+    });
+}
+[/template]
