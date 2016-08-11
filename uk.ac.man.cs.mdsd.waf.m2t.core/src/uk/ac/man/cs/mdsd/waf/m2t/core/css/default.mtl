@@ -201,6 +201,14 @@ dl.details_content > dd > ul.index_content {
 	margin: 0em;
 }
 
+div.filter {
+	background-color: yellow;
+}
+
+div.filter > form {
+	display: inline-block;
+}
+
 
 .create_unit {
 }

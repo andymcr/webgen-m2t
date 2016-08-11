@@ -35,6 +35,9 @@
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
+	[for(filter : Filter | indexUnit.filters())]
+ [filter.unitFilter(indexUnit, accessor)/]
+	[/for]
  [dataUnit.unitContent(accessor)/]
 	[if (not indexUnit.pagination.oclIsUndefined())]
  [indexUnit.pagination()/]
@@ -68,6 +71,19 @@
 [/let]
 [/template]
 
+
+[template private unitFilter(filter : Filter, unit : IndexUnit, accessor : String)]
+<div class="filter">
+ <form action="{{ path('[unit.routeName()/]', { [unit.entities->first().routeActualParameters(unit.entities->first(), accessor, true)/] }) }}" method="get">
+[for (parameter : FilterParameter | filter.parameters)]
+  <input name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
+ placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
+ class="[filter.jQueryClass()/]"[/if]/>
+[/for]
+  <input type="submit" name="[filter.name/]" value="[filter.displayLabel/]"/>
+ </form>
+</div>
+[/template]
 
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
 <form action="{{ path('[unit.supportRouteName()/]', { [unit.entities->first().routeActualParameters(unit.entities->first(), accessor, unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">

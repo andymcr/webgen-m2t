@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module form(
+	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
@@ -19,7 +20,7 @@
 
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
 {% form_theme [accessor/] 'form/messages_on_fields.html.twig' %}
-{{ form_start([accessor/], { 'attr': {'class': '[unit.contentClass/]'} }) }}
+{{ form_start([accessor/][if (not unit.contentClass.oclIsUndefined())], { 'attr': {'class': '[unit.contentClass/]'} }[/if]) }}
 [/template]
 
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
@@ -72,7 +73,11 @@
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor)/], { 'attr': { 'class': '[field.jQueryClasses(unit)/][field.inputClass()/]'}}) }}
+{{ form_row([field.propertyAccessor(parentAccessor)/][if (field.hasClass() or field.hasPlaceholder())]
+, { 'attr': {[if (field.hasPlaceholder())]
+ 'placeholder': '[field.placeholder()/]'[if (field.hasClass())],[/if][/if][if (field.hasClass())]
+ 'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/] [/if][field.inputClass()/]'[/if]
+ }}[/if]) }}
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
@@ -92,18 +97,9 @@
 [/let]
 [/template]
 
-[template private jQueryClasses(field : UnitField, unit : DynamicUnit)]
-[if (field.isDataType())]
-	[if (field.dataType().name <> 'Integer')]
-		[if (unit.pageDisplayedOn().partOf.inputTechnology = InputTechnologies::jQueryUI)]
-[field.jQueryClasses()/][/if]
-	[/if]
-[elseif (field.isDate() or field.isUrl())]
-[field.jQueryClasses()/][/if]
+[template public jQueryClass(eObject : EObject) post(trim())]
+ui-corner-all ui-widget ui-widget-content
 [/template]
-
-[template private jQueryClasses(field : UnitField)]
-ui-corner-all ui-widget ui-widget-content [/template]
 
 [comment this could be left from an experiment /]
 [template private formFie(field : UnitField, unit : DynamicUnit, accessor : String)
@@ -111,14 +107,14 @@ ui-corner-all ui-widget ui-widget-content [/template]
 [let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
 	[if (field.isSingleton())]
 		[for (childField : UnitField | embeddedUnit.displayFields)]
-{{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
+{{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/][if (not childField.inputClass().oclIsUndefined())], { 'attr': { 'class': '[childField.inputClass()/]'}}[/if]) }}
 		[/for]
 	[else]
 <ul>
 {% for x in [accessor/].[field.modelPropertyName()/] %}
  <li>
 		[for (childField : UnitField | embeddedUnit.displayFields)]
-  {{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/], { 'attr': { 'class': '[childField.inputClass()/]'}}) }}
+  {{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/][if (not childField.inputClass().oclIsUndefined())], { 'attr': { 'class': '[childField.inputClass()/]'}}[/if]) }}
 		[/for]
  </li>
 {% endfor %}

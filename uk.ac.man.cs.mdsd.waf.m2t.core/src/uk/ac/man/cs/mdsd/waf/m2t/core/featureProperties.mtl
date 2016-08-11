@@ -213,6 +213,10 @@
 	= page.controlUnits()->notEmpty()
 /]
 
+[query public hasFilterParameters(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasFilterParameters())->notEmpty()
+/]
+
 [query public hasFormUnits(page : Page) : Boolean
 	= page.formUnits()->notEmpty()
 /]
@@ -243,8 +247,8 @@
 	= page.parameterisedUnits()->notEmpty()
 /]
 
-[query public hasFilterParameters(page : Page) : Boolean
-	= page.dynamicUnits()->select(u | u.hasFilterParameters())->notEmpty()
+[query public hasJQueryClasses(page : Page) : Boolean
+	= page.partOf.inputTechnology <> InputTechnologies::Html
 /]
 
 [query public hasSliderUnits(page : Page) : Boolean
@@ -544,6 +548,10 @@
 		endif
 /]
 
+[query public hasJQueryClasses(unit : DynamicUnit) : Boolean
+	= unit.pageDisplayedOn().hasJQueryClasses()
+/]
+
 [query public hasUriActions(unit : DynamicUnit) : Boolean
 	= unit.uriActions()->notEmpty()
 /]
@@ -773,12 +781,35 @@
 		endif endif
 /]
 
+[query public hasClass(field : UnitField) : Boolean
+	= not field.inputClass().oclIsUndefined() or field.hasJQueryClasses()
+/]
+
 [query public hasForcedValue(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			not field.oclAsType(UnitFeature).forcedValue.oclIsUndefined()
 		else
 			false
 		endif
+/]
+
+[query public hasJQueryClasses(field : UnitField) : Boolean
+	= if field.isDataType() then
+			field.dataType().name <> 'Integer'
+		else
+			field.isDate() or field.isResource() or field.isUrl()
+		endif
+			and field.displayedOn.hasJQueryClasses()
+/]
+
+[query public hasPlaceholder(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitAttribute) then
+			not field.oclAsType(UnitAttribute).placeholder.oclIsUndefined()
+		else if field.oclIsKindOf(InterfaceField) then
+			not field.oclAsType(InterfaceField).placeholder.oclIsUndefined()
+		else
+			false
+		endif endif
 /]
 
 [query public hasSelection(field : UnitField) : Boolean
@@ -824,7 +855,7 @@
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).inputClass
 		else
-			'Unhandled'
+			null
 		endif endif
 /]
 
@@ -1200,6 +1231,16 @@
 
 [query public pageDisplayedOn(field : UnitField) : Page
 	= field.displayedOn.pageDisplayedOn()
+/]
+
+[query public placeholder(field : UnitField) : String
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).placeholder
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).placeholder
+		else
+			null
+		endif endif
 /]
 
 [comment TODO what if field has a selection?/]

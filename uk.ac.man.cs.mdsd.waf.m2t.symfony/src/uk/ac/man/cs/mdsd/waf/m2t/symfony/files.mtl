@@ -186,6 +186,12 @@
 /]
 
 
+[query public autocompleteFilename(eObject : EObject) : String
+	= eObject.javascriptDirectory().concat('/')
+		.concat('autocomplete')
+		.concat(eObject.javascriptExtension())
+/]
+
 [query public configBaseFilename(eObject : EObject) : String
 	= eObject.configDirectory().concat('/').concat('config')
 /]
