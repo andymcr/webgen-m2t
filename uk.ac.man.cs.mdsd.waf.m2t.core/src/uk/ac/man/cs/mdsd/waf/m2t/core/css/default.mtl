@@ -64,14 +64,14 @@ main > section {
 	margin: 0em 0em 0.5em 0em;
 }
 
-main > section > h1 {
+main > section > h2 {
 	color: SteelBlue;
 	font-size: 1.2em;
 	text-align: left;
-	padding: 1em 0.5em 0.5em 0.5em;
+	padding: 1em 0em 0.5em 0em;
 }
 
-main > section section > h1.unit_caption {
+main > section section > h2.unit_caption {
 	color: SteelBlue;
 	font-size: 1em;
 	text-align: left;
@@ -102,7 +102,7 @@ section p.error {
 	color: FireBrick;
 }
 
-.unit {
+section.unit {
 }
 
 .unit_control {
@@ -120,19 +120,19 @@ button {
 }
 
 
-.static_unit {
+section.static_unit {
 }
 
-.static_content {
+section.static_content {
 	padding: 0em 0.5em 0em 0.5em;
 }
 
-.static_content > p {
+section.static_content > p {
 	padding-bottom: 0.5em;
 }
 
 
-.details_unit {
+section.details_unit {
 }
 
 ul.details_content,
@@ -162,10 +162,7 @@ dl.details_content > dd > ul {
 }
 
 
-.index_unit {
-}
-
-.index_content {
+section.index_unit {
 }
 
 table.index_content {
@@ -194,6 +191,10 @@ table.index_content > tbody > tr > td > a:visited  {
 	color: black;
 }
 
+main > section > ul.index_content {
+	padding: 0em 0.5em 0em 0.5em;
+}
+
 ul.index_content,
 ul.details_content > li > ul.index_content,
 dl.details_content > dd > ul.index_content {
@@ -201,20 +202,26 @@ dl.details_content > dd > ul.index_content {
 	margin: 0em;
 }
 
-div.filter {
-	background-color: yellow;
-}
-
 div.filter > form {
-	display: inline-block;
+	padding: 0em 0em 0.5em 0em;
+}
+
+div.filter > form > input{
+	padding: 0.25em 0.5em 0.25em 0.5em;
 }
 
 
-.create_unit {
+section.create_unit {
 }
 
-.update_unit {
+section.update_unit {
 }
+
+form.edit_content {
+	width: 99%;
+	padding: 1em 0.5em 1em 0.5em;
+}
+
 
 .slider_unit {
 	padding: 1em 0em 0em 0em;
@@ -232,9 +239,6 @@ div.filter > form {
 .forgotten_password_unit {
 }
 
-main > section > ul.index_content {
-	padding: 0em 0.5em 0em 0.5em;
-}
 
 ul.unit_control {
 	list-style: none;
@@ -259,11 +263,6 @@ dt.field_label {
 
 div .map-canvas {
 	height: 300px;
-}
-
-form, .control_form {
-	width: 99%;
-	padding: 1em 0.5em 1em 0.5em;
 }
 
 
