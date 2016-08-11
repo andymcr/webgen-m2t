@@ -131,6 +131,9 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: [model.modelsNamespace()/]\[authentication.modelName()/]
+    from_email:
+        address:     admin@sps3.andycarpenter.me.uk
+        sender_name: Sale Photographic Society
 	[if (authentication.useCaptcha)]
     registration:
         form:

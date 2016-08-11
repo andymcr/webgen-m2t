@@ -204,6 +204,7 @@ $parameters['['/]'scripts'[']'/] = array(
         'integrity' => 'sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=',
         'crossorigin' => 'anonymous',
     ),
+    '[page.partOf.autocompleteFilename()/]',
 		[for (unit : DynamicUnit | page.formUnits()->select(u | u.entities->notEmpty()))]
     '[unit.entities->first().javascriptFilename()/]',
 		[/for]
