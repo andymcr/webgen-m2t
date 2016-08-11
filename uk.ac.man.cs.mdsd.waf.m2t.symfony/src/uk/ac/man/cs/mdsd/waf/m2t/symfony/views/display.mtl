@@ -22,7 +22,7 @@
 [file(dataUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section class="[dataUnit.styleClass/]{%if [dataUnit.errorName()/] is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
- <h1 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle(dataUnit.instanceName())/]</h1>
+ <h2 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle(dataUnit.instanceName())/]</h2>
  <section class="[dataUnit.errorClass/]{% if not [dataUnit.errorName()/] is defined %} hidden{% endif %}">
 {% if [dataUnit.errorName()/] is defined %}
    <p class="[dataUnit.errorClass/]">{{ [dataUnit.errorName()/] }}</p>
@@ -199,7 +199,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('entry')/]</h1>
+   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('entry')/]</h2>
 [/if]
 [for (field : UnitField | indexUnit.displayFields) ]
 	[if (field.conditionalDisplay())]
@@ -232,7 +232,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h1 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('entry')/]</h1>
+   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('entry')/]</h2>
 [/if]
   [unit.detailsContent('entry')/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]

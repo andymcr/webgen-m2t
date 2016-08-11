@@ -13,7 +13,7 @@
 [file(staticUnit.viewFilename(), false)]
  <section class="[staticUnit.styleClass/]" id="[staticUnit.instanceName()/]">
 [if (not staticUnit.omitCaption)]
-  <h1 class="[staticUnit.captionClass/]">[staticUnit.displayLabel/]</h1>
+  <h2 class="[staticUnit.captionClass/]">[staticUnit.displayLabel/]</h2>
 [/if]
 [if (staticUnit.pageDisplayedOn().partOf.staticUnitsEditable)]
   <div class="[staticUnit.contentClass/]">{{ [staticUnit.instanceName()/].content }}</div>

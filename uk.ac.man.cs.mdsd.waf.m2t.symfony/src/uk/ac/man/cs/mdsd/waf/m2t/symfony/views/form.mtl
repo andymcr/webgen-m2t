@@ -76,7 +76,7 @@
 {{ form_row([field.propertyAccessor(parentAccessor)/][if (field.hasClass() or field.hasPlaceholder())]
 , { 'attr': {[if (field.hasPlaceholder())]
  'placeholder': '[field.placeholder()/]'[if (field.hasClass())],[/if][/if][if (field.hasClass())]
- 'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/] [/if][field.inputClass()/]'[/if]
+ 'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
  }}[/if]) }}
 [/template]
 
@@ -198,7 +198,7 @@ function initialize() {
 		var place = autocomplete.getPlace();
 		if (place.geometry) {
 			var contentString = $('<div class="marker-info-win">' +
-				'<h1 class="place-name">' + place.name + '</h1>' +
+				'<h2 class="place-name">' + place.name + '</h2>' +
 				'<p class="place-address">' + place.formatted_address + '</p>' +
 				'<?php
 					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(

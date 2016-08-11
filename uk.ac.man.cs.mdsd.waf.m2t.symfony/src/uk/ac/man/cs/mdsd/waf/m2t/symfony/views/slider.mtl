@@ -14,7 +14,7 @@
 [file(sliderUnit.viewFilename(), false)]
 <section class="[sliderUnit.styleClass/]" id="[sliderUnit.instanceName()/]">
 [if (not sliderUnit.omitCaption)]
- <h1 class="[sliderUnit.captionClass/]">[sliderUnit.displayLabel/]</h1>
+ <h2 class="[sliderUnit.captionClass/]">[sliderUnit.displayLabel/]</h2>
 [/if]
  [sliderUnit.jssor()/]
 </section>

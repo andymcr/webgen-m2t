@@ -18,9 +18,9 @@
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
 [if (dynamicUnit.oclIsKindOf(EditUnit))]
- <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[dynamicUnit.oclAsType(EditUnit).unitTitle(dynamicUnit.instanceName())/]</h1>
+ <h2 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[dynamicUnit.oclAsType(EditUnit).unitTitle(dynamicUnit.instanceName())/]</h2>
 [else]
- <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}]</h1>
+ <h2 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}]</h2>
 [/if]
  <section class="[dynamicUnit.errorClass/]{% if not [dynamicUnit.errorName()/] is defined %} hidden{% endif %}">
 {% if [dynamicUnit.errorName()/] is defined %}
@@ -46,7 +46,7 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] is defined %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
- <h1 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h1>
+ <h2 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h2>
  <div class="unit_padding">
   <section class="[dynamicUnit.errorClass/]<?php if (empty($[dynamicUnit.errorName()/])[if (dynamicUnit.hasMessagesOnFormHead())] && empty($field_errors)[/if]) echo ' hidden'; ?>">
 {% if [dynamicUnit.errorName()/] is defined %}
