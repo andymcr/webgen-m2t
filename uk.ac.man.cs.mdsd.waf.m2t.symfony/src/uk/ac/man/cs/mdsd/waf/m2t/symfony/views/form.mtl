@@ -31,18 +31,21 @@
 
 [template private formControlAndClose(unit : DynamicUnit, accessor : String) post(trim())]
  <div class="[unit.controlClass/]">
-  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable()/]/>
+  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable()/][if (unit.hasJQueryClasses())]
+ class="[unit.jQueryClass()/]"[/if]/>
 [if (unit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
 	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
 		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
-  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable()/]/>
+  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable()/][if (unit.hasJQueryClasses())]
+ class="[unit.jQueryClass()/]"[/if]/>
 		[/if]
 	[/let]
 	[/if]
 	[if (not editUnit.cancelDestination.oclIsUndefined())]
-  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable()/]/>
+  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable()/][if (unit.hasJQueryClasses())]
+ class="[unit.jQueryClass()/]"[/if]/>
 	[/if]
 [/let]
 [/if]

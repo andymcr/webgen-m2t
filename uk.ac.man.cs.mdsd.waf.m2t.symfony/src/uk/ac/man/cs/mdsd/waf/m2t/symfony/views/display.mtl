@@ -76,11 +76,14 @@
 <div class="filter">
  <form action="{{ path('[unit.routeName()/]', { [unit.entities->first().routeActualParameters(unit.entities->first(), accessor, true)/] }) }}" method="get">
 [for (parameter : FilterParameter | filter.parameters)]
-  <input name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
+  <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
  placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
- class="[filter.jQueryClass()/]"[/if]/>
+ class="[filter.jQueryClass()/]"[/if][if (not parameter.formal.optional)]
+ required="required"[/if]
+ value="{{ app.request.query.get('[parameter.name/]') }}"/>
 [/for]
-  <input type="submit" name="[filter.name/]" value="[filter.displayLabel/]"/>
+  <input type="submit" name="[filter.name/]" value="[filter.displayLabel/]"[if (unit.hasJQueryClasses())]
+ class="[filter.jQueryClass()/]"[/if]/>
  </form>
 </div>
 [/template]
