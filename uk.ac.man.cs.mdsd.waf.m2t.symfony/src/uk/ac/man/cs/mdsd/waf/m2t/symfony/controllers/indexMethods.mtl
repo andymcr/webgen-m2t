@@ -24,7 +24,7 @@
 [template private actionMethod(unit : IndexUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- * [unit.routeAnnotation()/]
+ [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]([if (page.hasFilterParameters())]
 Request $request[/if])

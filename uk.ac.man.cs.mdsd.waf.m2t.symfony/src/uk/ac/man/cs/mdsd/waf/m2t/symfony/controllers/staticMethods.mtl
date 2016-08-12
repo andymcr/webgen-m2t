@@ -20,7 +20,7 @@
 [template private actionMethod(unit : StaticUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- * [unit.routeAnnotation()/]
+ [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]()
 {

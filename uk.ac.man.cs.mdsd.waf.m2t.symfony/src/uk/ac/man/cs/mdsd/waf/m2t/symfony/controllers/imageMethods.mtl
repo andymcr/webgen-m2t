@@ -26,7 +26,7 @@
 [template private actionMethod(unit : ImageUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- * [unit.routeAnnotation()/]
+ [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]([unit.actionMethodParameters()/])
 {

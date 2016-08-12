@@ -32,7 +32,7 @@
 [template private actionAddMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- * [unit.routeAnnotation(true)/]
+ [unit.routeAnnotation(true)/]
  */
 public function [unit.actionName()/]X([unit.actionMethodParameters(true)/])
 {
@@ -77,7 +77,7 @@ public function [unit.actionName()/]X([unit.actionMethodParameters(true)/])
 [template private actionEditMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- * [unit.routeAnnotation()/]
+ [unit.routeAnnotation()/]
  */
 public function [unit.actionName()/]([unit.actionMethodParameters()/])
 {
