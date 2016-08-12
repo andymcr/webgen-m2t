@@ -61,56 +61,36 @@ $this->page = $request->query->getInt('[unit.pagination.parameters->first().name
 else
 [/if]
 [if (not unit.defaultSelection.oclIsUndefined())]
-[unit.selectionCall(unit.defaultSelection, null)/]
+$this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]([if (not unit.pagination.oclIsUndefined())]
+[unit.paginationActuals()/][/if]);
 [else]
 $this->[unit.instanceName()/] = [unit.getService()/]->findAll([if (not unit.pagination.oclIsUndefined())]
-$this->page, [unit.defaultPaginationSize/][/if]);
+[unit.paginationActuals()/][/if]);
 [/if]
 [/template]
 
 [template private filterSelect(unit : IndexUnit) post(trim())]
-[for (f : Filter | unit.filters()) separator('else ')]
-if ([for (parameter : FilterParameter | f.parameters) separator(' || ')][parameter.queryPresentTest()/][/for])
-[unit.filterCall(f)/][/for]
-[/template]
-
-[template private queryPresentTest(parameter : FilterParameter) post(trim())]
-$request->query->has('[parameter.name/]')
+[for (f : Filter | unit.filters()) separator('} else ')]
+if ([for (parameter : FilterParameter | f.parameters) separator(' && ')]
+$request->query->has('[parameter.name/]')[/for]) {
+    [unit.filterCall(f)/]
+[/for]
+}
 [/template]
 
 [template private filterCall(unit : IndexUnit, f : Filter)]
-[if (f.selection.parameters->notEmpty())]
-{
-	[for (parameter : SelectionParameter | f.selection.parameters)]
-	[let actual : FilterParameter = f.matchingActual(parameter)]
-		[if (f.selection.parameters->size() = 1)]
-    $[parameter.name/] = $request->query->get('[actual.name/]');
-		[else]
-    $[parameter.name/] = $request->query->has('[actual.name/]')
-        ? $request->query->get('[actual.name/]')
-        : NULL;
-		[/if]
-	[/let]
-	[/for]
-[/if]
-    [unit.selectionCall(f.selection, f)/]
-[if (f.selection.parameters->notEmpty())]
-}
-[/if]
+$this->[unit.instanceName()/] = [unit.getService()/]->[f.selection.instanceName()/](
+[for (parameter : SelectionParameter | f.selection.parameters) separator(', ')]
+[let actual : FilterParameter = f.matchingActual(parameter)]
+    $request->query->get('[actual.name/]')[/let][/for]
+[if (not unit.pagination.oclIsUndefined())]
+[if (f.selection.parameters->notEmpty())],
+    [/if][unit.paginationActuals()/][/if]
+);
 [/template]
 
-[template private selectionCall(unit : IndexUnit, selection : Selection, f : Filter)]
-$this->[unit.instanceName()/] = [unit.getService()/]->[selection.instanceName()/]([unit.selectionActuals(f)/]);
-[/template]
-
-[template private selectionActuals(unit : IndexUnit, f : Filter) post(trim())]
-[if (not f.oclIsUndefined())]
-	[if(f.selection.parameters->notEmpty())]
-		[for (parameter : SelectionParameter | f.selection.parameters) separator(', ')]
-$[parameter.name/][/for], [/if]
-[/if]
-[if (unit.pagination.oclIsUndefined())]
-NULL[else]$this->page[/if], [unit.defaultPaginationSize/]
+[template private paginationActuals(unit : IndexUnit)]
+$this->page, [unit.defaultPaginationSize/]
 [/template]
 
 
