@@ -43,7 +43,7 @@ li > span:after{
 
 
 header {
-	width: 100%;
+	width: 95%;
 	padding: 0.5em 1em 0.5em 1em;
 	color: SteelBlue;
 	background-color: white;
