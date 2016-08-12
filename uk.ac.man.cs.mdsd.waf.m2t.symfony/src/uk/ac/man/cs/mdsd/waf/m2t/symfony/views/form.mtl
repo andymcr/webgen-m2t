@@ -76,8 +76,9 @@
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor)/][if (field.hasClass() or field.hasPlaceholder())]
-, { 'attr': {[if (field.hasPlaceholder())]
+{{ form_row([field.propertyAccessor(parentAccessor)/][if (not field.title.oclIsUndefined() or field.hasClass() or field.hasPlaceholder())]
+, { 'attr': {[if (not field.title.oclIsUndefined())]
+ 'title': '[field.title/]'[if (field.hasPlaceholder() or field.hasClass())], [/if][/if][if (field.hasPlaceholder())]
  'placeholder': '[field.placeholder()/]'[if (field.hasClass())],[/if][/if][if (field.hasClass())]
  'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
  }}[/if]) }}

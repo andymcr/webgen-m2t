@@ -137,7 +137,6 @@ section.details_unit {
 
 ul.details_content,
 dl.details_content {
-	padding: 0em 0.5em 0em 0.5em;
 	list-style: none;
 }
 
