@@ -238,7 +238,9 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public queryParameter(criteria : Expression)
 	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]
 [let path : ParameterReference = criteria.oclAsType(ParameterReference)]
-$query->setParameter('[path.parameter.name/]', $[path.parameter.name/]);
+$query->setParameter('[path.parameter.name/]', [if (path.parameter.optional)]
+$[path.parameter.name/] ? $[path.parameter.name/] : [path.parameter.defaultValue/][else]
+$[path.parameter.name/][/if]);
 [/let]
 [/template]
 
