@@ -44,7 +44,9 @@ $("#[feature.id()/]").selectmenu();
 [template private formField(feature : Feature)
 	? (feature.isDate()) post(trim())]
 [if (feature.dateDetails() <> DateDetails::TimeOnly)]
-$("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[/if]").datepicker();
+$("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[/if]").datepicker({
+    dateFormat: $.datepicker.ISO_8601
+});
 [/if]
 [if (feature.dateDetails() <> DateDetails::DateOnly)]
 // $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").timepicker();
