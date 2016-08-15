@@ -5,6 +5,14 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 
 
+[query public containerUniqueClassName(model : OrmModel) : String
+	= 'ContainerUnique'
+/]
+
+[query public validatorClassNamePostfix(model : OrmModel) : String
+	= 'Validator'
+/]
+
 [query public modelClassName(type : EnumerationType) : String
 	= type.name
 /]

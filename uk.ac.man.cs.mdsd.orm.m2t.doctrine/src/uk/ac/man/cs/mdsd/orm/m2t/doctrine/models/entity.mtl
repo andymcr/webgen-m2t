@@ -19,6 +19,14 @@ namespace [entityOrView.modelsNamespace()/];
 /**
  * @ORM\Entity
  * @ORM\Table(name="[entityOrView.tableName/]")
+[for (attribute : Attribute | entityOrView.uniqueAttributes())]
+ * @UniqueEntity("[attribute.modelPropertyName()/]")
+[/for]
+[if (entityOrView.isContained())]
+	[for (attribute : Attribute | entityOrView.containerUniqueAttributes())]
+ * @AppAssert\ContainerUnique
+	[/for]
+[/if]
 [if (entityOrView.serializationExcludeAll)]
  * @ExclusionPolicy("all")
 [/if]
@@ -97,10 +105,16 @@ use JMS\Serializer\Annotation\Groups;
 [if (entityOrView.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)->select(a | a.serializationMaxDepth > 0)->notEmpty())]
 use JMS\Serializer\Annotation\MaxDepth;
 [/if]
+[if (entityOrView.uniqueAttributes()->notEmpty())]
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+[/if]
 [if (entityOrView.implementsUserInterface)]
 use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
 use Symfony\Component\Validator\Constraints as Assert;
+[if (entityOrView.isContained() and entityOrView.containerUniqueAttributes()->notEmpty())]
+use AppBundle\Validator\Constraints as AppAssert;
+[/if]
 [/template]
 
 [template private autoIdFeature(entityOrView : EntityOrView) post(trim())]
@@ -246,9 +260,6 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 	[else]
 * @Assert\NotNull
 	[/if]
-[/if]
-[if (feature.isUnique())]
-* Unique
 [/if]
 [/template]
 

@@ -11,6 +11,10 @@
 	= eObject.sourceDirectory().concat('/').concat('AppBundle')
 /]
 
+[query public constraintsDirectory(eObject : EObject) : String
+	= eObject.validatorDirectory().concat('/').concat('Constraints')
+/]
+
 [query public modelsDirectory(eObject : EObject) : String
 	= eObject.appBundleDirectory().concat('/').concat('Entity')
 /]
@@ -19,13 +23,25 @@
 	= 'src'
 /]
 
+[query public validatorDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Validator')
+/]
+
 
 [query public appBundleNamespace(eObject : EObject) : String
 	= 'AppBundle'
 /]
 
+[query public constraintsNamespace(eObject : EObject) : String
+	= eObject.validatorNamespace().concat('\\').concat('Constraints')
+/]
+
 [query public modelsNamespace(eObject : EObject) : String
 	= eObject.appBundleNamespace().concat('\\').concat('Entity')
+/]
+
+[query public validatorNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Validator')
 /]
 
 

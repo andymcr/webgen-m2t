@@ -86,6 +86,10 @@
 			endif
 /]
 
+[query public  containerUniqueAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.attributes()->select(a | a.isContainerUnique())
+/]
+
 [query public containingAssociation(entityOrView : EntityOrView) : EntityAssociation
 	= let associations : Sequence(EntityAssociation)
 		= entityOrView.features
@@ -188,6 +192,10 @@
 
 [query public tableColumns(entity : Entity) : OrderedSet(Feature)
 	= entity.features->select(f | f.hasColumn())
+/]
+
+[query public  uniqueAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.attributes()->select(a | a.isUnique())
 /]
 
 [query public validatedFeatures(entityOrView : EntityOrView) : Sequence(Feature)
@@ -327,6 +335,16 @@
 		else
 			false
 		endif endif endif
+/]
+
+[query public isContainerUnique(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).containerUnique
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isContainerUnique()
+		else
+			false
+		endif endif
 /]
 
 [query public isContains(feature : Feature) : Boolean
@@ -492,7 +510,8 @@
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isValidated()
 		else
-			feature.isRequired() or feature.isUnique()
+			-- isUnique is an entity property
+			feature.isRequired()
 		endif
 /]
 

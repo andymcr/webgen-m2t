@@ -4,6 +4,8 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUnique/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUniqueValidator/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::entity/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::enumeration/]
 
@@ -11,4 +13,7 @@
 [template public doctrine(model : WafModel, supportTranslation : Boolean)]
 [model.persistence.enumerationTypes().model(supportTranslation)/]
 [model.persistence.entitiesAndViews.model()/]
+
+[model.persistence.containerUnique()/]
+[model.persistence.containerUniqueValidator()/]
 [/template]
