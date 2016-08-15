@@ -105,28 +105,6 @@
 ui-corner-all ui-widget ui-widget-content
 [/template]
 
-[comment this could be left from an experiment /]
-[template private formFie(field : UnitField, unit : DynamicUnit, accessor : String)
-	? (field.isContains()) post(trim())]
-[let embeddedUnit : DynamicUnit = field.oclAsType(UnitAssociation).units->first().oclAsType(DynamicUnit)]
-	[if (field.isSingleton())]
-		[for (childField : UnitField | embeddedUnit.displayFields)]
-{{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/][if (not childField.inputClass().oclIsUndefined())], { 'attr': { 'class': '[childField.inputClass()/]'}}[/if]) }}
-		[/for]
-	[else]
-<ul>
-{% for x in [accessor/].[field.modelPropertyName()/] %}
- <li>
-		[for (childField : UnitField | embeddedUnit.displayFields)]
-  {{ form_row([accessor/].[field.modelPropertyName()/].[childField.modelPropertyName()/][if (not childField.inputClass().oclIsUndefined())], { 'attr': { 'class': '[childField.inputClass()/]'}}[/if]) }}
-		[/for]
- </li>
-{% endfor %}
-</ul>
-	[/if]
-[/let]
-[/template]
-
 [template public map(unit : DynamicUnit)]
 [let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
 <div id="[unit.uniqueName()/]">
