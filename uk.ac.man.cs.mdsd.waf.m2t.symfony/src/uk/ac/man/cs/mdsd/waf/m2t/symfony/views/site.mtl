@@ -22,7 +22,11 @@
  <link rel="stylesheet" type="text/css" media="print" href="{{ asset('css/print.css') }}"/>
 {% if styles is defined %}
 {% for style in styles  %}
+{% if style starts with 'http' %}
  <link rel="stylesheet" type="text/css" href="{{ style }}"/>
+{% else %}
+ <link rel="stylesheet" type="text/css" href="{{ asset(style) }}"/>
+{%   endif %}
 {% endfor %}
 {% endif %}
 [if (not model.textEditorURL.oclIsUndefined())]
