@@ -52,10 +52,10 @@ $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[
 [if (feature.dateDetails() <> DateDetails::DateOnly)]
 $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").wickedpicker([if (feature.dateDetails() = DateDetails::TimeOnly or feature.hasDefaultValue())]{
 [if (feature.hasDefaultValue())]
-    now: [feature.defaultValue().controllerExpression()/]
+    now: [feature.defaultValue().controllerExpression()/],
 [/if]
 [if (feature.dateDetails() = DateDetails::TimeOnly)]
-    twentyFour: true
+    twentyFour: true,
 [/if]
 }[/if]);
 [/if]
