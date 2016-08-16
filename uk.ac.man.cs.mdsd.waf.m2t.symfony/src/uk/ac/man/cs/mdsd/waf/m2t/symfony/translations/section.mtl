@@ -55,23 +55,52 @@
  <target>[unit.displayLabel.validXML()/]</target>
 </trans-unit>
 [/if]
-[if (unit.oclIsKindOf(DataUnit))]
-	[for (field : UnitField | unit.oclAsType(DataUnit).displayFields)]
-		[if (field.hasCustomisedLabel())]
+[if (unit.oclIsKindOf(DynamicUnit))]
+[unit.oclAsType(DynamicUnit).fieldTranslations(page)/]
+[/if]
+[/template]
+
+[template private fieldTranslations(unit : DynamicUnit, page : Page)
+	? (unit.oclIsKindOf(EditUnit)) post (trim())]
+[for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
+	[if (field.hasUnitTranslation())]
+<trans-unit id="[unit.containedId()/].labels.[field.id()/]">
+ <source>[unit.entities->first().id()/].labels.[field.id()/]</source>
+ <target>[field.displayLabel.validXML()/]</target>
+</trans-unit>
+		[if (field.hasPlaceholder())]
+<trans-unit id="[unit.containedId()/].placeholders.[field.id()/]">
+ <source>[unit.containedId()/].placeholders.[field.id()/]</source>
+ <target>[field.placeholder().validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (field.hasTitle())]
+<trans-unit id="[unit.containedId()/].titles.[field.id()/]">
+ <source>[unit.containedId()/].titles.[field.id()/]</source>
+ <target>[field.title.validXML()/]</target>
+</trans-unit>
+		[/if]
+[/if]
+[/for]
+[/template]
+
+[template private fieldTranslations(unit : DynamicUnit, page : Page)
+	? (unit.oclIsKindOf(DataUnit)) post (trim())]
+[for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
+	[if (field.hasCustomisedLabel())]
 <trans-unit id="[unit.containedId()/].labels.[field.id()/]">
  <source>[unit.containedId()/].labels.[field.id()/]</source>
  <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
-		[/if]
-		[if (field.oclIsTypeOf(UnitAssociation))]
-		[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-			[if (association.units->notEmpty())]
+	[/if]
+	[if (field.oclIsTypeOf(UnitAssociation))]
+	[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+		[if (association.units->notEmpty())]
 [association.translations(page)/]
-			[/if]
-		[/let]
 		[/if]
-	[/for]
-[/if]
+	[/let]
+	[/if]
+[/for]
 [/template]
 
 [template private translations(association : UnitAssociation, page : Page) post(trim())]

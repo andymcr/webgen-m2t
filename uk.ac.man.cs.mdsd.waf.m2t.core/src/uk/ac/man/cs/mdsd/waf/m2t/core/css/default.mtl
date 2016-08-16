@@ -154,12 +154,6 @@ dl.details_content > dd {
 	float: left;
 }
 
-ul.details_content > li > ul,
-dl.details_content > dd > ul {
-	list-style: disc inside;
-	margin: 0.5em;
-}
-
 
 section.index_unit {
 }
@@ -190,15 +184,13 @@ table.index_content > tbody > tr > td > a:visited  {
 	color: black;
 }
 
-main > section > ul.index_content {
+/* main > section > ul.index_content {
 	padding: 0em 0.5em 0em 0.5em;
-}
+}*/
 
 ul.index_content,
-ul.details_content > li > ul.index_content,
-dl.details_content > dd > ul.index_content {
+dl.index_content {
 	list-style: none;
-	margin: 0em;
 }
 
 div.filter > form {

@@ -2,6 +2,7 @@
 [module translation(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
 
 [query public validXML(string : String) : String
@@ -18,4 +19,29 @@
 		else
 			field.oclIsKindOf(InterfaceField)
 		endif endif
+/]
+
+[query public hasCustomisedPlaceholder(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).placeholder <> field.oclAsType(UnitAttribute).attribute.displayLabel
+		else if field.oclIsTypeOf(UnitAssociation) then
+			false
+		else
+			field.oclIsKindOf(InterfaceField)
+		endif endif
+/]
+
+[query public hasCustomisedTitle(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.title <> field.oclAsType(UnitAttribute).attribute.displayLabel
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.title <> field.oclAsType(UnitAssociation).association.displayLabel
+				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
+		else
+			field.oclIsKindOf(InterfaceField)
+		endif endif
+/]
+
+[query public hasUnitTranslation(field : UnitField) : Boolean
+	= field.hasCustomisedLabel() or (field.hasPlaceholder() and field.hasCustomisedPlaceholder()) or (field.hasTitle() and field.hasCustomisedTitle())
 /]

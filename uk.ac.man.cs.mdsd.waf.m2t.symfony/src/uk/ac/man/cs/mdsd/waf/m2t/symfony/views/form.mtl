@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
@@ -76,12 +77,13 @@
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor)/][if (not field.title.oclIsUndefined() or field.hasClass() or field.hasPlaceholder())]
-, { 'attr': {[if (not field.title.oclIsUndefined())]
- 'title': '[field.title/]'[if (field.hasPlaceholder() or field.hasClass())], [/if][/if][if (field.hasPlaceholder())]
- 'placeholder': '[field.placeholder()/]'[if (field.hasClass())],[/if][/if][if (field.hasClass())]
+{{ form_row([field.propertyAccessor(parentAccessor)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.hasUnitTranslation())]
+, { [if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]'attr': {[if (field.hasTitle())]
+ 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.hasClass())], [/if][/if][if (field.hasPlaceholder())]
+ 'placeholder': [field.placeholder(unit)/][if (field.hasClass())],[/if][/if][if (field.hasClass())]
  'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
- }}[/if]) }}
+ }[if (field.hasUnitTranslation())], [/if][/if][if (field.hasUnitTranslation())]
+'translation_domain': '[unit.translationDomain()/]'[/if]}[/if]) }}
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
@@ -99,6 +101,18 @@
 [/if]
 [/let]
 [/let]
+[/template]
+
+[template private placeholder(field : UnitField, unit : DynamicUnit) post(trim())]
+[if (field.hasCustomisedLabel() or field.hasCustomisedPlaceholder() or field.hasCustomisedTitle())]
+'[unit.containedId()/].placeholders.[field.id()/]'[else]
+'[unit.entities->first().id()/].labels.[field.id()/]'[/if]
+[/template]
+
+[template private title(field : UnitField, unit : DynamicUnit) post(trim())]
+[if (field.hasCustomisedLabel() or field.hasCustomisedPlaceholder() or field.hasCustomisedTitle())]
+'[unit.containedId()/].titles.[field.id()/]'[else]
+'[unit.entities->first().id()/].labels.[field.id()/]'[/if]
 [/template]
 
 [template public jQueryClass(eObject : EObject) post(trim())]

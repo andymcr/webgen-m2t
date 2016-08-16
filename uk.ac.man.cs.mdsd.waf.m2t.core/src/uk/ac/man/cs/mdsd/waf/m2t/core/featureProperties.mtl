@@ -332,7 +332,11 @@
 /]
 
 [query public useInputJQuery(page : Page) : Boolean
-	= page.hasFormUnits()
+	= (page.hasFormUnits()
+			or page.units
+				->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
+				->select(u | u.filters()->notEmpty())
+				->notEmpty())
 		and page.partOf.inputTechnology <> InputTechnologies::Html
 /]
 
@@ -814,6 +818,10 @@
 
 [query public hasSelection(field : UnitField) : Boolean
 	= not field.selection().oclIsUndefined()
+/]
+
+[query public hasTitle(field : UnitField) : Boolean
+	= not field.title.oclIsUndefined()
 /]
 
 [query public id(field : UnitField) : String

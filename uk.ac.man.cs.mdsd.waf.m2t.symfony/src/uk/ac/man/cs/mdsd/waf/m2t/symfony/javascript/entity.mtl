@@ -49,7 +49,7 @@ $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[
 });
 [/if]
 [if (feature.dateDetails() <> DateDetails::DateOnly)]
-// $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").timepicker();
+ $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").timepicker();
 [/if]
 [/template]
 
