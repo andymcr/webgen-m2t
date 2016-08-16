@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::javascript/]
 
 
 [template public javascript(entityOrView : EntityOrView, model : WafModel)]
@@ -49,7 +50,14 @@ $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[
 });
 [/if]
 [if (feature.dateDetails() <> DateDetails::DateOnly)]
- $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").timepicker();
+$("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").wickedpicker([if (feature.dateDetails() = DateDetails::TimeOnly or feature.hasDefaultValue())]{
+[if (feature.hasDefaultValue())]
+    now: [feature.defaultValue().controllerExpression()/]
+[/if]
+[if (feature.dateDetails() = DateDetails::TimeOnly)]
+    twentyFour: true
+[/if]
+}[/if]);
 [/if]
 [/template]
 
