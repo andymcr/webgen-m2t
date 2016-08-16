@@ -7,7 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::criteriaDoctrine/]
 
 
 [template public unitMethods(unit : ContentUnit)

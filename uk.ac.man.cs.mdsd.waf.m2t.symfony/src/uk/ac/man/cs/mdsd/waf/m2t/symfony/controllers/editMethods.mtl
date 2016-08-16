@@ -11,7 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::controller/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::display/]
 
 

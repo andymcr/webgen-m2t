@@ -12,8 +12,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::criteriaDoctrine/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::queryDoctrine/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::criteriaDoctrine/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::queryDoctrine/]
 
 [template public service(service : Service)]
 [file(service.serviceFilename(), false)]

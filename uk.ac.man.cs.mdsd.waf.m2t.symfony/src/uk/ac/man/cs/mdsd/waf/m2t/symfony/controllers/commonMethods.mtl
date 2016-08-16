@@ -10,7 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::controller/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
 
 
 [template public translate(message : String) post(trim())]

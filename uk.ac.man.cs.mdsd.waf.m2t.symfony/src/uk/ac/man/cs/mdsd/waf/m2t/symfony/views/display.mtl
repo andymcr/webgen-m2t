@@ -10,7 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::criteria::twig/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
 
