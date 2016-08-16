@@ -33,8 +33,15 @@
 [/template]
 
 [template public routeParameters(entityOrView : EntityOrView, parentPath : Boolean) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys(parentPath)) separator (', ')]
+[if (parentPath and entityOrView.keyEntity().isContained())]
+[let container : EntityOrView = entityOrView.keyEntity().container()]
+	[for (key : Attribute | entityOrView.uriPathKeys(parentPath)) separator (', ')]
+$[key.routeParameterName(container)/][/for]
+[/let]
+[else]
+	[for (key : Attribute | entityOrView.uriPathKeys(parentPath)) separator (', ')]
 $[key.routeParameterName(entityOrView)/][/for]
+[/if]
 [/template]
 
 [template public filteredRouteParameters(unit : DynamicUnit) post(trim())]
@@ -42,8 +49,17 @@ $[key.routeParameterName(entityOrView)/][/for]
 [/template]
 
 [template public filteredRouteParameters(unit : DynamicUnit, parentPath : Boolean) post(trim())]
-[for (key : Attribute | unit.filteredUriPathKeys(parentPath)) separator (', ')]
-$[key.routeParameterName(unit.entities->first())/][/for]
+[let entityOrView : EntityOrView = unit.entities->first()]
+[if (parentPath and entityOrView.keyEntity().isContained())]
+[let container : EntityOrView = entityOrView.keyEntity().container()]
+	[for (key : Attribute | unit.filteredUriPathKeys(parentPath)) separator (', ')]
+$[key.routeParameterName(container)/][/for]
+[/let]
+[else]
+	[for (key : Attribute | unit.filteredUriPathKeys(parentPath)) separator (', ')]
+$[key.routeParameterName(entityOrView)/][/for]
+[/if]
+[/let]
 [/template]
 
 [query public routeParameterName(attribute : Attribute, entityOrView : EntityOrView) : String
@@ -143,19 +159,21 @@ $[key.routeParameterName(unit.entities->first())/][/for]
 	= let keyEntity : EntityOrView = entityOrView.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
+			else if not keyEntity.isContained() then
+				''
 			else
 				let parentPath : String
 					= if filter then
-							keyEntity.filteredParentPath(unit, entityOrView)
+							keyEntity.filteredParentPath(unit, keyEntity.container())
 						else
-							keyEntity.parentPath(entityOrView)
+							keyEntity.parentPath(keyEntity.container())
 						endif
 					in if parentPath = '' then
 							''
 						else
 							parentPath.appendContainingAssociation(keyEntity)
 						endif
-		endif
+		endif endif
 /]
 
 [query private entityUriPath(unit : DynamicUnit, filter : Boolean, parentPath : Boolean) : String

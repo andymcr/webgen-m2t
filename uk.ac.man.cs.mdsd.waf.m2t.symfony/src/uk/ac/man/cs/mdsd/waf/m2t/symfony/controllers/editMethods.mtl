@@ -69,7 +69,7 @@ public function [unit.actionName()/]X([unit.actionMethodParameters(true)/])
     }
 [/if]
 
-    return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
+    return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit, true)/]);
 }
 [/let]
 [/template]
@@ -129,7 +129,7 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
     'action' => $this->generateUrl('[unit.routeName(create)/]', array(
 [if (create)]
 	[if (entityOrView.keyEntity().isContained())]
-        [entityOrView.keyEntity().container().routeActualParameters(unit, entityOrView)/]
+        [entityOrView.keyEntity().container().routeActualParameters(unit, entityOrView.keyEntity().container())/]
 	[/if]
 [else]
         [entityOrView.routeActualParameters(unit, entityOrView)/]
@@ -156,17 +156,22 @@ return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 	[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
-return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContained())], array(
-    [keyEntity.container().routeActualParameters(unit, unit.entities->first())/]
-)[/if]);
+return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContained())]
+[let container : EntityOrView = keyEntity.container()], array(
+    [container.routeActualParameters(unit, keyEntity.container(), if create then container else unit.entities->first() endif)/]
+)[/let][/if]);
 	[/let]
 	[/if]
 [/if]
 [/template]
 
 [template private routeActualParameters(entityOrView : EntityOrView, unit : DynamicUnit, base : EntityOrView) post(trim())]
+[entityOrView.routeActualParameters(unit, base, base)/]
+[/template]
+
+[template private routeActualParameters(entityOrView : EntityOrView, unit : DynamicUnit, routeBase : EntityOrView, valueBase : EntityOrView) post(trim())]
 [for (key : Attribute | entityOrView.filteredUriPathKeys(unit))]
-'[key.routeParameterName(base)/]' => $[key.routeParameterName(entityOrView)/],
+'[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
 [/for]
 [/template]
 
