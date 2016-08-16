@@ -8,6 +8,14 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 
+
+[query private isReservedWord(word : String) : Boolean
+	= let reserved : Set(String) 
+		= Set{'order'}
+		in reserved->includes(word)
+/]
+
+
 [template public model(entityOrView : EntityOrView)]
 [file(entityOrView.modelFilename(), false)]
 <?php
@@ -182,7 +190,7 @@ protected $updated;
 [if (attribute.primaryKey)]
 * @ORM\Id
 [/if]
-* @ORM\Column(type="[attribute.ormType/]"[if (not feature.isRequired())], nullable=true[/if])
+* @ORM\Column([if (feature.columnName().isReservedWord())]name="`[feature.columnName()/]`", [/if]type="[attribute.ormType/]"[if (not feature.isRequired())], nullable=true[/if])
 [/let]
 [/template]
 
