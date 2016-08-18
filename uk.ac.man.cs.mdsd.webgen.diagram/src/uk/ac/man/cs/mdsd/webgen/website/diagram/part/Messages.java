@@ -536,6 +536,16 @@ public class Messages extends NLS {
 	public static String SliderUnit9CreationTool_desc;
 
 	/**
+	* @generated
+	*/
+	public static String GridUnit10CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String GridUnit10CreationTool_desc;
+
+	/**
 	 * @generated
 	 */
 	public static String SelectAction1CreationTool_title;

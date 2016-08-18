@@ -507,6 +507,10 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
+			if (visualID == GridUnitEditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
 		}
 		return result;
 	}
@@ -1836,6 +1840,8 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3212ContainedLinks(view);
 		case SliderUnitEditPart.VISUAL_ID:
 			return getSliderUnit_3261ContainedLinks(view);
+		case GridUnitEditPart.VISUAL_ID:
+			return getGridUnit_3262ContainedLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236ContainedLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2075,6 +2081,8 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3212IncomingLinks(view);
 		case SliderUnitEditPart.VISUAL_ID:
 			return getSliderUnit_3261IncomingLinks(view);
+		case GridUnitEditPart.VISUAL_ID:
+			return getGridUnit_3262IncomingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236IncomingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2314,6 +2322,8 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3212OutgoingLinks(view);
 		case SliderUnitEditPart.VISUAL_ID:
 			return getSliderUnit_3261OutgoingLinks(view);
+		case GridUnitEditPart.VISUAL_ID:
+			return getGridUnit_3262OutgoingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236OutgoingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -3069,6 +3079,13 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getSliderUnit_3261ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getGridUnit_3262ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3894,6 +3911,13 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getGridUnit_3262IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getSelectAction_3146IncomingLinks(View view) {
@@ -4705,6 +4729,13 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getSliderUnit_3261OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getGridUnit_3262OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

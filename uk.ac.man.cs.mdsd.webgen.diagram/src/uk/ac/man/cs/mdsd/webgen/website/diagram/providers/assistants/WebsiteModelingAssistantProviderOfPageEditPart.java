@@ -23,7 +23,7 @@ public class WebsiteModelingAssistantProviderOfPageEditPart extends WebsiteModel
 	@Override
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
-		List<IElementType> types = new ArrayList<IElementType>(10);
+		List<IElementType> types = new ArrayList<IElementType>(11);
 		types.add(WebsiteElementTypes.CreateUnit_3103);
 		types.add(WebsiteElementTypes.CreateUpdateUnit_3104);
 		types.add(WebsiteElementTypes.CreateSitemapUnit_3157);
@@ -34,6 +34,7 @@ public class WebsiteModelingAssistantProviderOfPageEditPart extends WebsiteModel
 		types.add(WebsiteElementTypes.StaticUnit_3110);
 		types.add(WebsiteElementTypes.UpdateUnit_3111);
 		types.add(WebsiteElementTypes.SliderUnit_3261);
+		types.add(WebsiteElementTypes.GridUnit_3262);
 		return types;
 	}
 

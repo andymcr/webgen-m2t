@@ -81,6 +81,7 @@ public class WebsitePaletteFactory {
 		paletteContainer.add(createUpdateUnit7CreationTool());
 		paletteContainer.add(createSearchUnit8CreationTool());
 		paletteContainer.add(createSliderUnit9CreationTool());
+		paletteContainer.add(createGridUnit10CreationTool());
 		return paletteContainer;
 	}
 
@@ -499,6 +500,18 @@ public class WebsitePaletteFactory {
 				Messages.SliderUnit9CreationTool_desc, Collections.singletonList(WebsiteElementTypes.SliderUnit_3261));
 		entry.setId("createSliderUnit9CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SliderUnit_3261));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	* @generated
+	*/
+	private ToolEntry createGridUnit10CreationTool() {
+		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.GridUnit10CreationTool_title,
+				Messages.GridUnit10CreationTool_desc, Collections.singletonList(WebsiteElementTypes.GridUnit_3262));
+		entry.setId("createGridUnit10CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.GridUnit_3262));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
