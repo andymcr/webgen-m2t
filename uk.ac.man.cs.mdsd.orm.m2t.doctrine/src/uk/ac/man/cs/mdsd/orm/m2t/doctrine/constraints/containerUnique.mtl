@@ -20,7 +20,43 @@ use Symfony\Component\Validator\Constraint;
  */
 class ContainerUnique extends Constraint
 {
-    public $message = '';
+    public $message = 'Value already used';
+
+    private $uniquePropertyPath;
+
+    private $containingPropertyPath;
+
+
+    public function __construct($options = null)
+    {
+        foreach ($options as $key => $value) {
+            if (strcmp($key, "uniqueProperty") == 0) {
+                $this->uniquePropertyPath = $value;
+            } else if (strcmp($key, "containingProperty") == 0) {
+                $this->containingPropertyPath = $value;
+            } else {
+                throw new \InvalidArgumentException($key . " invalid");
+            }
+        }
+
+        if (!isset($this->uniquePropertyPath)) {
+            throw new \InvalidArgumentException("uniqueProperty value missing");
+        }
+        if (!isset($this->containingPropertyPath)) {
+            throw new \InvalidArgumentException("containingProperty value missing");
+        }
+    }
+
+    public function getRequiredOptions()
+    {
+        return array('uniqueProperty', 'containingProperty');
+    }
+
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
+
 }
 [/file]
 [/template]
