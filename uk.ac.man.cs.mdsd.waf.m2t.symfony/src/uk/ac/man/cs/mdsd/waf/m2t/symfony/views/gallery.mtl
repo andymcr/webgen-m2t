@@ -1,0 +1,51 @@
+[comment encoding = UTF-8 /]
+[module gallery(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public unitView(unit : ContentUnit)
+	? (unit.oclIsTypeOf(GridUnit)) post(trim())]
+[let galleryUnit : GridUnit = unit.oclAsType(GridUnit)]
+[file(galleryUnit.viewFilename(), false)]
+<section class="[galleryUnit.styleClass/]" id="[galleryUnit.instanceName()/]">
+[if (not galleryUnit.omitCaption)]
+ <h2 class="[galleryUnit.captionClass/]">[galleryUnit.displayLabel/]</h2>
+[/if]
+ [galleryUnit.blueimp()/]
+</section>
+[/file]
+[/let]
+[/template]
+
+[template private blueimp(unit : GridUnit) post(trim())]
+<div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls">
+ <div class="slides"></div>
+ <h3 class="title"></h3>
+ <a class="prev">&lt;</a>
+ <a class="next">&gt;</a>
+ <a class="play-pause"></a>
+ <ol class="indicator"></ol>
+</div>
+<div id="links">
+{% for image in [unit.instanceName()/] %}
+ <a href="http://sps.andycarpenter.me.uk/{{ image.filePath }}" title="{{ image.image.title }}">
+  <!-- img src="images/thumbnails/banana.jpg" alt="Banana" -->
+ </a>
+{% endfor %}
+</div>
+<script src="{{ asset('js/blueimp-gallery.min.js') }}"></script>
+<script type="text/javascript">
+blueimp.Gallery(
+    document.getElementById('links').getElementsByTagName('a'),
+    {
+        container: '#blueimp-gallery-carousel',
+        carousel: true
+    }
+);
+</script>
+[/template]

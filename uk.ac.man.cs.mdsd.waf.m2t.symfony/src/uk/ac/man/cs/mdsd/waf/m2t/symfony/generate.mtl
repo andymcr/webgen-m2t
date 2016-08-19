@@ -47,6 +47,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::user::profileForm/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::user::registerForm/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::display/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::gallery/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::input/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::sidemenu/]

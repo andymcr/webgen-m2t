@@ -16,7 +16,8 @@
 [if (not sliderUnit.omitCaption)]
  <h2 class="[sliderUnit.captionClass/]">[sliderUnit.displayLabel/]</h2>
 [/if]
- [sliderUnit.jssor()/]
+ [comment sliderUnit.jssor()/]
+ [sliderUnit.blueimp()/]
 </section>
 [/file]
 [/let]
@@ -140,4 +141,32 @@
         }
         
     </style>
+[/template]
+
+[template private blueimp(unit : SliderUnit) post(trim())]
+<div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-carousel blueimp-gallery-controls">
+ <div class="slides"></div>
+ <h3 class="title"></h3>
+ <a class="prev">&lt;</a>
+ <a class="next">&gt;</a>
+ <a class="play-pause"></a>
+ <ol class="indicator"></ol>
+</div>
+<div id="links">
+{% for image in [unit.instanceName()/] %}
+ <a href="http://sps.andycarpenter.me.uk/{{ image.filePath }}" title="{{ image.image.title }}">
+  <!-- img src="images/thumbnails/banana.jpg" alt="Banana" -->
+ </a>
+{% endfor %}
+</div>
+<script src="{{ asset('js/blueimp-gallery.min.js') }}"></script>
+<script type="text/javascript">
+blueimp.Gallery(
+    document.getElementById('links').getElementsByTagName('a'),
+    {
+        container: '#blueimp-gallery-carousel',
+        carousel: true
+    }
+);
+</script>
 [/template]
