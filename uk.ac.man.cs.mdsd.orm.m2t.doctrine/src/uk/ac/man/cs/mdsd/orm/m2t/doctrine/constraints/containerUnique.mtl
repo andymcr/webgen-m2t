@@ -57,6 +57,16 @@ class ContainerUnique extends Constraint
         return self::CLASS_CONSTRAINT;
     }
 
+    public function getUniquePropertyPath()
+    {
+        return $this->uniquePropertyPath;
+    }
+
+    public function getContainingPropertyPath()
+    {
+        return $this->containingPropertyPath;
+    }
+
 }
 [/file]
 [/template]
