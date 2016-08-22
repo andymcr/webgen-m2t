@@ -26,7 +26,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::enumerationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::formType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::forms::unitType/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::autocomplete/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::entity/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::models::unit/]
@@ -100,7 +99,6 @@
 
 [if (model.inputTechnology <> InputTechnologies::Html)]
 [model.persistence.entitiesAndViews->select(eov | eov.featuresUsed(model)->notEmpty()).javascript(model)/]
-[model.autocomplete()/]
 [/if]
 [model.pages->select(p | p.hasJavascript()).javascript()/]
 
