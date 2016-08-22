@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
+
 [query public userService(model : WafModel) : Service
 	= if model.isLocallyAuthenticated() then
 			model.localAuthentication().user.services(model)->first()

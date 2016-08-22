@@ -237,3 +237,32 @@ $[key.routeParameterName(entityOrView)/][/for]
 		.combinePaths(action.immediateUnit().entityUriPath(false, false))
         .combinePaths(action.uriElement)
 /]
+
+
+[query private explicitHomeUnit(model : WafModel) : ContentUnit
+	= let homeUnits : Sequence(ContentUnit)
+		= model.pages
+			->collect(p | p.units)
+			->select(u | u.uriPath(true) = '')
+		in if homeUnits->notEmpty() then
+				homeUnits->first()
+			else
+				null
+			endif
+/]
+
+[query public isHomeUnit(unit : ContentUnit) : Boolean
+	= let explicitHome : ContentUnit
+		= unit.pageDisplayedOn().partOf.explicitHomeUnit()
+		in if not explicitHome.oclIsUndefined() then
+				explicitHome = unit
+			else 
+				let homePage : Page
+					= unit.pageDisplayedOn().partOf.homePage()
+					in if homePage.units->notEmpty() then
+							homePage.units->first() = unit
+						else
+							false
+						endif
+			endif
+/]
