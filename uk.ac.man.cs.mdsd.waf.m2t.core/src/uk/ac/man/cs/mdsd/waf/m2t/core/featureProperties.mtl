@@ -291,10 +291,6 @@
 	= page.authenticated and page.partOf.isAuthenticated()
 /]
 
-[query public isHomePage(page : Page) : Boolean
-	= page.partOf.topMenuItems()->first() = page
-/]
-
 [query public mapUnits(page : Page) : Sequence(MapUnit)
 	= page.units->select(u | u.oclIsKindOf(MapUnit)).oclAsType(MapUnit)
 /]
@@ -596,10 +592,6 @@
 		else
 			unit.entities->first().isContained()
 		endif
-/]
-
-[query public isHomeUnit(unit : ContentUnit) : Boolean
-	= unit.pageDisplayedOn().isHomePage() and unit.pageDisplayedOn().units->first() = unit
 /]
 
 [query public isParameterised(unit : ContentUnit) : Boolean
