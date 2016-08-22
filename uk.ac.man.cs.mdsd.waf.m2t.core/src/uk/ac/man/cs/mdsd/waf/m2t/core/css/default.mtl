@@ -62,14 +62,14 @@ main {
 main > section {
 	clear: both;
 	width: 100%;
-	margin: 0em 0em 0.5em 0em;
+	margin-bottom: 1em;
 }
 
 main > section > h2 {
 	color: SteelBlue;
 	font-size: 1.2em;
 	text-align: left;
-	padding: 1em 0em 0.5em 0em;
+	padding-bottom: 0.5em;
 }
 
 main > section section > h2.unit_caption {
@@ -216,7 +216,6 @@ form.edit_content {
 
 
 .slider_unit {
-	padding: 1em 0em 0em 0em;
 }
 
 .search_unit {

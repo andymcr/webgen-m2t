@@ -11,7 +11,7 @@
 	}
 
 [if (not model.topNavigationId.oclIsUndefined())]
-	#[model.topNavigationId/] {
+	nav#[model.topNavigationId/] {
 		width: 100%;
 	}
 
@@ -36,7 +36,7 @@
 	}
 
 [if (not model.topNavigationId.oclIsUndefined())]
-	#[model.topNavigationId/] {
+	nav#[model.topNavigationId/] {
 		width: 100%;
 	}
 
@@ -94,6 +94,7 @@ nav#[model.topNavigationId/] #authentication {
 
 [/if]
 .menu {
+	margin-bottom: 1em;
 	background-color: AliceBlue;
 }
 
