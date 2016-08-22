@@ -202,11 +202,17 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
-[if (page.useInputJQuery())]
+[if (page.useInputJQuery() or page.hasSliderUnits())]
 $parameters['['/]'styles'[']'/] = array(
+	[if (page.useInputJQuery())]
     'https://code.jquery.com/ui/1.12.0/themes/cupertino/jquery-ui.css',
-	[if (page.formUnits()->collect(u | u.displayFields)->select(f | f.isDate())->notEmpty())]
+    'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css',
+		[if (page.formUnits()->collect(u | u.displayFields)->select(f | f.isDate())->notEmpty())]
     'css/wickedpicker.css',
+		[/if]
+	[/if]
+	[if (page.hasSliderUnits())]
+    'css/blueimp-gallery.min.css',
 	[/if]
 );
 [/if]
@@ -223,7 +229,8 @@ $parameters['['/]'scripts'[']'/] = array(
         'integrity' => 'sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=',
         'crossorigin' => 'anonymous',
     ),
-    '[page.partOf.autocompleteFilename()/]',
+    'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+[comment     '[page.partOf.autocompleteFilename()', /]
 		[for (unit : DynamicUnit | page.formUnits()->select(u | u.entities->notEmpty()))]
     '[unit.entities->first().javascriptFilename()/]',
 		[/for]
@@ -232,7 +239,8 @@ $parameters['['/]'scripts'[']'/] = array(
 	[/if]
 	[/if]
 	[if (page.hasSliderUnits())]
-    'js/jssor.slider.mini.js',
+[comment    'js/jssor.slider.mini.js', /]
+[comment    'js/jquery.blueimp-gallery.min.js', /]
 	[/if]
 	[if (page.hasChangableCollections() or page.hasSliderUnits())]
     '[page.javascriptFilename()/]',
