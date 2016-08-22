@@ -395,10 +395,18 @@ public function add[feature.singletonPropertyName().toUpperFirst()/]($[feature.s
 {
 [if (feature.isUnique())]
     if (!in_array($[feature.singletonPropertyName()/], $this->[feature.modelPropertyName()/], true)) {
+	[if (feature.oclIsKindOf(Attribute))]
+        $this->[feature.columnName()/]['['/][']'/] = $[feature.singletonPropertyName()/];
+	[else]
         $this->[feature.modelPropertyName()/]->add($[feature.singletonPropertyName()/]);
+	[/if]
     }
 [else]
+	[if (feature.oclIsKindOf(Attribute))]
+    $this->[feature.columnName()/]['['/][']'/] = $[feature.singletonPropertyName()/];
+	[else]
     $this->[feature.modelPropertyName()/]->add($[feature.singletonPropertyName()/]);
+	[/if]
 [/if]
 }
 [/template]
@@ -406,7 +414,11 @@ public function add[feature.singletonPropertyName().toUpperFirst()/]($[feature.s
 [template private removeMethod(feature : Feature) post(trim())]
 public function remove[feature.singletonPropertyName().toUpperFirst()/]($[feature.singletonPropertyName()/])
 {
+	[if (feature.oclIsKindOf(Attribute))]
+    unset($this->[feature.columnName()/]['['/]array_search($[feature.singletonPropertyName()/], $this->[feature.columnName()/])[']'/]);
+	[else]
     $this->[feature.modelPropertyName()/]->removeElement($[feature.singletonPropertyName()/]);
+	[/if]
 }
 [/template]
 
