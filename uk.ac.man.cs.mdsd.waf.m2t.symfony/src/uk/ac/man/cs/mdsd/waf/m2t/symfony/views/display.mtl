@@ -173,7 +173,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.conditionalDisplay())]
-{% if [field.getImmediateValue(accessor)/] is defined %}
+{% if [field.getImmediateValue(accessor)/] is not null %}
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
  <li class="[field.displayClass()/]">[field.displayValue(accessor)/]</li>
@@ -206,7 +206,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [for (field : UnitField | indexUnit.displayFields) ]
 	[if (field.conditionalDisplay())]
-{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] is defined %}
+{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] is not null %}
 	[/if]
 <span class="[field.modelPropertyName()/]">[field.displayValue('entry')/]</span>
 	[if (field.conditionalDisplay())]
@@ -290,6 +290,15 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
    <td class="actions">[indexUnit.actions('entry')/]</td>
 [/if]
   </tr>
+[if (not nullDisplayValue.oclIsUndefined())]
+{% else %}
+  <tr>
+   <td colspan="[unit.displayFields->size()/]">{{ '[nullDisplayValue/]' }}</td>
+	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
+   <td class="actions">&nbsp;</td>
+	[/if]
+  </tr>
+[/if]
 {% endfor %}
  </tbody>
 </table>
