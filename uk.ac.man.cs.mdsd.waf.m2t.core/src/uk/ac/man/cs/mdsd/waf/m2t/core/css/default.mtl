@@ -142,9 +142,11 @@ dl.details_content {
 }
 
 dl.details_content > dt {
-	float: left;
-	clear: left;
+	display: inline-block;
 	width: 15%;
+	vertical-align: top;
+    margin-right: 0.5em;
+	padding-bottom: 0.25em;
 }
 
 dl.details_content > dt:after {
@@ -152,7 +154,8 @@ dl.details_content > dt:after {
 }
 
 dl.details_content > dd {
-	float: left;
+	display: inline-block;
+	width: 83%;
 }
 
 
@@ -169,7 +172,7 @@ table.index_content > thead {
 }
 
 table.index_content > thead > tr > th {
-	padding: 0.25em 0em 0.25em 0em;
+	padding: 0.25em 0.25em 0.25em 0.5em;
 }
 
 table.index_content > tbody > tr {
@@ -242,14 +245,6 @@ ul.unit_control > li {
 ul.unit_control > li > a {
 	color: inherit;
 	text-decoration: none;
-}
-
-dt.field_label {
-	display: inline-block;
-	width: 15%;
-	vertical-align: top;
-	text-align: right;
-    margin-right: 0.5em;
 }
 
 div .map-canvas {
