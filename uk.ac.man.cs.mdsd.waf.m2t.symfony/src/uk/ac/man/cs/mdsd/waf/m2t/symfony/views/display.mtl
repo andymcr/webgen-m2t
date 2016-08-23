@@ -29,16 +29,16 @@
 {% endif %}
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
- [dataUnit.unitContent(accessor)/]
+ [dataUnit.unitContent(null, accessor)/]
 	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
-  [dataUnit.unitSupportLinks(accessor)/]
+  [dataUnit.unitSupportLinks(null, accessor)/]
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
 	[for(filter : Filter | indexUnit.filters())]
  [filter.unitFilter(indexUnit, accessor)/]
 	[/for]
- [dataUnit.unitContent(accessor)/]
+ [dataUnit.unitContent(null, accessor)/]
 	[if (not indexUnit.pagination.oclIsUndefined())]
  [indexUnit.pagination()/]
 	[/if]
@@ -158,7 +158,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 
-[template public unitContent(unit : ContentUnit, accessor : String)
+[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.detailsContent(accessor)/]
@@ -173,7 +173,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.conditionalDisplay())]
-{% if [field.getValue(accessor.concat('.').concat(field.modelPropertyName()))/] %}
+{% if [field.getImmediateValue(accessor)/] is defined %}
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
  <li class="[field.displayClass()/]">[field.displayValue(accessor)/]</li>
@@ -194,7 +194,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [/template]
 
-[template protected unitContent(unit : DataUnit, accessor : String)
+[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
 <ul class="[indexUnit.contentClass/]">
@@ -206,7 +206,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [for (field : UnitField | indexUnit.displayFields) ]
 	[if (field.conditionalDisplay())]
-{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] %}
+{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] is defined %}
 	[/if]
 <span class="[field.modelPropertyName()/]">[field.displayValue('entry')/]</span>
 	[if (field.conditionalDisplay())]
@@ -222,12 +222,16 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
   </section>
 [/if]
  </li>
+[if (not nullDisplayValue.oclIsUndefined())]
+{% else %}
+ <li>{{ '[nullDisplayValue/]' }}</li>
+[/if]
 {% endfor %}
 </ul>
 [/let]
 [/template]
 
-[template protected unitContent(unit : DataUnit, accessor : String)
+[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
 	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
 [let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
 <ul class="[indexUnit.contentClass/]">
@@ -245,12 +249,16 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
   </section>
 [/if]
  </li>
+[if (not nullDisplayValue.oclIsUndefined())]
+{% else %}
+ <li>{{ '[nullDisplayValue/]' }}</li>
+[/if]
 {% endfor %}
 </ul>
 [/let]
 [/template]
 
-[template public unitContent(unit : DataUnit, accessor : String)
+[template public unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
 <table class="[indexUnit.contentClass/]">
@@ -373,7 +381,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [if (association.units->isEmpty())]
 [association.displayAssociation(accessor, parentAccessor)/]
 [else]
-[association.units->first().unitContent(accessor)/]
+[association.units->first().unitContent(association.nullDisplayValue, accessor)/]
 [/if]
 [/let]
 [/let]
@@ -386,16 +394,17 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [if (association.units->isEmpty())]
 {% for value in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[association.displayAssociation('value', 'value')/]</p>[else]
-<span>[association.displayAssociation('value', 'value')/]</span>[/if]{% endfor %}
+<span>[association.displayAssociation('value', 'value')/]</span>[/if][if (not association.nullDisplayValue.oclIsUndefined())]
+{% else %}{{ '[association.nullDisplayValue/]' }}[/if]{% endfor %}
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-[association.units.unitContent(accessor)/]
+[association.units.unitContent(association.nullDisplayValue, accessor)/]
 	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
-[association.units.unitContent(accessor)/]
+[association.units.unitContent(association.nullDisplayValue, accessor)/]
 	[else]
 	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[association.units.unitContent(
+[association.units.unitContent(association.nullDisplayValue,
 	association.serviceAccessor()
 		.concat('.').concat(association.name).concat(indexUnit.defaultSelection.instanceName().toUpperFirst())
 		.concat('(').concat(parentAccessor).concat(')'))/]
@@ -429,8 +438,37 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [association.actions->select(a | not a.disable)
 	->first().actionLink(association.association.targetType(), accessor, accessor.concat('.defaultLabel()'), accessor.concat('.defaultLabel()'), accessor)/]
 [else]
-{{ [accessor/].defaultLabel()| default('')[if (association.maximumDisplaySize > 0)]
+{{ [accessor/].defaultLabel()| default('[if (not association.nullDisplayValue.oclIsUndefined())][association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
+[/if]
+[/template]
+
+
+[template public getImmediateValue(field : UnitField, parentAccessor : String) post(trim())]
+[if (field.oclIsTypeOf(UnitFeature))]
+[field.oclAsType(UnitFeature).getImmediateValue(parentAccessor)/]
+[else]
+NULL
+[/if]
+[/template]
+
+[template public getImmediateValue(feature : UnitFeature, parentAccessor : String) post(trim())]
+[if (feature.oclIsTypeOf(UnitAttribute))]
+[feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor)/]
+[else]
+[feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor)/]
+[/if]
+[/template]
+
+[template public getImmediateValue(attribute : UnitAttribute, parentAccessor : String) post(trim())]
+[attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor))/]
+[/template]
+
+[template public getImmediateValue(association : UnitAssociation, parentAccessor : String) post(trim())]
+[if (association.isPseudo())]
+[association.pseudoAccessor(parentAccessor)/]
+[else]
+[association.propertyAccessor(parentAccessor)/]
 [/if]
 [/template]
 
