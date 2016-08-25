@@ -18,6 +18,10 @@
 	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
 /]
 
+[query public hasImageUnits(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasImageUnits())->notEmpty()
+/]
+
 [query public hasJavascript(model : WafModel) : Boolean
 	= model.pages->select(p | p.hasJavascript())->notEmpty()
 /]
@@ -221,6 +225,10 @@
 	= page.formUnits()->notEmpty()
 /]
 
+[query public hasImageUnits(page : Page) : Boolean
+	= page.imageUnits()->notEmpty()
+/]
+
 [query public hasIndexUnits(page : Page) : Boolean
 	= page.indexUnits()->notEmpty()
 /]
@@ -269,6 +277,10 @@
 
 [query public id(page : Page) : String
 	= page.name.asId()
+/]
+
+[query public imageUnits(page : Page) : Sequence(ImageUnit)
+	= page.units->select(u | u.oclIsKindOf(ImageUnit)).oclAsType(ImageUnit)
 /]
 
 [query public indexUnits(page : Page) : Sequence(IndexUnit)

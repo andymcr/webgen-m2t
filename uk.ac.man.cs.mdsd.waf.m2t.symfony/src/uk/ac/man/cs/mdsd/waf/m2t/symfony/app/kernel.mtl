@@ -47,6 +47,10 @@ class AppKernel extends Kernel
 [if (model.hasJavascript() or model.hasSliderUnits())]
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 [/if]
+[if (model.hasImageUnits())]
+            new Liip\ImagineBundle\LiipImagineBundle(),
+[/if]
+
             new AppBundle\AppBundle(),
         [']'/];
 

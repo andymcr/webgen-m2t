@@ -107,6 +107,21 @@ assetic:
         cssrewrite: ~
 
 [/if]
+[if (model.hasImageUnits())]
+liip_imagine:
+    loaders:
+       default:
+          stream:
+              wrapper: http://sps.andycarpenter.me.uk
+
+    filter_sets:
+        cache: ~
+        my_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: ['['/]120, 90[']'/], mode: outbound }
+
+[/if]
 [if (model.restApi->notEmpty())]
 fos_rest:
     allowed_methods_listener: true

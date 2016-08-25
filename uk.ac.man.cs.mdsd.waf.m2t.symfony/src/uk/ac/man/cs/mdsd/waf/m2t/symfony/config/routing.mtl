@@ -20,6 +20,11 @@ app[if (model.restApi->notEmpty())]_web[/if]:
     type:     annotation
 
 [/if]
+[if (model.hasImageUnits())]
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+[/if]
 [if (model.restApi->notEmpty())]
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
