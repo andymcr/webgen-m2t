@@ -184,6 +184,21 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  <dd class="[field.displayClass()/]">[field.displayValue(accessor)/]</dd>
 	[/if]
 	[if (field.conditionalDisplay())]
+		[if (field.oclIsKindOf(UnitFeature))]
+		[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+{% else %}
+			[if (not feature.nullDisplayValue.oclIsUndefined())]
+				[if (unit.hasOmitFieldLabels())]
+ <li class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</li>
+				[else]
+ <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.entities->first().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
+ <dd class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</dd>
+				[/if]
+			[/if]
+		[/let]
+		[/if]
 {% endif %}
 	[/if]
 [/for]
@@ -572,21 +587,27 @@ NULL
 [/template]
 
 [template private anchor(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String) post(trim())]
+[if (not action.requiresRole.oclIsUndefined())]
+{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, conditionAccessor)/][if (not action.requiresRole.oclIsUndefined())]
+{% endif %}[/if]
+[/template]
+
+[template private anchor2(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String) post(trim())]
 [if (action.displayWhen.oclIsUndefined())]
 	[if (action.enableWhen.oclIsUndefined())]
-[anchor2(action, routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]
+[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]
 	[else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[anchor2(action, routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}
 	[/if]
 [else]
 {% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[if (action.enableWhen.oclIsUndefined())]
-[anchor2(action, routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/][else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[anchor2(action, routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}[/if]
+[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/][else]
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}[/if]
 {% endif %}
 [/if]
 [/template]
 
-[template private anchor2(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String) post(trim())]
+[template private anchor3(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String) post(trim())]
 <a href="{{ path('[routeName/]', { [entityOrView.routeActualParameters(entityOrView, routeParametersAccessor, false)/] }) }}" title="[action.displayLabel/] {{ [title/] }}"[if (not confirmMessage.oclIsUndefined())]
  onclick="return confirm('[confirmMessage/] {{ [title/] }}');"[/if]>{{ [label/] }}</a>
 [/template]
