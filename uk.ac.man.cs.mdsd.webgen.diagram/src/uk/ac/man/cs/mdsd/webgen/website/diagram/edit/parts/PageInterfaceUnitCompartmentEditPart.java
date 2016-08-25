@@ -124,7 +124,7 @@ public class PageInterfaceUnitCompartmentEditPart extends ListCompartmentEditPar
 			if (type == WebsiteElementTypes.SliderUnit_3261) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.GridUnit_3262) {
+			if (type == WebsiteElementTypes.GalleryUnit_3263) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

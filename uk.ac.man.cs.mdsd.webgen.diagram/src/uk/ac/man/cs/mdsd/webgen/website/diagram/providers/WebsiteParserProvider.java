@@ -1773,18 +1773,18 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	* @generated
 	*/
-	private IParser gridUnitName_5270Parser;
+	private IParser galleryUnitName_5271Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser getGridUnitName_5270Parser() {
-		if (gridUnitName_5270Parser == null) {
+	private IParser getGalleryUnitName_5271Parser() {
+		if (galleryUnitName_5271Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			gridUnitName_5270Parser = parser;
+			galleryUnitName_5271Parser = parser;
 		}
-		return gridUnitName_5270Parser;
+		return galleryUnitName_5271Parser;
 	}
 
 	/**
@@ -2208,8 +2208,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getDateFieldName_5219Parser();
 		case SliderUnitNameEditPart.VISUAL_ID:
 			return getSliderUnitName_5269Parser();
-		case GridUnitNameEditPart.VISUAL_ID:
-			return getGridUnitName_5270Parser();
+		case GalleryUnitNameEditPart.VISUAL_ID:
+			return getGalleryUnitName_5271Parser();
 		case ActionMenuEntryNameEditPart.VISUAL_ID:
 			return getActionMenuEntryName_5243Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:

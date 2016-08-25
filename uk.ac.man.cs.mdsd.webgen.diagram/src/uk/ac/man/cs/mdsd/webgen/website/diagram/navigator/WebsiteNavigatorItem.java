@@ -19,6 +19,7 @@ public class WebsiteNavigatorItem extends WebsiteAbstractNavigatorItem {
 		final Class[] supportedTypes = new Class[] { View.class, EObject.class };
 		Platform.getAdapterManager().registerAdapters(new IAdapterFactory() {
 
+			@SuppressWarnings("unchecked")
 			public Object getAdapter(Object adaptableObject, Class adapterType) {
 				if (adaptableObject instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteNavigatorItem
 						&& (adapterType == View.class || adapterType == EObject.class)) {

@@ -7,7 +7,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.CreateSitemapUnitC
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.CreateUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.CreateUpdateUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DetailsUnitCreateCommand;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.GridUnitCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.GalleryUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.IndexUnit6CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.MapUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SearchUnitCreateCommand;
@@ -62,8 +62,8 @@ public class PageInterfaceUnitCompartmentItemSemanticEditPolicy extends WebsiteB
 		if (WebsiteElementTypes.SliderUnit_3261 == req.getElementType()) {
 			return getGEFWrapper(new SliderUnitCreateCommand(req));
 		}
-		if (WebsiteElementTypes.GridUnit_3262 == req.getElementType()) {
-			return getGEFWrapper(new GridUnitCreateCommand(req));
+		if (WebsiteElementTypes.GalleryUnit_3263 == req.getElementType()) {
+			return getGEFWrapper(new GalleryUnitCreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

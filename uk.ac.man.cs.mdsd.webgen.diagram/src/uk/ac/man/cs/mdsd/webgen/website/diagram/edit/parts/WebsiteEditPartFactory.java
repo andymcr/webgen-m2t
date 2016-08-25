@@ -658,11 +658,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case SliderUnitNameEditPart.VISUAL_ID:
 				return new SliderUnitNameEditPart(view);
 
-			case GridUnitEditPart.VISUAL_ID:
-				return new GridUnitEditPart(view);
+			case GalleryUnitEditPart.VISUAL_ID:
+				return new GalleryUnitEditPart(view);
 
-			case GridUnitNameEditPart.VISUAL_ID:
-				return new GridUnitNameEditPart(view);
+			case GalleryUnitNameEditPart.VISUAL_ID:
+				return new GalleryUnitNameEditPart(view);
 
 			case ActionMenuEntryEditPart.VISUAL_ID:
 				return new ActionMenuEntryEditPart(view);

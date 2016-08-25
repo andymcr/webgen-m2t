@@ -507,7 +507,7 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == GridUnitEditPart.VISUAL_ID) {
+			if (visualID == GalleryUnitEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1840,8 +1840,8 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3212ContainedLinks(view);
 		case SliderUnitEditPart.VISUAL_ID:
 			return getSliderUnit_3261ContainedLinks(view);
-		case GridUnitEditPart.VISUAL_ID:
-			return getGridUnit_3262ContainedLinks(view);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getGalleryUnit_3263ContainedLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236ContainedLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2081,8 +2081,8 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3212IncomingLinks(view);
 		case SliderUnitEditPart.VISUAL_ID:
 			return getSliderUnit_3261IncomingLinks(view);
-		case GridUnitEditPart.VISUAL_ID:
-			return getGridUnit_3262IncomingLinks(view);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getGalleryUnit_3263IncomingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236IncomingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2322,8 +2322,8 @@ public class WebsiteDiagramUpdater {
 			return getDateField_3212OutgoingLinks(view);
 		case SliderUnitEditPart.VISUAL_ID:
 			return getSliderUnit_3261OutgoingLinks(view);
-		case GridUnitEditPart.VISUAL_ID:
-			return getGridUnit_3262OutgoingLinks(view);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getGalleryUnit_3263OutgoingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236OutgoingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -3085,7 +3085,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getGridUnit_3262ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3913,7 +3913,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getGridUnit_3262IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4735,7 +4735,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getGridUnit_3262OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

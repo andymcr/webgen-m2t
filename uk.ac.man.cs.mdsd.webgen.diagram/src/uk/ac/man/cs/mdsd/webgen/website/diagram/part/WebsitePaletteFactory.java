@@ -509,9 +509,9 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createGridUnit10CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.GridUnit10CreationTool_title,
-				Messages.GridUnit10CreationTool_desc, Collections.singletonList(WebsiteElementTypes.GridUnit_3262));
+				Messages.GridUnit10CreationTool_desc, Collections.singletonList(WebsiteElementTypes.GalleryUnit_3263));
 		entry.setId("createGridUnit10CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.GridUnit_3262));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.GalleryUnit_3263));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

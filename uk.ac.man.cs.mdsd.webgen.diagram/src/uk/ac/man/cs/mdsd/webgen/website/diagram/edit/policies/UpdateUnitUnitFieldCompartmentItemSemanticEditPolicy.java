@@ -6,7 +6,6 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DataTypeField6CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DateField6CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitAssociation16CreateCommand;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitElement18CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.UnitElement19CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 

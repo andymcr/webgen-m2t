@@ -415,9 +415,9 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 		case SliderUnitEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?SliderUnit", //$NON-NLS-1$
 					WebsiteElementTypes.SliderUnit_3261);
-		case GridUnitEditPart.VISUAL_ID:
-			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?GridUnit", //$NON-NLS-1$
-					WebsiteElementTypes.GridUnit_3262);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?GalleryUnit", //$NON-NLS-1$
+					WebsiteElementTypes.GalleryUnit_3263);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?http://www.cs.man.ac.uk/mdsd/2010/Website?AssociationWithoutContainment", //$NON-NLS-1$
 					WebsiteElementTypes.AssociationWithoutContainment_4001);
@@ -704,8 +704,8 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 			return getBusinessOperation_3260Text(view);
 		case SliderUnitEditPart.VISUAL_ID:
 			return getSliderUnit_3261Text(view);
-		case GridUnitEditPart.VISUAL_ID:
-			return getGridUnit_3262Text(view);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getGalleryUnit_3263Text(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4001Text(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -2495,15 +2495,15 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 	/**
 	* @generated
 	*/
-	private String getGridUnit_3262Text(View view) {
-		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.GridUnit_3262,
+	private String getGalleryUnit_3263Text(View view) {
+		IParser parser = WebsiteParserProvider.getParser(WebsiteElementTypes.GalleryUnit_3263,
 				view.getElement() != null ? view.getElement() : view,
-				WebsiteVisualIDRegistry.getType(GridUnitNameEditPart.VISUAL_ID));
+				WebsiteVisualIDRegistry.getType(GalleryUnitNameEditPart.VISUAL_ID));
 		if (parser != null) {
 			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
 					ParserOptions.NONE.intValue());
 		} else {
-			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5270); //$NON-NLS-1$
+			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5271); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}

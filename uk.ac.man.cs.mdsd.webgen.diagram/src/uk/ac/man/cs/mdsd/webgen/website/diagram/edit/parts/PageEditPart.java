@@ -296,7 +296,7 @@ public class PageEditPart extends ShapeNodeEditPart {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.GridUnit_3262) {
+			if (type == WebsiteElementTypes.GalleryUnit_3263) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(PageInterfaceUnitCompartmentEditPart.VISUAL_ID));
 			}

@@ -34,7 +34,7 @@ public class WebsiteModelingAssistantProviderOfPageEditPart extends WebsiteModel
 		types.add(WebsiteElementTypes.StaticUnit_3110);
 		types.add(WebsiteElementTypes.UpdateUnit_3111);
 		types.add(WebsiteElementTypes.SliderUnit_3261);
-		types.add(WebsiteElementTypes.GridUnit_3262);
+		types.add(WebsiteElementTypes.GalleryUnit_3263);
 		return types;
 	}
 

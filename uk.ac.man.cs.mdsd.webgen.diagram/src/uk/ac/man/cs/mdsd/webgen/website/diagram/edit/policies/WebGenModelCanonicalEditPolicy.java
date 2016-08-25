@@ -1010,9 +1010,9 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case GridUnitEditPart.VISUAL_ID: {
+		case GalleryUnitEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getGridUnit_3262ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getGalleryUnit_3263ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

@@ -34,7 +34,6 @@ import org.eclipse.gmf.runtime.notation.NotationFactory;
 import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.RelativeBendpoints;
 import org.eclipse.gmf.runtime.notation.Routing;
-import org.eclipse.gmf.runtime.notation.Shape;
 import org.eclipse.gmf.runtime.notation.TitleStyle;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.runtime.notation.datatype.RelativeBendpoint;
@@ -166,7 +165,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case StaticUnitEditPart.VISUAL_ID:
 				case UpdateUnitEditPart.VISUAL_ID:
 				case SliderUnitEditPart.VISUAL_ID:
-				case GridUnitEditPart.VISUAL_ID:
+				case GalleryUnitEditPart.VISUAL_ID:
 				case ActionMenuEntryEditPart.VISUAL_ID:
 				case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 				case SelectionEditPart.VISUAL_ID:
@@ -303,7 +302,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				|| UnitAssociation17EditPart.VISUAL_ID == visualID || SelectAction7EditPart.VISUAL_ID == visualID
 				|| DeleteAction3EditPart.VISUAL_ID == visualID || DataTypeField6EditPart.VISUAL_ID == visualID
 				|| DateField6EditPart.VISUAL_ID == visualID || SliderUnitEditPart.VISUAL_ID == visualID
-				|| GridUnitEditPart.VISUAL_ID == visualID || ActionMenuEntryEditPart.VISUAL_ID == visualID
+				|| GalleryUnitEditPart.VISUAL_ID == visualID || ActionMenuEntryEditPart.VISUAL_ID == visualID
 				|| EditStaticTextMenuEntryEditPart.VISUAL_ID == visualID || SelectionEditPart.VISUAL_ID == visualID
 				|| BusinessOperationEditPart.VISUAL_ID == visualID;
 	}
@@ -570,8 +569,8 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createDateField_3212(domainElement, containerView, index, persisted, preferencesHint);
 		case SliderUnitEditPart.VISUAL_ID:
 			return createSliderUnit_3261(domainElement, containerView, index, persisted, preferencesHint);
-		case GridUnitEditPart.VISUAL_ID:
-			return createGridUnit_3262(domainElement, containerView, index, persisted, preferencesHint);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return createGalleryUnit_3263(domainElement, containerView, index, persisted, preferencesHint);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return createActionMenuEntry_3236(domainElement, containerView, index, persisted, preferencesHint);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -1094,6 +1093,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("unchecked")
 	public Node createUrlAttribute_3254(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1129,6 +1129,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("unchecked")
 	public Node createFileAttribute_3255(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1164,6 +1165,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("unchecked")
 	public Node createImageAttribute_3256(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1199,6 +1201,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("unchecked")
 	public Node createLocationAttribute_3257(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -4194,13 +4197,13 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	public Node createGridUnit_3262(EObject domainElement, View containerView, int index, boolean persisted,
+	public Node createGalleryUnit_3263(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
 		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
 		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(GridUnitEditPart.VISUAL_ID));
+		node.setType(WebsiteVisualIDRegistry.getType(GalleryUnitEditPart.VISUAL_ID));
 		ViewUtil.insertChildView(containerView, node, index, persisted);
 		node.setElement(domainElement);
 		// initializeFromPreferences 
@@ -4216,7 +4219,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5270 = createLabel(node, WebsiteVisualIDRegistry.getType(GridUnitNameEditPart.VISUAL_ID));
+		Node label5271 = createLabel(node, WebsiteVisualIDRegistry.getType(GalleryUnitNameEditPart.VISUAL_ID));
 		return node;
 	}
 
