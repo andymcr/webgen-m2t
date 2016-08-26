@@ -206,16 +206,16 @@ protected $updated;
 inversedBy[else]
 mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [if (association.isOwningEnd())]
-	[if (opposite.partOf.primaryKeys()->isEmpty())]
+	[if (association.keys->isEmpty())]
 * @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
-	[elseif (opposite.partOf.primaryKeys()->size() = 1)]
-	[let key : EntityFeature = opposite.partOf.primaryKeys()->first()]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+	[elseif (association.keys->size() = 1)]
+	[let key : AssociationKey = association.keys->first()]
+* @ORM\JoinColumn(name="[key.targetColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 	[/let]
 	[else]
-* @ORM\JoinColumns({[for (key : EntityFeature | opposite.partOf.primaryKeys()) separator(',')]
+* @ORM\JoinColumns({[for (key : AssociationKey | association.keys) separator(',')]
 
-*     @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
+*     @ORM\JoinColumn(name="[key.targetColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
 
 * })
 	[/if]
@@ -237,22 +237,26 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 	[if (association.partOf.primaryKeys()->isEmpty())]
 *     joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
 	[elseif (association.partOf.primaryKeys()->size() = 1)]
+	[let key : EntityFeature = association.partOf.primaryKeys()->first()]
 *     joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
+	[/let]
 	[else]
-*     joinColumns={[for (key : Feature | association.partOf.primaryKeys()) separator(',')]
+*     joinColumns={[for (key : EntityFeature | association.partOf.primaryKeys()) separator(',')]
 
-*         @ORM\JoinColumn(name="[key.columnName()/]", referencedColumnName="[key.columnName().toLowerCase()/]", nullable=false)[/for]
+*         @ORM\JoinColumn(name="[key.columnName/]", nullable=false)[/for]
 
 *     },
 	[/if]
 	[if (opposite.partOf.primaryKeys()->isEmpty())]
 *     inverseJoinColumns={@ORM\JoinColumn(name="[association.columnName/]")})
-	[elseif (association.partOf.primaryKeys()->size() = 1)]
+	[elseif (opposite.partOf.primaryKeys()->size() = 1)]
+	[let key : EntityFeature = opposite.partOf.primaryKeys()->first()]
 *     inverseJoinColumns={@ORM\JoinColumn(name="[association.columnName/]")},
+	[/let]
 	[else]
-*     inverseJoinColumns={[for (key : Feature | opposite.partOf.primaryKeys()) separator(',')]
+*     inverseJoinColumns={[for (key : EntityFeature | opposite.partOf.primaryKeys()) separator(',')]
 
-*         @ORM\JoinColumn(name="[key.columnName()/]", referencedColumnName="[key.columnName().toLowerCase()/]", nullable=false)[/for]
+*         @ORM\JoinColumn(name="[key.columnName/]", nullable=false)[/for]
 
 *     },
 	[/if]
@@ -364,17 +368,17 @@ public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.i
 [if (attribute.oclIsTypeOf(SingletonElement))]
 [let element : SingletonElement = attribute.oclAsType(SingletonElement)]
 	[if (element.caseInsensitive)]
-    $this->[element.columnName()/] = strtolower(trim($[element.instanceName()/]));
+    $this->[element.columnName/] = strtolower(trim($[element.instanceName()/]));
 	[elseif (element.encrypt)]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
 	[elseif (element.isEnumerationType() or element.dataType.name = 'Boolean')]
-    $this->[element.columnName()/] = $[element.instanceName()/];
+    $this->[element.columnName/] = $[element.instanceName()/];
 	[else]
-    $this->[element.columnName()/] = trim($[element.instanceName()/]);
+    $this->[element.columnName/] = trim($[element.instanceName()/]);
 	[/if]
 [/let]
 [elseif (attribute.oclIsTypeOf(SingletonDate))]
-    $this->[attribute.columnName()/] = $[attribute.instanceName()/];
+    $this->[attribute.columnName/] = $[attribute.instanceName()/];
 [/if]
 }
 [/let]
@@ -496,7 +500,7 @@ private function _save_[resource.modelPropertyName()/]()
 	$extension = pathinfo($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
 [comment if (resource.uploadsWithinWebsite = true) /]
 	$filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[comment resource.relativeUploadDirectory/]');
-	$this->[resource.columnName()/] = '[comment resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
+	$this->[resource.columnName/] = '[comment resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
 [comment else/]
 	$filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
 [comment /if/]
