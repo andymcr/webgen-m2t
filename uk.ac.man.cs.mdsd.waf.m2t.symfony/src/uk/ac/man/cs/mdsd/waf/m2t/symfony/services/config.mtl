@@ -66,6 +66,24 @@ services:
             - {name:twig.extension }
 
 [/if]
+[if (model.hasImageUnits())]
+    app.aws_s3:
+        class: Aws\S3\S3Client
+        arguments:
+            -
+                credentials: { key: %aws.s3.key%, secret: %aws.s3.secret% }
+                region:      %aws.s3.region%
+                version:     %aws.s3.version%
+
+    app.imagine.cache.resolver.aws_s3:
+        class: Liip\ImagineBundle\Imagine\Cache\Resolver\AwsS3Resolver
+        arguments:
+            - "@app.aws_s3"
+            - "%aws.s3.bucket%"
+        tags:
+            - { name: 'liip_imagine.cache.resolver', resolver: 'image_cache' }
+
+[/if]
 [for (service : Service | model.services->sortedBy(s | s.name))]
     [service.instanceName()/]:
         class: [service.appBundleName()/]\Service\[service.className()/]
