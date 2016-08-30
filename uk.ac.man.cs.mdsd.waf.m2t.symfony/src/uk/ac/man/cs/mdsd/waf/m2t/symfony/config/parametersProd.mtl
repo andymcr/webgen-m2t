@@ -27,6 +27,13 @@ parameters:
     mailer_user: null
     mailer_password: null
 # [/protected]
+# [protected ('amazon_s3')]
+    aws.s3.key:     'your-aws-key'
+    aws.s3.secret:  'your-aws-secret'
+    aws.s3.bucket:  'your-bucket.example.com'
+    aws.s3.region:  'your-bucket-region'
+    aws.s3.version: '2006-03-01'
+# [/protected]
     secret: 1ec446a4907a8a138704kskjosea9b59521ac31883e
 [/file]
 [/template]

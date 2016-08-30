@@ -109,17 +109,32 @@ assetic:
 [/if]
 [if (model.hasImageUnits())]
 liip_imagine:
+    cache: image_cache
     loaders:
        default:
           stream:
-              wrapper: http://sps.andycarpenter.me.uk
-
+              wrapper: http://sps.andycarpenter.me.uk/
+    resolvers:
+       image_cache:
+          aws_s3:
+              client_config:
+                  credentials:
+                      key:    "%aws.s3.key%"
+                      secret: "%aws.s3.secret%"
+                  region:     "%aws.s3.region%"
+                  version:    "%aws.s3.version%"
+              bucket:         "%aws.s3.bucket%"
+              get_options:
+                  Scheme: 'https'
+              put_options:
+                  CacheControl: 'max-age=86400'
     filter_sets:
-        cache: ~
-        my_thumb:
+[comment for (unit : ImageUnit | model.imageUnits())/]
+        grid_thumb[comment unit.thumbName()/]:
             quality: 75
             filters:
-                thumbnail: { size: ['['/]120, 90[']'/], mode: outbound }
+                thumbnail: { size: ['['/]160, 120[']'/], mode: outbound }
+[comment /]
 
 [/if]
 [if (model.restApi->notEmpty())]
