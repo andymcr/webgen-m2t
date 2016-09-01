@@ -23,6 +23,7 @@ public abstract class WebsiteAbstractNavigatorItem extends PlatformObject {
 		};
 		Platform.getAdapterManager().registerAdapters(new IAdapterFactory() {
 
+			@SuppressWarnings("unchecked")
 			public Object getAdapter(Object adaptableObject, Class adapterType) {
 				if (adaptableObject instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteAbstractNavigatorItem
 						&& adapterType == ITabbedPropertySheetPageContributor.class) {
@@ -31,6 +32,7 @@ public abstract class WebsiteAbstractNavigatorItem extends PlatformObject {
 				return null;
 			}
 
+			@SuppressWarnings("unchecked")
 			public Class[] getAdapterList() {
 				return supportedTypes;
 			}

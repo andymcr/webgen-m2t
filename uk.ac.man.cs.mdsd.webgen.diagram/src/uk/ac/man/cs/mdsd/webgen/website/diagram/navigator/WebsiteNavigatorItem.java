@@ -29,6 +29,7 @@ public class WebsiteNavigatorItem extends WebsiteAbstractNavigatorItem {
 				return null;
 			}
 
+			@SuppressWarnings("unchecked")
 			public Class[] getAdapterList() {
 				return supportedTypes;
 			}
