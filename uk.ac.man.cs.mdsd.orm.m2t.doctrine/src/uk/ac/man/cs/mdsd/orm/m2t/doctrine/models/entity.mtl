@@ -27,6 +27,9 @@ namespace [entityOrView.modelsNamespace()/];
 /**
  * @ORM\Entity
  * @ORM\Table(name="[entityOrView.tableName/]")
+[if (entityOrView.unique->notEmpty())]
+ * @UniqueEntity([for (feature : Feature | entityOrView.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for])
+[/if]
 [for (attribute : Attribute | entityOrView.uniqueAttributes())]
  * @UniqueEntity("[attribute.modelPropertyName()/]")
 [/for]
@@ -210,12 +213,12 @@ mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 * @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 	[elseif (association.keys->size() = 1)]
 	[let key : AssociationKey = association.keys->first()]
-* @ORM\JoinColumn(name="[key.targetColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[key.sourceColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 	[/let]
 	[else]
 * @ORM\JoinColumns({[for (key : AssociationKey | association.keys) separator(',')]
 
-*     @ORM\JoinColumn(name="[key.targetColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
+*     @ORM\JoinColumn(name="[key.sourceColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
 
 * })
 	[/if]
