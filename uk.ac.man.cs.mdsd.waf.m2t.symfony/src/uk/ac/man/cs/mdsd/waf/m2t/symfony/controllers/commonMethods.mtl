@@ -125,9 +125,9 @@ $[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceN
 
 [template public loadSelectedInstance(unit : ImageUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$[unit.instanceName()/] = [unit.loadFilteredInstance()/];
+$this->[unit.instanceName()/] = [unit.loadFilteredInstance()/];
 [else]
-$[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+$this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
 [/template]
 
@@ -202,7 +202,7 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
-[if (page.useInputJQuery() or page.hasSliderUnits())]
+[if (page.useInputJQuery() or page.hasGalleryUnits() or page.hasSliderUnits())]
 $parameters['['/]'styles'[']'/] = array(
 	[if (page.useInputJQuery())]
     'https://code.jquery.com/ui/1.12.0/themes/cupertino/jquery-ui.css',
@@ -213,6 +213,9 @@ $parameters['['/]'styles'[']'/] = array(
 	[/if]
 	[if (page.hasSliderUnits())]
     'css/blueimp-gallery.min.css',
+	[/if]
+	[if (page.hasGalleryUnits())]
+    'css/unite-gallery.css',
 	[/if]
 );
 [/if]
@@ -241,6 +244,10 @@ $parameters['['/]'scripts'[']'/] = array(
 	[if (page.hasSliderUnits())]
 [comment    'js/jssor.slider.mini.js', /]
 [comment    'js/jquery.blueimp-gallery.min.js', /]
+	[/if]
+	[if (page.hasGalleryUnits())]
+    'js/unitegallery.min.js',
+    'themes/ug-theme-tilesgrid.js',
 	[/if]
 	[if (page.hasChangableCollections() or page.hasSliderUnits())]
     '[page.javascriptFilename()/]',
