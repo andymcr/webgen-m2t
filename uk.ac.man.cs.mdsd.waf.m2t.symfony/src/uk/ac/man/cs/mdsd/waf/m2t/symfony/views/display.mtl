@@ -31,7 +31,7 @@
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.unitContent(null, accessor)/]
 	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
-  [dataUnit.unitSupportLinks(null, accessor)/]
+  [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]

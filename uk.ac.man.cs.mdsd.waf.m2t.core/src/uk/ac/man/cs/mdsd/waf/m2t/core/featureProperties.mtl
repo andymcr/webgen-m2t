@@ -51,6 +51,10 @@
 		endif endif
 /]
 
+[query public imageUnits(model : WafModel) : Sequence(ImageUnit)
+	= model.pages->collect(p | p.imageUnits())
+/]
+
 [query public indexUnits(model : WafModel) : Sequence(IndexUnit)
 	= model.pages->collect(p | p.indexUnits())
 /]
@@ -225,6 +229,10 @@
 	= page.formUnits()->notEmpty()
 /]
 
+[query public hasGalleryUnits(page : Page) : Boolean
+	= page.units->select(u | u.oclIsTypeOf(GalleryUnit))->notEmpty()
+/]
+
 [query public hasImageUnits(page : Page) : Boolean
 	= page.imageUnits()->notEmpty()
 /]
@@ -239,6 +247,7 @@
 
 [query public hasJavascript(page : Page) : Boolean
 	= page.hasChangableCollections()
+		or page.hasGalleryUnits()
 		or page.hasSliderUnits()
 		or page.partOf.responsiveTopMenu
 /]

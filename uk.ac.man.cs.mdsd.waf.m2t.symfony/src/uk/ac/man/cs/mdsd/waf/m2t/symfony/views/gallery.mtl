@@ -2,10 +2,12 @@
 [module gallery(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -16,27 +18,177 @@
 [if (not galleryUnit.omitCaption)]
  <h2 class="[galleryUnit.captionClass/]">[galleryUnit.displayLabel/]</h2>
 [/if]
- [galleryUnit.test()/]
+ [galleryUnit.uniteGallery()/]
 </section>
 [/file]
 [/let]
 [/template]
 
-[template private test(unit : GalleryUnit) post(trim())]
-<div class="[unit.contentClass/]">
-{% for image in [unit.instanceName()/] %}
-{% for variant in image.variants %}
-{% if variant.filePath is not null %}
- <img ="{{ variant.filePath | imagine_filter('my_thumb') }}" />
+
+[template private uniteGalleryX(unit : GalleryUnit) post(trim())]
+<div id="gallery" class="gallery_content" style="display:none;">
+{% for image in images %}
+{% if image.variants | length == 0 %}
+ <img src="Missing" alt="{{ image.title }}" data-image="Large"/>
+{% else %}
+{% set variant = image.variants | first %}
+{% if variant.filePath is empty %}
+ <img src="Missing"  alt="{{ image.title }}" data-image="Big"/>
+{% else %}
+ <img src="{{ variant.filePath | imagine_filter('grid_thumb') }}"  alt="{{ image.title }}" data-image="http://sps.andycarpenter.me.uk/{{ variant.filePath }}" data-description="?????"/>
+{% endif %}
 {% endif %}
 {% endfor %}
+</div>
+<script type="text/javascript"> 
+    jQuery(document).ready(function(){ 
+        jQuery("#gallery").unitegallery({
+            gallery_theme: "tilesgrid",
+
+            grid_space_between_cols:1,
+            grid_space_between_rows:1,
+            grid_padding:0,
+            tile_enable_border:false,
+            tile_enable_shadow:false,
+            tile_height:120,
+            tile_width:160,
+            tile_enable_textpanel:true,
+	        tile_textpanel_title_text_align: "center",
+            lightbox_type: "compact",
+	        lightbox_arrows_position: "inside",
+        });
+    }); 
+</script>
+[/template]
+
+[template private uniteGallery(unit : GalleryUnit) post(trim())]
+[let accessor : String = unit.instanceName()]
+<div id="gallery" class="gallery_content" style="display:none;">
+{% for image in [accessor/] %}
+[unit.imagePathFeature.uniteGallery(unit, 'image', 'image')/]
 {% endfor %}
 </div>
+<script type="text/javascript"> 
+    jQuery(document).ready(function(){ 
+        jQuery("#gallery").unitegallery({
+            gallery_theme: "tilesgrid",
+
+            grid_space_between_cols:1,
+            grid_space_between_rows:1,
+            grid_padding:0,
+            tile_enable_border:false,
+            tile_enable_shadow:false,
+            tile_height: [unit.thumbHeight/],
+            tile_width: [unit.thumbWidth/],
+            tile_enable_textpanel:true,
+	        tile_textpanel_title_text_align: "center",
+            lightbox_type: "compact",
+	        lightbox_arrows_position: "inside",
+        });
+    }); 
+</script>
+[/let]
 [/template]
+
+[template private uniteGallery(feature : FeaturePath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
+	? (feature.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
+[let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
+[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
+[if (attribute.attribute.isRequired())]
+<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  alt="{{ [unit.titleFeature.accessor(parentAccessor)/] }}" data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+[else]
+	[if (unit.missingImagePath.oclIsUndefined())]
+{% if [accessor/] is not empty %}
+<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
+alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+{% endif %}
+	[else]
+{% if [accessor/] is empty %}
+<img src="{{ '[unit.missingImagePath/]' | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
+alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"/>
+{% else %}
+<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
+alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+{% endif %}
+	[/if]
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template private uniteGallery(feature : FeaturePath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
+	? (feature.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
+[let association : FeaturePathAssociation = feature.oclAsType(FeaturePathAssociation)]
+[let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
+[if (association.association.isSingleton())]
+	[if (association.association.isRequired())]
+		[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.uniteGallery(unit, accessor, baseAccessor)/]
+		[/if]
+	[else]
+{% if [accessor/] is empty %}
+		[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.uniteGallery(unit, accessor, baseAccessor)/]
+		[/if]
+{% endif %}
+	[/if]
+[else]
+{% if [accessor/] | length > 0 %}
+{% set child = [accessor/] | first %}
+	[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.uniteGallery(unit, 'child', baseAccessor)/]
+	[/if]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+{% else %}
+<img src="{{ '[unit.missingImagePath/]' | imagine_filter('grid_thumb') }}" [if (not unit.titleFeature.oclIsUndefined())]
+alt="{{ [unit.titleFeature.accessor(parentAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"/>
+	[/if]
+{% endif %}
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template private uniteGallery(feature : ChildFeature, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
+	? (feature.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let attribute : ChildAttribute = feature.oclAsType(ChildAttribute)]
+[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
+[if (attribute.attribute.isRequired())]
+<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  alt="{{ [unit.titleFeature.accessor(parentAccessor)/] }}" data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+[else]
+	[if (unit.missingImagePath.oclIsUndefined())]
+{% if [accessor/] is not empty %}
+<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
+alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+{% endif %}
+	[else]
+{% if [accessor/] is empty %}
+<img src="{{ '[unit.missingImagePath/]' | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
+alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"/>
+{% else %}
+<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
+alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+{% endif %}
+	[/if]
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template private uniteGallery(feature : ChildFeature, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
+	? (feature.oclIsTypeOf(ChildAssociation)) post(trim())]
+[let association : ChildAssociation = feature.oclAsType(ChildAssociation)]
+[let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.uniteGallery(unit, accessor, baseAccessor)/]
+[/if]
+[/let]
+[/let]
+[/template]
+
 
 [template private blueimp(unit : GalleryUnit) post(trim())]
 <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls">
- <div class="slides"></div>
  <h3 class="title"></h3>
  <a class="prev">&lt;</a>
  <a class="next">&gt;</a>

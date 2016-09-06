@@ -88,7 +88,29 @@ if not association.childFeature.oclIsUndefined() then
 [query public serviceAccessor(association : UnitAssociation) : String
 	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
 /]
- 
+
+[query public accessor(feature : FeaturePath, parentAccessor : String) : String
+	= if feature.oclIsTypeOf(FeaturePathAttribute) then
+			feature.oclAsType(FeaturePathAttribute).accessor(parentAccessor)
+		else
+			feature.oclAsType(FeaturePathAssociation).accessor(parentAccessor)
+		endif
+/]
+
+[query public accessor(attribute : FeaturePathAttribute, parentAccessor : String) : String
+	= parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())
+/]
+
+[query public accessor(association : FeaturePathAssociation, parentAccessor : String) : String
+	= let accessor : String
+		= parentAccessor.concat('.').concat(association.association.modelPropertyName())
+		in if association.childFeature.oclIsUndefined() then
+				accessor
+			else
+				association.childFeature.accessor(accessor)
+			endif
+/]
+
 [query public accessor(child : ChildFeature, parentAccessor : String) : String
 	=  if child.oclIsTypeOf(ChildAttribute) then
 			child.oclAsType(ChildAttribute).accessor(parentAccessor)
