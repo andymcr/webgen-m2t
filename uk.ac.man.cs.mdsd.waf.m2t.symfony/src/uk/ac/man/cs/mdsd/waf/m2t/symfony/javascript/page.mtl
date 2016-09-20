@@ -16,6 +16,14 @@ jQuery(document).ready(function() {
 }
 /]
 [for (unit : SliderUnit | page.units->select(u | u.oclIsTypeOf(SliderUnit)).oclAsType(SliderUnit))]
+[comment unit.jssor()/]
+[comment unit.blueimp()/]
+
+[/for]
+[/file]
+[/template]
+
+[template private jssor(unit : SliderUnit) post(trim())]
 jQuery(document).ready(function ($) {
     
     var [unit.instanceName()/]_transitions = ['['/]
@@ -65,7 +73,17 @@ jQuery(document).ready(function ($) {
     $(window).bind("orientationchange", ScaleSlider);
     //responsive code end
 });
+[/template]
 
-[/for]
-[/file]
+[template private blueimp(unit : SliderUnit) post(trim())]
+jQuery(document).ready(function ($) {
+blueimp.Gallery(
+    document.getElementById('links').getElementsByTagName('a'),
+        {
+            container: '#blueimp-gallery-carousel',
+            carousel: true
+        }
+);
+
+});
 [/template]

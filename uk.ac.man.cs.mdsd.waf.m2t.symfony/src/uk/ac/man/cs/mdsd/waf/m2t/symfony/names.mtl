@@ -218,6 +218,16 @@
 	= unit.uniqueName().concat('_support')
 /]
 
+[query public thumbName(unit : ImageUnit) : String
+	= let units : Sequence(ImageUnit)
+		= unit.pageDisplayedOn().partOf.imageUnits()
+		in if unit->collect(u | u.name)->select(n | n = unit.name)->size() > 1 then
+				unit.instanceName()
+			else
+				unit.uniqueName()
+			endif
+/]
+
 [query public typeClassName(unit : DynamicUnit) : String
 	= 'Unit'.concat(unit.pageDisplayedOn().name).concat(unit.name).concat(unit.typeSuffix())
 /]

@@ -50,7 +50,6 @@ class AppKernel extends Kernel
 [if (model.hasImageUnits())]
             new Liip\ImagineBundle\LiipImagineBundle(),
 [/if]
-
             new AppBundle\AppBundle(),
         [']'/];
 
