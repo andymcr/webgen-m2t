@@ -106,8 +106,8 @@
 			page.units->first().uriPathKeys(page.units->first().oclIsKindOf(IndexUnit))
 		else
 			page.units->subOrderedSet(2, page.units->size())->iterate(u;
-				common : Sequence(Attribute) = page.units->first().uriPathKeys(page.units->first().oclIsKindOf(IndexUnit))
-				| common->select(k | u.uriPathKeys(u.oclIsKindOf(IndexUnit))->includes(k)))
+				common : Sequence(Attribute) = page.units->first().filteredUriPathKeys(page.units->first().oclIsKindOf(IndexUnit))
+				| common->select(k | u.filteredUriPathKeys(u.oclIsKindOf(IndexUnit))->includes(k)))
 		endif endif
 /]
 
