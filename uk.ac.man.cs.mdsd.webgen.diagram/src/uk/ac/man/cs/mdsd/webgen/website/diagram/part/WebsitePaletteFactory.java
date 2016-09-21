@@ -520,7 +520,7 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createSelectAction1CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(7);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(8);
 		types.add(WebsiteElementTypes.SelectAction_3102);
 		types.add(WebsiteElementTypes.SelectAction_3107);
 		types.add(WebsiteElementTypes.SelectAction_3126);
@@ -528,6 +528,7 @@ public class WebsitePaletteFactory {
 		types.add(WebsiteElementTypes.SelectAction_3128);
 		types.add(WebsiteElementTypes.SelectAction_3146);
 		types.add(WebsiteElementTypes.SelectAction_3153);
+		types.add(WebsiteElementTypes.SelectAction_3264);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.SelectAction1CreationTool_title,
 				Messages.SelectAction1CreationTool_desc, types);
 		entry.setId("createSelectAction1CreationTool"); //$NON-NLS-1$
@@ -540,10 +541,11 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createDeleteAction2CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(3);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(4);
 		types.add(WebsiteElementTypes.DeleteAction_3101);
 		types.add(WebsiteElementTypes.DeleteAction_3147);
 		types.add(WebsiteElementTypes.DeleteAction_3154);
+		types.add(WebsiteElementTypes.DeleteAction_3265);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.DeleteAction2CreationTool_title,
 				Messages.DeleteAction2CreationTool_desc, types);
 		entry.setId("createDeleteAction2CreationTool"); //$NON-NLS-1$
@@ -556,9 +558,10 @@ public class WebsitePaletteFactory {
 	 * @generated
 	 */
 	private ToolEntry createSupportAction3CreationTool() {
-		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
+		ArrayList<IElementType> types = new ArrayList<IElementType>(3);
 		types.add(WebsiteElementTypes.UnitSupportAction_3232);
 		types.add(WebsiteElementTypes.FeatureSupportAction_3234);
+		types.add(WebsiteElementTypes.FeatureSupportAction_3266);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.SupportAction3CreationTool_title,
 				Messages.SupportAction3CreationTool_desc, types);
 		entry.setId("createSupportAction3CreationTool"); //$NON-NLS-1$

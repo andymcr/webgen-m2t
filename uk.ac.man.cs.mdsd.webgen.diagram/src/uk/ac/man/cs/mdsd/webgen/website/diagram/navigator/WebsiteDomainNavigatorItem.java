@@ -21,7 +21,6 @@ public class WebsiteDomainNavigatorItem extends PlatformObject {
 		final Class[] supportedTypes = new Class[] { EObject.class, IPropertySource.class };
 		Platform.getAdapterManager().registerAdapters(new IAdapterFactory() {
 
-			@SuppressWarnings("unchecked")
 			public Object getAdapter(Object adaptableObject, Class adapterType) {
 				if (adaptableObject instanceof uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) {
 					uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem domainNavigatorItem = (uk.ac.man.cs.mdsd.webgen.website.diagram.navigator.WebsiteDomainNavigatorItem) adaptableObject;
@@ -37,7 +36,6 @@ public class WebsiteDomainNavigatorItem extends PlatformObject {
 				return null;
 			}
 
-			@SuppressWarnings("unchecked")
 			public Class[] getAdapterList() {
 				return supportedTypes;
 			}

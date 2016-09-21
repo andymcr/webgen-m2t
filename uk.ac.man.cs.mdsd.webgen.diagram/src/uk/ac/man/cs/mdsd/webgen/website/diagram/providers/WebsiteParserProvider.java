@@ -1788,6 +1788,57 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser selectActionName_5272Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5272Parser() {
+		if (selectActionName_5272Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5272Parser = parser;
+		}
+		return selectActionName_5272Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5273Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5273Parser() {
+		if (deleteActionName_5273Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5273Parser = parser;
+		}
+		return deleteActionName_5273Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser featureSupportActionName_5274Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getFeatureSupportActionName_5274Parser() {
+		if (featureSupportActionName_5274Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			featureSupportActionName_5274Parser = parser;
+		}
+		return featureSupportActionName_5274Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	private IParser selectActionName_5150Parser;
@@ -2210,6 +2261,12 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getSliderUnitName_5269Parser();
 		case GalleryUnitNameEditPart.VISUAL_ID:
 			return getGalleryUnitName_5271Parser();
+		case SelectActionName8EditPart.VISUAL_ID:
+			return getSelectActionName_5272Parser();
+		case DeleteActionName4EditPart.VISUAL_ID:
+			return getDeleteActionName_5273Parser();
+		case FeatureSupportActionName2EditPart.VISUAL_ID:
+			return getFeatureSupportActionName_5274Parser();
 		case ActionMenuEntryNameEditPart.VISUAL_ID:
 			return getActionMenuEntryName_5243Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
