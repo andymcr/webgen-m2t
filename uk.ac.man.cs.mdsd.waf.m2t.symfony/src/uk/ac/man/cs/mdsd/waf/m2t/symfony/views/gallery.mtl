@@ -25,42 +25,6 @@
 [/template]
 
 
-[template private uniteGalleryX(unit : GalleryUnit) post(trim())]
-<div id="gallery" class="gallery_content" style="display:none;">
-{% for image in images %}
-{% if image.variants | length == 0 %}
- <img src="Missing" alt="{{ image.title }}" data-image="Large"/>
-{% else %}
-{% set variant = image.variants | first %}
-{% if variant.filePath is empty %}
- <img src="Missing"  alt="{{ image.title }}" data-image="Big"/>
-{% else %}
- <img src="{{ variant.filePath | imagine_filter('grid_thumb') }}"  alt="{{ image.title }}" data-image="http://sps.andycarpenter.me.uk/{{ variant.filePath }}" data-description="?????"/>
-{% endif %}
-{% endif %}
-{% endfor %}
-</div>
-<script type="text/javascript"> 
-    jQuery(document).ready(function(){ 
-        jQuery("#gallery").unitegallery({
-            gallery_theme: "tilesgrid",
-
-            grid_space_between_cols:1,
-            grid_space_between_rows:1,
-            grid_padding:0,
-            tile_enable_border:false,
-            tile_enable_shadow:false,
-            tile_height:120,
-            tile_width:160,
-            tile_enable_textpanel:true,
-	        tile_textpanel_title_text_align: "center",
-            lightbox_type: "compact",
-	        lightbox_arrows_position: "inside",
-        });
-    }); 
-</script>
-[/template]
-
 [template private uniteGallery(unit : GalleryUnit) post(trim())]
 [let accessor : String = unit.instanceName()]
 <div id="gallery" class="gallery_content" style="display:none;">
@@ -78,8 +42,12 @@
             grid_padding:0,
             tile_enable_border:false,
             tile_enable_shadow:false,
-            tile_height: [unit.thumbHeight/],
-            tile_width: [unit.thumbWidth/],
+[let thumbFilter : ThumbnailFilter = unit.thumbFilter()]
+[if (not thumbnailFilter.oclIsUndefined())]
+            tile_height:[thumbFilter.height/],
+            tile_width:[thumbFilter.width/],
+[/if]
+[/let]
             tile_enable_textpanel:true,
 	        tile_textpanel_title_text_align: "center",
             lightbox_type: "compact",
@@ -90,25 +58,32 @@
 [/let]
 [/template]
 
+[query private thumbFilter(unit : ImageUnit) : ThumbnailFilter
+	= let filters : Sequence(ThumbnailFilter)
+		= unit.thumbnailFilter.filters->select(f | f.oclIsTypeOf(ThumbnailFilter)).oclAsType(ThumbnailFilter)
+		in if filters->isEmpty() then
+				null
+			else
+				filters->first()
+			endif
+/]
+
 [template private uniteGallery(feature : FeaturePath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
 	? (feature.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
 [let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
 [let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  alt="{{ [unit.titleFeature.accessor(parentAccessor)/] }}" data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
 {% if [accessor/] is not empty %}
-<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
 {% endif %}
 	[else]
 {% if [accessor/] is empty %}
-<img src="{{ '[unit.missingImagePath/]' | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"/>
+<img [unit.imageMissingSrc()/][unit.imageAlt(baseAccessor)/] [unit.imageMissingDataImage()/][unit.imageDataDescription(baseAccessor)/]/>
 {% else %}
-<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
 {% endif %}
 	[/if]
 [/if]
@@ -140,8 +115,7 @@ alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://
 	[/if]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 {% else %}
-<img src="{{ '[unit.missingImagePath/]' | imagine_filter('grid_thumb') }}" [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(parentAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"/>
+<img [unit.imageMissingSrc()/][unit.imageAlt(baseAccessor)/] [unit.imageMissingDataImage()/][unit.imageDataDescription(baseAccessor)/]/>
 	[/if]
 {% endif %}
 [/if]
@@ -154,20 +128,17 @@ alt="{{ [unit.titleFeature.accessor(parentAccessor)/] }}" [/if]data-image="http:
 [let attribute : ChildAttribute = feature.oclAsType(ChildAttribute)]
 [let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  alt="{{ [unit.titleFeature.accessor(parentAccessor)/] }}" data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
 {% if [accessor/] is not empty %}
-<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
 {% endif %}
 	[else]
 {% if [accessor/] is empty %}
-<img src="{{ '[unit.missingImagePath/]' | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"/>
+<img [unit.imageMissingSrc()/][unit.imageAlt(baseAccessor)/] [unit.imageMissingDataImage()/][unit.imageDataDescription(baseAccessor)/]/>
 {% else %}
-<img src="{{ [accessor/] | imagine_filter('grid_thumb') }}"  [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(baseAccessor)/] }}" [/if]data-image="http://sps.andycarpenter.me.uk/{{ [accessor/] }}" data-description="?????"/>
+<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
 {% endif %}
 	[/if]
 [/if]
@@ -213,3 +184,29 @@ blueimp.Gallery(
 );
 </script>
 [/template]
+
+[template private imageSrc(unit : ImageUnit, accessor : String) post(trim())]
+src="{{ [accessor/] | imagine_filter('[unit.thumbnailFilter.name/]') }}"
+[/template]
+
+[template private imageMissingSrc(unit : ImageUnit) post(trim())]
+src="{{ '[unit.missingImagePath/]' | imagine_filter('[unit.thumbnailFilter.name/]') }}"
+[/template]
+
+[template private imageAlt(unit : ImageUnit, accessor : String)]
+[if (not unit.titleFeature.oclIsUndefined())]
+ alt="{{ [unit.titleFeature.accessor(accessor)/] }}"[/if]
+[/template]
+
+[template private imageDataImage(unit : ImageUnit, accessor : String) post(trim())]
+data-image="[if (unit.imageFilter.oclIsUndefined())]
+http://sps.andycarpenter.me.uk/{{ [accessor/] }}[else]
+{{ [accessor/] | imagine_filter('[unit.imageFilter.name/]') }}[/if]"
+[/template]
+
+[template private imageMissingDataImage(unit : ImageUnit) post(trim())]
+data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"
+[/template]
+
+[template private imageDataDescription(unit : ImageUnit, accessor : String)]
+ data-description="?????"[/template]

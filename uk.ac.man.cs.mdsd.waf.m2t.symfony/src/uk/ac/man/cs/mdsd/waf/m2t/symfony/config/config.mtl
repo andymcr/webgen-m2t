@@ -108,33 +108,7 @@ assetic:
 
 [/if]
 [if (model.hasImageUnits())]
-liip_imagine:
-    cache: image_cache
-    loaders:
-       default:
-          stream:
-              wrapper: http://sps.andycarpenter.me.uk/
-    resolvers:
-       image_cache:
-          aws_s3:
-              client_config:
-                  credentials:
-                      key:    "%aws.s3.key%"
-                      secret: "%aws.s3.secret%"
-                  region:     "%aws.s3.region%"
-                  version:    "%aws.s3.version%"
-              bucket:         "%aws.s3.bucket%"
-              get_options:
-                  Scheme: 'https'
-              put_options:
-                  CacheControl: 'max-age=86400'
-    filter_sets:
-[comment for (unit : ImageUnit | model.imageUnits())/]
-        grid_thumb[comment unit.thumbName()/]:
-            quality: 75
-            filters:
-                thumbnail: { size: ['['/]160, 120[']'/], mode: outbound }
-[comment /]
+[model.imageConfig()/]
 
 [/if]
 [if (model.restApi->notEmpty())]
@@ -188,4 +162,45 @@ swiftmailer:
     password:   "%mailer_password%"
 #    spool:     { type: memory }
 [/file]
+[/template]
+
+[template private imageConfig(model : WafModel) post(trim())]
+liip_imagine:
+    cache: image_cache
+    loaders:
+       default:
+          stream:
+              wrapper: http://sps.andycarpenter.me.uk/
+    resolvers:
+       image_cache:
+          aws_s3:
+              client_config:
+                  credentials:
+                      key:    "%aws.s3.key%"
+                      secret: "%aws.s3.secret%"
+                  region:     "%aws.s3.region%"
+                  version:    "%aws.s3.version%"
+              bucket:         "%aws.s3.bucket%"
+              get_options:
+                  Scheme: 'https'
+              put_options:
+                  CacheControl: 'max-age=31557600'
+    filter_sets:
+[for (manipulation : ImageManipulation | model.imageManipulations)]
+        [manipulation.name/]:
+	[if (manipulation.jpegQuality > 0)]
+            quality: [manipulation.jpegQuality/]
+	[/if]
+            filters:
+	[for (filter : ImageFilter | manipulation.filters)]
+                [filter.config()/]
+	[/for]
+[/for]
+[/template]
+
+[template private config(filter : ImageFilter)
+	? (filter.oclIsTypeOf(ThumbnailFilter)) post(trim())]
+[let thumbnailFilter : ThumbnailFilter = filter.oclAsType(ThumbnailFilter)]
+thumbnail: { size: ['['/][thumbnailFilter.width/], [thumbnailFilter.height/][']'/], mode: outbound }
+[/let]
 [/template]
