@@ -1285,6 +1285,11 @@
 /]
 
 
+[query public actions(container : InlineActionContainer) : OrderedSet(InlineAction)
+	= container.actions->select(a | not a.disable)
+/]
+
+
 [query public controller(action : InlineAction) : Page
 	= if action.oclIsTypeOf(SelectAction) then
 			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).pageDisplayedOn()
