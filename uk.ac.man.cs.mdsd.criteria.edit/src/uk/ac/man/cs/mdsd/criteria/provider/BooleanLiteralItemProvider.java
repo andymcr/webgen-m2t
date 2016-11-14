@@ -83,7 +83,7 @@ public class BooleanLiteralItemProvider
 				 true,
 				 false,
 				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -107,11 +107,8 @@ public class BooleanLiteralItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		Boolean labelValue = ((BooleanLiteral)object).getValue();
-		String label = labelValue == null ? null : labelValue.toString();
-		return label == null || label.length() == 0 ?
-			getString("_UI_BooleanLiteral_type") :
-			getString("_UI_BooleanLiteral_type") + " " + label;
+		BooleanLiteral booleanLiteral = (BooleanLiteral)object;
+		return getString("_UI_BooleanLiteral_type") + " " + booleanLiteral.isValue();
 	}
 	
 
