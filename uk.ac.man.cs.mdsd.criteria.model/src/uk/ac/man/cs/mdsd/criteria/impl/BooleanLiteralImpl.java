@@ -20,31 +20,31 @@ import uk.ac.man.cs.mdsd.criteria.CriteriaPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link uk.ac.man.cs.mdsd.criteria.impl.BooleanLiteralImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.criteria.impl.BooleanLiteralImpl#isValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BooleanLiteralImpl extends MinimalEObjectImpl.Container implements BooleanLiteral {
 	/**
-	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+	 * The default value of the '{@link #isValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getValue()
+	 * @see #isValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Boolean VALUE_EDEFAULT = null;
+	protected static final boolean VALUE_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
+	 * The cached value of the '{@link #isValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getValue()
+	 * @see #isValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected Boolean value = VALUE_EDEFAULT;
+	protected boolean value = VALUE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -70,7 +70,7 @@ public class BooleanLiteralImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Boolean getValue() {
+	public boolean isValue() {
 		return value;
 	}
 
@@ -79,8 +79,8 @@ public class BooleanLiteralImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValue(Boolean newValue) {
-		Boolean oldValue = value;
+	public void setValue(boolean newValue) {
+		boolean oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CriteriaPackage.BOOLEAN_LITERAL__VALUE, oldValue, value));
@@ -95,7 +95,7 @@ public class BooleanLiteralImpl extends MinimalEObjectImpl.Container implements 
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case CriteriaPackage.BOOLEAN_LITERAL__VALUE:
-				return getValue();
+				return isValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -139,7 +139,7 @@ public class BooleanLiteralImpl extends MinimalEObjectImpl.Container implements 
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CriteriaPackage.BOOLEAN_LITERAL__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+				return value != VALUE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

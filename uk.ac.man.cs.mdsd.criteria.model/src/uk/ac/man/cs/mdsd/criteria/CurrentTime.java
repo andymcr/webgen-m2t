@@ -31,7 +31,7 @@ public interface CurrentTime extends Literal {
 	 * @return the value of the '<em>Format</em>' attribute.
 	 * @see #setFormat(String)
 	 * @see uk.ac.man.cs.mdsd.criteria.CriteriaPackage#getCurrentTime_Format()
-	 * @model unique="false"
+	 * @model
 	 * @generated
 	 */
 	String getFormat();

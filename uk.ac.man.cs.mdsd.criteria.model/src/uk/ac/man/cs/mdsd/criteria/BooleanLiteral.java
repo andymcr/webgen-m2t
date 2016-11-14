@@ -12,7 +12,7 @@ package uk.ac.man.cs.mdsd.criteria;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral#getValue <em>Value</em>}</li>
+ *   <li>{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral#isValue <em>Value</em>}</li>
  * </ul>
  *
  * @see uk.ac.man.cs.mdsd.criteria.CriteriaPackage#getBooleanLiteral()
@@ -29,21 +29,21 @@ public interface BooleanLiteral extends Literal {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value</em>' attribute.
-	 * @see #setValue(Boolean)
+	 * @see #setValue(boolean)
 	 * @see uk.ac.man.cs.mdsd.criteria.CriteriaPackage#getBooleanLiteral_Value()
 	 * @model unique="false" required="true"
 	 * @generated
 	 */
-	Boolean getValue();
+	boolean isValue();
 
 	/**
-	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral#getValue <em>Value</em>}' attribute.
+	 * Sets the value of the '{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral#isValue <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Value</em>' attribute.
-	 * @see #getValue()
+	 * @see #isValue()
 	 * @generated
 	 */
-	void setValue(Boolean value);
+	void setValue(boolean value);
 
 } // BooleanLiteral

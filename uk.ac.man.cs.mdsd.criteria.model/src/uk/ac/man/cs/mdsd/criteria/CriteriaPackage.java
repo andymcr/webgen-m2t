@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see uk.ac.man.cs.mdsd.criteria.CriteriaFactory
  * @model kind="package"
- *        annotation="http://www.eclipse.org/emf/2002/GenModel editDirectory='/uk.ac.man.cs.mdsd.criteria.edit/src' editPluginID='uk.ac.man.cs.mdsd.criteria.edit' extensibleProviderFactory='true' basePackage='uk.ac.man.cs.mdsd'"
  * @generated
  */
 public interface CriteriaPackage extends EPackage {
@@ -978,11 +977,11 @@ public interface CriteriaPackage extends EPackage {
 	EClass getBooleanLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral#getValue <em>Value</em>}'.
+	 * Returns the meta object for the attribute '{@link uk.ac.man.cs.mdsd.criteria.BooleanLiteral#isValue <em>Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Value</em>'.
-	 * @see uk.ac.man.cs.mdsd.criteria.BooleanLiteral#getValue()
+	 * @see uk.ac.man.cs.mdsd.criteria.BooleanLiteral#isValue()
 	 * @see #getBooleanLiteral()
 	 * @generated
 	 */
