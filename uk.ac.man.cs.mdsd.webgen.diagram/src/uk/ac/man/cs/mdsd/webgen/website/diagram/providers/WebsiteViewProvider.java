@@ -1034,6 +1034,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDataTypeAttribute_3252(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1069,6 +1070,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDateAttribute_3253(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1104,7 +1106,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUrlAttribute_3254(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1140,7 +1142,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createFileAttribute_3255(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1176,7 +1178,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createImageAttribute_3256(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1212,7 +1214,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createLocationAttribute_3257(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1318,6 +1320,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createEncapsulatedAttribute_3258(EObject domainElement, View containerView, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1354,6 +1357,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createEncapsulatedAssociation_3259(EObject domainElement, View containerView, int index,
 			boolean persisted, PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1426,6 +1430,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createBusinessOperation_3260(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -1780,6 +1785,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createCreateUpdateUnit_3249(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2482,6 +2488,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3182(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2552,7 +2559,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3185(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2588,6 +2595,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3186(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2623,7 +2631,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createIndexUnit_3136(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2657,6 +2665,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3193(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2692,7 +2701,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "unchecked" })
 	public Node createIndexUnit_3120(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2724,6 +2733,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3187(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2759,6 +2769,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3188(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2865,6 +2876,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3183(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2900,6 +2912,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3184(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -2971,6 +2984,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDataTypeField_3203(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3006,6 +3020,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDateField_3209(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3077,6 +3092,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDataTypeField_3204(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3112,6 +3128,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDateField_3210(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3183,6 +3200,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3194(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3291,6 +3309,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3195(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3328,6 +3347,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3196(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3363,6 +3383,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDetailsUnit_3219(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3394,6 +3415,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDataTypeField_3205(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3429,6 +3451,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createDateField_3211(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3496,6 +3519,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3189(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3531,6 +3555,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3190(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3628,6 +3653,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3220(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3663,6 +3689,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3221(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3698,6 +3725,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createIndexUnit_3222(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3731,6 +3759,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3250(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3766,6 +3795,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3197(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3801,6 +3831,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitAssociation_3198(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3836,6 +3867,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createIndexUnit_3143(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3867,6 +3899,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createUnitElement_3215(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
@@ -3902,6 +3935,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	public Node createUnitAssociation_3216(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
