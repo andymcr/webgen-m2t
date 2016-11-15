@@ -1,7 +1,6 @@
 [comment encoding = UTF-8 /]
 [module commonMethods(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
@@ -142,7 +141,7 @@ $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/
 		->select(f | if f.oclIsTypeOf(UnitAttribute) then
 				f.oclAsType(UnitAttribute).attribute.partOf = entityOrView
 			else if f.oclIsTypeOf(UnitAssociation) then
-				f.oclAsType(UnitAssociation).association.partOf = entityOrView
+				f.oclAsType(UnitAssociation).association.association.partOf = entityOrView
 			else
 				false
 			endif endif)

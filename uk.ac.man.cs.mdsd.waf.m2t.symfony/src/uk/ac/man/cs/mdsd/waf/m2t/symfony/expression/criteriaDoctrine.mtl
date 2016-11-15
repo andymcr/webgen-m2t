@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module criteriaDoctrine(
-	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
+	'http://www.cs.man.ac.uk/mdsd/2016/Expression',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
@@ -8,41 +8,41 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(NullLiteral)) post(trim())]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(NullLiteral)) post(trim())]
 NULL
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(IntegerLiteral)) post(trim())]
-[let literal : IntegerLiteral = criteria.oclAsType(IntegerLiteral)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(IntegerLiteral)) post(trim())]
+[let literal : IntegerLiteral = expression.oclAsType(IntegerLiteral)]
 [literal.value/]
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(StringLiteral)) post(trim())]
-[let literal : StringLiteral = criteria.oclAsType(StringLiteral)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(StringLiteral)) post(trim())]
+[let literal : StringLiteral = expression.oclAsType(StringLiteral)]
 '[literal.value/]'
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
 ':now'
 [/template]
 
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
-[let path : ModelReference = criteria.oclAsType(ModelReference)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(ModelReference)) post(trim())]
+[let path : ModelReference = expression.oclAsType(ModelReference)]
 $this->[path.unit.instanceName()/]->[comment path unit  services->first() keyName()/]
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
-[let path : FeatureReference = criteria.oclAsType(FeatureReference)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
+[let path : FeatureReference = expression.oclAsType(FeatureReference)]
 [path.feature.featureReference()/]
 [/let]
 [/template]
@@ -51,24 +51,24 @@ $this->[path.unit.instanceName()/]->[comment path unit  services->first() keyNam
 '[feature.columnName()/]'
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = criteria.oclAsType(ParameterReference)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
+[let path : ParameterReference = expression.oclAsType(ParameterReference)]
 ':[path.parameter.name/]'
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(CurrentUserReference)) post(trim())]
+[let path : CurrentUserReference = expression.oclAsType(CurrentUserReference)]
 $this->get('people')->getId()
 [/let]
 [/template]
 
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
-[let predicate : PredicateBooleanOperator = criteria.oclAsType(PredicateBooleanOperator)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
+[let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
 Criteria::expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
 [for (expression : Expression | predicate.expressions) separator (',')]
 
@@ -84,9 +84,9 @@ Criteria::expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
-[let predicate : PredicateEqualityOperator = criteria.oclAsType(PredicateEqualityOperator)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
+[let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
 Criteria::expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(Predicate) or predicate.right.oclIsKindOf(Predicate))]
 
     [predicate.left.criteriaExpression()/],
@@ -98,30 +98,30 @@ Criteria::expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(Predic
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
-[let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
+[let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
 Criteria::expr()->[predicate.operator()/]([predicate.left.criteriaExpression()/], [predicate.right.criteriaExpression()/])
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = criteria.oclAsType(PredicateIsOperator)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
+[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
 [predicate.left.criteriaExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.criteriaExpression()/]
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
-[let predicate : PredicateLikeOperator = criteria.oclAsType(PredicateLikeOperator)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
+[let predicate : PredicateLikeOperator = expression.oclAsType(PredicateLikeOperator)]
 Criteria::expr()->[predicate.operator()/]([predicate.left.criteriaExpression()/], [predicate.right.criteriaExpression()/])
 [/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateIsNull)) post(trim())]
-[let predicate : PredicateIsNull = criteria.oclAsType(PredicateIsNull)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateIsNull)) post(trim())]
+[let predicate : PredicateIsNull = expression.oclAsType(PredicateIsNull)]
 [if (not predicate.negated)]
 Criteria::expr()->isNull([predicate.feature.criteriaExpression()/])
 [else]
@@ -129,9 +129,9 @@ Criteria::expr()->neq([predicate.feature.criteriaExpression()/], null)
 [/if][/let]
 [/template]
 
-[template public criteriaExpression(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
-[let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
+[template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
+[let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
 Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.criteriaExpression()/], '0')
 [/let]
 [/template]
@@ -181,62 +181,62 @@ Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.cri
 /]
 
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
-[let predicate : PredicateBooleanOperator = criteria.oclAsType(PredicateBooleanOperator)]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
+[let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
 [for (expression : Expression | predicate.expressions)]
 [expression.criteriaParameter()/]
 [/for]
 [/let]
 [/template]
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
-[let predicate : PredicateEqualityOperator = criteria.oclAsType(PredicateEqualityOperator)]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
+[let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
 [predicate.left.criteriaParameter()/]
 [predicate.right.criteriaParameter()/]
 [/let]
 [/template]
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
-[let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
+[let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
 [predicate.left.criteriaParameter()/]
 [predicate.right.criteriaParameter()/]
 [/let]
 [/template]
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = criteria.oclAsType(PredicateIsOperator)]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
+[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
 [predicate.left.criteriaParameter()/]
 [predicate.right.criteriaParameter()/]
 [/let]
 [/template]
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
-[let predicate : PredicateLikeOperator = criteria.oclAsType(PredicateLikeOperator)]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
+[let predicate : PredicateLikeOperator = expression.oclAsType(PredicateLikeOperator)]
 [predicate.left.criteriaParameter()/]
 [predicate.right.criteriaParameter()/]
 [/let]
 [/template]
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
-[let predicate : PredicateIsEmpty = criteria.oclAsType(PredicateIsEmpty)]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
+[let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
 [predicate.feature.criteriaParameter()/]
 [/let]
 [/template]
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = criteria.oclAsType(ParameterReference)]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
+[let path : ParameterReference = expression.oclAsType(ParameterReference)]
 $query->setParameter('[path.parameter.name/]', $[path.parameter.name/]);
 [/let]
 [/template]
 
-[template public criteriaParameter(criteria : Expression)
-	? (criteria.oclIsTypeOf(CurrentTime)) post(trim())]
+[template public criteriaParameter(expression : Expression)
+	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
 $query->setParameter('now', new \DateTime('now'));
 [/template]

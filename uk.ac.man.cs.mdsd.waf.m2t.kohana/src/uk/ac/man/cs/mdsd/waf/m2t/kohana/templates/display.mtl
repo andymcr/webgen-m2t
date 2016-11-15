@@ -251,7 +251,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
-				feature.oclAsType(UnitAssociation).association.partOf
+				feature.oclAsType(UnitAssociation).association.association.partOf
 			endif]
 	[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('->') - 1)]
     [feature.actions->select(a | not a.disable)->first().actionLink(parentAccessor, feature.getValue(accessor), parentEntityOrView)/]
@@ -359,7 +359,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template private displayAssociation(association : UnitAssociation, accessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(accessor, association.getValue(accessor), association.association.targetType())/]
+	->first().actionLink(accessor, association.getValue(accessor), association.association.association.targetType())/]
 [else]
 	[if (association.maximumDisplaySize > 0)]
 <?php
@@ -401,14 +401,14 @@ NULL
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
-[if (association.childFeature.oclIsUndefined())]
+[if (association.association.childFeature.oclIsUndefined())]
 	[if (not association.valueDisplay.oclIsUndefined())]
 [association.valueDisplay.label(accessor)/]
 	[else]
 [accessor/]->defaultLabel()
 	[/if]
 [else]
-[association.childFeature.getValue(accessor, association.dateFormat)/]
+[association.association.childFeature.getValue(accessor, association.dateFormat)/]
 [/if]
 [/template]
 

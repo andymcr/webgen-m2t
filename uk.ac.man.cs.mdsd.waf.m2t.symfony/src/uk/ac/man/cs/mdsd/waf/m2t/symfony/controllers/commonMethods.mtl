@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module commonMethods(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
+	'http://www.cs.man.ac.uk/mdsd/2016/Expression',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]

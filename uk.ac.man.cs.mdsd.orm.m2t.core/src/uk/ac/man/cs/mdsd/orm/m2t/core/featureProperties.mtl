@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
-	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
+	'http://www.cs.man.ac.uk/mdsd/2016/Expression',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
 
 

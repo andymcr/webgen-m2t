@@ -1,6 +1,5 @@
 [comment encoding = UTF-8 /]
 [module editMethods(
-	'http://www.cs.man.ac.uk/mdsd/2013/Criteria',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
@@ -195,7 +194,7 @@ public function [association.optionsName()/]()
 [if (association.isSingleton())]
     $options['['/][']'/] = "Please select";
 [/if]
-    foreach (ORM::factory('[association.association.modelName()/]')->[if (association.selection.oclIsUndefined())]
+    foreach (ORM::factory('[association.association.association.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
         $options['['/]$option->id[']'/] = [if (association.valueDisplay.oclIsUndefined())]
