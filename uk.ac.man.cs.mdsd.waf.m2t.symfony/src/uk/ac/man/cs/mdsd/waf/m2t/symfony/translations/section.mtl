@@ -43,7 +43,7 @@
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.displayLabel
 		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).association.association.displayLabel
+			field.oclAsType(UnitAssociation).path.association.displayLabel
 		else
 			field.displayLabel
 		endif endif
@@ -64,10 +64,12 @@
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
 [for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
 	[if (field.hasUnitTranslation())]
+		[if (field.hasCustomisedLabel())]
 <trans-unit id="[unit.containedId()/].labels.[field.id()/]">
  <source>[unit.entities->first().id()/].labels.[field.id()/]</source>
  <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
+		[/if]
 		[if (field.hasPlaceholder())]
 <trans-unit id="[unit.containedId()/].placeholders.[field.id()/]">
  <source>[unit.containedId()/].placeholders.[field.id()/]</source>

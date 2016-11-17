@@ -14,8 +14,8 @@
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.displayLabel <> field.oclAsType(UnitAttribute).attribute.displayLabel
 		else if field.oclIsTypeOf(UnitAssociation) then
-			field.displayLabel <> field.oclAsType(UnitAssociation).association.displayLabel
-				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
+			field.displayLabel <> field.oclAsType(UnitAssociation).path.association.displayLabel
+				or not field.oclAsType(UnitAssociation).path.childFeature.oclIsUndefined()
 		else
 			field.oclIsKindOf(InterfaceField)
 		endif endif
@@ -35,13 +35,15 @@
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.title <> field.oclAsType(UnitAttribute).attribute.displayLabel
 		else if field.oclIsTypeOf(UnitAssociation) then
-			field.title <> field.oclAsType(UnitAssociation).association.displayLabel
-				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
+			field.title <> field.oclAsType(UnitAssociation).path.association.displayLabel
+				or not field.oclAsType(UnitAssociation).path.childFeature.oclIsUndefined()
 		else
 			field.oclIsKindOf(InterfaceField)
 		endif endif
 /]
 
 [query public hasUnitTranslation(field : UnitField) : Boolean
-	= field.hasCustomisedLabel() or (field.hasPlaceholder() and field.hasCustomisedPlaceholder()) or (field.hasTitle() and field.hasCustomisedTitle())
+	= field.hasCustomisedLabel()
+		or (field.hasPlaceholder() and field.hasCustomisedPlaceholder())
+		or (field.hasTitle() and field.hasCustomisedTitle())
 /]

@@ -43,7 +43,7 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 [/if]
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),#
 [if (model.hasJavascript() or model.hasSliderUnits())]
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 [/if]

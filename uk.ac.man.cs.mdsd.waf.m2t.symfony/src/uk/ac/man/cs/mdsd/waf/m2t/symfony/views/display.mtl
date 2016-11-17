@@ -446,7 +446,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
-				feature.oclAsType(UnitAssociation).association.association.partOf
+				feature.oclAsType(UnitAssociation).path.association.partOf
 			endif]
 [feature.actions->select(a | not a.disable)
 	->first().actionLink(parentEntityOrView, parentAccessor, feature.getValue(accessor), parentAccessor.concat('.defaultLabel()'), parentAccessor)/]
@@ -460,7 +460,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(association.association.association.targetType(), accessor, accessor.concat('.defaultLabel()'), accessor.concat('.defaultLabel()'), accessor)/]
+	->first().actionLink(association.path.association.targetType(), accessor, accessor.concat('.defaultLabel()'), accessor.concat('.defaultLabel()'), accessor)/]
 [else]
 {{ [accessor/].defaultLabel()| default('[if (not association.nullDisplayValue.oclIsUndefined())][association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
@@ -518,8 +518,8 @@ NULL
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
-[if (not association.association.childFeature.oclIsUndefined())]
-[association.association.childFeature.getValue(accessor)/]
+[if (not association.path.childFeature.oclIsUndefined())]
+[association.path.childFeature.getValue(accessor)/]
 [else]
 	[if (not association.valueDisplay.oclIsUndefined())]
 [association.valueDisplay.label(accessor)/]

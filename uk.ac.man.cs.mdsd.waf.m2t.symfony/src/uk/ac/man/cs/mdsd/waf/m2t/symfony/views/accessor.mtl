@@ -50,8 +50,8 @@
 		else
 			let accessor : String
 				= association.propertyAccessor(parentAccessor)
-				in if not association.association.childFeature.oclIsUndefined() then
-						association.association.childFeature.accessor(accessor)
+				in if not association.path.childFeature.oclIsUndefined() then
+						association.path.childFeature.accessor(accessor)
 					else
 						accessor
 					endif 
@@ -69,8 +69,8 @@
 		in -- if not association.selection.oclIsUndefined() then
 				-- association.collectionAccessor(accessor)
 			-- else 
-if not association.association.childFeature.oclIsUndefined() then
-				association.association.childFeature.accessor(accessor)
+if not association.path.childFeature.oclIsUndefined() then
+				association.path.childFeature.accessor(accessor)
 			else
 				accessor
 			endif -- endif
@@ -79,14 +79,14 @@ if not association.association.childFeature.oclIsUndefined() then
 [query private collectionAccessor(association : UnitAssociation, parentAccessor : String) : String
 	= association.serviceAccessor()
 				.concat('.')
-.concat(association.association.name)
+.concat(association.path.name)
 .concat(association.selection.instanceName().toUpperFirst())
--- .concat(association.association.childSelectionName(association.selection))
+-- .concat(association.path.childSelectionName(association.selection))
 				.concat('(').concat(parentAccessor).concat(')')
 /]
 
 [query public serviceAccessor(association : UnitAssociation) : String
-	= association.association.association.partOf.services(association.model())->first().className().toLowerFirst()
+	= association.path.association.partOf.services(association.model())->first().className().toLowerFirst()
 /]
 
 [query public accessor(feature : FeaturePath, parentAccessor : String) : String
