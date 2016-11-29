@@ -202,7 +202,15 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
-[if (page.useInputJQuery() or page.hasGalleryUnits() or page.hasSliderUnits())]
+[if (page.useInputJQuery() or page.hasImageUnits())]
+[page.templateStyleParameters()/]
+[/if]
+[if (page.hasJavascript() or page.useInputJQuery())]
+[page.templateScriptParameters()/]
+[/if]
+[/template]
+
+[template private templateStyleParameters(page : Page) post(trim())]
 $parameters['['/]'styles'[']'/] = array(
 	[if (page.useInputJQuery())]
     'https://code.jquery.com/ui/1.12.0/themes/cupertino/jquery-ui.css',
@@ -211,15 +219,16 @@ $parameters['['/]'styles'[']'/] = array(
     'css/wickedpicker.css',
 		[/if]
 	[/if]
-	[if (page.hasSliderUnits())]
+	[if (page.hasSliderUnits() or page.hasChildSliderUnits())]
     'css/blueimp-gallery.min.css',
 	[/if]
-	[if (page.hasGalleryUnits())]
+	[if (page.hasGalleryUnits() or page.hasChildGalleryUnits())]
     'css/unite-gallery.css',
 	[/if]
 );
-[/if]
-[if (page.hasJavascript() or page.useInputJQuery())]
+[/template]
+
+[template public templateScriptParameters(page : Page) post(trim())]
 $parameters['['/]'scripts'[']'/] = array(
     array(
         'src'=>'https://code.jquery.com/jquery-1.12.4.min.js',
@@ -241,11 +250,11 @@ $parameters['['/]'scripts'[']'/] = array(
     'js/wickedpicker.js',
 	[/if]
 	[/if]
-	[if (page.hasSliderUnits())]
+	[if (page.hasSliderUnits() or page.hasChildSliderUnits())]
 [comment    'js/jssor.slider.mini.js', /]
 [comment    'js/jquery.blueimp-gallery.min.js', /]
 	[/if]
-	[if (page.hasGalleryUnits())]
+	[if (page.hasGalleryUnits() or page.hasChildGalleryUnits())]
     'js/unitegallery.min.js',
     'themes/ug-theme-tilesgrid.js',
 	[/if]
@@ -256,5 +265,4 @@ $parameters['['/]'scripts'[']'/] = array(
     'js/responsive-nav.min.js',
 	[/if]
 );
-[/if]
 [/template]

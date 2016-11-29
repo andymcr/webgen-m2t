@@ -183,6 +183,27 @@
 	= page.units->select(u | u.oclIsKindOf(AuthenticationUnit)).oclAsType(AuthenticationUnit)
 /]
 
+[query public childGalleryUnits(page : Page) : Sequence(GalleryUnit)
+	= page.childUnits()
+		->select(u | u.oclIsTypeOf(GalleryUnit)).oclAsType(GalleryUnit)
+/]
+
+[query public childImageUnits(page : Page) : Sequence(ImageUnit)
+	= page.childUnits()
+		->select(u | u.oclIsKindOf(ImageUnit)).oclAsType(ImageUnit)
+/]
+
+[query public childSliderUnits(page : Page) : Sequence(SliderUnit)
+	= page.childUnits()
+		->select(u | u.oclIsTypeOf(SliderUnit)).oclAsType(SliderUnit)
+/]
+
+[query public childUnits(page : Page) : Sequence(ContentUnit)
+	= page.units
+		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+		->collect(u | u.childUnits())
+/]
+
 [query public controlUnits(page : Page) : Sequence(DynamicUnit)
 	= page.units->select(u | u.oclIsKindOf(ControlUnit)).oclAsType(DynamicUnit)
 /]
@@ -217,6 +238,18 @@
 	= page.dynamicUnits()->select(u | u.hasChangableCollections())->notEmpty()
 /]
 
+[query public hasChildGalleryUnits(page : Page) : Boolean
+	= page.childGalleryUnits()->notEmpty()
+/]
+
+[query public hasChildImageUnits(page : Page) : Boolean
+	= page.childImageUnits()->notEmpty()
+/]
+
+[query public hasChildSliderUnits(page : Page) : Boolean
+	= page.childSliderUnits()->notEmpty()
+/]
+
 [query public hasControlUnits(page : Page) : Boolean
 	= page.controlUnits()->notEmpty()
 /]
@@ -234,7 +267,7 @@
 /]
 
 [query public hasImageUnits(page : Page) : Boolean
-	= page.imageUnits()->notEmpty()
+	= page.imageUnits()->notEmpty() or page.hasChildImageUnits()
 /]
 
 [query public hasIndexUnits(page : Page) : Boolean
@@ -249,6 +282,7 @@
 	= page.hasChangableCollections()
 		or page.hasGalleryUnits()
 		or page.hasSliderUnits()
+		or page.hasChildImageUnits()
 		or page.partOf.responsiveTopMenu
 /]
 
@@ -388,6 +422,18 @@
 
 [query public captchaFields(unit : DynamicUnit) : Sequence(CaptchaField)
 	= unit.displayFields->select(f | f.oclIsTypeOf(CaptchaField)).oclAsType(CaptchaField)
+/]
+
+[query public childImageUnits(unit : DynamicUnit) : Sequence(ImageUnit)
+	= unit.childUnits()
+		->select(u | u.oclIsKindOf(ImageUnit)).oclAsType(ImageUnit)
+/]
+
+[query public childUnits(unit : DynamicUnit) : Sequence(ContentUnit)
+	= unit.displayFields
+		->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
+		->select(a | a.units->notEmpty())
+		->collect(a | a.units)
 /]
 
 [query public containedId(unit : ContentUnit) : String
