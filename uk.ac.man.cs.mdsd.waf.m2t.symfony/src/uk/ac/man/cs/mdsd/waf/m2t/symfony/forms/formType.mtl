@@ -99,8 +99,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'label' => '[attribute.partOf.id()/].labels.[attribute.id()/]',
     'translation_domain' => 'entity',
-[if (attribute.isSingleton() and not attribute.isRequired())]
-    'required' => FALSE,
+[if (not attribute.isSingleton() or not attribute.isRequired())]
+    'required' => false,
 [/if]
 [if (not attribute.isSingleton())]
     'entry_type' => [attribute.interfaceType(true)/],
@@ -180,8 +180,8 @@ TextType::class
 add('[association.modelPropertyName()/]', EntityType::class, array(
     'label' => '[association.partOf.id()/].labels.[association.id()/]',
     'translation_domain' => 'entity',
-[if (not association.isRequired() and association.isSingleton())]
-    'required' => FALSE,
+[if (not association.isSingleton() or not association.isRequired())]
+    'required' => false,
 [/if]
     'class' => '[association.appBundleName()/]:[association.modelName()/]',
     'choice_label' => 'defaultLabel',
