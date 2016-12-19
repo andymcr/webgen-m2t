@@ -12,21 +12,25 @@
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-[let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-[file(galleryUnit.viewFilename(), false)]
-<section class="[galleryUnit.styleClass/]" id="[galleryUnit.instanceName()/]">
-[if (not galleryUnit.omitCaption)]
- <h2 class="[galleryUnit.captionClass/]">[galleryUnit.displayLabel/]</h2>
+[file(unit.viewFilename(), false)]
+<section class="[unit.styleClass/]" id="[unit.instanceName()/]">
+[if (not unit.omitCaption)]
+ <h2 class="[unit.captionClass/]">[unit.displayLabel/]</h2>
 [/if]
- [galleryUnit.uniteGallery()/]
+ [unit.unitContent(null, unit.instanceName())/]
 </section>
 [/file]
+[/template]
+
+[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String)
+	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
+[let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
+[galleryUnit.uniteGallery(accessor)/]
 [/let]
 [/template]
 
 
-[template private uniteGallery(unit : GalleryUnit) post(trim())]
-[let accessor : String = unit.instanceName()]
+[template private uniteGallery(unit : GalleryUnit, accessor : String) post(trim())]
 <div id="gallery" class="gallery_content" style="display:none;">
 {% for image in [accessor/] %}
 [unit.imagePathFeature.uniteGallery(unit, 'image', 'image')/]
@@ -49,13 +53,12 @@
 [/if]
 [/let]
             tile_enable_textpanel:true,
-	        tile_textpanel_title_text_align: "center",
+            tile_textpanel_title_text_align: "center",
             lightbox_type: "compact",
-	        lightbox_arrows_position: "inside",
+            lightbox_arrows_position: "inside",
         });
     }); 
 </script>
-[/let]
 [/template]
 
 [query private thumbFilter(unit : ImageUnit) : ThumbnailFilter
