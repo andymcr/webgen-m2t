@@ -299,7 +299,7 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 [template private field(field : SelectField, alias : String)
 	? (field.oclIsTypeOf(SelectAttribute)) post(trim())]
 [let attribute : Attribute = field.oclAsType(SelectAttribute).attribute]
-'[attribute.partOf.selectName()/].[attribute.name/][if (not alias.oclIsUndefined())]
+'[attribute.partOf.selectName()/].[attribute.columnName()/][if (not alias.oclIsUndefined())]
  [alias/][/if]'
 [/let]
 [/template]
@@ -335,7 +335,7 @@ $queryBuilder->join('[join.targetType().selectName()/].[join.opposite().modelPro
 $queryBuilder->orderBy([selection.ordering->first().path.queryExpression()/], [selection.ordering->first().order()/]);
 [if (selection.ordering->size() > 1)]
 	[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-$queryBuilder->addOrderBy([selection.ordering->first().path.queryExpression()/], [order.order()/]);
+$queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 	[/for]
 [/if]
 [/template]
