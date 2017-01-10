@@ -333,6 +333,17 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/for]
 [/template]
 
+[template public unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
+	? (unit.oclIsTypeOf(IndexImageGridUnit)) post(trim())]
+[let indexUnit : IndexImageGridUnit = unit.oclAsType(IndexImageGridUnit)]
+{% for entry in [accessor/] %}
+[if (not nullDisplayValue.oclIsUndefined())]
+{% else %}
+[/if]
+{% endfor %}
+[/let]
+[/template]
+
 [template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
 [action.actionLink(unit.entities->first(), rowAccessor, '\''.concat(action.displayLabel).concat('\''), rowAccessor.concat('.defaultLabel()'), rowAccessor)/]
