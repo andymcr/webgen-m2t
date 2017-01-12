@@ -19,9 +19,9 @@ public class WebsiteModelingAssistantProviderOfGalleryUnitEditPart extends Websi
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(3);
-		types.add(WebsiteElementTypes.SelectAction_3264);
-		types.add(WebsiteElementTypes.DeleteAction_3265);
-		types.add(WebsiteElementTypes.FeatureSupportAction_3266);
+		types.add(WebsiteElementTypes.SelectAction_3272);
+		types.add(WebsiteElementTypes.DeleteAction_3273);
+		types.add(WebsiteElementTypes.FeatureSupportAction_3274);
 		return types;
 	}
 

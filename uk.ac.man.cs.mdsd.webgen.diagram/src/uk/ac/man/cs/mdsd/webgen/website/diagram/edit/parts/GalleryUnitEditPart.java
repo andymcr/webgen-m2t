@@ -257,15 +257,15 @@ public class GalleryUnitEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3264) {
+			if (type == WebsiteElementTypes.SelectAction_3272) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(GalleryUnitActionCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DeleteAction_3265) {
+			if (type == WebsiteElementTypes.DeleteAction_3273) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(GalleryUnitActionCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.FeatureSupportAction_3266) {
+			if (type == WebsiteElementTypes.FeatureSupportAction_3274) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(GalleryUnitActionCompartmentEditPart.VISUAL_ID));
 			}

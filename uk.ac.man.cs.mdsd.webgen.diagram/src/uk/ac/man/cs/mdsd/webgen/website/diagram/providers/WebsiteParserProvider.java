@@ -1295,6 +1295,23 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser imageIndexUnitName_5275Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getImageIndexUnitName_5275Parser() {
+		if (imageIndexUnitName_5275Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			imageIndexUnitName_5275Parser = parser;
+		}
+		return imageIndexUnitName_5275Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	private IParser searchUnitName_5113Parser;
@@ -1756,6 +1773,74 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	* @generated
 	*/
+	private IParser imageIndexUnitName_5276Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getImageIndexUnitName_5276Parser() {
+		if (imageIndexUnitName_5276Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			imageIndexUnitName_5276Parser = parser;
+		}
+		return imageIndexUnitName_5276Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5277Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5277Parser() {
+		if (selectActionName_5277Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5277Parser = parser;
+		}
+		return selectActionName_5277Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5278Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5278Parser() {
+		if (deleteActionName_5278Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5278Parser = parser;
+		}
+		return deleteActionName_5278Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser featureSupportAction_3271Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getFeatureSupportAction_3271Parser() {
+		if (featureSupportAction_3271Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			featureSupportAction_3271Parser = parser;
+		}
+		return featureSupportAction_3271Parser;
+	}
+
+	/**
+	* @generated
+	*/
 	private IParser sliderUnitName_5269Parser;
 
 	/**
@@ -1785,6 +1870,57 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			galleryUnitName_5271Parser = parser;
 		}
 		return galleryUnitName_5271Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5279Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5279Parser() {
+		if (selectActionName_5279Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5279Parser = parser;
+		}
+		return selectActionName_5279Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5280Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5280Parser() {
+		if (deleteActionName_5280Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5280Parser = parser;
+		}
+		return deleteActionName_5280Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser featureSupportActionName_5281Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getFeatureSupportActionName_5281Parser() {
+		if (featureSupportActionName_5281Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			featureSupportActionName_5281Parser = parser;
+		}
+		return featureSupportActionName_5281Parser;
 	}
 
 	/**
@@ -1873,20 +2009,20 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser featureSupportActionName_5241Parser;
+	* @generated
+	*/
+	private IParser featureSupportAction_3234Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getFeatureSupportActionName_5241Parser() {
-		if (featureSupportActionName_5241Parser == null) {
+	* @generated
+	*/
+	private IParser getFeatureSupportAction_3234Parser() {
+		if (featureSupportAction_3234Parser == null) {
 			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			featureSupportActionName_5241Parser = parser;
+			featureSupportAction_3234Parser = parser;
 		}
-		return featureSupportActionName_5241Parser;
+		return featureSupportAction_3234Parser;
 	}
 
 	/**
@@ -2183,8 +2319,16 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getSelectActionName_5110Parser();
 		case DeleteActionNameEditPart.VISUAL_ID:
 			return getDeleteActionName_5105Parser();
+		case ImageIndexUnitNameEditPart.VISUAL_ID:
+			return getImageIndexUnitName_5275Parser();
 		case SelectActionName3EditPart.VISUAL_ID:
 			return getSelectActionName_5130Parser();
+		case DeleteActionName2EditPart.VISUAL_ID:
+			return getDeleteActionName_5151Parser();
+		case FeatureSupportActionEditPart.VISUAL_ID:
+			return getFeatureSupportAction_3234Parser();
+		case SelectActionName4EditPart.VISUAL_ID:
+			return getSelectActionName_5131Parser();
 		case DataTypeFieldName3EditPart.VISUAL_ID:
 			return getDataTypeFieldName_5210Parser();
 		case DateFieldName3EditPart.VISUAL_ID:
@@ -2195,8 +2339,8 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getIndexUnitName_5142Parser();
 		case UnitElementName15EditPart.VISUAL_ID:
 			return getUnitElementName_5202Parser();
-		case SelectActionName4EditPart.VISUAL_ID:
-			return getSelectActionName_5131Parser();
+		case SelectActionName5EditPart.VISUAL_ID:
+			return getSelectActionName_5132Parser();
 		case UnitAssociationName12EditPart.VISUAL_ID:
 			return getUnitAssociationName_5201Parser();
 		case DetailsUnitName7EditPart.VISUAL_ID:
@@ -2211,18 +2355,18 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getUnitElementName_5205Parser();
 		case UnitAssociationName14EditPart.VISUAL_ID:
 			return getUnitAssociationName_5207Parser();
-		case SelectActionName5EditPart.VISUAL_ID:
-			return getSelectActionName_5132Parser();
+		case SelectActionName6EditPart.VISUAL_ID:
+			return getSelectActionName_5150Parser();
 		case DataTypeFieldName4EditPart.VISUAL_ID:
 			return getDataTypeFieldName_5211Parser();
 		case DateFieldName4EditPart.VISUAL_ID:
 			return getDateFieldName_5217Parser();
-		case SelectActionName6EditPart.VISUAL_ID:
-			return getSelectActionName_5150Parser();
-		case DeleteActionName2EditPart.VISUAL_ID:
-			return getDeleteActionName_5151Parser();
-		case FeatureSupportActionNameEditPart.VISUAL_ID:
-			return getFeatureSupportActionName_5241Parser();
+		case SelectActionName7EditPart.VISUAL_ID:
+			return getSelectActionName_5161Parser();
+		case DeleteActionName3EditPart.VISUAL_ID:
+			return getDeleteActionName_5162Parser();
+		case FeatureSupportActionName2EditPart.VISUAL_ID:
+			return getFeatureSupportActionName_5274Parser();
 		case MapUnitNameEditPart.VISUAL_ID:
 			return getMapUnitName_5235Parser();
 		case SearchUnitNameEditPart.VISUAL_ID:
@@ -2249,24 +2393,32 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getUnitElementName_5258Parser();
 		case UnitAssociationName17EditPart.VISUAL_ID:
 			return getUnitAssociationName_5231Parser();
-		case SelectActionName7EditPart.VISUAL_ID:
-			return getSelectActionName_5161Parser();
-		case DeleteActionName3EditPart.VISUAL_ID:
-			return getDeleteActionName_5162Parser();
-		case DataTypeFieldName6EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5213Parser();
-		case DateFieldName6EditPart.VISUAL_ID:
-			return getDateFieldName_5219Parser();
-		case SliderUnitNameEditPart.VISUAL_ID:
-			return getSliderUnitName_5269Parser();
-		case GalleryUnitNameEditPart.VISUAL_ID:
-			return getGalleryUnitName_5271Parser();
 		case SelectActionName8EditPart.VISUAL_ID:
 			return getSelectActionName_5272Parser();
 		case DeleteActionName4EditPart.VISUAL_ID:
 			return getDeleteActionName_5273Parser();
-		case FeatureSupportActionName2EditPart.VISUAL_ID:
-			return getFeatureSupportActionName_5274Parser();
+		case DataTypeFieldName6EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5213Parser();
+		case DateFieldName6EditPart.VISUAL_ID:
+			return getDateFieldName_5219Parser();
+		case ImageIndexUnitName2EditPart.VISUAL_ID:
+			return getImageIndexUnitName_5276Parser();
+		case SelectActionName9EditPart.VISUAL_ID:
+			return getSelectActionName_5277Parser();
+		case DeleteActionName5EditPart.VISUAL_ID:
+			return getDeleteActionName_5278Parser();
+		case FeatureSupportAction3EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3271Parser();
+		case SliderUnitNameEditPart.VISUAL_ID:
+			return getSliderUnitName_5269Parser();
+		case GalleryUnitNameEditPart.VISUAL_ID:
+			return getGalleryUnitName_5271Parser();
+		case SelectActionName10EditPart.VISUAL_ID:
+			return getSelectActionName_5279Parser();
+		case DeleteActionName6EditPart.VISUAL_ID:
+			return getDeleteActionName_5280Parser();
+		case FeatureSupportActionNameEditPart.VISUAL_ID:
+			return getFeatureSupportActionName_5281Parser();
 		case ActionMenuEntryNameEditPart.VISUAL_ID:
 			return getActionMenuEntryName_5243Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:

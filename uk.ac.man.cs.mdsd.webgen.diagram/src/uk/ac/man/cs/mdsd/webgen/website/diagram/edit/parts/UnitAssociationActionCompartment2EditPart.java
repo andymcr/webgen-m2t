@@ -89,7 +89,7 @@ public class UnitAssociationActionCompartment2EditPart extends ListCompartmentEd
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3128) {
+			if (type == WebsiteElementTypes.SelectAction_3146) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

@@ -8,6 +8,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.CreateUnitCreateCo
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.CreateUpdateUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DetailsUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.GalleryUnitCreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ImageIndexUnit2CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.IndexUnit6CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.MapUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SearchUnitCreateCommand;
@@ -58,6 +59,9 @@ public class PageInterfaceUnitCompartmentItemSemanticEditPolicy extends WebsiteB
 		}
 		if (WebsiteElementTypes.UpdateUnit_3111 == req.getElementType()) {
 			return getGEFWrapper(new UpdateUnitCreateCommand(req));
+		}
+		if (WebsiteElementTypes.ImageIndexUnit_3268 == req.getElementType()) {
+			return getGEFWrapper(new ImageIndexUnit2CreateCommand(req));
 		}
 		if (WebsiteElementTypes.SliderUnit_3261 == req.getElementType()) {
 			return getGEFWrapper(new SliderUnitCreateCommand(req));

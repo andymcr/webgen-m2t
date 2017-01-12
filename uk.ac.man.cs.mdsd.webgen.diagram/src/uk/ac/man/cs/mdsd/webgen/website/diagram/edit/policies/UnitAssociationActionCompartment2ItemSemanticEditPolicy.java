@@ -4,6 +4,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SelectAction5CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SelectAction6CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
@@ -22,8 +23,8 @@ public class UnitAssociationActionCompartment2ItemSemanticEditPolicy extends Web
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.SelectAction_3128 == req.getElementType()) {
-			return getGEFWrapper(new SelectAction5CreateCommand(req));
+		if (WebsiteElementTypes.SelectAction_3146 == req.getElementType()) {
+			return getGEFWrapper(new SelectAction6CreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

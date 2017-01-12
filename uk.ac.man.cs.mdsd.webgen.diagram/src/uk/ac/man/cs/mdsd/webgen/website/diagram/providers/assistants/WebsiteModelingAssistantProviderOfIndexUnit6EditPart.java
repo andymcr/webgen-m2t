@@ -25,9 +25,9 @@ public class WebsiteModelingAssistantProviderOfIndexUnit6EditPart extends Websit
 		types.add(WebsiteElementTypes.UnitAssociation_3194);
 		types.add(WebsiteElementTypes.DataTypeField_3204);
 		types.add(WebsiteElementTypes.DateField_3210);
-		types.add(WebsiteElementTypes.SelectAction_3146);
-		types.add(WebsiteElementTypes.DeleteAction_3147);
-		types.add(WebsiteElementTypes.FeatureSupportAction_3234);
+		types.add(WebsiteElementTypes.SelectAction_3153);
+		types.add(WebsiteElementTypes.DeleteAction_3154);
+		types.add(WebsiteElementTypes.FeatureSupportAction_3266);
 		return types;
 	}
 

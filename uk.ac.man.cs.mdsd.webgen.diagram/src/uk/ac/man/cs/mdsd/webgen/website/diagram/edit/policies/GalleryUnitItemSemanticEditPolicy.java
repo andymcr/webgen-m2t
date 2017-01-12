@@ -12,8 +12,11 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction4EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction4EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.GalleryUnitActionCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction10EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction8EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -62,19 +65,19 @@ public class GalleryUnitItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case SelectAction8EditPart.VISUAL_ID:
+					case SelectAction10EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
-					case DeleteAction4EditPart.VISUAL_ID:
+					case DeleteAction6EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
-					case FeatureSupportAction2EditPart.VISUAL_ID:
+					case FeatureSupportAction4EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

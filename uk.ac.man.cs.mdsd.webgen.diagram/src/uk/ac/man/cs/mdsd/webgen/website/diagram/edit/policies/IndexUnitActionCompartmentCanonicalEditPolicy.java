@@ -23,8 +23,11 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction3EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportActionEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction6EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction7EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -80,8 +83,8 @@ public class IndexUnitActionCompartmentCanonicalEditPolicy extends CanonicalEdit
 	 */
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == SelectAction6EditPart.VISUAL_ID || visualID == DeleteAction2EditPart.VISUAL_ID
-				|| visualID == FeatureSupportActionEditPart.VISUAL_ID;
+		return visualID == SelectAction7EditPart.VISUAL_ID || visualID == DeleteAction3EditPart.VISUAL_ID
+				|| visualID == FeatureSupportAction2EditPart.VISUAL_ID;
 	}
 
 	/**

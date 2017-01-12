@@ -2,9 +2,10 @@ package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -26,53 +27,53 @@ import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 import org.eclipse.swt.graphics.Color;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UnitAssociation12ItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ImageIndexUnit2ItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
  * @generated
  */
-public class UnitAssociation12EditPart extends ShapeNodeEditPart {
+public class ImageIndexUnit2EditPart extends ShapeNodeEditPart {
 
 	/**
-	 * @generated
-	 */
-	public static final int VISUAL_ID = 3194;
+	* @generated
+	*/
+	public static final int VISUAL_ID = 3268;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IFigure contentPane;
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IFigure primaryShape;
 
 	/**
-	 * @generated
-	 */
-	public UnitAssociation12EditPart(View view) {
+	* @generated
+	*/
+	public ImageIndexUnit2EditPart(View view) {
 		super(view);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void createDefaultEditPolicies() {
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new UnitAssociation12ItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new ImageIndexUnit2ItemSemanticEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
 		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
 		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected LayoutEditPolicy createLayoutEditPolicy() {
 
 		FlowLayoutEditPolicy lep = new FlowLayoutEditPolicy() {
@@ -93,44 +94,44 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IFigure createNodeShape() {
-		return primaryShape = new InterfaceFieldFigure();
+		return primaryShape = new InterfaceUnitFigure();
 	}
 
 	/**
-	 * @generated
-	 */
-	public InterfaceFieldFigure getPrimaryShape() {
-		return (InterfaceFieldFigure) primaryShape;
+	* @generated
+	*/
+	public InterfaceUnitFigure getPrimaryShape() {
+		return (InterfaceUnitFigure) primaryShape;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof UnitAssociationName12EditPart) {
-			((UnitAssociationName12EditPart) childEditPart)
-					.setLabel(getPrimaryShape().getFigureInterfaceFieldNameLabelFigure());
+		if (childEditPart instanceof ImageIndexUnitName2EditPart) {
+			((ImageIndexUnitName2EditPart) childEditPart)
+					.setLabel(getPrimaryShape().getFigureInterfaceUnitNameLabelFigure());
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof UnitAssociationName12EditPart) {
+		if (childEditPart instanceof ImageIndexUnitName2EditPart) {
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		if (addFixedChild(childEditPart)) {
 			return;
@@ -139,8 +140,8 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void removeChildVisual(EditPart childEditPart) {
 		if (removeFixedChild(childEditPart)) {
 			return;
@@ -149,28 +150,28 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
 		return getContentPane();
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected NodeFigure createNodePlate() {
 		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 30);
 		return result;
 	}
 
 	/**
-	 * Creates figure for this edit part.
-	 * 
-	 * Body of this method does not depend on settings in generation model
-	 * so you may safely remove <i>generated</i> tag and modify it.
-	 * 
-	 * @generated
-	 */
+	* Creates figure for this edit part.
+	* 
+	* Body of this method does not depend on settings in generation model
+	* so you may safely remove <i>generated</i> tag and modify it.
+	* 
+	* @generated
+	*/
 	protected NodeFigure createNodeFigure() {
 		NodeFigure figure = createNodePlate();
 		figure.setLayoutManager(new StackLayout());
@@ -181,11 +182,11 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * Default implementation treats passed figure as content pane.
-	 * Respects layout one may have set for generated figure.
-	 * @param nodeShape instance of generated figure class
-	 * @generated
-	 */
+	* Default implementation treats passed figure as content pane.
+	* Respects layout one may have set for generated figure.
+	* @param nodeShape instance of generated figure class
+	* @generated
+	*/
 	protected IFigure setupContentPane(IFigure nodeShape) {
 		if (nodeShape.getLayoutManager() == null) {
 			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
@@ -196,8 +197,8 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IFigure getContentPane() {
 		if (contentPane != null) {
 			return contentPane;
@@ -206,8 +207,8 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setForegroundColor(Color color) {
 		if (primaryShape != null) {
 			primaryShape.setForegroundColor(color);
@@ -215,8 +216,8 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setBackgroundColor(Color color) {
 		if (primaryShape != null) {
 			primaryShape.setBackgroundColor(color);
@@ -224,8 +225,8 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setLineWidth(int width) {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineWidth(width);
@@ -233,8 +234,8 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setLineType(int style) {
 		if (primaryShape instanceof Shape) {
 			((Shape) primaryShape).setLineStyle(style);
@@ -242,10 +243,10 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(UnitAssociationName12EditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(ImageIndexUnitName2EditPart.VISUAL_ID));
 	}
 
 	/**
@@ -256,9 +257,17 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3146) {
+			if (type == WebsiteElementTypes.SelectAction_3269) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartment2EditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(ImageIndexUnitActionCompartment2EditPart.VISUAL_ID));
+			}
+			if (type == WebsiteElementTypes.DeleteAction_3270) {
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(ImageIndexUnitActionCompartment2EditPart.VISUAL_ID));
+			}
+			if (type == WebsiteElementTypes.FeatureSupportAction_3271) {
+				return getChildBySemanticHint(
+						WebsiteVisualIDRegistry.getType(ImageIndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);
@@ -267,17 +276,17 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public class InterfaceFieldFigure extends RectangleFigure {
+	public class InterfaceUnitFigure extends RoundedRectangle {
 
 		/**
 		 * @generated
 		 */
-		private WrappingLabel fFigureInterfaceFieldNameLabelFigure;
+		private WrappingLabel fFigureInterfaceUnitNameLabelFigure;
 
 		/**
 		 * @generated
 		 */
-		public InterfaceFieldFigure() {
+		public InterfaceUnitFigure() {
 
 			FlowLayout layoutThis = new FlowLayout();
 			layoutThis.setStretchMinorAxis(true);
@@ -290,6 +299,9 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 
 			this.setLayoutManager(layoutThis);
 
+			this.setCornerDimensions(new Dimension(getMapMode().DPtoLP(5), getMapMode().DPtoLP(5)));
+			this.setLineWidth(2);
+			this.setForegroundColor(THIS_FORE);
 			this.setBackgroundColor(THIS_BACK);
 			createContents();
 		}
@@ -299,19 +311,19 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 		 */
 		private void createContents() {
 
-			fFigureInterfaceFieldNameLabelFigure = new WrappingLabel();
+			fFigureInterfaceUnitNameLabelFigure = new WrappingLabel();
 
-			fFigureInterfaceFieldNameLabelFigure.setText("");
+			fFigureInterfaceUnitNameLabelFigure.setText("");
 
-			this.add(fFigureInterfaceFieldNameLabelFigure);
+			this.add(fFigureInterfaceUnitNameLabelFigure);
 
 		}
 
 		/**
 		 * @generated
 		 */
-		public WrappingLabel getFigureInterfaceFieldNameLabelFigure() {
-			return fFigureInterfaceFieldNameLabelFigure;
+		public WrappingLabel getFigureInterfaceUnitNameLabelFigure() {
+			return fFigureInterfaceUnitNameLabelFigure;
 		}
 
 	}
@@ -319,6 +331,11 @@ public class UnitAssociation12EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	static final Color THIS_BACK = new Color(null, 230, 230, 250);
+	static final Color THIS_FORE = new Color(null, 139, 0, 139);
+
+	/**
+	 * @generated
+	 */
+	static final Color THIS_BACK = new Color(null, 216, 191, 216);
 
 }

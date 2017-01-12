@@ -256,7 +256,7 @@ public class UnitAssociation3EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3126) {
+			if (type == WebsiteElementTypes.SelectAction_3127) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(UnitAssociationActionCompartmentEditPart.VISUAL_ID));
 			}

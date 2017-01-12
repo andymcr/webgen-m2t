@@ -225,6 +225,9 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getUpdateUnit().isSuperTypeOf(domainElement.eClass())) {
 				return UpdateUnitEditPart.VISUAL_ID;
 			}
+			if (WebsitePackage.eINSTANCE.getImageIndexUnit().isSuperTypeOf(domainElement.eClass())) {
+				return ImageIndexUnit2EditPart.VISUAL_ID;
+			}
 			if (WebsitePackage.eINSTANCE.getSliderUnit().isSuperTypeOf(domainElement.eClass())) {
 				return SliderUnitEditPart.VISUAL_ID;
 			}
@@ -301,10 +304,13 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getIndexUnit().isSuperTypeOf(domainElement.eClass())) {
 				return IndexUnit2EditPart.VISUAL_ID;
 			}
+			if (WebsitePackage.eINSTANCE.getImageIndexUnit().isSuperTypeOf(domainElement.eClass())) {
+				return ImageIndexUnitEditPart.VISUAL_ID;
+			}
 			break;
 		case UnitAssociationActionCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
-				return SelectAction3EditPart.VISUAL_ID;
+				return SelectAction4EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment2EditPart.VISUAL_ID:
@@ -421,6 +427,17 @@ public class WebsiteVisualIDRegistry {
 				return UnitAssociation11EditPart.VISUAL_ID;
 			}
 			break;
+		case ImageIndexUnitActionCompartmentEditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
+				return SelectAction3EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
+				return DeleteAction2EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getFeatureSupportAction().isSuperTypeOf(domainElement.eClass())) {
+				return FeatureSupportActionEditPart.VISUAL_ID;
+			}
+			break;
 		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
 				return UnitElement15EditPart.VISUAL_ID;
@@ -437,18 +454,18 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case IndexUnitActionCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
-				return SelectAction6EditPart.VISUAL_ID;
+				return SelectAction7EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
-				return DeleteAction2EditPart.VISUAL_ID;
+				return DeleteAction3EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getFeatureSupportAction().isSuperTypeOf(domainElement.eClass())) {
-				return FeatureSupportActionEditPart.VISUAL_ID;
+				return FeatureSupportAction2EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitElementActionCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
-				return SelectAction4EditPart.VISUAL_ID;
+				return SelectAction5EditPart.VISUAL_ID;
 			}
 			break;
 		case UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID:
@@ -461,7 +478,7 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
-				return SelectAction5EditPart.VISUAL_ID;
+				return SelectAction6EditPart.VISUAL_ID;
 			}
 			break;
 		case DetailsUnitUnitFieldCompartment7EditPart.VISUAL_ID:
@@ -523,21 +540,32 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
-				return SelectAction7EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
-				return DeleteAction3EditPart.VISUAL_ID;
-			}
-			break;
-		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
 				return SelectAction8EditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
 				return DeleteAction4EditPart.VISUAL_ID;
 			}
+			break;
+		case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
+				return SelectAction9EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
+				return DeleteAction5EditPart.VISUAL_ID;
+			}
 			if (WebsitePackage.eINSTANCE.getFeatureSupportAction().isSuperTypeOf(domainElement.eClass())) {
-				return FeatureSupportAction2EditPart.VISUAL_ID;
+				return FeatureSupportAction3EditPart.VISUAL_ID;
+			}
+			break;
+		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
+			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
+				return SelectAction10EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
+				return DeleteAction6EditPart.VISUAL_ID;
+			}
+			if (WebsitePackage.eINSTANCE.getFeatureSupportAction().isSuperTypeOf(domainElement.eClass())) {
+				return FeatureSupportAction4EditPart.VISUAL_ID;
 			}
 			break;
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
@@ -1047,8 +1075,26 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
+		case ImageIndexUnitEditPart.VISUAL_ID:
+			if (ImageIndexUnitNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ImageIndexUnitActionCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case SelectAction3EditPart.VISUAL_ID:
 			if (SelectActionName3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case DeleteAction2EditPart.VISUAL_ID:
+			if (DeleteActionName2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case SelectAction4EditPart.VISUAL_ID:
+			if (SelectActionName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1086,8 +1132,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case SelectAction4EditPart.VISUAL_ID:
-			if (SelectActionName4EditPart.VISUAL_ID == nodeVisualID) {
+		case SelectAction5EditPart.VISUAL_ID:
+			if (SelectActionName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1138,8 +1184,8 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case SelectAction5EditPart.VISUAL_ID:
-			if (SelectActionName5EditPart.VISUAL_ID == nodeVisualID) {
+		case SelectAction6EditPart.VISUAL_ID:
+			if (SelectActionName6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1153,18 +1199,18 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case SelectAction6EditPart.VISUAL_ID:
-			if (SelectActionName6EditPart.VISUAL_ID == nodeVisualID) {
+		case SelectAction7EditPart.VISUAL_ID:
+			if (SelectActionName7EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DeleteAction2EditPart.VISUAL_ID:
-			if (DeleteActionName2EditPart.VISUAL_ID == nodeVisualID) {
+		case DeleteAction3EditPart.VISUAL_ID:
+			if (DeleteActionName3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case FeatureSupportActionEditPart.VISUAL_ID:
-			if (FeatureSupportActionNameEditPart.VISUAL_ID == nodeVisualID) {
+		case FeatureSupportAction2EditPart.VISUAL_ID:
+			if (FeatureSupportActionName2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1248,13 +1294,13 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case SelectAction7EditPart.VISUAL_ID:
-			if (SelectActionName7EditPart.VISUAL_ID == nodeVisualID) {
+		case SelectAction8EditPart.VISUAL_ID:
+			if (SelectActionName8EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DeleteAction3EditPart.VISUAL_ID:
-			if (DeleteActionName3EditPart.VISUAL_ID == nodeVisualID) {
+		case DeleteAction4EditPart.VISUAL_ID:
+			if (DeleteActionName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1265,6 +1311,24 @@ public class WebsiteVisualIDRegistry {
 			break;
 		case DateField6EditPart.VISUAL_ID:
 			if (DateFieldName6EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ImageIndexUnit2EditPart.VISUAL_ID:
+			if (ImageIndexUnitName2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (ImageIndexUnitActionCompartment2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case SelectAction9EditPart.VISUAL_ID:
+			if (SelectActionName9EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case DeleteAction5EditPart.VISUAL_ID:
+			if (DeleteActionName5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1281,18 +1345,18 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case SelectAction8EditPart.VISUAL_ID:
-			if (SelectActionName8EditPart.VISUAL_ID == nodeVisualID) {
+		case SelectAction10EditPart.VISUAL_ID:
+			if (SelectActionName10EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case DeleteAction4EditPart.VISUAL_ID:
-			if (DeleteActionName4EditPart.VISUAL_ID == nodeVisualID) {
+		case DeleteAction6EditPart.VISUAL_ID:
+			if (DeleteActionName6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
-		case FeatureSupportAction2EditPart.VISUAL_ID:
-			if (FeatureSupportActionName2EditPart.VISUAL_ID == nodeVisualID) {
+		case FeatureSupportAction4EditPart.VISUAL_ID:
+			if (FeatureSupportActionNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1395,6 +1459,9 @@ public class WebsiteVisualIDRegistry {
 			if (UpdateUnitEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (ImageIndexUnit2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			if (SliderUnitEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1471,9 +1538,12 @@ public class WebsiteVisualIDRegistry {
 			if (IndexUnit2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
+			if (ImageIndexUnitEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
 			break;
 		case UnitAssociationActionCompartmentEditPart.VISUAL_ID:
-			if (SelectAction3EditPart.VISUAL_ID == nodeVisualID) {
+			if (SelectAction4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1591,6 +1661,17 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
+		case ImageIndexUnitActionCompartmentEditPart.VISUAL_ID:
+			if (SelectAction3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (DeleteAction2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (FeatureSupportActionEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 			if (UnitElement15EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1606,18 +1687,18 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case IndexUnitActionCompartmentEditPart.VISUAL_ID:
-			if (SelectAction6EditPart.VISUAL_ID == nodeVisualID) {
+			if (SelectAction7EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (DeleteAction2EditPart.VISUAL_ID == nodeVisualID) {
+			if (DeleteAction3EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (FeatureSupportActionEditPart.VISUAL_ID == nodeVisualID) {
+			if (FeatureSupportAction2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
 		case UnitElementActionCompartment2EditPart.VISUAL_ID:
-			if (SelectAction4EditPart.VISUAL_ID == nodeVisualID) {
+			if (SelectAction5EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1630,7 +1711,7 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
-			if (SelectAction5EditPart.VISUAL_ID == nodeVisualID) {
+			if (SelectAction6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1692,21 +1773,32 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
-			if (SelectAction7EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DeleteAction3EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
 			if (SelectAction8EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (DeleteAction4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (FeatureSupportAction2EditPart.VISUAL_ID == nodeVisualID) {
+			break;
+		case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
+			if (SelectAction9EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (DeleteAction5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (FeatureSupportAction3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
+			if (SelectAction10EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (DeleteAction6EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (FeatureSupportAction4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1838,6 +1930,7 @@ public class WebsiteVisualIDRegistry {
 		case UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID:
 		case DetailsUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
+		case ImageIndexUnitActionCompartmentEditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 		case IndexUnitActionCompartmentEditPart.VISUAL_ID:
 		case UnitElementActionCompartment2EditPart.VISUAL_ID:
@@ -1850,6 +1943,7 @@ public class WebsiteVisualIDRegistry {
 		case UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID:
 		case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
+		case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
 		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
@@ -1945,6 +2039,12 @@ public class WebsiteVisualIDRegistry {
 		case SelectAction8EditPart.VISUAL_ID:
 		case DeleteAction4EditPart.VISUAL_ID:
 		case FeatureSupportAction2EditPart.VISUAL_ID:
+		case SelectAction9EditPart.VISUAL_ID:
+		case DeleteAction5EditPart.VISUAL_ID:
+		case FeatureSupportAction3EditPart.VISUAL_ID:
+		case SelectAction10EditPart.VISUAL_ID:
+		case DeleteAction6EditPart.VISUAL_ID:
+		case FeatureSupportAction4EditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

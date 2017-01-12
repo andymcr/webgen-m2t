@@ -23,7 +23,10 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction4EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction4EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction10EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction8EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
@@ -81,8 +84,8 @@ public class GalleryUnitActionCompartmentCanonicalEditPolicy extends CanonicalEd
 	*/
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == SelectAction8EditPart.VISUAL_ID || visualID == DeleteAction4EditPart.VISUAL_ID
-				|| visualID == FeatureSupportAction2EditPart.VISUAL_ID;
+		return visualID == SelectAction10EditPart.VISUAL_ID || visualID == DeleteAction6EditPart.VISUAL_ID
+				|| visualID == FeatureSupportAction4EditPart.VISUAL_ID;
 	}
 
 	/**

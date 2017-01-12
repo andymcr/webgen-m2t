@@ -22,6 +22,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.GalleryUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageIndexUnit2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MapUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageInterfaceUnitCompartmentEditPart;
@@ -144,6 +145,12 @@ public class PageItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
 					case UpdateUnitEditPart.VISUAL_ID:
+						cmd.add(new DestroyElementCommand(
+								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
+						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
+						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
+						break;
+					case ImageIndexUnit2EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

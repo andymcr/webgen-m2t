@@ -4,6 +4,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DetailsUnit2CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.ImageIndexUnitCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.IndexUnit2CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -28,6 +29,9 @@ public class UnitAssociationInterfaceUnitsCompartmentItemSemanticEditPolicy exte
 		}
 		if (WebsiteElementTypes.IndexUnit_3114 == req.getElementType()) {
 			return getGEFWrapper(new IndexUnit2CreateCommand(req));
+		}
+		if (WebsiteElementTypes.ImageIndexUnit_3267 == req.getElementType()) {
+			return getGEFWrapper(new ImageIndexUnitCreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

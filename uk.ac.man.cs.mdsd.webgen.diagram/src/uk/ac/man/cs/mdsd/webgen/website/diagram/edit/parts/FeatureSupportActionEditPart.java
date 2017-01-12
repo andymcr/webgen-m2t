@@ -1,9 +1,18 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
+import java.util.Collections;
+import java.util.List;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.transaction.RunnableWithResult;
+import org.eclipse.gef.AccessibleEditPart;
+import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -11,23 +20,55 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.gef.requests.SelectionRequest;
+import org.eclipse.gef.tools.DirectEditManager;
+import org.eclipse.gmf.runtime.common.ui.services.parser.IParser;
+import org.eclipse.gmf.runtime.common.ui.services.parser.IParserEditStatus;
+import org.eclipse.gmf.runtime.common.ui.services.parser.ParserEditStatus;
+import org.eclipse.gmf.runtime.common.ui.services.parser.ParserOptions;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.CompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ITextAwareEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.LabelDirectEditPolicy;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.ListItemComponentEditPolicy;
+import org.eclipse.gmf.runtime.diagram.ui.l10n.DiagramColorRegistry;
+import org.eclipse.gmf.runtime.diagram.ui.label.ILabelDelegate;
+import org.eclipse.gmf.runtime.diagram.ui.label.WrappingLabelDelegate;
+import org.eclipse.gmf.runtime.diagram.ui.requests.RequestConstants;
+import org.eclipse.gmf.runtime.diagram.ui.tools.DragEditPartsTrackerEx;
+import org.eclipse.gmf.runtime.diagram.ui.tools.TextDirectEditManager;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
+import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
+import org.eclipse.gmf.runtime.emf.ui.services.parser.ISemanticParser;
 import org.eclipse.gmf.runtime.gef.ui.figures.DefaultSizeNodeFigure;
 import org.eclipse.gmf.runtime.gef.ui.figures.NodeFigure;
+import org.eclipse.gmf.runtime.notation.FontStyle;
+import org.eclipse.gmf.runtime.notation.NotationPackage;
 import org.eclipse.gmf.runtime.notation.View;
+import org.eclipse.gmf.tooling.runtime.draw2d.labels.SimpleLabelDelegate;
+import org.eclipse.gmf.tooling.runtime.edit.policies.labels.IRefreshableFeedbackEditPolicy;
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
+import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Color;
 
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.FeatureSupportActionItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteTextNonResizableEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteParserProvider;
 
 /**
  * @generated
  */
-public class FeatureSupportActionEditPart extends ShapeNodeEditPart {
+public class FeatureSupportActionEditPart extends CompartmentEditPart implements ITextAwareEditPart {
 
 	/**
 	 * @generated
@@ -35,14 +76,29 @@ public class FeatureSupportActionEditPart extends ShapeNodeEditPart {
 	public static final int VISUAL_ID = 3234;
 
 	/**
-	 * @generated
-	 */
-	protected IFigure contentPane;
+	* @generated
+	*/
+	private DirectEditManager manager;
 
 	/**
-	 * @generated
-	 */
-	protected IFigure primaryShape;
+	* @generated
+	*/
+	private IParser parser;
+
+	/**
+	* @generated
+	*/
+	private List<?> parserElements;
+
+	/**
+	* @generated
+	*/
+	private String defaultText;
+
+	/**
+	* @generated
+	*/
+	private ILabelDelegate labelDelegate;
 
 	/**
 	 * @generated
@@ -52,240 +108,518 @@ public class FeatureSupportActionEditPart extends ShapeNodeEditPart {
 	}
 
 	/**
+	* @generated
+	*/
+	public DragTracker getDragTracker(Request request) {
+		if (request instanceof SelectionRequest && ((SelectionRequest) request).getLastButtonPressed() == 3) {
+			return null;
+		}
+		return new DragEditPartsTrackerEx(this);
+	}
+
+	/**
 	 * @generated
 	 */
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
 		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new FeatureSupportActionItemSemanticEditPolicy());
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, createLayoutEditPolicy());
-		// XXX need an SCR to runtime to have another abstract superclass that would let children add reasonable editpolicies
-		// removeEditPolicy(org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles.CONNECTION_HANDLES_ROLE);
+		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new WebsiteTextNonResizableEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ListItemComponentEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new LabelDirectEditPolicy());
 	}
 
 	/**
-	 * @generated
-	 */
-	protected LayoutEditPolicy createLayoutEditPolicy() {
-		org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy lep = new org.eclipse.gmf.runtime.diagram.ui.editpolicies.LayoutEditPolicy() {
+	* @generated
+	*/
+	protected String getLabelTextHelper(IFigure figure) {
+		if (figure instanceof WrappingLabel) {
+			return ((WrappingLabel) figure).getText();
+		} else if (figure instanceof Label) {
+			return ((Label) figure).getText();
+		} else {
+			return getLabelDelegate().getText();
+		}
+	}
 
-			protected EditPolicy createChildEditPolicy(EditPart child) {
-				EditPolicy result = child.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
-				if (result == null) {
-					result = new NonResizableEditPolicy();
+	/**
+	* @generated
+	*/
+	protected void setLabelTextHelper(IFigure figure, String text) {
+		if (figure instanceof WrappingLabel) {
+			((WrappingLabel) figure).setText(text);
+		} else if (figure instanceof Label) {
+			((Label) figure).setText(text);
+		} else {
+			getLabelDelegate().setText(text);
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	protected Image getLabelIconHelper(IFigure figure) {
+		if (figure instanceof WrappingLabel) {
+			return ((WrappingLabel) figure).getIcon();
+		} else if (figure instanceof Label) {
+			return ((Label) figure).getIcon();
+		} else {
+			return getLabelDelegate().getIcon(0);
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	protected void setLabelIconHelper(IFigure figure, Image icon) {
+		if (figure instanceof WrappingLabel) {
+			((WrappingLabel) figure).setIcon(icon);
+			return;
+		} else if (figure instanceof Label) {
+			((Label) figure).setIcon(icon);
+			return;
+		} else {
+			getLabelDelegate().setIcon(icon, 0);
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	public void setLabel(WrappingLabel figure) {
+		unregisterVisuals();
+		setFigure(figure);
+		defaultText = getLabelTextHelper(figure);
+		registerVisuals();
+		refreshVisuals();
+	}
+
+	/**
+	* @generated
+	*/
+	@SuppressWarnings("rawtypes")
+	protected List getModelChildren() {
+		return Collections.EMPTY_LIST;
+	}
+
+	/**
+	* @generated
+	*/
+	public IGraphicalEditPart getChildBySemanticHint(String semanticHint) {
+		return null;
+	}
+
+	/**
+	* @generated
+	*/
+	protected EObject getParserElement() {
+		return resolveSemanticElement();
+	}
+
+	/**
+	* @generated
+	*/
+	protected Image getLabelIcon() {
+		EObject parserElement = getParserElement();
+		if (parserElement == null) {
+			return null;
+		}
+		return WebsiteElementTypes.getImage(parserElement.eClass());
+	}
+
+	/**
+	* @generated
+	*/
+	protected String getLabelText() {
+		String text = null;
+		EObject parserElement = getParserElement();
+		if (parserElement != null && getParser() != null) {
+			text = getParser().getPrintString(new EObjectAdapter(parserElement), getParserOptions().intValue());
+		}
+		if (text == null || text.length() == 0) {
+			text = defaultText;
+		}
+		return text;
+	}
+
+	/**
+	* @generated
+	*/
+	public void setLabelText(String text) {
+		setLabelTextHelper(getFigure(), text);
+		refreshSelectionFeedback();
+	}
+
+	/**
+	* @generated
+	*/
+	public String getEditText() {
+		if (getParserElement() == null || getParser() == null) {
+			return ""; //$NON-NLS-1$
+		}
+		return getParser().getEditString(new EObjectAdapter(getParserElement()), getParserOptions().intValue());
+	}
+
+	/**
+	* @generated
+	*/
+	protected boolean isEditable() {
+		return getParser() != null;
+	}
+
+	/**
+	* @generated
+	*/
+	public ICellEditorValidator getEditTextValidator() {
+		return new ICellEditorValidator() {
+
+			public String isValid(final Object value) {
+				if (value instanceof String) {
+					final EObject element = getParserElement();
+					final IParser parser = getParser();
+					try {
+						IParserEditStatus valid = (IParserEditStatus) getEditingDomain()
+								.runExclusive(new RunnableWithResult.Impl<IParserEditStatus>() {
+
+									public void run() {
+										setResult(
+												parser.isValidEditString(new EObjectAdapter(element), (String) value));
+									}
+								});
+						return valid.getCode() == ParserEditStatus.EDITABLE ? null : valid.getMessage();
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
 				}
-				return result;
-			}
 
-			protected Command getMoveChildrenCommand(Request request) {
-				return null;
-			}
-
-			protected Command getCreateCommand(CreateRequest request) {
+				// shouldn't get here
 				return null;
 			}
 		};
-		return lep;
 	}
 
 	/**
-	 * @generated
-	 */
-	protected IFigure createNodeShape() {
-		return primaryShape = new ActionFigure();
-	}
-
-	/**
-	 * @generated
-	 */
-	public ActionFigure getPrimaryShape() {
-		return (ActionFigure) primaryShape;
-	}
-
-	/**
-	 * @generated
-	 */
-	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FeatureSupportActionNameEditPart) {
-			((FeatureSupportActionNameEditPart) childEditPart)
-					.setLabel(getPrimaryShape().getFigureActionNameLabelFigure());
-			return true;
+	* @generated
+	*/
+	public IContentAssistProcessor getCompletionProcessor() {
+		if (getParserElement() == null || getParser() == null) {
+			return null;
 		}
-		return false;
+		return getParser().getCompletionProcessor(new EObjectAdapter(getParserElement()));
 	}
 
 	/**
-	 * @generated
-	 */
-	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FeatureSupportActionNameEditPart) {
-			return true;
+	* @generated
+	*/
+	public ParserOptions getParserOptions() {
+		return ParserOptions.NONE;
+	}
+
+	/**
+	* @generated
+	*/
+	public IParser getParser() {
+		if (parser == null) {
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.FeatureSupportAction_3234, getParserElement(),
+					WebsiteVisualIDRegistry.getType(
+							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportActionEditPart.VISUAL_ID));
 		}
-		return false;
+		return parser;
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void addChildVisual(EditPart childEditPart, int index) {
-		if (addFixedChild(childEditPart)) {
-			return;
+	* @generated
+	*/
+	protected DirectEditManager getManager() {
+		if (manager == null) {
+			setManager(new TextDirectEditManager(this, null, WebsiteEditPartFactory.getTextCellEditorLocator(this)));
 		}
-		super.addChildVisual(childEditPart, -1);
+		return manager;
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void removeChildVisual(EditPart childEditPart) {
-		if (removeFixedChild(childEditPart)) {
-			return;
-		}
-		super.removeChildVisual(childEditPart);
+	* @generated
+	*/
+	protected void setManager(DirectEditManager manager) {
+		this.manager = manager;
 	}
 
 	/**
-	 * @generated
-	 */
-	protected IFigure getContentPaneFor(IGraphicalEditPart editPart) {
-		return getContentPane();
+	* @generated
+	*/
+	protected void performDirectEdit() {
+		getManager().show();
 	}
 
 	/**
-	 * @generated
-	 */
-	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(80, 20);
-		return result;
-	}
-
-	/**
-	 * Creates figure for this edit part.
-	 * 
-	 * Body of this method does not depend on settings in generation model
-	 * so you may safely remove <i>generated</i> tag and modify it.
-	 * 
-	 * @generated
-	 */
-	protected NodeFigure createNodeFigure() {
-		NodeFigure figure = createNodePlate();
-		figure.setLayoutManager(new StackLayout());
-		IFigure shape = createNodeShape();
-		figure.add(shape);
-		contentPane = setupContentPane(shape);
-		return figure;
-	}
-
-	/**
-	 * Default implementation treats passed figure as content pane.
-	 * Respects layout one may have set for generated figure.
-	 * @param nodeShape instance of generated figure class
-	 * @generated
-	 */
-	protected IFigure setupContentPane(IFigure nodeShape) {
-		if (nodeShape.getLayoutManager() == null) {
-			ConstrainedToolbarLayout layout = new ConstrainedToolbarLayout();
-			layout.setSpacing(5);
-			nodeShape.setLayoutManager(layout);
-		}
-		return nodeShape; // use nodeShape itself as contentPane
-	}
-
-	/**
-	 * @generated
-	 */
-	public IFigure getContentPane() {
-		if (contentPane != null) {
-			return contentPane;
-		}
-		return super.getContentPane();
-	}
-
-	/**
-	 * @generated
-	 */
-	protected void setForegroundColor(Color color) {
-		if (primaryShape != null) {
-			primaryShape.setForegroundColor(color);
+	* @generated
+	*/
+	protected void performDirectEdit(Point eventLocation) {
+		if (getManager().getClass() == TextDirectEditManager.class) {
+			((TextDirectEditManager) getManager()).show(eventLocation.getSWTPoint());
 		}
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void setBackgroundColor(Color color) {
-		if (primaryShape != null) {
-			primaryShape.setBackgroundColor(color);
+	* @generated
+	*/
+	private void performDirectEdit(char initialCharacter) {
+		if (getManager() instanceof TextDirectEditManager) {
+			((TextDirectEditManager) getManager()).show(initialCharacter);
+		} else //
+		{
+			performDirectEdit();
 		}
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void setLineWidth(int width) {
-		if (primaryShape instanceof Shape) {
-			((Shape) primaryShape).setLineWidth(width);
+	* @generated
+	*/
+	protected void performDirectEditRequest(Request request) {
+		final Request theRequest = request;
+		try {
+			getEditingDomain().runExclusive(new Runnable() {
+
+				public void run() {
+					if (isActive() && isEditable()) {
+						if (theRequest.getExtendedData()
+								.get(RequestConstants.REQ_DIRECTEDIT_EXTENDEDDATA_INITIAL_CHAR) instanceof Character) {
+							Character initialChar = (Character) theRequest.getExtendedData()
+									.get(RequestConstants.REQ_DIRECTEDIT_EXTENDEDDATA_INITIAL_CHAR);
+							performDirectEdit(initialChar.charValue());
+						} else if ((theRequest instanceof DirectEditRequest)
+								&& (getEditText().equals(getLabelText()))) {
+							DirectEditRequest editRequest = (DirectEditRequest) theRequest;
+							performDirectEdit(editRequest.getLocation());
+						} else {
+							performDirectEdit();
+						}
+					}
+				}
+			});
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * @generated
-	 */
-	protected void setLineType(int style) {
-		if (primaryShape instanceof Shape) {
-			((Shape) primaryShape).setLineStyle(style);
+	* @generated
+	*/
+	protected void refreshVisuals() {
+		super.refreshVisuals();
+		refreshLabel();
+		refreshFont();
+		refreshFontColor();
+		refreshUnderline();
+		refreshStrikeThrough();
+	}
+
+	/**
+	* @generated
+	*/
+	protected void refreshLabel() {
+		setLabelTextHelper(getFigure(), getLabelText());
+		setLabelIconHelper(getFigure(), getLabelIcon());
+		refreshSelectionFeedback();
+	}
+
+	/**
+	* @generated
+	*/
+	protected void refreshUnderline() {
+		FontStyle style = (FontStyle) getFontStyleOwnerView().getStyle(NotationPackage.eINSTANCE.getFontStyle());
+		if (style != null && getFigure() instanceof WrappingLabel) {
+			((WrappingLabel) getFigure()).setTextUnderline(style.isUnderline());
 		}
 	}
 
 	/**
-	 * @generated
-	 */
-	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(FeatureSupportActionNameEditPart.VISUAL_ID));
+	* @generated
+	*/
+	protected void refreshStrikeThrough() {
+		FontStyle style = (FontStyle) getFontStyleOwnerView().getStyle(NotationPackage.eINSTANCE.getFontStyle());
+		if (style != null && getFigure() instanceof WrappingLabel) {
+			((WrappingLabel) getFigure()).setTextStrikeThrough(style.isStrikeThrough());
+		}
 	}
 
 	/**
-	 * @generated
-	 */
-	public class ActionFigure extends RectangleFigure {
-
-		/**
-		 * @generated
-		 */
-		private WrappingLabel fFigureActionNameLabelFigure;
-
-		/**
-		 * @generated
-		 */
-		public ActionFigure() {
-			this.setBackgroundColor(THIS_BACK);
-			createContents();
+	* @generated
+	*/
+	protected void refreshFont() {
+		FontStyle style = (FontStyle) getFontStyleOwnerView().getStyle(NotationPackage.eINSTANCE.getFontStyle());
+		if (style != null) {
+			FontData fontData = new FontData(style.getFontName(), style.getFontHeight(),
+					(style.isBold() ? SWT.BOLD : SWT.NORMAL) | (style.isItalic() ? SWT.ITALIC : SWT.NORMAL));
+			setFont(fontData);
 		}
-
-		/**
-		 * @generated
-		 */
-		private void createContents() {
-
-			fFigureActionNameLabelFigure = new WrappingLabel();
-
-			fFigureActionNameLabelFigure.setText("");
-
-			this.add(fFigureActionNameLabelFigure);
-
-		}
-
-		/**
-		 * @generated
-		 */
-		public WrappingLabel getFigureActionNameLabelFigure() {
-			return fFigureActionNameLabelFigure;
-		}
-
 	}
 
 	/**
-	 * @generated
-	 */
-	static final Color THIS_BACK = new Color(null, 255, 228, 181);
+	* @generated
+	*/
+	private void refreshSelectionFeedback() {
+		requestEditPolicyFeedbackRefresh(EditPolicy.PRIMARY_DRAG_ROLE);
+		requestEditPolicyFeedbackRefresh(EditPolicy.SELECTION_FEEDBACK_ROLE);
+	}
+
+	/**
+	* @generated
+	*/
+	private void requestEditPolicyFeedbackRefresh(String editPolicyKey) {
+		Object editPolicy = getEditPolicy(editPolicyKey);
+		if (editPolicy instanceof IRefreshableFeedbackEditPolicy) {
+			((IRefreshableFeedbackEditPolicy) editPolicy).refreshFeedback();
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	protected void setFontColor(Color color) {
+		getFigure().setForegroundColor(color);
+	}
+
+	/**
+	* @generated
+	*/
+	protected void addSemanticListeners() {
+		if (getParser() instanceof ISemanticParser) {
+			EObject element = resolveSemanticElement();
+			parserElements = ((ISemanticParser) getParser()).getSemanticElementsBeingParsed(element);
+			for (int i = 0; i < parserElements.size(); i++) {
+				addListenerFilter("SemanticModel" + i, this, (EObject) parserElements.get(i)); //$NON-NLS-1$
+			}
+		} else {
+			super.addSemanticListeners();
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	protected void removeSemanticListeners() {
+		if (parserElements != null) {
+			for (int i = 0; i < parserElements.size(); i++) {
+				removeListenerFilter("SemanticModel" + i); //$NON-NLS-1$
+			}
+		} else {
+			super.removeSemanticListeners();
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	protected AccessibleEditPart getAccessibleEditPart() {
+		if (accessibleEP == null) {
+			accessibleEP = new AccessibleGraphicalEditPart() {
+
+				public void getName(AccessibleEvent e) {
+					e.result = getLabelTextHelper(getFigure());
+				}
+			};
+		}
+		return accessibleEP;
+	}
+
+	/**
+	* @generated
+	*/
+	private View getFontStyleOwnerView() {
+		return getPrimaryView();
+	}
+
+	/**
+	* @generated
+	*/
+	private ILabelDelegate getLabelDelegate() {
+		if (labelDelegate == null) {
+			IFigure label = getFigure();
+			if (label instanceof WrappingLabel) {
+				labelDelegate = new WrappingLabelDelegate((WrappingLabel) label);
+			} else {
+				labelDelegate = new SimpleLabelDelegate((Label) label);
+			}
+		}
+		return labelDelegate;
+	}
+
+	/**
+	* @generated
+	*/
+	@Override
+	public Object getAdapter(Class key) {
+		if (ILabelDelegate.class.equals(key)) {
+			return getLabelDelegate();
+		}
+		return super.getAdapter(key);
+	}
+
+	/**
+	* @generated
+	*/
+	protected void addNotationalListeners() {
+		super.addNotationalListeners();
+		addListenerFilter("PrimaryView", this, getPrimaryView()); //$NON-NLS-1$
+	}
+
+	/**
+	* @generated
+	*/
+	protected void removeNotationalListeners() {
+		super.removeNotationalListeners();
+		removeListenerFilter("PrimaryView"); //$NON-NLS-1$
+	}
+
+	/**
+	* @generated
+	*/
+	protected void handleNotificationEvent(Notification event) {
+		Object feature = event.getFeature();
+		if (NotationPackage.eINSTANCE.getFontStyle_FontColor().equals(feature)) {
+			Integer c = (Integer) event.getNewValue();
+			setFontColor(DiagramColorRegistry.getInstance().getColor(c));
+		} else if (NotationPackage.eINSTANCE.getFontStyle_Underline().equals(feature)) {
+			refreshUnderline();
+		} else if (NotationPackage.eINSTANCE.getFontStyle_StrikeThrough().equals(feature)) {
+			refreshStrikeThrough();
+		} else if (NotationPackage.eINSTANCE.getFontStyle_FontHeight().equals(feature)
+				|| NotationPackage.eINSTANCE.getFontStyle_FontName().equals(feature)
+				|| NotationPackage.eINSTANCE.getFontStyle_Bold().equals(feature)
+				|| NotationPackage.eINSTANCE.getFontStyle_Italic().equals(feature)) {
+			refreshFont();
+		} else {
+			if (getParser() != null && getParser().isAffectingEvent(event, getParserOptions().intValue())) {
+				refreshLabel();
+			}
+			if (getParser() instanceof ISemanticParser) {
+				ISemanticParser modelParser = (ISemanticParser) getParser();
+				if (modelParser.areSemanticElementsAffected(null, event)) {
+					removeSemanticListeners();
+					if (resolveSemanticElement() != null) {
+						addSemanticListeners();
+					}
+					refreshLabel();
+				}
+			}
+		}
+		super.handleNotificationEvent(event);
+	}
+
+	/**
+	* @generated
+	*/
+	protected IFigure createFigure() {
+		// Parent should assign one using setLabel() method
+		return null;
+	}
+
+	/**
+	* @generated
+	*/
+	@Override
+	public boolean isSelectable() {
+		return getFigure().isShowing();
+	}
 
 }

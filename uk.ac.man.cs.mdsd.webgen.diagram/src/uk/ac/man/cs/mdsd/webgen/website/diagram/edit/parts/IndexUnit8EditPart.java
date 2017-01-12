@@ -265,11 +265,11 @@ public class IndexUnit8EditPart extends ShapeNodeEditPart {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.SelectAction_3153) {
+			if (type == WebsiteElementTypes.SelectAction_3264) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DeleteAction_3154) {
+			if (type == WebsiteElementTypes.DeleteAction_3265) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}

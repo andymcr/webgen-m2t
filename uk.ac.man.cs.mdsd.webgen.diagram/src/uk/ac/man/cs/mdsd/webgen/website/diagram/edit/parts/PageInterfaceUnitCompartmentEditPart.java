@@ -121,6 +121,9 @@ public class PageInterfaceUnitCompartmentEditPart extends ListCompartmentEditPar
 			if (type == WebsiteElementTypes.UpdateUnit_3111) {
 				return this;
 			}
+			if (type == WebsiteElementTypes.ImageIndexUnit_3268) {
+				return this;
+			}
 			if (type == WebsiteElementTypes.SliderUnit_3261) {
 				return this;
 			}

@@ -28,6 +28,7 @@ import uk.ac.man.cs.mdsd.webgen.website.EntityFeature;
 import uk.ac.man.cs.mdsd.webgen.website.EnumerationLiteral;
 import uk.ac.man.cs.mdsd.webgen.website.EnumerationType;
 import uk.ac.man.cs.mdsd.webgen.website.GalleryUnit;
+import uk.ac.man.cs.mdsd.webgen.website.ImageIndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.IndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.InlineAction;
 import uk.ac.man.cs.mdsd.webgen.website.Menu;
@@ -177,6 +178,8 @@ public class WebsiteDiagramUpdater {
 			return getDetailsUnitUnitFieldCompartment_7068SemanticChildren(view);
 		case IndexUnitUnitFieldCompartment5EditPart.VISUAL_ID:
 			return getIndexUnitUnitFieldCompartment_7069SemanticChildren(view);
+		case ImageIndexUnitActionCompartmentEditPart.VISUAL_ID:
+			return getImageIndexUnitActionCompartment_7135SemanticChildren(view);
 		case IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID:
 			return getIndexUnitUnitFieldCompartment_7070SemanticChildren(view);
 		case IndexUnitActionCompartmentEditPart.VISUAL_ID:
@@ -201,6 +204,8 @@ public class WebsiteDiagramUpdater {
 			return getIndexUnitUnitFieldCompartment_7115SemanticChildren(view);
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 			return getIndexUnitActionCompartment_7116SemanticChildren(view);
+		case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
+			return getImageIndexUnitActionCompartment_7136SemanticChildren(view);
 		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
 			return getGalleryUnitActionCompartment_7134SemanticChildren(view);
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
@@ -506,6 +511,10 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
+			if (visualID == ImageIndexUnit2EditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
 			if (visualID == SliderUnitEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
@@ -748,6 +757,10 @@ public class WebsiteDiagramUpdater {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
+			if (visualID == ImageIndexUnitEditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
 		}
 		return result;
 	}
@@ -768,7 +781,7 @@ public class WebsiteDiagramUpdater {
 		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SelectAction3EditPart.VISUAL_ID) {
+			if (visualID == SelectAction4EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1193,6 +1206,38 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteNodeDescriptor> getImageIndexUnitActionCompartment_7135SemanticChildren(View view) {
+		if (false == view.eContainer() instanceof View) {
+			return Collections.emptyList();
+		}
+		View containerView = (View) view.eContainer();
+		if (!containerView.isSetElement()) {
+			return Collections.emptyList();
+		}
+		ImageIndexUnit modelElement = (ImageIndexUnit) containerView.getElement();
+		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
+			InlineAction childElement = (InlineAction) it.next();
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
+			if (visualID == SelectAction3EditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == DeleteAction2EditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == FeatureSupportActionEditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7070SemanticChildren(View view) {
@@ -1244,15 +1289,15 @@ public class WebsiteDiagramUpdater {
 		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SelectAction6EditPart.VISUAL_ID) {
+			if (visualID == SelectAction7EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == DeleteAction2EditPart.VISUAL_ID) {
+			if (visualID == DeleteAction3EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == FeatureSupportActionEditPart.VISUAL_ID) {
+			if (visualID == FeatureSupportAction2EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1276,7 +1321,7 @@ public class WebsiteDiagramUpdater {
 		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SelectAction4EditPart.VISUAL_ID) {
+			if (visualID == SelectAction5EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1329,7 +1374,7 @@ public class WebsiteDiagramUpdater {
 		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SelectAction5EditPart.VISUAL_ID) {
+			if (visualID == SelectAction6EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1506,11 +1551,43 @@ public class WebsiteDiagramUpdater {
 		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SelectAction7EditPart.VISUAL_ID) {
+			if (visualID == SelectAction8EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == DeleteAction3EditPart.VISUAL_ID) {
+			if (visualID == DeleteAction4EditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
+		}
+		return result;
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteNodeDescriptor> getImageIndexUnitActionCompartment_7136SemanticChildren(View view) {
+		if (false == view.eContainer() instanceof View) {
+			return Collections.emptyList();
+		}
+		View containerView = (View) view.eContainer();
+		if (!containerView.isSetElement()) {
+			return Collections.emptyList();
+		}
+		ImageIndexUnit modelElement = (ImageIndexUnit) containerView.getElement();
+		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
+		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
+			InlineAction childElement = (InlineAction) it.next();
+			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
+			if (visualID == SelectAction9EditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == DeleteAction5EditPart.VISUAL_ID) {
+				result.add(new WebsiteNodeDescriptor(childElement, visualID));
+				continue;
+			}
+			if (visualID == FeatureSupportAction3EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1534,15 +1611,15 @@ public class WebsiteDiagramUpdater {
 		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
 			InlineAction childElement = (InlineAction) it.next();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SelectAction8EditPart.VISUAL_ID) {
+			if (visualID == SelectAction10EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == DeleteAction4EditPart.VISUAL_ID) {
+			if (visualID == DeleteAction6EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
-			if (visualID == FeatureSupportAction2EditPart.VISUAL_ID) {
+			if (visualID == FeatureSupportAction4EditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 				continue;
 			}
@@ -1799,8 +1876,16 @@ public class WebsiteDiagramUpdater {
 			return getSelectAction_3107ContainedLinks(view);
 		case DeleteActionEditPart.VISUAL_ID:
 			return getDeleteAction_3101ContainedLinks(view);
+		case ImageIndexUnitEditPart.VISUAL_ID:
+			return getImageIndexUnit_3267ContainedLinks(view);
 		case SelectAction3EditPart.VISUAL_ID:
 			return getSelectAction_3126ContainedLinks(view);
+		case DeleteAction2EditPart.VISUAL_ID:
+			return getDeleteAction_3147ContainedLinks(view);
+		case FeatureSupportActionEditPart.VISUAL_ID:
+			return getFeatureSupportAction_3234ContainedLinks(view);
+		case SelectAction4EditPart.VISUAL_ID:
+			return getSelectAction_3127ContainedLinks(view);
 		case DataTypeField3EditPart.VISUAL_ID:
 			return getDataTypeField_3203ContainedLinks(view);
 		case DateField3EditPart.VISUAL_ID:
@@ -1811,8 +1896,8 @@ public class WebsiteDiagramUpdater {
 			return getIndexUnit_3136ContainedLinks(view);
 		case UnitElement15EditPart.VISUAL_ID:
 			return getUnitElement_3195ContainedLinks(view);
-		case SelectAction4EditPart.VISUAL_ID:
-			return getSelectAction_3127ContainedLinks(view);
+		case SelectAction5EditPart.VISUAL_ID:
+			return getSelectAction_3128ContainedLinks(view);
 		case UnitAssociation12EditPart.VISUAL_ID:
 			return getUnitAssociation_3194ContainedLinks(view);
 		case DetailsUnit7EditPart.VISUAL_ID:
@@ -1827,18 +1912,18 @@ public class WebsiteDiagramUpdater {
 			return getUnitElement_3199ContainedLinks(view);
 		case UnitAssociation14EditPart.VISUAL_ID:
 			return getUnitAssociation_3198ContainedLinks(view);
-		case SelectAction5EditPart.VISUAL_ID:
-			return getSelectAction_3128ContainedLinks(view);
+		case SelectAction6EditPart.VISUAL_ID:
+			return getSelectAction_3146ContainedLinks(view);
 		case DataTypeField4EditPart.VISUAL_ID:
 			return getDataTypeField_3204ContainedLinks(view);
 		case DateField4EditPart.VISUAL_ID:
 			return getDateField_3210ContainedLinks(view);
-		case SelectAction6EditPart.VISUAL_ID:
-			return getSelectAction_3146ContainedLinks(view);
-		case DeleteAction2EditPart.VISUAL_ID:
-			return getDeleteAction_3147ContainedLinks(view);
-		case FeatureSupportActionEditPart.VISUAL_ID:
-			return getFeatureSupportAction_3234ContainedLinks(view);
+		case SelectAction7EditPart.VISUAL_ID:
+			return getSelectAction_3153ContainedLinks(view);
+		case DeleteAction3EditPart.VISUAL_ID:
+			return getDeleteAction_3154ContainedLinks(view);
+		case FeatureSupportAction2EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3266ContainedLinks(view);
 		case MapUnitEditPart.VISUAL_ID:
 			return getMapUnit_3228ContainedLinks(view);
 		case SearchUnitEditPart.VISUAL_ID:
@@ -1865,24 +1950,32 @@ public class WebsiteDiagramUpdater {
 			return getUnitElement_3250ContainedLinks(view);
 		case UnitAssociation17EditPart.VISUAL_ID:
 			return getUnitAssociation_3221ContainedLinks(view);
-		case SelectAction7EditPart.VISUAL_ID:
-			return getSelectAction_3153ContainedLinks(view);
-		case DeleteAction3EditPart.VISUAL_ID:
-			return getDeleteAction_3154ContainedLinks(view);
-		case DataTypeField6EditPart.VISUAL_ID:
-			return getDataTypeField_3206ContainedLinks(view);
-		case DateField6EditPart.VISUAL_ID:
-			return getDateField_3212ContainedLinks(view);
-		case SliderUnitEditPart.VISUAL_ID:
-			return getSliderUnit_3261ContainedLinks(view);
-		case GalleryUnitEditPart.VISUAL_ID:
-			return getGalleryUnit_3263ContainedLinks(view);
 		case SelectAction8EditPart.VISUAL_ID:
 			return getSelectAction_3264ContainedLinks(view);
 		case DeleteAction4EditPart.VISUAL_ID:
 			return getDeleteAction_3265ContainedLinks(view);
-		case FeatureSupportAction2EditPart.VISUAL_ID:
-			return getFeatureSupportAction_3266ContainedLinks(view);
+		case DataTypeField6EditPart.VISUAL_ID:
+			return getDataTypeField_3206ContainedLinks(view);
+		case DateField6EditPart.VISUAL_ID:
+			return getDateField_3212ContainedLinks(view);
+		case ImageIndexUnit2EditPart.VISUAL_ID:
+			return getImageIndexUnit_3268ContainedLinks(view);
+		case SelectAction9EditPart.VISUAL_ID:
+			return getSelectAction_3269ContainedLinks(view);
+		case DeleteAction5EditPart.VISUAL_ID:
+			return getDeleteAction_3270ContainedLinks(view);
+		case FeatureSupportAction3EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3271ContainedLinks(view);
+		case SliderUnitEditPart.VISUAL_ID:
+			return getSliderUnit_3261ContainedLinks(view);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getGalleryUnit_3263ContainedLinks(view);
+		case SelectAction10EditPart.VISUAL_ID:
+			return getSelectAction_3272ContainedLinks(view);
+		case DeleteAction6EditPart.VISUAL_ID:
+			return getDeleteAction_3273ContainedLinks(view);
+		case FeatureSupportAction4EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3274ContainedLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236ContainedLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2046,8 +2139,16 @@ public class WebsiteDiagramUpdater {
 			return getSelectAction_3107IncomingLinks(view);
 		case DeleteActionEditPart.VISUAL_ID:
 			return getDeleteAction_3101IncomingLinks(view);
+		case ImageIndexUnitEditPart.VISUAL_ID:
+			return getImageIndexUnit_3267IncomingLinks(view);
 		case SelectAction3EditPart.VISUAL_ID:
 			return getSelectAction_3126IncomingLinks(view);
+		case DeleteAction2EditPart.VISUAL_ID:
+			return getDeleteAction_3147IncomingLinks(view);
+		case FeatureSupportActionEditPart.VISUAL_ID:
+			return getFeatureSupportAction_3234IncomingLinks(view);
+		case SelectAction4EditPart.VISUAL_ID:
+			return getSelectAction_3127IncomingLinks(view);
 		case DataTypeField3EditPart.VISUAL_ID:
 			return getDataTypeField_3203IncomingLinks(view);
 		case DateField3EditPart.VISUAL_ID:
@@ -2058,8 +2159,8 @@ public class WebsiteDiagramUpdater {
 			return getIndexUnit_3136IncomingLinks(view);
 		case UnitElement15EditPart.VISUAL_ID:
 			return getUnitElement_3195IncomingLinks(view);
-		case SelectAction4EditPart.VISUAL_ID:
-			return getSelectAction_3127IncomingLinks(view);
+		case SelectAction5EditPart.VISUAL_ID:
+			return getSelectAction_3128IncomingLinks(view);
 		case UnitAssociation12EditPart.VISUAL_ID:
 			return getUnitAssociation_3194IncomingLinks(view);
 		case DetailsUnit7EditPart.VISUAL_ID:
@@ -2074,18 +2175,18 @@ public class WebsiteDiagramUpdater {
 			return getUnitElement_3199IncomingLinks(view);
 		case UnitAssociation14EditPart.VISUAL_ID:
 			return getUnitAssociation_3198IncomingLinks(view);
-		case SelectAction5EditPart.VISUAL_ID:
-			return getSelectAction_3128IncomingLinks(view);
+		case SelectAction6EditPart.VISUAL_ID:
+			return getSelectAction_3146IncomingLinks(view);
 		case DataTypeField4EditPart.VISUAL_ID:
 			return getDataTypeField_3204IncomingLinks(view);
 		case DateField4EditPart.VISUAL_ID:
 			return getDateField_3210IncomingLinks(view);
-		case SelectAction6EditPart.VISUAL_ID:
-			return getSelectAction_3146IncomingLinks(view);
-		case DeleteAction2EditPart.VISUAL_ID:
-			return getDeleteAction_3147IncomingLinks(view);
-		case FeatureSupportActionEditPart.VISUAL_ID:
-			return getFeatureSupportAction_3234IncomingLinks(view);
+		case SelectAction7EditPart.VISUAL_ID:
+			return getSelectAction_3153IncomingLinks(view);
+		case DeleteAction3EditPart.VISUAL_ID:
+			return getDeleteAction_3154IncomingLinks(view);
+		case FeatureSupportAction2EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3266IncomingLinks(view);
 		case MapUnitEditPart.VISUAL_ID:
 			return getMapUnit_3228IncomingLinks(view);
 		case SearchUnitEditPart.VISUAL_ID:
@@ -2112,24 +2213,32 @@ public class WebsiteDiagramUpdater {
 			return getUnitElement_3250IncomingLinks(view);
 		case UnitAssociation17EditPart.VISUAL_ID:
 			return getUnitAssociation_3221IncomingLinks(view);
-		case SelectAction7EditPart.VISUAL_ID:
-			return getSelectAction_3153IncomingLinks(view);
-		case DeleteAction3EditPart.VISUAL_ID:
-			return getDeleteAction_3154IncomingLinks(view);
-		case DataTypeField6EditPart.VISUAL_ID:
-			return getDataTypeField_3206IncomingLinks(view);
-		case DateField6EditPart.VISUAL_ID:
-			return getDateField_3212IncomingLinks(view);
-		case SliderUnitEditPart.VISUAL_ID:
-			return getSliderUnit_3261IncomingLinks(view);
-		case GalleryUnitEditPart.VISUAL_ID:
-			return getGalleryUnit_3263IncomingLinks(view);
 		case SelectAction8EditPart.VISUAL_ID:
 			return getSelectAction_3264IncomingLinks(view);
 		case DeleteAction4EditPart.VISUAL_ID:
 			return getDeleteAction_3265IncomingLinks(view);
-		case FeatureSupportAction2EditPart.VISUAL_ID:
-			return getFeatureSupportAction_3266IncomingLinks(view);
+		case DataTypeField6EditPart.VISUAL_ID:
+			return getDataTypeField_3206IncomingLinks(view);
+		case DateField6EditPart.VISUAL_ID:
+			return getDateField_3212IncomingLinks(view);
+		case ImageIndexUnit2EditPart.VISUAL_ID:
+			return getImageIndexUnit_3268IncomingLinks(view);
+		case SelectAction9EditPart.VISUAL_ID:
+			return getSelectAction_3269IncomingLinks(view);
+		case DeleteAction5EditPart.VISUAL_ID:
+			return getDeleteAction_3270IncomingLinks(view);
+		case FeatureSupportAction3EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3271IncomingLinks(view);
+		case SliderUnitEditPart.VISUAL_ID:
+			return getSliderUnit_3261IncomingLinks(view);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getGalleryUnit_3263IncomingLinks(view);
+		case SelectAction10EditPart.VISUAL_ID:
+			return getSelectAction_3272IncomingLinks(view);
+		case DeleteAction6EditPart.VISUAL_ID:
+			return getDeleteAction_3273IncomingLinks(view);
+		case FeatureSupportAction4EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3274IncomingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236IncomingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2293,8 +2402,16 @@ public class WebsiteDiagramUpdater {
 			return getSelectAction_3107OutgoingLinks(view);
 		case DeleteActionEditPart.VISUAL_ID:
 			return getDeleteAction_3101OutgoingLinks(view);
+		case ImageIndexUnitEditPart.VISUAL_ID:
+			return getImageIndexUnit_3267OutgoingLinks(view);
 		case SelectAction3EditPart.VISUAL_ID:
 			return getSelectAction_3126OutgoingLinks(view);
+		case DeleteAction2EditPart.VISUAL_ID:
+			return getDeleteAction_3147OutgoingLinks(view);
+		case FeatureSupportActionEditPart.VISUAL_ID:
+			return getFeatureSupportAction_3234OutgoingLinks(view);
+		case SelectAction4EditPart.VISUAL_ID:
+			return getSelectAction_3127OutgoingLinks(view);
 		case DataTypeField3EditPart.VISUAL_ID:
 			return getDataTypeField_3203OutgoingLinks(view);
 		case DateField3EditPart.VISUAL_ID:
@@ -2305,8 +2422,8 @@ public class WebsiteDiagramUpdater {
 			return getIndexUnit_3136OutgoingLinks(view);
 		case UnitElement15EditPart.VISUAL_ID:
 			return getUnitElement_3195OutgoingLinks(view);
-		case SelectAction4EditPart.VISUAL_ID:
-			return getSelectAction_3127OutgoingLinks(view);
+		case SelectAction5EditPart.VISUAL_ID:
+			return getSelectAction_3128OutgoingLinks(view);
 		case UnitAssociation12EditPart.VISUAL_ID:
 			return getUnitAssociation_3194OutgoingLinks(view);
 		case DetailsUnit7EditPart.VISUAL_ID:
@@ -2321,18 +2438,18 @@ public class WebsiteDiagramUpdater {
 			return getUnitElement_3199OutgoingLinks(view);
 		case UnitAssociation14EditPart.VISUAL_ID:
 			return getUnitAssociation_3198OutgoingLinks(view);
-		case SelectAction5EditPart.VISUAL_ID:
-			return getSelectAction_3128OutgoingLinks(view);
+		case SelectAction6EditPart.VISUAL_ID:
+			return getSelectAction_3146OutgoingLinks(view);
 		case DataTypeField4EditPart.VISUAL_ID:
 			return getDataTypeField_3204OutgoingLinks(view);
 		case DateField4EditPart.VISUAL_ID:
 			return getDateField_3210OutgoingLinks(view);
-		case SelectAction6EditPart.VISUAL_ID:
-			return getSelectAction_3146OutgoingLinks(view);
-		case DeleteAction2EditPart.VISUAL_ID:
-			return getDeleteAction_3147OutgoingLinks(view);
-		case FeatureSupportActionEditPart.VISUAL_ID:
-			return getFeatureSupportAction_3234OutgoingLinks(view);
+		case SelectAction7EditPart.VISUAL_ID:
+			return getSelectAction_3153OutgoingLinks(view);
+		case DeleteAction3EditPart.VISUAL_ID:
+			return getDeleteAction_3154OutgoingLinks(view);
+		case FeatureSupportAction2EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3266OutgoingLinks(view);
 		case MapUnitEditPart.VISUAL_ID:
 			return getMapUnit_3228OutgoingLinks(view);
 		case SearchUnitEditPart.VISUAL_ID:
@@ -2359,24 +2476,32 @@ public class WebsiteDiagramUpdater {
 			return getUnitElement_3250OutgoingLinks(view);
 		case UnitAssociation17EditPart.VISUAL_ID:
 			return getUnitAssociation_3221OutgoingLinks(view);
-		case SelectAction7EditPart.VISUAL_ID:
-			return getSelectAction_3153OutgoingLinks(view);
-		case DeleteAction3EditPart.VISUAL_ID:
-			return getDeleteAction_3154OutgoingLinks(view);
-		case DataTypeField6EditPart.VISUAL_ID:
-			return getDataTypeField_3206OutgoingLinks(view);
-		case DateField6EditPart.VISUAL_ID:
-			return getDateField_3212OutgoingLinks(view);
-		case SliderUnitEditPart.VISUAL_ID:
-			return getSliderUnit_3261OutgoingLinks(view);
-		case GalleryUnitEditPart.VISUAL_ID:
-			return getGalleryUnit_3263OutgoingLinks(view);
 		case SelectAction8EditPart.VISUAL_ID:
 			return getSelectAction_3264OutgoingLinks(view);
 		case DeleteAction4EditPart.VISUAL_ID:
 			return getDeleteAction_3265OutgoingLinks(view);
-		case FeatureSupportAction2EditPart.VISUAL_ID:
-			return getFeatureSupportAction_3266OutgoingLinks(view);
+		case DataTypeField6EditPart.VISUAL_ID:
+			return getDataTypeField_3206OutgoingLinks(view);
+		case DateField6EditPart.VISUAL_ID:
+			return getDateField_3212OutgoingLinks(view);
+		case ImageIndexUnit2EditPart.VISUAL_ID:
+			return getImageIndexUnit_3268OutgoingLinks(view);
+		case SelectAction9EditPart.VISUAL_ID:
+			return getSelectAction_3269OutgoingLinks(view);
+		case DeleteAction5EditPart.VISUAL_ID:
+			return getDeleteAction_3270OutgoingLinks(view);
+		case FeatureSupportAction3EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3271OutgoingLinks(view);
+		case SliderUnitEditPart.VISUAL_ID:
+			return getSliderUnit_3261OutgoingLinks(view);
+		case GalleryUnitEditPart.VISUAL_ID:
+			return getGalleryUnit_3263OutgoingLinks(view);
+		case SelectAction10EditPart.VISUAL_ID:
+			return getSelectAction_3272OutgoingLinks(view);
+		case DeleteAction6EditPart.VISUAL_ID:
+			return getDeleteAction_3273OutgoingLinks(view);
+		case FeatureSupportAction4EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3274OutgoingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236OutgoingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2940,6 +3065,13 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getImageIndexUnit_3267ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getSearchUnit_3109ContainedLinks(View view) {
@@ -3131,6 +3263,34 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
+	public static List<WebsiteLinkDescriptor> getImageIndexUnit_3268ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSelectAction_3269ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3270ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3271ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
 	public static List<WebsiteLinkDescriptor> getSliderUnit_3261ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -3139,6 +3299,27 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSelectAction_3272ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3273ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3274ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3789,6 +3970,13 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getImageIndexUnit_3267IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getSearchUnit_3109IncomingLinks(View view) {
@@ -3980,6 +4168,34 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
+	public static List<WebsiteLinkDescriptor> getImageIndexUnit_3268IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSelectAction_3269IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3270IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3271IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
 	public static List<WebsiteLinkDescriptor> getSliderUnit_3261IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -3988,6 +4204,27 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSelectAction_3272IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3273IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3274IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4632,6 +4869,13 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getImageIndexUnit_3267OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebsiteLinkDescriptor> getSearchUnit_3109OutgoingLinks(View view) {
@@ -4823,6 +5067,34 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
+	public static List<WebsiteLinkDescriptor> getImageIndexUnit_3268OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSelectAction_3269OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3270OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3271OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
 	public static List<WebsiteLinkDescriptor> getSliderUnit_3261OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -4831,6 +5103,27 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getSelectAction_3272OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDeleteAction_3273OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3274OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

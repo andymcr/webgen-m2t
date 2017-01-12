@@ -89,6 +89,9 @@ public class UnitAssociationInterfaceUnitsCompartmentEditPart extends ShapeCompa
 			if (type == WebsiteElementTypes.IndexUnit_3114) {
 				return this;
 			}
+			if (type == WebsiteElementTypes.ImageIndexUnit_3267) {
+				return this;
+			}
 			return getParent().getTargetEditPart(request);
 		}
 		if (request instanceof CreateUnspecifiedTypeConnectionRequest) {

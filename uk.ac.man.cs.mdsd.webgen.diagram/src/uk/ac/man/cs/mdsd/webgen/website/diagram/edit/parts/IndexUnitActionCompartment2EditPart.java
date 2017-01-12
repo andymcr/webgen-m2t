@@ -94,10 +94,10 @@ public class IndexUnitActionCompartment2EditPart extends ListCompartmentEditPart
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3153) {
+			if (type == WebsiteElementTypes.SelectAction_3264) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DeleteAction_3154) {
+			if (type == WebsiteElementTypes.DeleteAction_3265) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

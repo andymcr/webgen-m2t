@@ -11,30 +11,28 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit7EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit7EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction5EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction6EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationActionCompartment2EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationInterfaceUnitsCompartment3EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction5EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction3EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageIndexUnitActionCompartment2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction9EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
  * @generated
  */
-public class UnitAssociation12ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
+public class ImageIndexUnit2ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolicy {
 
 	/**
-	 * @generated
-	 */
-	public UnitAssociation12ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitAssociation_3194);
+	* @generated
+	*/
+	public ImageIndexUnit2ItemSemanticEditPolicy() {
+		super(WebsiteElementTypes.ImageIndexUnit_3268);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected Command getDestroyElementCommand(DestroyElementRequest req) {
 		View view = (View) getHost().getModel();
 		CompositeTransactionalCommand cmd = new CompositeTransactionalCommand(getEditingDomain(), null);
@@ -60,30 +58,23 @@ public class UnitAssociation12ItemSemanticEditPolicy extends WebsiteBaseItemSema
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
-			case UnitAssociationInterfaceUnitsCompartment3EditPart.VISUAL_ID:
+			case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case DetailsUnit7EditPart.VISUAL_ID:
+					case SelectAction9EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
-					case IndexUnit7EditPart.VISUAL_ID:
+					case DeleteAction5EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 
 						// cmd.add(new org.eclipse.gmf.runtime.diagram.core.commands.DeleteCommand(getEditingDomain(), cnode));
 						break;
-					}
-				}
-				break;
-			case UnitAssociationActionCompartment2EditPart.VISUAL_ID:
-				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
-					Node cnode = (Node) cit.next();
-					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
-					case SelectAction6EditPart.VISUAL_ID:
+					case FeatureSupportAction3EditPart.VISUAL_ID:
 						cmd.add(new DestroyElementCommand(
 								new DestroyElementRequest(getEditingDomain(), cnode.getElement(), false))); // directlyOwned: true
 						// don't need explicit deletion of cnode as parent's view deletion would clean child views as well 

@@ -511,6 +511,12 @@ public class WebsiteElementTypes {
 	public static final IElementType DeleteAction_3101 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3101"); //$NON-NLS-1$
 	/**
+	* @generated
+	*/
+	public static final IElementType ImageIndexUnit_3267 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ImageIndexUnit_3267"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType SearchUnit_3109 = getElementType(
@@ -668,6 +674,30 @@ public class WebsiteElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType ImageIndexUnit_3268 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.ImageIndexUnit_3268"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType SelectAction_3269 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3269"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType DeleteAction_3270 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3270"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType FeatureSupportAction_3271 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.FeatureSupportAction_3271"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType SliderUnit_3261 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.SliderUnit_3261"); //$NON-NLS-1$
 
@@ -676,6 +706,24 @@ public class WebsiteElementTypes {
 	*/
 	public static final IElementType GalleryUnit_3263 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.GalleryUnit_3263"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType SelectAction_3272 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3272"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType DeleteAction_3273 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3273"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType FeatureSupportAction_3274 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.FeatureSupportAction_3274"); //$NON-NLS-1$
 
 	/**
 	* @generated
@@ -940,7 +988,15 @@ public class WebsiteElementTypes {
 
 			elements.put(DeleteAction_3101, WebsitePackage.eINSTANCE.getDeleteAction());
 
+			elements.put(ImageIndexUnit_3267, WebsitePackage.eINSTANCE.getImageIndexUnit());
+
 			elements.put(SelectAction_3126, WebsitePackage.eINSTANCE.getSelectAction());
+
+			elements.put(DeleteAction_3147, WebsitePackage.eINSTANCE.getDeleteAction());
+
+			elements.put(FeatureSupportAction_3234, WebsitePackage.eINSTANCE.getFeatureSupportAction());
+
+			elements.put(SelectAction_3127, WebsitePackage.eINSTANCE.getSelectAction());
 
 			elements.put(DataTypeField_3203, WebsitePackage.eINSTANCE.getDataTypeField());
 
@@ -952,7 +1008,7 @@ public class WebsiteElementTypes {
 
 			elements.put(UnitElement_3195, WebsitePackage.eINSTANCE.getUnitElement());
 
-			elements.put(SelectAction_3127, WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(SelectAction_3128, WebsitePackage.eINSTANCE.getSelectAction());
 
 			elements.put(UnitAssociation_3194, WebsitePackage.eINSTANCE.getUnitAssociation());
 
@@ -968,17 +1024,17 @@ public class WebsiteElementTypes {
 
 			elements.put(UnitAssociation_3198, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(SelectAction_3128, WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(SelectAction_3146, WebsitePackage.eINSTANCE.getSelectAction());
 
 			elements.put(DataTypeField_3204, WebsitePackage.eINSTANCE.getDataTypeField());
 
 			elements.put(DateField_3210, WebsitePackage.eINSTANCE.getDateField());
 
-			elements.put(SelectAction_3146, WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(SelectAction_3153, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(DeleteAction_3147, WebsitePackage.eINSTANCE.getDeleteAction());
+			elements.put(DeleteAction_3154, WebsitePackage.eINSTANCE.getDeleteAction());
 
-			elements.put(FeatureSupportAction_3234, WebsitePackage.eINSTANCE.getFeatureSupportAction());
+			elements.put(FeatureSupportAction_3266, WebsitePackage.eINSTANCE.getFeatureSupportAction());
 
 			elements.put(MapUnit_3228, WebsitePackage.eINSTANCE.getMapUnit());
 
@@ -1006,23 +1062,31 @@ public class WebsiteElementTypes {
 
 			elements.put(UnitAssociation_3221, WebsitePackage.eINSTANCE.getUnitAssociation());
 
-			elements.put(SelectAction_3153, WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(SelectAction_3264, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(DeleteAction_3154, WebsitePackage.eINSTANCE.getDeleteAction());
+			elements.put(DeleteAction_3265, WebsitePackage.eINSTANCE.getDeleteAction());
 
 			elements.put(DataTypeField_3206, WebsitePackage.eINSTANCE.getDataTypeField());
 
 			elements.put(DateField_3212, WebsitePackage.eINSTANCE.getDateField());
 
+			elements.put(ImageIndexUnit_3268, WebsitePackage.eINSTANCE.getImageIndexUnit());
+
+			elements.put(SelectAction_3269, WebsitePackage.eINSTANCE.getSelectAction());
+
+			elements.put(DeleteAction_3270, WebsitePackage.eINSTANCE.getDeleteAction());
+
+			elements.put(FeatureSupportAction_3271, WebsitePackage.eINSTANCE.getFeatureSupportAction());
+
 			elements.put(SliderUnit_3261, WebsitePackage.eINSTANCE.getSliderUnit());
 
 			elements.put(GalleryUnit_3263, WebsitePackage.eINSTANCE.getGalleryUnit());
 
-			elements.put(SelectAction_3264, WebsitePackage.eINSTANCE.getSelectAction());
+			elements.put(SelectAction_3272, WebsitePackage.eINSTANCE.getSelectAction());
 
-			elements.put(DeleteAction_3265, WebsitePackage.eINSTANCE.getDeleteAction());
+			elements.put(DeleteAction_3273, WebsitePackage.eINSTANCE.getDeleteAction());
 
-			elements.put(FeatureSupportAction_3266, WebsitePackage.eINSTANCE.getFeatureSupportAction());
+			elements.put(FeatureSupportAction_3274, WebsitePackage.eINSTANCE.getFeatureSupportAction());
 
 			elements.put(ActionMenuEntry_3236, WebsitePackage.eINSTANCE.getActionMenuEntry());
 
@@ -1127,13 +1191,17 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3192);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3107);
 			KNOWN_ELEMENT_TYPES.add(DeleteAction_3101);
+			KNOWN_ELEMENT_TYPES.add(ImageIndexUnit_3267);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3126);
+			KNOWN_ELEMENT_TYPES.add(DeleteAction_3147);
+			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3234);
+			KNOWN_ELEMENT_TYPES.add(SelectAction_3127);
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3203);
 			KNOWN_ELEMENT_TYPES.add(DateField_3209);
 			KNOWN_ELEMENT_TYPES.add(UnitSupportAction_3232);
 			KNOWN_ELEMENT_TYPES.add(IndexUnit_3136);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3195);
-			KNOWN_ELEMENT_TYPES.add(SelectAction_3127);
+			KNOWN_ELEMENT_TYPES.add(SelectAction_3128);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3194);
 			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3219);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3197);
@@ -1141,12 +1209,12 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(IndexUnit_3143);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3199);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3198);
-			KNOWN_ELEMENT_TYPES.add(SelectAction_3128);
+			KNOWN_ELEMENT_TYPES.add(SelectAction_3146);
 			KNOWN_ELEMENT_TYPES.add(DataTypeField_3204);
 			KNOWN_ELEMENT_TYPES.add(DateField_3210);
-			KNOWN_ELEMENT_TYPES.add(SelectAction_3146);
-			KNOWN_ELEMENT_TYPES.add(DeleteAction_3147);
-			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3234);
+			KNOWN_ELEMENT_TYPES.add(SelectAction_3153);
+			KNOWN_ELEMENT_TYPES.add(DeleteAction_3154);
+			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3266);
 			KNOWN_ELEMENT_TYPES.add(MapUnit_3228);
 			KNOWN_ELEMENT_TYPES.add(SearchUnit_3109);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3215);
@@ -1160,15 +1228,19 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(IndexUnit_3222);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3250);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3221);
-			KNOWN_ELEMENT_TYPES.add(SelectAction_3153);
-			KNOWN_ELEMENT_TYPES.add(DeleteAction_3154);
-			KNOWN_ELEMENT_TYPES.add(DataTypeField_3206);
-			KNOWN_ELEMENT_TYPES.add(DateField_3212);
-			KNOWN_ELEMENT_TYPES.add(SliderUnit_3261);
-			KNOWN_ELEMENT_TYPES.add(GalleryUnit_3263);
 			KNOWN_ELEMENT_TYPES.add(SelectAction_3264);
 			KNOWN_ELEMENT_TYPES.add(DeleteAction_3265);
-			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3266);
+			KNOWN_ELEMENT_TYPES.add(DataTypeField_3206);
+			KNOWN_ELEMENT_TYPES.add(DateField_3212);
+			KNOWN_ELEMENT_TYPES.add(ImageIndexUnit_3268);
+			KNOWN_ELEMENT_TYPES.add(SelectAction_3269);
+			KNOWN_ELEMENT_TYPES.add(DeleteAction_3270);
+			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3271);
+			KNOWN_ELEMENT_TYPES.add(SliderUnit_3261);
+			KNOWN_ELEMENT_TYPES.add(GalleryUnit_3263);
+			KNOWN_ELEMENT_TYPES.add(SelectAction_3272);
+			KNOWN_ELEMENT_TYPES.add(DeleteAction_3273);
+			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3274);
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
@@ -1326,8 +1398,16 @@ public class WebsiteElementTypes {
 			return SelectAction_3107;
 		case DeleteActionEditPart.VISUAL_ID:
 			return DeleteAction_3101;
+		case ImageIndexUnitEditPart.VISUAL_ID:
+			return ImageIndexUnit_3267;
 		case SelectAction3EditPart.VISUAL_ID:
 			return SelectAction_3126;
+		case DeleteAction2EditPart.VISUAL_ID:
+			return DeleteAction_3147;
+		case FeatureSupportActionEditPart.VISUAL_ID:
+			return FeatureSupportAction_3234;
+		case SelectAction4EditPart.VISUAL_ID:
+			return SelectAction_3127;
 		case DataTypeField3EditPart.VISUAL_ID:
 			return DataTypeField_3203;
 		case DateField3EditPart.VISUAL_ID:
@@ -1338,8 +1418,8 @@ public class WebsiteElementTypes {
 			return IndexUnit_3136;
 		case UnitElement15EditPart.VISUAL_ID:
 			return UnitElement_3195;
-		case SelectAction4EditPart.VISUAL_ID:
-			return SelectAction_3127;
+		case SelectAction5EditPart.VISUAL_ID:
+			return SelectAction_3128;
 		case UnitAssociation12EditPart.VISUAL_ID:
 			return UnitAssociation_3194;
 		case DetailsUnit7EditPart.VISUAL_ID:
@@ -1354,18 +1434,18 @@ public class WebsiteElementTypes {
 			return UnitElement_3199;
 		case UnitAssociation14EditPart.VISUAL_ID:
 			return UnitAssociation_3198;
-		case SelectAction5EditPart.VISUAL_ID:
-			return SelectAction_3128;
+		case SelectAction6EditPart.VISUAL_ID:
+			return SelectAction_3146;
 		case DataTypeField4EditPart.VISUAL_ID:
 			return DataTypeField_3204;
 		case DateField4EditPart.VISUAL_ID:
 			return DateField_3210;
-		case SelectAction6EditPart.VISUAL_ID:
-			return SelectAction_3146;
-		case DeleteAction2EditPart.VISUAL_ID:
-			return DeleteAction_3147;
-		case FeatureSupportActionEditPart.VISUAL_ID:
-			return FeatureSupportAction_3234;
+		case SelectAction7EditPart.VISUAL_ID:
+			return SelectAction_3153;
+		case DeleteAction3EditPart.VISUAL_ID:
+			return DeleteAction_3154;
+		case FeatureSupportAction2EditPart.VISUAL_ID:
+			return FeatureSupportAction_3266;
 		case MapUnitEditPart.VISUAL_ID:
 			return MapUnit_3228;
 		case SearchUnitEditPart.VISUAL_ID:
@@ -1392,24 +1472,32 @@ public class WebsiteElementTypes {
 			return UnitElement_3250;
 		case UnitAssociation17EditPart.VISUAL_ID:
 			return UnitAssociation_3221;
-		case SelectAction7EditPart.VISUAL_ID:
-			return SelectAction_3153;
-		case DeleteAction3EditPart.VISUAL_ID:
-			return DeleteAction_3154;
-		case DataTypeField6EditPart.VISUAL_ID:
-			return DataTypeField_3206;
-		case DateField6EditPart.VISUAL_ID:
-			return DateField_3212;
-		case SliderUnitEditPart.VISUAL_ID:
-			return SliderUnit_3261;
-		case GalleryUnitEditPart.VISUAL_ID:
-			return GalleryUnit_3263;
 		case SelectAction8EditPart.VISUAL_ID:
 			return SelectAction_3264;
 		case DeleteAction4EditPart.VISUAL_ID:
 			return DeleteAction_3265;
-		case FeatureSupportAction2EditPart.VISUAL_ID:
-			return FeatureSupportAction_3266;
+		case DataTypeField6EditPart.VISUAL_ID:
+			return DataTypeField_3206;
+		case DateField6EditPart.VISUAL_ID:
+			return DateField_3212;
+		case ImageIndexUnit2EditPart.VISUAL_ID:
+			return ImageIndexUnit_3268;
+		case SelectAction9EditPart.VISUAL_ID:
+			return SelectAction_3269;
+		case DeleteAction5EditPart.VISUAL_ID:
+			return DeleteAction_3270;
+		case FeatureSupportAction3EditPart.VISUAL_ID:
+			return FeatureSupportAction_3271;
+		case SliderUnitEditPart.VISUAL_ID:
+			return SliderUnit_3261;
+		case GalleryUnitEditPart.VISUAL_ID:
+			return GalleryUnit_3263;
+		case SelectAction10EditPart.VISUAL_ID:
+			return SelectAction_3272;
+		case DeleteAction6EditPart.VISUAL_ID:
+			return DeleteAction_3273;
+		case FeatureSupportAction4EditPart.VISUAL_ID:
+			return FeatureSupportAction_3274;
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return ActionMenuEntry_3236;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:

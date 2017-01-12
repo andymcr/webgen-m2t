@@ -546,6 +546,16 @@ public class Messages extends NLS {
 	public static String GridUnit10CreationTool_desc;
 
 	/**
+	* @generated
+	*/
+	public static String ImageGridUnit11CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ImageGridUnit11CreationTool_desc;
+
+	/**
 	 * @generated
 	 */
 	public static String SelectAction1CreationTool_title;
@@ -921,6 +931,11 @@ public class Messages extends NLS {
 	public static String IndexUnitUnitFieldCompartment5EditPart_title;
 
 	/**
+	* @generated
+	*/
+	public static String ImageIndexUnitActionCompartmentEditPart_title;
+
+	/**
 	 * @generated
 	 */
 	public static String IndexUnitUnitFieldCompartment6EditPart_title;
@@ -989,6 +1004,11 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String IndexUnitActionCompartment2EditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String ImageIndexUnitActionCompartment2EditPart_title;
 
 	/**
 	* @generated

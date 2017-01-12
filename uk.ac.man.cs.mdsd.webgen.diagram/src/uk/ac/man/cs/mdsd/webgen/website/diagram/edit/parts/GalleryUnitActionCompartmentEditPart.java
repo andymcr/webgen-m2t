@@ -89,13 +89,13 @@ public class GalleryUnitActionCompartmentEditPart extends ListCompartmentEditPar
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3264) {
+			if (type == WebsiteElementTypes.SelectAction_3272) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DeleteAction_3265) {
+			if (type == WebsiteElementTypes.DeleteAction_3273) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.FeatureSupportAction_3266) {
+			if (type == WebsiteElementTypes.FeatureSupportAction_3274) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

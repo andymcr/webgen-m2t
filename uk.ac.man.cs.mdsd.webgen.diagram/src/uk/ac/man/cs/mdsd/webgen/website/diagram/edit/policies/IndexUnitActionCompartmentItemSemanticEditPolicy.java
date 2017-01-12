@@ -4,8 +4,11 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DeleteAction2CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DeleteAction3CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.FeatureSupportAction2CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.FeatureSupportActionCreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SelectAction6CreateCommand;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SelectAction7CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
 /**
@@ -24,14 +27,14 @@ public class IndexUnitActionCompartmentItemSemanticEditPolicy extends WebsiteBas
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.SelectAction_3146 == req.getElementType()) {
-			return getGEFWrapper(new SelectAction6CreateCommand(req));
+		if (WebsiteElementTypes.SelectAction_3153 == req.getElementType()) {
+			return getGEFWrapper(new SelectAction7CreateCommand(req));
 		}
-		if (WebsiteElementTypes.DeleteAction_3147 == req.getElementType()) {
-			return getGEFWrapper(new DeleteAction2CreateCommand(req));
+		if (WebsiteElementTypes.DeleteAction_3154 == req.getElementType()) {
+			return getGEFWrapper(new DeleteAction3CreateCommand(req));
 		}
-		if (WebsiteElementTypes.FeatureSupportAction_3234 == req.getElementType()) {
-			return getGEFWrapper(new FeatureSupportActionCreateCommand(req));
+		if (WebsiteElementTypes.FeatureSupportAction_3266 == req.getElementType()) {
+			return getGEFWrapper(new FeatureSupportAction2CreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}
