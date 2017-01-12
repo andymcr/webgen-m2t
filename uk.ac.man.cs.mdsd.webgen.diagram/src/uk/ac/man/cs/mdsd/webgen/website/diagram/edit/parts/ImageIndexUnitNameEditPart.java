@@ -520,6 +520,7 @@ public class ImageIndexUnitNameEditPart extends CompartmentEditPart implements I
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class key) {
 		if (ILabelDelegate.class.equals(key)) {
