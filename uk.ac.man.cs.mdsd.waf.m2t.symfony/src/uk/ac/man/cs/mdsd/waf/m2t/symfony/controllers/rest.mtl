@@ -40,15 +40,15 @@ class [entityOrView.controllerClassName()/] extends Controller
     }
 
     /**
-     * @Rest\Post("/[service.name.toLowerCase()/]_new", name="[entityOrView.routeName()/]_new")
+     * Rest\Post("/[service.name.toLowerCase()/]_new", name="[entityOrView.routeName()/]_new")
      *
-     * @ApiDoc(resource="true")
+     * ApiDoc(resource="true")
      *
      **/
-    public function new[service.name/]Action()
-    {
-        return array('users' => $users);
-    }
+//    public function new[service.name/]Action()
+//    {
+//        return array('users' => $users);
+//    }
 
 }
 [/let]

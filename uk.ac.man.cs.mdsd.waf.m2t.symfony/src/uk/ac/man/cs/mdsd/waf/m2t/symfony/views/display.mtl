@@ -12,8 +12,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::action/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::gallery/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::imageIndex/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -333,20 +335,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/for]
 [/template]
 
-[template public unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
-	? (unit.oclIsTypeOf(IndexImageGridUnit)) post(trim())]
-[let indexUnit : IndexImageGridUnit = unit.oclAsType(IndexImageGridUnit)]
-{% for entry in [accessor/] %}
-[if (not nullDisplayValue.oclIsUndefined())]
-{% else %}
-[/if]
-{% endfor %}
-[/let]
-[/template]
-
 [template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(unit.entities->first(), rowAccessor, '\''.concat(action.displayLabel).concat('\''), rowAccessor.concat('.defaultLabel()'), rowAccessor)/]
+[action.actionLink(unit.entities->first(), rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor)/]
 [/for]
 [/template]
 
@@ -461,7 +452,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 				feature.oclAsType(UnitAssociation).path.association.partOf
 			endif]
 [feature.actions->select(a | not a.disable)
-	->first().actionLink(parentEntityOrView, parentAccessor, feature.getValue(accessor), parentAccessor.concat('.defaultLabel()'), parentAccessor)/]
+	->first().actionLink(parentEntityOrView, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor)/]
 [/let]
 [else]
 {{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
@@ -472,7 +463,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(association.path.association.targetType(), accessor, accessor.concat('.defaultLabel()'), accessor.concat('.defaultLabel()'), accessor)/]
+	->first().actionLink(association.path.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor)/]
 [else]
 {{ [accessor/].defaultLabel()| default('[if (not association.nullDisplayValue.oclIsUndefined())][association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
@@ -507,133 +498,3 @@ NULL
 [association.propertyAccessor(parentAccessor)/]
 [/if]
 [/template]
-
-
-[template public getValue(field : UnitField, accessor : String) post(trim())]
-[if (field.oclIsTypeOf(UnitFeature))]
-[field.oclAsType(UnitFeature).getValue(accessor)/]
-[else]
-NULL
-[/if]
-[/template]
-
-[template public getValue(feature : UnitFeature, accessor : String) post(trim())]
-[if (feature.oclIsTypeOf(UnitAttribute))]
-[feature.oclAsType(UnitAttribute).getValue(accessor)/]
-[else]
-[feature.oclAsType(UnitAssociation).getValue(accessor)/]
-[/if]
-[/template]
-
-[template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
-[attribute.attribute.getValue(accessor)/]
-[/template]
-
-[template public getValue(association : UnitAssociation, accessor : String) post(trim())]
-[if (not association.path.childFeature.oclIsUndefined())]
-[association.path.childFeature.getValue(accessor)/]
-[else]
-	[if (not association.valueDisplay.oclIsUndefined())]
-[association.valueDisplay.label(accessor)/]
-	[else]
-[accessor/].defaultLabel()
-	[/if]
-[/if]
-[/template]
-
-[template public getValue(child : ChildFeature, accessor : String)
-	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
-[let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
-[attribute.attribute.getValue(accessor)/]
-[/let]
-[/template]
-
-[template public getValue(child : ChildFeature, accessor : String)
-	? (child.oclIsTypeOf(ChildAssociation)) post(trim())]
-[let association : ChildAssociation = child.oclAsType(ChildAssociation)]
-[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.getValue(accessor)/]
-[else]
-[accessor/].defaultLabel()
-[/if]
-[/let]
-[/template]
-
-
-[template public getValue(attribute : Attribute, accessor : String)
-	? (attribute.isDataType() and not attribute.isEnumerationType()
-		or attribute.isDate() or attribute.isUrl() or attribute.isResource()) post(trim())]
-[accessor/]
-[/template]
-
-[template public getValue(attribute : Attribute, accessor : String)
-	? (attribute.isEnumerationType()) post(trim())]
-[accessor/] | [attribute.enumerationType().filterName()/] | trans({}, 'entity')
-[/template]
-
-
-[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
-	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
-[let delete : DeleteAction = action.oclAsType(DeleteAction)]
-[action.anchor(delete.routeName(), entityOrView, routeParametersAccessor, label, title, delete.confirmMessage, conditionAccessor)/]
-[/let]
-[/template]
-
-
-[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
-	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
-[let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[action.anchor(feature.routeName(), entityOrView, routeParametersAccessor, label, title, feature.confirmMessage, conditionAccessor)/]
-[/let]
-[/template]
-
-[template public actionLink(action : InlineAction, dummy : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
-	? (action.oclIsTypeOf(SelectAction))  post(trim())]
-[let select : SelectAction = action.oclAsType(SelectAction)]
-[let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
-[let targetEntityOrView : EntityOrView = targetUnit.entities->first()]
-[action.anchor(targetUnit.routeName(), targetEntityOrView, routeParametersAccessor, label, title, null, conditionAccessor)/]
-[/let]
-[/let]
-[/let]
-[/template]
-
-[template private anchor(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String) post(trim())]
-[if (not action.requiresRole.oclIsUndefined())]
-{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, conditionAccessor)/][if (not action.requiresRole.oclIsUndefined())]
-{% endif %}[/if]
-[/template]
-
-[template private anchor2(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String) post(trim())]
-[if (action.displayWhen.oclIsUndefined())]
-	[if (action.enableWhen.oclIsUndefined())]
-[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]
-	[else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}
-	[/if]
-[else]
-{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[if (action.enableWhen.oclIsUndefined())]
-[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/][else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}[/if]
-{% endif %}
-[/if]
-[/template]
-
-[template private anchor3(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String) post(trim())]
-<a href="{{ path('[routeName/]', { [entityOrView.routeActualParameters(entityOrView, routeParametersAccessor, false)/] }) }}" title="[action.displayLabel/] {{ [title/] }}"[if (not confirmMessage.oclIsUndefined())]
- onclick="return confirm('[confirmMessage/] {{ [title/] }}');"[/if]>{{ [label/] }}</a>
-[/template]
-
-[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String, parentPath : Boolean) post(trim())]
-[if (entityOrView.isContained())]
-[entityOrView.container().routeActualParameters(base, accessor.concat('.').concat(entityOrView.containingAssociation().modelPropertyName()), parentPath)/]
-[/if]
-[if (not parentPath)]
-	[for (key : Attribute | entityOrView.attributeKeys())]
-	[let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
-'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
-	[/let]
-	[/for]
-[/if]
-[/template]
-

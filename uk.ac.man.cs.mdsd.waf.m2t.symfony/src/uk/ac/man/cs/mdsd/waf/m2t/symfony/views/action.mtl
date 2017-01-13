@@ -1,0 +1,138 @@
+[comment encoding = UTF-8 /]
+[module action(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
+
+
+[template public getValue(field : UnitField, accessor : String) post(trim())]
+[if (field.oclIsTypeOf(UnitFeature))]
+[field.oclAsType(UnitFeature).getValue(accessor)/]
+[else]
+NULL
+[/if]
+[/template]
+
+[template public getValue(feature : UnitFeature, accessor : String) post(trim())]
+[if (feature.oclIsTypeOf(UnitAttribute))]
+[feature.oclAsType(UnitAttribute).getValue(accessor)/]
+[else]
+[feature.oclAsType(UnitAssociation).getValue(accessor)/]
+[/if]
+[/template]
+
+[template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
+[attribute.attribute.getValue(accessor)/]
+[/template]
+
+[template public getValue(association : UnitAssociation, accessor : String) post(trim())]
+[if (not association.path.childFeature.oclIsUndefined())]
+[association.path.childFeature.getValue(accessor)/]
+[else]
+	[if (not association.valueDisplay.oclIsUndefined())]
+[association.valueDisplay.label(accessor)/]
+	[else]
+[accessor/].defaultLabel()
+	[/if]
+[/if]
+[/template]
+
+[template public getValue(child : ChildFeature, accessor : String)
+	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
+[attribute.attribute.getValue(accessor)/]
+[/let]
+[/template]
+
+[template public getValue(child : ChildFeature, accessor : String)
+	? (child.oclIsTypeOf(ChildAssociation)) post(trim())]
+[let association : ChildAssociation = child.oclAsType(ChildAssociation)]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(accessor)/]
+[else]
+[accessor/].defaultLabel()
+[/if]
+[/let]
+[/template]
+
+
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isDataType() and not attribute.isEnumerationType()
+		or attribute.isDate() or attribute.isUrl() or attribute.isResource()) post(trim())]
+[accessor/]
+[/template]
+
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isEnumerationType()) post(trim())]
+[accessor/] | [attribute.enumerationType().filterName()/] | trans({}, 'entity')
+[/template]
+
+
+[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
+	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
+[let delete : DeleteAction = action.oclAsType(DeleteAction)]
+[action.anchor(delete.routeName(), entityOrView, routeParametersAccessor, label, title, delete.confirmMessage, conditionAccessor)/]
+[/let]
+[/template]
+
+[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
+	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
+[let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+[action.anchor(feature.routeName(), entityOrView, routeParametersAccessor, label, title, feature.confirmMessage, conditionAccessor)/]
+[/let]
+[/template]
+
+[template public actionLink(action : InlineAction, dummy : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
+	? (action.oclIsTypeOf(SelectAction))  post(trim())]
+[let select : SelectAction = action.oclAsType(SelectAction)]
+[let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
+[let targetEntityOrView : EntityOrView = targetUnit.entities->first()]
+[action.anchor(targetUnit.routeName(), targetEntityOrView, routeParametersAccessor, label, title, null, conditionAccessor)/]
+[/let]
+[/let]
+[/let]
+[/template]
+
+[template private anchor(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String) post(trim())]
+[if (not action.requiresRole.oclIsUndefined())]
+{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, conditionAccessor)/][if (not action.requiresRole.oclIsUndefined())]
+{% endif %}[/if]
+[/template]
+
+[template private anchor2(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String) post(trim())]
+[if (action.displayWhen.oclIsUndefined())]
+	[if (action.enableWhen.oclIsUndefined())]
+[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]
+	[else]
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}
+	[/if]
+[else]
+{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[if (action.enableWhen.oclIsUndefined())]
+[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/][else]
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage)/]{% else %}{{ [label/] }}{% endif %}[/if]
+{% endif %}
+[/if]
+[/template]
+
+[template private anchor3(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String) post(trim())]
+<a href="{{ path('[routeName/]', { [entityOrView.routeActualParameters(entityOrView, routeParametersAccessor, false)/] }) }}" title="[action.displayLabel/] {{ [title/] }}"[if (not confirmMessage.oclIsUndefined())]
+ onclick="return confirm('[confirmMessage/] {{ [title/] }}');"[/if]>[label/]</a>
+[/template]
+
+[template public routeActualParameters(entityOrView : EntityOrView, base : EntityOrView, accessor : String, parentPath : Boolean) post(trim())]
+[if (entityOrView.isContained())]
+[entityOrView.container().routeActualParameters(base, accessor.concat('.').concat(entityOrView.containingAssociation().modelPropertyName()), parentPath)/]
+[/if]
+[if (not parentPath)]
+	[for (key : Attribute | entityOrView.attributeKeys())]
+	[let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
+'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
+	[/let]
+	[/for]
+[/if]
+[/template]
+

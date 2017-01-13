@@ -8,6 +8,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::image/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -31,9 +32,9 @@
 
 
 [template private uniteGallery(unit : GalleryUnit, accessor : String) post(trim())]
-<div id="gallery" class="gallery_content" style="display:none;">
+<div id="gallery" class="[unit.contentClass/]" style="display:none;">
 {% for image in [accessor/] %}
-[unit.imagePathFeature.uniteGallery(unit, 'image', 'image')/]
+[unit.imagePathFeature.imagePath(unit, 'image', 'image')/]
 {% endfor %}
 </div>
 <script type="text/javascript"> 
@@ -47,7 +48,7 @@
             tile_enable_border:false,
             tile_enable_shadow:false,
 [let thumbFilter : ThumbnailFilter = unit.thumbFilter()]
-[if (not thumbnailFilter.oclIsUndefined())]
+[if (not thumbFilter.oclIsUndefined())]
             tile_height:[thumbFilter.height/],
             tile_width:[thumbFilter.width/],
 [/if]
@@ -61,32 +62,22 @@
 </script>
 [/template]
 
-[query private thumbFilter(unit : ImageUnit) : ThumbnailFilter
-	= let filters : Sequence(ThumbnailFilter)
-		= unit.thumbnailFilter.filters->select(f | f.oclIsTypeOf(ThumbnailFilter)).oclAsType(ThumbnailFilter)
-		in if filters->isEmpty() then
-				null
-			else
-				filters->first()
-			endif
-/]
-
 [template private uniteGallery(feature : FeaturePath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
 	? (feature.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
 [let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
 [let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.image(accessor, baseAccessor)/]
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
 {% if [accessor/] is not empty %}
-<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.image(accessor, baseAccessor)/]
 {% endif %}
 	[else]
 {% if [accessor/] is empty %}
-<img [unit.imageMissingSrc()/][unit.imageAlt(baseAccessor)/] [unit.imageMissingDataImage()/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.imageMissing(accessor, baseAccessor)/]
 {% else %}
-<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.image(accessor, baseAccessor)/]
 {% endif %}
 	[/if]
 [/if]
@@ -118,7 +109,7 @@
 	[/if]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 {% else %}
-<img [unit.imageMissingSrc()/][unit.imageAlt(baseAccessor)/] [unit.imageMissingDataImage()/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.imageMissing(accessor, baseAccessor)/]
 	[/if]
 {% endif %}
 [/if]
@@ -131,17 +122,17 @@
 [let attribute : ChildAttribute = feature.oclAsType(ChildAttribute)]
 [let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.image(accessor, baseAccessor)/]
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
 {% if [accessor/] is not empty %}
-<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.image(accessor, baseAccessor)/]
 {% endif %}
 	[else]
 {% if [accessor/] is empty %}
-<img [unit.imageMissingSrc()/][unit.imageAlt(baseAccessor)/] [unit.imageMissingDataImage()/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.imageMissing(accessor, baseAccessor)/]
 {% else %}
-<img [unit.imageSrc(accessor)/][unit.imageAlt(baseAccessor)/] [unit.imageDataImage(accessor)/][unit.imageDataDescription(baseAccessor)/]/>
+[unit.image(accessor, baseAccessor)/]
 {% endif %}
 	[/if]
 [/if]
@@ -187,29 +178,3 @@ blueimp.Gallery(
 );
 </script>
 [/template]
-
-[template private imageSrc(unit : ImageUnit, accessor : String) post(trim())]
-src="{{ [accessor/] | imagine_filter('[unit.thumbnailFilter.name/]') }}"
-[/template]
-
-[template private imageMissingSrc(unit : ImageUnit) post(trim())]
-src="{{ '[unit.missingImagePath/]' | imagine_filter('[unit.thumbnailFilter.name/]') }}"
-[/template]
-
-[template private imageAlt(unit : ImageUnit, accessor : String)]
-[if (not unit.titleFeature.oclIsUndefined())]
- alt="{{ [unit.titleFeature.accessor(accessor)/] }}"[/if]
-[/template]
-
-[template private imageDataImage(unit : ImageUnit, accessor : String) post(trim())]
-data-image="[if (unit.imageFilter.oclIsUndefined())]
-http://sps.andycarpenter.me.uk/{{ [accessor/] }}[else]
-{{ [accessor/] | imagine_filter('[unit.imageFilter.name/]') }}[/if]"
-[/template]
-
-[template private imageMissingDataImage(unit : ImageUnit) post(trim())]
-data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"
-[/template]
-
-[template private imageDataDescription(unit : ImageUnit, accessor : String)]
- data-description="?????"[/template]
