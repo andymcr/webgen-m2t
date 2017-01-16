@@ -1875,57 +1875,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	/**
 	* @generated
 	*/
-	private IParser selectActionName_5279Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getSelectActionName_5279Parser() {
-		if (selectActionName_5279Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5279Parser = parser;
-		}
-		return selectActionName_5279Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser deleteActionName_5280Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getDeleteActionName_5280Parser() {
-		if (deleteActionName_5280Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			deleteActionName_5280Parser = parser;
-		}
-		return deleteActionName_5280Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser featureSupportActionName_5281Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getFeatureSupportActionName_5281Parser() {
-		if (featureSupportActionName_5281Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			featureSupportActionName_5281Parser = parser;
-		}
-		return featureSupportActionName_5281Parser;
-	}
-
-	/**
-	* @generated
-	*/
 	private IParser selectActionName_5272Parser;
 
 	/**
@@ -2413,12 +2362,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getSliderUnitName_5269Parser();
 		case GalleryUnitNameEditPart.VISUAL_ID:
 			return getGalleryUnitName_5271Parser();
-		case SelectActionName10EditPart.VISUAL_ID:
-			return getSelectActionName_5279Parser();
-		case DeleteActionName6EditPart.VISUAL_ID:
-			return getDeleteActionName_5280Parser();
-		case FeatureSupportActionNameEditPart.VISUAL_ID:
-			return getFeatureSupportActionName_5281Parser();
 		case ActionMenuEntryNameEditPart.VISUAL_ID:
 			return getActionMenuEntryName_5243Parser();
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:

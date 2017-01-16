@@ -710,24 +710,6 @@ public class WebsiteElementTypes {
 	/**
 	* @generated
 	*/
-	public static final IElementType SelectAction_3272 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3272"); //$NON-NLS-1$
-
-	/**
-	* @generated
-	*/
-	public static final IElementType DeleteAction_3273 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.DeleteAction_3273"); //$NON-NLS-1$
-
-	/**
-	* @generated
-	*/
-	public static final IElementType FeatureSupportAction_3274 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.FeatureSupportAction_3274"); //$NON-NLS-1$
-
-	/**
-	* @generated
-	*/
 	public static final IElementType SelectAction_3264 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.SelectAction_3264"); //$NON-NLS-1$
 
@@ -1082,12 +1064,6 @@ public class WebsiteElementTypes {
 
 			elements.put(GalleryUnit_3263, WebsitePackage.eINSTANCE.getGalleryUnit());
 
-			elements.put(SelectAction_3272, WebsitePackage.eINSTANCE.getSelectAction());
-
-			elements.put(DeleteAction_3273, WebsitePackage.eINSTANCE.getDeleteAction());
-
-			elements.put(FeatureSupportAction_3274, WebsitePackage.eINSTANCE.getFeatureSupportAction());
-
 			elements.put(ActionMenuEntry_3236, WebsitePackage.eINSTANCE.getActionMenuEntry());
 
 			elements.put(EditStaticTextMenuEntry_3156, WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
@@ -1238,9 +1214,6 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3271);
 			KNOWN_ELEMENT_TYPES.add(SliderUnit_3261);
 			KNOWN_ELEMENT_TYPES.add(GalleryUnit_3263);
-			KNOWN_ELEMENT_TYPES.add(SelectAction_3272);
-			KNOWN_ELEMENT_TYPES.add(DeleteAction_3273);
-			KNOWN_ELEMENT_TYPES.add(FeatureSupportAction_3274);
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
 			KNOWN_ELEMENT_TYPES.add(Selection_3150);
@@ -1492,12 +1465,6 @@ public class WebsiteElementTypes {
 			return SliderUnit_3261;
 		case GalleryUnitEditPart.VISUAL_ID:
 			return GalleryUnit_3263;
-		case SelectAction10EditPart.VISUAL_ID:
-			return SelectAction_3272;
-		case DeleteAction6EditPart.VISUAL_ID:
-			return DeleteAction_3273;
-		case FeatureSupportAction4EditPart.VISUAL_ID:
-			return FeatureSupportAction_3274;
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return ActionMenuEntry_3236;
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:

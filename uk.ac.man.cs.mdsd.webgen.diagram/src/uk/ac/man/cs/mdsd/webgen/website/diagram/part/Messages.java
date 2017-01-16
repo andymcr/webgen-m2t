@@ -1013,11 +1013,6 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String GalleryUnitActionCompartmentEditPart_title;
-
-	/**
-	* @generated
-	*/
 	public static String StaticMenuIncludedFeaturesCompartmentEditPart_title;
 
 	/**

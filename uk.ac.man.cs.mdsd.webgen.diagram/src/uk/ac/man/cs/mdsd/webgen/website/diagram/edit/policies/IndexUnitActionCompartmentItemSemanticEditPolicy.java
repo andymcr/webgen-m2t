@@ -3,11 +3,8 @@ package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DeleteAction2CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.DeleteAction3CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.FeatureSupportAction2CreateCommand;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.FeatureSupportActionCreateCommand;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SelectAction6CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.commands.SelectAction7CreateCommand;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 

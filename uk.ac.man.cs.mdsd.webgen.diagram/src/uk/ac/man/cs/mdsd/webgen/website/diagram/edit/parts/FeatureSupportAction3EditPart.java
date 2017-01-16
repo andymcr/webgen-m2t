@@ -536,6 +536,7 @@ public class FeatureSupportAction3EditPart extends CompartmentEditPart implement
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class key) {
 		if (ILabelDelegate.class.equals(key)) {

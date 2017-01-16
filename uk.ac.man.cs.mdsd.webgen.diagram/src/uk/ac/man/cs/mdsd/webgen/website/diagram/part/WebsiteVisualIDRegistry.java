@@ -557,17 +557,6 @@ public class WebsiteVisualIDRegistry {
 				return FeatureSupportAction3EditPart.VISUAL_ID;
 			}
 			break;
-		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelectAction().isSuperTypeOf(domainElement.eClass())) {
-				return SelectAction10EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getDeleteAction().isSuperTypeOf(domainElement.eClass())) {
-				return DeleteAction6EditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getFeatureSupportAction().isSuperTypeOf(domainElement.eClass())) {
-				return FeatureSupportAction4EditPart.VISUAL_ID;
-			}
-			break;
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 			if (WebsitePackage.eINSTANCE.getActionMenuEntry().isSuperTypeOf(domainElement.eClass())) {
 				return ActionMenuEntryEditPart.VISUAL_ID;
@@ -1341,24 +1330,6 @@ public class WebsiteVisualIDRegistry {
 			if (GalleryUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (GalleryUnitActionCompartmentEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case SelectAction10EditPart.VISUAL_ID:
-			if (SelectActionName10EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case DeleteAction6EditPart.VISUAL_ID:
-			if (DeleteActionName6EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
-		case FeatureSupportAction4EditPart.VISUAL_ID:
-			if (FeatureSupportActionNameEditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
 			break;
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			if (ActionMenuEntryNameEditPart.VISUAL_ID == nodeVisualID) {
@@ -1791,17 +1762,6 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
-			if (SelectAction10EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (DeleteAction6EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			if (FeatureSupportAction4EditPart.VISUAL_ID == nodeVisualID) {
-				return true;
-			}
-			break;
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 			if (ActionMenuEntryEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -1944,7 +1904,6 @@ public class WebsiteVisualIDRegistry {
 		case IndexUnitUnitFieldCompartment8EditPart.VISUAL_ID:
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 		case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
-		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
 		case ServiceOperationsCompartmentEditPart.VISUAL_ID:
@@ -2036,15 +1995,13 @@ public class WebsiteVisualIDRegistry {
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
 		case BusinessOperationEditPart.VISUAL_ID:
 		case SliderUnitEditPart.VISUAL_ID:
+		case GalleryUnitEditPart.VISUAL_ID:
 		case SelectAction8EditPart.VISUAL_ID:
 		case DeleteAction4EditPart.VISUAL_ID:
 		case FeatureSupportAction2EditPart.VISUAL_ID:
 		case SelectAction9EditPart.VISUAL_ID:
 		case DeleteAction5EditPart.VISUAL_ID:
 		case FeatureSupportAction3EditPart.VISUAL_ID:
-		case SelectAction10EditPart.VISUAL_ID:
-		case DeleteAction6EditPart.VISUAL_ID:
-		case FeatureSupportAction4EditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

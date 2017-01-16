@@ -706,24 +706,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case GalleryUnitNameEditPart.VISUAL_ID:
 				return new GalleryUnitNameEditPart(view);
 
-			case SelectAction10EditPart.VISUAL_ID:
-				return new SelectAction10EditPart(view);
-
-			case SelectActionName10EditPart.VISUAL_ID:
-				return new SelectActionName10EditPart(view);
-
-			case DeleteAction6EditPart.VISUAL_ID:
-				return new DeleteAction6EditPart(view);
-
-			case DeleteActionName6EditPart.VISUAL_ID:
-				return new DeleteActionName6EditPart(view);
-
-			case FeatureSupportAction4EditPart.VISUAL_ID:
-				return new FeatureSupportAction4EditPart(view);
-
-			case FeatureSupportActionNameEditPart.VISUAL_ID:
-				return new FeatureSupportActionNameEditPart(view);
-
 			case ActionMenuEntryEditPart.VISUAL_ID:
 				return new ActionMenuEntryEditPart(view);
 
@@ -885,9 +867,6 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 
 			case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
 				return new ImageIndexUnitActionCompartment2EditPart(view);
-
-			case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
-				return new GalleryUnitActionCompartmentEditPart(view);
 
 			case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 				return new StaticMenuIncludedFeaturesCompartmentEditPart(view);

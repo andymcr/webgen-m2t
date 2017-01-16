@@ -27,7 +27,6 @@ import uk.ac.man.cs.mdsd.webgen.website.Entity;
 import uk.ac.man.cs.mdsd.webgen.website.EntityFeature;
 import uk.ac.man.cs.mdsd.webgen.website.EnumerationLiteral;
 import uk.ac.man.cs.mdsd.webgen.website.EnumerationType;
-import uk.ac.man.cs.mdsd.webgen.website.GalleryUnit;
 import uk.ac.man.cs.mdsd.webgen.website.ImageIndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.IndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.InlineAction;
@@ -206,8 +205,6 @@ public class WebsiteDiagramUpdater {
 			return getIndexUnitActionCompartment_7116SemanticChildren(view);
 		case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
 			return getImageIndexUnitActionCompartment_7136SemanticChildren(view);
-		case GalleryUnitActionCompartmentEditPart.VISUAL_ID:
-			return getGalleryUnitActionCompartment_7134SemanticChildren(view);
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 			return getStaticMenuMenuEntriesCompartment_7084SemanticChildren(view);
 		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
@@ -1596,38 +1593,6 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	* @generated
-	*/
-	public static List<WebsiteNodeDescriptor> getGalleryUnitActionCompartment_7134SemanticChildren(View view) {
-		if (false == view.eContainer() instanceof View) {
-			return Collections.emptyList();
-		}
-		View containerView = (View) view.eContainer();
-		if (!containerView.isSetElement()) {
-			return Collections.emptyList();
-		}
-		GalleryUnit modelElement = (GalleryUnit) containerView.getElement();
-		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
-		for (Iterator<?> it = modelElement.getActions().iterator(); it.hasNext();) {
-			InlineAction childElement = (InlineAction) it.next();
-			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == SelectAction10EditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
-			}
-			if (visualID == DeleteAction6EditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
-			}
-			if (visualID == FeatureSupportAction4EditPart.VISUAL_ID) {
-				result.add(new WebsiteNodeDescriptor(childElement, visualID));
-				continue;
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * @generated
 	 */
 	public static List<WebsiteNodeDescriptor> getIndexUnitUnitFieldCompartment_7076SemanticChildren(View view) {
@@ -1970,12 +1935,6 @@ public class WebsiteDiagramUpdater {
 			return getSliderUnit_3261ContainedLinks(view);
 		case GalleryUnitEditPart.VISUAL_ID:
 			return getGalleryUnit_3263ContainedLinks(view);
-		case SelectAction10EditPart.VISUAL_ID:
-			return getSelectAction_3272ContainedLinks(view);
-		case DeleteAction6EditPart.VISUAL_ID:
-			return getDeleteAction_3273ContainedLinks(view);
-		case FeatureSupportAction4EditPart.VISUAL_ID:
-			return getFeatureSupportAction_3274ContainedLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236ContainedLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2233,12 +2192,6 @@ public class WebsiteDiagramUpdater {
 			return getSliderUnit_3261IncomingLinks(view);
 		case GalleryUnitEditPart.VISUAL_ID:
 			return getGalleryUnit_3263IncomingLinks(view);
-		case SelectAction10EditPart.VISUAL_ID:
-			return getSelectAction_3272IncomingLinks(view);
-		case DeleteAction6EditPart.VISUAL_ID:
-			return getDeleteAction_3273IncomingLinks(view);
-		case FeatureSupportAction4EditPart.VISUAL_ID:
-			return getFeatureSupportAction_3274IncomingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236IncomingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -2496,12 +2449,6 @@ public class WebsiteDiagramUpdater {
 			return getSliderUnit_3261OutgoingLinks(view);
 		case GalleryUnitEditPart.VISUAL_ID:
 			return getGalleryUnit_3263OutgoingLinks(view);
-		case SelectAction10EditPart.VISUAL_ID:
-			return getSelectAction_3272OutgoingLinks(view);
-		case DeleteAction6EditPart.VISUAL_ID:
-			return getDeleteAction_3273OutgoingLinks(view);
-		case FeatureSupportAction4EditPart.VISUAL_ID:
-			return getFeatureSupportAction_3274OutgoingLinks(view);
 		case ActionMenuEntryEditPart.VISUAL_ID:
 			return getActionMenuEntry_3236OutgoingLinks(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -3299,27 +3246,6 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getSelectAction_3272ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3273ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3274ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4210,27 +4136,6 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getSelectAction_3272IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3273IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3274IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
 	public static List<WebsiteLinkDescriptor> getSelectAction_3264IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -5103,27 +5008,6 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getGalleryUnit_3263OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getSelectAction_3272OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getDeleteAction_3273OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getFeatureSupportAction_3274OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
