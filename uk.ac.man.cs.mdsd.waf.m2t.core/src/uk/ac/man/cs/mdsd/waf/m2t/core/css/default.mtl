@@ -218,6 +218,15 @@ form.edit_content {
 }
 
 
+.image_index_content {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.image_index_content > ul {
+	display: inline;
+}
+
 .slider_unit {
 }
 
