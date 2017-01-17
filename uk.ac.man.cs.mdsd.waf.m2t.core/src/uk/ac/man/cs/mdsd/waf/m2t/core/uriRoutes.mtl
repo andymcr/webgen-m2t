@@ -63,7 +63,7 @@
 
 
 [query public attributeKeys(unit : DynamicUnit) : Sequence(Attribute)
-	= unit.entities->first().attributeKeys()
+	= unit.contentType().attributeKeys()
 /]
 
 [query public filteredAttributeKeys(entityOrView : EntityOrView, unit : DynamicUnit) : Sequence(Attribute)
@@ -121,10 +121,10 @@
 			Sequence{}
 		else 
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-				in if dynamicUnit.entities->isEmpty() then
+				in if dynamicUnit.contentType().oclIsUndefined() then
 						Sequence{}
 					else
-						dynamicUnit.entities->first().uriPathKeys(parentPath)
+						dynamicUnit.contentType().uriPathKeys(parentPath)
 					endif
 		endif
 /]
@@ -138,10 +138,10 @@
 			Sequence{}
 		else 
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-				in if dynamicUnit.entities->isEmpty() then
+				in if dynamicUnit.contentType().oclIsUndefined() then
 						Sequence{}
 					else
-						dynamicUnit.entities->first().filteredUriPathKeys(dynamicUnit, parentPath)
+						dynamicUnit.contentType().filteredUriPathKeys(dynamicUnit, parentPath)
 					endif
 		endif
 /]

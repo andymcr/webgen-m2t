@@ -441,10 +441,10 @@
 /]
 
 [query public containingAssociation(unit : DynamicUnit) : Association
-	= if unit.entities->isEmpty() then
+	= if unit.contentType().oclIsUndefined() then
 			null
 		else
-			unit.entities->first().containingAssociation()
+			unit.contentType().containingAssociation()
 		endif
 /]
 
@@ -454,6 +454,16 @@
 		else
 			unit.displayedOn.oclAsType(UnitAssociation).displayedOn.containingUnit()
 		endif
+/]
+
+[query public contentType(unit : DynamicUnit) : EntityOrView
+	= if unit.oclIsKindOf(SingletonUnit) then
+			unit.oclAsType(SingletonUnit).contentType
+		else if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).contentType->first()
+		else
+			null
+		endif endif
 /]
 
 [query public defaultValueFields(unit : DynamicUnit) : Set(UnitField)
@@ -654,18 +664,18 @@
 /]
 
 [query public isContained(unit : DynamicUnit) : Boolean
-	= if unit.entities->isEmpty() then
+	= if unit.contentType().oclIsUndefined() then
 			false
 		else
-			unit.entities->first().isContained()
+			unit.contentType().isContained()
 		endif
 /]
 
 [query public isParameterised(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(Selectable) then
+	= if unit.oclIsKindOf(SelectableUnit) then
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-			in if dynamicUnit.entities->notEmpty() then
-					dynamicUnit.entities->first().keys->notEmpty()
+			in if dynamicUnit.contentType().oclIsUndefined() then
+					dynamicUnit.contentType().keys->notEmpty()
 				else
 					false
 				endif
