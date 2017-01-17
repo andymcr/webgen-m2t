@@ -180,7 +180,7 @@
 			if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
 				unit.unitPrefix().concat(unit.pageDisplayedOn().name).concat(unit.name)
 			else
-				unit.oclAsType(DynamicUnit).entities->first().modelName()
+				unit.oclAsType(DynamicUnit).contentType().modelName()
 			endif
 		endif
 /]

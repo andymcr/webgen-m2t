@@ -89,11 +89,7 @@ NULL
 [template public actionLink(action : InlineAction, dummy : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
-[let targetUnit : DynamicUnit = select.target.oclAsType(DynamicUnit)]
-[let targetEntityOrView : EntityOrView = targetUnit.entities->first()]
-[action.anchor(targetUnit.routeName(), targetEntityOrView, routeParametersAccessor, label, title, null, conditionAccessor)/]
-[/let]
-[/let]
+[action.anchor(select.target.oclAsType(ContentUnit).routeName(), select.target.selectionType, routeParametersAccessor, label, title, null, conditionAccessor)/]
 [/let]
 [/template]
 

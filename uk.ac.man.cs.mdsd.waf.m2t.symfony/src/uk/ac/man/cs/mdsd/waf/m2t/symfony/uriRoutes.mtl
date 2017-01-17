@@ -49,7 +49,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 [/template]
 
 [template public filteredRouteParameters(unit : DynamicUnit, parentPath : Boolean) post(trim())]
-[let entityOrView : EntityOrView = unit.entities->first()]
+[let entityOrView : EntityOrView = unit.contentType()]
 [if (parentPath and entityOrView.keyEntity().isContained())]
 [let container : EntityOrView = entityOrView.keyEntity().container()]
 	[for (key : Attribute | unit.filteredUriPathKeys(parentPath)) separator (', ')]
@@ -177,10 +177,10 @@ $[key.routeParameterName(entityOrView)/][/for]
 /]
 
 [query private entityUriPath(unit : DynamicUnit, filter : Boolean, parentPath : Boolean) : String
-	= if unit.entities->isEmpty() then
+	= if unit.contentType().oclIsUndefined() then
 			''
 		else
-			let entityOrView : EntityOrView = unit.entities->first()
+			let entityOrView : EntityOrView = unit.contentType()
 				in if parentPath then
 						entityOrView.parentEntityUriPath(unit, filter)
 					else
@@ -203,7 +203,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 			= if not unit.oclIsKindOf(DynamicUnit) then
 					''
 				else
-					unit.oclAsType(DynamicUnit).entityUriPath(filter, not unit.oclIsKindOf(Selectable) or parentPath)
+					unit.oclAsType(DynamicUnit).entityUriPath(filter, unit.oclIsKindOf(IndexUnit) or unit.oclIsKindOf(ImageUnit) or parentPath)
 				endif
 			in entityPath.combinePaths(
 					if unit.oclIsTypeOf(CreateUpdateUnit) and parentPath then
@@ -223,7 +223,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 /]
 
 [query public supportUriPath(unit : ContentUnit) : String
-	= unit.uriPath(false, unit.oclIsTypeOf(IndexUnit)).combinePaths('support')
+	= unit.uriPath(false, unit.oclIsKindOf(CollectionUnit)).combinePaths('support')
 /]
 
 [query public uriPath(action : DeleteAction) : String

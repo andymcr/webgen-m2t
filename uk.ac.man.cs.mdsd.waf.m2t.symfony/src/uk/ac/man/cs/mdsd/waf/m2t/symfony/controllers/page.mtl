@@ -49,10 +49,10 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/template]
 
 [template private useStatements(page : Page) post(trim())]
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.entities)->asSet()->asSequence()->sortedBy(e | e.name))]
+[for (entity : EntityOrView | page.editUnits()->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -160,7 +160,7 @@ public function [action.actionName()/]([unit.inlineActionMethodParameters(page)/
     $tempFilename = $this->get('[feature.operation.partOf.instanceName()/]')
         ->[feature.operation.methodName()/]([unit.loadInstance()/], '[feature.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
-    $filename = $[unit.uriPathKeys()->first().routeParameterName(unit.entities->first())/] . '[feature.fileExtension/]';
+    $filename = $[unit.uriPathKeys()->first().routeParameterName(unit.contentType())/] . '[feature.fileExtension/]';
     $response->setContentDisposition(
         ResponseHeaderBag::DISPOSITION_ATTACHMENT,
         $filename

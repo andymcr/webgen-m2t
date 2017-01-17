@@ -124,7 +124,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters()/])
 [/template]
 
 [template public createForm(unit : EditUnit, create : Boolean, placeholder : Boolean) post(trim())]
-[let entityOrView : EntityOrView = unit.entities->first()]
+[let entityOrView : EntityOrView = unit.contentType]
 $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(create)/]', array(
 [if (create)]
@@ -140,7 +140,7 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
 [/template]
 
 [template public setContainer(unit : EditUnit) post(trim())]
-[let entityOrView : EntityOrView = unit.entities->first()]
+[let entityOrView : EntityOrView = unit.contentType]
 [let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
 [let parentService : Service = entityOrView.container().services(unit.pageDisplayedOn().partOf)->first()]
             $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name/]')->find([entityOrView.routeParameters(true)/]));
@@ -155,10 +155,10 @@ $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/
 return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-	[let keyEntity : EntityOrView = unit.entities->first().keyEntity()]
+	[let keyEntity : EntityOrView = unit.contentType.keyEntity()]
 return $this->redirectToRoute('[unit.routeName(true)/]'[if (keyEntity.isContained())]
 [let container : EntityOrView = keyEntity.container()], array(
-    [container.routeActualParameters(unit, keyEntity.container(), if create then container else unit.entities->first() endif)/]
+    [container.routeActualParameters(unit, keyEntity.container(), if create then container else unit.contentType endif)/]
 )[/let][/if]);
 	[/let]
 	[/if]

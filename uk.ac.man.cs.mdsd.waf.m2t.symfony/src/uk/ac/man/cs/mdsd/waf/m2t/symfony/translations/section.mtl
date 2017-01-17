@@ -62,28 +62,30 @@
 
 [template private fieldTranslations(unit : DynamicUnit, page : Page)
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
-[for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[for (field : UnitField | editUnit.displayFields)]
 	[if (field.hasUnitTranslation())]
 		[if (field.hasCustomisedLabel())]
-<trans-unit id="[unit.containedId()/].labels.[field.id()/]">
- <source>[unit.entities->first().id()/].labels.[field.id()/]</source>
+<trans-unit id="[editUnit.containedId()/].labels.[field.id()/]">
+ <source>[editUnit.contentType.id()/].labels.[field.id()/]</source>
  <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
 		[/if]
 		[if (field.hasPlaceholder())]
-<trans-unit id="[unit.containedId()/].placeholders.[field.id()/]">
- <source>[unit.containedId()/].placeholders.[field.id()/]</source>
+<trans-unit id="[editUnit.containedId()/].placeholders.[field.id()/]">
+ <source>[editUnit.containedId()/].placeholders.[field.id()/]</source>
  <target>[field.placeholder().validXML()/]</target>
 </trans-unit>
 		[/if]
 		[if (field.hasTitle())]
-<trans-unit id="[unit.containedId()/].titles.[field.id()/]">
- <source>[unit.containedId()/].titles.[field.id()/]</source>
+<trans-unit id="[editUnit.containedId()/].titles.[field.id()/]">
+ <source>[editUnit.containedId()/].titles.[field.id()/]</source>
  <target>[field.title.validXML()/]</target>
 </trans-unit>
 		[/if]
 [/if]
 [/for]
+[/let]
 [/template]
 
 [template private fieldTranslations(unit : DynamicUnit, page : Page)

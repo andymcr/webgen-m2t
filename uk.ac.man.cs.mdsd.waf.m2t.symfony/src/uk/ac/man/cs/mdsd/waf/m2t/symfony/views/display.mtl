@@ -77,7 +77,7 @@
 
 [template private unitFilter(filter : Filter, unit : IndexUnit, accessor : String)]
 <div class="filter">
- <form action="{{ path('[unit.routeName()/]', { [unit.entities->first().routeActualParameters(unit.entities->first(), accessor, true)/] }) }}" method="get">
+ <form action="{{ path('[unit.routeName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, true)/] }) }}" method="get">
 [for (parameter : FilterParameter | filter.parameters)]
   <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
  placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
@@ -92,7 +92,7 @@
 [/template]
 
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="{{ path('[unit.supportRouteName()/]', { [unit.entities->first().routeActualParameters(unit.entities->first(), accessor, unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+<form action="{{ path('[unit.supportRouteName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
  [action.unitSupportLink()/]
 [/for]
@@ -183,7 +183,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.entities->first().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
+{{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">[field.displayValue(accessor)/]</dd>
 	[/if]
 	[if (field.conditionalDisplay())]
@@ -196,7 +196,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 				[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.entities->first().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
+{{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</dd>
 				[/if]
 			[/if]
@@ -286,7 +286,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  	[for (field : UnitField | indexUnit.displayFields)]
    <th>[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.entities->first().id()/].labels.[field.id()/]' | trans }}[/if]</th>
+{{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</th>
  	[/for]
 	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <th>Actions</th>
@@ -337,7 +337,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(unit.entities->first(), rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor)/]
+[action.actionLink(unit.contentType(), rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor)/]
 [/for]
 [/template]
 

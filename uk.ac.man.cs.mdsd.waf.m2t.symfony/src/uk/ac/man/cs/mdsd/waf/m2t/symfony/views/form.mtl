@@ -93,7 +93,7 @@
 [if (association.isSingleton())]
 [embeddedUnit.formFields(association.accessor(parentAccessor))/]
 [else]
-[let elementAccessor : String = embeddedUnit.entities->first().name]
+[let elementAccessor : String = embeddedUnit.contentType().name]
 {% for [elementAccessor/] in [association.accessor(parentAccessor)/] %}
 [embeddedUnit.formFields(elementAccessor)/]
 {% endfor %}
@@ -106,13 +106,13 @@
 [template private placeholder(field : UnitField, unit : DynamicUnit) post(trim())]
 [if (field.hasCustomisedLabel() or field.hasCustomisedPlaceholder() or field.hasCustomisedTitle())]
 '[unit.containedId()/].placeholders.[field.id()/]'[else]
-'[unit.entities->first().id()/].labels.[field.id()/]'[/if]
+'[unit.contentType().id()/].labels.[field.id()/]'[/if]
 [/template]
 
 [template private title(field : UnitField, unit : DynamicUnit) post(trim())]
 [if (field.hasCustomisedLabel() or field.hasCustomisedPlaceholder() or field.hasCustomisedTitle())]
 '[unit.containedId()/].titles.[field.id()/]'[else]
-'[unit.entities->first().id()/].labels.[field.id()/]'[/if]
+'[unit.contentType().id()/].labels.[field.id()/]'[/if]
 [/template]
 
 [template public jQueryClass(eObject : EObject) post(trim())]
