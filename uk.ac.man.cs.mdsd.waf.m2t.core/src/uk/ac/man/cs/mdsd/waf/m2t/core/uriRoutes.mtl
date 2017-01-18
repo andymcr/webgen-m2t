@@ -30,72 +30,57 @@
 
 
 [query public uriPathKeys(entityOrView : EntityOrView) : Sequence(Attribute)
-	=entityOrView.uriPathKeys(false)
-/]
-
-[query public uriPathKeys(entityOrView : EntityOrView, parentPath : Boolean) : Sequence(Attribute)
-	= if parentPath then
-			entityOrView.parentUriPathKeys()
-		else
-			let localKeys : Sequence(Attribute) = entityOrView.attributeKeys()
-				in if entityOrView.isContained() then
-					let parentKeys : Sequence(Attribute) = entityOrView.container().uriPathKeys()
-						in if localKeys->isEmpty() then
-								parentKeys
-							else if parentKeys->isEmpty() then
-								localKeys
-							else
-								localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
-							endif endif
+	= let keyEntity : EntityOrView = entityOrView.keyEntity()
+		in let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
+			in let parentKeys : Sequence(Attribute) = entityOrView.parentUriPathKeys()
+				in if localKeys->isEmpty() then
+						parentKeys
 					else
-						localKeys
+						localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
 					endif
-		endif
 /]
-
-[query public filteredUriPathKeys(entityOrView : EntityOrView, unit : DynamicUnit) : Sequence(Attribute)
-	=entityOrView.filteredUriPathKeys(unit, false)
-/]
-
-[query public filteredUriPathKeys(entityOrView : EntityOrView, unit : DynamicUnit, parentPath : Boolean) : Sequence(Attribute)
-	= entityOrView.uriPathKeys(parentPath)->select(k |  nonRoutedPathKeys(unit)->excludes(k))
-/]
-
-
-[query public attributeKeys(unit : DynamicUnit) : Sequence(Attribute)
-	= unit.contentType().attributeKeys()
-/]
-
-[query public filteredAttributeKeys(entityOrView : EntityOrView, unit : DynamicUnit) : Sequence(Attribute)
-	= entityOrView.attributeKeys()
-			->select(k | unit.nonRoutedPathKeys()->excludes(k))
-/]
-
-[query public nonRoutedPathKeys(unit : DynamicUnit) : Sequence(Attribute)
-	= unit.keyActuals
-		->select(a | if a.actual.oclIsUndefined() then
-							true
-						else
-							not a.actual.oclIsTypeOf(RouteParameterReference)
-						endif)
-		->collect(a | a.key)
-/]
-
 
 [query public hasRouteParameters(entityOrView : EntityOrView) : Boolean
-	= entityOrView.hasRouteParameters(false)
+	= entityOrView.uriPathKeys()->notEmpty()
 /]
 
-[query public hasRouteParameters(entityOrView : EntityOrView, parentPath : Boolean) : Boolean
-	= entityOrView.uriPathKeys(parentPath)->notEmpty()
+
+[query public selectType(unit : ContentUnit) : EntityOrView
+	= if unit.oclIsKindOf(SelectableUnit) then
+			let selectableUnit : SelectableUnit = unit.oclAsType(SelectableUnit)
+			in if selectableUnit.oclIsKindOf(IndexUnit) or selectableUnit.oclIsKindOf(ImageUnit) then
+				if not selectableUnit.selectionType.oclIsUndefined() then
+					selectableUnit.selectionType.keyEntity()
+				else
+					let contentType : EntityOrView
+						= selectableUnit.oclAsType(DynamicUnit).contentType()
+						in let keyEntity : EntityOrView
+								= contentType.keyEntity()
+								in if keyEntity.isContained() then
+										keyEntity.container()
+									else
+										null
+									endif
+				endif
+			else if not selectableUnit.selectionType.oclIsUndefined() then
+						selectableUnit.selectionType.keyEntity()
+					else
+						selectableUnit.oclAsType(DynamicUnit).contentType()
+					endif
+			endif
+		else if unit.oclIsKindOf(DynamicUnit) then
+			unit.oclAsType(DynamicUnit).contentType()
+		else
+			null
+		endif endif
 /]
 
-[query public hasFilteredRouteParameters(entityOrView : EntityOrView, unit : DynamicUnit) : Boolean
-	= entityOrView.hasFilteredRouteParameters(unit, false)
-/]
-
-[query public hasFilteredRouteParameters(entityOrView : EntityOrView, unit : DynamicUnit, parentPath : Boolean) : Boolean
-	= entityOrView.filteredUriPathKeys(unit, parentPath)->notEmpty()
+[query private uriPathKeys(unit : ContentUnit) : Sequence(Attribute)
+	= if not unit.selectType().oclIsUndefined() then
+				unit.selectType().uriPathKeys()
+			else
+				Sequence{}
+			endif
 /]
 
 
@@ -103,62 +88,10 @@
 	= if page.units->isEmpty() then
 			Sequence{}
 		else if page.units->size() = 1 then
-			page.units->first().uriPathKeys(page.units->first().oclIsKindOf(IndexUnit))
+			page.units->first().uriPathKeys()
 		else
 			page.units->subOrderedSet(2, page.units->size())->iterate(u;
-				common : Sequence(Attribute) = page.units->first().filteredUriPathKeys(page.units->first().oclIsKindOf(IndexUnit))
-				| common->select(k | u.filteredUriPathKeys(u.oclIsKindOf(IndexUnit))->includes(k)))
+				common : Sequence(Attribute) = page.units->first().uriPathKeys()
+				| common->select(k | u.uriPathKeys()->includes(k)))
 		endif endif
-/]
-
-
-[query public uriPathKeys(unit : ContentUnit) : Sequence(Attribute)
-	= unit.uriPathKeys(false)
-/]
-
-[query public uriPathKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
-	= if not unit.oclIsKindOf(DynamicUnit) then
-			Sequence{}
-		else 
-			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-				in if dynamicUnit.contentType().oclIsUndefined() then
-						Sequence{}
-					else
-						dynamicUnit.contentType().uriPathKeys(parentPath)
-					endif
-		endif
-/]
-
-[query public filteredUriPathKeys(unit : ContentUnit) : Sequence(Attribute)
-	= unit.filteredUriPathKeys(false)
-/]
-
-[query public filteredUriPathKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
-	= if not unit.oclIsKindOf(DynamicUnit) then
-			Sequence{}
-		else 
-			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-				in if dynamicUnit.contentType().oclIsUndefined() then
-						Sequence{}
-					else
-						dynamicUnit.contentType().filteredUriPathKeys(dynamicUnit, parentPath)
-					endif
-		endif
-/]
-
-
-[query public hasRouteParameters(unit : ContentUnit) : Boolean
-	= unit.hasRouteParameters(false)
-/]
-
-[query public hasRouteParameters(unit : ContentUnit, parentPath : Boolean) : Boolean
-	= unit.uriPathKeys(parentPath)->notEmpty()
-/]
-
-[query public hasFilteredRouteParameters(unit : ContentUnit) : Boolean
-	= unit.hasFilteredRouteParameters(false)
-/]
-
-[query public hasFilteredRouteParameters(unit : ContentUnit, parentPath : Boolean) : Boolean
-	= unit.filteredUriPathKeys(parentPath)->notEmpty()
 /]

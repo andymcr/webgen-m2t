@@ -27,12 +27,12 @@
 /**
  [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([unit.actionMethodParameters()/])
+public function [unit.actionName()/]([page.actionMethodParameters(unit.selectType())/])
 {
     [unit.loadSelectedInstance()/]
 
 [if (page.units->size() > 1)]
-    return $this->renderPage([page.renderActualParameters(unit)/]);
+    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
 [else]
     $parameters = array();
     [page.templateParameters()/]
@@ -53,8 +53,8 @@ $parameters['['/]'[imageUnit.instanceName()/]'[']'/] = $this->[imageUnit.instanc
 if (!isset($this->[imageUnit.instanceName()/]))
 	[if (not imageUnit.defaultSelection.oclIsUndefined())]
     $this->[imageUnit.instanceName()/] = [imageUnit.getService()/]->[imageUnit.defaultSelection.methodName()/]();
-	[elseif (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()))]
-    $this->[imageUnit.instanceName()/] = [imageUnit.loadFilteredInstance()/];
+	[elseif (page.uriCommonPathKeys()->includesAll(unit.selectType().uriPathKeys()))]
+    $this->[imageUnit.instanceName()/] = [imageUnit.selectType().loadInstance(imageUnit)/];
 	[else]
     $this->[imageUnit.instanceName()/] = [imageUnit.createInstance()/];
 	[/if]

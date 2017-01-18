@@ -190,16 +190,16 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
-	= unit.routeName(false)
+	= unit.routeName('')
 /]
 
-[query public routeName(unit : ContentUnit, create : Boolean) : String
+[query public routeName(unit : ContentUnit, suffix : String) : String
 	= if unit.displayedOn.oclIsTypeOf(Page) and unit.pageDisplayedOn().units->size() = 1 then
 			unit.pageDisplayedOn().instanceName()
 		else
 			unit.uniqueName()
-			.concat(if create then
-					'_create'
+			.concat(if suffix <> '' then
+					'_' + suffix
 				else
 					''
 				endif)

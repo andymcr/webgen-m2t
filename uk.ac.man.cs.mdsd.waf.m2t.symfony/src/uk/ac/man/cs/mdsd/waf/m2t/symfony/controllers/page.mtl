@@ -97,7 +97,7 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 public function [unit.supportActionName()/](Request $request)
 {
 	[if (unit.oclIsTypeOf(DetailsUnit))]
-    $[unit.instanceName()/] = [unit.loadInstance()/];
+    $[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
     [unit.actionHandlers()/]
 	[else]
     [unit.actionHandlers()/]
@@ -126,20 +126,22 @@ return new Response("No action taken", 200);
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
 [let unit : DynamicUnit = action.immediateUnit()]
+[let contentType : EntityOrView = unit.contentType()]
 /**
  * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
  */
-public function [deleteAction.actionName()/]([unit.inlineActionMethodParameters(page)/])
+public function [deleteAction.actionName()/]([page.actionMethodParameters(contentType)/])
 {
-    $[deleteAction.instanceName()/] = [unit.loadInstance()/];
+    $[deleteAction.instanceName()/] = [contentType.loadInstance(unit)/];
     $this->get('[deleteAction.usedBy.oclAsType(IndexUnit).service().instanceName()/]')->remove($[deleteAction.instanceName()/], true);
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
 [else]
 
-    return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
+    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
 [/if]
 }
+[/let]
 [/let]
 [/let]
 [/template]
@@ -148,19 +150,20 @@ public function [deleteAction.actionName()/]([unit.inlineActionMethodParameters(
 	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
 [let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
 [let unit : DynamicUnit = action.immediateUnit().containingUnit()]
+[let contentType : EntityOrView = unit.contentType()]
 /**
  * @Route("[feature.uriPath()/]", name="[feature.routeName()/]")
  */
-public function [action.actionName()/]([unit.inlineActionMethodParameters(page)/])
+public function [action.actionName()/]([page.actionMethodParameters(contentType)/])
 {
 [if (feature.operation.resultType = OperationResultTypes::None)]
     $this->get('[feature.operation.partOf.instanceName()/]')
-        ->[feature.operation.methodName()/]([unit.loadInstance()/]);
+        ->[feature.operation.methodName()/]([contentType.loadInstance(unit)/]);
 [elseif (feature.operation.resultType = OperationResultTypes::File)]
     $tempFilename = $this->get('[feature.operation.partOf.instanceName()/]')
-        ->[feature.operation.methodName()/]([unit.loadInstance()/], '[feature.fileExtension/]');
+        ->[feature.operation.methodName()/]([contentType.loadInstance(unit)/], '[feature.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
-    $filename = $[unit.uriPathKeys()->first().routeParameterName(unit.contentType())/] . '[feature.fileExtension/]';
+    $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[feature.fileExtension/]';
     $response->setContentDisposition(
         ResponseHeaderBag::DISPOSITION_ATTACHMENT,
         $filename
@@ -170,9 +173,10 @@ public function [action.actionName()/]([unit.inlineActionMethodParameters(page)/
 [/if]
 [if (feature.operation.resultType = OperationResultTypes::None)]
 
-    return $this->renderPage([unit.pageDisplayedOn().renderActualParameters(unit)/]);
+    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
 [/if]
 }
+[/let]
 [/let]
 [/let]
 [/template]

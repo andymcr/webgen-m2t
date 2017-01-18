@@ -19,63 +19,45 @@ $this->get('translator')->trans('[message/]')
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
-[unit.routeAnnotation(false)/]
+[unit.routeAnnotation(unit.uriElement, '', false)/]
 [/template]
 
-[template public routeAnnotation(unit : ContentUnit, create : Boolean) post(trim())]
-[if (unit.isHomeUnit() and unit.uriPath(true, create) <> '')]
+[template public routeAnnotation(unit : ContentUnit, uriSuffix : String, nameSuffix : String, parentPath : Boolean) post(trim())]
+[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, parentPath) <> '')]
 * @Route("", name="Home")
 [/if]
-* @Route("[unit.uriPath(true, create)/]", name="[unit.routeName(create)/]"[if (unit.hasValidatedRouteParameters(create))]
+* @Route("[unit.uriPath(uriSuffix, parentPath)/]", name="[unit.routeName(nameSuffix)/]"[if (unit.hasValidatedRouteParameters())]
 , requirements={[for (key : Attribute | unit.uriPathValidatedKeys()) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
 
-[template public actionMethodParameters(unit : DynamicUnit) post(trim())]
-[unit.actionMethodParameters(false)/]
-[/template]
 
-[template public actionMethodParameters(unit : DynamicUnit, parentPath : Boolean) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (unit.hasFilteredRouteParameters(parentPath))]
-, [/if][/if][unit.filteredRouteParameters(parentPath)/]
-[/let]
-[/template]
-
-[template public inlineActionMethodParameters(unit : DynamicUnit, page : Page) post(trim())]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]Request $request[if (unit.hasRouteParameters())]
-, [/if][/if][unit.contentType().routeParameters()/]
-[/template]
-
-[template public renderActualParameters(page : Page, unit : DynamicUnit) post(trim())]
-[page.renderActualParameters(unit, false)/]
-[/template]
-
-[template public renderActualParameters(page : Page, unit : DynamicUnit, parentPath : Boolean) post(trim())]
-[let entityOrView : EntityOrView = unit.contentType()]
-[if (parentPath and entityOrView.keyEntity().isContained())]
-[let container : EntityOrView = entityOrView.keyEntity().container()]
-	[if (page.hasFilterParameters())]
-$request[if (page.uriCommonPathKeys()->notEmpty())]
-, [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
-$[key.routeParameterName(container)/][/for]
-[/let]
+[template public actionMethodParameters(page : Page, entityOrView : EntityOrView) post(trim())]
+[if (entityOrView.oclIsUndefined())]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]
+Request $request[/if]
 [else]
-	[if (page.hasFilterParameters())]
+[if (page.hasFilterParameters() or page.hasUpdateUnits())]
+Request $request[if (entityOrView.hasRouteParameters())]
+, [/if][/if][entityOrView.routeParameters()/]
+[/if]
+[/template]
+
+[template public renderActualParameters(page : Page, entityOrView : EntityOrView) post(trim())]
+[if (page.hasFilterParameters())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName(entityOrView)/][/for]
-[/if]
-[/let]
 [/template]
+
 
 [template public getService(unit : DynamicUnit) post(trim())]
 $this->get('[unit.service().name/]')
 
 [/template]
 
-[template public findActualParameters(unit : DynamicUnit) post(trim())]
-[for (key : Attribute | unit.uriPathKeys(false)) separator (', ')]
-[let parameterName : String = key.routeParameterName(unit.contentType())]
+[template public findActualParameters(entityOrView : EntityOrView) post(trim())]
+[for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
+[let parameterName : String = key.routeParameterName(entityOrView)]
 	[if (key.encodeUriKey)]
 urldecode($[parameterName/])[else]
 $[parameterName/][/if]
@@ -83,27 +65,13 @@ $[parameterName/][/if]
 [/for]
 [/template]
 
-[template public findFilteredActualParameters(unit : DynamicUnit) post(trim())]
-[for (key : Attribute | unit.uriPathKeys(false)) separator (', ')]
-[if (unit.nonRoutedPathKeys()->excludes(key))]
-[let parameterName : String = key.routeParameterName(unit.contentType())]
-	[if (key.encodeUriKey)]
-urldecode($[parameterName/])[else]
-$[parameterName/][/if][/let][else]
-[unit.keyActuals->any(a | a.key = key).actual.controllerExpression()/][/if][/for]
-[/template]
-
-[template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.findActualParameters()/])
-[/template]
-
-[template public loadFilteredInstance(unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([unit.findFilteredActualParameters()/])
+[template public loadInstance(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
+[unit.getService()/]->find([entityOrView.findActualParameters()/])
 [/template]
 
 [template public loadSelectedInstance(unit : DataUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.loadFilteredInstance()/];
+$this->[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
 [else]
 $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
@@ -111,7 +79,7 @@ $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.ins
 
 [template public loadSelectedInstance(unit : EditUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$[unit.instanceName()/] = [unit.loadFilteredInstance()/];
+$[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
 [else]
 $[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
@@ -119,7 +87,7 @@ $[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceN
 
 [template public loadSelectedInstance(unit : ImageUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.loadFilteredInstance()/];
+$this->[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
 [else]
 $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
