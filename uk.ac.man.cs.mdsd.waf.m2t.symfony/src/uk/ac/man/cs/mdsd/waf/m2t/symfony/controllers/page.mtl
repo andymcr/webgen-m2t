@@ -138,7 +138,7 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(conten
     $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
 [else]
 
-    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.contentType())/]);
 [/if]
 }
 [/let]
