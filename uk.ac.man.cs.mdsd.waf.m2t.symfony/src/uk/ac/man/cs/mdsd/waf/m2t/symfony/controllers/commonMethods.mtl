@@ -33,8 +33,9 @@ $this->get('translator')->trans('[message/]')
 
 [template public actionMethodParameters(page : Page, entityOrView : EntityOrView) post(trim())]
 [if (entityOrView.oclIsUndefined())]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]
-Request $request[/if]
+	[if (page.hasFilterParameters() or page.hasUpdateUnits())]
+Request $request
+	[/if]
 [else]
 [if (page.hasFilterParameters() or page.hasUpdateUnits())]
 Request $request[if (entityOrView.hasRouteParameters())]
@@ -43,10 +44,16 @@ Request $request[if (entityOrView.hasRouteParameters())]
 [/template]
 
 [template public renderActualParameters(page : Page, entityOrView : EntityOrView) post(trim())]
+[if (entityOrView.oclIsUndefined())]
+	[if (page.hasFilterParameters())]
+$request
+	[/if]
+[else]
 [if (page.hasFilterParameters())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName(entityOrView)/][/for]
+[/if]
 [/template]
 
 
