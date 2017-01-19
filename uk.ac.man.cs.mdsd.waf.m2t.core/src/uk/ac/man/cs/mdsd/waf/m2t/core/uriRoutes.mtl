@@ -49,25 +49,22 @@
 	= if unit.oclIsKindOf(SelectableUnit) then
 			let selectableUnit : SelectableUnit = unit.oclAsType(SelectableUnit)
 			in if selectableUnit.oclIsKindOf(IndexUnit) or selectableUnit.oclIsKindOf(ImageUnit) then
-				if not selectableUnit.selectionType.oclIsUndefined() then
-					selectableUnit.selectionType.keyEntity()
-				else
-					let contentType : EntityOrView
-						= selectableUnit.oclAsType(DynamicUnit).contentType()
-						in let keyEntity : EntityOrView
-								= contentType.keyEntity()
-								in if keyEntity.isContained() then
-										keyEntity.container()
-									else
-										null
-									endif
-				endif
-			else if not selectableUnit.selectionType.oclIsUndefined() then
+					if not selectableUnit.selectionType.oclIsUndefined() then
 						selectableUnit.selectionType.keyEntity()
 					else
-						selectableUnit.oclAsType(DynamicUnit).contentType()
+						let keyEntity : EntityOrView
+							= selectableUnit.oclAsType(DynamicUnit).contentType().keyEntity()
+							in if keyEntity.isContained() then
+									keyEntity.container()
+								else
+									null
+								endif
 					endif
-			endif
+				else if not selectableUnit.selectionType.oclIsUndefined() then
+						selectableUnit.selectionType.keyEntity()
+				else
+					null
+				endif endif
 		else if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).contentType()
 		else
