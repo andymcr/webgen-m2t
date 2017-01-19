@@ -58,7 +58,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(selectType.co
 	[/if]
         $errors = $this->get('validator')->validate($[unit.instanceName()/]);
         if (count($errors) == 0) {
-            [unit.saveBody(suffix, true)/]
+            [unit.saveBody(suffix, unit.contentType.parentEntity())/]
         }
     }
 [else]
@@ -67,7 +67,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(selectType.co
     [unit.handleCancel()/]
 	[/if]
     if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-        [unit.saveBody(suffix, true)/]
+        [unit.saveBody(suffix, unit.contentType.parentEntity())/]
     }
 [/if]
 
@@ -103,7 +103,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit.selectTyp
 	[/if]
         $errors = $this->get('validator')->validate($[unit.instanceName()/]);
         if (count($errors) == 0) {
-            [unit.saveBody(addSuffix, false)/]
+            [unit.saveBody(addSuffix, unit.contentType)/]
         }
     }
 [else]
@@ -112,7 +112,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit.selectTyp
     [unit.handleCancel()/]
 	[/if]
     if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-        [unit.saveBody(addSuffix, false)/]
+        [unit.saveBody(addSuffix, unit.contentType)/]
     }
 [/if]
 
@@ -155,7 +155,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name
 [/let]
 [/template]
 
-[template private saveBody(unit : EditUnit, suffix : String, parentPath : Boolean) post(trim())]
+[template private saveBody(unit : EditUnit, suffix : String, routeParameterBase : EntityOrView) post(trim())]
 [unit.getService()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
 return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
@@ -163,7 +163,7 @@ return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (not unit.contentType.parentEntity().oclIsUndefined())]
 , array(
-    [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
+    [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
 )[/if]);
 	[/if]
 [/if]

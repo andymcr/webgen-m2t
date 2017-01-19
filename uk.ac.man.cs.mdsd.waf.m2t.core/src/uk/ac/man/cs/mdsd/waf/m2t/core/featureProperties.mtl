@@ -456,7 +456,7 @@
 		endif
 /]
 
-[query public contentType(unit : DynamicUnit) : EntityOrView
+[query public contentType(unit : ContentUnit) : EntityOrView
 	= if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).contentType
 		else if unit.oclIsKindOf(CollectionUnit) then
