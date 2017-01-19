@@ -16,16 +16,24 @@
 		endif endif
 /]
 
-[query private parentUriPathKeys(entityOrView : EntityOrView) : Sequence(Attribute)
-	= let keyEntity : EntityOrView
-		= entityOrView.keyEntity()
+[query public parentEntity(entityOrView : EntityOrView) : EntityOrView
+	= let keyEntity : EntityOrView = entityOrView.keyEntity()
 		in if keyEntity.oclIsUndefined() then
-				Sequence{}
+				null
 			else if not keyEntity.isContained() then
-				Sequence{}
+				null
 			else
-				keyEntity.container().uriPathKeys()
+				keyEntity.container().keyEntity()
 			endif endif
+/]
+
+[query private parentUriPathKeys(entityOrView : EntityOrView) : Sequence(Attribute)
+	= let parentEntity : EntityOrView = entityOrView.parentEntity()
+		in if not parentEntity.oclIsUndefined() then
+				parentEntity.uriPathKeys()
+			else
+				Sequence{}
+			endif
 /]
 
 
@@ -52,13 +60,7 @@
 					if not selectableUnit.selectionType.oclIsUndefined() then
 						selectableUnit.selectionType.keyEntity()
 					else
-						let keyEntity : EntityOrView
-							= selectableUnit.oclAsType(DynamicUnit).contentType().keyEntity()
-							in if keyEntity.isContained() then
-									keyEntity.container()
-								else
-									null
-								endif
+						selectableUnit.oclAsType(DynamicUnit).contentType().parentEntity()
 					endif
 				else if not selectableUnit.selectionType.oclIsUndefined() then
 						selectableUnit.selectionType.keyEntity()

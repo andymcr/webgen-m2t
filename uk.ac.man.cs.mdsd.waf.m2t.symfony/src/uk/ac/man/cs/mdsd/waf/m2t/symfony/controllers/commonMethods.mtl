@@ -26,8 +26,8 @@ $this->get('translator')->trans('[message/]')
 [if (unit.isHomeUnit() and unit.uriPath(uriSuffix, parentPath) <> '')]
 * @Route("", name="Home")
 [/if]
-* @Route("[unit.uriPath(uriSuffix, parentPath)/]", name="[unit.routeName(nameSuffix)/]"[if (unit.hasValidatedRouteParameters())]
-, requirements={[for (key : Attribute | unit.uriPathValidatedKeys()) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
+* @Route("[unit.uriPath(uriSuffix, parentPath)/]", name="[unit.routeName(nameSuffix)/]"[if (unit.hasValidatedRouteParameters(parentPath))]
+, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(parentPath)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
 
 

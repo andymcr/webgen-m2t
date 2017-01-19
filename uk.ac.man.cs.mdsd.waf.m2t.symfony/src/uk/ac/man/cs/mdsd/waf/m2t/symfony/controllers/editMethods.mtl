@@ -134,8 +134,8 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit.selectTyp
 $this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(suffix)/]', array(
 [if (parentPath)]
-	[if (entityOrView.keyEntity().isContained())]
-        [entityOrView.keyEntity().container().routeActualParameters(entityOrView.keyEntity().container())/]
+	[if (not unit.contentType.parentEntity().oclIsUndefined())]
+        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
 	[/if]
 [else]
         [entityOrView.routeActualParameters(entityOrView)/]
@@ -161,12 +161,10 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name
 return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-	[let keyEntity : EntityOrView = unit.contentType.keyEntity()]
-return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (keyEntity.isContained())]
-[let container : EntityOrView = keyEntity.container()], array(
-    [container.routeActualParameters(keyEntity.container(), if parentPath then container else unit.contentType endif)/]
-)[/let][/if]);
-	[/let]
+return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (not unit.contentType.parentEntity().oclIsUndefined())]
+, array(
+    [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
+)[/if]);
 	[/if]
 [/if]
 [/template]
