@@ -91,8 +91,8 @@
 	= model.services->select(s | s.serves = entityOrView)
 /]
 
-[query public servicesWithSelections(model : WafModel) : Sequence(Service)
-	= model.services->select(s | s.selections->notEmpty()).oclAsType(Service)
+[query public servicesWithSelections(model : WafModel) : OrderedSet(Service)
+	= model.services->select(s | s.selections->notEmpty())
 /]
 
 [query public topMenuItems(model : WafModel) : Sequence(Page)
@@ -701,11 +701,21 @@
 /]
 
 [query public service(unit : DynamicUnit) : Service
-	= if unit.entities->size() > 0 then
-			unit.pageDisplayedOn().partOf.services(unit.entities->first())->first()
-		else
-			null
-		endif
+	= let model : WafModel = unit.pageDisplayedOn().partOf
+		in if unit.oclIsKindOf(SelectableUnit) then
+				let selectable : SelectableUnit = unit.oclAsType(SelectableUnit)
+				in if not selectable.selectionType.oclIsUndefined() then
+						model.services(selectable.selectionType)->first()
+					else
+						model.services(unit.contentType())->first()
+					endif
+			else
+				if unit.entities->size() > 0 then
+					model.services(unit.entities->first())->first()
+				else
+					null
+				endif
+			endif
 /]
 
 [query public submitLabel(unit : DynamicUnit) : String
