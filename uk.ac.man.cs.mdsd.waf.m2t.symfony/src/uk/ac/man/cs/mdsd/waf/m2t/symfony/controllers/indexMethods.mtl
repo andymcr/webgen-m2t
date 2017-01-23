@@ -3,6 +3,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -62,13 +63,17 @@ $this->page = $request->query->getInt('[unit.pagination.parameters->first().name
 [unit.filterSelect()/]
 else
 [/if]
-[if (not unit.selectionType.oclIsUndefined()) and not unit.containingFeature.oclIsUndefined()]
+[if (not unit.selectionType.oclIsUndefined())]
+	[if (unit.containingFeature.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.methodName()/]([unit.selectableParameters()/]);
+	[else]
 $[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
-	[if (not unit.selection.oclIsUndefined())]
+		[if (not unit.selection.oclIsUndefined())]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($[unit.selectionType.instanceName()/][if (not unit.pagination.oclIsUndefined())]
 , [unit.paginationActuals()/][/if]);
-	[else]
-$this->[unit.instanceName()/] = $[unit.selectionType.instanceName()/]->[unit.containingFeature.modelPropertyName()/];
+		[else]
+$this->[unit.instanceName()/] = $[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]();
+		[/if]
 	[/if]
 [elseif (not unit.defaultSelection.oclIsUndefined())]
 $this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]([if (not unit.pagination.oclIsUndefined())]
