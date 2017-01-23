@@ -354,7 +354,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 	[let targetType : EntityOrView = association.targetType()]
 		[if (not targetType.oclIsUndefined())]
 		[let targetService : Service = targetType.services(service.partOf)->first()]
-			[for (selection : Selection | targetService.selections)]
+			[for (selection : Selection | targetService.selections->select(s | s.joins->isEmpty()))]
 [service.childSelectionMethod(association, selection)/]
 
 			[/for]
