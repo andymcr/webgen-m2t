@@ -156,7 +156,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name
 [/template]
 
 [template private saveBody(unit : EditUnit, suffix : String, routeParameterBase : EntityOrView) post(trim())]
-[unit.getService()/]->save($[unit.instanceName()/], true);
+[unit.getContentService()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
 return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 [else]

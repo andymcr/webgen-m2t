@@ -52,7 +52,7 @@ $parameters['['/]'[imageUnit.instanceName()/]'[']'/] = $this->[imageUnit.instanc
 [else]
 if (!isset($this->[imageUnit.instanceName()/]))
 	[if (not imageUnit.defaultSelection.oclIsUndefined())]
-    $this->[imageUnit.instanceName()/] = [imageUnit.getService()/]->[imageUnit.defaultSelection.methodName()/]();
+    $this->[imageUnit.instanceName()/] = [imageUnit.getContentService()/]->[imageUnit.defaultSelection.methodName()/]();
 	[elseif (page.uriCommonPathKeys()->includesAll(unit.selectType().uriPathKeys()))]
     $this->[imageUnit.instanceName()/] = [imageUnit.selectType().loadInstance(imageUnit)/];
 	[else]

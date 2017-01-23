@@ -1,6 +1,8 @@
 [comment encoding = UTF-8 /]
 [module indexMethods(
+	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -27,8 +29,7 @@
 /**
  [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([if (page.hasFilterParameters())]
-Request $request[/if])
+public function [unit.actionName()/]([unit.filteredSelectableParameters(true)/])
 {
 [if (page.units->size() = 1)]
     [unit.selectCode()/]
@@ -47,7 +48,7 @@ Request $request[/if])
 [/template]
 
 [template private selectMethod(unit : IndexUnit) post(trim())]
-private function [unit.selectName()/]([if (unit.hasFilterParameters())]Request $request[/if])
+private function [unit.selectName()/]([unit.filteredSelectableParameters(true)/])
 {
     [unit.selectCode()/]
 }
@@ -61,11 +62,19 @@ $this->page = $request->query->getInt('[unit.pagination.parameters->first().name
 [unit.filterSelect()/]
 else
 [/if]
-[if (not unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]([if (not unit.pagination.oclIsUndefined())]
+[if (not unit.selectionType.oclIsUndefined()) and not unit.containingFeature.oclIsUndefined()]
+$[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
+	[if (not unit.selection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($[unit.selectionType.instanceName()/][if (not unit.pagination.oclIsUndefined())]
+, [unit.paginationActuals()/][/if]);
+	[else]
+$this->[unit.instanceName()/] = $[unit.selectionType.instanceName()/]->[unit.containingFeature.modelPropertyName()/];
+	[/if]
+[elseif (not unit.defaultSelection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]([if (not unit.pagination.oclIsUndefined())]
 [unit.paginationActuals()/][/if]);
 [else]
-$this->[unit.instanceName()/] = [unit.getService()/]->findAll([if (not unit.pagination.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getContentService()/]->findAll([if (not unit.pagination.oclIsUndefined())]
 [unit.paginationActuals()/][/if]);
 [/if]
 [/template]
@@ -80,7 +89,7 @@ $request->query->has('[parameter.name/]')[/for]) {
 [/template]
 
 [template private filterCall(unit : IndexUnit, f : Filter)]
-$this->[unit.instanceName()/] = [unit.getService()/]->[f.selection.instanceName()/](
+$this->[unit.instanceName()/] = [unit.getContentService()/]->[f.selection.instanceName()/](
 [for (parameter : SelectionParameter | f.selection.parameters) separator(', ')]
 [let actual : FilterParameter = f.matchingActual(parameter)]
     $request->query->get('[actual.name/]')[/let][/for]
@@ -97,7 +106,7 @@ $this->page, [unit.defaultPaginationSize/]
 
 [template private templateParameters(unit : IndexUnit) post(trim())]
 [if (unit.pageDisplayedOn().units->size() > 1)]
-$this->[unit.selectName()/]([if (unit.hasFilterParameters())]$request[/if]);
+$this->[unit.selectName()/]([unit.filteredSelectableParameters()/]);
 [/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (not unit.pagination.oclIsUndefined())]

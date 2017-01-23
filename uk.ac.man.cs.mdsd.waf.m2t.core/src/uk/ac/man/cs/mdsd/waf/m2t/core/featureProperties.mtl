@@ -456,6 +456,11 @@
 		endif
 /]
 
+[query public contentService(unit : DynamicUnit) : Service
+	= let model : WafModel = unit.pageDisplayedOn().partOf
+		in model.services(unit.contentType())->first()
+/]
+
 [query public contentType(unit : ContentUnit) : EntityOrView
 	= if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).contentType
@@ -700,7 +705,7 @@
 	= unit->collect(targettingSearches.displayFields)
 /]
 
-[query public service(unit : DynamicUnit) : Service
+[query public selectionService(unit : DynamicUnit) : Service
 	= let model : WafModel = unit.pageDisplayedOn().partOf
 		in if unit.oclIsKindOf(SelectableUnit) then
 				let selectable : SelectableUnit = unit.oclAsType(SelectableUnit)
@@ -710,11 +715,7 @@
 						model.services(unit.contentType())->first()
 					endif
 			else
-				if unit.entities->size() > 0 then
-					model.services(unit.entities->first())->first()
-				else
-					null
-				endif
+				null
 			endif
 /]
 

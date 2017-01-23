@@ -43,6 +43,24 @@ Request $request[if (entityOrView.hasRouteParameters())]
 [/if]
 [/template]
 
+[template public selectableParameters(unit : SelectableUnit) post(trim())]
+[if (not unit.selectionType.oclIsUndefined())]
+	[for (key : Attribute | unit.selectionType.uriPathKeys()) separator(', ')]
+$[key.routeParameterName(unit.selectionType)/][/for]
+[/if]
+[/template]
+
+[template public filteredSelectableParameters(unit : SelectableUnit) post(trim())]
+[unit.filteredSelectableParameters(false)/]
+[/template]
+
+[template public filteredSelectableParameters(unit : SelectableUnit, formal : Boolean) post(trim())]
+[if (unit.oclAsType(DynamicUnit).hasFilterParameters())][if (formal)]
+Request [/if]$request[if (not unit.selectionType.oclIsUndefined())][if (unit.selectionType.uriPathKeys()->notEmpty())]
+, [/if][/if][/if]
+[unit.selectableParameters()/]
+[/template]
+
 [template public renderActualParameters(page : Page, entityOrView : EntityOrView) post(trim())]
 [if (entityOrView.oclIsUndefined())]
 	[if (page.hasFilterParameters())]
@@ -57,8 +75,13 @@ $[key.routeParameterName(entityOrView)/][/for]
 [/template]
 
 
-[template public getService(unit : DynamicUnit) post(trim())]
-$this->get('[unit.service().name/]')
+[template public getContentService(unit : DynamicUnit) post(trim())]
+$this->get('[unit.contentService().name/]')
+
+[/template]
+
+[template public getSelectionService(unit : DynamicUnit) post(trim())]
+$this->get('[unit.selectionService().name/]')
 
 [/template]
 
@@ -73,14 +96,14 @@ $[parameterName/][/if]
 [/template]
 
 [template public loadInstance(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
-[unit.getService()/]->find([entityOrView.findActualParameters()/])
+[unit.getContentService()/]->find([entityOrView.findActualParameters()/])
 [/template]
 
 [template public loadSelectedInstance(unit : DataUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
 $this->[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
 [else]
-$this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+$this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
 [/template]
 
@@ -88,7 +111,7 @@ $this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.ins
 [if (unit.defaultSelection.oclIsUndefined())]
 $[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
 [else]
-$[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+$[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
 [/template]
 
@@ -96,7 +119,7 @@ $[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceN
 [if (unit.defaultSelection.oclIsUndefined())]
 $this->[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
 [else]
-$this->[unit.instanceName()/] = [unit.getService()/]->[unit.defaultSelection.instanceName()/]();
+$this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
 [/template]
 
