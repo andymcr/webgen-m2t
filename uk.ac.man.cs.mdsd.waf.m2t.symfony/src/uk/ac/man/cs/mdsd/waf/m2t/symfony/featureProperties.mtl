@@ -34,3 +34,37 @@
 			endif
 /]
 
+
+[query public alias(field : UnitField) : String
+	= if field.oclIsKindOf(InterfaceField) then
+			null
+		else if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).alias()
+		else
+			field.oclAsType(UnitAssociation).alias()
+		endif endif
+/]
+
+[query public alias(attribute : UnitAttribute) : String
+	= if attribute.displayedOn.oclIsKindOf(CollectionUnit) then
+			let unit : CollectionUnit = attribute.displayedOn.oclAsType(CollectionUnit)
+				in if unit.selection.oclIsUndefined() then
+						null
+					else
+						attribute.attribute.alias(unit.selection)
+					endif
+		else if attribute.displayedOn.oclIsKindOf(DataUnit) then
+			let unit : DataUnit = attribute.displayedOn.oclAsType(DataUnit)
+				in if unit.defaultSelection.oclIsUndefined() then
+						null
+					else
+						attribute.attribute.alias(unit.defaultSelection)
+					endif
+		else
+			null
+		endif endif
+/]
+
+[query public alias(association : UnitAssociation) : String
+	= null
+/]

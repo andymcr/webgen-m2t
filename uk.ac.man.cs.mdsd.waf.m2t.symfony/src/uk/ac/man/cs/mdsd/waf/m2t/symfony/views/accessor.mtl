@@ -6,50 +6,62 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[query public propertyAccessor(field : UnitField, parentAccessor : String) : String
+[query public propertyAccessor(field : UnitField, parentAccessor : String, alias : String) : String
 	= if field.oclIsTypeOf(InterfaceField) then
 			null
 		else if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor)
+			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor, alias)
 		else
-			field.oclAsType(UnitAssociation).propertyAccessor(parentAccessor)
+			field.oclAsType(UnitAssociation).propertyAccessor(parentAccessor, alias)
 		endif endif
 /]
 
-[query public propertyAccessor(attribute : UnitAttribute, parentAccessor : String) : String
-	= attribute.accessor(parentAccessor)
+[query public propertyAccessor(attribute : UnitAttribute, parentAccessor : String, alias : String) : String
+	= attribute.accessor(parentAccessor, alias)
 /]
 
-[query public propertyAccessor(association : UnitAssociation, parentAccessor : String) : String
-	= parentAccessor.concat('.').concat(association.modelPropertyName())
+[query public propertyAccessor(association : UnitAssociation, parentAccessor : String, alias : String) : String
+	= if alias.oclIsUndefined() then
+			parentAccessor.concat('.').concat(association.modelPropertyName())
+		else
+			parentAccessor.concat('.').concat(alias)
+		endif
 /]
 
-[query public accessor(field : UnitField, parentAccessor : String) : String
+[query public accessor(field : UnitField, parentAccessor : String, alias : String) : String
 	= if field.oclIsTypeOf(InterfaceField) then
-			field.oclAsType(InterfaceField).accessor(parentAccessor)
+			field.oclAsType(InterfaceField).accessor(parentAccessor, alias)
 		else if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).accessor(parentAccessor)
+			field.oclAsType(UnitAttribute).accessor(parentAccessor, alias)
 		else
-			field.oclAsType(UnitAssociation).accessor(parentAccessor)
+			field.oclAsType(UnitAssociation).accessor(parentAccessor, alias)
 		endif endif
 /]
 
-[query public accessor(field : InterfaceField, parentAccessor : String) : String
-	= parentAccessor.concat('.').concat(field.modelPropertyName())
+[query public accessor(field : InterfaceField, parentAccessor : String, alias : String) : String
+	= if alias.oclIsUndefined() then
+			parentAccessor.concat('.').concat(field.modelPropertyName())
+		else
+			parentAccessor.concat('.').concat(alias)
+		endif
 /]
 
-[query public accessor(attribute : UnitAttribute, parentAccessor : String) : String
-	= parentAccessor.concat('.').concat(attribute.modelPropertyName())
+[query public accessor(attribute : UnitAttribute, parentAccessor : String, alias : String) : String
+	= if alias.oclIsUndefined() then
+			parentAccessor.concat('.').concat(attribute.modelPropertyName())
+		else
+			parentAccessor.concat('.').concat(alias)
+		endif
 /]
 
-[query public accessor(association : UnitAssociation, parentAccessor : String) : String
+[query public accessor(association : UnitAssociation, parentAccessor : String, alias : String) : String
 	= if association.isPseudo() then
 			association.pseudoAccessorWithChild(parentAccessor)
 		else if not association.selection.oclIsUndefined() then
 			association.collectionAccessor(parentAccessor)
 		else
 			let accessor : String
-				= association.propertyAccessor(parentAccessor)
+				= association.propertyAccessor(parentAccessor, alias)
 				in if not association.path.childFeature.oclIsUndefined() then
 						association.path.childFeature.accessor(accessor)
 					else

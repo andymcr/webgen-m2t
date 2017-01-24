@@ -345,10 +345,10 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template public displayValue(field : UnitField, parentAccessor : String)
 	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
+{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/] | default('') }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-[feature.displayAttribute(feature.accessor(parentAccessor), parentAccessor)/]
+[feature.displayAttribute(feature.accessor(parentAccessor, field.alias()), parentAccessor)/]
 [/let]
 [/if]
 [/template]
@@ -356,10 +356,10 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template public displayValue(field : UnitField, parentAccessor : String)
 	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and not field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
+{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/] | default('') }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-{% for value in [feature.accessor(parentAccessor)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+{% for value in [feature.accessor(parentAccessor, field.alias())/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[feature.displayAttribute('value', parentAccessor)/]</p>[else]
 <span>[feature.displayAttribute('value', parentAccessor)/]</span>[/if]{% endfor %}
 [/let]
@@ -368,26 +368,26 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isEnumerationType()) post(trim())]
-{{ [field.getValue(field.accessor(parentAccessor))/][if (field.maximumDisplaySize > 0)]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isDate()) post(trim())]
-{{ [field.getValue(field.accessor(parentAccessor))/] | date[if (not field.dateFormat.oclIsUndefined())]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String) 
 	? (field.isBooleanDataType()) post(trim())] 
-<input type="checkbox"{% if [field.accessor(parentAccessor)/] %} checked="checked"{% endif %} disabled="disabled"/>
+<input type="checkbox"{% if [field.accessor(parentAccessor, field.alias())/] %} checked="checked"{% endif %} disabled="disabled"/>
 [/template] 
  
 [template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isResource() and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
-[let accessor : String = field.accessor(parentAccessor)]
+[let accessor : String = field.accessor(parentAccessor, field.alias())]
 <?php
 [if (not attribute.conditionalDisplay())]
     if (!empty([attribute.getValue(accessor)/]))
@@ -404,7 +404,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let accessor : String = association.accessor(parentAccessor)]
+[let accessor : String = association.accessor(parentAccessor, field.alias())]
 [if (association.units->isEmpty())]
 [association.displayAssociation(accessor, parentAccessor)/]
 [else]
@@ -417,7 +417,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let accessor : String = association.accessor(parentAccessor)]
+[let accessor : String = association.accessor(parentAccessor, field.alias())]
 [if (association.units->isEmpty())]
 {% for value in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[association.displayAssociation('value', 'value')/]</p>[else]
@@ -488,13 +488,13 @@ NULL
 [/template]
 
 [template public getImmediateValue(attribute : UnitAttribute, parentAccessor : String) post(trim())]
-[attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor))/]
+[attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor, attribute.alias()))/]
 [/template]
 
 [template public getImmediateValue(association : UnitAssociation, parentAccessor : String) post(trim())]
 [if (association.isPseudo())]
 [association.pseudoAccessor(parentAccessor)/]
 [else]
-[association.propertyAccessor(parentAccessor)/]
+[association.propertyAccessor(parentAccessor, association.alias())/]
 [/if]
 [/template]
