@@ -54,7 +54,7 @@ $this->[path.unit.instanceName()/]->[comment path unit  services->first() keyNam
 [template public criteriaExpression(expression : Expression)
 	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
 [let path : ParameterReference = expression.oclAsType(ParameterReference)]
-':[path.parameter.name/]'
+$[path.parameter.name/]
 [/let]
 [/template]
 
@@ -174,7 +174,7 @@ Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.cri
 
 [query private operator(predicate : PredicateLikeOperator) : String
 	= if not predicate.negated then
-			'like'
+			'contains'
 		else
 			'notLike'
 		endif
