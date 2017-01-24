@@ -56,31 +56,31 @@ private function [unit.selectName()/]([unit.filteredSelectableParameters(true)/]
 [/template]
 
 [template private selectCode(unit : IndexUnit) post(trim())]
-[if (not unit.pagination.oclIsUndefined())]
+[if (not unit.selectionType.oclIsUndefined() and not unit.containingFeature.oclIsUndefined())]
+$[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
+	[if (unit.selection.oclIsUndefined())]
+$this->[unit.instanceName()/] = $[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]();
+	[else]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($[unit.selectionType.instanceName()/]);
+	[/if]
+[else]
+	[if (not unit.pagination.oclIsUndefined())]
 $this->page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
-[/if]
-[if (unit.hasFilters())]
+	[if (unit.hasFilters())]
 [unit.filterSelect()/]
 else
-[/if]
-[if (not unit.selectionType.oclIsUndefined())]
-	[if (unit.containingFeature.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.methodName()/]([unit.selectableParameters()/]);
-	[else]
-$[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
-		[if (not unit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($[unit.selectionType.instanceName()/][if (not unit.pagination.oclIsUndefined())]
-, [unit.paginationActuals()/][/if]);
-		[else]
-$this->[unit.instanceName()/] = $[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]();
-		[/if]
 	[/if]
-[elseif (not unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]([if (not unit.pagination.oclIsUndefined())]
+	[/if]
+	[if (not unit.selection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][if (not unit.pagination.oclIsUndefined())]
 [unit.paginationActuals()/][/if]);
-[else]
+	[elseif (not unit.defaultSelection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.defaultSelection.instanceName()/]([unit.selectableParameters()/][if (not unit.pagination.oclIsUndefined())]
+[unit.paginationActuals()/][/if]);
+	[else]
 $this->[unit.instanceName()/] = [unit.getContentService()/]->findAll([if (not unit.pagination.oclIsUndefined())]
 [unit.paginationActuals()/][/if]);
+	[/if]
 [/if]
 [/template]
 
