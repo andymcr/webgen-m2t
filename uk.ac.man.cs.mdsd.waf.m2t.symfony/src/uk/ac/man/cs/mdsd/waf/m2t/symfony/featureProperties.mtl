@@ -2,6 +2,7 @@
 [module featureProperties(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
@@ -23,26 +24,13 @@
 /]
 
 
-[query private fieldName(field : SelectField) : String
-	= if field.oclIsTypeOf(SelectAttribute) then
-			field.oclAsType(SelectAttribute).attribute.name
-		else
-			''
-		endif
-/]
-
-[query public alias(field : SelectField, selection : Selection) : String
-	= if not field.oclIsTypeOf(SelectAttribute) then
-			null
-		else 
-			let attribute : Attribute = field.oclAsType(SelectAttribute).attribute
-				in let fieldNames : Sequence(String)
-					= selection.fields->collect(f | f.fieldName())
-					in if fieldNames->select(n | n = field.fieldName())->size() > 1 then
-							attribute.partOf.selectName().concat(attribute.name.toUpperFirst())
-						else
-							null
-						endif
-		endif
+[query public alias(field : Feature, selection : Selection) : String
+	= let fieldNames : Sequence(String)
+		= selection.fields->collect(f | f.modelPropertyName())
+		in if fieldNames->select(n | n = field.modelPropertyName())->size() > 1 then
+				field.partOf.selectName().concat(field.name.toUpperFirst())
+			else
+				null
+			endif
 /]
 

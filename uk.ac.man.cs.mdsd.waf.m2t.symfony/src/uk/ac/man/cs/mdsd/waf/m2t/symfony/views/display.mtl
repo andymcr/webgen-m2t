@@ -299,7 +299,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
 [if (unit.defaultSelection.oclIsUndefined())]
    [indexUnit.objectData('entry')/]
-[elseif (indexUnit.defaultSelection.fields->select(f | f.oclIsTypeOf(SelectAttribute))->isEmpty())]
+[elseif (indexUnit.defaultSelection.joins->isEmpty())]
    [indexUnit.objectData('entry')/]
 [else]
    [indexUnit.arrayData('entry')/]
