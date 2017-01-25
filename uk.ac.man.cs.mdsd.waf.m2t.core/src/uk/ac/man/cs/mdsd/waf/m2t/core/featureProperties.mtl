@@ -489,7 +489,7 @@
 	= unit.filters()->collect(q | q.parameters)
 /]
 
-[query public filters(unit : IndexUnit) : Sequence(Filter)
+[query public filters(unit : CollectionUnit) : Sequence(Filter)
 	= unit.filters->select(q | not q.selection.oclIsUndefined()).oclAsType(Filter)
 /]
 
@@ -541,7 +541,7 @@
 		endif
 /]
 
-[query public hasFilters(unit : IndexUnit) : Boolean
+[query public hasFilters(unit : CollectionUnit) : Boolean
 	= unit.filters()->notEmpty()
 /]
 
@@ -705,18 +705,15 @@
 	= unit->collect(targettingSearches.displayFields)
 /]
 
-[query public selectionService(unit : DynamicUnit) : Service
-	= let model : WafModel = unit.pageDisplayedOn().partOf
-		in if unit.oclIsKindOf(SelectableUnit) then
-				let selectable : SelectableUnit = unit.oclAsType(SelectableUnit)
-				in if not selectable.selectionType.oclIsUndefined() then
-						model.services(selectable.selectionType)->first()
-					else
-						model.services(unit.contentType())->first()
-					endif
+[query public selectionService(unit : CollectionUnit) : Service
+	= let model : WafModel = unit.oclAsType(DynamicUnit).pageDisplayedOn().partOf
+		in if not unit.selectionType.oclIsUndefined() then
+				model.services(unit.selectionType)->first()
+			else if unit.contentType->notEmpty() then
+				model.services(unit.contentType->first())->first()
 			else
 				null
-			endif
+			endif endif
 /]
 
 [query public submitLabel(unit : DynamicUnit) : String
