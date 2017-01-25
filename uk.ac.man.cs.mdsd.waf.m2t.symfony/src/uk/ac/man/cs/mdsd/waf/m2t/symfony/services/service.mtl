@@ -237,8 +237,7 @@ public function save($entity, $flush = false)
 [/template]
 
 [template private selectionMethod(selection : Selection, service : Service) post(trim())]
-public function [selection.methodName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
-$[parameter.name/][if (parameter.optional)] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else][parameter.defaultValue/][/if][/if][/for][if (selection.parameters->notEmpty())][if (selection.limit <> 1)], [/if][/if][if (selection.limit <> 1)]$page = NULL, $pageSize = 10[/if])
+public function [selection.methodName()/]([selection.parameters()/])
 {
     $queryBuilder = $this->createQueryBuilder();
 [if (selection.fields->notEmpty())]
@@ -358,7 +357,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/template]
 
 [template private childSelectionMethod(service : Service, association : Association, selection : Selection) post(trim())]
-public function [association.childSelectionName(selection)/]($[service.instanceName()/])
+public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.parameters->notEmpty() or selection.limit <> 1)], [/if][selection.parameters()/])
 {
     $criteria = Criteria::create();
 [if (not selection.filter.oclIsUndefined())]
@@ -374,9 +373,31 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 	[/for]
     ));
 [/if]
+[if (selection.limit <> 1)]
+    if ($page)
+    {
+        $criteria->setFirstResult(($page - 1) * $pageSize);
+        $criteria->setMaxResults($pageSize);
+    }
+	[if (selection.limit > 0)]
+    else
+        $criteria->setMaxResults([selection.limit/]);
+	[/if]
+[/if]
 
     return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->matching($criteria);
 }
+[/template]
+
+[template private parameters(selection : Selection) post(trim())]
+[for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+$[parameter.name/][if (parameter.optional)]
+ = [if (parameter.defaultValue.oclIsUndefined())]
+NULL[else]
+[parameter.defaultValue/][/if][/if][/for]
+[if (selection.limit <> 1)]
+[if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10
+[/if]
 [/template]
 
 [template private pseudoAssociationMethods(service : Service) post(trim())]
