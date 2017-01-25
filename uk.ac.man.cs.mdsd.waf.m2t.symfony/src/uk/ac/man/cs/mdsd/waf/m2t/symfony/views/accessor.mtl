@@ -6,62 +6,86 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[query public propertyAccessor(field : UnitField, parentAccessor : String, alias : String) : String
+[query public propertyAccessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if field.oclIsTypeOf(InterfaceField) then
 			null
 		else if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor, alias)
+			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor, alias, objectAccess)
 		else
-			field.oclAsType(UnitAssociation).propertyAccessor(parentAccessor, alias)
+			field.oclAsType(UnitAssociation).propertyAccessor(parentAccessor, alias, objectAccess)
 		endif endif
 /]
 
-[query public propertyAccessor(attribute : UnitAttribute, parentAccessor : String, alias : String) : String
-	= attribute.accessor(parentAccessor, alias)
+[query public propertyAccessor(attribute : UnitAttribute, parentAccessor : String, alias : String, objectAccess : Boolean) : String
+	= attribute.accessor(parentAccessor, alias, objectAccess)
 /]
 
-[query public propertyAccessor(association : UnitAssociation, parentAccessor : String, alias : String) : String
-	= if alias.oclIsUndefined() then
-			parentAccessor.concat('.').concat(association.modelPropertyName())
+[query public propertyAccessor(association : UnitAssociation, parentAccessor : String, alias : String, objectAccess : Boolean) : String
+	= if objectAccess then
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('.').concat(association.modelPropertyName())
+			else
+				parentAccessor.concat('.').concat(alias)
+			endif
 		else
-			parentAccessor.concat('.').concat(alias)
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('[''').concat(association.modelPropertyName()).concat(''']')
+			else
+				parentAccessor.concat('[''').concat(alias).concat(''']')
+			endif
 		endif
 /]
 
-[query public accessor(field : UnitField, parentAccessor : String, alias : String) : String
+[query public accessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if field.oclIsTypeOf(InterfaceField) then
-			field.oclAsType(InterfaceField).accessor(parentAccessor, alias)
+			field.oclAsType(InterfaceField).accessor(parentAccessor, alias, objectAccess)
 		else if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).accessor(parentAccessor, alias)
+			field.oclAsType(UnitAttribute).accessor(parentAccessor, alias, objectAccess)
 		else
-			field.oclAsType(UnitAssociation).accessor(parentAccessor, alias)
+			field.oclAsType(UnitAssociation).accessor(parentAccessor, alias, objectAccess)
 		endif endif
 /]
 
-[query public accessor(field : InterfaceField, parentAccessor : String, alias : String) : String
-	= if alias.oclIsUndefined() then
-			parentAccessor.concat('.').concat(field.modelPropertyName())
+[query public accessor(field : InterfaceField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
+	= if objectAccess then
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('.').concat(field.modelPropertyName())
+			else
+				parentAccessor.concat('.').concat(alias)
+			endif
 		else
-			parentAccessor.concat('.').concat(alias)
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('[''').concat(field.modelPropertyName()).concat(''']')
+			else
+				parentAccessor.concat('[''').concat(alias).concat(''']')
+			endif
 		endif
 /]
 
-[query public accessor(attribute : UnitAttribute, parentAccessor : String, alias : String) : String
-	= if alias.oclIsUndefined() then
-			parentAccessor.concat('.').concat(attribute.modelPropertyName())
+[query public accessor(attribute : UnitAttribute, parentAccessor : String, alias : String, objectAccess : Boolean) : String
+	= if objectAccess then
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('.').concat(attribute.modelPropertyName())
+			else
+				parentAccessor.concat('.').concat(alias)
+			endif
 		else
-			parentAccessor.concat('.').concat(alias)
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('[''').concat(attribute.modelPropertyName()).concat(''']')
+			else
+				parentAccessor.concat('[''').concat(alias).concat(''']')
+			endif
 		endif
 /]
 
-[query public accessor(association : UnitAssociation, parentAccessor : String, alias : String) : String
+[query public accessor(association : UnitAssociation, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if association.isPseudo() then
 			association.pseudoAccessorWithChild(parentAccessor)
 		else if not association.selection.oclIsUndefined() then
 			association.collectionAccessor(parentAccessor)
 		else
 			let accessor : String
-				= association.propertyAccessor(parentAccessor, alias)
+				= association.propertyAccessor(parentAccessor, alias, objectAccess)
 				in if not association.path.childFeature.oclIsUndefined() then
 						association.path.childFeature.accessor(accessor)
 					else
@@ -69,6 +93,7 @@
 					endif 
 		endif endif
 /]
+
 
 [query public pseudoAccessor(association : UnitAssociation, parentAccessor : String) : String
 	= association.serviceAccessor()

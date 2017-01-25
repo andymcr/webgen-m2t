@@ -77,7 +77,7 @@
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor, null)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.hasUnitTranslation())]
+{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.hasUnitTranslation())]
 , { [if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]'attr': {[if (field.hasTitle())]
  'title': [field.title(unit)/][if (field.hasPlaceholder() or field.hasClass())], [/if][/if][if (field.hasPlaceholder())]
  'placeholder': [field.placeholder(unit)/][if (field.hasClass())],[/if][/if][if (field.hasClass())]
@@ -91,10 +91,10 @@
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let embeddedUnit : EditUnit = association.units->first().oclAsType(EditUnit)]
 [if (association.isSingleton())]
-[embeddedUnit.formFields(association.accessor(parentAccessor, null))/]
+[embeddedUnit.formFields(association.accessor(parentAccessor, null, true))/]
 [else]
 [let elementAccessor : String = embeddedUnit.contentType().name]
-{% for [elementAccessor/] in [association.accessor(parentAccessor, null)/] %}
+{% for [elementAccessor/] in [association.accessor(parentAccessor, null, true)/] %}
 [embeddedUnit.formFields(elementAccessor)/]
 {% endfor %}
 [/let]

@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -38,16 +39,23 @@
 	[/if]
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
+[let selectionAccessor : String
+	= if not indexUnit.selectionType.oclIsUndefined() then
+			indexUnit.selectionType.instanceName()
+		else
+			accessor
+		endif]
 	[for(filter : Filter | indexUnit.filters())]
- [filter.unitFilter(indexUnit, accessor)/]
+ [filter.unitFilter(indexUnit, selectionAccessor)/]
 	[/for]
  [dataUnit.unitContent(null, accessor)/]
 	[if (not indexUnit.pagination.oclIsUndefined())]
- [indexUnit.pagination()/]
+ [indexUnit.pagination(selectionAccessor)/]
 	[/if]
 	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
  [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
+[/let]
 [/let]
 [/if]
 </section>
@@ -77,7 +85,9 @@
 
 [template private unitFilter(filter : Filter, unit : IndexUnit, accessor : String)]
 <div class="filter">
- <form action="{{ path('[unit.routeName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, true)/] }) }}" method="get">
+ <form action="{{ path('[unit.routeName()/]', { [if (not unit.selectionType.oclIsUndefined())]
+[unit.selectType().routeActualParameters(unit.contentType(), accessor, false)/][else]
+[unit.contentType().routeActualParameters(unit.contentType(), accessor, true)/][/if] }) }}" method="get">
 [for (parameter : FilterParameter | filter.parameters)]
   <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
  placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
@@ -85,7 +95,7 @@
  required="required"[/if]
  value="{{ app.request.query.get('[parameter.name/]') }}"/>
 [/for]
-  <input type="submit" name="[filter.name/]" value="[filter.displayLabel/]"[if (unit.hasJQueryClasses())]
+  <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"[if (unit.hasJQueryClasses())]
  class="[filter.jQueryClass()/]"[/if]/>
  </form>
 </div>
@@ -104,7 +114,7 @@
 onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
-[template private pagination(unit : IndexUnit)]
+[template private pagination(unit : IndexUnit, accessor : String)]
 <ul class="unit_control">
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage != 1 %}
@@ -176,15 +186,15 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.conditionalDisplay())]
-{% if [field.getImmediateValue(accessor)/] is not null %}
+{% if [field.getImmediateValue(accessor, true)/] is not null %}
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
- <li class="[field.displayClass()/]">[field.displayValue(accessor)/]</li>
+ <li class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</li>
 	[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
- <dd class="[field.displayClass()/]">[field.displayValue(accessor)/]</dd>
+ <dd class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</dd>
 	[/if]
 	[if (field.conditionalDisplay())]
 		[if (field.oclIsKindOf(UnitFeature))]
@@ -216,25 +226,16 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
 <ul class="[indexUnit.contentClass/]">
-{% for entry in [accessor/] %}
+[let loopVariable : String = 'entry']
+{% for [loopVariable/] in [accessor/] %}
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('entry')/]</h2>
+   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
 [/if]
-[for (field : UnitField | indexUnit.displayFields) ]
-	[if (field.conditionalDisplay())]
-{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] is not null %}
-	[/if]
-<span class="[field.modelPropertyName()/]">[field.displayValue('entry')/]</span>
-	[if (field.conditionalDisplay())]
-{% endif %}
-	[/if]
-[/for]
+   [indexUnit.entry(loopVariable, true)/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
-<span class="actions">[indexUnit.actions('entry')/]</span>
-[else]
-
+<span class="actions">[indexUnit.actions(loopVariable)/]</span>
 [/if]
 [if (not indexUnit.omitCaption)]
   </section>
@@ -245,8 +246,21 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  <li>{{ '[nullDisplayValue/]' }}</li>
 [/if]
 {% endfor %}
+[/let]
 </ul>
 [/let]
+[/template]
+
+[template private entry(unit : IndexLineDirectionUnit, accessor : String, objectAccess : Boolean) post(trim())]
+[for (field : UnitField | unit.displayFields) ]
+	[if (field.conditionalDisplay())]
+{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] is not null %}
+	[/if]
+<span class="[field.modelPropertyName()/]">[field.displayValue(accessor, objectAccess)/]</span>
+	[if (field.conditionalDisplay())]
+{% endif %}
+	[/if]
+[/for]
 [/template]
 
 [template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
@@ -295,17 +309,12 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  </thead>
 [/if]
  <tbody>
-{% for entry in [accessor/] %}
+[let loopVariable : String = 'entry']
+{% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
-[if (unit.defaultSelection.oclIsUndefined())]
-   [indexUnit.objectData('entry')/]
-[elseif (indexUnit.defaultSelection.joins->isEmpty())]
-   [indexUnit.objectData('entry')/]
-[else]
-   [indexUnit.arrayData('entry')/]
-[/if]
+   [indexUnit.entry(loopVariable, true)/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
-   <td class="actions">[indexUnit.actions('entry')/]</td>
+   <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
   </tr>
 [if (not nullDisplayValue.oclIsUndefined())]
@@ -318,20 +327,15 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
   </tr>
 [/if]
 {% endfor %}
+[/let]
  </tbody>
 </table>
 [/let]
 [/template]
 
-[template private objectData(unit : IndexGridUnit, accessor : String) post(trim())]
+[template private entry(unit : IndexGridUnit, accessor : String, objectAccess : Boolean) post(trim())]
 [for (field : UnitField | unit.displayFields)]
-<td class="[field.styleClass()/]">[field.displayValue(accessor)/]</td>
-[/for]
-[/template]
-
-[template private arrayData(unit : IndexGridUnit, accessor : String) post(trim())]
-[for (field : UnitField | unit.displayFields)]
-<td class="[field.styleClass()/]">{{ [accessor/]['['/]'[field.modelPropertyName()/]'[']'/] }}</td>
+<td class="[field.styleClass()/]">[field.displayValue(accessor, objectAccess)/]</td>
 [/for]
 [/template]
 
@@ -342,52 +346,52 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 
-[template public displayValue(field : UnitField, parentAccessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/] | default('') }}
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-[feature.displayAttribute(feature.accessor(parentAccessor, field.alias()), parentAccessor)/]
+[feature.displayAttribute(feature.accessor(parentAccessor, field.alias(), objectAccess), parentAccessor)/]
 [/let]
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and not field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/] | default('') }}
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-{% for value in [feature.accessor(parentAccessor, field.alias())/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+{% for value in [feature.accessor(parentAccessor, field.alias(), objectAccess)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[feature.displayAttribute('value', parentAccessor)/]</p>[else]
 <span>[feature.displayAttribute('value', parentAccessor)/]</span>[/if]{% endfor %}
 [/let]
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isEnumerationType()) post(trim())]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/][if (field.maximumDisplaySize > 0)]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isDate()) post(trim())]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias()))/] | date[if (not field.dateFormat.oclIsUndefined())]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String) 
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
 	? (field.isBooleanDataType()) post(trim())] 
-<input type="checkbox"{% if [field.accessor(parentAccessor, field.alias())/] %} checked="checked"{% endif %} disabled="disabled"/>
+<input type="checkbox"{% if [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} checked="checked"{% endif %} disabled="disabled"/>
 [/template] 
  
-[template public displayValue(field : UnitField, parentAccessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isResource() and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
-[let accessor : String = field.accessor(parentAccessor, field.alias())]
+[let accessor : String = field.accessor(parentAccessor, field.alias(), objectAccess)]
 <?php
 [if (not attribute.conditionalDisplay())]
     if (!empty([attribute.getValue(accessor)/]))
@@ -401,10 +405,10 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let accessor : String = association.accessor(parentAccessor, field.alias())]
+[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [if (association.units->isEmpty())]
 [association.displayAssociation(accessor, parentAccessor)/]
 [else]
@@ -414,10 +418,10 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let accessor : String = association.accessor(parentAccessor, field.alias())]
+[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [if (association.units->isEmpty())]
 {% for value in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[association.displayAssociation('value', 'value')/]</p>[else]
@@ -471,30 +475,30 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 
-[template public getImmediateValue(field : UnitField, parentAccessor : String) post(trim())]
+[template public getImmediateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
 [if (field.oclIsTypeOf(UnitFeature))]
-[field.oclAsType(UnitFeature).getImmediateValue(parentAccessor)/]
+[field.oclAsType(UnitFeature).getImmediateValue(parentAccessor, objectAccess)/]
 [else]
 NULL
 [/if]
 [/template]
 
-[template public getImmediateValue(feature : UnitFeature, parentAccessor : String) post(trim())]
+[template public getImmediateValue(feature : UnitFeature, parentAccessor : String, objectAccess : Boolean) post(trim())]
 [if (feature.oclIsTypeOf(UnitAttribute))]
-[feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor)/]
+[feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor, objectAccess)/]
 [else]
-[feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor)/]
+[feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor, objectAccess)/]
 [/if]
 [/template]
 
-[template public getImmediateValue(attribute : UnitAttribute, parentAccessor : String) post(trim())]
-[attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor, attribute.alias()))/]
+[template public getImmediateValue(attribute : UnitAttribute, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor, attribute.alias(), objectAccess))/]
 [/template]
 
-[template public getImmediateValue(association : UnitAssociation, parentAccessor : String) post(trim())]
+[template public getImmediateValue(association : UnitAssociation, parentAccessor : String, objectAccess : Boolean) post(trim())]
 [if (association.isPseudo())]
 [association.pseudoAccessor(parentAccessor)/]
 [else]
-[association.propertyAccessor(parentAccessor, association.alias())/]
+[association.propertyAccessor(parentAccessor, association.alias(), objectAccess)/]
 [/if]
 [/template]
