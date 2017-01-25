@@ -56,44 +56,78 @@ private function [unit.selectName()/]([unit.filteredSelectableParameters(true)/]
 [/template]
 
 [template private selectCode(unit : IndexUnit) post(trim())]
+[if (not unit.selectionType.oclIsUndefined())]
+$this->[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
+[/if]
 [if (not unit.selectionType.oclIsUndefined() and not unit.containingFeature.oclIsUndefined())]
-$[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
-	[if (unit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = $[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]();
-	[else]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($[unit.selectionType.instanceName()/]);
-	[/if]
+[unit.childSelect()/]
 [else]
-	[if (not unit.pagination.oclIsUndefined())]
-$this->page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
-	[if (unit.hasFilters())]
-[unit.filterSelect()/]
-else
-	[/if]
-	[/if]
-	[if (not unit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][if (not unit.pagination.oclIsUndefined())]
-[unit.paginationActuals()/][/if]);
-	[elseif (not unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.defaultSelection.instanceName()/]([unit.selectableParameters()/][if (not unit.pagination.oclIsUndefined())]
-[unit.paginationActuals()/][/if]);
-	[else]
-$this->[unit.instanceName()/] = [unit.getContentService()/]->findAll([if (not unit.pagination.oclIsUndefined())]
-[unit.paginationActuals()/][/if]);
-	[/if]
+[unit.contentSelect()/]
 [/if]
 [/template]
 
-[template private filterSelect(unit : IndexUnit) post(trim())]
+[template private childSelect(unit : IndexUnit) post(trim())]
+[if (unit.hasFilters())]
+[unit.childFilterSelect()/]
+else
+[/if]
+[if (unit.selection.oclIsUndefined())]
+$this->[unit.instanceName()/] = $this->[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]();
+[else]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($this->[unit.selectionType.instanceName()/]);
+[/if]
+[/template]
+
+[template private childFilterSelect(unit : IndexUnit) post(trim())]
+[for (f : Filter | unit.filters()) separator('else')]
+if ([for (parameter : FilterParameter | f.parameters) separator(' && ')]
+$request->query->has('[parameter.name/]')[/for])
+    [unit.childFilterCall(f)/]
+[/for]
+[/template]
+
+[template private childFilterCall(unit : IndexUnit, filter : Filter)]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(filter.selection)/](
+    $this->[unit.selectionType.instanceName()/],
+[for (parameter : SelectionParameter | filter.selection.parameters) separator(', ')]
+[let actual : FilterParameter = filter.matchingActual(parameter)]
+    $request->query->get('[actual.name/]')[/let][/for]
+[if (false and not unit.pagination.oclIsUndefined())]
+[if (filter.selection.parameters->notEmpty())],
+    [/if][unit.paginationActuals()/][/if]
+);
+[/template]
+
+[template private contentSelect(unit : IndexUnit) post(trim())]
+[if (not unit.pagination.oclIsUndefined())]
+$this->page = $request->query->getInt('[unit.pagination.parameters->first().name/]', 1);
+	[if (unit.hasFilters())]
+[unit.contentFilterSelect()/]
+else
+	[/if]
+[/if]
+[if (not unit.selection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][if (not unit.pagination.oclIsUndefined())]
+[unit.paginationActuals()/][/if]);
+[elseif (not unit.defaultSelection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.defaultSelection.instanceName()/]([unit.selectableParameters()/][if (not unit.pagination.oclIsUndefined())]
+[unit.paginationActuals()/][/if]);
+[else]
+$this->[unit.instanceName()/] = [unit.getContentService()/]->findAll([if (not unit.pagination.oclIsUndefined())]
+[unit.paginationActuals()/][/if]);
+[/if]
+[/template]
+
+[template private contentFilterSelect(unit : IndexUnit) post(trim())]
 [for (f : Filter | unit.filters()) separator('} else ')]
 if ([for (parameter : FilterParameter | f.parameters) separator(' && ')]
 $request->query->has('[parameter.name/]')[/for]) {
-    [unit.filterCall(f)/]
+    [unit.contentFilterCall(f)/]
 [/for]
 }
 [/template]
 
-[template private filterCall(unit : IndexUnit, f : Filter)]
+[template private contentFilterCall(unit : IndexUnit, f : Filter)]
 $this->[unit.instanceName()/] = [unit.getContentService()/]->[f.selection.instanceName()/](
 [for (parameter : SelectionParameter | f.selection.parameters) separator(', ')]
 [let actual : FilterParameter = f.matchingActual(parameter)]
@@ -112,6 +146,9 @@ $this->page, [unit.defaultPaginationSize/]
 [template private templateParameters(unit : IndexUnit) post(trim())]
 [if (unit.pageDisplayedOn().units->size() > 1)]
 $this->[unit.selectName()/]([unit.filteredSelectableParameters()/]);
+[/if]
+[if (not unit.selectionType.oclIsUndefined())]
+$parameters['['/]'[unit.selectionType.instanceName()/]'[']'/] = $this->[unit.selectionType.instanceName()/];
 [/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (not unit.pagination.oclIsUndefined())]
