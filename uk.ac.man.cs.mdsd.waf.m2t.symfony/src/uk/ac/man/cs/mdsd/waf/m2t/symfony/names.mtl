@@ -169,6 +169,10 @@
 	= unit.name.toLowerFirst()
 /]
 
+[query public instanceName(unit : CollectionUnit) : String
+	= unit.oclAsType(DynamicUnit).instanceName()
+/]
+
 [query public modelName(unit : ContentUnit) : String
 	= if unit.oclIsTypeOf(StaticUnit) then
 			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
@@ -208,6 +212,10 @@
 
 [query public selectName(unit : ContentUnit) : String
 	= unit.instanceName().concat('Select')
+/]
+
+[query public selectName(unit : CollectionUnit) : String
+	= unit.oclAsType(DynamicUnit).selectName()
 /]
 
 [query public supportActionName(unit : ContentUnit) : String

@@ -10,8 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::display/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::collectionMethods/]
 
 
 [template public unitMethods(unit : ContentUnit)
@@ -19,47 +18,5 @@
 [let imageUnit : ImageUnit = unit.oclAsType(ImageUnit)]
 [imageUnit.actionMethod()/]
 
-[/let]
-[/template]
-
-[template private actionMethod(unit : ImageUnit) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
-/**
- [unit.routeAnnotation()/]
- */
-public function [unit.actionName()/]([page.actionMethodParameters(unit.selectType())/])
-{
-    [unit.loadSelectedInstance()/]
-
-[if (page.units->size() > 1)]
-    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
-[else]
-    $parameters = array();
-    [page.templateParameters()/]
-    [unit.templateParameters()/]
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
-[/if]
-}
-[/let]
-[/template]
-
-[template private templateParameters(unit : ContentUnit)
-	? (unit.oclIsKindOf(ImageUnit)) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
-[let imageUnit : ImageUnit = unit.oclAsType(ImageUnit)]
-[if (page.units->size() = 1)]
-$parameters['['/]'[imageUnit.instanceName()/]'[']'/] = $this->[imageUnit.instanceName()/];
-[else]
-if (!isset($this->[imageUnit.instanceName()/]))
-	[if (not imageUnit.defaultSelection.oclIsUndefined())]
-    $this->[imageUnit.instanceName()/] = [imageUnit.getContentService()/]->[imageUnit.defaultSelection.methodName()/]();
-	[elseif (page.uriCommonPathKeys()->includesAll(unit.selectType().uriPathKeys()))]
-    $this->[imageUnit.instanceName()/] = [imageUnit.selectType().loadInstance(imageUnit)/];
-	[else]
-    $this->[imageUnit.instanceName()/] = [imageUnit.createInstance()/];
-	[/if]
- $parameters['['/]'[imageUnit.instanceName()/]'[']'/] = $this->[imageUnit.instanceName()/];
-[/if]
-[/let]
 [/let]
 [/template]

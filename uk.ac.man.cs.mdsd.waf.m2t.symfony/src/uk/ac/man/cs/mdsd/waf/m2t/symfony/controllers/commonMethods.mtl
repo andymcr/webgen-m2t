@@ -80,7 +80,7 @@ $this->get('[unit.contentService().name/]')
 
 [/template]
 
-[template public getSelectionService(unit : DynamicUnit) post(trim())]
+[template public getSelectionService(unit : CollectionUnit) post(trim())]
 $this->get('[unit.selectionService().name/]')
 
 [/template]
