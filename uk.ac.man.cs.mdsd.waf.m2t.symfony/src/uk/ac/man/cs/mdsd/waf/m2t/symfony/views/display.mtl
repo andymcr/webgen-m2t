@@ -114,11 +114,11 @@
 onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
-[template private pagination(unit : IndexUnit, accessor : String)]
+[template private pagination(unit : IndexUnit, selectionAccessor : String)]
 <ul class="unit_control">
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage != 1 %}
- <li><a href="[unit.pageHref('1')/]">[unit.firstPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLabel/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
  <li>[unit.firstPageLabel/]</li>
@@ -126,7 +126,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 {% endif %}
 [/if]
 {% if currentPage != 1 %}
- <li><a href="[unit.pageHref('currentPage - 1')/]">[unit.previousPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('currentPage - 1', selectionAccessor)/]">[unit.previousPageLabel/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
  <li>[unit.previousPageLabel/]</li>
@@ -140,7 +140,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  {% if page == currentPage %}
  <li>{{ page }}</li>
  {% else %}
- <li><a href="[unit.pageHref('page')/]">{{ page }}</a></li>
+ <li><a href="[unit.pageHref('page', selectionAccessor)/]">{{ page }}</a></li>
  {% endif %}
 {% endfor %}
 [/if]
@@ -148,7 +148,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 {% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li>&hellip;</li>{% endif %}
 [/if]
 {% if currentPage != pageCount %}
- <li><a href="[unit.pageHref('currentPage + 1')/]">[unit.nextPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLabel/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
  <li>[unit.nextPageLabel/]</li>
@@ -156,7 +156,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 {% endif %}
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage != pageCount %}
- <li><a href="[unit.pageHref('pageCount')/]">[unit.lastPageLabel/]</a></li>
+ <li><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLabel/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
  <li>[unit.lastPageLabel/]</li>
@@ -166,8 +166,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 </ul>
 [/template]
 
-[template private pageHref(unit : IndexUnit, x : String) post(trim())]
-{{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.pagination.parameters->first().name/]': [x/]})) }}
+[template private pageHref(unit : IndexUnit, pageNumber : String, selectionAccessor : String) post(trim())]
+{{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.pagination.parameters->first().name/]': [pageNumber/][if (not unit.selectionType.oclIsUndefined())]
+, [unit.selectType().routeActualParameters(unit.contentType(), selectionAccessor, false)/][/if]})) }}
 [/template]
 
 
