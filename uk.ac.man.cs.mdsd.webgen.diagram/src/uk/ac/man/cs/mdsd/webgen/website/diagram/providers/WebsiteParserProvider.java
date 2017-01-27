@@ -488,7 +488,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5177Parser() {
 		if (unitAssociationName_5177Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5177Parser = parser;
 		}
@@ -590,7 +590,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5179Parser() {
 		if (unitAssociationName_5179Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5179Parser = parser;
 		}
@@ -709,7 +709,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5199Parser() {
 		if (unitAssociationName_5199Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5199Parser = parser;
 		}
@@ -760,7 +760,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5184Parser() {
 		if (unitAssociationName_5184Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5184Parser = parser;
 		}
@@ -879,7 +879,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5198Parser() {
 		if (unitAssociationName_5198Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5198Parser = parser;
 		}
@@ -930,7 +930,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5191Parser() {
 		if (unitAssociationName_5191Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5191Parser = parser;
 		}
@@ -981,7 +981,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5190Parser() {
 		if (unitAssociationName_5190Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5190Parser = parser;
 		}
@@ -1066,7 +1066,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5197Parser() {
 		if (unitAssociationName_5197Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5197Parser = parser;
 		}
@@ -1134,7 +1134,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5188Parser() {
 		if (unitAssociationName_5188Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5188Parser = parser;
 		}
@@ -1270,7 +1270,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5201Parser() {
 		if (unitAssociationName_5201Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5201Parser = parser;
 		}
@@ -1355,7 +1355,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5203Parser() {
 		if (unitAssociationName_5203Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5203Parser = parser;
 		}
@@ -1457,7 +1457,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5194Parser() {
 		if (unitAssociationName_5194Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5194Parser = parser;
 		}
@@ -1525,7 +1525,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5231Parser() {
 		if (unitAssociationName_5231Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5231Parser = parser;
 		}
@@ -1593,7 +1593,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5207Parser() {
 		if (unitAssociationName_5207Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5207Parser = parser;
 		}
@@ -1644,7 +1644,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5223Parser() {
 		if (unitAssociationName_5223Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5223Parser = parser;
 		}
@@ -1678,7 +1678,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5206Parser() {
 		if (unitAssociationName_5206Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5206Parser = parser;
 		}
@@ -2035,7 +2035,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	 */
 	private IParser getUnitAssociationName_5196Parser() {
 		if (unitAssociationName_5196Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getFeaturePathAssociation_Name() };
+			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
 			unitAssociationName_5196Parser = parser;
 		}
