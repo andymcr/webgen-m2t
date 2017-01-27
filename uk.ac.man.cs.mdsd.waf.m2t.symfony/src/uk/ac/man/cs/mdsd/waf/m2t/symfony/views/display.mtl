@@ -454,7 +454,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
-				feature.oclAsType(UnitAssociation).path.association.partOf
+				feature.oclAsType(UnitAssociation).association.partOf
 			endif]
 [feature.actions->select(a | not a.disable)
 	->first().actionLink(parentEntityOrView, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor)/]
@@ -468,7 +468,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(association.path.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor)/]
+	->first().actionLink(association.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor)/]
 [else]
 {{ [accessor/].defaultLabel()| default('[if (not association.nullDisplayValue.oclIsUndefined())][association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}

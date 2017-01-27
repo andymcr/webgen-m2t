@@ -311,7 +311,7 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
-			action.usedBy.oclAsType(UnitAssociation).path.association.modelName()
+			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif
 /]
 
@@ -319,7 +319,7 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
-			action.usedBy.oclAsType(UnitAssociation).path.association.modelName()
+			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif
 /]
 

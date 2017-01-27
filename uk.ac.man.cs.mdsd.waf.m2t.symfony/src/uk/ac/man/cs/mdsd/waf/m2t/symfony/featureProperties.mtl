@@ -4,6 +4,7 @@
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
@@ -32,6 +33,20 @@
 			else
 				null
 			endif
+/]
+
+
+[query public selected(selection : Selection) : Boolean
+	= selection.selected and not selection.partOf.serves.parentEntity().oclIsUndefined()
+/]
+
+
+[query public routedSelection(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then
+			false
+		else
+			unit.selection.selected()
+		endif
 /]
 
 

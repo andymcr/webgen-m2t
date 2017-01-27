@@ -30,8 +30,8 @@ NULL
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
-[if (not association.path.childFeature.oclIsUndefined())]
-[association.path.childFeature.getValue(accessor)/]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(accessor)/]
 [else]
 	[if (not association.valueDisplay.oclIsUndefined())]
 [association.valueDisplay.label(accessor)/]
@@ -41,16 +41,16 @@ NULL
 [/if]
 [/template]
 
-[template public getValue(child : ChildFeature, accessor : String)
-	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
-[let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
+[template public getValue(child : ChildPath, accessor : String)
+	? (child.oclIsTypeOf(ChildPathAttribute)) post(trim())]
+[let attribute : ChildPathAttribute = child.oclAsType(ChildPathAttribute)]
 [attribute.attribute.getValue(accessor)/]
 [/let]
 [/template]
 
-[template public getValue(child : ChildFeature, accessor : String)
-	? (child.oclIsTypeOf(ChildAssociation)) post(trim())]
-[let association : ChildAssociation = child.oclAsType(ChildAssociation)]
+[template public getValue(child : ChildPath, accessor : String)
+	? (child.oclIsTypeOf(ChildPathAssociation)) post(trim())]
+[let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)]
 [if (not association.childFeature.oclIsUndefined())]
 [association.childFeature.getValue(accessor)/]
 [else]

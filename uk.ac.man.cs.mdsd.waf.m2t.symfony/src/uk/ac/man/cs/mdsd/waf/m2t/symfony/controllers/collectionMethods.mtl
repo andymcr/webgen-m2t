@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
@@ -96,7 +97,11 @@ $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingF
 else
 [/if]
 [if (not unit.selection.oclIsUndefined())]
+	[if (unit.routedSelection())]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+	[else]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+	[/if]
 [elseif (unit.oclIsKindOf(DataUnit))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 	[if (not dataUnit.defaultSelection.oclIsUndefined())]

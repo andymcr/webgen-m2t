@@ -14,8 +14,8 @@
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.displayLabel <> field.oclAsType(UnitAttribute).attribute.displayLabel
 		else if field.oclIsTypeOf(UnitAssociation) then
-			field.displayLabel <> field.oclAsType(UnitAssociation).path.association.displayLabel
-				or not field.oclAsType(UnitAssociation).path.childFeature.oclIsUndefined()
+			field.displayLabel <> field.oclAsType(UnitAssociation).association.displayLabel
+				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
 		else
 			field.oclIsKindOf(InterfaceField)
 		endif endif
@@ -35,8 +35,8 @@
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.title <> field.oclAsType(UnitAttribute).attribute.displayLabel
 		else if field.oclIsTypeOf(UnitAssociation) then
-			field.title <> field.oclAsType(UnitAssociation).path.association.displayLabel
-				or not field.oclAsType(UnitAssociation).path.childFeature.oclIsUndefined()
+			field.title <> field.oclAsType(UnitAssociation).association.displayLabel
+				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
 		else
 			field.oclIsKindOf(InterfaceField)
 		endif endif

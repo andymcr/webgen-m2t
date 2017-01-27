@@ -43,7 +43,7 @@
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.displayLabel
 		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).path.association.displayLabel
+			field.oclAsType(UnitAssociation).association.displayLabel
 		else
 			field.displayLabel
 		endif endif

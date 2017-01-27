@@ -57,7 +57,7 @@ $this->[path.unit.instanceName()/]->[comment path unit services->first() keyName
 [template private featureReference(feature : Feature) 
 	? (feature.oclIsKindOf(Association)) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
- '[association.targetType().selectName()/].[feature.partOf.autoKeyName/]'
+ '[association.sourceType().selectName()/].[feature.modelPropertyName()/]'
 [/let]
 [/template]
 
@@ -252,12 +252,6 @@ $query->setParameter('now', new \DateTime('now'));
 [template public queryParameter(expression : Expression)
 	? (expression.oclIsTypeOf(CurrentUserReference)) post(trim())]
 [let containedIn : WafModel = expression.ancestors()->select(a | a.oclIsTypeOf(WafModel)).oclAsType(WafModel)->first()]
-[if (containedIn.isLocallyAuthenticated())]
-$query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser()->getId());
-[elseif (containedIn.isCasAuthenticated())]
-$query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser()->getUsername());
-[else]
-$query->setParameter('user', '????');
-[/if]
+$query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser());
 [/let]
 [/template]

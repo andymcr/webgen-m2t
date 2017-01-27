@@ -478,7 +478,7 @@
 [query public displayedAssociations(unit : DynamicUnit) : Sequence(Association)
 	= unit.displayFields
 		->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
-		->collect(a | a.path.association)
+		->collect(a | a.association)
 /]
 
 [query public encryptedFeatures(unit : DynamicUnit) : Set(UnitField)
@@ -755,10 +755,10 @@
 				field.oclAsType(UnitAttribute).attribute.dataType()
 			else
 				let association : UnitAssociation = field.oclAsType(UnitAssociation)
-				in if association.path.childFeature.oclIsUndefined() then
+				in if association.childFeature.oclIsUndefined() then
 						null
 					else
-						association.path.childFeature.dataTypeElement()
+						association.childFeature.dataTypeElement()
 					endif
 			endif
 		else
@@ -766,11 +766,11 @@
 		endif
 /]
 
-[query public dataTypeElement(child : ChildFeature) : Classifier
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.dataType()
+[query public dataTypeElement(child : ChildPath) : Classifier
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.dataType()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					null
 				else
@@ -806,7 +806,7 @@
 	= if field.oclIsKindOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.partOf
 		else if field.oclIsKindOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).path.association.partOf
+			field.oclAsType(UnitAssociation).association.partOf
 		else 
 			null
 		endif endif
@@ -826,7 +826,7 @@
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute
 		else
-			field.oclAsType(UnitAssociation).path.association
+			field.oclAsType(UnitAssociation).association
 		endif
 /]
 
@@ -836,7 +836,7 @@
 				field.oclAsType(UnitAttribute).attribute.columnName()
 			else
 				let association : Association
-					= field.oclAsType(UnitAssociation).path.association
+					= field.oclAsType(UnitAssociation).association
 					in if association.isSingleton() and association.isOwningEnd() then 
 	 						association.columnName() 
 						else 
@@ -914,18 +914,18 @@
 /]
 
 [query public id(association : UnitAssociation) : String
-	= if association.path.childFeature.oclIsUndefined() then
+	= if association.childFeature.oclIsUndefined() then
 			association.name.asId()
 		else
-			association.name.asId().concat('.').concat(association.path.childFeature.id())
+			association.name.asId().concat('.').concat(association.childFeature.id())
 		endif
 /]
 
-[query public id(child : ChildFeature) : String
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.id()
+[query public id(child : ChildPath) : String
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.id()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					association.name.asId()
 				else
@@ -949,19 +949,19 @@
 			false
 		else
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
-			in if association.path.childFeature.oclIsUndefined() then
+			in if association.childFeature.oclIsUndefined() then
 					true
 				else
-					association.path.childFeature.isAssociationElement()
+					association.childFeature.isAssociationElement()
 				endif
 		endif
 /]
 
-[query public isAssociationElement(child : ChildFeature) : Boolean
-	= if child.oclIsTypeOf(ChildAttribute) then
+[query public isAssociationElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
 			false
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					true
 				else
@@ -976,10 +976,10 @@
 				field.oclAsType(UnitAttribute).attribute.isBooleanDataType()
 			else
 				let association : UnitAssociation = field.oclAsType(UnitAssociation)
-				in if association.path.childFeature.oclIsUndefined() then
+				in if association.childFeature.oclIsUndefined() then
 						false
 					else
-						association.path.childFeature.isBooleanDataTypeElement()
+						association.childFeature.isBooleanDataTypeElement()
 					endif
 			endif
 		else
@@ -987,11 +987,11 @@
 		endif
 /]
 
-[query public isBooleanDataTypeElement(child : ChildFeature) : Boolean
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.isBooleanDataType()
+[query public isBooleanDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isBooleanDataType()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
@@ -1016,7 +1016,7 @@
 
 [query public isContains(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).path.association.isContains()
+			field.oclAsType(UnitAssociation).association.isContains()
 		else
 			false
 		endif
@@ -1028,10 +1028,10 @@
 				field.oclAsType(UnitAttribute).attribute.isDataType()
 			else
 				let association : UnitAssociation = field.oclAsType(UnitAssociation)
-				in if association.path.childFeature.oclIsUndefined() then
+				in if association.childFeature.oclIsUndefined() then
 						false
 					else
-						association.path.childFeature.isDataTypeElement()
+						association.childFeature.isDataTypeElement()
 					endif
 			endif
 		else
@@ -1039,11 +1039,11 @@
 		endif
 /]
 
-[query public isDataTypeElement(child : ChildFeature) : Boolean
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.isDataType()
+[query public isDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isDataType()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
@@ -1058,10 +1058,10 @@
 				field.oclAsType(UnitAttribute).attribute.isDate()
 			else
 				let association : UnitAssociation = field.oclAsType(UnitAssociation)
-				in if association.path.childFeature.oclIsUndefined() then
+				in if association.childFeature.oclIsUndefined() then
 						false
 					else
-						association.path.childFeature.isDateElement()
+						association.childFeature.isDateElement()
 					endif
 			endif
 		else
@@ -1069,11 +1069,11 @@
 		endif
 /]
 
-[query public isDateElement(child : ChildFeature) : Boolean
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.isDate()
+[query public isDateElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isDate()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
@@ -1111,10 +1111,10 @@
 				field.oclAsType(UnitAttribute).attribute.isEnumerationType()
 			else
 				let association : UnitAssociation = field.oclAsType(UnitAssociation)
-				in if association.path.childFeature.oclIsUndefined() then
+				in if association.childFeature.oclIsUndefined() then
 						false
 					else
-						association.path.childFeature.isEnumerationTypeElement()
+						association.childFeature.isEnumerationTypeElement()
 					endif
 			endif
 		else
@@ -1122,11 +1122,11 @@
 		endif
 /]
 
-[query public isEnumerationTypeElement(child : ChildFeature) : Boolean
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.isEnumerationType()
+[query public isEnumerationTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isEnumerationType()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
@@ -1144,7 +1144,7 @@
 				in if association.units->notEmpty() then
 						false
 					else
-						association.forcedValue.oclIsUndefined() and association.path.association.isModifiable()
+						association.forcedValue.oclIsUndefined() and association.association.isModifiable()
 					endif
 		endif
 /]
@@ -1176,10 +1176,10 @@
 /]
 
 [query public isPseudo(association : UnitAssociation) : Boolean
-	= association.path.association.isPseudo()
+	= association.association.isPseudo()
 /]
 
-[query public isPseudo(association : ChildAssociation) : Boolean
+[query public isPseudo(association : ChildPathAssociation) : Boolean
 	= if association.association.oclIsKindOf(EntityAssociation) then
 			association.association.oclAsType(EntityAssociation).isPseudo()
 		else 
@@ -1192,7 +1192,7 @@
 			if field.oclIsTypeOf(UnitAttribute) then
 				field.oclAsType(UnitAttribute).attribute.isRequired()
 			else
-				field.oclAsType(UnitAssociation).path.association.isRequired()
+				field.oclAsType(UnitAssociation).association.isRequired()
 			endif
 		else 
 			field.oclAsType(InterfaceField).required
@@ -1214,10 +1214,10 @@
 				field.oclAsType(UnitAttribute).attribute.isSingleton()
 			else
 				let association : UnitAssociation = field.oclAsType(UnitAssociation)
-				in if association.path.childFeature.oclIsUndefined() then
-						association.path.association.isSingleton()
+				in if association.childFeature.oclIsUndefined() then
+						association.association.isSingleton()
 					else
-						association.path.childFeature.isSingletonElement()
+						association.childFeature.isSingletonElement()
 					endif
 			endif
 		else 
@@ -1225,11 +1225,11 @@
 		endif
 /]
 
-[query public isSingletonElement(child : ChildFeature) : Boolean
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.isSingleton()
+[query public isSingletonElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isSingleton()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					association.association.isSingleton()
 				else
@@ -1243,7 +1243,7 @@
 			if field.oclIsTypeOf(UnitAttribute) then
 				field.oclAsType(UnitAttribute).attribute.isUnique()
 			else
-				field.oclAsType(UnitAssociation).path.association.isUnique()
+				field.oclAsType(UnitAssociation).association.isUnique()
 			endif
 		else
 			false
@@ -1256,10 +1256,10 @@
 				field.oclAsType(UnitAttribute).attribute.isUrl()
 			else
 				let association : UnitAssociation = field.oclAsType(UnitAssociation)
-				in if association.path.childFeature.oclIsUndefined() then
+				in if association.childFeature.oclIsUndefined() then
 						false
 					else
-						association.path.childFeature.isUrlElement()
+						association.childFeature.isUrlElement()
 					endif
 			endif
 		else
@@ -1267,11 +1267,11 @@
 		endif
 /]
 
-[query public isUrlElement(child : ChildFeature) : Boolean
-	= if child.oclIsTypeOf(ChildAttribute) then
-			child.oclAsType(ChildAttribute).attribute.isUrl()
+[query public isUrlElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isUrl()
 		else
-			let association : ChildAssociation = child.oclAsType(ChildAssociation)
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
 			in if association.childFeature.oclIsUndefined() then
 					false
 				else
@@ -1284,7 +1284,7 @@
 	= if feature.oclIsTypeOf(UnitAttribute) then
 			feature.oclAsType(UnitAttribute).attribute.isValidated()
 		else 
-			feature.oclAsType(UnitAssociation).path.association.isValidated()
+			feature.oclAsType(UnitAssociation).association.isValidated()
 		endif
 /]
 
@@ -1292,11 +1292,11 @@
 	= field.pageDisplayedOn().partOf
 /]
 
-[query public model(child : ChildAssociation) : WafModel
+[query public model(child : ChildPathAssociation) : WafModel
 	= if child.eContainer().oclIsTypeOf(UnitAssociation) then
 			child.eContainer().oclAsType(UnitAssociation).model()
 		else
-			child.eContainer().oclAsType(ChildAssociation).model()
+			child.eContainer().oclAsType(ChildPathAssociation).model()
 		endif
 /]
 
@@ -1305,7 +1305,7 @@
 			if field.oclIsTypeOf(UnitAttribute) then
 				field.oclAsType(UnitAttribute).attribute.modelPropertyName()
 			else
-				field.oclAsType(UnitAssociation).path.association.modelPropertyName()
+				field.oclAsType(UnitAssociation).association.modelPropertyName()
 			endif
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name

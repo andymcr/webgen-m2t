@@ -390,13 +390,23 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [/template]
 
 [template private parameters(selection : Selection) post(trim())]
-[for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+[if (selection.selected())]
+	[for (key : Attribute | selection.partOf.serves.parentEntity().uriPathKeys()) separator(', ')]
+$[key.routeParameterName(selection.partOf.serves)/][/for]
+[if (selection.parameters->notEmpty() or selection.limit <> 1)]
+, [/if]
+[/if]
+[if (selection.parameters->notEmpty())]
+	[for (parameter : SelectionParameter | selection.parameters) separator(', ')]
 $[parameter.name/][if (parameter.optional)]
  = [if (parameter.defaultValue.oclIsUndefined())]
 NULL[else]
 [parameter.defaultValue/][/if][/if][/for]
 [if (selection.limit <> 1)]
-[if (selection.parameters->notEmpty())], [/if]$page = NULL, $pageSize = 10
+, [/if]
+[/if]
+[if (selection.limit <> 1)]
+$page = NULL, $pageSize = 10
 [/if]
 [/template]
 
