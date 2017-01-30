@@ -186,17 +186,36 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name
 [/template]
 
 [template private saveBody(unit : EditUnit, suffix : String, routeParameterBase : EntityOrView) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
+[let pathKeys : Sequence(Attribute)
+	= if unit.contentType.parentEntity().oclIsUndefined() then
+			Sequence{}
+		else
+			unit.contentType.parentEntity().uriPathKeys()
+		endif]
 [unit.getContentService()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
 return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (not unit.contentType.parentEntity().oclIsUndefined())]
+return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (page.hasFilterParameters())]
+, [if (pathKeys->isEmpty())]
+$request->query->all()[else]
+array_merge(
+    $request->query->all(),
+    array(
+        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
+))[/if]
+[else]
+	[if (pathKeys->notEmpty())]
 , array(
     [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
-)[/if]);
+)[/if]
+[/if]);
 	[/if]
 [/if]
+[/let]
+[/let]
 [/template]
 
 [template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView) post(trim())]
