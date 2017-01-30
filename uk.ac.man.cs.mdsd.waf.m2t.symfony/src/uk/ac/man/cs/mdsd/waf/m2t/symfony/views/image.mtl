@@ -48,29 +48,29 @@
 	? (feature.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
 [let association : FeaturePathAssociation = feature.oclAsType(FeaturePathAssociation)]
 [let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
-[if (association.association.isSingleton())]
-	[if (association.association.isRequired())]
-		[if (not association.childFeature.oclIsUndefined())]
+[if (association.childFeature.oclIsUndefined())]
+[unit.imageMissing(accessor, baseAccessor)/]
+[else]
+	[if (association.association.isSingleton())]
+		[if (association.association.isRequired())]
 [association.childFeature.imagePath(unit, accessor, baseAccessor)/]
+		[else]
+{% if [accessor/] is empty %}
+[unit.imageMissing(accessor, baseAccessor)/]
+{% else %}
+[association.childFeature.imagePath(unit, accessor, baseAccessor)/]
+{% endif %}
 		[/if]
 	[else]
-{% if [accessor/] is empty %}
-		[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.imagePath(unit, accessor, baseAccessor)/]
+{% if [accessor/] | length > 0 %}
+{% set child = [accessor/] | first %}
+[association.childFeature.imagePath(unit, 'child', baseAccessor)/]
+		[if (not unit.missingImagePath.oclIsUndefined())]
+{% else %}
+[unit.imageMissing(accessor, baseAccessor)/]
 		[/if]
 {% endif %}
 	[/if]
-[else]
-{% if [accessor/] | length > 0 %}
-{% set child = [accessor/] | first %}
-	[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.imagePath(unit, 'child', baseAccessor)/]
-	[/if]
-	[if (not unit.missingImagePath.oclIsUndefined())]
-{% else %}
-[unit.imageMissing(accessor, baseAccessor)/]
-	[/if]
-{% endif %}
 [/if]
 [/let]
 [/let]
