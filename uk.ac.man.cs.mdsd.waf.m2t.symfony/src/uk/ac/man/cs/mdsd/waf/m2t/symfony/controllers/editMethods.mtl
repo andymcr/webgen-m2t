@@ -130,18 +130,49 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit.selectTyp
 [/template]
 
 [template public createForm(unit : EditUnit, suffix : String, parentPath : Boolean, placeholder : Boolean) post(trim())]
-[let entityOrView : EntityOrView = unit.contentType]
-$this->createForm([entityOrView.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
-    'action' => $this->generateUrl('[unit.routeName(suffix)/]', array(
-[if (parentPath)]
-	[if (not unit.contentType.parentEntity().oclIsUndefined())]
-        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
-	[/if]
+[let page : Page = unit.pageDisplayedOn()]
+[let entity : EntityOrView = unit.contentType]
+[let pathKeys : Sequence(Attribute)
+	= if parentPath then
+			if entity.parentEntity().oclIsUndefined() then
+				Sequence{}
+			else
+				entity.parentEntity().uriPathKeys()
+			endif
+		else
+			entity.uriPathKeys()
+		endif]
+$this->createForm([entity.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
+    'action' => $this->generateUrl('[unit.routeName(suffix)/]', [if (page.hasFilterParameters())]
+	[if (pathKeys->isEmpty())]
+$request->query->all()[else]
+array_merge(
+        $request->query->all(),
+        array(
+		[if (parentPath)]
+			[if (not unit.contentType.parentEntity().oclIsUndefined())]
+            [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
+			[/if]
+		[else]
+            [entity.routeActualParameters(entity)/]
+		[/if]
+    ))[/if]
 [else]
-        [entityOrView.routeActualParameters(entityOrView)/]
-[/if]
-    )),
+	[if (pathKeys->notEmpty())]
+array(
+		[if (parentPath)]
+			[if (not unit.contentType.parentEntity().oclIsUndefined())]
+        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
+			[/if]
+		[else]
+        [entity.routeActualParameters(entity)/]
+		[/if]
+)
+	[/if]
+[/if]),
 )[/if])
+[/let]
+[/let]
 [/let]
 [/template]
 
