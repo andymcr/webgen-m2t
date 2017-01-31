@@ -243,11 +243,11 @@ public function [selection.methodName()/]([selection.parameters()/])
 [if (selection.fields->notEmpty())]
     [selection.fields()/]
 [/if]
-[if (selection.joins->notEmpty())]
+[if (selection.joins->notEmpty() or selection.selected())]
     [selection.joins()/]
 [/if]
-[if (not selection.filter.oclIsUndefined())]
-    $queryBuilder->where([selection.filter.queryExpression()/]);
+[if (selection.selected() or not selection.filter.oclIsUndefined())]
+    [selection.filter()/]
 [/if]
 [if (selection.ordering->size() > 0)]
     [selection.orderBy()/]
@@ -264,6 +264,13 @@ public function [selection.methodName()/]([selection.parameters()/])
 	[/if]
 [/if]
     $query = $queryBuilder->getQuery();
+[if (selection.selected())]
+[let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
+	[for (key : Attribute | parentEntity.uriPathKeys())]
+    $query->setParameter('[key.routeParameterName(parentEntity)/]', $[key.routeParameterName(parentEntity)/]);
+	[/for]
+[/let]
+[/if]
 [if (not selection.filter.oclIsUndefined())]
     [selection.filter.queryParameter()/]
 [/if]
@@ -295,7 +302,11 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
  [alias/][/if]'
 [/template]
 
-[query private entitiesAndViews(selection : Selection, length : Integer) : Set(EntityOrView)
+[query private entities(selection : Selection) : Set(EntityOrView)
+	= selection.entities(selection.joins->size())
+/]
+
+[query private entities(selection : Selection, length : Integer) : Set(EntityOrView)
 	= if length = 1 then
 			Set{selection.partOf.serves}
 		else
@@ -313,13 +324,55 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 /]
 
 [template private joins(selection : Selection) post(trim())]
+[if (selection.selected())]
+[let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
+[let association : Association = selection.partOf.serves.containingAssociation()]
+	[if (selection.entities()->excludes(parentEntity))]
+		[if (selection.entities()->includes(association.partOf))]
+$queryBuilder->join('[association.partOf.selectName()/].[association.modelPropertyName()/]', '[association.targetType().selectName()/]');
+		[else]
+$queryBuilder->join('[association.targetType().selectName()/].[association.opposite().modelPropertyName()/]', '[association.partOf.selectName()/]');
+		[/if]
+	[/if]
+[/let]
+[/let]
+[/if]
 [for (join : Association | selection.joins)]
-	[if (selection.entitiesAndViews(i)->includes(join.partOf))]
+	[if (selection.entities(i)->includes(join.partOf))]
 $queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
 	[else]
 $queryBuilder->join('[join.targetType().selectName()/].[join.opposite().modelPropertyName()/]', '[join.partOf.selectName()/]');
 	[/if]
 [/for]
+[/template]
+
+[template private filter(selection : Selection) post(trim())]
+[if (selection.selected())]
+[let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
+	[if (selection.filter.oclIsUndefined())]
+		[if (parentEntity.uriPathKeys()->size() = 1)]
+		[let key : Attribute = parentEntity.uriPathKeys()->first()]
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(parentEntity)/]'));
+		[/let]
+		[else]
+$queryBuilder->where($queryBuilder->expr->andX(
+			[for (key : Attribute | parentEntity.uriPathKeys())]
+    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(parentEntity)/]'),
+			[/for]
+));
+		[/if]
+	[else]
+$queryBuilder->where($queryBuilder->expr()->andX(
+		[for (key : Attribute | parentEntity.uriPathKeys())]
+    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(parentEntity)/]'),
+		[/for]
+    [selection.filter.queryExpression()/]
+));
+	[/if]
+[/let]
+[else]
+$queryBuilder->where([selection.filter.queryExpression()/]);
+[/if]
 [/template]
 
 [template private orderBy(selection : Selection) post(trim())]
