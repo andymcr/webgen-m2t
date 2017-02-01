@@ -263,6 +263,9 @@ public function [selection.methodName()/]([selection.parameters()/])
         $queryBuilder->setMaxResults([selection.limit/]);
 	[/if]
 [/if]
+[if (selection.distinct)]
+    $queryBuilder->distinct();
+[/if]
     $query = $queryBuilder->getQuery();
 [if (selection.selected())]
 [let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
