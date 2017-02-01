@@ -29,7 +29,7 @@
 /**
  [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([page.actionMethodParameters(unit.selectType())/])
+public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.selectType())/])
 {
     [unit.loadSelectedInstance()/]
 

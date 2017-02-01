@@ -19,7 +19,7 @@
 /**
  [dynamicUnit.routeAnnotation()/]
  */
-public function [dynamicUnit.actionName()/]([unit.filteredSelectableParameters(true)/])
+public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.selectionType)/])
 {
 [if (page.units->size() = 1)]
     [unit.selectCode()/]
@@ -39,7 +39,7 @@ public function [dynamicUnit.actionName()/]([unit.filteredSelectableParameters(t
 [/template]
 
 [template public selectMethod(unit : CollectionUnit) post(trim())]
-private function [unit.selectName()/]([unit.filteredSelectableParameters(true)/])
+private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
 {
     [unit.selectCode()/]
 }
@@ -134,6 +134,24 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 );
 [/template]
 
+[template private selectMethodParameters(unit : SelectableUnit) post(trim())]
+[unit.selectMethodParameters(false)/]
+[/template]
+
+[template private selectMethodParameters(unit : SelectableUnit, formal : Boolean) post(trim())]
+[if (unit.oclAsType(DynamicUnit).hasFilterParameters())][if (formal)]
+Request [/if]$request[if (not unit.selectionType.oclIsUndefined())][if (unit.selectionType.uriPathKeys()->notEmpty())]
+, [/if][/if][/if]
+[unit.selectableParameters()/]
+[/template]
+
+[template private selectableParameters(unit : SelectableUnit) post(trim())]
+[if (not unit.selectionType.oclIsUndefined())]
+	[for (key : Attribute | unit.selectionType.uriPathKeys()) separator(', ')]
+$[key.routeParameterName(unit.selectionType)/][/for]
+[/if]
+[/template]
+
 [template private paginationActuals(unit : CollectionUnit) post(trim())]
 [unit.paginationActuals(false)/]
 [/template]
@@ -147,7 +165,7 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
 [if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1)]
-$this->[unit.selectName()/]([unit.filteredSelectableParameters()/]);
+$this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
 [if (not unit.selectionType.oclIsUndefined())]
 $parameters['['/]'[unit.selectionType.instanceName()/]'[']'/] = $this->[unit.selectionType.instanceName()/];

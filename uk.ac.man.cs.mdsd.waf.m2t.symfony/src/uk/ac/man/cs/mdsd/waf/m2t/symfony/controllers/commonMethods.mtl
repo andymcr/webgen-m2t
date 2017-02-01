@@ -31,34 +31,16 @@ $this->get('translator')->trans('[message/]')
 [/template]
 
 
-[template public actionMethodParameters(page : Page, entityOrView : EntityOrView) post(trim())]
+[template public actionMethodParameters(page : Page, unit : DynamicUnit, entityOrView : EntityOrView) post(trim())]
 [if (entityOrView.oclIsUndefined())]
-	[if (page.hasFilterParameters() or page.hasUpdateUnits())]
+	[if (page.hasFilterParameters() or unit.oclIsKindOf(EditUnit))]
 Request $request
 	[/if]
 [else]
-[if (page.hasFilterParameters() or page.hasUpdateUnits())]
+[if (page.hasFilterParameters() or unit.oclIsKindOf(EditUnit))]
 Request $request[if (entityOrView.hasRouteParameters())]
 , [/if][/if][entityOrView.routeParameters()/]
 [/if]
-[/template]
-
-[template public selectableParameters(unit : SelectableUnit) post(trim())]
-[if (not unit.selectionType.oclIsUndefined())]
-	[for (key : Attribute | unit.selectionType.uriPathKeys()) separator(', ')]
-$[key.routeParameterName(unit.selectionType)/][/for]
-[/if]
-[/template]
-
-[template public filteredSelectableParameters(unit : SelectableUnit) post(trim())]
-[unit.filteredSelectableParameters(false)/]
-[/template]
-
-[template public filteredSelectableParameters(unit : SelectableUnit, formal : Boolean) post(trim())]
-[if (unit.oclAsType(DynamicUnit).hasFilterParameters())][if (formal)]
-Request [/if]$request[if (not unit.selectionType.oclIsUndefined())][if (unit.selectionType.uriPathKeys()->notEmpty())]
-, [/if][/if][/if]
-[unit.selectableParameters()/]
 [/template]
 
 [template public renderActualParameters(page : Page, entityOrView : EntityOrView) post(trim())]

@@ -36,7 +36,7 @@
 /**
  [unit.routeAnnotation(suffix, suffix, true)/]
  */
-public function [unit.actionName()/]X([page.actionMethodParameters(selectType.container())/])
+public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectType.container())/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
     $this->[unit.instanceName()/] = [unit.createForm('create', true, false)/];
@@ -84,7 +84,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(selectType.co
 /**
  [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([page.actionMethodParameters(unit.selectType())/])
+public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.selectType())/])
 {
     [unit.loadSelectedInstance()/]
     $this->[unit.instanceName()/] = [unit.createForm('', false, false)/];
