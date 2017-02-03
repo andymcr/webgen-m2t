@@ -26,7 +26,7 @@
 [file(dataUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section class="[dataUnit.styleClass/]{%if [dataUnit.errorName()/] is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
- <h2 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle(dataUnit.instanceName())/]</h2>
+ <h2 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle()/]</h2>
  <section class="[dataUnit.errorClass/]{% if not [dataUnit.errorName()/] is defined %} hidden{% endif %}">
 {% if [dataUnit.errorName()/] is defined %}
    <p class="[dataUnit.errorClass/]">{{ [dataUnit.errorName()/] }}</p>
@@ -65,18 +65,50 @@
 [/template]
 
 
-[template private unitTitle(unit : DataUnit, unitAccessor : String)
-	? (unit.oclIsTypeOf(IndexGridUnit) or unit.title.oclIsUndefined())  post(trim())]
+[template private unitTitle(unit : DataUnit)
+	? (unit.title.oclIsUndefined()) post(trim())]
+[unit.unitTitle('')/]
+[/template]
+
+[template private unitTitle(unit : DataUnit)
+	? (not unit.title.oclIsUndefined()) post(trim())]
+[let contentAccessor : String = unit.instanceName()]
+[if (unit.oclIsKindOf(SingletonUnit))]
+[unit.unitTitle(contentAccessor)/]
+[else]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+[let selectionAccessor : String = collectionUnit.selectionType.instanceName()]
+	[if (unit.title.oclIsKindOf(Attribute))]
+		[if (unit.title.oclAsType(Attribute).partOf = collectionUnit.selectionType)]
+[unit.unitTitle(selectionAccessor)/]
+		[else]
+[unit.unitTitle(contentAccessor)/]
+		[/if]
+	[else]
+		[if (unit.title.oclAsType(ModelLabel).labelFor = collectionUnit.selectionType)]
+[unit.unitTitle(selectionAccessor)/]
+		[else]
+[unit.unitTitle(contentAccessor)/]
+		[/if]
+	[/if]
+[/let]
+[/let]
+[/if]
+[/let]
+[/template]
+
+[template private unitTitle(unit : DataUnit, accessor : String)
+	? (unit.title.oclIsUndefined()) post(trim())]
 {{ '[unit.id()/]' | trans({}, '[unit.translationDomain()/]') }}
 [/template]
 
-[template private unitTitle(unit : DataUnit, unitAccessor : String)
-	? (not unit.title.oclIsUndefined())  post(trim())]
+[template private unitTitle(unit : DataUnit, accessor : String)
+	? (not unit.title.oclIsUndefined()) post(trim())]
 [let labelAccessor : String
 	= if unit.title.oclIsKindOf(Attribute) then
-			unitAccessor.concat('.').concat(unit.title.oclAsType(Attribute).modelPropertyName())
+			accessor.concat('.').concat(unit.title.oclAsType(Attribute).modelPropertyName())
 		else
-			unitAccessor
+			accessor
 		endif]
 {{ [unit.title.label(labelAccessor)/] }}
 [/let]
