@@ -79,8 +79,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 		or featuresUsed->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textarea')->notEmpty())]
-use Symfony\Component\Form\Extension\Core\Type\TestareaType;
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 [/if]
 [if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -156,7 +156,7 @@ EmailType::class
 IntegerType::class
 	[elseif (attribute.dataType().name.toLowerCase() = 'text')]
 TextType::class
-	[elseif (attribute.dataType().name.toLowerCase() = 'textarea')]
+	[elseif (attribute.dataType().name.toLowerCase() = 'textblock')]
 TextareaType::class
 	[else]
 TextType::class
