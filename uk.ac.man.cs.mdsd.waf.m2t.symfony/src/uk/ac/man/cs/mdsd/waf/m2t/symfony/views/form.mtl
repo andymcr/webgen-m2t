@@ -78,11 +78,17 @@
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
 	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.hasUnitTranslation())]
-, { [if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]'attr': {[if (field.hasTitle())]
- 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.hasClass())], [/if][/if][if (field.hasPlaceholder())]
- 'placeholder': [field.placeholder(unit)/][if (field.hasClass())],[/if][/if][if (field.hasClass())]
+, {[if (field.hasUnitTranslation())]
+ 'label': '[unit.containedId()/].labels.[field.id()/]',[/if]
+[if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]
+ 'attr': {[if (field.hasTitle())]
+ 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.hasClass())],[/if][/if]
+[if (field.hasPlaceholder())]
+ 'placeholder': [field.placeholder(unit)/][if (field.hasClass())],[/if][/if]
+[if (field.hasClass())]
  'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
- }[if (field.hasUnitTranslation())], [/if][/if][if (field.hasUnitTranslation())]
+ }[if (field.hasUnitTranslation())], [/if][/if]
+[if (field.hasUnitTranslation())]
 'translation_domain': '[unit.translationDomain()/]'[/if]}[/if]) }}
 [/template]
 
@@ -110,7 +116,7 @@
 [/template]
 
 [template private title(field : UnitField, unit : DynamicUnit) post(trim())]
-[if (field.hasCustomisedLabel() or field.hasCustomisedPlaceholder() or field.hasCustomisedTitle())]
+[if (field.hasUnitTranslation())]
 '[unit.containedId()/].titles.[field.id()/]'[else]
 '[unit.contentType().id()/].labels.[field.id()/]'[/if]
 [/template]

@@ -65,12 +65,10 @@
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [for (field : UnitField | editUnit.displayFields)]
 	[if (field.hasUnitTranslation())]
-		[if (field.hasCustomisedLabel())]
 <trans-unit id="[editUnit.containedId()/].labels.[field.id()/]">
- <source>[editUnit.contentType.id()/].labels.[field.id()/]</source>
+ <source>[editUnit.containedId()/].labels.[field.id()/]</source>
  <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
-		[/if]
 		[if (field.hasPlaceholder())]
 <trans-unit id="[editUnit.containedId()/].placeholders.[field.id()/]">
  <source>[editUnit.containedId()/].placeholders.[field.id()/]</source>
