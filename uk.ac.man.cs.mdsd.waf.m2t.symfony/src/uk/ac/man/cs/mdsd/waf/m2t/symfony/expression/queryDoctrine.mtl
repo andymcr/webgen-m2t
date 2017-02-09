@@ -188,55 +188,55 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 /]
 
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
 [for (expression : Expression | predicate.expressions)]
-[expression.queryParameter()/]
+[expression.queryParameter(userService)/]
 [/for]
 [/let]
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
-[predicate.left.queryParameter()/]
-[predicate.right.queryParameter()/]
+[predicate.left.queryParameter(userService)/]
+[predicate.right.queryParameter(userService)/]
 [/let]
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-[predicate.left.queryParameter()/]
-[predicate.right.queryParameter()/]
+[predicate.left.queryParameter(userService)/]
+[predicate.right.queryParameter(userService)/]
 [/let]
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
 [let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
-[predicate.left.queryParameter()/]
-[predicate.right.queryParameter()/]
+[predicate.left.queryParameter(userService)/]
+[predicate.right.queryParameter(userService)/]
 [/let]
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
 [let predicate : PredicateLikeOperator = expression.oclAsType(PredicateLikeOperator)]
-[predicate.left.queryParameter()/]
-[predicate.right.queryParameter()/]
+[predicate.left.queryParameter(userService)/]
+[predicate.right.queryParameter(userService)/]
 [/let]
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-[predicate.feature.queryParameter()/]
+[predicate.feature.queryParameter(userService)/]
 [/let]
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
 [let path : ParameterReference = expression.oclAsType(ParameterReference)]
 $query->setParameter('[path.parameter.name/]', [if (path.parameter.optional)]
@@ -245,14 +245,12 @@ $[path.parameter.name/][/if]);
 [/let]
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
 $query->setParameter('now', new \DateTime('now'));
 [/template]
 
-[template public queryParameter(expression : Expression)
+[template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let containedIn : WafModel = expression.ancestors()->select(a | a.oclIsTypeOf(WafModel)).oclAsType(WafModel)->first()]
-$query->setParameter('user', $this->[containedIn.userService().instanceName()/]->getUser());
-[/let]
+$query->setParameter('user', $this->[userService.instanceName()/]->getUser());
 [/template]
