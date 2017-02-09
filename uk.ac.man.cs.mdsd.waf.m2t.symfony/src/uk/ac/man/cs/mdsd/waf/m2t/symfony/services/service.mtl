@@ -73,25 +73,21 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
 
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.localAuthentication()]
-[let userService : Service = authentication.user.services(model)->first()]
-	[if (userService = service)]
+	[if (model.userService() = service)]
     [authentication.getUserMethod()/]
 
 	[/if]
 [/let]
-[/let]
 [elseif (model.isCasAuthenticated())]
 [let authentication : CasAuthentication = model.casAuthentication()]
-[let userService : Service = authentication.user.services(model)->first()]
-	[if (userService = service)]
-    [authentication.getUserMethod(userService)/]
+	[if (model.userService() = service)]
+    [authentication.getUserMethod(model.userService())/]
 
 	[/if]
 [/let]
-[/let]
 [/if]
 [for (selection : Selection | service.selections)]
-    [selection.selectionMethod(service)/]
+    [selection.selectionMethod(service, model.userService())/]
 
 [/for]
 
@@ -237,7 +233,7 @@ public function save($entity, $flush = false)
 }
 [/template]
 
-[template private selectionMethod(selection : Selection, service : Service) post(trim())]
+[template private selectionMethod(selection : Selection, service : Service, userService : Service) post(trim())]
 public function [selection.methodName()/]([selection.parameters()/])
 {
     $queryBuilder = $this->createQueryBuilder();
@@ -276,7 +272,7 @@ public function [selection.methodName()/]([selection.parameters()/])
 [/let]
 [/if]
 [if (not selection.filter.oclIsUndefined())]
-    [selection.filter.queryParameter()/]
+    [selection.filter.queryParameter(userService)/]
 [/if]
 
 [if (selection.limit = 1)]
