@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2017/Service',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]

@@ -2,6 +2,7 @@
 [module controller(
 	'http://www.cs.man.ac.uk/mdsd/2016/Expression',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2017/Service',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]

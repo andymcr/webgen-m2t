@@ -74,7 +74,7 @@
 [model.parametersTest()/]
 
 [model.configServices()/]
-[model.services.service()/]
+[model.business.services.service(model)/]
 
 [model.appBundle()/]
 [model.entityTranslations()/]

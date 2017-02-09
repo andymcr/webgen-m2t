@@ -2,6 +2,7 @@
 [module service(
 	'http://www.cs.man.ac.uk/mdsd/2016/Expression',
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2017/Service',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -15,7 +16,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::criteriaDoctrine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::queryDoctrine/]
 
-[template public service(service : Service)]
+[template public service(service : Service, model : WafModel)]
 [file(service.serviceFilename(), false)]
 <?php
 namespace [service.servicesNamespace()/];
@@ -38,31 +39,31 @@ class [service.className()/]
     private $entityManager;
 
 [/if]
-[if (service.partOf.isAuthenticated())]
-	[if (service = service.partOf.userService())]
+[if (model.isAuthenticated())]
+	[if (service = model.userService())]
     private $securityTokenStorage;
 	[else]
-    private $[service.partOf.userService().instanceName()/];
+    private $[model.userService().instanceName()/];
 
 	[/if]
 [/if]
-    public function __construct($doctrine[if (service.serves.hasPseudoAssociations())], $entityManager[/if][if (service.partOf.isAuthenticated())], [if (service = service.partOf.userService())]
-$securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][/if])
+    public function __construct($doctrine[if (service.serves.hasPseudoAssociations())], $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
+$securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
     {
         $this->doctrine = $doctrine;
 [if (service.serves.hasPseudoAssociations())]
         $this->entityManager = $entityManager;
 [/if]
-[if (service.partOf.isAuthenticated())]
-	[if (service = service.partOf.userService())]
+[if (model.isAuthenticated())]
+	[if (service = model.userService())]
         $this->securityTokenStorage = $securityTokenStorage;
 	[else]
-        $this->[service.partOf.userService().instanceName()/] = $[service.partOf.userService().instanceName()/];
+        $this->[model.userService().instanceName()/] = $[model.userService().instanceName()/];
 	[/if]
 [/if]
     }
 
-    [service.findMethod()/]
+    [service.findMethod(model)/]
 
     [service.findAllMethod()/]
 
@@ -70,18 +71,18 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][
 
     [service.saveMethod()/]
 
-[if (service.partOf.isLocallyAuthenticated())]
-[let authentication : LocalAuthenticationSystem = service.partOf.localAuthentication()]
-[let userService : Service = authentication.user.services(service.partOf)->first()]
+[if (model.isLocallyAuthenticated())]
+[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
+[let userService : Service = authentication.user.services(model)->first()]
 	[if (userService = service)]
     [authentication.getUserMethod()/]
 
 	[/if]
 [/let]
 [/let]
-[elseif (service.partOf.isCasAuthenticated())]
-[let authentication : CasAuthentication = service.partOf.casAuthentication()]
-[let userService : Service = authentication.user.services(service.partOf)->first()]
+[elseif (model.isCasAuthenticated())]
+[let authentication : CasAuthentication = model.casAuthentication()]
+[let userService : Service = authentication.user.services(model)->first()]
 	[if (userService = service)]
     [authentication.getUserMethod(userService)/]
 
@@ -94,7 +95,7 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][
 
 [/for]
 
-    [service.childSelectionMethods()/]
+    [service.childSelectionMethods(model)/]
 
 [if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isPseudo())->notEmpty())]
     [service.pseudoAssociationMethods()/]
@@ -118,14 +119,14 @@ $securityTokenStorage[else]$[service.partOf.userService().instanceName()/][/if][
 [/file]
 [/template]
 
-[template private findMethod(service : Service) post(trim())]
+[template private findMethod(service : Service, model : WafModel) post(trim())]
 [let entityOrView : EntityOrView = service.serves]
 public function find([service.serves.routeParameters()/])
 {
 	$queryBuilder = $this->createQueryBuilder();
 	return $queryBuilder
 [if (entityOrView.isContained() or entityOrView.hasAssociationKeys())]
-        [service.keyJoin(service.serves)/]
+        [service.keyJoin(model, service.serves)/]
 [/if]
 [if (entityOrView.uriPathKeys()->notEmpty())]
 	[if (entityOrView.uriPathKeys()->size() < 2)]
@@ -144,12 +145,12 @@ public function find([service.serves.routeParameters()/])
 [/let]
 [/template]
 
-[template private keyJoin(service : Service, entityOrView : EntityOrView) post(trim())]
+[template private keyJoin(service : Service, model : WafModel, entityOrView : EntityOrView) post(trim())]
 [if (service.serves.isContained())]
 [let container : EntityOrView = service.serves.container()]
-[let containerService : Service = container.services(service.partOf)->first()]
+[let containerService : Service = container.services(model)->first()]
 ->join('[service.serves.selectName()/].[service.serves.containingAssociation().modelPropertyName()/]', '[container.selectName()/]')
-[containerService.keyJoin(container)/]
+[containerService.keyJoin(model, container)/]
 [/let]
 [/let]
 [/if]
@@ -395,12 +396,12 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/if]
 [/template]
 
-[template private childSelectionMethods(service : Service) post(trim())]
+[template private childSelectionMethods(service : Service, model : WafModel) post(trim())]
 [for (association : Association | service.serves.associations())]
 	[if (not association.isSingleton(service.serves))]
 	[let targetType : EntityOrView = association.targetType()]
 		[if (not targetType.oclIsUndefined())]
-		[let targetService : Service = targetType.services(service.partOf)->first()]
+		[let targetService : Service = targetType.services(model)->first()]
 			[for (selection : Selection | targetService.selections->select(s | s.joins->isEmpty()))]
 [service.childSelectionMethod(association, selection)/]
 
