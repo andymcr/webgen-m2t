@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
 	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
+	'http://www.cs.man.ac.uk/mdsd/2017/Service',
 	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
 
@@ -88,11 +89,11 @@
 /]
 
 [query public services(model : WafModel, entityOrView : EntityOrView) : OrderedSet(Service)
-	= model.services->select(s | s.serves = entityOrView)
+	= model.business.services->select(s | s.serves = entityOrView)
 /]
 
 [query public servicesWithSelections(model : WafModel) : OrderedSet(Service)
-	= model.services->select(s | s.selections->notEmpty())
+	= model.business.services->select(s | s.selections->notEmpty())
 /]
 
 [query public topMenuItems(model : WafModel) : Sequence(Page)
