@@ -3,6 +3,7 @@
 package uk.ac.man.cs.mdsd.criteria;
 
 import org.eclipse.emf.ecore.EObject;
+import uk.ac.man.cs.mdsd.webgen.expression.Path;
 
 /**
  * <!-- begin-user-doc -->

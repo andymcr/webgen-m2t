@@ -6,6 +6,7 @@ import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.osgi.framework.BundleActivator;
+import uk.ac.man.cs.mdsd.webgen.expression.provider.ExpressionEditPlugin;
 
 /**
  * This is the central singleton for the Criteria edit plugin.
@@ -39,6 +40,7 @@ public final class CriteriaEditPlugin extends EMFPlugin {
 	public CriteriaEditPlugin() {
 		super
 		  (new ResourceLocator [] {
+		     ExpressionEditPlugin.INSTANCE,
 		   });
 	}
 

@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import uk.ac.man.cs.mdsd.criteria.CriteriaPackage;
 import uk.ac.man.cs.mdsd.criteria.Order;
-import uk.ac.man.cs.mdsd.criteria.Path;
+import uk.ac.man.cs.mdsd.webgen.expression.Path;
 
 /**
  * <!-- begin-user-doc -->
