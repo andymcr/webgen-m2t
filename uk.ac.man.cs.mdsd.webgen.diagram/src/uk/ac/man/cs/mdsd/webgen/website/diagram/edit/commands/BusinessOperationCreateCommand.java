@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.BusinessOperation;
-import uk.ac.man.cs.mdsd.webgen.website.Service;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.service.BusinessOperation;
+import uk.ac.man.cs.mdsd.webgen.service.Service;
+import uk.ac.man.cs.mdsd.webgen.service.ServiceFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class BusinessOperationCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		BusinessOperation newElement = WebsiteFactory.eINSTANCE.createBusinessOperation();
+		BusinessOperation newElement = ServiceFactory.eINSTANCE.createBusinessOperation();
 
 		Service owner = (Service) getElementToEdit();
 		owner.getOperations().add(newElement);

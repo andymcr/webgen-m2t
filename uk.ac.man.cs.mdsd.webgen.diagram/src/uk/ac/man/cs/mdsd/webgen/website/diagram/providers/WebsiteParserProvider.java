@@ -175,23 +175,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser serviceName_5005Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getServiceName_5005Parser() {
-		if (serviceName_5005Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			serviceName_5005Parser = parser;
-		}
-		return serviceName_5005Parser;
-	}
-
-	/**
 	* @generated
 	*/
 	private IParser enumerationLiteralName_5283Parser;
@@ -413,37 +396,20 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser selectionName_5158Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectionName_5158Parser() {
-		if (selectionName_5158Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectionName_5158Parser = parser;
-		}
-		return selectionName_5158Parser;
-	}
+	* @generated
+	*/
+	private IParser serviceName_5299Parser;
 
 	/**
 	* @generated
 	*/
-	private IParser businessOperationName_5268Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getBusinessOperationName_5268Parser() {
-		if (businessOperationName_5268Parser == null) {
+	private IParser getServiceName_5299Parser() {
+		if (serviceName_5299Parser == null) {
 			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			businessOperationName_5268Parser = parser;
+			serviceName_5299Parser = parser;
 		}
-		return businessOperationName_5268Parser;
+		return serviceName_5299Parser;
 	}
 
 	/**
@@ -2134,6 +2100,40 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
+	* @generated
+	*/
+	private IParser selectionName_5297Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectionName_5297Parser() {
+		if (selectionName_5297Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectionName_5297Parser = parser;
+		}
+		return selectionName_5297Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser businessOperationName_5298Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getBusinessOperationName_5298Parser() {
+		if (businessOperationName_5298Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			businessOperationName_5298Parser = parser;
+		}
+		return businessOperationName_5298Parser;
+	}
+
+	/**
 	 * @generated
 	 */
 	protected IParser getParser(int visualID) {
@@ -2155,7 +2155,7 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 		case StaticMenuNameEditPart.VISUAL_ID:
 			return getStaticMenuName_5157Parser();
 		case ServiceNameEditPart.VISUAL_ID:
-			return getServiceName_5005Parser();
+			return getServiceName_5299Parser();
 		case EnumerationLiteralNameEditPart.VISUAL_ID:
 			return getEnumerationLiteralName_5283Parser();
 		case DataTypeAttributeNameEditPart.VISUAL_ID:
@@ -2369,9 +2369,9 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntryName_5164Parser();
 		case SelectionNameEditPart.VISUAL_ID:
-			return getSelectionName_5158Parser();
+			return getSelectionName_5297Parser();
 		case BusinessOperationNameEditPart.VISUAL_ID:
-			return getBusinessOperationName_5268Parser();
+			return getBusinessOperationName_5298Parser();
 		case AssociationWithoutContainmentNameEditPart.VISUAL_ID:
 			return getAssociationWithoutContainmentName_6005Parser();
 		case AssociationWithoutContainmentCardinalityTargetCardinEditPart.VISUAL_ID:

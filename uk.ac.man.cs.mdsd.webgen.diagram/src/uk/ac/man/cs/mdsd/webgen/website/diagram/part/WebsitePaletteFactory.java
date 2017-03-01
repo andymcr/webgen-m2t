@@ -594,9 +594,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createService1CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Service1CreationTool_title,
-				Messages.Service1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Service_2004));
+				Messages.Service1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Service_2017));
 		entry.setId("createService1CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Service_2004));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Service_2017));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -621,9 +621,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createSelection3CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Selection3CreationTool_title,
-				Messages.Selection3CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Selection_3150));
+				Messages.Selection3CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Selection_3284));
 		entry.setId("createSelection3CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Selection_3150));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Selection_3284));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -634,9 +634,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createOperation4CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Operation4CreationTool_title,
 				Messages.Operation4CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.BusinessOperation_3260));
+				Collections.singletonList(WebsiteElementTypes.BusinessOperation_3285));
 		entry.setId("createOperation4CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.BusinessOperation_3260));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.BusinessOperation_3285));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

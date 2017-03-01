@@ -57,7 +57,7 @@ public class BusinessOperationNameEditPart extends CompartmentEditPart implement
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5268;
+	public static final int VISUAL_ID = 5298;
 
 	/**
 	* @generated
@@ -292,7 +292,7 @@ public class BusinessOperationNameEditPart extends CompartmentEditPart implement
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.BusinessOperation_3260, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.BusinessOperation_3285, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.BusinessOperationNameEditPart.VISUAL_ID));
 		}

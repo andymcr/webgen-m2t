@@ -57,7 +57,7 @@ public class ServiceNameEditPart extends CompartmentEditPart implements ITextAwa
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5005;
+	public static final int VISUAL_ID = 5299;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class ServiceNameEditPart extends CompartmentEditPart implements ITextAwa
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.Service_2004, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.Service_2017, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceNameEditPart.VISUAL_ID));
 		}

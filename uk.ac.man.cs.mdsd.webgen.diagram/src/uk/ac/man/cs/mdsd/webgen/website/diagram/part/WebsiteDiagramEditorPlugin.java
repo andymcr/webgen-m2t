@@ -23,6 +23,7 @@ import uk.ac.man.cs.mdsd.criteria.provider.CriteriaItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.base.provider.BaseItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.expression.provider.ExpressionItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.persistence.provider.PersistenceItemProviderAdapterFactory;
+import uk.ac.man.cs.mdsd.webgen.service.provider.ServiceItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.expressions.WebsiteOCLFactory;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.ElementInitializers;
@@ -130,9 +131,9 @@ public class WebsiteDiagramEditorPlugin extends AbstractUIPlugin {
 	protected void fillItemProviderFactories(List<AdapterFactory> factories) {
 		factories.add(new WebsiteItemProviderAdapterFactory());
 		factories.add(new BaseItemProviderAdapterFactory());
-		factories.add(new CriteriaItemProviderAdapterFactory());
 		factories.add(new ExpressionItemProviderAdapterFactory());
 		factories.add(new PersistenceItemProviderAdapterFactory());
+		factories.add(new ServiceItemProviderAdapterFactory());
 		factories.add(new ResourceItemProviderAdapterFactory());
 		factories.add(new ReflectiveItemProviderAdapterFactory());
 	}

@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.Selection;
-import uk.ac.man.cs.mdsd.webgen.website.Service;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.service.Selection;
+import uk.ac.man.cs.mdsd.webgen.service.Service;
+import uk.ac.man.cs.mdsd.webgen.service.ServiceFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class SelectionCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		Selection newElement = WebsiteFactory.eINSTANCE.createSelection();
+		Selection newElement = ServiceFactory.eINSTANCE.createSelection();
 
 		Service owner = (Service) getElementToEdit();
 		owner.getSelections().add(newElement);
@@ -64,8 +64,8 @@ public class SelectionCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(Selection newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

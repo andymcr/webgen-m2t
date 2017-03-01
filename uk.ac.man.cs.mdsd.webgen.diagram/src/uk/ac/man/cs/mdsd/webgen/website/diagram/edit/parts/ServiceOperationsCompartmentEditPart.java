@@ -29,7 +29,7 @@ public class ServiceOperationsCompartmentEditPart extends ListCompartmentEditPar
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 7133;
+	public static final int VISUAL_ID = 7144;
 
 	/**
 	* @generated
@@ -89,7 +89,7 @@ public class ServiceOperationsCompartmentEditPart extends ListCompartmentEditPar
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.BusinessOperation_3260) {
+			if (type == WebsiteElementTypes.BusinessOperation_3285) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

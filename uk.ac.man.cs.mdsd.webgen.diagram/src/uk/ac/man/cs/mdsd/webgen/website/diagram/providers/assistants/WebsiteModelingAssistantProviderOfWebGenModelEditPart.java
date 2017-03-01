@@ -29,7 +29,7 @@ public class WebsiteModelingAssistantProviderOfWebGenModelEditPart extends Websi
 		types.add(WebsiteElementTypes.View_2016);
 		types.add(WebsiteElementTypes.Page_2005);
 		types.add(WebsiteElementTypes.StaticMenu_2009);
-		types.add(WebsiteElementTypes.Service_2004);
+		types.add(WebsiteElementTypes.Service_2017);
 		return types;
 	}
 

@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Image;
 
 import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
+import uk.ac.man.cs.mdsd.webgen.service.ServicePackage;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.AssociationWithContainmentEditPart;
@@ -136,16 +137,17 @@ public class WebsiteElementTypes {
 	/**
 	 * @generated
 	 */
-	public static final IElementType Service_2004 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Service_2004"); //$NON-NLS-1$
-	/**
-	 * @generated
-	 */
 	public static final IElementType Page_2005 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Page_2005"); //$NON-NLS-1$
 	/**
 	 * @generated
 	 */
 	public static final IElementType StaticMenu_2009 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.StaticMenu_2009"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType Service_2017 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Service_2017"); //$NON-NLS-1$
 
 	/**
 	 * @generated
@@ -222,17 +224,6 @@ public class WebsiteElementTypes {
 	*/
 	public static final IElementType EncapsulatedAssociation_3283 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.EncapsulatedAssociation_3283"); //$NON-NLS-1$
-
-	/**
-	 * @generated
-	 */
-	public static final IElementType Selection_3150 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Selection_3150"); //$NON-NLS-1$
-
-	/**
-	* @generated
-	*/
-	public static final IElementType BusinessOperation_3260 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.BusinessOperation_3260"); //$NON-NLS-1$
 
 	/**
 	* @generated
@@ -796,6 +787,17 @@ public class WebsiteElementTypes {
 			"uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"); //$NON-NLS-1$
 
 	/**
+	* @generated
+	*/
+	public static final IElementType Selection_3284 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Selection_3284"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType BusinessOperation_3285 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.BusinessOperation_3285"); //$NON-NLS-1$
+
+	/**
 	 * @generated
 	 */
 	public static final IElementType PageLink_4003 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.PageLink_4003"); //$NON-NLS-1$
@@ -856,7 +858,7 @@ public class WebsiteElementTypes {
 
 			elements.put(StaticMenu_2009, WebsitePackage.eINSTANCE.getStaticMenu());
 
-			elements.put(Service_2004, WebsitePackage.eINSTANCE.getService());
+			elements.put(Service_2017, ServicePackage.eINSTANCE.getService());
 
 			elements.put(CasAuthentication_3055, WebsitePackage.eINSTANCE.getCasAuthentication());
 
@@ -1076,9 +1078,9 @@ public class WebsiteElementTypes {
 
 			elements.put(EditStaticTextMenuEntry_3156, WebsitePackage.eINSTANCE.getEditStaticTextMenuEntry());
 
-			elements.put(Selection_3150, WebsitePackage.eINSTANCE.getSelection());
+			elements.put(Selection_3284, ServicePackage.eINSTANCE.getSelection());
 
-			elements.put(BusinessOperation_3260, WebsitePackage.eINSTANCE.getBusinessOperation());
+			elements.put(BusinessOperation_3285, ServicePackage.eINSTANCE.getBusinessOperation());
 
 			elements.put(AssociationWithoutContainment_4005,
 					PersistencePackage.eINSTANCE.getAssociationWithoutContainment());
@@ -1114,7 +1116,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(View_2016);
 			KNOWN_ELEMENT_TYPES.add(Page_2005);
 			KNOWN_ELEMENT_TYPES.add(StaticMenu_2009);
-			KNOWN_ELEMENT_TYPES.add(Service_2004);
+			KNOWN_ELEMENT_TYPES.add(Service_2017);
 			KNOWN_ELEMENT_TYPES.add(CasAuthentication_3055);
 			KNOWN_ELEMENT_TYPES.add(LocalAuthenticationSystem_3029);
 			KNOWN_ELEMENT_TYPES.add(EnumerationLiteral_3273);
@@ -1224,8 +1226,8 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(GalleryUnit_3263);
 			KNOWN_ELEMENT_TYPES.add(ActionMenuEntry_3236);
 			KNOWN_ELEMENT_TYPES.add(EditStaticTextMenuEntry_3156);
-			KNOWN_ELEMENT_TYPES.add(Selection_3150);
-			KNOWN_ELEMENT_TYPES.add(BusinessOperation_3260);
+			KNOWN_ELEMENT_TYPES.add(Selection_3284);
+			KNOWN_ELEMENT_TYPES.add(BusinessOperation_3285);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithoutContainment_4005);
 			KNOWN_ELEMENT_TYPES.add(AssociationWithContainment_4006);
 			KNOWN_ELEMENT_TYPES.add(ViewAssociation_4007);
@@ -1258,7 +1260,7 @@ public class WebsiteElementTypes {
 		case StaticMenuEditPart.VISUAL_ID:
 			return StaticMenu_2009;
 		case ServiceEditPart.VISUAL_ID:
-			return Service_2004;
+			return Service_2017;
 		case CasAuthenticationEditPart.VISUAL_ID:
 			return CasAuthentication_3055;
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
@@ -1478,9 +1480,9 @@ public class WebsiteElementTypes {
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return EditStaticTextMenuEntry_3156;
 		case SelectionEditPart.VISUAL_ID:
-			return Selection_3150;
+			return Selection_3284;
 		case BusinessOperationEditPart.VISUAL_ID:
-			return BusinessOperation_3260;
+			return BusinessOperation_3285;
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return AssociationWithoutContainment_4005;
 		case AssociationWithContainmentEditPart.VISUAL_ID:

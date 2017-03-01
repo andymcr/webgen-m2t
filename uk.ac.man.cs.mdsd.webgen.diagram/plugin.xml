@@ -231,7 +231,7 @@
       <viewProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteViewProvider">
          <Priority name="Lowest"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="Website"/>
-         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2013,2008,2014,2015,2016,2005,2009,2004,3055,3029,3273,3274,3275,3276,3277,3278,3279,3280,3281,3282,3283,3103,3169,3170,3201,3207,3104,3171,3172,3249,3173,3202,3208,3157,3105,3175,3102,3174,3112,3177,3176,3113,3178,3106,3179,3114,3181,3180,3116,3183,3182,3129,3185,3184,3118,3187,3186,3120,3189,3188,3131,3191,3190,3133,3193,3192,3107,3101,3267,3126,3147,3234,3127,3203,3209,3232,3136,3195,3128,3194,3219,3197,3196,3143,3199,3198,3146,3204,3210,3153,3154,3266,3228,3109,3215,3200,3205,3211,3110,3111,3220,3216,3222,3250,3221,3264,3265,3206,3212,3268,3269,3270,3271,3261,3263,3236,3156,3150,3260"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,2013,2008,2014,2015,2016,2005,2009,2017,3055,3029,3273,3274,3275,3276,3277,3278,3279,3280,3281,3282,3283,3103,3169,3170,3201,3207,3104,3171,3172,3249,3173,3202,3208,3157,3105,3175,3102,3174,3112,3177,3176,3113,3178,3106,3179,3114,3181,3180,3116,3183,3182,3129,3185,3184,3118,3187,3186,3120,3189,3188,3131,3191,3190,3133,3193,3192,3107,3101,3267,3126,3147,3234,3127,3203,3209,3232,3136,3195,3128,3194,3219,3197,3196,3143,3199,3198,3146,3204,3210,3153,3154,3266,3228,3109,3215,3200,3205,3211,3110,3111,3220,3216,3222,3250,3221,3264,3265,3206,3212,3268,3269,3270,3271,3261,3263,3236,3156,3284,3285"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4005,4006,4007,4003"/>
       </viewProvider>
    </extension>
@@ -244,16 +244,16 @@
             <method name="getType()" value="Website"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-nodes">
-            <method name="getType()" value="2001,2013,2008,2014,2015,2016,2005,2009,2004,3055,3029,3273,3274,3275,3276,3277,3278,3279,3280,3281,3282,3283,3103,3169,3170,3201,3207,3104,3171,3172,3249,3173,3202,3208,3157,3105,3175,3102,3174,3112,3177,3176,3113,3178,3106,3179,3114,3181,3180,3116,3183,3182,3129,3185,3184,3118,3187,3186,3120,3189,3188,3131,3191,3190,3133,3193,3192,3107,3101,3267,3126,3147,3234,3127,3203,3209,3232,3136,3195,3128,3194,3219,3197,3196,3143,3199,3198,3146,3204,3210,3153,3154,3266,3228,3109,3215,3200,3205,3211,3110,3111,3220,3216,3222,3250,3221,3264,3265,3206,3212,3268,3269,3270,3271,3261,3263,3236,3156,3150,3260"/>
+            <method name="getType()" value="2001,2013,2008,2014,2015,2016,2005,2009,2017,3055,3029,3273,3274,3275,3276,3277,3278,3279,3280,3281,3282,3283,3103,3169,3170,3201,3207,3104,3171,3172,3249,3173,3202,3208,3157,3105,3175,3102,3174,3112,3177,3176,3113,3178,3106,3179,3114,3181,3180,3116,3183,3182,3129,3185,3184,3118,3187,3186,3120,3189,3188,3131,3191,3190,3133,3193,3192,3107,3101,3267,3126,3147,3234,3127,3203,3209,3232,3136,3195,3128,3194,3219,3197,3196,3143,3199,3198,3146,3204,3210,3153,3154,3266,3228,3109,3215,3200,3205,3211,3110,3111,3220,3216,3222,3250,3221,3264,3265,3206,3212,3268,3269,3270,3271,3261,3263,3236,3156,3284,3285"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
             <method name="getType()" value="4005,4006,4007,4003"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
-            <method name="getType()" value="5054,5282,5155,5284,5292,5296,5014,5157,5005,5283,5285,5286,5287,5288,5289,5290,5291,5293,5294,5295,5107,5176,5177,5208,5214,5108,5178,5179,5257,5180,5209,5215,5109,5181,5106,5199,5116,5182,5184,5117,5183,5112,5185,5123,5186,5198,5120,5187,5191,5133,5189,5188,5122,5192,5190,5125,5193,5197,5135,5195,5194,5138,5200,5196,5110,5105,5275,5130,5151,5131,5210,5216,5239,5142,5202,5132,5201,5226,5204,5203,5149,5205,5207,5150,5211,5217,5161,5162,5274,5235,5113,5222,5206,5212,5218,5114,5115,5227,5223,5230,5258,5231,5272,5273,5213,5219,5276,5277,5278,5269,5271,5243,5164,5158,5268"/>
+            <method name="getType()" value="5054,5282,5155,5284,5292,5296,5014,5157,5299,5283,5285,5286,5287,5288,5289,5290,5291,5293,5294,5295,5107,5176,5177,5208,5214,5108,5178,5179,5257,5180,5209,5215,5109,5181,5106,5199,5116,5182,5184,5117,5183,5112,5185,5123,5186,5198,5120,5187,5191,5133,5189,5188,5122,5192,5190,5125,5193,5197,5135,5195,5194,5138,5200,5196,5110,5105,5275,5130,5151,5131,5210,5216,5239,5142,5202,5132,5201,5226,5204,5203,5149,5205,5207,5150,5211,5217,5161,5162,5274,5235,5113,5222,5206,5212,5218,5114,5115,5227,5223,5230,5258,5231,5272,5273,5213,5219,5276,5277,5278,5269,5271,5243,5164,5297,5298"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-compartments">
-            <method name="getType()" value="7007,7081,7138,7139,7140,7141,7142,7002,7042,7043,7129,7130,7044,7087,7131,7122,7123,7051,7096,7053,7045,7054,7086,7097,7056,7098,7066,7057,7058,7124,7068,7069,7135,7070,7071,7132,7126,7127,7113,7076,7047,7049,7128,7115,7116,7136,7084,7006,7133"/>
+            <method name="getType()" value="7007,7081,7138,7139,7140,7141,7142,7002,7042,7043,7129,7130,7044,7087,7131,7122,7123,7051,7096,7053,7045,7054,7086,7097,7056,7098,7066,7057,7058,7124,7068,7069,7135,7070,7071,7132,7126,7127,7113,7076,7047,7049,7128,7115,7116,7136,7084,7143,7144"/>
          </object>
          <context views="generated-diagram,generated-nodes,generated-links,generated-labels,generated-compartments"/>
       </editpartProvider>
@@ -308,8 +308,8 @@
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfServiceEditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEditPart" id="Service_2004"/>
-         <context elements="Service_2004"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ServiceEditPart" id="Service_2017"/>
+         <context elements="Service_2017"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfCasAuthenticationEditPart">
          <Priority name="Lowest"/>
@@ -858,13 +858,13 @@
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfSelectionEditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionEditPart" id="Selection_3150"/>
-         <context elements="Selection_3150"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectionEditPart" id="Selection_3284"/>
+         <context elements="Selection_3284"/>
       </modelingAssistantProvider>
             <modelingAssistantProvider class="uk.ac.man.cs.mdsd.webgen.website.diagram.providers.assistants.WebsiteModelingAssistantProviderOfBusinessOperationEditPart">
          <Priority name="Lowest"/>
-         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.BusinessOperationEditPart" id="BusinessOperation_3260"/>
-         <context elements="BusinessOperation_3260"/>
+         <object class="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.BusinessOperationEditPart" id="BusinessOperation_3285"/>
+         <context elements="BusinessOperation_3285"/>
       </modelingAssistantProvider>
       
    </extension>
@@ -975,14 +975,14 @@
             <param name="semanticHint" value="2009"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+      <metamodel nsURI="http://cs.man.ac.uk/mdsd/webgen/service">
          <metamodelType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.Service_2004"
-               name="%metatype.name.Service_2004"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.Service_2017"
+               name="%metatype.name.Service_2017"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
                eclass="Service"
                edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.ServiceEditHelper">
-            <param name="semanticHint" value="2004"/>
+            <param name="semanticHint" value="2017"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
@@ -2000,24 +2000,24 @@
             <param name="semanticHint" value="3156"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+      <metamodel nsURI="http://cs.man.ac.uk/mdsd/webgen/service">
          <metamodelType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.Selection_3150"
-               name="%metatype.name.Selection_3150"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.Selection_3284"
+               name="%metatype.name.Selection_3284"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
                eclass="Selection"
                edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.SelectionEditHelper">
-            <param name="semanticHint" value="3150"/>
+            <param name="semanticHint" value="3284"/>
          </metamodelType>
       </metamodel>
-      <metamodel nsURI="http://www.cs.man.ac.uk/mdsd/2010/Website">
+      <metamodel nsURI="http://cs.man.ac.uk/mdsd/webgen/service">
          <metamodelType
-               id="uk.ac.man.cs.mdsd.webgen.diagram.BusinessOperation_3260"
-               name="%metatype.name.BusinessOperation_3260"
+               id="uk.ac.man.cs.mdsd.webgen.diagram.BusinessOperation_3285"
+               name="%metatype.name.BusinessOperation_3285"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
                eclass="BusinessOperation"
                edithelper="uk.ac.man.cs.mdsd.webgen.website.diagram.edit.helpers.BusinessOperationEditHelper">
-            <param name="semanticHint" value="3260"/>
+            <param name="semanticHint" value="3285"/>
          </metamodelType>
       </metamodel>
       <metamodel nsURI="http://cs.man.ac.uk/mdsd/webgen/persistence">
@@ -2081,7 +2081,7 @@
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.View_2016"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Page_2005"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.StaticMenu_2009"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Service_2004"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Service_2017"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.CasAuthentication_3055"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3029"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3273"/>
@@ -2191,8 +2191,8 @@
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.GalleryUnit_3263"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ActionMenuEntry_3236"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.EditStaticTextMenuEntry_3156"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Selection_3150"/>
-         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.BusinessOperation_3260"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.Selection_3284"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.BusinessOperation_3285"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithoutContainment_4005"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.AssociationWithContainment_4006"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.diagram.ViewAssociation_4007"/>

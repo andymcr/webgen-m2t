@@ -275,23 +275,6 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			return result.toArray();
 		}
 
-		case ServiceEditPart.VISUAL_ID: {
-			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			Collection<View> connectedViews;
-			connectedViews = getChildrenByType(Collections.singleton(sv),
-					WebsiteVisualIDRegistry.getType(ServiceFeaturesCompartmentEditPart.VISUAL_ID));
-			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(SelectionEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
-			connectedViews = getChildrenByType(Collections.singleton(sv),
-					WebsiteVisualIDRegistry.getType(ServiceOperationsCompartmentEditPart.VISUAL_ID));
-			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(BusinessOperationEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
-			return result.toArray();
-		}
-
 		case PageEditPart.VISUAL_ID: {
 			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
 			Node sv = (Node) view;
@@ -500,6 +483,23 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			if (!outgoinglinks.isEmpty()) {
 				result.add(outgoinglinks);
 			}
+			return result.toArray();
+		}
+
+		case ServiceEditPart.VISUAL_ID: {
+			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(ServiceSelectionsCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry.getType(SelectionEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(ServiceOperationsCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry.getType(BusinessOperationEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
 

@@ -1018,7 +1018,7 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String ServiceFeaturesCompartmentEditPart_title;
+	public static String ServiceSelectionsCompartmentEditPart_title;
 
 	/**
 	* @generated

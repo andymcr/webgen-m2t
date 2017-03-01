@@ -32,7 +32,7 @@ public class BusinessOperationEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3260;
+	public static final int VISUAL_ID = 3285;
 
 	/**
 	* @generated
@@ -153,7 +153,7 @@ public class BusinessOperationEditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected NodeFigure createNodePlate() {
-		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(200, 50);
+		DefaultSizeNodeFigure result = new DefaultSizeNodeFigure(40, 40);
 		return result;
 	}
 

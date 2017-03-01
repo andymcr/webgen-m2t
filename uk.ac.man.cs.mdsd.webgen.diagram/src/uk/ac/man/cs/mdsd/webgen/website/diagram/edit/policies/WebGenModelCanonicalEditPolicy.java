@@ -319,7 +319,7 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case ServiceEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getService_2004ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getService_2017ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -1075,14 +1075,14 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case SelectionEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getSelection_3150ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getSelection_3284ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case BusinessOperationEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getBusinessOperation_3260ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getBusinessOperation_3285ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

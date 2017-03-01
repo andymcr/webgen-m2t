@@ -15,14 +15,14 @@ public class ServiceOperationsCompartmentItemSemanticEditPolicy extends WebsiteB
 	* @generated
 	*/
 	public ServiceOperationsCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.Service_2004);
+		super(WebsiteElementTypes.Service_2017);
 	}
 
 	/**
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.BusinessOperation_3260 == req.getElementType()) {
+		if (WebsiteElementTypes.BusinessOperation_3285 == req.getElementType()) {
 			return getGEFWrapper(new BusinessOperationCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

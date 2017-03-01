@@ -10,6 +10,7 @@ import org.eclipse.gmf.tooling.runtime.structure.DiagramStructure;
 import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.base.DataType;
 import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
+import uk.ac.man.cs.mdsd.webgen.service.ServicePackage;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
@@ -144,7 +145,7 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getStaticMenu().isSuperTypeOf(domainElement.eClass())) {
 				return StaticMenuEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getService().isSuperTypeOf(domainElement.eClass())) {
+			if (ServicePackage.eINSTANCE.getService().isSuperTypeOf(domainElement.eClass())) {
 				return ServiceEditPart.VISUAL_ID;
 			}
 			break;
@@ -567,13 +568,13 @@ public class WebsiteVisualIDRegistry {
 				return EditStaticTextMenuEntryEditPart.VISUAL_ID;
 			}
 			break;
-		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getSelection().isSuperTypeOf(domainElement.eClass())) {
+		case ServiceSelectionsCompartmentEditPart.VISUAL_ID:
+			if (ServicePackage.eINSTANCE.getSelection().isSuperTypeOf(domainElement.eClass())) {
 				return SelectionEditPart.VISUAL_ID;
 			}
 			break;
 		case ServiceOperationsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getBusinessOperation().isSuperTypeOf(domainElement.eClass())) {
+			if (ServicePackage.eINSTANCE.getBusinessOperation().isSuperTypeOf(domainElement.eClass())) {
 				return BusinessOperationEditPart.VISUAL_ID;
 			}
 			break;
@@ -702,7 +703,7 @@ public class WebsiteVisualIDRegistry {
 			if (ServiceNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (ServiceFeaturesCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+			if (ServiceSelectionsCompartmentEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (ServiceOperationsCompartmentEditPart.VISUAL_ID == nodeVisualID) {
@@ -1772,7 +1773,7 @@ public class WebsiteVisualIDRegistry {
 				return true;
 			}
 			break;
-		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
+		case ServiceSelectionsCompartmentEditPart.VISUAL_ID:
 			if (SelectionEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
@@ -1907,7 +1908,7 @@ public class WebsiteVisualIDRegistry {
 		case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 		case ImageIndexUnitActionCompartment2EditPart.VISUAL_ID:
 		case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
-		case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
+		case ServiceSelectionsCompartmentEditPart.VISUAL_ID:
 		case ServiceOperationsCompartmentEditPart.VISUAL_ID:
 			return true;
 		default:
@@ -1936,7 +1937,6 @@ public class WebsiteVisualIDRegistry {
 		case SelectAction5EditPart.VISUAL_ID:
 		case SelectAction6EditPart.VISUAL_ID:
 		case DeleteAction2EditPart.VISUAL_ID:
-		case SelectionEditPart.VISUAL_ID:
 		case SelectAction7EditPart.VISUAL_ID:
 		case DeleteAction3EditPart.VISUAL_ID:
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
@@ -1984,7 +1984,6 @@ public class WebsiteVisualIDRegistry {
 		case FeatureSupportActionEditPart.VISUAL_ID:
 		case ActionMenuEntryEditPart.VISUAL_ID:
 		case UnitElement20EditPart.VISUAL_ID:
-		case BusinessOperationEditPart.VISUAL_ID:
 		case SliderUnitEditPart.VISUAL_ID:
 		case GalleryUnitEditPart.VISUAL_ID:
 		case SelectAction8EditPart.VISUAL_ID:
@@ -2004,6 +2003,8 @@ public class WebsiteVisualIDRegistry {
 		case ModelLabel2EditPart.VISUAL_ID:
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
+		case SelectionEditPart.VISUAL_ID:
+		case BusinessOperationEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

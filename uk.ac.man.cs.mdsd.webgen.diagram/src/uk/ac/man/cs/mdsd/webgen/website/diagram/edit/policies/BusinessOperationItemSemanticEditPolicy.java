@@ -19,7 +19,7 @@ public class BusinessOperationItemSemanticEditPolicy extends WebsiteBaseItemSema
 	* @generated
 	*/
 	public BusinessOperationItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.BusinessOperation_3260);
+		super(WebsiteElementTypes.BusinessOperation_3285);
 	}
 
 	/**

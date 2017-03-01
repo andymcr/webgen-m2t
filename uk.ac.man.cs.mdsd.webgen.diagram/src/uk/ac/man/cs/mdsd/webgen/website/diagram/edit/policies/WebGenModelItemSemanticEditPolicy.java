@@ -58,7 +58,7 @@ public class WebGenModelItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 		if (WebsiteElementTypes.StaticMenu_2009 == req.getElementType()) {
 			return getGEFWrapper(new StaticMenuCreateCommand(req));
 		}
-		if (WebsiteElementTypes.Service_2004 == req.getElementType()) {
+		if (WebsiteElementTypes.Service_2017 == req.getElementType()) {
 			return getGEFWrapper(new ServiceCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

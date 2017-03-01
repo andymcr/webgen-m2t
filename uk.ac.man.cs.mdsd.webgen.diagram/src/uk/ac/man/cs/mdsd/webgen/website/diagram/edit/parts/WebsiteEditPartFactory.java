@@ -871,8 +871,8 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
 				return new StaticMenuIncludedFeaturesCompartmentEditPart(view);
 
-			case ServiceFeaturesCompartmentEditPart.VISUAL_ID:
-				return new ServiceFeaturesCompartmentEditPart(view);
+			case ServiceSelectionsCompartmentEditPart.VISUAL_ID:
+				return new ServiceSelectionsCompartmentEditPart(view);
 
 			case ServiceOperationsCompartmentEditPart.VISUAL_ID:
 				return new ServiceOperationsCompartmentEditPart(view);
