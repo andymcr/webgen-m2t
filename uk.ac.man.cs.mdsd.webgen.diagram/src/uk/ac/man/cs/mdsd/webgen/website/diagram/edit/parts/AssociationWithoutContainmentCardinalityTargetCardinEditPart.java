@@ -59,7 +59,7 @@ public class AssociationWithoutContainmentCardinalityTargetCardinEditPart extend
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 6002;
+	public static final int VISUAL_ID = 6006;
 
 	/**
 	 * @generated
@@ -307,7 +307,7 @@ public class AssociationWithoutContainmentCardinalityTargetCardinEditPart extend
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithoutContainment_4001,
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithoutContainment_4005,
 					getParserElement(), WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.AssociationWithoutContainmentCardinalityTargetCardinEditPart.VISUAL_ID));
 		}

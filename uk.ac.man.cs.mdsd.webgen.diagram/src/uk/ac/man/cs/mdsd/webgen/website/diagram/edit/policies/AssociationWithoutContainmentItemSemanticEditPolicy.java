@@ -15,7 +15,7 @@ public class AssociationWithoutContainmentItemSemanticEditPolicy extends Website
 	 * @generated
 	 */
 	public AssociationWithoutContainmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.AssociationWithoutContainment_4001);
+		super(WebsiteElementTypes.AssociationWithoutContainment_4005);
 	}
 
 	/**

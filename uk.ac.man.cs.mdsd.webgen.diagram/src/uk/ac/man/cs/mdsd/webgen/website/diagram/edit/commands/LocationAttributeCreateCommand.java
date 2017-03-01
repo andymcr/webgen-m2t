@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.Entity;
-import uk.ac.man.cs.mdsd.webgen.website.LocationAttribute;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.Entity;
+import uk.ac.man.cs.mdsd.webgen.persistence.LocationAttribute;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class LocationAttributeCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		LocationAttribute newElement = WebsiteFactory.eINSTANCE.createLocationAttribute();
+		LocationAttribute newElement = PersistenceFactory.eINSTANCE.createLocationAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
 		owner.getEntityFeatures().add(newElement);
@@ -64,8 +64,8 @@ public class LocationAttributeCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(LocationAttribute newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

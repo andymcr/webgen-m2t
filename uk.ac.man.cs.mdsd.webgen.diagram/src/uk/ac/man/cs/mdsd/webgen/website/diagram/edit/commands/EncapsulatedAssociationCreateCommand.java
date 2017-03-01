@@ -12,8 +12,8 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.EncapsulatedAssociation;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
 
 /**
  * @generated
@@ -51,9 +51,9 @@ public class EncapsulatedAssociationCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		EncapsulatedAssociation newElement = WebsiteFactory.eINSTANCE.createEncapsulatedAssociation();
+		EncapsulatedAssociation newElement = PersistenceFactory.eINSTANCE.createEncapsulatedAssociation();
 
-		uk.ac.man.cs.mdsd.webgen.website.View owner = (uk.ac.man.cs.mdsd.webgen.website.View) getElementToEdit();
+		uk.ac.man.cs.mdsd.webgen.persistence.View owner = (uk.ac.man.cs.mdsd.webgen.persistence.View) getElementToEdit();
 		owner.getViewFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);

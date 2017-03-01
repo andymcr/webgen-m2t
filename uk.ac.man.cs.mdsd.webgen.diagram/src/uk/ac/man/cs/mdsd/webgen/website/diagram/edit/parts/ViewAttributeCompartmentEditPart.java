@@ -18,7 +18,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ViewAttributeCompartmentCanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ViewAttributeCompartmentItemSemanticEditPolicy;
@@ -34,7 +34,7 @@ public class ViewAttributeCompartmentEditPart extends ListCompartmentEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 7119;
+	public static final int VISUAL_ID = 7141;
 
 	/**
 	* @generated
@@ -77,7 +77,7 @@ public class ViewAttributeCompartmentEditPart extends ListCompartmentEditPart {
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new ViewAttributeCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.VIEW__VIEW_FEATURES));
+				new CompartmentRepositionLayoutEditPolicy(PersistencePackage.Literals.VIEW__VIEW_FEATURES));
 	}
 
 	/**
@@ -96,10 +96,10 @@ public class ViewAttributeCompartmentEditPart extends ListCompartmentEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.EncapsulatedAttribute_3258) {
+			if (type == WebsiteElementTypes.EncapsulatedAttribute_3282) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.EncapsulatedAssociation_3259) {
+			if (type == WebsiteElementTypes.EncapsulatedAssociation_3283) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);
@@ -109,7 +109,7 @@ public class ViewAttributeCompartmentEditPart extends ListCompartmentEditPart {
 				for (Object type : ((CreateUnspecifiedTypeConnectionRequest) request).getElementTypes()) {
 					if (type instanceof IElementType) {
 						IElementType elementType = (IElementType) type;
-						if (elementType.equals(WebsiteElementTypes.ViewAssociation_4004))
+						if (elementType.equals(WebsiteElementTypes.ViewAssociation_4007))
 							return super.getTargetEditPart(request);
 					}
 				}

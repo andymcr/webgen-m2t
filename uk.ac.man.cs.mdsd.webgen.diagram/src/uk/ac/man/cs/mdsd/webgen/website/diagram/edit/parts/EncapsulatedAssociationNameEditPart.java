@@ -57,7 +57,7 @@ public class EncapsulatedAssociationNameEditPart extends CompartmentEditPart imp
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5267;
+	public static final int VISUAL_ID = 5295;
 
 	/**
 	* @generated
@@ -292,7 +292,7 @@ public class EncapsulatedAssociationNameEditPart extends CompartmentEditPart imp
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EncapsulatedAssociation_3259,
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EncapsulatedAssociation_3283,
 					getParserElement(), WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAssociationNameEditPart.VISUAL_ID));
 		}

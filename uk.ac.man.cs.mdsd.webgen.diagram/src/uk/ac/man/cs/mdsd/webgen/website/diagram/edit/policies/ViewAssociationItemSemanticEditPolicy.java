@@ -15,7 +15,7 @@ public class ViewAssociationItemSemanticEditPolicy extends WebsiteBaseItemSemant
 	* @generated
 	*/
 	public ViewAssociationItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.ViewAssociation_4004);
+		super(WebsiteElementTypes.ViewAssociation_4007);
 	}
 
 	/**

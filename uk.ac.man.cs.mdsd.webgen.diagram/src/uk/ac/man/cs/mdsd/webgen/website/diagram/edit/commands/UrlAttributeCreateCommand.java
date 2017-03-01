@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.Entity;
-import uk.ac.man.cs.mdsd.webgen.website.UrlAttribute;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.Entity;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.UrlAttribute;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class UrlAttributeCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		UrlAttribute newElement = WebsiteFactory.eINSTANCE.createUrlAttribute();
+		UrlAttribute newElement = PersistenceFactory.eINSTANCE.createUrlAttribute();
 
 		Entity owner = (Entity) getElementToEdit();
 		owner.getEntityFeatures().add(newElement);

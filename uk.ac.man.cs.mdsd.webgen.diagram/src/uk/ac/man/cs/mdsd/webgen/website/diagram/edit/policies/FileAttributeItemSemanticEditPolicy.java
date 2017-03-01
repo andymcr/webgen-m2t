@@ -19,7 +19,7 @@ public class FileAttributeItemSemanticEditPolicy extends WebsiteBaseItemSemantic
 	 * @generated
 	 */
 	public FileAttributeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.FileAttribute_3255);
+		super(WebsiteElementTypes.FileAttribute_3277);
 	}
 
 	/**

@@ -12,8 +12,8 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAttribute;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.EncapsulatedAttribute;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
 
 /**
  * @generated
@@ -51,9 +51,9 @@ public class EncapsulatedAttributeCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		EncapsulatedAttribute newElement = WebsiteFactory.eINSTANCE.createEncapsulatedAttribute();
+		EncapsulatedAttribute newElement = PersistenceFactory.eINSTANCE.createEncapsulatedAttribute();
 
-		uk.ac.man.cs.mdsd.webgen.website.View owner = (uk.ac.man.cs.mdsd.webgen.website.View) getElementToEdit();
+		uk.ac.man.cs.mdsd.webgen.persistence.View owner = (uk.ac.man.cs.mdsd.webgen.persistence.View) getElementToEdit();
 		owner.getViewFeatures().add(newElement);
 
 		doConfigure(newElement, monitor, info);

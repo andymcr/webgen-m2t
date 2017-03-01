@@ -32,7 +32,7 @@ public class ModelLabelEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3247;
+	public static final int VISUAL_ID = 3280;
 
 	/**
 	* @generated

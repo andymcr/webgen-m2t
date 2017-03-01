@@ -12,8 +12,8 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
@@ -51,7 +51,7 @@ public class ViewCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		uk.ac.man.cs.mdsd.webgen.website.View newElement = WebsiteFactory.eINSTANCE.createView();
+		uk.ac.man.cs.mdsd.webgen.persistence.View newElement = PersistenceFactory.eINSTANCE.createView();
 
 		WebGenModel owner = (WebGenModel) getElementToEdit();
 		owner.getClassifiers().add(newElement);
@@ -65,7 +65,7 @@ public class ViewCreateCommand extends EditElementCommand {
 	/**
 	* @generated
 	*/
-	protected void doConfigure(uk.ac.man.cs.mdsd.webgen.website.View newElement, IProgressMonitor monitor,
+	protected void doConfigure(uk.ac.man.cs.mdsd.webgen.persistence.View newElement, IProgressMonitor monitor,
 			IAdaptable info) throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);

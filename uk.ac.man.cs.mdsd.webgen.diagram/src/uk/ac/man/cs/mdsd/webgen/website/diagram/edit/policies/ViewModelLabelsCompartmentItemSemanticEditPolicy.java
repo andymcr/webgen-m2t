@@ -15,14 +15,14 @@ public class ViewModelLabelsCompartmentItemSemanticEditPolicy extends WebsiteBas
 	* @generated
 	*/
 	public ViewModelLabelsCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.View_2010);
+		super(WebsiteElementTypes.View_2016);
 	}
 
 	/**
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.ModelLabel_3248 == req.getElementType()) {
+		if (WebsiteElementTypes.ModelLabel_3281 == req.getElementType()) {
 			return getGEFWrapper(new ModelLabel2CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

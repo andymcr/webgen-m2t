@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.EntityOrView;
-import uk.ac.man.cs.mdsd.webgen.website.ModelLabel;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.EntityOrView;
+import uk.ac.man.cs.mdsd.webgen.persistence.ModelLabel;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class ModelLabelCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ModelLabel newElement = WebsiteFactory.eINSTANCE.createModelLabel();
+		ModelLabel newElement = PersistenceFactory.eINSTANCE.createModelLabel();
 
 		EntityOrView owner = (EntityOrView) getElementToEdit();
 		owner.getLabels().add(newElement);

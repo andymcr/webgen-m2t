@@ -15,17 +15,17 @@ public class ViewAttributeCompartmentItemSemanticEditPolicy extends WebsiteBaseI
 	* @generated
 	*/
 	public ViewAttributeCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.View_2010);
+		super(WebsiteElementTypes.View_2016);
 	}
 
 	/**
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.EncapsulatedAttribute_3258 == req.getElementType()) {
+		if (WebsiteElementTypes.EncapsulatedAttribute_3282 == req.getElementType()) {
 			return getGEFWrapper(new EncapsulatedAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.EncapsulatedAssociation_3259 == req.getElementType()) {
+		if (WebsiteElementTypes.EncapsulatedAssociation_3283 == req.getElementType()) {
 			return getGEFWrapper(new EncapsulatedAssociationCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

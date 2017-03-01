@@ -8,9 +8,9 @@ import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.emf.type.core.commands.EditElementCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.View;
-import uk.ac.man.cs.mdsd.webgen.website.ViewAssociation;
+import uk.ac.man.cs.mdsd.webgen.persistence.EncapsulatedAssociation;
+import uk.ac.man.cs.mdsd.webgen.persistence.View;
+import uk.ac.man.cs.mdsd.webgen.persistence.ViewAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
 
 /**
@@ -67,7 +67,7 @@ public class ViewAssociationReorientCommand extends EditElementCommand {
 			return false;
 		}
 		EncapsulatedAssociation target = getLink().getOpposite();
-		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistViewAssociation_4004(getLink(),
+		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistViewAssociation_4007(getLink(),
 				getNewSource(), target);
 	}
 
@@ -82,7 +82,7 @@ public class ViewAssociationReorientCommand extends EditElementCommand {
 			return false;
 		}
 		View source = (View) getLink().eContainer();
-		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistViewAssociation_4004(getLink(), source,
+		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistViewAssociation_4007(getLink(), source,
 				getNewTarget());
 	}
 

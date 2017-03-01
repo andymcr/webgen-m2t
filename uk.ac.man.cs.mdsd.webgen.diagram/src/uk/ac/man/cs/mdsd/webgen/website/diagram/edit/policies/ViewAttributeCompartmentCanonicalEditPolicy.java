@@ -21,7 +21,7 @@ import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAssociationEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EncapsulatedAttributeEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
@@ -49,7 +49,7 @@ public class ViewAttributeCompartmentCanonicalEditPolicy extends CanonicalEditPo
 	* @generated
 	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getView_ViewFeatures();
+		return PersistencePackage.eINSTANCE.getView_ViewFeatures();
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class ViewAttributeCompartmentCanonicalEditPolicy extends CanonicalEditPo
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getViewAttributeCompartment_7119SemanticChildren(viewObject);
+				.getViewAttributeCompartment_7141SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -93,7 +93,7 @@ public class ViewAttributeCompartmentCanonicalEditPolicy extends CanonicalEditPo
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getViewAttributeCompartment_7119SemanticChildren((View) getHost().getModel());
+				.getViewAttributeCompartment_7141SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

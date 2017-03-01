@@ -19,7 +19,7 @@ public class ModelLabelItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 	* @generated
 	*/
 	public ModelLabelItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.ModelLabel_3247);
+		super(WebsiteElementTypes.ModelLabel_3280);
 	}
 
 	/**

@@ -20,29 +20,29 @@ public class EntityAttributeCompartmentItemSemanticEditPolicy extends WebsiteBas
 	 * @generated
 	 */
 	public EntityAttributeCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.Entity_2003);
+		super(WebsiteElementTypes.Entity_2015);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.DataTypeAttribute_3252 == req.getElementType()) {
+		if (WebsiteElementTypes.DataTypeAttribute_3274 == req.getElementType()) {
 			return getGEFWrapper(new DataTypeAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.DateAttribute_3253 == req.getElementType()) {
+		if (WebsiteElementTypes.DateAttribute_3275 == req.getElementType()) {
 			return getGEFWrapper(new DateAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.UrlAttribute_3254 == req.getElementType()) {
+		if (WebsiteElementTypes.UrlAttribute_3276 == req.getElementType()) {
 			return getGEFWrapper(new UrlAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.FileAttribute_3255 == req.getElementType()) {
+		if (WebsiteElementTypes.FileAttribute_3277 == req.getElementType()) {
 			return getGEFWrapper(new FileAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.ImageAttribute_3256 == req.getElementType()) {
+		if (WebsiteElementTypes.ImageAttribute_3278 == req.getElementType()) {
 			return getGEFWrapper(new ImageAttributeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.LocationAttribute_3257 == req.getElementType()) {
+		if (WebsiteElementTypes.LocationAttribute_3279 == req.getElementType()) {
 			return getGEFWrapper(new LocationAttributeCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

@@ -29,7 +29,7 @@ public class ViewModelLabelsCompartmentEditPart extends ListCompartmentEditPart 
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 7120;
+	public static final int VISUAL_ID = 7142;
 
 	/**
 	* @generated
@@ -89,7 +89,7 @@ public class ViewModelLabelsCompartmentEditPart extends ListCompartmentEditPart 
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ModelLabel_3248) {
+			if (type == WebsiteElementTypes.ModelLabel_3281) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

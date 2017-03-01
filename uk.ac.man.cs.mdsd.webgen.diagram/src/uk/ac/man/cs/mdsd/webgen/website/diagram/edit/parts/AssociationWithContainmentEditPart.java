@@ -23,7 +23,7 @@ public class AssociationWithContainmentEditPart extends ConnectionNodeEditPart i
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 4002;
+	public static final int VISUAL_ID = 4006;
 
 	/**
 	 * @generated

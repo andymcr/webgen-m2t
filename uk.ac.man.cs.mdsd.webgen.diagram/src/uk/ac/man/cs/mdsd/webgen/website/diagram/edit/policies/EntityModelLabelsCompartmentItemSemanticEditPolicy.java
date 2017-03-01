@@ -15,14 +15,14 @@ public class EntityModelLabelsCompartmentItemSemanticEditPolicy extends WebsiteB
 	* @generated
 	*/
 	public EntityModelLabelsCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.Entity_2003);
+		super(WebsiteElementTypes.Entity_2015);
 	}
 
 	/**
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.ModelLabel_3247 == req.getElementType()) {
+		if (WebsiteElementTypes.ModelLabel_3280 == req.getElementType()) {
 			return getGEFWrapper(new ModelLabelCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

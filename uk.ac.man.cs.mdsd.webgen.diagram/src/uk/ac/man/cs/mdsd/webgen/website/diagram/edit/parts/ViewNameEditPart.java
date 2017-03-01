@@ -57,7 +57,7 @@ public class ViewNameEditPart extends CompartmentEditPart implements ITextAwareE
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5246;
+	public static final int VISUAL_ID = 5296;
 
 	/**
 	* @generated
@@ -292,7 +292,7 @@ public class ViewNameEditPart extends CompartmentEditPart implements ITextAwareE
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.View_2010, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.View_2016, getParserElement(),
 					WebsiteVisualIDRegistry
 							.getType(uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ViewNameEditPart.VISUAL_ID));
 		}

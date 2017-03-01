@@ -15,7 +15,7 @@ public class AssociationWithContainmentItemSemanticEditPolicy extends WebsiteBas
 	 * @generated
 	 */
 	public AssociationWithContainmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.AssociationWithContainment_4002);
+		super(WebsiteElementTypes.AssociationWithContainment_4006);
 	}
 
 	/**

@@ -57,7 +57,7 @@ public class ModelLabelNameEditPart extends CompartmentEditPart implements IText
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5255;
+	public static final int VISUAL_ID = 5291;
 
 	/**
 	* @generated
@@ -292,7 +292,7 @@ public class ModelLabelNameEditPart extends CompartmentEditPart implements IText
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabel_3247, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabel_3280, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelNameEditPart.VISUAL_ID));
 		}

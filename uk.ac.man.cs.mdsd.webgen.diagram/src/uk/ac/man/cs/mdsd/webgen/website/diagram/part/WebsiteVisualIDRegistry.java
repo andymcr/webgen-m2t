@@ -9,6 +9,7 @@ import org.eclipse.gmf.tooling.runtime.structure.DiagramStructure;
 
 import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.base.DataType;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
@@ -131,10 +132,10 @@ public class WebsiteVisualIDRegistry {
 			if (BasePackage.eINSTANCE.getEnumerationType().isSuperTypeOf(domainElement.eClass())) {
 				return EnumerationTypeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getEntity().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getEntity().isSuperTypeOf(domainElement.eClass())) {
 				return EntityEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getView().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getView().isSuperTypeOf(domainElement.eClass())) {
 				return ViewEditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getPage().isSuperTypeOf(domainElement.eClass())) {
@@ -161,40 +162,40 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case EntityAttributeCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getDataTypeAttribute().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getDataTypeAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return DataTypeAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDateAttribute().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getDateAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return DateAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getUrlAttribute().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getUrlAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return UrlAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getFileAttribute().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getFileAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return FileAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getImageAttribute().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getImageAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return ImageAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getLocationAttribute().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getLocationAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return LocationAttributeEditPart.VISUAL_ID;
 			}
 			break;
 		case EntityModelLabelsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getModelLabel().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getModelLabel().isSuperTypeOf(domainElement.eClass())) {
 				return ModelLabelEditPart.VISUAL_ID;
 			}
 			break;
 		case ViewAttributeCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getEncapsulatedAttribute().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getEncapsulatedAttribute().isSuperTypeOf(domainElement.eClass())) {
 				return EncapsulatedAttributeEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getEncapsulatedAssociation().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getEncapsulatedAssociation().isSuperTypeOf(domainElement.eClass())) {
 				return EncapsulatedAssociationEditPart.VISUAL_ID;
 			}
 			break;
 		case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getModelLabel().isSuperTypeOf(domainElement.eClass())) {
+			if (PersistencePackage.eINSTANCE.getModelLabel().isSuperTypeOf(domainElement.eClass())) {
 				return ModelLabel2EditPart.VISUAL_ID;
 			}
 			break;
@@ -1808,13 +1809,13 @@ public class WebsiteVisualIDRegistry {
 		if (domainElement == null) {
 			return -1;
 		}
-		if (WebsitePackage.eINSTANCE.getAssociationWithoutContainment().isSuperTypeOf(domainElement.eClass())) {
+		if (PersistencePackage.eINSTANCE.getAssociationWithoutContainment().isSuperTypeOf(domainElement.eClass())) {
 			return AssociationWithoutContainmentEditPart.VISUAL_ID;
 		}
-		if (WebsitePackage.eINSTANCE.getAssociationWithContainment().isSuperTypeOf(domainElement.eClass())) {
+		if (PersistencePackage.eINSTANCE.getAssociationWithContainment().isSuperTypeOf(domainElement.eClass())) {
 			return AssociationWithContainmentEditPart.VISUAL_ID;
 		}
-		if (WebsitePackage.eINSTANCE.getViewAssociation().isSuperTypeOf(domainElement.eClass())) {
+		if (PersistencePackage.eINSTANCE.getViewAssociation().isSuperTypeOf(domainElement.eClass())) {
 			return ViewAssociationEditPart.VISUAL_ID;
 		}
 		if (WebsitePackage.eINSTANCE.getPageLink().isSuperTypeOf(domainElement.eClass())) {
@@ -1982,17 +1983,7 @@ public class WebsiteVisualIDRegistry {
 		case UnitSupportActionEditPart.VISUAL_ID:
 		case FeatureSupportActionEditPart.VISUAL_ID:
 		case ActionMenuEntryEditPart.VISUAL_ID:
-		case ModelLabelEditPart.VISUAL_ID:
-		case ModelLabel2EditPart.VISUAL_ID:
 		case UnitElement20EditPart.VISUAL_ID:
-		case DataTypeAttributeEditPart.VISUAL_ID:
-		case DateAttributeEditPart.VISUAL_ID:
-		case UrlAttributeEditPart.VISUAL_ID:
-		case FileAttributeEditPart.VISUAL_ID:
-		case ImageAttributeEditPart.VISUAL_ID:
-		case LocationAttributeEditPart.VISUAL_ID:
-		case EncapsulatedAttributeEditPart.VISUAL_ID:
-		case EncapsulatedAssociationEditPart.VISUAL_ID:
 		case BusinessOperationEditPart.VISUAL_ID:
 		case SliderUnitEditPart.VISUAL_ID:
 		case GalleryUnitEditPart.VISUAL_ID:
@@ -2003,6 +1994,16 @@ public class WebsiteVisualIDRegistry {
 		case DeleteAction5EditPart.VISUAL_ID:
 		case FeatureSupportAction3EditPart.VISUAL_ID:
 		case EnumerationLiteralEditPart.VISUAL_ID:
+		case DataTypeAttributeEditPart.VISUAL_ID:
+		case DateAttributeEditPart.VISUAL_ID:
+		case UrlAttributeEditPart.VISUAL_ID:
+		case FileAttributeEditPart.VISUAL_ID:
+		case ImageAttributeEditPart.VISUAL_ID:
+		case LocationAttributeEditPart.VISUAL_ID:
+		case ModelLabelEditPart.VISUAL_ID:
+		case ModelLabel2EditPart.VISUAL_ID:
+		case EncapsulatedAttributeEditPart.VISUAL_ID:
+		case EncapsulatedAssociationEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

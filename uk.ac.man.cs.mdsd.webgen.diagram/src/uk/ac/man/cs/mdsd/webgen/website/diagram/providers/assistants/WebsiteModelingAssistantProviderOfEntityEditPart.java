@@ -24,13 +24,13 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(7);
-		types.add(WebsiteElementTypes.DataTypeAttribute_3252);
-		types.add(WebsiteElementTypes.DateAttribute_3253);
-		types.add(WebsiteElementTypes.UrlAttribute_3254);
-		types.add(WebsiteElementTypes.FileAttribute_3255);
-		types.add(WebsiteElementTypes.ImageAttribute_3256);
-		types.add(WebsiteElementTypes.LocationAttribute_3257);
-		types.add(WebsiteElementTypes.ModelLabel_3247);
+		types.add(WebsiteElementTypes.DataTypeAttribute_3274);
+		types.add(WebsiteElementTypes.DateAttribute_3275);
+		types.add(WebsiteElementTypes.UrlAttribute_3276);
+		types.add(WebsiteElementTypes.FileAttribute_3277);
+		types.add(WebsiteElementTypes.ImageAttribute_3278);
+		types.add(WebsiteElementTypes.LocationAttribute_3279);
+		types.add(WebsiteElementTypes.ModelLabel_3280);
 		return types;
 	}
 
@@ -49,8 +49,8 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 	*/
 	public List<IElementType> doGetRelTypesOnSource(EntityEditPart source) {
 		List<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.AssociationWithoutContainment_4001);
-		types.add(WebsiteElementTypes.AssociationWithContainment_4002);
+		types.add(WebsiteElementTypes.AssociationWithoutContainment_4005);
+		types.add(WebsiteElementTypes.AssociationWithContainment_4006);
 		return types;
 	}
 
@@ -71,10 +71,10 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 	public List<IElementType> doGetRelTypesOnSourceAndTarget(EntityEditPart source, IGraphicalEditPart targetEditPart) {
 		List<IElementType> types = new LinkedList<IElementType>();
 		if (targetEditPart instanceof EntityEditPart) {
-			types.add(WebsiteElementTypes.AssociationWithoutContainment_4001);
+			types.add(WebsiteElementTypes.AssociationWithoutContainment_4005);
 		}
 		if (targetEditPart instanceof EntityEditPart) {
-			types.add(WebsiteElementTypes.AssociationWithContainment_4002);
+			types.add(WebsiteElementTypes.AssociationWithContainment_4006);
 		}
 		return types;
 	}
@@ -94,10 +94,10 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 	*/
 	public List<IElementType> doGetTypesForTarget(EntityEditPart source, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
-		if (relationshipType == WebsiteElementTypes.AssociationWithoutContainment_4001) {
-			types.add(WebsiteElementTypes.Entity_2003);
-		} else if (relationshipType == WebsiteElementTypes.AssociationWithContainment_4002) {
-			types.add(WebsiteElementTypes.Entity_2003);
+		if (relationshipType == WebsiteElementTypes.AssociationWithoutContainment_4005) {
+			types.add(WebsiteElementTypes.Entity_2015);
+		} else if (relationshipType == WebsiteElementTypes.AssociationWithContainment_4006) {
+			types.add(WebsiteElementTypes.Entity_2015);
 		}
 		return types;
 	}
@@ -117,8 +117,8 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 	*/
 	public List<IElementType> doGetRelTypesOnTarget(EntityEditPart target) {
 		List<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.AssociationWithoutContainment_4001);
-		types.add(WebsiteElementTypes.AssociationWithContainment_4002);
+		types.add(WebsiteElementTypes.AssociationWithoutContainment_4005);
+		types.add(WebsiteElementTypes.AssociationWithContainment_4006);
 		return types;
 	}
 
@@ -137,10 +137,10 @@ public class WebsiteModelingAssistantProviderOfEntityEditPart extends WebsiteMod
 	*/
 	public List<IElementType> doGetTypesForSource(EntityEditPart target, IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
-		if (relationshipType == WebsiteElementTypes.AssociationWithoutContainment_4001) {
-			types.add(WebsiteElementTypes.Entity_2003);
-		} else if (relationshipType == WebsiteElementTypes.AssociationWithContainment_4002) {
-			types.add(WebsiteElementTypes.Entity_2003);
+		if (relationshipType == WebsiteElementTypes.AssociationWithoutContainment_4005) {
+			types.add(WebsiteElementTypes.Entity_2015);
+		} else if (relationshipType == WebsiteElementTypes.AssociationWithContainment_4006) {
+			types.add(WebsiteElementTypes.Entity_2015);
 		}
 		return types;
 	}

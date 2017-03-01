@@ -42,7 +42,7 @@ public class EntityItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPol
 	 * @generated
 	 */
 	public EntityItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.Entity_2003);
+		super(WebsiteElementTypes.Entity_2015);
 	}
 
 	/**
@@ -176,10 +176,10 @@ public class EntityItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPol
 	 * @generated
 	 */
 	protected Command getStartCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.AssociationWithoutContainment_4001 == req.getElementType()) {
+		if (WebsiteElementTypes.AssociationWithoutContainment_4005 == req.getElementType()) {
 			return getGEFWrapper(new AssociationWithoutContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
-		if (WebsiteElementTypes.AssociationWithContainment_4002 == req.getElementType()) {
+		if (WebsiteElementTypes.AssociationWithContainment_4006 == req.getElementType()) {
 			return getGEFWrapper(new AssociationWithContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;
@@ -189,10 +189,10 @@ public class EntityItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPol
 	 * @generated
 	 */
 	protected Command getCompleteCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.AssociationWithoutContainment_4001 == req.getElementType()) {
+		if (WebsiteElementTypes.AssociationWithoutContainment_4005 == req.getElementType()) {
 			return getGEFWrapper(new AssociationWithoutContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
-		if (WebsiteElementTypes.AssociationWithContainment_4002 == req.getElementType()) {
+		if (WebsiteElementTypes.AssociationWithContainment_4006 == req.getElementType()) {
 			return getGEFWrapper(new AssociationWithContainmentCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;

@@ -16,23 +16,26 @@ import org.eclipse.gmf.tooling.runtime.update.DiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.base.Classifier;
 import uk.ac.man.cs.mdsd.webgen.base.EnumerationLiteral;
 import uk.ac.man.cs.mdsd.webgen.base.EnumerationType;
-import uk.ac.man.cs.mdsd.webgen.website.AssociationWithContainment;
-import uk.ac.man.cs.mdsd.webgen.website.AssociationWithoutContainment;
+import uk.ac.man.cs.mdsd.webgen.persistence.AssociationWithContainment;
+import uk.ac.man.cs.mdsd.webgen.persistence.AssociationWithoutContainment;
+import uk.ac.man.cs.mdsd.webgen.persistence.EncapsulatedAssociation;
+import uk.ac.man.cs.mdsd.webgen.persistence.Entity;
+import uk.ac.man.cs.mdsd.webgen.persistence.EntityFeature;
+import uk.ac.man.cs.mdsd.webgen.persistence.ModelLabel;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
+import uk.ac.man.cs.mdsd.webgen.persistence.ViewAssociation;
+import uk.ac.man.cs.mdsd.webgen.persistence.ViewFeature;
 import uk.ac.man.cs.mdsd.webgen.website.Authentication;
 import uk.ac.man.cs.mdsd.webgen.website.BusinessOperation;
 import uk.ac.man.cs.mdsd.webgen.website.ContentUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUpdateUnit;
 import uk.ac.man.cs.mdsd.webgen.website.DetailsUnit;
-import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.Entity;
-import uk.ac.man.cs.mdsd.webgen.website.EntityFeature;
 import uk.ac.man.cs.mdsd.webgen.website.ImageIndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.IndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.InlineAction;
 import uk.ac.man.cs.mdsd.webgen.website.Menu;
 import uk.ac.man.cs.mdsd.webgen.website.MenuEntry;
-import uk.ac.man.cs.mdsd.webgen.website.ModelLabel;
 import uk.ac.man.cs.mdsd.webgen.website.Page;
 import uk.ac.man.cs.mdsd.webgen.website.PageLink;
 import uk.ac.man.cs.mdsd.webgen.website.SearchUnit;
@@ -44,8 +47,6 @@ import uk.ac.man.cs.mdsd.webgen.website.UnitElement;
 import uk.ac.man.cs.mdsd.webgen.website.UnitField;
 import uk.ac.man.cs.mdsd.webgen.website.UnitSupportAction;
 import uk.ac.man.cs.mdsd.webgen.website.UpdateUnit;
-import uk.ac.man.cs.mdsd.webgen.website.ViewAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.ViewFeature;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteProperties;
@@ -120,13 +121,13 @@ public class WebsiteDiagramUpdater {
 		case EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID:
 			return getEnumerationTypeEnumerationsCompartment_7138SemanticChildren(view);
 		case EntityAttributeCompartmentEditPart.VISUAL_ID:
-			return getEntityAttributeCompartment_7001SemanticChildren(view);
+			return getEntityAttributeCompartment_7139SemanticChildren(view);
 		case EntityModelLabelsCompartmentEditPart.VISUAL_ID:
-			return getEntityModelLabelsCompartment_7118SemanticChildren(view);
+			return getEntityModelLabelsCompartment_7140SemanticChildren(view);
 		case ViewAttributeCompartmentEditPart.VISUAL_ID:
-			return getViewAttributeCompartment_7119SemanticChildren(view);
+			return getViewAttributeCompartment_7141SemanticChildren(view);
 		case ViewModelLabelsCompartmentEditPart.VISUAL_ID:
-			return getViewModelLabelsCompartment_7120SemanticChildren(view);
+			return getViewModelLabelsCompartment_7142SemanticChildren(view);
 		case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
 			return getPageInterfaceUnitsCompartment_7002SemanticChildren(view);
 		case CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID:
@@ -335,9 +336,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteNodeDescriptor> getEntityAttributeCompartment_7001SemanticChildren(View view) {
+	* @generated
+	*/
+	public static List<WebsiteNodeDescriptor> getEntityAttributeCompartment_7139SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -381,7 +382,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteNodeDescriptor> getEntityModelLabelsCompartment_7118SemanticChildren(View view) {
+	public static List<WebsiteNodeDescriptor> getEntityModelLabelsCompartment_7140SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -405,7 +406,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteNodeDescriptor> getViewAttributeCompartment_7119SemanticChildren(View view) {
+	public static List<WebsiteNodeDescriptor> getViewAttributeCompartment_7141SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -413,7 +414,7 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		uk.ac.man.cs.mdsd.webgen.website.View modelElement = (uk.ac.man.cs.mdsd.webgen.website.View) containerView
+		uk.ac.man.cs.mdsd.webgen.persistence.View modelElement = (uk.ac.man.cs.mdsd.webgen.persistence.View) containerView
 				.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getViewFeatures().iterator(); it.hasNext();) {
@@ -434,7 +435,7 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteNodeDescriptor> getViewModelLabelsCompartment_7120SemanticChildren(View view) {
+	public static List<WebsiteNodeDescriptor> getViewModelLabelsCompartment_7142SemanticChildren(View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
 		}
@@ -442,7 +443,7 @@ public class WebsiteDiagramUpdater {
 		if (!containerView.isSetElement()) {
 			return Collections.emptyList();
 		}
-		uk.ac.man.cs.mdsd.webgen.website.View modelElement = (uk.ac.man.cs.mdsd.webgen.website.View) containerView
+		uk.ac.man.cs.mdsd.webgen.persistence.View modelElement = (uk.ac.man.cs.mdsd.webgen.persistence.View) containerView
 				.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		for (Iterator<?> it = modelElement.getLabels().iterator(); it.hasNext();) {
@@ -1712,9 +1713,9 @@ public class WebsiteDiagramUpdater {
 		case EnumerationTypeEditPart.VISUAL_ID:
 			return getEnumerationType_2014ContainedLinks(view);
 		case EntityEditPart.VISUAL_ID:
-			return getEntity_2003ContainedLinks(view);
+			return getEntity_2015ContainedLinks(view);
 		case ViewEditPart.VISUAL_ID:
-			return getView_2010ContainedLinks(view);
+			return getView_2016ContainedLinks(view);
 		case PageEditPart.VISUAL_ID:
 			return getPage_2005ContainedLinks(view);
 		case StaticMenuEditPart.VISUAL_ID:
@@ -1728,25 +1729,25 @@ public class WebsiteDiagramUpdater {
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3273ContainedLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
-			return getDataTypeAttribute_3252ContainedLinks(view);
+			return getDataTypeAttribute_3274ContainedLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
-			return getDateAttribute_3253ContainedLinks(view);
+			return getDateAttribute_3275ContainedLinks(view);
 		case UrlAttributeEditPart.VISUAL_ID:
-			return getUrlAttribute_3254ContainedLinks(view);
+			return getUrlAttribute_3276ContainedLinks(view);
 		case FileAttributeEditPart.VISUAL_ID:
-			return getFileAttribute_3255ContainedLinks(view);
+			return getFileAttribute_3277ContainedLinks(view);
 		case ImageAttributeEditPart.VISUAL_ID:
-			return getImageAttribute_3256ContainedLinks(view);
+			return getImageAttribute_3278ContainedLinks(view);
 		case LocationAttributeEditPart.VISUAL_ID:
-			return getLocationAttribute_3257ContainedLinks(view);
+			return getLocationAttribute_3279ContainedLinks(view);
 		case ModelLabelEditPart.VISUAL_ID:
-			return getModelLabel_3247ContainedLinks(view);
+			return getModelLabel_3280ContainedLinks(view);
 		case ModelLabel2EditPart.VISUAL_ID:
-			return getModelLabel_3248ContainedLinks(view);
+			return getModelLabel_3281ContainedLinks(view);
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
-			return getEncapsulatedAttribute_3258ContainedLinks(view);
+			return getEncapsulatedAttribute_3282ContainedLinks(view);
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
-			return getEncapsulatedAssociation_3259ContainedLinks(view);
+			return getEncapsulatedAssociation_3283ContainedLinks(view);
 		case CreateUnitEditPart.VISUAL_ID:
 			return getCreateUnit_3103ContainedLinks(view);
 		case UnitElementEditPart.VISUAL_ID:
@@ -1944,11 +1945,11 @@ public class WebsiteDiagramUpdater {
 		case BusinessOperationEditPart.VISUAL_ID:
 			return getBusinessOperation_3260ContainedLinks(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
-			return getAssociationWithoutContainment_4001ContainedLinks(view);
+			return getAssociationWithoutContainment_4005ContainedLinks(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
-			return getAssociationWithContainment_4002ContainedLinks(view);
+			return getAssociationWithContainment_4006ContainedLinks(view);
 		case ViewAssociationEditPart.VISUAL_ID:
-			return getViewAssociation_4004ContainedLinks(view);
+			return getViewAssociation_4007ContainedLinks(view);
 		case PageLinkEditPart.VISUAL_ID:
 			return getPageLink_4003ContainedLinks(view);
 		}
@@ -1969,9 +1970,9 @@ public class WebsiteDiagramUpdater {
 		case EnumerationTypeEditPart.VISUAL_ID:
 			return getEnumerationType_2014IncomingLinks(view);
 		case EntityEditPart.VISUAL_ID:
-			return getEntity_2003IncomingLinks(view);
+			return getEntity_2015IncomingLinks(view);
 		case ViewEditPart.VISUAL_ID:
-			return getView_2010IncomingLinks(view);
+			return getView_2016IncomingLinks(view);
 		case PageEditPart.VISUAL_ID:
 			return getPage_2005IncomingLinks(view);
 		case StaticMenuEditPart.VISUAL_ID:
@@ -1985,25 +1986,25 @@ public class WebsiteDiagramUpdater {
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3273IncomingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
-			return getDataTypeAttribute_3252IncomingLinks(view);
+			return getDataTypeAttribute_3274IncomingLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
-			return getDateAttribute_3253IncomingLinks(view);
+			return getDateAttribute_3275IncomingLinks(view);
 		case UrlAttributeEditPart.VISUAL_ID:
-			return getUrlAttribute_3254IncomingLinks(view);
+			return getUrlAttribute_3276IncomingLinks(view);
 		case FileAttributeEditPart.VISUAL_ID:
-			return getFileAttribute_3255IncomingLinks(view);
+			return getFileAttribute_3277IncomingLinks(view);
 		case ImageAttributeEditPart.VISUAL_ID:
-			return getImageAttribute_3256IncomingLinks(view);
+			return getImageAttribute_3278IncomingLinks(view);
 		case LocationAttributeEditPart.VISUAL_ID:
-			return getLocationAttribute_3257IncomingLinks(view);
+			return getLocationAttribute_3279IncomingLinks(view);
 		case ModelLabelEditPart.VISUAL_ID:
-			return getModelLabel_3247IncomingLinks(view);
+			return getModelLabel_3280IncomingLinks(view);
 		case ModelLabel2EditPart.VISUAL_ID:
-			return getModelLabel_3248IncomingLinks(view);
+			return getModelLabel_3281IncomingLinks(view);
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
-			return getEncapsulatedAttribute_3258IncomingLinks(view);
+			return getEncapsulatedAttribute_3282IncomingLinks(view);
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
-			return getEncapsulatedAssociation_3259IncomingLinks(view);
+			return getEncapsulatedAssociation_3283IncomingLinks(view);
 		case CreateUnitEditPart.VISUAL_ID:
 			return getCreateUnit_3103IncomingLinks(view);
 		case UnitElementEditPart.VISUAL_ID:
@@ -2201,11 +2202,11 @@ public class WebsiteDiagramUpdater {
 		case BusinessOperationEditPart.VISUAL_ID:
 			return getBusinessOperation_3260IncomingLinks(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
-			return getAssociationWithoutContainment_4001IncomingLinks(view);
+			return getAssociationWithoutContainment_4005IncomingLinks(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
-			return getAssociationWithContainment_4002IncomingLinks(view);
+			return getAssociationWithContainment_4006IncomingLinks(view);
 		case ViewAssociationEditPart.VISUAL_ID:
-			return getViewAssociation_4004IncomingLinks(view);
+			return getViewAssociation_4007IncomingLinks(view);
 		case PageLinkEditPart.VISUAL_ID:
 			return getPageLink_4003IncomingLinks(view);
 		}
@@ -2226,9 +2227,9 @@ public class WebsiteDiagramUpdater {
 		case EnumerationTypeEditPart.VISUAL_ID:
 			return getEnumerationType_2014OutgoingLinks(view);
 		case EntityEditPart.VISUAL_ID:
-			return getEntity_2003OutgoingLinks(view);
+			return getEntity_2015OutgoingLinks(view);
 		case ViewEditPart.VISUAL_ID:
-			return getView_2010OutgoingLinks(view);
+			return getView_2016OutgoingLinks(view);
 		case PageEditPart.VISUAL_ID:
 			return getPage_2005OutgoingLinks(view);
 		case StaticMenuEditPart.VISUAL_ID:
@@ -2242,25 +2243,25 @@ public class WebsiteDiagramUpdater {
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3273OutgoingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
-			return getDataTypeAttribute_3252OutgoingLinks(view);
+			return getDataTypeAttribute_3274OutgoingLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
-			return getDateAttribute_3253OutgoingLinks(view);
+			return getDateAttribute_3275OutgoingLinks(view);
 		case UrlAttributeEditPart.VISUAL_ID:
-			return getUrlAttribute_3254OutgoingLinks(view);
+			return getUrlAttribute_3276OutgoingLinks(view);
 		case FileAttributeEditPart.VISUAL_ID:
-			return getFileAttribute_3255OutgoingLinks(view);
+			return getFileAttribute_3277OutgoingLinks(view);
 		case ImageAttributeEditPart.VISUAL_ID:
-			return getImageAttribute_3256OutgoingLinks(view);
+			return getImageAttribute_3278OutgoingLinks(view);
 		case LocationAttributeEditPart.VISUAL_ID:
-			return getLocationAttribute_3257OutgoingLinks(view);
+			return getLocationAttribute_3279OutgoingLinks(view);
 		case ModelLabelEditPart.VISUAL_ID:
-			return getModelLabel_3247OutgoingLinks(view);
+			return getModelLabel_3280OutgoingLinks(view);
 		case ModelLabel2EditPart.VISUAL_ID:
-			return getModelLabel_3248OutgoingLinks(view);
+			return getModelLabel_3281OutgoingLinks(view);
 		case EncapsulatedAttributeEditPart.VISUAL_ID:
-			return getEncapsulatedAttribute_3258OutgoingLinks(view);
+			return getEncapsulatedAttribute_3282OutgoingLinks(view);
 		case EncapsulatedAssociationEditPart.VISUAL_ID:
-			return getEncapsulatedAssociation_3259OutgoingLinks(view);
+			return getEncapsulatedAssociation_3283OutgoingLinks(view);
 		case CreateUnitEditPart.VISUAL_ID:
 			return getCreateUnit_3103OutgoingLinks(view);
 		case UnitElementEditPart.VISUAL_ID:
@@ -2458,11 +2459,11 @@ public class WebsiteDiagramUpdater {
 		case BusinessOperationEditPart.VISUAL_ID:
 			return getBusinessOperation_3260OutgoingLinks(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
-			return getAssociationWithoutContainment_4001OutgoingLinks(view);
+			return getAssociationWithoutContainment_4005OutgoingLinks(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
-			return getAssociationWithContainment_4002OutgoingLinks(view);
+			return getAssociationWithContainment_4006OutgoingLinks(view);
 		case ViewAssociationEditPart.VISUAL_ID:
-			return getViewAssociation_4004OutgoingLinks(view);
+			return getViewAssociation_4007OutgoingLinks(view);
 		case PageLinkEditPart.VISUAL_ID:
 			return getPageLink_4003OutgoingLinks(view);
 		}
@@ -2505,23 +2506,24 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEntity_2003ContainedLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEntity_2015ContainedLinks(View view) {
 		Entity modelElement = (Entity) view.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getContainedTypeModelFacetLinks_AssociationWithoutContainment_4001(modelElement));
-		result.addAll(getContainedTypeModelFacetLinks_AssociationWithContainment_4002(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_AssociationWithoutContainment_4005(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_AssociationWithContainment_4006(modelElement));
 		return result;
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getView_2010ContainedLinks(View view) {
-		uk.ac.man.cs.mdsd.webgen.website.View modelElement = (uk.ac.man.cs.mdsd.webgen.website.View) view.getElement();
+	public static List<WebsiteLinkDescriptor> getView_2016ContainedLinks(View view) {
+		uk.ac.man.cs.mdsd.webgen.persistence.View modelElement = (uk.ac.man.cs.mdsd.webgen.persistence.View) view
+				.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getContainedTypeModelFacetLinks_ViewAssociation_4004(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_ViewAssociation_4007(modelElement));
 		return result;
 	}
 
@@ -2573,70 +2575,70 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3252ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3274ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getDateAttribute_3253ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getDateAttribute_3275ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getUrlAttribute_3254ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getUrlAttribute_3276ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getFileAttribute_3255ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getFileAttribute_3277ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getImageAttribute_3256ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getImageAttribute_3278ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getLocationAttribute_3257ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getLocationAttribute_3279ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getModelLabel_3247ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3280ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getModelLabel_3248ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3281ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getEncapsulatedAttribute_3258ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getEncapsulatedAttribute_3282ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getEncapsulatedAssociation_3259ContainedLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getEncapsulatedAssociation_3283ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -2651,6 +2653,27 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getBusinessOperation_3260ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4005ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4006ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getViewAssociation_4007ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3329,27 +3352,6 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getViewAssociation_4004ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<WebsiteLinkDescriptor> getPageLink_4003ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -3383,22 +3385,22 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEntity_2003IncomingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEntity_2015IncomingLinks(View view) {
 		Entity modelElement = (Entity) view.getElement();
 		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
 				.find(view.eResource().getResourceSet().getResources());
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithoutContainment_4001(modelElement, crossReferences));
-		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithContainment_4002(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithoutContainment_4005(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_AssociationWithContainment_4006(modelElement, crossReferences));
 		return result;
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getView_2010IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getView_2016IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3452,75 +3454,75 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3252IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3274IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getDateAttribute_3253IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getDateAttribute_3275IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getUrlAttribute_3254IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getUrlAttribute_3276IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getFileAttribute_3255IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getFileAttribute_3277IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getImageAttribute_3256IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getImageAttribute_3278IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getLocationAttribute_3257IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getLocationAttribute_3279IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getModelLabel_3247IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3280IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getModelLabel_3248IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3281IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getEncapsulatedAttribute_3258IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getEncapsulatedAttribute_3282IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getEncapsulatedAssociation_3259IncomingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getEncapsulatedAssociation_3283IncomingLinks(View view) {
 		EncapsulatedAssociation modelElement = (EncapsulatedAssociation) view.getElement();
 		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
 				.find(view.eResource().getResourceSet().getResources());
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getIncomingTypeModelFacetLinks_ViewAssociation_4004(modelElement, crossReferences));
+		result.addAll(getIncomingTypeModelFacetLinks_ViewAssociation_4007(modelElement, crossReferences));
 		return result;
 	}
 
@@ -3535,6 +3537,27 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getBusinessOperation_3260IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4005IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4006IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getViewAssociation_4007IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4213,27 +4236,6 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	* @generated
-	*/
-	public static List<WebsiteLinkDescriptor> getViewAssociation_4004IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
 	public static List<WebsiteLinkDescriptor> getPageLink_4003IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -4267,23 +4269,24 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEntity_2003OutgoingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEntity_2015OutgoingLinks(View view) {
 		Entity modelElement = (Entity) view.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getContainedTypeModelFacetLinks_AssociationWithoutContainment_4001(modelElement));
-		result.addAll(getContainedTypeModelFacetLinks_AssociationWithContainment_4002(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_AssociationWithoutContainment_4005(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_AssociationWithContainment_4006(modelElement));
 		return result;
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getView_2010OutgoingLinks(View view) {
-		uk.ac.man.cs.mdsd.webgen.website.View modelElement = (uk.ac.man.cs.mdsd.webgen.website.View) view.getElement();
+	public static List<WebsiteLinkDescriptor> getView_2016OutgoingLinks(View view) {
+		uk.ac.man.cs.mdsd.webgen.persistence.View modelElement = (uk.ac.man.cs.mdsd.webgen.persistence.View) view
+				.getElement();
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
-		result.addAll(getContainedTypeModelFacetLinks_ViewAssociation_4004(modelElement));
+		result.addAll(getContainedTypeModelFacetLinks_ViewAssociation_4007(modelElement));
 		return result;
 	}
 
@@ -4335,70 +4338,70 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3252OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getDataTypeAttribute_3274OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getDateAttribute_3253OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getDateAttribute_3275OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getUrlAttribute_3254OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getUrlAttribute_3276OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getFileAttribute_3255OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getFileAttribute_3277OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getImageAttribute_3256OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getImageAttribute_3278OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getLocationAttribute_3257OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getLocationAttribute_3279OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getModelLabel_3247OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3280OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getModelLabel_3248OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getModelLabel_3281OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getEncapsulatedAttribute_3258OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getEncapsulatedAttribute_3282OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getEncapsulatedAssociation_3259OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getEncapsulatedAssociation_3283OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4413,6 +4416,27 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getBusinessOperation_3260OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4005OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4006OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getViewAssociation_4007OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -5091,35 +5115,14 @@ public class WebsiteDiagramUpdater {
 	/**
 	 * @generated
 	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithoutContainment_4001OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getAssociationWithContainment_4002OutgoingLinks(View view) {
+	public static List<WebsiteLinkDescriptor> getPageLink_4003OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
 	/**
 	* @generated
 	*/
-	public static List<WebsiteLinkDescriptor> getViewAssociation_4004OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getPageLink_4003OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_AssociationWithoutContainment_4001(
+	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_AssociationWithoutContainment_4005(
 			Entity container) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		for (Iterator<?> links = container.getEntityFeatures().iterator(); links.hasNext();) {
@@ -5134,16 +5137,16 @@ public class WebsiteDiagramUpdater {
 			}
 			Entity dst = link.getTargetEntity();
 			result.add(new WebsiteLinkDescriptor(container, dst, link,
-					WebsiteElementTypes.AssociationWithoutContainment_4001,
+					WebsiteElementTypes.AssociationWithoutContainment_4005,
 					AssociationWithoutContainmentEditPart.VISUAL_ID));
 		}
 		return result;
 	}
 
 	/**
-	 * @generated
-	 */
-	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_AssociationWithContainment_4002(
+	* @generated
+	*/
+	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_AssociationWithContainment_4006(
 			Entity container) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		for (Iterator<?> links = container.getEntityFeatures().iterator(); links.hasNext();) {
@@ -5158,7 +5161,7 @@ public class WebsiteDiagramUpdater {
 			}
 			Entity dst = link.getTargetEntity();
 			result.add(new WebsiteLinkDescriptor(container, dst, link,
-					WebsiteElementTypes.AssociationWithContainment_4002, AssociationWithContainmentEditPart.VISUAL_ID));
+					WebsiteElementTypes.AssociationWithContainment_4006, AssociationWithContainmentEditPart.VISUAL_ID));
 		}
 		return result;
 	}
@@ -5166,8 +5169,8 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_ViewAssociation_4004(
-			uk.ac.man.cs.mdsd.webgen.website.View container) {
+	private static Collection<WebsiteLinkDescriptor> getContainedTypeModelFacetLinks_ViewAssociation_4007(
+			uk.ac.man.cs.mdsd.webgen.persistence.View container) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		for (Iterator<?> links = container.getViewFeatures().iterator(); links.hasNext();) {
 			EObject linkObject = (EObject) links.next();
@@ -5179,7 +5182,7 @@ public class WebsiteDiagramUpdater {
 				continue;
 			}
 			EncapsulatedAssociation dst = link.getOpposite();
-			result.add(new WebsiteLinkDescriptor(container, dst, link, WebsiteElementTypes.ViewAssociation_4004,
+			result.add(new WebsiteLinkDescriptor(container, dst, link, WebsiteElementTypes.ViewAssociation_4007,
 					ViewAssociationEditPart.VISUAL_ID));
 		}
 		return result;
@@ -5201,14 +5204,14 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_AssociationWithoutContainment_4001(
+	* @generated
+	*/
+	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_AssociationWithoutContainment_4005(
 			Entity target, Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		Collection<EStructuralFeature.Setting> settings = crossReferences.get(target);
 		for (EStructuralFeature.Setting setting : settings) {
-			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE.getEntityAssociation_TargetEntity()
+			if (setting.getEStructuralFeature() != PersistencePackage.eINSTANCE.getEntityAssociation_TargetEntity()
 					|| false == setting.getEObject() instanceof AssociationWithoutContainment) {
 				continue;
 			}
@@ -5222,7 +5225,7 @@ public class WebsiteDiagramUpdater {
 			}
 			Entity container = (Entity) link.eContainer();
 			result.add(new WebsiteLinkDescriptor(container, target, link,
-					WebsiteElementTypes.AssociationWithoutContainment_4001,
+					WebsiteElementTypes.AssociationWithoutContainment_4005,
 					AssociationWithoutContainmentEditPart.VISUAL_ID));
 
 		}
@@ -5230,14 +5233,14 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_AssociationWithContainment_4002(
+	* @generated
+	*/
+	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_AssociationWithContainment_4006(
 			Entity target, Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		Collection<EStructuralFeature.Setting> settings = crossReferences.get(target);
 		for (EStructuralFeature.Setting setting : settings) {
-			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE.getEntityAssociation_TargetEntity()
+			if (setting.getEStructuralFeature() != PersistencePackage.eINSTANCE.getEntityAssociation_TargetEntity()
 					|| false == setting.getEObject() instanceof AssociationWithContainment) {
 				continue;
 			}
@@ -5251,7 +5254,7 @@ public class WebsiteDiagramUpdater {
 			}
 			Entity container = (Entity) link.eContainer();
 			result.add(new WebsiteLinkDescriptor(container, target, link,
-					WebsiteElementTypes.AssociationWithContainment_4002, AssociationWithContainmentEditPart.VISUAL_ID));
+					WebsiteElementTypes.AssociationWithContainment_4006, AssociationWithContainmentEditPart.VISUAL_ID));
 
 		}
 		return result;
@@ -5260,12 +5263,12 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
-	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_ViewAssociation_4004(
+	private static Collection<WebsiteLinkDescriptor> getIncomingTypeModelFacetLinks_ViewAssociation_4007(
 			EncapsulatedAssociation target, Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
 		LinkedList<WebsiteLinkDescriptor> result = new LinkedList<WebsiteLinkDescriptor>();
 		Collection<EStructuralFeature.Setting> settings = crossReferences.get(target);
 		for (EStructuralFeature.Setting setting : settings) {
-			if (setting.getEStructuralFeature() != WebsitePackage.eINSTANCE.getViewAssociation_Opposite()
+			if (setting.getEStructuralFeature() != PersistencePackage.eINSTANCE.getViewAssociation_Opposite()
 					|| false == setting.getEObject() instanceof ViewAssociation) {
 				continue;
 			}
@@ -5273,11 +5276,12 @@ public class WebsiteDiagramUpdater {
 			if (ViewAssociationEditPart.VISUAL_ID != WebsiteVisualIDRegistry.getLinkWithClassVisualID(link)) {
 				continue;
 			}
-			if (false == link.eContainer() instanceof uk.ac.man.cs.mdsd.webgen.website.View) {
+			if (false == link.eContainer() instanceof uk.ac.man.cs.mdsd.webgen.persistence.View) {
 				continue;
 			}
-			uk.ac.man.cs.mdsd.webgen.website.View container = (uk.ac.man.cs.mdsd.webgen.website.View) link.eContainer();
-			result.add(new WebsiteLinkDescriptor(container, target, link, WebsiteElementTypes.ViewAssociation_4004,
+			uk.ac.man.cs.mdsd.webgen.persistence.View container = (uk.ac.man.cs.mdsd.webgen.persistence.View) link
+					.eContainer();
+			result.add(new WebsiteLinkDescriptor(container, target, link, WebsiteElementTypes.ViewAssociation_4007,
 					ViewAssociationEditPart.VISUAL_ID));
 
 		}

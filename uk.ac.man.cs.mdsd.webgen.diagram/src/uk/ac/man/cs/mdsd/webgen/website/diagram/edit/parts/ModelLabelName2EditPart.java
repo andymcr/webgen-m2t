@@ -57,7 +57,7 @@ public class ModelLabelName2EditPart extends CompartmentEditPart implements ITex
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5256;
+	public static final int VISUAL_ID = 5293;
 
 	/**
 	* @generated
@@ -292,7 +292,7 @@ public class ModelLabelName2EditPart extends CompartmentEditPart implements ITex
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabel_3248, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.ModelLabel_3281, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ModelLabelName2EditPart.VISUAL_ID));
 		}

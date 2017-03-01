@@ -39,7 +39,7 @@ public class EntityEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 2003;
+	public static final int VISUAL_ID = 2015;
 
 	/**
 	 * @generated
@@ -256,31 +256,31 @@ public class EntityEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DataTypeAttribute_3252) {
+			if (type == WebsiteElementTypes.DataTypeAttribute_3274) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DateAttribute_3253) {
+			if (type == WebsiteElementTypes.DateAttribute_3275) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UrlAttribute_3254) {
+			if (type == WebsiteElementTypes.UrlAttribute_3276) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.FileAttribute_3255) {
+			if (type == WebsiteElementTypes.FileAttribute_3277) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.ImageAttribute_3256) {
+			if (type == WebsiteElementTypes.ImageAttribute_3278) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.LocationAttribute_3257) {
+			if (type == WebsiteElementTypes.LocationAttribute_3279) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityAttributeCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.ModelLabel_3247) {
+			if (type == WebsiteElementTypes.ModelLabel_3280) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EntityModelLabelsCompartmentEditPart.VISUAL_ID));
 			}

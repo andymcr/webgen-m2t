@@ -19,7 +19,7 @@ public class DateAttributeItemSemanticEditPolicy extends WebsiteBaseItemSemantic
 	 * @generated
 	 */
 	public DateAttributeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DateAttribute_3253);
+		super(WebsiteElementTypes.DateAttribute_3275);
 	}
 
 	/**

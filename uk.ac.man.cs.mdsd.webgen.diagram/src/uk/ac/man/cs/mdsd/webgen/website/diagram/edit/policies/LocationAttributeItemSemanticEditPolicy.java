@@ -19,7 +19,7 @@ public class LocationAttributeItemSemanticEditPolicy extends WebsiteBaseItemSema
 	 * @generated
 	 */
 	public LocationAttributeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.LocationAttribute_3257);
+		super(WebsiteElementTypes.LocationAttribute_3279);
 	}
 
 	/**

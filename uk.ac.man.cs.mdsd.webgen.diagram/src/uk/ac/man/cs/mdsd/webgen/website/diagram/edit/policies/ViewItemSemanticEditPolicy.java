@@ -35,7 +35,7 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 	* @generated
 	*/
 	public ViewItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.View_2010);
+		super(WebsiteElementTypes.View_2016);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 	* @generated
 	*/
 	protected Command getStartCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.ViewAssociation_4004 == req.getElementType()) {
+		if (WebsiteElementTypes.ViewAssociation_4007 == req.getElementType()) {
 			return getGEFWrapper(new ViewAssociationCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;
@@ -144,7 +144,7 @@ public class ViewItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 	* @generated
 	*/
 	protected Command getCompleteCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.ViewAssociation_4004 == req.getElementType()) {
+		if (WebsiteElementTypes.ViewAssociation_4007 == req.getElementType()) {
 			return null;
 		}
 		return null;

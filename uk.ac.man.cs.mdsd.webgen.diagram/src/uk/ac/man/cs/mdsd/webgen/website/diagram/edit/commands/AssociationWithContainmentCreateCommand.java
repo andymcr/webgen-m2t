@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateRelationshipRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.AssociationWithContainment;
-import uk.ac.man.cs.mdsd.webgen.website.Entity;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.AssociationWithContainment;
+import uk.ac.man.cs.mdsd.webgen.persistence.Entity;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
 
 /**
@@ -59,7 +59,7 @@ public class AssociationWithContainmentCreateCommand extends EditElementCommand 
 		}
 		// target may be null here but it's possible to check constraint
 		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canCreateAssociationWithContainment_4002(getSource(), getTarget());
+				.canCreateAssociationWithContainment_4006(getSource(), getTarget());
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class AssociationWithContainmentCreateCommand extends EditElementCommand 
 			throw new ExecutionException("Invalid arguments in create link command"); //$NON-NLS-1$
 		}
 
-		AssociationWithContainment newElement = WebsiteFactory.eINSTANCE.createAssociationWithContainment();
+		AssociationWithContainment newElement = PersistenceFactory.eINSTANCE.createAssociationWithContainment();
 		getSource().getEntityFeatures().add(newElement);
 		newElement.setTargetEntity(getTarget());
 		doConfigure(newElement, monitor, info);
@@ -80,8 +80,8 @@ public class AssociationWithContainmentCreateCommand extends EditElementCommand 
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(AssociationWithContainment newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

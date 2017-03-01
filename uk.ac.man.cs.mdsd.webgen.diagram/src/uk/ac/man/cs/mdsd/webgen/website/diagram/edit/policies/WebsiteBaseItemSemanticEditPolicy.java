@@ -32,13 +32,13 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.helpers.GeneratedEditHelperBase;
 
-import uk.ac.man.cs.mdsd.webgen.website.AssociationWithContainment;
-import uk.ac.man.cs.mdsd.webgen.website.AssociationWithoutContainment;
-import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.Entity;
+import uk.ac.man.cs.mdsd.webgen.persistence.AssociationWithContainment;
+import uk.ac.man.cs.mdsd.webgen.persistence.AssociationWithoutContainment;
+import uk.ac.man.cs.mdsd.webgen.persistence.EncapsulatedAssociation;
+import uk.ac.man.cs.mdsd.webgen.persistence.Entity;
+import uk.ac.man.cs.mdsd.webgen.persistence.ViewAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.Page;
 import uk.ac.man.cs.mdsd.webgen.website.PageLink;
-import uk.ac.man.cs.mdsd.webgen.website.ViewAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorPlugin;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
@@ -312,30 +312,30 @@ public class WebsiteBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		}
 
 		/**
-		 * @generated
-		 */
-		public boolean canCreateAssociationWithoutContainment_4001(Entity source, Entity target) {
-			return canExistAssociationWithoutContainment_4001(null, source, target);
-		}
-
-		/**
-		 * @generated
-		 */
-		public boolean canCreateAssociationWithContainment_4002(Entity source, Entity target) {
-			return canExistAssociationWithContainment_4002(null, source, target);
+		* @generated
+		*/
+		public boolean canCreateAssociationWithoutContainment_4005(Entity source, Entity target) {
+			return canExistAssociationWithoutContainment_4005(null, source, target);
 		}
 
 		/**
 		* @generated
 		*/
-		public boolean canCreateViewAssociation_4004(uk.ac.man.cs.mdsd.webgen.website.View source,
-				EncapsulatedAssociation target) {
-			return canExistViewAssociation_4004(null, source, target);
+		public boolean canCreateAssociationWithContainment_4006(Entity source, Entity target) {
+			return canExistAssociationWithContainment_4006(null, source, target);
 		}
 
 		/**
-				 * @generated
-				 */
+		* @generated
+		*/
+		public boolean canCreateViewAssociation_4007(uk.ac.man.cs.mdsd.webgen.persistence.View source,
+				EncapsulatedAssociation target) {
+			return canExistViewAssociation_4007(null, source, target);
+		}
+
+		/**
+						 * @generated
+						 */
 		public boolean canCreatePageLink_4003(Page source, Page target) {
 			if (source != null) {
 				if (source.getParentPage() != null) {
@@ -346,17 +346,17 @@ public class WebsiteBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		}
 
 		/**
-		 * @generated
-		 */
-		public boolean canExistAssociationWithoutContainment_4001(AssociationWithoutContainment linkInstance,
+		* @generated
+		*/
+		public boolean canExistAssociationWithoutContainment_4005(AssociationWithoutContainment linkInstance,
 				Entity source, Entity target) {
 			return true;
 		}
 
 		/**
-		 * @generated
-		 */
-		public boolean canExistAssociationWithContainment_4002(AssociationWithContainment linkInstance, Entity source,
+		* @generated
+		*/
+		public boolean canExistAssociationWithContainment_4006(AssociationWithContainment linkInstance, Entity source,
 				Entity target) {
 			return true;
 		}
@@ -364,14 +364,14 @@ public class WebsiteBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		/**
 		* @generated
 		*/
-		public boolean canExistViewAssociation_4004(ViewAssociation linkInstance,
-				uk.ac.man.cs.mdsd.webgen.website.View source, EncapsulatedAssociation target) {
+		public boolean canExistViewAssociation_4007(ViewAssociation linkInstance,
+				uk.ac.man.cs.mdsd.webgen.persistence.View source, EncapsulatedAssociation target) {
 			return true;
 		}
 
 		/**
-				 * @generated
-				 */
+						 * @generated
+						 */
 		public boolean canExistPageLink_4003(PageLink linkInstance, Page source, Page target) {
 			return true;
 		}

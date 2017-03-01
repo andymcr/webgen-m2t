@@ -46,10 +46,10 @@ public class WebGenModelItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 		if (WebsiteElementTypes.EnumerationType_2014 == req.getElementType()) {
 			return getGEFWrapper(new EnumerationTypeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.Entity_2003 == req.getElementType()) {
+		if (WebsiteElementTypes.Entity_2015 == req.getElementType()) {
 			return getGEFWrapper(new EntityCreateCommand(req));
 		}
-		if (WebsiteElementTypes.View_2010 == req.getElementType()) {
+		if (WebsiteElementTypes.View_2016 == req.getElementType()) {
 			return getGEFWrapper(new ViewCreateCommand(req));
 		}
 		if (WebsiteElementTypes.Page_2005 == req.getElementType()) {

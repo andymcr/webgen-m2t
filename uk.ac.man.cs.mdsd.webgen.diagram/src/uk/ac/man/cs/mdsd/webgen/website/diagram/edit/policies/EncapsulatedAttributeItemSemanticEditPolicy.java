@@ -19,7 +19,7 @@ public class EncapsulatedAttributeItemSemanticEditPolicy extends WebsiteBaseItem
 	* @generated
 	*/
 	public EncapsulatedAttributeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.EncapsulatedAttribute_3258);
+		super(WebsiteElementTypes.EncapsulatedAttribute_3282);
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class UrlAttributeItemSemanticEditPolicy extends WebsiteBaseItemSemanticE
 	* @generated
 	*/
 	public UrlAttributeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UrlAttribute_3254);
+		super(WebsiteElementTypes.UrlAttribute_3276);
 	}
 
 	/**

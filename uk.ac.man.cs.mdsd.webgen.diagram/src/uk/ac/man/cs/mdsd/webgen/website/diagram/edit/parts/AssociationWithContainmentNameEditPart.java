@@ -58,7 +58,7 @@ public class AssociationWithContainmentNameEditPart extends LabelEditPart implem
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 6003;
+	public static final int VISUAL_ID = 6007;
 
 	/**
 	 * @generated
@@ -306,7 +306,7 @@ public class AssociationWithContainmentNameEditPart extends LabelEditPart implem
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithContainment_4002,
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithContainment_4006,
 					getParserElement(), WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.AssociationWithContainmentNameEditPart.VISUAL_ID));
 		}

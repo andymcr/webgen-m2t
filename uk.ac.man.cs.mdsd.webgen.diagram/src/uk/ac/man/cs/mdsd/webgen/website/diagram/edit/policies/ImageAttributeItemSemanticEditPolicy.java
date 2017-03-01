@@ -19,7 +19,7 @@ public class ImageAttributeItemSemanticEditPolicy extends WebsiteBaseItemSemanti
 	 * @generated
 	 */
 	public ImageAttributeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.ImageAttribute_3256);
+		super(WebsiteElementTypes.ImageAttribute_3278);
 	}
 
 	/**

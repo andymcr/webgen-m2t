@@ -27,7 +27,7 @@ public class EncapsulatedAssociationItemSemanticEditPolicy extends WebsiteBaseIt
 	* @generated
 	*/
 	public EncapsulatedAssociationItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.EncapsulatedAssociation_3259);
+		super(WebsiteElementTypes.EncapsulatedAssociation_3283);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class EncapsulatedAssociationItemSemanticEditPolicy extends WebsiteBaseIt
 	* @generated
 	*/
 	protected Command getStartCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.ViewAssociation_4004 == req.getElementType()) {
+		if (WebsiteElementTypes.ViewAssociation_4007 == req.getElementType()) {
 			return null;
 		}
 		return null;
@@ -81,7 +81,7 @@ public class EncapsulatedAssociationItemSemanticEditPolicy extends WebsiteBaseIt
 	* @generated
 	*/
 	protected Command getCompleteCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.ViewAssociation_4004 == req.getElementType()) {
+		if (WebsiteElementTypes.ViewAssociation_4007 == req.getElementType()) {
 			return getGEFWrapper(new ViewAssociationCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;

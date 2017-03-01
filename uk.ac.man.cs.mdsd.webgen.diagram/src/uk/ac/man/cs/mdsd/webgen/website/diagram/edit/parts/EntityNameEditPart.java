@@ -57,7 +57,7 @@ public class EntityNameEditPart extends CompartmentEditPart implements ITextAwar
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5004;
+	public static final int VISUAL_ID = 5292;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class EntityNameEditPart extends CompartmentEditPart implements ITextAwar
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.Entity_2003, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.Entity_2015, getParserElement(),
 					WebsiteVisualIDRegistry
 							.getType(uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EntityNameEditPart.VISUAL_ID));
 		}

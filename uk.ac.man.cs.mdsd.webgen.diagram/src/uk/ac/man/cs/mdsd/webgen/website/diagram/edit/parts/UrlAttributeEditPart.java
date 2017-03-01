@@ -32,7 +32,7 @@ public class UrlAttributeEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3254;
+	public static final int VISUAL_ID = 3276;
 
 	/**
 	* @generated

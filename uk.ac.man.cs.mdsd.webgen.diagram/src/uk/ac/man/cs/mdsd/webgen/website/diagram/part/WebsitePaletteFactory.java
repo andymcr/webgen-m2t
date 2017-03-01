@@ -606,12 +606,12 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createModelLabel2CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.ModelLabel_3247);
-		types.add(WebsiteElementTypes.ModelLabel_3248);
+		types.add(WebsiteElementTypes.ModelLabel_3280);
+		types.add(WebsiteElementTypes.ModelLabel_3281);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ModelLabel2CreationTool_title,
 				Messages.ModelLabel2CreationTool_desc, types);
 		entry.setId("createModelLabel2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ModelLabel_3247));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ModelLabel_3280));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -687,9 +687,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createEntity4CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Entity4CreationTool_title,
-				Messages.Entity4CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Entity_2003));
+				Messages.Entity4CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Entity_2015));
 		entry.setId("createEntity4CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Entity_2003));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Entity_2015));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -699,9 +699,9 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createView5CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.View5CreationTool_title,
-				Messages.View5CreationTool_desc, Collections.singletonList(WebsiteElementTypes.View_2010));
+				Messages.View5CreationTool_desc, Collections.singletonList(WebsiteElementTypes.View_2016));
 		entry.setId("createView5CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.View_2010));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.View_2016));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -712,9 +712,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createDataTypeAttribute6CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.DataTypeAttribute6CreationTool_title,
 				Messages.DataTypeAttribute6CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.DataTypeAttribute_3252));
+				Collections.singletonList(WebsiteElementTypes.DataTypeAttribute_3274));
 		entry.setId("createDataTypeAttribute6CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DataTypeAttribute_3252));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DataTypeAttribute_3274));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -725,9 +725,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createDateAttribute7CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.DateAttribute7CreationTool_title,
 				Messages.DateAttribute7CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.DateAttribute_3253));
+				Collections.singletonList(WebsiteElementTypes.DateAttribute_3275));
 		entry.setId("createDateAttribute7CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DateAttribute_3253));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DateAttribute_3275));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -738,9 +738,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createURLAttribute8CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.URLAttribute8CreationTool_title,
 				Messages.URLAttribute8CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.UrlAttribute_3254));
+				Collections.singletonList(WebsiteElementTypes.UrlAttribute_3276));
 		entry.setId("createURLAttribute8CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UrlAttribute_3254));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UrlAttribute_3276));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -751,9 +751,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createFileAttribute9CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.FileAttribute9CreationTool_title,
 				Messages.FileAttribute9CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.FileAttribute_3255));
+				Collections.singletonList(WebsiteElementTypes.FileAttribute_3277));
 		entry.setId("createFileAttribute9CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.FileAttribute_3255));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.FileAttribute_3277));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -763,9 +763,9 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createImageAttribute10CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ImageAttribute10CreationTool_title, null,
-				Collections.singletonList(WebsiteElementTypes.ImageAttribute_3256));
+				Collections.singletonList(WebsiteElementTypes.ImageAttribute_3278));
 		entry.setId("createImageAttribute10CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ImageAttribute_3256));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ImageAttribute_3278));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -776,9 +776,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createLocationAttribute11CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.LocationAttribute11CreationTool_title,
 				Messages.LocationAttribute11CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.LocationAttribute_3257));
+				Collections.singletonList(WebsiteElementTypes.LocationAttribute_3279));
 		entry.setId("createLocationAttribute11CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.LocationAttribute_3257));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.LocationAttribute_3279));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -789,10 +789,10 @@ public class WebsitePaletteFactory {
 	private ToolEntry createUncontainedAssociation12CreationTool() {
 		DefaultLinkToolEntry entry = new DefaultLinkToolEntry(Messages.UncontainedAssociation12CreationTool_title,
 				Messages.UncontainedAssociation12CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.AssociationWithoutContainment_4001));
+				Collections.singletonList(WebsiteElementTypes.AssociationWithoutContainment_4005));
 		entry.setId("createUncontainedAssociation12CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(
-				WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.AssociationWithoutContainment_4001));
+				WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.AssociationWithoutContainment_4005));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -803,9 +803,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createContainedAssociation13CreationTool() {
 		DefaultLinkToolEntry entry = new DefaultLinkToolEntry(Messages.ContainedAssociation13CreationTool_title,
 				Messages.ContainedAssociation13CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.AssociationWithContainment_4002));
+				Collections.singletonList(WebsiteElementTypes.AssociationWithContainment_4006));
 		entry.setId("createContainedAssociation13CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.AssociationWithContainment_4002));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.AssociationWithContainment_4006));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -816,9 +816,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createEncapsulatedAttribute14CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.EncapsulatedAttribute14CreationTool_title,
 				Messages.EncapsulatedAttribute14CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.EncapsulatedAttribute_3258));
+				Collections.singletonList(WebsiteElementTypes.EncapsulatedAttribute_3282));
 		entry.setId("createEncapsulatedAttribute14CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EncapsulatedAttribute_3258));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EncapsulatedAttribute_3282));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -829,9 +829,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createEncapsulatedAssociation15CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.EncapsulatedAssociation15CreationTool_title,
 				Messages.EncapsulatedAssociation15CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.EncapsulatedAssociation_3259));
+				Collections.singletonList(WebsiteElementTypes.EncapsulatedAssociation_3283));
 		entry.setId("createEncapsulatedAssociation15CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EncapsulatedAssociation_3259));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EncapsulatedAssociation_3283));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -842,9 +842,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createViewAssociation16CreationTool() {
 		DefaultLinkToolEntry entry = new DefaultLinkToolEntry(Messages.ViewAssociation16CreationTool_title,
 				Messages.ViewAssociation16CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.ViewAssociation_4004));
+				Collections.singletonList(WebsiteElementTypes.ViewAssociation_4007));
 		entry.setId("createViewAssociation16CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ViewAssociation_4004));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ViewAssociation_4007));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

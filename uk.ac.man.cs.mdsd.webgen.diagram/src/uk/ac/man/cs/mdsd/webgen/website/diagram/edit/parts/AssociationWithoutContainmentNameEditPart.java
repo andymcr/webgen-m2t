@@ -58,7 +58,7 @@ public class AssociationWithoutContainmentNameEditPart extends LabelEditPart imp
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 6001;
+	public static final int VISUAL_ID = 6005;
 
 	/**
 	 * @generated
@@ -306,7 +306,7 @@ public class AssociationWithoutContainmentNameEditPart extends LabelEditPart imp
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithoutContainment_4001,
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithoutContainment_4005,
 					getParserElement(), WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.AssociationWithoutContainmentNameEditPart.VISUAL_ID));
 		}

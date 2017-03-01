@@ -32,7 +32,7 @@ public class LocationAttributeEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3257;
+	public static final int VISUAL_ID = 3279;
 
 	/**
 	 * @generated

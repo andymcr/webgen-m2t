@@ -51,7 +51,9 @@ Require-Bundle: org.eclipse.core.runtime,
  uk.ac.man.cs.mdsd.webgen.base;visibility:=reexport,
  uk.ac.man.cs.mdsd.webgen.base.edit;visibility:=reexport,
  uk.ac.man.cs.mdsd.webgen.expression;visibility:=reexport,
- uk.ac.man.cs.mdsd.webgen.expression.edit;visibility:=reexport
+ uk.ac.man.cs.mdsd.webgen.expression.edit;visibility:=reexport,
+ uk.ac.man.cs.mdsd.webgen.presistence;visibility:=reexport,
+ uk.ac.man.cs.mdsd.webgen.presistence.edit;visibility:=reexport
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

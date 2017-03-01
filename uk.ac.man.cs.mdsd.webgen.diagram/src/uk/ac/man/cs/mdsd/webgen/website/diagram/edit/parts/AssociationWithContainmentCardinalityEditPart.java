@@ -57,7 +57,7 @@ public class AssociationWithContainmentCardinalityEditPart extends LabelEditPart
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 6004;
+	public static final int VISUAL_ID = 6008;
 
 	/**
 	 * @generated
@@ -305,7 +305,7 @@ public class AssociationWithContainmentCardinalityEditPart extends LabelEditPart
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithContainment_4002,
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.AssociationWithContainment_4006,
 					getParserElement(), WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.AssociationWithContainmentCardinalityEditPart.VISUAL_ID));
 		}

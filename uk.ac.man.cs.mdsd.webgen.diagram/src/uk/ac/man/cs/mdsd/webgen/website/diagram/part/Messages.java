@@ -1038,16 +1038,6 @@ public class Messages extends NLS {
 	/**
 	 * @generated
 	 */
-	public static String NavigatorGroupName_Entity_2003_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Entity_2003_outgoinglinks;
-
-	/**
-	 * @generated
-	 */
 	public static String NavigatorGroupName_Page_2005_incominglinks;
 
 	/**
@@ -1058,32 +1048,22 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_View_2010_outgoinglinks;
+	public static String NavigatorGroupName_Entity_2015_incominglinks;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_EncapsulatedAssociation_3259_incominglinks;
+	public static String NavigatorGroupName_Entity_2015_outgoinglinks;
 
 	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_AssociationWithoutContainment_4001_target;
+	* @generated
+	*/
+	public static String NavigatorGroupName_View_2016_outgoinglinks;
 
 	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_AssociationWithoutContainment_4001_source;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_AssociationWithContainment_4002_target;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_AssociationWithContainment_4002_source;
+	* @generated
+	*/
+	public static String NavigatorGroupName_EncapsulatedAssociation_3283_incominglinks;
 
 	/**
 	 * @generated
@@ -1098,12 +1078,32 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_ViewAssociation_4004_target;
+	public static String NavigatorGroupName_AssociationWithoutContainment_4005_target;
 
 	/**
 	* @generated
 	*/
-	public static String NavigatorGroupName_ViewAssociation_4004_source;
+	public static String NavigatorGroupName_AssociationWithoutContainment_4005_source;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_AssociationWithContainment_4006_target;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_AssociationWithContainment_4006_source;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_ViewAssociation_4007_target;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_ViewAssociation_4007_source;
 
 	/**
 	 * @generated

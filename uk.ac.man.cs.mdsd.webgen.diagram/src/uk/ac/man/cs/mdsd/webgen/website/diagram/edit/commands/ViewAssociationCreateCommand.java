@@ -12,10 +12,10 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateRelationshipRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.View;
-import uk.ac.man.cs.mdsd.webgen.website.ViewAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.EncapsulatedAssociation;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistenceFactory;
+import uk.ac.man.cs.mdsd.webgen.persistence.View;
+import uk.ac.man.cs.mdsd.webgen.persistence.ViewAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
 
 /**
@@ -59,7 +59,7 @@ public class ViewAssociationCreateCommand extends EditElementCommand {
 			return true; // link creation is in progress; source is not defined yet
 		}
 		// target may be null here but it's possible to check constraint
-		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canCreateViewAssociation_4004(getSource(),
+		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canCreateViewAssociation_4007(getSource(),
 				getTarget());
 	}
 
@@ -71,7 +71,7 @@ public class ViewAssociationCreateCommand extends EditElementCommand {
 			throw new ExecutionException("Invalid arguments in create link command"); //$NON-NLS-1$
 		}
 
-		ViewAssociation newElement = WebsiteFactory.eINSTANCE.createViewAssociation();
+		ViewAssociation newElement = PersistenceFactory.eINSTANCE.createViewAssociation();
 		getSource().getViewFeatures().add(newElement);
 		newElement.setOpposite(getTarget());
 		doConfigure(newElement, monitor, info);

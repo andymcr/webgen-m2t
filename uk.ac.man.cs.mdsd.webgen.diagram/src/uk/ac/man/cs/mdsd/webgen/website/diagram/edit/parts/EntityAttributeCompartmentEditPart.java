@@ -16,7 +16,7 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
+import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.EntityAttributeCompartmentCanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.EntityAttributeCompartmentItemSemanticEditPolicy;
@@ -32,7 +32,7 @@ public class EntityAttributeCompartmentEditPart extends ListCompartmentEditPart 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7001;
+	public static final int VISUAL_ID = 7139;
 
 	/**
 	 * @generated
@@ -75,7 +75,7 @@ public class EntityAttributeCompartmentEditPart extends ListCompartmentEditPart 
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new EntityAttributeCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.ENTITY__ENTITY_FEATURES));
+				new CompartmentRepositionLayoutEditPolicy(PersistencePackage.Literals.ENTITY__ENTITY_FEATURES));
 	}
 
 	/**
@@ -94,22 +94,22 @@ public class EntityAttributeCompartmentEditPart extends ListCompartmentEditPart 
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DataTypeAttribute_3252) {
+			if (type == WebsiteElementTypes.DataTypeAttribute_3274) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DateAttribute_3253) {
+			if (type == WebsiteElementTypes.DateAttribute_3275) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UrlAttribute_3254) {
+			if (type == WebsiteElementTypes.UrlAttribute_3276) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.FileAttribute_3255) {
+			if (type == WebsiteElementTypes.FileAttribute_3277) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.ImageAttribute_3256) {
+			if (type == WebsiteElementTypes.ImageAttribute_3278) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.LocationAttribute_3257) {
+			if (type == WebsiteElementTypes.LocationAttribute_3279) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

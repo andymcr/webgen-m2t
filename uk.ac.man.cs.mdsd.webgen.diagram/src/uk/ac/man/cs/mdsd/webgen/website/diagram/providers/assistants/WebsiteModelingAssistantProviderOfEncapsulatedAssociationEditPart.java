@@ -30,7 +30,7 @@ public class WebsiteModelingAssistantProviderOfEncapsulatedAssociationEditPart
 	*/
 	public List<IElementType> doGetRelTypesOnTarget(EncapsulatedAssociationEditPart target) {
 		List<IElementType> types = new ArrayList<IElementType>(1);
-		types.add(WebsiteElementTypes.ViewAssociation_4004);
+		types.add(WebsiteElementTypes.ViewAssociation_4007);
 		return types;
 	}
 
@@ -50,8 +50,8 @@ public class WebsiteModelingAssistantProviderOfEncapsulatedAssociationEditPart
 	public List<IElementType> doGetTypesForSource(EncapsulatedAssociationEditPart target,
 			IElementType relationshipType) {
 		List<IElementType> types = new ArrayList<IElementType>();
-		if (relationshipType == WebsiteElementTypes.ViewAssociation_4004) {
-			types.add(WebsiteElementTypes.View_2010);
+		if (relationshipType == WebsiteElementTypes.ViewAssociation_4007) {
+			types.add(WebsiteElementTypes.View_2016);
 		}
 		return types;
 	}

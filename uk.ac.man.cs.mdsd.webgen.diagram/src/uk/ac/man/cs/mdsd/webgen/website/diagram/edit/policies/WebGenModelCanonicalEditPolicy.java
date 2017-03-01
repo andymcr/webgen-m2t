@@ -291,14 +291,14 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case EntityEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getEntity_2003ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEntity_2015ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case ViewEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getView_2010ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getView_2016ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -347,70 +347,70 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case DataTypeAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getDataTypeAttribute_3252ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getDataTypeAttribute_3274ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case DateAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getDateAttribute_3253ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getDateAttribute_3275ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case UrlAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getUrlAttribute_3254ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getUrlAttribute_3276ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case FileAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getFileAttribute_3255ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getFileAttribute_3277ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case ImageAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getImageAttribute_3256ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getImageAttribute_3278ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case LocationAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getLocationAttribute_3257ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getLocationAttribute_3279ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case ModelLabelEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getModelLabel_3247ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getModelLabel_3280ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case ModelLabel2EditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getModelLabel_3248ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getModelLabel_3281ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case EncapsulatedAttributeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAttribute_3258ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAttribute_3282ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case EncapsulatedAssociationEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAssociation_3259ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEncapsulatedAssociation_3283ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -1089,21 +1089,21 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case AssociationWithoutContainmentEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getAssociationWithoutContainment_4001ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getAssociationWithoutContainment_4005ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case AssociationWithContainmentEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getAssociationWithContainment_4002ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getAssociationWithContainment_4006ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
 		case ViewAssociationEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getViewAssociation_4004ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getViewAssociation_4007ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

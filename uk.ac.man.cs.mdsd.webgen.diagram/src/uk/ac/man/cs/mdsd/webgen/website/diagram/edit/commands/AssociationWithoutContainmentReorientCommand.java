@@ -8,8 +8,8 @@ import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.emf.type.core.commands.EditElementCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.AssociationWithoutContainment;
-import uk.ac.man.cs.mdsd.webgen.website.Entity;
+import uk.ac.man.cs.mdsd.webgen.persistence.AssociationWithoutContainment;
+import uk.ac.man.cs.mdsd.webgen.persistence.Entity;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
 
 /**
@@ -67,7 +67,7 @@ public class AssociationWithoutContainmentReorientCommand extends EditElementCom
 		}
 		Entity target = getLink().getTargetEntity();
 		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canExistAssociationWithoutContainment_4001(getLink(), getNewSource(), target);
+				.canExistAssociationWithoutContainment_4005(getLink(), getNewSource(), target);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class AssociationWithoutContainmentReorientCommand extends EditElementCom
 		}
 		Entity source = (Entity) getLink().eContainer();
 		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints()
-				.canExistAssociationWithoutContainment_4001(getLink(), source, getNewTarget());
+				.canExistAssociationWithoutContainment_4005(getLink(), source, getNewTarget());
 	}
 
 	/**
