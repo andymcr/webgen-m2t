@@ -26,7 +26,7 @@ public class EnumerationTypeItemSemanticEditPolicy extends WebsiteBaseItemSemant
 	 * @generated
 	 */
 	public EnumerationTypeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.EnumerationType_2006);
+		super(WebsiteElementTypes.EnumerationType_2014);
 	}
 
 	/**

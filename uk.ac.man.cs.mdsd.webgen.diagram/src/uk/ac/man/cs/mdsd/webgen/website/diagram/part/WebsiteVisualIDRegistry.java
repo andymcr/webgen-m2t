@@ -7,7 +7,8 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.structure.DiagramStructure;
 
-import uk.ac.man.cs.mdsd.webgen.website.DataType;
+import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
+import uk.ac.man.cs.mdsd.webgen.base.DataType;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
@@ -120,14 +121,14 @@ public class WebsiteVisualIDRegistry {
 			if (WebsitePackage.eINSTANCE.getWebsiteProperties().isSuperTypeOf(domainElement.eClass())) {
 				return WebsitePropertiesEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getDataType().isSuperTypeOf(domainElement.eClass())
-					&& isDataType_2002((DataType) domainElement)) {
+			if (BasePackage.eINSTANCE.getDataType().isSuperTypeOf(domainElement.eClass())
+					&& isDataType_2013((DataType) domainElement)) {
 				return DataTypeEditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getDynamicMenu().isSuperTypeOf(domainElement.eClass())) {
 				return DynamicMenuEditPart.VISUAL_ID;
 			}
-			if (WebsitePackage.eINSTANCE.getEnumerationType().isSuperTypeOf(domainElement.eClass())) {
+			if (BasePackage.eINSTANCE.getEnumerationType().isSuperTypeOf(domainElement.eClass())) {
 				return EnumerationTypeEditPart.VISUAL_ID;
 			}
 			if (WebsitePackage.eINSTANCE.getEntity().isSuperTypeOf(domainElement.eClass())) {
@@ -155,7 +156,7 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getEnumerationLiteral().isSuperTypeOf(domainElement.eClass())) {
+			if (BasePackage.eINSTANCE.getEnumerationLiteral().isSuperTypeOf(domainElement.eClass())) {
 				return EnumerationLiteralEditPart.VISUAL_ID;
 			}
 			break;
@@ -1833,10 +1834,10 @@ public class WebsiteVisualIDRegistry {
 	}
 
 	/**
-	 * @generated
-	 */
-	private static boolean isDataType_2002(DataType domainElement) {
-		Object result = WebsiteOCLFactory.getExpression(0, WebsitePackage.eINSTANCE.getDataType(), null)
+	* @generated
+	*/
+	private static boolean isDataType_2013(DataType domainElement) {
+		Object result = WebsiteOCLFactory.getExpression(0, BasePackage.eINSTANCE.getDataType(), null)
 				.evaluate(domainElement);
 		return result instanceof Boolean && ((Boolean) result).booleanValue();
 	}
@@ -1921,9 +1922,8 @@ public class WebsiteVisualIDRegistry {
 		switch (visualID) {
 		case WebGenModelEditPart.VISUAL_ID:
 			return false;
-		case DataTypeEditPart.VISUAL_ID:
 		case DynamicMenuEditPart.VISUAL_ID:
-		case EnumerationLiteralEditPart.VISUAL_ID:
+		case DataTypeEditPart.VISUAL_ID:
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 		case CasAuthenticationEditPart.VISUAL_ID:
 		case DeleteActionEditPart.VISUAL_ID:
@@ -2002,6 +2002,7 @@ public class WebsiteVisualIDRegistry {
 		case SelectAction9EditPart.VISUAL_ID:
 		case DeleteAction5EditPart.VISUAL_ID:
 		case FeatureSupportAction3EditPart.VISUAL_ID:
+		case EnumerationLiteralEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

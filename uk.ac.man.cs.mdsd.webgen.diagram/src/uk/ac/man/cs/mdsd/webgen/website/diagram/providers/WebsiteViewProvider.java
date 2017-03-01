@@ -369,11 +369,11 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 		case WebsitePropertiesEditPart.VISUAL_ID:
 			return createWebsiteProperties_2001(domainElement, containerView, index, persisted, preferencesHint);
 		case DataTypeEditPart.VISUAL_ID:
-			return createDataType_2002(domainElement, containerView, index, persisted, preferencesHint);
+			return createDataType_2013(domainElement, containerView, index, persisted, preferencesHint);
 		case DynamicMenuEditPart.VISUAL_ID:
 			return createDynamicMenu_2008(domainElement, containerView, index, persisted, preferencesHint);
 		case EnumerationTypeEditPart.VISUAL_ID:
-			return createEnumerationType_2006(domainElement, containerView, index, persisted, preferencesHint);
+			return createEnumerationType_2014(domainElement, containerView, index, persisted, preferencesHint);
 		case EntityEditPart.VISUAL_ID:
 			return createEntity_2003(domainElement, containerView, index, persisted, preferencesHint);
 		case ViewEditPart.VISUAL_ID:
@@ -390,7 +390,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createLocalAuthenticationSystem_3029(domainElement, containerView, index, persisted,
 					preferencesHint);
 		case EnumerationLiteralEditPart.VISUAL_ID:
-			return createEnumerationLiteral_3028(domainElement, containerView, index, persisted, preferencesHint);
+			return createEnumerationLiteral_3273(domainElement, containerView, index, persisted, preferencesHint);
 		case DataTypeAttributeEditPart.VISUAL_ID:
 			return createDataTypeAttribute_3252(domainElement, containerView, index, persisted, preferencesHint);
 		case DateAttributeEditPart.VISUAL_ID:
@@ -673,10 +673,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createDataType_2002(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createDataType_2013(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -699,7 +698,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5002 = createLabel(node, WebsiteVisualIDRegistry.getType(DataTypeNameEditPart.VISUAL_ID));
+		Node label5282 = createLabel(node, WebsiteVisualIDRegistry.getType(DataTypeNameEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -737,10 +736,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createEnumerationType_2006(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createEnumerationType_2014(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -763,7 +761,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5032 = createLabel(node, WebsiteVisualIDRegistry.getType(EnumerationTypeNameEditPart.VISUAL_ID));
+		Node label5284 = createLabel(node, WebsiteVisualIDRegistry.getType(EnumerationTypeNameEditPart.VISUAL_ID));
 		createCompartment(node,
 				WebsiteVisualIDRegistry.getType(EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID), false, false,
 				true, true);
@@ -1013,10 +1011,9 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	}
 
 	/**
-	 * @generated
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	public Node createEnumerationLiteral_3028(EObject domainElement, View containerView, int index, boolean persisted,
+	* @generated
+	*/
+	public Node createEnumerationLiteral_3273(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
 		Node node = NotationFactory.eINSTANCE.createNode();
 		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
@@ -1044,7 +1041,7 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 					IPreferenceConstants.PREF_FONT_COLOR);
 			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
 		}
-		Node label5033 = createLabel(node, WebsiteVisualIDRegistry.getType(EnumerationLiteralNameEditPart.VISUAL_ID));
+		Node label5283 = createLabel(node, WebsiteVisualIDRegistry.getType(EnumerationLiteralNameEditPart.VISUAL_ID));
 		return node;
 	}
 

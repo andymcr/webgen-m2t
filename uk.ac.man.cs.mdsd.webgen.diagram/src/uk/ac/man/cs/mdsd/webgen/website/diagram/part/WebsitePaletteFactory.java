@@ -646,12 +646,12 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createDatatype1CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.DataType_2002);
+		types.add(WebsiteElementTypes.DataType_2013);
 		types.add(WebsiteElementTypes.DataTypeField_3206);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datatype1CreationTool_title,
 				Messages.Datatype1CreationTool_desc, types);
 		entry.setId("createDatatype1CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DataType_2002));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DataType_2013));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -662,9 +662,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createEnumerationtype2CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Enumerationtype2CreationTool_title,
 				Messages.Enumerationtype2CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.EnumerationType_2006));
+				Collections.singletonList(WebsiteElementTypes.EnumerationType_2014));
 		entry.setId("createEnumerationtype2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EnumerationType_2006));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EnumerationType_2014));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -675,9 +675,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createEnumerationLiteral3CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.EnumerationLiteral3CreationTool_title,
 				Messages.EnumerationLiteral3CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.EnumerationLiteral_3028));
+				Collections.singletonList(WebsiteElementTypes.EnumerationLiteral_3273));
 		entry.setId("createEnumerationLiteral3CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EnumerationLiteral_3028));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EnumerationLiteral_3273));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

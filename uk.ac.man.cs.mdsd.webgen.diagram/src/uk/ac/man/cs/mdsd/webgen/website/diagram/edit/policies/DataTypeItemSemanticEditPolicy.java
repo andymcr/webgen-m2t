@@ -19,7 +19,7 @@ public class DataTypeItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditP
 	 * @generated
 	 */
 	public DataTypeItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DataType_2002);
+		super(WebsiteElementTypes.DataType_2013);
 	}
 
 	/**

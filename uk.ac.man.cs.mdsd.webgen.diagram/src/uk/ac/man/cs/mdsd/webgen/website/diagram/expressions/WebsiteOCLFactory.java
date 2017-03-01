@@ -38,7 +38,7 @@ public class WebsiteOCLFactory {
 	 */
 	protected WebsiteOCLFactory() {
 		this.expressions = new WebsiteAbstractExpression[1];
-		this.expressionBodies = new String[] { "not self.oclIsTypeOf(EnumerationType)", //$NON-NLS-1$
+		this.expressionBodies = new String[] { "self.oclIsTypeOf(DataType)", //$NON-NLS-1$
 		};
 	}
 

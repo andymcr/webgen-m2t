@@ -57,7 +57,7 @@ public class DataTypeNameEditPart extends CompartmentEditPart implements ITextAw
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5002;
+	public static final int VISUAL_ID = 5282;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class DataTypeNameEditPart extends CompartmentEditPart implements ITextAw
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DataType_2002, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DataType_2013, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeNameEditPart.VISUAL_ID));
 		}

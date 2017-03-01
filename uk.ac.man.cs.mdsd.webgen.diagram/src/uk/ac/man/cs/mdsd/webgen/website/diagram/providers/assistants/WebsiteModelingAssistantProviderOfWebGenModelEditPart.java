@@ -22,9 +22,9 @@ public class WebsiteModelingAssistantProviderOfWebGenModelEditPart extends Websi
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(9);
 		types.add(WebsiteElementTypes.WebsiteProperties_2001);
-		types.add(WebsiteElementTypes.DataType_2002);
+		types.add(WebsiteElementTypes.DataType_2013);
 		types.add(WebsiteElementTypes.DynamicMenu_2008);
-		types.add(WebsiteElementTypes.EnumerationType_2006);
+		types.add(WebsiteElementTypes.EnumerationType_2014);
 		types.add(WebsiteElementTypes.Entity_2003);
 		types.add(WebsiteElementTypes.View_2010);
 		types.add(WebsiteElementTypes.Page_2005);

@@ -57,7 +57,7 @@ public class EnumerationTypeNameEditPart extends CompartmentEditPart implements 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5032;
+	public static final int VISUAL_ID = 5284;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class EnumerationTypeNameEditPart extends CompartmentEditPart implements 
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EnumerationType_2006, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EnumerationType_2014, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EnumerationTypeNameEditPart.VISUAL_ID));
 		}

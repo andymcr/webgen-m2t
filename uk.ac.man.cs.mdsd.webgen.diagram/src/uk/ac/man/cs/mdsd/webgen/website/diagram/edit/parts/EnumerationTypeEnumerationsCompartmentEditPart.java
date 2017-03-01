@@ -16,7 +16,7 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
+import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.EnumerationTypeEnumerationsCompartmentCanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.EnumerationTypeEnumerationsCompartmentItemSemanticEditPolicy;
@@ -32,7 +32,7 @@ public class EnumerationTypeEnumerationsCompartmentEditPart extends ListCompartm
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7016;
+	public static final int VISUAL_ID = 7138;
 
 	/**
 	 * @generated
@@ -77,7 +77,7 @@ public class EnumerationTypeEnumerationsCompartmentEditPart extends ListCompartm
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
 				new EnumerationTypeEnumerationsCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.ENUMERATION_TYPE__ENUMERATIONS));
+				new CompartmentRepositionLayoutEditPolicy(BasePackage.Literals.ENUMERATION_TYPE__ENUMERATIONS));
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class EnumerationTypeEnumerationsCompartmentEditPart extends ListCompartm
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.EnumerationLiteral_3028) {
+			if (type == WebsiteElementTypes.EnumerationLiteral_3273) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

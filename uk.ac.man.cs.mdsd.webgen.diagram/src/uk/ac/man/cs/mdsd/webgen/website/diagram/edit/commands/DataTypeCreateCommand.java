@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.DataType;
+import uk.ac.man.cs.mdsd.webgen.base.BaseFactory;
+import uk.ac.man.cs.mdsd.webgen.base.DataType;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class DataTypeCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		DataType newElement = WebsiteFactory.eINSTANCE.createDataType();
+		DataType newElement = BaseFactory.eINSTANCE.createDataType();
 
 		WebGenModel owner = (WebGenModel) getElementToEdit();
 		owner.getClassifiers().add(newElement);
@@ -64,8 +64,8 @@ public class DataTypeCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(DataType newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

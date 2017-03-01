@@ -15,14 +15,14 @@ public class EnumerationTypeEnumerationsCompartmentItemSemanticEditPolicy extend
 	 * @generated
 	 */
 	public EnumerationTypeEnumerationsCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.EnumerationType_2006);
+		super(WebsiteElementTypes.EnumerationType_2014);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.EnumerationLiteral_3028 == req.getElementType()) {
+		if (WebsiteElementTypes.EnumerationLiteral_3273 == req.getElementType()) {
 			return getGEFWrapper(new EnumerationLiteralCreateCommand(req));
 		}
 		return super.getCreateCommand(req);

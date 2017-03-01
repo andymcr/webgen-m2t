@@ -13,11 +13,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.update.DiagramUpdater;
 
+import uk.ac.man.cs.mdsd.webgen.base.Classifier;
+import uk.ac.man.cs.mdsd.webgen.base.EnumerationLiteral;
+import uk.ac.man.cs.mdsd.webgen.base.EnumerationType;
 import uk.ac.man.cs.mdsd.webgen.website.AssociationWithContainment;
 import uk.ac.man.cs.mdsd.webgen.website.AssociationWithoutContainment;
 import uk.ac.man.cs.mdsd.webgen.website.Authentication;
 import uk.ac.man.cs.mdsd.webgen.website.BusinessOperation;
-import uk.ac.man.cs.mdsd.webgen.website.Classifier;
 import uk.ac.man.cs.mdsd.webgen.website.ContentUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUnit;
 import uk.ac.man.cs.mdsd.webgen.website.CreateUpdateUnit;
@@ -25,8 +27,6 @@ import uk.ac.man.cs.mdsd.webgen.website.DetailsUnit;
 import uk.ac.man.cs.mdsd.webgen.website.EncapsulatedAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.Entity;
 import uk.ac.man.cs.mdsd.webgen.website.EntityFeature;
-import uk.ac.man.cs.mdsd.webgen.website.EnumerationLiteral;
-import uk.ac.man.cs.mdsd.webgen.website.EnumerationType;
 import uk.ac.man.cs.mdsd.webgen.website.ImageIndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.IndexUnit;
 import uk.ac.man.cs.mdsd.webgen.website.InlineAction;
@@ -118,7 +118,7 @@ public class WebsiteDiagramUpdater {
 		case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
 			return getWebsitePropertiesAuthenticationCompartment_7007SemanticChildren(view);
 		case EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID:
-			return getEnumerationTypeEnumerationsCompartment_7016SemanticChildren(view);
+			return getEnumerationTypeEnumerationsCompartment_7138SemanticChildren(view);
 		case EntityAttributeCompartmentEditPart.VISUAL_ID:
 			return getEntityAttributeCompartment_7001SemanticChildren(view);
 		case EntityModelLabelsCompartmentEditPart.VISUAL_ID:
@@ -310,9 +310,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteNodeDescriptor> getEnumerationTypeEnumerationsCompartment_7016SemanticChildren(
+	* @generated
+	*/
+	public static List<WebsiteNodeDescriptor> getEnumerationTypeEnumerationsCompartment_7138SemanticChildren(
 			View view) {
 		if (false == view.eContainer() instanceof View) {
 			return Collections.emptyList();
@@ -1706,11 +1706,11 @@ public class WebsiteDiagramUpdater {
 		case WebsitePropertiesEditPart.VISUAL_ID:
 			return getWebsiteProperties_2001ContainedLinks(view);
 		case DataTypeEditPart.VISUAL_ID:
-			return getDataType_2002ContainedLinks(view);
+			return getDataType_2013ContainedLinks(view);
 		case DynamicMenuEditPart.VISUAL_ID:
 			return getDynamicMenu_2008ContainedLinks(view);
 		case EnumerationTypeEditPart.VISUAL_ID:
-			return getEnumerationType_2006ContainedLinks(view);
+			return getEnumerationType_2014ContainedLinks(view);
 		case EntityEditPart.VISUAL_ID:
 			return getEntity_2003ContainedLinks(view);
 		case ViewEditPart.VISUAL_ID:
@@ -1726,7 +1726,7 @@ public class WebsiteDiagramUpdater {
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return getLocalAuthenticationSystem_3029ContainedLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
-			return getEnumerationLiteral_3028ContainedLinks(view);
+			return getEnumerationLiteral_3273ContainedLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
 			return getDataTypeAttribute_3252ContainedLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
@@ -1963,11 +1963,11 @@ public class WebsiteDiagramUpdater {
 		case WebsitePropertiesEditPart.VISUAL_ID:
 			return getWebsiteProperties_2001IncomingLinks(view);
 		case DataTypeEditPart.VISUAL_ID:
-			return getDataType_2002IncomingLinks(view);
+			return getDataType_2013IncomingLinks(view);
 		case DynamicMenuEditPart.VISUAL_ID:
 			return getDynamicMenu_2008IncomingLinks(view);
 		case EnumerationTypeEditPart.VISUAL_ID:
-			return getEnumerationType_2006IncomingLinks(view);
+			return getEnumerationType_2014IncomingLinks(view);
 		case EntityEditPart.VISUAL_ID:
 			return getEntity_2003IncomingLinks(view);
 		case ViewEditPart.VISUAL_ID:
@@ -1983,7 +1983,7 @@ public class WebsiteDiagramUpdater {
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return getLocalAuthenticationSystem_3029IncomingLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
-			return getEnumerationLiteral_3028IncomingLinks(view);
+			return getEnumerationLiteral_3273IncomingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
 			return getDataTypeAttribute_3252IncomingLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
@@ -2220,11 +2220,11 @@ public class WebsiteDiagramUpdater {
 		case WebsitePropertiesEditPart.VISUAL_ID:
 			return getWebsiteProperties_2001OutgoingLinks(view);
 		case DataTypeEditPart.VISUAL_ID:
-			return getDataType_2002OutgoingLinks(view);
+			return getDataType_2013OutgoingLinks(view);
 		case DynamicMenuEditPart.VISUAL_ID:
 			return getDynamicMenu_2008OutgoingLinks(view);
 		case EnumerationTypeEditPart.VISUAL_ID:
-			return getEnumerationType_2006OutgoingLinks(view);
+			return getEnumerationType_2014OutgoingLinks(view);
 		case EntityEditPart.VISUAL_ID:
 			return getEntity_2003OutgoingLinks(view);
 		case ViewEditPart.VISUAL_ID:
@@ -2240,7 +2240,7 @@ public class WebsiteDiagramUpdater {
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return getLocalAuthenticationSystem_3029OutgoingLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
-			return getEnumerationLiteral_3028OutgoingLinks(view);
+			return getEnumerationLiteral_3273OutgoingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
 			return getDataTypeAttribute_3252OutgoingLinks(view);
 		case DateAttributeEditPart.VISUAL_ID:
@@ -2484,9 +2484,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDataType_2002ContainedLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDataType_2013ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -2498,9 +2498,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationType_2006ContainedLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEnumerationType_2014ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -2564,9 +2564,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028ContainedLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3273ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3362,9 +3362,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDataType_2002IncomingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDataType_2013IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3376,9 +3376,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationType_2006IncomingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEnumerationType_2014IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3443,9 +3443,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028IncomingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3273IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4246,9 +4246,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getDataType_2002OutgoingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getDataType_2013OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4260,9 +4260,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationType_2006OutgoingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEnumerationType_2014OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4326,9 +4326,9 @@ public class WebsiteDiagramUpdater {
 	}
 
 	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3028OutgoingLinks(View view) {
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getEnumerationLiteral_3273OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

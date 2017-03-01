@@ -21,6 +21,7 @@ import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
+import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EnumerationLiteralEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
@@ -48,7 +49,7 @@ public class EnumerationTypeEnumerationsCompartmentCanonicalEditPolicy extends C
 	 * @generated
 	 */
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getEnumerationType_Enumerations();
+		return BasePackage.eINSTANCE.getEnumerationType_Enumerations();
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class EnumerationTypeEnumerationsCompartmentCanonicalEditPolicy extends C
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getEnumerationTypeEnumerationsCompartment_7016SemanticChildren(viewObject);
+				.getEnumerationTypeEnumerationsCompartment_7138SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -89,7 +90,7 @@ public class EnumerationTypeEnumerationsCompartmentCanonicalEditPolicy extends C
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getEnumerationTypeEnumerationsCompartment_7016SemanticChildren((View) getHost().getModel());
+				.getEnumerationTypeEnumerationsCompartment_7138SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

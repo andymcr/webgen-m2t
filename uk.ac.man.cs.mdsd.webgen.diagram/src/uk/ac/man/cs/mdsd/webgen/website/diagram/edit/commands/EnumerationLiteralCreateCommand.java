@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.EnumerationLiteral;
-import uk.ac.man.cs.mdsd.webgen.website.EnumerationType;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.base.BaseFactory;
+import uk.ac.man.cs.mdsd.webgen.base.EnumerationLiteral;
+import uk.ac.man.cs.mdsd.webgen.base.EnumerationType;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class EnumerationLiteralCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		EnumerationLiteral newElement = WebsiteFactory.eINSTANCE.createEnumerationLiteral();
+		EnumerationLiteral newElement = BaseFactory.eINSTANCE.createEnumerationLiteral();
 
 		EnumerationType owner = (EnumerationType) getElementToEdit();
 		owner.getEnumerations().add(newElement);
@@ -64,8 +64,8 @@ public class EnumerationLiteralCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(EnumerationLiteral newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

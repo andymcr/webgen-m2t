@@ -19,7 +19,7 @@ public class EnumerationLiteralItemSemanticEditPolicy extends WebsiteBaseItemSem
 	 * @generated
 	 */
 	public EnumerationLiteralItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.EnumerationLiteral_3028);
+		super(WebsiteElementTypes.EnumerationLiteral_3273);
 	}
 
 	/**

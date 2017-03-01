@@ -12,7 +12,7 @@ public class WebsiteNavigatorSorter extends ViewerSorter {
 	/**
 	 * @generated
 	 */
-	private static final int GROUP_CATEGORY = 7138;
+	private static final int GROUP_CATEGORY = 7140;
 
 	/**
 	 * @generated

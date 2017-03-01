@@ -236,7 +236,7 @@ public class CreateUpdateUnitName2EditPart extends CompartmentEditPart implement
 	* @generated
 	*/
 	protected boolean isEditable() {
-		return false;
+		return getParser() != null;
 	}
 
 	/**

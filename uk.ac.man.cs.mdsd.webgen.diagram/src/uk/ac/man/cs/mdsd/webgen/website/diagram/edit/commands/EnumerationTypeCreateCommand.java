@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.EnumerationType;
+import uk.ac.man.cs.mdsd.webgen.base.BaseFactory;
+import uk.ac.man.cs.mdsd.webgen.base.EnumerationType;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class EnumerationTypeCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		EnumerationType newElement = WebsiteFactory.eINSTANCE.createEnumerationType();
+		EnumerationType newElement = BaseFactory.eINSTANCE.createEnumerationType();
 
 		WebGenModel owner = (WebGenModel) getElementToEdit();
 		owner.getClassifiers().add(newElement);
@@ -64,8 +64,8 @@ public class EnumerationTypeCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(EnumerationType newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

@@ -21,7 +21,7 @@ public class WebsiteModelingAssistantProviderOfEnumerationTypeEditPart extends W
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(1);
-		types.add(WebsiteElementTypes.EnumerationLiteral_3028);
+		types.add(WebsiteElementTypes.EnumerationLiteral_3273);
 		return types;
 	}
 

@@ -14,6 +14,7 @@ import org.eclipse.gmf.tooling.runtime.providers.DiagramElementTypes;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
+import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.AssociationWithContainmentEditPart;
@@ -105,9 +106,10 @@ public class WebsiteElementTypes {
 	public static final IElementType WebsiteProperties_2001 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.WebsiteProperties_2001"); //$NON-NLS-1$
 	/**
-	 * @generated
-	 */
-	public static final IElementType DataType_2002 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataType_2002"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType DataType_2013 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.DataType_2013"); //$NON-NLS-1$
+
 	/**
 	 * @generated
 	 */
@@ -115,10 +117,11 @@ public class WebsiteElementTypes {
 			"uk.ac.man.cs.mdsd.webgen.diagram.DynamicMenu_2008"); //$NON-NLS-1$
 
 	/**
-	 * @generated
-	 */
-	public static final IElementType EnumerationType_2006 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.EnumerationType_2006"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType EnumerationType_2014 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EnumerationType_2014"); //$NON-NLS-1$
+
 	/**
 	 * @generated
 	 */
@@ -153,10 +156,11 @@ public class WebsiteElementTypes {
 	public static final IElementType LocalAuthenticationSystem_3029 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3029"); //$NON-NLS-1$
 	/**
-	 * @generated
-	 */
-	public static final IElementType EnumerationLiteral_3028 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3028"); //$NON-NLS-1$
+	* @generated
+	*/
+	public static final IElementType EnumerationLiteral_3273 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.EnumerationLiteral_3273"); //$NON-NLS-1$
+
 	/**
 	* @generated
 	*/
@@ -834,11 +838,11 @@ public class WebsiteElementTypes {
 
 			elements.put(WebsiteProperties_2001, WebsitePackage.eINSTANCE.getWebsiteProperties());
 
-			elements.put(DataType_2002, WebsitePackage.eINSTANCE.getDataType());
+			elements.put(DataType_2013, BasePackage.eINSTANCE.getDataType());
 
 			elements.put(DynamicMenu_2008, WebsitePackage.eINSTANCE.getDynamicMenu());
 
-			elements.put(EnumerationType_2006, WebsitePackage.eINSTANCE.getEnumerationType());
+			elements.put(EnumerationType_2014, BasePackage.eINSTANCE.getEnumerationType());
 
 			elements.put(Entity_2003, WebsitePackage.eINSTANCE.getEntity());
 
@@ -854,7 +858,7 @@ public class WebsiteElementTypes {
 
 			elements.put(LocalAuthenticationSystem_3029, WebsitePackage.eINSTANCE.getLocalAuthenticationSystem());
 
-			elements.put(EnumerationLiteral_3028, WebsitePackage.eINSTANCE.getEnumerationLiteral());
+			elements.put(EnumerationLiteral_3273, BasePackage.eINSTANCE.getEnumerationLiteral());
 
 			elements.put(DataTypeAttribute_3252, WebsitePackage.eINSTANCE.getDataTypeAttribute());
 
@@ -1099,9 +1103,9 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES = new HashSet<IElementType>();
 			KNOWN_ELEMENT_TYPES.add(WebGenModel_1000);
 			KNOWN_ELEMENT_TYPES.add(WebsiteProperties_2001);
-			KNOWN_ELEMENT_TYPES.add(DataType_2002);
+			KNOWN_ELEMENT_TYPES.add(DataType_2013);
 			KNOWN_ELEMENT_TYPES.add(DynamicMenu_2008);
-			KNOWN_ELEMENT_TYPES.add(EnumerationType_2006);
+			KNOWN_ELEMENT_TYPES.add(EnumerationType_2014);
 			KNOWN_ELEMENT_TYPES.add(Entity_2003);
 			KNOWN_ELEMENT_TYPES.add(View_2010);
 			KNOWN_ELEMENT_TYPES.add(Page_2005);
@@ -1109,7 +1113,7 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(Service_2004);
 			KNOWN_ELEMENT_TYPES.add(CasAuthentication_3055);
 			KNOWN_ELEMENT_TYPES.add(LocalAuthenticationSystem_3029);
-			KNOWN_ELEMENT_TYPES.add(EnumerationLiteral_3028);
+			KNOWN_ELEMENT_TYPES.add(EnumerationLiteral_3273);
 			KNOWN_ELEMENT_TYPES.add(DataTypeAttribute_3252);
 			KNOWN_ELEMENT_TYPES.add(DateAttribute_3253);
 			KNOWN_ELEMENT_TYPES.add(UrlAttribute_3254);
@@ -1236,11 +1240,11 @@ public class WebsiteElementTypes {
 		case WebsitePropertiesEditPart.VISUAL_ID:
 			return WebsiteProperties_2001;
 		case DataTypeEditPart.VISUAL_ID:
-			return DataType_2002;
+			return DataType_2013;
 		case DynamicMenuEditPart.VISUAL_ID:
 			return DynamicMenu_2008;
 		case EnumerationTypeEditPart.VISUAL_ID:
-			return EnumerationType_2006;
+			return EnumerationType_2014;
 		case EntityEditPart.VISUAL_ID:
 			return Entity_2003;
 		case ViewEditPart.VISUAL_ID:
@@ -1256,7 +1260,7 @@ public class WebsiteElementTypes {
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
 			return LocalAuthenticationSystem_3029;
 		case EnumerationLiteralEditPart.VISUAL_ID:
-			return EnumerationLiteral_3028;
+			return EnumerationLiteral_3273;
 		case DataTypeAttributeEditPart.VISUAL_ID:
 			return DataTypeAttribute_3252;
 		case DateAttributeEditPart.VISUAL_ID:

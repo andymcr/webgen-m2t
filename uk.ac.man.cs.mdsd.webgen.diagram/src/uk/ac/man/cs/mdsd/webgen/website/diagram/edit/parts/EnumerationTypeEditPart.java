@@ -39,7 +39,7 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 2006;
+	public static final int VISUAL_ID = 2014;
 
 	/**
 	 * @generated
@@ -257,7 +257,7 @@ public class EnumerationTypeEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.EnumerationLiteral_3028) {
+			if (type == WebsiteElementTypes.EnumerationLiteral_3273) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID));
 			}

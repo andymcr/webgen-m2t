@@ -37,13 +37,13 @@ public class WebGenModelItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 		if (WebsiteElementTypes.WebsiteProperties_2001 == req.getElementType()) {
 			return getGEFWrapper(new WebsitePropertiesCreateCommand(req));
 		}
-		if (WebsiteElementTypes.DataType_2002 == req.getElementType()) {
+		if (WebsiteElementTypes.DataType_2013 == req.getElementType()) {
 			return getGEFWrapper(new DataTypeCreateCommand(req));
 		}
 		if (WebsiteElementTypes.DynamicMenu_2008 == req.getElementType()) {
 			return getGEFWrapper(new DynamicMenuCreateCommand(req));
 		}
-		if (WebsiteElementTypes.EnumerationType_2006 == req.getElementType()) {
+		if (WebsiteElementTypes.EnumerationType_2014 == req.getElementType()) {
 			return getGEFWrapper(new EnumerationTypeCreateCommand(req));
 		}
 		if (WebsiteElementTypes.Entity_2003 == req.getElementType()) {

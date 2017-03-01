@@ -443,18 +443,6 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			return result.toArray();
 		}
 
-		case EnumerationTypeEditPart.VISUAL_ID: {
-			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
-			Node sv = (Node) view;
-			Collection<View> connectedViews;
-			connectedViews = getChildrenByType(Collections.singleton(sv),
-					WebsiteVisualIDRegistry.getType(EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID));
-			connectedViews = getChildrenByType(connectedViews,
-					WebsiteVisualIDRegistry.getType(EnumerationLiteralEditPart.VISUAL_ID));
-			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
-			return result.toArray();
-		}
-
 		case StaticMenuEditPart.VISUAL_ID: {
 			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
 			Node sv = (Node) view;
@@ -500,6 +488,18 @@ public class WebsiteNavigatorContentProvider implements ICommonContentProvider {
 			if (!outgoinglinks.isEmpty()) {
 				result.add(outgoinglinks);
 			}
+			return result.toArray();
+		}
+
+		case EnumerationTypeEditPart.VISUAL_ID: {
+			LinkedList<WebsiteAbstractNavigatorItem> result = new LinkedList<WebsiteAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebsiteVisualIDRegistry.getType(EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebsiteVisualIDRegistry.getType(EnumerationLiteralEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}
 

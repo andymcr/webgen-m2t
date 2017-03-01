@@ -50,7 +50,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
-import uk.ac.man.cs.mdsd.webgen.website.DataType;
+import uk.ac.man.cs.mdsd.webgen.base.BaseFactory;
+import uk.ac.man.cs.mdsd.webgen.base.DataType;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteProperties;
@@ -187,27 +188,27 @@ public class WebsiteDiagramEditorUtil {
 		properties.setProjectName("MyWebsite");
 		properties.setSiteTitle("My Website");
 
-		DataType string = WebsiteFactory.eINSTANCE.createDataType();
+		DataType string = BaseFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(string);
 		string.setName("String");
 		string.setInterfaceType("string");
 
-		DataType textBlock = WebsiteFactory.eINSTANCE.createDataType();
+		DataType textBlock = BaseFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(textBlock);
 		textBlock.setName("TextBlock");
 		textBlock.setInterfaceType("textArea");
 
-		DataType integer = WebsiteFactory.eINSTANCE.createDataType();
+		DataType integer = BaseFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(integer);
 		integer.setName("Integer");
 		integer.setInterfaceType("integer");
 
-		DataType bool = WebsiteFactory.eINSTANCE.createDataType();
+		DataType bool = BaseFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(bool);
 		bool.setName("Boolean");
 		bool.setInterfaceType("checkbox");
 
-		DataType email = WebsiteFactory.eINSTANCE.createDataType();
+		DataType email = BaseFactory.eINSTANCE.createDataType();
 		model.getClassifiers().add(email);
 		email.setName("Email");
 		email.setPersistentType("String");

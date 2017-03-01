@@ -270,7 +270,7 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case DataTypeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getDataType_2002ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getDataType_2013ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -284,7 +284,7 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case EnumerationTypeEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getEnumerationType_2006ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEnumerationType_2014ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
@@ -340,7 +340,7 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 		}
 		case EnumerationLiteralEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getEnumerationLiteral_3028ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getEnumerationLiteral_3273ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

@@ -57,7 +57,7 @@ public class EnumerationLiteralNameEditPart extends CompartmentEditPart implemen
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5033;
+	public static final int VISUAL_ID = 5283;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class EnumerationLiteralNameEditPart extends CompartmentEditPart implemen
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EnumerationLiteral_3028, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EnumerationLiteral_3273, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EnumerationLiteralNameEditPart.VISUAL_ID));
 		}
