@@ -21,8 +21,8 @@ public class WebsiteModelingAssistantProviderOfWebsitePropertiesEditPart extends
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.CasAuthentication_3055);
-		types.add(WebsiteElementTypes.LocalAuthenticationSystem_3029);
+		types.add(WebsiteElementTypes.LocalAuthenticationSystem_3382);
+		types.add(WebsiteElementTypes.CasAuthentication_3383);
 		return types;
 	}
 

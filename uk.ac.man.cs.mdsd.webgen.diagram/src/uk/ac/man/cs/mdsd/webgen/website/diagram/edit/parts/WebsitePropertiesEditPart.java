@@ -270,11 +270,11 @@ public class WebsitePropertiesEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.CasAuthentication_3055) {
+			if (type == WebsiteElementTypes.LocalAuthenticationSystem_3382) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.LocalAuthenticationSystem_3029) {
+			if (type == WebsiteElementTypes.CasAuthentication_3383) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID));
 			}

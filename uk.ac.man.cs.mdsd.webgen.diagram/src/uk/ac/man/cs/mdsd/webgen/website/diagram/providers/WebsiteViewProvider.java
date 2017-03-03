@@ -135,8 +135,8 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				case DynamicMenuEditPart.VISUAL_ID:
 				case StaticMenuEditPart.VISUAL_ID:
 				case PageEditPart.VISUAL_ID:
-				case CasAuthenticationEditPart.VISUAL_ID:
 				case LocalAuthenticationSystemEditPart.VISUAL_ID:
+				case CasAuthenticationEditPart.VISUAL_ID:
 				case EnumerationLiteralEditPart.VISUAL_ID:
 				case DataTypeAttributeEditPart.VISUAL_ID:
 				case DateAttributeEditPart.VISUAL_ID:
@@ -260,13 +260,13 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				|| EnumerationTypeEditPart.VISUAL_ID == visualID || EntityEditPart.VISUAL_ID == visualID
 				|| ViewEditPart.VISUAL_ID == visualID || ServiceEditPart.VISUAL_ID == visualID
 				|| DynamicMenuEditPart.VISUAL_ID == visualID || StaticMenuEditPart.VISUAL_ID == visualID
-				|| PageEditPart.VISUAL_ID == visualID || CasAuthenticationEditPart.VISUAL_ID == visualID
-				|| LocalAuthenticationSystemEditPart.VISUAL_ID == visualID
-				|| EnumerationLiteralEditPart.VISUAL_ID == visualID || DataTypeAttributeEditPart.VISUAL_ID == visualID
-				|| DateAttributeEditPart.VISUAL_ID == visualID || UrlAttributeEditPart.VISUAL_ID == visualID
-				|| FileAttributeEditPart.VISUAL_ID == visualID || ImageAttributeEditPart.VISUAL_ID == visualID
-				|| LocationAttributeEditPart.VISUAL_ID == visualID || ModelLabelEditPart.VISUAL_ID == visualID
-				|| ModelLabel2EditPart.VISUAL_ID == visualID || EncapsulatedAttributeEditPart.VISUAL_ID == visualID
+				|| PageEditPart.VISUAL_ID == visualID || LocalAuthenticationSystemEditPart.VISUAL_ID == visualID
+				|| CasAuthenticationEditPart.VISUAL_ID == visualID || EnumerationLiteralEditPart.VISUAL_ID == visualID
+				|| DataTypeAttributeEditPart.VISUAL_ID == visualID || DateAttributeEditPart.VISUAL_ID == visualID
+				|| UrlAttributeEditPart.VISUAL_ID == visualID || FileAttributeEditPart.VISUAL_ID == visualID
+				|| ImageAttributeEditPart.VISUAL_ID == visualID || LocationAttributeEditPart.VISUAL_ID == visualID
+				|| ModelLabelEditPart.VISUAL_ID == visualID || ModelLabel2EditPart.VISUAL_ID == visualID
+				|| EncapsulatedAttributeEditPart.VISUAL_ID == visualID
 				|| EncapsulatedAssociationEditPart.VISUAL_ID == visualID || SelectionEditPart.VISUAL_ID == visualID
 				|| BusinessOperationEditPart.VISUAL_ID == visualID || ActionMenuEntryEditPart.VISUAL_ID == visualID
 				|| EditStaticTextMenuEntryEditPart.VISUAL_ID == visualID || CreateUnitEditPart.VISUAL_ID == visualID
@@ -384,11 +384,11 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 			return createStaticMenu_2020(domainElement, containerView, index, persisted, preferencesHint);
 		case PageEditPart.VISUAL_ID:
 			return createPage_2019(domainElement, containerView, index, persisted, preferencesHint);
-		case CasAuthenticationEditPart.VISUAL_ID:
-			return createCasAuthentication_3055(domainElement, containerView, index, persisted, preferencesHint);
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-			return createLocalAuthenticationSystem_3029(domainElement, containerView, index, persisted,
+			return createLocalAuthenticationSystem_3382(domainElement, containerView, index, persisted,
 					preferencesHint);
+		case CasAuthenticationEditPart.VISUAL_ID:
+			return createCasAuthentication_3383(domainElement, containerView, index, persisted, preferencesHint);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return createEnumerationLiteral_3273(domainElement, containerView, index, persisted, preferencesHint);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -875,6 +875,74 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 	/**
 	* @generated
 	*/
+	public Node createLocalAuthenticationSystem_3382(EObject domainElement, View containerView, int index,
+			boolean persisted, PreferencesHint preferencesHint) {
+		Node node = NotationFactory.eINSTANCE.createNode();
+		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
+		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
+		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(WebsiteVisualIDRegistry.getType(LocalAuthenticationSystemEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
+	public Node createCasAuthentication_3383(EObject domainElement, View containerView, int index, boolean persisted,
+			PreferencesHint preferencesHint) {
+		Node node = NotationFactory.eINSTANCE.createNode();
+		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
+		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
+		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
+		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
+		node.setType(WebsiteVisualIDRegistry.getType(CasAuthenticationEditPart.VISUAL_ID));
+		ViewUtil.insertChildView(containerView, node, index, persisted);
+		node.setElement(domainElement);
+		// initializeFromPreferences 
+		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
+
+		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
+				IPreferenceConstants.PREF_LINE_COLOR);
+		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
+				FigureUtilities.RGBToInteger(lineRGB));
+		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
+		if (nodeFontStyle != null) {
+			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
+			nodeFontStyle.setFontName(fontData.getName());
+			nodeFontStyle.setFontHeight(fontData.getHeight());
+			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
+			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
+			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
+					IPreferenceConstants.PREF_FONT_COLOR);
+			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
+		}
+		return node;
+	}
+
+	/**
+	* @generated
+	*/
 	@SuppressWarnings({ "unchecked", "unused" })
 	public Node createStaticMenu_2020(EObject domainElement, View containerView, int index, boolean persisted,
 			PreferencesHint preferencesHint) {
@@ -937,76 +1005,6 @@ public class WebsiteViewProvider extends AbstractProvider implements IViewProvid
 				false, true, true);
 		createCompartment(node, WebsiteVisualIDRegistry.getType(ServiceOperationsCompartmentEditPart.VISUAL_ID), false,
 				false, true, true);
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	public Node createCasAuthentication_3055(EObject domainElement, View containerView, int index, boolean persisted,
-			PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(CasAuthenticationEditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
-		return node;
-	}
-
-	/**
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	public Node createLocalAuthenticationSystem_3029(EObject domainElement, View containerView, int index,
-			boolean persisted, PreferencesHint preferencesHint) {
-		Node node = NotationFactory.eINSTANCE.createNode();
-		node.getStyles().add(NotationFactory.eINSTANCE.createDescriptionStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createFontStyle());
-		node.getStyles().add(NotationFactory.eINSTANCE.createLineStyle());
-		node.setLayoutConstraint(NotationFactory.eINSTANCE.createBounds());
-		node.setType(WebsiteVisualIDRegistry.getType(LocalAuthenticationSystemEditPart.VISUAL_ID));
-		ViewUtil.insertChildView(containerView, node, index, persisted);
-		node.setElement(domainElement);
-		// initializeFromPreferences 
-		final IPreferenceStore prefStore = (IPreferenceStore) preferencesHint.getPreferenceStore();
-
-		org.eclipse.swt.graphics.RGB lineRGB = PreferenceConverter.getColor(prefStore,
-				IPreferenceConstants.PREF_LINE_COLOR);
-		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getLineStyle_LineColor(),
-				FigureUtilities.RGBToInteger(lineRGB));
-		FontStyle nodeFontStyle = (FontStyle) node.getStyle(NotationPackage.Literals.FONT_STYLE);
-		if (nodeFontStyle != null) {
-			FontData fontData = PreferenceConverter.getFontData(prefStore, IPreferenceConstants.PREF_DEFAULT_FONT);
-			nodeFontStyle.setFontName(fontData.getName());
-			nodeFontStyle.setFontHeight(fontData.getHeight());
-			nodeFontStyle.setBold((fontData.getStyle() & SWT.BOLD) != 0);
-			nodeFontStyle.setItalic((fontData.getStyle() & SWT.ITALIC) != 0);
-			org.eclipse.swt.graphics.RGB fontRGB = PreferenceConverter.getColor(prefStore,
-					IPreferenceConstants.PREF_FONT_COLOR);
-			nodeFontStyle.setFontColor(FigureUtilities.RGBToInteger(fontRGB).intValue());
-		}
 		return node;
 	}
 

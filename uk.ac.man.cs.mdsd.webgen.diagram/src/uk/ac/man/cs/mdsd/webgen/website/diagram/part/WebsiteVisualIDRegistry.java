@@ -7,6 +7,7 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.structure.DiagramStructure;
 
+import security.SecurityPackage;
 import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.base.DataType;
 import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
@@ -151,11 +152,11 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
-			if (WebsitePackage.eINSTANCE.getCasAuthentication().isSuperTypeOf(domainElement.eClass())) {
-				return CasAuthenticationEditPart.VISUAL_ID;
-			}
-			if (WebsitePackage.eINSTANCE.getLocalAuthenticationSystem().isSuperTypeOf(domainElement.eClass())) {
+			if (SecurityPackage.eINSTANCE.getLocalAuthenticationSystem().isSuperTypeOf(domainElement.eClass())) {
 				return LocalAuthenticationSystemEditPart.VISUAL_ID;
+			}
+			if (SecurityPackage.eINSTANCE.getCasAuthentication().isSuperTypeOf(domainElement.eClass())) {
+				return CasAuthenticationEditPart.VISUAL_ID;
 			}
 			break;
 		case EnumerationTypeEnumerationsCompartmentEditPart.VISUAL_ID:
@@ -1356,10 +1357,10 @@ public class WebsiteVisualIDRegistry {
 			}
 			break;
 		case WebsitePropertiesAuthenticationCompartmentEditPart.VISUAL_ID:
-			if (CasAuthenticationEditPart.VISUAL_ID == nodeVisualID) {
+			if (LocalAuthenticationSystemEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
-			if (LocalAuthenticationSystemEditPart.VISUAL_ID == nodeVisualID) {
+			if (CasAuthenticationEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -1927,8 +1928,6 @@ public class WebsiteVisualIDRegistry {
 			return false;
 		case DataTypeEditPart.VISUAL_ID:
 		case DynamicMenuEditPart.VISUAL_ID:
-		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-		case CasAuthenticationEditPart.VISUAL_ID:
 		case EnumerationLiteralEditPart.VISUAL_ID:
 		case DataTypeAttributeEditPart.VISUAL_ID:
 		case DateAttributeEditPart.VISUAL_ID:
@@ -2006,6 +2005,8 @@ public class WebsiteVisualIDRegistry {
 		case GalleryUnitEditPart.VISUAL_ID:
 		case ActionMenuEntryEditPart.VISUAL_ID:
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
+		case LocalAuthenticationSystemEditPart.VISUAL_ID:
+		case CasAuthenticationEditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

@@ -28,7 +28,7 @@ public class CasAuthenticationEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3055;
+	public static final int VISUAL_ID = 3383;
 
 	/**
 	 * @generated

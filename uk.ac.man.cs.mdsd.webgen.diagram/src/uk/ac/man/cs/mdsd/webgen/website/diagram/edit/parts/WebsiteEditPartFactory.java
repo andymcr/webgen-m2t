@@ -79,11 +79,11 @@ public class WebsiteEditPartFactory implements EditPartFactory {
 			case PageNameEditPart.VISUAL_ID:
 				return new PageNameEditPart(view);
 
-			case CasAuthenticationEditPart.VISUAL_ID:
-				return new CasAuthenticationEditPart(view);
-
 			case LocalAuthenticationSystemEditPart.VISUAL_ID:
 				return new LocalAuthenticationSystemEditPart(view);
+
+			case CasAuthenticationEditPart.VISUAL_ID:
+				return new CasAuthenticationEditPart(view);
 
 			case EnumerationLiteralEditPart.VISUAL_ID:
 				return new EnumerationLiteralEditPart(view);

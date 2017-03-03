@@ -160,9 +160,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createLocalTable1CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.LocalTable1CreationTool_title,
 				Messages.LocalTable1CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.CasAuthentication_3055));
+				Collections.singletonList(WebsiteElementTypes.LocalAuthenticationSystem_3382));
 		entry.setId("createLocalTable1CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CasAuthentication_3055));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.LocalAuthenticationSystem_3382));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -173,9 +173,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createLocalSystem2CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.LocalSystem2CreationTool_title,
 				Messages.LocalSystem2CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.LocalAuthenticationSystem_3029));
+				Collections.singletonList(WebsiteElementTypes.CasAuthentication_3383));
 		entry.setId("createLocalSystem2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.LocalAuthenticationSystem_3029));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CasAuthentication_3383));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}

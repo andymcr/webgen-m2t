@@ -79,8 +79,8 @@ public class WebsitePropertiesAuthenticationCompartmentCanonicalEditPolicy exten
 	 */
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == CasAuthenticationEditPart.VISUAL_ID
-				|| visualID == LocalAuthenticationSystemEditPart.VISUAL_ID;
+		return visualID == LocalAuthenticationSystemEditPart.VISUAL_ID
+				|| visualID == CasAuthenticationEditPart.VISUAL_ID;
 	}
 
 	/**

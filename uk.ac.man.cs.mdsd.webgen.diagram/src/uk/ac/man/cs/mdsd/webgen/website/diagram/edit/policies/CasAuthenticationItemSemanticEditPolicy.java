@@ -19,7 +19,7 @@ public class CasAuthenticationItemSemanticEditPolicy extends WebsiteBaseItemSema
 	 * @generated
 	 */
 	public CasAuthenticationItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.CasAuthentication_3055);
+		super(WebsiteElementTypes.CasAuthentication_3383);
 	}
 
 	/**

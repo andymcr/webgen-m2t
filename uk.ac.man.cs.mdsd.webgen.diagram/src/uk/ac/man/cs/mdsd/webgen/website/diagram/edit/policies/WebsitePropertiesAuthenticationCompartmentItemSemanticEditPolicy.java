@@ -24,11 +24,11 @@ public class WebsitePropertiesAuthenticationCompartmentItemSemanticEditPolicy
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.CasAuthentication_3055 == req.getElementType()) {
-			return getGEFWrapper(new CasAuthenticationCreateCommand(req));
-		}
-		if (WebsiteElementTypes.LocalAuthenticationSystem_3029 == req.getElementType()) {
+		if (WebsiteElementTypes.LocalAuthenticationSystem_3382 == req.getElementType()) {
 			return getGEFWrapper(new LocalAuthenticationSystemCreateCommand(req));
+		}
+		if (WebsiteElementTypes.CasAuthentication_3383 == req.getElementType()) {
+			return getGEFWrapper(new CasAuthenticationCreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

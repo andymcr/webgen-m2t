@@ -17,8 +17,6 @@ import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonLabelProvider;
 
 import uk.ac.man.cs.mdsd.webgen.persistence.ViewAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.CasAuthentication;
-import uk.ac.man.cs.mdsd.webgen.website.LocalAuthenticationSystem;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorPlugin;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
@@ -109,12 +107,6 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 		case StaticMenuEditPart.VISUAL_ID:
 			return getImage("Navigator?TopLevelNode?http://cs.man.ac.uk/mdsd/webgen/webui?StaticMenu", //$NON-NLS-1$
 					WebsiteElementTypes.StaticMenu_2020);
-		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?LocalAuthenticationSystem", //$NON-NLS-1$
-					WebsiteElementTypes.LocalAuthenticationSystem_3029);
-		case CasAuthenticationEditPart.VISUAL_ID:
-			return getImage("Navigator?Node?http://www.cs.man.ac.uk/mdsd/2010/Website?CasAuthentication", //$NON-NLS-1$
-					WebsiteElementTypes.CasAuthentication_3055);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/base?EnumerationLiteral", //$NON-NLS-1$
 					WebsiteElementTypes.EnumerationLiteral_3273);
@@ -442,6 +434,12 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?EditStaticTextMenuEntry", //$NON-NLS-1$
 					WebsiteElementTypes.EditStaticTextMenuEntry_3381);
+		case LocalAuthenticationSystemEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/security?LocalAuthenticationSystem", //$NON-NLS-1$
+					WebsiteElementTypes.LocalAuthenticationSystem_3382);
+		case CasAuthenticationEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/security?CasAuthentication", //$NON-NLS-1$
+					WebsiteElementTypes.CasAuthentication_3383);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getImage("Navigator?Link?http://cs.man.ac.uk/mdsd/webgen/persistence?AssociationWithoutContainment", //$NON-NLS-1$
 					WebsiteElementTypes.AssociationWithoutContainment_4005);
@@ -524,10 +522,6 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 			return getPage_2019Text(view);
 		case StaticMenuEditPart.VISUAL_ID:
 			return getStaticMenu_2020Text(view);
-		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-			return getLocalAuthenticationSystem_3029Text(view);
-		case CasAuthenticationEditPart.VISUAL_ID:
-			return getCasAuthentication_3055Text(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3273Text(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -746,6 +740,10 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 			return getActionMenuEntry_3380Text(view);
 		case EditStaticTextMenuEntryEditPart.VISUAL_ID:
 			return getEditStaticTextMenuEntry_3381Text(view);
+		case LocalAuthenticationSystemEditPart.VISUAL_ID:
+			return getLocalAuthenticationSystem_3382Text(view);
+		case CasAuthenticationEditPart.VISUAL_ID:
+			return getCasAuthentication_3383Text(view);
 		case AssociationWithoutContainmentEditPart.VISUAL_ID:
 			return getAssociationWithoutContainment_4005Text(view);
 		case AssociationWithContainmentEditPart.VISUAL_ID:
@@ -905,32 +903,6 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 					ParserOptions.NONE.intValue());
 		} else {
 			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5395); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * @generated
-	 */
-	private String getLocalAuthenticationSystem_3029Text(View view) {
-		LocalAuthenticationSystem domainModelElement = (LocalAuthenticationSystem) view.getElement();
-		if (domainModelElement != null) {
-			return domainModelElement.getLoginLabel();
-		} else {
-			WebsiteDiagramEditorPlugin.getInstance().logError("No domain element for view with visualID = " + 3029); //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * @generated
-	 */
-	private String getCasAuthentication_3055Text(View view) {
-		CasAuthentication domainModelElement = (CasAuthentication) view.getElement();
-		if (domainModelElement != null) {
-			return domainModelElement.getLoginLabel();
-		} else {
-			WebsiteDiagramEditorPlugin.getInstance().logError("No domain element for view with visualID = " + 3055); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}
@@ -2672,6 +2644,32 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 					ParserOptions.NONE.intValue());
 		} else {
 			WebsiteDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5394); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getLocalAuthenticationSystem_3382Text(View view) {
+		security.LocalAuthenticationSystem domainModelElement = (security.LocalAuthenticationSystem) view.getElement();
+		if (domainModelElement != null) {
+			return domainModelElement.getLoginLabel();
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("No domain element for view with visualID = " + 3382); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getCasAuthentication_3383Text(View view) {
+		security.CasAuthentication domainModelElement = (security.CasAuthentication) view.getElement();
+		if (domainModelElement != null) {
+			return domainModelElement.getLoginLabel();
+		} else {
+			WebsiteDiagramEditorPlugin.getInstance().logError("No domain element for view with visualID = " + 3383); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}

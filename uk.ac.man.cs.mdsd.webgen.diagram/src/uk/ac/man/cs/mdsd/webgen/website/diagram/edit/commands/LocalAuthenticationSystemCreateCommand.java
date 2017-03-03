@@ -12,8 +12,8 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.LocalAuthenticationSystem;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import security.LocalAuthenticationSystem;
+import security.SecurityFactory;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteProperties;
 
 /**
@@ -56,7 +56,7 @@ public class LocalAuthenticationSystemCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		LocalAuthenticationSystem newElement = WebsiteFactory.eINSTANCE.createLocalAuthenticationSystem();
+		LocalAuthenticationSystem newElement = SecurityFactory.eINSTANCE.createLocalAuthenticationSystem();
 
 		WebsiteProperties owner = (WebsiteProperties) getElementToEdit();
 		owner.setAuthentication(newElement);

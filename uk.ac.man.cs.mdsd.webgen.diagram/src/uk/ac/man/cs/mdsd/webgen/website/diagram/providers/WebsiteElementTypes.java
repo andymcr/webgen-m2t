@@ -14,6 +14,7 @@ import org.eclipse.gmf.tooling.runtime.providers.DiagramElementTypes;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
+import security.SecurityPackage;
 import uk.ac.man.cs.mdsd.webgen.base.BasePackage;
 import uk.ac.man.cs.mdsd.webgen.persistence.PersistencePackage;
 import uk.ac.man.cs.mdsd.webgen.service.ServicePackage;
@@ -143,6 +144,18 @@ public class WebsiteElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType LocalAuthenticationSystem_3382 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3382"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType CasAuthentication_3383 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.diagram.CasAuthentication_3383"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType StaticMenu_2020 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.diagram.StaticMenu_2020"); //$NON-NLS-1$
 
@@ -151,16 +164,6 @@ public class WebsiteElementTypes {
 	*/
 	public static final IElementType Service_2017 = getElementType("uk.ac.man.cs.mdsd.webgen.diagram.Service_2017"); //$NON-NLS-1$
 
-	/**
-	 * @generated
-	 */
-	public static final IElementType CasAuthentication_3055 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.CasAuthentication_3055"); //$NON-NLS-1$
-	/**
-	 * @generated
-	 */
-	public static final IElementType LocalAuthenticationSystem_3029 = getElementType(
-			"uk.ac.man.cs.mdsd.webgen.diagram.LocalAuthenticationSystem_3029"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
@@ -880,9 +883,9 @@ public class WebsiteElementTypes {
 
 			elements.put(Page_2019, WebuiPackage.eINSTANCE.getPage());
 
-			elements.put(CasAuthentication_3055, WebsitePackage.eINSTANCE.getCasAuthentication());
+			elements.put(LocalAuthenticationSystem_3382, SecurityPackage.eINSTANCE.getLocalAuthenticationSystem());
 
-			elements.put(LocalAuthenticationSystem_3029, WebsitePackage.eINSTANCE.getLocalAuthenticationSystem());
+			elements.put(CasAuthentication_3383, SecurityPackage.eINSTANCE.getCasAuthentication());
 
 			elements.put(EnumerationLiteral_3273, BasePackage.eINSTANCE.getEnumerationLiteral());
 
@@ -1137,8 +1140,8 @@ public class WebsiteElementTypes {
 			KNOWN_ELEMENT_TYPES.add(DynamicMenu_2018);
 			KNOWN_ELEMENT_TYPES.add(StaticMenu_2020);
 			KNOWN_ELEMENT_TYPES.add(Page_2019);
-			KNOWN_ELEMENT_TYPES.add(CasAuthentication_3055);
-			KNOWN_ELEMENT_TYPES.add(LocalAuthenticationSystem_3029);
+			KNOWN_ELEMENT_TYPES.add(LocalAuthenticationSystem_3382);
+			KNOWN_ELEMENT_TYPES.add(CasAuthentication_3383);
 			KNOWN_ELEMENT_TYPES.add(EnumerationLiteral_3273);
 			KNOWN_ELEMENT_TYPES.add(DataTypeAttribute_3274);
 			KNOWN_ELEMENT_TYPES.add(DateAttribute_3275);
@@ -1281,10 +1284,10 @@ public class WebsiteElementTypes {
 			return StaticMenu_2020;
 		case PageEditPart.VISUAL_ID:
 			return Page_2019;
-		case CasAuthenticationEditPart.VISUAL_ID:
-			return CasAuthentication_3055;
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-			return LocalAuthenticationSystem_3029;
+			return LocalAuthenticationSystem_3382;
+		case CasAuthenticationEditPart.VISUAL_ID:
+			return CasAuthentication_3383;
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return EnumerationLiteral_3273;
 		case DataTypeAttributeEditPart.VISUAL_ID:

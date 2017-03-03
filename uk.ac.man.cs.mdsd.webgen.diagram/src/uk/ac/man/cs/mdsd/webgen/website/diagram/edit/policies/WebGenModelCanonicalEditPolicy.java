@@ -324,16 +324,16 @@ public class WebGenModelCanonicalEditPolicy extends CanonicalEditPolicy {
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case CasAuthenticationEditPart.VISUAL_ID: {
+		case LocalAuthenticationSystemEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getCasAuthentication_3055ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getLocalAuthenticationSystem_3382ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;
 		}
-		case LocalAuthenticationSystemEditPart.VISUAL_ID: {
+		case CasAuthenticationEditPart.VISUAL_ID: {
 			if (!domain2NotationMap.containsKey(view.getElement())) {
-				result.addAll(WebsiteDiagramUpdater.getLocalAuthenticationSystem_3029ContainedLinks(view));
+				result.addAll(WebsiteDiagramUpdater.getCasAuthentication_3383ContainedLinks(view));
 			}
 			domain2NotationMap.putView(view.getElement(), view);
 			break;

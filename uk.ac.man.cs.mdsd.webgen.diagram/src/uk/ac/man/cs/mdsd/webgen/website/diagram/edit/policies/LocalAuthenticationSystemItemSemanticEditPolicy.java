@@ -19,7 +19,7 @@ public class LocalAuthenticationSystemItemSemanticEditPolicy extends WebsiteBase
 	 * @generated
 	 */
 	public LocalAuthenticationSystemItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.LocalAuthenticationSystem_3029);
+		super(WebsiteElementTypes.LocalAuthenticationSystem_3382);
 	}
 
 	/**

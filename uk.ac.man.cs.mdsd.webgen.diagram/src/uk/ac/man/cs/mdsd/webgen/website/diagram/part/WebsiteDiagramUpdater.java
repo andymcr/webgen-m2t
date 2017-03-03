@@ -28,7 +28,6 @@ import uk.ac.man.cs.mdsd.webgen.persistence.ViewFeature;
 import uk.ac.man.cs.mdsd.webgen.service.BusinessOperation;
 import uk.ac.man.cs.mdsd.webgen.service.Selection;
 import uk.ac.man.cs.mdsd.webgen.service.Service;
-import uk.ac.man.cs.mdsd.webgen.website.Authentication;
 import uk.ac.man.cs.mdsd.webgen.website.WebGenModel;
 import uk.ac.man.cs.mdsd.webgen.website.WebsiteProperties;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
@@ -297,12 +296,12 @@ public class WebsiteDiagramUpdater {
 		WebsiteProperties modelElement = (WebsiteProperties) containerView.getElement();
 		LinkedList<WebsiteNodeDescriptor> result = new LinkedList<WebsiteNodeDescriptor>();
 		{
-			Authentication childElement = modelElement.getAuthentication();
+			security.Authentication childElement = modelElement.getAuthentication();
 			int visualID = WebsiteVisualIDRegistry.getNodeVisualID(view, childElement);
-			if (visualID == CasAuthenticationEditPart.VISUAL_ID) {
+			if (visualID == LocalAuthenticationSystemEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 			}
-			if (visualID == LocalAuthenticationSystemEditPart.VISUAL_ID) {
+			if (visualID == CasAuthenticationEditPart.VISUAL_ID) {
 				result.add(new WebsiteNodeDescriptor(childElement, visualID));
 			}
 		}
@@ -1721,10 +1720,10 @@ public class WebsiteDiagramUpdater {
 			return getStaticMenu_2020ContainedLinks(view);
 		case PageEditPart.VISUAL_ID:
 			return getPage_2019ContainedLinks(view);
-		case CasAuthenticationEditPart.VISUAL_ID:
-			return getCasAuthentication_3055ContainedLinks(view);
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-			return getLocalAuthenticationSystem_3029ContainedLinks(view);
+			return getLocalAuthenticationSystem_3382ContainedLinks(view);
+		case CasAuthenticationEditPart.VISUAL_ID:
+			return getCasAuthentication_3383ContainedLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3273ContainedLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -1978,10 +1977,10 @@ public class WebsiteDiagramUpdater {
 			return getStaticMenu_2020IncomingLinks(view);
 		case PageEditPart.VISUAL_ID:
 			return getPage_2019IncomingLinks(view);
-		case CasAuthenticationEditPart.VISUAL_ID:
-			return getCasAuthentication_3055IncomingLinks(view);
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-			return getLocalAuthenticationSystem_3029IncomingLinks(view);
+			return getLocalAuthenticationSystem_3382IncomingLinks(view);
+		case CasAuthenticationEditPart.VISUAL_ID:
+			return getCasAuthentication_3383IncomingLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3273IncomingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -2235,10 +2234,10 @@ public class WebsiteDiagramUpdater {
 			return getStaticMenu_2020OutgoingLinks(view);
 		case PageEditPart.VISUAL_ID:
 			return getPage_2019OutgoingLinks(view);
-		case CasAuthenticationEditPart.VISUAL_ID:
-			return getCasAuthentication_3055OutgoingLinks(view);
 		case LocalAuthenticationSystemEditPart.VISUAL_ID:
-			return getLocalAuthenticationSystem_3029OutgoingLinks(view);
+			return getLocalAuthenticationSystem_3382OutgoingLinks(view);
+		case CasAuthenticationEditPart.VISUAL_ID:
+			return getCasAuthentication_3383OutgoingLinks(view);
 		case EnumerationLiteralEditPart.VISUAL_ID:
 			return getEnumerationLiteral_3273OutgoingLinks(view);
 		case DataTypeAttributeEditPart.VISUAL_ID:
@@ -2539,6 +2538,20 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
+	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3382ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getCasAuthentication_3383ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
 	public static List<WebsiteLinkDescriptor> getStaticMenu_2020ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -2547,20 +2560,6 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getService_2017ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055ContainedLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029ContainedLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -3418,6 +3417,20 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
+	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3382IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getCasAuthentication_3383IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
 	public static List<WebsiteLinkDescriptor> getStaticMenu_2020IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -3426,20 +3439,6 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getService_2017IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055IncomingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029IncomingLinks(View view) {
 		return Collections.emptyList();
 	}
 
@@ -4302,6 +4301,20 @@ public class WebsiteDiagramUpdater {
 	/**
 	* @generated
 	*/
+	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3382OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebsiteLinkDescriptor> getCasAuthentication_3383OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
 	public static List<WebsiteLinkDescriptor> getStaticMenu_2020OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
@@ -4310,20 +4323,6 @@ public class WebsiteDiagramUpdater {
 	* @generated
 	*/
 	public static List<WebsiteLinkDescriptor> getService_2017OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getCasAuthentication_3055OutgoingLinks(View view) {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * @generated
-	 */
-	public static List<WebsiteLinkDescriptor> getLocalAuthenticationSystem_3029OutgoingLinks(View view) {
 		return Collections.emptyList();
 	}
 

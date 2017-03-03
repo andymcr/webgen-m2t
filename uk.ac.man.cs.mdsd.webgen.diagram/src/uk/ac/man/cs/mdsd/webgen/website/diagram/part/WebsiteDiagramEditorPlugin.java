@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import security.provider.SecurityItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.base.provider.BaseItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.expression.provider.ExpressionItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.image.provider.ImageItemProviderAdapterFactory;
@@ -133,10 +134,11 @@ public class WebsiteDiagramEditorPlugin extends AbstractUIPlugin {
 		factories.add(new WebsiteItemProviderAdapterFactory());
 		factories.add(new BaseItemProviderAdapterFactory());
 		factories.add(new ExpressionItemProviderAdapterFactory());
+		factories.add(new ImageItemProviderAdapterFactory());
 		factories.add(new PersistenceItemProviderAdapterFactory());
+		factories.add(new SecurityItemProviderAdapterFactory());
 		factories.add(new ServiceItemProviderAdapterFactory());
 		factories.add(new WebuiItemProviderAdapterFactory());
-		factories.add(new ImageItemProviderAdapterFactory());
 		factories.add(new ResourceItemProviderAdapterFactory());
 		factories.add(new ReflectiveItemProviderAdapterFactory());
 	}

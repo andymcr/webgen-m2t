@@ -96,10 +96,10 @@ public class WebsitePropertiesAuthenticationCompartmentEditPart extends ListComp
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.CasAuthentication_3055) {
+			if (type == WebsiteElementTypes.LocalAuthenticationSystem_3382) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.LocalAuthenticationSystem_3029) {
+			if (type == WebsiteElementTypes.CasAuthentication_3383) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);
