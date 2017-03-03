@@ -16,6 +16,8 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonLabelProvider;
 
+import security.CasAuthentication;
+import security.LocalAuthenticationSystem;
 import uk.ac.man.cs.mdsd.webgen.persistence.ViewAssociation;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.*;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorPlugin;
@@ -2652,7 +2654,7 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 	* @generated
 	*/
 	private String getLocalAuthenticationSystem_3382Text(View view) {
-		security.LocalAuthenticationSystem domainModelElement = (security.LocalAuthenticationSystem) view.getElement();
+		LocalAuthenticationSystem domainModelElement = (LocalAuthenticationSystem) view.getElement();
 		if (domainModelElement != null) {
 			return domainModelElement.getLoginLabel();
 		} else {
@@ -2665,7 +2667,7 @@ public class WebsiteNavigatorLabelProvider extends LabelProvider
 	* @generated
 	*/
 	private String getCasAuthentication_3383Text(View view) {
-		security.CasAuthentication domainModelElement = (security.CasAuthentication) view.getElement();
+		CasAuthentication domainModelElement = (CasAuthentication) view.getElement();
 		if (domainModelElement != null) {
 			return domainModelElement.getLoginLabel();
 		} else {
