@@ -39,7 +39,7 @@ public class DetailsUnit5EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3129;
+	public static final int VISUAL_ID = 3316;
 
 	/**
 	 * @generated
@@ -257,11 +257,11 @@ public class DetailsUnit5EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3185) {
+			if (type == WebsiteElementTypes.UnitElement_3317) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3184) {
+			if (type == WebsiteElementTypes.UnitAssociation_3318) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(DetailsUnitUnitFieldCompartment5EditPart.VISUAL_ID));
 			}

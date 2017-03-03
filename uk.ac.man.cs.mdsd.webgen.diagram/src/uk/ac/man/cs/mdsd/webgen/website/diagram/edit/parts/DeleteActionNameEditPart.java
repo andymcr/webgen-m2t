@@ -57,7 +57,7 @@ public class DeleteActionNameEditPart extends CompartmentEditPart implements ITe
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5105;
+	public static final int VISUAL_ID = 5343;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class DeleteActionNameEditPart extends CompartmentEditPart implements ITe
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DeleteAction_3101, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DeleteAction_3332, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteActionNameEditPart.VISUAL_ID));
 		}

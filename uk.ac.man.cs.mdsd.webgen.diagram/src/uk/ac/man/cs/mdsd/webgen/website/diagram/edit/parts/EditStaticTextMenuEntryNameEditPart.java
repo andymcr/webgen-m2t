@@ -57,7 +57,7 @@ public class EditStaticTextMenuEntryNameEditPart extends CompartmentEditPart imp
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5164;
+	public static final int VISUAL_ID = 5394;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class EditStaticTextMenuEntryNameEditPart extends CompartmentEditPart imp
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EditStaticTextMenuEntry_3156,
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.EditStaticTextMenuEntry_3381,
 					getParserElement(), WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EditStaticTextMenuEntryNameEditPart.VISUAL_ID));
 		}

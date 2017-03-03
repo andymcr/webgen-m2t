@@ -21,21 +21,31 @@ import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit4EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit4EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateSitemapUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.GalleryUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageIndexUnit2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MapUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SearchUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SliderUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
  */
-public class UnitAssociationInterfaceUnitCompartment2CanonicalEditPolicy extends CanonicalEditPolicy {
+public class PageInterfaceUnitsCompartmentCanonicalEditPolicy extends CanonicalEditPolicy {
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void refreshOnActivate() {
 		// Need to activate editpart children before invoking the canonical refresh for EditParts to add event listeners
 		List<?> c = getHost().getChildren();
@@ -46,21 +56,22 @@ public class UnitAssociationInterfaceUnitCompartment2CanonicalEditPolicy extends
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getUnitContainer_Units();
+		return WebuiPackage.eINSTANCE.getUnitContainer_Units();
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	@SuppressWarnings("rawtypes")
+
 	protected List getSemanticChildrenList() {
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitAssociationInterfaceUnitsCompartment_7097SemanticChildren(viewObject);
+				.getPageInterfaceUnitsCompartment_7146SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -68,30 +79,45 @@ public class UnitAssociationInterfaceUnitCompartment2CanonicalEditPolicy extends
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean isOrphaned(Collection<EObject> semanticChildren, final View view) {
 		return isMyDiagramElement(view) && !semanticChildren.contains(view.getElement());
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	private boolean isMyDiagramElement(View view) {
 		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
-		return visualID == DetailsUnit4EditPart.VISUAL_ID || visualID == IndexUnit4EditPart.VISUAL_ID;
+		switch (visualID) {
+		case CreateUnitEditPart.VISUAL_ID:
+		case CreateUpdateUnitEditPart.VISUAL_ID:
+		case CreateSitemapUnitEditPart.VISUAL_ID:
+		case DetailsUnitEditPart.VISUAL_ID:
+		case IndexUnit6EditPart.VISUAL_ID:
+		case MapUnitEditPart.VISUAL_ID:
+		case SearchUnitEditPart.VISUAL_ID:
+		case StaticUnitEditPart.VISUAL_ID:
+		case UpdateUnitEditPart.VISUAL_ID:
+		case ImageIndexUnit2EditPart.VISUAL_ID:
+		case SliderUnitEditPart.VISUAL_ID:
+		case GalleryUnitEditPart.VISUAL_ID:
+			return true;
+		}
+		return false;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void refreshSemantic() {
 		if (resolveSemanticElement() == null) {
 			return;
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitAssociationInterfaceUnitsCompartment_7097SemanticChildren((View) getHost().getModel());
+				.getPageInterfaceUnitsCompartment_7146SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

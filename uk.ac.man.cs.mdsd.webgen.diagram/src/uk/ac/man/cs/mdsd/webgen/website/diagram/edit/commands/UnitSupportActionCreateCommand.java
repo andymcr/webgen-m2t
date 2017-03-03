@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.DynamicUnit;
-import uk.ac.man.cs.mdsd.webgen.website.UnitSupportAction;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.DynamicUnit;
+import uk.ac.man.cs.mdsd.webgen.webui.UnitSupportAction;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class UnitSupportActionCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		UnitSupportAction newElement = WebsiteFactory.eINSTANCE.createUnitSupportAction();
+		UnitSupportAction newElement = WebuiFactory.eINSTANCE.createUnitSupportAction();
 
 		DynamicUnit owner = (DynamicUnit) getElementToEdit();
 		owner.getSupportActions().add(newElement);
@@ -64,8 +64,8 @@ public class UnitSupportActionCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(UnitSupportAction newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

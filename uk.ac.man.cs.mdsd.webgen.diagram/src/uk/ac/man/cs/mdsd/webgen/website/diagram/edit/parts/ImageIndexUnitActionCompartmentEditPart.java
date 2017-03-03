@@ -29,7 +29,7 @@ public class ImageIndexUnitActionCompartmentEditPart extends ListCompartmentEdit
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 7135;
+	public static final int VISUAL_ID = 7171;
 
 	/**
 	* @generated
@@ -89,13 +89,13 @@ public class ImageIndexUnitActionCompartmentEditPart extends ListCompartmentEdit
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3126) {
+			if (type == WebsiteElementTypes.SelectAction_3334) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DeleteAction_3147) {
+			if (type == WebsiteElementTypes.DeleteAction_3335) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.FeatureSupportAction_3234) {
+			if (type == WebsiteElementTypes.FeatureSupportAction_3336) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

@@ -19,7 +19,7 @@ public class SliderUnitItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 	* @generated
 	*/
 	public SliderUnitItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.SliderUnit_3261);
+		super(WebsiteElementTypes.SliderUnit_3378);
 	}
 
 	/**

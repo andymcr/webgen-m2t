@@ -57,7 +57,7 @@ public class DateFieldNameEditPart extends CompartmentEditPart implements ITextA
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5214;
+	public static final int VISUAL_ID = 5304;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class DateFieldNameEditPart extends CompartmentEditPart implements ITextA
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DateField_3207, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DateField_3290, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateFieldNameEditPart.VISUAL_ID));
 		}

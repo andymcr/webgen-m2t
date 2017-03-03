@@ -19,7 +19,7 @@ public class ActionMenuEntryItemSemanticEditPolicy extends WebsiteBaseItemSemant
 	* @generated
 	*/
 	public ActionMenuEntryItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.ActionMenuEntry_3236);
+		super(WebsiteElementTypes.ActionMenuEntry_3380);
 	}
 
 	/**

@@ -26,7 +26,7 @@ public class CreateUpdateUnit2ItemSemanticEditPolicy extends WebsiteBaseItemSema
 	* @generated
 	*/
 	public CreateUpdateUnit2ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.CreateUpdateUnit_3249);
+		super(WebsiteElementTypes.CreateUpdateUnit_3294);
 	}
 
 	/**

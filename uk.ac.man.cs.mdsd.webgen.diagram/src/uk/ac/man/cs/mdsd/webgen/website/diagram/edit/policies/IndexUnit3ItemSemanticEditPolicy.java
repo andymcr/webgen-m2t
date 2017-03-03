@@ -27,7 +27,7 @@ public class IndexUnit3ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 	 * @generated
 	 */
 	public IndexUnit3ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.IndexUnit_3118);
+		super(WebsiteElementTypes.IndexUnit_3319);
 	}
 
 	/**

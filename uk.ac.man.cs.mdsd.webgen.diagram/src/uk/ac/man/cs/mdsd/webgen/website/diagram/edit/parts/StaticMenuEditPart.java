@@ -39,7 +39,7 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 2009;
+	public static final int VISUAL_ID = 2020;
 
 	/**
 	 * @generated
@@ -256,13 +256,13 @@ public class StaticMenuEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.ActionMenuEntry_3236) {
+			if (type == WebsiteElementTypes.ActionMenuEntry_3380) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(StaticMenuMenuEntriesCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.EditStaticTextMenuEntry_3156) {
+			if (type == WebsiteElementTypes.EditStaticTextMenuEntry_3381) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(StaticMenuMenuEntriesCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);

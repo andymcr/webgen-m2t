@@ -57,7 +57,7 @@ public class DynamicMenuNameEditPart extends CompartmentEditPart implements ITex
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5155;
+	public static final int VISUAL_ID = 5300;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class DynamicMenuNameEditPart extends CompartmentEditPart implements ITex
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DynamicMenu_2008, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DynamicMenu_2018, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DynamicMenuNameEditPart.VISUAL_ID));
 		}

@@ -32,7 +32,7 @@ public class FeatureSupportAction2EditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3266;
+	public static final int VISUAL_ID = 3356;
 
 	/**
 	* @generated
@@ -105,8 +105,8 @@ public class FeatureSupportAction2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean addFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FeatureSupportActionName2EditPart) {
-			((FeatureSupportActionName2EditPart) childEditPart)
+		if (childEditPart instanceof FeatureSupportActionNameEditPart) {
+			((FeatureSupportActionNameEditPart) childEditPart)
 					.setLabel(getPrimaryShape().getFigureActionNameLabelFigure());
 			return true;
 		}
@@ -117,7 +117,7 @@ public class FeatureSupportAction2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	protected boolean removeFixedChild(EditPart childEditPart) {
-		if (childEditPart instanceof FeatureSupportActionName2EditPart) {
+		if (childEditPart instanceof FeatureSupportActionNameEditPart) {
 			return true;
 		}
 		return false;
@@ -240,7 +240,7 @@ public class FeatureSupportAction2EditPart extends ShapeNodeEditPart {
 	* @generated
 	*/
 	public EditPart getPrimaryChildEditPart() {
-		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(FeatureSupportActionName2EditPart.VISUAL_ID));
+		return getChildBySemanticHint(WebsiteVisualIDRegistry.getType(FeatureSupportActionNameEditPart.VISUAL_ID));
 	}
 
 	/**

@@ -12,7 +12,7 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DynamicMenuUnitFieldCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DynamicMenuMenuEntriesCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -25,7 +25,7 @@ public class DynamicMenuItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 	 * @generated
 	 */
 	public DynamicMenuItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DynamicMenu_2008);
+		super(WebsiteElementTypes.DynamicMenu_2018);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class DynamicMenuItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
-			case DynamicMenuUnitFieldCompartmentEditPart.VISUAL_ID:
+			case DynamicMenuMenuEntriesCompartmentEditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {

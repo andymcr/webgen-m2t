@@ -30,7 +30,7 @@ public class CreateSitemapUnitEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3157;
+	public static final int VISUAL_ID = 3298;
 
 	/**
 	 * @generated

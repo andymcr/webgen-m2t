@@ -21,11 +21,12 @@ import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnit2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit5EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
@@ -48,7 +49,7 @@ public class UnitAssociationInterfaceUnitsCompartment5CanonicalEditPolicy extend
 	* @generated
 	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getUnitContainer_Units();
+		return WebuiPackage.eINSTANCE.getUnitContainer_Units();
 	}
 
 	/**
@@ -60,7 +61,7 @@ public class UnitAssociationInterfaceUnitsCompartment5CanonicalEditPolicy extend
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitAssociationInterfaceUnitsCompartment_7129SemanticChildren(viewObject);
+				.getUnitAssociationInterfaceUnitsCompartment_7164SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -78,7 +79,8 @@ public class UnitAssociationInterfaceUnitsCompartment5CanonicalEditPolicy extend
 	* @generated
 	*/
 	private boolean isMyDiagramElement(View view) {
-		return CreateUpdateUnit2EditPart.VISUAL_ID == WebsiteVisualIDRegistry.getVisualID(view);
+		int visualID = WebsiteVisualIDRegistry.getVisualID(view);
+		return visualID == DetailsUnit5EditPart.VISUAL_ID || visualID == IndexUnit3EditPart.VISUAL_ID;
 	}
 
 	/**
@@ -90,7 +92,7 @@ public class UnitAssociationInterfaceUnitsCompartment5CanonicalEditPolicy extend
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getUnitAssociationInterfaceUnitsCompartment_7129SemanticChildren((View) getHost().getModel());
+				.getUnitAssociationInterfaceUnitsCompartment_7164SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

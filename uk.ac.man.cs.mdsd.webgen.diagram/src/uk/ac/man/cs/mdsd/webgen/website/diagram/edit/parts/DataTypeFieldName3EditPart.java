@@ -57,7 +57,7 @@ public class DataTypeFieldName3EditPart extends CompartmentEditPart implements I
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5210;
+	public static final int VISUAL_ID = 5350;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class DataTypeFieldName3EditPart extends CompartmentEditPart implements I
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DataTypeField_3203, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.DataTypeField_3338, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeFieldName3EditPart.VISUAL_ID));
 		}

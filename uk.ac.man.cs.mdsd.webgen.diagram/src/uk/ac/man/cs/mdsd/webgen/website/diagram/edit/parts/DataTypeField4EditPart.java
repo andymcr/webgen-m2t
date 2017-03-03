@@ -32,7 +32,7 @@ public class DataTypeField4EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3204;
+	public static final int VISUAL_ID = 3352;
 
 	/**
 	 * @generated

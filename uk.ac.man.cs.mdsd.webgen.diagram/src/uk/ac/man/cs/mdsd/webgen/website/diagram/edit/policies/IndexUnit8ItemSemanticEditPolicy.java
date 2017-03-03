@@ -13,7 +13,7 @@ import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction4EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitActionCompartment2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitActionCompartment3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitUnitFieldCompartment8EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction8EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation17EditPart;
@@ -30,7 +30,7 @@ public class IndexUnit8ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 	* @generated
 	*/
 	public IndexUnit8ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.IndexUnit_3222);
+		super(WebsiteElementTypes.IndexUnit_3367);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class IndexUnit8ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 					}
 				}
 				break;
-			case IndexUnitActionCompartment2EditPart.VISUAL_ID:
+			case IndexUnitActionCompartment3EditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {

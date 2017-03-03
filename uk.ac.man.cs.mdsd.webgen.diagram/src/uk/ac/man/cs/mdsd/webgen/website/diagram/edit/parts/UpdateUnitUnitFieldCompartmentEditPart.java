@@ -1,12 +1,11 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.figures.ResizableCompartmentFigure;
@@ -16,36 +15,29 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UpdateUnitUnitFieldCompartmentCanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UpdateUnitUnitFieldCompartmentItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
  */
-public class UpdateUnitUnitFieldCompartmentEditPart extends ListCompartmentEditPart {
+public class UpdateUnitUnitFieldCompartmentEditPart extends ShapeCompartmentEditPart {
 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7049;
+	public static final int VISUAL_ID = 7180;
 
 	/**
 	 * @generated
 	 */
 	public UpdateUnitUnitFieldCompartmentEditPart(View view) {
 		super(view);
-	}
-
-	/**
-	* @generated
-	*/
-	protected boolean hasModelChildrenChanged(Notification evt) {
-		return false;
 	}
 
 	/**
@@ -75,7 +67,7 @@ public class UpdateUnitUnitFieldCompartmentEditPart extends ListCompartmentEditP
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new UpdateUnitUnitFieldCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.DYNAMIC_UNIT__DISPLAY_FIELDS));
+				new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.DYNAMIC_UNIT__DISPLAY_FIELDS));
 	}
 
 	/**
@@ -94,16 +86,16 @@ public class UpdateUnitUnitFieldCompartmentEditPart extends ListCompartmentEditP
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3220) {
+			if (type == WebsiteElementTypes.UnitElement_3365) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3216) {
+			if (type == WebsiteElementTypes.UnitAssociation_3366) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DataTypeField_3206) {
+			if (type == WebsiteElementTypes.DataTypeField_3372) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DateField_3212) {
+			if (type == WebsiteElementTypes.DateField_3373) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

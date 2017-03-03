@@ -38,7 +38,7 @@ public class UnitElement4EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3175;
+	public static final int VISUAL_ID = 3300;
 
 	/**
 	 * @generated
@@ -256,7 +256,7 @@ public class UnitElement4EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3102) {
+			if (type == WebsiteElementTypes.SelectAction_3301) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(UnitElementActionCompartmentEditPart.VISUAL_ID));
 			}

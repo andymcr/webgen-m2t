@@ -15,7 +15,7 @@ public class PageLinkItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditP
 	 * @generated
 	 */
 	public PageLinkItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.PageLink_4003);
+		super(WebsiteElementTypes.PageLink_4008);
 	}
 
 	/**

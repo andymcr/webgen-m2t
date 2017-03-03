@@ -16,13 +16,13 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.DetailsUnitUnitFieldCompartment3CanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.DetailsUnitUnitFieldCompartment3ItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
@@ -32,7 +32,7 @@ public class DetailsUnitUnitFieldCompartment3EditPart extends ListCompartmentEdi
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7053;
+	public static final int VISUAL_ID = 7158;
 
 	/**
 	 * @generated
@@ -75,7 +75,7 @@ public class DetailsUnitUnitFieldCompartment3EditPart extends ListCompartmentEdi
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new DetailsUnitUnitFieldCompartment3CanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.DYNAMIC_UNIT__DISPLAY_FIELDS));
+				new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.DYNAMIC_UNIT__DISPLAY_FIELDS));
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class DetailsUnitUnitFieldCompartment3EditPart extends ListCompartmentEdi
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3178) {
+			if (type == WebsiteElementTypes.UnitElement_3307) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

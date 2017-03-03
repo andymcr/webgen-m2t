@@ -39,7 +39,7 @@ public class IndexUnit2EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3114;
+	public static final int VISUAL_ID = 3310;
 
 	/**
 	 * @generated
@@ -257,21 +257,13 @@ public class IndexUnit2EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3181) {
+			if (type == WebsiteElementTypes.SelectAction_3331) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3180) {
+			if (type == WebsiteElementTypes.DeleteAction_3332) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment2EditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.SelectAction_3107) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment3EditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.DeleteAction_3101) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment3EditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);

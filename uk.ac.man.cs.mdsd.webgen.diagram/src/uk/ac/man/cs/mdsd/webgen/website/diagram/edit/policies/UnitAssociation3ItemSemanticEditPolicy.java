@@ -16,7 +16,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageIndexUnitEditPar
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction4EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationActionCompartmentEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationInterfaceUnitsCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationInterfaceUnitsCompartment2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -29,7 +29,7 @@ public class UnitAssociation3ItemSemanticEditPolicy extends WebsiteBaseItemSeman
 	 * @generated
 	 */
 	public UnitAssociation3ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitAssociation_3174);
+		super(WebsiteElementTypes.UnitAssociation_3302);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class UnitAssociation3ItemSemanticEditPolicy extends WebsiteBaseItemSeman
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
-			case UnitAssociationInterfaceUnitsCompartmentEditPart.VISUAL_ID:
+			case UnitAssociationInterfaceUnitsCompartment2EditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {

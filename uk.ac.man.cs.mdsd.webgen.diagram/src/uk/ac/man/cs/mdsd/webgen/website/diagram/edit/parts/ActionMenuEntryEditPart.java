@@ -32,7 +32,7 @@ public class ActionMenuEntryEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3236;
+	public static final int VISUAL_ID = 3380;
 
 	/**
 	* @generated

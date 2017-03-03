@@ -19,15 +19,16 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import uk.ac.man.cs.mdsd.criteria.provider.CriteriaItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.base.provider.BaseItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.expression.provider.ExpressionItemProviderAdapterFactory;
+import uk.ac.man.cs.mdsd.webgen.image.provider.ImageItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.persistence.provider.PersistenceItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.service.provider.ServiceItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.expressions.WebsiteOCLFactory;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.ElementInitializers;
 import uk.ac.man.cs.mdsd.webgen.website.provider.WebsiteItemProviderAdapterFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.provider.WebuiItemProviderAdapterFactory;
 
 /**
  * @generated
@@ -134,6 +135,8 @@ public class WebsiteDiagramEditorPlugin extends AbstractUIPlugin {
 		factories.add(new ExpressionItemProviderAdapterFactory());
 		factories.add(new PersistenceItemProviderAdapterFactory());
 		factories.add(new ServiceItemProviderAdapterFactory());
+		factories.add(new WebuiItemProviderAdapterFactory());
+		factories.add(new ImageItemProviderAdapterFactory());
 		factories.add(new ResourceItemProviderAdapterFactory());
 		factories.add(new ReflectiveItemProviderAdapterFactory());
 	}

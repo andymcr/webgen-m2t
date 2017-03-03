@@ -8,9 +8,9 @@ import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.emf.type.core.commands.EditElementCommand;
 import org.eclipse.gmf.runtime.emf.type.core.requests.ReorientRelationshipRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.Page;
-import uk.ac.man.cs.mdsd.webgen.website.PageLink;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.webui.Page;
+import uk.ac.man.cs.mdsd.webgen.webui.PageLink;
 
 /**
  * @generated
@@ -66,7 +66,7 @@ public class PageLinkReorientCommand extends EditElementCommand {
 			return false;
 		}
 		Page target = getLink().getTargetPage();
-		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistPageLink_4003(getLink(), getNewSource(),
+		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistPageLink_4008(getLink(), getNewSource(),
 				target);
 	}
 
@@ -81,7 +81,7 @@ public class PageLinkReorientCommand extends EditElementCommand {
 			return false;
 		}
 		Page source = (Page) getLink().eContainer();
-		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistPageLink_4003(getLink(), source,
+		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canExistPageLink_4008(getLink(), source,
 				getNewTarget());
 	}
 

@@ -39,7 +39,7 @@ public class ImageIndexUnit2EditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3268;
+	public static final int VISUAL_ID = 3374;
 
 	/**
 	* @generated
@@ -257,15 +257,15 @@ public class ImageIndexUnit2EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3269) {
+			if (type == WebsiteElementTypes.SelectAction_3375) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ImageIndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DeleteAction_3270) {
+			if (type == WebsiteElementTypes.DeleteAction_3376) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ImageIndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.FeatureSupportAction_3271) {
+			if (type == WebsiteElementTypes.FeatureSupportAction_3377) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(ImageIndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}

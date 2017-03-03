@@ -19,7 +19,7 @@ public class DataTypeField2ItemSemanticEditPolicy extends WebsiteBaseItemSemanti
 	 * @generated
 	 */
 	public DataTypeField2ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DataTypeField_3202);
+		super(WebsiteElementTypes.DataTypeField_3296);
 	}
 
 	/**

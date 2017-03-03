@@ -14,7 +14,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ActionMenuEntryEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.EditStaticTextMenuEntryEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticMenuIncludedFeaturesCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.StaticMenuMenuEntriesCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -27,7 +27,7 @@ public class StaticMenuItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 	* @generated
 	*/
 	public StaticMenuItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.StaticMenu_2009);
+		super(WebsiteElementTypes.StaticMenu_2020);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class StaticMenuItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
-			case StaticMenuIncludedFeaturesCompartmentEditPart.VISUAL_ID:
+			case StaticMenuMenuEntriesCompartmentEditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {

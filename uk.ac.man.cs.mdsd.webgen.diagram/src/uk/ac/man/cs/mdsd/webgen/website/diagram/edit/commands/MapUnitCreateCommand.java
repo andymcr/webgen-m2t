@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.MapUnit;
-import uk.ac.man.cs.mdsd.webgen.website.UnitContainer;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.MapUnit;
+import uk.ac.man.cs.mdsd.webgen.webui.UnitContainer;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class MapUnitCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		MapUnit newElement = WebsiteFactory.eINSTANCE.createMapUnit();
+		MapUnit newElement = WebuiFactory.eINSTANCE.createMapUnit();
 
 		UnitContainer owner = (UnitContainer) getElementToEdit();
 		owner.getUnits().add(newElement);
@@ -64,8 +64,8 @@ public class MapUnitCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(MapUnit newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

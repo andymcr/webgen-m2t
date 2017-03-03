@@ -12,10 +12,10 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateRelationshipRequest;
 
-import uk.ac.man.cs.mdsd.webgen.website.Page;
-import uk.ac.man.cs.mdsd.webgen.website.PageLink;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteBaseItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.webui.Page;
+import uk.ac.man.cs.mdsd.webgen.webui.PageLink;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -58,7 +58,7 @@ public class PageLinkCreateCommand extends EditElementCommand {
 			return true; // link creation is in progress; source is not defined yet
 		}
 		// target may be null here but it's possible to check constraint
-		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canCreatePageLink_4003(getSource(), getTarget());
+		return WebsiteBaseItemSemanticEditPolicy.getLinkConstraints().canCreatePageLink_4008(getSource(), getTarget());
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class PageLinkCreateCommand extends EditElementCommand {
 			throw new ExecutionException("Invalid arguments in create link command"); //$NON-NLS-1$
 		}
 
-		PageLink newElement = WebsiteFactory.eINSTANCE.createPageLink();
+		PageLink newElement = WebuiFactory.eINSTANCE.createPageLink();
 		getSource().setParentPage(newElement);
 		newElement.setTargetPage(getTarget());
 		doConfigure(newElement, monitor, info);
@@ -79,8 +79,8 @@ public class PageLinkCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(PageLink newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

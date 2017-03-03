@@ -32,7 +32,7 @@ public class SelectAction2EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3107;
+	public static final int VISUAL_ID = 3331;
 
 	/**
 	 * @generated

@@ -29,7 +29,7 @@ public class CreateUpdateUnitItemSemanticEditPolicy extends WebsiteBaseItemSeman
 	 * @generated
 	 */
 	public CreateUpdateUnitItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.CreateUpdateUnit_3104);
+		super(WebsiteElementTypes.CreateUpdateUnit_3291);
 	}
 
 	/**

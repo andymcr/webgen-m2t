@@ -29,7 +29,7 @@ public class CreateUpdateUnitUnitFieldCompartment2EditPart extends ListCompartme
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 7130;
+	public static final int VISUAL_ID = 7150;
 
 	/**
 	* @generated
@@ -91,7 +91,7 @@ public class CreateUpdateUnitUnitFieldCompartment2EditPart extends ListCompartme
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3173) {
+			if (type == WebsiteElementTypes.UnitElement_3295) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

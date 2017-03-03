@@ -1,21 +1,22 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
+import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.LayoutEditPolicy;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ITextAwareEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeNodeEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.editpolicies.ConstrainedToolbarLayoutEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
+import org.eclipse.gmf.runtime.diagram.ui.editpolicies.FlowLayoutEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.requests.CreateViewAndElementRequest;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
@@ -27,7 +28,6 @@ import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicy
 import org.eclipse.swt.graphics.Color;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.ServiceItemSemanticEditPolicy;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.WebsiteTextSelectionEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -76,15 +76,18 @@ public class ServiceEditPart extends ShapeNodeEditPart {
 	 */
 	protected LayoutEditPolicy createLayoutEditPolicy() {
 
-		ConstrainedToolbarLayoutEditPolicy lep = new ConstrainedToolbarLayoutEditPolicy() {
+		FlowLayoutEditPolicy lep = new FlowLayoutEditPolicy() {
 
-			protected EditPolicy createChildEditPolicy(EditPart child) {
-				if (child.getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE) == null) {
-					if (child instanceof ITextAwareEditPart) {
-						return new WebsiteTextSelectionEditPolicy();
-					}
-				}
-				return super.createChildEditPolicy(child);
+			protected Command createAddCommand(EditPart child, EditPart after) {
+				return null;
+			}
+
+			protected Command createMoveChildCommand(EditPart child, EditPart after) {
+				return null;
+			}
+
+			protected Command getCreateCommand(CreateRequest request) {
+				return null;
 			}
 		};
 		return lep;
@@ -280,12 +283,14 @@ public class ServiceEditPart extends ShapeNodeEditPart {
 		 */
 		public ServiceFigure() {
 
-			ToolbarLayout layoutThis = new ToolbarLayout();
+			FlowLayout layoutThis = new FlowLayout();
 			layoutThis.setStretchMinorAxis(true);
-			layoutThis.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
+			layoutThis.setMinorAlignment(FlowLayout.ALIGN_CENTER);
 
-			layoutThis.setSpacing(10);
-			layoutThis.setVertical(true);
+			layoutThis.setMajorAlignment(FlowLayout.ALIGN_CENTER);
+			layoutThis.setMajorSpacing(10);
+			layoutThis.setMinorSpacing(10);
+			layoutThis.setHorizontal(true);
 
 			this.setLayoutManager(layoutThis);
 

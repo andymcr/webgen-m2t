@@ -16,17 +16,17 @@ public class DetailsUnitUnitFieldCompartment5ItemSemanticEditPolicy extends Webs
 	 * @generated
 	 */
 	public DetailsUnitUnitFieldCompartment5ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DetailsUnit_3129);
+		super(WebsiteElementTypes.DetailsUnit_3316);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.UnitElement_3185 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitElement_3317 == req.getElementType()) {
 			return getGEFWrapper(new UnitElement10CreateCommand(req));
 		}
-		if (WebsiteElementTypes.UnitAssociation_3184 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitAssociation_3318 == req.getElementType()) {
 			return getGEFWrapper(new UnitAssociation7CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

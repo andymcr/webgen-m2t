@@ -16,7 +16,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DataTypeField4EditPar
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DateField4EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DeleteAction3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction2EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitActionCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitActionCompartment2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnitUnitFieldCompartment6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SelectAction7EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociation12EditPart;
@@ -33,7 +33,7 @@ public class IndexUnit6ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 	 * @generated
 	 */
 	public IndexUnit6ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.IndexUnit_3136);
+		super(WebsiteElementTypes.IndexUnit_3341);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class IndexUnit6ItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdi
 					}
 				}
 				break;
-			case IndexUnitActionCompartmentEditPart.VISUAL_ID:
+			case IndexUnitActionCompartment2EditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {

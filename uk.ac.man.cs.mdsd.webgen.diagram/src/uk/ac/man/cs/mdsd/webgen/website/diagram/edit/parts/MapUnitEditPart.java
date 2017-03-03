@@ -33,7 +33,7 @@ public class MapUnitEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3228;
+	public static final int VISUAL_ID = 3357;
 
 	/**
 	 * @generated

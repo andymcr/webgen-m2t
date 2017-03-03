@@ -32,7 +32,7 @@ public class DateField3EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3209;
+	public static final int VISUAL_ID = 3339;
 
 	/**
 	 * @generated

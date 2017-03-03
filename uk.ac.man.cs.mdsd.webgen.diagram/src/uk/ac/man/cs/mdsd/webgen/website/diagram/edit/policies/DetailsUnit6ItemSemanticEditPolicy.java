@@ -27,7 +27,7 @@ public class DetailsUnit6ItemSemanticEditPolicy extends WebsiteBaseItemSemanticE
 	 * @generated
 	 */
 	public DetailsUnit6ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DetailsUnit_3131);
+		super(WebsiteElementTypes.DetailsUnit_3325);
 	}
 
 	/**

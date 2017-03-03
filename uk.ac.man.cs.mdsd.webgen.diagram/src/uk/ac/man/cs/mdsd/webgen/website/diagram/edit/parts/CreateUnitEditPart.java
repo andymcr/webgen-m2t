@@ -39,7 +39,7 @@ public class CreateUnitEditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3103;
+	public static final int VISUAL_ID = 3286;
 
 	/**
 	 * @generated
@@ -257,19 +257,19 @@ public class CreateUnitEditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3169) {
+			if (type == WebsiteElementTypes.UnitElement_3287) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3170) {
+			if (type == WebsiteElementTypes.UnitAssociation_3288) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DataTypeField_3201) {
+			if (type == WebsiteElementTypes.DataTypeField_3289) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DateField_3207) {
+			if (type == WebsiteElementTypes.DateField_3290) {
 				return getChildBySemanticHint(
 						WebsiteVisualIDRegistry.getType(CreateUnitUnitFieldCompartmentEditPart.VISUAL_ID));
 			}

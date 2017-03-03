@@ -16,13 +16,13 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.IndexUnitActionCompartmentCanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.IndexUnitActionCompartmentItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
@@ -32,7 +32,7 @@ public class IndexUnitActionCompartmentEditPart extends ListCompartmentEditPart 
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7071;
+	public static final int VISUAL_ID = 7161;
 
 	/**
 	 * @generated
@@ -75,7 +75,7 @@ public class IndexUnitActionCompartmentEditPart extends ListCompartmentEditPart 
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new IndexUnitActionCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.INLINE_ACTION_CONTAINER__ACTIONS));
+				new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.INLINE_ACTION_CONTAINER__ACTIONS));
 	}
 
 	/**
@@ -94,13 +94,10 @@ public class IndexUnitActionCompartmentEditPart extends ListCompartmentEditPart 
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.SelectAction_3153) {
+			if (type == WebsiteElementTypes.SelectAction_3331) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DeleteAction_3154) {
-				return this;
-			}
-			if (type == WebsiteElementTypes.FeatureSupportAction_3266) {
+			if (type == WebsiteElementTypes.DeleteAction_3332) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

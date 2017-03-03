@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.EditStaticTextMenuEntry;
-import uk.ac.man.cs.mdsd.webgen.website.Menu;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.EditStaticTextMenuEntry;
+import uk.ac.man.cs.mdsd.webgen.webui.Menu;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class EditStaticTextMenuEntryCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		EditStaticTextMenuEntry newElement = WebsiteFactory.eINSTANCE.createEditStaticTextMenuEntry();
+		EditStaticTextMenuEntry newElement = WebuiFactory.eINSTANCE.createEditStaticTextMenuEntry();
 
 		Menu owner = (Menu) getElementToEdit();
 		owner.getEntries().add(newElement);
@@ -64,8 +64,8 @@ public class EditStaticTextMenuEntryCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(EditStaticTextMenuEntry newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

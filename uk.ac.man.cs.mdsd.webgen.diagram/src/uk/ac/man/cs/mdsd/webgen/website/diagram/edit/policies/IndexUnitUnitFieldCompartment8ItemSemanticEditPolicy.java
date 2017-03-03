@@ -16,17 +16,17 @@ public class IndexUnitUnitFieldCompartment8ItemSemanticEditPolicy extends Websit
 	 * @generated
 	 */
 	public IndexUnitUnitFieldCompartment8ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.IndexUnit_3222);
+		super(WebsiteElementTypes.IndexUnit_3367);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.UnitElement_3250 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitElement_3368 == req.getElementType()) {
 			return getGEFWrapper(new UnitElement20CreateCommand(req));
 		}
-		if (WebsiteElementTypes.UnitAssociation_3221 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitAssociation_3369 == req.getElementType()) {
 			return getGEFWrapper(new UnitAssociation17CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

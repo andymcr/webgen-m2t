@@ -19,7 +19,7 @@ public class EditStaticTextMenuEntryItemSemanticEditPolicy extends WebsiteBaseIt
 	 * @generated
 	 */
 	public EditStaticTextMenuEntryItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.EditStaticTextMenuEntry_3156);
+		super(WebsiteElementTypes.EditStaticTextMenuEntry_3381);
 	}
 
 	/**

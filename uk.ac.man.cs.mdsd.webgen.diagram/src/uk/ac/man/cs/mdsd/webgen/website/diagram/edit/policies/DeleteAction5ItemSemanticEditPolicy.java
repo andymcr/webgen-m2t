@@ -19,7 +19,7 @@ public class DeleteAction5ItemSemanticEditPolicy extends WebsiteBaseItemSemantic
 	* @generated
 	*/
 	public DeleteAction5ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DeleteAction_3270);
+		super(WebsiteElementTypes.DeleteAction_3376);
 	}
 
 	/**

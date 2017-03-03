@@ -40,9 +40,6 @@ public class WebGenModelItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 		if (WebsiteElementTypes.DataType_2013 == req.getElementType()) {
 			return getGEFWrapper(new DataTypeCreateCommand(req));
 		}
-		if (WebsiteElementTypes.DynamicMenu_2008 == req.getElementType()) {
-			return getGEFWrapper(new DynamicMenuCreateCommand(req));
-		}
 		if (WebsiteElementTypes.EnumerationType_2014 == req.getElementType()) {
 			return getGEFWrapper(new EnumerationTypeCreateCommand(req));
 		}
@@ -52,14 +49,17 @@ public class WebGenModelItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 		if (WebsiteElementTypes.View_2016 == req.getElementType()) {
 			return getGEFWrapper(new ViewCreateCommand(req));
 		}
-		if (WebsiteElementTypes.Page_2005 == req.getElementType()) {
-			return getGEFWrapper(new PageCreateCommand(req));
-		}
-		if (WebsiteElementTypes.StaticMenu_2009 == req.getElementType()) {
-			return getGEFWrapper(new StaticMenuCreateCommand(req));
-		}
 		if (WebsiteElementTypes.Service_2017 == req.getElementType()) {
 			return getGEFWrapper(new ServiceCreateCommand(req));
+		}
+		if (WebsiteElementTypes.DynamicMenu_2018 == req.getElementType()) {
+			return getGEFWrapper(new DynamicMenuCreateCommand(req));
+		}
+		if (WebsiteElementTypes.StaticMenu_2020 == req.getElementType()) {
+			return getGEFWrapper(new StaticMenuCreateCommand(req));
+		}
+		if (WebsiteElementTypes.Page_2019 == req.getElementType()) {
+			return getGEFWrapper(new PageCreateCommand(req));
 		}
 		return super.getCreateCommand(req);
 	}

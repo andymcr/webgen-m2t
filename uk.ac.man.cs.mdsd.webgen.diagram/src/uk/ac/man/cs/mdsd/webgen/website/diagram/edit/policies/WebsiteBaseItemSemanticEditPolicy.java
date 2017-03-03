@@ -37,11 +37,11 @@ import uk.ac.man.cs.mdsd.webgen.persistence.AssociationWithoutContainment;
 import uk.ac.man.cs.mdsd.webgen.persistence.EncapsulatedAssociation;
 import uk.ac.man.cs.mdsd.webgen.persistence.Entity;
 import uk.ac.man.cs.mdsd.webgen.persistence.ViewAssociation;
-import uk.ac.man.cs.mdsd.webgen.website.Page;
-import uk.ac.man.cs.mdsd.webgen.website.PageLink;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramEditorPlugin;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.Page;
+import uk.ac.man.cs.mdsd.webgen.webui.PageLink;
 
 /**
  * @generated
@@ -334,20 +334,20 @@ public class WebsiteBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		}
 
 		/**
-						 * @generated
-						 */
-		public boolean canCreatePageLink_4003(Page source, Page target) {
+		* @generated
+		*/
+		public boolean canCreatePageLink_4008(Page source, Page target) {
 			if (source != null) {
 				if (source.getParentPage() != null) {
 					return false;
 				}
 			}
-			return canExistPageLink_4003(null, source, target);
+			return canExistPageLink_4008(null, source, target);
 		}
 
 		/**
-		* @generated
-		*/
+				* @generated
+				*/
 		public boolean canExistAssociationWithoutContainment_4005(AssociationWithoutContainment linkInstance,
 				Entity source, Entity target) {
 			return true;
@@ -370,9 +370,9 @@ public class WebsiteBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 		}
 
 		/**
-						 * @generated
-						 */
-		public boolean canExistPageLink_4003(PageLink linkInstance, Page source, Page target) {
+		* @generated
+		*/
+		public boolean canExistPageLink_4008(PageLink linkInstance, Page source, Page target) {
 			return true;
 		}
 	}

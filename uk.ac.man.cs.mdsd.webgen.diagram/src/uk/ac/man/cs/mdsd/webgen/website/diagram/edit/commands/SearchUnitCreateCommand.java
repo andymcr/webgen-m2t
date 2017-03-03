@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.SearchUnit;
-import uk.ac.man.cs.mdsd.webgen.website.UnitContainer;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.SearchUnit;
+import uk.ac.man.cs.mdsd.webgen.webui.UnitContainer;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class SearchUnitCreateCommand extends EditElementCommand {
 	 * @generated
 	 */
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		SearchUnit newElement = WebsiteFactory.eINSTANCE.createSearchUnit();
+		SearchUnit newElement = WebuiFactory.eINSTANCE.createSearchUnit();
 
 		UnitContainer owner = (UnitContainer) getElementToEdit();
 		owner.getUnits().add(newElement);
@@ -64,8 +64,8 @@ public class SearchUnitCreateCommand extends EditElementCommand {
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void doConfigure(SearchUnit newElement, IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 		IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();

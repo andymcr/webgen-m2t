@@ -23,13 +23,13 @@ public class WebsiteModelingAssistantProviderOfWebGenModelEditPart extends Websi
 		List<IElementType> types = new ArrayList<IElementType>(9);
 		types.add(WebsiteElementTypes.WebsiteProperties_2001);
 		types.add(WebsiteElementTypes.DataType_2013);
-		types.add(WebsiteElementTypes.DynamicMenu_2008);
 		types.add(WebsiteElementTypes.EnumerationType_2014);
 		types.add(WebsiteElementTypes.Entity_2015);
 		types.add(WebsiteElementTypes.View_2016);
-		types.add(WebsiteElementTypes.Page_2005);
-		types.add(WebsiteElementTypes.StaticMenu_2009);
 		types.add(WebsiteElementTypes.Service_2017);
+		types.add(WebsiteElementTypes.DynamicMenu_2018);
+		types.add(WebsiteElementTypes.StaticMenu_2020);
+		types.add(WebsiteElementTypes.Page_2019);
 		return types;
 	}
 

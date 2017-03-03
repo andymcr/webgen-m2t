@@ -3,6 +3,7 @@ package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
@@ -15,46 +16,48 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UnitAssociationInterfaceUnitCompartmentCanonicalEditPolicy;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.UnitAssociationInterfaceUnitCompartmentItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.StaticMenuMenuEntriesCompartmentCanonicalEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.StaticMenuMenuEntriesCompartmentItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
  */
-public class UnitAssociationInterfaceUnitCompartmentEditPart extends ListCompartmentEditPart {
+public class StaticMenuMenuEntriesCompartmentEditPart extends ListCompartmentEditPart {
 
 	/**
-	 * @generated
-	 */
-	public static final int VISUAL_ID = 7096;
+	* @generated
+	*/
+	public static final int VISUAL_ID = 7185;
 
 	/**
-	 * @generated
-	 */
-	public UnitAssociationInterfaceUnitCompartmentEditPart(View view) {
+	* @generated
+	*/
+	public StaticMenuMenuEntriesCompartmentEditPart(View view) {
 		super(view);
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected boolean hasModelChildrenChanged(Notification evt) {
 		return false;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public String getCompartmentName() {
-		return Messages.UnitAssociationInterfaceUnitCompartmentEditPart_title;
+		return Messages.StaticMenuMenuEntriesCompartmentEditPart_title;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IFigure createFigure() {
 		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
 		result.setTitleVisibility(false);
@@ -62,22 +65,23 @@ public class UnitAssociationInterfaceUnitCompartmentEditPart extends ListCompart
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated NOT
+	* 
+	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE,
-				new UnitAssociationInterfaceUnitCompartmentItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new StaticMenuMenuEntriesCompartmentItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
-		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE,
-				new UnitAssociationInterfaceUnitCompartmentCanonicalEditPolicy());
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new StaticMenuMenuEntriesCompartmentCanonicalEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE,
+				new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.MENU__ENTRIES));
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setRatio(Double ratio) {
 		// nothing to do -- parent layout does not accept Double constraints as ratio
 		// super.setRatio(ratio); 
@@ -91,10 +95,10 @@ public class UnitAssociationInterfaceUnitCompartmentEditPart extends ListCompart
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DetailsUnit_3113) {
+			if (type == WebsiteElementTypes.ActionMenuEntry_3380) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.IndexUnit_3106) {
+			if (type == WebsiteElementTypes.EditStaticTextMenuEntry_3381) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

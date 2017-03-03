@@ -66,6 +66,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UpdateUnitNameEditPar
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.WebsitePropertiesSiteTitleEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.parsers.MessageFormatParser;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
@@ -107,20 +108,20 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser dynamicMenuName_5155Parser;
+	* @generated
+	*/
+	private IParser dynamicMenuName_5300Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getDynamicMenuName_5155Parser() {
-		if (dynamicMenuName_5155Parser == null) {
+	* @generated
+	*/
+	private IParser getDynamicMenuName_5300Parser() {
+		if (dynamicMenuName_5300Parser == null) {
 			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			dynamicMenuName_5155Parser = parser;
+			dynamicMenuName_5300Parser = parser;
 		}
-		return dynamicMenuName_5155Parser;
+		return dynamicMenuName_5300Parser;
 	}
 
 	/**
@@ -172,6 +173,40 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			viewName_5296Parser = parser;
 		}
 		return viewName_5296Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser pageName_5392Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getPageName_5392Parser() {
+		if (pageName_5392Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			pageName_5392Parser = parser;
+		}
+		return pageName_5392Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser staticMenuName_5395Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getStaticMenuName_5395Parser() {
+		if (staticMenuName_5395Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			staticMenuName_5395Parser = parser;
+		}
+		return staticMenuName_5395Parser;
 	}
 
 	/**
@@ -362,37 +397,1618 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser pageName_5014Parser;
+	* @generated
+	*/
+	private IParser createUnitName_5305Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getPageName_5014Parser() {
-		if (pageName_5014Parser == null) {
+	* @generated
+	*/
+	private IParser getCreateUnitName_5305Parser() {
+		if (createUnitName_5305Parser == null) {
 			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			pageName_5014Parser = parser;
+			createUnitName_5305Parser = parser;
 		}
-		return pageName_5014Parser;
+		return createUnitName_5305Parser;
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser staticMenuName_5157Parser;
+	* @generated
+	*/
+	private IParser unitElementName_5301Parser;
 
 	/**
-	 * @generated
-	 */
-	private IParser getStaticMenuName_5157Parser() {
-		if (staticMenuName_5157Parser == null) {
+	* @generated
+	*/
+	private IParser getUnitElementName_5301Parser() {
+		if (unitElementName_5301Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5301Parser = parser;
+		}
+		return unitElementName_5301Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5302Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5302Parser() {
+		if (unitAssociationName_5302Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5302Parser = parser;
+		}
+		return unitAssociationName_5302Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dataTypeFieldName_5303Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataTypeFieldName_5303Parser() {
+		if (dataTypeFieldName_5303Parser == null) {
 			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
 			MessageFormatParser parser = new MessageFormatParser(features);
-			staticMenuName_5157Parser = parser;
+			dataTypeFieldName_5303Parser = parser;
 		}
-		return staticMenuName_5157Parser;
+		return dataTypeFieldName_5303Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dateFieldName_5304Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDateFieldName_5304Parser() {
+		if (dateFieldName_5304Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dateFieldName_5304Parser = parser;
+		}
+		return dateFieldName_5304Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser createUpdateUnitName_5312Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getCreateUpdateUnitName_5312Parser() {
+		if (createUpdateUnitName_5312Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			createUpdateUnitName_5312Parser = parser;
+		}
+		return createUpdateUnitName_5312Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5306Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5306Parser() {
+		if (unitElementName_5306Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5306Parser = parser;
+		}
+		return unitElementName_5306Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5309Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5309Parser() {
+		if (unitAssociationName_5309Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5309Parser = parser;
+		}
+		return unitAssociationName_5309Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser createUpdateUnitName_5308Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getCreateUpdateUnitName_5308Parser() {
+		if (createUpdateUnitName_5308Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			createUpdateUnitName_5308Parser = parser;
+		}
+		return createUpdateUnitName_5308Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5307Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5307Parser() {
+		if (unitElementName_5307Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5307Parser = parser;
+		}
+		return unitElementName_5307Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dataTypeFieldName_5310Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataTypeFieldName_5310Parser() {
+		if (dataTypeFieldName_5310Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dataTypeFieldName_5310Parser = parser;
+		}
+		return dataTypeFieldName_5310Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dateFieldName_5311Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDateFieldName_5311Parser() {
+		if (dateFieldName_5311Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dateFieldName_5311Parser = parser;
+		}
+		return dateFieldName_5311Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser detailsUnitName_5353Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDetailsUnitName_5353Parser() {
+		if (detailsUnitName_5353Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			detailsUnitName_5353Parser = parser;
+		}
+		return detailsUnitName_5353Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5314Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5314Parser() {
+		if (unitElementName_5314Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5314Parser = parser;
+		}
+		return unitElementName_5314Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5313Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5313Parser() {
+		if (selectActionName_5313Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5313Parser = parser;
+		}
+		return selectActionName_5313Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5349Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5349Parser() {
+		if (unitAssociationName_5349Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5349Parser = parser;
+		}
+		return unitAssociationName_5349Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser detailsUnitName_5321Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDetailsUnitName_5321Parser() {
+		if (detailsUnitName_5321Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			detailsUnitName_5321Parser = parser;
+		}
+		return detailsUnitName_5321Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5315Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5315Parser() {
+		if (unitElementName_5315Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5315Parser = parser;
+		}
+		return unitElementName_5315Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5320Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5320Parser() {
+		if (unitAssociationName_5320Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5320Parser = parser;
+		}
+		return unitAssociationName_5320Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser detailsUnitName_5317Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDetailsUnitName_5317Parser() {
+		if (detailsUnitName_5317Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			detailsUnitName_5317Parser = parser;
+		}
+		return detailsUnitName_5317Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5316Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5316Parser() {
+		if (unitElementName_5316Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5316Parser = parser;
+		}
+		return unitElementName_5316Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5319Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5319Parser() {
+		if (indexUnitName_5319Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5319Parser = parser;
+		}
+		return indexUnitName_5319Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5318Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5318Parser() {
+		if (unitElementName_5318Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5318Parser = parser;
+		}
+		return unitElementName_5318Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5344Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5344Parser() {
+		if (indexUnitName_5344Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5344Parser = parser;
+		}
+		return indexUnitName_5344Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5322Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5322Parser() {
+		if (unitElementName_5322Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5322Parser = parser;
+		}
+		return unitElementName_5322Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5341Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5341Parser() {
+		if (unitAssociationName_5341Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5341Parser = parser;
+		}
+		return unitAssociationName_5341Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser detailsUnitName_5331Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDetailsUnitName_5331Parser() {
+		if (detailsUnitName_5331Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			detailsUnitName_5331Parser = parser;
+		}
+		return detailsUnitName_5331Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5323Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5323Parser() {
+		if (unitElementName_5323Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5323Parser = parser;
+		}
+		return unitElementName_5323Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5330Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5330Parser() {
+		if (unitAssociationName_5330Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5330Parser = parser;
+		}
+		return unitAssociationName_5330Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser detailsUnitName_5326Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDetailsUnitName_5326Parser() {
+		if (detailsUnitName_5326Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			detailsUnitName_5326Parser = parser;
+		}
+		return detailsUnitName_5326Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5324Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5324Parser() {
+		if (unitElementName_5324Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5324Parser = parser;
+		}
+		return unitElementName_5324Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5325Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5325Parser() {
+		if (unitAssociationName_5325Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5325Parser = parser;
+		}
+		return unitAssociationName_5325Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5329Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5329Parser() {
+		if (indexUnitName_5329Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5329Parser = parser;
+		}
+		return indexUnitName_5329Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5327Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5327Parser() {
+		if (unitElementName_5327Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5327Parser = parser;
+		}
+		return unitElementName_5327Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5328Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5328Parser() {
+		if (unitAssociationName_5328Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5328Parser = parser;
+		}
+		return unitAssociationName_5328Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5340Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5340Parser() {
+		if (indexUnitName_5340Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5340Parser = parser;
+		}
+		return indexUnitName_5340Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5332Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5332Parser() {
+		if (unitElementName_5332Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5332Parser = parser;
+		}
+		return unitElementName_5332Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5339Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5339Parser() {
+		if (unitAssociationName_5339Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5339Parser = parser;
+		}
+		return unitAssociationName_5339Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser detailsUnitName_5335Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDetailsUnitName_5335Parser() {
+		if (detailsUnitName_5335Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			detailsUnitName_5335Parser = parser;
+		}
+		return detailsUnitName_5335Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5333Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5333Parser() {
+		if (unitElementName_5333Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5333Parser = parser;
+		}
+		return unitElementName_5333Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5334Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5334Parser() {
+		if (unitAssociationName_5334Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5334Parser = parser;
+		}
+		return unitAssociationName_5334Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5338Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5338Parser() {
+		if (indexUnitName_5338Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5338Parser = parser;
+		}
+		return indexUnitName_5338Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5336Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5336Parser() {
+		if (unitElementName_5336Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5336Parser = parser;
+		}
+		return unitElementName_5336Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5337Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5337Parser() {
+		if (unitAssociationName_5337Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5337Parser = parser;
+		}
+		return unitAssociationName_5337Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5342Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5342Parser() {
+		if (selectActionName_5342Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5342Parser = parser;
+		}
+		return selectActionName_5342Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5343Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5343Parser() {
+		if (deleteActionName_5343Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5343Parser = parser;
+		}
+		return deleteActionName_5343Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser imageIndexUnitName_5347Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getImageIndexUnitName_5347Parser() {
+		if (imageIndexUnitName_5347Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			imageIndexUnitName_5347Parser = parser;
+		}
+		return imageIndexUnitName_5347Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5345Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5345Parser() {
+		if (selectActionName_5345Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5345Parser = parser;
+		}
+		return selectActionName_5345Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5346Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5346Parser() {
+		if (deleteActionName_5346Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5346Parser = parser;
+		}
+		return deleteActionName_5346Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser featureSupportAction_3336Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getFeatureSupportAction_3336Parser() {
+		if (featureSupportAction_3336Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			featureSupportAction_3336Parser = parser;
+		}
+		return featureSupportAction_3336Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5348Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5348Parser() {
+		if (selectActionName_5348Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5348Parser = parser;
+		}
+		return selectActionName_5348Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dataTypeFieldName_5350Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataTypeFieldName_5350Parser() {
+		if (dataTypeFieldName_5350Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dataTypeFieldName_5350Parser = parser;
+		}
+		return dataTypeFieldName_5350Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dateFieldName_5351Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDateFieldName_5351Parser() {
+		if (dateFieldName_5351Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dateFieldName_5351Parser = parser;
+		}
+		return dateFieldName_5351Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitSupportActionName_5352Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitSupportActionName_5352Parser() {
+		if (unitSupportActionName_5352Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitSupportActionName_5352Parser = parser;
+		}
+		return unitSupportActionName_5352Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5369Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5369Parser() {
+		if (indexUnitName_5369Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5369Parser = parser;
+		}
+		return indexUnitName_5369Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5355Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5355Parser() {
+		if (unitElementName_5355Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5355Parser = parser;
+		}
+		return unitElementName_5355Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5354Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5354Parser() {
+		if (selectActionName_5354Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5354Parser = parser;
+		}
+		return selectActionName_5354Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5363Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5363Parser() {
+		if (unitAssociationName_5363Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5363Parser = parser;
+		}
+		return unitAssociationName_5363Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser detailsUnitName_5358Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDetailsUnitName_5358Parser() {
+		if (detailsUnitName_5358Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			detailsUnitName_5358Parser = parser;
+		}
+		return detailsUnitName_5358Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5356Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5356Parser() {
+		if (unitElementName_5356Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5356Parser = parser;
+		}
+		return unitElementName_5356Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5357Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5357Parser() {
+		if (unitAssociationName_5357Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5357Parser = parser;
+		}
+		return unitAssociationName_5357Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5361Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5361Parser() {
+		if (indexUnitName_5361Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5361Parser = parser;
+		}
+		return indexUnitName_5361Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5359Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5359Parser() {
+		if (unitElementName_5359Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5359Parser = parser;
+		}
+		return unitElementName_5359Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5360Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5360Parser() {
+		if (unitAssociationName_5360Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5360Parser = parser;
+		}
+		return unitAssociationName_5360Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5362Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5362Parser() {
+		if (selectActionName_5362Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5362Parser = parser;
+		}
+		return selectActionName_5362Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dataTypeFieldName_5364Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataTypeFieldName_5364Parser() {
+		if (dataTypeFieldName_5364Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dataTypeFieldName_5364Parser = parser;
+		}
+		return dataTypeFieldName_5364Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dateFieldName_5365Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDateFieldName_5365Parser() {
+		if (dateFieldName_5365Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dateFieldName_5365Parser = parser;
+		}
+		return dateFieldName_5365Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5366Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5366Parser() {
+		if (selectActionName_5366Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5366Parser = parser;
+		}
+		return selectActionName_5366Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5367Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5367Parser() {
+		if (deleteActionName_5367Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5367Parser = parser;
+		}
+		return deleteActionName_5367Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser featureSupportActionName_5368Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getFeatureSupportActionName_5368Parser() {
+		if (featureSupportActionName_5368Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			featureSupportActionName_5368Parser = parser;
+		}
+		return featureSupportActionName_5368Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser mapUnitName_5370Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getMapUnitName_5370Parser() {
+		if (mapUnitName_5370Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			mapUnitName_5370Parser = parser;
+		}
+		return mapUnitName_5370Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser searchUnitName_5375Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSearchUnitName_5375Parser() {
+		if (searchUnitName_5375Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			searchUnitName_5375Parser = parser;
+		}
+		return searchUnitName_5375Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5371Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5371Parser() {
+		if (unitElementName_5371Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5371Parser = parser;
+		}
+		return unitElementName_5371Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5372Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5372Parser() {
+		if (unitAssociationName_5372Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5372Parser = parser;
+		}
+		return unitAssociationName_5372Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dataTypeFieldName_5373Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataTypeFieldName_5373Parser() {
+		if (dataTypeFieldName_5373Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dataTypeFieldName_5373Parser = parser;
+		}
+		return dataTypeFieldName_5373Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dateFieldName_5374Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDateFieldName_5374Parser() {
+		if (dateFieldName_5374Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dateFieldName_5374Parser = parser;
+		}
+		return dateFieldName_5374Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser staticUnitName_5376Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getStaticUnitName_5376Parser() {
+		if (staticUnitName_5376Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			staticUnitName_5376Parser = parser;
+		}
+		return staticUnitName_5376Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser updateUnitName_5386Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUpdateUnitName_5386Parser() {
+		if (updateUnitName_5386Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			updateUnitName_5386Parser = parser;
+		}
+		return updateUnitName_5386Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5377Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5377Parser() {
+		if (unitElementName_5377Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5377Parser = parser;
+		}
+		return unitElementName_5377Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5383Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5383Parser() {
+		if (unitAssociationName_5383Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5383Parser = parser;
+		}
+		return unitAssociationName_5383Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser indexUnitName_5382Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getIndexUnitName_5382Parser() {
+		if (indexUnitName_5382Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			indexUnitName_5382Parser = parser;
+		}
+		return indexUnitName_5382Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitElementName_5378Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitElementName_5378Parser() {
+		if (unitElementName_5378Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getUnitElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitElementName_5378Parser = parser;
+		}
+		return unitElementName_5378Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser unitAssociationName_5379Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getUnitAssociationName_5379Parser() {
+		if (unitAssociationName_5379Parser == null) {
+			EAttribute[] features = new EAttribute[] { WebuiPackage.eINSTANCE.getAssociationReference_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			unitAssociationName_5379Parser = parser;
+		}
+		return unitAssociationName_5379Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5380Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5380Parser() {
+		if (selectActionName_5380Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5380Parser = parser;
+		}
+		return selectActionName_5380Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5381Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5381Parser() {
+		if (deleteActionName_5381Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5381Parser = parser;
+		}
+		return deleteActionName_5381Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dataTypeFieldName_5384Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDataTypeFieldName_5384Parser() {
+		if (dataTypeFieldName_5384Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dataTypeFieldName_5384Parser = parser;
+		}
+		return dataTypeFieldName_5384Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser dateFieldName_5385Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDateFieldName_5385Parser() {
+		if (dateFieldName_5385Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			dateFieldName_5385Parser = parser;
+		}
+		return dateFieldName_5385Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser imageIndexUnitName_5389Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getImageIndexUnitName_5389Parser() {
+		if (imageIndexUnitName_5389Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			imageIndexUnitName_5389Parser = parser;
+		}
+		return imageIndexUnitName_5389Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser selectActionName_5387Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSelectActionName_5387Parser() {
+		if (selectActionName_5387Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			selectActionName_5387Parser = parser;
+		}
+		return selectActionName_5387Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser deleteActionName_5388Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getDeleteActionName_5388Parser() {
+		if (deleteActionName_5388Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			deleteActionName_5388Parser = parser;
+		}
+		return deleteActionName_5388Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser featureSupportAction_3377Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getFeatureSupportAction_3377Parser() {
+		if (featureSupportAction_3377Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			featureSupportAction_3377Parser = parser;
+		}
+		return featureSupportAction_3377Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser sliderUnitName_5390Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getSliderUnitName_5390Parser() {
+		if (sliderUnitName_5390Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			sliderUnitName_5390Parser = parser;
+		}
+		return sliderUnitName_5390Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser galleryUnitName_5391Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getGalleryUnitName_5391Parser() {
+		if (galleryUnitName_5391Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			galleryUnitName_5391Parser = parser;
+		}
+		return galleryUnitName_5391Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser actionMenuEntryName_5393Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getActionMenuEntryName_5393Parser() {
+		if (actionMenuEntryName_5393Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			actionMenuEntryName_5393Parser = parser;
+		}
+		return actionMenuEntryName_5393Parser;
+	}
+
+	/**
+	* @generated
+	*/
+	private IParser editStaticTextMenuEntryName_5394Parser;
+
+	/**
+	* @generated
+	*/
+	private IParser getEditStaticTextMenuEntryName_5394Parser() {
+		if (editStaticTextMenuEntryName_5394Parser == null) {
+			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
+			MessageFormatParser parser = new MessageFormatParser(features);
+			editStaticTextMenuEntryName_5394Parser = parser;
+		}
+		return editStaticTextMenuEntryName_5394Parser;
 	}
 
 	/**
@@ -485,1621 +2101,6 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 	}
 
 	/**
-	 * @generated
-	 */
-	private IParser createUnitName_5107Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getCreateUnitName_5107Parser() {
-		if (createUnitName_5107Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			createUnitName_5107Parser = parser;
-		}
-		return createUnitName_5107Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5176Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5176Parser() {
-		if (unitElementName_5176Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5176Parser = parser;
-		}
-		return unitElementName_5176Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5177Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5177Parser() {
-		if (unitAssociationName_5177Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5177Parser = parser;
-		}
-		return unitAssociationName_5177Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dataTypeFieldName_5208Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDataTypeFieldName_5208Parser() {
-		if (dataTypeFieldName_5208Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeFieldName_5208Parser = parser;
-		}
-		return dataTypeFieldName_5208Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateFieldName_5214Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateFieldName_5214Parser() {
-		if (dateFieldName_5214Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateFieldName_5214Parser = parser;
-		}
-		return dateFieldName_5214Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitSupportActionName_5239Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitSupportActionName_5239Parser() {
-		if (unitSupportActionName_5239Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitSupportActionName_5239Parser = parser;
-		}
-		return unitSupportActionName_5239Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser createUpdateUnitName_5108Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getCreateUpdateUnitName_5108Parser() {
-		if (createUpdateUnitName_5108Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			createUpdateUnitName_5108Parser = parser;
-		}
-		return createUpdateUnitName_5108Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5178Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5178Parser() {
-		if (unitElementName_5178Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5178Parser = parser;
-		}
-		return unitElementName_5178Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5179Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5179Parser() {
-		if (unitAssociationName_5179Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5179Parser = parser;
-		}
-		return unitAssociationName_5179Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser createUpdateUnitName_5257Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getCreateUpdateUnitName_5257Parser() {
-		if (createUpdateUnitName_5257Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			createUpdateUnitName_5257Parser = parser;
-		}
-		return createUpdateUnitName_5257Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dataTypeFieldName_5209Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDataTypeFieldName_5209Parser() {
-		if (dataTypeFieldName_5209Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeFieldName_5209Parser = parser;
-		}
-		return dataTypeFieldName_5209Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateFieldName_5215Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateFieldName_5215Parser() {
-		if (dateFieldName_5215Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateFieldName_5215Parser = parser;
-		}
-		return dateFieldName_5215Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser detailsUnitName_5109Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDetailsUnitName_5109Parser() {
-		if (detailsUnitName_5109Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			detailsUnitName_5109Parser = parser;
-		}
-		return detailsUnitName_5109Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5180Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5180Parser() {
-		if (unitElementName_5180Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5180Parser = parser;
-		}
-		return unitElementName_5180Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser selectActionName_5106Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectActionName_5106Parser() {
-		if (selectActionName_5106Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5106Parser = parser;
-		}
-		return selectActionName_5106Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5199Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5199Parser() {
-		if (unitAssociationName_5199Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5199Parser = parser;
-		}
-		return unitAssociationName_5199Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser detailsUnitName_5116Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDetailsUnitName_5116Parser() {
-		if (detailsUnitName_5116Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			detailsUnitName_5116Parser = parser;
-		}
-		return detailsUnitName_5116Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5181Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5181Parser() {
-		if (unitElementName_5181Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5181Parser = parser;
-		}
-		return unitElementName_5181Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5184Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5184Parser() {
-		if (unitAssociationName_5184Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5184Parser = parser;
-		}
-		return unitAssociationName_5184Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser detailsUnitName_5117Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDetailsUnitName_5117Parser() {
-		if (detailsUnitName_5117Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			detailsUnitName_5117Parser = parser;
-		}
-		return detailsUnitName_5117Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5182Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5182Parser() {
-		if (unitElementName_5182Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5182Parser = parser;
-		}
-		return unitElementName_5182Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5112Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5112Parser() {
-		if (indexUnitName_5112Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5112Parser = parser;
-		}
-		return indexUnitName_5112Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5183Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5183Parser() {
-		if (unitElementName_5183Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5183Parser = parser;
-		}
-		return unitElementName_5183Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5123Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5123Parser() {
-		if (indexUnitName_5123Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5123Parser = parser;
-		}
-		return indexUnitName_5123Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5185Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5185Parser() {
-		if (unitElementName_5185Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5185Parser = parser;
-		}
-		return unitElementName_5185Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5198Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5198Parser() {
-		if (unitAssociationName_5198Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5198Parser = parser;
-		}
-		return unitAssociationName_5198Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser detailsUnitName_5120Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDetailsUnitName_5120Parser() {
-		if (detailsUnitName_5120Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			detailsUnitName_5120Parser = parser;
-		}
-		return detailsUnitName_5120Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5186Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5186Parser() {
-		if (unitElementName_5186Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5186Parser = parser;
-		}
-		return unitElementName_5186Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5191Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5191Parser() {
-		if (unitAssociationName_5191Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5191Parser = parser;
-		}
-		return unitAssociationName_5191Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5122Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5122Parser() {
-		if (indexUnitName_5122Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5122Parser = parser;
-		}
-		return indexUnitName_5122Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5189Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5189Parser() {
-		if (unitElementName_5189Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5189Parser = parser;
-		}
-		return unitElementName_5189Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5190Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5190Parser() {
-		if (unitAssociationName_5190Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5190Parser = parser;
-		}
-		return unitAssociationName_5190Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5142Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5142Parser() {
-		if (indexUnitName_5142Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5142Parser = parser;
-		}
-		return indexUnitName_5142Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5200Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5200Parser() {
-		if (unitElementName_5200Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5200Parser = parser;
-		}
-		return unitElementName_5200Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5125Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5125Parser() {
-		if (indexUnitName_5125Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5125Parser = parser;
-		}
-		return indexUnitName_5125Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5192Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5192Parser() {
-		if (unitElementName_5192Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5192Parser = parser;
-		}
-		return unitElementName_5192Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5197Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5197Parser() {
-		if (unitAssociationName_5197Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5197Parser = parser;
-		}
-		return unitAssociationName_5197Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser selectActionName_5110Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectActionName_5110Parser() {
-		if (selectActionName_5110Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5110Parser = parser;
-		}
-		return selectActionName_5110Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser detailsUnitName_5133Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDetailsUnitName_5133Parser() {
-		if (detailsUnitName_5133Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			detailsUnitName_5133Parser = parser;
-		}
-		return detailsUnitName_5133Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5187Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5187Parser() {
-		if (unitElementName_5187Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5187Parser = parser;
-		}
-		return unitElementName_5187Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5188Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5188Parser() {
-		if (unitAssociationName_5188Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5188Parser = parser;
-		}
-		return unitAssociationName_5188Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser selectActionName_5130Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectActionName_5130Parser() {
-		if (selectActionName_5130Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5130Parser = parser;
-		}
-		return selectActionName_5130Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dataTypeFieldName_5210Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDataTypeFieldName_5210Parser() {
-		if (dataTypeFieldName_5210Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeFieldName_5210Parser = parser;
-		}
-		return dataTypeFieldName_5210Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateFieldName_5216Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateFieldName_5216Parser() {
-		if (dateFieldName_5216Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateFieldName_5216Parser = parser;
-		}
-		return dateFieldName_5216Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser selectActionName_5132Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectActionName_5132Parser() {
-		if (selectActionName_5132Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5132Parser = parser;
-		}
-		return selectActionName_5132Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dataTypeFieldName_5211Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDataTypeFieldName_5211Parser() {
-		if (dataTypeFieldName_5211Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeFieldName_5211Parser = parser;
-		}
-		return dataTypeFieldName_5211Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateFieldName_5217Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateFieldName_5217Parser() {
-		if (dateFieldName_5217Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateFieldName_5217Parser = parser;
-		}
-		return dateFieldName_5217Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser selectActionName_5131Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectActionName_5131Parser() {
-		if (selectActionName_5131Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5131Parser = parser;
-		}
-		return selectActionName_5131Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5201Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5201Parser() {
-		if (unitAssociationName_5201Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5201Parser = parser;
-		}
-		return unitAssociationName_5201Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser deleteActionName_5105Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDeleteActionName_5105Parser() {
-		if (deleteActionName_5105Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			deleteActionName_5105Parser = parser;
-		}
-		return deleteActionName_5105Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser imageIndexUnitName_5275Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getImageIndexUnitName_5275Parser() {
-		if (imageIndexUnitName_5275Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			imageIndexUnitName_5275Parser = parser;
-		}
-		return imageIndexUnitName_5275Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser searchUnitName_5113Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSearchUnitName_5113Parser() {
-		if (searchUnitName_5113Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			searchUnitName_5113Parser = parser;
-		}
-		return searchUnitName_5113Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5202Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5202Parser() {
-		if (unitElementName_5202Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5202Parser = parser;
-		}
-		return unitElementName_5202Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5203Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5203Parser() {
-		if (unitAssociationName_5203Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5203Parser = parser;
-		}
-		return unitAssociationName_5203Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser detailsUnitName_5226Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDetailsUnitName_5226Parser() {
-		if (detailsUnitName_5226Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			detailsUnitName_5226Parser = parser;
-		}
-		return detailsUnitName_5226Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dataTypeFieldName_5212Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDataTypeFieldName_5212Parser() {
-		if (dataTypeFieldName_5212Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeFieldName_5212Parser = parser;
-		}
-		return dataTypeFieldName_5212Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateFieldName_5218Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateFieldName_5218Parser() {
-		if (dateFieldName_5218Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateFieldName_5218Parser = parser;
-		}
-		return dateFieldName_5218Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser detailsUnitName_5135Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDetailsUnitName_5135Parser() {
-		if (detailsUnitName_5135Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			detailsUnitName_5135Parser = parser;
-		}
-		return detailsUnitName_5135Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5193Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5193Parser() {
-		if (unitElementName_5193Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5193Parser = parser;
-		}
-		return unitElementName_5193Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5194Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5194Parser() {
-		if (unitAssociationName_5194Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5194Parser = parser;
-		}
-		return unitAssociationName_5194Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser staticUnitName_5114Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getStaticUnitName_5114Parser() {
-		if (staticUnitName_5114Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			staticUnitName_5114Parser = parser;
-		}
-		return staticUnitName_5114Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser updateUnitName_5115Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUpdateUnitName_5115Parser() {
-		if (updateUnitName_5115Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			updateUnitName_5115Parser = parser;
-		}
-		return updateUnitName_5115Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5227Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5227Parser() {
-		if (unitElementName_5227Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5227Parser = parser;
-		}
-		return unitElementName_5227Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5231Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5231Parser() {
-		if (unitAssociationName_5231Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5231Parser = parser;
-		}
-		return unitAssociationName_5231Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5230Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5230Parser() {
-		if (indexUnitName_5230Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5230Parser = parser;
-		}
-		return indexUnitName_5230Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser unitElementName_5258Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getUnitElementName_5258Parser() {
-		if (unitElementName_5258Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5258Parser = parser;
-		}
-		return unitElementName_5258Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5204Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5204Parser() {
-		if (unitElementName_5204Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5204Parser = parser;
-		}
-		return unitElementName_5204Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5207Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5207Parser() {
-		if (unitAssociationName_5207Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5207Parser = parser;
-		}
-		return unitAssociationName_5207Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5149Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5149Parser() {
-		if (indexUnitName_5149Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5149Parser = parser;
-		}
-		return indexUnitName_5149Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5222Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5222Parser() {
-		if (unitElementName_5222Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5222Parser = parser;
-		}
-		return unitElementName_5222Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5223Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5223Parser() {
-		if (unitAssociationName_5223Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5223Parser = parser;
-		}
-		return unitAssociationName_5223Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5205Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5205Parser() {
-		if (unitElementName_5205Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5205Parser = parser;
-		}
-		return unitElementName_5205Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5206Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5206Parser() {
-		if (unitAssociationName_5206Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5206Parser = parser;
-		}
-		return unitAssociationName_5206Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser selectActionName_5161Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectActionName_5161Parser() {
-		if (selectActionName_5161Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5161Parser = parser;
-		}
-		return selectActionName_5161Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser deleteActionName_5162Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDeleteActionName_5162Parser() {
-		if (deleteActionName_5162Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			deleteActionName_5162Parser = parser;
-		}
-		return deleteActionName_5162Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser actionMenuEntryName_5243Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getActionMenuEntryName_5243Parser() {
-		if (actionMenuEntryName_5243Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			actionMenuEntryName_5243Parser = parser;
-		}
-		return actionMenuEntryName_5243Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dataTypeFieldName_5213Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDataTypeFieldName_5213Parser() {
-		if (dataTypeFieldName_5213Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dataTypeFieldName_5213Parser = parser;
-		}
-		return dataTypeFieldName_5213Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser dateFieldName_5219Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDateFieldName_5219Parser() {
-		if (dateFieldName_5219Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			dateFieldName_5219Parser = parser;
-		}
-		return dateFieldName_5219Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser imageIndexUnitName_5276Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getImageIndexUnitName_5276Parser() {
-		if (imageIndexUnitName_5276Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			imageIndexUnitName_5276Parser = parser;
-		}
-		return imageIndexUnitName_5276Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser selectActionName_5277Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getSelectActionName_5277Parser() {
-		if (selectActionName_5277Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5277Parser = parser;
-		}
-		return selectActionName_5277Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser deleteActionName_5278Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getDeleteActionName_5278Parser() {
-		if (deleteActionName_5278Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			deleteActionName_5278Parser = parser;
-		}
-		return deleteActionName_5278Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser featureSupportAction_3271Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getFeatureSupportAction_3271Parser() {
-		if (featureSupportAction_3271Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			featureSupportAction_3271Parser = parser;
-		}
-		return featureSupportAction_3271Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser sliderUnitName_5269Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getSliderUnitName_5269Parser() {
-		if (sliderUnitName_5269Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			sliderUnitName_5269Parser = parser;
-		}
-		return sliderUnitName_5269Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser galleryUnitName_5271Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getGalleryUnitName_5271Parser() {
-		if (galleryUnitName_5271Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			galleryUnitName_5271Parser = parser;
-		}
-		return galleryUnitName_5271Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser selectActionName_5272Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getSelectActionName_5272Parser() {
-		if (selectActionName_5272Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5272Parser = parser;
-		}
-		return selectActionName_5272Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser deleteActionName_5273Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getDeleteActionName_5273Parser() {
-		if (deleteActionName_5273Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			deleteActionName_5273Parser = parser;
-		}
-		return deleteActionName_5273Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser featureSupportActionName_5274Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getFeatureSupportActionName_5274Parser() {
-		if (featureSupportActionName_5274Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			featureSupportActionName_5274Parser = parser;
-		}
-		return featureSupportActionName_5274Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser selectActionName_5150Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getSelectActionName_5150Parser() {
-		if (selectActionName_5150Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			selectActionName_5150Parser = parser;
-		}
-		return selectActionName_5150Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser deleteActionName_5151Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getDeleteActionName_5151Parser() {
-		if (deleteActionName_5151Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			deleteActionName_5151Parser = parser;
-		}
-		return deleteActionName_5151Parser;
-	}
-
-	/**
-	* @generated
-	*/
-	private IParser featureSupportAction_3234Parser;
-
-	/**
-	* @generated
-	*/
-	private IParser getFeatureSupportAction_3234Parser() {
-		if (featureSupportAction_3234Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			featureSupportAction_3234Parser = parser;
-		}
-		return featureSupportAction_3234Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser mapUnitName_5235Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getMapUnitName_5235Parser() {
-		if (mapUnitName_5235Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			mapUnitName_5235Parser = parser;
-		}
-		return mapUnitName_5235Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser indexUnitName_5138Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getIndexUnitName_5138Parser() {
-		if (indexUnitName_5138Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			indexUnitName_5138Parser = parser;
-		}
-		return indexUnitName_5138Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitElementName_5195Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitElementName_5195Parser() {
-		if (unitElementName_5195Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getUnitElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitElementName_5195Parser = parser;
-		}
-		return unitElementName_5195Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser unitAssociationName_5196Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getUnitAssociationName_5196Parser() {
-		if (unitAssociationName_5196Parser == null) {
-			EAttribute[] features = new EAttribute[] { WebsitePackage.eINSTANCE.getAssociationReference_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			unitAssociationName_5196Parser = parser;
-		}
-		return unitAssociationName_5196Parser;
-	}
-
-	/**
-	 * @generated
-	 */
-	private IParser editStaticTextMenuEntryName_5164Parser;
-
-	/**
-	 * @generated
-	 */
-	private IParser getEditStaticTextMenuEntryName_5164Parser() {
-		if (editStaticTextMenuEntryName_5164Parser == null) {
-			EAttribute[] features = new EAttribute[] { BasePackage.eINSTANCE.getNamedElement_Name() };
-			MessageFormatParser parser = new MessageFormatParser(features);
-			editStaticTextMenuEntryName_5164Parser = parser;
-		}
-		return editStaticTextMenuEntryName_5164Parser;
-	}
-
-	/**
 	* @generated
 	*/
 	private IParser selectionName_5297Parser;
@@ -2142,20 +2143,20 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getWebsitePropertiesSiteTitle_5054Parser();
 		case DataTypeNameEditPart.VISUAL_ID:
 			return getDataTypeName_5282Parser();
-		case DynamicMenuNameEditPart.VISUAL_ID:
-			return getDynamicMenuName_5155Parser();
 		case EnumerationTypeNameEditPart.VISUAL_ID:
 			return getEnumerationTypeName_5284Parser();
 		case EntityNameEditPart.VISUAL_ID:
 			return getEntityName_5292Parser();
 		case ViewNameEditPart.VISUAL_ID:
 			return getViewName_5296Parser();
-		case PageNameEditPart.VISUAL_ID:
-			return getPageName_5014Parser();
-		case StaticMenuNameEditPart.VISUAL_ID:
-			return getStaticMenuName_5157Parser();
 		case ServiceNameEditPart.VISUAL_ID:
 			return getServiceName_5299Parser();
+		case DynamicMenuNameEditPart.VISUAL_ID:
+			return getDynamicMenuName_5300Parser();
+		case StaticMenuNameEditPart.VISUAL_ID:
+			return getStaticMenuName_5395Parser();
+		case PageNameEditPart.VISUAL_ID:
+			return getPageName_5392Parser();
 		case EnumerationLiteralNameEditPart.VISUAL_ID:
 			return getEnumerationLiteralName_5283Parser();
 		case DataTypeAttributeNameEditPart.VISUAL_ID:
@@ -2178,200 +2179,200 @@ public class WebsiteParserProvider extends AbstractProvider implements IParserPr
 			return getEncapsulatedAttributeName_5294Parser();
 		case EncapsulatedAssociationNameEditPart.VISUAL_ID:
 			return getEncapsulatedAssociationName_5295Parser();
-		case CreateUnitNameEditPart.VISUAL_ID:
-			return getCreateUnitName_5107Parser();
-		case UnitElementNameEditPart.VISUAL_ID:
-			return getUnitElementName_5176Parser();
-		case UnitAssociationNameEditPart.VISUAL_ID:
-			return getUnitAssociationName_5177Parser();
-		case DataTypeFieldNameEditPart.VISUAL_ID:
-			return getDataTypeFieldName_5208Parser();
-		case DateFieldNameEditPart.VISUAL_ID:
-			return getDateFieldName_5214Parser();
-		case CreateUpdateUnitNameEditPart.VISUAL_ID:
-			return getCreateUpdateUnitName_5108Parser();
-		case UnitElementName2EditPart.VISUAL_ID:
-			return getUnitElementName_5178Parser();
-		case UnitAssociationName2EditPart.VISUAL_ID:
-			return getUnitAssociationName_5179Parser();
-		case CreateUpdateUnitName2EditPart.VISUAL_ID:
-			return getCreateUpdateUnitName_5257Parser();
-		case UnitElementName3EditPart.VISUAL_ID:
-			return getUnitElementName_5180Parser();
-		case DataTypeFieldName2EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5209Parser();
-		case DateFieldName2EditPart.VISUAL_ID:
-			return getDateFieldName_5215Parser();
-		case DetailsUnitNameEditPart.VISUAL_ID:
-			return getDetailsUnitName_5109Parser();
-		case UnitElementName4EditPart.VISUAL_ID:
-			return getUnitElementName_5181Parser();
-		case SelectActionNameEditPart.VISUAL_ID:
-			return getSelectActionName_5106Parser();
-		case UnitAssociationName3EditPart.VISUAL_ID:
-			return getUnitAssociationName_5199Parser();
-		case DetailsUnitName2EditPart.VISUAL_ID:
-			return getDetailsUnitName_5116Parser();
-		case UnitElementName5EditPart.VISUAL_ID:
-			return getUnitElementName_5182Parser();
-		case UnitAssociationName4EditPart.VISUAL_ID:
-			return getUnitAssociationName_5184Parser();
-		case DetailsUnitName3EditPart.VISUAL_ID:
-			return getDetailsUnitName_5117Parser();
-		case UnitElementName6EditPart.VISUAL_ID:
-			return getUnitElementName_5183Parser();
-		case IndexUnitNameEditPart.VISUAL_ID:
-			return getIndexUnitName_5112Parser();
-		case UnitElementName7EditPart.VISUAL_ID:
-			return getUnitElementName_5185Parser();
-		case IndexUnitName2EditPart.VISUAL_ID:
-			return getIndexUnitName_5123Parser();
-		case UnitElementName8EditPart.VISUAL_ID:
-			return getUnitElementName_5186Parser();
-		case UnitAssociationName5EditPart.VISUAL_ID:
-			return getUnitAssociationName_5198Parser();
-		case DetailsUnitName4EditPart.VISUAL_ID:
-			return getDetailsUnitName_5120Parser();
-		case UnitElementName9EditPart.VISUAL_ID:
-			return getUnitElementName_5187Parser();
-		case UnitAssociationName6EditPart.VISUAL_ID:
-			return getUnitAssociationName_5191Parser();
-		case DetailsUnitName5EditPart.VISUAL_ID:
-			return getDetailsUnitName_5133Parser();
-		case UnitElementName10EditPart.VISUAL_ID:
-			return getUnitElementName_5189Parser();
-		case UnitAssociationName7EditPart.VISUAL_ID:
-			return getUnitAssociationName_5188Parser();
-		case IndexUnitName3EditPart.VISUAL_ID:
-			return getIndexUnitName_5122Parser();
-		case UnitElementName11EditPart.VISUAL_ID:
-			return getUnitElementName_5192Parser();
-		case UnitAssociationName8EditPart.VISUAL_ID:
-			return getUnitAssociationName_5190Parser();
-		case IndexUnitName4EditPart.VISUAL_ID:
-			return getIndexUnitName_5125Parser();
-		case UnitElementName12EditPart.VISUAL_ID:
-			return getUnitElementName_5193Parser();
-		case UnitAssociationName9EditPart.VISUAL_ID:
-			return getUnitAssociationName_5197Parser();
-		case DetailsUnitName6EditPart.VISUAL_ID:
-			return getDetailsUnitName_5135Parser();
-		case UnitElementName13EditPart.VISUAL_ID:
-			return getUnitElementName_5195Parser();
-		case UnitAssociationName10EditPart.VISUAL_ID:
-			return getUnitAssociationName_5194Parser();
-		case IndexUnitName5EditPart.VISUAL_ID:
-			return getIndexUnitName_5138Parser();
-		case UnitElementName14EditPart.VISUAL_ID:
-			return getUnitElementName_5200Parser();
-		case UnitAssociationName11EditPart.VISUAL_ID:
-			return getUnitAssociationName_5196Parser();
-		case SelectActionName2EditPart.VISUAL_ID:
-			return getSelectActionName_5110Parser();
-		case DeleteActionNameEditPart.VISUAL_ID:
-			return getDeleteActionName_5105Parser();
-		case ImageIndexUnitNameEditPart.VISUAL_ID:
-			return getImageIndexUnitName_5275Parser();
-		case SelectActionName3EditPart.VISUAL_ID:
-			return getSelectActionName_5130Parser();
-		case DeleteActionName2EditPart.VISUAL_ID:
-			return getDeleteActionName_5151Parser();
-		case FeatureSupportActionEditPart.VISUAL_ID:
-			return getFeatureSupportAction_3234Parser();
-		case SelectActionName4EditPart.VISUAL_ID:
-			return getSelectActionName_5131Parser();
-		case DataTypeFieldName3EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5210Parser();
-		case DateFieldName3EditPart.VISUAL_ID:
-			return getDateFieldName_5216Parser();
-		case UnitSupportActionNameEditPart.VISUAL_ID:
-			return getUnitSupportActionName_5239Parser();
-		case IndexUnitName6EditPart.VISUAL_ID:
-			return getIndexUnitName_5142Parser();
-		case UnitElementName15EditPart.VISUAL_ID:
-			return getUnitElementName_5202Parser();
-		case SelectActionName5EditPart.VISUAL_ID:
-			return getSelectActionName_5132Parser();
-		case UnitAssociationName12EditPart.VISUAL_ID:
-			return getUnitAssociationName_5201Parser();
-		case DetailsUnitName7EditPart.VISUAL_ID:
-			return getDetailsUnitName_5226Parser();
-		case UnitElementName16EditPart.VISUAL_ID:
-			return getUnitElementName_5204Parser();
-		case UnitAssociationName13EditPart.VISUAL_ID:
-			return getUnitAssociationName_5203Parser();
-		case IndexUnitName7EditPart.VISUAL_ID:
-			return getIndexUnitName_5149Parser();
-		case UnitElementName17EditPart.VISUAL_ID:
-			return getUnitElementName_5205Parser();
-		case UnitAssociationName14EditPart.VISUAL_ID:
-			return getUnitAssociationName_5207Parser();
-		case SelectActionName6EditPart.VISUAL_ID:
-			return getSelectActionName_5150Parser();
-		case DataTypeFieldName4EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5211Parser();
-		case DateFieldName4EditPart.VISUAL_ID:
-			return getDateFieldName_5217Parser();
-		case SelectActionName7EditPart.VISUAL_ID:
-			return getSelectActionName_5161Parser();
-		case DeleteActionName3EditPart.VISUAL_ID:
-			return getDeleteActionName_5162Parser();
-		case FeatureSupportActionName2EditPart.VISUAL_ID:
-			return getFeatureSupportActionName_5274Parser();
-		case MapUnitNameEditPart.VISUAL_ID:
-			return getMapUnitName_5235Parser();
-		case SearchUnitNameEditPart.VISUAL_ID:
-			return getSearchUnitName_5113Parser();
-		case UnitElementName18EditPart.VISUAL_ID:
-			return getUnitElementName_5222Parser();
-		case UnitAssociationName15EditPart.VISUAL_ID:
-			return getUnitAssociationName_5206Parser();
-		case DataTypeFieldName5EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5212Parser();
-		case DateFieldName5EditPart.VISUAL_ID:
-			return getDateFieldName_5218Parser();
-		case StaticUnitNameEditPart.VISUAL_ID:
-			return getStaticUnitName_5114Parser();
-		case UpdateUnitNameEditPart.VISUAL_ID:
-			return getUpdateUnitName_5115Parser();
-		case UnitElementName19EditPart.VISUAL_ID:
-			return getUnitElementName_5227Parser();
-		case UnitAssociationName16EditPart.VISUAL_ID:
-			return getUnitAssociationName_5223Parser();
-		case IndexUnitName8EditPart.VISUAL_ID:
-			return getIndexUnitName_5230Parser();
-		case UnitElementName20EditPart.VISUAL_ID:
-			return getUnitElementName_5258Parser();
-		case UnitAssociationName17EditPart.VISUAL_ID:
-			return getUnitAssociationName_5231Parser();
-		case SelectActionName8EditPart.VISUAL_ID:
-			return getSelectActionName_5272Parser();
-		case DeleteActionName4EditPart.VISUAL_ID:
-			return getDeleteActionName_5273Parser();
-		case DataTypeFieldName6EditPart.VISUAL_ID:
-			return getDataTypeFieldName_5213Parser();
-		case DateFieldName6EditPart.VISUAL_ID:
-			return getDateFieldName_5219Parser();
-		case ImageIndexUnitName2EditPart.VISUAL_ID:
-			return getImageIndexUnitName_5276Parser();
-		case SelectActionName9EditPart.VISUAL_ID:
-			return getSelectActionName_5277Parser();
-		case DeleteActionName5EditPart.VISUAL_ID:
-			return getDeleteActionName_5278Parser();
-		case FeatureSupportAction3EditPart.VISUAL_ID:
-			return getFeatureSupportAction_3271Parser();
-		case SliderUnitNameEditPart.VISUAL_ID:
-			return getSliderUnitName_5269Parser();
-		case GalleryUnitNameEditPart.VISUAL_ID:
-			return getGalleryUnitName_5271Parser();
-		case ActionMenuEntryNameEditPart.VISUAL_ID:
-			return getActionMenuEntryName_5243Parser();
-		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
-			return getEditStaticTextMenuEntryName_5164Parser();
 		case SelectionNameEditPart.VISUAL_ID:
 			return getSelectionName_5297Parser();
 		case BusinessOperationNameEditPart.VISUAL_ID:
 			return getBusinessOperationName_5298Parser();
+		case ActionMenuEntryNameEditPart.VISUAL_ID:
+			return getActionMenuEntryName_5393Parser();
+		case EditStaticTextMenuEntryNameEditPart.VISUAL_ID:
+			return getEditStaticTextMenuEntryName_5394Parser();
+		case CreateUnitNameEditPart.VISUAL_ID:
+			return getCreateUnitName_5305Parser();
+		case UnitElementNameEditPart.VISUAL_ID:
+			return getUnitElementName_5301Parser();
+		case UnitAssociationNameEditPart.VISUAL_ID:
+			return getUnitAssociationName_5302Parser();
+		case DataTypeFieldNameEditPart.VISUAL_ID:
+			return getDataTypeFieldName_5303Parser();
+		case DateFieldNameEditPart.VISUAL_ID:
+			return getDateFieldName_5304Parser();
+		case CreateUpdateUnitNameEditPart.VISUAL_ID:
+			return getCreateUpdateUnitName_5312Parser();
+		case UnitElementName2EditPart.VISUAL_ID:
+			return getUnitElementName_5306Parser();
+		case UnitAssociationName2EditPart.VISUAL_ID:
+			return getUnitAssociationName_5309Parser();
+		case CreateUpdateUnitName2EditPart.VISUAL_ID:
+			return getCreateUpdateUnitName_5308Parser();
+		case UnitElementName3EditPart.VISUAL_ID:
+			return getUnitElementName_5307Parser();
+		case DataTypeFieldName2EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5310Parser();
+		case DateFieldName2EditPart.VISUAL_ID:
+			return getDateFieldName_5311Parser();
+		case DetailsUnitNameEditPart.VISUAL_ID:
+			return getDetailsUnitName_5353Parser();
+		case UnitElementName4EditPart.VISUAL_ID:
+			return getUnitElementName_5314Parser();
+		case SelectActionNameEditPart.VISUAL_ID:
+			return getSelectActionName_5313Parser();
+		case UnitAssociationName3EditPart.VISUAL_ID:
+			return getUnitAssociationName_5349Parser();
+		case DetailsUnitName2EditPart.VISUAL_ID:
+			return getDetailsUnitName_5321Parser();
+		case UnitElementName5EditPart.VISUAL_ID:
+			return getUnitElementName_5315Parser();
+		case UnitAssociationName4EditPart.VISUAL_ID:
+			return getUnitAssociationName_5320Parser();
+		case DetailsUnitName3EditPart.VISUAL_ID:
+			return getDetailsUnitName_5317Parser();
+		case UnitElementName6EditPart.VISUAL_ID:
+			return getUnitElementName_5316Parser();
+		case IndexUnitNameEditPart.VISUAL_ID:
+			return getIndexUnitName_5319Parser();
+		case UnitElementName7EditPart.VISUAL_ID:
+			return getUnitElementName_5318Parser();
+		case IndexUnitName2EditPart.VISUAL_ID:
+			return getIndexUnitName_5344Parser();
+		case UnitElementName8EditPart.VISUAL_ID:
+			return getUnitElementName_5322Parser();
+		case UnitAssociationName5EditPart.VISUAL_ID:
+			return getUnitAssociationName_5341Parser();
+		case DetailsUnitName4EditPart.VISUAL_ID:
+			return getDetailsUnitName_5331Parser();
+		case UnitElementName9EditPart.VISUAL_ID:
+			return getUnitElementName_5323Parser();
+		case UnitAssociationName6EditPart.VISUAL_ID:
+			return getUnitAssociationName_5330Parser();
+		case DetailsUnitName5EditPart.VISUAL_ID:
+			return getDetailsUnitName_5326Parser();
+		case UnitElementName10EditPart.VISUAL_ID:
+			return getUnitElementName_5324Parser();
+		case UnitAssociationName7EditPart.VISUAL_ID:
+			return getUnitAssociationName_5325Parser();
+		case IndexUnitName3EditPart.VISUAL_ID:
+			return getIndexUnitName_5329Parser();
+		case UnitElementName11EditPart.VISUAL_ID:
+			return getUnitElementName_5327Parser();
+		case UnitAssociationName8EditPart.VISUAL_ID:
+			return getUnitAssociationName_5328Parser();
+		case IndexUnitName4EditPart.VISUAL_ID:
+			return getIndexUnitName_5340Parser();
+		case UnitElementName12EditPart.VISUAL_ID:
+			return getUnitElementName_5332Parser();
+		case UnitAssociationName9EditPart.VISUAL_ID:
+			return getUnitAssociationName_5339Parser();
+		case DetailsUnitName6EditPart.VISUAL_ID:
+			return getDetailsUnitName_5335Parser();
+		case UnitElementName13EditPart.VISUAL_ID:
+			return getUnitElementName_5333Parser();
+		case UnitAssociationName10EditPart.VISUAL_ID:
+			return getUnitAssociationName_5334Parser();
+		case IndexUnitName5EditPart.VISUAL_ID:
+			return getIndexUnitName_5338Parser();
+		case UnitElementName14EditPart.VISUAL_ID:
+			return getUnitElementName_5336Parser();
+		case UnitAssociationName11EditPart.VISUAL_ID:
+			return getUnitAssociationName_5337Parser();
+		case SelectActionName2EditPart.VISUAL_ID:
+			return getSelectActionName_5342Parser();
+		case DeleteActionNameEditPart.VISUAL_ID:
+			return getDeleteActionName_5343Parser();
+		case ImageIndexUnitNameEditPart.VISUAL_ID:
+			return getImageIndexUnitName_5347Parser();
+		case SelectActionName3EditPart.VISUAL_ID:
+			return getSelectActionName_5345Parser();
+		case DeleteActionName2EditPart.VISUAL_ID:
+			return getDeleteActionName_5346Parser();
+		case FeatureSupportActionEditPart.VISUAL_ID:
+			return getFeatureSupportAction_3336Parser();
+		case SelectActionName4EditPart.VISUAL_ID:
+			return getSelectActionName_5348Parser();
+		case DataTypeFieldName3EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5350Parser();
+		case DateFieldName3EditPart.VISUAL_ID:
+			return getDateFieldName_5351Parser();
+		case UnitSupportActionNameEditPart.VISUAL_ID:
+			return getUnitSupportActionName_5352Parser();
+		case IndexUnitName6EditPart.VISUAL_ID:
+			return getIndexUnitName_5369Parser();
+		case UnitElementName15EditPart.VISUAL_ID:
+			return getUnitElementName_5355Parser();
+		case SelectActionName5EditPart.VISUAL_ID:
+			return getSelectActionName_5354Parser();
+		case UnitAssociationName12EditPart.VISUAL_ID:
+			return getUnitAssociationName_5363Parser();
+		case DetailsUnitName7EditPart.VISUAL_ID:
+			return getDetailsUnitName_5358Parser();
+		case UnitElementName16EditPart.VISUAL_ID:
+			return getUnitElementName_5356Parser();
+		case UnitAssociationName13EditPart.VISUAL_ID:
+			return getUnitAssociationName_5357Parser();
+		case IndexUnitName7EditPart.VISUAL_ID:
+			return getIndexUnitName_5361Parser();
+		case UnitElementName17EditPart.VISUAL_ID:
+			return getUnitElementName_5359Parser();
+		case UnitAssociationName14EditPart.VISUAL_ID:
+			return getUnitAssociationName_5360Parser();
+		case SelectActionName6EditPart.VISUAL_ID:
+			return getSelectActionName_5362Parser();
+		case DataTypeFieldName4EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5364Parser();
+		case DateFieldName4EditPart.VISUAL_ID:
+			return getDateFieldName_5365Parser();
+		case SelectActionName7EditPart.VISUAL_ID:
+			return getSelectActionName_5366Parser();
+		case DeleteActionName3EditPart.VISUAL_ID:
+			return getDeleteActionName_5367Parser();
+		case FeatureSupportActionNameEditPart.VISUAL_ID:
+			return getFeatureSupportActionName_5368Parser();
+		case MapUnitNameEditPart.VISUAL_ID:
+			return getMapUnitName_5370Parser();
+		case SearchUnitNameEditPart.VISUAL_ID:
+			return getSearchUnitName_5375Parser();
+		case UnitElementName18EditPart.VISUAL_ID:
+			return getUnitElementName_5371Parser();
+		case UnitAssociationName15EditPart.VISUAL_ID:
+			return getUnitAssociationName_5372Parser();
+		case DataTypeFieldName5EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5373Parser();
+		case DateFieldName5EditPart.VISUAL_ID:
+			return getDateFieldName_5374Parser();
+		case StaticUnitNameEditPart.VISUAL_ID:
+			return getStaticUnitName_5376Parser();
+		case UpdateUnitNameEditPart.VISUAL_ID:
+			return getUpdateUnitName_5386Parser();
+		case UnitElementName19EditPart.VISUAL_ID:
+			return getUnitElementName_5377Parser();
+		case UnitAssociationName16EditPart.VISUAL_ID:
+			return getUnitAssociationName_5383Parser();
+		case IndexUnitName8EditPart.VISUAL_ID:
+			return getIndexUnitName_5382Parser();
+		case UnitElementName20EditPart.VISUAL_ID:
+			return getUnitElementName_5378Parser();
+		case UnitAssociationName17EditPart.VISUAL_ID:
+			return getUnitAssociationName_5379Parser();
+		case SelectActionName8EditPart.VISUAL_ID:
+			return getSelectActionName_5380Parser();
+		case DeleteActionName4EditPart.VISUAL_ID:
+			return getDeleteActionName_5381Parser();
+		case DataTypeFieldName6EditPart.VISUAL_ID:
+			return getDataTypeFieldName_5384Parser();
+		case DateFieldName6EditPart.VISUAL_ID:
+			return getDateFieldName_5385Parser();
+		case ImageIndexUnitName2EditPart.VISUAL_ID:
+			return getImageIndexUnitName_5389Parser();
+		case SelectActionName9EditPart.VISUAL_ID:
+			return getSelectActionName_5387Parser();
+		case DeleteActionName5EditPart.VISUAL_ID:
+			return getDeleteActionName_5388Parser();
+		case FeatureSupportAction3EditPart.VISUAL_ID:
+			return getFeatureSupportAction_3377Parser();
+		case SliderUnitNameEditPart.VISUAL_ID:
+			return getSliderUnitName_5390Parser();
+		case GalleryUnitNameEditPart.VISUAL_ID:
+			return getGalleryUnitName_5391Parser();
 		case AssociationWithoutContainmentNameEditPart.VISUAL_ID:
 			return getAssociationWithoutContainmentName_6005Parser();
 		case AssociationWithoutContainmentCardinalityTargetCardinEditPart.VISUAL_ID:

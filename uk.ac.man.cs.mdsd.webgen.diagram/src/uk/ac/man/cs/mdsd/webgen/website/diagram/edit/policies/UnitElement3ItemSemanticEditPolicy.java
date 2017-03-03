@@ -19,7 +19,7 @@ public class UnitElement3ItemSemanticEditPolicy extends WebsiteBaseItemSemanticE
 	 * @generated
 	 */
 	public UnitElement3ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitElement_3173);
+		super(WebsiteElementTypes.UnitElement_3295);
 	}
 
 	/**

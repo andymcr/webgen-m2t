@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.ImageIndexUnit;
-import uk.ac.man.cs.mdsd.webgen.website.UnitContainer;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.ImageIndexUnit;
+import uk.ac.man.cs.mdsd.webgen.webui.UnitContainer;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class ImageIndexUnitCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ImageIndexUnit newElement = WebsiteFactory.eINSTANCE.createImageIndexUnit();
+		ImageIndexUnit newElement = WebuiFactory.eINSTANCE.createImageIndexUnit();
 
 		UnitContainer owner = (UnitContainer) getElementToEdit();
 		owner.getUnits().add(newElement);

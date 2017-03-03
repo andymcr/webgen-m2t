@@ -57,7 +57,7 @@ public class PageNameEditPart extends CompartmentEditPart implements ITextAwareE
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5014;
+	public static final int VISUAL_ID = 5392;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class PageNameEditPart extends CompartmentEditPart implements ITextAwareE
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.Page_2005, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.Page_2019, getParserElement(),
 					WebsiteVisualIDRegistry
 							.getType(uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageNameEditPart.VISUAL_ID));
 		}

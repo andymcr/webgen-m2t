@@ -1,12 +1,11 @@
 package uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
-import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.ShapeCompartmentEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.DragDropEditPolicy;
 import org.eclipse.gmf.runtime.diagram.ui.editpolicies.EditPolicyRoles;
 import org.eclipse.gmf.runtime.diagram.ui.figures.ResizableCompartmentFigure;
@@ -16,48 +15,41 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.PageInterfaceUnitCompartmentCanonicalEditPolicy;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.PageInterfaceUnitCompartmentItemSemanticEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.PageInterfaceUnitsCompartmentCanonicalEditPolicy;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.policies.PageInterfaceUnitsCompartmentItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
  */
-public class PageInterfaceUnitCompartmentEditPart extends ListCompartmentEditPart {
+public class PageInterfaceUnitsCompartmentEditPart extends ShapeCompartmentEditPart {
 
 	/**
-	 * @generated
-	 */
-	public static final int VISUAL_ID = 7002;
+	* @generated
+	*/
+	public static final int VISUAL_ID = 7146;
 
 	/**
-	 * @generated
-	 */
-	public PageInterfaceUnitCompartmentEditPart(View view) {
+	* @generated
+	*/
+	public PageInterfaceUnitsCompartmentEditPart(View view) {
 		super(view);
 	}
 
 	/**
-	 * @generated
-	 */
-	protected boolean hasModelChildrenChanged(Notification evt) {
-		return false;
-	}
-
-	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public String getCompartmentName() {
-		return Messages.PageInterfaceUnitCompartmentEditPart_title;
+		return Messages.PageInterfaceUnitsCompartmentEditPart_title;
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	public IFigure createFigure() {
 		ResizableCompartmentFigure result = (ResizableCompartmentFigure) super.createFigure();
 		result.setTitleVisibility(false);
@@ -65,22 +57,22 @@ public class PageInterfaceUnitCompartmentEditPart extends ListCompartmentEditPar
 	}
 
 	/**
-	 * @generated NOT
-	 */
+	* @generated NOT
+	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
-		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new PageInterfaceUnitCompartmentItemSemanticEditPolicy());
+		installEditPolicy(EditPolicyRoles.SEMANTIC_ROLE, new PageInterfaceUnitsCompartmentItemSemanticEditPolicy());
 		installEditPolicy(EditPolicyRoles.CREATION_ROLE,
 				new CreationEditPolicyWithCustomReparent(WebsiteVisualIDRegistry.TYPED_INSTANCE));
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
-		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new PageInterfaceUnitCompartmentCanonicalEditPolicy());
+		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new PageInterfaceUnitsCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new CompartmentRepositionLayoutEditPolicy(WebsitePackage.Literals.UNIT_CONTAINER__UNITS));
+				new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.UNIT_CONTAINER__UNITS));
 	}
 
 	/**
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void setRatio(Double ratio) {
 		// nothing to do -- parent layout does not accept Double constraints as ratio
 		// super.setRatio(ratio); 
@@ -94,40 +86,40 @@ public class PageInterfaceUnitCompartmentEditPart extends ListCompartmentEditPar
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.CreateUnit_3103) {
+			if (type == WebsiteElementTypes.CreateUnit_3286) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.CreateUpdateUnit_3104) {
+			if (type == WebsiteElementTypes.CreateUpdateUnit_3291) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.CreateSitemapUnit_3157) {
+			if (type == WebsiteElementTypes.CreateSitemapUnit_3298) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.DetailsUnit_3105) {
+			if (type == WebsiteElementTypes.DetailsUnit_3299) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.IndexUnit_3136) {
+			if (type == WebsiteElementTypes.IndexUnit_3341) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.MapUnit_3228) {
+			if (type == WebsiteElementTypes.MapUnit_3357) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.SearchUnit_3109) {
+			if (type == WebsiteElementTypes.SearchUnit_3358) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.StaticUnit_3110) {
+			if (type == WebsiteElementTypes.StaticUnit_3363) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UpdateUnit_3111) {
+			if (type == WebsiteElementTypes.UpdateUnit_3364) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.ImageIndexUnit_3268) {
+			if (type == WebsiteElementTypes.ImageIndexUnit_3374) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.SliderUnit_3261) {
+			if (type == WebsiteElementTypes.SliderUnit_3378) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.GalleryUnit_3263) {
+			if (type == WebsiteElementTypes.GalleryUnit_3379) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

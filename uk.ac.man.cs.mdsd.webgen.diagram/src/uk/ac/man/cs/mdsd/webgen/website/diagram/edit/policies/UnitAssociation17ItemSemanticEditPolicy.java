@@ -19,7 +19,7 @@ public class UnitAssociation17ItemSemanticEditPolicy extends WebsiteBaseItemSema
 	 * @generated
 	 */
 	public UnitAssociation17ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitAssociation_3221);
+		super(WebsiteElementTypes.UnitAssociation_3369);
 	}
 
 	/**

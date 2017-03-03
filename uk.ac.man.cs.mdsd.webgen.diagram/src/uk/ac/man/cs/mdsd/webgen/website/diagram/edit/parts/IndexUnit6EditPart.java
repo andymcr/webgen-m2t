@@ -39,7 +39,7 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3136;
+	public static final int VISUAL_ID = 3341;
 
 	/**
 	 * @generated
@@ -257,33 +257,17 @@ public class IndexUnit6EditPart extends ShapeNodeEditPart {
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3195) {
+			if (type == WebsiteElementTypes.SelectAction_3354) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3194) {
+			if (type == WebsiteElementTypes.DeleteAction_3355) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}
-			if (type == WebsiteElementTypes.DataTypeField_3204) {
+			if (type == WebsiteElementTypes.FeatureSupportAction_3356) {
 				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.DateField_3210) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitUnitFieldCompartment6EditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.SelectAction_3153) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.DeleteAction_3154) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
-			}
-			if (type == WebsiteElementTypes.FeatureSupportAction_3266) {
-				return getChildBySemanticHint(
-						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartmentEditPart.VISUAL_ID));
+						WebsiteVisualIDRegistry.getType(IndexUnitActionCompartment2EditPart.VISUAL_ID));
 			}
 		}
 		return super.getTargetEditPart(request);

@@ -14,7 +14,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.DetailsUnit4EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit4EditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationInterfaceUnitCompartment2EditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitAssociationInterfaceUnitsCompartment4EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteElementTypes;
 
@@ -27,7 +27,7 @@ public class UnitAssociation5ItemSemanticEditPolicy extends WebsiteBaseItemSeman
 	 * @generated
 	 */
 	public UnitAssociation5ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitAssociation_3180);
+		super(WebsiteElementTypes.UnitAssociation_3312);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class UnitAssociation5ItemSemanticEditPolicy extends WebsiteBaseItemSeman
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
-			case UnitAssociationInterfaceUnitCompartment2EditPart.VISUAL_ID:
+			case UnitAssociationInterfaceUnitsCompartment4EditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {

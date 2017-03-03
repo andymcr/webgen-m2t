@@ -19,7 +19,7 @@ public class FeatureSupportAction2ItemSemanticEditPolicy extends WebsiteBaseItem
 	* @generated
 	*/
 	public FeatureSupportAction2ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.FeatureSupportAction_3266);
+		super(WebsiteElementTypes.FeatureSupportAction_3356);
 	}
 
 	/**

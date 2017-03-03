@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.InlineActionContainer;
-import uk.ac.man.cs.mdsd.webgen.website.SelectAction;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.InlineActionContainer;
+import uk.ac.man.cs.mdsd.webgen.webui.SelectAction;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class SelectAction8CreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		SelectAction newElement = WebsiteFactory.eINSTANCE.createSelectAction();
+		SelectAction newElement = WebuiFactory.eINSTANCE.createSelectAction();
 
 		InlineActionContainer owner = (InlineActionContainer) getElementToEdit();
 		owner.getActions().add(newElement);

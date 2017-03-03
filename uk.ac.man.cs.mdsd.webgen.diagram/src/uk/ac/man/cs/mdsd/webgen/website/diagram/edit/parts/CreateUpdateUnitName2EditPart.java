@@ -57,7 +57,7 @@ public class CreateUpdateUnitName2EditPart extends CompartmentEditPart implement
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 5257;
+	public static final int VISUAL_ID = 5308;
 
 	/**
 	* @generated
@@ -292,7 +292,7 @@ public class CreateUpdateUnitName2EditPart extends CompartmentEditPart implement
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.CreateUpdateUnit_3249, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.CreateUpdateUnit_3294, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.CreateUpdateUnitName2EditPart.VISUAL_ID));
 		}

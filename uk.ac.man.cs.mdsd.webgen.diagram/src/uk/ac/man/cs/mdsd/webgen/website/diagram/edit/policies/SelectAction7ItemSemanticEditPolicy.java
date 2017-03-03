@@ -19,7 +19,7 @@ public class SelectAction7ItemSemanticEditPolicy extends WebsiteBaseItemSemantic
 	 * @generated
 	 */
 	public SelectAction7ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.SelectAction_3153);
+		super(WebsiteElementTypes.SelectAction_3354);
 	}
 
 	/**

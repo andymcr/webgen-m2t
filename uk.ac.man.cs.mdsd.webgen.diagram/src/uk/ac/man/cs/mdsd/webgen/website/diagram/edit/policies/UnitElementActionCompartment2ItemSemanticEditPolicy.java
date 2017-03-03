@@ -15,14 +15,14 @@ public class UnitElementActionCompartment2ItemSemanticEditPolicy extends Website
 	 * @generated
 	 */
 	public UnitElementActionCompartment2ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.UnitElement_3195);
+		super(WebsiteElementTypes.UnitElement_3342);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.SelectAction_3128 == req.getElementType()) {
+		if (WebsiteElementTypes.SelectAction_3343 == req.getElementType()) {
 			return getGEFWrapper(new SelectAction5CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

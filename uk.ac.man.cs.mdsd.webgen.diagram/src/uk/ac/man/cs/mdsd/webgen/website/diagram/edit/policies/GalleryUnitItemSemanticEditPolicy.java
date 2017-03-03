@@ -19,7 +19,7 @@ public class GalleryUnitItemSemanticEditPolicy extends WebsiteBaseItemSemanticEd
 	* @generated
 	*/
 	public GalleryUnitItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.GalleryUnit_3263);
+		super(WebsiteElementTypes.GalleryUnit_3379);
 	}
 
 	/**

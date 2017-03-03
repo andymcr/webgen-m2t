@@ -32,7 +32,7 @@ public class UnitElement13EditPart extends ShapeNodeEditPart {
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 3191;
+	public static final int VISUAL_ID = 3326;
 
 	/**
 	 * @generated

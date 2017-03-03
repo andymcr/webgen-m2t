@@ -28,7 +28,7 @@ public class UnitAssociationInterfaceUnitsCompartment2EditPart extends ShapeComp
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 7124;
+	public static final int VISUAL_ID = 7154;
 
 	/**
 	* @generated
@@ -83,10 +83,13 @@ public class UnitAssociationInterfaceUnitsCompartment2EditPart extends ShapeComp
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.DetailsUnit_3131) {
+			if (type == WebsiteElementTypes.DetailsUnit_3303) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.IndexUnit_3133) {
+			if (type == WebsiteElementTypes.IndexUnit_3310) {
+				return this;
+			}
+			if (type == WebsiteElementTypes.ImageIndexUnit_3333) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

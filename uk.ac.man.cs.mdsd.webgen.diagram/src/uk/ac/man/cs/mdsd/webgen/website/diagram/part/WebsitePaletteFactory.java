@@ -185,9 +185,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createPage1CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Page1CreationTool_title,
-				Messages.Page1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Page_2005));
+				Messages.Page1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.Page_2019));
 		entry.setId("createPage1CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Page_2005));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.Page_2019));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -197,9 +197,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createParentpage2CreationTool() {
 		DefaultLinkToolEntry entry = new DefaultLinkToolEntry(Messages.Parentpage2CreationTool_title,
-				Messages.Parentpage2CreationTool_desc, Collections.singletonList(WebsiteElementTypes.PageLink_4003));
+				Messages.Parentpage2CreationTool_desc, Collections.singletonList(WebsiteElementTypes.PageLink_4008));
 		entry.setId("createParentpage2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.PageLink_4003));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.PageLink_4008));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -209,30 +209,30 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createElement3CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(20);
-		types.add(WebsiteElementTypes.UnitElement_3169);
-		types.add(WebsiteElementTypes.UnitElement_3171);
-		types.add(WebsiteElementTypes.UnitElement_3173);
-		types.add(WebsiteElementTypes.UnitElement_3175);
-		types.add(WebsiteElementTypes.UnitElement_3177);
-		types.add(WebsiteElementTypes.UnitElement_3178);
-		types.add(WebsiteElementTypes.UnitElement_3179);
-		types.add(WebsiteElementTypes.UnitElement_3181);
-		types.add(WebsiteElementTypes.UnitElement_3183);
-		types.add(WebsiteElementTypes.UnitElement_3185);
-		types.add(WebsiteElementTypes.UnitElement_3187);
-		types.add(WebsiteElementTypes.UnitElement_3189);
-		types.add(WebsiteElementTypes.UnitElement_3191);
-		types.add(WebsiteElementTypes.UnitElement_3193);
-		types.add(WebsiteElementTypes.UnitElement_3195);
-		types.add(WebsiteElementTypes.UnitElement_3197);
-		types.add(WebsiteElementTypes.UnitElement_3199);
-		types.add(WebsiteElementTypes.UnitElement_3215);
-		types.add(WebsiteElementTypes.UnitElement_3220);
-		types.add(WebsiteElementTypes.UnitElement_3250);
+		types.add(WebsiteElementTypes.UnitElement_3287);
+		types.add(WebsiteElementTypes.UnitElement_3292);
+		types.add(WebsiteElementTypes.UnitElement_3295);
+		types.add(WebsiteElementTypes.UnitElement_3300);
+		types.add(WebsiteElementTypes.UnitElement_3304);
+		types.add(WebsiteElementTypes.UnitElement_3307);
+		types.add(WebsiteElementTypes.UnitElement_3309);
+		types.add(WebsiteElementTypes.UnitElement_3311);
+		types.add(WebsiteElementTypes.UnitElement_3314);
+		types.add(WebsiteElementTypes.UnitElement_3317);
+		types.add(WebsiteElementTypes.UnitElement_3320);
+		types.add(WebsiteElementTypes.UnitElement_3323);
+		types.add(WebsiteElementTypes.UnitElement_3326);
+		types.add(WebsiteElementTypes.UnitElement_3329);
+		types.add(WebsiteElementTypes.UnitElement_3342);
+		types.add(WebsiteElementTypes.UnitElement_3346);
+		types.add(WebsiteElementTypes.UnitElement_3349);
+		types.add(WebsiteElementTypes.UnitElement_3359);
+		types.add(WebsiteElementTypes.UnitElement_3365);
+		types.add(WebsiteElementTypes.UnitElement_3368);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Element3CreationTool_title,
 				Messages.Element3CreationTool_desc, types);
 		entry.setId("createElement3CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UnitElement_3169));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UnitElement_3287));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -242,27 +242,27 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createAssociation4CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(17);
-		types.add(WebsiteElementTypes.UnitAssociation_3170);
-		types.add(WebsiteElementTypes.UnitAssociation_3172);
-		types.add(WebsiteElementTypes.UnitAssociation_3174);
-		types.add(WebsiteElementTypes.UnitAssociation_3176);
-		types.add(WebsiteElementTypes.UnitAssociation_3180);
-		types.add(WebsiteElementTypes.UnitAssociation_3182);
-		types.add(WebsiteElementTypes.UnitAssociation_3184);
-		types.add(WebsiteElementTypes.UnitAssociation_3186);
-		types.add(WebsiteElementTypes.UnitAssociation_3188);
-		types.add(WebsiteElementTypes.UnitAssociation_3190);
-		types.add(WebsiteElementTypes.UnitAssociation_3192);
-		types.add(WebsiteElementTypes.UnitAssociation_3194);
-		types.add(WebsiteElementTypes.UnitAssociation_3196);
-		types.add(WebsiteElementTypes.UnitAssociation_3198);
-		types.add(WebsiteElementTypes.UnitAssociation_3200);
-		types.add(WebsiteElementTypes.UnitAssociation_3216);
-		types.add(WebsiteElementTypes.UnitAssociation_3221);
+		types.add(WebsiteElementTypes.UnitAssociation_3288);
+		types.add(WebsiteElementTypes.UnitAssociation_3293);
+		types.add(WebsiteElementTypes.UnitAssociation_3302);
+		types.add(WebsiteElementTypes.UnitAssociation_3305);
+		types.add(WebsiteElementTypes.UnitAssociation_3312);
+		types.add(WebsiteElementTypes.UnitAssociation_3315);
+		types.add(WebsiteElementTypes.UnitAssociation_3318);
+		types.add(WebsiteElementTypes.UnitAssociation_3321);
+		types.add(WebsiteElementTypes.UnitAssociation_3324);
+		types.add(WebsiteElementTypes.UnitAssociation_3327);
+		types.add(WebsiteElementTypes.UnitAssociation_3330);
+		types.add(WebsiteElementTypes.UnitAssociation_3344);
+		types.add(WebsiteElementTypes.UnitAssociation_3347);
+		types.add(WebsiteElementTypes.UnitAssociation_3350);
+		types.add(WebsiteElementTypes.UnitAssociation_3360);
+		types.add(WebsiteElementTypes.UnitAssociation_3366);
+		types.add(WebsiteElementTypes.UnitAssociation_3369);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Association4CreationTool_title,
 				Messages.Association4CreationTool_desc, types);
 		entry.setId("createAssociation4CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UnitAssociation_3170));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UnitAssociation_3288));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -272,15 +272,15 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createDatatypefield5CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(5);
-		types.add(WebsiteElementTypes.DataTypeField_3201);
-		types.add(WebsiteElementTypes.DataTypeField_3202);
-		types.add(WebsiteElementTypes.DataTypeField_3203);
-		types.add(WebsiteElementTypes.DataTypeField_3204);
-		types.add(WebsiteElementTypes.DataTypeField_3205);
+		types.add(WebsiteElementTypes.DataTypeField_3289);
+		types.add(WebsiteElementTypes.DataTypeField_3296);
+		types.add(WebsiteElementTypes.DataTypeField_3338);
+		types.add(WebsiteElementTypes.DataTypeField_3352);
+		types.add(WebsiteElementTypes.DataTypeField_3361);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datatypefield5CreationTool_title,
 				Messages.Datatypefield5CreationTool_desc, types);
 		entry.setId("createDatatypefield5CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DataTypeField_3201));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DataTypeField_3289));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -290,16 +290,16 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createDatefield6CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(6);
-		types.add(WebsiteElementTypes.DateField_3207);
-		types.add(WebsiteElementTypes.DateField_3208);
-		types.add(WebsiteElementTypes.DateField_3209);
-		types.add(WebsiteElementTypes.DateField_3210);
-		types.add(WebsiteElementTypes.DateField_3211);
-		types.add(WebsiteElementTypes.DateField_3212);
+		types.add(WebsiteElementTypes.DateField_3290);
+		types.add(WebsiteElementTypes.DateField_3297);
+		types.add(WebsiteElementTypes.DateField_3339);
+		types.add(WebsiteElementTypes.DateField_3353);
+		types.add(WebsiteElementTypes.DateField_3362);
+		types.add(WebsiteElementTypes.DateField_3373);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datefield6CreationTool_title,
 				Messages.Datefield6CreationTool_desc, types);
 		entry.setId("createDatefield6CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DateField_3207));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DateField_3290));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -309,9 +309,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createStaticMenu1CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.StaticMenu1CreationTool_title,
-				Messages.StaticMenu1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.StaticMenu_2009));
+				Messages.StaticMenu1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.StaticMenu_2020));
 		entry.setId("createStaticMenu1CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.StaticMenu_2009));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.StaticMenu_2020));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -322,9 +322,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createDynamicMenu2CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.DynamicMenu2CreationTool_title,
 				Messages.DynamicMenu2CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.DynamicMenu_2008));
+				Collections.singletonList(WebsiteElementTypes.DynamicMenu_2018));
 		entry.setId("createDynamicMenu2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DynamicMenu_2008));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DynamicMenu_2018));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -335,9 +335,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createFixedPageEntry3CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.FixedPageEntry3CreationTool_title,
 				Messages.FixedPageEntry3CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.ActionMenuEntry_3236));
+				Collections.singletonList(WebsiteElementTypes.ActionMenuEntry_3380));
 		entry.setId("createFixedPageEntry3CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ActionMenuEntry_3236));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ActionMenuEntry_3380));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -370,9 +370,9 @@ public class WebsitePaletteFactory {
 	private ToolEntry createEditStaticText6CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.EditStaticText6CreationTool_title,
 				Messages.EditStaticText6CreationTool_desc,
-				Collections.singletonList(WebsiteElementTypes.EditStaticTextMenuEntry_3156));
+				Collections.singletonList(WebsiteElementTypes.EditStaticTextMenuEntry_3381));
 		entry.setId("createEditStaticText6CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EditStaticTextMenuEntry_3156));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.EditStaticTextMenuEntry_3381));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -382,9 +382,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createStaticUnit1CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.StaticUnit1CreationTool_title,
-				Messages.StaticUnit1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.StaticUnit_3110));
+				Messages.StaticUnit1CreationTool_desc, Collections.singletonList(WebsiteElementTypes.StaticUnit_3363));
 		entry.setId("createStaticUnit1CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.StaticUnit_3110));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.StaticUnit_3363));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -394,18 +394,18 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createIndexUnit2CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(8);
-		types.add(WebsiteElementTypes.IndexUnit_3106);
-		types.add(WebsiteElementTypes.IndexUnit_3114);
-		types.add(WebsiteElementTypes.IndexUnit_3118);
-		types.add(WebsiteElementTypes.IndexUnit_3120);
-		types.add(WebsiteElementTypes.IndexUnit_3133);
-		types.add(WebsiteElementTypes.IndexUnit_3136);
-		types.add(WebsiteElementTypes.IndexUnit_3143);
-		types.add(WebsiteElementTypes.IndexUnit_3222);
+		types.add(WebsiteElementTypes.IndexUnit_3308);
+		types.add(WebsiteElementTypes.IndexUnit_3310);
+		types.add(WebsiteElementTypes.IndexUnit_3319);
+		types.add(WebsiteElementTypes.IndexUnit_3322);
+		types.add(WebsiteElementTypes.IndexUnit_3328);
+		types.add(WebsiteElementTypes.IndexUnit_3341);
+		types.add(WebsiteElementTypes.IndexUnit_3348);
+		types.add(WebsiteElementTypes.IndexUnit_3367);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.IndexUnit2CreationTool_title,
 				Messages.IndexUnit2CreationTool_desc, types);
 		entry.setId("createIndexUnit2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.IndexUnit_3106));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.IndexUnit_3308));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -415,17 +415,17 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createDetailsUnit3CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(7);
-		types.add(WebsiteElementTypes.DetailsUnit_3105);
-		types.add(WebsiteElementTypes.DetailsUnit_3112);
-		types.add(WebsiteElementTypes.DetailsUnit_3113);
-		types.add(WebsiteElementTypes.DetailsUnit_3116);
-		types.add(WebsiteElementTypes.DetailsUnit_3129);
-		types.add(WebsiteElementTypes.DetailsUnit_3131);
-		types.add(WebsiteElementTypes.DetailsUnit_3219);
+		types.add(WebsiteElementTypes.DetailsUnit_3299);
+		types.add(WebsiteElementTypes.DetailsUnit_3303);
+		types.add(WebsiteElementTypes.DetailsUnit_3306);
+		types.add(WebsiteElementTypes.DetailsUnit_3313);
+		types.add(WebsiteElementTypes.DetailsUnit_3316);
+		types.add(WebsiteElementTypes.DetailsUnit_3325);
+		types.add(WebsiteElementTypes.DetailsUnit_3345);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.DetailsUnit3CreationTool_title,
 				Messages.DetailsUnit3CreationTool_desc, types);
 		entry.setId("createDetailsUnit3CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DetailsUnit_3105));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DetailsUnit_3299));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -435,9 +435,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createCreateUnit4CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.CreateUnit4CreationTool_title,
-				Messages.CreateUnit4CreationTool_desc, Collections.singletonList(WebsiteElementTypes.CreateUnit_3103));
+				Messages.CreateUnit4CreationTool_desc, Collections.singletonList(WebsiteElementTypes.CreateUnit_3286));
 		entry.setId("createCreateUnit4CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CreateUnit_3103));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CreateUnit_3286));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -447,12 +447,12 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createCreateUpdateUnit5CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.CreateUpdateUnit_3104);
-		types.add(WebsiteElementTypes.CreateUpdateUnit_3249);
+		types.add(WebsiteElementTypes.CreateUpdateUnit_3291);
+		types.add(WebsiteElementTypes.CreateUpdateUnit_3294);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.CreateUpdateUnit5CreationTool_title,
 				Messages.CreateUpdateUnit5CreationTool_desc, types);
 		entry.setId("createCreateUpdateUnit5CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CreateUpdateUnit_3104));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.CreateUpdateUnit_3291));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -462,9 +462,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createMapUnit6CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.MapUnit6CreationTool_title,
-				Messages.MapUnit6CreationTool_desc, Collections.singletonList(WebsiteElementTypes.MapUnit_3228));
+				Messages.MapUnit6CreationTool_desc, Collections.singletonList(WebsiteElementTypes.MapUnit_3357));
 		entry.setId("createMapUnit6CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.MapUnit_3228));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.MapUnit_3357));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -474,9 +474,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createUpdateUnit7CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.UpdateUnit7CreationTool_title,
-				Messages.UpdateUnit7CreationTool_desc, Collections.singletonList(WebsiteElementTypes.UpdateUnit_3111));
+				Messages.UpdateUnit7CreationTool_desc, Collections.singletonList(WebsiteElementTypes.UpdateUnit_3364));
 		entry.setId("createUpdateUnit7CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UpdateUnit_3111));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.UpdateUnit_3364));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -486,9 +486,9 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createSearchUnit8CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.SearchUnit8CreationTool_title,
-				Messages.SearchUnit8CreationTool_desc, Collections.singletonList(WebsiteElementTypes.SearchUnit_3109));
+				Messages.SearchUnit8CreationTool_desc, Collections.singletonList(WebsiteElementTypes.SearchUnit_3358));
 		entry.setId("createSearchUnit8CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SearchUnit_3109));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SearchUnit_3358));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -498,9 +498,9 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createSliderUnit9CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.SliderUnit9CreationTool_title,
-				Messages.SliderUnit9CreationTool_desc, Collections.singletonList(WebsiteElementTypes.SliderUnit_3261));
+				Messages.SliderUnit9CreationTool_desc, Collections.singletonList(WebsiteElementTypes.SliderUnit_3378));
 		entry.setId("createSliderUnit9CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SliderUnit_3261));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SliderUnit_3378));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -510,9 +510,9 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createGridUnit10CreationTool() {
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.GridUnit10CreationTool_title,
-				Messages.GridUnit10CreationTool_desc, Collections.singletonList(WebsiteElementTypes.GalleryUnit_3263));
+				Messages.GridUnit10CreationTool_desc, Collections.singletonList(WebsiteElementTypes.GalleryUnit_3379));
 		entry.setId("createGridUnit10CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.GalleryUnit_3263));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.GalleryUnit_3379));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -522,12 +522,12 @@ public class WebsitePaletteFactory {
 	*/
 	private ToolEntry createImageGridUnit11CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.ImageIndexUnit_3267);
-		types.add(WebsiteElementTypes.ImageIndexUnit_3268);
+		types.add(WebsiteElementTypes.ImageIndexUnit_3333);
+		types.add(WebsiteElementTypes.ImageIndexUnit_3374);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.ImageGridUnit11CreationTool_title,
 				Messages.ImageGridUnit11CreationTool_desc, types);
 		entry.setId("createImageGridUnit11CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ImageIndexUnit_3267));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.ImageIndexUnit_3333));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -537,19 +537,19 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createSelectAction1CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(9);
-		types.add(WebsiteElementTypes.SelectAction_3102);
-		types.add(WebsiteElementTypes.SelectAction_3107);
-		types.add(WebsiteElementTypes.SelectAction_3126);
-		types.add(WebsiteElementTypes.SelectAction_3127);
-		types.add(WebsiteElementTypes.SelectAction_3128);
-		types.add(WebsiteElementTypes.SelectAction_3146);
-		types.add(WebsiteElementTypes.SelectAction_3153);
-		types.add(WebsiteElementTypes.SelectAction_3264);
-		types.add(WebsiteElementTypes.SelectAction_3269);
+		types.add(WebsiteElementTypes.SelectAction_3301);
+		types.add(WebsiteElementTypes.SelectAction_3331);
+		types.add(WebsiteElementTypes.SelectAction_3334);
+		types.add(WebsiteElementTypes.SelectAction_3337);
+		types.add(WebsiteElementTypes.SelectAction_3343);
+		types.add(WebsiteElementTypes.SelectAction_3351);
+		types.add(WebsiteElementTypes.SelectAction_3354);
+		types.add(WebsiteElementTypes.SelectAction_3370);
+		types.add(WebsiteElementTypes.SelectAction_3375);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.SelectAction1CreationTool_title,
 				Messages.SelectAction1CreationTool_desc, types);
 		entry.setId("createSelectAction1CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SelectAction_3102));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.SelectAction_3301));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -559,15 +559,15 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createDeleteAction2CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(5);
-		types.add(WebsiteElementTypes.DeleteAction_3101);
-		types.add(WebsiteElementTypes.DeleteAction_3147);
-		types.add(WebsiteElementTypes.DeleteAction_3154);
-		types.add(WebsiteElementTypes.DeleteAction_3265);
-		types.add(WebsiteElementTypes.DeleteAction_3270);
+		types.add(WebsiteElementTypes.DeleteAction_3332);
+		types.add(WebsiteElementTypes.DeleteAction_3335);
+		types.add(WebsiteElementTypes.DeleteAction_3355);
+		types.add(WebsiteElementTypes.DeleteAction_3371);
+		types.add(WebsiteElementTypes.DeleteAction_3376);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.DeleteAction2CreationTool_title,
 				Messages.DeleteAction2CreationTool_desc, types);
 		entry.setId("createDeleteAction2CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DeleteAction_3101));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.DeleteAction_3332));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -577,14 +577,14 @@ public class WebsitePaletteFactory {
 	 */
 	private ToolEntry createSupportAction3CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(4);
-		types.add(WebsiteElementTypes.FeatureSupportAction_3234);
-		types.add(WebsiteElementTypes.UnitSupportAction_3232);
-		types.add(WebsiteElementTypes.FeatureSupportAction_3266);
-		types.add(WebsiteElementTypes.FeatureSupportAction_3271);
+		types.add(WebsiteElementTypes.FeatureSupportAction_3336);
+		types.add(WebsiteElementTypes.UnitSupportAction_3340);
+		types.add(WebsiteElementTypes.FeatureSupportAction_3356);
+		types.add(WebsiteElementTypes.FeatureSupportAction_3377);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.SupportAction3CreationTool_title,
 				Messages.SupportAction3CreationTool_desc, types);
 		entry.setId("createSupportAction3CreationTool"); //$NON-NLS-1$
-		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.FeatureSupportAction_3234));
+		entry.setSmallIcon(WebsiteElementTypes.getImageDescriptor(WebsiteElementTypes.FeatureSupportAction_3336));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
@@ -647,7 +647,7 @@ public class WebsitePaletteFactory {
 	private ToolEntry createDatatype1CreationTool() {
 		ArrayList<IElementType> types = new ArrayList<IElementType>(2);
 		types.add(WebsiteElementTypes.DataType_2013);
-		types.add(WebsiteElementTypes.DataTypeField_3206);
+		types.add(WebsiteElementTypes.DataTypeField_3372);
 		DefaultNodeToolEntry entry = new DefaultNodeToolEntry(Messages.Datatype1CreationTool_title,
 				Messages.Datatype1CreationTool_desc, types);
 		entry.setId("createDatatype1CreationTool"); //$NON-NLS-1$

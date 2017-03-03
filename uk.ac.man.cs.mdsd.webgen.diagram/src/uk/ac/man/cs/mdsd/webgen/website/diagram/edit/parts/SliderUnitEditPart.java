@@ -33,7 +33,7 @@ public class SliderUnitEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3261;
+	public static final int VISUAL_ID = 3378;
 
 	/**
 	* @generated

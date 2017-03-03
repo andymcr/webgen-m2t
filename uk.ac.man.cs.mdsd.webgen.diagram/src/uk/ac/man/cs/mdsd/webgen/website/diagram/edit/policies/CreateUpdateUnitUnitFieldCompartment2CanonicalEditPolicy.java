@@ -21,11 +21,11 @@ import org.eclipse.gmf.runtime.emf.core.util.EObjectAdapter;
 import org.eclipse.gmf.runtime.notation.Node;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.WebsitePackage;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.UnitElement3EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteDiagramUpdater;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteNodeDescriptor;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.part.WebsiteVisualIDRegistry;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
@@ -48,7 +48,7 @@ public class CreateUpdateUnitUnitFieldCompartment2CanonicalEditPolicy extends Ca
 	* @generated
 	*/
 	protected EStructuralFeature getFeatureToSynchronize() {
-		return WebsitePackage.eINSTANCE.getDynamicUnit_DisplayFields();
+		return WebuiPackage.eINSTANCE.getDynamicUnit_DisplayFields();
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class CreateUpdateUnitUnitFieldCompartment2CanonicalEditPolicy extends Ca
 		View viewObject = (View) getHost().getModel();
 		LinkedList<EObject> result = new LinkedList<EObject>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getCreateUpdateUnitUnitFieldCompartment_7130SemanticChildren(viewObject);
+				.getCreateUpdateUnitUnitFieldCompartment_7150SemanticChildren(viewObject);
 		for (WebsiteNodeDescriptor d : childDescriptors) {
 			result.add(d.getModelElement());
 		}
@@ -90,7 +90,7 @@ public class CreateUpdateUnitUnitFieldCompartment2CanonicalEditPolicy extends Ca
 		}
 		LinkedList<IAdaptable> createdViews = new LinkedList<IAdaptable>();
 		List<WebsiteNodeDescriptor> childDescriptors = WebsiteDiagramUpdater
-				.getCreateUpdateUnitUnitFieldCompartment_7130SemanticChildren((View) getHost().getModel());
+				.getCreateUpdateUnitUnitFieldCompartment_7150SemanticChildren((View) getHost().getModel());
 		LinkedList<View> orphaned = new LinkedList<View>();
 		// we care to check only views we recognize as ours
 		LinkedList<View> knownViewChildren = new LinkedList<View>();

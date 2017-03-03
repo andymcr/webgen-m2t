@@ -19,7 +19,7 @@ public class DateFieldItemSemanticEditPolicy extends WebsiteBaseItemSemanticEdit
 	 * @generated
 	 */
 	public DateFieldItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DateField_3207);
+		super(WebsiteElementTypes.DateField_3290);
 	}
 
 	/**

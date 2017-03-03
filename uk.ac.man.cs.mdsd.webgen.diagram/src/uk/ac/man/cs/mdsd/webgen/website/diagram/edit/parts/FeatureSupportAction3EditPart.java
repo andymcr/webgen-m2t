@@ -62,7 +62,7 @@ public class FeatureSupportAction3EditPart extends CompartmentEditPart implement
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3271;
+	public static final int VISUAL_ID = 3377;
 
 	/**
 	* @generated
@@ -308,7 +308,7 @@ public class FeatureSupportAction3EditPart extends CompartmentEditPart implement
 	*/
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.FeatureSupportAction_3271, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.FeatureSupportAction_3377, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.FeatureSupportAction3EditPart.VISUAL_ID));
 		}

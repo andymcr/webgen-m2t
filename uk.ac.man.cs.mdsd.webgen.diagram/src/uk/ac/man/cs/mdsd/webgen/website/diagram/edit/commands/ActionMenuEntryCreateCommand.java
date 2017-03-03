@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.ActionMenuEntry;
-import uk.ac.man.cs.mdsd.webgen.website.Menu;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.ActionMenuEntry;
+import uk.ac.man.cs.mdsd.webgen.webui.Menu;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class ActionMenuEntryCreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		ActionMenuEntry newElement = WebsiteFactory.eINSTANCE.createActionMenuEntry();
+		ActionMenuEntry newElement = WebuiFactory.eINSTANCE.createActionMenuEntry();
 
 		Menu owner = (Menu) getElementToEdit();
 		owner.getEntries().add(newElement);

@@ -25,7 +25,7 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.GalleryUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.ImageIndexUnit2EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.IndexUnit6EditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MapUnitEditPart;
-import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageInterfaceUnitCompartmentEditPart;
+import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageInterfaceUnitsCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.PageLinkEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SearchUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.SliderUnitEditPart;
@@ -43,7 +43,7 @@ public class PageItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 	 * @generated
 	 */
 	public PageItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.Page_2005);
+		super(WebsiteElementTypes.Page_2019);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class PageItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 		for (Iterator<?> nit = view.getChildren().iterator(); nit.hasNext();) {
 			Node node = (Node) nit.next();
 			switch (WebsiteVisualIDRegistry.getVisualID(node)) {
-			case PageInterfaceUnitCompartmentEditPart.VISUAL_ID:
+			case PageInterfaceUnitsCompartmentEditPart.VISUAL_ID:
 				for (Iterator<?> cit = node.getChildren().iterator(); cit.hasNext();) {
 					Node cnode = (Node) cit.next();
 					switch (WebsiteVisualIDRegistry.getVisualID(cnode)) {
@@ -188,7 +188,7 @@ public class PageItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 	 * @generated
 	 */
 	protected Command getStartCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.PageLink_4003 == req.getElementType()) {
+		if (WebsiteElementTypes.PageLink_4008 == req.getElementType()) {
 			return getGEFWrapper(new PageLinkCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;
@@ -198,7 +198,7 @@ public class PageItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPolic
 	 * @generated
 	 */
 	protected Command getCompleteCreateRelationshipCommand(CreateRelationshipRequest req) {
-		if (WebsiteElementTypes.PageLink_4003 == req.getElementType()) {
+		if (WebsiteElementTypes.PageLink_4008 == req.getElementType()) {
 			return getGEFWrapper(new PageLinkCreateCommand(req, req.getSource(), req.getTarget()));
 		}
 		return null;

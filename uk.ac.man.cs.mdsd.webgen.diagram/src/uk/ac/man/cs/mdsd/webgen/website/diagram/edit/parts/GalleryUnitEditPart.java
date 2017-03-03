@@ -33,7 +33,7 @@ public class GalleryUnitEditPart extends ShapeNodeEditPart {
 	/**
 	* @generated
 	*/
-	public static final int VISUAL_ID = 3263;
+	public static final int VISUAL_ID = 3379;
 
 	/**
 	* @generated

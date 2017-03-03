@@ -18,23 +18,23 @@ public class CreateUpdateUnitUnitFieldCompartmentItemSemanticEditPolicy extends 
 	 * @generated
 	 */
 	public CreateUpdateUnitUnitFieldCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.CreateUpdateUnit_3104);
+		super(WebsiteElementTypes.CreateUpdateUnit_3291);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.UnitElement_3171 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitElement_3292 == req.getElementType()) {
 			return getGEFWrapper(new UnitElement2CreateCommand(req));
 		}
-		if (WebsiteElementTypes.UnitAssociation_3172 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitAssociation_3293 == req.getElementType()) {
 			return getGEFWrapper(new UnitAssociation2CreateCommand(req));
 		}
-		if (WebsiteElementTypes.DataTypeField_3202 == req.getElementType()) {
+		if (WebsiteElementTypes.DataTypeField_3296 == req.getElementType()) {
 			return getGEFWrapper(new DataTypeField2CreateCommand(req));
 		}
-		if (WebsiteElementTypes.DateField_3208 == req.getElementType()) {
+		if (WebsiteElementTypes.DateField_3297 == req.getElementType()) {
 			return getGEFWrapper(new DateField2CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

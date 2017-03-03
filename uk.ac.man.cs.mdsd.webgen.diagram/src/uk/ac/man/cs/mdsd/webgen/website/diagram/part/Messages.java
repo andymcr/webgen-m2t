@@ -786,11 +786,6 @@ public class Messages extends NLS {
 	public static String WebsitePropertiesAuthenticationCompartmentEditPart_title;
 
 	/**
-	* @generated
-	*/
-	public static String DynamicMenuUnitFieldCompartmentEditPart_title;
-
-	/**
 	 * @generated
 	 */
 	public static String EnumerationTypeEnumerationsCompartmentEditPart_title;
@@ -818,7 +813,12 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String PageInterfaceUnitCompartmentEditPart_title;
+	public static String DynamicMenuMenuEntriesCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String PageInterfaceUnitsCompartmentEditPart_title;
 
 	/**
 	 * @generated
@@ -856,11 +856,6 @@ public class Messages extends NLS {
 	public static String UnitElementActionCompartmentEditPart_title;
 
 	/**
-	* @generated
-	*/
-	public static String UnitAssociationInterfaceUnitCompartmentEditPart_title;
-
-	/**
 	 * @generated
 	 */
 	public static String UnitAssociationActionCompartmentEditPart_title;
@@ -869,11 +864,6 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String DetailsUnitUnitFieldCompartment2EditPart_title;
-
-	/**
-	* @generated
-	*/
-	public static String UnitAssociationInterfaceUnitCompartment2EditPart_title;
 
 	/**
 	 * @generated
@@ -896,11 +886,6 @@ public class Messages extends NLS {
 	public static String IndexUnitActionCompartment3EditPart_title;
 
 	/**
-	* @generated
-	*/
-	public static String UnitAssociationInterfaceUnitCompartment3EditPart_title;
-
-	/**
 	 * @generated
 	 */
 	public static String DetailsUnitUnitFieldCompartment4EditPart_title;
@@ -914,6 +899,11 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String IndexUnitUnitFieldCompartment4EditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String UnitAssociationInterfaceUnitsCompartment6EditPart_title;
 
 	/**
 	* @generated
@@ -953,6 +943,11 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String UnitAssociationInterfaceUnitsCompartment7EditPart_title;
+
+	/**
+	* @generated
+	*/
 	public static String UnitAssociationInterfaceUnitsCompartment3EditPart_title;
 
 	/**
@@ -979,6 +974,11 @@ public class Messages extends NLS {
 	 * @generated
 	 */
 	public static String UpdateUnitUnitFieldCompartmentEditPart_title;
+
+	/**
+	* @generated
+	*/
+	public static String UnitAssociationInterfaceUnitsCompartment8EditPart_title;
 
 	/**
 	* @generated
@@ -1013,7 +1013,7 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
-	public static String StaticMenuIncludedFeaturesCompartmentEditPart_title;
+	public static String StaticMenuMenuEntriesCompartmentEditPart_title;
 
 	/**
 	* @generated
@@ -1036,16 +1036,6 @@ public class Messages extends NLS {
 	public static String NavigatorGroupName_WebGenModel_1000_links;
 
 	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Page_2005_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_Page_2005_outgoinglinks;
-
-	/**
 	* @generated
 	*/
 	public static String NavigatorGroupName_Entity_2015_incominglinks;
@@ -1063,17 +1053,17 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String NavigatorGroupName_Page_2019_incominglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_Page_2019_outgoinglinks;
+
+	/**
+	* @generated
+	*/
 	public static String NavigatorGroupName_EncapsulatedAssociation_3283_incominglinks;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_PageLink_4003_target;
-
-	/**
-	 * @generated
-	 */
-	public static String NavigatorGroupName_PageLink_4003_source;
 
 	/**
 	* @generated
@@ -1104,6 +1094,16 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String NavigatorGroupName_ViewAssociation_4007_source;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_PageLink_4008_target;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_PageLink_4008_source;
 
 	/**
 	 * @generated

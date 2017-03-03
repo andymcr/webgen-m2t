@@ -14,16 +14,4 @@ import uk.ac.man.cs.mdsd.webgen.website.diagram.providers.WebsiteModelingAssista
  */
 public class WebsiteModelingAssistantProviderOfDetailsUnit2EditPart extends WebsiteModelingAssistantProvider {
 
-	/**
-	* @generated
-	*/
-	@Override
-
-	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
-		List<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.UnitElement_3177);
-		types.add(WebsiteElementTypes.UnitAssociation_3176);
-		return types;
-	}
-
 }

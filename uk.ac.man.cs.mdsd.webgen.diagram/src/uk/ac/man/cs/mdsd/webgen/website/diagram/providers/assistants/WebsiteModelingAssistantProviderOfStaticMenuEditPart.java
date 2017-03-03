@@ -21,8 +21,8 @@ public class WebsiteModelingAssistantProviderOfStaticMenuEditPart extends Websit
 
 	public List<IElementType> getTypesForPopupBar(IAdaptable host) {
 		List<IElementType> types = new ArrayList<IElementType>(2);
-		types.add(WebsiteElementTypes.ActionMenuEntry_3236);
-		types.add(WebsiteElementTypes.EditStaticTextMenuEntry_3156);
+		types.add(WebsiteElementTypes.ActionMenuEntry_3380);
+		types.add(WebsiteElementTypes.EditStaticTextMenuEntry_3381);
 		return types;
 	}
 

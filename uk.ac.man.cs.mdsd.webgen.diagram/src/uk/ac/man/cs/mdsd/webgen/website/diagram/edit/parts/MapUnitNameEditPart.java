@@ -57,7 +57,7 @@ public class MapUnitNameEditPart extends CompartmentEditPart implements ITextAwa
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 5235;
+	public static final int VISUAL_ID = 5370;
 
 	/**
 	 * @generated
@@ -292,7 +292,7 @@ public class MapUnitNameEditPart extends CompartmentEditPart implements ITextAwa
 	 */
 	public IParser getParser() {
 		if (parser == null) {
-			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.MapUnit_3228, getParserElement(),
+			parser = WebsiteParserProvider.getParser(WebsiteElementTypes.MapUnit_3357, getParserElement(),
 					WebsiteVisualIDRegistry.getType(
 							uk.ac.man.cs.mdsd.webgen.website.diagram.edit.parts.MapUnitNameEditPart.VISUAL_ID));
 		}

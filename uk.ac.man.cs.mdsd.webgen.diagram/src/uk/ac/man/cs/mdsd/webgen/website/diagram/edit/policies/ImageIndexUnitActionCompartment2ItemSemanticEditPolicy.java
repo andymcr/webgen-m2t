@@ -17,20 +17,20 @@ public class ImageIndexUnitActionCompartment2ItemSemanticEditPolicy extends Webs
 	* @generated
 	*/
 	public ImageIndexUnitActionCompartment2ItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.ImageIndexUnit_3268);
+		super(WebsiteElementTypes.ImageIndexUnit_3374);
 	}
 
 	/**
 	* @generated
 	*/
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.SelectAction_3269 == req.getElementType()) {
+		if (WebsiteElementTypes.SelectAction_3375 == req.getElementType()) {
 			return getGEFWrapper(new SelectAction9CreateCommand(req));
 		}
-		if (WebsiteElementTypes.DeleteAction_3270 == req.getElementType()) {
+		if (WebsiteElementTypes.DeleteAction_3376 == req.getElementType()) {
 			return getGEFWrapper(new DeleteAction5CreateCommand(req));
 		}
-		if (WebsiteElementTypes.FeatureSupportAction_3271 == req.getElementType()) {
+		if (WebsiteElementTypes.FeatureSupportAction_3377 == req.getElementType()) {
 			return getGEFWrapper(new FeatureSupportAction3CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

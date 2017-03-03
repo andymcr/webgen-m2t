@@ -12,9 +12,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
 import org.eclipse.gmf.runtime.emf.type.core.requests.CreateElementRequest;
 import org.eclipse.gmf.runtime.notation.View;
 
-import uk.ac.man.cs.mdsd.webgen.website.FeatureSupportAction;
-import uk.ac.man.cs.mdsd.webgen.website.InlineActionContainer;
-import uk.ac.man.cs.mdsd.webgen.website.WebsiteFactory;
+import uk.ac.man.cs.mdsd.webgen.webui.FeatureSupportAction;
+import uk.ac.man.cs.mdsd.webgen.webui.InlineActionContainer;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiFactory;
 
 /**
  * @generated
@@ -52,7 +52,7 @@ public class FeatureSupportAction3CreateCommand extends EditElementCommand {
 	* @generated
 	*/
 	protected CommandResult doExecuteWithResult(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		FeatureSupportAction newElement = WebsiteFactory.eINSTANCE.createFeatureSupportAction();
+		FeatureSupportAction newElement = WebuiFactory.eINSTANCE.createFeatureSupportAction();
 
 		InlineActionContainer owner = (InlineActionContainer) getElementToEdit();
 		owner.getActions().add(newElement);

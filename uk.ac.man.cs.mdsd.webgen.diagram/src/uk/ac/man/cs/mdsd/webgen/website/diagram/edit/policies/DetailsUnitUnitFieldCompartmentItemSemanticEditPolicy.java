@@ -18,23 +18,23 @@ public class DetailsUnitUnitFieldCompartmentItemSemanticEditPolicy extends Websi
 	 * @generated
 	 */
 	public DetailsUnitUnitFieldCompartmentItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.DetailsUnit_3105);
+		super(WebsiteElementTypes.DetailsUnit_3299);
 	}
 
 	/**
 	 * @generated
 	 */
 	protected Command getCreateCommand(CreateElementRequest req) {
-		if (WebsiteElementTypes.UnitElement_3175 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitElement_3300 == req.getElementType()) {
 			return getGEFWrapper(new UnitElement4CreateCommand(req));
 		}
-		if (WebsiteElementTypes.UnitAssociation_3174 == req.getElementType()) {
+		if (WebsiteElementTypes.UnitAssociation_3302 == req.getElementType()) {
 			return getGEFWrapper(new UnitAssociation3CreateCommand(req));
 		}
-		if (WebsiteElementTypes.DataTypeField_3203 == req.getElementType()) {
+		if (WebsiteElementTypes.DataTypeField_3338 == req.getElementType()) {
 			return getGEFWrapper(new DataTypeField3CreateCommand(req));
 		}
-		if (WebsiteElementTypes.DateField_3209 == req.getElementType()) {
+		if (WebsiteElementTypes.DateField_3339 == req.getElementType()) {
 			return getGEFWrapper(new DateField3CreateCommand(req));
 		}
 		return super.getCreateCommand(req);

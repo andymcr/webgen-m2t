@@ -29,7 +29,7 @@ public class IndexUnitUnitFieldCompartment8EditPart extends ListCompartmentEditP
 	/**
 	 * @generated
 	 */
-	public static final int VISUAL_ID = 7115;
+	public static final int VISUAL_ID = 7182;
 
 	/**
 	 * @generated
@@ -89,10 +89,10 @@ public class IndexUnitUnitFieldCompartment8EditPart extends ListCompartmentEditP
 			CreateElementRequestAdapter adapter = ((CreateViewAndElementRequest) request).getViewAndElementDescriptor()
 					.getCreateElementRequestAdapter();
 			IElementType type = (IElementType) adapter.getAdapter(IElementType.class);
-			if (type == WebsiteElementTypes.UnitElement_3250) {
+			if (type == WebsiteElementTypes.UnitElement_3368) {
 				return this;
 			}
-			if (type == WebsiteElementTypes.UnitAssociation_3221) {
+			if (type == WebsiteElementTypes.UnitAssociation_3369) {
 				return this;
 			}
 			return getParent().getTargetEditPart(request);

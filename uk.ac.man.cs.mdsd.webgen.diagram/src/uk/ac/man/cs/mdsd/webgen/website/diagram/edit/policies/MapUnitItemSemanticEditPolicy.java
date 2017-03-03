@@ -19,7 +19,7 @@ public class MapUnitItemSemanticEditPolicy extends WebsiteBaseItemSemanticEditPo
 	 * @generated
 	 */
 	public MapUnitItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.MapUnit_3228);
+		super(WebsiteElementTypes.MapUnit_3357);
 	}
 
 	/**

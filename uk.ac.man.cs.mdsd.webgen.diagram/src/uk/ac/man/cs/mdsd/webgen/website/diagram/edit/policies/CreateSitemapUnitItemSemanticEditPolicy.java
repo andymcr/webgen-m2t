@@ -19,7 +19,7 @@ public class CreateSitemapUnitItemSemanticEditPolicy extends WebsiteBaseItemSema
 	 * @generated
 	 */
 	public CreateSitemapUnitItemSemanticEditPolicy() {
-		super(WebsiteElementTypes.CreateSitemapUnit_3157);
+		super(WebsiteElementTypes.CreateSitemapUnit_3298);
 	}
 
 	/**
