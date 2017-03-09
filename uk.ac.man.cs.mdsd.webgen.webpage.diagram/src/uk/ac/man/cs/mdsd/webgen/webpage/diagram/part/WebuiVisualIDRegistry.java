@@ -40,6 +40,46 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SliderUnitNameEditPar
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitNameEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationNameEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitNameEditPart;
@@ -190,6 +230,86 @@ public class WebuiVisualIDRegistry {
 				return UpdateUnitEditPart.VISUAL_ID;
 			}
 			break;
+		case CreateUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociationEditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElementEditPart.VISUAL_ID;
+			}
+			break;
+		case CreateUpdateUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation2EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement2EditPart.VISUAL_ID;
+			}
+			break;
+		case DetailsUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation3EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement3EditPart.VISUAL_ID;
+			}
+			break;
+		case GalleryUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation4EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement4EditPart.VISUAL_ID;
+			}
+			break;
+		case ImageIndexUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation5EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement5EditPart.VISUAL_ID;
+			}
+			break;
+		case IndexUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation6EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement6EditPart.VISUAL_ID;
+			}
+			break;
+		case MapUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation7EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement7EditPart.VISUAL_ID;
+			}
+			break;
+		case SearchUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation8EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement8EditPart.VISUAL_ID;
+			}
+			break;
+		case SliderUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation9EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement9EditPart.VISUAL_ID;
+			}
+			break;
+		case UpdateUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (WebuiPackage.eINSTANCE.getUnitAssociation().isSuperTypeOf(domainElement.eClass())) {
+				return UnitAssociation10EditPart.VISUAL_ID;
+			}
+			if (WebuiPackage.eINSTANCE.getUnitElement().isSuperTypeOf(domainElement.eClass())) {
+				return UnitElement10EditPart.VISUAL_ID;
+			}
+			break;
 		}
 		return -1;
 	}
@@ -236,11 +356,31 @@ public class WebuiVisualIDRegistry {
 				return true;
 			}
 			break;
+		case UnitAssociationEditPart.VISUAL_ID:
+			if (UnitAssociationNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElementEditPart.VISUAL_ID:
+			if (UnitElementNameEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case CreateUpdateUnitEditPart.VISUAL_ID:
 			if (CreateUpdateUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (CreateUpdateUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitAssociation2EditPart.VISUAL_ID:
+			if (UnitAssociationName2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement2EditPart.VISUAL_ID:
+			if (UnitElementName2EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -252,11 +392,31 @@ public class WebuiVisualIDRegistry {
 				return true;
 			}
 			break;
+		case UnitAssociation3EditPart.VISUAL_ID:
+			if (UnitAssociationName3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement3EditPart.VISUAL_ID:
+			if (UnitElementName3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case GalleryUnitEditPart.VISUAL_ID:
 			if (GalleryUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (GalleryUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitAssociation4EditPart.VISUAL_ID:
+			if (UnitAssociationName4EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement4EditPart.VISUAL_ID:
+			if (UnitElementName4EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -268,11 +428,31 @@ public class WebuiVisualIDRegistry {
 				return true;
 			}
 			break;
+		case UnitAssociation5EditPart.VISUAL_ID:
+			if (UnitAssociationName5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement5EditPart.VISUAL_ID:
+			if (UnitElementName5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case IndexUnitEditPart.VISUAL_ID:
 			if (IndexUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (IndexUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitAssociation6EditPart.VISUAL_ID:
+			if (UnitAssociationName6EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement6EditPart.VISUAL_ID:
+			if (UnitElementName6EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -284,6 +464,16 @@ public class WebuiVisualIDRegistry {
 				return true;
 			}
 			break;
+		case UnitAssociation7EditPart.VISUAL_ID:
+			if (UnitAssociationName7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement7EditPart.VISUAL_ID:
+			if (UnitElementName7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case SearchUnitEditPart.VISUAL_ID:
 			if (SearchUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
@@ -292,11 +482,31 @@ public class WebuiVisualIDRegistry {
 				return true;
 			}
 			break;
+		case UnitAssociation8EditPart.VISUAL_ID:
+			if (UnitAssociationName8EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement8EditPart.VISUAL_ID:
+			if (UnitElementName8EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
 		case SliderUnitEditPart.VISUAL_ID:
 			if (SliderUnitNameEditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			if (SliderUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitAssociation9EditPart.VISUAL_ID:
+			if (UnitAssociationName9EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement9EditPart.VISUAL_ID:
+			if (UnitElementName9EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -313,6 +523,16 @@ public class WebuiVisualIDRegistry {
 				return true;
 			}
 			if (UpdateUnitFieldCompartmentEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitAssociation10EditPart.VISUAL_ID:
+			if (UnitAssociationName10EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UnitElement10EditPart.VISUAL_ID:
+			if (UnitElementName10EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -348,6 +568,86 @@ public class WebuiVisualIDRegistry {
 				return true;
 			}
 			if (UpdateUnitEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case CreateUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociationEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElementEditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case CreateUpdateUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement2EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case DetailsUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement3EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case GalleryUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation4EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement4EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case ImageIndexUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement5EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case IndexUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation6EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement6EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case MapUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement7EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case SearchUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation8EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement8EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case SliderUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation9EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement9EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			break;
+		case UpdateUnitFieldCompartmentEditPart.VISUAL_ID:
+			if (UnitAssociation10EditPart.VISUAL_ID == nodeVisualID) {
+				return true;
+			}
+			if (UnitElement10EditPart.VISUAL_ID == nodeVisualID) {
 				return true;
 			}
 			break;
@@ -418,17 +718,27 @@ public class WebuiVisualIDRegistry {
 		switch (visualID) {
 		case WebUIEditPart.VISUAL_ID:
 			return false;
-		case CreateUnitEditPart.VISUAL_ID:
-		case CreateUpdateUnitEditPart.VISUAL_ID:
-		case DetailsUnitEditPart.VISUAL_ID:
-		case GalleryUnitEditPart.VISUAL_ID:
-		case ImageIndexUnitEditPart.VISUAL_ID:
-		case IndexUnitEditPart.VISUAL_ID:
-		case MapUnitEditPart.VISUAL_ID:
-		case SearchUnitEditPart.VISUAL_ID:
-		case SliderUnitEditPart.VISUAL_ID:
 		case StaticUnitEditPart.VISUAL_ID:
-		case UpdateUnitEditPart.VISUAL_ID:
+		case UnitAssociationEditPart.VISUAL_ID:
+		case UnitElementEditPart.VISUAL_ID:
+		case UnitAssociation2EditPart.VISUAL_ID:
+		case UnitElement2EditPart.VISUAL_ID:
+		case UnitAssociation3EditPart.VISUAL_ID:
+		case UnitElement3EditPart.VISUAL_ID:
+		case UnitAssociation4EditPart.VISUAL_ID:
+		case UnitElement4EditPart.VISUAL_ID:
+		case UnitAssociation5EditPart.VISUAL_ID:
+		case UnitElement5EditPart.VISUAL_ID:
+		case UnitAssociation6EditPart.VISUAL_ID:
+		case UnitElement6EditPart.VISUAL_ID:
+		case UnitAssociation7EditPart.VISUAL_ID:
+		case UnitElement7EditPart.VISUAL_ID:
+		case UnitAssociation8EditPart.VISUAL_ID:
+		case UnitElement8EditPart.VISUAL_ID:
+		case UnitAssociation9EditPart.VISUAL_ID:
+		case UnitElement9EditPart.VISUAL_ID:
+		case UnitAssociation10EditPart.VISUAL_ID:
+		case UnitElement10EditPart.VISUAL_ID:
 			return true;
 		default:
 			break;

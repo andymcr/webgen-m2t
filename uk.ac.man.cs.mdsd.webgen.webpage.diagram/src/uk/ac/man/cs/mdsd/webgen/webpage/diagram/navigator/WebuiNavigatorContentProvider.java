@@ -24,18 +24,48 @@ import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
 
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.CreateUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.CreateUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.CreateUpdateUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.CreateUpdateUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.DetailsUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.DetailsUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.GalleryUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.GalleryUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.ImageIndexUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.ImageIndexUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.IndexUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.IndexUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageUnitCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SliderUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SliderUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.WebUIEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.WebuiVisualIDRegistry;
 
@@ -287,6 +317,176 @@ public class WebuiNavigatorContentProvider implements ICommonContentProvider {
 					WebuiVisualIDRegistry.getType(PageUnitCompartmentEditPart.VISUAL_ID));
 			connectedViews = getChildrenByType(connectedViews,
 					WebuiVisualIDRegistry.getType(UpdateUnitEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case CreateUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(CreateUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociationEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(CreateUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElementEditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case CreateUpdateUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(CreateUpdateUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation2EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(CreateUpdateUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement2EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case DetailsUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(DetailsUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation3EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(DetailsUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement3EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case GalleryUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(GalleryUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation4EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(GalleryUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement4EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case ImageIndexUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(ImageIndexUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation5EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(ImageIndexUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement5EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case IndexUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(IndexUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation6EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(IndexUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement6EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case MapUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(MapUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation7EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(MapUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement7EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case SearchUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(SearchUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation8EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(SearchUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement8EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case SliderUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(SliderUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation9EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(SliderUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement9EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case UpdateUnitEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Node sv = (Node) view;
+			Collection<View> connectedViews;
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(UpdateUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitAssociation10EditPart.VISUAL_ID));
+			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getChildrenByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(UpdateUnitFieldCompartmentEditPart.VISUAL_ID));
+			connectedViews = getChildrenByType(connectedViews,
+					WebuiVisualIDRegistry.getType(UnitElement10EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
 			return result.toArray();
 		}

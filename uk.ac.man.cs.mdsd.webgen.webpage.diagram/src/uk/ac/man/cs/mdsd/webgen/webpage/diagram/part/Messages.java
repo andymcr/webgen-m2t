@@ -253,62 +253,82 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String Units2Group_title;
+
+	/**
+	* @generated
+	*/
+	public static String Properties3Group_title;
+
+	/**
+	* @generated
+	*/
 	public static String Page1CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String CreateUnit2CreationTool_title;
+	public static String CreateUnit1CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String CreateUpdateUnit3CreationTool_title;
+	public static String CreateUpdateUnit2CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String DetailsUnit4CreationTool_title;
+	public static String DetailsUnit3CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String GalleryUnit5CreationTool_title;
+	public static String GalleryUnit4CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String ImageIndexUnit6CreationTool_title;
+	public static String ImageIndexUnit5CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String IndexUnit7CreationTool_title;
+	public static String IndexUnit6CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String MapUnit8CreationTool_title;
+	public static String MapUnit7CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String SearchUnit9CreationTool_title;
+	public static String SearchUnit8CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String SliderUnit10CreationTool_title;
+	public static String SliderUnit9CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String StaticUnit11CreationTool_title;
+	public static String StaticUnit10CreationTool_title;
 
 	/**
 	* @generated
 	*/
-	public static String UpdateUnit12CreationTool_title;
+	public static String UpdateUnit11CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String UnitAssociation1CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String UnitAttribute2CreationTool_title;
 
 	/**
 	* @generated

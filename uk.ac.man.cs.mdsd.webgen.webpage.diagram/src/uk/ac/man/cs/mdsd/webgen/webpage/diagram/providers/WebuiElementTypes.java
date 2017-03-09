@@ -25,6 +25,26 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SliderUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.WebUIEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.WebuiDiagramEditorPlugin;
@@ -73,8 +93,32 @@ public class WebuiElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType UnitAssociation_3012 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3012"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3013 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3013"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType CreateUpdateUnit_3002 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.webui.diagram.CreateUpdateUnit_3002"); //$NON-NLS-1$
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitAssociation_3014 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3014"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3015 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3015"); //$NON-NLS-1$
+
 	/**
 	* @generated
 	*/
@@ -83,8 +127,32 @@ public class WebuiElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType UnitAssociation_3016 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3016"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3017 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3017"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType GalleryUnit_3004 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.webui.diagram.GalleryUnit_3004"); //$NON-NLS-1$
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitAssociation_3018 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3018"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3019 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3019"); //$NON-NLS-1$
+
 	/**
 	* @generated
 	*/
@@ -93,8 +161,32 @@ public class WebuiElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType UnitAssociation_3020 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3020"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3021 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3021"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType IndexUnit_3006 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.webui.diagram.IndexUnit_3006"); //$NON-NLS-1$
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitAssociation_3022 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3022"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3023 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3023"); //$NON-NLS-1$
+
 	/**
 	* @generated
 	*/
@@ -103,13 +195,49 @@ public class WebuiElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType UnitAssociation_3024 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3024"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3025 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3025"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType SearchUnit_3008 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.webui.diagram.SearchUnit_3008"); //$NON-NLS-1$
 	/**
 	* @generated
 	*/
+	public static final IElementType UnitAssociation_3026 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3026"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3027 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3027"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static final IElementType SliderUnit_3009 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.webui.diagram.SliderUnit_3009"); //$NON-NLS-1$
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitAssociation_3028 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3028"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3029 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3029"); //$NON-NLS-1$
+
 	/**
 	* @generated
 	*/
@@ -120,6 +248,18 @@ public class WebuiElementTypes {
 	*/
 	public static final IElementType UpdateUnit_3011 = getElementType(
 			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UpdateUnit_3011"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitAssociation_3030 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3030"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
+	public static final IElementType UnitElement_3031 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3031"); //$NON-NLS-1$
 
 	/**
 	* @generated
@@ -165,25 +305,65 @@ public class WebuiElementTypes {
 
 			elements.put(CreateUnit_3001, WebuiPackage.eINSTANCE.getCreateUnit());
 
+			elements.put(UnitAssociation_3012, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3013, WebuiPackage.eINSTANCE.getUnitElement());
+
 			elements.put(CreateUpdateUnit_3002, WebuiPackage.eINSTANCE.getCreateUpdateUnit());
+
+			elements.put(UnitAssociation_3014, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3015, WebuiPackage.eINSTANCE.getUnitElement());
 
 			elements.put(DetailsUnit_3003, WebuiPackage.eINSTANCE.getDetailsUnit());
 
+			elements.put(UnitAssociation_3016, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3017, WebuiPackage.eINSTANCE.getUnitElement());
+
 			elements.put(GalleryUnit_3004, WebuiPackage.eINSTANCE.getGalleryUnit());
+
+			elements.put(UnitAssociation_3018, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3019, WebuiPackage.eINSTANCE.getUnitElement());
 
 			elements.put(ImageIndexUnit_3005, WebuiPackage.eINSTANCE.getImageIndexUnit());
 
+			elements.put(UnitAssociation_3020, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3021, WebuiPackage.eINSTANCE.getUnitElement());
+
 			elements.put(IndexUnit_3006, WebuiPackage.eINSTANCE.getIndexUnit());
+
+			elements.put(UnitAssociation_3022, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3023, WebuiPackage.eINSTANCE.getUnitElement());
 
 			elements.put(MapUnit_3007, WebuiPackage.eINSTANCE.getMapUnit());
 
+			elements.put(UnitAssociation_3024, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3025, WebuiPackage.eINSTANCE.getUnitElement());
+
 			elements.put(SearchUnit_3008, WebuiPackage.eINSTANCE.getSearchUnit());
 
+			elements.put(UnitAssociation_3026, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3027, WebuiPackage.eINSTANCE.getUnitElement());
+
 			elements.put(SliderUnit_3009, WebuiPackage.eINSTANCE.getSliderUnit());
+
+			elements.put(UnitAssociation_3028, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3029, WebuiPackage.eINSTANCE.getUnitElement());
 
 			elements.put(StaticUnit_3010, WebuiPackage.eINSTANCE.getStaticUnit());
 
 			elements.put(UpdateUnit_3011, WebuiPackage.eINSTANCE.getUpdateUnit());
+
+			elements.put(UnitAssociation_3030, WebuiPackage.eINSTANCE.getUnitAssociation());
+
+			elements.put(UnitElement_3031, WebuiPackage.eINSTANCE.getUnitElement());
 		}
 		return (ENamedElement) elements.get(type);
 	}
@@ -204,16 +384,36 @@ public class WebuiElementTypes {
 			KNOWN_ELEMENT_TYPES.add(WebUI_1000);
 			KNOWN_ELEMENT_TYPES.add(Page_2001);
 			KNOWN_ELEMENT_TYPES.add(CreateUnit_3001);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3012);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3013);
 			KNOWN_ELEMENT_TYPES.add(CreateUpdateUnit_3002);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3014);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3015);
 			KNOWN_ELEMENT_TYPES.add(DetailsUnit_3003);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3016);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3017);
 			KNOWN_ELEMENT_TYPES.add(GalleryUnit_3004);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3018);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3019);
 			KNOWN_ELEMENT_TYPES.add(ImageIndexUnit_3005);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3020);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3021);
 			KNOWN_ELEMENT_TYPES.add(IndexUnit_3006);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3022);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3023);
 			KNOWN_ELEMENT_TYPES.add(MapUnit_3007);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3024);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3025);
 			KNOWN_ELEMENT_TYPES.add(SearchUnit_3008);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3026);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3027);
 			KNOWN_ELEMENT_TYPES.add(SliderUnit_3009);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3028);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3029);
 			KNOWN_ELEMENT_TYPES.add(StaticUnit_3010);
 			KNOWN_ELEMENT_TYPES.add(UpdateUnit_3011);
+			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3030);
+			KNOWN_ELEMENT_TYPES.add(UnitElement_3031);
 		}
 		return KNOWN_ELEMENT_TYPES.contains(elementType);
 	}
@@ -229,26 +429,66 @@ public class WebuiElementTypes {
 			return Page_2001;
 		case CreateUnitEditPart.VISUAL_ID:
 			return CreateUnit_3001;
+		case UnitAssociationEditPart.VISUAL_ID:
+			return UnitAssociation_3012;
+		case UnitElementEditPart.VISUAL_ID:
+			return UnitElement_3013;
 		case CreateUpdateUnitEditPart.VISUAL_ID:
 			return CreateUpdateUnit_3002;
+		case UnitAssociation2EditPart.VISUAL_ID:
+			return UnitAssociation_3014;
+		case UnitElement2EditPart.VISUAL_ID:
+			return UnitElement_3015;
 		case DetailsUnitEditPart.VISUAL_ID:
 			return DetailsUnit_3003;
+		case UnitAssociation3EditPart.VISUAL_ID:
+			return UnitAssociation_3016;
+		case UnitElement3EditPart.VISUAL_ID:
+			return UnitElement_3017;
 		case GalleryUnitEditPart.VISUAL_ID:
 			return GalleryUnit_3004;
+		case UnitAssociation4EditPart.VISUAL_ID:
+			return UnitAssociation_3018;
+		case UnitElement4EditPart.VISUAL_ID:
+			return UnitElement_3019;
 		case ImageIndexUnitEditPart.VISUAL_ID:
 			return ImageIndexUnit_3005;
+		case UnitAssociation5EditPart.VISUAL_ID:
+			return UnitAssociation_3020;
+		case UnitElement5EditPart.VISUAL_ID:
+			return UnitElement_3021;
 		case IndexUnitEditPart.VISUAL_ID:
 			return IndexUnit_3006;
+		case UnitAssociation6EditPart.VISUAL_ID:
+			return UnitAssociation_3022;
+		case UnitElement6EditPart.VISUAL_ID:
+			return UnitElement_3023;
 		case MapUnitEditPart.VISUAL_ID:
 			return MapUnit_3007;
+		case UnitAssociation7EditPart.VISUAL_ID:
+			return UnitAssociation_3024;
+		case UnitElement7EditPart.VISUAL_ID:
+			return UnitElement_3025;
 		case SearchUnitEditPart.VISUAL_ID:
 			return SearchUnit_3008;
+		case UnitAssociation8EditPart.VISUAL_ID:
+			return UnitAssociation_3026;
+		case UnitElement8EditPart.VISUAL_ID:
+			return UnitElement_3027;
 		case SliderUnitEditPart.VISUAL_ID:
 			return SliderUnit_3009;
+		case UnitAssociation9EditPart.VISUAL_ID:
+			return UnitAssociation_3028;
+		case UnitElement9EditPart.VISUAL_ID:
+			return UnitElement_3029;
 		case StaticUnitEditPart.VISUAL_ID:
 			return StaticUnit_3010;
 		case UpdateUnitEditPart.VISUAL_ID:
 			return UpdateUnit_3011;
+		case UnitAssociation10EditPart.VISUAL_ID:
+			return UnitAssociation_3030;
+		case UnitElement10EditPart.VISUAL_ID:
+			return UnitElement_3031;
 		}
 		return null;
 	}

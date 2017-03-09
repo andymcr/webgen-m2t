@@ -38,6 +38,46 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SliderUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SliderUnitNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitNameEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociation9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationName9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitAssociationNameEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElement9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName10EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName2EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName3EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName4EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName5EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName6EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName7EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName8EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementName9EditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.WebUIEditPart;
@@ -138,6 +178,66 @@ public class WebuiNavigatorLabelProvider extends LabelProvider implements ICommo
 		case UpdateUnitEditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UpdateUnit", //$NON-NLS-1$
 					WebuiElementTypes.UpdateUnit_3011);
+		case UnitAssociationEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3012);
+		case UnitElementEditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3013);
+		case UnitAssociation2EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3014);
+		case UnitElement2EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3015);
+		case UnitAssociation3EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3016);
+		case UnitElement3EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3017);
+		case UnitAssociation4EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3018);
+		case UnitElement4EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3019);
+		case UnitAssociation5EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3020);
+		case UnitElement5EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3021);
+		case UnitAssociation6EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3022);
+		case UnitElement6EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3023);
+		case UnitAssociation7EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3024);
+		case UnitElement7EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3025);
+		case UnitAssociation8EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3026);
+		case UnitElement8EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3027);
+		case UnitAssociation9EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3028);
+		case UnitElement9EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3029);
+		case UnitAssociation10EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitAssociation", //$NON-NLS-1$
+					WebuiElementTypes.UnitAssociation_3030);
+		case UnitElement10EditPart.VISUAL_ID:
+			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
+					WebuiElementTypes.UnitElement_3031);
 		}
 		return getImage("Navigator?UnknownElement", null); //$NON-NLS-1$
 	}
@@ -214,6 +314,46 @@ public class WebuiNavigatorLabelProvider extends LabelProvider implements ICommo
 			return getStaticUnit_3010Text(view);
 		case UpdateUnitEditPart.VISUAL_ID:
 			return getUpdateUnit_3011Text(view);
+		case UnitAssociationEditPart.VISUAL_ID:
+			return getUnitAssociation_3012Text(view);
+		case UnitElementEditPart.VISUAL_ID:
+			return getUnitElement_3013Text(view);
+		case UnitAssociation2EditPart.VISUAL_ID:
+			return getUnitAssociation_3014Text(view);
+		case UnitElement2EditPart.VISUAL_ID:
+			return getUnitElement_3015Text(view);
+		case UnitAssociation3EditPart.VISUAL_ID:
+			return getUnitAssociation_3016Text(view);
+		case UnitElement3EditPart.VISUAL_ID:
+			return getUnitElement_3017Text(view);
+		case UnitAssociation4EditPart.VISUAL_ID:
+			return getUnitAssociation_3018Text(view);
+		case UnitElement4EditPart.VISUAL_ID:
+			return getUnitElement_3019Text(view);
+		case UnitAssociation5EditPart.VISUAL_ID:
+			return getUnitAssociation_3020Text(view);
+		case UnitElement5EditPart.VISUAL_ID:
+			return getUnitElement_3021Text(view);
+		case UnitAssociation6EditPart.VISUAL_ID:
+			return getUnitAssociation_3022Text(view);
+		case UnitElement6EditPart.VISUAL_ID:
+			return getUnitElement_3023Text(view);
+		case UnitAssociation7EditPart.VISUAL_ID:
+			return getUnitAssociation_3024Text(view);
+		case UnitElement7EditPart.VISUAL_ID:
+			return getUnitElement_3025Text(view);
+		case UnitAssociation8EditPart.VISUAL_ID:
+			return getUnitAssociation_3026Text(view);
+		case UnitElement8EditPart.VISUAL_ID:
+			return getUnitElement_3027Text(view);
+		case UnitAssociation9EditPart.VISUAL_ID:
+			return getUnitAssociation_3028Text(view);
+		case UnitElement9EditPart.VISUAL_ID:
+			return getUnitElement_3029Text(view);
+		case UnitAssociation10EditPart.VISUAL_ID:
+			return getUnitAssociation_3030Text(view);
+		case UnitElement10EditPart.VISUAL_ID:
+			return getUnitElement_3031Text(view);
 		}
 		return getUnknownElementText(view);
 	}
@@ -419,6 +559,326 @@ public class WebuiNavigatorLabelProvider extends LabelProvider implements ICommo
 					ParserOptions.NONE.intValue());
 		} else {
 			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5011); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3012Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3012,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5013); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3013Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3013,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementNameEditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5014); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3014Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3014,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName2EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5015); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3015Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3015,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName2EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5016); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3016Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3016,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName3EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5017); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3017Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3017,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName3EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5018); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3018Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3018,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName4EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5019); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3019Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3019,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName4EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5020); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3020Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3020,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName5EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5021); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3021Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3021,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName5EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5022); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3022Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3022,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName6EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5023); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3023Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3023,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName6EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5024); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3024Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3024,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName7EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5025); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3025Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3025,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName7EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5026); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3026Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3026,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName8EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5027); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3027Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3027,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName8EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5028); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3028Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3028,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName9EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5029); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3029Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3029,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName9EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5030); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitAssociation_3030Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitAssociation_3030,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitAssociationName10EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5031); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getUnitElement_3031Text(View view) {
+		IParser parser = WebuiParserProvider.getParser(WebuiElementTypes.UnitElement_3031,
+				view.getElement() != null ? view.getElement() : view,
+				WebuiVisualIDRegistry.getType(UnitElementName10EditPart.VISUAL_ID));
+		if (parser != null) {
+			return parser.getPrintString(new EObjectAdapter(view.getElement() != null ? view.getElement() : view),
+					ParserOptions.NONE.intValue());
+		} else {
+			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5032); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 	}
