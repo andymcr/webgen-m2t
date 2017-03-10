@@ -22,6 +22,7 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.ImageIndexUnitEditPar
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.IndexUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageLinkEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SliderUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.StaticUnitEditPart;
@@ -264,6 +265,12 @@ public class WebuiElementTypes {
 	/**
 	* @generated
 	*/
+	public static final IElementType PageLink_4001 = getElementType(
+			"uk.ac.man.cs.mdsd.webgen.webui.diagram.PageLink_4001"); //$NON-NLS-1$
+
+	/**
+	* @generated
+	*/
 	public static ImageDescriptor getImageDescriptor(ENamedElement element) {
 		return elementTypeImages.getImageDescriptor(element);
 	}
@@ -364,6 +371,8 @@ public class WebuiElementTypes {
 			elements.put(UnitAssociation_3030, WebuiPackage.eINSTANCE.getUnitAssociation());
 
 			elements.put(UnitElement_3031, WebuiPackage.eINSTANCE.getUnitElement());
+
+			elements.put(PageLink_4001, WebuiPackage.eINSTANCE.getPageLink());
 		}
 		return (ENamedElement) elements.get(type);
 	}
@@ -414,6 +423,7 @@ public class WebuiElementTypes {
 			KNOWN_ELEMENT_TYPES.add(UpdateUnit_3011);
 			KNOWN_ELEMENT_TYPES.add(UnitAssociation_3030);
 			KNOWN_ELEMENT_TYPES.add(UnitElement_3031);
+			KNOWN_ELEMENT_TYPES.add(PageLink_4001);
 		}
 		return KNOWN_ELEMENT_TYPES.contains(elementType);
 	}
@@ -489,6 +499,8 @@ public class WebuiElementTypes {
 			return UnitAssociation_3030;
 		case UnitElement10EditPart.VISUAL_ID:
 			return UnitElement_3031;
+		case PageLinkEditPart.VISUAL_ID:
+			return PageLink_4001;
 		}
 		return null;
 	}

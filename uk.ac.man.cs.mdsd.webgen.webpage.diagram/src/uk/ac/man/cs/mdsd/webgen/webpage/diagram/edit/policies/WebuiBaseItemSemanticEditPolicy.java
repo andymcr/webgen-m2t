@@ -32,8 +32,11 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.SetRequest;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.edit.helpers.GeneratedEditHelperBase;
 
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.WebuiDiagramEditorPlugin;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.WebuiVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.providers.WebuiElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.Page;
+import uk.ac.man.cs.mdsd.webgen.webui.PageLink;
 
 /**
  * @generated
@@ -275,6 +278,49 @@ public class WebuiBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 				continue;
 			}
 			cmd.add(new DeleteCommand(getEditingDomain(), nextView));
+		}
+	}
+
+	/**
+	* @generated
+	*/
+	public static LinkConstraints getLinkConstraints() {
+		LinkConstraints cached = WebuiDiagramEditorPlugin.getInstance().getLinkConstraints();
+		if (cached == null) {
+			WebuiDiagramEditorPlugin.getInstance().setLinkConstraints(cached = new LinkConstraints());
+		}
+		return cached;
+	}
+
+	/**
+	* @generated
+	*/
+	public static class LinkConstraints {
+
+		/**
+		* @generated
+		*/
+		LinkConstraints() {
+			// use static method #getLinkConstraints() to access instance
+		}
+
+		/**
+		 * @generated
+		 */
+		public boolean canCreatePageLink_4001(Page source, Page target) {
+			if (source != null) {
+				if (source.getParentPage() != null) {
+					return false;
+				}
+			}
+			return canExistPageLink_4001(null, source, target);
+		}
+
+		/**
+		* @generated
+		*/
+		public boolean canExistPageLink_4001(PageLink linkInstance, Page source, Page target) {
+			return true;
 		}
 	}
 

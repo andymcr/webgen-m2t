@@ -38,6 +38,7 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.IndexUnitFieldCompart
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageLinkEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageUnitCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitFieldCompartmentEditPart;
@@ -67,6 +68,7 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.WebUIEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.WebuiVisualIDRegistry;
 
 /**
@@ -252,16 +254,30 @@ public class WebuiNavigatorContentProvider implements ICommonContentProvider {
 		case WebUIEditPart.VISUAL_ID: {
 			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
 			Diagram sv = (Diagram) view;
+			WebuiNavigatorGroup links = new WebuiNavigatorGroup(Messages.NavigatorGroupName_WebUI_1000_links,
+					"icons/linksNavigatorGroup.gif", parentElement); //$NON-NLS-1$
 			Collection<View> connectedViews;
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebuiVisualIDRegistry.getType(PageEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getDiagramLinksByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(PageLinkEditPart.VISUAL_ID));
+			links.addChildren(createNavigatorItems(connectedViews, links, false));
+			if (!links.isEmpty()) {
+				result.add(links);
+			}
 			return result.toArray();
 		}
 
 		case PageEditPart.VISUAL_ID: {
 			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
 			Node sv = (Node) view;
+			WebuiNavigatorGroup incominglinks = new WebuiNavigatorGroup(
+					Messages.NavigatorGroupName_Page_2001_incominglinks, "icons/incomingLinksNavigatorGroup.gif", //$NON-NLS-1$
+					parentElement);
+			WebuiNavigatorGroup outgoinglinks = new WebuiNavigatorGroup(
+					Messages.NavigatorGroupName_Page_2001_outgoinglinks, "icons/outgoingLinksNavigatorGroup.gif", //$NON-NLS-1$
+					parentElement);
 			Collection<View> connectedViews;
 			connectedViews = getChildrenByType(Collections.singleton(sv),
 					WebuiVisualIDRegistry.getType(PageUnitCompartmentEditPart.VISUAL_ID));
@@ -318,6 +334,18 @@ public class WebuiNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(connectedViews,
 					WebuiVisualIDRegistry.getType(UpdateUnitEditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			connectedViews = getIncomingLinksByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(PageLinkEditPart.VISUAL_ID));
+			incominglinks.addChildren(createNavigatorItems(connectedViews, incominglinks, true));
+			connectedViews = getOutgoingLinksByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(PageLinkEditPart.VISUAL_ID));
+			outgoinglinks.addChildren(createNavigatorItems(connectedViews, outgoinglinks, true));
+			if (!incominglinks.isEmpty()) {
+				result.add(incominglinks);
+			}
+			if (!outgoinglinks.isEmpty()) {
+				result.add(outgoinglinks);
+			}
 			return result.toArray();
 		}
 
@@ -488,6 +516,29 @@ public class WebuiNavigatorContentProvider implements ICommonContentProvider {
 			connectedViews = getChildrenByType(connectedViews,
 					WebuiVisualIDRegistry.getType(UnitElement10EditPart.VISUAL_ID));
 			result.addAll(createNavigatorItems(connectedViews, parentElement, false));
+			return result.toArray();
+		}
+
+		case PageLinkEditPart.VISUAL_ID: {
+			LinkedList<WebuiAbstractNavigatorItem> result = new LinkedList<WebuiAbstractNavigatorItem>();
+			Edge sv = (Edge) view;
+			WebuiNavigatorGroup target = new WebuiNavigatorGroup(Messages.NavigatorGroupName_PageLink_4001_target,
+					"icons/linkTargetNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			WebuiNavigatorGroup source = new WebuiNavigatorGroup(Messages.NavigatorGroupName_PageLink_4001_source,
+					"icons/linkSourceNavigatorGroup.gif", parentElement); //$NON-NLS-1$
+			Collection<View> connectedViews;
+			connectedViews = getLinksTargetByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(PageEditPart.VISUAL_ID));
+			target.addChildren(createNavigatorItems(connectedViews, target, true));
+			connectedViews = getLinksSourceByType(Collections.singleton(sv),
+					WebuiVisualIDRegistry.getType(PageEditPart.VISUAL_ID));
+			source.addChildren(createNavigatorItems(connectedViews, source, true));
+			if (!target.isEmpty()) {
+				result.add(target);
+			}
+			if (!source.isEmpty()) {
+				result.add(source);
+			}
 			return result.toArray();
 		}
 		}

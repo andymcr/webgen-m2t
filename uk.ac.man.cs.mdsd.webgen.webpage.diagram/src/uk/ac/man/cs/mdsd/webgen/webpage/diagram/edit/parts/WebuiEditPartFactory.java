@@ -252,6 +252,10 @@ public class WebuiEditPartFactory implements EditPartFactory {
 
 			case UpdateUnitFieldCompartmentEditPart.VISUAL_ID:
 				return new UpdateUnitFieldCompartmentEditPart(view);
+
+			case PageLinkEditPart.VISUAL_ID:
+				return new PageLinkEditPart(view);
+
 			}
 		}
 		return createUnrecognizedEditPart(context, model);

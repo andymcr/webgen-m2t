@@ -31,6 +31,7 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.IndexUnitNameEditPart
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageLinkEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageNameEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitNameEditPart;
@@ -238,6 +239,9 @@ public class WebuiNavigatorLabelProvider extends LabelProvider implements ICommo
 		case UnitElement10EditPart.VISUAL_ID:
 			return getImage("Navigator?Node?http://cs.man.ac.uk/mdsd/webgen/webui?UnitElement", //$NON-NLS-1$
 					WebuiElementTypes.UnitElement_3031);
+		case PageLinkEditPart.VISUAL_ID:
+			return getImage("Navigator?Link?http://cs.man.ac.uk/mdsd/webgen/webui?PageLink", //$NON-NLS-1$
+					WebuiElementTypes.PageLink_4001);
 		}
 		return getImage("Navigator?UnknownElement", null); //$NON-NLS-1$
 	}
@@ -354,6 +358,8 @@ public class WebuiNavigatorLabelProvider extends LabelProvider implements ICommo
 			return getUnitAssociation_3030Text(view);
 		case UnitElement10EditPart.VISUAL_ID:
 			return getUnitElement_3031Text(view);
+		case PageLinkEditPart.VISUAL_ID:
+			return getPageLink_4001Text(view);
 		}
 		return getUnknownElementText(view);
 	}
@@ -881,6 +887,13 @@ public class WebuiNavigatorLabelProvider extends LabelProvider implements ICommo
 			WebuiDiagramEditorPlugin.getInstance().logError("Parser was not found for label " + 5032); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
+	}
+
+	/**
+	* @generated
+	*/
+	private String getPageLink_4001Text(View view) {
+		return ""; //$NON-NLS-1$
 	}
 
 	/**

@@ -218,6 +218,7 @@
          <Priority name="Lowest"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Diagram" semanticHints="WebPage"/>
          <context viewClass="org.eclipse.gmf.runtime.notation.Node" semanticHints="2001,3001,3012,3013,3002,3014,3015,3003,3016,3017,3004,3018,3019,3005,3020,3021,3006,3022,3023,3007,3024,3025,3008,3026,3027,3009,3028,3029,3010,3011,3030,3031"/>
+         <context viewClass="org.eclipse.gmf.runtime.notation.Edge" semanticHints="4001"/>
       </viewProvider>
    </extension>
 
@@ -232,7 +233,7 @@
             <method name="getType()" value="2001,3001,3012,3013,3002,3014,3015,3003,3016,3017,3004,3018,3019,3005,3020,3021,3006,3022,3023,3007,3024,3025,3008,3026,3027,3009,3028,3029,3010,3011,3030,3031"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Edge" id="generated-links">
-            <method name="getType()" value=""/>
+            <method name="getType()" value="4001"/>
          </object>
          <object class="org.eclipse.gmf.runtime.notation.Node" id="generated-labels">
             <method name="getType()" value="5012,5001,5013,5014,5002,5015,5016,5003,5017,5018,5004,5019,5020,5005,5021,5022,5006,5023,5024,5007,5025,5026,5008,5027,5028,5009,5029,5030,5010,5011,5031,5032"/>
@@ -744,6 +745,16 @@
             <param name="semanticHint" value="3031"/>
          </specializationType>
       </metamodel>
+      <metamodel nsURI="http://cs.man.ac.uk/mdsd/webgen/webui">
+         <metamodelType
+               id="uk.ac.man.cs.mdsd.webgen.webui.diagram.PageLink_4001"
+               name="%metatype.name.PageLink_4001"
+               kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
+               eclass="PageLink"
+               edithelper="uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.helpers.PageLinkEditHelper">
+            <param name="semanticHint" value="4001"/>
+         </metamodelType>
+      </metamodel>
    </extension>
 
    <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypeBindings" id="element-types-bindings">
@@ -789,6 +800,7 @@
          <elementType ref="uk.ac.man.cs.mdsd.webgen.webui.diagram.UpdateUnit_3011"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitAssociation_3030"/>
          <elementType ref="uk.ac.man.cs.mdsd.webgen.webui.diagram.UnitElement_3031"/>
+         <elementType ref="uk.ac.man.cs.mdsd.webgen.webui.diagram.PageLink_4001"/>
          <advice ref="org.eclipse.gmf.runtime.diagram.core.advice.notationDepdendents"/>
       </binding>
    </extension>

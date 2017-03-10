@@ -268,6 +268,16 @@ public class Messages extends NLS {
 	/**
 	* @generated
 	*/
+	public static String ParentPage2CreationTool_title;
+
+	/**
+	* @generated
+	*/
+	public static String ParentPage2CreationTool_desc;
+
+	/**
+	* @generated
+	*/
 	public static String CreateUnit1CreationTool_title;
 
 	/**
@@ -394,6 +404,31 @@ public class Messages extends NLS {
 	* @generated
 	*/
 	public static String CommandName_OpenDiagram;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_WebUI_1000_links;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_Page_2001_incominglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_Page_2001_outgoinglinks;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_PageLink_4001_target;
+
+	/**
+	* @generated
+	*/
+	public static String NavigatorGroupName_PageLink_4001_source;
 
 	/**
 	* @generated

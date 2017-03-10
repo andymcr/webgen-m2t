@@ -1,10 +1,15 @@
 package uk.ac.man.cs.mdsd.webgen.webpage.diagram.part;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import java.util.Map;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.gmf.tooling.runtime.update.DiagramUpdater;
 
@@ -23,6 +28,7 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.IndexUnitFieldCompart
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.MapUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageLinkEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.PageUnitCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.SearchUnitFieldCompartmentEditPart;
@@ -52,6 +58,7 @@ import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UnitElementEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.UpdateUnitFieldCompartmentEditPart;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts.WebUIEditPart;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.providers.WebuiElementTypes;
 import uk.ac.man.cs.mdsd.webgen.webui.ContentUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.CreateUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.CreateUpdateUnit;
@@ -61,11 +68,13 @@ import uk.ac.man.cs.mdsd.webgen.webui.ImageIndexUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.IndexUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.MapUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.Page;
+import uk.ac.man.cs.mdsd.webgen.webui.PageLink;
 import uk.ac.man.cs.mdsd.webgen.webui.SearchUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.SliderUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.UnitField;
 import uk.ac.man.cs.mdsd.webgen.webui.UpdateUnit;
 import uk.ac.man.cs.mdsd.webgen.webui.WebUI;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
@@ -540,6 +549,8 @@ public class WebuiDiagramUpdater {
 			return getUnitAssociation_3030ContainedLinks(view);
 		case UnitElement10EditPart.VISUAL_ID:
 			return getUnitElement_3031ContainedLinks(view);
+		case PageLinkEditPart.VISUAL_ID:
+			return getPageLink_4001ContainedLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -613,6 +624,8 @@ public class WebuiDiagramUpdater {
 			return getUnitAssociation_3030IncomingLinks(view);
 		case UnitElement10EditPart.VISUAL_ID:
 			return getUnitElement_3031IncomingLinks(view);
+		case PageLinkEditPart.VISUAL_ID:
+			return getPageLink_4001IncomingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -686,6 +699,8 @@ public class WebuiDiagramUpdater {
 			return getUnitAssociation_3030OutgoingLinks(view);
 		case UnitElement10EditPart.VISUAL_ID:
 			return getUnitElement_3031OutgoingLinks(view);
+		case PageLinkEditPart.VISUAL_ID:
+			return getPageLink_4001OutgoingLinks(view);
 		}
 		return Collections.emptyList();
 	}
@@ -701,7 +716,10 @@ public class WebuiDiagramUpdater {
 	 * @generated
 	 */
 	public static List<WebuiLinkDescriptor> getPage_2001ContainedLinks(View view) {
-		return Collections.emptyList();
+		Page modelElement = (Page) view.getElement();
+		LinkedList<WebuiLinkDescriptor> result = new LinkedList<WebuiLinkDescriptor>();
+		result.addAll(getContainedTypeModelFacetLinks_PageLink_4001(modelElement));
+		return result;
 	}
 
 	/**
@@ -922,10 +940,22 @@ public class WebuiDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebuiLinkDescriptor> getPageLink_4001ContainedLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebuiLinkDescriptor> getPage_2001IncomingLinks(View view) {
-		return Collections.emptyList();
+		Page modelElement = (Page) view.getElement();
+		Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences = EcoreUtil.CrossReferencer
+				.find(view.eResource().getResourceSet().getResources());
+		LinkedList<WebuiLinkDescriptor> result = new LinkedList<WebuiLinkDescriptor>();
+		result.addAll(getIncomingTypeModelFacetLinks_PageLink_4001(modelElement, crossReferences));
+		return result;
 	}
 
 	/**
@@ -1146,10 +1176,20 @@ public class WebuiDiagramUpdater {
 	}
 
 	/**
+	* @generated
+	*/
+	public static List<WebuiLinkDescriptor> getPageLink_4001IncomingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
 	 * @generated
 	 */
 	public static List<WebuiLinkDescriptor> getPage_2001OutgoingLinks(View view) {
-		return Collections.emptyList();
+		Page modelElement = (Page) view.getElement();
+		LinkedList<WebuiLinkDescriptor> result = new LinkedList<WebuiLinkDescriptor>();
+		result.addAll(getContainedTypeModelFacetLinks_PageLink_4001(modelElement));
+		return result;
 	}
 
 	/**
@@ -1367,6 +1407,55 @@ public class WebuiDiagramUpdater {
 	*/
 	public static List<WebuiLinkDescriptor> getUnitElement_3031OutgoingLinks(View view) {
 		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	public static List<WebuiLinkDescriptor> getPageLink_4001OutgoingLinks(View view) {
+		return Collections.emptyList();
+	}
+
+	/**
+	* @generated
+	*/
+	private static Collection<WebuiLinkDescriptor> getContainedTypeModelFacetLinks_PageLink_4001(Page container) {
+		LinkedList<WebuiLinkDescriptor> result = new LinkedList<WebuiLinkDescriptor>();
+		PageLink link = container.getParentPage();
+		if (PageLinkEditPart.VISUAL_ID != WebuiVisualIDRegistry.getLinkWithClassVisualID(link)) {
+			return result;
+		}
+		Page dst = link.getTargetPage();
+		result.add(new WebuiLinkDescriptor(container, dst, link, WebuiElementTypes.PageLink_4001,
+				PageLinkEditPart.VISUAL_ID));
+		return result;
+	}
+
+	/**
+	* @generated
+	*/
+	private static Collection<WebuiLinkDescriptor> getIncomingTypeModelFacetLinks_PageLink_4001(Page target,
+			Map<EObject, Collection<EStructuralFeature.Setting>> crossReferences) {
+		LinkedList<WebuiLinkDescriptor> result = new LinkedList<WebuiLinkDescriptor>();
+		Collection<EStructuralFeature.Setting> settings = crossReferences.get(target);
+		for (EStructuralFeature.Setting setting : settings) {
+			if (setting.getEStructuralFeature() != WebuiPackage.eINSTANCE.getPageLink_TargetPage()
+					|| false == setting.getEObject() instanceof PageLink) {
+				continue;
+			}
+			PageLink link = (PageLink) setting.getEObject();
+			if (PageLinkEditPart.VISUAL_ID != WebuiVisualIDRegistry.getLinkWithClassVisualID(link)) {
+				continue;
+			}
+			if (false == link.eContainer() instanceof Page) {
+				continue;
+			}
+			Page container = (Page) link.eContainer();
+			result.add(new WebuiLinkDescriptor(container, target, link, WebuiElementTypes.PageLink_4001,
+					PageLinkEditPart.VISUAL_ID));
+
+		}
+		return result;
 	}
 
 	/**

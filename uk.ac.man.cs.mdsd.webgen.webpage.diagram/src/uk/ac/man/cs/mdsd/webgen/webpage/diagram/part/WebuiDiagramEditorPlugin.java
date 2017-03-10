@@ -24,6 +24,7 @@ import uk.ac.man.cs.mdsd.webgen.expression.provider.ExpressionItemProviderAdapte
 import uk.ac.man.cs.mdsd.webgen.image.provider.ImageItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.persistence.provider.PersistenceItemProviderAdapterFactory;
 import uk.ac.man.cs.mdsd.webgen.service.provider.ServiceItemProviderAdapterFactory;
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.policies.WebuiBaseItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.providers.ElementInitializers;
 import uk.ac.man.cs.mdsd.webgen.webui.provider.WebuiItemProviderAdapterFactory;
 
@@ -65,6 +66,11 @@ public class WebuiDiagramEditorPlugin extends AbstractUIPlugin {
 	/**
 	* @generated
 	*/
+	private WebuiBaseItemSemanticEditPolicy.LinkConstraints linkConstraints;
+
+	/**
+	* @generated
+	*/
 	private ElementInitializers initializers;
 
 	/**
@@ -90,6 +96,7 @@ public class WebuiDiagramEditorPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		adapterFactory.dispose();
 		adapterFactory = null;
+		linkConstraints = null;
 		initializers = null;
 		instance = null;
 		super.stop(context);
@@ -208,6 +215,20 @@ public class WebuiDiagramEditorPlugin extends AbstractUIPlugin {
 			documentProvider = new WebuiDocumentProvider();
 		}
 		return documentProvider;
+	}
+
+	/**
+	* @generated
+	*/
+	public WebuiBaseItemSemanticEditPolicy.LinkConstraints getLinkConstraints() {
+		return linkConstraints;
+	}
+
+	/**
+	* @generated
+	*/
+	public void setLinkConstraints(WebuiBaseItemSemanticEditPolicy.LinkConstraints lc) {
+		this.linkConstraints = lc;
 	}
 
 	/**

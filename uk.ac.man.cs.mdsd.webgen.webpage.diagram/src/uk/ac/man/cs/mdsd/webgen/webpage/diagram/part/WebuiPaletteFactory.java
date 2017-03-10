@@ -9,6 +9,7 @@ import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gmf.runtime.emf.type.core.IElementType;
+import org.eclipse.gmf.tooling.runtime.part.DefaultLinkToolEntry;
 import org.eclipse.gmf.tooling.runtime.part.DefaultNodeToolEntry;
 
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.providers.WebuiElementTypes;
@@ -36,6 +37,7 @@ public class WebuiPaletteFactory {
 		paletteContainer.setId("createDefault1Group"); //$NON-NLS-1$
 		paletteContainer.setDescription(Messages.Default1Group_desc);
 		paletteContainer.add(createPage1CreationTool());
+		paletteContainer.add(createParentPage2CreationTool());
 		return paletteContainer;
 	}
 
@@ -80,6 +82,18 @@ public class WebuiPaletteFactory {
 				Collections.singletonList(WebuiElementTypes.Page_2001));
 		entry.setId("createPage1CreationTool"); //$NON-NLS-1$
 		entry.setSmallIcon(WebuiElementTypes.getImageDescriptor(WebuiElementTypes.Page_2001));
+		entry.setLargeIcon(entry.getSmallIcon());
+		return entry;
+	}
+
+	/**
+	* @generated
+	*/
+	private ToolEntry createParentPage2CreationTool() {
+		DefaultLinkToolEntry entry = new DefaultLinkToolEntry(Messages.ParentPage2CreationTool_title,
+				Messages.ParentPage2CreationTool_desc, Collections.singletonList(WebuiElementTypes.PageLink_4001));
+		entry.setId("createParentPage2CreationTool"); //$NON-NLS-1$
+		entry.setSmallIcon(WebuiElementTypes.getImageDescriptor(WebuiElementTypes.PageLink_4001));
 		entry.setLargeIcon(entry.getSmallIcon());
 		return entry;
 	}
