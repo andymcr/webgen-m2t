@@ -40,13 +40,6 @@ date()
 
 
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(ModelReference)) post(trim())]
-[let path : ModelReference = guard.oclAsType(ModelReference)]
-$this->[path.unit.instanceName()/]->[comment path unit  services->first() keyName()/]
-[/let]
-[/template]
-
-[template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = guard.oclAsType(FeatureReference)]
 [accessor/].[path.feature.modelPropertyName()/]

@@ -31,13 +31,6 @@ $now
 
 
 [template public controllerExpression(expression : Expression)
-	? (expression.oclIsTypeOf(ModelReference)) post(trim())]
-[let path : ModelReference = expression.oclAsType(ModelReference)]
-$this->[path.unit.instanceName()/]->[comment path unit services->first() keyName()/]
-[/let]
-[/template]
-
-[template public controllerExpression(expression : Expression)
 	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = expression.oclAsType(FeatureReference)]
 ->get[path.feature.modelPropertyName().toUpperFirst()/]()
