@@ -54,7 +54,7 @@ class [entityOrView.modelClassName()/][if (entityOrView.implementsUserInterface)
     [entityOrView.timestampFeatures()/]
 
 [/if]
-[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations()or entityOrView.implementsUserInterface)]
+[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations() or entityOrView.implementsUserInterface)]
     [entityOrView.constructor()/]
 
 [/if]

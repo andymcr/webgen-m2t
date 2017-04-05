@@ -252,7 +252,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
-				feature.oclAsType(UnitAssociation).association.association.partOf
+				feature.oclAsType(UnitAssociation).association.partOf
 			endif]
 	[let parentAccessor : String = accessor.substring(1, accessor.lastIndex('->') - 1)]
     [feature.actions->select(a | not a.disable)->first().actionLink(parentAccessor, feature.getValue(accessor), parentEntityOrView)/]
@@ -360,7 +360,7 @@ echo Form::submit('[action.actionName()/]', '[action.displayLabel/]'[if (not act
 [template private displayAssociation(association : UnitAssociation, accessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(accessor, association.getValue(accessor), association.association.association.targetType())/]
+	->first().actionLink(accessor, association.getValue(accessor), association.association.targetType())/]
 [else]
 	[if (association.maximumDisplaySize > 0)]
 <?php
@@ -402,29 +402,29 @@ NULL
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
-[if (association.association.childFeature.oclIsUndefined())]
+[if (association.childFeature.oclIsUndefined())]
 	[if (not association.valueDisplay.oclIsUndefined())]
 [association.valueDisplay.label(accessor)/]
 	[else]
 [accessor/]->defaultLabel()
 	[/if]
 [else]
-[association.association.childFeature.getValue(accessor, association.dateFormat)/]
+[association.childFeature.getValue(accessor, association.dateFormat)/]
 [/if]
 [/template]
 
-[template public getValue(childFeature : ChildFeature, accessor : String, dateFormat : String)
-	? (childFeature.oclIsTypeOf(ChildAttribute)) post(trim())]
-[let childAttribute : ChildAttribute = childFeature.oclAsType(ChildAttribute)]
+[template public getValue(childFeature : ChildPath, accessor : String, dateFormat : String)
+	? (childFeature.oclIsTypeOf(ChildPathAttribute)) post(trim())]
+[let childAttribute : ChildPathAttribute = childFeature.oclAsType(ChildPathAttribute)]
 [let childAccessor : String = accessor.concat('->').concat(childAttribute.attribute.columnName())]
 [childAttribute.attribute.getValue(childAccessor, dateFormat)/]
 [/let]
 [/let]
 [/template]
 
-[template public getValue(childFeature : ChildFeature, accessor : String, dateFormat : String)
-	? (childFeature.oclIsTypeOf(ChildAssociation)) post(trim())]
-[let childAssociation : ChildAssociation = childFeature.oclAsType(ChildAssociation)]
+[template public getValue(childFeature : ChildPath, accessor : String, dateFormat : String)
+	? (childFeature.oclIsTypeOf(ChildPathAssociation)) post(trim())]
+[let childAssociation : ChildPathAssociation = childFeature.oclAsType(ChildPathAssociation)]
 [let childAccessor : String = accessor.concat('->').concat(childAssociation.association.modelPropertyName())]
 [if (childAssociation.childFeature.oclIsUndefined())]
 [childAccessor/]->defaultLabel()

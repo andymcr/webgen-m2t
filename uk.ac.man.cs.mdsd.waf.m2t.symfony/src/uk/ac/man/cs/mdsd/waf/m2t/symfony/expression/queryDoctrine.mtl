@@ -63,8 +63,8 @@ $queryBuilder->expr()->literal('[literal.value/]')
 [/template]
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let path : CurrentUserReference = expression.oclAsType(CurrentUserReference)]
+	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
+[let path : CurrentUser = expression.oclAsType(CurrentUser)]
 ':user'
 [/let]
 [/template]
@@ -244,6 +244,6 @@ $query->setParameter('now', new \DateTime('now'));
 [/template]
 
 [template public queryParameter(expression : Expression, userService : Service)
-	? (expression.oclIsTypeOf(CurrentUserReference)) post(trim())]
+	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
 $query->setParameter('user', $this->[userService.instanceName()/]->getUser());
 [/template]

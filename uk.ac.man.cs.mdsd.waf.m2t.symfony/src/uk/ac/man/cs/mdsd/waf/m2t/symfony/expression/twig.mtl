@@ -58,8 +58,8 @@ date()
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let path : CurrentUserReference = guard.oclAsType(CurrentUserReference)]
+	? (guard.oclIsTypeOf(CurrentUser)) post(trim())]
+[let path : CurrentUser = guard.oclAsType(CurrentUser)]
 $this->get('people')->getId()
 [/let]
 [/template]

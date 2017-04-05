@@ -142,7 +142,7 @@ $[unit.templateInstanceName()/]->bind('route_parameters', $[unit.instanceName()/
 		->select(f | if f.oclIsTypeOf(UnitAttribute) then
 				f.oclAsType(UnitAttribute).attribute.partOf = entityOrView
 			else if f.oclIsTypeOf(UnitAssociation) then
-				f.oclAsType(UnitAssociation).association.association.partOf = entityOrView
+				f.oclAsType(UnitAssociation).association.partOf = entityOrView
 			else
 				false
 			endif endif)

@@ -18,7 +18,7 @@
     <target>[page.navigationLabel.validXML()/]</target>
    </trans-unit>
 [/for]
-[for (menu : Menu | model.menus)]
+[for (menu : Menu | model.contextMenus)]
    <trans-unit id="label.[menu.id()/]">
     <source>label.[menu.id()/]</source>
     <target>[menu.displayLabel.validXML()/]</target>

@@ -45,8 +45,8 @@ $now
 [/template]
 
 [template public controllerExpression(expression : Expression)
-	? (expression.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let path : CurrentUserReference = expression.oclAsType(CurrentUserReference)]
+	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
+[let path : CurrentUser = expression.oclAsType(CurrentUser)]
 $this->getUser()
 [/let]
 [/template]

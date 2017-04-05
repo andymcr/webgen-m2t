@@ -42,13 +42,6 @@ Time()
 
 
 [template public generateCriteria(criteria : Expression)
-	? (criteria.oclIsTypeOf(ModelReference)) post(trim())]
-[let path : ModelReference = criteria.oclAsType(ModelReference)]
-$this->[path.unit.instanceName()/]->[comment path.unit.services->first().keyName()/]
-[/let]
-[/template]
-
-[template public generateCriteria(criteria : Expression)
 	? (criteria.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = criteria.oclAsType(FeatureReference)]
 [if (path.feature.isDate())]
@@ -72,8 +65,8 @@ $[path.parameter.name/]
 [/template]
 
 [template public generateCriteria(criteria : Expression)
-	? (criteria.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let path : CurrentUserReference = criteria.oclAsType(CurrentUserReference)]
+	? (criteria.oclIsTypeOf(CurrentUser)) post(trim())]
+[let path : CurrentUser = criteria.oclAsType(CurrentUser)]
 Auth::instance()->get_actual_user()->id
 [/let]
 [/template]
@@ -143,13 +136,6 @@ $this->where([predicate.feature.generateCriteria()/], [if (predicate.negated)]'>
 		endif endif
 /]
 
-
-[template public generateOrderPath(path : Path)
-	? (path.oclIsTypeOf(ModelReference)) post(trim())]
-[let modelReference : ModelReference = path.oclAsType(ModelReference)]
-$this->[modelReference.unit.instanceName()/]
-[/let]
-[/template]
 
 [template public generateOrderPath(path : Expression)
 	? (path.oclIsTypeOf(FeatureReference)) post(trim())]

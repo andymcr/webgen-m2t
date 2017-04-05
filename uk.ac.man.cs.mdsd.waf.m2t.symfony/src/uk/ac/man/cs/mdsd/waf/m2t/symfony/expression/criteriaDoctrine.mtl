@@ -53,8 +53,8 @@ $[path.parameter.name/]
 [/template]
 
 [template public criteriaExpression(expression : Expression)
-	? (expression.oclIsTypeOf(CurrentUserReference)) post(trim())]
-[let path : CurrentUserReference = expression.oclAsType(CurrentUserReference)]
+	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
+[let path : CurrentUser = expression.oclAsType(CurrentUser)]
 $this->get('people')->getId()
 [/let]
 [/template]

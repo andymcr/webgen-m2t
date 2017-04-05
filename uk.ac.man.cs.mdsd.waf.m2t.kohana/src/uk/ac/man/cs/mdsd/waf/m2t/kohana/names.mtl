@@ -273,7 +273,7 @@
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
-			action.usedBy.oclAsType(UnitAssociation).association.association.modelName()
+			action.usedBy.oclAsType(UnitAssociation).association.modelName()
 		endif
 /]
 

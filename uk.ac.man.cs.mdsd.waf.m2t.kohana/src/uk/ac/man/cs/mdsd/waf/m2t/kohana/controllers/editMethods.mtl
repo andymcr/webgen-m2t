@@ -195,7 +195,7 @@ public function [association.optionsName()/]()
 [if (association.isSingleton())]
     $options['['/][']'/] = "Please select";
 [/if]
-    foreach (ORM::factory('[association.association.association.modelName()/]')->[if (association.selection.oclIsUndefined())]
+    foreach (ORM::factory('[association.association.modelName()/]')->[if (association.selection.oclIsUndefined())]
 find_all()[else]
 [association.selection.instanceName()/](FALSE)[/if] AS $option)
         $options['['/]$option->id[']'/] = [if (association.valueDisplay.oclIsUndefined())]
