@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module htaccess('http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[module htaccess('http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 
 
 [template public htaccess(model : WafModel)]

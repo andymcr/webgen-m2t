@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module indexMethods(
-	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::collectionMethods/]
 

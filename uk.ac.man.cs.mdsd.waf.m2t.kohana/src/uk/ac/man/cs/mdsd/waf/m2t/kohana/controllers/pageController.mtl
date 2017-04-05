@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module pageController(
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
-	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::files/]

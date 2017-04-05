@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
-	'http://www.cs.man.ac.uk/mdsd/2016/Expression',
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping')]
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
 
 
 [query public asId(string : String) : String

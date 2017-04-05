@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module generate(
-	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::custom/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::default/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::nonPrint/]

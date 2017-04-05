@@ -1,9 +1,9 @@
 [comment encoding = UTF-8 /]
 [module javascript(
-	'http://www.cs.man.ac.uk/mdsd/2016/Expression',
-	'http://www.cs.man.ac.uk/mdsd/2010/ObjectRelationalMapping',
-	'http://www.cs.man.ac.uk/mdsd/2017/Service',
-	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]

@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module unit(
-	'http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]

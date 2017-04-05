@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
-[module staticSitemapXML('http://www.cs.man.ac.uk/mdsd/2015/WebApplicationFramework')]
+[module staticSitemapXML(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::kohana::names/]

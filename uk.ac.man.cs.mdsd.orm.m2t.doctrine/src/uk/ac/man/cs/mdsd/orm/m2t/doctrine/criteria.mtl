@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module criteria(
-	'http://www.cs.man.ac.uk/mdsd/2016/Expression')]
+	'http://cs.manchester.ac.uk/mdsd/Expression')]
 [import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 
 
