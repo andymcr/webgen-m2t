@@ -43,6 +43,7 @@ public class WebuiModelingAssistantProvider extends ModelingAssistantProvider {
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("rawtypes")
 	protected EObject selectExistingElement(IAdaptable host, Collection types) {
 		if (types.isEmpty()) {
 			return null;
@@ -68,6 +69,7 @@ public class WebuiModelingAssistantProvider extends ModelingAssistantProvider {
 	/**
 	* @generated
 	*/
+	@SuppressWarnings("rawtypes")
 	protected boolean isApplicableElement(EObject element, Collection types) {
 		IElementType type = ElementTypeRegistry.getInstance().getElementType(element);
 		return types.contains(type);

@@ -731,6 +731,7 @@ public class WebuiParserProvider extends AbstractProvider implements IParserProv
 		/**
 		* @generated
 		*/
+		@SuppressWarnings("rawtypes")
 		public Object getAdapter(Class adapter) {
 			if (IElementType.class.equals(adapter)) {
 				return elementType;
