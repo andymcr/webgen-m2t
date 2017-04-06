@@ -3,6 +3,7 @@ package uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.parts;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gmf.runtime.diagram.core.edithelpers.CreateElementRequestAdapter;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.ListCompartmentEditPart;
@@ -15,11 +16,14 @@ import org.eclipse.gmf.runtime.emf.type.core.IElementType;
 import org.eclipse.gmf.runtime.notation.View;
 
 import org.eclipse.gmf.tooling.runtime.edit.policies.reparent.CreationEditPolicyWithCustomReparent;
+
+import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.policies.CompartmentRepositionLayoutEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.policies.GalleryUnitFieldCompartmentCanonicalEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.edit.policies.GalleryUnitFieldCompartmentItemSemanticEditPolicy;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.Messages;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.WebuiVisualIDRegistry;
 import uk.ac.man.cs.mdsd.webgen.webpage.diagram.providers.WebuiElementTypes;
+import uk.ac.man.cs.mdsd.webgen.webui.WebuiPackage;
 
 /**
  * @generated
@@ -62,7 +66,7 @@ public class GalleryUnitFieldCompartmentEditPart extends ListCompartmentEditPart
 	}
 
 	/**
-	* @generated
+	* @generated NOT
 	*/
 	protected void createDefaultEditPolicies() {
 		super.createDefaultEditPolicies();
@@ -71,6 +75,8 @@ public class GalleryUnitFieldCompartmentEditPart extends ListCompartmentEditPart
 				new CreationEditPolicyWithCustomReparent(WebuiVisualIDRegistry.TYPED_INSTANCE));
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new GalleryUnitFieldCompartmentCanonicalEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE,
+				new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.DYNAMIC_UNIT__DISPLAY_FIELDS));
 	}
 
 	/**
