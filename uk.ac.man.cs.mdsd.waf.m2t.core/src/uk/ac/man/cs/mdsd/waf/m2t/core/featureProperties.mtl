@@ -15,6 +15,14 @@
 /]
 
 
+[query public hasAPI(model : WafModel) : Boolean
+	= if model.api.oclIsUndefined() then
+			false
+		else
+			model.api.resources->notEmpty()
+		endif
+/]
+
 [query public hasCaptchaFields(model : WafModel) : Boolean
 	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
 /]
@@ -900,18 +908,6 @@
 
 [query public hasTitle(field : UnitField) : Boolean
 	= not field.title.oclIsUndefined()
-/]
-
-[query public id(field : UnitField) : String
-	= if field.oclIsKindOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).name.asId()
-		else if field.oclIsKindOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).id()
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).name.asId()
-		else
-			'Unhandled'
-		endif endif endif
 /]
 
 [query public id(association : UnitAssociation) : String

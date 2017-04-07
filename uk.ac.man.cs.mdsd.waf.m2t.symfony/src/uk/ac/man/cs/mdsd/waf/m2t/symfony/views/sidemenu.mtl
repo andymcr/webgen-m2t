@@ -31,10 +31,10 @@
 [/template]
 
 [template private generateMenuEntries(menu : Menu)
-	? (menu.oclIsTypeOf(StaticMenu)) post(trim())]
-[let staticMenu : StaticMenu = menu.oclAsType(StaticMenu)]
-<h1 class="[staticMenu.captionClass/][if (staticMenu.omitCaption)] hidden[/if]">{{ 'label.[staticMenu.id()/]' | trans }}</h1>
-<ul class="[staticMenu.layoutClass/]">
+	? (menu.oclIsTypeOf(ContextMenu)) post(trim())]
+[let contextMenu : ContextMenu = menu.oclAsType(ContextMenu)]
+<h1 class="[contextMenu.captionClass/][if (contextMenu.omitCaption)] hidden[/if]">{{ 'label.[contextMenu.id()/]' | trans }}</h1>
+<ul class="[contextMenu.layoutClass/]">
 [for (entry : MenuEntry | menu.entries)]
  [entry.generateMenuEntry()/]
 [/for]

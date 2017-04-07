@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
-[module rest(
+[module api(
+	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
@@ -12,11 +13,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
-[template public controller(entityOrView : EntityOrView, model : WafModel)]
-[file(entityOrView.controllerFilename(), false)]
-[let service : Service = entityOrView.services(model)->first()]
+[template public controller(resource : Resource, model : WafModel)]
+[file(resource.controllerFilename(), false)]
 <?php
-namespace [entityOrView.apiControllersNamespace()/];
+namespace [resource.apiControllersNamespace()/];
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -26,10 +26,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * @Rest\View(serializerEnableMaxDepthChecks="true")
  **/
-class [entityOrView.controllerClassName()/] extends Controller
+class [resource.controllerClassName()/] extends Controller
 {
     /**
-     * @Rest\Get("/[service.name.toLowerCase()/]", name="[entityOrView.routeName()/]")
+     * @Rest\Get("/[resource.service.name.toLowerCase()/]", name="[resource.routeName()/]")
      *
      * @ApiDoc(resource="true")
      *
@@ -41,7 +41,7 @@ class [entityOrView.controllerClassName()/] extends Controller
     }
 
     /**
-     * Rest\Post("/[service.name.toLowerCase()/]_new", name="[entityOrView.routeName()/]_new")
+     * Rest\Post("/[service.name.toLowerCase()/]_new", name="[resource.routeName()/]_new")
      *
      * ApiDoc(resource="true")
      *
@@ -52,6 +52,5 @@ class [entityOrView.controllerClassName()/] extends Controller
 //    }
 
 }
-[/let]
 [/file]
 [/template]

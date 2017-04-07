@@ -1,9 +1,11 @@
 [comment encoding = UTF-8 /]
 [module files(
 	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
@@ -110,7 +112,7 @@
 /]
 
 [query public webControllersDirectory(eObject : EObject) : String
-	= eObject.controllersDirectory() -- TODO remove? .concat('/').concat('Web')
+	= eObject.controllersDirectory().concat('/').concat('Web')
 /]
 
 [query public webDirectory(eObject : EObject) : String
@@ -183,7 +185,7 @@
 /]
 
 [query public webControllersNamespace(eObject : EObject) : String
-	= eObject.controllersNamespace() -- TODO remove? .concat('\\').concat('Web')
+	= eObject.controllersNamespace().concat('\\').concat('Web')
 /]
 
 
@@ -197,16 +199,20 @@
 	= eObject.configDirectory().concat('/').concat('config')
 /]
 
-[query public controllerFilename(entityOrView : EntityOrView) : String
-	= entityOrView.apiControllersDirectory().concat('/')
-		.concat(entityOrView.controllerClassName())
-		.concat(entityOrView.executableExtension())
+[query public controllerFilename(page : Page, model : WafModel) : String
+	= if model.hasAPI() then
+			page.webControllersDirectory()
+		else
+			page.controllersDirectory()
+		endif.concat('/')
+			.concat(page.controllerClassName())
+			.concat(page.executableExtension())
 /]
 
-[query public controllerFilename(page : Page) : String
-	= page.webControllersDirectory().concat('/')
-		.concat(page.controllerClassName())
-		.concat(page.executableExtension())
+[query public controllerFilename(resource : Resource) : String
+	= resource.apiControllersDirectory().concat('/')
+		.concat(resource.controllerClassName())
+		.concat(resource.executableExtension())
 /]
 
 [query public formTypeFilename(type : EnumerationType) : String

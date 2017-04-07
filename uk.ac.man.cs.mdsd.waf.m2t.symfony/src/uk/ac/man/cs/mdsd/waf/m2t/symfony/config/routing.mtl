@@ -8,15 +8,15 @@
 
 [template public routing(model : WafModel)]
 [file (model.routingBaseFilename().concat(model.ymlExtension()), false)]
-[if (model.restApi->notEmpty())]
+[if (model.hasAPI())]
 app_api:
     resource: "@AppBundle/Controller/Api/"
     type:     annotation
     prefix: /api
 [/if]
 [if (model.pages->select(p | p.units->notEmpty())->notEmpty())]
-app[if (model.restApi->notEmpty())]_web[/if]:
-    resource: "@AppBundle/Controller/"
+app[if (model.hasAPI())]_web[/if]:
+    resource: "@AppBundle/Controller/[if (model.hasAPI())]Web/[/if]"
     type:     annotation
 
 [/if]
@@ -25,7 +25,7 @@ _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
 [/if]
-[if (model.restApi->notEmpty())]
+[if (model.hasAPI())]
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix: /api/doc

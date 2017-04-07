@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module names(
 	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
@@ -50,14 +51,6 @@
 /]
 
 
-[query public controllerName(entityOrView : EntityOrView) : String
-	= entityOrView.name
-/]
-
-[query public controllerClassName(entityOrView : EntityOrView) : String
-	= entityOrView.controllerName().concat('Controller').toUpperFirst()
-/]
-
 [query public instanceName(entityOrView : EntityOrView) : String
 	= entityOrView.name.toLowerFirst()
 /]
@@ -72,6 +65,15 @@
 
 [query public typeClassName(entityOrView : EntityOrView) : String
 	= entityOrView.typePrefix().concat(entityOrView.modelName()).concat(entityOrView.typeSuffix())
+/]
+
+
+[query public controllerName(resource : Resource) : String
+	= resource.name
+/]
+
+[query public controllerClassName(resource : Resource) : String
+	= resource.controllerName().concat('Controller').toUpperFirst()
 /]
 
 
@@ -174,6 +176,10 @@
 	= unit.oclAsType(DynamicUnit).instanceName()
 /]
 
+[query public instanceName(resource : Resource) : String
+	= resource.name.toLowerFirst()
+/]
+
 [query public modelName(unit : ContentUnit) : String
 	= if unit.oclIsTypeOf(StaticUnit) then
 			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
@@ -209,6 +215,10 @@
 					''
 				endif)
 		endif
+/]
+
+[query public routeName(resource : Resource) : String
+	= resource.instanceName()
 /]
 
 [query public selectName(unit : ContentUnit) : String

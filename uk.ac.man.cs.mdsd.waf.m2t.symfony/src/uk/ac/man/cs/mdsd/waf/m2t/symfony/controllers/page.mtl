@@ -19,10 +19,14 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::staticMethods/]
 
 
-[template public controller(page : Page)]
-[file(page.controllerFilename(), false)]
+[template public controller(page : Page, model : WafModel)]
+[file(page.controllerFilename(model), false)]
 <?php
+[if (model.hasAPI())]
 namespace [page.webControllersNamespace()/];
+[else]
+namespace [page.controllersNamespace()/];
+[/if]
 
 [page.useStatements()/]
 

@@ -33,13 +33,13 @@ class AppKernel extends Kernel
 [if (model.isCasAuthenticated())]
             new McrCsMdsd\CasBundle\McrCsMdsdCasBundle(),
 [/if]
-[if (model.restApi->notEmpty())]
+[if (model.hasAPI())]
             new FOS\RestBundle\FOSRestBundle(),
 [/if]
 [if (model.isLocallyAuthenticated())]
             new FOS\UserBundle\FOSUserBundle(),
 [/if]
-[if (model.restApi->notEmpty())]
+[if (model.hasAPI())]
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 [/if]
