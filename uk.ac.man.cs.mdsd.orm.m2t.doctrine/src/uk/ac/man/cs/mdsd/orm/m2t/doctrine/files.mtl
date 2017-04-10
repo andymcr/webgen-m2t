@@ -19,6 +19,14 @@
 	= eObject.appBundleDirectory().concat('/').concat('Entity')
 /]
 
+[query public normalizerDirectory(eObject : EObject) : String
+	= eObject.serializerDirectory().concat('/').concat('Normalizer')
+/]
+
+[query public serializerDirectory(eObject : EObject) : String
+	= eObject.appBundleDirectory().concat('/').concat('Serializer')
+/]
+
 [query public sourceDirectory(eObject : EObject) : String
 	= 'src'
 /]
@@ -40,6 +48,14 @@
 	= eObject.appBundleNamespace().concat('\\').concat('Entity')
 /]
 
+[query public normalizerNamespace(eObject : EObject) : String
+	= eObject.serializerNamespace().concat('\\').concat('Normalizer')
+/]
+
+[query public serializerNamespace(eObject : EObject) : String
+	= eObject.appBundleNamespace().concat('\\').concat('Serializer')
+/]
+
 [query public validatorNamespace(eObject : EObject) : String
 	= eObject.appBundleNamespace().concat('\\').concat('Validator')
 /]
@@ -51,8 +67,14 @@
 		.concat(type.executableExtension())
 /]
 
-[query public modelFilename(entityOrView : EntityOrView) : String
-	= entityOrView.modelsDirectory().concat('/')
-		.concat(entityOrView.name)
-		.concat(entityOrView.executableExtension())
+[query public modelFilename(entity : EntityOrView) : String
+	= entity.modelsDirectory().concat('/')
+		.concat(entity.modelClassName())
+		.concat(entity.executableExtension())
+/]
+
+[query public normalizerFilename(entity : EntityOrView) : String
+	= entity.normalizerDirectory().concat('/')
+		.concat(entity.normalizerClassName())
+		.concat(entity.executableExtension())
 /]
