@@ -31,7 +31,9 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+[if (model.hasAPI())]
+    serializer:      { enable_annotations: true }
+[/if]
     templating:
         engines: ['['/]'twig'[']'/]
         #assets_version: SomeVersionScheme
@@ -46,9 +48,7 @@ framework:
     assets: ~
 
 sensio_framework_extra:
-[if (not model.hasAPI())]
-    view: { annotations: false }
-[/if]
+    view: { annotations: [if (model.hasAPI())]true[else]false[/if] }
     router: { annotations: true }
 
 # Twig Configuration
