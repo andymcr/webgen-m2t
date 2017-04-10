@@ -31,7 +31,7 @@ namespace [entityOrView.modelsNamespace()/];
  * @UniqueEntity([for (feature : Feature | entityOrView.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for])
 [/if]
 [for (attribute : Attribute | entityOrView.uniqueAttributes())]
- * @UniqueEntity("[attribute.columnName()/]")
+ * @UniqueEntity("[attribute.columnName()/]"[if (not attribute.isRequired())], ignoreNull="false"[/if])
 [/for]
 [if (entityOrView.isContained())]
 	[for (attribute : Attribute | entityOrView.containerUniqueAttributes())]
