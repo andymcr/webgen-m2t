@@ -40,7 +40,6 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
 [/if]
 [if (model.hasAPI())]
-            new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 [/if]
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
