@@ -118,6 +118,10 @@
 	= entityOrView.features->select(a | a.isVisible())
 /]
 
+[query public hasAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.associations()->notEmpty()
+/]
+
 [query public hasAssociationKeys(entityOrView : EntityOrView) : Boolean
 	= entityOrView.associationKeys()->notEmpty()
 /]
