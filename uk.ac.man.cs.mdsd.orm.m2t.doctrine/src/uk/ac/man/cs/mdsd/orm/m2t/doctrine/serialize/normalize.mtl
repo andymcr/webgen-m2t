@@ -28,9 +28,19 @@ class [entity.normalizerClassName()/] extends SerializerAwareNormalizer implemen
     public function normalize($object, $format = NULL, array $context = array())
     {
         $data = array();
-[for (feature : Feature | entity.features->select(f | f.serializationExpose))]
-    	[feature.data('$object')/]
+        if (array_key_exists('x', $context))
+        {
+[for (key : Attribute | entity.attributeKeys())]
+             $data['['/]'[key.modelPropertyName()/]'[']'/] = $object->[key.getMethodName()/]();
 [/for]
+        }
+        else
+        {
+            $context['['/]'x'[']'/] = 'y';
+[for (feature : Feature | entity.features->select(f | f.serializationExpose))]
+    	    [feature.data('$object')/]
+[/for]
+        }
     	return $data;
     }
 }
@@ -44,14 +54,24 @@ $data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMet
 
 [template private data(feature : Feature, accessor : String)
 	? (feature.oclIsKindOf(EntityAssociation) and feature.isSingleton()) post(trim())]
+[if (feature.isRequired())]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize([accessor/]->[feature.getMethodName()/](), $format, $context);
+[else]
+$[feature.instanceName()/] = [accessor/]->[feature.getMethodName()/]();
+if ($[feature.instanceName()/])
+    $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize($[feature.instanceName()/], $format, $context);
+[/if]
+[/template]
+
+[template private data2(association : EntityAssociation, accessor : String)
+	? (association.isSingleton()) post(trim())]
 [/template]
 
 [template private data(feature : Feature, accessor : String)
 	? (feature.oclIsKindOf(EntityAssociation) and not feature.isSingleton()) post(trim())]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = array_map(
     function ($object) use ($format, $context) {
-                    return $this->serializer->normalize($object, $format, $context);
+        return $this->serializer->normalize($object, $format, $context);
     },
     [accessor/]->[feature.getMethodName()/]()
 );
