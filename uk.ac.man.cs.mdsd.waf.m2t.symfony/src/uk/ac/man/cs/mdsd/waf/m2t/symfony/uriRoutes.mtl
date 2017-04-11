@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module uriRoutes(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -168,6 +169,31 @@ $[key.routeParameterName(entityOrView)/][/for]
 	= action.immediateUnit().pageDisplayedOn().uriPath()
 		.combinePaths(action.immediateUnit().contentUriPath())
         .combinePaths(action.uriElement)
+/]
+
+
+[query private parentUriPath(resource : Resource) : String
+	= '/'
+/]
+
+[query public uriPath(resource : Resource) : String
+	= resource.uriPath(false)
+/]
+
+[query public uriPath(resource : Resource, basePath : Boolean) : String
+	= let baseUri : String
+		= if resource.parentResource.oclIsUndefined() then
+				'/'.concat(resource.uriElement)
+			else
+				resource.parentUriPath().combinePaths(resource.uriElement)
+			endif
+		in if basePath then
+				baseUri
+			else
+				let entity : EntityOrView 
+					= resource.service.serves
+					in baseUri.combinePaths(entity.keyEntity().keyPath(entity))
+			endif
 /]
 
 

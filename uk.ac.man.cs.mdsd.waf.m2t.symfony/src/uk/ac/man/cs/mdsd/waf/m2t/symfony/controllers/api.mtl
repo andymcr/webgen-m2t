@@ -19,38 +19,51 @@
 namespace [resource.apiControllersNamespace()/];
 
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
 /**
  * @Rest\View(serializerEnableMaxDepthChecks="true")
  **/
-class [resource.controllerClassName()/] extends Controller
+class [resource.controllerClassName()/] extends FOSRestController
 {
-    /**
-     * @Rest\Get("/[resource.service.name.toLowerCase()/]", name="[resource.routeName()/]")
-     *
-     * @ApiDoc(resource="true")
-     *
-     * @return array
-     **/
-    public function get[service.name/]Action()
-    {
-        return $this->get('[service.instanceName()/]')->findAll();
-    }
+[if (resource.supportGetAll)]
+    [resource.getAllAction()/]
 
-    /**
-     * Rest\Post("/[service.name.toLowerCase()/]_new", name="[resource.routeName()/]_new")
-     *
-     * ApiDoc(resource="true")
-     *
-     **/
-//    public function new[service.name/]Action()
-//    {
-//        return array('users' => $users);
-//    }
+[/if]
+[if (resource.supportGetOne)]
+    [resource.getOneAction()/]
 
+[/if]
 }
 [/file]
+[/template]
+
+[template private getAllAction(resource : Resource)]
+/**
+ * @Rest\Get("[resource.uriPath(true)/]", name="[resource.routeName()/]")
+ *
+ * @ApiDoc(resource="true")
+ *
+ * @return array
+ **/
+public function get[service.name/]Action()
+{
+    return $this->get('[service.instanceName()/]')->findAll();
+}
+[/template]
+
+[template private getOneAction(resource : Resource)]
+/**
+ * @Rest\Get("[resource.uriPath()/]", name="[resource.routeName()/]One")
+ *
+ * @ApiDoc(resource="true")
+ *
+ * @return [resource.service.serves.modelClassName()/]
+ **/
+public function getOne[service.name/]Action([resource.service.serves.routeParameters()/])
+{
+    return $this->get('[service.instanceName()/]')->find([resource.service.serves.routeParameters()/]);
+}
 [/template]

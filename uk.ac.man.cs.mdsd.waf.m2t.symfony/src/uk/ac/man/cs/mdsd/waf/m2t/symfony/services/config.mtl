@@ -4,6 +4,8 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -55,6 +57,13 @@ services:
             - ['['/] setAnnotationReader, ['['/] "@annotation_reader" [']'/] [']'/]
 
 [/if]
+[for (entity : EntityOrView | model.persistence.entitiesAndViews)]
+    app.normalizer.[entity.instanceName()/]:
+        class: [entity.normalizerNamespace()/]\[entity.normalizerClassName()/]
+        tags:
+            - { name: serializer.normalizer }
+
+[/for]
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
