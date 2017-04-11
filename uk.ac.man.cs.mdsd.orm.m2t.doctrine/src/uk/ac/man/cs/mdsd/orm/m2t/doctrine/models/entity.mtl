@@ -16,73 +16,73 @@
 /]
 
 
-[template public model(entityOrView : EntityOrView)]
-[file(entityOrView.modelFilename(), false)]
+[template public model(entity : EntityOrView)]
+[file(entity.modelFilename(), false)]
 <?php
-namespace [entityOrView.modelsNamespace()/];
+namespace [entity.modelsNamespace()/];
 
-[entityOrView.useStatements()/]
+[entity.useStatements()/]
 
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="[entityOrView.tableName/]")
-[if (entityOrView.unique->notEmpty())]
- * @UniqueEntity([for (feature : Feature | entityOrView.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for])
+ * @ORM\Table(name="[entity.tableName/]")
+[if (entity.unique->notEmpty())]
+ * @UniqueEntity([for (feature : Feature | entity.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for])
 [/if]
-[for (attribute : Attribute | entityOrView.uniqueAttributes())]
+[for (attribute : Attribute | entity.uniqueAttributes())]
  * @UniqueEntity("[attribute.columnName()/]"[if (not attribute.isRequired())], ignoreNull="false"[/if])
 [/for]
-[if (entityOrView.isContained())]
-	[for (attribute : Attribute | entityOrView.containerUniqueAttributes())]
- * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entityOrView.containingAssociation().opposite().modelPropertyName()/]")
+[if (entity.isContained())]
+	[for (attribute : Attribute | entity.containerUniqueAttributes())]
+ * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entity.containingAssociation().opposite().modelPropertyName()/]")
 	[/for]
 [/if]
  **/
-class [entityOrView.modelClassName()/][if (entityOrView.implementsUserInterface)] implements UserInterface[/if]
+class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements UserInterface[/if]
 {
-[if (not entityOrView.hasPrimaryKeys())]
-    [entityOrView.autoIdFeature()/]
+[if (not entity.hasPrimaryKeys())]
+    [entity.autoIdFeature()/]
 
 [/if]
-    [entityOrView.features()/]
+    [entity.features()/]
 
-[if (entityOrView.oclIsTypeOf(Entity) and (entityOrView.partOf.timestampCreation or entityOrView.partOf.timestampUpdates))]
-    [entityOrView.timestampFeatures()/]
-
-[/if]
-[if (entityOrView.hasDefaultValueFeatures() or entityOrView.hasCollectionAssociations() or entityOrView.implementsUserInterface)]
-    [entityOrView.constructor()/]
+[if (entity.oclIsTypeOf(Entity) and (entity.partOf.timestampCreation or entity.partOf.timestampUpdates))]
+    [entity.timestampFeatures()/]
 
 [/if]
-[if (not entityOrView.hasPrimaryKeys())]
-    [entityOrView.idMethods()/]
+[if (entity.hasDefaultValueFeatures() or entity.hasCollectionAssociations() or entity.implementsUserInterface)]
+    [entity.constructor()/]
 
 [/if]
-[for (feature : Feature | entityOrView.features->select(f | not f.isPseudo()))]
+[if (not entity.hasPrimaryKeys())]
+    [entity.idMethods()/]
+
+[/if]
+[for (feature : Feature | entity.features->select(f | not f.isPseudo()))]
     [feature.featureMethods()/]
 
 [/for]
-[if (entityOrView.oclIsTypeOf(Entity) and (entityOrView.partOf.timestampCreation or entityOrView.partOf.timestampUpdates))]
-    [entityOrView.timestampMethods()/]
+[if (entity.oclIsTypeOf(Entity) and (entity.partOf.timestampCreation or entity.partOf.timestampUpdates))]
+    [entity.timestampMethods()/]
 
 [/if]
-[if (entityOrView.implementsUserInterface)]
-    [entityOrView.userInterfaceMethods()/]
+[if (entity.implementsUserInterface)]
+    [entity.userInterfaceMethods()/]
 
 [/if]
-[for (label : ModelLabel | entityOrView.labels)]
+[for (label : ModelLabel | entity.labels)]
     [label.label()/]
 
 [/for]
-[for (resource : SingletonResource | entityOrView.resourceAttributes())]
+[for (resource : SingletonResource | entity.resourceAttributes())]
 	[resource.resourceSaveMethod()/]
 
 [/for]
-[if (entityOrView.hasResourceAttributes())]
+[if (entity.hasResourceAttributes())]
 /*	public function save(Validation $validation = NULL)
 	{
-[for (feature : SingletonResource | entityOrView.resourceAttributes())]
+[for (feature : SingletonResource | entity.resourceAttributes())]
 		$this->_save_[feature.modelPropertyName()/]();
 [/for]
 		parent::save($validation);
@@ -93,43 +93,45 @@ class [entityOrView.modelClassName()/][if (entityOrView.implementsUserInterface)
 [/file]
 [/template]
 
-[template private useStatements(entityOrView : EntityOrView) post(trim())]
+[template private useStatements(entity : EntityOrView) post(trim())]
 use Doctrine\ORM\Mapping as ORM;
-[if (entityOrView.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
+[if (entity.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (entityOrView.partOf.timestampCreation or entityOrView.partOf.timestampUpdates)]
+[if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates)]
 use Gedmo\Mapping\Annotation as Gedmo;
 [/if]
-[if (entityOrView.uniqueAttributes()->notEmpty())]
+[if (entity.uniqueAttributes()->notEmpty())]
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 [/if]
-[if (entityOrView.implementsUserInterface)]
+[if (entity.implementsUserInterface)]
 use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
-[if (entityOrView.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
+[if (entity.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
 use Symfony\Component\Serializer\Annotation\Groups;
 [/if]
-[if (entityOrView.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)->select(a | a.serializationMaxDepth > 0)->notEmpty())]
+[if (entity.associations()->select(a | a.serializationMaxDepth > 0)->notEmpty())]
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 [/if]
+[if (entity.hasValidatedFeatures())]
 use Symfony\Component\Validator\Constraints as Assert;
-[if (entityOrView.isContained() and entityOrView.containerUniqueAttributes()->notEmpty())]
+[/if]
+[if (entity.isContained() and entity.containerUniqueAttributes()->notEmpty())]
 use AppBundle\Validator\Constraints as AppAssert;
 [/if]
 [/template]
 
-[template private autoIdFeature(entityOrView : EntityOrView) post(trim())]
+[template private autoIdFeature(entity : EntityOrView) post(trim())]
 /**
  * @ORM\Id
- * @ORM\Column(type="[entityOrView.autoKeyPersistentType/]")
- * @ORM\GeneratedValue[if (not entityOrView.autoKeyGenerationStrategy.oclIsUndefined())](strategy="[entityOrView.autoKeyGenerationStrategy/]")[/if]
+ * @ORM\Column(type="[entity.autoKeyPersistentType/]")
+ * @ORM\GeneratedValue[if (not entity.autoKeyGenerationStrategy.oclIsUndefined())](strategy="[entity.autoKeyGenerationStrategy/]")[/if]
  **/
-protected $[entityOrView.autoKeyName/];
+protected $[entity.autoKeyName/];
 [/template]
 
-[template private features(entityOrView : EntityOrView) post(trim())]
-[for (feature : Feature | entityOrView.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isPseudo()))]
+[template private features(entity : EntityOrView) post(trim())]
+[for (feature : Feature | entity.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isPseudo()))]
 [comment TODO sortout location features /]
 	[if (not feature.isLocation())]
 /**
@@ -151,8 +153,8 @@ protected $[feature.modelPropertyName()/];
 [/for]
 [/template]
 
-[template private timestampFeatures(entityOrView : EntityOrView) post(trim())]
-[if (entityOrView.partOf.timestampCreation)]
+[template private timestampFeatures(entity : EntityOrView) post(trim())]
+[if (entity.partOf.timestampCreation)]
 /**
  * @ORM\Column(type="datetime")
  * @Gedmo\Timestampable(on="create")
@@ -160,7 +162,7 @@ protected $[feature.modelPropertyName()/];
 protected $created;
 
 [/if]
-[if (entityOrView.partOf.timestampUpdates)]
+[if (entity.partOf.timestampUpdates)]
 /**
  * @ORM\Column(type="datetime", nullable=true)
  * @Gedmo\Timestampable(on="update")
@@ -282,10 +284,10 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [/if]
 [/template]
 
-[template private constructor(entityOrView : EntityOrView) post(trim())]
+[template private constructor(entity : EntityOrView) post(trim())]
 public function __construct()
 {
-[for (feature : Feature | entityOrView.features)]
+[for (feature : Feature | entity.features)]
 	[if (feature.hasDefaultValue())]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue().valueExpression()/];
 	[/if]
@@ -301,7 +303,7 @@ public function __construct()
 }
 [/template]
 
-[template private encoderSelectionMethod(entityOrView : EntityOrView) post(trim())]
+[template private encoderSelectionMethod(entity : EntityOrView) post(trim())]
 public function getEncoderName()
 {
     if ($this->created < new \DateTime('2016-01-01 00:00'))
@@ -311,10 +313,10 @@ public function getEncoderName()
 }
 [/template]
 
-[template private idMethods(entityOrView : EntityOrView) post(trim())]
+[template private idMethods(entity : EntityOrView) post(trim())]
 public function getId()
 {
-    return $this->[entityOrView.autoKeyName/];
+    return $this->[entity.autoKeyName/];
 }
 [/template]
 
@@ -417,7 +419,7 @@ public function remove[feature.singletonPropertyName().toUpperFirst()/]($[featur
 }
 [/template]
 
-[template private userInterfaceMethods(entityOrView : EntityOrView) post(trim())]
+[template private userInterfaceMethods(entity : EntityOrView) post(trim())]
 public function getPassword() 
 { 
     return null; 
@@ -433,15 +435,15 @@ public function eraseCredentials()
 } 
 [/template]
 
-[template private timestampMethods(entityOrView : EntityOrView) post(trim())]
-[if (entityOrView.partOf.timestampCreation)]
+[template private timestampMethods(entity : EntityOrView) post(trim())]
+[if (entity.partOf.timestampCreation)]
 public function getCreated()
 {
     return $this->created;
 }
 
 [/if]
-[if (entityOrView.partOf.timestampUpdates)]
+[if (entity.partOf.timestampUpdates)]
 public function getUpdated()
 {
     return $this->updated;
