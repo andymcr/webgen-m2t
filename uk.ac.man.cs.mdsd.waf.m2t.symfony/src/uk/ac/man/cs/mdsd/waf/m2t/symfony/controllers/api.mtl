@@ -29,11 +29,11 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
  **/
 class [resource.controllerClassName()/] extends FOSRestController
 {
-[if (resource.supportGetAll)]
+[if (not resource.getAll.oclIsUndefined() or resource.enableDefaultGetAll)]
     [resource.getAllAction()/]
 
 [/if]
-[if (resource.supportGetOne)]
+[if (not resource.getOne.oclIsUndefined() or resource.enableDefaultGetOne)]
     [resource.getOneAction()/]
 
 [/if]
@@ -51,7 +51,9 @@ class [resource.controllerClassName()/] extends FOSRestController
  **/
 public function get[service.name/]Action()
 {
-    return $this->get('[service.instanceName()/]')->findAll();
+    return $this->get('[service.instanceName()/]')->[if (resource.getAll.oclIsUndefined())]
+findAll[else]
+[resource.getAll.methodName()/][/if]();
 }
 [/template]
 
@@ -65,6 +67,8 @@ public function get[service.name/]Action()
  **/
 public function getOne[service.name/]Action([resource.service.serves.routeParameters()/])
 {
-    return $this->get('[service.instanceName()/]')->find([resource.service.serves.routeParameters()/]);
+    return $this->get('[service.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
+findAll[else]
+[resource.getOne.methodName()/][/if]([resource.service.serves.routeParameters()/]);
 }
 [/template]
