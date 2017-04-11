@@ -57,9 +57,14 @@ services:
             - ['['/] setAnnotationReader, ['['/] "@annotation_reader" [']'/] [']'/]
 
 [/if]
-[for (entity : EntityOrView | model.persistence.entitiesAndViews)]
+[for (entity : EntityOrView | model.persistence.entitiesAndViews->sortedBy(e | e.name))]
     app.normalizer.[entity.instanceName()/]:
         class: [entity.normalizerNamespace()/]\[entity.normalizerClassName()/]
+        arguments:
+            - "@serializer.mapping.class_metadata_factory"
+            - null
+            - "@serializer.property_accessor"
+            - null # "@property_info"
         tags:
             - { name: serializer.normalizer }
 

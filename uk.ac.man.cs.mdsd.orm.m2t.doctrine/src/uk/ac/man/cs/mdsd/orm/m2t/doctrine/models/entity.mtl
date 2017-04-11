@@ -101,21 +101,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 [if (entityOrView.partOf.timestampCreation or entityOrView.partOf.timestampUpdates)]
 use Gedmo\Mapping\Annotation as Gedmo;
 [/if]
-[if ( false and entityOrView.features->select(f | f.serializationExpose)->notEmpty())]
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
-[/if]
 [if (false and entityOrView.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
 use JMS\Serializer\Annotation\Groups;
-[/if]
-[if (false and entityOrView.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)->select(a | a.serializationMaxDepth > 0)->notEmpty())]
-use JMS\Serializer\Annotation\MaxDepth;
 [/if]
 [if (entityOrView.uniqueAttributes()->notEmpty())]
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 [/if]
 [if (entityOrView.implementsUserInterface)]
 use Symfony\Component\Security\Core\User\UserInterface;
+[/if]
+[if (entityOrView.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)->select(a | a.serializationMaxDepth > 0)->notEmpty())]
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 [/if]
 use Symfony\Component\Validator\Constraints as Assert;
 [if (entityOrView.isContained() and entityOrView.containerUniqueAttributes()->notEmpty())]
@@ -141,7 +137,7 @@ protected $[entityOrView.autoKeyName/];
 	[if (feature.isValidated())]
   [feature.validationAnnotation()/]
 	[/if]
-	[if (false and feature.hasSerializationControl())]
+	[if (feature.hasSerializationControl())]
   [feature.serializationAnnotation()/]
 	[/if]
   **/
@@ -274,9 +270,6 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [/template]
 
 [template private serializationAnnotation(feature : Feature) post(trim())]
-[if (feature.serializationExpose)]
-* @Expose
-[/if]
 [if (feature.serializationGroups->notEmpty())]
 * @Groups([for (group : String | feature.serializationGroups) separator(', ')]"[group/]"[/for])
 [/if]

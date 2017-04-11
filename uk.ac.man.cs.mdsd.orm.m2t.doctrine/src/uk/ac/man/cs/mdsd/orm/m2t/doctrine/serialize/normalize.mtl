@@ -13,12 +13,11 @@
 <?php
 namespace [entity.normalizerNamespace()/];
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 
 
-class [entity.normalizerClassName()/] extends SerializerAwareNormalizer implements NormalizerInterface
+class [entity.normalizerClassName()/] extends ObjectNormalizer
 {
     public function supportsNormalization($data, $format = NULL)
     {
@@ -27,22 +26,20 @@ class [entity.normalizerClassName()/] extends SerializerAwareNormalizer implemen
 
     public function normalize($object, $format = NULL, array $context = array())
     {
-        $data = array();
-        if (array_key_exists('x', $context))
+        if (array_key_exists('keys_only', $context))
         {
+            $data = array();
 [for (key : Attribute | entity.attributeKeys())]
-             $data['['/]'[key.modelPropertyName()/]'[']'/] = $object->[key.getMethodName()/]();
+            $data['['/]'[key.modelPropertyName()/]'[']'/] = $object->[key.getMethodName()/]();
 [/for]
+   	        return $data;
         }
         else
         {
-            $context['['/]'x'[']'/] = 'y';
-[for (feature : Feature | entity.features->select(f | f.serializationExpose))]
-    	    [feature.data('$object')/]
-[/for]
+            $context['['/]'keys_only'[']'/] = true;
+            return parent::normalize($object, $format, $context);
         }
-    	return $data;
-    }
+     }
 }
 [/file]
 [/template]
@@ -63,16 +60,11 @@ if ($[feature.instanceName()/])
 [/if]
 [/template]
 
-[template private data2(association : EntityAssociation, accessor : String)
-	? (association.isSingleton()) post(trim())]
-[/template]
-
 [template private data(feature : Feature, accessor : String)
 	? (feature.oclIsKindOf(EntityAssociation) and not feature.isSingleton()) post(trim())]
-$data['['/]'[feature.modelPropertyName()/]'[']'/] = array_map(
-    function ($object) use ($format, $context) {
-        return $this->serializer->normalize($object, $format, $context);
-    },
-    [accessor/]->[feature.getMethodName()/]()
-);
+$data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMethodName()/]()->map(
+    function ($item) use ($format, $context) {
+        return $this->serializer->normalize($item, $format, $context);
+    }
+)->getValues();
 [/template]
