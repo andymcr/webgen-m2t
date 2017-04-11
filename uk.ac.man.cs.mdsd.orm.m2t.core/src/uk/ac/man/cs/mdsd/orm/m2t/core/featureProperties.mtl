@@ -296,7 +296,7 @@
 			else
 				feature.oclAsType(Association).serializationMaxDepth > 0
 			endif
-		in feature.serializationExpose or feature.serializationGroups->notEmpty() or hasMaxDepth
+		in feature.serializationGroups->notEmpty() or hasMaxDepth
 /]
 
 [query public hasValidationPattern(feature : Feature) : Boolean

@@ -24,7 +24,8 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 
 /**
- * @Rest\View(serializerEnableMaxDepthChecks="true")
+ * @Rest\View(serializerEnableMaxDepthChecks="true"[if (resource.defaultSerializationGroups->notEmpty())]
+, serializerGroups={[for (group : SerializationGroup | resource.defaultSerializationGroups)]"[group.name/]"[/for]}[/if])
  **/
 class [resource.controllerClassName()/] extends FOSRestController
 {
