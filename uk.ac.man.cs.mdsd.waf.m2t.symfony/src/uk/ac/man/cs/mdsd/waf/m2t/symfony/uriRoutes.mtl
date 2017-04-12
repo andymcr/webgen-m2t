@@ -172,27 +172,27 @@ $[key.routeParameterName(entityOrView)/][/for]
 /]
 
 
-[query private parentUriPath(resource : Resource) : String
-	= '/'
-/]
-
 [query public uriPath(resource : Resource) : String
 	= resource.uriPath(false)
 /]
 
 [query public uriPath(resource : Resource, basePath : Boolean) : String
+	= resource.uriPath(basePath, resource.service.serves)
+/]
+
+[query private uriPath(resource : Resource, basePath : Boolean, base : EntityOrView) : String
 	= let baseUri : String
 		= if resource.parentResource.oclIsUndefined() then
 				'/'.concat(resource.uriElement)
 			else
-				resource.parentUriPath().combinePaths(resource.uriElement)
+				resource.parentResource.uriPath(false, base).combinePaths(resource.uriElement)
 			endif
 		in if basePath then
 				baseUri
 			else
 				let entity : EntityOrView 
 					= resource.service.serves
-					in baseUri.combinePaths(entity.keyEntity().keyPath(entity))
+					in baseUri.combinePaths(entity.keyEntity().keyPath(base))
 			endif
 /]
 
