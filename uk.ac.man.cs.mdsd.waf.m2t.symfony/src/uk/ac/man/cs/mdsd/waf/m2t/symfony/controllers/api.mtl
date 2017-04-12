@@ -29,19 +29,26 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
  **/
 class [resource.controllerClassName()/] extends FOSRestController
 {
-[if (not resource.getAll.oclIsUndefined() or resource.enableDefaultGetAll)]
-    [resource.getAllAction()/]
-
-[/if]
-[if (not resource.getOne.oclIsUndefined() or resource.enableDefaultGetOne)]
-    [resource.getOneAction()/]
-
-[/if]
+    [resource.resourceActionMethods()/]
 }
 [/file]
 [/template]
 
-[template private getAllAction(resource : Resource)]
+[template private resourceActionMethods(resource : Resource) post(trim())]
+[if (not resource.getAll.oclIsUndefined() or resource.enableDefaultGetAll)]
+[resource.getAllAction()/]
+
+[/if]
+[if (not resource.getOne.oclIsUndefined() or resource.enableDefaultGetOne)]
+[resource.getOneAction()/]
+
+[/if]
+[for (child : Resource | resource.childResources)]
+[child.resourceActionMethods()/]
+[/for]
+[/template]
+
+[template private getAllAction(resource : Resource) post(trim())]
 /**
  * @Rest\Get("[resource.uriPath(true)/]", name="[resource.routeName()/]")
  *
@@ -57,7 +64,7 @@ findAll[else]
 }
 [/template]
 
-[template private getOneAction(resource : Resource)]
+[template private getOneAction(resource : Resource) post(trim())]
 /**
  * @Rest\Get("[resource.uriPath()/]", name="[resource.routeName()/]One")
  *
@@ -68,7 +75,7 @@ findAll[else]
 public function getOne[service.name/]Action([resource.service.serves.routeParameters()/])
 {
     return $this->get('[service.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
-findAll[else]
+find[else]
 [resource.getOne.methodName()/][/if]([resource.service.serves.routeParameters()/]);
 }
 [/template]
