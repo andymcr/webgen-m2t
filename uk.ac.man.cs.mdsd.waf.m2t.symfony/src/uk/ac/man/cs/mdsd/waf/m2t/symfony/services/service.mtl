@@ -272,7 +272,9 @@ public function [selection.methodName()/]([selection.parameters()/])
 [/let]
 [/if]
 [if (not selection.filter.oclIsUndefined())]
+	[if (selection.filter.hasParameter())]
     [selection.filter.queryParameter(userService)/]
+	[/if]
 [/if]
 
 [if (selection.limit = 1)]

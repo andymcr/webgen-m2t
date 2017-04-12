@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
@@ -12,6 +13,39 @@
 		else
 			entries->drop(index - 1)->first()
 		endif
+/]
+
+
+[query public hasParameter(expression : Expression) : Boolean
+	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
+			let predicate : PredicateBooleanOperator
+				= expression.oclAsType(PredicateBooleanOperator)
+				in predicate.expressions->exists(e | e.hasParameter())
+		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
+			let predicate : PredicateEqualityOperator
+				= expression.oclAsType(PredicateEqualityOperator)
+				in  predicate.left.hasParameter() or predicate.right.hasParameter()
+		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
+			let predicate : PredicateComparisonOperator
+				= expression.oclAsType(PredicateComparisonOperator)
+				in predicate.left.hasParameter() or predicate.right.hasParameter()
+		else if expression.oclIsTypeOf(PredicateIsOperator) then
+			let predicate : PredicateIsOperator
+				= expression.oclAsType(PredicateIsOperator)
+				in predicate.left.hasParameter() or predicate.right.hasParameter()
+		else if expression.oclIsTypeOf(PredicateLikeOperator) then
+			let predicate : PredicateLikeOperator
+				= expression.oclAsType(PredicateLikeOperator)
+				in predicate.left.hasParameter() or predicate.right.hasParameter()
+		else if expression.oclIsTypeOf(PredicateIsEmpty) then
+			let predicate : PredicateIsEmpty
+				= expression.oclAsType(PredicateIsEmpty)
+				in predicate.feature.hasParameter()
+		else
+			expression.oclIsTypeOf(ParameterReference)
+				or expression.oclIsTypeOf(CurrentTime)
+				or expression.oclIsTypeOf(CurrentUser)
+		endif endif endif endif endif endif
 /]
 
 
