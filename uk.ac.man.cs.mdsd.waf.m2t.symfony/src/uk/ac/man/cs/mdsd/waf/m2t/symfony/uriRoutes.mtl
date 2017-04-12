@@ -16,9 +16,11 @@
 			path1
 		else if path2 = '' then
 			path1
+		else if path1 ='/' then
+			path1.concat(path2)
 		else
 			path1.concat('/').concat(path2)
-		endif endif endif
+		endif endif endif endif
 /]
 
 [query private appendContainingAssociation(path : String, keyEntity : EntityOrView) : String
@@ -30,15 +32,31 @@
 /]
 
 
-[template public routeParameters(entityOrView : EntityOrView) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
-$[key.routeParameterName(entityOrView)/][/for]
+[template public routeParameters(entity : EntityOrView) post(trim())]
+[for (key : Attribute | entity.uriPathKeys()) separator (', ')]
+$[key.routeParameterName(entity)/][/for]
 [/template]
 
-[query public routeParameterName(attribute : Attribute, entityOrView : EntityOrView) : String
-	= if entityOrView.oclIsUndefined() then
+[query public routeParameterName(attribute : Attribute, entity : EntityOrView) : String
+	= if entity.oclIsUndefined() then
 			attribute.name
-		else if entityOrView.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
+		else if entity.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
+			attribute.name
+		else
+			attribute.partOf.modelName().toLowerFirst()
+				.concat(attribute.name.toUpperFirst())
+		endif endif
+/]
+
+[template public routeParameters(resource : Resource) post(trim())]
+[for (key : Attribute | resource.uriPathKeys()) separator (', ')]
+$[key.routeParameterName(resource)/][/for]
+[/template]
+
+[query public routeParameterName(attribute : Attribute, resource : Resource) : String
+	= if resource.oclIsUndefined() then
+			attribute.name
+		else if resource.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
 			attribute.partOf.modelName().toLowerFirst()
@@ -68,21 +86,30 @@ $[key.routeParameterName(entityOrView)/][/for]
 /]
 
 
-[query private keyPath(entityOrView : EntityOrView, base : EntityOrView) : String
-	= if entityOrView.attributeKeys()->isEmpty() then
+[query private keyPath(entity : EntityOrView, base : EntityOrView) : String
+	= if entity.attributeKeys()->isEmpty() then
 			''
 		else
-			entityOrView.attributeKeys()
+			entity.attributeKeys()
 				->collect(k | k.routeParameterName(base))->sep('{', '}/{', '}')->toString()
 		endif
 /]
 
-[query public uriPath(entityOrView : EntityOrView) : String
-	= entityOrView.uriPath(entityOrView)
+[query private keyPath(entity : EntityOrView, base : Resource) : String
+	= if entity.attributeKeys()->isEmpty() then
+			''
+		else
+			entity.attributeKeys()
+				->collect(k | k.routeParameterName(base))->sep('{', '}/{', '}')->toString()
+		endif
 /]
 
-[query private uriPath(entityOrView : EntityOrView, base : EntityOrView) : String
-	= let keyEntity : EntityOrView = entityOrView.keyEntity()
+[query public uriPath(entity : EntityOrView) : String
+	= entity.uriPath(entity)
+/]
+
+[query private uriPath(entity : EntityOrView, base : EntityOrView) : String
+	= let keyEntity : EntityOrView = entity.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
 			else if not keyEntity.isContained() then
@@ -94,8 +121,8 @@ $[key.routeParameterName(entityOrView)/][/for]
 			endif endif
 /]
 
-[query private parentUriPath(entityOrView : EntityOrView) : String
-	= let parentEntity : EntityOrView = entityOrView.parentEntity()
+[query private parentUriPath(entity : EntityOrView) : String
+	= let parentEntity : EntityOrView = entity.parentEntity()
 		in if parentEntity.oclIsUndefined() then
 				''
 			else
@@ -104,7 +131,7 @@ $[key.routeParameterName(entityOrView)/][/for]
 					in if parentPath = '' then
 							''
 						else
-							parentPath.appendContainingAssociation(entityOrView.keyEntity())
+							parentPath.appendContainingAssociation(entity.keyEntity())
 						endif
 		endif
 /]
@@ -177,23 +204,25 @@ $[key.routeParameterName(entityOrView)/][/for]
 /]
 
 [query public uriPath(resource : Resource, basePath : Boolean) : String
-	= resource.uriPath(basePath, resource.service.serves)
+	= resource.uriPath(basePath, resource)
 /]
 
-[query private uriPath(resource : Resource, basePath : Boolean, base : EntityOrView) : String
-	= let baseUri : String
+[query private uriPath(resource : Resource, baseUriOnly : Boolean, base : Resource) : String
+	= let parentUri : String
 		= if resource.parentResource.oclIsUndefined() then
-				'/'.concat(resource.uriElement)
+				'/'
+			else if baseUriOnly then
+				resource.parentResource.uriPath()
 			else
-				resource.parentResource.uriPath(false, base).combinePaths(resource.uriElement)
-			endif
-		in if basePath then
-				baseUri
-			else
-				let entity : EntityOrView 
-					= resource.service.serves
-					in baseUri.combinePaths(entity.keyEntity().keyPath(base))
-			endif
+				resource.parentResource.uriPath(false, base)
+			endif endif
+		in let baseUri : String
+			= parentUri.combinePaths(resource.uriElement)
+			in if baseUriOnly then
+					baseUri
+				else
+					baseUri.combinePaths(resource.service.serves.keyEntity().keyPath(base))
+				endif
 /]
 
 

@@ -1,23 +1,24 @@
 [comment encoding = UTF-8 /]
 [module uriRoutes(
+	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
 
-[query public keyEntity(entityOrView : EntityOrView) : EntityOrView
-	= if entityOrView.attributeKeys()->notEmpty() then
-			entityOrView
-		else if entityOrView.isContained() then
-			entityOrView.container().keyEntity()
+[query public keyEntity(entity : EntityOrView) : EntityOrView
+	= if entity.attributeKeys()->notEmpty() then
+			entity
+		else if entity.isContained() then
+			entity.container().keyEntity()
 		else
 			null
 		endif endif
 /]
 
-[query public parentEntity(entityOrView : EntityOrView) : EntityOrView
-	= let keyEntity : EntityOrView = entityOrView.keyEntity()
+[query public parentEntity(entity : EntityOrView) : EntityOrView
+	= let keyEntity : EntityOrView = entity.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				null
 			else if not keyEntity.isContained() then
@@ -27,8 +28,8 @@
 			endif endif
 /]
 
-[query private parentUriPathKeys(entityOrView : EntityOrView) : Sequence(Attribute)
-	= let parentEntity : EntityOrView = entityOrView.parentEntity()
+[query private parentUriPathKeys(entity : EntityOrView) : Sequence(Attribute)
+	= let parentEntity : EntityOrView = entity.parentEntity()
 		in if not parentEntity.oclIsUndefined() then
 				parentEntity.uriPathKeys()
 			else
@@ -37,10 +38,10 @@
 /]
 
 
-[query public uriPathKeys(entityOrView : EntityOrView) : Sequence(Attribute)
-	= let keyEntity : EntityOrView = entityOrView.keyEntity()
+[query public uriPathKeys(entity : EntityOrView) : Sequence(Attribute)
+	= let keyEntity : EntityOrView = entity.keyEntity()
 		in let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
-			in let parentKeys : Sequence(Attribute) = entityOrView.parentUriPathKeys()
+			in let parentKeys : Sequence(Attribute) = entity.parentUriPathKeys()
 				in if localKeys->isEmpty() then
 						parentKeys
 					else
@@ -48,8 +49,8 @@
 					endif
 /]
 
-[query public hasRouteParameters(entityOrView : EntityOrView) : Boolean
-	= entityOrView.uriPathKeys()->notEmpty()
+[query public hasRouteParameters(entity : EntityOrView) : Boolean
+	= entity.uriPathKeys()->notEmpty()
 /]
 
 
@@ -93,4 +94,24 @@
 				common : Sequence(Attribute) = page.units->first().uriPathKeys()
 				| common->select(k | u.uriPathKeys()->includes(k)))
 		endif endif
+/]
+
+
+[query private parentUriPathKeys(resource : Resource) : Sequence(Attribute)
+	= if not resource.parentResource.oclIsUndefined() then
+				resource.parentResource.uriPathKeys()
+			else
+				Sequence{}
+			endif
+/]
+
+[query public uriPathKeys(resource : Resource) : Sequence(Attribute)
+	= let keyEntity : EntityOrView = resource.service.serves.keyEntity()
+		in let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
+			in let parentKeys : Sequence(Attribute) = resource.parentUriPathKeys()
+				in if localKeys->isEmpty() then
+						parentKeys
+					else
+						localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
+					endif
 /]

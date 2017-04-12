@@ -56,11 +56,18 @@ class [resource.controllerClassName()/] extends FOSRestController
  *
  * @return array
  **/
-public function get[service.name/]Action()
+public function get[resource.service.name/]Action([if (not resource.parentResource.oclIsUndefined())]
+[resource.parentResource.routeParameters()/][/if])
 {
-    return $this->get('[service.instanceName()/]')->[if (resource.getAll.oclIsUndefined())]
+[if (resource.parentResource.oclIsUndefined())]
+    return $this->get('[resource.service.instanceName()/]')->[if (resource.getAll.oclIsUndefined())]
 findAll[else]
 [resource.getAll.methodName()/][/if]();
+[else]
+    return $this->get('[resource.parentResource.service.instanceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
+find[else]
+[resource.parentResource.getOne.methodName()/][/if]([resource.parentResource.service.serves.routeParameters()/]);
+[/if]
 }
 [/template]
 
@@ -72,9 +79,9 @@ findAll[else]
  *
  * @return [resource.service.serves.modelClassName()/]
  **/
-public function getOne[service.name/]Action([resource.service.serves.routeParameters()/])
+public function getOne[resource.service.name/]Action([resource.routeParameters()/])
 {
-    return $this->get('[service.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
+    return $this->get('[resource.service.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
 find[else]
 [resource.getOne.methodName()/][/if]([resource.service.serves.routeParameters()/]);
 }
