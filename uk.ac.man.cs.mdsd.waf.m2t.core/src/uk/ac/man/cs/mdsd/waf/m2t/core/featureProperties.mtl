@@ -198,7 +198,7 @@
 /]
 
 
-[query public matchingActual(f : Filter, parameter : SelectionParameter) : FilterParameter
+[query public matchingActual(f : Filter, parameter : FormalParameter) : FilterParameter
 	= f.parameters->any(p | if p.formal.oclIsUndefined() then
 								false
 							else

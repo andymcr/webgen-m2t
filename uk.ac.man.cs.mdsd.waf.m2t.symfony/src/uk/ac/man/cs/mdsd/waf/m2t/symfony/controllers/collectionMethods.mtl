@@ -83,7 +83,7 @@ $request->query->has('[parameter.name/]')[/for])
 [template private childFilterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(filter.selection)/](
     $this->[unit.selectionType.instanceName()/],
-[for (parameter : SelectionParameter | filter.selection.parameters)]
+[for (parameter : FormalParameter | filter.selection.parameters)]
 [let actual : FilterParameter = filter.matchingActual(parameter)]
     $request->query->get('[actual.name/]'),
 [/let]
@@ -126,7 +126,7 @@ $request->query->has('[parameter.name/]')[/for])
 
 [template private contentFilterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.selection.instanceName()/](
-[for (parameter : SelectionParameter | filter.selection.parameters)]
+[for (parameter : FormalParameter | filter.selection.parameters)]
 [let actual : FilterParameter = filter.matchingActual(parameter)]
     $request->query->get('[actual.name/]'),
 [/let]

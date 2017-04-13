@@ -64,7 +64,7 @@ array_key_exists('[parameter.name/]', $this->request->query())
 [template private filterCall(unit : IndexUnit, f : Filter)]
 [if (f.selection.parameters->notEmpty() or not unit.pagination.oclIsUndefined())]
 {
-	[for (parameter : SelectionParameter | f.selection.parameters)]
+	[for (parameter : FormalParameter | f.selection.parameters)]
 	[let actual : FilterParameter = f.matchingActual(parameter)]
     $[parameter.name/] = $this->request->query('[actual.name/]');
 	[/let]
@@ -103,7 +103,7 @@ $[unit.countName()/] = ORM::factory('[unit.modelName()/]')->[selection.countName
 
 [template private selectionActuals(unit : IndexUnit, f : Filter) post(trim())]
 [if (not f.oclIsUndefined())]
-	[for (parameter : SelectionParameter | f.selection.parameters) separator(', ')]
+	[for (parameter : FormalParameter | f.selection.parameters) separator(', ')]
 $[parameter.name/][/for]
 [/if]
 [/template]

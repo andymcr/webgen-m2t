@@ -360,7 +360,7 @@ $[key.instanceName()/] = NULL[/for])
 [/template]
 
 [template private selection(selection : Selection) post(trim())]
-public function [selection.instanceName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+public function [selection.instanceName()/]([for (parameter : FormalParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for][if (selection.parameters->notEmpty())], [/if][if (selection.limit <= 0)]$paging = TRUE, $page = 1, $pageSize = 10[/if])
 {
 [for (association : Association | selection.joins)]
@@ -384,7 +384,7 @@ $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[p
 }
 
 [if (selection.limit <> 1)]
-public function [selection.countName()/]([for (parameter : SelectionParameter | selection.parameters) separator(', ')]
+public function [selection.countName()/]([for (parameter : FormalParameter | selection.parameters) separator(', ')]
 $[parameter.name/] = [if (parameter.defaultValue.oclIsUndefined())]NULL[else]'[parameter.defaultValue/]'[/if][/for])
 {
 [for (association : Association | selection.joins)]
