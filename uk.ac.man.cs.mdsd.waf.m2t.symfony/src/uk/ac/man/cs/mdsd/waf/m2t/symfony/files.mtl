@@ -239,16 +239,16 @@
 		.concat(unit.executableExtension())
 /]
 
-[query public javascriptFilename(entityOrView : EntityOrView) : String
-	= entityOrView.javascriptDirectory().concat('/')
-		.concat(entityOrView.instanceName())
-		.concat(entityOrView.javascriptExtension())
+[query public javascriptFormFilename(model : WafModel) : String
+	= model.javascriptDirectory().concat('/')
+		.concat('input')
+		.concat(model.javascriptExtension())
 /]
 
-[query public javascriptFilename(page : Page) : String
-	= page.javascriptDirectory().concat('/')
-		.concat(page.instanceName())
-		.concat(page.javascriptExtension())
+[query public javascriptImageFilename(model : WafModel) : String
+	= model.javascriptDirectory().concat('/')
+		.concat('image')
+		.concat(model.javascriptExtension())
 /]
 
 [query public menuFilename(menu : Menu) : String

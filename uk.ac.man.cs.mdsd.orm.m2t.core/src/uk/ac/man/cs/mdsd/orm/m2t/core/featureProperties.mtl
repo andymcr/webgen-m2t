@@ -399,6 +399,18 @@
 		endif endif
 /]
 
+[query public isIntegerDataType(feature : Feature) : Boolean
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isBooleanDataType()
+		else if not feature.oclIsTypeOf(SingletonElement) then
+			false
+		else
+			let singleton : SingletonElement
+				= feature.oclAsType(SingletonElement)
+				in singleton.dataType.name = 'Integer'
+		endif endif
+/]
+
 [query public isLocation(feature : Feature) : Boolean
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isLocation()

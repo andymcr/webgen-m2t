@@ -210,7 +210,7 @@ $parameters['['/]'scripts'[']'/] = array(
         'integrity' => 'sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=',
         'crossorigin' => 'anonymous',
     ),
-	[if (page.useInputJQuery())]
+[if (page.useInputJQuery())]
     array(
         'src'=>'https://code.jquery.com/ui/1.12.0/jquery-ui.min.js',
         'integrity' => 'sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=',
@@ -218,26 +218,26 @@ $parameters['['/]'scripts'[']'/] = array(
     ),
     'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
 [comment     '[page.partOf.autocompleteFilename()', /]
-		[for (unit : DynamicUnit | page.formUnits()->select(u | not u.contentType().oclIsUndefined()))]
-    '[unit.contentType().javascriptFilename()/]',
-		[/for]
 	[if (page.formUnits()->collect(u | u.displayFields)->select(f | f.isDate())->notEmpty())]
     'js/wickedpicker.js',
 	[/if]
-	[/if]
-	[if (page.hasSliderUnits() or page.hasChildSliderUnits())]
+[/if]
+[if (page.hasSliderUnits() or page.hasChildSliderUnits())]
 [comment    'js/jssor.slider.mini.js', /]
 [comment    'js/jquery.blueimp-gallery.min.js', /]
-	[/if]
-	[if (page.hasGalleryUnits() or page.hasChildGalleryUnits())]
+[/if]
+[if (page.hasGalleryUnits() or page.hasChildGalleryUnits())]
     'js/unitegallery.min.js',
     'themes/ug-theme-tilesgrid.js',
-	[/if]
-	[if (page.hasChangableCollections() or page.hasSliderUnits())]
-    '[page.javascriptFilename()/]',
-	[/if]
-	[if (page.partOf.responsiveTopMenu)]
+[/if]
+[if ((page.useInputJQuery() and page.formUnits()->select(u | not u.contentType().oclIsUndefined())->notEmpty()))]
+    '[page.partOf.javascriptFormFilename()/]',
+[/if]
+[if (page.hasChangableCollections() or page.hasSliderUnits())]
+    '[page.partOf.javascriptImageFilename()/]',
+[/if]
+[if (page.partOf.responsiveTopMenu)]
     'js/responsive-nav.min.js',
-	[/if]
+[/if]
 );
 [/template]

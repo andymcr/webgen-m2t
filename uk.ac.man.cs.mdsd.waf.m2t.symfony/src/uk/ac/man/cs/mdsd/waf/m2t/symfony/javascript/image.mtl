@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module page(
+[module image(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
@@ -7,19 +7,19 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public javascript(page : Page)]
-[file(page.webDirectory().concat('/').concat(page.javascriptFilename()), false)]
+[template public javascriptImage(model : WafModel)]
+[file(model.webDirectory().concat('/').concat(model.javascriptImageFilename()), false)]
 [comment var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
 var $newLinkLi = $('<li></li>').append($addTagLink);
 
 jQuery(document).ready(function() {
 }
 /]
-[for (unit : SliderUnit | page.units->select(u | u.oclIsTypeOf(SliderUnit)).oclAsType(SliderUnit))]
+[comment for (unit : SliderUnit | page.units->select(u | u.oclIsTypeOf(SliderUnit)).oclAsType(SliderUnit))/]
 [comment unit.jssor()/]
 [comment unit.blueimp()/]
 
-[/for]
+[comment /for/]
 [/file]
 [/template]
 
