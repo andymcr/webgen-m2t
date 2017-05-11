@@ -101,7 +101,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 [if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates)]
 use Gedmo\Mapping\Annotation as Gedmo;
 [/if]
-[if (entity.uniqueAttributes()->notEmpty())]
+[if (entity.unique->notEmpty() or entity.uniqueAttributes()->notEmpty())]
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 [/if]
 [if (entity.implementsUserInterface)]
@@ -206,12 +206,12 @@ mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 * @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 	[elseif (association.keys->size() = 1)]
 	[let key : AssociationKey = association.keys->first()]
-* @ORM\JoinColumn(name="[key.sourceColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 	[/let]
 	[else]
 * @ORM\JoinColumns({[for (key : AssociationKey | association.keys) separator(',')]
 
-*     @ORM\JoinColumn(name="[key.sourceColumnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
+*     @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
 
 * })
 	[/if]
@@ -230,16 +230,16 @@ mappedBy[else]
 inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [if (association.owningEnd)]
 * @ORM\JoinTable(name="[association.pivotTableName/]",
-	[if (association.partOf.primaryKeys()->isEmpty())]
+	[if (association.keys->isEmpty())]
 *     joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
-	[elseif (association.partOf.primaryKeys()->size() = 1)]
-	[let key : EntityFeature = association.partOf.primaryKeys()->first()]
-*     joinColumns={@ORM\JoinColumn(name="[opposite.columnName/]")},
+	[elseif (association.keys->size() = 1)]
+	[let key : AssociationKey = association.keys->first()]
+*     joinColumns={@ORM\JoinColumn(name="[key.sourceFeature.columnName/]")},
 	[/let]
 	[else]
-*     joinColumns={[for (key : EntityFeature | association.partOf.primaryKeys()) separator(',')]
+*     joinColumns={[for (key : AssociationKey | association.keys) separator(',')]
 
-*         @ORM\JoinColumn(name="[key.columnName/]", nullable=false)[/for]
+*         @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", nullable=false)[/for]
 
 *     },
 	[/if]
