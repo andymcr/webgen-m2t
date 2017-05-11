@@ -218,9 +218,6 @@ $parameters['['/]'scripts'[']'/] = array(
     ),
     'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
 [comment     '[page.partOf.autocompleteFilename()', /]
-	[if (page.formUnits()->collect(u | u.displayFields)->select(f | f.isDate())->notEmpty())]
-    'js/wickedpicker.js',
-	[/if]
 [/if]
 [if (page.hasSliderUnits() or page.hasChildSliderUnits())]
 [comment    'js/jssor.slider.mini.js', /]
@@ -231,6 +228,7 @@ $parameters['['/]'scripts'[']'/] = array(
     'themes/ug-theme-tilesgrid.js',
 [/if]
 [if ((page.useInputJQuery() and page.formUnits()->select(u | not u.contentType().oclIsUndefined())->notEmpty()))]
+    'js/wickedpicker.js',
     '[page.partOf.javascriptFormFilename()/]',
 [/if]
 [if (page.hasChangableCollections() or page.hasSliderUnits())]
