@@ -69,6 +69,10 @@
 	= model.pages->select(p | p.hasJavascript())->notEmpty()
 /]
 
+[query public hasJQueryClasses(model : WafModel) : Boolean
+	= model.inputTechnology <> InputTechnologies::Html
+/]
+
 [query public hasServicesWithSelections(model : WafModel) : Boolean
 	= model.servicesWithSelections()->notEmpty()
 /]
@@ -160,8 +164,12 @@
 				endif)
 /]
 
-[query public id(entityOrView : EntityOrView) : String
-	= entityOrView.name.asId()
+[query public id(entity : EntityOrView) : String
+	= entity.name.asId()
+/]
+
+[query public inputJQueryFeatures(entity : EntityOrView, model : WafModel) : Sequence(Feature)
+	= entity.featuresUsed(model)->select(f | f.usesInputJQuery())
 /]
 
 [query public services(entityOrView : EntityOrView, model : WafModel) : OrderedSet(Service)
@@ -195,6 +203,14 @@
 
 [query public id(feature : Feature) : String
 	= feature.name.asId()
+/]
+
+[query public usesInputJQuery(feature : Feature) : Boolean
+	= not (feature.isDataType() or feature.isUrl() or feature.isResource())
+		or feature.isBooleanDataType()
+		or feature.isEnumerationType()
+		or feature.isIntegerDataType()
+		or not feature.isSingleton()
 /]
 
 
@@ -329,6 +345,10 @@
 		or page.partOf.responsiveTopMenu
 /]
 
+[query public hasJQueryClasses(page : Page) : Boolean
+	= page.partOf.hasJQueryClasses()
+/]
+
 [query public hasMapUnits(page : Page) : Boolean
 	= page.mapUnits()->notEmpty()
 /]
@@ -339,10 +359,6 @@
 
 [query public hasParameterisedUnits(page : Page) : Boolean
 	= page.parameterisedUnits()->notEmpty()
-/]
-
-[query public hasJQueryClasses(page : Page) : Boolean
-	= page.partOf.inputTechnology <> InputTechnologies::Html
 /]
 
 [query public hasSliderUnits(page : Page) : Boolean
@@ -431,7 +447,7 @@
 				->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
 				->select(u | u.filters()->notEmpty())
 				->notEmpty())
-		and page.partOf.inputTechnology <> InputTechnologies::Html
+		and page.partOf.hasJQueryClasses()
 /]
 
 
