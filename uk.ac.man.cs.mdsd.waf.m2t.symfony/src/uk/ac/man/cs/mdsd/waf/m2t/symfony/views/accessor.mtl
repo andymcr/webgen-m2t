@@ -1,10 +1,21 @@
 [comment encoding = UTF-8 /]
 [module accessor(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
+
+[query public keyAccessor(attribute : Attribute, entity : EntityOrView, parentAccessor : String) : String
+	= if entity.features->includes(attribute) then
+			parentAccessor.concat('->').concat(attribute.getMethodName()).concat('()')
+		else
+			attribute.keyAccessor(entity.container(),
+				parentAccessor.concat('->').concat(entity.containingAssociation().getMethodName().concat('()')))
+		endif
+/]
 
 [query public propertyAccessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if field.oclIsTypeOf(InterfaceField) then
