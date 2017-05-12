@@ -333,7 +333,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  	[for (field : UnitField | indexUnit.displayFields)]
    <th>[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[field.entityOrView().id()/].labels.[field.id()/]' | trans }}[/if]</th>
+{{ '[field.entity().id()/].labels.[field.id()/]' | trans }}[/if]</th>
  	[/for]
 	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <th>Actions</th>
