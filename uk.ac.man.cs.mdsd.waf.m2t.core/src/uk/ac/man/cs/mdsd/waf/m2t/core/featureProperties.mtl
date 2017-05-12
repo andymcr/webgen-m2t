@@ -134,8 +134,8 @@
 	= model.authentication.oclAsType(LocalAuthenticationSystem)
 /]
 
-[query public services(model : WafModel, entityOrView : EntityOrView) : OrderedSet(Service)
-	= model.business.services->select(s | s.serves = entityOrView)
+[query public services(model : WafModel, entity : EntityOrView) : OrderedSet(Service)
+	= model.business.services->select(s | s.serves = entity)
 /]
 
 [query public servicesWithSelections(model : WafModel) : OrderedSet(Service)
@@ -150,14 +150,14 @@
 
 
 [comment TODO nested units not currently being handled/]
-[query public featuresUsed(entityOrView : EntityOrView, model : WafModel) : Sequence(Feature)
-	= entityOrView.usersOf(model)
+[query public featuresUsed(entity : EntityOrView, model : WafModel) : Sequence(Feature)
+	= entity.usersOf(model)
 		->collect(u | u.displayFields)
         ->select(f | not f.oclIsTypeOf(UnitField))
 		->iterate(f;
 			xxx : Sequence(Feature) = Sequence{}
 			| let x : Feature = f.feature()
-				in if xxx->includes(x) or not entityOrView.features->includes(x) then
+				in if xxx->includes(x) or not entity.features->includes(x) then
 					xxx
 				else
 					xxx->append(x)
@@ -172,32 +172,32 @@
 	= entity.featuresUsed(model)->select(f | f.usesInputJQuery())
 /]
 
-[query public services(entityOrView : EntityOrView, model : WafModel) : OrderedSet(Service)
-	= model.services(entityOrView)
+[query public services(entity : EntityOrView, model : WafModel) : OrderedSet(Service)
+	= model.services(entity)
 /]
 
-[query private usersOf(entityOrView : EntityOrView, model : WafModel) : Sequence(EditUnit)
+[query private usersOf(entity : EntityOrView, model : WafModel) : Sequence(EditUnit)
 	= model.pages->collect(
 		p | p.units
 			->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
-			->select(u | u.entities->includes(entityOrView)))
+			->select(u | u.contentType = entity))
 /]
 
-[query private usersOf(entityOrView : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
-	= if unit.entities->includes(entityOrView) then
+[query private usersOf(entity : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+	= if unit.contentType = entity then
 			Sequence{unit}
 		else
 			Sequence{}
-		endif->union(entityOrView.nestedUsersOf(unit))
+		endif->union(entity.nestedUsersOf(unit))
 /]
 
-[query private nestedUsersOf(entityOrView : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+[query private nestedUsersOf(entity : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
 	= unit.displayFields
 		->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
 		->select(a | a.units->notEmpty())
 		->iterate(a;
 			units : Sequence(EditUnit) = Sequence{}
-			| units->union(entityOrView.usersOf(a.units->first().oclAsType(EditUnit))))
+			| units->union(entity.usersOf(a.units->first().oclAsType(EditUnit))))
 /]
 
 
@@ -861,7 +861,7 @@
 		endif endif
 /]
 
-[query public entityOrView(field : UnitField) : EntityOrView
+[query public entity(field : UnitField) : EntityOrView
 	= if field.oclIsKindOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.partOf
 		else if field.oclIsKindOf(UnitAssociation) then
@@ -871,13 +871,13 @@
 		endif endif
 /]
 
-[query public firstEntityOrView(field : UnitField) : Boolean
+[query public firstEntity(field : UnitField) : Boolean
 	= if field.oclIsKindOf(InterfaceField) then
 			true
-		else if field.entityOrView().oclIsUndefined() or field.displayedOn.entities->isEmpty() then
+		else if field.entity().oclIsUndefined() or field.displayedOn.entities->isEmpty() then
 			false
 		else 
-			field.entityOrView() = field.displayedOn.entities->first()
+			field.entity() = field.displayedOn.entities->first()
 		endif endif
 /]
 
