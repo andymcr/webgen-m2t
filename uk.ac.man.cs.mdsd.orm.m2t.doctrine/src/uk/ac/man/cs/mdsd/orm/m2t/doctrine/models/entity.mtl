@@ -203,7 +203,7 @@ inversedBy[else]
 mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [if (association.isOwningEnd())]
 	[if (association.keys->isEmpty())]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[association.opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 	[elseif (association.keys->size() = 1)]
 	[let key : AssociationKey = association.keys->first()]
 * @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
