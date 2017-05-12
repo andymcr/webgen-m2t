@@ -40,13 +40,17 @@
 
 [query public uriPathKeys(entity : EntityOrView) : Sequence(Attribute)
 	= let keyEntity : EntityOrView = entity.keyEntity()
-		in let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
-			in let parentKeys : Sequence(Attribute) = entity.parentUriPathKeys()
-				in if localKeys->isEmpty() then
-						parentKeys
-					else
-						localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
-					endif
+		in if keyEntity.oclIsUndefined() then
+				Sequence{}
+			else
+				let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
+					in let parentKeys : Sequence(Attribute) = entity.parentUriPathKeys()
+						in if localKeys->isEmpty() then
+								parentKeys
+							else
+								localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
+							endif
+			endif
 /]
 
 [query public hasRouteParameters(entity : EntityOrView) : Boolean
