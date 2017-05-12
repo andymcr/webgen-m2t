@@ -15,6 +15,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::criteriaDoctrine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::queryDoctrine/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
 
 [template public service(service : Service, model : WafModel)]
 [file(service.serviceFilename(), false)]
@@ -63,8 +64,10 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
 [/if]
     }
 
-    [service.findMethod(model)/]
+[if (service.serves.hasRouteParameters())]
+    [service.findMethod()/]
 
+[/if]
     [service.findAllMethod()/]
 
     [service.removeMethod()/]
@@ -117,43 +120,41 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
 [/file]
 [/template]
 
-[template private findMethod(service : Service, model : WafModel) post(trim())]
-[let entityOrView : EntityOrView = service.serves]
+[template private findMethod(service : Service) post(trim())]
+[let entity : EntityOrView = service.serves]
 public function find([service.serves.routeParameters()/])
 {
 	$queryBuilder = $this->createQueryBuilder();
 	return $queryBuilder
-[if (entityOrView.isContained() or entityOrView.hasAssociationKeys())]
-        [service.keyJoin(model, service.serves)/]
+[if (entity.isContained() or entity.hasAssociationKeys())]
+        [entity.containerJoin()/]
 [/if]
-[if (entityOrView.uriPathKeys()->notEmpty())]
-	[if (entityOrView.uriPathKeys()->size() < 2)]
-        ->where([entityOrView.uriPathKeys()->first().findWhere(entityOrView)/])
+[if (entity.uriPathKeys()->notEmpty())]
+	[if (entity.uriPathKeys()->size() < 2)]
+        ->where([entity.uriPathKeys()->first().findWhere(entity)/])
 	[else]
         ->where(
-            [entityOrView.findWhere(entityOrView) /]
+            [entity.findWhere(entity) /]
         )
 	[/if]
 [/if]
-[for (key : Attribute | entityOrView.uriPathKeys())]
-        ->setParameter('[key.routeParameterName(entityOrView)/]', $[key.routeParameterName(entityOrView)/])
+[for (key : Attribute | entity.uriPathKeys())]
+        ->setParameter('[key.routeParameterName(entity)/]', $[key.routeParameterName(entity)/])
 [/for]
         ->getQuery()->getSingleResult();
 }
 [/let]
 [/template]
 
-[template private keyJoin(service : Service, model : WafModel, entityOrView : EntityOrView) post(trim())]
-[if (service.serves.isContained())]
-[let container : EntityOrView = service.serves.container()]
-[let containerService : Service = container.services(model)->first()]
-->join('[service.serves.selectName()/].[service.serves.containingAssociation().modelPropertyName()/]', '[container.selectName()/]')
-[containerService.keyJoin(model, container)/]
-[/let]
-[/let]
+[template private containerJoin(entity : EntityOrView) post(trim())]
+[let container : EntityOrView = entity.container()]
+->join('[entity.selectName()/].[entity.containingAssociation().modelPropertyName()/]', '[container.selectName()/]')
+[if (container.isContained())]
+[container.containerJoin()/]
 [/if]
-[for (key : EntityAssociation | service.serves.associationKeys()->select(k | not k.container))]
-->join('[service.serves.selectName()/].[key.modelPropertyName()/]', '[key.targetType().selectName()/]')
+[/let]
+[for (key : EntityAssociation | entity.associationKeys()->select(k | not k.container))]
+->join('[entity.selectName()/].[key.modelPropertyName()/]', '[key.targetType().selectName()/]')
 [/for]
 [/template]
 
@@ -500,43 +501,28 @@ public function [association.name/]($[sourceEntity.selectName()/][if (service.se
     // [/protected]
     $sql = 'SELECT DISTINCT ' . (String) $builder
         . ' FROM [sourceEntity.tableName/] [sourceEntity.selectName()/]'
+[if (sourceEntity.isContained())]
+        [sourceEntity.pseudoContainerJoin()/]
+[/if]
         . ' INNER JOIN [targetEntity.tableName/] [targetEntity.selectName()/] ON'
 [for (key : AssociationKey | association.keys())]
             . ' [if (i > 1)]AND [/if][key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/] = [key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]'
 [/for]
-[comment for (selection : Selection | service.selections)]
-    [if (selection.joins->notEmpty())]
-    if ($selection == self::xx) {
-		[for (join : Association | selection.joins)]
-// [join/]
-        . ' JOIN ' . [join.targetType().tableName/] . ' ' . [join.targetType().selectName()/]
-		[/for]
-    }
-	[/if]
-[/comment]
 [comment TODO short term fix/]
     // [protected (association.name.concat('.customise.join'))]
     // [/protected]
         . ' WHERE'
-[if (not sourceEntity.hasPrimaryKeys())]
-            . ' [sourceEntity.selectName()/].[sourceEntity.autoKeyName/] = :[sourceEntity.autoKeyName/]'
-[else]
-	[for (key : EntityFeature | sourceEntity.primaryKeys())]
-            . ' [if (i > 1)]AND [/if][sourceEntity.selectName()/].[key.columnName/] = :[key.instanceName()/]'
-	[/for]
-[/if]
+[for (key : Attribute | sourceEntity.uriPathKeys())]
+            . ' [if (i > 1)]AND [/if][key.partOf.selectName()/].[key.columnName()/] = :[key.routeParameterName(sourceEntity)/]'
+[/for]
 [comment TODO short term fix/]
     // [protected (association.name.concat('.customise.where'))]
     // [/protected]
     ;
     $query = $this->entityManager->createNativeQuery($sql, $builder);
-[if (not sourceEntity.hasPrimaryKeys())]
-    $query->setParameter('[sourceEntity.autoKeyName/]', $[sourceEntity.selectName()/]->getId());
-[else]
-	[for (key : EntityFeature | sourceEntity.primaryKeys())]
-    $query->setParameter('[key.instanceName()/]', $[sourceEntity.selectName()/]->[key.getMethodName()/]());
-	[/for]
-[/if]
+[for (key : Attribute | sourceEntity.uriPathKeys())]
+    $query->setParameter('[key.routeParameterName(sourceEntity)/]', [key.keyAccessor(sourceEntity, '$'.concat(sourceEntity.selectName()))/]);
+[/for]
 
 [if (association.isSingleton())]
 	[if (association.isRequired())]
@@ -548,6 +534,24 @@ public function [association.name/]($[sourceEntity.selectName()/][if (service.se
     return $query->getResult();
 [/if]
 }
+[/let]
+[/let]
+[/template]
+
+[template private pseudoContainerJoin(entity : EntityOrView) post(trim())]
+[let association : EntityAssociation = entity.containingAssociation()]
+[let container : EntityOrView = entity.container()]
+. ' INNER JOIN [container.tableName/] [container.selectName()/] ON'
+[if (association.keys->isEmpty())]
+    . ' [entity.selectName()/].[association.columnName/] = [container.selectName()/].[association.opposite.partOf.oclAsType(Entity).autoKeyName/]'
+[else]
+	[for (key : AssociationKey | association.keys)]
+    . '[if (i > 1)] AND[/if] [entity.selectName()/].[key.sourceFeature.columnName/] = [container.selectName()/].[key.targetFeature.columnName/]'
+	[/for]
+[/if]
+[if (container.isContained())]
+[container.pseudoContainerJoin()/]
+[/if]
 [/let]
 [/let]
 [/template]
