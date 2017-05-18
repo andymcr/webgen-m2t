@@ -4,28 +4,17 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(NullLiteral)) post(trim())]
-NULL
-[/template]
-
-[template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(IntegerLiteral)) post(trim())]
-[let literal : IntegerLiteral = guard.oclAsType(IntegerLiteral)]
-[literal.value/]
-[/let]
-[/template]
-
-[template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(StringLiteral)) post(trim())]
-[let literal : StringLiteral = guard.oclAsType(StringLiteral)]
-'[literal.value/]'
-[/let]
+	? (guard.oclIsTypeOf(NullLiteral)
+		or guard.oclIsTypeOf(IntegerLiteral)
+		or guard.oclIsTypeOf(StringLiteral)) post(trim())]
+[guard.valueExpression()/]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)

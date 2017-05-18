@@ -1,0 +1,33 @@
+[comment encoding = UTF-8 /]
+[module literals(
+	'http://cs.manchester.ac.uk/mdsd/Expression')]
+
+[template public valueExpression(expression : Expression)
+	? (expression.oclIsTypeOf(NullLiteral)) post(trim())]
+null
+[/template]
+
+[template public valueExpression(expression : Expression)
+	? (expression.oclIsTypeOf(BooleanLiteral)) post(trim())]
+[let literal : BooleanLiteral = expression.oclAsType(BooleanLiteral)]
+[if (literal.value)]
+true
+[else]
+false
+[/if]
+[/let]
+[/template]
+
+[template public valueExpression(expression : Expression)
+	? (expression.oclIsTypeOf(IntegerLiteral)) post(trim())]
+[let literal : IntegerLiteral = expression.oclAsType(IntegerLiteral)]
+[literal.value/]
+[/let]
+[/template]
+
+[template public valueExpression(expression : Expression)
+	? (expression.oclIsTypeOf(StringLiteral)) post(trim())]
+[let literal : StringLiteral = expression.oclAsType(StringLiteral)]
+'[literal.value/]'
+[/let]
+[/template]

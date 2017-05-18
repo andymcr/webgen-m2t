@@ -4,7 +4,7 @@ Bundle-Name: Acceleo Core Module Runtime Plug-in
 Bundle-SymbolicName: uk.ac.man.cs.mdsd.orm.m2t.core
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
-Require-Bundle: org.eclipse.core.runtime, 
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl,

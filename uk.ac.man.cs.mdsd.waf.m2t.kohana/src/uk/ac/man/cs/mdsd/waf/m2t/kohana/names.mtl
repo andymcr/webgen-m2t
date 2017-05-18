@@ -231,10 +231,10 @@
 
 
 [query public modelInstanceName(field : UnitField) : String
-	= if field.firstEntityOrView() then
+	= if field.firstEntity() then
 			field.displayedOn.modelInstanceName()
 		else
-			field.displayedOn.modelInstanceName(field.entityOrView())
+			field.displayedOn.modelInstanceName(field.entity())
 		endif
 /]
 

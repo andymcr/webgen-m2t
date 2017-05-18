@@ -2,7 +2,6 @@
 [module entity(
 	'http://cs.manchester.ac.uk/mdsd/Expression',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::criteria/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]

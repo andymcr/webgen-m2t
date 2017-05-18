@@ -152,7 +152,7 @@ $[unit.modelInstanceName()/]->loaded() ? '[unit.routeName()/]' : '[unit.routeNam
 		field.modelPropertyName()
 	endif]
 [let accessor : String = '$'.concat(field.modelInstanceName()).concat('->').concat(fieldName)]
-[if (not field.firstEntityOrView())]
+[if (not field.firstEntity())]
 <?php if (!empty($[field.modelInstanceName()/])) { ?>
 [/if]
 <div[if (unit.hasMessagesOnFeature())]<?php
@@ -196,7 +196,7 @@ find_all()[else]
 <?php } ?>
 	[/if]
     </div>
-[if (not field.firstEntityOrView())]
+[if (not field.firstEntity())]
 <?php } ?>
 [/if]
 [/let]

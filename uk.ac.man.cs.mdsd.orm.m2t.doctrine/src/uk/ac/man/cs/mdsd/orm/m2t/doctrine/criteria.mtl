@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module criteria(
 	'http://cs.manchester.ac.uk/mdsd/Expression')]
-[import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
+[import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
 
 
 [template public valueExpression(criteria : Expression)
@@ -20,7 +20,24 @@ new \DateTime('now')
 [template public valueExpression(criteria : Expression)
 	? (criteria.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = criteria.oclAsType(PredicateComparisonOperator)]
-[predicate.left.valueExpression()/] '[predicate.operator.generateOperator()/]' [predicate.right.valueExpression()/]
+[predicate.left.valueExpression()/] '[predicate.operator()/]' [predicate.right.valueExpression()/]
 [/let]
 [/template]
 
+[query private operator(predicate : PredicateComparisonOperator) : String
+	= if predicate.operator = ComparisionOperator::GreaterThan then
+			if not predicate.negated then
+				'gt'
+			else
+				'lte'
+			endif
+		else if predicate.operator = ComparisionOperator::LessThan then
+			if not predicate.negated then
+				'lt'
+			else
+				'gte'
+			endif
+		else
+			'?'
+		endif endif
+/]

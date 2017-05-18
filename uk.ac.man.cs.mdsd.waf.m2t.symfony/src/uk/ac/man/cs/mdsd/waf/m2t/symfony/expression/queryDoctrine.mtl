@@ -4,23 +4,17 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::criteria::m2t::criteria/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(NullLiteral)) post(trim())]
-NULL
-[/template]
-
-[template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(IntegerLiteral)) post(trim())]
-[let literal : IntegerLiteral = expression.oclAsType(IntegerLiteral)]
-[literal.value/]
-[/let]
+	? (expression.oclIsTypeOf(NullLiteral)
+		or expression.oclIsTypeOf(IntegerLiteral)) post(trim())]
+[expression.valueExpression()/]
 [/template]
 
 [template public queryExpression(expression : Expression)
