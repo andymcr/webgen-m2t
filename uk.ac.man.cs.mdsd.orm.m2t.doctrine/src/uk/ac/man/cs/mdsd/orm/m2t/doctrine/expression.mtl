@@ -1,0 +1,58 @@
+[comment encoding = UTF-8 /]
+[module expression(
+	'http://cs.manchester.ac.uk/mdsd/Expression')]
+[import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
+
+
+[template public defaultExpression(expression : Expression)
+	? (expression.oclIsTypeOf(NullLiteral)
+		or expression.oclIsTypeOf(BooleanLiteral)
+		or expression.oclIsTypeOf(IntegerLiteral)
+		or expression.oclIsTypeOf(StringLiteral)) post(trim())]
+[expression.valueExpression()/]
+[/template]
+
+[template public defaultExpression(expression : Expression)
+	? (expression.oclIsTypeOf(TimeLiteral)) post(trim())]
+[let literal : TimeLiteral = expression.oclAsType(TimeLiteral)]
+new \DateTime('[literal.value/]')
+[/let]
+[/template]
+
+[template public defaultExpression(expression : Expression)
+	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
+new \DateTime('now')
+[/template]
+
+
+[template public defaultExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
+[let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
+[predicate.left.valueExpression()/] [if (predicate.negated)]'!='[else]'='[/if] [predicate.right.valueExpression()/]
+[/let]
+[/template]
+
+[template public defaultExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
+[let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
+[predicate.left.valueExpression()/] '[predicate.operator()/]' [predicate.right.valueExpression()/]
+[/let]
+[/template]
+
+[query private operator(predicate : PredicateComparisonOperator) : String
+	= if predicate.operator = ComparisionOperator::GreaterThan then
+			if not predicate.negated then
+				'gt'
+			else
+				'lte'
+			endif
+		else if predicate.operator = ComparisionOperator::LessThan then
+			if not predicate.negated then
+				'lt'
+			else
+				'gte'
+			endif
+		else
+			'?'
+		endif endif
+/]

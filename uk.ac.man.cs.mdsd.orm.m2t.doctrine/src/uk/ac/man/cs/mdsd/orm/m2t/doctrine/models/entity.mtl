@@ -2,7 +2,7 @@
 [module entity(
 	'http://cs.manchester.ac.uk/mdsd/Expression',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::criteria/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::expression/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
@@ -288,7 +288,7 @@ public function __construct()
 {
 [for (feature : Feature | entity.features)]
 	[if (feature.hasDefaultValue())]
-    $this->[feature.modelPropertyName()/] = [feature.defaultValue().valueExpression()/];
+    $this->[feature.modelPropertyName()/] = [feature.defaultValue().defaultExpression()/];
 	[/if]
 	[if (feature.oclIsTypeOf(CollectionAttribute))]
     $this->[feature.modelPropertyName()/] = Array();
