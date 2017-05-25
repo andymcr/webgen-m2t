@@ -115,5 +115,8 @@ services:
             - { name: form.type, alias: [type.formTypeName()/] }
 
 [/for]
+
+# [protected ('manually created services')]
+# [/protected]
 [/file]
 [/template]
