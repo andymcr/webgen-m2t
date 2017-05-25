@@ -693,6 +693,10 @@
 	= unit.pageDisplayedOn().hasJQueryClasses()
 /]
 
+[query public hasSupportActions(unit : DynamicUnit) : Boolean
+	= unit.supportActions->notEmpty()
+/]
+
 [query public hasUriActions(unit : DynamicUnit) : Boolean
 	= unit.uriActions()->notEmpty()
 /]

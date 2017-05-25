@@ -32,15 +32,19 @@ $this->get('translator')->trans('[message/]')
 [/template]
 
 
-[template public actionMethodParameters(page : Page, unit : DynamicUnit, entityOrView : EntityOrView) post(trim())]
-[if (entityOrView.oclIsUndefined())]
+[template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView) post(trim())]
+[page.actionMethodParameters(unit, entity, false)/]
+[/template]
+
+[template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, supportMethod : Boolean) post(trim())]
+[if (entity.oclIsUndefined())]
 	[if (page.hasFilterParameters() or unit.oclIsKindOf(EditUnit))]
 Request $request
 	[/if]
 [else]
-[if (page.hasFilterParameters() or unit.oclIsKindOf(EditUnit))]
-Request $request[if (entityOrView.hasRouteParameters())]
-, [/if][/if][entityOrView.routeParameters()/]
+[if (page.hasFilterParameters() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasSupportActions())]
+Request $request[if (entity.hasRouteParameters())]
+, [/if][/if][entity.routeParameters()/]
 [/if]
 [/template]
 
