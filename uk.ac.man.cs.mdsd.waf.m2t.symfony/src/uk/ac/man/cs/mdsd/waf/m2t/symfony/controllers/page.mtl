@@ -103,7 +103,7 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 public function [unit.supportActionName()/]([page.actionMethodParameters(unit, unit.contentType(), true)/])
 {
 	[if (unit.oclIsTypeOf(DetailsUnit))]
-    $[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
+    $[unit.contentType().instanceName()/] = [unit.selectType().loadInstance(unit)/];
     [unit.actionHandlers()/]
 	[else]
     [unit.actionHandlers()/]
