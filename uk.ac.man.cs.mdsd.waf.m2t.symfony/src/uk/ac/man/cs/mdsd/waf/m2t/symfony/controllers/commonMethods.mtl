@@ -63,12 +63,12 @@ $[key.routeParameterName(entityOrView)/][/for]
 
 
 [template public getContentService(unit : DynamicUnit) post(trim())]
-$this->get('[unit.contentService().name/]')
+$this->get('[unit.contentService().serviceName()/]')
 
 [/template]
 
 [template public getSelectionService(unit : CollectionUnit) post(trim())]
-$this->get('[unit.selectionService().name/]')
+$this->get('[unit.selectionService().serviceName()/]')
 
 [/template]
 

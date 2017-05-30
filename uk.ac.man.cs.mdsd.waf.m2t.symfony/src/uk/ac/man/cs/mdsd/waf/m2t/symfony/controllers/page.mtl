@@ -139,7 +139,7 @@ return new Response("No action taken", 200);
 public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, contentType)/])
 {
     $[deleteAction.instanceName()/] = [contentType.loadInstance(unit)/];
-    $this->get('[deleteAction.usedBy.oclAsType(IndexUnit).contentService().instanceName()/]')->remove($[deleteAction.instanceName()/], true);
+    $this->get('[deleteAction.usedBy.oclAsType(IndexUnit).contentService().serviceName()/]')->remove($[deleteAction.instanceName()/], true);
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
 [else]
@@ -166,7 +166,7 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
     $this->get('[feature.operation.partOf.instanceName()/]')
         ->[feature.operation.methodName()/]([contentType.loadInstance(unit)/]);
 [elseif (feature.operation.resultType = OperationResultTypes::File)]
-    $tempFilename = $this->get('[feature.operation.partOf.instanceName()/]')
+    $tempFilename = $this->get('[feature.operation.partOf.serviceName()/]')
         ->[feature.operation.methodName()/]([contentType.loadInstance(unit)/], '[feature.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
     $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[feature.fileExtension/]';

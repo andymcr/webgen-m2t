@@ -57,7 +57,7 @@ twig:
 [if (model.hasServicesWithSelections())]
     globals:
 	[for (service : Service | model.servicesWithSelections())]
-        [service.className().toLowerFirst()/]: "@[service.name/]"
+        [service.className().toLowerFirst()/]: "@[service.serviceName()/]"
 	[/for]
 [/if]
 

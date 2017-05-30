@@ -72,11 +72,11 @@ public function get[resource.service.name/]Action(ParamFetcher $paramFetcher[if 
 , [resource.parentResource.routeParameters()/][/if])
 {
 [if (resource.parentResource.oclIsUndefined())]
-    return $this->get('[resource.service.instanceName()/]')->[if (resource.getAll.oclIsUndefined())]
+    return $this->get('[resource.service.serviceName()/]')->[if (resource.getAll.oclIsUndefined())]
 findAll[else]
 [resource.getAll.methodName()/][/if]($paramFetcher->get("page"), $paramFetcher->get("pageSize"));
 [else]
-    return $this->get('[resource.parentResource.service.instanceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
+    return $this->get('[resource.parentResource.service.serviceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
 find[else]
 [resource.parentResource.getOne.methodName()/][/if]([resource.parentResource.service.serves.routeParameters()/]);
 [/if]
@@ -102,7 +102,7 @@ find[else]
  **/
 public function getOne[resource.service.name/]Action([resource.routeParameters()/])
 {
-    return $this->get('[resource.service.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
+    return $this->get('[resource.service.serviceName()/]')->[if (resource.getOne.oclIsUndefined())]
 find[else]
 [resource.getOne.methodName()/][/if]([resource.service.serves.routeParameters()/]);
 }

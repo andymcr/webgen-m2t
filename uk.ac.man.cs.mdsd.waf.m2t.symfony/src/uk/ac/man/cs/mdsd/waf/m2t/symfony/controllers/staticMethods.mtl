@@ -25,7 +25,7 @@
 public function [unit.actionName()/]()
 {
 [if (unit.pageDisplayedOn().partOf.staticUnitsEditable)]
-   $this->[unit.instanceName()/] = $this->get('staticText')->find('[unit.uniqueName()/]');
+   $this->[unit.instanceName()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
 
 [/if]
 [if (page.units->size() > 1)]
