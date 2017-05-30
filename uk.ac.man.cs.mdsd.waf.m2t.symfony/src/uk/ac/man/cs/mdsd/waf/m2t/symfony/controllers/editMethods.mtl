@@ -180,7 +180,7 @@ array(
 [let entityOrView : EntityOrView = unit.contentType]
 [let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
 [let parentService : Service = entityOrView.container().services(unit.pageDisplayedOn().partOf)->first()]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.name/]')->find([entityOrView.container().routeParameters()/]));
+$[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.serviceName()/]')->find([entityOrView.container().routeParameters()/]));
 [/let]
 [/let]
 [/let]
