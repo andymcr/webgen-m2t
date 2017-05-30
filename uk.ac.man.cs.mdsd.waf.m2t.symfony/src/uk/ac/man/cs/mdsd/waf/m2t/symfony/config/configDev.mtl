@@ -8,7 +8,7 @@
 [template public configDev(model : WafModel)]
 [file (model.configBaseFilename().concat('_dev').concat(model.ymlExtension()), false)]
 imports:
-    - { resource: parameters_dev.yml }
+    - { resource: parameters.yml }
     - { resource: config.yml }
 
 framework:
