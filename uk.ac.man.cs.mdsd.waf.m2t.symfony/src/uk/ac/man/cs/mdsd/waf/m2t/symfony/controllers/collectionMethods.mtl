@@ -73,23 +73,9 @@ $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingF
 [/template]
 
 [template private childFilterSelect(unit : CollectionUnit) post(trim())]
-[for (f : Filter | unit.filters()) separator('else')]
-if ([for (parameter : FilterParameter | f.parameters) separator(' && ')]
-$request->query->has('[parameter.name/]')[/for])
-    [unit.childFilterCall(f)/]
-[/for]
 [/template]
 
 [template private childFilterCall(unit : CollectionUnit, filter : Filter)]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(filter.selection)/](
-    $this->[unit.selectionType.instanceName()/],
-[for (parameter : FormalParameter | filter.selection.parameters)]
-[let actual : FilterParameter = filter.matchingActual(parameter)]
-    $request->query->get('[actual.name/]'),
-[/let]
-[/for]
-    [unit.paginationActuals()/]
-);
 [/template]
 
 [template private contentSelect(unit : CollectionUnit) post(trim())]
@@ -117,22 +103,9 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 [/template]
 
 [template private contentFilterSelect(unit : CollectionUnit) post(trim())]
-[for (f : Filter | unit.filters()) separator('else')]
-if ([for (parameter : FilterParameter | f.parameters) separator(' && ')]
-$request->query->has('[parameter.name/]')[/for])
-    [unit.contentFilterCall(f)/]
-[/for]
 [/template]
 
 [template private contentFilterCall(unit : CollectionUnit, filter : Filter)]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.selection.instanceName()/](
-[for (parameter : FormalParameter | filter.selection.parameters)]
-[let actual : FilterParameter = filter.matchingActual(parameter)]
-    $request->query->get('[actual.name/]'),
-[/let]
-[/for]
-    [unit.paginationActuals()/]
-);
 [/template]
 
 [template private selectMethodParameters(unit : SelectableUnit) post(trim())]

@@ -36,17 +36,26 @@
 			endif
 /]
 
+[query public hasParameters(selection : Selection) : Boolean
+	= selection.isSelected()
+		or if selection.condition.oclIsUndefined() then
+				false
+			else
+				selection.condition.hasParameter()
+			endif
+/]
 
-[query public selected(selection : Selection) : Boolean
+[query public isSelected(selection : Selection) : Boolean
 	= selection.selected and not selection.partOf.serves.parentEntity().oclIsUndefined()
 /]
+
 
 
 [query public routedSelection(unit : CollectionUnit) : Boolean
 	= if unit.selection.oclIsUndefined() then
 			false
 		else
-			unit.selection.selected()
+			unit.selection.isSelected()
 		endif
 /]
 

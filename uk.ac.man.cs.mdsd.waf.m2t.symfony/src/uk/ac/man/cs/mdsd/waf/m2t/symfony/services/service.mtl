@@ -67,8 +67,10 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
     [service.findMethod()/]
 
 [/if]
+[if (service.findAll.oclIsUndefined())]
     [service.findAllMethod()/]
 
+[/if]
     [service.removeMethod()/]
 
     [service.saveMethod()/]
@@ -235,59 +237,176 @@ public function save($entity, $flush = false)
 }
 [/template]
 
-[template private selectionMethod(selection : Selection, service : Service, userService : Service) post(trim())]
-public function [selection.methodName()/]([selection.parameters()/])
+[template private selectionMethod(selection : Selection, service : Service, userService : Service)
+	? (selection.filters->isEmpty()) post(trim())]
+public function [selection.instanceName()/]([selection.formals()/])
 {
-    $queryBuilder = $this->createQueryBuilder();
-[if (selection.fields->notEmpty())]
-    [selection.fields()/]
+    [selection.builderCode()/]
+    $query = $queryBuilder->getQuery();
+[if (selection.hasParameters())]
+    [selection.queryParametersCode(userService)/]
 [/if]
-[if (selection.joins->notEmpty() or selection.selected())]
-    [selection.joins()/]
+
+    [selection.queryResult(service)/]
+}
+[/template]
+
+[template private selectionMethod(selection : Selection, service : Service, userService : Service)
+	? (selection.filters->notEmpty()) post(trim())]
+private function [selection.builderMethodName()/]([selection.formals()/])
+{
+    [selection.builderCode()/]
+    return $queryBuilder;
+}
+
+[if (selection.hasParameters())]
+private function x($query)
+{
+    [selection.queryParametersCode(userService)/]
+}
+
 [/if]
-[if (selection.selected() or not selection.filter.oclIsUndefined())]
-    [selection.filter()/]
+public function [selection.methodName/]([selection.formals()/])
+{
+    $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
+[if (selection.hasParameters())]
+    $this->x($query);
 [/if]
-[if (selection.ordering->size() > 0)]
-    [selection.orderBy()/]
+
+    [selection.queryResult(service)/]
+}
+[for (filter : Filter | selection.filters)]
+
+public function [filter.methodName/]([filter.formals()/])
+{
+    $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
+    $queryBuilder->[if (selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
+    $query = $queryBuilder->getQuery();
+[if (selection.hasParameters())]
+    $this->x($query);
+[/if]
+
+    [selection.queryResult(service)/]
+}
+[/for]
+[/template]
+
+[template private formals(selection : Selection) post(trim())]
+[if (selection.isSelected() or selection.parameters->notEmpty())]
+[selection.selectionFormals()/]
+[if (selection.limit <> 1)]
+, [/if][/if][if (selection.limit <> 1)]
+[selection.limitFormals()/]
+[/if]
+[/template]
+
+[template private formals(filter : Filter) post(trim())]
+[if (filter.selection.isSelected() or filter.selection.parameters->notEmpty())]
+[selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
+, [/if]
+[/if]
+[if (filter.parameters->notEmpty())]
+[filter.filterFormals()/][if (filter.selection.limit <> 1)]
+, [/if][/if][if (filter.selection.limit <> 1)]
+[filter.selection.limitFormals()/][/if]
+[/template]
+
+[template private selectionFormals(selection : Selection) post(trim())]
+[if (selection.isSelected())]
+	[for (key : Attribute | selection.partOf.serves.parentEntity().uriPathKeys()) separator(', ')]
+$[key.routeParameterName(selection.partOf.serves)/][/for]
+[if (selection.parameters->notEmpty())]
+, [/if]
+[/if]
+[if (selection.parameters->notEmpty())]
+	[for (parameter : FormalParameter | selection.parameters) separator(', ')]
+$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
+ = [parameter.defaultValue/][/if][/for]
+[/if]
+[/template]
+
+[template private limitFormals(selection : Selection) post(trim())]
+$page = NULL, $pageSize = 10
+[/template]
+
+[template private filterFormals(filter : Filter) post(trim())]
+[for (parameter : FormalParameter | filter.parameters) separator(', ')]
+$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
+ = [parameter.defaultValue/][/if][/for]
+[/template]
+
+[template private actuals(selection : Selection) post(trim())]
+[if (selection.isSelected() or selection.parameters->notEmpty())]
+[selection.selectionActuals()/][if (selection.limit <> 1)]
+, [/if]
 [/if]
 [if (selection.limit <> 1)]
-    if ($page)
-    {
-        $queryBuilder->setFirstResult(($page - 1) * $pageSize);
-        $queryBuilder->setMaxResults($pageSize);
-    }
+[selection.limitActuals()/][/if]
+[/template]
+
+[template private actuals(filter : Filter) post(trim())]
+[if (filter.selection.isSelected() or filter.selection.parameters->notEmpty())]
+[selection.selectionActuals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
+, [/if]
+[/if]
+[if (filter.parameters->notEmpty())]
+[filter.filterActuals()/][if (filter.selection.limit <> 1)]
+, [/if]
+[/if]
+[if (filter.selection.limit <> 1)]
+[filter.selection.limitActuals()/][/if]
+[/template]
+
+[template private selectionActuals(selection : Selection) post(trim())]
+[if (selection.isSelected())]
+	[for (key : Attribute | selection.partOf.serves.parentEntity().uriPathKeys()) separator(', ')]
+$[key.routeParameterName(selection.partOf.serves)/][/for]
+[if (selection.parameters->notEmpty())]
+, [/if]
+[/if]
+[if (selection.parameters->notEmpty())]
+	[for (parameter : FormalParameter | selection.parameters) separator(', ')]
+$[parameter.name/][/for]
+[/if]
+[/template]
+
+[template private limitActuals(selection : Selection) post(trim())]
+$page, $pageSize
+[/template]
+
+[template private filterActuals(filter : Filter) post(trim())]
+[for (parameter : FormalParameter | filter.parameters) separator(', ')]
+$[parameter.name/][/for]
+[/template]
+
+[template private builderCode(selection : Selection) post(trim())]
+$queryBuilder = $this->createQueryBuilder();
+[if (selection.fields->notEmpty())]
+[selection.fields()/]
+[/if]
+[if (selection.joins->notEmpty() or selection.isSelected())]
+[selection.joins()/]
+[/if]
+[if (selection.isSelected() or not selection.condition.oclIsUndefined())]
+[selection.condition()/]
+[/if]
+[if (selection.ordering->notEmpty())]
+[selection.orderBy()/]
+[/if]
+[if (selection.limit <> 1)]
+if ($page)
+{
+    $queryBuilder->setFirstResult(($page - 1) * $pageSize);
+    $queryBuilder->setMaxResults($pageSize);
+}
 	[if (selection.limit > 0)]
-    else
-        $queryBuilder->setMaxResults([selection.limit/]);
+else
+    $queryBuilder->setMaxResults([selection.limit/]);
 	[/if]
 [/if]
 [if (selection.distinct)]
-    $queryBuilder->distinct();
+$queryBuilder->distinct();
 [/if]
-    $query = $queryBuilder->getQuery();
-[if (selection.selected())]
-[let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
-	[for (key : Attribute | parentEntity.uriPathKeys())]
-    $query->setParameter('[key.routeParameterName(parentEntity)/]', $[key.routeParameterName(parentEntity)/]);
-	[/for]
-[/let]
-[/if]
-[if (not selection.filter.oclIsUndefined())]
-	[if (selection.filter.hasParameter())]
-    [selection.filter.queryParameter(userService)/]
-	[/if]
-[/if]
-
-[if (selection.limit = 1)]
-    return $query->getSingleResult();
-[else]
-    if ($page)
-        return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
-    else
-        return $query->getResult();
-[/if]
-}
 [/template]
 
 [template private fields(selection : Selection) post(trim())]
@@ -328,7 +447,7 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 /]
 
 [template private joins(selection : Selection) post(trim())]
-[if (selection.selected())]
+[if (selection.isSelected())]
 [let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
 [let association : Association = selection.partOf.serves.containingAssociation()]
 	[if (selection.entities()->excludes(parentEntity))]
@@ -350,33 +469,23 @@ $queryBuilder->join('[join.targetType().selectName()/].[join.opposite().modelPro
 [/for]
 [/template]
 
-[template private filter(selection : Selection) post(trim())]
-[if (selection.selected())]
+[template private condition(selection : Selection) post(trim())]
+[if (selection.isSelected())]
 [let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
-	[if (selection.filter.oclIsUndefined())]
-		[if (parentEntity.uriPathKeys()->size() = 1)]
-		[let key : Attribute = parentEntity.uriPathKeys()->first()]
+	[if (parentEntity.uriPathKeys()->size() = 1)]
+	[let key : Attribute = parentEntity.uriPathKeys()->first()]
 $queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(parentEntity)/]'));
-		[/let]
-		[else]
-$queryBuilder->where($queryBuilder->expr->andX(
-			[for (key : Attribute | parentEntity.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(parentEntity)/]'),
-			[/for]
-));
-		[/if]
+	[/let]
 	[else]
-$queryBuilder->where($queryBuilder->expr()->andX(
+$queryBuilder->where($queryBuilder->expr->andX(
 		[for (key : Attribute | parentEntity.uriPathKeys())]
     $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(parentEntity)/]'),
 		[/for]
-    [selection.filter.queryExpression()/]
 ));
 	[/if]
 [/let]
-[else]
-$queryBuilder->where([selection.filter.queryExpression()/]);
 [/if]
+$queryBuilder->[if (selection.isSelected())]andWhere[else]where[/if]([selection.condition.queryExpression()/]);
 [/template]
 
 [template private orderBy(selection : Selection) post(trim())]
@@ -393,6 +502,36 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 'ASC'
 [else]
 'DESC'
+[/if]
+[/template]
+
+[template private queryParametersCode(selection : Selection, userService : Service) post(trim())]
+[if (selection.isSelected())]
+    [selection.querySelectedParameters()/]
+[/if]
+[if (not selection.condition.oclIsUndefined())]
+	[if (selection.condition.hasParameter())]
+    [selection.condition.queryParameter(userService)/]
+	[/if]
+[/if]
+[/template]
+
+[template private querySelectedParameters(selection : Selection) post(trim())]
+[let parentEntity : EntityOrView = selection.partOf.serves.parentEntity()]
+	[for (key : Attribute | parentEntity.uriPathKeys())]
+$query->setParameter('[key.routeParameterName(parentEntity)/]', $[key.routeParameterName(parentEntity)/]);
+	[/for]
+[/let]
+[/template]
+
+[template private queryResult(selection : Selection, service : Service) post(trim())]
+[if (selection.limit = 1)]
+return $query->getSingleResult();
+[else]
+if ($page)
+    return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
+else
+    return $query->getResult();
 [/if]
 [/template]
 
@@ -414,11 +553,11 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/template]
 
 [template private childSelectionMethod(service : Service, association : Association, selection : Selection) post(trim())]
-public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.parameters->notEmpty() or selection.limit <> 1)], [/if][selection.parameters()/])
+public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.parameters->notEmpty() or selection.limit <> 1)], [/if][selection.formals()/])
 {
     $criteria = Criteria::create();
-[if (not selection.filter.oclIsUndefined())]
-    $criteria->where([selection.filter.criteriaExpression()/]);
+[if (not selection.condition.oclIsUndefined())]
+    $criteria->where([selection.condition.criteriaExpression()/]);
 [/if]
 [if (selection.limit > 0)]
     $criteria->setMaxResults([selection.limit/]);
@@ -444,27 +583,6 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 
     return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->matching($criteria);
 }
-[/template]
-
-[template private parameters(selection : Selection) post(trim())]
-[if (selection.selected())]
-	[for (key : Attribute | selection.partOf.serves.parentEntity().uriPathKeys()) separator(', ')]
-$[key.routeParameterName(selection.partOf.serves)/][/for]
-[if (selection.parameters->notEmpty() or selection.limit <> 1)]
-, [/if]
-[/if]
-[if (selection.parameters->notEmpty())]
-	[for (parameter : FormalParameter | selection.parameters) separator(', ')]
-$[parameter.name/][if (parameter.optional)]
- = [if (parameter.defaultValue.oclIsUndefined())]
-NULL[else]
-[parameter.defaultValue/][/if][/if][/for]
-[if (selection.limit <> 1)]
-, [/if]
-[/if]
-[if (selection.limit <> 1)]
-$page = NULL, $pageSize = 10
-[/if]
 [/template]
 
 [template private pseudoAssociationMethods(service : Service) post(trim())]

@@ -54,35 +54,6 @@ class [resource.controllerClassName()/] extends FOSRestController
 [/for]
 [/template]
 
-[template private getAllAction(resource : Resource) post(trim())]
-/**
- * @Rest\Get("[resource.uriPath(true)/]", name="[resource.routeName()/]")
- * @Rest\QueryParam(name="page", nullable=true, description="The section of items to return")
- * @Rest\QueryParam(name="pageSize", nullable=true, description="The number of items to return")
- * [resource.viewAnnotation()/]
- * @ApiDoc(
-[if (resource.parentResource.oclIsUndefined())]
- *     resource="true",
-[/if]
- * )
- *
- * @return array
- **/
-public function get[resource.service.name/]Action(ParamFetcher $paramFetcher[if (not resource.parentResource.oclIsUndefined())]
-, [resource.parentResource.routeParameters()/][/if])
-{
-[if (resource.parentResource.oclIsUndefined())]
-    return $this->get('[resource.service.serviceName()/]')->[if (resource.getAll.oclIsUndefined())]
-findAll[else]
-[resource.getAll.methodName()/][/if]($paramFetcher->get("page"), $paramFetcher->get("pageSize"));
-[else]
-    return $this->get('[resource.parentResource.service.serviceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
-find[else]
-[resource.parentResource.getOne.methodName()/][/if]([resource.parentResource.service.serves.routeParameters()/]);
-[/if]
-}
-[/template]
-
 [template private getOneAction(resource : Resource) post(trim())]
 /**
  * @Rest\Get("[resource.uriPath()/]", name="[resource.routeName()/]One")
@@ -104,6 +75,93 @@ public function getOne[resource.service.name/]Action([resource.routeParameters()
 {
     return $this->get('[resource.service.serviceName()/]')->[if (resource.getOne.oclIsUndefined())]
 find[else]
-[resource.getOne.methodName()/][/if]([resource.service.serves.routeParameters()/]);
+[resource.getOne.instanceName()/][/if]([resource.service.serves.routeParameters()/]);
 }
 [/template]
+
+[template private getAllAction(resource : Resource) post(trim())]
+/**
+ * @Rest\Get("[resource.uriPath(true)/]", name="[resource.routeName()/]")
+ * @Rest\QueryParam(name="page", nullable=true, description="The section of items to return")
+ * @Rest\QueryParam(name="pageSize", nullable=true, description="The number of items to return")
+ * [resource.viewAnnotation()/]
+ * @ApiDoc(
+[if (resource.parentResource.oclIsUndefined())]
+ *     resource="true",
+[/if]
+ * )
+ *
+ * @return array
+ **/
+public function get[resource.service.name/]Action(ParamFetcher $paramFetcher[if (not resource.parentResource.oclIsUndefined())]
+, [resource.parentResource.routeParameters()/][/if])
+{
+[if (resource.parentResource.oclIsUndefined())]
+    return $this->get('[resource.service.serviceName()/]')->[if (resource.getAll.oclIsUndefined())]
+findAll[else]
+[resource.getAll.instanceName()/][/if]($paramFetcher->get("page"), $paramFetcher->get("pageSize"));
+[else]
+    return $this->get('[resource.parentResource.service.serviceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
+find[else]
+[resource.parentResource.getOne.instanceName()/][/if]([resource.parentResource.service.serves.routeParameters()/]);
+[/if]
+}
+[/template]
+
+[template private selectCode(resource : Resource) post(trim())]
+[if (not resource.limit.oclIsUndefined())]
+$this->offset = $request->query->getInt('[resource.limit.parameters->first().name/]', 1);
+[/if]
+[if (not unit.selectionType.oclIsUndefined())]
+$this->[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
+[/if]
+[if (not unit.selectionType.oclIsUndefined() and not unit.containingFeature.oclIsUndefined())]
+[unit.childSelect()/]
+[else]
+[unit.contentSelect()/]
+[/if]
+[/template]
+
+[template private contentSelect(unit : CollectionUnit) post(trim())]
+[if (unit.hasFilters())]
+[unit.contentFilterSelect()/]
+else
+[/if]
+[if (not unit.selection.oclIsUndefined())]
+	[if (unit.routedSelection())]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+	[else]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+	[/if]
+[elseif (unit.oclIsKindOf(DataUnit))]
+[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+	[if (not dataUnit.defaultSelection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[dataUnit.defaultSelection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+	[else]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+	[/if]
+[/let]
+[else]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+[/if]
+[/template]
+
+[template private contentFilterSelect(unit : CollectionUnit) post(trim())]
+[for (f : Filter | unit.filters()) separator('else')]
+if ([for (parameter : FilterParameter | f.parameters) separator(' && ')]
+$request->query->has('[parameter.name/]')[/for])
+    [unit.contentFilterCall(f)/]
+[/for]
+[/template]
+
+[template private contentFilterCall(unit : CollectionUnit, filter : Filter)]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.selection.instanceName()/](
+[for (parameter : FormalParameter | filter.selection.parameters)]
+[let actual : FilterParameter = filter.matchingActual(parameter)]
+    $request->query->get('[actual.name/]'),
+[/let]
+[/for]
+    [unit.paginationActuals()/]
+);
+[/template]
+

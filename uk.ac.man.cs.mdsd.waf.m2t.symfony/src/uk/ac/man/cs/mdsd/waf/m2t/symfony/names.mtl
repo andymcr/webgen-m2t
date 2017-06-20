@@ -356,6 +356,6 @@
 	= selection.name.toLowerFirst()
 /]
 
-[query public methodName(selection : Selection) : String
-	= selection.instanceName()
+[query public builderMethodName(selection : Selection) : String
+	= selection.instanceName().concat('Builder')
 /]

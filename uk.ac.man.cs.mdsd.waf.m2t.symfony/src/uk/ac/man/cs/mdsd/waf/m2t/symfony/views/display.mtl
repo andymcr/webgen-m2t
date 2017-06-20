@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module display(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
@@ -120,13 +121,13 @@
  <form action="{{ path('[unit.routeName()/]', { [if (not unit.selectionType.oclIsUndefined())]
 [unit.selectType().routeActualParameters(unit.contentType(), accessor, false)/][else]
 [unit.contentType().routeActualParameters(unit.contentType(), accessor, true)/][/if] }) }}" method="get">
-[for (parameter : FilterParameter | filter.parameters)]
-  <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
- placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
- class="[filter.jQueryClass()/]"[/if][if (not parameter.formal.optional)]
- required="required"[/if]
- value="{{ app.request.query.get('[parameter.name/]') }}"/>
-[/for]
+[comment for (parameter : FilterParameter | filter.parameters)
+  <input type="text" name="parameter.name"if (not parameter.placeholder.oclIsUndefined())
+ placeholder="parameter.placeholde"ifif (unit.hasJQueryClasses())
+ class="filter.jQueryClass()/"ifif (not parameter.formal.optional)
+ required="required"if
+ value="{{ app.request.query.get('parameter.name') }}">
+/]
   <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"[if (unit.hasJQueryClasses())]
  class="[filter.jQueryClass()/]"[/if]/>
  </form>
