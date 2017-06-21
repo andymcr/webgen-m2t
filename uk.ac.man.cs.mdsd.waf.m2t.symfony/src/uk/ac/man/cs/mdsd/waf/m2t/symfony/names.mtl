@@ -204,6 +204,14 @@
 	= 'logout'
 /]
 
+[query public paginationLimitParameterName(unit : CollectionUnit) : String
+	= 'limit'
+/]
+
+[query public paginationPageParameterName(unit : CollectionUnit) : String
+	= 'page'
+/]
+
 [query public routeName(unit : ContentUnit) : String
 	= unit.routeName('')
 /]
@@ -358,4 +366,8 @@
 
 [query public builderMethodName(selection : Selection) : String
 	= selection.instanceName().concat('Builder')
+/]
+
+[query public parametersMethodName(selection : Selection) : String
+	= selection.instanceName().concat('Parameters')
 /]

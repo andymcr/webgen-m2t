@@ -214,15 +214,6 @@
 /]
 
 
-[query public matchingActual(f : Filter, parameter : FormalParameter) : FilterParameter
-	= f.parameters->any(p | if p.formal.oclIsUndefined() then
-								false
-							else
-								p.formal.name = parameter.name
-							endif)
-/]
-
-
 [query public id(menu : Menu) : String
 	= menu.name.asId()
 /]
@@ -444,8 +435,8 @@
 [query public useInputJQuery(page : Page) : Boolean
 	= (page.hasFormUnits()
 			or page.units
-				->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
-				->select(u | u.filters()->notEmpty())
+				->select(u | u.oclIsKindOf(CollectionUnit)).oclAsType(CollectionUnit)
+				->select(u | u.supportedFilters->notEmpty())
 				->notEmpty())
 		and page.partOf.hasJQueryClasses()
 /]
@@ -544,12 +535,8 @@
 	= unit.displayFields->select(f | f.oclIsKindOf(UnitFeature))->select(f | f.isEncrypted())
 /]
 
-[query public filterParameters(unit : IndexUnit) : Sequence(FilterParameter)
-	= unit.filters()->collect(q | q.parameters)
-/]
-
-[query public filters(unit : CollectionUnit) : Sequence(Filter)
-	= unit.filters->select(q | not q.selection.oclIsUndefined()).oclAsType(Filter)
+[query public filterParameters(unit : CollectionUnit) : Sequence(FormalParameter)
+	= unit.supportedFilters->collect(q | q.parameters)
 /]
 
 [query public forcedValueFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
@@ -593,15 +580,15 @@
 /]
 
 [query public hasFilterParameters(unit : DynamicUnit) : Boolean
-	= if unit.oclIsKindOf(IndexUnit) then
-			unit.oclAsType(IndexUnit).filters->notEmpty()
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).supportedFilters->notEmpty()
 		else
 			false
 		endif
 /]
 
 [query public hasFilters(unit : CollectionUnit) : Boolean
-	= unit.filters()->notEmpty()
+	= unit.supportedFilters->notEmpty()
 /]
 
 [query public hasForcedValueFeatures(unit : DynamicUnit) : Boolean

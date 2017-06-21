@@ -260,7 +260,7 @@ private function [selection.builderMethodName()/]([selection.formals()/])
 }
 
 [if (selection.hasParameters())]
-private function x($query)
+private function [selection.parametersMethodName()/]($query)
 {
     [selection.queryParametersCode(userService)/]
 }
@@ -270,7 +270,7 @@ public function [selection.methodName/]([selection.formals()/])
 {
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
 [if (selection.hasParameters())]
-    $this->x($query);
+    $this->[selection.parametersMethodName()/]($query);
 [/if]
 
     [selection.queryResult(service)/]
@@ -282,9 +282,12 @@ public function [filter.methodName/]([filter.formals()/])
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
     $queryBuilder->[if (selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
     $query = $queryBuilder->getQuery();
-[if (selection.hasParameters())]
-    $this->x($query);
-[/if]
+	[if (selection.hasParameters())]
+    $this->[selection.parametersMethodName()/]($query);
+	[/if]
+	[for (parameter : FormalParameter | filter.parameters)]
+    $query->setParameter('[parameter.name/]', $[parameter.name/]);
+	[/for]
 
     [selection.queryResult(service)/]
 }
@@ -293,11 +296,11 @@ public function [filter.methodName/]([filter.formals()/])
 
 [template private formals(selection : Selection) post(trim())]
 [if (selection.isSelected() or selection.parameters->notEmpty())]
-[selection.selectionFormals()/]
-[if (selection.limit <> 1)]
-, [/if][/if][if (selection.limit <> 1)]
-[selection.limitFormals()/]
+[selection.selectionFormals()/][if (selection.limit <> 1)]
+, [/if]
 [/if]
+[if (selection.limit <> 1)]
+[selection.limitFormals()/][/if]
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
@@ -307,7 +310,9 @@ public function [filter.methodName/]([filter.formals()/])
 [/if]
 [if (filter.parameters->notEmpty())]
 [filter.filterFormals()/][if (filter.selection.limit <> 1)]
-, [/if][/if][if (filter.selection.limit <> 1)]
+, [/if]
+[/if]
+[if (filter.selection.limit <> 1)]
 [filter.selection.limitFormals()/][/if]
 [/template]
 
@@ -326,7 +331,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private limitFormals(selection : Selection) post(trim())]
-$page = NULL, $pageSize = 10
+$offset = 0, $limit = 10
 [/template]
 
 [template private filterFormals(filter : Filter) post(trim())]
@@ -371,7 +376,7 @@ $[parameter.name/][/for]
 [/template]
 
 [template private limitActuals(selection : Selection) post(trim())]
-$page, $pageSize
+$offset, $limit
 [/template]
 
 [template private filterActuals(filter : Filter) post(trim())]
@@ -394,10 +399,9 @@ $queryBuilder = $this->createQueryBuilder();
 [selection.orderBy()/]
 [/if]
 [if (selection.limit <> 1)]
-if ($page)
-{
-    $queryBuilder->setFirstResult(($page - 1) * $pageSize);
-    $queryBuilder->setMaxResults($pageSize);
+if ($offset >= 0) {
+    $queryBuilder->setFirstResult($offset);
+    $queryBuilder->setMaxResults($limit);
 }
 	[if (selection.limit > 0)]
 else
@@ -507,11 +511,11 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 
 [template private queryParametersCode(selection : Selection, userService : Service) post(trim())]
 [if (selection.isSelected())]
-    [selection.querySelectedParameters()/]
+[selection.querySelectedParameters()/]
 [/if]
 [if (not selection.condition.oclIsUndefined())]
 	[if (selection.condition.hasParameter())]
-    [selection.condition.queryParameter(userService)/]
+[selection.condition.queryParameter(userService)/]
 	[/if]
 [/if]
 [/template]
@@ -528,7 +532,7 @@ $query->setParameter('[key.routeParameterName(parentEntity)/]', $[key.routeParam
 [if (selection.limit = 1)]
 return $query->getSingleResult();
 [else]
-if ($page)
+if ($offset >= 0)
     return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
 else
     return $query->getResult();
