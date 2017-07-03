@@ -348,6 +348,10 @@
 	= page.dynamicUnits()->isEmpty()
 /]
 
+[query public hasPagination(page : Page) : Boolean
+	= page.units->select(u | u.hasPagination())->notEmpty()
+/]
+
 [query public hasParameterisedUnits(page : Page) : Boolean
 	= page.parameterisedUnits()->notEmpty()
 /]
@@ -678,6 +682,14 @@
 
 [query public hasJQueryClasses(unit : DynamicUnit) : Boolean
 	= unit.pageDisplayedOn().hasJQueryClasses()
+/]
+
+[query public hasPagination(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).defaultPaginationSize > 0
+		else
+			false
+		endif
 /]
 
 [query public hasSupportActions(unit : DynamicUnit) : Boolean

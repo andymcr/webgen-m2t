@@ -137,7 +137,7 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 [/template]
 
 [template private selectMethodParameters(unit : SelectableUnit, formal : Boolean) post(trim())]
-[if (unit.oclAsType(DynamicUnit).hasFilterParameters())][if (formal)]
+[if (unit.oclAsType(DynamicUnit).hasFilterParameters() or unit.oclAsType(DynamicUnit).hasPagination())][if (formal)]
 Request [/if]$request[if (not unit.selectionType.oclIsUndefined())][if (unit.selectionType.uriPathKeys()->notEmpty())]
 , [/if][/if][/if]
 [unit.selectableParameters()/]

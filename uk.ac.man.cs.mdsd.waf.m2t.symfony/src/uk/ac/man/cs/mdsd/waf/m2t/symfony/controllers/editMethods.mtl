@@ -144,7 +144,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 			entity.uriPathKeys()
 		endif]
 $this->createForm([entity.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
-    'action' => $this->generateUrl('[unit.routeName(suffix)/]', [if (page.hasFilterParameters())]
+    'action' => $this->generateUrl('[unit.routeName(suffix)/]', [if (page.hasFilterParameters() or page.hasPagination())]
 	[if (pathKeys->isEmpty())]
 $request->query->all()[else]
 array_merge(
