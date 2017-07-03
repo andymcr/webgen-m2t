@@ -174,15 +174,14 @@ $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[k
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
-public function findAll($page = NULL, $pageSize = 10)
+public function findAll([service.limitFormals()/])
 {
-    if ($page == NULL)
+    if ($offset < 0)
 	    return $this->getRepository()->findAll();
-    else
-    {
+    else {
         $queryBuilder = $this->createQueryBuilder();
-        $queryBuilder->setFirstResult(($page - 1) * $pageSize);
-        $queryBuilder->setMaxResults($pageSize);
+        $queryBuilder->setFirstResult($offset);
+        $queryBuilder->setMaxResults($limit);
         $query = $queryBuilder->getQuery();
         return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
     }
@@ -300,7 +299,7 @@ public function [filter.methodName/]([filter.formals()/])
 , [/if]
 [/if]
 [if (selection.limit <> 1)]
-[selection.limitFormals()/][/if]
+[selection.partOf.limitFormals()/][/if]
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
@@ -313,7 +312,7 @@ public function [filter.methodName/]([filter.formals()/])
 , [/if]
 [/if]
 [if (filter.selection.limit <> 1)]
-[filter.selection.limitFormals()/][/if]
+[filter.selection.partOf.limitFormals()/][/if]
 [/template]
 
 [template private selectionFormals(selection : Selection) post(trim())]
@@ -330,7 +329,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/if]
 [/template]
 
-[template private limitFormals(selection : Selection) post(trim())]
+[template private limitFormals(service : Service) post(trim())]
 $offset = 0, $limit = 10
 [/template]
 
