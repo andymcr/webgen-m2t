@@ -199,7 +199,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.serv
 return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
-return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (page.hasFilterParameters())]
+return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (page.hasFilterParameters() or page.hasPagination())]
 , [if (pathKeys->isEmpty())]
 $request->query->all()[else]
 array_merge(

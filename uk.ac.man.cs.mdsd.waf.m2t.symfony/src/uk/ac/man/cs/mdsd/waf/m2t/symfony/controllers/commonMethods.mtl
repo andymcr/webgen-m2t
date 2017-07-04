@@ -38,11 +38,11 @@ $this->get('translator')->trans('[message/]')
 
 [template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, supportMethod : Boolean) post(trim())]
 [if (entity.oclIsUndefined())]
-	[if (page.hasFilterParameters() or unit.hasPagination() or unit.oclIsKindOf(EditUnit))]
+	[if (page.hasFilterParameters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request
 	[/if]
 [else]
-[if (page.hasFilterParameters() or unit.hasPagination() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasSupportActions())]
+[if (page.hasFilterParameters() or page.hasPagination() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasSupportActions())]
 Request $request[if (entity.hasRouteParameters())]
 , [/if][/if][entity.routeParameters()/]
 [/if]

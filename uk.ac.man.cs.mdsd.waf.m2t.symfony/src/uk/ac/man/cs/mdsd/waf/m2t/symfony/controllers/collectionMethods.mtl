@@ -73,21 +73,18 @@ $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingF
 [/template]
 
 [template private childFilterSelect(unit : CollectionUnit) post(trim())]
-[for (f : Filter | unit.supportedFilters) separator('else')]
-if ([for (parameter : FormalParameter | f.parameters) separator(' && ')]
-$request->query->has('[parameter.name/]')[/for])
-    [unit.childFilterCall(f)/]
+[for (filter : Filter | unit.supportedFilters) separator('else')]
+if ($request->query->has('[filter.name/]Filter'))
+    [unit.childFilterCall(filter)/]
 [/for]
 [/template]
 
 [template private childFilterCall(unit : CollectionUnit, filter : Filter)]
-[if (not filter.selection.oclIsUndefined())]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(filter.selection)/](
     $this->[unit.selectionType.instanceName()/],
-[for (parameter : FormalParameter | filter.selection.parameters)]
+[for (parameter : FormalParameter | filter.parameters)]
     $request->query->get('[parameter.name/]'),
 [/for]
-[/if]
     [unit.paginationActuals()/]
 );
 [/template]
@@ -101,7 +98,9 @@ else
 	[if (unit.routedSelection())]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([unit.selectableParameters()/][unit.paginationActuals()/]);
 	[else]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.methodName/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
+[unit.filter.methodName/][else][unit.selection.methodName/][/if]
+([unit.selectableParameters()/][unit.paginationActuals()/]);
 	[/if]
 [elseif (unit.oclIsKindOf(DataUnit))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
