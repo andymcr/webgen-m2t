@@ -126,7 +126,7 @@
  placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
  class="[filter.jQueryClass()/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
  required="required"[/if]
- value="{{ app.request.query.get('[parameter.name/]') }}">
+ value="{{ app.request.query.get('[parameter.name/]') }}"/>
 [/for]
   <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"[if (unit.hasJQueryClasses())]
  class="[filter.jQueryClass()/]"[/if]/>

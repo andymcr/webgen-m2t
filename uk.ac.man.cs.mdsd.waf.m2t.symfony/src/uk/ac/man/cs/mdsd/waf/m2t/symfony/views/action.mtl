@@ -76,7 +76,9 @@ NULL
 [template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
-[action.anchor(delete.routeName(), entityOrView, routeParametersAccessor, label, title, delete.confirmMessage, conditionAccessor, action.immediateUnit().pageDisplayedOn().hasFilterParameters())/]
+[let page : Page = delete.immediateUnit().pageDisplayedOn()]
+[action.anchor(delete.routeName(), entityOrView, routeParametersAccessor, label, title, delete.confirmMessage, conditionAccessor, page.hasFilterParameters() or page.hasPagination())/]
+[/let]
 [/let]
 [/template]
 
@@ -90,8 +92,10 @@ NULL
 [template public actionLink(action : InlineAction, dummy : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
+[let page : Page = select.immediateUnit().pageDisplayedOn()]
 [let targetUnit : ContentUnit = select.target.oclAsType(ContentUnit)]
-[action.anchor(targetUnit.routeName(), select.target.selectionType, routeParametersAccessor, label, title, null, conditionAccessor, action.immediateUnit().pageDisplayedOn() = targetUnit.pageDisplayedOn() and targetUnit.pageDisplayedOn().hasFilterParameters())/]
+[action.anchor(targetUnit.routeName(), select.target.selectionType, routeParametersAccessor, label, title, null, conditionAccessor, page = targetUnit.pageDisplayedOn() and (page.hasFilterParameters() or page.hasPagination()))/]
+[/let]
 [/let]
 [/let]
 [/template]
