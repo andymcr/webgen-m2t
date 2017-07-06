@@ -57,7 +57,8 @@ services:
             - ['['/] setAnnotationReader, ['['/] "@annotation_reader" [']'/] [']'/]
 
 [/if]
-[for (entity : EntityOrView | model.persistence.entitiesAndViews->sortedBy(e | e.name))]
+[if (model.hasAPI())]
+	[for (entity : EntityOrView | model.persistence.entitiesAndViews->sortedBy(e | e.name))]
     app.normalizer.[entity.instanceName()/]:
         class: [entity.normalizerNamespace()/]\[entity.normalizerClassName()/]
         arguments:
@@ -68,7 +69,8 @@ services:
         tags:
             - { name: serializer.normalizer }
 
-[/for]
+	[/for]
+[/if]
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
