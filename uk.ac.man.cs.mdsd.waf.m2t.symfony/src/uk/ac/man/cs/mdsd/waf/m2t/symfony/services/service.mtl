@@ -22,9 +22,6 @@
 namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
-[if (service.serves.hasPseudoAssociations())]
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
-[/if]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [if (service.operations->notEmpty())]
 // [protected ('operations')]
@@ -295,10 +292,10 @@ public function [filter.methodName/]([filter.formals()/])
 
 [template private formals(selection : Selection) post(trim())]
 [if (selection.isSelected() or selection.parameters->notEmpty())]
-[selection.selectionFormals()/][if (selection.limit <> 1)]
+[selection.selectionFormals()/][if (selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
-[if (selection.limit <> 1)]
+[if (selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 [selection.partOf.limitFormals()/][/if]
 [/template]
 
@@ -308,10 +305,10 @@ public function [filter.methodName/]([filter.formals()/])
 , [/if]
 [/if]
 [if (filter.parameters->notEmpty())]
-[filter.filterFormals()/][if (filter.selection.limit <> 1)]
+[filter.filterFormals()/][if (filter.selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
-[if (filter.selection.limit <> 1)]
+[if (filter.selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 [filter.selection.partOf.limitFormals()/][/if]
 [/template]
 
@@ -341,10 +338,10 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 
 [template private actuals(selection : Selection) post(trim())]
 [if (selection.isSelected() or selection.parameters->notEmpty())]
-[selection.selectionActuals()/][if (selection.limit <> 1)]
+[selection.selectionActuals()/][if (selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
-[if (selection.limit <> 1)]
+[if (selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 [selection.limitActuals()/][/if]
 [/template]
 
@@ -354,10 +351,10 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 , [/if]
 [/if]
 [if (filter.parameters->notEmpty())]
-[filter.filterActuals()/][if (filter.selection.limit <> 1)]
+[filter.filterActuals()/][if (filter.selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
-[if (filter.selection.limit <> 1)]
+[if (filter.selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 [filter.selection.limitActuals()/][/if]
 [/template]
 
@@ -397,13 +394,15 @@ $queryBuilder = $this->createQueryBuilder();
 [if (selection.ordering->notEmpty())]
 [selection.orderBy()/]
 [/if]
-[if (selection.limit <> 1)]
+[if (selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 if ($offset >= 0) {
     $queryBuilder->setFirstResult($offset);
     $queryBuilder->setMaxResults($limit);
 }
 	[if (selection.limit > 0)]
+		[if (selection.joins->notEmpty())]
 else
+		[/if]
     $queryBuilder->setMaxResults([selection.limit/]);
 	[/if]
 [/if]
@@ -530,6 +529,8 @@ $query->setParameter('[key.routeParameterName(parentEntity)/]', $[key.routeParam
 [template private queryResult(selection : Selection, service : Service) post(trim())]
 [if (selection.limit = 1)]
 return $query->getSingleResult();
+[elseif (selection.joins->notEmpty() and selection.fields->notEmpty())]
+return $query->getResult();
 [else]
 if ($offset >= 0)
     return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
@@ -599,6 +600,66 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [/template]
 
 [template private pseudoAssociationMethod(association : EntityAssociation, service : Service) post(trim())]
+[let sourceType : EntityOrView = association.partOf]
+[let targetType : EntityOrView = association.opposite.partOf]
+public function [association.name/]($[sourceType.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])
+{
+    $queryBuilder = $this->createQueryBuilder();
+    $queryBuilder->join('[association.partOf.selectName()/].[association.modelPropertyName()/]', '[targetType.selectName()/]');
+[comment TODO short term fix/]
+    // [protected (association.name.concat('.customise.join'))]
+    // [/protected]
+[if (targetType.attributes()->notEmpty())]
+    [targetType.pseudoFields()/]
+[/if]
+[comment TODO short term fix/]
+    // [protected (association.name.concat('.customise.fields'))]
+    // [/protected]
+[if (sourceType.uriPathKeys()->size() = 1)]
+[let key : Attribute = sourceType.uriPathKeys()->first()]
+    $queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]'));
+[/let]
+[else]
+    $queryBuilder->where($queryBuilder->expr->andX(
+	[for (key : Attribute | sourceType.uriPathKeys())]
+        $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
+	[/for]
+    ));
+[/if]
+[comment TODO short term fix/]
+    // [protected (association.name.concat('.customise.where'))]
+    // [/protected]
+    $query = $queryBuilder->getQuery();
+[for (key : Attribute | sourceType.uriPathKeys())]
+    $query->setParameter('[key.routeParameterName(sourceType)/]', [key.keyAccessor(sourceType, '$'.concat(sourceType.selectName()))/]);
+[/for]
+
+[if (association.isSingleton())]
+	[if (association.isRequired())]
+    return $query->getSingleResult();
+	[else]
+    return $query->getOneOrNullResult();
+	[/if]
+[else]
+    return $query->getResult();
+[/if]
+}
+[/let]
+[/let]
+[/template]
+
+[template private pseudoFields(entity : EntityOrView) post(trim())]
+[let first : Feature = entity.attributes()->first()]
+$queryBuilder->select([first.field(null)/]);
+[/let]
+[if (entity.attributes()->size() > 1)]
+	[for (field : Attribute | entity.attributes()->subSequence(2, entity.attributes()->size()))]
+$queryBuilder->addSelect([field.field(null)/]);
+	[/for]
+[/if]
+[/template]
+
+[template private pseudoAssociationMethodOld(association : EntityAssociation, service : Service) post(trim())]
 [let sourceEntity : EntityOrView = association.partOf]
 [let targetEntity : EntityOrView = association.opposite.partOf]
 public function [association.name/]($[sourceEntity.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])

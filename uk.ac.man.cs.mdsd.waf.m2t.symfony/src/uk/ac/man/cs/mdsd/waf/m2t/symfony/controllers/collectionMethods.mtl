@@ -125,9 +125,11 @@ if ($request->query->has('[filter.name/]Filter'))
 [template private contentFilterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
 [for (parameter : FormalParameter | filter.parameters)]
-    $request->query->get('[parameter.name/]'),
+    $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())],[/if]
 [/for]
+[if (filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
     [unit.paginationActuals()/]
+[/if]
 );
 [/template]
 
