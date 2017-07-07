@@ -599,20 +599,16 @@
 	= unit.forcedValueFeatures()->notEmpty()
 /]
 
-[query public hasOmitFieldLabels(unit : DataUnit) : Boolean
-	= if unit.oclIsTypeOf(DetailsUnit) then
-			unit.oclAsType(DetailsUnit).omitFieldLabels
-		else
-			unit.oclAsType(IndexUnit).omitColumnLabels
-		endif
-/]
-
 [query public hasInterfaceFields(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).interfaceFields()->notEmpty()
 		else
 			false
 		endif
+/]
+
+[query public hasJQueryClasses(unit : DynamicUnit) : Boolean
+	= unit.pageDisplayedOn().hasJQueryClasses()
 /]
 
 [query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
@@ -680,8 +676,20 @@
 		endif
 /]
 
-[query public hasJQueryClasses(unit : DynamicUnit) : Boolean
-	= unit.pageDisplayedOn().hasJQueryClasses()
+[query public hasObjectAccess(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then
+			true
+		else
+			unit.selection.joins->isEmpty() or unit.selection.fields->isEmpty()
+		endif
+/]
+
+[query public hasOmitFieldLabels(unit : DataUnit) : Boolean
+	= if unit.oclIsTypeOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).omitFieldLabels
+		else
+			unit.oclAsType(IndexUnit).omitColumnLabels
+		endif
 /]
 
 [query public hasPagination(unit : ContentUnit) : Boolean

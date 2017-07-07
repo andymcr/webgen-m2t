@@ -267,7 +267,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
   <section>
    <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
 [/if]
-   [indexUnit.entry(loopVariable, true)/]
+   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess())/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
 <span class="actions">[indexUnit.actions(loopVariable)/]</span>
 [/if]
@@ -346,7 +346,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let loopVariable : String = 'entry']
 {% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
-   [indexUnit.entry(loopVariable, true)/]
+   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess())/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]

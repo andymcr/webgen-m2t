@@ -82,9 +82,9 @@
 			endif
 		else
 			if alias.oclIsUndefined() then
-				parentAccessor.concat('[''').concat(attribute.modelPropertyName()).concat(''']')
+				parentAccessor.concat('.').concat(attribute.attribute.columnName())
 			else
-				parentAccessor.concat('[''').concat(alias).concat(''']')
+				parentAccessor.concat('.').concat(alias)
 			endif
 		endif
 /]
