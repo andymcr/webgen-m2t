@@ -101,7 +101,7 @@ ewz_recaptcha:
     locale_key:  %kernel.default_locale%
 
 [/if]
-[if (model.hasJavascript() or model.hasSliderUnits())]
+[if (model.hasSliderUnits())]
 assetic:
     debug:          '%kernel.debug%'
     use_controller: '%kernel.debug%'
