@@ -43,7 +43,7 @@ class AppKernel extends Kernel
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 [/if]
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-[if (model.hasJavascript() or model.hasSliderUnits())]
+[if (model.hasSliderUnits())]
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 [/if]
 [if (model.hasImageUnits())]
