@@ -31,6 +31,13 @@ $queryBuilder->expr()->literal('[literal.value/]')
 
 
 [template public queryExpression(expression : Expression)
+	? (expression.oclIsTypeOf(Constant)) post(trim())]
+[let constant : Constant = expression.oclAsType(Constant)]
+[constant.value/]
+[/let]
+[/template]
+
+[template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = expression.oclAsType(FeatureReference)]
 [path.feature.featureReference()/]
@@ -103,6 +110,13 @@ $queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()
 [/template]
 
 [template public queryExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateInOperator)) post(trim())]
+[let predicate : PredicateInOperator = expression.oclAsType(PredicateInOperator)]
+$queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
+[/let]
+[/template]
+
+[template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
 [let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
 [predicate.left.queryExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.queryExpression()/]
@@ -164,6 +178,14 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 		else
 			'?'
 		endif endif
+/]
+
+[query private operator(predicate : PredicateInOperator) : String
+	= if not predicate.negated then
+			'in'
+		else
+			'notIn'
+		endif
 /]
 
 [query private operator(predicate : PredicateLikeOperator) : String

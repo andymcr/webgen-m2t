@@ -24,6 +24,13 @@
 
 
 [template public criteriaExpression(expression : Expression)
+	? (expression.oclIsTypeOf(Constant)) post(trim())]
+[let constant : Constant = expression.oclAsType(Constant)]
+[constant.value/]
+[/let]
+[/template]
+
+[template public criteriaExpression(expression : Expression)
 	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = expression.oclAsType(FeatureReference)]
 [path.feature.featureReference()/]
