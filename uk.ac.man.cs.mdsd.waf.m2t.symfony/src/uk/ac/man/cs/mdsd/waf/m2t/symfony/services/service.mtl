@@ -238,7 +238,7 @@ public function save($entity, $flush = false)
 
 [template private selectionMethod(selection : Selection, service : Service, userService : Service)
 	? (selection.filters->isEmpty()) post(trim())]
-public function [selection.instanceName()/]([selection.formals()/])
+public function [selection.methodName/]([selection.formals()/])
 {
     [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
@@ -573,10 +573,9 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
     ));
 [/if]
 [if (selection.limit <> 1)]
-    if ($page)
-    {
-        $criteria->setFirstResult(($page - 1) * $pageSize);
-        $criteria->setMaxResults($pageSize);
+    if ($offset >= 0) {
+        $criteria->setFirstResult($offset);
+        $criteria->setMaxResults($limit);
     }
 	[if (selection.limit > 0)]
     else
