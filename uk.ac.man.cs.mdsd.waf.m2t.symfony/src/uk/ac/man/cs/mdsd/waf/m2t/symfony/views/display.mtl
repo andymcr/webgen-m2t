@@ -119,8 +119,8 @@
 [template private unitFilter(filter : Filter, unit : IndexUnit, accessor : String)]
 <div class="filter">
  <form action="{{ path('[unit.routeName()/]', { [if (not unit.selectionType.oclIsUndefined())]
-[unit.selectType().routeActualParameters(unit.contentType(), accessor, false)/][else]
-[unit.contentType().routeActualParameters(unit.contentType(), accessor, true)/][/if] }) }}" method="get">
+[unit.selectType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), false)/][else]
+[unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), true)/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
  placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
@@ -135,7 +135,7 @@
 [/template]
 
 [template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="{{ path('[unit.supportRouteName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+<form action="{{ path('[unit.supportRouteName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
  [action.unitSupportLink()/]
 [/for]
@@ -201,7 +201,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private pageHref(unit : IndexUnit, pageNumber : String, selectionAccessor : String) post(trim())]
 {{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.selectionType.oclIsUndefined())]
-, [unit.selectType().routeActualParameters(unit.contentType(), selectionAccessor, false)/][/if]})) }}
+, [unit.selectType().routeActualParameters(unit.contentType(), selectionAccessor, unit.hasObjectAccess(), false)/][/if]})) }}
 [/template]
 
 
@@ -375,7 +375,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
-[action.actionLink(unit.contentType(), rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor)/]
+[action.actionLink(unit.contentType(), rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor, unit.hasObjectAccess())/]
 [/for]
 [/template]
 
@@ -490,7 +490,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 				feature.oclAsType(UnitAssociation).association.partOf
 			endif]
 [feature.actions->select(a | not a.disable)
-	->first().actionLink(parentEntityOrView, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor)/]
+	->first().actionLink(parentEntityOrView, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess())/]
 [/let]
 [else]
 {{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
@@ -501,7 +501,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.actions->select(a | not a.disable)->notEmpty())]
 [association.actions->select(a | not a.disable)
-	->first().actionLink(association.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor)/]
+	->first().actionLink(association.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor, association.displayedOn.hasObjectAccess())/]
 [else]
 {{ [accessor/].defaultLabel()| default('[if (not association.nullDisplayValue.oclIsUndefined())][association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}

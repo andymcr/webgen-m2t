@@ -73,66 +73,71 @@ NULL
 [/template]
 
 
-[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
+[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]
 [let page : Page = delete.immediateUnit().pageDisplayedOn()]
-[action.anchor(delete.routeName(), entityOrView, routeParametersAccessor, label, title, delete.confirmMessage, conditionAccessor, page.hasFilterParameters() or page.hasPagination())/]
+[action.anchor(delete.routeName(), entityOrView, routeParametersAccessor, label, title, delete.confirmMessage, conditionAccessor, page.hasFilterParameters() or page.hasPagination(), objectAccess)/]
 [/let]
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
+[template public actionLink(action : InlineAction, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
 [let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[action.anchor(feature.routeName(), entityOrView, routeParametersAccessor, label, title, feature.confirmMessage, conditionAccessor, false)/]
+[action.anchor(feature.routeName(), entityOrView, routeParametersAccessor, label, title, feature.confirmMessage, conditionAccessor, false, objectAccess)/]
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, dummy : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String)
+[template public actionLink(action : InlineAction, dummy : EntityOrView, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let page : Page = select.immediateUnit().pageDisplayedOn()]
 [let targetUnit : ContentUnit = select.target.oclAsType(ContentUnit)]
-[action.anchor(targetUnit.routeName(), select.target.selectionType, routeParametersAccessor, label, title, null, conditionAccessor, page = targetUnit.pageDisplayedOn() and (page.hasFilterParameters() or page.hasPagination()))/]
+[action.anchor(targetUnit.routeName(), select.target.selectionType, routeParametersAccessor, label, title, null, conditionAccessor, page = targetUnit.pageDisplayedOn() and (page.hasFilterParameters() or page.hasPagination()), objectAccess)/]
 [/let]
 [/let]
 [/let]
 [/template]
 
-[template private anchor(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String, targetSamePage : Boolean) post(trim())]
+[template private anchor(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
 [if (not action.requiresRole.oclIsUndefined())]
-{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, conditionAccessor, targetSamePage)/][if (not action.requiresRole.oclIsUndefined())]
+{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, conditionAccessor, targetSamePage, objectAccess)/][if (not action.requiresRole.oclIsUndefined())]
 {% endif %}[/if]
 [/template]
 
-[template private anchor2(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String, targetSamePage : Boolean) post(trim())]
+[template private anchor2(action : InlineAction, routeName : String, entityOrView : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
 [if (action.displayWhen.oclIsUndefined())]
 	[if (action.enableWhen.oclIsUndefined())]
-[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage)/]
+[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]
 	[else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage)/]{% else %}{{ [label/] }}{% endif %}
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}{{ [label/] }}{% endif %}
 	[/if]
 [else]
 {% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[if (action.enableWhen.oclIsUndefined())]
-[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage)/][else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage)/]{% else %}{{ [label/] }}{% endif %}[/if]
+[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/][else]
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}{{ [label/] }}{% endif %}[/if]
 {% endif %}
 [/if]
 [/template]
 
-[template private anchor3(action : InlineAction, routeName : String, entity : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, targetSamePage : Boolean) post(trim())]
-<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [entity.routeActualParameters(entity, routeParametersAccessor, false)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/] {{ [title/] }}"[if (not confirmMessage.oclIsUndefined())]
+[template private anchor3(action : InlineAction, routeName : String, entity : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
+<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [entity.routeActualParameters(entity, routeParametersAccessor, objectAccess, false)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/] {{ [title/] }}"[if (not confirmMessage.oclIsUndefined())]
  onclick="return confirm('[confirmMessage/] {{ [title/] }}');"[/if]>[label/]</a>
 [/template]
 
-[template public routeActualParameters(entity : EntityOrView, base : EntityOrView, accessor : String, parentPath : Boolean) post(trim())]
+[template public routeActualParameters(entity : EntityOrView, base : EntityOrView, accessor : String, objectAccess : Boolean, parentPath : Boolean) post(trim())]
 [if (entity.isContained())]
-[entity.container().routeActualParameters(base, accessor.concat('.').concat(entity.containingAssociation().modelPropertyName()), parentPath)/]
+[entity.container().routeActualParameters(base, accessor.concat('.').concat(entity.containingAssociation().modelPropertyName()), objectAccess, parentPath)/]
 [/if]
 [if (not parentPath)]
 	[for (key : Attribute | entity.attributeKeys())]
-	[let keyAccessor : String = accessor.concat('.').concat(key.modelPropertyName())]
+	[let keyAccessor : String
+		= if objectAccess then
+				accessor.concat('.').concat(key.modelPropertyName())
+			else
+				accessor.concat('.').concat(key.columnName())
+			endif]
 '[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
 	[/let]
 	[/for]
