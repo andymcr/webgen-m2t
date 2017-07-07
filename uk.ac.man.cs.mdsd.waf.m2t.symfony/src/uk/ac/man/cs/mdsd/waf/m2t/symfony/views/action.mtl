@@ -111,12 +111,12 @@ NULL
 	[if (action.enableWhen.oclIsUndefined())]
 [action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]
 	[else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}{{ [label/] }}{% endif %}
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}[label/]{% endif %}
 	[/if]
 [else]
 {% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[if (action.enableWhen.oclIsUndefined())]
 [action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/][else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}{{ [label/] }}{% endif %}[/if]
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entityOrView, routeParametersAccessor, label, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}[label/]{% endif %}[/if]
 {% endif %}
 [/if]
 [/template]
