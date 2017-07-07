@@ -90,7 +90,7 @@ $[parameterName/][/if]
 [if (unit.defaultSelection.oclIsUndefined())]
 $this->[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
 [else]
-$this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]();
+$this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.methodName/]();
 [/if]
 [/template]
 
