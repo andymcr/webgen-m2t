@@ -46,6 +46,8 @@ Require-Bundle: org.eclipse.core.runtime,
  uk.ac.man.cs.mdsd.webgen.service;visibility:=reexport,
  uk.ac.man.cs.mdsd.webgen.service.edit;visibility:=reexport,
  org.eclipse.gef;visibility:=reexport,
- org.eclipse.gmf.runtime.draw2d.ui;visibility:=reexport
+ org.eclipse.gmf.runtime.draw2d.ui;visibility:=reexport,
+ org.eclipse.gmf.runtime.diagram.ui.printing,
+ org.eclipse.gmf.runtime.diagram.ui.printing.render
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
