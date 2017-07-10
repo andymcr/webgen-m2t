@@ -22,6 +22,9 @@
 namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
+[if (service.serves.hasPseudoAssociations())]
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+[/if]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [if (service.operations->notEmpty())]
 // [protected ('operations')]
@@ -600,66 +603,6 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [/template]
 
 [template private pseudoAssociationMethod(association : EntityAssociation, service : Service) post(trim())]
-[let sourceType : EntityOrView = association.partOf]
-[let targetType : EntityOrView = association.opposite.partOf]
-public function [association.name/]($[sourceType.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])
-{
-    $queryBuilder = $this->createQueryBuilder();
-    $queryBuilder->join('[association.partOf.selectName()/].[association.modelPropertyName()/]', '[targetType.selectName()/]');
-[comment TODO short term fix/]
-    // [protected (association.name.concat('.customise.join'))]
-    // [/protected]
-[if (targetType.attributes()->notEmpty())]
-    [targetType.pseudoFields()/]
-[/if]
-[comment TODO short term fix/]
-    // [protected (association.name.concat('.customise.fields'))]
-    // [/protected]
-[if (sourceType.uriPathKeys()->size() = 1)]
-[let key : Attribute = sourceType.uriPathKeys()->first()]
-    $queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]'));
-[/let]
-[else]
-    $queryBuilder->where($queryBuilder->expr->andX(
-	[for (key : Attribute | sourceType.uriPathKeys())]
-        $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
-	[/for]
-    ));
-[/if]
-[comment TODO short term fix/]
-    // [protected (association.name.concat('.customise.where'))]
-    // [/protected]
-    $query = $queryBuilder->getQuery();
-[for (key : Attribute | sourceType.uriPathKeys())]
-    $query->setParameter('[key.routeParameterName(sourceType)/]', [key.keyAccessor(sourceType, '$'.concat(sourceType.selectName()))/]);
-[/for]
-
-[if (association.isSingleton())]
-	[if (association.isRequired())]
-    return $query->getSingleResult();
-	[else]
-    return $query->getOneOrNullResult();
-	[/if]
-[else]
-    return $query->getResult();
-[/if]
-}
-[/let]
-[/let]
-[/template]
-
-[template private pseudoFields(entity : EntityOrView) post(trim())]
-[let first : Feature = entity.attributes()->first()]
-$queryBuilder->select([first.field(null)/]);
-[/let]
-[if (entity.attributes()->size() > 1)]
-	[for (field : Attribute | entity.attributes()->subSequence(2, entity.attributes()->size()))]
-$queryBuilder->addSelect([field.field(null)/]);
-	[/for]
-[/if]
-[/template]
-
-[template private pseudoAssociationMethodOld(association : EntityAssociation, service : Service) post(trim())]
 [let sourceEntity : EntityOrView = association.partOf]
 [let targetEntity : EntityOrView = association.opposite.partOf]
 public function [association.name/]($[sourceEntity.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])
@@ -673,7 +616,7 @@ public function [association.name/]($[sourceEntity.selectName()/][if (service.se
     $builder->addFieldResult('[targetEntity.selectName()/]', '[key.columnName/]', '[key.columnName/]');
 	[/for]
 [/if]
-[for (attribute : Attribute | targetEntity.attributes())]
+[for (attribute : Attribute | targetEntity.attributes()->select(a | a.oclIsKindOf(EntityAttribute)).oclAsType(EntityAttribute)->select(a | not a.primaryKey))]
     $builder->addFieldResult('[targetEntity.selectName()/]', '[attribute.columnName()/]', '[attribute.columnName()/]');
 [/for]
 [comment TODO short term fix/]
