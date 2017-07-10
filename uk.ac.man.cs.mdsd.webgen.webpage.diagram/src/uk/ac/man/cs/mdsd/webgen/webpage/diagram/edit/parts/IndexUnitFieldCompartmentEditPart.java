@@ -76,7 +76,7 @@ public class IndexUnitFieldCompartmentEditPart extends ListCompartmentEditPart {
 		installEditPolicy(EditPolicyRoles.DRAG_DROP_ROLE, new DragDropEditPolicy());
 		installEditPolicy(EditPolicyRoles.CANONICAL_ROLE, new IndexUnitFieldCompartmentCanonicalEditPolicy());
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-			new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.DYNAMIC_UNIT__DISPLAY_FIELDS));
+				new CompartmentRepositionLayoutEditPolicy(WebuiPackage.Literals.DYNAMIC_UNIT__DISPLAY_FIELDS));
 	}
 
 	/**
