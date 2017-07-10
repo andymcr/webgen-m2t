@@ -375,7 +375,11 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
 [for (action : InlineAction | unit.actions->select(a | not a.disable))]
+	[if (unit.hasObjectAccess())]
 [action.actionLink(unit.contentType(), rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor, unit.hasObjectAccess())/]
+	[else]
+[action.actionLink(unit.contentType(), rowAccessor, action.displayLabel, null, rowAccessor, unit.hasObjectAccess())/]
+	[/if]
 [/for]
 [/template]
 

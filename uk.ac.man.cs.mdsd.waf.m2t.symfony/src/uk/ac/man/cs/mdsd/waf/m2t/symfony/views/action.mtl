@@ -122,8 +122,8 @@ NULL
 [/template]
 
 [template private anchor3(action : InlineAction, routeName : String, entity : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
-<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [entity.routeActualParameters(entity, routeParametersAccessor, objectAccess, false)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/] {{ [title/] }}"[if (not confirmMessage.oclIsUndefined())]
- onclick="return confirm('[confirmMessage/] {{ [title/] }}');"[/if]>[label/]</a>
+<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [entity.routeActualParameters(entity, routeParametersAccessor, objectAccess, false)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
+ onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]');"[/if]>[label/]</a>
 [/template]
 
 [template public routeActualParameters(entity : EntityOrView, base : EntityOrView, accessor : String, objectAccess : Boolean, parentPath : Boolean) post(trim())]
