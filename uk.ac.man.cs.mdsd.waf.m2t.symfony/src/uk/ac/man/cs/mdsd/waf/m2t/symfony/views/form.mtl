@@ -96,6 +96,8 @@
  'title': [field.title(unit)/][if (field.hasPlaceholder() or field.hasClass())],[/if][/if]
 [if (field.hasPlaceholder())]
  'placeholder': [field.placeholder(unit)/][if (field.hasClass())],[/if][/if]
+[if (field.disableInput)]
+ 'disabled': 'disabled',[/if]
 [if (field.hasClass())]
  'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
  }[if (field.hasUnitTranslation())], [/if][/if]
