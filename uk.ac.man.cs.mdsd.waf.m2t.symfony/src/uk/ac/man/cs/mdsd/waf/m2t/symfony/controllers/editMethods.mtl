@@ -188,7 +188,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.serv
 
 [template private saveBody(unit : EditUnit, suffix : String, routeParameterBase : EntityOrView) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-[let pathKeys : Sequence(Attribute)
+[let localPathKeys : Sequence(Attribute)
 	= if unit.contentType.parentEntity().oclIsUndefined() then
 			Sequence{}
 		else
@@ -196,11 +196,14 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.serv
 		endif]
 [unit.getContentService()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
-return $this->redirectToRoute('[unit.confirmDestination.routeName()/]');
+return $this->redirectToRoute('[unit.confirmDestination.routeName()/]'[if (unit.confirmDestination.uriCommonPathKeys()->notEmpty())]
+, array(
+    [unit.confirmDestination.routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
+)[/if]);
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 return $this->redirectToRoute('[unit.routeName(suffix)/]'[if (page.hasFilterParameters() or page.hasPagination())]
-, [if (pathKeys->isEmpty())]
+, [if (localPathKeys->isEmpty())]
 $request->query->all()[else]
 array_merge(
     $request->query->all(),
@@ -208,7 +211,7 @@ array_merge(
         [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
 ))[/if]
 [else]
-	[if (pathKeys->notEmpty())]
+	[if (localPathKeys->notEmpty())]
 , array(
     [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
 )[/if]
@@ -217,6 +220,12 @@ array_merge(
 [/if]
 [/let]
 [/let]
+[/template]
+
+[template private routeActualParameters(page : Page, routeBase : EntityOrView, valueBase : EntityOrView) post(trim())]
+[for (key : Attribute | page.uriCommonPathKeys())]
+'[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
+[/for]
 [/template]
 
 [template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView) post(trim())]
