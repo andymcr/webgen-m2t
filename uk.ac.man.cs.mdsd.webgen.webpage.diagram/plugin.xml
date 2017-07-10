@@ -87,6 +87,16 @@
          </ViewId>
       </GlobalActionHandlerProvider>
       <GlobalActionHandlerProvider
+         class="org.eclipse.gmf.runtime.diagram.ui.printing.render.providers.DiagramWithPrintGlobalActionHandlerProvider"
+         id="WebPagePresentationPrint">
+         <Priority name="Lowest"/>
+         <ViewId id="uk.ac.man.cs.mdsd.webgen.webpage.diagram.part.WebuiDiagramEditorID">
+            <ElementType class="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+               <GlobalActionId actionId="print"/>
+            </ElementType>
+         </ViewId>
+      </GlobalActionHandlerProvider>
+      <GlobalActionHandlerProvider
          class="org.eclipse.gmf.runtime.diagram.ui.providers.ide.providers.DiagramIDEGlobalActionHandlerProvider"
          id="WebPagePresentationIDE">
          <Priority name="Lowest"/>
