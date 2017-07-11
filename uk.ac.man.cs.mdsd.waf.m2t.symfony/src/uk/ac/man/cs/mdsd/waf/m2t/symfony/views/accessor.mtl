@@ -107,9 +107,15 @@
 
 
 [query public pseudoAccessor(association : UnitAssociation, parentAccessor : String) : String
-	= association.serviceAccessor()
-		.concat('.').concat(association.name)
-		.concat('(').concat(parentAccessor).concat(')')
+	= let methodName : String
+		= if association.selection.oclIsUndefined() then
+				association.name
+			else
+				association.association.findMethodName(association.selection)
+			endif
+		in association.serviceAccessor()
+			.concat('.').concat(methodName)
+			.concat('(').concat(parentAccessor).concat(')')
 /]
 
 [query private pseudoAccessorWithChild(association : UnitAssociation, parentAccessor : String) : String
