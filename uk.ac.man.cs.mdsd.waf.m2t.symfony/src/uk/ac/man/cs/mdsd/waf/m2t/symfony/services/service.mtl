@@ -23,7 +23,7 @@ namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
 [if (service.serves.hasPseudoAssociations())]
-use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Doctrine\ORM\Query\Expr;
 [/if]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [if (service.operations->notEmpty())]
@@ -100,7 +100,7 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
 
 [/if]
 [if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isPseudo())->notEmpty())]
-    [service.pseudoAssociationMethods()/]
+    [service.pseudoAssociationMethods(model)/]
 
 [/if]
     [service.getRepositoryMethod()/]
@@ -591,7 +591,7 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 }
 [/template]
 
-[template private pseudoAssociationMethods(service : Service) post(trim())]
+[template private pseudoAssociationMethods(service : Service, model : WafModel) post(trim())]
 [for (association : Association | service.serves.associations())]
 	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
 	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
@@ -603,48 +603,15 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [/template]
 
 [template private pseudoAssociationMethod(association : EntityAssociation, service : Service) post(trim())]
-[let sourceEntity : EntityOrView = association.partOf]
-[let targetEntity : EntityOrView = association.opposite.partOf]
-public function [association.name/]($[sourceEntity.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])
+[let sourceType : EntityOrView = association.partOf]
+[let targetType : EntityOrView = association.opposite.partOf]
+public function [association.name/]($[sourceType.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])
 {
-    $builder = new ResultSetMappingBuilder($this->entityManager);
-    $builder->addEntityResult('AppBundle:[targetEntity.modelClassName()/]', '[targetEntity.selectName()/]');
-[if (not targetEntity.hasPrimaryKeys())]
-    $builder->addFieldResult('[targetEntity.selectName()/]', '[targetEntity.autoKeyName/]', '[targetEntity.autoKeyName/]');
-[else]
-	[for (key : EntityFeature | targetEntity.primaryKeys())]
-    $builder->addFieldResult('[targetEntity.selectName()/]', '[key.columnName/]', '[key.columnName/]');
-	[/for]
-[/if]
-[for (attribute : Attribute | targetEntity.attributes()->select(a | a.oclIsKindOf(EntityAttribute)).oclAsType(EntityAttribute)->select(a | not a.primaryKey))]
-    $builder->addFieldResult('[targetEntity.selectName()/]', '[attribute.columnName()/]', '[attribute.columnName()/]');
-[/for]
-[comment TODO short term fix/]
-    // [protected (association.name.concat('.customise.fields'))]
-    // [/protected]
-    $sql = 'SELECT DISTINCT ' . (String) $builder
-        . ' FROM [sourceEntity.tableName/] [sourceEntity.selectName()/]'
-[if (sourceEntity.isContained())]
-        [sourceEntity.pseudoContainerJoin()/]
-[/if]
-        . ' INNER JOIN [targetEntity.tableName/] [targetEntity.selectName()/] ON'
-[for (key : AssociationKey | association.keys())]
-            . ' [if (i > 1)]AND [/if][key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/] = [key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]'
-[/for]
-[comment TODO short term fix/]
-    // [protected (association.name.concat('.customise.join'))]
-    // [/protected]
-        . ' WHERE'
-[for (key : Attribute | sourceEntity.uriPathKeys())]
-            . ' [if (i > 1)]AND [/if][key.partOf.selectName()/].[key.columnName()/] = :[key.routeParameterName(sourceEntity)/]'
-[/for]
-[comment TODO short term fix/]
-    // [protected (association.name.concat('.customise.where'))]
-    // [/protected]
-    ;
-    $query = $this->entityManager->createNativeQuery($sql, $builder);
-[for (key : Attribute | sourceEntity.uriPathKeys())]
-    $query->setParameter('[key.routeParameterName(sourceEntity)/]', [key.keyAccessor(sourceEntity, '$'.concat(sourceEntity.selectName()))/]);
+    [association.pseudoBuilderCode(sourceType, targetType)/]
+
+    $query = $queryBuilder->getQuery();
+[for (key : Attribute | sourceType.uriPathKeys())]
+    $query->setParameter('[key.routeParameterName(sourceType)/]', [key.keyAccessor(sourceType, '$'.concat(sourceType.selectName()))/]);
 [/for]
 
 [if (association.isSingleton())]
@@ -661,22 +628,30 @@ public function [association.name/]($[sourceEntity.selectName()/][if (service.se
 [/let]
 [/template]
 
-[template private pseudoContainerJoin(entity : EntityOrView) post(trim())]
-[let association : EntityAssociation = entity.containingAssociation()]
-[let container : EntityOrView = entity.container()]
-. ' INNER JOIN [container.tableName/] [container.selectName()/] ON'
-[if (association.keys->isEmpty())]
-    . ' [entity.selectName()/].[association.columnName/] = [container.selectName()/].[association.opposite.partOf.oclAsType(Entity).autoKeyName/]'
+[template private pseudoBuilderCode(association : EntityAssociation, sourceType : EntityOrView, targetType : EntityOrView) post(trim())]
+$queryBuilder = $this->doctrine->getRepository('[targetType.appBundleName()/]:[targetType.modelName()/]')->getQueryBuilder('[targetType.selectName()/]');
+$queryBuilder->join('[sourceType.appBundleName()/]:[sourceType.modelName()/]', '[sourceType.selectName()/]', Expr\Join::WITH,[if (association.keys()->size() = 1)]
+[let key : AssociationKey = association.keys->first()]
+
+$queryBuilder->expr()->eq('[key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]', '[key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/]')
+[/let]
 [else]
+ $queryBuilder->expr()->andX(
 	[for (key : AssociationKey | association.keys)]
-    . '[if (i > 1)] AND[/if] [entity.selectName()/].[key.sourceFeature.columnName/] = [container.selectName()/].[key.targetFeature.columnName/]'
+    $queryBuilder->expr()->eq('[key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]', '[key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/]')[if (i < association.keys->size())],[/if]
 	[/for]
-[/if]
-[if (container.isContained())]
-[container.pseudoContainerJoin()/]
-[/if]
+)[/if]);
+[if (sourceType.uriPathKeys()->size() = 1)]
+[let key : Attribute = sourceType.uriPathKeys()->first()]
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]'));
 [/let]
-[/let]
+[else]
+$queryBuilder->where($queryBuilder->expr()->andX(
+	[for (key : Attribute | sourceType.uriPathKeys())]
+    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
+	[/for]
+));
+[/if]
 [/template]
 
 [template private getRepositoryMethod(service : Service) post(trim())]
