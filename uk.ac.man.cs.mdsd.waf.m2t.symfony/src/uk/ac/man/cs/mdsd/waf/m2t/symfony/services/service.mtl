@@ -100,7 +100,7 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
 
 [/if]
 [if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isPseudo())->notEmpty())]
-    [service.pseudoAssociationMethods(model)/]
+    [service.serves.pseudoAssociationMethods(model)/]
 
 [/if]
     [service.getRepositoryMethod()/]
@@ -591,45 +591,88 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 }
 [/template]
 
-[template private pseudoAssociationMethods(service : Service, model : WafModel) post(trim())]
-[for (association : Association | service.serves.associations())]
+[template private pseudoAssociationMethods(entity : EntityOrView, model : WafModel) post(trim())]
+[for (association : Association | entity.associations())]
 	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
 	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
-[entityAssociation.pseudoAssociationMethod(service)/]
+[entityAssociation.pseudoAssociationMethod(entityAssociation.opposite.partOf.services(model)->first())/]
 
 	[/let]
 	[/if]
 [/for]
 [/template]
 
-[template private pseudoAssociationMethod(association : EntityAssociation, service : Service) post(trim())]
+[template private pseudoAssociationMethod(association : EntityAssociation, targetService : Service)
+	? (targetService.selections->isEmpty()) post(trim())]
 [let sourceType : EntityOrView = association.partOf]
 [let targetType : EntityOrView = association.opposite.partOf]
-public function [association.name/]($[sourceType.selectName()/][if (service.selections->notEmpty())], $selection = null[/if])
+public function [association.name/]($[sourceType.selectName()/])
 {
     [association.pseudoBuilderCode(sourceType, targetType)/]
 
     $query = $queryBuilder->getQuery();
-[for (key : Attribute | sourceType.uriPathKeys())]
-    $query->setParameter('[key.routeParameterName(sourceType)/]', [key.keyAccessor(sourceType, '$'.concat(sourceType.selectName()))/]);
-[/for]
+    [sourceType.pseudoParameterCode()/]
 
-[if (association.isSingleton())]
-	[if (association.isRequired())]
-    return $query->getSingleResult();
-	[else]
-    return $query->getOneOrNullResult();
-	[/if]
-[else]
-    return $query->getResult();
-[/if]
+    [association.pseudoQueryResult()/]
 }
 [/let]
 [/let]
 [/template]
 
+[template private pseudoAssociationMethod(association : EntityAssociation, targetService : Service)
+	? (targetService.selections->notEmpty()) post(trim())]
+[let sourceType : EntityOrView = association.partOf]
+[let targetType : EntityOrView = association.opposite.partOf]
+private function [association.builderMethodName()/]()
+{
+    [association.pseudoBuilderCode(sourceType, targetType)/]
+    return $queryBuilder;
+}
+
+[if (sourceType.uriPathKeys()->notEmpty())]
+private function [association.parametersMethodName()/]($query, $[sourceType.selectName()/])
+{
+    [sourceType.pseudoParameterCode()/]
+}
+
+[/if]
+public function [association.name/]($[sourceType.selectName()/])
+{
+    $query = $this->[association.builderMethodName()/]()->getQuery();
+[if (sourceType.uriPathKeys()->notEmpty())]
+    $this->[association.parametersMethodName()/]($query, $[sourceType.selectName()/]);
+[/if]
+
+    [association.pseudoQueryResult()/]
+}
+[for (selection : Selection | targetService.selections->select(s | not s.condition.oclIsUndefined() or s.ordering->notEmpty()))]
+
+public function [association.findMethodName(selection)/]($[sourceType.selectName()/])
+{
+    $queryBuilder = $this->[association.builderMethodName()/]();
+	[if (selection.joins->notEmpty())]
+    [selection.joins()/]
+	[/if]
+	[if (not selection.condition.oclIsUndefined())]
+    $queryBuilder->andWhere([selection.condition.queryExpression()/]);
+	[/if]
+	[if (selection.ordering->notEmpty())]
+    [selection.orderBy()/]
+	[/if]
+    $query = $queryBuilder->getQuery();
+	[if (sourceType.uriPathKeys()->notEmpty())]
+    $this->[association.parametersMethodName()/]($query, $[sourceType.selectName()/]);
+	[/if]
+
+    [association.pseudoQueryResult()/]
+}
+[/for]
+[/let]
+[/let]
+[/template]
+
 [template private pseudoBuilderCode(association : EntityAssociation, sourceType : EntityOrView, targetType : EntityOrView) post(trim())]
-$queryBuilder = $this->doctrine->getRepository('[targetType.appBundleName()/]:[targetType.modelName()/]')->getQueryBuilder('[targetType.selectName()/]');
+$queryBuilder = $this->doctrine->getRepository('[targetType.appBundleName()/]:[targetType.modelName()/]')->createQueryBuilder('[targetType.selectName()/]');
 $queryBuilder->join('[sourceType.appBundleName()/]:[sourceType.modelName()/]', '[sourceType.selectName()/]', Expr\Join::WITH,[if (association.keys()->size() = 1)]
 [let key : AssociationKey = association.keys->first()]
 
@@ -651,6 +694,24 @@ $queryBuilder->where($queryBuilder->expr()->andX(
     $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
 	[/for]
 ));
+[/if]
+[/template]
+
+[template private pseudoParameterCode(sourceType : EntityOrView) post(trim())]
+[for (key : Attribute | sourceType.uriPathKeys())]
+$query->setParameter('[key.routeParameterName(sourceType)/]', [key.keyAccessor(sourceType, '$'.concat(sourceType.selectName()))/]);
+[/for]
+[/template]
+
+[template private pseudoQueryResult(association : EntityAssociation) post(trim())]
+[if (association.isSingleton())]
+	[if (association.isRequired())]
+return $query->getSingleResult();
+	[else]
+return $query->getOneOrNullResult();
+	[/if]
+[else]
+return $query->getResult();
 [/if]
 [/template]
 

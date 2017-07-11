@@ -77,8 +77,20 @@
 /]
 
 
+[query public builderMethodName(association : Association) : String
+	= association.name.concat('Builder')
+/]
+
 [query public childSelectionName(association : Association, selection : Selection) : String
 	= association.name.concat(selection.instanceName().toUpperFirst())
+/]
+
+[query public findMethodName(association : Association, selection : Selection) : String
+	= 'find'.concat(association.name.toUpperFirst()).concat(selection.name.toUpperFirst())
+/]
+
+[query public parametersMethodName(association : Association) : String
+	= association.name.concat('Parameters')
 /]
 
 [query public selectName(association : Association, service : Service) : String
