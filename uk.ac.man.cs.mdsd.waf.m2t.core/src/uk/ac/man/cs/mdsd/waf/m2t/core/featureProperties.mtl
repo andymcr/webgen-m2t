@@ -720,7 +720,7 @@
 /]
 
 [query public hasSupportActions(unit : DynamicUnit) : Boolean
-	= unit.supportActions->notEmpty()
+	= unit.supportActions()->notEmpty()
 /]
 
 [query public hasUriActions(unit : DynamicUnit) : Boolean
@@ -813,6 +813,10 @@
 		else
 			'unexpectedUnit'
 		endif endif
+/]
+
+[query public supportActions(unit : DynamicUnit) : OrderedSet(UnitSupportAction)
+	= unit.supportActions->select(a | not a.disable)
 /]
 
 [query public translationDomain(unit : ContentUnit) : String

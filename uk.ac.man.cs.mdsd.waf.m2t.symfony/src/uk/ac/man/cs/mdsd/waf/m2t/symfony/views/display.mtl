@@ -35,7 +35,7 @@
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.unitContent(null, accessor)/]
-	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
+	[if (dataUnit.hasSupportActions()->notEmpty())]
   [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [else]
@@ -53,7 +53,7 @@
 	[if (indexUnit.defaultPaginationSize > 0)]
  [indexUnit.pagination(selectionAccessor)/]
 	[/if]
-	[if (dataUnit.supportActions->select(a | not a.disable)->notEmpty())]
+	[if (dataUnit.supportActions()->notEmpty())]
  [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [/let]

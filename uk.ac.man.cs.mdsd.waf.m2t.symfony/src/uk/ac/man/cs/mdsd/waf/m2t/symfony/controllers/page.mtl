@@ -129,7 +129,7 @@ public function [unit.supportActionName()/]([page.supportActionMethodParameters(
 [/template]
 
 [template private actionHandlers(unit : DynamicUnit) post(trim())]
-[for (action : UnitSupportAction | unit.supportActions)]
+[for (action : UnitSupportAction | unit.supportActions())]
 if ($request->query->has('[action.actionName()/]')) {
     // [protected ('support.'.concat(action.actionName()))]
     // [/protected]
