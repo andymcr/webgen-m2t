@@ -134,19 +134,6 @@
 </div>
 [/template]
 
-[template private unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="{{ path('[unit.supportRouteName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
-[for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
- [action.unitSupportLink()/]
-[/for]
-</form>
-[/template]
-
-[template public unitSupportLink(action : UnitSupportAction) post(trim())]
-<input type="submit" name="[action.actionName()/]" value="[action.displayLabel/]"[if (not action.confirmMessage.oclIsUndefined())]
-onclick="return confirm('[action.confirmMessage/]');"[/if]/>
-[/template]
-
 [template private pagination(unit : IndexUnit, selectionAccessor : String)]
 <ul class="unit_control">
 [if (unit.useFirstLastPageLinks)]

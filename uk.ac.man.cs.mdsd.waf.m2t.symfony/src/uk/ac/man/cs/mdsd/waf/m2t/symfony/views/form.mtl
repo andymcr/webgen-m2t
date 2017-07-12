@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::action/]
 
 
 [template public unitContent(unit : ContentUnit, dummy : String, accessor : String)
@@ -51,6 +52,9 @@
 	[/if]
 [/let]
 [/if]
+[for (action : UnitSupportAction | unit.supportActions)]
+  [action.unitSupportLink()/]
+[/for]
  </div>
 {{ form_row([accessor/]._token) }}
 {{ form_end([accessor/], {'render_rest': false}) }}
