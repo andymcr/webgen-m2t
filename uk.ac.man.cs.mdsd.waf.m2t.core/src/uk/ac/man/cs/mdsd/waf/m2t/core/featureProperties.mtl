@@ -901,16 +901,6 @@
 		endif endif
 /]
 
-[query public firstEntity(field : UnitField) : Boolean
-	= if field.oclIsKindOf(InterfaceField) then
-			true
-		else if field.entity().oclIsUndefined() or field.displayedOn.entities->isEmpty() then
-			false
-		else 
-			field.entity() = field.displayedOn.entities->first()
-		endif endif
-/]
-
 [query private feature(field : UnitField) : Feature
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute
