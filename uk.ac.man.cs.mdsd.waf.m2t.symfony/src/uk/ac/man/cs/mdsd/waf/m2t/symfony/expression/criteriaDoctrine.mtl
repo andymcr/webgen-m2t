@@ -19,7 +19,7 @@
 
 [template public criteriaExpression(expression : Expression)
 	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
-':now'
+new \DateTime()
 [/template]
 
 
