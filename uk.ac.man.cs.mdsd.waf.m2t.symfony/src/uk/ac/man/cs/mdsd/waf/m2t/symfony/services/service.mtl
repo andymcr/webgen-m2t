@@ -333,6 +333,10 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 $offset = 0, $limit = 10
 [/template]
 
+[template private criterialLimitFormals(selection : Selection) post(trim())]
+$offset = 0, $limit = 0
+[/template]
+
 [template private filterFormals(filter : Filter) post(trim())]
 [for (parameter : FormalParameter | filter.parameters) separator(', ')]
 $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
@@ -398,7 +402,7 @@ $queryBuilder = $this->createQueryBuilder();
 [selection.orderBy()/]
 [/if]
 [if (selection.limit <> 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
-if ($offset >= 0) {
+if ($limit > 0) {
     $queryBuilder->setFirstResult($offset);
     $queryBuilder->setMaxResults($limit);
 }
@@ -535,7 +539,7 @@ return $query->getSingleResult();
 [elseif (selection.joins->notEmpty() and selection.fields->notEmpty())]
 return $query->getResult();
 [else]
-if ($offset >= 0)
+if ($limit > 0)
     return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
 else
     return $query->getResult();
@@ -560,7 +564,7 @@ else
 [/template]
 
 [template private childSelectionMethod(service : Service, association : Association, selection : Selection) post(trim())]
-public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.parameters->notEmpty() or selection.limit <> 1)], [/if][selection.formals()/])
+public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.limit <> 1)], [selection.criterialLimitFormals()/][/if])
 {
     $criteria = Criteria::create();
 [if (not selection.condition.oclIsUndefined())]
@@ -577,7 +581,7 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
     ));
 [/if]
 [if (selection.limit <> 1)]
-    if ($offset >= 0) {
+    if ($limit > 0) {
         $criteria->setFirstResult($offset);
         $criteria->setMaxResults($limit);
     }
