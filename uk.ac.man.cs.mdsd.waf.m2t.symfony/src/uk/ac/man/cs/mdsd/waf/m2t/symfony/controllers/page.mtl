@@ -61,6 +61,9 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 [for (entity : EntityOrView | page.editUnits()->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
 [/for]
+[for (unit : ContentUnit | page.units->select(u | u.hasInterfaceFields()))]
+use [unit.formTypeNamespace()/]\[unit.typeClassName()/];
+[/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 [if (page.hasInlineFileActions())]

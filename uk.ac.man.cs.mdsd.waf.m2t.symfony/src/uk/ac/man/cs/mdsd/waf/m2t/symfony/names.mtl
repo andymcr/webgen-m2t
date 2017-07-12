@@ -204,11 +204,12 @@
 				unit.oclAsType(StaticUnit).service.serves.modelName()
 			endif
 		else
-			if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
-				unit.unitPrefix().concat(unit.pageDisplayedOn().name).concat(unit.name)
-			else
-				unit.oclAsType(DynamicUnit).contentType().modelName()
-			endif
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+				in if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
+						dynamicUnit.typeClassName()
+					else
+						dynamicUnit.contentType().modelName()
+					endif
 		endif
 /]
 
@@ -271,7 +272,7 @@
 			endif
 /]
 
-[query public typeClassName(unit : DynamicUnit) : String
+[query public typeClassName(unit : ContentUnit) : String
 	= 'Unit'.concat(unit.pageDisplayedOn().name).concat(unit.name).concat(unit.typeSuffix())
 /]
 
