@@ -850,9 +850,11 @@
 						association.childFeature.dataTypeElement()
 					endif
 			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).dataType
 		else
 			null
-		endif
+		endif endif
 /]
 
 [query public dataTypeElement(child : ChildPath) : Classifier
