@@ -150,7 +150,7 @@ ui-corner-all ui-widget ui-widget-content
 		array(
 			'id' => '[mapUnit.uniqueName()/]_autocomplete',
 //			'class' => 'field.styleClass()/] field.inputClass()/]',
-	)) . PHP_EOL;
+	));
 ?>
  <div id="[mapUnit.uniqueName()/]_map" class="map-canvas"></div>
  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>

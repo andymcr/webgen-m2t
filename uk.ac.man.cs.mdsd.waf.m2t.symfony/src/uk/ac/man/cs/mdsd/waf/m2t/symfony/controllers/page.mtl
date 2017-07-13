@@ -36,8 +36,8 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [for (unit : ContentUnit | page.units)]
     [unit.unitMethods()/]
 
-	[if (unit.oclIsKindOf(DynamicUnit))]
-		[for (action : InlineAction | unit.oclAsType(DynamicUnit).uriActions())]
+	[if (unit.oclIsKindOf(DataUnit))]
+		[for (action : InlineAction | unit.oclAsType(DataUnit).uriActions())]
     [action.actionMethod(page)/]
 
 		[/for]
