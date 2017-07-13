@@ -86,13 +86,19 @@ $[key.routeParameterName(resource)/][/for]
 /]
 
 
-[query private keyPath(entity : EntityOrView, base : EntityOrView) : String
-	= if entity.attributeKeys()->isEmpty() then
-			''
-		else
-			entity.attributeKeys()
-				->collect(k | k.routeParameterName(base))->sep('{', '}/{', '}')->toString()
-		endif
+[query public activeKeys(entity : EntityOrView, unit : ContentUnit) : Sequence(Attribute)
+	= let keysWithActuals : Sequence(Attribute)
+		= unit.routingActuals->collect(a | a.routingParameter)
+		in entity.attributeKeys()->select(k | not keysWithActuals->includes(k))
+/]
+
+[query private keyPath(entity : EntityOrView, base : EntityOrView, unit : ContentUnit) : String
+	= let activeKeys : Sequence(Attribute) = entity.activeKeys(unit)
+		in if activeKeys->isEmpty() then
+				''
+			else
+				activeKeys->collect(k | k.routeParameterName(base))->sep('{', '}/{', '}')->toString()
+			endif
 /]
 
 [query private keyPath(entity : EntityOrView, base : Resource) : String
@@ -104,30 +110,30 @@ $[key.routeParameterName(resource)/][/for]
 		endif
 /]
 
-[query public uriPath(entity : EntityOrView) : String
-	= entity.uriPath(entity)
+[query public uriPath(entity : EntityOrView, unit : ContentUnit) : String
+	= entity.uriPath(entity, unit)
 /]
 
-[query private uriPath(entity : EntityOrView, base : EntityOrView) : String
+[query private uriPath(entity : EntityOrView, base : EntityOrView, unit : ContentUnit) : String
 	= let keyEntity : EntityOrView = entity.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
 			else if not keyEntity.isContained() then
-				keyEntity.keyPath(base)
+				keyEntity.keyPath(base, unit)
 			else
-				keyEntity.container().uriPath(base)
+				keyEntity.container().uriPath(base, unit)
 					.appendContainingAssociation(keyEntity)
-					.combinePaths(keyEntity.keyPath(base))
+					.combinePaths(keyEntity.keyPath(base, unit))
 			endif endif
 /]
 
-[query private parentUriPath(entity : EntityOrView) : String
+[query private parentUriPath(entity : EntityOrView, unit : ContentUnit) : String
 	= let parentEntity : EntityOrView = entity.parentEntity()
 		in if parentEntity.oclIsUndefined() then
 				''
 			else
 				let parentPath : String
-					= parentEntity.uriPath(parentEntity)
+					= parentEntity.uriPath(parentEntity, unit)
 					in if parentPath = '' then
 							''
 						else
@@ -144,7 +150,7 @@ $[key.routeParameterName(resource)/][/for]
 			in if dynamicUnit.contentType().oclIsUndefined() then
 					''
 				else
-					dynamicUnit.contentType().uriPath()
+					dynamicUnit.contentType().uriPath(unit)
 				endif
 		endif
 /]
@@ -158,9 +164,9 @@ $[key.routeParameterName(resource)/][/for]
 				in if selectable.selectionType.oclIsUndefined() then
 						''
 					else if parentPath then
-						selectable.selectionType.parentUriPath()
+						selectable.selectionType.parentUriPath(unit)
 					else
-						selectable.selectionType.uriPath()
+						selectable.selectionType.uriPath(unit)
 					endif endif
 			endif
 		in element.combinePaths(suffix)

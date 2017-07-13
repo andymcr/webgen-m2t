@@ -54,7 +54,7 @@
 	else
 		unit.imagePathFeature.imagePath(unit, accessor, accessor)
 	endif]
-[action.actionLink(unit.contentType(), accessor,  label, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]
+[action.actionLink(unit.contentType(), unit, accessor,  label, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]
 [/let]
 [/let]
 [/template]
@@ -69,7 +69,7 @@
 [/if]
 <ul>
 [for (action : InlineAction | unit.actions())]
- <li>[action.actionLink(unit.contentType(), accessor, action.displayLabel, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]</li>
+ <li>[action.actionLink(unit.contentType(), unit, accessor, action.displayLabel, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]</li>
 [/for]
 </ul>
 </div>

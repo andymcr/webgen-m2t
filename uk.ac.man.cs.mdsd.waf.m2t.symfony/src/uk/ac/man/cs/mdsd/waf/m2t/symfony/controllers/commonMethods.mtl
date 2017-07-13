@@ -72,18 +72,19 @@ $this->get('[unit.selectionService().serviceName()/]')
 
 [/template]
 
-[template public findActualParameters(entityOrView : EntityOrView) post(trim())]
+[template public loadInstance(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
+[unit.getContentService()/]->find([entityOrView.findActualParameters(unit)/])
+[/template]
+
+[template public findActualParameters(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
 [for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
 [let parameterName : String = key.routeParameterName(entityOrView)]
-	[if (key.encodeUriKey)]
+	[if (unit.hasRouteActual(key))]
+[unit.routeActual(key).value.controllerExpression()/][elseif (key.encodeUriKey)]
 urldecode($[parameterName/])[else]
 $[parameterName/][/if]
 [/let]
 [/for]
-[/template]
-
-[template public loadInstance(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
-[unit.getContentService()/]->find([entityOrView.findActualParameters()/])
 [/template]
 
 [template public loadSelectedInstance(unit : DataUnit) post(trim())]
