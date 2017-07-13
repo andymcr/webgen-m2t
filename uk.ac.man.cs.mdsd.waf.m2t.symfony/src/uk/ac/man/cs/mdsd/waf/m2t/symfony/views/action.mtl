@@ -12,7 +12,7 @@
 
 [template public unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
 <form action="{{ path('[unit.supportRouteName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
-[for (action : UnitSupportAction | unit.supportActions->select(a | not a.disable))]
+[for (action : UnitSupportAction | unit.supportActions())]
  [action.unitSupportLink()/]
 [/for]
 </form>
