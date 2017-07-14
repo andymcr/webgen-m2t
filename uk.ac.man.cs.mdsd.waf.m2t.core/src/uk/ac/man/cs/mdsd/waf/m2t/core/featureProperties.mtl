@@ -719,6 +719,10 @@
 		endif
 /]
 
+[query public hasRouteActual(unit : ContentUnit, key : Attribute) : Boolean
+	= not unit.routeActual(key).oclIsUndefined()
+/]
+
 [query public hasSupportActions(unit : DynamicUnit) : Boolean
 	= unit.supportActions()->notEmpty()
 /]
@@ -784,6 +788,10 @@
 		else
 			unit.displayedOn.oclAsType(UnitAssociation).displayedOn.pageDisplayedOn()
 		endif
+/]
+
+[query public routeActual(unit : ContentUnit, key : Attribute) : RouteActual
+	= unit.routeActuals->any(a | a.routeParameter = key)
 /]
 
 [query public rowClasses(unit : IndexUnit) : Sequence(String)
