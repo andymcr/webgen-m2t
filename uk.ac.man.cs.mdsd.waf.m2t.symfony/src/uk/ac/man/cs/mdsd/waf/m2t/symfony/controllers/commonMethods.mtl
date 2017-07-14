@@ -80,7 +80,7 @@ $this->get('[unit.selectionService().serviceName()/]')
 [for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
 [let parameterName : String = key.routeParameterName(entityOrView)]
 	[if (unit.hasRouteActual(key))]
-[unit.routeActual(key).value.controllerExpression()/][elseif (key.encodeUriKey)]
+[unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()))/][elseif (key.encodeUriKey)]
 urldecode($[parameterName/])[else]
 $[parameterName/][/if]
 [/let]

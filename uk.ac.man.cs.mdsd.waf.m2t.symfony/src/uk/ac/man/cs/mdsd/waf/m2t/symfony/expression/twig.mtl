@@ -27,6 +27,13 @@ date('[guard.oclAsType(TimeLiteral).value/]')
 date()
 [/template]
 
+[template public twigExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(Constant)) post(trim())]
+[let constant : Constant = guard.oclAsType(Constant)]
+[constant.value/]
+[/let]
+[/template]
+
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(FeatureReference)) post(trim())]

@@ -241,16 +241,16 @@ array_merge(
 [template public templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[if (not editUnit.enableWhen.oclIsUndefined())]
-[editUnit.enableWhen.controllerVariable()/]
-$parameters['['/]'[editUnit.instanceName()/]_enabled'[']'/] = [editUnit.enableWhen.controllerExpression()/];
-[/if]
 if (!isset($this->[editUnit.instanceName()/]))
 {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
     $this->[editUnit.instanceName()/] = [editUnit.createForm('create', not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
 }
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
+[if (not editUnit.enableWhen.oclIsUndefined())]
+[editUnit.enableWhen.controllerVariable()/]
+$parameters['['/]'[editUnit.instanceName()/]_enabled'[']'/] = [editUnit.enableWhen.controllerExpression('$'.concat(editUnit.instanceName()))/];
+[/if]
 [/let]
 [/template]
 

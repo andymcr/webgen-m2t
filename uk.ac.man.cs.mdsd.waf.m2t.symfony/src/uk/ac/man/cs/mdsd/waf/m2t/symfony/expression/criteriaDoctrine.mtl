@@ -67,7 +67,6 @@ Criteria::expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.
 )
 [else]
 [for (expression : Expression | predicate.expressions) separator (', ')]
-// y
 [expression.criteriaExpression()/]
 [/for]
 [/if]
