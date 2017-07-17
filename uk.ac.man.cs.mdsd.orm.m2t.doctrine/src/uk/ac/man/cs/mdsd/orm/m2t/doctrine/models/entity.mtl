@@ -236,8 +236,8 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 	[elseif (association.partOf.primaryKeys()->notEmpty())]
 [association.primaryKeysOwning()/]
 	[else]
-*     joinColumns={@ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[if (association.partOf.autoKeyName.toLowerCase() <> 'id')]
-[association.partOf.autoKeyName.toLowerCase()/]"[/if], nullable=false)},
+*     joinColumns={@ORM\JoinColumn(name="[association.columnName/]"[if (association.partOf.autoKeyName.toLowerCase() <> 'id')]
+, referencedColumnName="[association.partOf.autoKeyName.toLowerCase()/]"[/if], nullable=false)},
 	[/if]
 	[if (association.keys->notEmpty())]
 [association.explicitKeysInverse()/]
