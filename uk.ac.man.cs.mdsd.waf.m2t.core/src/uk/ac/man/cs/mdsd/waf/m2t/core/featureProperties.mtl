@@ -73,10 +73,6 @@
 	= model.inputTechnology <> InputTechnologies::Html
 /]
 
-[query public hasServicesWithSelections(model : WafModel) : Boolean
-	= model.servicesWithSelections()->notEmpty()
-/]
-
 [query public hasSliderUnits(model : WafModel) : Boolean
 	= model.pages->select(p | p.hasSliderUnits())->notEmpty()
 /]
@@ -136,10 +132,6 @@
 
 [query public services(model : WafModel, entity : EntityOrView) : OrderedSet(Service)
 	= model.business.services->select(s | s.serves = entity)
-/]
-
-[query public servicesWithSelections(model : WafModel) : OrderedSet(Service)
-	= model.business.services->select(s | s.selections->notEmpty())
 /]
 
 [query public topMenuItems(model : WafModel) : Sequence(Page)
