@@ -22,10 +22,14 @@
 namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
-[if (service.serves.hasPseudoAssociations())]
+[if (not service.serves.oclIsUndefined())]
+	[if (service.serves.hasPseudoAssociations())]
 use Doctrine\ORM\Query\Expr;
+	[/if]
 [/if]
+[if (service.selections->notEmpty() or not service.serves.oclIsUndefined() and service.findAll.oclIsUndefined())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
+[/if]
 [if (service.operations->notEmpty())]
 // [protected ('operations')]
 // [/protected]
@@ -33,48 +37,75 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class [service.className()/]
 {
+[for (constant : Constant | service.constants)]
+    [if (constant.useFunction())]private[else]public[/if] static $[constant.name/] = [if (constant.useFunction())]null[else][constant.value.queryExpression()/][/if];
+
+
+[/for]
+[if (not service.serves.oclIsUndefined())]
     private $doctrine;
 
-[if (service.serves.hasPseudoAssociations())]
+	[if (service.serves.hasPseudoAssociations())]
     private $entityManager;
 
-[/if]
-[if (model.isAuthenticated())]
-	[if (service = model.userService())]
+	[/if]
+	[if (model.isAuthenticated())]
+		[if (service = model.userService())]
     private $securityTokenStorage;
-	[else]
+		[else]
     private $[model.userService().instanceName()/];
 
+		[/if]
 	[/if]
-[/if]
     public function __construct($doctrine[if (service.serves.hasPseudoAssociations())], $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
 $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
     {
         $this->doctrine = $doctrine;
-[if (service.serves.hasPseudoAssociations())]
+	[if (service.serves.hasPseudoAssociations())]
         $this->entityManager = $entityManager;
-[/if]
-[if (model.isAuthenticated())]
-	[if (service = model.userService())]
-        $this->securityTokenStorage = $securityTokenStorage;
-	[else]
-        $this->[model.userService().instanceName()/] = $[model.userService().instanceName()/];
 	[/if]
-[/if]
+	[if (model.isAuthenticated())]
+		[if (service = model.userService())]
+        $this->securityTokenStorage = $securityTokenStorage;
+		[else]
+        $this->[model.userService().instanceName()/] = $[model.userService().instanceName()/];
+		[/if]
+	[/if]
     }
 
-[if (service.serves.hasRouteParameters())]
+[/if]
+[for (constant : Constant | service.constants->select(c | c.useFunction()))]
+    public static function [constant.name/]()
+    {
+	[if (constant.value.oclIsUndefined())]
+        // [protected ('constant '.concat(constant.name))]
+        // [/protected]
+	[else]
+		[if (constant.value.oclIsTypeOf(TimeLiteral))]
+        if (empty($[constant.name/])) {
+            $[constant.name/] = new \DateTime('[constant.value.oclAsType(TimeLiteral).value/]');
+        }
+
+        return $[constant.name/];
+		[/if]
+	[/if]
+    }
+
+[/for]
+[if (not service.serves.oclIsUndefined())]
+	[if (service.serves.hasRouteParameters())]
     [service.findMethod()/]
 
-[/if]
-[if (service.findAll.oclIsUndefined())]
+	[/if]
+	[if (service.findAll.oclIsUndefined())]
     [service.findAllMethod()/]
 
-[/if]
+	[/if]
     [service.removeMethod()/]
 
     [service.saveMethod()/]
 
+[/if]
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.localAuthentication()]
 	[if (model.userService() = service)]
@@ -94,19 +125,21 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
     [selection.selectionMethod(service, model.userService())/]
 
 [/for]
-[if (service.serves.associations()->select(a | not a.isSingleton(service.serves))
+[if (not service.serves.oclIsUndefined())]
+	[if (service.serves.associations()->select(a | not a.isSingleton(service.serves))
 		->collect(a | a.targetType().services(model)->first().selections->select(s | s.joins->isEmpty()))->notEmpty())]
     [service.childSelectionMethods(model)/]
 
-[/if]
-[if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isPseudo())->notEmpty())]
+	[/if]
+	[if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isPseudo())->notEmpty())]
     [service.serves.pseudoAssociationMethods(model)/]
 
-[/if]
+	[/if]
     [service.getRepositoryMethod()/]
 
     [service.createQueryBuilderMethod()/]
 
+[/if]
 [for (operation : BusinessOperation | service.operations)]
     [operation.businessOperation()/]
 

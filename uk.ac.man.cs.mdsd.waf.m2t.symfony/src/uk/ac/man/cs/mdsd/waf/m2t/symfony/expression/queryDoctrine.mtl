@@ -31,9 +31,9 @@ $queryBuilder->expr()->literal('[literal.value/]')
 
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(Constant)) post(trim())]
-[let constant : Constant = expression.oclAsType(Constant)]
-[constant.value/]
+	? (expression.oclIsTypeOf(ConstantReference)) post(trim())]
+[let constant : ConstantReference = expression.oclAsType(ConstantReference)]
+[constant.value.definedBy.className()/]::[constant.value.name/][if (constant.value.useFunction())]()[/if]
 [/let]
 [/template]
 

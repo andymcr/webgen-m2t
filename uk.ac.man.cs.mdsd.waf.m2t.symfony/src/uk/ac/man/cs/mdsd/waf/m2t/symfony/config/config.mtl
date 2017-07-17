@@ -50,49 +50,9 @@ sensio_framework_extra:
     view: { annotations: [if (model.hasAPI())]true[else]false[/if] }
     router: { annotations: true }
 
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
-[if (model.hasServicesWithSelections())]
-    globals:
-	[for (service : Service | model.servicesWithSelections())]
-        [service.className().toLowerFirst()/]: "@[service.serviceName()/]"
-	[/for]
-[/if]
+[model.twigConfig()/]
 
-# Doctrine Configuration
-doctrine:
-    dbal:
-        driver:   [if (model.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
-pdo_mysql[elseif (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
-oci8[/if]
-
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-[if (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
-        service:   true
-[/if]
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #     path:     "%database_path%"
-[if (model.persistence.hasCustomOrmTypes)]
-        types:
-            # [protected ('Custom types')]
-            # [/protected]
-[/if]
-
-    orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+[model.doctrineConfig()/]
 
 [if (model.hasCaptchaFields() or model.isLocallyAuthenticated())]
 ewz_recaptcha:
@@ -198,6 +158,53 @@ liip_imagine:
                 [filter.config()/]
 	[/for]
 [/for]
+[/template]
+
+[template private twigConfig(model : WafModel) post(trim())]
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+[for (service : Service | model.business.services)]
+        [service.className().toLowerFirst()/]: "@[service.serviceName()/]"
+[/for]
+[/template]
+
+[template private doctrineConfig(model : WafModel) post(trim())]
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   [if (model.persistence.databaseTechnology = DatabaseTechnologies::MySql)]
+pdo_mysql[elseif (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
+oci8[/if]
+
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+[if (model.persistence.databaseTechnology = DatabaseTechnologies::Oracle)]
+        service:   true
+[/if]
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+[if (model.persistence.hasCustomOrmTypes)]
+        types:
+            # [protected ('Custom types')]
+            # [/protected]
+[/if]
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
 [/template]
 
 [template private config(filter : ImageFilter)

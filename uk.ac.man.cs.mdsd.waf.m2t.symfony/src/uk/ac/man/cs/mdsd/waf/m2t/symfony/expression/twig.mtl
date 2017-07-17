@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
@@ -28,9 +29,9 @@ date()
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(Constant)) post(trim())]
-[let constant : Constant = guard.oclAsType(Constant)]
-[constant.value/]
+	? (guard.oclIsTypeOf(ConstantReference)) post(trim())]
+[let constant : ConstantReference = guard.oclAsType(ConstantReference)]
+[constant.value.definedBy.className().toLowerFirst()/].[constant.value.name/][if (constant.value.useFunction())]()[/if]
 [/let]
 [/template]
 

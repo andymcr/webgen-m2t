@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
@@ -23,6 +24,15 @@
 	= model.pages->collect(p | p.units)
 	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
 	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields())
+/]
+
+
+[query public useFunction(constant : Constant) : Boolean
+	= if constant.value.oclIsUndefined() then
+			true
+		else
+			constant.value.oclIsTypeOf(TimeLiteral)
+		endif
 /]
 
 

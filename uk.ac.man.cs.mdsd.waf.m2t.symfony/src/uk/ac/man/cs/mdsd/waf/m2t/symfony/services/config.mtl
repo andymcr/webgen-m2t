@@ -104,10 +104,11 @@ services:
 [for (service : Service | model.business.services->sortedBy(s | s.name))]
     [service.serviceName()/]:
         class: [service.appBundleName()/]\Service\[service.className()/]
-        arguments: ['['/]"@doctrine"[if (service.serves.hasPseudoAssociations())]
+        arguments: [if (service.serves.oclIsUndefined())]~[else]['['/]"@doctrine"[if (service.serves.hasPseudoAssociations())]
 , "@doctrine.orm.entity_manager"[/if][if (model.isAuthenticated())]
 [if (service = model.userService())], "@security.token_storage"[else]
-, "@[model.userService().serviceName()/]"[/if][/if][']'/]
+, "@[model.userService().serviceName()/]"[/if][/if][']'/][/if]
+
 
 [/for]
 [for (type : EnumerationType | model.persistence.enumerationTypes())]

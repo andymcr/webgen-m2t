@@ -6,6 +6,9 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
@@ -31,16 +34,16 @@ $now
 
 
 [template public controllerExpression(expression : Expression, accessor : String)
-	? (expression.oclIsTypeOf(Constant)) post(trim())]
-[let constant : Constant = expression.oclAsType(Constant)]
-[constant.value/]
+	? (expression.oclIsTypeOf(ConstantReference)) post(trim())]
+[let constant : ConstantReference = expression.oclAsType(ConstantReference)]
+\[constant.value.servicesNamespace()/]\[constant.value.definedBy.className()/]::[constant.value.name/][if (constant.value.useFunction())]()[/if]
 [/let]
 [/template]
 
 [template public controllerExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = expression.oclAsType(FeatureReference)]
-[accessor/]->get[path.feature.modelPropertyName().toUpperFirst()/]()
+[accessor/]->[path.feature.getMethodName()/]()
 [/let]
 [/template]
 

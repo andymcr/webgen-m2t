@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
@@ -24,9 +25,9 @@ new \DateTime()
 
 
 [template public criteriaExpression(expression : Expression)
-	? (expression.oclIsTypeOf(Constant)) post(trim())]
-[let constant : Constant = expression.oclAsType(Constant)]
-[constant.value/]
+	? (expression.oclIsTypeOf(ConstantReference)) post(trim())]
+[let constant : ConstantReference = expression.oclAsType(ConstantReference)]
+[constant.value.definedBy.className()/]::[constant.value.name/][if (constant.value.useFunction())]()[/if]
 [/let]
 [/template]
 
