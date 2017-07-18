@@ -67,7 +67,12 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
 	[if (not unit.cancelDestination.oclIsUndefined())]
     [unit.handleCancel()/]
 	[/if]
-    if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+	[for (action : UnitSupportAction | unit.supportActions())]
+    [if (i > 1)]} else [/if]if ($this->[unit.instanceName()/]->isSubmitted() && $request->request->has('[action.name/]')) {
+        // [protected ('Support action '.concat(action.name))]
+        // [/protected]
+	[/for]
+    [if (unit.supportActions()->notEmpty())]} else [/if]if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
         [unit.saveBody(suffix, unit.contentType.parentEntity())/]
     }
 [/if]
@@ -144,8 +149,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 			entity.uriPathKeys()
 		endif]
 $this->createForm([entity.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
-    'action' => $this->generateUrl('[unit.routeName(suffix)/]', [if (page.hasFilterParameters() or page.hasPagination())]
-	[if (pathKeys->isEmpty())]
+    'action' => $this->generateUrl('[unit.routeName(suffix)/]'[if (page.hasFilterParameters() or page.hasPagination())], [if (pathKeys->isEmpty())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
@@ -160,7 +164,7 @@ array_merge(
     ))[/if]
 [else]
 	[if (pathKeys->notEmpty())]
-array(
+, array(
 		[if (parentPath)]
 			[if (not unit.contentType.parentEntity().oclIsUndefined())]
         [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]

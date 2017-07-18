@@ -73,7 +73,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 [if (page.unitsWithSupportActions()->notEmpty())]
+	[if (page.unitsWithSupportActions()->select(u | not u.oclIsKindOf(EditUnit))->notEmpty())]
 use Symfony\Component\HttpFoundation\Response;
+	[/if]
 // [protected ('support.use')]
 // [/protected]
 [/if]
@@ -99,7 +101,7 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 [/template]
 
 [template private actionMethods(page : Page) post(trim())]
-[for (unit : DynamicUnit | page.unitsWithSupportActions())]
+[for (unit : DynamicUnit | page.unitsWithSupportActions()->select(u | not u.oclIsKindOf(EditUnit)))]
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
  */
