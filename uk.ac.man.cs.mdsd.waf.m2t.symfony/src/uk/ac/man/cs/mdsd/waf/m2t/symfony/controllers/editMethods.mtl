@@ -37,7 +37,7 @@
 /**
  [unit.routeAnnotation(suffix, suffix, true)/]
  */
-public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectType.container())/])
+public function [unit.actionName()/][if (not unit.oclIsTypeOf(CreateUnit))]X[/if]([page.actionMethodParameters(unit, selectType.container())/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
     $this->[unit.instanceName()/] = [unit.createForm('create', true, false)/];
@@ -68,7 +68,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
     [unit.handleCancel()/]
 	[/if]
 	[for (action : UnitSupportAction | unit.supportActions())]
-    [if (i > 1)]} else [/if]if ($this->[unit.instanceName()/]->isSubmitted() && $request->request->has('[action.name/]')) {
+    [if (i > 1)]} else [/if]if ($this->[unit.instanceName()/]->isSubmitted() && $request->request->has('[action.name.toLowerFirst()/]')) {
         // [protected ('Support action '.concat(action.name))]
         // [/protected]
 	[/for]
@@ -77,7 +77,14 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
     }
 [/if]
 
+[if (page.units->size() > 1 or unit.oclIsTypeOf(CreateUpdateUnit))]
     return $this->renderPage([page.renderActualParameters(selectType.container())/]);
+[else]
+    $parameters = array();
+    [page.templateParameters()/]
+    [unit.templateParameters()/]
+    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+[/if]
 }
 [/let]
 [/let]
@@ -245,11 +252,13 @@ array_merge(
 [template public templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[if (editUnit.pageDisplayedOn().units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
 if (!isset($this->[editUnit.instanceName()/]))
 {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
     $this->[editUnit.instanceName()/] = [editUnit.createForm('create', not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
 }
+[/if]
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
 [if (not editUnit.enableWhen.oclIsUndefined())]
 [editUnit.enableWhen.controllerVariable()/]
