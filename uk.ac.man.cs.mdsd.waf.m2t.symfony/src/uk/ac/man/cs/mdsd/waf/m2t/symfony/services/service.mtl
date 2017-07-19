@@ -30,6 +30,9 @@ use Doctrine\ORM\Query\Expr;
 [if (service.selections->notEmpty() or not service.serves.oclIsUndefined() and service.findAll.oclIsUndefined())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [/if]
+[if (not service.serves.oclIsUndefined())]
+use [service.modelsNamespace()/]\[service.serves.modelClassName()/];
+[/if]
 [if (service.operations->notEmpty())]
 // [protected ('operations')]
 // [/protected]
@@ -49,6 +52,12 @@ class [service.className()/]
     private $entityManager;
 
 	[/if]
+[/if]
+[for (uses : Service | service.uses)]
+    private $[uses.instanceServiceName()/];
+
+[/for]
+[if (not service.serves.oclIsUndefined())]
 	[if (model.isAuthenticated())]
 		[if (service = model.userService())]
     private $securityTokenStorage;
@@ -57,13 +66,21 @@ class [service.className()/]
 
 		[/if]
 	[/if]
-    public function __construct($doctrine[if (service.serves.hasPseudoAssociations())], $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
-$securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
+[/if]
+    public function __construct($doctrine[if (not service.serves.oclIsUndefined())]
+[if (service.serves.hasPseudoAssociations())], $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
+$securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (service.uses->notEmpty())], [/if][/if][for (uses : Service | service.uses) separator(', ')]$[uses.instanceName()/][/for])
     {
+[if (not service.serves.oclIsUndefined())]
         $this->doctrine = $doctrine;
 	[if (service.serves.hasPseudoAssociations())]
         $this->entityManager = $entityManager;
 	[/if]
+[/if]
+[for (uses : Service | service.uses)]
+        $this->[uses.instanceServiceName()/] =  $[uses.instanceName()/];
+[/for]
+[if (not service.serves.oclIsUndefined())]
 	[if (model.isAuthenticated())]
 		[if (service = model.userService())]
         $this->securityTokenStorage = $securityTokenStorage;
@@ -93,12 +110,16 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if])
 
 [/for]
 [if (not service.serves.oclIsUndefined())]
-	[if (service.serves.hasRouteParameters())]
+	[if (service.findOne.oclIsUndefined() and service.serves.hasRouteParameters())]
     [service.findMethod()/]
 
 	[/if]
 	[if (service.findAll.oclIsUndefined())]
     [service.findAllMethod()/]
+
+	[/if]
+	[if (service.serves.hasRouteParameters())]
+    [service.createMethod()/]
 
 	[/if]
     [service.removeMethod()/]
@@ -175,7 +196,7 @@ public function find([service.serves.routeParameters()/])
 [for (key : Attribute | entity.uriPathKeys())]
         ->setParameter('[key.routeParameterName(entity)/]', $[key.routeParameterName(entity)/])
 [/for]
-        ->getQuery()->getSingleResult();
+        ->getQuery()->getOneOrNullResult();
 }
 [/let]
 [/template]
@@ -221,16 +242,6 @@ public function findAll([service.limitFormals()/])
 }
 [/template]
 
-[template private removeMethod(service : Service) post(trim())]
-public function remove($entity, $flush = false)
-{
-	$entityManager = $this->doctrine->getManager();
-    $entityManager->remove($entity);
-    if ($flush)
-        $entityManager->flush();
-}
-[/template]
-
 [query private joinProperty(authentication : LocalAuthenticationSystem) : String
 	= if authentication.authenticationKey = AuthenticationKeyTypes::Email then
 			'getEmail()'
@@ -257,6 +268,33 @@ public function getUser()
 
     return $this->find($user->[authentication.joinProperty()/]);
  }
+[/template]
+
+[template private createMethod(service : Service) post(trim())]
+[let entity : EntityOrView = service.serves]
+public function create([entity.routeParameters()/], $flush = false)
+{
+    $current = $this->find([entity.routeParameters()/]);
+    if (!empty($current))
+        return null;
+    $new = new [entity.modelName()/]();
+[for (key : Attribute | entity.uriPathKeys())]
+    $new->set[key.modelPropertyName().toUpperFirst()/]($[key.routeParameterName(entity)/]);
+[/for]
+    $this->save($new, $flush);
+    return $new;
+}
+[/let]
+[/template]
+
+[template private removeMethod(service : Service) post(trim())]
+public function remove($entity, $flush = false)
+{
+	$entityManager = $this->doctrine->getManager();
+    $entityManager->remove($entity);
+    if ($flush)
+        $entityManager->flush();
+}
 [/template]
 
 [template private saveMethod(service : Service) post(trim())]
@@ -767,9 +805,14 @@ public function createQueryBuilder()
 [/template]
 
 [template private businessOperation(operation : BusinessOperation) post(trim())]
-public function [operation.methodName()/]($[operation.partOf.instanceName()/][if (operation.resultType = OperationResultTypes::File)], $fileExtension = null[/if])
+public function [operation.methodName()/]([operation.formalParameters()/])
 {
     // [protected ('operation.'.concat(operation.methodName()))]
     // [/protected]
 }
+[/template]
+
+[template private formalParameters(operation : BusinessOperation) post(trim())]
+[for (parameter : FormalParameter | operation.parameters) separator(', ')]
+$[parameter.name/][/for]
 [/template]

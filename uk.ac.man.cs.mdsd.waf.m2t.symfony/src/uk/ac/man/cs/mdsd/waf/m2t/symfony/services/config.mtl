@@ -107,7 +107,8 @@ services:
         arguments: [if (service.serves.oclIsUndefined())]~[else]['['/]"@doctrine"[if (service.serves.hasPseudoAssociations())]
 , "@doctrine.orm.entity_manager"[/if][if (model.isAuthenticated())]
 [if (service = model.userService())], "@security.token_storage"[else]
-, "@[model.userService().serviceName()/]"[/if][/if][']'/][/if]
+, "@[model.userService().serviceName()/]"[/if][/if][if (service.uses->notEmpty())]
+, [for (uses : Service | service.uses) separator(', ')]"@[uses.serviceName()/]"[/for][/if][']'/][/if]
 
 
 [/for]

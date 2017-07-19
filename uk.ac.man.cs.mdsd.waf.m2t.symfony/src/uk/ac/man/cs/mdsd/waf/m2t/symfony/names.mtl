@@ -125,8 +125,12 @@
 	= service.name.toLowerFirst()
 /]
 
+[query public instanceServiceName(service : Service) : String
+	= service.className().toLowerFirst()
+/]
+
 [query public serviceName(service : Service) : String
-	= 'app.service.'.concat(service.name.toLowerFirst())
+	= 'app.'.concat(service.name.toLowerFirst())
 /]
 
 
