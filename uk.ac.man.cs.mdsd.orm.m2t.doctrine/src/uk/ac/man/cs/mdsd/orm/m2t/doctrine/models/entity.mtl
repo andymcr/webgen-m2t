@@ -370,9 +370,7 @@ public function __construct()
     $this->[feature.modelPropertyName()/] = Array();
 	[/if]
 	[if (feature.oclIsTypeOf(CollectionAssociation))]
-		[if (feature.oclAsType(CollectionAssociation).owningEnd)]
     $this->[feature.modelPropertyName()/] = new ArrayCollection();
-		[/if]
 	[/if]
 [/for]
 }
