@@ -24,6 +24,7 @@
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
 {% form_theme [accessor/] 'form/messages_on_fields.html.twig' %}
 {{ form_start([accessor/][if (not unit.contentClass.oclIsUndefined())], { 'attr': {'class': '[unit.contentClass/]'} }[/if]) }}
+{{ form_errors([accessor/]) }}
 [/template]
 
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
