@@ -126,7 +126,19 @@ $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(I
 [/for]
 [/template]
 
-[template public handleCancel(unit : DynamicUnit) post(trim())]
+[template public handleCancelPost(unit : DynamicUnit) post(trim())]
+[let cancelDestination : Page = 
+	if unit.oclIsKindOf(ControlUnit) then
+		unit.oclAsType(ControlUnit).cancelDestination
+	else
+		unit.oclAsType(EditUnit).cancelDestination
+	endif]
+if ($request->request->has('cancel'))
+	return $this->redirectToRoute('[comment cancelDestination routeName()/]');
+[/let]
+[/template]
+
+[template public handleCancelSubmit(unit : DynamicUnit) post(trim())]
 [let cancelDestination : Page = 
 	if unit.oclIsKindOf(ControlUnit) then
 		unit.oclAsType(ControlUnit).cancelDestination

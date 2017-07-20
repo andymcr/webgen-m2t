@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -27,54 +28,66 @@
 [editUnit.actionEditMethod()/]
 
 [/if]
+[if (editUnit.hasSupportActions())]
+[editUnit.updateFormMethod('')/]
+
+[/if]
 [/let]
 [/template]
 
 [template private actionAddMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [let selectType : EntityOrView = unit.selectType()]
-[let suffix : String = 'create']
+[let suffix : String = if unit.oclIsTypeOf(CreateUpdateUnit) then 'create' else '' endif]
 /**
- [unit.routeAnnotation(suffix, suffix, true)/]
+ [unit.routeAnnotation(unit.uriElement, suffix, true)/]
  */
-public function [unit.actionName()/][if (not unit.oclIsTypeOf(CreateUnit))]X[/if]([page.actionMethodParameters(unit, selectType.container())/])
+public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectType.container())/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
-    $this->[unit.instanceName()/] = [unit.createForm('create', true, false)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+    $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), suffix, true, false)/];
+[if (unit.hasSupportActions())]
+
     if ($request->isMethod('POST')) {
-        $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
+        $formValues = $request->request->get($this->[unit.instanceName()/]->getName());
 	[if (not unit.cancelDestination.oclIsUndefined())]
-        [unit.handleCancel()/]
+        [unit.handleCancelPost()/]
+
 	[/if]
-	[if (unit.customiseValues)]
-        // [protected ('customise.values.'.concat(unit.instanceName()).concat('.add'))]
-        // [/protected]
+	[for (action : UnitSupportAction | unit.supportActions())]
+        [if (i > 1)]} else [/if]if ($request->request->has('[action.name.toLowerFirst()/]')) {
+            // [protected ('Support action '.concat(action.name))]
+            // [/protected]
+
+	[/for]
+        } else {
+	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+            [unit.customValuesBody(suffix)/]
+	[else]
+            $this->[unit.instanceName()/]->handleRequest($request);
+            if ($this->[unit.instanceName()/]->isValid()) {
+                [unit.saveBody(suffix, unit.contentType.parentEntity())/]
+            }
 	[/if]
-	[if (unit.hasForcedValueFeatures())]
-        // forced values [comment unit.forcedFeatureValues()/]
-	[/if]
-	[if (unit.isContained())]
-        [unit.setContainer()/]
-	[/if]
-        $errors = $this->get('validator')->validate($[unit.instanceName()/]);
-        if (count($errors) == 0) {
-            [unit.saveBody(suffix, unit.contentType.parentEntity())/]
         }
     }
 [else]
+	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+    if ($request->isMethod('POST')) {
+		[if (not unit.cancelDestination.oclIsUndefined())]
+        [unit.handleCancelPost()/]
+		[/if]
+        [unit.customValuesBody(suffix)/]
+    }
+    [else]
     $this->[unit.instanceName()/]->handleRequest($request);
-	[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancel()/]
-	[/if]
-	[for (action : UnitSupportAction | unit.supportActions())]
-    [if (i > 1)]} else [/if]if ($this->[unit.instanceName()/]->isSubmitted() && $request->request->has('[action.name.toLowerFirst()/]')) {
-        // [protected ('Support action '.concat(action.name))]
-        // [/protected]
-	[/for]
-    [if (unit.supportActions()->notEmpty())]} else [/if]if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+		[if (not unit.cancelDestination.oclIsUndefined())]
+    [unit.handleCancelSubmit()/]
+		[/if]
+    if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
         [unit.saveBody(suffix, unit.contentType.parentEntity())/]
     }
+	[/if]
 [/if]
 
 [if (page.units->size() > 1 or unit.oclIsTypeOf(CreateUpdateUnit))]
@@ -100,12 +113,12 @@ public function [unit.actionName()/][if (not unit.oclIsTypeOf(CreateUnit))]X[/if
 public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.selectType())/])
 {
     [unit.loadSelectedInstance()/]
-    $this->[unit.instanceName()/] = [unit.createForm('', false, false)/];
+    $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), '', false, false)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures())]
     if ($request->isMethod('POST')) {
         $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
 	[if (not unit.cancelDestination.oclIsUndefined())]
-        [unit.handleCancel()/]
+        [unit.handleCancelPost()/]
 	[/if]
 	[if (unit.customiseValues)]
         // [protected ('customise.values.'.concat(unit.instanceName()).concat('.edit'))]
@@ -122,7 +135,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 [else]
     $this->[unit.instanceName()/]->handleRequest($request);
 	[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancel()/]
+    [unit.handleCancelSubmit()/]
 	[/if]
     if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
         [unit.saveBody(addSuffix, unit.contentType)/]
@@ -142,7 +155,25 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 [/let]
 [/template]
 
-[template public createForm(unit : EditUnit, suffix : String, parentPath : Boolean, placeholder : Boolean) post(trim())]
+[template private customValuesBody(unit : EditUnit, suffix : String) post(trim())]
+$this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
+[if (unit.customiseValues)]
+// [protected ('customise.values.'.concat(unit.instanceName()).concat('.add'))]
+// [/protected]
+[/if]
+[if (unit.hasForcedValueFeatures())]
+// forced values [comment unit.forcedFeatureValues()/]
+[/if]
+[if (unit.isContained())]
+[unit.setContainer()/]
+[/if]
+$errors = $this->get('validator')->validate($[unit.instanceName()/]);
+if (count($errors) == 0) {
+    [unit.saveBody(suffix, unit.contentType.parentEntity())/]
+}
+[/template]
+
+[template public createForm(unit : EditUnit, entityInstance : String, suffix : String, parentPath : Boolean, placeholder : Boolean) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [let entity : EntityOrView = unit.contentType]
 [let pathKeys : Sequence(Attribute)
@@ -155,7 +186,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 		else
 			entity.uriPathKeys()
 		endif]
-$this->createForm([entity.typeClassName()/]::class, $[unit.instanceName()/][if (not placeholder)], array(
+$this->createForm([entity.typeClassName()/]::class, $[entityInstance/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(suffix)/]'[if (page.hasFilterParameters() or page.hasPagination())], [if (pathKeys->isEmpty())]
 $request->query->all()[else]
 array_merge(
@@ -256,7 +287,7 @@ array_merge(
 if (!isset($this->[editUnit.instanceName()/]))
 {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
-    $this->[editUnit.instanceName()/] = [editUnit.createForm('create', not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm(unit.instanceName(), 'create', not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
 }
 [/if]
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
@@ -267,3 +298,18 @@ $parameters['['/]'[editUnit.instanceName()/]_enabled'[']'/] = [editUnit.enableWh
 [/let]
 [/template]
 
+[template private updateFormMethod(unit : EditUnit, suffix : String) post(trim())]
+[let contentType : EntityOrView = unit.contentType]
+private function updateForm($[contentType.instanceName()/], $values)
+{
+    $form = [unit.createForm(contentType.instanceName(), suffix, true, false)/];
+    $form->submit($values, false);
+    foreach ($this->get('validator')->validate($[contentType.instanceName()/]) as $violation) {
+        $path = $violation->getPropertyPath();
+        $form->get($path)->addError(new FormError($violation->getMessage()));
+    }
+
+    return $form;
+}
+[/let]
+[/template]
