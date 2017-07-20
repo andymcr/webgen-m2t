@@ -114,12 +114,12 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (
     [service.findMethod()/]
 
 	[/if]
-	[if (service.findAll.oclIsUndefined())]
-    [service.findAllMethod()/]
+	[if (service.serves.hasRouteParameters())]
+    [service.findOrCreateMethod()/]
 
 	[/if]
-	[if (service.serves.hasRouteParameters())]
-    [service.createMethod()/]
+	[if (service.findAll.oclIsUndefined())]
+    [service.findAllMethod()/]
 
 	[/if]
     [service.removeMethod()/]
@@ -227,6 +227,23 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(base)/]')
 [/template]
 
+[template private findOrCreateMethod(service : Service) post(trim())]
+[let entity : EntityOrView = service.serves]
+public function findOrCreate([entity.routeParameters()/], $flush = false)
+{
+    $current = $this->find([entity.routeParameters()/]);
+    if (!empty($current))
+        return $current;
+    $new = new [entity.modelName()/]();
+[for (key : Attribute | entity.uriPathKeys())]
+    $new->set[key.modelPropertyName().toUpperFirst()/]($[key.routeParameterName(entity)/]);
+[/for]
+    $this->save($new, $flush);
+    return $new;
+}
+[/let]
+[/template]
+
 [template private findAllMethod(service : Service) post(trim())]
 public function findAll([service.limitFormals()/])
 {
@@ -268,23 +285,6 @@ public function getUser()
 
     return $this->find($user->[authentication.joinProperty()/]);
  }
-[/template]
-
-[template private createMethod(service : Service) post(trim())]
-[let entity : EntityOrView = service.serves]
-public function create([entity.routeParameters()/], $flush = false)
-{
-    $current = $this->find([entity.routeParameters()/]);
-    if (!empty($current))
-        return null;
-    $new = new [entity.modelName()/]();
-[for (key : Attribute | entity.uriPathKeys())]
-    $new->set[key.modelPropertyName().toUpperFirst()/]($[key.routeParameterName(entity)/]);
-[/for]
-    $this->save($new, $flush);
-    return $new;
-}
-[/let]
 [/template]
 
 [template private removeMethod(service : Service) post(trim())]
