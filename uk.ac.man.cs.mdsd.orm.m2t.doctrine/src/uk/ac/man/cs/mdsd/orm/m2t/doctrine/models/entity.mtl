@@ -103,7 +103,7 @@ use Doctrine\ORM\Mapping as ORM;
 [if (entity.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates)]
+[if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates or entity.hasSlugAttributes())]
 use Gedmo\Mapping\Annotation as Gedmo;
 [/if]
 [if (entity.unique->notEmpty() or entity.uniqueAttributes()->notEmpty())]
@@ -195,7 +195,7 @@ protected $updated;
 [/if]
 * @ORM\Column([if (feature.columnName().isReservedWord())]name="`[feature.columnName()/]`", [/if]type="[attribute.ormType/]"[if (not feature.isRequired())], nullable=true[/if])
 [if (attribute.slugFields->notEmpty())]
-* @Gedmo\Slug=(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.modelPropertyName()/]"[/for]})
+* @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.modelPropertyName()/]"[/for]})
 [/if]
 [/let]
 [/template]

@@ -48,6 +48,15 @@ services:
             - { name: doctrine.event_listener, event: postConnect }
 
 [/if]
+[if (model.persistence.hasSlugAttributes())]
+    gedmo.listener.sluggable:
+        class: Gedmo\Sluggable\SluggableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - ['['/] setAnnotationReader, ['['/] "@annotation_reader" [']'/] [']'/]
+
+[/if]
 [if (model.persistence.timestampCreation or model.persistence.timestampUpdates)]
     gedmo.listener.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
