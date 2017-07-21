@@ -170,28 +170,28 @@
 	= entityOrView.associations()->select(a | a.isSingleton() and not a.isOwningEnd() and a.isVisible())
 /]
 
-[query public isContained(entityOrView : EntityOrView) : Boolean
-	= not entityOrView.container().oclIsUndefined()
+[query public isContained(entity : EntityOrView) : Boolean
+	= not entity.container().oclIsUndefined()
 /]
 
-[query public modifiableAssociations(entityOrView : EntityOrView) : Sequence(Association)
-	= entityOrView.associations()->select(a | a.isModifiable())
+[query public modifiableAssociations(entity : EntityOrView) : Sequence(Association)
+	= entity.associations()->select(a | a.isModifiable())
 /]
 
-[query public ownedSingletonAssociations(entityOrView : EntityOrView) : Sequence(Association)
-	= entityOrView.associations()->select(a | a.isSingleton() and a.isOwningEnd())
+[query public ownedSingletonAssociations(entity : EntityOrView) : Sequence(Association)
+	= entity.associations()->select(a | a.isSingleton() and a.isOwningEnd())
 /]
 
-[query public primaryKeys(entityOrView : EntityOrView) : Sequence(EntityFeature)
-	= entityOrView.features->select(f | f.isPrimaryKey()).oclAsType(EntityFeature)
+[query public primaryKeys(entity : EntityOrView) : Sequence(EntityFeature)
+	= entity.features->select(f | f.isPrimaryKey()).oclAsType(EntityFeature)
 /]
 
-[query public pseudoAssociations(entityOrView : EntityOrView) : Sequence(Association)
-	= entityOrView.features->select(f | f.isPseudo()).oclAsType(Association)
+[query public pseudoAssociations(entity : EntityOrView) : Sequence(Association)
+	= entity.features->select(f | f.isPseudo()).oclAsType(Association)
 /]
 
-[query public resourceAttributes(entityOrView : EntityOrView) : Sequence(SingletonResource)
-	= entityOrView.features->select(f | f.isResource()).oclAsType(SingletonResource)
+[query public resourceAttributes(entity : EntityOrView) : Sequence(SingletonResource)
+	= entity.features->select(f | f.isResource()).oclAsType(SingletonResource)
 /]
 
 [query public tableColumns(entity : Entity) : OrderedSet(Feature)

@@ -189,11 +189,14 @@ protected $updated;
 
 [template private ormAnnotation(feature : Feature)
 	? (feature.oclIsKindOf(EntityAttribute)) post(trim())]
-[let attribute : EntityAttribute =feature.oclAsType(EntityAttribute)]
+[let attribute : EntityAttribute = feature.oclAsType(EntityAttribute)]
 [if (attribute.primaryKey)]
 * @ORM\Id
 [/if]
 * @ORM\Column([if (feature.columnName().isReservedWord())]name="`[feature.columnName()/]`", [/if]type="[attribute.ormType/]"[if (not feature.isRequired())], nullable=true[/if])
+[if (attribute.slugFields->notEmpty())]
+* @Gedmo\Slug=(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.modelPropertyName()/]"[/for]})
+[/if]
 [/let]
 [/template]
 
