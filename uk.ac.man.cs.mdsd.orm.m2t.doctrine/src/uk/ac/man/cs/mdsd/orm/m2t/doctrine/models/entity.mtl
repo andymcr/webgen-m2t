@@ -100,7 +100,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
 
 [template private useStatements(entity : EntityOrView) post(trim())]
 use Doctrine\ORM\Mapping as ORM;
-[if (entity.collectionAssociations()->select(c | c.isOwningEnd())->notEmpty())]
+[if (entity.collectionAssociations()->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 [if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates or entity.hasSlugAttributes())]
@@ -342,7 +342,13 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [template private validationAnnotation(feature : Feature) post(trim())]
 [if (feature.isRequired())]
 	[if (feature.oclIsKindOf(Attribute))]
+		[if (feature.oclIsKindOf(EntityAttribute))]
+			[if (feature.oclAsType(EntityAttribute).slugFields->isEmpty())]
 * @Assert\NotBlank
+			[/if]
+		[else]
+* @Assert\NotBlank
+		[/if]
 	[else]
 * @Assert\NotNull
 	[/if]
