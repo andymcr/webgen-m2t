@@ -39,13 +39,6 @@ public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamic
 [/let]
 [/template]
 
-[template public selectMethod(unit : CollectionUnit) post(trim())]
-private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
-{
-    [unit.selectCode()/]
-}
-[/template]
-
 [template private selectCode(unit : CollectionUnit) post(trim())]
 [if (unit.defaultPaginationSize > 0)]
 $this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
@@ -164,7 +157,7 @@ $[key.routeParameterName(unit.selectionType)/][/for]
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
 [if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1 or unit.hasDeleteActions())]
-$this->[unit.selectName()/]([unit.selectMethodParameters()/]);
+[unit.selectCode()/]
 [/if]
 [if (not unit.selectionType.oclIsUndefined())]
 $parameters['['/]'[unit.selectionType.instanceName()/]'[']'/] = $this->[unit.selectionType.instanceName()/];

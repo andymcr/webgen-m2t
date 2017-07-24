@@ -9,10 +9,5 @@
 	? (unit.oclIsKindOf(ImageUnit)) post(trim())]
 [let imageUnit : ImageUnit = unit.oclAsType(ImageUnit)]
 [imageUnit.actionMethod()/]
-
-[if (unit.pageDisplayedOn().units->size() > 1)]
-[imageUnit.selectMethod()/]
-
-[/if]
 [/let]
 [/template]

@@ -9,10 +9,5 @@
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [indexUnit.actionMethod()/]
-
-[if (indexUnit.pageDisplayedOn().units->size() > 1 or indexUnit.hasDeleteActions())]
-[indexUnit.selectMethod()/]
-
-[/if]
 [/let]
 [/template]
