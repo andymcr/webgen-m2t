@@ -805,6 +805,18 @@
 			endif endif
 /]
 
+[query public selectionType(unit : SelectableUnit) : EntityOrView
+	= if not unit.selectionType.oclIsUndefined() then
+			unit.selectionType
+		else if unit.oclIsTypeOf(SingletonUnit) then
+			unit.oclAsType(SingletonUnit).contentType
+		else if unit.oclIsTypeOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).contentType->first().container()
+		else
+			null
+		endif endif endif
+/]
+
 [query public submitLabel(unit : DynamicUnit) : String
 	= if unit.oclIsKindOf(EditUnit) then
 			unit.oclAsType(EditUnit).confirmLabel
