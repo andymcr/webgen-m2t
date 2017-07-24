@@ -85,7 +85,8 @@
 
 [model.css(model.cssDirectory())/]
 [model.generateMenu()/]
-[model.menus.generateMenu()/]
+[model.globalMenus.menu()/]
+[model.dynamicMenus.menu()/]
 [model.generatePage()/]
 [model.pages->select(p | p.units->notEmpty()).page()/]
 [model.pages.units.unitView()/]
