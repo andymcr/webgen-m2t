@@ -203,7 +203,7 @@
 /]
 
 [query public slugAttributes(entity : EntityOrView) : Sequence(EntityAttribute)
-	= entity.attributes().oclAsType(EntityAttribute)->select(a | a.slugFields->notEmpty())
+	= entity.attributes().oclAsType(EntityAttribute)->select(a | a.hasSlugFields())
 /]
 
 [query public tableColumns(entity : Entity) : OrderedSet(Feature)
@@ -309,6 +309,14 @@
 				feature.oclAsType(Association).serializationMaxDepth > 0
 			endif
 		in feature.serializationGroups->notEmpty() or hasMaxDepth
+/]
+
+[query public hasSlugFields(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAttribute) then
+			feature.oclAsType(EntityAttribute).slugFields->notEmpty()
+		else
+			false
+		endif
 /]
 
 [query public hasValidationPattern(feature : Feature) : Boolean

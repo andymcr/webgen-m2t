@@ -114,12 +114,12 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (
     [service.findMethod()/]
 
 	[/if]
-	[if (service.serves.hasRouteParameters())]
-    [service.findOrCreateMethod()/]
-
-	[/if]
 	[if (service.findAll.oclIsUndefined())]
     [service.findAllMethod()/]
+
+	[/if]
+	[if (service.serves.attributes()->notEmpty())]
+    [service.createMethod()/]
 
 	[/if]
     [service.removeMethod()/]
@@ -227,23 +227,6 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(base)/]')
 [/template]
 
-[template private findOrCreateMethod(service : Service) post(trim())]
-[let entity : EntityOrView = service.serves]
-public function findOrCreate([entity.routeParameters()/], $flush = false)
-{
-    $current = $this->find([entity.routeParameters()/]);
-    if (!empty($current))
-        return $current;
-    $new = new [entity.modelName()/]();
-[for (key : Attribute | entity.uriPathKeys())]
-    $new->set[key.modelPropertyName().toUpperFirst()/]($[key.routeParameterName(entity)/]);
-[/for]
-    $this->save($new, $flush);
-    return $new;
-}
-[/let]
-[/template]
-
 [template private findAllMethod(service : Service) post(trim())]
 public function findAll([service.limitFormals()/])
 {
@@ -269,22 +252,23 @@ public function findAll([service.limitFormals()/])
 		endif endif
 /]
 
-[template private getUserMethod(authentication : CasAuthentication, service : Service) post(trim())]
-public function getUser()
+[template private createMethod(service : Service) post(trim())]
+[let entity : EntityOrView = service.serves]
+public function create([for (attribute : Attribute | entity.attributes()) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
 {
-    return $this->securityTokenStorage->getToken()->getUser();
+    $new = new [entity.modelName()/]();
+[for (attribute : Attribute | entity.attributes())]
+	[if (attribute.hasSlugFields())]
+    if (!empty($[attribute.instanceName()/]))
+        $new->set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]);
+	[else]
+    $new->set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]);
+	[/if]
+[/for]
+    $this->save($new, $flush);
+    return $new;
 }
-[/template]
-
-[template private getUserMethod(authentication : LocalAuthenticationSystem) post(trim())]
-public function getUser()
-{
-    $user = $this->securityTokenStorage->getToken()->getUser();
-    if (empty($user))
-        return null;
-
-    return $this->find($user->[authentication.joinProperty()/]);
- }
+[/let]
 [/template]
 
 [template private removeMethod(service : Service) post(trim())]
@@ -305,6 +289,24 @@ public function save($entity, $flush = false)
     if ($flush)
         $entityManager->flush();
 }
+[/template]
+
+[template private getUserMethod(authentication : CasAuthentication, service : Service) post(trim())]
+public function getUser()
+{
+    return $this->securityTokenStorage->getToken()->getUser();
+}
+[/template]
+
+[template private getUserMethod(authentication : LocalAuthenticationSystem) post(trim())]
+public function getUser()
+{
+    $user = $this->securityTokenStorage->getToken()->getUser();
+    if (empty($user))
+        return null;
+
+    return $this->find($user->[authentication.joinProperty()/]);
+ }
 [/template]
 
 [template private selectionMethod(selection : Selection, service : Service, userService : Service)
@@ -606,7 +608,7 @@ $query->setParameter('[key.routeParameterName(parentEntity)/]', $[key.routeParam
 
 [template private queryResult(selection : Selection, service : Service) post(trim())]
 [if (selection.limit = 1)]
-return $query->getSingleResult();
+return $query->getOneOrNullResult();
 [elseif (selection.joins->notEmpty() and selection.fields->notEmpty())]
 return $query->getResult();
 [else]
