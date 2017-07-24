@@ -296,6 +296,16 @@
 	= page.controlUnits()->notEmpty()
 /]
 
+[query public hasDeleteActions(page : Page) : Boolean
+	= let collectionUnits : Sequence(CollectionUnit)
+		= page.units->select(u | u.oclIsKindOf(CollectionUnit)).oclAsType(CollectionUnit)
+		in if collectionUnits->isEmpty() then
+				false
+			else
+				collectionUnits->select(u | u.hasDeleteActions())->notEmpty()
+			endif
+/]
+
 [query public hasFilterParameters(page : Page) : Boolean
 	= page.dynamicUnits()->select(u | u.hasFilterParameters())->notEmpty()
 /]
@@ -568,6 +578,16 @@
 			unit.oclAsType(DynamicUnit).defaultValueFields()->notEmpty()
 		else
 			false
+		endif
+/]
+
+[query public hasDeleteActions(unit : CollectionUnit) : Boolean
+	= if not unit.oclIsKindOf(InlineActionContainer) then
+			false
+		else
+			unit.oclAsType(InlineActionContainer).actions
+				->select(a | a.oclIsTypeOf(DeleteAction))
+				->notEmpty()
 		endif
 /]
 

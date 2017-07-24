@@ -22,11 +22,11 @@
  */
 public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.selectionType)/])
 {
-[if (page.units->size() = 1)]
+[if (page.units->size() = 1 and not unit.hasDeleteActions())]
     [unit.selectCode()/]
 
 [/if]
-[if (page.units->size() > 1)]
+[if (page.units->size() > 1 or unit.hasDeleteActions())]
     return $this->renderPage([page.renderActualParameters(unit.selectionType)/]);
 [else]
     $parameters = array();
@@ -163,7 +163,7 @@ $[key.routeParameterName(unit.selectionType)/][/for]
 
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
-[if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1)]
+[if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1 or unit.hasDeleteActions())]
 $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
 [if (not unit.selectionType.oclIsUndefined())]

@@ -47,7 +47,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     [page.actionMethods()/]
 
 [/if]
-[if (page.units->size() > 1)]
+[if (page.units->size() > 1 or  page.hasDeleteActions())]
     [page.renderMethod()/]
 [/if]
 }

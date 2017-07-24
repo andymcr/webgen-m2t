@@ -10,7 +10,7 @@
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [indexUnit.actionMethod()/]
 
-[if (unit.pageDisplayedOn().units->size() > 1)]
+[if (indexUnit.pageDisplayedOn().units->size() > 1 or indexUnit.hasDeleteActions())]
 [indexUnit.selectMethod()/]
 
 [/if]
