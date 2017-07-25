@@ -220,8 +220,8 @@
 	[if (field.conditionalDisplay())]
 		[if (field.oclIsKindOf(UnitFeature))]
 		[let feature : UnitFeature = field.oclAsType(UnitFeature)]
-{% else %}
 			[if (not feature.nullDisplayValue.oclIsUndefined())]
+{% else %}
 				[if (unit.hasOmitFieldLabels())]
  <li class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</li>
 				[else]
