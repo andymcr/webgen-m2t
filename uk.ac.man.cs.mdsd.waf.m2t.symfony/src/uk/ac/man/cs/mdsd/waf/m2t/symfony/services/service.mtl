@@ -67,25 +67,27 @@ class [service.className()/]
 		[/if]
 	[/if]
 [/if]
-    public function __construct($doctrine[if (not service.serves.oclIsUndefined())]
-[if (service.serves.hasPseudoAssociations())], $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
+[if (not service.serves.oclIsUndefined() or service.uses->notEmpty())]
+    public function __construct([if (not service.serves.oclIsUndefined())]$doctrine[if (service.serves.hasPseudoAssociations())]
+, $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
 $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (service.uses->notEmpty())], [/if][/if][for (uses : Service | service.uses) separator(', ')]$[uses.instanceName()/][/for])
     {
-[if (not service.serves.oclIsUndefined())]
+	[if (not service.serves.oclIsUndefined())]
         $this->doctrine = $doctrine;
-	[if (service.serves.hasPseudoAssociations())]
+		[if (service.serves.hasPseudoAssociations())]
         $this->entityManager = $entityManager;
+		[/if]
 	[/if]
-[/if]
-[for (uses : Service | service.uses)]
+	[for (uses : Service | service.uses)]
         $this->[uses.instanceServiceName()/] =  $[uses.instanceName()/];
-[/for]
-[if (not service.serves.oclIsUndefined())]
-	[if (model.isAuthenticated())]
-		[if (service = model.userService())]
+	[/for]
+	[if (not service.serves.oclIsUndefined())]
+		[if (model.isAuthenticated())]
+			[if (service = model.userService())]
         $this->securityTokenStorage = $securityTokenStorage;
-		[else]
+			[else]
         $this->[model.userService().instanceName()/] = $[model.userService().instanceName()/];
+			[/if]
 		[/if]
 	[/if]
     }
