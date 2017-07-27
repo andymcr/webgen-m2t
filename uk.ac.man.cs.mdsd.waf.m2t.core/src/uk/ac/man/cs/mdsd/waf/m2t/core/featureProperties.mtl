@@ -250,10 +250,6 @@
 	= page.units->select(u | u.oclIsKindOf(ControlUnit)).oclAsType(DynamicUnit)
 /]
 
-[query public unitsWithSupportActions(page : Page) : Sequence(DynamicUnit)
-	= page.dynamicUnits()->select(u | u.supportActions->notEmpty())
-/]
-
 [query public dynamicUnits(page : Page) : Sequence(DynamicUnit)
 	= page.units->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
 /]
@@ -362,8 +358,8 @@
 	= page.units->select(u | u.oclIsTypeOf(SliderUnit))->notEmpty()
 /]
 
-[query public hasUnitActions(page : Page) : Boolean
-	= page.unitActions()->notEmpty()
+[query public hasUnitSupportActions(page : Page) : Boolean
+	= page.unitSupportActions()->notEmpty()
 /]
 
 [query public hasUpdateUnits(page : Page) : Boolean
@@ -426,8 +422,12 @@
 		endif
 /]
 
-[query public unitActions(page : Page) : Sequence(UnitSupportAction)
-	= page.dynamicUnits()->collect(u | u.supportActions)
+[query public unitSupportActions(page : Page) : Sequence(UnitSupportAction)
+	= page.dynamicUnits()->select(u | not u.oclIsKindOf(EditUnit))->collect(u | u.supportActions())
+/]
+
+[query public unitsWithSupportActions(page : Page) : Sequence(DynamicUnit)
+	= page.dynamicUnits()->select(u | not u.oclIsKindOf(EditUnit))->select(u | u.hasSupportActions())
 /]
 
 [query public updateUnits(page : Page) : OrderedSet(ContentUnit)
@@ -485,6 +485,12 @@
 		->select(u | u.oclIsKindOf(ImageUnit)).oclAsType(ImageUnit)
 /]
 
+[query public childSupportActions(unit : DynamicUnit) : Sequence(UnitSupportAction)
+	= unit.childUnits()
+		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+		->collect(u | u.supportActions())
+/]
+
 [query public childUnits(unit : DynamicUnit) : Sequence(ContentUnit)
 	= unit.displayFields
 		->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
@@ -531,6 +537,10 @@
 	= unit.displayFields->select(f | f.hasDefaultValue())
 /]
 
+[query public directSupportActions(unit : DynamicUnit) : OrderedSet(UnitSupportAction)
+	= unit.supportActions->select(a | not a.disable)
+/]
+
 [query public displayedAssociations(unit : DynamicUnit) : Sequence(Association)
 	= unit.displayFields
 		->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
@@ -565,6 +575,10 @@
 		endif
 /]
 
+[query public hasChildSupportActions(unit : DynamicUnit) : Boolean
+	= unit.childSupportActions()->notEmpty()
+/]
+
 [query public hasClearLabel(unit : EditUnit) : Boolean
 	= if unit.oclIsTypeOf(CreateUpdateUnit) then
 			not unit.oclAsType(CreateUpdateUnit).clearLabel.oclIsUndefined()
@@ -589,6 +603,10 @@
 				->select(a | a.oclIsTypeOf(DeleteAction))
 				->notEmpty()
 		endif
+/]
+
+[query public hasDirectSupportActions(unit : DynamicUnit) : Boolean
+	= unit.directSupportActions()->notEmpty()
 /]
 
 [query public hasEncryptedFeatures(unit : DynamicUnit) : Boolean
@@ -848,7 +866,10 @@
 /]
 
 [query public supportActions(unit : DynamicUnit) : OrderedSet(UnitSupportAction)
-	= unit.supportActions->select(a | not a.disable)
+	= unit.childSupportActions()->iterate (
+		a;
+		actions : OrderedSet(UnitSupportAction) = unit.directSupportActions()
+		| actions->append(a))
 /]
 
 [query public translationDomain(unit : ContentUnit) : String

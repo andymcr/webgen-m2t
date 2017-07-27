@@ -43,7 +43,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		[/for]
 	[/if]
 [/for]
-[if (page.hasUnitActions())]
+[if (page.hasUnitSupportActions())]
     [page.actionMethods()/]
 
 [/if]
@@ -69,7 +69,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 [if (page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
-[if (page.hasFilterParameters() or page.hasPagination() or page.hasUpdateUnits() or page.hasUnitActions())]
+[if (page.hasFilterParameters() or page.hasPagination() or page.hasUpdateUnits() or page.hasUnitSupportActions())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 [if (page.unitsWithSupportActions()->notEmpty())]
@@ -101,7 +101,8 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 [/template]
 
 [template private actionMethods(page : Page) post(trim())]
-[for (unit : DynamicUnit | page.unitsWithSupportActions()->select(u | not u.oclIsKindOf(EditUnit)))]
+[for (unit : DynamicUnit | page.unitsWithSupportActions())]
+	[if (unit.hasDirectSupportActions())]
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
  */
@@ -114,8 +115,18 @@ public function [unit.supportActionName()/]([page.supportActionMethodParameters(
     [unit.actionHandlers()/]
 	[/if]
 }
-[/for]
 
+	[/if]
+	[if (unit.hasChildSupportActions())]
+/**
+ * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
+ */
+public function [unit.supportActionName()/]([page.supportActionMethodParameters(unit)/])
+{
+}
+
+	[/if]
+[/for]
 /* [protected (page.instanceName().concat('.support'))]
  */
 /* [/protected]
