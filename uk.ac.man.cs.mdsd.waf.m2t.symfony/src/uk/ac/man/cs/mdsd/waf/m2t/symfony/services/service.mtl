@@ -31,7 +31,9 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [/if]
 [if (not service.serves.oclIsUndefined())]
+	[if (service.serves.attributes()->notEmpty())]
 use [service.modelsNamespace()/]\[service.serves.modelClassName()/];
+	[/if]
 [/if]
 [if (service.operations->notEmpty())]
 // [protected ('operations')]
