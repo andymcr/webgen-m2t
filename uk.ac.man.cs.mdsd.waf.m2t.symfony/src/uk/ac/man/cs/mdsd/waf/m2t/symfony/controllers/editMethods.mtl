@@ -196,10 +196,10 @@ array_merge(
         array(
 		[if (parentPath)]
 			[if (not unit.contentType.parentEntity().oclIsUndefined())]
-            [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
+            [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), unit)/]
 			[/if]
 		[else]
-            [entity.routeActualParameters(entity)/]
+            [entity.routeActualParameters(entity, unit)/]
 		[/if]
     ))[/if]
 [else]
@@ -207,10 +207,10 @@ array_merge(
 , array(
 		[if (parentPath)]
 			[if (not unit.contentType.parentEntity().oclIsUndefined())]
-        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity())/]
+        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), unit)/]
 			[/if]
 		[else]
-        [entity.routeActualParameters(entity)/]
+        [entity.routeActualParameters(entity, unit)/]
 		[/if]
     )[/if]
 [/if]),
@@ -252,12 +252,12 @@ $request->query->all()[else]
 array_merge(
     $request->query->all(),
     array(
-        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
+        [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase, unit)/]
 ))[/if]
 [else]
 	[if (localPathKeys->notEmpty())]
 , array(
-    [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase)/]
+    [unit.contentType.parentEntity().routeActualParameters(unit.contentType.parentEntity(), routeParameterBase, unit)/]
 )[/if]
 [/if]);
 	[/if]
@@ -272,12 +272,15 @@ array_merge(
 [/for]
 [/template]
 
-[template private routeActualParameters(entityOrView : EntityOrView, base : EntityOrView) post(trim())]
-[entityOrView.routeActualParameters(base, base)/]
+[template private routeActualParameters(entity : EntityOrView, base : EntityOrView, targetUnit : EditUnit) post(trim())]
+[entity.routeActualParameters(base, base, targetUnit)/]
 [/template]
 
-[template private routeActualParameters(entityOrView : EntityOrView, routeBase : EntityOrView, valueBase : EntityOrView) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys())]
+[template private routeActualParameters(entity : EntityOrView, routeBase : EntityOrView, valueBase : EntityOrView, targetUnit : EditUnit) post(trim())]
+[if (entity.isContained())]
+[entity.container().routeActualParameters(routeBase, valueBase, targetUnit)/]
+[/if]
+[for (key : Attribute | entity.activeKeys(targetUnit))]
 '[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
 [/for]
 [/template]

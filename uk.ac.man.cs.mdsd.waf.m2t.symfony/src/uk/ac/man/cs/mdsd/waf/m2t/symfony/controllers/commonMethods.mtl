@@ -43,8 +43,8 @@ Request $request
 	[/if]
 [else]
 [if (page.hasFilterParameters() or page.hasPagination() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasSupportActions())]
-Request $request[if (entity.hasRouteParameters())]
-, [/if][/if][entity.routeParameters()/]
+Request $request[if (entity.hasRouteParameters(unit))]
+, [/if][/if][entity.routeParameters(unit)/]
 [/if]
 [/template]
 
