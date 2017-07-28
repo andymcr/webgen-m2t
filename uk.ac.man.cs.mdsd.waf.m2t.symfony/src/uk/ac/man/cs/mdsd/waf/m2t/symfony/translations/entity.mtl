@@ -39,15 +39,25 @@
 [/for]
 [/template]
 
-[template private translations(entityOrView : EntityOrView) post(trim())]
-<trans-unit id="label.[entityOrView.id()/]">
- <source>label.[entityOrView.id()/]</source>
- <target>[entityOrView.displayLabel.validXML()/]</target>
+[template private translations(entity : EntityOrView) post(trim())]
+<trans-unit id="label.[entity.id()/]">
+ <source>label.[entity.id()/]</source>
+ <target>[entity.displayLabel.validXML()/]</target>
 </trans-unit>
-[for (feature : Feature | entityOrView.features)]
-<trans-unit id="[entityOrView.id()/].labels.[feature.id()/]">
- <source>[entityOrView.id()/].labels.[feature.id()/]</source>
+[for (feature : Feature | entity.features)]
+<trans-unit id="[entity.id()/].labels.[feature.id()/]">
+ <source>[entity.id()/].labels.[feature.id()/]</source>
  <target>[feature.displayLabel.validXML()/]</target>
 </trans-unit>
+[if (feature.oclIsKindOf(Association))]
+[let association : Association = feature.oclAsType(Association)]
+	[if (not association.placeholder.oclIsUndefined())]
+<trans-unit id="[entity.id()/].placeholders.[association.id()/]">
+ <source>[entity.id()/].placeholders.[association.id()/]</source>
+ <target>[association.placeholder.validXML()/]</target>
+</trans-unit>
+	[/if]
+[/let]
+[/if]
 [/for]
 [/template]

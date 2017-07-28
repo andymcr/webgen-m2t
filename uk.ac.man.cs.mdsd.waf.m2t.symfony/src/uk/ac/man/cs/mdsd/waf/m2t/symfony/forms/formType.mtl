@@ -187,7 +187,11 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     'choice_label' => 'defaultLabel',
     'choice_translation_domain' => false,
 [if (association.isSingleton())]
+	[if (not association.placeholder.oclIsUndefined())]
+    'placeholder' => '[association.partOf.id()/].placeholders.[association.id()/]',
+	[else]
     'placeholder' => 'actions.labels.select_one',
+	[/if]
 [else]
     'multiple' => true,
 [/if]
