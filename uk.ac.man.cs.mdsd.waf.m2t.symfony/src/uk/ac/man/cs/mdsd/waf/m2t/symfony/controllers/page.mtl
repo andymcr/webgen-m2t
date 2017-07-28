@@ -179,7 +179,7 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
 [template private actionMethod(action : InlineAction, page : Page)
 	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
 [let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[let unit : DynamicUnit = action.immediateUnit().containingUnit()]
+[let unit : DynamicUnit = action.immediateUnit()]
 [let contentType : EntityOrView = unit.contentType()]
 /**
  * @Route("[feature.uriPath()/]", name="[feature.routeName()/]")
@@ -187,7 +187,7 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
 public function [action.actionName()/]([page.actionMethodParameters(unit, contentType)/])
 {
 [if (feature.operation.resultType = OperationResultTypes::None)]
-    $this->get('[feature.operation.partOf.instanceName()/]')
+    $this->get('[feature.operation.partOf.serviceName()/]')
         ->[feature.operation.methodName()/]([contentType.loadInstance(unit)/]);
 [elseif (feature.operation.resultType = OperationResultTypes::File)]
     $tempFilename = $this->get('[feature.operation.partOf.serviceName()/]')
