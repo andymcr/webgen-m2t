@@ -18,12 +18,12 @@
 [if (not unit.omitCaption)]
  <h2 class="[unit.captionClass/]">[unit.displayLabel/]</h2>
 [/if]
- [unit.unitContent(null, unit.instanceName())/]
+ [unit.unitContent(null, unit.instanceName(), 0)/]
 </section>
 [/file]
 [/template]
 
-[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String)
+[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
 [galleryUnit.uniteGallery(accessor)/]

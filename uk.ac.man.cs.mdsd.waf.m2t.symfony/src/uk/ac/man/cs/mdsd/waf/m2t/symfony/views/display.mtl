@@ -34,7 +34,7 @@
 {% endif %}
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
- [dataUnit.unitContent(null, accessor)/]
+ [dataUnit.unitContent(null, accessor, 0)/]
 	[if (dataUnit.hasSupportActions())]
   [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
@@ -49,7 +49,7 @@
 	[for(filter : Filter | indexUnit.supportedFilters)]
  [filter.unitFilter(indexUnit, selectionAccessor)/]
 	[/for]
- [dataUnit.unitContent(null, accessor)/]
+ [dataUnit.unitContent(null, accessor, 0)/]
 	[if (indexUnit.defaultPaginationSize > 0)]
  [indexUnit.pagination(selectionAccessor)/]
 	[/if]
@@ -192,14 +192,14 @@
 [/template]
 
 
-[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String)
+[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[detailsUnit.detailsContent(accessor)/]
+[detailsUnit.detailsContent(accessor, depthIndex)/]
 [/let]
 [/template]
 
-[template public detailsContent(unit : DataUnit, accessor : String) post(trim())]
+[template public detailsContent(unit : DataUnit, accessor : String, depthIndex : Integer) post(trim())]
 [if (unit.hasOmitFieldLabels())]
 <ul class="[unit.contentClass/]">
 [else]
@@ -210,12 +210,12 @@
 {% if [field.getImmediateValue(accessor, true)/] is not null %}
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
- <li class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</li>
+ <li class="[field.displayClass()/]">[field.displayValue(accessor, true, depthIndex)/]</li>
 	[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
- <dd class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</dd>
+ <dd class="[field.displayClass()/]">[field.displayValue(accessor, true, depthIndex)/]</dd>
 	[/if]
 	[if (field.conditionalDisplay())]
 		[if (field.oclIsKindOf(UnitFeature))]
@@ -243,18 +243,18 @@
 [/if]
 [/template]
 
-[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
+[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
 <ul class="[indexUnit.contentClass/]">
-[let loopVariable : String = 'entry']
+[let loopVariable : String = 'entry'.concat(if depthIndex > 0 then depthIndex.toString() else '' endif)]
 {% for [loopVariable/] in [accessor/] %}
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
    <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
 [/if]
-   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess())/]
+   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
 <span class="actions">[indexUnit.actions(loopVariable)/]</span>
 [/if]
@@ -272,31 +272,32 @@
 [/let]
 [/template]
 
-[template private entry(unit : IndexLineDirectionUnit, accessor : String, objectAccess : Boolean) post(trim())]
+[template private entry(unit : IndexLineDirectionUnit, accessor : String, objectAccess : Boolean, depthIndex : Integer) post(trim())]
 [for (field : UnitField | unit.displayFields) ]
 	[if (field.conditionalDisplay())]
-{% if [field.getValue('entry'.concat('.').concat(field.modelPropertyName()))/] is not null %}
+{% if [field.getValue(accessor.concat('.').concat(field.modelPropertyName()))/] is not null %}
 	[/if]
-<span class="[field.modelPropertyName()/]">[field.displayValue(accessor, objectAccess)/]</span>
+<span class="[field.modelPropertyName()/]">[field.displayValue(accessor, objectAccess, depthIndex)/]</span>
 	[if (field.conditionalDisplay())]
 {% endif %}
 	[/if]
 [/for]
 [/template]
 
-[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
+[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
 [let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
 <ul class="[indexUnit.contentClass/]">
-{% for entry in [accessor/] %}
+[let loopVariable : String = 'entry'.concat(if depthIndex > 0 then depthIndex.toString() else '' endif)]
+{% for [loopVariable/] in [accessor/] %}
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle('entry')/]</h2>
+   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
 [/if]
-  [unit.detailsContent('entry')/]
+  [unit.detailsContent(loopVariable, depthIndex)/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
-  <td class="actions">[indexUnit.actions('entry')/]</td>
+  <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
   </section>
@@ -307,11 +308,12 @@
  <li>{{ '[nullDisplayValue/]' }}</li>
 [/if]
 {% endfor %}
+[/let]
 </ul>
 [/let]
 [/template]
 
-[template public unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String)
+[template public unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
 <table class="[indexUnit.contentClass/]">
@@ -330,10 +332,10 @@
  </thead>
 [/if]
  <tbody>
-[let loopVariable : String = 'entry']
+[let loopVariable : String = 'entry'.concat(if depthIndex > 0 then depthIndex.toString() else '' endif)]
 {% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
-   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess())/]
+   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
 [if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
@@ -354,9 +356,9 @@
 [/let]
 [/template]
 
-[template private entry(unit : IndexGridUnit, accessor : String, objectAccess : Boolean) post(trim())]
+[template private entry(unit : IndexGridUnit, accessor : String, objectAccess : Boolean, depthIndex : Integer) post(trim())]
 [for (field : UnitField | unit.displayFields)]
-<td class="[field.styleClass()/]">[field.displayValue(accessor, objectAccess)/]</td>
+<td class="[field.styleClass()/]">[field.displayValue(accessor, objectAccess, depthIndex)/]</td>
 [/for]
 [/template]
 
@@ -371,7 +373,7 @@
 [/template]
 
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
@@ -382,7 +384,7 @@
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and not field.isSingleton()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
@@ -395,25 +397,25 @@
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? (field.isEnumerationType()) post(trim())]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? (field.isDate()) post(trim())]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
  | truncate([field.maximumDisplaySize/])[/if] }}
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer) 
 	? (field.isBooleanDataType()) post(trim())] 
 <input type="checkbox"{% if [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} checked="checked"{% endif %} disabled="disabled"/>
 [/template] 
  
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? (field.isResource() and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [let accessor : String = field.accessor(parentAccessor, field.alias(), objectAccess)]
@@ -430,20 +432,20 @@
 [/let]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [if (association.units->isEmpty())]
 [association.displayAssociation(accessor, parentAccessor)/]
 [else]
-[association.units->first().unitContent(association.nullDisplayValue, accessor)/]
+[association.units->first().unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
 [/if]
 [/let]
 [/let]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
@@ -455,15 +457,15 @@
 [else]
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-[association.units.unitContent(association.nullDisplayValue, accessor)/]
+[association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
 	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
-[association.units.unitContent(association.nullDisplayValue, accessor)/]
+[association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
 	[else]
 	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
 [association.units.unitContent(association.nullDisplayValue,
 	association.serviceAccessor()
 		.concat('.').concat(association.name).concat(indexUnit.defaultSelection.instanceName().toUpperFirst())
-		.concat('(').concat(parentAccessor).concat(')'))/]
+		.concat('(').concat(parentAccessor).concat(')'), depthIndex + 1)/]
 	[/let]
 	[/if]
 [/let]

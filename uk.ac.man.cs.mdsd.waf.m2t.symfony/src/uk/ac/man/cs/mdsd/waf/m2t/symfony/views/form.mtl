@@ -12,7 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::action/]
 
 
-[template public unitContent(unit : ContentUnit, dummy : String, accessor : String)
+[template public unitContent(unit : ContentUnit, dummy : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.formOpen(accessor)/]

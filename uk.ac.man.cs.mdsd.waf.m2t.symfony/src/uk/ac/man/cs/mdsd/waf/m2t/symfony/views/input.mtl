@@ -33,7 +33,7 @@
 [if (unit.oclIsTypeOf(MapUnit))]
  [dynamicUnit.map()/]
 [else]
- [dynamicUnit.unitContent(null, dynamicUnit.instanceName())/]
+ [dynamicUnit.unitContent(null, dynamicUnit.instanceName(), 0)/]
 [/if]
 </section>
 [/let]
@@ -63,7 +63,7 @@
 ?>
 [/let]
 [/if]
-[dynamicUnit.unitContent(null, dynamicUnit.instanceName())/]
+[dynamicUnit.unitContent(null, dynamicUnit.instanceName(), 0)/]
  </div>
 </section>
 [/let]

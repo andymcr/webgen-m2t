@@ -20,13 +20,13 @@
  <h2 class="[unit.captionClass/]">[unit.displayLabel/]</h2>
 [/if]
  <div class="[unit.contentClass/]">
- [unit.unitContent(null, unit.instanceName())/]
+ [unit.unitContent(null, unit.instanceName(), 0)/]
  </div>
 </section>
 [/file]
 [/template]
 
-[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String)
+[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
 [let imageUnit : ImageIndexUnit = unit.oclAsType(ImageIndexUnit)]
 [let variable : String = imageUnit.contentType().instanceName()]
