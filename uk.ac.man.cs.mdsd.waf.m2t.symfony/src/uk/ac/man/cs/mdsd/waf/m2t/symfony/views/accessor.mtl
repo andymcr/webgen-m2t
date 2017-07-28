@@ -92,17 +92,19 @@
 [query public accessor(association : UnitAssociation, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if association.isPseudo() then
 			association.pseudoAccessorWithChild(parentAccessor)
-		else if not association.selection.oclIsUndefined() then
-			association.collectionAccessor(parentAccessor)
-		else
+		else 
 			let accessor : String
-				= association.propertyAccessor(parentAccessor, alias, objectAccess)
-				in if not association.childFeature.oclIsUndefined() then
-						association.childFeature.accessor(accessor)
+				= if association.selection.oclIsUndefined() then
+						association.propertyAccessor(parentAccessor, alias, objectAccess)
 					else
+						association.collectionAccessor(parentAccessor)
+					endif
+				in if association.childFeature.oclIsUndefined() then
 						accessor
+					else
+						association.childFeature.accessor(accessor)
 					endif 
-		endif endif
+		endif
 /]
 
 
