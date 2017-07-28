@@ -32,8 +32,32 @@
 /]
 
 
+[query private parentUriPathKeys(entity : EntityOrView, targetUnit : ContentUnit) : Sequence(Attribute)
+	= let parentEntity : EntityOrView = entity.parentEntity()
+		in if not parentEntity.oclIsUndefined() then
+				parentEntity.uriPathKeys(targetUnit)
+			else
+				Sequence{}
+			endif
+/]
+
+[query public uriPathKeys(entity : EntityOrView, targetUnit : ContentUnit) : Sequence(Attribute)
+	= let keyEntity : EntityOrView = entity.keyEntity()
+		in if keyEntity.oclIsUndefined() then
+				Sequence{}
+			else
+				let localKeys : Sequence(Attribute) = keyEntity.activeEntityKeys(targetUnit)
+					in let parentKeys : Sequence(Attribute) = entity.parentUriPathKeys(targetUnit)
+						in if localKeys->isEmpty() then
+								parentKeys
+							else
+								localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
+							endif
+			endif
+/]
+
 [query public hasRouteParameters(entity : EntityOrView, targetUnit : ContentUnit) : Boolean
-	= entity.activeKeys(targetUnit)->notEmpty()
+	= entity.uriPathKeys(targetUnit)->notEmpty()
 /]
 
 [template public routeParameters(entity : EntityOrView) post(trim())]
@@ -42,9 +66,7 @@ $[key.routeParameterName(entity)/][/for]
 [/template]
 
 [template public routeParameters(entity : EntityOrView, targetUnit : ContentUnit) post(trim())]
-[if (entity.isContained())]
-[entity.container().routeParameters(targetUnit)/][if (entity.container().hasRouteParameters(targetUnit) and entity.hasRouteParameters(targetUnit))], [/if][/if]
-[for (key : Attribute | entity.activeKeys(targetUnit)) separator (', ')]
+[for (key : Attribute | entity.uriPathKeys(targetUnit)) separator (', ')]
 $[key.routeParameterName(entity)/][/for]
 [/template]
 
@@ -97,14 +119,14 @@ $[key.routeParameterName(resource)/][/for]
 /]
 
 
-[query public activeKeys(entity : EntityOrView, unit : ContentUnit) : Sequence(Attribute)
+[query private activeEntityKeys(entity : EntityOrView, unit : ContentUnit) : Sequence(Attribute)
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.routeActuals->collect(a | a.routeParameter)
 		in entity.attributeKeys()->select(k | not keysWithActuals->includes(k))
 /]
 
 [query private keyPath(entity : EntityOrView, base : EntityOrView, unit : ContentUnit) : String
-	= let activeKeys : Sequence(Attribute) = entity.activeKeys(unit)
+	= let activeKeys : Sequence(Attribute) = entity.activeEntityKeys(unit)
 		in if activeKeys->isEmpty() then
 				''
 			else

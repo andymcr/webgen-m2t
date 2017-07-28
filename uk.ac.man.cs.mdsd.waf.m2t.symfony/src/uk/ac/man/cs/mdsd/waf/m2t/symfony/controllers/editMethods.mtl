@@ -277,10 +277,7 @@ array_merge(
 [/template]
 
 [template private routeActualParameters(entity : EntityOrView, routeBase : EntityOrView, valueBase : EntityOrView, targetUnit : EditUnit) post(trim())]
-[if (entity.isContained())]
-[entity.container().routeActualParameters(routeBase, valueBase, targetUnit)/]
-[/if]
-[for (key : Attribute | entity.activeKeys(targetUnit))]
+[for (key : Attribute | entity.uriPathKeys(targetUnit))]
 '[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
 [/for]
 [/template]
