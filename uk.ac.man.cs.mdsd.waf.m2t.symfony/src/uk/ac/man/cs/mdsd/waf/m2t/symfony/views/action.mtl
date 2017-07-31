@@ -145,7 +145,7 @@ NULL
 [entity.container().routeActualParameters(base, accessor.concat('.').concat(entity.containingAssociation().modelPropertyName()), objectAccess, targetUnit, parentPath)/]
 [/if]
 [if (not parentPath)]
-	[for (key : Attribute | entity.activeKeys(targetUnit))]
+	[for (key : Attribute | entity.uriEntityKeys(targetUnit))]
 	[let keyAccessor : String
 		= if objectAccess then
 				accessor.concat('.').concat(key.modelPropertyName())

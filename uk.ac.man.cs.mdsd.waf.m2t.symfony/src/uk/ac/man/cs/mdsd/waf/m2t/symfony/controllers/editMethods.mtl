@@ -35,17 +35,28 @@
 [/let]
 [/template]
 
+[query private addSuffix(unit : EditUnit) : String
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+			unit.oclAsType(CreateUpdateUnit).createUriElement
+		else
+			''
+		endif
+/]
+
 [template private actionAddMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [let selectType : EntityOrView = unit.selectType()]
-[let suffix : String = if unit.oclIsTypeOf(CreateUpdateUnit) then 'create' else '' endif]
 /**
- [unit.routeAnnotation(unit.uriElement, suffix, true)/]
+[if (unit.oclIsTypeOf(CreateUpdateUnit))]
+ [unit.routeAnnotation(unit.oclAsType(CreateUpdateUnit).createUriElement, unit.addSuffix(), true)/]
+[else]
+ [unit.routeAnnotation(unit.uriElement, unit.addSuffix(), true)/]
+[/if]
  */
 public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectType.container())/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
-    $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), suffix, true, false)/];
+    $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), unit.addSuffix(), true, false)/];
 [if (unit.hasSupportActions())]
 
     if ($request->isMethod('POST')) {
@@ -62,11 +73,11 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
 	[/for]
         } else {
 	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
-            [unit.customValuesBody(suffix)/]
+            [unit.customValuesBody(unit.addSuffix())/]
 	[else]
             $this->[unit.instanceName()/]->handleRequest($request);
             if ($this->[unit.instanceName()/]->isValid()) {
-                [unit.saveBody(suffix, unit.contentType.parentEntity())/]
+                [unit.saveBody(unit.addSuffix(), unit.contentType.parentEntity())/]
             }
 	[/if]
         }
@@ -77,7 +88,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
 		[if (not unit.cancelDestination.oclIsUndefined())]
         [unit.handleCancelPost()/]
 		[/if]
-        [unit.customValuesBody(suffix)/]
+        [unit.customValuesBody(unit.addSuffix())/]
     }
     [else]
     $this->[unit.instanceName()/]->handleRequest($request);
@@ -85,7 +96,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
     [unit.handleCancelSubmit()/]
 		[/if]
     if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-        [unit.saveBody(suffix, unit.contentType.parentEntity())/]
+        [unit.saveBody(unit.addSuffix(), unit.contentType.parentEntity())/]
     }
 	[/if]
 [/if]
@@ -102,12 +113,10 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
 }
 [/let]
 [/let]
-[/let]
 [/template]
 
 [template private actionEditMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-[let addSuffix : String = 'create']
 /**
  [unit.routeAnnotation()/]
  */
@@ -130,7 +139,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 	[/if]
         $errors = $this->get('validator')->validate($[unit.instanceName()/]);
         if (count($errors) == 0) {
-            [unit.saveBody(addSuffix, unit.contentType)/]
+            [unit.saveBody(unit.addSuffix(), unit.contentType)/]
         }
     }
 [else]
@@ -139,7 +148,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
     [unit.handleCancelSubmit()/]
 	[/if]
     if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-        [unit.saveBody(addSuffix, unit.contentType)/]
+        [unit.saveBody(unit.addSuffix(), unit.contentType)/]
     }
 [/if]
 
@@ -153,7 +162,6 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/if]
 }
-[/let]
 [/let]
 [/template]
 

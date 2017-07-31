@@ -46,7 +46,7 @@
 		in if keyEntity.oclIsUndefined() then
 				Sequence{}
 			else
-				let localKeys : Sequence(Attribute) = keyEntity.activeEntityKeys(targetUnit)
+				let localKeys : Sequence(Attribute) = keyEntity.uriEntityKeys(targetUnit)
 					in let parentKeys : Sequence(Attribute) = entity.parentUriPathKeys(targetUnit)
 						in if localKeys->isEmpty() then
 								parentKeys
@@ -119,14 +119,14 @@ $[key.routeParameterName(resource)/][/for]
 /]
 
 
-[query private activeEntityKeys(entity : EntityOrView, unit : ContentUnit) : Sequence(Attribute)
+[query public uriEntityKeys(entity : EntityOrView, unit : ContentUnit) : Sequence(Attribute)
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.routeActuals->collect(a | a.routeParameter)
 		in entity.attributeKeys()->select(k | not keysWithActuals->includes(k))
 /]
 
 [query private keyPath(entity : EntityOrView, base : EntityOrView, unit : ContentUnit) : String
-	= let activeKeys : Sequence(Attribute) = entity.activeEntityKeys(unit)
+	= let activeKeys : Sequence(Attribute) = entity.uriEntityKeys(unit)
 		in if activeKeys->isEmpty() then
 				''
 			else
