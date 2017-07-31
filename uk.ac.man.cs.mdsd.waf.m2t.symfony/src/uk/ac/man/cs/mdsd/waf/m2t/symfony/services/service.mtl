@@ -122,7 +122,7 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (
     [service.findAllMethod()/]
 
 	[/if]
-	[if (service.serves.attributes()->notEmpty())]
+	[if (service.serves.attributes()->select(a | not a.hasSlugFields())->notEmpty())]
     [service.createMethod()/]
 
 	[/if]
@@ -152,7 +152,7 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (
 [/for]
 [if (not service.serves.oclIsUndefined())]
 	[if (service.serves.associations()->select(a | not a.isSingleton(service.serves))
-		->collect(a | a.targetType().services(model)->first().selections->select(s | s.joins->isEmpty()))->notEmpty())]
+		->collect(a | a.targetType().services(model)->first().selections->select(s | not s.condition.oclIsUndefined() and s.fields->isEmpty()))->notEmpty())]
     [service.childSelectionMethods(model)/]
 
 	[/if]
@@ -258,16 +258,11 @@ public function findAll([service.limitFormals()/])
 
 [template private createMethod(service : Service) post(trim())]
 [let entity : EntityOrView = service.serves]
-public function create([for (attribute : Attribute | entity.attributes()) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
+public function create([for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields())) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
 {
     $new = new [entity.modelName()/]();
-[for (attribute : Attribute | entity.attributes())]
-	[if (attribute.hasSlugFields())]
-    if (!empty($[attribute.instanceName()/]))
-        $new->set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]);
-	[else]
+[for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields()))]
     $new->set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]);
-	[/if]
 [/for]
     $this->save($new, $flush);
     return $new;
@@ -629,9 +624,12 @@ else
 	[let targetType : EntityOrView = association.targetType()]
 		[if (not targetType.oclIsUndefined())]
 		[let targetService : Service = targetType.services(model)->first()]
-			[for (selection : Selection | targetService.selections->select(s | s.joins->isEmpty()))]
-[service.childSelectionMethod(association, selection)/]
-
+			[for (selection : Selection | targetService.selections->select(s | not s.condition.oclIsUndefined() and s.fields->isEmpty()))]
+				[if (selection.joins->isEmpty())]
+[service.childCriteriaMethod(association, selection)/]
+				[else]
+[service.childFilterMethod(association, selection)/]
+				[/if]
 			[/for]
 		[/let]
 		[/if]
@@ -640,7 +638,7 @@ else
 [/for]
 [/template]
 
-[template private childSelectionMethod(service : Service, association : Association, selection : Selection) post(trim())]
+[template private childCriteriaMethod(service : Service, association : Association, selection : Selection) post(trim())]
 public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.limit <> 1)], [selection.criterialLimitFormals()/][/if])
 {
     $criteria = Criteria::create();
@@ -669,6 +667,17 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [/if]
 
     return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->matching($criteria);
+}
+[/template]
+
+[template private childFilterMethod(service : Service, association : Association, selection : Selection) post(trim())]
+public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.limit <> 1)], [selection.criterialLimitFormals()/][/if])
+{
+
+    return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->filter(
+        function ($[association.targetType().instanceName()/]) [comment use () /]{
+            return true;
+        });
 }
 [/template]
 
