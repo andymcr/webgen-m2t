@@ -99,7 +99,7 @@ NULL
 [template public actionLink(action : InlineAction, entity : EntityOrView, unit : ContentUnit, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
 [let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[action.anchor(feature.routeName(), entity, routeParametersAccessor, label, title, feature.confirmMessage, conditionAccessor, unit, false, objectAccess)/]
+[action.anchor(feature.routeName(), entity, routeParametersAccessor, label, title, feature.confirmMessage, conditionAccessor, unit, true, objectAccess)/]
 [/let]
 [/template]
 
