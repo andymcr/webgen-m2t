@@ -18,7 +18,7 @@
 /]
 
 [query public propertyAccessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
-	= if field.oclIsTypeOf(InterfaceField) then
+	= if field.oclIsKindOf(InterfaceField) then
 			null
 		else if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor, alias, objectAccess)
@@ -48,7 +48,7 @@
 /]
 
 [query public accessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
-	= if field.oclIsTypeOf(InterfaceField) then
+	= if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).accessor(parentAccessor, alias, objectAccess)
 		else if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).accessor(parentAccessor, alias, objectAccess)
