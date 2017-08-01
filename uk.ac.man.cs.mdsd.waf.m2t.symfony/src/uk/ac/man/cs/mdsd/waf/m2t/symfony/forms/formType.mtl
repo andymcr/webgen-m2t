@@ -24,9 +24,15 @@ class [entity.typeClassName()/] extends AbstractType
     {
 [comment Only features that are used by forms are included to minimise number of db queries. Including
 others can result in queries for associated entities that are not used. /]
-[for (feature : Feature | entity.featuresUsed(model)->sortedBy(f | f.name))]
+[if (entity.isContained() and entity.featuresUsed(model)->isEmpty())]
+	[for (feature : Feature | entity.features->select(f | not f.isContainer())->sortedBy(f | f.name))]
         $builder->[feature.formFeature()/];
-[/for]
+	[/for]
+[else]
+	[for (feature : Feature | entity.featuresUsed(model)->sortedBy(f | f.name))]
+        $builder->[feature.formFeature()/];
+	[/for]
+[/if]
 [if (entity.allowFormTypeCustomisation)]
 
     // [protected (entity.instanceName())]
