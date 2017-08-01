@@ -55,15 +55,18 @@ others can result in queries for associated entities that are not used. /]
 [for (feature : Feature | featuresUsed->select(f | f.isEnumerationType()))]
 use [entity.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
-[if (featuresUsed->select(f | f.oclIsKindOf(Association))->notEmpty())]
+[if (featuresUsed->select(f | f.oclIsKindOf(Association))->notEmpty()
+		or entity.isContained())]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (featuresUsed->select(f | f.isBooleanDataType())->notEmpty())]
+[if (featuresUsed->select(f | f.isBooleanDataType())->notEmpty()
+		or entity.isContained() and entity.features->select(f | f.isBooleanDataType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (featuresUsed->select(f | f.isEnumerationType())->notEmpty())]
+[if (featuresUsed->select(f | f.isEnumerationType())->notEmpty()
+		or entity.isContained() and entity.features->select(f | f.isEnumerationType())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
 [if (featuresUsed->select(a | (a.oclIsKindOf(EntityAttribute) or a.isContains()) and not a.isSingleton())->notEmpty())]
@@ -75,17 +78,22 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 [if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty())]
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty()
+		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty())]
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty()
+		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
 [if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'string')->notEmpty()
-		or featuresUsed->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty())]
+		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'string')->notEmpty()
+		or featuresUsed->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty()
+		or entity.isContained() and entity.features->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
+[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textblock')->notEmpty()
+		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 [/if]
 [if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::TimeOnly)->notEmpty())]

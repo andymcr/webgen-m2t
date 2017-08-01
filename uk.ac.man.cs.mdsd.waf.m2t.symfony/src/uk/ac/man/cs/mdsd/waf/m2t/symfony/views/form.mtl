@@ -24,7 +24,7 @@
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
 {% form_theme [accessor/] 'form/messages_on_fields.html.twig' %}
 {{ form_start([accessor/][if (not unit.contentClass.oclIsUndefined())], { 'attr': {'class': '[unit.contentClass/]'} }[/if]) }}
-{{ form_errors([accessor/]) }}
+ {{ form_errors([accessor/]) }}
 [/template]
 
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
@@ -92,13 +92,31 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (not field.hasEmbedded()) post(trim())]
+	? (field.isContains()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
+<div>
+ {{- form_label([accessor/]) -}}
+ <div>
+{% for entry in [accessor/] %}
+[for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer()))]
+{{ form_row(entry.[feature.modelPropertyName()/]) }}
+[/for]
+{% endfor %}
+ </div>
+</div>
+[/let]
+[/let]
+[/template]
+
+[template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
+	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.disableInput or field.hasUnitTranslation())]
 , {[if (field.hasUnitTranslation())]
  'label': '[unit.containedId()/].labels.[field.id()/]',[/if]
 [if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]
  'attr': {[if (field.hasTitle())]
- 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.hasClass())],[/if][/if]
+ 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.disableInput or field.hasClass())],[/if][/if]
 [if (field.hasPlaceholder())]
  'placeholder': [field.placeholder(unit)/][if (field.disableInput or field.hasClass())],[/if][/if]
 [if (field.disableInput)]
@@ -111,7 +129,7 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (field.hasEmbedded()) post(trim())]
+	? (not field.isContains() and field.hasEmbedded()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let embeddedUnit : EditUnit = association.units->first().oclAsType(EditUnit)]
 [if (association.isSingleton())]

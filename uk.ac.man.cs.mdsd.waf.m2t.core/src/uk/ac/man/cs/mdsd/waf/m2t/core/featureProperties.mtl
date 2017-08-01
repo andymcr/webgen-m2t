@@ -1136,6 +1136,14 @@
 		endif endif
 /]
 
+[query public isContainer(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).association.isContainer()
+		else
+			false
+		endif
+/]
+
 [query public isContains(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitAssociation) then
 			field.oclAsType(UnitAssociation).association.isContains()
