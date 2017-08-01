@@ -69,7 +69,7 @@ $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[
 [/template]
 
 [template private javascript(feature : Feature)
-	? (feature.oclIsKindOf(Association) and feature.isSingleton()) post(trim())]
+	? (feature.oclIsKindOf(Association) and not feature.isContains() and feature.isSingleton()) post(trim())]
 if ($("#[feature.id()/] option").length < 15) {
 	$("#[feature.id()/]").selectmenu();
 } else {
@@ -78,6 +78,6 @@ if ($("#[feature.id()/] option").length < 15) {
 [/template]
 
 [template private javascript(feature : Feature)
-	? (feature.oclIsKindOf(Association) and not feature.isSingleton()) post(trim())]
+	? (feature.oclIsKindOf(Association) and not feature.isContains() and not feature.isSingleton()) post(trim())]
 $("#[feature.id()/]").select2();
 [/template]
