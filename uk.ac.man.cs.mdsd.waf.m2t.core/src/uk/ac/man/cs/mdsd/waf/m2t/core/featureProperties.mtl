@@ -302,6 +302,10 @@
 			endif
 /]
 
+[query public hasEditUnits(page : Page) : Boolean
+	= page.editUnits()->notEmpty()
+/]
+
 [query public hasFilterParameters(page : Page) : Boolean
 	= page.dynamicUnits()->select(u | u.hasFilterParameters())->notEmpty()
 /]
@@ -362,10 +366,6 @@
 	= page.unitSupportActions()->notEmpty()
 /]
 
-[query public hasUpdateUnits(page : Page) : Boolean
-	= page.updateUnits()->notEmpty()
-/]
-
 [query public hasUriActions(page : Page) : Boolean
 	= page.uriActions()->notEmpty()
 /]
@@ -423,15 +423,11 @@
 /]
 
 [query public unitSupportActions(page : Page) : Sequence(UnitSupportAction)
-	= page.dynamicUnits()->select(u | not u.oclIsKindOf(EditUnit))->collect(u | u.supportActions())
+	= page.dynamicUnits()->collect(u | u.supportActions())
 /]
 
 [query public unitsWithSupportActions(page : Page) : Sequence(DynamicUnit)
-	= page.dynamicUnits()->select(u | not u.oclIsKindOf(EditUnit))->select(u | u.hasSupportActions())
-/]
-
-[query public updateUnits(page : Page) : OrderedSet(ContentUnit)
-	= page.units->select(u | u.oclIsTypeOf(CreateUpdateUnit) or u.oclIsTypeOf(UpdateUnit))
+	= page.dynamicUnits()->select(u | u.hasSupportActions())
 /]
 
 [query public uriActions(page : Page) : Sequence(InlineAction)
