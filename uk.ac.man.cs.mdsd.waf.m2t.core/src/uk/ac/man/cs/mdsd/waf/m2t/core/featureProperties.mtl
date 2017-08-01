@@ -773,7 +773,7 @@
 [query public inputAndEmbeddedFields(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then
-			f.oclAsType(UnitFeature).isModifiableOrEmbedded()
+			f.oclAsType(UnitFeature).isModifiableOrEmbedded() or f.isContains()
 		else
 			true
 		endif)
