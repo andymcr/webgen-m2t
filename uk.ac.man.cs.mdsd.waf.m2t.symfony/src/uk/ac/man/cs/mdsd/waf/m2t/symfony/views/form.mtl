@@ -92,8 +92,8 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.hasUnitTranslation())]
+	? (not field.hasEmbedded()) post(trim())]
+{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.disableInput or field.hasUnitTranslation())]
 , {[if (field.hasUnitTranslation())]
  'label': '[unit.containedId()/].labels.[field.id()/]',[/if]
 [if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]
