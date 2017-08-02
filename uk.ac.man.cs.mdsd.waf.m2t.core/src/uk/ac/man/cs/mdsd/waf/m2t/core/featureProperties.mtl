@@ -145,7 +145,7 @@
 [query public featuresUsed(entity : EntityOrView, model : WafModel) : Sequence(Feature)
 	= entity.usersOf(model)
 		->collect(u | u.displayFields)
-        ->select(f | not f.oclIsKindOf(InterfaceField))
+        ->select(f | not f.oclIsKindOf(InterfaceField) and not f.disableInput)
 		->iterate(f;
 			xxx : Sequence(Feature) = Sequence{}
 			| let x : Feature = f.feature()
