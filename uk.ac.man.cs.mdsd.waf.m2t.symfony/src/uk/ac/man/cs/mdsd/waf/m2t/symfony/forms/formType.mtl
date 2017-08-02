@@ -118,10 +118,10 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/if]
 [if (not attribute.isSingleton())]
     'entry_type' => [attribute.interfaceType(true)/],
-	[if (attribute.collectionAllowAdd)]
+	[if (attribute.collectionUiAllowAdd)]
     'allow_add' => true,
 	[/if]
-	[if (attribute.collectionAllowRemove)]
+	[if (attribute.collectionUiAllowRemove)]
     'allow_delete' => true,
 	[/if]
 [elseif (attribute.isDate())]
@@ -225,13 +225,13 @@ add('[association.modelPropertyName()/]', [association.targetType().typeClassNam
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(
     'entry_type' => [association.targetType().typeClassName()/]::class,
-[if (feature.collectionAllowAdd)]
+[if (feature.collectionUiAllowAdd)]
     'allow_add' => true,
 [/if]
-[if (feature.collectionAllowRemove)]
+[if (feature.collectionUiAllowRemove)]
     'allow_delete' => true,
 [/if]
-[if (feature.collectionAllowAdd and feature.collectionAllowRemove)]
+[if (feature.collectionOrmAllowAdd and feature.collectionOrmAllowRemove)]
     'by_reference' => false,
 [/if]
     'required' => false,

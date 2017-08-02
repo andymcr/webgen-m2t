@@ -411,11 +411,11 @@ public function getId()
 [else]
 	[if (feature.oclIsKindOf(EntityFeature))]
 	[let feature2 : EntityFeature = feature.oclAsType(EntityFeature)]
-		[if (feature2.collectionAllowAdd)]
+		[if (feature2.collectionOrmAllowAdd)]
 [feature.addMethod()/]
 
 		[/if]
-		[if (feature2.collectionAllowRemove)]
+		[if (feature2.collectionOrmAllowRemove)]
 [feature.removeMethod()/]
 
 		[/if]

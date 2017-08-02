@@ -84,6 +84,6 @@
 		else
 			unitAccessor
 		endif]
-{{ [unit.title.label(labelAccessor)/] }}
+{% if [unit.title.label(labelAccessor)/].vars.value is not null %}{{ [unit.title.label(labelAccessor)/].vars.value }}{% else %}{{ 'unit.id()/]' | trans }}{% endif %}
 [/let]
 [/template]
