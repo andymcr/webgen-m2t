@@ -152,7 +152,7 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (
 [/for]
 [if (not service.serves.oclIsUndefined())]
 	[if (service.serves.associations()->select(a | not a.isSingleton(service.serves))
-		->collect(a | a.targetType().services(model)->first().selections->select(s | not s.condition.oclIsUndefined() and s.fields->isEmpty()))->notEmpty())]
+		->collect(a | a.targetType().services(model)->first().selections->select(s | s.fields->isEmpty()))->notEmpty())]
     [service.childSelectionMethods(model)/]
 
 	[/if]
@@ -624,11 +624,17 @@ else
 	[let targetType : EntityOrView = association.targetType()]
 		[if (not targetType.oclIsUndefined())]
 		[let targetService : Service = targetType.services(model)->first()]
-			[for (selection : Selection | targetService.selections->select(s | not s.condition.oclIsUndefined() and s.fields->isEmpty()))]
+			[for (selection : Selection | targetService.selections->select(s | s.fields->isEmpty()))]
 				[if (selection.joins->isEmpty())]
+					[if (not selection.condition.oclIsUndefined() or selection.ordering->notEmpty())]
 [service.childCriteriaMethod(association, selection)/]
+
+					[/if]
 				[else]
+					[if (not selection.condition.oclIsUndefined())]
 [service.childFilterMethod(association, selection)/]
+
+					[/if]
 				[/if]
 			[/for]
 		[/let]
