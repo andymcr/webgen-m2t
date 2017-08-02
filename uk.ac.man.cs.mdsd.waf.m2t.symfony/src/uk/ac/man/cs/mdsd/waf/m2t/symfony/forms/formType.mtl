@@ -225,7 +225,16 @@ add('[association.modelPropertyName()/]', [association.targetType().typeClassNam
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(
     'entry_type' => [association.targetType().typeClassName()/]::class,
+[if (feature.collectionAllowAdd)]
     'allow_add' => true,
+[/if]
+[if (feature.collectionAllowRemove)]
+    'allow_delete' => true,
+[/if]
+[if (feature.collectionAllowAdd and feature.collectionAllowRemove)]
+    'by_reference' => false,
+[/if]
+    'required' => false,
 ))
 [/if]
 [/let]

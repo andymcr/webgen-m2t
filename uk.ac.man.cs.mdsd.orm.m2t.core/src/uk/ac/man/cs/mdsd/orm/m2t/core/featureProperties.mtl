@@ -28,6 +28,13 @@
 /]
 
 
+[query public containsAssociations(model : OrmModel) : Sequence(EntityAssociation)
+	= model.entitiesAndViews
+		->collect(e | e.features)
+		->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+		->select(a | a.contains)
+/]
+
 [query public enumerationTypes(model : OrmModel) : Sequence(EnumerationType)
 	= model.dataTypes->select(t | t.oclIsKindOf(EnumerationType)).oclAsType(EnumerationType)
 /]
