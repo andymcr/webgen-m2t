@@ -124,23 +124,12 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 {
     [unit.loadSelectedInstance()/]
     $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), '', false, false)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures())]
+[if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.hasDisabledFeatures())]
     if ($request->isMethod('POST')) {
-        $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
 	[if (not unit.cancelDestination.oclIsUndefined())]
         [unit.handleCancelPost()/]
 	[/if]
-	[if (unit.customiseValues)]
-        // [protected ('customise.values.'.concat(unit.instanceName()).concat('.edit'))]
-        // [/protected]
-	[/if]
-	[if (unit.hasForcedValueFeatures())]
-         // forced values [comment unit.forcedFeatureValues()/]
-	[/if]
-        $errors = $this->get('validator')->validate($[unit.instanceName()/]);
-        if (count($errors) == 0) {
-            [unit.saveBody(unit.addSuffix(), unit.contentType)/]
-        }
+        [unit.customValuesBody('')/]
     }
 [else]
     $this->[unit.instanceName()/]->handleRequest($request);
@@ -174,11 +163,14 @@ $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instan
 [if (unit.hasForcedValueFeatures())]
 // forced values [comment unit.forcedFeatureValues()/]
 [/if]
-[if (unit.isContained())]
+[if (unit.isContained() and suffix <> '')]
 [unit.setContainer()/]
 [/if]
-$errors = $this->get('validator')->validate($[unit.instanceName()/]);
-if (count($errors) == 0) {
+foreach ($this->get('validator')->validate($[unit.instanceName()/]) as $violation) {
+    $path = $violation->getPropertyPath();
+   	$this->[unit.instanceName()/]->get($path)->addError(new FormError($violation->getMessage()));
+}
+if ($this->[unit.instanceName()/]->isValid()) {
     [unit.saveBody(suffix, unit.contentType.parentEntity())/]
 }
 [/template]
