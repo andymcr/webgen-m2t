@@ -28,10 +28,10 @@ namespace [entity.modelsNamespace()/];
  * @ORM\Table(name="[entity.tableName/]")
 [if (entity.unique->notEmpty())]
 	[if (entity.unique->size() = 1)]
- * @UniqueEntity("[entity.unique->first().modelPropertyName()/]")
+ * @UniqueEntity("[entity.unique->first().columnName()/]")
 	[else]
  * @UniqueEntity(
- *     fields={[for (feature : Feature | entity.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for]}
+ *     fields={[for (feature : Feature | entity.unique) separator(', ')]"[feature.columnName()/]"[/for]}
  * )
 	[/if]
 [/if]
