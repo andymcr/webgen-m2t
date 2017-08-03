@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 
@@ -180,10 +181,6 @@
 	= unit.instanceName().concat('_error')
 /]
 
-[query public formTypeName(unit : DynamicUnit) : String
-	= unit.instanceName().concat('_field_errors')
-/]
-
 [query public fieldErrorsName(unit : DynamicUnit) : String
 	= unit.instanceName().concat('_field_errors')
 /]
@@ -276,7 +273,19 @@
 			endif
 /]
 
-[query public typeClassName(unit : ContentUnit) : String
+[query public typeClassName(unit : DynamicUnit) : String
+	= if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
+			unit.typeClassNameForm()
+		else
+			unit.typeClassNameEntity()
+		endif
+/]
+
+[query private typeClassNameEntity(unit : ContentUnit) : String
+	= unit.typePrefix().concat(unit.contentType().modelName()).concat(unit.typeSuffix()).concat('2')
+/]
+
+[query private typeClassNameForm(unit : ContentUnit) : String
 	= 'Unit'.concat(unit.pageDisplayedOn().name).concat(unit.name).concat(unit.typeSuffix())
 /]
 
@@ -307,6 +316,10 @@
 
 [query public optionsName(field : UnitField) : String
 	= field.uniqueName().concat('_options')
+/]
+
+[query public typeClassName(association : UnitAssociation) : String
+	= association.typePrefix().concat(association.association.targetType().modelName()).concat(association.typeSuffix()).concat('2')
 /]
 
 [query public uniqueName(field : UnitField) : String

@@ -227,16 +227,22 @@
 		.concat(authentication.executableExtension())
 /]
 
-[query public formTypeFilename(entityOrView : EntityOrView) : String
-	= entityOrView.formTypeDirectory().concat('/')
-		.concat(entityOrView.typeClassName())
-		.concat(entityOrView.executableExtension())
+[query public formTypeFilename(entity : EntityOrView) : String
+	= entity.formTypeDirectory().concat('/')
+		.concat(entity.typeClassName())
+		.concat(entity.executableExtension())
 /]
 
 [query public formTypeFilename(unit : DynamicUnit) : String
 	= unit.formTypeDirectory().concat('/')
 		.concat(unit.typeClassName())
 		.concat(unit.executableExtension())
+/]
+
+[query public formTypeFilename(association : UnitAssociation) : String
+	= association.formTypeDirectory().concat('/')
+		.concat(association.typeClassName())
+		.concat(association.executableExtension())
 /]
 
 [query public javascriptFormFilename(model : WafModel) : String

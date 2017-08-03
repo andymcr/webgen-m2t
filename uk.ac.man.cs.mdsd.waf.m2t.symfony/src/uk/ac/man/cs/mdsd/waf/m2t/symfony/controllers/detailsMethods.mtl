@@ -17,7 +17,7 @@
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.actionMethod()/]
 
-[for (action : InlineAction | detailsUnit.uriActions())]
+[for (action : InlineAction | detailsUnit.urlActions())]
 [comment action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
 
 [/for]

@@ -37,7 +37,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     [unit.unitMethods()/]
 
 	[if (unit.oclIsKindOf(DataUnit))]
-		[for (action : InlineAction | unit.oclAsType(DataUnit).uriActions())]
+		[for (action : InlineAction | unit.oclAsType(DataUnit).urlActions())]
     [action.actionMethod(page)/]
 
 		[/for]
@@ -61,7 +61,7 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 [for (entity : EntityOrView | page.editUnits()->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
 [/for]
-[for (unit : ContentUnit | page.units->select(u | u.hasInterfaceFields()))]
+[for (unit : DynamicUnit | page.formUnits()->select(u | u.hasInterfaceFields()))]
 use [unit.formTypeNamespace()/]\[unit.typeClassName()/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

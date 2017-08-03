@@ -3,14 +3,22 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::javascript/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
 
 
 [template public javascriptForm(model : WafModel)]
 [file(model.webDirectory().concat('/').concat(model.javascriptFormFilename()), false)]
+[model.containerLinks()/]
+
+[model.addLinks()/]
+
+[model.addFormFunctions()/]
+
 $( function() {
 [for (entity : EntityOrView | model.persistence.entitiesAndViews->select(e | e.inputJQueryFeatures(model)->notEmpty())->sortedBy(e | e.name))]
     [entity.javascript(model)/]
@@ -18,6 +26,59 @@ $( function() {
 [/for]
 } );
 [/file]
+[/template]
+
+[template private containerLinks(model : WafModel) post(trim())]
+[for (association : EntityAssociation | model.persistence.containsAssociations()->select(a | a.collectionUiAllowAdd or a.collectionUiAllowRemove))]
+[let target : EntityOrView = association.targetType()]
+var $[target.instanceName()/]Container;
+[if (association.collectionUiAllowAdd)]
+var $add[target.name/]Link = $('<input type="button" name="add[target.name/]" value="Add [target.name/]"[if (model.hasJQueryClasses())] class="[model.jQueryClass()/]"[/if]/>');
+var $new[target.name/]LinkDiv = $('<div></div>').append($add[target.name/]Link);
+[/if]
+[if (association.collectionUiAllowRemove)]
+var $remove[target.name/]Link = $('<input type="button" name="remove[target.name/]" value="Remove"[if (model.hasJQueryClasses())] class="[model.jQueryClass()/]"[/if]/>');
+var $remove[target.name/]LinkDiv = $('<div></div>').append($remove[target.name/]Link);
+[/if]
+
+[/let]
+[/for]
+[/template]
+
+[template private addLinks(model : WafModel) post(trim())]
+jQuery(document).ready(function() {
+[for (association : EntityAssociation | model.persistence.containsAssociations()->select(a | a.collectionUiAllowAdd))]
+[let target : EntityOrView = association.targetType()]
+    $[target.instanceName()/]Container = $('div.[association.name.asId()/]');
+    if ($[target.instanceName()/]Container) {
+        $[target.instanceName()/]Container.append($new[target.name/]LinkDiv);
+        $[target.instanceName()/]Container.data('index', $[target.instanceName()/]Container.find(':input').length);
+        $add[target.name/]Link.on('click', function(e) {
+            e.preventDefault();
+            add[target.name/]Form($[target.instanceName()/]Container, $new[target.name/]LinkDiv);
+        });
+    }
+
+[/let]
+[/for]
+});
+[/template]
+
+[template private addFormFunctions(model : WafModel) post(trim())]
+[for (association : EntityAssociation | model.persistence.containsAssociations()->select(a | a.collectionUiAllowAdd))]
+[association.addFormFunction(association.targetType())/]
+
+[/for]
+[/template]
+
+[template private addFormFunction(association : EntityAssociation, target : EntityOrView)]
+function add[target.name/]Form($container, $newLinkDiv) {
+    var prototype = $container.data('prototype');
+    var index = $container.data('index');
+    var $newForm = $(prototype.replace(/__name__/g, index));
+    $container.data('index', index + 1);
+    $newLinkDiv.before($newForm);
+}
 [/template]
 
 [template private javascript(entityOrView : EntityOrView, model : WafModel) post(trim())]
@@ -56,7 +117,7 @@ $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[
     dateFormat: $.datepicker.ISO_8601
 });
 [/if]
-[if (feature.dateDetails() <> DateDetails::DateOnly)]
+[if (feature.dateDetails() <> DateDetails::DateOnly and false)]
 $("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").wickedpicker([if (feature.dateDetails() = DateDetails::TimeOnly or feature.hasDefaultValue())]{
 [if (feature.hasDefaultValue())]
     now: [feature.defaultValue().controllerExpression()/],
@@ -80,4 +141,9 @@ if ($("#[feature.id()/] option").length < 15) {
 [template private javascript(feature : Feature)
 	? (feature.oclIsKindOf(Association) and not feature.isContains() and not feature.isSingleton()) post(trim())]
 $("#[feature.id()/]").select2();
+[/template]
+
+
+[template private javascript(feature : Feature)
+	? (feature.oclIsKindOf(Association) and feature.isContains()) post(trim())]
 [/template]

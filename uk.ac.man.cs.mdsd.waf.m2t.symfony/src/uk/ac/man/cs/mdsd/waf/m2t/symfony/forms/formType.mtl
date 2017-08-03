@@ -6,36 +6,44 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public formType(entity : EntityOrView, model : WafModel)]
-[file(entity.formTypeFilename(), false)]
+[template public formTypes(model : WafModel)]
+[for (entity : EntityOrView | model.formEntities())]
+	[for (form : DynamicUnit | entity.formsUsing(model))]
+	[let sameModel : Sequence(DynamicUnit) = form.sameModel(model)]
+		[if (form = sameModel->first())]
+[form.entityFormType()/]
+		[/if]
+	[/let]
+	[/for]
+[/for]
+[for (form : UnitAssociation | model.embeddedForms())]
+[form.formType()/]
+[/for]
+[/template]
+
+[template private entityFormType(unit : DynamicUnit)]
+[file(unit.formTypeFilename(), false)]
 <?php
-namespace [entity.formTypeNamespace()/];
+namespace [unit.formTypeNamespace()/];
 
-[entity.useStatements(model)/]
+[unit.useStatements()/]
 
 
-class [entity.typeClassName()/] extends AbstractType
+class [unit.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-[comment Only features that are used by forms are included to minimise number of db queries. Including
-others can result in queries for associated entities that are not used. /]
-[if (entity.isContained() and entity.featuresUsed(model)->isEmpty())]
-	[for (feature : Feature | entity.features->select(f | not f.isContainer())->sortedBy(f | f.name))]
+[for (feature : UnitField | unit.displayFields->sortedBy(f | f.feature().name))]
         $builder->[feature.formFeature()/];
-	[/for]
-[else]
-	[for (feature : Feature | entity.featuresUsed(model)->sortedBy(f | f.name))]
-        $builder->[feature.formFeature()/];
-	[/for]
-[/if]
-[if (entity.allowFormTypeCustomisation)]
+[/for]
+[if (unit.contentType().allowFormTypeCustomisation)]
 
-    // [protected (entity.instanceName())]
+    // [protected ('form customisation')]
     // [/protected]
 [/if]
     }
@@ -43,71 +51,95 @@ others can result in queries for associated entities that are not used. /]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '[entity.modelsNamespace()/]\[entity.modelName()/]'
+            'data_class' => '[unit.modelsNamespace()/]\[unit.modelName()/]'
         ));
     }
 }
 [/file]
 [/template]
 
-[template private useStatements(entity : EntityOrView, model : WafModel) post(trim())]
-[let featuresUsed : Sequence(Feature) = entity.featuresUsed(model)]
-[for (feature : Feature | featuresUsed->select(f | f.isEnumerationType()))]
-use [entity.modelsNamespace()/]\[feature.enumerationType().modelName()/];
+[template public formType(form : UnitAssociation)]
+[file(form.formTypeFilename(), false)]
+<?php
+namespace [form.formTypeNamespace()/];
+
+[comment entity.useStatements(model)/]
+
+
+class [form.typeClassName()/] extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+[for (feature : Feature | form.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
+        $builder->[feature.formFeature(false, false)/];
 [/for]
-[if (featuresUsed->select(f | f.oclIsKindOf(Association))->notEmpty()
-		or entity.isContained())]
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => '[form.modelsNamespace()/]\[form.association.targetType().modelName()/]'
+        ));
+    }
+}
+[/file]
+[/template]
+
+[template private useStatements(unit : DynamicUnit) post(trim())]
+[for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.feature().name))]
+use [feature.modelsNamespace()/]\[feature.enumerationType().modelName()/];
+[/for]
+[if (unit.associationFeatures()->notEmpty())]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (featuresUsed->select(f | f.isBooleanDataType())->notEmpty()
-		or entity.isContained() and entity.features->select(f | f.isBooleanDataType())->notEmpty())]
+[if (unit.booleanFeatures()->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (featuresUsed->select(f | f.isEnumerationType())->notEmpty()
-		or entity.isContained() and entity.features->select(f | f.isEnumerationType())->notEmpty())]
+[if (unit.enumerationFeatures()->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (featuresUsed->select(a | (a.oclIsKindOf(EntityAttribute) or a.isContains()) and not a.isSingleton())->notEmpty())]
+[if (unit.collectionFeatures()->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
-[if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::DateOnly)->notEmpty())]
+[if (unit.dateFeatures()->select(f | f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
+[if (unit.dateFeatures()->select(f | f.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty()
-		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'email')->notEmpty())]
+[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'email')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty()
-		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'integer')->notEmpty())]
+[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'integer')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'string')->notEmpty()
-		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'string')->notEmpty()
-		or featuresUsed->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty()
-		or entity.isContained() and entity.features->select(f | f.oclIsTypeOf(SingletonURL))->notEmpty())]
+[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'string')->notEmpty()
+		or unit.urlFeatures()->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (featuresUsed->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textblock')->notEmpty()
-		or entity.isContained() and entity.features->select(f | f.isDataType()).oclAsType(Attribute)->select(a | a.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
+[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 [/if]
-[if (featuresUsed->select(f | f.isDate()).oclAsType(Attribute)->select(a | a.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
+[if (unit.dateFeatures()->select(f | f.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
-[/let]
-[if (entity.allowFormTypeCustomisation)]
+[if (unit.contentType().allowFormTypeCustomisation)]
 // [protected ('custom.uses')]
 // [/protected]
 [/if]
 [/template]
 
-[template private formFeature(feature : Feature)
+[template private formFeature(feature : UnitField)
+	? (feature.oclIsTypeOf(UnitAttribute)) post(trim())]
+[let attribute : UnitAttribute = feature.oclAsType(UnitAttribute)]
+[attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
+[/let]
+[/template]
+
+[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
 	? (feature.oclIsKindOf(Attribute)) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
@@ -118,10 +150,10 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/if]
 [if (not attribute.isSingleton())]
     'entry_type' => [attribute.interfaceType(true)/],
-	[if (attribute.collectionUiAllowAdd)]
+	[if (allowUiAdd)]
     'allow_add' => true,
 	[/if]
-	[if (attribute.collectionUiAllowRemove)]
+	[if (allowUiRemove)]
     'allow_delete' => true,
 	[/if]
 [elseif (attribute.isDate())]
@@ -188,7 +220,14 @@ TextType::class
 [/if]
 [/template]
 
-[template private formFeature(feature : Feature)
+[template private formFeature(feature : UnitField)
+	? (feature.oclIsTypeOf(UnitAssociation)) post(trim())]
+[let association : UnitAssociation = feature.oclAsType(UnitAssociation)]
+[association.association.formFeature(association.collectionUiAllowAdd, association.collectionUiAllowRemove)/]
+[/let]
+[/template]
+
+[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
@@ -217,7 +256,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature)
+[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
 	? (feature.oclIsKindOf(Association) and feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 [if (association.isSingleton())]
@@ -225,13 +264,13 @@ add('[association.modelPropertyName()/]', [association.targetType().typeClassNam
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(
     'entry_type' => [association.targetType().typeClassName()/]::class,
-[if (feature.collectionUiAllowAdd)]
+[if (allowUiAdd)]
     'allow_add' => true,
 [/if]
-[if (feature.collectionUiAllowRemove)]
+[if (allowUiRemove)]
     'allow_delete' => true,
 [/if]
-[if (feature.collectionOrmAllowAdd and feature.collectionOrmAllowRemove)]
+[if (association.collectionOrmAllowAdd and association.collectionOrmAllowRemove)]
     'by_reference' => false,
 [/if]
     'required' => false,

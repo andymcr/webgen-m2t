@@ -97,7 +97,7 @@
 [let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
 <div>
  {{- form_label([accessor/]) -}}
- <div class="[association.name.asId()/] framed"[if (association.association.collectionUiAllowAdd)]
+ <div class="[association.name.asId()/] framed"[if (association.collectionUiAllowAdd)]
  data-prototype="[for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer()))]
 {{ form_row([accessor/].vars.prototype.[feature.modelPropertyName()/])|e('html_attr') }}[/for]"[/if]>
 {% for entry in [accessor/] %}
