@@ -58,11 +58,8 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [for (entity : EntityOrView | page.editUnits()->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
-use [entity.formTypeNamespace()/]\[entity.typeClassName()/];
-[/for]
-[for (unit : DynamicUnit | page.formUnits()->select(u | u.hasInterfaceFields()))]
-use [unit.formTypeNamespace()/]\[unit.typeClassName()/];
+[for (form : DynamicUnit | page.formUnits()->sortedBy(u | u.name))]
+use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

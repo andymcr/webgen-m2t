@@ -188,7 +188,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 		else
 			entity.uriPathKeys()
 		endif]
-$this->createForm([entity.typeClassName()/]::class, $[entityInstance/][if (not placeholder)], array(
+$this->createForm([unit.typeClassName(unit.pageDisplayedOn().partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(suffix)/]'[if (page.hasFilterParameters() or page.hasPagination())], [if (pathKeys->isEmpty())]
 $request->query->all()[else]
 array_merge(

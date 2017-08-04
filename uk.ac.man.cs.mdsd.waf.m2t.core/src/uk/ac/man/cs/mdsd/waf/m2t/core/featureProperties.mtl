@@ -49,6 +49,10 @@
 /]
 
 
+[query public formFields(model : WafModel) : Sequence(UnitField)
+	= model.formUnits()->collect(u | u.displayFields)
+/]
+
 [query public formUnits(model : WafModel) : Sequence(DynamicUnit)
 	= model.pages->collect(p | p.formUnits())
 /]
@@ -600,7 +604,8 @@
 		else
 			unit.displayFields
 				->select(f | not f.isSingleton())
-				->select(f | f.collectionAllowAdd or f.collectionAllowRemove)
+				->select(f | f.oclIsKindOf(UnitFeature)).oclAsType(UnitFeature)
+				->select(f | f.collectionUiAllowAdd or f.collectionUiAllowRemove)
 				->notEmpty()
 		endif
 /]
@@ -927,7 +932,7 @@
 
 [query public urlFields(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields
-		->select(f | not f.isUrl())
+		->select(f | f.isUrl())
 /]
 
 
@@ -1003,6 +1008,15 @@
 		endif
 /]
 
+[query public defaultValue(field : UnitField) : Expression
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).defaultValue
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).defaultValue
+		else
+			null
+		endif endif
+/]
 [query public displayClass(field : UnitField) : String
 	= if not field.oclIsTypeOf(UnitAssociation) or field.isSingleton() then
 			field.modelPropertyName()
@@ -1104,13 +1118,7 @@
 /]
 
 [query public hasDefaultValue(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitAttribute) then
-			not field.oclAsType(UnitAttribute).defaultValue.oclIsUndefined()
-		else if field.oclIsKindOf(InterfaceField) then
-			not field.oclAsType(InterfaceField).defaultValue.oclIsUndefined()
-		else
-			false
-		endif endif
+	= not field.defaultValue().oclIsUndefined()
 /]
 
 [query public hasClass(field : UnitField) : Boolean

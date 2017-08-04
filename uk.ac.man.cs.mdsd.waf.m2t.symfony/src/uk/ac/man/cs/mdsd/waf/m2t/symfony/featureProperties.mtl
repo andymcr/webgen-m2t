@@ -13,7 +13,7 @@
 [query public embeddedForms(model : WafModel) : Sequence(UnitAssociation)
 	= model.formUnits()
 		->collect(u | u.displayFields)
-		->select(f | f.isContainer()).oclAsType(UnitAssociation)
+		->select(f | f.isContains()).oclAsType(UnitAssociation)
 /]
 
 [query public formEntities(model : WafModel) : Set(EntityOrView)
@@ -74,34 +74,6 @@
 /]
 
 
-
-[query public sameModel(form : DynamicUnit, model : WafModel) : Sequence(DynamicUnit)
-	= let forms : Sequence(DynamicUnit) = form.contentType().formsUsing(model)
-		in if forms->size() < 2 then
-				forms
-			else
-				let base : DynamicUnit = forms->first()
-					in forms->select(f | f.featureNames() = base.featureNames())
-						->sortedBy(u | u.name)
-			endif
-/]
-
-[query public formsUsing(entity : EntityOrView, model : WafModel) : Sequence(DynamicUnit)
-	= model.pages
-		->collect(p | p.units)
-		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
-		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))
-		->select(u | u.contentType() = entity)
-		->sortedBy(u | u.name)
-/]
-
-[query private featureNames(form : DynamicUnit) : Sequence(String)
-	= form.displayFields
-		->select(f | f.oclIsKindOf(UnitFeature))
-		->collect(f | f.feature())
-		->sortedBy(f | f.name)
-		->collect(f | f.name)
-/]
 
 [query public routedSelection(unit : CollectionUnit) : Boolean
 	= if unit.selection.oclIsUndefined() then

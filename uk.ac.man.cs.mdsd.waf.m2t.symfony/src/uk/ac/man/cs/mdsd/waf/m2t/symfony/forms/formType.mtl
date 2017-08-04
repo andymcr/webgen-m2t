@@ -16,7 +16,7 @@
 	[for (form : DynamicUnit | entity.formsUsing(model))]
 	[let sameModel : Sequence(DynamicUnit) = form.sameModel(model)]
 		[if (form = sameModel->first())]
-[form.entityFormType()/]
+[form.entityFormType(model)/]
 		[/if]
 	[/let]
 	[/for]
@@ -26,15 +26,15 @@
 [/for]
 [/template]
 
-[template private entityFormType(unit : DynamicUnit)]
-[file(unit.formTypeFilename(), false)]
+[template private entityFormType(unit : DynamicUnit, model : WafModel)]
+[file(unit.formTypeFilename(model), false)]
 <?php
 namespace [unit.formTypeNamespace()/];
 
 [unit.useStatements()/]
 
 
-class [unit.typeClassName()/] extends AbstractType
+class [unit.typeClassName(model)/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -58,19 +58,19 @@ class [unit.typeClassName()/] extends AbstractType
 [/file]
 [/template]
 
-[template public formType(form : UnitAssociation)]
-[file(form.formTypeFilename(), false)]
+[template public formType(association : UnitAssociation)]
+[file(association.formTypeFilename(), false)]
 <?php
-namespace [form.formTypeNamespace()/];
+namespace [association.formTypeNamespace()/];
 
-[comment entity.useStatements(model)/]
+[association.useStatements()/]
 
 
-class [form.typeClassName()/] extends AbstractType
+class [association.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-[for (feature : Feature | form.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
+[for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
         $builder->[feature.formFeature(false, false)/];
 [/for]
     }
@@ -78,7 +78,7 @@ class [form.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => '[form.modelsNamespace()/]\[form.association.targetType().modelName()/]'
+            'data_class' => '[association.modelsNamespace()/]\[association.association.targetType().modelName()/]'
         ));
     }
 }
@@ -132,9 +132,52 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/if]
 [/template]
 
-[template private formFeature(feature : UnitField)
-	? (feature.oclIsTypeOf(UnitAttribute)) post(trim())]
-[let attribute : UnitAttribute = feature.oclAsType(UnitAttribute)]
+[template private useStatements(association : UnitAssociation) post(trim())]
+[let features : OrderedSet(Feature) = association.association.targetType().features->select(f | not f.isContainer())]
+[for (feature : Feature | features->select(f | f.isEnumerationType())->sortedBy(f | f.name))]
+use [feature.modelsNamespace()/]\[feature.enumerationType().modelName()/];
+[/for]
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+[if (features->select(f | f.isBooleanDataType())->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+[/if]
+[if (features->select(f | f.isEnumerationType())->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+[/if]
+[if (features->select(f | not f.isSingleton())->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+[/if]
+[if (features->select(f | f.isDate() and f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+[/if]
+[if (features->select(f | f.isDate() and f.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+[/if]
+[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'email')->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+[/if]
+[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'integer')->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+[/if]
+[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'string')->notEmpty()
+		or features->select(f | f.isUrl())->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+[/if]
+[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+[/if]
+[if (features->select(f | f.isDate() and f.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+[/if]
+use Symfony\Component\OptionsResolver\OptionsResolver;
+[/let]
+[/template]
+
+[template private formFeature(field : UnitField)
+	? (field.oclIsTypeOf(UnitAttribute)) post(trim())]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
 [/let]
 [/template]
@@ -220,9 +263,9 @@ TextType::class
 [/if]
 [/template]
 
-[template private formFeature(feature : UnitField)
-	? (feature.oclIsTypeOf(UnitAssociation)) post(trim())]
-[let association : UnitAssociation = feature.oclAsType(UnitAssociation)]
+[template private formFeature(field : UnitField)
+	? (field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [association.association.formFeature(association.collectionUiAllowAdd, association.collectionUiAllowRemove)/]
 [/let]
 [/template]
@@ -256,21 +299,21 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
-	? (feature.oclIsKindOf(Association) and feature.isContains()) post(trim())]
-[let association : Association = feature.oclAsType(Association)]
+[template private formFeature(feature : UnitField)
+	? (feature.oclIsTypeOf(UnitAssociation) and feature.isContains()) post(trim())]
+[let association : UnitAssociation = feature.oclAsType(UnitAssociation)]
 [if (association.isSingleton())]
-add('[association.modelPropertyName()/]', [association.targetType().typeClassName()/]::class)
+add('[association.modelPropertyName()/]', [association.typeClassName()/]::class)
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(
-    'entry_type' => [association.targetType().typeClassName()/]::class,
-[if (allowUiAdd)]
+    'entry_type' => [association.typeClassName()/]::class,
+[if (association.collectionUiAllowAdd)]
     'allow_add' => true,
 [/if]
-[if (allowUiRemove)]
+[if (association.collectionUiAllowRemove)]
     'allow_delete' => true,
 [/if]
-[if (association.collectionOrmAllowAdd and association.collectionOrmAllowRemove)]
+[if (association.association.collectionOrmAllowAdd and association.association.collectionOrmAllowRemove)]
     'by_reference' => false,
 [/if]
     'required' => false,

@@ -20,8 +20,8 @@
 [model.addFormFunctions()/]
 
 $( function() {
-[for (entity : EntityOrView | model.persistence.entitiesAndViews->select(e | e.inputJQueryFeatures(model)->notEmpty())->sortedBy(e | e.name))]
-    [entity.javascript(model)/]
+[for (field : UnitField | model.formFields()->sortedBy(f | f.feature().name))]
+    [field.javascript()/]
 
 [/for]
 } );
@@ -29,26 +29,32 @@ $( function() {
 [/template]
 
 [template private containerLinks(model : WafModel) post(trim())]
-[for (association : EntityAssociation | model.persistence.containsAssociations()->select(a | a.collectionUiAllowAdd or a.collectionUiAllowRemove))]
-[let target : EntityOrView = association.targetType()]
+[for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
+[let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
+	[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
+	[let target : EntityOrView = association.association.targetType()]
 var $[target.instanceName()/]Container;
-[if (association.collectionUiAllowAdd)]
+		[if (association.collectionUiAllowAdd)]
 var $add[target.name/]Link = $('<input type="button" name="add[target.name/]" value="Add [target.name/]"[if (model.hasJQueryClasses())] class="[model.jQueryClass()/]"[/if]/>');
 var $new[target.name/]LinkDiv = $('<div></div>').append($add[target.name/]Link);
-[/if]
-[if (association.collectionUiAllowRemove)]
+		[/if]
+		[if (association.collectionUiAllowRemove)]
 var $remove[target.name/]Link = $('<input type="button" name="remove[target.name/]" value="Remove"[if (model.hasJQueryClasses())] class="[model.jQueryClass()/]"[/if]/>');
 var $remove[target.name/]LinkDiv = $('<div></div>').append($remove[target.name/]Link);
-[/if]
+		[/if]
 
+	[/let]
+	[/if]
 [/let]
 [/for]
 [/template]
 
 [template private addLinks(model : WafModel) post(trim())]
 jQuery(document).ready(function() {
-[for (association : EntityAssociation | model.persistence.containsAssociations()->select(a | a.collectionUiAllowAdd))]
-[let target : EntityOrView = association.targetType()]
+[for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
+[let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
+	[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
+	[let target : EntityOrView = association.association.targetType()]
     $[target.instanceName()/]Container = $('div.[association.name.asId()/]');
     if ($[target.instanceName()/]Container) {
         $[target.instanceName()/]Container.append($new[target.name/]LinkDiv);
@@ -59,19 +65,25 @@ jQuery(document).ready(function() {
         });
     }
 
+	[/let]
+	[/if]
 [/let]
 [/for]
 });
 [/template]
 
 [template private addFormFunctions(model : WafModel) post(trim())]
-[for (association : EntityAssociation | model.persistence.containsAssociations()->select(a | a.collectionUiAllowAdd))]
-[association.addFormFunction(association.targetType())/]
+[for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
+[let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
+	[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
+[association.addFormFunction(association.association.targetType())/]
 
+	[/if]
+[/let]
 [/for]
 [/template]
 
-[template private addFormFunction(association : EntityAssociation, target : EntityOrView)]
+[template private addFormFunction(association : UnitAssociation, target : EntityOrView)]
 function add[target.name/]Form($container, $newLinkDiv) {
     var prototype = $container.data('prototype');
     var index = $container.data('index');
@@ -81,69 +93,63 @@ function add[target.name/]Form($container, $newLinkDiv) {
 }
 [/template]
 
-[template private javascript(entityOrView : EntityOrView, model : WafModel) post(trim())]
-[for (feature : Feature | entityOrView.inputJQueryFeatures(model)->sortedBy(f | f.name))]
-[feature.javascript()/]
-[/for]
-[/template]
-
-[query private id(feature : Feature) : String
-	= 'app_'.concat(feature.partOf.name.asId()).concat('_').concat(feature.modelPropertyName())
+[query private id(field : UnitField) : String
+	= 'app_'.concat(field.feature().partOf.name.asId()).concat('_').concat(field.modelPropertyName())
 /]
 
-[template private javascript(feature : Feature)
-	? ((feature.isDataType() and not feature.isBooleanDataType() and not feature.isEnumerationType())) post(trim())]
-[let dataType : Classifier = feature.dataType()]
+[template private javascript(field : UnitField)
+	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType())) post(trim())]
+[let dataType : Classifier = field.dataType()]
 [if (dataType.name = 'Integer')]
-$("#[feature.id()/]").spinner();
+$("#[field.id()/]").spinner();
 [/if]
 [/let]
 [/template]
 
-[template private javascript(feature : Feature)
-	? (feature.isBooleanDataType()) post(trim())]
-$("#[feature.id()/]").checkboxradio();
+[template private javascript(field : UnitField)
+	? (field.isBooleanDataType()) post(trim())]
+$("#[field.id()/]").checkboxradio();
 [/template]
 
-[template private javascript(feature : Feature)
-	? (feature.isEnumerationType()) post(trim())]
-$("#[feature.id()/]").selectmenu();
+[template private javascript(field : UnitField)
+	? (field.isEnumerationType()) post(trim())]
+$("#[field.id()/]").selectmenu();
 [/template]
 
-[template private javascript(feature : Feature)
-	? (feature.isDate()) post(trim())]
-[if (feature.dateDetails() <> DateDetails::TimeOnly)]
-$("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_date[/if]").datepicker({
+[template private javascript(field : UnitField)
+	? (field.isDate()) post(trim())]
+[if (field.dateDetails() <> DateDetails::TimeOnly)]
+$("#[field.id()/][if (field.dateDetails() = DateDetails::DateAndTime)]_date[/if]").datepicker({
     dateFormat: $.datepicker.ISO_8601
 });
 [/if]
-[if (feature.dateDetails() <> DateDetails::DateOnly and false)]
-$("#[feature.id()/][if (feature.dateDetails() = DateDetails::DateAndTime)]_time[/if]").wickedpicker([if (feature.dateDetails() = DateDetails::TimeOnly or feature.hasDefaultValue())]{
-[if (feature.hasDefaultValue())]
-    now: [feature.defaultValue().controllerExpression()/],
+[if (field.dateDetails() <> DateDetails::DateOnly and false)]
+$("#[field.id()/][if (field.dateDetails() = DateDetails::DateAndTime)]_time[/if]").wickedpicker([if (field.dateDetails() = DateDetails::TimeOnly or field.hasDefaultValue())]{
+[if (field.hasDefaultValue())]
+    now: [field.defaultValue().controllerExpression()/],
 [/if]
-[if (feature.dateDetails() = DateDetails::TimeOnly)]
+[if (field.dateDetails() = DateDetails::TimeOnly)]
     twentyFour: true,
 [/if]
 }[/if]);
 [/if]
 [/template]
 
-[template private javascript(feature : Feature)
-	? (feature.oclIsKindOf(Association) and not feature.isContains() and feature.isSingleton()) post(trim())]
-if ($("#[feature.id()/] option").length < 15) {
-	$("#[feature.id()/]").selectmenu();
+[template private javascript(field : UnitField)
+	? (field.oclIsKindOf(UnitAssociation) and not field.isContains() and field.isSingleton()) post(trim())]
+if ($("#[field.id()/] option").length < 15) {
+	$("#[field.id()/]").selectmenu();
 } else {
-    $("#[feature.id()/]").select2();
+    $("#[field.id()/]").select2();
 }
 [/template]
 
-[template private javascript(feature : Feature)
-	? (feature.oclIsKindOf(Association) and not feature.isContains() and not feature.isSingleton()) post(trim())]
-$("#[feature.id()/]").select2();
+[template private javascript(field : UnitField)
+	? (field.oclIsKindOf(UnitAssociation) and not field.isContains() and not field.isSingleton()) post(trim())]
+$("#[field.id()/]").select2();
 [/template]
 
 
-[template private javascript(feature : Feature)
-	? (feature.oclIsKindOf(Association) and feature.isContains()) post(trim())]
+[template private javascript(field : UnitField)
+	? (field.oclIsKindOf(UnitAssociation) and field.isContains()) post(trim())]
 [/template]

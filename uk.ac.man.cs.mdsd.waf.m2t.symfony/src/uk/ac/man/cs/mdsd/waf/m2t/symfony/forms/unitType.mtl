@@ -9,7 +9,8 @@
 
 
 [template public formType(unit : DynamicUnit)]
-[file(unit.formTypeFilename(), false)]
+[let model : WafModel = unit.pageDisplayedOn().partOf]
+[file(unit.formTypeFilename(model), false)]
 <?php
 namespace [unit.formTypeNamespace()/];
 
@@ -22,7 +23,7 @@ use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 [/if]
 
 
-class [unit.typeClassName()/] extends AbstractType
+class [unit.typeClassName(model)/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -39,6 +40,7 @@ class [unit.typeClassName()/] extends AbstractType
     }
 }
 [/file]
+[/let]
 [/template]
 
 [template private formFeature(field : InterfaceField)

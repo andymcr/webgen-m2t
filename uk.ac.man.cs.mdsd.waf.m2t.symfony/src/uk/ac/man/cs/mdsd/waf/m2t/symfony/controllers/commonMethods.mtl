@@ -248,7 +248,7 @@ $parameters['['/]'scripts'[']'/] = array(
     'js/wickedpicker.js',
     '[page.partOf.javascriptFormFilename()/]',
 [/if]
-[if (page.hasChangableCollections() or page.hasSliderUnits())]
+[if (page.hasSliderUnits())]
     '[page.partOf.javascriptImageFilename()/]',
 [/if]
 [if (page.partOf.responsiveTopMenu)]

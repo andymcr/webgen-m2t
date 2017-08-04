@@ -227,15 +227,9 @@
 		.concat(authentication.executableExtension())
 /]
 
-[query public formTypeFilename(entity : EntityOrView) : String
-	= entity.formTypeDirectory().concat('/')
-		.concat(entity.typeClassName())
-		.concat(entity.executableExtension())
-/]
-
-[query public formTypeFilename(unit : DynamicUnit) : String
+[query public formTypeFilename(unit : DynamicUnit, model : WafModel) : String
 	= unit.formTypeDirectory().concat('/')
-		.concat(unit.typeClassName())
+		.concat(unit.typeClassName(model))
 		.concat(unit.executableExtension())
 /]
 

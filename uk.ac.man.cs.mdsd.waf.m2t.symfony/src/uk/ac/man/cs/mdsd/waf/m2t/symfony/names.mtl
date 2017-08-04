@@ -52,6 +52,15 @@
 /]
 
 
+[query public formsUsing(entity : EntityOrView, model : WafModel) : Sequence(DynamicUnit)
+	= model.pages
+		->collect(p | p.units)
+		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))
+		->select(u | u.contentType() = entity)
+		->sortedBy(u | u.name)
+/]
+
 [query public instanceName(entityOrView : EntityOrView) : String
 	= entityOrView.name.toLowerFirst()
 /]
@@ -62,10 +71,6 @@
 
 [query public selectName(entityOrView : EntityOrView) : String
 	= entityOrView.name.toLowerFirst()
-/]
-
-[query public typeClassName(entityOrView : EntityOrView) : String
-	= entityOrView.typePrefix().concat(entityOrView.modelName()).concat(entityOrView.typeSuffix())
 /]
 
 
@@ -181,6 +186,14 @@
 	= unit.instanceName().concat('_error')
 /]
 
+[query private featureNames(form : DynamicUnit) : Sequence(String)
+	= form.displayFields
+		->select(f | f.oclIsKindOf(UnitFeature))
+		->collect(f | f.feature())
+		->sortedBy(f | f.name)
+		->collect(f | f.name)
+/]
+
 [query public fieldErrorsName(unit : DynamicUnit) : String
 	= unit.instanceName().concat('_field_errors')
 /]
@@ -207,7 +220,7 @@
 		else
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
 				in if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
-						dynamicUnit.typeClassName()
+						dynamicUnit.typeClassName(null)
 					else
 						dynamicUnit.contentType().modelName()
 					endif
@@ -247,6 +260,16 @@
 	= resource.instanceName()
 /]
 
+[query public sameModel(form : DynamicUnit, model : WafModel) : Sequence(DynamicUnit)
+	= let forms : Sequence(DynamicUnit) = form.contentType().formsUsing(model)
+		in if forms->size() < 2 then
+				forms
+			else
+				forms->select(f | f.featureNames() = form.featureNames())
+					->sortedBy(u | u.name)
+			endif
+/]
+
 [query public selectName(unit : ContentUnit) : String
 	= unit.instanceName().concat('Select')
 /]
@@ -273,19 +296,27 @@
 			endif
 /]
 
-[query public typeClassName(unit : DynamicUnit) : String
+[query public typeClassName(unit : DynamicUnit, model : WafModel) : String
 	= if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
 			unit.typeClassNameForm()
 		else
-			unit.typeClassNameEntity()
+			unit.typeClassNameEntity(model)
 		endif
 /]
 
-[query private typeClassNameEntity(unit : ContentUnit) : String
-	= unit.typePrefix().concat(unit.contentType().modelName()).concat(unit.typeSuffix()).concat('2')
+[query private typeClassNameEntity(unit : DynamicUnit, model : WafModel) : String
+	= let sameModel : Sequence(DynamicUnit) = unit.sameModel(model)
+		in unit.typePrefix()
+			.concat(unit.contentType().modelName())
+			.concat(if sameModel->size() <> unit.contentType().formsUsing(model)->size() then
+					unit.name
+				else
+					''
+				endif)
+			.concat(unit.typeSuffix())
 /]
 
-[query private typeClassNameForm(unit : ContentUnit) : String
+[query private typeClassNameForm(unit : DynamicUnit) : String
 	= 'Unit'.concat(unit.pageDisplayedOn().name).concat(unit.name).concat(unit.typeSuffix())
 /]
 
@@ -319,7 +350,7 @@
 /]
 
 [query public typeClassName(association : UnitAssociation) : String
-	= association.typePrefix().concat(association.association.targetType().modelName()).concat(association.typeSuffix()).concat('2')
+	= association.typePrefix().concat(association.association.targetType().modelName()).concat(association.typeSuffix())
 /]
 
 [query public uniqueName(field : UnitField) : String
