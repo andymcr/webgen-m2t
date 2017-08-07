@@ -57,7 +57,7 @@ $this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1
 [if (not unit.selectionType.oclIsUndefined())]
 $this->[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
 [/if]
-[if (not unit.selectionType.oclIsUndefined() and not unit.containingFeature.oclIsUndefined())]
+[if (not unit.selectionType.oclIsUndefined() and not unit.containingAssociation.oclIsUndefined())]
 [unit.childSelect()/]
 [else]
 [unit.contentSelect()/]
@@ -70,9 +70,9 @@ $this->[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->fin
 else
 [/if]
 [if (unit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = $this->[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]();
+$this->[unit.instanceName()/] = $this->[unit.selectionType.instanceName()/]->[unit.containingAssociation.getMethodName()/]();
 [else]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($this->[unit.selectionType.instanceName()/][unit.paginationActuals(true)/]);
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingAssociation.oclAsType(Association).childSelectionName(unit.selection)/]($this->[unit.selectionType.instanceName()/][unit.paginationActuals(true)/]);
 [/if]
 [/template]
 
@@ -84,7 +84,7 @@ if ($request->query->has('[filter.name/]Filter'))
 [/template]
 
 [template private childFilterCall(unit : CollectionUnit, filter : Filter)]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(filter.selection)/](
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingAssociation.oclAsType(Association).childSelectionName(filter.selection)/](
     $this->[unit.selectionType.instanceName()/],
 [for (parameter : FormalParameter | filter.parameters)]
     $request->query->get('[parameter.name/]'),
