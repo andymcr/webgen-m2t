@@ -70,7 +70,7 @@ $this->[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->fin
 else
 [/if]
 [if (unit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = $this->[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = $this->[unit.selectionType.instanceName()/]->[unit.containingFeature.getMethodName()/]();
 [else]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingFeature.oclAsType(Association).childSelectionName(unit.selection)/]($this->[unit.selectionType.instanceName()/][unit.paginationActuals(true)/]);
 [/if]
