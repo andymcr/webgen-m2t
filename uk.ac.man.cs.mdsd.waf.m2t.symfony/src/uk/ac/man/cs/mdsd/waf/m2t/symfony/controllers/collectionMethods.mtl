@@ -59,10 +59,16 @@ private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
 Request [/if]$request[if (not unit.selection.selectVia.oclIsUndefined())]
 [if (unit.selection.selectVia.partOf.uriPathKeys()->notEmpty())]
 , [/if][/if][/if]
-[unit.selectionParameters()/]
+[unit.routingParameters()/]
 [/template]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
+[if (not unit.selection.selectVia.oclIsUndefined())]
+[unit.routingParameters()/][if (unit.selection.selectVia.partOf.hasRouteParameters())]
+, [/if][/if][unit.paginationActuals()/]
+[/template]
+
+[template private routingParameters(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.selectVia.oclIsUndefined())]
 [let selectionEntity : EntityOrView = unit.selection.selectVia.partOf]
 	[for (key : Attribute | selectionEntity.uriPathKeys()) separator(', ')]
@@ -82,6 +88,7 @@ $[key.routeParameterName(selectionEntity)/][/for]
 [/template]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (unit.defaultPaginationSize > 0)]
 $this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
 [/if]
@@ -91,24 +98,27 @@ else
 [/if]
 [if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.routedSelection())]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([if (not unit.selection.selectVia.oclIsUndefined())]
-[unit.selectionParameters()/][if (unit.selection.selectVia.partOf.hasRouteParameters())], [/if][/if][unit.paginationActuals()/]);
+		[if (unit.defaultPaginationSize > 0)]
+// $this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->findOne([unit.routingParameters()/]);
+		[/if]
+$this->[unit.instanceName()/] = [dynamicUnit.getContentService()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
 [unit.filter.methodName/][else][unit.selection.methodName/][/if]
-([unit.selectionParameters()/][unit.paginationActuals()/]);
+([unit.selectionParameters()/]);
 	[/if]
 [elseif (unit.oclIsKindOf(DataUnit))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 	[if (not dataUnit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[dataUnit.defaultSelection.methodName/]([unit.selectionParameters()/][unit.paginationActuals()/]);
+$this->[dataUnit.instanceName()/] = [unit.getSelectionService()/]->[dataUnit.defaultSelection.methodName/]([unit.selectionParameters()/]);
 	[else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+$this->[dataUnit.instanceName()/] = [dataUnit.getContentService()/]->findAll([unit.paginationActuals()/]);
 	[/if]
 [/let]
 [else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [dynamicUnit.getContentService()/]->[unit.selection.methodName/]([unit.paginationActuals()/]);
 [/if]
+[/let]
 [/template]
 
 [template private filterSelect(unit : CollectionUnit) post(trim())]
