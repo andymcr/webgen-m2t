@@ -58,30 +58,19 @@
 /]
 
 
-[query public selectType(unit : ContentUnit) : EntityOrView
-	= if unit.oclIsKindOf(SelectableUnit) then
-			let selectableUnit : SelectableUnit = unit.oclAsType(SelectableUnit)
-			in if selectableUnit.oclIsKindOf(IndexUnit) or selectableUnit.oclIsKindOf(ImageUnit) then
-					if not selectableUnit.selectionType.oclIsUndefined() then
-						selectableUnit.selectionType.keyEntity()
-					else
-						selectableUnit.oclAsType(DynamicUnit).contentType().parentEntity()
-					endif
-				else if not selectableUnit.selectionType.oclIsUndefined() then
-						selectableUnit.selectionType.keyEntity()
-				else
-					null
-				endif endif
-		else if unit.oclIsKindOf(DynamicUnit) then
-			unit.oclAsType(DynamicUnit).contentType()
+[query public routingType(unit : ContentUnit) : EntityOrView
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).routingType()
+		else if unit.oclIsKindOf(SingletonUnit) then
+			unit.oclAsType(SingletonUnit).contentType
 		else
 			null
 		endif endif
 /]
 
-[query private uriPathKeys(unit : ContentUnit) : Sequence(Attribute)
-	= if not unit.selectType().oclIsUndefined() then
-				unit.selectType().uriPathKeys()
+[query public uriPathKeys(unit : ContentUnit) : Sequence(Attribute)
+	= if not unit.routingType().oclIsUndefined() then
+				unit.routingType().uriPathKeys()
 			else
 				Sequence{}
 			endif

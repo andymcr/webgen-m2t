@@ -139,7 +139,8 @@ form div.error {
 	border-radius: 0.5em;
 }
 
-form > div > label {
+form > div > label,
+form > div > div > div > label {
 	display: inline-block;
 	width: 15%;
 	padding: 0.5em 0.5em 0.25em 0em;
@@ -147,15 +148,18 @@ form > div > label {
 	text-align: right;
 }
 
-form > div > label:after {
+form > div > label:after,
+form > div > div > div > label:after {
 	content: ':';
 }
 
-form > div > label.required {
+form > div > label.required,
+form > div > div > div > label.required {
 	font-weight: bold;
 }
 
-form > div > label.required:after {
+form > div > label.required:after,
+form > div > div > div > label.required:after {
 	color: FireBrick;
 	content: '*:';
 	display:inline;
@@ -163,16 +167,22 @@ form > div > label.required:after {
 
 form > div > div,
 form > div > input['['/]type="email"[']'/],
+form > div > div > div > input['['/]type="email"[']'/],
 form > div > input['['/]type="integer"[']'/],
+form > div > div > div > input['['/]type="integer"[']'/],
 form > div > input['['/]type="password"[']'/],
+form > div > div > div > input['['/]type="password"[']'/],
 form > div > input['['/]type="text"[']'/],
+form > div > div > div > input['['/]type="text"[']'/],
 form > div > input['['/]type="url"[']'/],
+form > div > div > div > input['['/]type="url"[']'/],
 [if (model.inputTechnology = InputTechnologies::jQueryUI)]
 form > div > input.ui-widget-content,
 form > div > span.ui-widget-content,
 form > div > span.ui-selectmenu-button,
 [/if]
-form > div > select {
+form > div > select,
+form > div > div > div > select {
 	display: inline-block;
 	width: 80%;
 	padding: 0.25em 0.5em 0.25em 0.5em;
@@ -206,6 +216,11 @@ form > input['['/]type="submit"[']'/],
 form > div > input['['/]type="submit"[']'/],
 form > div > input['['/]type="reset"[']'/] {
 	padding: 0.2em;
+}
+
+form > div > div > div > input['['/]type="button"[']'/] {
+	padding: 0.2em;
+	margin-left: 15%;
 }
 
 table.index_content > tbody > tr > td > a:hover  {

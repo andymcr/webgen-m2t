@@ -61,7 +61,7 @@
 /]
 
 [query public hasParameters(selection : Selection) : Boolean
-	= selection.isSelected()
+	= not selection.selectVia.oclIsUndefined()
 		or if selection.condition.oclIsUndefined() then
 				false
 			else
@@ -69,6 +69,7 @@
 			endif
 /]
 
+[comment 'remove when select removed after selectVia implemented'/]
 [query public isSelected(selection : Selection) : Boolean
 	= selection.selected and not selection.partOf.serves.parentEntity().oclIsUndefined()
 /]
@@ -79,7 +80,7 @@
 	= if unit.selection.oclIsUndefined() then
 			false
 		else
-			unit.selection.isSelected()
+			not unit.selection.selectVia.oclIsUndefined()
 		endif
 /]
 

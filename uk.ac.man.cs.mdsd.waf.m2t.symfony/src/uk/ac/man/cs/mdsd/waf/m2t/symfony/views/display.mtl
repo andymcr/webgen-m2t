@@ -41,8 +41,8 @@
 [else]
 [let indexUnit : IndexUnit = dataUnit.oclAsType(IndexUnit)]
 [let selectionAccessor : String
-	= if not indexUnit.selectionType.oclIsUndefined() then
-			indexUnit.selectionType.instanceName()
+	= if not indexUnit.routingType().oclIsUndefined() then
+			indexUnit.routingType().instanceName()
 		else
 			accessor
 		endif]
@@ -78,15 +78,15 @@
 [unit.unitTitle(contentAccessor)/]
 [else]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[let selectionAccessor : String = collectionUnit.selectionType.instanceName()]
+[let selectionAccessor : String = collectionUnit.routingType().instanceName()]
 	[if (unit.title.oclIsKindOf(Attribute))]
-		[if (unit.title.oclAsType(Attribute).partOf = collectionUnit.selectionType)]
+		[if (unit.title.oclAsType(Attribute).partOf = collectionUnit.routingType())]
 [unit.unitTitle(selectionAccessor)/]
 		[else]
 [unit.unitTitle(contentAccessor)/]
 		[/if]
 	[else]
-		[if (unit.title.oclAsType(ModelLabel).labelFor = collectionUnit.selectionType)]
+		[if (unit.title.oclAsType(ModelLabel).labelFor = collectionUnit.routingType())]
 [unit.unitTitle(selectionAccessor)/]
 		[else]
 [unit.unitTitle(contentAccessor)/]
@@ -118,8 +118,8 @@
 
 [template private unitFilter(filter : Filter, unit : IndexUnit, accessor : String)]
 <div class="filter">
- <form action="{{ path('[unit.routeName()/]', { [if (not unit.selectionType.oclIsUndefined())]
-[unit.selectType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit, false)/][else]
+ <form action="{{ path('[unit.routeName()/]', { [if (not unit.routingType().oclIsUndefined())]
+[unit.routingType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit, false)/][else]
 [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit, true)/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
@@ -187,8 +187,8 @@
 [/template]
 
 [template private pageHref(unit : IndexUnit, pageNumber : String, selectionAccessor : String) post(trim())]
-{{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.selectionType.oclIsUndefined())]
-, [unit.selectType().routeActualParameters(unit.contentType(), selectionAccessor, unit.hasObjectAccess(), unit, false)/][/if]})) }}
+{{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
+, [unit.routingType().routeActualParameters(unit.contentType(), selectionAccessor, unit.hasObjectAccess(), unit, false)/][/if]})) }}
 [/template]
 
 

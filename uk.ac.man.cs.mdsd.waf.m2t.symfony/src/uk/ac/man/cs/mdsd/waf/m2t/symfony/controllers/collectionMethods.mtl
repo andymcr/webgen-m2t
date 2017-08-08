@@ -20,14 +20,14 @@
 /**
  [dynamicUnit.routeAnnotation()/]
  */
-public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.selectionType)/])
+public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType())/])
 {
 [if (page.units->size() = 1 and not unit.hasDeleteActions())]
     [unit.selectCode()/]
 
 [/if]
 [if (page.units->size() > 1 or unit.hasDeleteActions())]
-    return $this->renderPage([page.renderActualParameters(unit.selectionType)/]);
+    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
 [else]
     $parameters = array();
     [page.templateParameters()/]
@@ -50,108 +50,24 @@ private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
 	= not unit.hasFilters() and unit.selection.oclIsUndefined()
 /]
 
-[template private selectCode(unit : CollectionUnit) post(trim())]
-[if (unit.defaultPaginationSize > 0)]
-$this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
-[/if]
-[if (not unit.selectionType.oclIsUndefined())]
-$this->[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
-[/if]
-[if (not unit.selectionType.oclIsUndefined() and not unit.containingAssociation.oclIsUndefined())]
-[unit.childSelect()/]
-[else]
-[unit.contentSelect()/]
-[/if]
-[/template]
-
-[template private childSelect(unit : CollectionUnit) post(trim())]
-[if (unit.hasFilters())]
-[unit.childFilterSelect()/]
-else
-[/if]
-[if (unit.selection.oclIsUndefined())]
-$this->[unit.instanceName()/] = $this->[unit.selectionType.instanceName()/]->[unit.containingAssociation.getMethodName()/]();
-[else]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingAssociation.oclAsType(Association).childSelectionName(unit.selection)/]($this->[unit.selectionType.instanceName()/][unit.paginationActuals(true)/]);
-[/if]
-[/template]
-
-[template private childFilterSelect(unit : CollectionUnit) post(trim())]
-[for (filter : Filter | unit.supportedFilters) separator('else')]
-if ($request->query->has('[filter.name/]Filter'))
-    [unit.childFilterCall(filter)/]
-[/for]
-[/template]
-
-[template private childFilterCall(unit : CollectionUnit, filter : Filter)]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.containingAssociation.oclAsType(Association).childSelectionName(filter.selection)/](
-    $this->[unit.selectionType.instanceName()/],
-[for (parameter : FormalParameter | filter.parameters)]
-    $request->query->get('[parameter.name/]'),
-[/for]
-    [unit.paginationActuals()/]
-);
-[/template]
-
-[template private contentSelect(unit : CollectionUnit) post(trim())]
-[if (unit.hasFilters())]
-[unit.contentFilterSelect()/]
-else
-[/if]
-[if (not unit.selection.oclIsUndefined())]
-	[if (unit.routedSelection())]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([unit.selectableParameters()/][unit.paginationActuals()/]);
-	[else]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
-[unit.filter.methodName/][else][unit.selection.methodName/][/if]
-([unit.selectableParameters()/][unit.paginationActuals()/]);
-	[/if]
-[elseif (unit.oclIsKindOf(DataUnit))]
-[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
-	[if (not dataUnit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[dataUnit.defaultSelection.methodName/]([unit.selectableParameters()/][unit.paginationActuals()/]);
-	[else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
-	[/if]
-[/let]
-[else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([unit.paginationActuals()/]);
-[/if]
-[/template]
-
-[template private contentFilterSelect(unit : CollectionUnit) post(trim())]
-[for (filter : Filter | unit.supportedFilters) separator('else')]
-if ($request->query->has('[filter.name/]Filter'))
-    [unit.contentFilterCall(filter)/]
-[/for]
-[/template]
-
-[template private contentFilterCall(unit : CollectionUnit, filter : Filter)]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
-[for (parameter : FormalParameter | filter.parameters)]
-    $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())],[/if]
-[/for]
-[if (filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
-    [unit.paginationActuals()/]
-[/if]
-);
-[/template]
-
-[template private selectMethodParameters(unit : SelectableUnit) post(trim())]
+[template private selectMethodParameters(unit : CollectionUnit) post(trim())]
 [unit.selectMethodParameters(false)/]
 [/template]
 
-[template private selectMethodParameters(unit : SelectableUnit, formal : Boolean) post(trim())]
+[template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
 [if (unit.oclAsType(DynamicUnit).hasFilterParameters() or unit.oclAsType(DynamicUnit).hasPagination())][if (formal)]
-Request [/if]$request[if (not unit.selectionType.oclIsUndefined())][if (unit.selectionType.uriPathKeys()->notEmpty())]
+Request [/if]$request[if (not unit.selection.selectVia.oclIsUndefined())]
+[if (unit.selection.selectVia.partOf.uriPathKeys()->notEmpty())]
 , [/if][/if][/if]
-[unit.selectableParameters()/]
+[unit.selectionParameters()/]
 [/template]
 
-[template private selectableParameters(unit : SelectableUnit) post(trim())]
-[if (not unit.selectionType.oclIsUndefined())]
-	[for (key : Attribute | unit.selectionType.uriPathKeys()) separator(', ')]
-$[key.routeParameterName(unit.selectionType)/][/for]
+[template private selectionParameters(unit : CollectionUnit) post(trim())]
+[if (not unit.selection.selectVia.oclIsUndefined())]
+[let selectionEntity : EntityOrView = unit.selection.selectVia.partOf]
+	[for (key : Attribute | selectionEntity.uriPathKeys()) separator(', ')]
+$[key.routeParameterName(selectionEntity)/][/for]
+[/let]
 [/if]
 [/template]
 
@@ -165,6 +81,52 @@ $[key.routeParameterName(unit.selectionType)/][/for]
 [/if]
 [/template]
 
+[template private selectCode(unit : CollectionUnit) post(trim())]
+[if (unit.defaultPaginationSize > 0)]
+$this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
+[/if]
+[if (unit.hasFilters())]
+[unit.filterSelect()/]
+else
+[/if]
+[comment if (unit.hasFilters())    /][if (not unit.selection.oclIsUndefined())]
+	[if (unit.routedSelection())]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([unit.selectionParameters()/][unit.paginationActuals()/]);
+	[else]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
+[unit.filter.methodName/][else][unit.selection.methodName/][/if]
+([unit.selectionParameters()/][unit.paginationActuals()/]);
+	[/if]
+[elseif (unit.oclIsKindOf(DataUnit))]
+[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
+	[if (not dataUnit.defaultSelection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[dataUnit.defaultSelection.methodName/]([unit.selectionParameters()/][unit.paginationActuals()/]);
+	[else]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+	[/if]
+[/let]
+[else]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([unit.paginationActuals()/]);
+[/if]
+[/template]
+
+[template private filterSelect(unit : CollectionUnit) post(trim())]
+[for (filter : Filter | unit.supportedFilters) separator('else')]
+if ($request->query->has('[filter.name/]Filter'))
+    [unit.filterCall(filter)/]
+[/for]
+[/template]
+
+[template private filterCall(unit : CollectionUnit, filter : Filter)]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
+[for (parameter : FormalParameter | filter.parameters)]
+    $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())],[/if]
+[/for]
+[if (filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
+    [unit.paginationActuals()/]
+[/if]
+);
+[/template]
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
 [if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1 or unit.hasDeleteActions())]
@@ -173,9 +135,6 @@ $[key.routeParameterName(unit.selectionType)/][/for]
 	[else]
 $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 	[/if]
-[/if]
-[if (not unit.selectionType.oclIsUndefined())]
-$parameters['['/]'[unit.selectionType.instanceName()/]'[']'/] = $this->[unit.selectionType.instanceName()/];
 [/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (unit.defaultPaginationSize > 0)]

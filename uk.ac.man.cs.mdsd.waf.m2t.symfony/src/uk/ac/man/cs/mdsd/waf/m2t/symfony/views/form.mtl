@@ -61,7 +61,7 @@
 {{ form_end([accessor/], {'render_rest': false}) }}
 [/template]
 
-[template private disable(unit : ContentUnit) post(trim())]
+[template private disable(unit : DynamicUnit) post(trim())]
 [if (not unit.oclIsKindOf(EditUnit))]
 {% if [unit.instanceName()/].data.vars.[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
 [else]
@@ -81,7 +81,7 @@
 [/if]
 [/template]
 
-[template private primaryId(unit : ContentUnit) post(trim())]
+[template private primaryId(unit : DynamicUnit) post(trim())]
 [let contentType : EntityOrView = unit.contentType()]
 [if (contentType.primaryKeys()->isEmpty())]
 [contentType.autoKeyName/]

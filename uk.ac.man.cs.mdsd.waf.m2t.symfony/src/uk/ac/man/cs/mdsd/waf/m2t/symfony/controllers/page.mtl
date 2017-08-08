@@ -106,7 +106,7 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 public function [unit.supportActionName()/]([page.supportActionMethodParameters(unit)/])
 {
 	[if (unit.oclIsTypeOf(DetailsUnit))]
-    $[unit.contentType().instanceName()/] = [unit.selectType().loadInstance(unit)/];
+    $[unit.contentType().instanceName()/] = [unit.routingType().loadInstance(unit)/];
     [unit.actionHandlers()/]
 	[else]
     [unit.actionHandlers()/]
@@ -132,7 +132,7 @@ public function [unit.supportActionName()/]([page.supportActionMethodParameters(
 
 [template private supportActionMethodParameters(page : Page, unit : DynamicUnit) post(trim())]
 [if (unit.oclIsKindOf(CollectionUnit))]
-[page.actionMethodParameters(unit, unit.oclAsType(CollectionUnit).selectionType, true)/]
+[page.actionMethodParameters(unit, unit.oclAsType(CollectionUnit).routingType(), true)/]
 [else]
 [page.actionMethodParameters(unit, unit.contentType(), true)/]
 [/if]
@@ -200,7 +200,7 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
 [/if]
 [if (feature.operation.resultType = OperationResultTypes::None)]
 
-    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
 [/if]
 }
 [/let]

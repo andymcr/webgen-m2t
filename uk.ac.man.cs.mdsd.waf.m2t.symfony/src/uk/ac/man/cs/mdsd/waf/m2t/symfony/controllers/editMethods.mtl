@@ -45,7 +45,7 @@
 
 [template private actionAddMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-[let selectType : EntityOrView = unit.selectType()]
+[let routingType : EntityOrView = unit.routingType()]
 /**
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
  [unit.routeAnnotation(unit.oclAsType(CreateUpdateUnit).createUriElement, unit.addSuffix(), true)/]
@@ -53,7 +53,7 @@
  [unit.routeAnnotation(unit.uriElement, unit.addSuffix(), true)/]
 [/if]
  */
-public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectType.container())/])
+public function [unit.actionName()/]X([page.actionMethodParameters(unit, routingType.container())/])
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
     $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), unit.addSuffix(), true, false)/];
@@ -102,7 +102,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
 [/if]
 
 [if (page.units->size() > 1 or unit.oclIsTypeOf(CreateUpdateUnit))]
-    return $this->renderPage([page.renderActualParameters(selectType.container())/]);
+    return $this->renderPage([page.renderActualParameters(routingType.container())/]);
 [else]
     $parameters = array();
     $parameters['['/]'title'[']'/] = '[page.displayLabel/]';
@@ -120,7 +120,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, selectT
 /**
  [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.selectType())/])
+public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType())/])
 {
     [unit.loadSelectedInstance()/]
     $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), '', false, false)/];
@@ -142,7 +142,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.sel
 [/if]
 
 [if (not unit.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)]
-    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
 [else]
     $parameters = array();
     $parameters['['/]'title'[']'/] = '[page.displayLabel/]';

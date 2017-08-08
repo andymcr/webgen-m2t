@@ -101,7 +101,7 @@ $[key.routeParameterName(resource)/][/for]
 [query public uriPathValidatedKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
 	= let selectType : EntityOrView
 			= if not parentPath then
-					unit.selectType()
+					unit.routingType()
 				else
 					unit.contentType().parentEntity()
 				endif
@@ -190,18 +190,14 @@ $[key.routeParameterName(resource)/][/for]
 
 [query private selectUriPath(unit : ContentUnit, suffix : String, parentPath : Boolean) : String
 	= let element : String
-		= if not unit.oclIsKindOf(SelectableUnit) then
-				''
-			else
-				let selectable : SelectableUnit = unit.oclAsType(SelectableUnit)
-				in if selectable.selectionType.oclIsUndefined() then
-						''
-					else if parentPath then
-						selectable.selectionType.parentUriPath(unit)
-					else
-						selectable.selectionType.uriPath(unit)
-					endif endif
-			endif
+		= let routingType : EntityOrView = unit.routingType()
+			in if routingType.oclIsUndefined() then
+					''
+				else if parentPath then
+					routingType.parentUriPath(unit)
+				else
+					routingType.uriPath(unit)
+				endif endif
 		in element.combinePaths(suffix)
 /]
 

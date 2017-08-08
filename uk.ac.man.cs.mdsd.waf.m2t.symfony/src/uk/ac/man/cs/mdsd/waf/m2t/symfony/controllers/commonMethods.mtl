@@ -48,8 +48,8 @@ Request $request[if (entity.hasRouteParameters(unit))]
 [/if]
 [/template]
 
-[template public renderActualParameters(page : Page, entityOrView : EntityOrView) post(trim())]
-[if (entityOrView.oclIsUndefined())]
+[template public renderActualParameters(page : Page, entity : EntityOrView) post(trim())]
+[if (entity.oclIsUndefined())]
 	[if (page.hasFilterParameters() or page.hasPagination())]
 $request
 	[/if]
@@ -57,28 +57,26 @@ $request
 [if (page.hasFilterParameters() or page.hasPagination())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
-$[key.routeParameterName(entityOrView)/][/for]
+$[key.routeParameterName(entity)/][/for]
 [/if]
 [/template]
 
 
 [template public getContentService(unit : DynamicUnit) post(trim())]
 $this->get('[unit.contentService().serviceName()/]')
-
 [/template]
 
 [template public getSelectionService(unit : CollectionUnit) post(trim())]
 $this->get('[unit.selectionService().serviceName()/]')
-
 [/template]
 
-[template public loadInstance(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
-[unit.getContentService()/]->find([entityOrView.findActualParameters(unit)/])
+[template public loadInstance(entity : EntityOrView, unit : DynamicUnit) post(trim())]
+[unit.getContentService()/]->find([entity.findActualParameters(unit)/])
 [/template]
 
-[template public findActualParameters(entityOrView : EntityOrView, unit : DynamicUnit) post(trim())]
-[for (key : Attribute | entityOrView.uriPathKeys()) separator (', ')]
-[let parameterName : String = key.routeParameterName(entityOrView)]
+[template public findActualParameters(entity : EntityOrView, unit : DynamicUnit) post(trim())]
+[for (key : Attribute | entity.uriPathKeys()) separator (', ')]
+[let parameterName : String = key.routeParameterName(entity)]
 	[if (unit.hasRouteActual(key))]
 [unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()))/][elseif (key.encodeUriKey)]
 urldecode($[parameterName/])[else]
@@ -89,7 +87,7 @@ $[parameterName/][/if]
 
 [template public loadSelectedInstance(unit : DataUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
+$this->[unit.instanceName()/] = [unit.routingType().loadInstance(unit)/];
 [else]
 $this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.methodName/]();
 [/if]
@@ -97,7 +95,7 @@ $this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelect
 
 [template public loadSelectedInstance(unit : EditUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
+$[unit.instanceName()/] = [unit.routingType().loadInstance(unit)/];
 [else]
 $[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]
@@ -105,7 +103,7 @@ $[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.in
 
 [template public loadSelectedInstance(unit : ImageUnit) post(trim())]
 [if (unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.selectType().loadInstance(unit)/];
+$this->[unit.instanceName()/] = [unit.routingType().loadInstance(unit)/];
 [else]
 $this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]();
 [/if]

@@ -29,12 +29,12 @@
 /**
  [unit.routeAnnotation()/]
  */
-public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.selectType())/])
+public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType())/])
 {
     [unit.loadSelectedInstance()/]
 
 [if (page.units->size() > 1)]
-    return $this->renderPage([page.renderActualParameters(unit.selectType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
 [else]
     $parameters = array();
     [page.templateParameters()/]
@@ -59,8 +59,8 @@ if (isset($this->[detailsUnit.instanceName()/]))
 if (!isset($this->[detailsUnit.instanceName()/]))
 		[if (not detailsUnit.defaultSelection.oclIsUndefined())]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.getContentService()/]->[detailsUnit.defaultSelection.methodName/]();
-		[elseif (page.uriCommonPathKeys()->includesAll(unit.selectType().uriPathKeys()))]
-    $this->[detailsUnit.instanceName()/] = [detailsUnit.selectType().loadInstance(detailsUnit)/];
+		[elseif (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()))]
+    $this->[detailsUnit.instanceName()/] = [detailsUnit.routingType().loadInstance(detailsUnit)/];
 		[else]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
 		[/if]

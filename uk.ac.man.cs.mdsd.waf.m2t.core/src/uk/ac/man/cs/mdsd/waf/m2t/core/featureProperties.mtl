@@ -863,6 +863,20 @@
 	= unit.routeActuals->any(a | a.routeParameter = key)
 /]
 
+[query public routingType(unit : CollectionUnit) : EntityOrView
+	= if not unit.selection.selectVia.oclIsUndefined() then
+			unit.selection.selectVia.opposite.partOf
+		else
+			let association : EntityAssociation
+				= unit.contentType->first().containingAssociation()
+				in if association.oclIsUndefined() then
+						null
+					else
+						association.opposite.partOf
+					endif
+		endif
+/]
+
 [query public rowClasses(unit : IndexUnit) : Sequence(String)
 	= unit.rowClasses.tokenize(' ')
 /]
@@ -873,25 +887,25 @@
 
 [query public selectionService(unit : CollectionUnit) : Service
 	= let model : WafModel = unit.oclAsType(DynamicUnit).pageDisplayedOn().partOf
-		in if not unit.selectionType.oclIsUndefined() then
-				model.services(unit.selectionType)->first()
-			else if unit.contentType->notEmpty() then
-				model.services(unit.contentType->first())->first()
+		in if not unit.selectionType().oclIsUndefined() then
+				model.services(unit.selectionType())->first()
 			else
 				null
-			endif endif
+			endif
 /]
 
-[query public selectionType(unit : SelectableUnit) : EntityOrView
-	= if not unit.selectionType.oclIsUndefined() then
-			unit.selectionType
-		else if unit.oclIsTypeOf(SingletonUnit) then
-			unit.oclAsType(SingletonUnit).contentType
-		else if unit.oclIsTypeOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).contentType->first().container()
+[query public selectionType(unit : CollectionUnit) : EntityOrView
+	= if not unit.selection.selectVia.oclIsUndefined() then
+			unit.selection.selectVia.opposite.partOf
 		else
-			null
-		endif endif endif
+			let association : EntityAssociation
+				= unit.contentType->first().containingAssociation()
+				in if not association.oclIsUndefined() then
+						association.opposite.partOf
+					else
+						unit.contentType->first()
+					endif
+		endif
 /]
 
 [query public submitLabel(unit : DynamicUnit) : String
