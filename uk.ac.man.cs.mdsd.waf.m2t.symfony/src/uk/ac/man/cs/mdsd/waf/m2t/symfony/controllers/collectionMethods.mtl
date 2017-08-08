@@ -89,9 +89,10 @@ $this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1
 [unit.filterSelect()/]
 else
 [/if]
-[comment if (unit.hasFilters())    /][if (not unit.selection.oclIsUndefined())]
+[if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.routedSelection())]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([unit.selectionParameters()/][unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.methodName/]([if (not unit.selection.selectVia.oclIsUndefined())]
+[unit.selectionParameters()/][if (unit.selection.selectVia.partOf.hasRouteParameters())], [/if][/if][unit.paginationActuals()/]);
 	[else]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
 [unit.filter.methodName/][else][unit.selection.methodName/][/if]
