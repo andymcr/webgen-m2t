@@ -181,9 +181,9 @@ $[key.routeParameterName(resource)/][/for]
 		else
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
 			in if dynamicUnit.contentType().oclIsUndefined() then
-					''
+					unit.uriElement
 				else
-					dynamicUnit.contentType().uriPath(unit)
+					unit.uriElement.combinePaths(dynamicUnit.contentType().uriPath(unit))
 				endif
 		endif
 /]
