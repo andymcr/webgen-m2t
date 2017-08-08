@@ -512,8 +512,8 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 
 [template private joins(selection : Selection) post(trim())]
 [if (not selection.selectVia.oclIsUndefined())]
-	[if (selection.entities()->excludes(selection.selectVia.partOf))]
-$queryBuilder->join('[selection.selectVia.targetType().selectName()/].[selection.selectVia.opposite().modelPropertyName()/]', '[selection.selectVia.partOf.selectName()/]');
+	[if (selection.entities()->excludes(selection.selectVia.opposite.partOf))]
+$queryBuilder->join('[selection.selectVia.sourceType().selectName()/].[selection.selectVia.modelPropertyName()/]', '[selection.selectVia.targetType().selectName()/]');
 	[/if]
 [/if]
 [for (join : Association | selection.joins)]
@@ -523,15 +523,15 @@ $queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '
 
 [template private condition(selection : Selection) post(trim())]
 [if (not selection.selectVia.oclIsUndefined())]
-[let selectionEntity : EntityOrView = selection.selectVia.partOf]
-	[if (selectionEntity.uriPathKeys()->size() = 1)]
-	[let key : Attribute = selectionEntity.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(selectionEntity)/]'));
+[let routingEntity : EntityOrView = selection.selectVia.targetType()]
+	[if (routingEntity.uriPathKeys()->size() = 1)]
+	[let key : Attribute = routingEntity.uriPathKeys()->first()]
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'));
 	[/let]
 	[else]
 $queryBuilder->where($queryBuilder->expr->andX(
-		[for (key : Attribute | selectionEntity.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(selectionEntity)/]'),
+		[for (key : Attribute | routingEntity.uriPathKeys())]
+    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'),
 		[/for]
 ));
 	[/if]
@@ -573,9 +573,9 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/template]
 
 [template private querySelectedParameters(selection : Selection) post(trim())]
-[let selectionEntity : EntityOrView = selection.selectVia.partOf]
-	[for (key : Attribute | selectionEntity.uriPathKeys())]
-$query->setParameter('[key.routeParameterName(selectionEntity)/]', $[key.routeParameterName(selectionEntity)/]);
+[let routingEntity : EntityOrView = selection.selectVia.targetType()]
+	[for (key : Attribute | routingEntity.uriPathKeys())]
+$query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routeParameterName(routingEntity)/]);
 	[/for]
 [/let]
 [/template]
