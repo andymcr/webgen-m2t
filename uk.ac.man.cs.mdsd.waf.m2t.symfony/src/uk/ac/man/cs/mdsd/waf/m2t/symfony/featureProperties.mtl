@@ -69,13 +69,6 @@
 			endif
 /]
 
-[comment 'remove when select removed after selectVia implemented'/]
-[query public isSelected(selection : Selection) : Boolean
-	= selection.selected and not selection.partOf.serves.parentEntity().oclIsUndefined()
-/]
-
-
-
 [query public routedSelection(unit : CollectionUnit) : Boolean
 	= if unit.selection.oclIsUndefined() then
 			false

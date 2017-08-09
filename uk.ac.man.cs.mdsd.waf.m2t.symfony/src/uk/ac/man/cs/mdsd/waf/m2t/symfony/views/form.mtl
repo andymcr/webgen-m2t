@@ -29,7 +29,13 @@
 
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
 [for (field : UnitField | unit.inputAndEmbeddedFields())]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
 [field.formField(unit, accessor)/]
+	[if (field.requiresRole <> '')]
+{% endif %}
+	[/if]
 [/for]
 [/template]
 

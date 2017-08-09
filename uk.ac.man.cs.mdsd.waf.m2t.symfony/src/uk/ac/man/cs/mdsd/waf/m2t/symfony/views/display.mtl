@@ -206,6 +206,9 @@
 <dl class="[unit.contentClass/]">
 [/if]
 [for (field : UnitField | unit.displayFields)]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
 	[if (field.conditionalDisplay())]
 {% if [field.getImmediateValue(accessor, true)/] is not null %}
 	[/if]
@@ -233,6 +236,9 @@
 			[/if]
 		[/let]
 		[/if]
+{% endif %}
+	[/if]
+	[if (field.requiresRole <> '')]
 {% endif %}
 	[/if]
 [/for]
@@ -274,11 +280,17 @@
 
 [template private entry(unit : IndexLineDirectionUnit, accessor : String, objectAccess : Boolean, depthIndex : Integer) post(trim())]
 [for (field : UnitField | unit.displayFields) ]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
 	[if (field.conditionalDisplay())]
 {% if [field.getValue(accessor.concat('.').concat(field.modelPropertyName()))/] is not null %}
 	[/if]
 <span class="[field.modelPropertyName()/]">[field.displayValue(accessor, objectAccess, depthIndex)/]</span>
 	[if (field.conditionalDisplay())]
+{% endif %}
+	[/if]
+	[if (field.requiresRole <> '')]
 {% endif %}
 	[/if]
 [/for]
@@ -321,9 +333,15 @@
  <thead class="[indexUnit.headerClass/]">
   <tr>
  	[for (field : UnitField | indexUnit.displayFields)]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
    <th>[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[field.entity().id()/].labels.[field.id()/]' | trans }}[/if]</th>
+	[if (field.requiresRole <> '')]
+{% endif %}
+	[/if]
  	[/for]
 	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
    <th>Actions</th>
@@ -358,7 +376,13 @@
 
 [template private entry(unit : IndexGridUnit, accessor : String, objectAccess : Boolean, depthIndex : Integer) post(trim())]
 [for (field : UnitField | unit.displayFields)]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
 <td class="[field.styleClass()/]">[field.displayValue(accessor, objectAccess, depthIndex)/]</td>
+	[if (field.requiresRole <> '')]
+{% endif %}
+	[/if]
 [/for]
 [/template]
 

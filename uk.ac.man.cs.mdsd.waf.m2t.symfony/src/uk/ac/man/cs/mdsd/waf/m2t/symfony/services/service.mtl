@@ -375,7 +375,7 @@ public function [filter.methodName/]([filter.formals()/])
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
-[if (filter.selection.isSelected() or filter.selection.parameters->notEmpty())]
+[if (not filter.selection.selectVia.oclIsUndefined() or filter.selection.parameters->notEmpty())]
 [selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
 , [/if]
 [/if]
@@ -425,7 +425,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private actuals(filter : Filter) post(trim())]
-[if (filter.selection.isSelected() or filter.selection.parameters->notEmpty())]
+[if (not filter.selection.selectVia.oclIsUndefined() or filter.selection.parameters->notEmpty())]
 [selection.selectionActuals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
 , [/if]
 [/if]
