@@ -142,7 +142,7 @@ if not association.childFeature.oclIsUndefined() then
 /]
 
 [query public serviceAccessor(association : UnitAssociation) : String
-	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
+	= association.association.sourceType().services(association.model())->first().className().toLowerFirst()
 /]
 
 [query public accessor(feature : FeaturePath, parentAccessor : String) : String
@@ -206,5 +206,5 @@ if not association.childFeature.oclIsUndefined() then
 /]
 
 [query private serviceAccessor(association : ChildPathAssociation) : String
-	= association.association.partOf.services(association.model())->first().className().toLowerFirst()
+	= association.association.sourceType().services(association.model())->first().className().toLowerFirst()
 /]

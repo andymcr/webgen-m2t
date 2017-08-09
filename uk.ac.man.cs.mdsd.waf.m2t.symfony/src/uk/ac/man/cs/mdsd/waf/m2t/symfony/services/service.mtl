@@ -512,7 +512,7 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 
 [template private joins(selection : Selection) post(trim())]
 [if (not selection.selectVia.oclIsUndefined())]
-	[if (selection.entities()->excludes(selection.selectVia.opposite.partOf))]
+	[if (selection.entities()->excludes(selection.selectVia.targetType()))]
 $queryBuilder->join('[selection.selectVia.sourceType().selectName()/].[selection.selectVia.modelPropertyName()/]', '[selection.selectVia.targetType().selectName()/]');
 	[/if]
 [/if]
@@ -666,7 +666,7 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [for (association : Association | entity.associations())]
 	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
 	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
-[entityAssociation.pseudoAssociationMethod(entityAssociation.opposite.partOf.services(model)->first())/]
+[entityAssociation.pseudoAssociationMethod(entityAssociation.targetType().services(model)->first())/]
 
 	[/let]
 	[/if]
@@ -675,50 +675,44 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 
 [template private pseudoAssociationMethod(association : EntityAssociation, targetService : Service)
 	? (targetService.selections->isEmpty()) post(trim())]
-[let sourceType : EntityOrView = association.partOf]
-[let targetType : EntityOrView = association.opposite.partOf]
-public function [association.name/]($[sourceType.selectName()/])
+public function [association.name/]($[association.sourceType().selectName()/])
 {
-    [association.pseudoBuilderCode(sourceType, targetType)/]
+    [association.pseudoBuilderCode(association.sourceType(), association.targetType())/]
 
     $query = $queryBuilder->getQuery();
-    [sourceType.pseudoParameterCode()/]
+    [association.sourceType().pseudoParameterCode()/]
 
     [association.pseudoQueryResult()/]
 }
-[/let]
-[/let]
 [/template]
 
 [template private pseudoAssociationMethod(association : EntityAssociation, targetService : Service)
 	? (targetService.selections->notEmpty()) post(trim())]
-[let sourceType : EntityOrView = association.partOf]
-[let targetType : EntityOrView = association.opposite.partOf]
 private function [association.builderMethodName()/]()
 {
-    [association.pseudoBuilderCode(sourceType, targetType)/]
+    [association.pseudoBuilderCode(association.sourceType(), association.targetType())/]
     return $queryBuilder;
 }
 
-[if (sourceType.uriPathKeys()->notEmpty())]
-private function [association.parametersMethodName()/]($query, $[sourceType.selectName()/])
+[if (association.sourceType().uriPathKeys()->notEmpty())]
+private function [association.parametersMethodName()/]($query, $[association.sourceType().selectName()/])
 {
-    [sourceType.pseudoParameterCode()/]
+    [association.sourceType().pseudoParameterCode()/]
 }
 
 [/if]
-public function [association.name/]($[sourceType.selectName()/])
+public function [association.name/]($[association.sourceType().selectName()/])
 {
     $query = $this->[association.builderMethodName()/]()->getQuery();
-[if (sourceType.uriPathKeys()->notEmpty())]
-    $this->[association.parametersMethodName()/]($query, $[sourceType.selectName()/]);
+[if (association.sourceType().uriPathKeys()->notEmpty())]
+    $this->[association.parametersMethodName()/]($query, $[association.sourceType().selectName()/]);
 [/if]
 
     [association.pseudoQueryResult()/]
 }
 [for (selection : Selection | targetService.selections->select(s | not s.condition.oclIsUndefined() or s.ordering->notEmpty()))]
 
-public function [association.findMethodName(selection)/]($[sourceType.selectName()/])
+public function [association.findMethodName(selection)/]($[association.sourceType().selectName()/])
 {
     $queryBuilder = $this->[association.builderMethodName()/]();
 	[if (selection.joins->notEmpty())]
@@ -731,15 +725,13 @@ public function [association.findMethodName(selection)/]($[sourceType.selectName
     [selection.orderBy()/]
 	[/if]
     $query = $queryBuilder->getQuery();
-	[if (sourceType.uriPathKeys()->notEmpty())]
-    $this->[association.parametersMethodName()/]($query, $[sourceType.selectName()/]);
+	[if (association.sourceType().uriPathKeys()->notEmpty())]
+    $this->[association.parametersMethodName()/]($query, $[association.sourceType().selectName()/]);
 	[/if]
 
     [association.pseudoQueryResult()/]
 }
 [/for]
-[/let]
-[/let]
 [/template]
 
 [template private pseudoBuilderCode(association : EntityAssociation, sourceType : EntityOrView, targetType : EntityOrView) post(trim())]

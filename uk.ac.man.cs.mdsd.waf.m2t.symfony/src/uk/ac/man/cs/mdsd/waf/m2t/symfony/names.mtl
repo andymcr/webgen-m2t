@@ -103,12 +103,12 @@
 	= let entityOrView : EntityOrView
 		= if service.serves.features->includes(association) then
 				if association.oclIsKindOf(EntityAssociation) then
-					association.oclAsType(EntityAssociation).opposite.partOf
+					association.oclAsType(EntityAssociation).targetType()
 				else
-					association.partOf -- TODO fix
+					association.sourceType() -- TODO fix
 				endif
 			else
-				association.partOf
+				association.sourceType()
 			endif
 		in entityOrView.selectName()
 /]

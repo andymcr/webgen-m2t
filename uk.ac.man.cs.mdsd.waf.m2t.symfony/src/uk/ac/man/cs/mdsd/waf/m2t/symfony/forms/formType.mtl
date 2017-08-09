@@ -274,7 +274,7 @@ TextType::class
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
-    'label' => '[association.partOf.id()/].labels.[association.id()/]',
+    'label' => '[association.sourceType().id()/].labels.[association.id()/]',
     'translation_domain' => 'entity',
 [if (not association.isSingleton() or not association.isRequired())]
     'required' => false,
@@ -284,14 +284,14 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     'choice_translation_domain' => false,
 [if (association.isSingleton())]
 	[if (not association.placeholder.oclIsUndefined())]
-    'placeholder' => '[association.partOf.id()/].placeholders.[association.id()/]',
+    'placeholder' => '[association.sourceType().id()/].placeholders.[association.id()/]',
 	[else]
     'placeholder' => 'actions.labels.select_one',
 	[/if]
 [else]
     'multiple' => true,
 [/if]
-[if (association.partOf.allowFormTypeCustomisation)]
+[if (association.sourceType().allowFormTypeCustomisation)]
 // [protected ('custom.'.concat(association.modelPropertyName()))]
 // [/protected]
 [/if]

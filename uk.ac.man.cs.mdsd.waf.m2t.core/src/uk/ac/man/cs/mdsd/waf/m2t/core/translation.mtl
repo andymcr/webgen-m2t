@@ -15,7 +15,7 @@
 	= if field.oclIsKindOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.partOf.id()
 		else if field.oclIsKindOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).association.partOf.id()
+			field.oclAsType(UnitAssociation).association.sourceType().id()
 		else if field.oclIsKindOf(InterfaceField) then
 			'Unexpected'
 		else

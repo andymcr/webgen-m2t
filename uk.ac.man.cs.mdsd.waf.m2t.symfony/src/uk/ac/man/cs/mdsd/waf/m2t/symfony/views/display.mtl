@@ -480,7 +480,7 @@
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
-				feature.oclAsType(UnitAssociation).association.partOf
+				feature.oclAsType(UnitAssociation).association.sourceType()
 			endif]
 [feature.actions->select(a | not a.disable)
 	->first().actionLink(parentEntity, feature.displayedOn, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess())/]

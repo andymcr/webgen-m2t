@@ -58,6 +58,20 @@
 /]
 
 
+[query public routingType(unit : CollectionUnit) : EntityOrView
+	= if not unit.selection.selectVia.oclIsUndefined() then
+			unit.selection.selectVia.targetType()
+		else
+			let association : EntityAssociation
+				= unit.contentType->first().containingAssociation()
+				in if association.oclIsUndefined() or unit.oclAsType(SelectableUnit).selectors->isEmpty() then
+						null
+					else
+						association.targetType()
+					endif
+		endif
+/]
+
 [query public routingType(unit : ContentUnit) : EntityOrView
 	= if unit.oclIsKindOf(CollectionUnit) then
 			unit.oclAsType(CollectionUnit).routingType()

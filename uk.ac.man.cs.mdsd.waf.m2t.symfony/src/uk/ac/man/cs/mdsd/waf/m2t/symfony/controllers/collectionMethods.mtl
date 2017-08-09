@@ -98,8 +98,10 @@ else
 [/if]
 [if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.routedSelection())]
-		[if (unit.defaultPaginationSize > 0)]
-// $this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->findOne([unit.routingParameters()/]);
+		[if (not unit.selection.oclIsUndefined())]
+			[if (not unit.selection.selectVia.oclIsUndefined() and unit.defaultPaginationSize > 0)]
+$this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->find([unit.routingParameters()/]);
+			[/if]
 		[/if]
 $this->[unit.instanceName()/] = [dynamicUnit.getContentService()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
@@ -145,6 +147,11 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 [unit.selectCode()/]
 	[else]
 $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
+	[/if]
+[/if]
+[if (not unit.selection.oclIsUndefined())]
+	[if (not unit.selection.selectVia.oclIsUndefined() and unit.defaultPaginationSize > 0)]
+$parameters['['/]'[unit.routingType().instanceName()/]'[']'/] = $this->[unit.routingType().instanceName()/];
 	[/if]
 [/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];

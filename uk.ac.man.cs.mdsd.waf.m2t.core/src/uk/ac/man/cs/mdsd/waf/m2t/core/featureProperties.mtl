@@ -863,20 +863,6 @@
 	= unit.routeActuals->any(a | a.routeParameter = key)
 /]
 
-[query public routingType(unit : CollectionUnit) : EntityOrView
-	= if not unit.selection.selectVia.oclIsUndefined() then
-			unit.selection.selectVia.opposite.partOf
-		else
-			let association : EntityAssociation
-				= unit.contentType->first().containingAssociation()
-				in if association.oclIsUndefined() then
-						null
-					else
-						association.opposite.partOf
-					endif
-		endif
-/]
-
 [query public rowClasses(unit : IndexUnit) : Sequence(String)
 	= unit.rowClasses.tokenize(' ')
 /]
@@ -896,14 +882,14 @@
 
 [query public selectionType(unit : CollectionUnit) : EntityOrView
 	= if not unit.selection.selectVia.oclIsUndefined() then
-			unit.selection.selectVia.opposite.partOf
+			unit.selection.selectVia.targetType()
 		else
 			let association : EntityAssociation
 				= unit.contentType->first().containingAssociation()
-				in if not association.oclIsUndefined() then
-						association.opposite.partOf
-					else
+				in if association.oclIsUndefined() or unit.oclAsType(SelectableUnit).selectors->isEmpty() then
 						unit.contentType->first()
+					else
+						association.targetType()
 					endif
 		endif
 /]
@@ -1058,7 +1044,7 @@
 	= if field.oclIsKindOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.partOf
 		else if field.oclIsKindOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).association.partOf
+			field.oclAsType(UnitAssociation).association.sourceType()
 		else 
 			null
 		endif endif
