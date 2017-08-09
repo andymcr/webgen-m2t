@@ -148,6 +148,9 @@ return new Response("No action taken", 200);
 [let contentType : EntityOrView = unit.contentType()]
 /**
  * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
+[if (deleteAction.requiresRole <> '')]
+ [deleteAction.securityAnnotation()/]
+[/if]
  */
 public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, contentType)/])
 {
@@ -167,22 +170,25 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
 
 [template private actionMethod(action : InlineAction, page : Page)
 	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
-[let feature : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+[let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
 [let unit : DynamicUnit = action.immediateUnit()]
 [let contentType : EntityOrView = unit.contentType()]
 /**
- * @Route("[feature.uriPath()/]", name="[feature.routeName()/]")
+ * @Route("[featureAction.uriPath()/]", name="[featureAction.routeName()/]")
+[if (featureAction.requiresRole <> '')]
+ [featureAction.securityAnnotation()/]
+[/if]
  */
 public function [action.actionName()/]([page.actionMethodParameters(unit, contentType)/])
 {
-[if (feature.operation.resultType = OperationResultTypes::None)]
-    $this->get('[feature.operation.partOf.serviceName()/]')
-        ->[feature.operation.methodName()/]([contentType.loadInstance(unit)/]);
-[elseif (feature.operation.resultType = OperationResultTypes::File)]
-    $tempFilename = $this->get('[feature.operation.partOf.serviceName()/]')
-        ->[feature.operation.methodName()/]([contentType.loadInstance(unit)/], '[feature.fileExtension/]');
+[if (featureAction.operation.resultType = OperationResultTypes::None)]
+    $this->get('[featureAction.operation.partOf.serviceName()/]')
+        ->[featureAction.operation.methodName()/]([contentType.loadInstance(unit)/]);
+[elseif (featureAction.operation.resultType = OperationResultTypes::File)]
+    $tempFilename = $this->get('[featureAction.operation.partOf.serviceName()/]')
+        ->[featureAction.operation.methodName()/]([contentType.loadInstance(unit)/], '[featureAction.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
-    $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[feature.fileExtension/]';
+    $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[featureAction.fileExtension/]';
     $response->setContentDisposition(
         ResponseHeaderBag::DISPOSITION_ATTACHMENT,
         $filename
@@ -190,7 +196,7 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
     $response->headers->set('Content-type', mime_content_type($tempFilename));
     return $response;
 [/if]
-[if (feature.operation.resultType = OperationResultTypes::None)]
+[if (featureAction.operation.resultType = OperationResultTypes::None)]
 
     return $this->renderPage([page.renderActualParameters(unit.contentType())/]);
 [/if]
@@ -200,3 +206,6 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
 [/let]
 [/template]
 
+[template private securityAnnotation(action : InlineAction) post(trim())]
+* @Security("has_role('[action.requiresRole/]')")
+[/template]
