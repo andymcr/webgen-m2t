@@ -214,10 +214,10 @@ mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [if (association.isOwningEnd())]
 	[if (association.keys->notEmpty())]
 [association.explicitKeys()/]
-	[elseif (association.opposite.partOf.primaryKeys()->notEmpty())]
+	[elseif (association.targetType().primaryKeys()->notEmpty())]
 [association.primaryKeys()/]
 	[else]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[association.opposite.partOf.oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[association.targetType().oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 	[/if]
 [/if]
 [/let]
@@ -236,19 +236,19 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 * @ORM\JoinTable(name="[association.pivotTableName/]",
 	[if (association.keys->notEmpty())]
 [association.explicitKeysOwning()/]
-	[elseif (association.partOf.primaryKeys()->notEmpty())]
+	[elseif (association.sourceType().primaryKeys()->notEmpty())]
 [association.primaryKeysOwning()/]
 	[else]
-*     joinColumns={@ORM\JoinColumn(name="[association.columnName/]"[if (association.partOf.autoKeyName.toLowerCase() <> 'id')]
-, referencedColumnName="[association.partOf.autoKeyName.toLowerCase()/]"[/if], nullable=false)},
+*     joinColumns={@ORM\JoinColumn(name="[association.columnName/]"[if (association.sourceType().autoKeyName.toLowerCase() <> 'id')]
+, referencedColumnName="[association.sourceType().autoKeyName.toLowerCase()/]"[/if], nullable=false)},
 	[/if]
 	[if (association.keys->notEmpty())]
 [association.explicitKeysInverse()/]
-	[elseif (association.opposite.partOf.primaryKeys()->notEmpty())]
+	[elseif (association.targetType().primaryKeys()->notEmpty())]
 [association.primaryKeysInverse()/]
 	[else]
-*     inverseJoinColumns={@ORM\JoinColumn(name="[association.opposite.columnName/]"[if (association.opposite.partOf.autoKeyName.toLowerCase() <> 'id')]
-, referencedColumnName="[association.opposite.partOf.autoKeyName.toLowerCase()/]"[/if], nullable=false)})
+*     inverseJoinColumns={@ORM\JoinColumn(name="[association.opposite.columnName/]"[if (association.targetType().autoKeyName.toLowerCase() <> 'id')]
+, referencedColumnName="[association.targetType().autoKeyName.toLowerCase()/]"[/if], nullable=false)})
 	[/if]
 [/if]
 [/let]
@@ -298,12 +298,12 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [/template]
 
 [template private primaryKeys(association : SingletonAssociation) post(trim())]
-[if (association.opposite.partOf.primaryKeys()->size() = 1)]
-[let key : EntityFeature = association.opposite.partOf.primaryKeys()->first()]
+[if (association.targetType().primaryKeys()->size() = 1)]
+[let key : EntityFeature = association.targetType().primaryKeys()->first()]
 * @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
 [/let]
 [else]
-* @ORM\JoinColumns({[for (key : EntityFeature | association.opposite.partOf.primaryKeys()) separator(',')]
+* @ORM\JoinColumns({[for (key : EntityFeature | association.targetType().primaryKeys()) separator(',')]
 
 *     @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
 
@@ -317,7 +317,7 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 *     joinColumns={@ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)},
 [/let]
 [else]
-*     joinColumns={[for (key : EntityFeature | association.partOf.primaryKeys()) separator(',')]
+*     joinColumns={[for (key : EntityFeature | association.sourceType().primaryKeys()) separator(',')]
 
 *         @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
 
@@ -326,12 +326,12 @@ inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [/template]
 
 [template private primaryKeysInverse(association : CollectionAssociation) post(trim())]
-[if (association.opposite.partOf.primaryKeys()->size() = 1)]
-[let key : EntityFeature = association.opposite.partOf.primaryKeys()->first()]
+[if (association.targetType().primaryKeys()->size() = 1)]
+[let key : EntityFeature = association.targetType().primaryKeys()->first()]
 *     inverseJoinColumns={@ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)},
 [/let]
 [else]
-*     inverseJoinColumns={[for (key : EntityFeature | association.opposite.partOf.primaryKeys()) separator(',')]
+*     inverseJoinColumns={[for (key : EntityFeature | association.targetType().primaryKeys()) separator(',')]
 
 *         @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
 

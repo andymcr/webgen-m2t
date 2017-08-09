@@ -85,7 +85,7 @@
 		in if containingAssociation.oclIsUndefined() then
 				null
 			else
-				containingAssociation.opposite.partOf
+				containingAssociation.targetType()
 			endif
 /]
 
