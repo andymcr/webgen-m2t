@@ -61,7 +61,7 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-[if (page.inlineActions()->select(a | not a.requiresRole.oclIsUndefined())->notEmpty())]
+[if (page.inlineActionsRequiringHandlers()->select(a | not a.requiresRole.oclIsUndefined())->notEmpty())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
