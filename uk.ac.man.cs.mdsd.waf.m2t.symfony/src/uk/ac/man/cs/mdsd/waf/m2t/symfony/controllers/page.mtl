@@ -192,7 +192,7 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
 [/if]
 [if (feature.operation.resultType = OperationResultTypes::None)]
 
-    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.contentType())/]);
 [/if]
 }
 [/let]
