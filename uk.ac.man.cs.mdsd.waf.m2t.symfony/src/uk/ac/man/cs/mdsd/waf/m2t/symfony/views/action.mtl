@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
@@ -13,7 +14,7 @@
 
 [template public unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
 <form action="{{ path('[unit.supportRouteName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit, unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
-[for (action : UnitSupportAction | unit.supportActions())]
+[for (action : UnitSupportAction | unit.unitSupportActions())]
  [action.unitSupportLink()/]
 [/for]
 </form>

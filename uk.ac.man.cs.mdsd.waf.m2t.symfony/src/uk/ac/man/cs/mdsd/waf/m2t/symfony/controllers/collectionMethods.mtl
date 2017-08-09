@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -22,11 +23,11 @@
  */
 public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType())/])
 {
-[if (page.units->size() = 1 and not unit.hasDeleteActions())]
+[if (page.units->size() = 1 and not unit.hasInlineDeleteActions())]
     [unit.selectCode()/]
 
 [/if]
-[if (page.units->size() > 1 or unit.hasDeleteActions())]
+[if (page.units->size() > 1 or unit.hasInlineDeleteActions())]
     return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
 [else]
     $parameters = array();
@@ -142,7 +143,7 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 [/template]
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
-[if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1 or unit.hasDeleteActions())]
+[if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1 or unit.hasInlineDeleteActions())]
 	[if (unit.inlineSelectCode())]
 [unit.selectCode()/]
 	[else]

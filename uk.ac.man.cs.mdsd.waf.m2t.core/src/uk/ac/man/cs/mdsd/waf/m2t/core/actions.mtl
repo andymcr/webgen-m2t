@@ -1,0 +1,210 @@
+[comment encoding = UTF-8 /]
+[module actions(
+	'http://cs.manchester.ac.uk/mdsd/Service',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties]
+
+
+[query public fieldSelectActions(page : Page) : Sequence(InlineAction)
+	= page.dynamicUnits()->collect(u | u.fieldSelectActions())
+/]
+
+[query public hasFieldSelectActions(page : Page) : Boolean
+	= page.fieldSelectActions()->notEmpty()
+/]
+
+[query public hasInlineActions(page : Page) : Boolean
+	= page.inlineActions()->notEmpty()
+/]
+
+[query public hasInlineActionsRequiringHandlers(page : Page) : Boolean
+	= page.inlineActionsRequiringHandlers()->notEmpty()
+/]
+
+[query public hasInlineDeleteActions(page : Page) : Boolean
+	= page.inlineDeleteActions()->notEmpty()
+/]
+
+[query public hasInlineFileActions(page : Page) : Boolean
+	= page.inlineFileActions()->notEmpty()
+/]
+
+[query public hasUnitSupportActions(page : Page) : Boolean
+	= page.unitSupportActions()->notEmpty()
+/]
+
+[query public inlineActions(page : Page) : Sequence(InlineAction)
+	= page.dynamicUnits()->collect(u | u.inlineActions())
+/]
+
+[query public inlineActionsRequiringHandlers(page : Page) : Sequence(InlineAction)
+	= page.dynamicUnits()->collect(u | u.inlineActionsRequiringHandlers())
+/]
+
+[query public inlineDeleteActions(page : Page) : Sequence(DeleteAction)
+	= page.dynamicUnits()->collect(u | u.inlineDeleteActions())
+/]
+
+[query public inlineFileActions(page : Page) : Sequence(FeatureSupportAction)
+	= page.dynamicUnits()->collect(u | u.inlineFileActions())
+/]
+
+[query public unitSupportActions(page : Page) : Sequence(UnitSupportAction)
+	= page.dynamicUnits()->collect(u | u.unitSupportActions())
+/]
+
+
+[query public fieldSelectActions(unit : DynamicUnit) : Sequence(SelectAction)
+	= let childActions : Sequence(SelectAction)
+		= unit.childDynamicUnits()->collect(c | c.fieldSelectActions())
+		in childActions->iterate (
+			a;
+			actions : Sequence(SelectAction)
+				= unit.displayFields
+					->select(f | f.oclIsKindOf(InlineActionContainer)).oclAsType(InlineActionContainer)
+					->collect(c | c.inlineSelectActions())
+			| actions->append(a))
+/]
+
+[query public hasFieldSelectActions(unit : DynamicUnit) : Boolean
+	= unit.fieldSelectActions()->notEmpty()
+/]
+
+[query public hasInlineActionsRequiringHandlers(unit : DynamicUnit) : Boolean
+	= unit.inlineActionsRequiringHandlers()->notEmpty()
+/]
+
+[query public hasInlineActions(unit : DynamicUnit) : Boolean
+	= unit.inlineActions()->notEmpty()
+/]
+
+[query public hasInlineDeleteActions(unit : CollectionUnit) : Boolean
+	= unit.oclAsType(DynamicUnit).hasInlineDeleteActions()
+/]
+
+[query public hasInlineDeleteActions(unit : DynamicUnit) : Boolean
+	= unit.inlineDeleteActions()->notEmpty()
+/]
+
+[query public hasInlineFileActions(unit : DynamicUnit) : Boolean
+	= unit.inlineFileActions()->notEmpty()
+/]
+
+[query public hasUnitSupportActions(unit : DynamicUnit) : Boolean
+	= unit.unitSupportActions()->notEmpty()
+/]
+
+[query public inlineActions(unit : DynamicUnit) : OrderedSet(InlineAction)
+	= let childActions : Sequence(InlineAction)
+		= unit.childDynamicUnits()->collect(c | c.inlineActions())
+		in childActions->iterate (
+			a;
+			actions : OrderedSet(InlineAction)
+				= if unit.oclIsKindOf(InlineActionContainer) then
+						unit.oclAsType(InlineActionContainer).inlineActions()
+					else
+						OrderedSet{}
+					endif
+			| actions->append(a))
+/]
+
+[query public inlineActionsRequiringHandlers(unit : DynamicUnit) : OrderedSet(InlineAction)
+	= let childActions : Sequence(InlineAction)
+		= unit.childDynamicUnits()->collect(c | c.inlineActionsRequiringHandlers())
+		in childActions->iterate (
+			a;
+			actions : OrderedSet(InlineAction)
+				= if unit.oclIsKindOf(InlineActionContainer) then
+						unit.oclAsType(InlineActionContainer).inlineActionsRequiringHandlers()
+					else
+						OrderedSet{}
+					endif
+			| actions->append(a))
+/]
+
+[query public inlineDeleteActions(unit : DynamicUnit) : Sequence(DeleteAction)
+	= let childActions : Sequence(DeleteAction)
+		= unit.childDynamicUnits()->collect(c | c.inlineDeleteActions())
+		in childActions->iterate (
+			a;
+			actions : Sequence(DeleteAction)
+				= if unit.oclIsKindOf(InlineActionContainer) then
+						unit.oclAsType(InlineActionContainer).inlineDeleteActions()
+					else
+						Sequence{}
+					endif
+			| actions->append(a))
+/]
+
+[query public inlineFileActions(unit : DynamicUnit) : Sequence(FeatureSupportAction)
+	= let childActions : Sequence(FeatureSupportAction)
+		= unit.childDynamicUnits()->collect(c | c.inlineFileActions())
+		in childActions->iterate (
+			a;
+			actions : Sequence(FeatureSupportAction)
+				= if unit.oclIsKindOf(InlineActionContainer) then
+						unit.oclAsType(InlineActionContainer).inlineFileActions()
+					else
+						Sequence{}
+					endif
+			| actions->append(a))
+/]
+
+[query public unitSupportActions(unit : DynamicUnit) : OrderedSet(UnitSupportAction)
+	= let childActions : Sequence(UnitSupportAction)
+		= unit.childDynamicUnits()->collect(c | c.unitSupportActions())
+		in childActions->iterate (
+			a;
+			actions : OrderedSet(UnitSupportAction)
+				= unit.supportActions->select(a | not a.disable)
+			| actions->append(a))
+/]
+
+
+[query public hasInlineActions(container : InlineActionContainer) : Boolean
+	= container.inlineActions()->notEmpty()
+/]
+
+[query public inlineActions(container : InlineActionContainer) : OrderedSet(InlineAction)
+	= container.actions->select(a | not a.disable)
+/]
+
+[query public inlineActionsRequiringHandlers(container : InlineActionContainer) : OrderedSet(InlineAction)
+	= container.inlineActions()->select(a | not a.oclIsTypeOf(SelectAction))
+/]
+
+[query public inlineDeleteActions(container : InlineActionContainer) : Sequence(DeleteAction)
+	= container.inlineActions()->select(a | a.oclIsTypeOf(DeleteAction)).oclAsType(DeleteAction)
+/]
+
+[query public inlineFileActions(container : InlineActionContainer) : Sequence(FeatureSupportAction)
+	= container.inlineActions()
+		->select(a | a.oclIsTypeOf(FeatureSupportAction)).oclAsType(FeatureSupportAction)
+		->select(a | a.operation.resultType = OperationResultTypes::File)
+/]
+
+[query public inlineSelectActions(container : InlineActionContainer) : Sequence(SelectAction)
+	= container.inlineActions()->select(a | a.oclIsTypeOf(SelectAction)).oclAsType(SelectAction)
+/]
+
+
+[query public controller(action : InlineAction) : Page
+	= if action.oclIsTypeOf(SelectAction) then
+			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).pageDisplayedOn()
+		else
+			if action.usedBy.oclIsKindOf(DynamicUnit) then
+				action.usedBy.oclAsType(DynamicUnit).pageDisplayedOn()
+			else
+				null
+			endif
+		endif
+/]
+
+[query public immediateUnit(action : InlineAction) : DynamicUnit
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit)
+		else
+			action.usedBy.oclAsType(UnitFeature).displayedOn
+		endif
+/]

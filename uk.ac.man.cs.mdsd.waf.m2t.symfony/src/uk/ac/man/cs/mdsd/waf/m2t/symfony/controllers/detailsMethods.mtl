@@ -2,6 +2,7 @@
 [module detailsMethods(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -17,7 +18,7 @@
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.actionMethod()/]
 
-[for (action : InlineAction | detailsUnit.urlActions())]
+[for (action : InlineAction | detailsUnit.fieldSelectActions())]
 [comment action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
 
 [/for]

@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module indexMethods(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::collectionMethods/]
 
@@ -10,7 +11,7 @@
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [indexUnit.actionMethod()/]
 
-[if (indexUnit.pageDisplayedOn().units->size() > 1 or indexUnit.hasDeleteActions())]
+[if (indexUnit.pageDisplayedOn().units->size() > 1 or indexUnit.hasInlineDeleteActions())]
 	[if (not indexUnit.inlineSelectCode())]
 [indexUnit.selectMethod()/]
 

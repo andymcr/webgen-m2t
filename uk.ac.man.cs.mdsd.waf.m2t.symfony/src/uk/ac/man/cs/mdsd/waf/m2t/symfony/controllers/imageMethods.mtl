@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module imageMethods(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::collectionMethods/]
 
@@ -10,7 +11,7 @@
 [let imageUnit : ImageUnit = unit.oclAsType(ImageUnit)]
 [imageUnit.actionMethod()/]
 
-[if (imageUnit.pageDisplayedOn().units->size() > 1 or imageUnit.hasDeleteActions())]
+[if (imageUnit.pageDisplayedOn().units->size() > 1 or imageUnit.hasInlineDeleteActions())]
 	[if (not imageUnit.inlineSelectCode())]
 [imageUnit.selectMethod()/]
 

@@ -6,6 +6,7 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -28,7 +29,7 @@
 [editUnit.actionEditMethod()/]
 
 [/if]
-[if (editUnit.hasSupportActions())]
+[if (editUnit.hasUnitSupportActions())]
 [editUnit.updateFormMethod('')/]
 
 [/if]
@@ -57,7 +58,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, routing
 {
     $[unit.instanceName()/] = [unit.createInstance()/];
     $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), unit.addSuffix(), true, false)/];
-[if (unit.hasSupportActions())]
+[if (unit.hasUnitSupportActions())]
 
     if ($request->isMethod('POST')) {
         $formValues = $request->request->get($this->[unit.instanceName()/]->getName());
@@ -65,7 +66,7 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, routing
         [unit.handleCancelPost()/]
 
 	[/if]
-	[for (action : UnitSupportAction | unit.supportActions())]
+	[for (action : UnitSupportAction | unit.unitSupportActions())]
         [if (i > 1)]} else [/if]if ($request->request->has('[action.name.toLowerFirst()/]')) {
             // [protected ('Support action '.concat(action.name))]
             // [/protected]

@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
@@ -35,7 +36,7 @@
  </section>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.unitContent(null, accessor, 0)/]
-	[if (dataUnit.hasSupportActions())]
+	[if (dataUnit.hasUnitSupportActions())]
   [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [else]
@@ -53,7 +54,7 @@
 	[if (indexUnit.defaultPaginationSize > 0)]
  [indexUnit.pagination(selectionAccessor)/]
 	[/if]
-	[if (dataUnit.hasSupportActions())]
+	[if (dataUnit.hasUnitSupportActions())]
  [dataUnit.unitSupportLinks(accessor)/]
 	[/if]
 [/let]
@@ -261,7 +262,7 @@
    <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
 [/if]
    [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
-[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
+[if (indexUnit.hasInlineActions())]
 <span class="actions">[indexUnit.actions(loopVariable)/]</span>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -308,7 +309,7 @@
    <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
 [/if]
   [unit.detailsContent(loopVariable, depthIndex)/]
-[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
+[if (indexUnit.hasInlineActions())]
   <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -343,7 +344,7 @@
 {% endif %}
 	[/if]
  	[/for]
-	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
+	[if (indexUnit.hasInlineActions())]
    <th>Actions</th>
 	[/if]
   </tr>
@@ -354,7 +355,7 @@
 {% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
    [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
-[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
+[if (indexUnit.hasInlineActions())]
    <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
   </tr>
@@ -362,7 +363,7 @@
 {% else %}
   <tr>
    <td colspan="[unit.displayFields->size()/]">{{ '[nullDisplayValue/]' }}</td>
-	[if (indexUnit.actions->select(a | not a.disable)->notEmpty())]
+	[if (indexUnit.hasInlineActions())]
    <td class="actions">&nbsp;</td>
 	[/if]
   </tr>
@@ -387,7 +388,7 @@
 [/template]
 
 [template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
-[for (action : InlineAction | unit.actions->select(a | not a.disable))]
+[for (action : InlineAction | unit.inlineActions())]
 	[if (unit.hasObjectAccess())]
 [action.actionLink(unit.contentType(), unit, rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor, unit.hasObjectAccess())/]
 	[else]
@@ -499,14 +500,14 @@
 [/template]
 
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
-[if (feature.actions()->notEmpty())]
+[if (feature.hasInlineActions())]
 [let parentEntity : EntityOrView
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
 				feature.oclAsType(UnitAssociation).association.sourceType()
 			endif]
-[feature.actions->select(a | not a.disable)
+[feature.inlineActions()
 	->first().actionLink(parentEntity, feature.displayedOn, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess())/]
 [/let]
 [else]
@@ -516,8 +517,8 @@
 [/template]
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
-[if (association.actions->select(a | not a.disable)->notEmpty())]
-[association.actions->select(a | not a.disable)
+[if (association.hasInlineActions())]
+[association.inlineActions()
 	->first().actionLink(association.association.targetType(), association.displayedOn, accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor, association.displayedOn.hasObjectAccess())/]
 [else]
 {{ [accessor/].defaultLabel()| default('[if (not association.nullDisplayValue.oclIsUndefined())][association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]

@@ -281,16 +281,6 @@
 	= page.controlUnits()->notEmpty()
 /]
 
-[query public hasDeleteActions(page : Page) : Boolean
-	= let collectionUnits : Sequence(CollectionUnit)
-		= page.units->select(u | u.oclIsKindOf(CollectionUnit)).oclAsType(CollectionUnit)
-		in if collectionUnits->isEmpty() then
-				false
-			else
-				collectionUnits->select(u | u.hasDeleteActions())->notEmpty()
-			endif
-/]
-
 [query public hasEditUnits(page : Page) : Boolean
 	= page.editUnits()->notEmpty()
 /]
@@ -313,10 +303,6 @@
 
 [query public hasIndexUnits(page : Page) : Boolean
 	= page.indexUnits()->notEmpty()
-/]
-
-[query public hasInlineFileActions(page : Page) : Boolean
-	= page.inlineFileActions()->notEmpty()
 /]
 
 [query public hasJavascript(page : Page) : Boolean
@@ -351,14 +337,6 @@
 	= page.units->select(u | u.oclIsTypeOf(SliderUnit))->notEmpty()
 /]
 
-[query public hasUnitSupportActions(page : Page) : Boolean
-	= page.unitSupportActions()->notEmpty()
-/]
-
-[query public hasUrlActions(page : Page) : Boolean
-	= page.urlActions()->notEmpty()
-/]
-
 [query public id(page : Page) : String
 	= page.name.asId()
 /]
@@ -369,18 +347,6 @@
 
 [query public indexUnits(page : Page) : Sequence(IndexUnit)
 	= page.units->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
-/]
-
-[query public inlineActions(page : Page) : Sequence(InlineAction)
-	= page.units
-		->select(u | u.oclIsKindOf(InlineActionContainer)).oclAsType(InlineActionContainer)
-		->collect(c | c.actions)
-/]
-
-[query public inlineFileActions(page : Page) : Sequence(FeatureSupportAction)
-	= page.inlineActions()
-		->select(a | a.oclIsTypeOf(FeatureSupportAction)).oclAsType(FeatureSupportAction)
-		->select(a | a.operation.resultType = OperationResultTypes::File)
 /]
 
 [query public isAuthenticated(page : Page) : Boolean
@@ -409,18 +375,6 @@
 		else
 			page.parentPage.translationDomain()
 		endif
-/]
-
-[query public unitSupportActions(page : Page) : Sequence(UnitSupportAction)
-	= page.dynamicUnits()->collect(u | u.supportActions())
-/]
-
-[query public unitsWithSupportActions(page : Page) : Sequence(DynamicUnit)
-	= page.dynamicUnits()->select(u | u.hasSupportActions())
-/]
-
-[query public urlActions(page : Page) : Sequence(InlineAction)
-	= page.dynamicUnits()->collect(u | u.urlActions())
 /]
 
 [query public useInputJQuery(page : Page) : Boolean
@@ -476,15 +430,13 @@
 	= unit.displayFields->select(f | f.oclIsTypeOf(CaptchaField)).oclAsType(CaptchaField)
 /]
 
+[query public childDynamicUnits(unit : DynamicUnit) : Sequence(DynamicUnit)
+	= unit.childUnits()->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+/]
+
 [query public childImageUnits(unit : DynamicUnit) : Sequence(ImageUnit)
 	= unit.childUnits()
 		->select(u | u.oclIsKindOf(ImageUnit)).oclAsType(ImageUnit)
-/]
-
-[query public childSupportActions(unit : DynamicUnit) : Sequence(UnitSupportAction)
-	= unit.childUnits()
-		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
-		->collect(u | u.supportActions())
 /]
 
 [query public childUnits(unit : DynamicUnit) : Sequence(ContentUnit)
@@ -563,10 +515,6 @@
 	= unit.displayFields->select(f | f.hasDefaultValue())
 /]
 
-[query public directSupportActions(unit : DynamicUnit) : OrderedSet(UnitSupportAction)
-	= unit.supportActions->select(a | not a.disable)
-/]
-
 [query public displayedAssociations(unit : DynamicUnit) : Sequence(Association)
 	= unit.displayFields
 		->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
@@ -610,10 +558,6 @@
 		endif
 /]
 
-[query public hasChildSupportActions(unit : DynamicUnit) : Boolean
-	= unit.childSupportActions()->notEmpty()
-/]
-
 [query public hasClearLabel(unit : EditUnit) : Boolean
 	= if unit.oclIsTypeOf(CreateUpdateUnit) then
 			not unit.oclAsType(CreateUpdateUnit).clearLabel.oclIsUndefined()
@@ -628,20 +572,6 @@
 		else
 			false
 		endif
-/]
-
-[query public hasDeleteActions(unit : CollectionUnit) : Boolean
-	= if not unit.oclIsKindOf(InlineActionContainer) then
-			false
-		else
-			unit.oclAsType(InlineActionContainer).actions
-				->select(a | a.oclIsTypeOf(DeleteAction))
-				->notEmpty()
-		endif
-/]
-
-[query public hasDirectSupportActions(unit : DynamicUnit) : Boolean
-	= unit.directSupportActions()->notEmpty()
 /]
 
 [query public hasEncryptedFeatures(unit : DynamicUnit) : Boolean
@@ -792,14 +722,6 @@
 	= not unit.routeActual(key).oclIsUndefined()
 /]
 
-[query public hasSupportActions(unit : DynamicUnit) : Boolean
-	= unit.supportActions()->notEmpty()
-/]
-
-[query public hasUrlActions(unit : DynamicUnit) : Boolean
-	= unit.urlActions()->notEmpty()
-/]
-
 [query public id(unit : ContentUnit) : String
 	= unit.displayedOn.containerId().concat('.labels.').concat(unit.name.asId())
 /]
@@ -904,25 +826,8 @@
 		endif endif
 /]
 
-[query public supportActions(unit : DynamicUnit) : OrderedSet(UnitSupportAction)
-	= unit.childSupportActions()->iterate (
-		a;
-		actions : OrderedSet(UnitSupportAction) = unit.directSupportActions()
-		| actions->append(a))
-/]
-
 [query public translationDomain(unit : ContentUnit) : String
 	= unit.pageDisplayedOn().translationDomain()
-/]
-
-[query public urlActions(unit : DynamicUnit) : Sequence(InlineAction)
-	= unit.displayFields->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
-			->collect(f | f.units.oclAsType(DynamicUnit).urlActions())
-		->union(if unit.oclIsKindOf(IndexUnit) then
-				unit.oclAsType(IndexUnit).actions->select(a | not a.oclIsTypeOf(SelectAction)).oclAsType(InlineAction)
-			else
-				Sequence{}
-			endif)
 /]
 
 [query public urlFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
@@ -1601,30 +1506,4 @@
 
 [query public styleClass(field : UnitField) : String
 	= field.modelPropertyName().asId()
-/]
-
-
-[query public actions(container : InlineActionContainer) : OrderedSet(InlineAction)
-	= container.actions->select(a | not a.disable)
-/]
-
-
-[query public controller(action : InlineAction) : Page
-	= if action.oclIsTypeOf(SelectAction) then
-			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).pageDisplayedOn()
-		else
-			if action.usedBy.oclIsKindOf(DynamicUnit) then
-				action.usedBy.oclAsType(DynamicUnit).pageDisplayedOn()
-			else
-				null
-			endif
-		endif
-/]
-
-[query public immediateUnit(action : InlineAction) : DynamicUnit
-	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit)
-		else
-			action.usedBy.oclAsType(UnitFeature).displayedOn
-		endif
 /]

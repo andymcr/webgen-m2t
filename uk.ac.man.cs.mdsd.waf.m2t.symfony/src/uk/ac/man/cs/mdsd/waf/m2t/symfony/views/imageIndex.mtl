@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -68,7 +69,7 @@
 [unit.imagePathFeature.imagePath(unit, accessor, accessor)/]
 [/if]
 <ul>
-[for (action : InlineAction | unit.actions())]
+[for (action : InlineAction | unit.inlineActions())]
  <li>[action.actionLink(unit.contentType(), unit, accessor, action.displayLabel, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]</li>
 [/for]
 </ul>

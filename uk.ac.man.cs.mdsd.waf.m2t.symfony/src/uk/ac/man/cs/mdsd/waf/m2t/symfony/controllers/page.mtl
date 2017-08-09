@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -33,21 +34,19 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[for (unit : ContentUnit | page.units)]
+[for (unit : DynamicUnit | page.dynamicUnits())]
     [unit.unitMethods()/]
 
-	[if (unit.oclIsKindOf(DataUnit))]
-		[for (action : InlineAction | unit.oclAsType(DataUnit).urlActions())]
+	[for (action : InlineAction | unit.inlineActionsRequiringHandlers())]
     [action.actionMethod(page)/]
 
-		[/for]
-	[/if]
+	[/for]
 [/for]
 [if (page.hasUnitSupportActions())]
-    [page.actionMethods()/]
+    [page.unitSupportActionMethods()/]
 
 [/if]
-[if (page.units->size() > 1 or  page.hasDeleteActions())]
+[if (page.units->size() > 1 or  page.hasInlineDeleteActions())]
     [page.renderMethod()/]
 [/if]
 }
@@ -62,6 +61,9 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+[if (page.inlineActions()->select(a | not a.requiresRole.oclIsUndefined())->notEmpty())]
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+[/if]
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 [if (page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -69,15 +71,13 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [if (page.hasFilterParameters() or page.hasPagination() or page.hasEditUnits() or page.hasUnitSupportActions())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
-[if (page.unitsWithSupportActions()->notEmpty())]
-	[if (page.unitsWithSupportActions()->select(u | not u.oclIsKindOf(EditUnit))->notEmpty())]
+[if (page.hasUnitSupportActions() or page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\Response;
-	[/if]
-// [protected ('support.use')]
-// [/protected]
-[/if]
 [if (page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+[/if]
+// [protected ('support.use')]
+// [/protected]
 [/if]
 [/template]
 
@@ -97,9 +97,9 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 }
 [/template]
 
-[template private actionMethods(page : Page) post(trim())]
-[for (unit : DynamicUnit | page.unitsWithSupportActions())]
-	[if (not unit.oclIsKindOf(EditUnit) and unit.hasDirectSupportActions())]
+[template private unitSupportActionMethods(page : Page) post(trim())]
+[for (unit : DynamicUnit | page.dynamicUnits())]
+	[if (unit.hasUnitSupportActions() and not unit.oclIsKindOf(EditUnit))]
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
  */
@@ -114,15 +114,6 @@ public function [unit.supportActionName()/]([page.actionMethodParameters(unit, u
 }
 
 	[/if]
-	[if (unit.hasChildSupportActions())]
-/**
- * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
- */
-public function [unit.supportActionName()/]([page.actionMethodParameters(unit, unit.routingType(), true)/])
-{
-}
-
-	[/if]
 [/for]
 /* [protected (page.instanceName().concat('.support'))]
  */
@@ -131,7 +122,7 @@ public function [unit.supportActionName()/]([page.actionMethodParameters(unit, u
 [/template]
 
 [template private actionHandlers(unit : DynamicUnit) post(trim())]
-[for (action : UnitSupportAction | unit.supportActions())]
+[for (action : UnitSupportAction | unit.unitSupportActions())]
 if ($request->query->has('[action.actionName()/]')) {
     // [protected ('support.'.concat(action.actionName()))]
     // [/protected]
