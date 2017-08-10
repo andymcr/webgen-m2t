@@ -71,11 +71,13 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [if (page.hasFilterParameters() or page.hasPagination() or page.hasEditUnits() or page.hasUnitSupportActions())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
-[if (page.hasUnitSupportActions() or page.hasInlineFileActions())]
+[if (page.hasInlineFileActions() or page.dynamicUnits()->select(u | not u.oclIsKindOf(EditUnit) and u.hasUnitSupportActions())->notEmpty())]
 use Symfony\Component\HttpFoundation\Response;
+[/if]
 [if (page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 [/if]
+[if (page.hasUnitSupportActions())]
 // [protected ('support.use')]
 // [/protected]
 [/if]
