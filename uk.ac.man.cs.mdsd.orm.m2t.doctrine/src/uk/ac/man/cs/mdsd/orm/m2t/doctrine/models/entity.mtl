@@ -209,8 +209,8 @@ protected $updated;
 [/if]
 * @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
 , [if (association.isOwningEnd())]
-inversedBy[else]
-mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
+inversedBy[else]mappedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains())]
+, [if (association.isOwningEnd())]orphanRemoval=true[else]cascade={"persist", "remove"}[/if][/if][/if])
 [if (association.isOwningEnd())]
 	[if (association.keys->notEmpty())]
 [association.explicitKeys()/]
@@ -230,8 +230,8 @@ mappedBy[/if]="[opposite.modelPropertyName()/]"[/if])
 [let opposite : EntityAssociation = association.opposite]
 * @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
 , [if (association.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd())]
-mappedBy[else]
-inversedBy[/if]="[opposite.modelPropertyName()/]"[/if])
+mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains())]
+, cascade={"persist", "remove"}[/if][/if])
 [if (association.owningEnd)]
 * @ORM\JoinTable(name="[association.pivotTableName/]",
 	[if (association.keys->notEmpty())]
