@@ -546,7 +546,7 @@
 			feature.oclAsType(EncapsulatedAttribute).attribute.isValidated()
 		else
 			-- isUnique is an entity property
-			feature.isRequired()
+			feature.isRequired() or feature.isContains()
 		endif
 /]
 
