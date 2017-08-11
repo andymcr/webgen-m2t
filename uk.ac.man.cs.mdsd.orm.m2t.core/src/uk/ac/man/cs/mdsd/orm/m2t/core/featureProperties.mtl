@@ -181,10 +181,6 @@
 	= not entity.container().oclIsUndefined()
 /]
 
-[query public modifiableAssociations(entity : EntityOrView) : Sequence(Association)
-	= entity.associations()->select(a | a.isModifiable())
-/]
-
 [query public ownedSingletonAssociations(entity : EntityOrView) : Sequence(Association)
 	= entity.associations()->select(a | a.isSingleton() and a.isOwningEnd())
 /]
@@ -436,10 +432,6 @@
 		else
 			feature.oclIsTypeOf(SingletonLocation)
 		endif
-/]
-
-[query public isModifiable(feature : Feature) : Boolean
-	= feature.isVisible() and not feature.isContains()
 /]
 
 [query public isOppositeSingleton(association : Association) : Boolean

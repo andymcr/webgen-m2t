@@ -124,6 +124,13 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, routing
 public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType())/])
 {
     [unit.loadSelectedInstance()/]
+[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
+[let association : Association = field.feature().oclAsType(Association)]
+    $original[field.instanceName().toUpperFirst()/] = new ArrayCollection();
+    foreach ($[unit.instanceName()/]->[field.feature().getMethodName()/]() as $[association.targetType().instanceName()/])
+        $original[field.instanceName().toUpperFirst()/]->add($[association.targetType().instanceName()/]);
+[/let]
+[/for]
     $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), '', false, false)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.hasDisabledFeatures())]
     if ($request->isMethod('POST')) {
@@ -138,6 +145,13 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.rou
     [unit.handleCancelSubmit()/]
 	[/if]
     if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+	[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
+	[let association : Association = field.feature().oclAsType(Association)]
+        foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType().instanceName()/])
+            if (false === $[unit.instanceName()/]->[field.feature().getMethodName()/]()->contains($[association.targetType().instanceName()/]))
+                $this->get('[association.targetType().services(unit.pageDisplayedOn().partOf)->first().serviceName()/]')->remove($[association.targetType().instanceName()/]);
+	[/let]
+	[/for]
         [unit.saveBody(unit.addSuffix(), unit.contentType)/]
     }
 [/if]

@@ -29,7 +29,7 @@
 [/template]
 
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
-[for (field : UnitField | unit.inputAndEmbeddedFields())]
+[for (field : UnitField | unit.inputFields())]
 	[if (field.requiresRole <> '')]
 {% if is_granted('[field.requiresRole/]') %}
 	[/if]
@@ -123,7 +123,7 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (not field.isContains() and not field.hasEmbedded()) post(trim())]
+	? (not field.isContains()) post(trim())]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.disableInput or field.hasUnitTranslation())]
 , {[if (field.hasUnitTranslation())]
  'label': '[unit.containedId()/].labels.[field.id()/]',[/if]
@@ -139,23 +139,6 @@
  }[if (field.hasUnitTranslation())], [/if][/if]
 [if (field.hasUnitTranslation())]
 'translation_domain': '[unit.translationDomain()/]'[/if]}[/if]) }}
-[/template]
-
-[template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (not field.isContains() and field.hasEmbedded()) post(trim())]
-[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let embeddedUnit : EditUnit = association.units->first().oclAsType(EditUnit)]
-[if (association.isSingleton())]
-[embeddedUnit.formFields(association.accessor(parentAccessor, null, true))/]
-[else]
-[let elementAccessor : String = embeddedUnit.contentType().name]
-{% for [elementAccessor/] in [association.accessor(parentAccessor, null, true)/] %}
-[embeddedUnit.formFields(elementAccessor)/]
-{% endfor %}
-[/let]
-[/if]
-[/let]
-[/let]
 [/template]
 
 [template private placeholder(field : UnitField, unit : DynamicUnit) post(trim())]

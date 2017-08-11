@@ -349,10 +349,6 @@
 	= page.units->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
 /]
 
-[query public isAuthenticated(page : Page) : Boolean
-	= page.authenticated and page.partOf.isAuthenticated()
-/]
-
 [query public mapUnits(page : Page) : Sequence(MapUnit)
 	= page.units->select(u | u.oclIsKindOf(MapUnit)).oclAsType(MapUnit)
 /]
@@ -735,21 +731,8 @@
 		endif)
 /]
 
-[query public inputAndEmbeddedFields(unit : DynamicUnit) : OrderedSet(UnitField)
-	= unit.displayFields->select(f |
-		if f.oclIsKindOf(UnitFeature) then
-			f.oclAsType(UnitFeature).isModifiableOrEmbedded() or f.isContains()
-		else
-			true
-		endif)
-/]
-
 [query public interfaceFields(unit : DynamicUnit) : Sequence(InterfaceField)
 	= unit.displayFields->select(f | f.oclIsKindOf(InterfaceField)).oclAsType(InterfaceField)
-/]
-
-[query public isAuthenticated(unit : ContentUnit) : Boolean
-	= unit.pageDisplayedOn().isAuthenticated()
 /]
 
 [query public isContained(unit : DynamicUnit) : Boolean
@@ -1242,15 +1225,6 @@
 		endif
 /]
 
-[query public hasEmbedded(feature : UnitField) : Boolean
-	= if feature.oclIsTypeOf(UnitAssociation) then
-			let association : UnitAssociation = feature.oclAsType(UnitAssociation)
-				in association.units->notEmpty()
-		else
-			false
-		endif
-/]
-
 [query public isEncrypted(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
@@ -1298,19 +1272,15 @@
 [query public isModifiable(feature : UnitFeature) : Boolean
 	= if feature.oclIsTypeOf(UnitAttribute) then
 			let attribute : UnitAttribute = feature.oclAsType(UnitAttribute)
-				in attribute.forcedValue.oclIsUndefined() and attribute.attribute.isModifiable()
+				in attribute.forcedValue.oclIsUndefined()
 		else
 			let association : UnitAssociation = feature.oclAsType(UnitAssociation)
 				in if association.units->notEmpty() then
 						false
 					else
-						association.forcedValue.oclIsUndefined() and association.association.isModifiable()
+						association.forcedValue.oclIsUndefined() and association.association.isVisible()
 					endif
 		endif
-/]
-
-[query public isModifiableOrEmbedded(feature : UnitFeature) : Boolean
-	= feature.isModifiable() or feature.hasEmbedded()
 /]
 
 [query public isLocation(field : UnitField) : Boolean
