@@ -36,7 +36,7 @@
 
 
 [query public addMethodName(feature : Feature) : String
-	= 'add'.concat(feature.modelPropertyName().toUpperFirst())
+	= 'add'.concat(feature.singletonPropertyName().toUpperFirst())
 /]
 
 [query public getMethodName(feature : Feature) : String
@@ -78,7 +78,7 @@
 /]
 
 [query public removeMethodName(feature : Feature) : String
-	= 'remove'.concat(feature.modelPropertyName().toUpperFirst())
+	= 'remove'.concat(feature.singletonPropertyName().toUpperFirst())
 /]
 
 [query public setMethodName(feature : Feature) : String
