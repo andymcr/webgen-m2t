@@ -77,6 +77,10 @@
 		endif endif
 /]
 
+[query public removeMethodName(feature : Feature) : String
+	= 'remove'.concat(feature.modelPropertyName().toUpperFirst())
+/]
+
 [query public setMethodName(feature : Feature) : String
 	= 'set'.concat(feature.modelPropertyName().toUpperFirst())
 /]

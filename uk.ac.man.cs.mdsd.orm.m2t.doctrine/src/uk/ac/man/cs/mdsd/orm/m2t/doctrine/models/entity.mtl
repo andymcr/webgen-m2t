@@ -497,7 +497,7 @@ public function [feature.addMethodName()/]($[feature.singletonPropertyName()/])
 	[else]
     $[association.singletonPropertyName()/]->[if (association.opposite().collectionOrmAllowAdd)]
 [association.opposite().addMethodName()/][else]
-[association.opposite().setMethodName()/]->add[/if](this);
+[association.opposite().getMethodName()/]->add[/if](this);
 	[/if]
 [/let]
 [/if]
@@ -505,13 +505,24 @@ public function [feature.addMethodName()/]($[feature.singletonPropertyName()/])
 [/template]
 
 [template private removeMethod(feature : Feature) post(trim())]
-public function remove[feature.singletonPropertyName().toUpperFirst()/]($[feature.singletonPropertyName()/])
+public function [feature.removeMethodName()/]($[feature.singletonPropertyName()/])
 {
-	[if (feature.oclIsKindOf(Attribute))]
+[if (feature.oclIsKindOf(Attribute))]
     unset($this->[feature.columnName()/]['['/]array_search($[feature.singletonPropertyName()/], $this->[feature.columnName()/])[']'/]);
-	[else]
+[else]
     $this->[feature.modelPropertyName()/]->removeElement($[feature.singletonPropertyName()/]);
+[/if]
+[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd())]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.isOppositeSingleton())]
+    $[association.singletonPropertyName()/]->[association.opposite().setMethodName()/](null);
+	[else]
+    $[association.singletonPropertyName()/]->[if (association.opposite().collectionOrmAllowRemove)]
+[association.opposite().removeMethodName()/][else]
+[association.opposite().getMethodName()/]->removeElement[/if](this);
 	[/if]
+[/let]
+[/if]
 }
 [/template]
 
