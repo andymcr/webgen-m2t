@@ -102,18 +102,22 @@
 	? (field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
+[let childFields : OrderedSet(Feature) = association.association.targetType().features->select(f | not f.isContainer())]
 <div>
  {{- form_label([accessor/]) -}}
  <div class="[association.name.asId()/] framed"[if (association.collectionUiAllowAdd)]
- data-prototype="[for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer()))]
+ data-prototype="[for (feature : Feature | childFields)]
 {{ form_row([accessor/].vars.prototype.[feature.modelPropertyName()/])|e('html_attr') }}[/for]"[/if]>
 {% for entry in [accessor/] %}
-[for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer()))]
+<div[if (childFields->size() > 1)] class="framed"[/if]>
+[for (feature : Feature | childFields)]
 {{ form_row(entry.[feature.modelPropertyName()/], { 'attr': {'class': '[feature.name.asId()/]'} } ) }}
 [/for]
+</div>
 {% endfor %}
  </div>
 </div>
+[/let]
 [/let]
 [/let]
 [/template]
