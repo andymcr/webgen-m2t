@@ -353,6 +353,9 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 * @Assert\NotNull
 	[/if]
 [/if]
+[if (feature.isContains())]
+* @Assert\Valid
+[/if]
 [/template]
 
 [template private serializationAnnotation(feature : Feature) post(trim())]
