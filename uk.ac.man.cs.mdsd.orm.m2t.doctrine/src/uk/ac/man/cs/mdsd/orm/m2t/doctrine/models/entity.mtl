@@ -441,7 +441,7 @@ public function [feature.getMethodName()/]()
 [template private setMethod(feature : Feature)
 	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
 [let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
-public function set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/])
+public function [attribute.setMethodName()/]($[attribute.instanceName()/])
 {
 [if (attribute.oclIsTypeOf(SingletonElement))]
 [let element : SingletonElement = attribute.oclAsType(SingletonElement)]
@@ -473,7 +473,7 @@ public function set[association.modelPropertyName().toUpperFirst()/]($[associati
 [/template]
 
 [template private addMethod(feature : Feature) post(trim())]
-public function add[feature.singletonPropertyName().toUpperFirst()/]($[feature.singletonPropertyName()/])
+public function [feature.addMethodName()/]($[feature.singletonPropertyName()/])
 {
 [if (feature.isUnique())]
     if (!in_array($[feature.singletonPropertyName()/], $this->[feature.modelPropertyName()/], true)) {
@@ -489,6 +489,17 @@ public function add[feature.singletonPropertyName().toUpperFirst()/]($[feature.s
 	[else]
     $this->[feature.modelPropertyName()/]->add($[feature.singletonPropertyName()/]);
 	[/if]
+[/if]
+[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd())]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.isOppositeSingleton())]
+    $[association.singletonPropertyName()/]->[association.opposite().setMethodName()/]($this);
+	[else]
+    $[association.singletonPropertyName()/]->[if (association.opposite().collectionOrmAllowAdd)]
+[association.opposite().addMethodName()/][else]
+[association.opposite().setMethodName()/]->add[/if](this);
+	[/if]
+[/let]
 [/if]
 }
 [/template]

@@ -35,6 +35,10 @@
 /]
 
 
+[query public addMethodName(feature : Feature) : String
+	= 'add'.concat(feature.modelPropertyName().toUpperFirst())
+/]
+
 [query public getMethodName(feature : Feature) : String
 	= let prefix : String
 		= if feature.isBooleanDataType() then
@@ -71,4 +75,8 @@
 		else
 			'xxx'
 		endif endif
+/]
+
+[query public setMethodName(feature : Feature) : String
+	= 'set'.concat(feature.modelPropertyName().toUpperFirst())
 /]
