@@ -35,12 +35,8 @@ $( function() {
 	[let target : EntityOrView = association.association.targetType()]
 var $[target.instanceName()/]Container;
 		[if (association.collectionUiAllowAdd)]
-var $add[target.name/]Link = $('<input type="button" name="add[target.name/]" value="Add [target.name/]"[if (model.hasJQueryClasses())] class="[model.jQueryClass()/]"[/if]/>');
+var $add[target.name/]Link = $('<input type="button" name="add[target.name/]" value="Add [target.name/]"class="add[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
 var $new[target.name/]LinkDiv = $('<div></div>').append($add[target.name/]Link);
-		[/if]
-		[if (association.collectionUiAllowRemove)]
-var $remove[target.name/]Link = $('<input type="button" name="remove[target.name/]" value="Remove"[if (model.hasJQueryClasses())] class="[model.jQueryClass()/]"[/if]/>');
-var $remove[target.name/]LinkDiv = $('<div></div>').append($remove[target.name/]Link);
 		[/if]
 
 	[/let]
@@ -57,12 +53,19 @@ jQuery(document).ready(function() {
 	[let target : EntityOrView = association.association.targetType()]
     $[target.instanceName()/]Container = $('div.[association.name.asId()/]');
     if ($[target.instanceName()/]Container) {
+		[if (association.collectionUiAllowRemove)]
+        $[target.instanceName()/]Container.children('div').each(function() {
+            add[target.name/]RemoveLink($(this));
+        });
+		[/if]
+		[if (association.collectionUiAllowAdd)]
         $[target.instanceName()/]Container.append($new[target.name/]LinkDiv);
         $[target.instanceName()/]Container.data('index', $[target.instanceName()/]Container.find(':input').length);
         $add[target.name/]Link.on('click', function(e) {
             e.preventDefault();
-            add[target.name/]Form($[target.instanceName()/]Container, $new[target.name/]LinkDiv);
+            add[target.name/]AddForm($[target.instanceName()/]Container, $new[target.name/]LinkDiv);
         });
+		[/if]
     }
 
 	[/let]
@@ -75,21 +78,36 @@ jQuery(document).ready(function() {
 [template private addFormFunctions(model : WafModel) post(trim())]
 [for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
 [let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
-	[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
-[association.addFormFunction(association.association.targetType())/]
+	[if (association.collectionUiAllowAdd)]
+[association.addAddFormFunction(association.association.targetType())/]
+
+	[/if]
+	[if (association.collectionUiAllowRemove)]
+[association.addRemoveLinkFunction(association.association.targetType(), model)/]
 
 	[/if]
 [/let]
 [/for]
 [/template]
 
-[template private addFormFunction(association : UnitAssociation, target : EntityOrView)]
-function add[target.name/]Form($container, $newLinkDiv) {
+[template private addAddFormFunction(association : UnitAssociation, target : EntityOrView)]
+function add[target.name/]AddForm($container, $newLinkDiv) {
     var prototype = $container.data('prototype');
     var index = $container.data('index');
     var $newForm = $(prototype.replace(/__name__/g, index));
     $container.data('index', index + 1);
     $newLinkDiv.before($newForm);
+}
+[/template]
+
+[template private addRemoveLinkFunction(association : UnitAssociation, target : EntityOrView, model : WafModel)]
+function add[target.name/]RemoveLink($[target.instanceName()/]) {
+    var $removeLink = $('<input type="button" name="remove[target.name/]" value="Delete [target.name/]"class="delete[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
+    $[target.instanceName()/].append($removeLink);
+    $removeLink.on('click', function(e) {
+        e.preventDefault();
+        $[target.instanceName()/].remove();
+    });
 }
 [/template]
 
