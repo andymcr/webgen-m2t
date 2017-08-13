@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -61,7 +62,7 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 [/for]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-[if (page.inlineActionsRequiringHandlers()->select(a | not a.requiresRole.oclIsUndefined())->notEmpty())]
+[if (page.hasAuthorisation())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -197,8 +198,4 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
 [/let]
 [/let]
 [/let]
-[/template]
-
-[template private securityAnnotation(action : InlineAction) post(trim())]
-* @Security("has_role('[action.requiresRole/]')")
 [/template]

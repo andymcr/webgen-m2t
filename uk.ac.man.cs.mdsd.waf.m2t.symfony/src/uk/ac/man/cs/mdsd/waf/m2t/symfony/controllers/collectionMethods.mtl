@@ -20,6 +20,9 @@
 [let page : Page = dynamicUnit.pageDisplayedOn()]
 /**
  [dynamicUnit.routeAnnotation()/]
+[if (dynamicUnit.requiresRole <> '')]
+ [dynamicUnit.securityAnnotation()/]
+[/if]
  */
 public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType())/])
 {

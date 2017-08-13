@@ -21,6 +21,9 @@
 [let page : Page = unit.pageDisplayedOn()]
 /**
  [unit.routeAnnotation()/]
+[if (unit.requiresRole <> '')]
+ [unit.securityAnnotation()/]
+[/if]
  */
 public function [unit.actionName()/]()
 {

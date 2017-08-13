@@ -20,6 +20,14 @@
 $this->get('translator')->trans('[message/]')
 [/template]
 
+[template public securityAnnotation(unit : ContentUnit) post(trim())]
+* @Security("has_role('[unit.requiresRole/]')")
+[/template]
+
+[template public securityAnnotation(action : InlineAction) post(trim())]
+* @Security("has_role('[action.requiresRole/]')")
+[/template]
+
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
 [unit.routeAnnotation(unit.uriElement, '', false)/]
 [/template]

@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
@@ -117,8 +118,8 @@ NULL
 [/template]
 
 [template private anchor(action : InlineAction, routeName : String, entity : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String, targetUnit : ContentUnit, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
-[if (not action.requiresRole.oclIsUndefined())]
-{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entity, routeParametersAccessor, label, title, confirmMessage, conditionAccessor, targetUnit, targetSamePage, objectAccess)/][if (not action.requiresRole.oclIsUndefined())]
+[if (action.requiresRole <> '' and action.requiresRole <> action.immediateUnit().requiresRole)]
+{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entity, routeParametersAccessor, label, title, confirmMessage, conditionAccessor, targetUnit, targetSamePage, objectAccess)/][if (action.requiresRole <> '' and action.requiresRole <> action.immediateUnit().requiresRole)]
 {% endif %}[/if]
 [/template]
 

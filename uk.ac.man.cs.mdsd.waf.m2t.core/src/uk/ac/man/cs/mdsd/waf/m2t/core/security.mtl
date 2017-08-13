@@ -1,0 +1,58 @@
+[comment encoding = UTF-8 /]
+[module security(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties]
+
+
+[query public isAuthenticated(model : WafModel) : Boolean
+	= not model.authentication.oclIsUndefined()
+/]
+
+[query public isCasAuthenticated(model : WafModel) : Boolean
+	= if model.isAuthenticated() then
+			model.authentication.oclIsTypeOf(CasAuthentication)
+		else
+			false
+		endif
+/]
+
+[query public casAuthentication(model : WafModel) : CasAuthentication
+	= model.authentication.oclAsType(CasAuthentication)
+/]
+
+[query public isLocallyAuthenticated(model : WafModel) : Boolean
+	= if model.isAuthenticated() then
+			model.authentication.oclIsTypeOf(LocalAuthenticationSystem)
+		else
+			false
+		endif
+/]
+
+[query public localAuthentication(model : WafModel) : LocalAuthenticationSystem
+	= model.authentication.oclAsType(LocalAuthenticationSystem)
+/]
+
+
+[query public authenticationUnits(page : Page) : Sequence(AuthenticationUnit)
+	= page.units->select(u | u.oclIsKindOf(AuthenticationUnit)).oclAsType(AuthenticationUnit)
+/]
+
+[query public hasAuthenticationUnit(page : Page) : Boolean
+	= page.authenticationUnits()->notEmpty()
+/]
+
+[query public hasAuthorisation(page : Page) : Boolean
+	= page.units->select(u | u.hasAuthorisation())->notEmpty()
+/]
+
+
+[query public hasAuthorisation(unit : ContentUnit) : Boolean
+	= unit.requiresRole <> ''
+ 		or if unit.oclIsKindOf(DynamicUnit) then
+				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.requiresRole <> '')->notEmpty()
+			else
+				false
+			endif
+/]
+

@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
