@@ -50,7 +50,7 @@
 [query public hasAuthorisation(unit : ContentUnit) : Boolean
 	= unit.requiresRole <> ''
  		or if unit.oclIsKindOf(DynamicUnit) then
-				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.requiresRole <> '')->notEmpty()
+				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.requiresRole() <> '')->notEmpty()
 			else
 				false
 			endif

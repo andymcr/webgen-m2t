@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::action/]
 
@@ -42,20 +43,20 @@
 
 [template private formControlAndClose(unit : DynamicUnit, accessor : String) post(trim())]
  <div class="[unit.controlClass/]">
-  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable()/][if (unit.hasJQueryClasses())]
+  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable(accessor)/][if (unit.hasJQueryClasses())]
  class="[unit.jQueryClass()/]"[/if]/>
 [if (unit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
 	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
 		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
-  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable()/][if (unit.hasJQueryClasses())]
+  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable(accessor)/][if (unit.hasJQueryClasses())]
  class="[unit.jQueryClass()/]"[/if]/>
 		[/if]
 	[/let]
 	[/if]
 	[if (not editUnit.cancelDestination.oclIsUndefined())]
-  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable()/][if (unit.hasJQueryClasses())]
+  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable(accessor)/][if (unit.hasJQueryClasses())]
  class="[unit.jQueryClass()/]"[/if]/>
 	[/if]
 [/let]
@@ -68,7 +69,7 @@
 {{ form_end([accessor/], {'render_rest': false}) }}
 [/template]
 
-[template private disable(unit : DynamicUnit) post(trim())]
+[template private disable(unit : DynamicUnit, accessor : String) post(trim())]
 [if (not unit.oclIsKindOf(EditUnit))]
 {% if [unit.instanceName()/].data.vars.[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
 [else]
@@ -79,9 +80,9 @@
 		[/if]
 	[else] 
 		[if (editUnit.oclIsTypeOf(UpdateUnit))]
-{% if [editUnit.instanceName()/].vars.data.[unit.primaryId()/] is null or not [editUnit.instanceName()/]_enabled %} disabled="disabled"{% endif %}
+{% if [editUnit.instanceName()/].vars.data.[unit.primaryId()/] is null or not ([editUnit.enableWhen.twigExpression(accessor)/]) %} disabled="disabled"{% endif %}
 		[else]
-{% if not [editUnit.instanceName()/]_enabled %} disabled="disabled"{% endif %}
+{% if not ([editUnit.enableWhen.twigExpression(accessor)/]) %} disabled="disabled"{% endif %}
 		[/if]
 	[/if]
 [/let]

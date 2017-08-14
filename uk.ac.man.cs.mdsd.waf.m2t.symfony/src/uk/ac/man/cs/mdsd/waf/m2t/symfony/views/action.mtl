@@ -118,22 +118,22 @@ NULL
 [/template]
 
 [template private anchor(action : InlineAction, routeName : String, entity : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String, targetUnit : ContentUnit, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
-[if (action.requiresRole <> '' and action.requiresRole <> action.immediateUnit().requiresRole)]
-{% if is_granted('[action.requiresRole/]') %}[/if][action.anchor2(routeName, entity, routeParametersAccessor, label, title, confirmMessage, conditionAccessor, targetUnit, targetSamePage, objectAccess)/][if (action.requiresRole <> '' and action.requiresRole <> action.immediateUnit().requiresRole)]
+[if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
+{% if is_granted('[action.requiresRole()/]') %}[/if][action.anchor2(routeName, entity, routeParametersAccessor, label, title, confirmMessage, conditionAccessor, targetUnit, targetSamePage, objectAccess)/][if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
 {% endif %}[/if]
 [/template]
 
 [template private anchor2(action : InlineAction, routeName : String, entity : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, conditionAccessor : String, targetUnit : ContentUnit, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
 [if (action.displayWhen.oclIsUndefined())]
-	[if (action.enableWhen.oclIsUndefined())]
+	[if (action.enableWhen().oclIsUndefined())]
 [action.anchor3(routeName, entity, routeParametersAccessor, label, title, confirmMessage, targetUnit, targetSamePage, objectAccess)/]
 	[else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entity, routeParametersAccessor, label, title, confirmMessage, targetUnit, targetSamePage, objectAccess)/]{% else %}[label/]{% endif %}
+{% if [action.enableWhen().twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entity, routeParametersAccessor, label, title, confirmMessage, targetUnit, targetSamePage, objectAccess)/]{% else %}[label/]{% endif %}
 	[/if]
 [else]
-{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[if (action.enableWhen.oclIsUndefined())]
+{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[if (action.enableWhen().oclIsUndefined())]
 [action.anchor3(routeName, entity, routeParametersAccessor, label, title, confirmMessage, targetUnit, targetSamePage, objectAccess)/][else]
-{% if [action.enableWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entity, routeParametersAccessor, label, title, confirmMessage, targetUnit, targetSamePage, objectAccess)/]{% else %}[label/]{% endif %}[/if]
+{% if [action.enableWhen().twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, entity, routeParametersAccessor, label, title, confirmMessage, targetUnit, targetSamePage, objectAccess)/]{% else %}[label/]{% endif %}[/if]
 {% endif %}
 [/if]
 [/template]

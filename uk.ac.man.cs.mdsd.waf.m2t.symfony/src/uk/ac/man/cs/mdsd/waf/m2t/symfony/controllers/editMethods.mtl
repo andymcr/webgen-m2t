@@ -314,10 +314,6 @@ if (!isset($this->[editUnit.instanceName()/]))
 }
 [/if]
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
-[if (not editUnit.enableWhen.oclIsUndefined())]
-[editUnit.enableWhen.controllerVariable()/]
-$parameters['['/]'[editUnit.instanceName()/]_enabled'[']'/] = [editUnit.enableWhen.controllerExpression('$'.concat(editUnit.instanceName()))/];
-[/if]
 [/let]
 [/template]
 

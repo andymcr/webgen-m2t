@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module actions(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
@@ -201,10 +202,34 @@
 		endif
 /]
 
+[query public enableWhen(action : InlineAction) : Predicate
+	= if action.oclIsTypeOf(DeleteAction) then
+			action.oclAsType(DeleteAction).enableWhen
+		else if action.oclIsTypeOf(FeatureSupportAction) then
+			action.oclAsType(FeatureSupportAction).enableWhen
+		else if action.oclIsTypeOf(SelectAction) then
+			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).enableWhen
+		else
+			null
+		endif endif endif
+/]
+
 [query public immediateUnit(action : InlineAction) : DynamicUnit
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit)
 		else
 			action.usedBy.oclAsType(UnitFeature).displayedOn
 		endif
+/]
+
+[query public requiresRole(action : InlineAction) : String
+	= if action.oclIsTypeOf(DeleteAction) then
+			action.oclAsType(DeleteAction).requiresRole
+		else if action.oclIsTypeOf(FeatureSupportAction) then
+			action.oclAsType(FeatureSupportAction).requiresRole
+		else if action.oclIsTypeOf(SelectAction) then
+			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).requiresRole
+		else
+			''
+		endif endif endif
 /]

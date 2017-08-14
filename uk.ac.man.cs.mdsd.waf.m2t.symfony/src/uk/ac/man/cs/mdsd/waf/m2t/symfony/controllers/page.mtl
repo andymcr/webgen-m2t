@@ -105,6 +105,9 @@ $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 	[if (unit.hasUnitSupportActions() and not unit.oclIsKindOf(EditUnit))]
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
+[if (unit.requiresRole <> '')]
+ [unit.securityAnnotation()/]
+[/if]
  */
 public function [unit.supportActionName()/]([page.actionMethodParameters(unit, unit.routingType(), true)/])
 {
