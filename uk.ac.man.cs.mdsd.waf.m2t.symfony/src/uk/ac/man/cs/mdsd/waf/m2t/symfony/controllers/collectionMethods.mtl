@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
@@ -51,7 +52,7 @@ private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
 [/template]
 
 [query public inlineSelectCode(unit : CollectionUnit) : Boolean
-	= not unit.hasFilters() and unit.selection.oclIsUndefined()
+	= not unit.hasFilters()
 /]
 
 [template private selectMethodParameters(unit : CollectionUnit) post(trim())]
@@ -60,24 +61,22 @@ private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
 
 [template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
 [if (unit.oclAsType(DynamicUnit).hasFilterParameters() or unit.oclAsType(DynamicUnit).hasPagination())][if (formal)]
-Request [/if]$request[if (not unit.selection.selectVia.oclIsUndefined())]
-[if (unit.selection.selectVia.partOf.uriPathKeys()->notEmpty())]
+Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
+[if (unit.routingType().uriPathKeys()->notEmpty())]
 , [/if][/if][/if]
 [unit.routingParameters()/]
 [/template]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.selectVia.oclIsUndefined())]
-[unit.routingParameters()/][if (unit.selection.selectVia.partOf.hasRouteParameters())]
+[unit.routingParameters()/][if (unit.defaultPaginationSize > 0)]
 , [/if][/if][unit.paginationActuals()/]
 [/template]
 
 [template private routingParameters(unit : CollectionUnit) post(trim())]
-[if (not unit.selection.selectVia.oclIsUndefined())]
-[let selectionEntity : EntityOrView = unit.selection.selectVia.partOf]
-	[for (key : Attribute | selectionEntity.uriPathKeys()) separator(', ')]
-$[key.routeParameterName(selectionEntity)/][/for]
-[/let]
+[if (not unit.routingType().oclIsUndefined())]
+	[for (key : Attribute | unit.routingType().uriPathKeys()) separator(', ')]
+$[key.routeParameterName(unit.routingType())/][/for]
 [/if]
 [/template]
 
@@ -96,17 +95,15 @@ $[key.routeParameterName(selectionEntity)/][/for]
 [if (unit.defaultPaginationSize > 0)]
 $this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
 [/if]
+[if (not unit.routingType().oclIsUndefined())]
+$this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->find([unit.routingParameters()/]);
+[/if]
 [if (unit.hasFilters())]
 [unit.filterSelect()/]
 else
 [/if]
 [if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.routedSelection())]
-		[if (not unit.selection.oclIsUndefined())]
-			[if (not unit.selection.selectVia.oclIsUndefined() and unit.defaultPaginationSize > 0)]
-$this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->find([unit.routingParameters()/]);
-			[/if]
-		[/if]
 $this->[unit.instanceName()/] = [dynamicUnit.getContentService()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
@@ -154,7 +151,7 @@ $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 	[/if]
 [/if]
 [if (not unit.selection.oclIsUndefined())]
-	[if (not unit.selection.selectVia.oclIsUndefined() and unit.defaultPaginationSize > 0)]
+	[if (not unit.routingType().oclIsUndefined())]
 $parameters['['/]'[unit.routingType().instanceName()/]'[']'/] = $this->[unit.routingType().instanceName()/];
 	[/if]
 [/if]
