@@ -92,14 +92,14 @@ $[key.routeParameterName(unit.routingType())/][/for]
 
 [template private paginationActuals(unit : CollectionUnit, continuation: Boolean) post(trim())]
 [if (unit.defaultPaginationSize > 0 and if unit.selection.oclIsUndefined() then true else unit.selection.limit > 1 endif)]
-[if (continuation)], [/if]($this->page - 1) * [unit.defaultPaginationSize/], [unit.defaultPaginationSize/]
+[if (continuation)], [/if]([unit.pageVariable()/] - 1) * [unit.defaultPaginationSize/], [unit.defaultPaginationSize/]
 [/if]
 [/template]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (unit.defaultPaginationSize > 0 and if unit.selection.oclIsUndefined() then true else unit.selection.limit > 1 endif)]
-$this->page = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
+[unit.pageVariable()/] = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
 [/if]
 [if (not unit.routingType().oclIsUndefined())]
 $this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->find([unit.routingParameters()/]);
@@ -175,7 +175,15 @@ $parameters['['/]'[unit.routingType().instanceName()/]'[']'/] = $this->[unit.rou
 [/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (unit.defaultPaginationSize > 0 and if unit.selection.oclIsUndefined() then true else unit.selection.limit > 1 endif)]
-$parameters['['/]'currentPage'[']'/] = $this->page;
+$parameters['['/]'currentPage'[']'/] = [unit.pageVariable()/];
 $parameters['['/]'pageCount'[']'/] = ceil($this->[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]);
+[/if]
+[/template]
+
+[template private pageVariable(unit : CollectionUnit) post(trim())]
+[if (unit.inlineSelectCode())]
+$page
+[else]
+$this->page
 [/if]
 [/template]
