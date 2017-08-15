@@ -208,7 +208,12 @@
 		else if action.oclIsTypeOf(FeatureSupportAction) then
 			action.oclAsType(FeatureSupportAction).enableWhen
 		else if action.oclIsTypeOf(SelectAction) then
-			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).enableWhen
+			let selectAction : SelectAction = action.oclAsType(SelectAction)
+				in if selectAction.target.oclIsKindOf(EditUnit) then
+						selectAction.target.oclAsType(EditUnit).disableCondition
+					else
+						null
+					endif
 		else
 			null
 		endif endif endif

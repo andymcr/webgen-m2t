@@ -74,15 +74,15 @@
 {% if [unit.instanceName()/].data.vars.[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
 [else]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-	[if (editUnit.enableWhen.oclIsUndefined())]
+	[if (editUnit.disableCondition.oclIsUndefined())]
 		[if (editUnit.oclIsTypeOf(UpdateUnit))]
 {% if [editUnit.instanceName()/].vars.data.[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
 		[/if]
 	[else] 
 		[if (editUnit.oclIsTypeOf(UpdateUnit))]
-{% if [editUnit.instanceName()/].vars.data.[unit.primaryId()/] is null or not ([editUnit.enableWhen.twigExpression(accessor)/]) %} disabled="disabled"{% endif %}
+{% if [editUnit.instanceName()/].vars.data.[unit.primaryId()/] is null or [editUnit.disableCondition.twigExpression(accessor)/] %} disabled="disabled"{% endif %}
 		[else]
-{% if not ([editUnit.enableWhen.twigExpression(accessor)/]) %} disabled="disabled"{% endif %}
+{% if [editUnit.disableCondition.twigExpression(accessor)/] %} disabled="disabled"{% endif %}
 		[/if]
 	[/if]
 [/let]
