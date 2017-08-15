@@ -51,7 +51,7 @@
  [filter.unitFilter(indexUnit, selectionAccessor)/]
 	[/for]
  [dataUnit.unitContent(null, accessor, 0)/]
-	[if (indexUnit.defaultPaginationSize > 0)]
+	[if (indexUnit.hasPagination())]
  [indexUnit.pagination(selectionAccessor)/]
 	[/if]
 	[if (dataUnit.hasUnitSupportActions())]

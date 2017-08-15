@@ -665,9 +665,18 @@
 		endif
 /]
 
+[query public hasPagination(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then 
+			unit.defaultPaginationSize > 0
+		else
+			unit.defaultPaginationSize > 0 and unit.selection.limit > 1
+		endif
+
+/]
+
 [query public hasPagination(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).defaultPaginationSize > 0
+			unit.oclAsType(CollectionUnit).hasPagination()
 		else
 			false
 		endif
