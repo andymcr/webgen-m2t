@@ -651,12 +651,7 @@
 					dataUnit.defaultSelection.joins->isEmpty() or dataUnit.defaultSelection.fields->isEmpty()
 				endif
 		else if unit.oclIsKindOf(EditUnit) then
-			let editUnit : EditUnit = unit.oclAsType(EditUnit)
-				in if editUnit.defaultSelection.oclIsUndefined() then
-					true
-				else
-					editUnit.defaultSelection.joins->isEmpty() or editUnit.defaultSelection.fields->isEmpty()
-				endif
+			true
 		else
 			false
 		endif endif endif

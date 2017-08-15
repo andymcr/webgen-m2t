@@ -184,7 +184,7 @@ $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instan
 [if (unit.hasForcedValueFeatures())]
 // forced values [comment unit.forcedFeatureValues()/]
 [/if]
-[if (unit.isContained())]
+[if (unit.isContained() and customTag = 'add')]
 [unit.setContainer()/]
 [/if]
 foreach ($this->get('validator')->validate($[unit.instanceName()/]) as $violation) {
@@ -307,8 +307,7 @@ array_merge(
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.pageDisplayedOn().units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
-if (!isset($this->[editUnit.instanceName()/]))
-{
+if (!isset($this->[editUnit.instanceName()/])) {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
     $this->[editUnit.instanceName()/] = [editUnit.createForm(unit.instanceName(), 'create', not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
 }
