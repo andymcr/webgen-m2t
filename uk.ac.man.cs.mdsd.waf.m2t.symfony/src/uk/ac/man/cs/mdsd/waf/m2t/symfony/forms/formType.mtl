@@ -100,7 +100,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [if (unit.enumerationFeatures()->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (unit.collectionFeatures()->notEmpty())]
+[if (unit.collectionFeatures()->select(f | f.oclIsTypeOf(UnitAttribute) or f.isContains())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
 [if (unit.dateFeatures()->select(f | f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
