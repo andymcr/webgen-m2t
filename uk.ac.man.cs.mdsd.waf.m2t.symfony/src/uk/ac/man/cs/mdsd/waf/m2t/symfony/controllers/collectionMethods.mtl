@@ -150,6 +150,20 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 	[/if]
 [/if]
+[if (unit.oclIsKindOf(DataUnit))]
+	[if (unit.oclAsType(DataUnit).onlyDisplayWhenNotEmpty)]
+if (!empty($this->[unit.instanceName()/])) {
+    [unit.templateParameters2()/]
+}
+	[else]
+[unit.templateParameters2()/]
+	[/if]
+[else]
+[unit.templateParameters2()/]
+[/if]
+[/template]
+
+[template private templateParameters2(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
 	[if (not unit.routingType().oclIsUndefined())]
 $parameters['['/]'[unit.routingType().instanceName()/]'[']'/] = $this->[unit.routingType().instanceName()/];

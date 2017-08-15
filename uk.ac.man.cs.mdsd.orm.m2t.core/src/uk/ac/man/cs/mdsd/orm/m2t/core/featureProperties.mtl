@@ -198,7 +198,7 @@
 /]
 
 [query public slugAttributes(entity : EntityOrView) : Sequence(EntityAttribute)
-	= entity.attributes().oclAsType(EntityAttribute)->select(a | a.hasSlugFields())
+	= entity.attributes()->select(a | a.hasSlugFields())
 /]
 
 [query public tableColumns(entity : Entity) : OrderedSet(Feature)

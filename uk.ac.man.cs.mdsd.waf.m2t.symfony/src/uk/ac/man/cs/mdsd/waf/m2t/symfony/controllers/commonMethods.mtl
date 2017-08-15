@@ -103,11 +103,7 @@ $this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelect
 [/template]
 
 [template public loadSelectedInstance(unit : EditUnit) post(trim())]
-[if (unit.defaultSelection.oclIsUndefined())]
 $[unit.instanceName()/] = [unit.routingType().loadInstance(unit)/];
-[else]
-$[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.instanceName()/]();
-[/if]
 [/template]
 
 [template public loadSelectedInstance(unit : ImageUnit) post(trim())]
