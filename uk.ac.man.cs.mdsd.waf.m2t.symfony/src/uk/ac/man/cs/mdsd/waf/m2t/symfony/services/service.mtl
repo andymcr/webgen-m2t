@@ -390,8 +390,8 @@ public function [filter.methodName/]([filter.formals()/])
 
 [template private selectionFormals(selection : Selection) post(trim())]
 [if (not selection.selectVia.oclIsUndefined())]
-	[for (key : Attribute | selection.selectVia.partOf.uriPathKeys()) separator(', ')]
-$[key.routeParameterName(selection.selectVia.partOf)/][/for]
+	[for (key : Attribute | selection.selectVia.targetType().uriPathKeys()) separator(', ')]
+$[key.routeParameterName(selection.selectVia.targetType())/][/for]
 [if (selection.parameters->notEmpty())]
 , [/if]
 [/if]
@@ -532,7 +532,7 @@ $queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.
 	[else]
 $queryBuilder->where($queryBuilder->expr->andX(
 		[for (key : Attribute | routingEntity.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'),
+    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> routingEntity.uriPathKeys()->size())],[/if]
 		[/for]
 ));
 	[/if]
