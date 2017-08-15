@@ -210,7 +210,7 @@
 	[if (field.requiresRole <> '')]
 {% if is_granted('[field.requiresRole/]') %}
 	[/if]
-	[if (field.conditionalDisplay())]
+	[if (field.isConditionalDisplay())]
 {% if [field.getImmediateValue(accessor, true)/] is not null %}
 	[/if]
 	[if (unit.hasOmitFieldLabels())]
@@ -221,7 +221,7 @@
 {{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">[field.displayValue(accessor, true, depthIndex)/]</dd>
 	[/if]
-	[if (field.conditionalDisplay())]
+	[if (field.isConditionalDisplay())]
 		[if (field.oclIsKindOf(UnitFeature))]
 		[let feature : UnitFeature = field.oclAsType(UnitFeature)]
 			[if (not feature.nullDisplayValue.oclIsUndefined())]
@@ -284,11 +284,11 @@
 	[if (field.requiresRole <> '')]
 {% if is_granted('[field.requiresRole/]') %}
 	[/if]
-	[if (field.conditionalDisplay())]
+	[if (field.isConditionalDisplay())]
 {% if [field.getValue(accessor.concat('.').concat(field.modelPropertyName()))/] is not null %}
 	[/if]
 <span class="[field.modelPropertyName()/]">[field.displayValue(accessor, objectAccess, depthIndex)/]</span>
-	[if (field.conditionalDisplay())]
+	[if (field.isConditionalDisplay())]
 {% endif %}
 	[/if]
 	[if (field.requiresRole <> '')]
@@ -445,7 +445,7 @@
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [let accessor : String = field.accessor(parentAccessor, field.alias(), objectAccess)]
 <?php
-[if (not attribute.conditionalDisplay())]
+[if (not attribute.isConditionalDisplay())]
     if (!empty([attribute.getValue(accessor)/]))
 [/if]
         echo HTML::anchor(

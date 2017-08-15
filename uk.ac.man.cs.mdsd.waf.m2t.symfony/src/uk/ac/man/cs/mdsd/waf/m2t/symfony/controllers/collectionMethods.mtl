@@ -27,7 +27,7 @@
  */
 public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType())/])
 {
-[if (page.units->size() = 1 and not unit.hasInlineDeleteActions())]
+[if (page.units->size() = 1 and not unit.hasInlineDeleteActions() or dynamicUnit.isConditionalDisplay())]
     [unit.selectCode()/]
 
 [/if]
@@ -143,24 +143,22 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 [/template]
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
-[if (unit.oclAsType(DynamicUnit).pageDisplayedOn().units->size() > 1 or unit.hasInlineDeleteActions())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[if ((dynamicUnit.pageDisplayedOn().units->size() > 1 or unit.hasInlineDeleteActions()) and not dynamicUnit.isConditionalDisplay())]
 	[if (unit.inlineSelectCode())]
 [unit.selectCode()/]
 	[else]
 $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 	[/if]
 [/if]
-[if (unit.oclIsKindOf(DataUnit))]
-	[if (unit.oclAsType(DataUnit).onlyDisplayWhenNotEmpty)]
+[if (dynamicUnit.isConditionalDisplay())]
 if (!empty($this->[unit.instanceName()/])) {
     [unit.templateParameters2()/]
 }
-	[else]
-[unit.templateParameters2()/]
-	[/if]
 [else]
 [unit.templateParameters2()/]
 [/if]
+[/let]
 [/template]
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]

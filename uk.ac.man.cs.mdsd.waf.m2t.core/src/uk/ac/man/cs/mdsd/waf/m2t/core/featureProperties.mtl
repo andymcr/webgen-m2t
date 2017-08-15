@@ -694,6 +694,14 @@
 	= unit.displayFields->select(f | f.oclIsKindOf(InterfaceField)).oclAsType(InterfaceField)
 /]
 
+[query public isConditionalDisplay(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(DataUnit) then
+			unit.oclAsType(DataUnit).onlyDisplayWhenNotEmpty
+		else
+			false
+		endif
+/]
+
 [query public isContained(unit : DynamicUnit) : Boolean
 	= if unit.contentType().oclIsUndefined() then
 			false
@@ -783,7 +791,7 @@
 /]
 
 
-[query public conditionalDisplay(field : UnitField) : Boolean
+[query public isConditionalDisplay(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			field.oclAsType(UnitFeature).onlyDisplayWhenNotEmpty
 		else
