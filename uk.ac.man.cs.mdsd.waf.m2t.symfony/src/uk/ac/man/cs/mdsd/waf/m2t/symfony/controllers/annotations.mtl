@@ -1,0 +1,34 @@
+[comment encoding = UTF-8 /]
+[module annotations(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+
+
+[template public securityAnnotation(unit : ContentUnit) post(trim())]
+* @Security("has_role('[unit.requiresRole/]')")
+[/template]
+
+[template public securityAnnotation(action : InlineAction) post(trim())]
+* @Security("has_role('[action.requiresRole()/]')")
+[/template]
+
+[template public routeAnnotation(page : Page) post(trim())]
+* @Route("[page.uriActionPath()/]", name="[page.routeName()/]"[if (page.hasValidatedRouteParameters())]
+, requirements={[for (key : Attribute | page.uriPathValidatedKeys()) separator(', ')]"[key.routeParameterName(page)/]" = "[key.validationPattern/]"[/for]}[/if])
+[/template]
+
+[template public routeAnnotation(unit : ContentUnit) post(trim())]
+[unit.routeAnnotation(unit.uriElement, '', false)/]
+[/template]
+
+[template public routeAnnotation(unit : ContentUnit, uriSuffix : String, nameSuffix : String, parentPath : Boolean) post(trim())]
+[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, parentPath) <> '')]
+* @Route("", name="Home")
+[/if]
+* @Route("[unit.uriPath(uriSuffix, parentPath)/]", name="[unit.routeName(nameSuffix)/]"[if (unit.hasValidatedRouteParameters(parentPath))]
+, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(parentPath)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
+[/template]

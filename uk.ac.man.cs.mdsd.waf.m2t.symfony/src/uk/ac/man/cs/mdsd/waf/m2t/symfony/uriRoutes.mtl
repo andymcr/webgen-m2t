@@ -33,6 +33,11 @@
 /]
 
 
+[query public hasSingleActionMethod(page : Page) : Boolean
+	= page.units->notEmpty() and page.units->forAll(u | page.uriCommonPathKeys()->includesAll(u.uriPathKeys()))
+/]
+
+
 [query private parentUriPathKeys(entity : EntityOrView, targetUnit : ContentUnit) : Sequence(Attribute)
 	= let parentEntity : EntityOrView = entity.parentEntity()
 		in if not parentEntity.oclIsUndefined() then
@@ -57,9 +62,18 @@
 			endif
 /]
 
+[query public hasRouteParameters(page : Page) : Boolean
+	= page.uriCommonPathKeys()->notEmpty()
+/]
+
 [query public hasRouteParameters(entity : EntityOrView, targetUnit : ContentUnit) : Boolean
 	= entity.uriPathKeys(targetUnit)->notEmpty()
 /]
+
+[template public routeParameters(page : Page) post(trim())]
+[for (key : Attribute | page.uriCommonPathKeys()) separator (', ')]
+$[key.routeParameterName(page)/][/for]
+[/template]
 
 [template public routeParameters(entity : EntityOrView) post(trim())]
 [for (key : Attribute | entity.uriPathKeys()) separator (', ')]
@@ -70,6 +84,15 @@ $[key.routeParameterName(entity)/][/for]
 [for (key : Attribute | entity.uriPathKeys(targetUnit)) separator (', ')]
 $[key.routeParameterName(entity)/][/for]
 [/template]
+
+[query public routeParameterName(attribute : Attribute, page : Page) : String
+	= if page.uriCommonPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
+			attribute.name
+		else
+			attribute.partOf.modelName().toLowerFirst()
+				.concat(attribute.name.toUpperFirst())
+		endif
+/]
 
 [query public routeParameterName(attribute : Attribute, entity : EntityOrView) : String
 	= if entity.oclIsUndefined() then
@@ -99,6 +122,16 @@ $[key.routeParameterName(resource)/][/for]
 /]
 
 
+[query public uriPathValidatedKeys(page : Page) : Sequence(Attribute)
+	= page.uriCommonPathKeys()
+		->select(k | not k .validationPattern.oclIsUndefined())
+		->select(k | k.validationPattern <> '[^/]+')
+/]
+
+[query public hasValidatedRouteParameters(page : Page) : Boolean
+	= page.uriPathValidatedKeys()->notEmpty()
+/]
+
 [query public uriPathValidatedKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
 	= let selectType : EntityOrView
 			= if not parentPath then
@@ -124,6 +157,20 @@ $[key.routeParameterName(resource)/][/for]
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.routeActuals->collect(a | a.routeParameter)
 		in entity.attributeKeys()->select(k | not keysWithActuals->includes(k))
+/]
+
+[query private keyPath(page : Page) : String
+	= let activeKeys : Sequence(Attribute)
+		= if page.parentPage.oclIsUndefined() then
+				page.uriCommonPathKeys()
+			else
+				page.uriCommonPathKeys()->reject(k | page.parentPage.uriCommonPathKeys()->includes(k))
+			endif
+		in if activeKeys->isEmpty() then
+				''
+			else
+				activeKeys->collect(k | k.routeParameterName(page))->sep('{', '}/{', '}')->toString()
+			endif
 /]
 
 [query private keyPath(entity : EntityOrView, base : EntityOrView, unit : ContentUnit) : String
@@ -216,6 +263,16 @@ $[key.routeParameterName(resource)/][/for]
 		else
 			page.parentPage.uriPath().combinePaths(page.uriElement)
 		endif
+/]
+
+[query public uriActionPath(page : Page) : String
+	= let x : String
+		= if page.parentPage.oclIsUndefined() then
+				page.uriElement
+			else
+				page.parentPage.uriPath().combinePaths(page.uriElement)
+			endif
+		in x.combinePaths(page.keyPath()).combinePaths(page.units->first().uriElement)
 /]
 
 [query public supportUriPath(unit : ContentUnit) : String

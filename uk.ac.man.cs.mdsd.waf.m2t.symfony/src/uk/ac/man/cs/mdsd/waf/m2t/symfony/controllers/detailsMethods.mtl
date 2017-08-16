@@ -2,15 +2,16 @@
 [module detailsMethods(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::criteriaDoctrine/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 
 
 [template public unitMethods(unit : ContentUnit)
@@ -35,17 +36,23 @@
  */
 public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType())/])
 {
-    [unit.loadSelectedInstance()/]
+[if (not page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()) or unit.isConditionalDisplay())]
+    [unit.actionCore()/]
 
-[if (page.units->size() > 1)]
-    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
-[else]
-    $parameters = array();
-    [page.templateParameters()/]
-    [unit.templateParameters()/]
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/if]
+    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
 }
+[/let]
+[/template]
+
+[template public actionCore(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.defaultSelection.oclIsUndefined())]
+$this->[detailsUnit.instanceName()/] = [detailsUnit.routingType().loadInstance(detailsUnit)/];
+[else]
+$this->[detailsUnit.instanceName()/] = [detailsUnit.getContentService()/]->[detailsUnit.defaultSelection.methodName/]();
+[/if]
 [/let]
 [/template]
 
@@ -53,23 +60,17 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.rou
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[if (page.units->size() = 1)]
-$parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
-[else]
-	[if (detailsUnit.onlyDisplayWhenNotEmpty)]
+[if (detailsUnit.isConditionalDisplay())]
 if (isset($this->[detailsUnit.instanceName()/]))
     $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
+[else]
+	[if (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys())) ]
+[unit.actionCore()/]
 	[else]
 if (!isset($this->[detailsUnit.instanceName()/]))
-		[if (not detailsUnit.defaultSelection.oclIsUndefined())]
-    $this->[detailsUnit.instanceName()/] = [detailsUnit.getContentService()/]->[detailsUnit.defaultSelection.methodName/]();
-		[elseif (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()))]
-    $this->[detailsUnit.instanceName()/] = [detailsUnit.routingType().loadInstance(detailsUnit)/];
-		[else]
     $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
-		[/if]
-$parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 	[/if]
+$parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [/if]
 [/let]
 [/let]

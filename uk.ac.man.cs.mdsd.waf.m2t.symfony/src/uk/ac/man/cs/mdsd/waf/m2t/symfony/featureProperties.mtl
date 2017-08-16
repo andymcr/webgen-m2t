@@ -70,6 +70,7 @@
 			endif
 /]
 
+
 [query public routedSelection(unit : CollectionUnit) : Boolean
 	= if unit.selection.oclIsUndefined() then
 			false

@@ -12,6 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::collectionMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::detailsMethods/]
@@ -35,19 +36,24 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[for (unit : DynamicUnit | page.dynamicUnits())]
+[if (page.hasSingleActionMethod())]
+    [page.actionMethod()/]
+
+[else]
+	[for (unit : DynamicUnit | page.dynamicUnits())]
     [unit.unitMethods()/]
 
-	[for (action : InlineAction | unit.inlineActionsRequiringHandlers())]
+		[for (action : InlineAction | unit.inlineActionsRequiringHandlers())]
     [action.actionMethod(page)/]
 
+		[/for]
 	[/for]
-[/for]
+[/if]
 [if (page.hasUnitSupportActions())]
     [page.unitSupportActionMethods()/]
 
 [/if]
-[if (page.units->size() > 1 or  page.hasInlineDeleteActions())]
+[if (page.units->size() > 1 or  page.hasInlineDeleteActions() and not page.hasSingleActionMethod())]
     [page.renderMethod()/]
 [/if]
 }
@@ -84,20 +90,41 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 [/if]
 [/template]
 
+[template private actionMethod(page : Page) post(trim())]
+/**
+ [page.routeAnnotation()/]
+[comment if (unit.requiresRole <> '')/]
+ [comment unit.securityAnnotation()/]
+[comment /]
+ */
+public function [page.actionName()/]([page.actionMethodParameters()/])
+{
+[for (unit : DynamicUnit | page.dynamicUnits())]
+    [unit.actionCore()/]
+
+[/for]
+    [page.renderCore()/]
+}
+[/template]
+
 [template private renderMethod(page : Page) post(trim())]
 private function renderPage([if (page.hasFilterParameters() or page.hasPagination())]
 Request $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
 {
-    $parameters = array();
-    [page.templateParameters()/]
+    [page.renderCore()/]
+}
+[/template]
+
+[template private renderCore(page : Page) post(trim())]
+$parameters = array();
+[page.templateParameters()/]
 [for (unit : ContentUnit | page.units)]
-    [unit.templateParameters()/]
+[unit.templateParameters()/]
 [/for]
 
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
-}
+return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/template]
 
 [template private unitSupportActionMethods(page : Page) post(trim())]

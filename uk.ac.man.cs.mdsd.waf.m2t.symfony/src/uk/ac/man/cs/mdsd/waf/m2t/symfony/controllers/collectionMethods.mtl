@@ -13,6 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 
 
@@ -27,20 +28,23 @@
  */
 public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType())/])
 {
-[if (page.units->size() = 1 and not unit.hasInlineDeleteActions() or dynamicUnit.isConditionalDisplay())]
-    [unit.selectCode()/]
+[if (not page.uriCommonPathKeys()->includesAll(dynamicUnit.uriPathKeys()) or dynamicUnit.isConditionalDisplay())]
+    [dynamicUnit.actionCore()/]
 
-[/if]
-[if (page.units->size() > 1 or unit.hasInlineDeleteActions())]
-    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
-[else]
-    $parameters = array();
-    [page.templateParameters()/]
-    [unit.templateParameters()/]
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/if]
 }
 [/let]
+[/let]
+[/template]
+
+[template public actionCore(unit : DynamicUnit)
+	? (unit.oclIsKindOf(IndexUnit) or unit.oclIsKindOf(ImageUnit)) post(trim())]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+[if (collectionUnit.inlineSelectCode())]
+[collectionUnit.selectCode()/]
+[else]
+$this->[collectionUnit.selectName()/]([collectionUnit.selectMethodParameters()/]);
+[/if]
 [/let]
 [/template]
 
@@ -141,18 +145,17 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[if ((dynamicUnit.pageDisplayedOn().units->size() > 1 or unit.hasInlineDeleteActions()) and not dynamicUnit.isConditionalDisplay())]
-	[if (unit.inlineSelectCode())]
-[unit.selectCode()/]
-	[else]
-$this->[unit.selectName()/]([unit.selectMethodParameters()/]);
-	[/if]
-[/if]
 [if (dynamicUnit.isConditionalDisplay())]
 if (!empty($this->[unit.instanceName()/])) {
     [unit.templateParameters2()/]
 }
 [else]
+	[if (dynamicUnit.pageDisplayedOn().uriCommonPathKeys()->includesAll(dynamicUnit.uriPathKeys())) ]
+[dynamicUnit.actionCore()/]
+	[else]
+if (!isset($this->[dynamicUnit.instanceName()/]))
+    $this->[dynamicUnit.instanceName()/] = [dynamicUnit.createInstance()/];
+	[/if]
 [unit.templateParameters2()/]
 [/if]
 [/let]

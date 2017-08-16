@@ -20,26 +20,12 @@
 $this->get('translator')->trans('[message/]')
 [/template]
 
-[template public securityAnnotation(unit : ContentUnit) post(trim())]
-* @Security("has_role('[unit.requiresRole/]')")
-[/template]
 
-[template public securityAnnotation(action : InlineAction) post(trim())]
-* @Security("has_role('[action.requiresRole()/]')")
+[template public actionMethodParameters(page : Page) post(trim())]
+[if (page.hasFilterParameters() or page.hasPagination() or page.hasFormUnits())]
+Request $request[if (page.hasRouteParameters())]
+, [/if][/if][page.routeParameters()/]
 [/template]
-
-[template public routeAnnotation(unit : ContentUnit) post(trim())]
-[unit.routeAnnotation(unit.uriElement, '', false)/]
-[/template]
-
-[template public routeAnnotation(unit : ContentUnit, uriSuffix : String, nameSuffix : String, parentPath : Boolean) post(trim())]
-[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, parentPath) <> '')]
-* @Route("", name="Home")
-[/if]
-* @Route("[unit.uriPath(uriSuffix, parentPath)/]", name="[unit.routeName(nameSuffix)/]"[if (unit.hasValidatedRouteParameters(parentPath))]
-, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(parentPath)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
-[/template]
-
 
 [template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView) post(trim())]
 [page.actionMethodParameters(unit, entity, false)/]
@@ -92,14 +78,6 @@ urldecode($[parameterName/])[else]
 $[parameterName/][/if]
 [/let]
 [/for]
-[/template]
-
-[template public loadSelectedInstance(unit : DataUnit) post(trim())]
-[if (unit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.routingType().loadInstance(unit)/];
-[else]
-$this->[unit.instanceName()/] = [unit.getContentService()/]->[unit.defaultSelection.methodName/]();
-[/if]
 [/template]
 
 [template public loadSelectedInstance(unit : EditUnit) post(trim())]

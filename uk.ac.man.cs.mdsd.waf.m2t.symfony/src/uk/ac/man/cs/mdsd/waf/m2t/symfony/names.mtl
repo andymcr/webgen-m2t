@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
 [query public appBundleName(eObject : EObject) : String
@@ -154,6 +155,11 @@
 	= menu.name.toLowerFirst()
 /]
 
+
+[query public actionName(page : Page) : String
+	= page.instanceName().concat('Action')
+/]
+
 [query public controllerName(page : Page) : String
 	= page.name
 /]
@@ -167,7 +173,7 @@
 /]
 
 [query public routeName(page : Page) : String
-	= if page.dynamicUnits()->isEmpty() then
+	= if page.dynamicUnits()->isEmpty() or page.hasSingleActionMethod() then
 			page.instanceName()
 		else
 			page.dynamicUnits()->first().routeName()
@@ -246,7 +252,7 @@
 
 [query public routeName(unit : ContentUnit, suffix : String) : String
 	= if unit.displayedOn.oclIsTypeOf(Page) and unit.pageDisplayedOn().units->size() = 1 then
-			unit.pageDisplayedOn().instanceName()
+			unit.pageDisplayedOn().routeName()
 		else
 			unit.uniqueName()
 			.concat(if suffix <> '' then
