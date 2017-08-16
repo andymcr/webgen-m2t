@@ -32,6 +32,7 @@ public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamic
     [dynamicUnit.actionCore()/]
 
 [/if]
+    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
 }
 [/let]
 [/let]

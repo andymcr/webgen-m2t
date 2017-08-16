@@ -53,7 +53,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     [page.unitSupportActionMethods()/]
 
 [/if]
-[if (page.units->size() > 1 or  page.hasInlineDeleteActions() and not page.hasSingleActionMethod())]
+[if (not page.hasSingleActionMethod())]
     [page.renderMethod()/]
 [/if]
 }

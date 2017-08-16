@@ -514,7 +514,9 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 	[if (selection.entities()->excludes(selection.selectVia.targetType()))]
 $queryBuilder->join('[selection.selectVia.sourceType().selectName()/].[selection.selectVia.modelPropertyName()/]', '[selection.selectVia.targetType().selectName()/]');
 	[/if]
+[if (selection.selectVia.targetType().isContained())]
 [selection.joinContainer(selection.selectVia.targetType())/]
+[/if]
 [/if]
 [for (join : Association | selection.joins)]
 $queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
@@ -522,14 +524,14 @@ $queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '
 [/template]
 
 [template private joinContainer(selection : Selection, childType : EntityOrView) post(trim())]
-[if (childType.isContained())]
 [let association : Association = childType.containingAssociation()]
 	[if (selection.entities()->union(Set{selection.partOf.serves})->excludes(association.targetType()))]
 $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/]', '[association.targetType().selectName()/]');
 	[/if]
+[if (association.targetType().isContained())]
 [selection.joinContainer(association.targetType())/]
-[/let]
 [/if]
+[/let]
 [/template]
 
 [template private condition(selection : Selection) post(trim())]

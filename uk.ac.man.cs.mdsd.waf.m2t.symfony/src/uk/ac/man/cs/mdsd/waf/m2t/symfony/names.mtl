@@ -247,7 +247,11 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
-	= unit.routeName('')
+	= if unit.pageDisplayedOn().hasSingleActionMethod() then
+			unit.pageDisplayedOn().routeName()
+		else
+			unit.routeName('')
+		endif
 /]
 
 [query public routeName(unit : ContentUnit, suffix : String) : String
