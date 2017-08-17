@@ -7,8 +7,10 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::criteriaDoctrine/]
@@ -36,7 +38,7 @@
  */
 public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType())/])
 {
-[if (not page.uriCommonPathKeys()->includesAll(unit.uriPathKeys()) or unit.isConditionalDisplay())]
+[if (unit.isConditionalDisplay())]
     [unit.actionCore()/]
 
 [/if]
@@ -64,11 +66,8 @@ $this->[detailsUnit.instanceName()/] = [detailsUnit.getContentService()/]->[deta
 if (isset($this->[detailsUnit.instanceName()/]))
     $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [else]
-	[if (page.uriCommonPathKeys()->includesAll(unit.uriPathKeys())) ]
+	[if (not page.hasSingleActionMethod()) ]
 [unit.actionCore()/]
-	[else]
-if (!isset($this->[detailsUnit.instanceName()/]))
-    $this->[detailsUnit.instanceName()/] = [detailsUnit.createInstance()/];
 	[/if]
 $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [/if]

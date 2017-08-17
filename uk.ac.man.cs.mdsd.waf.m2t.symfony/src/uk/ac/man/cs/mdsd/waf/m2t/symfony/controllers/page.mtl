@@ -9,6 +9,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
@@ -17,8 +19,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::detailsMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::editMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::imageMethods/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::indexMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::staticMethods/]
 
 
@@ -39,6 +39,12 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [if (page.hasSingleActionMethod())]
     [page.actionMethod()/]
 
+	[for (unit : DynamicUnit | page.dynamicUnits())]
+		[if (unit.hasActionSupportMethods())]
+    [unit.actionSupportMethods()/]
+
+		[/if]
+	[/for]
 [else]
 	[for (unit : DynamicUnit | page.dynamicUnits())]
     [unit.unitMethods()/]
@@ -93,9 +99,9 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 [template private actionMethod(page : Page) post(trim())]
 /**
  [page.routeAnnotation()/]
-[comment if (unit.requiresRole <> '')/]
- [comment unit.securityAnnotation()/]
-[comment /]
+[if (page.requiresRole() <> '')]
+ [page.securityAnnotation()/]
+[/if]
  */
 public function [page.actionName()/]([page.actionMethodParameters()/])
 {

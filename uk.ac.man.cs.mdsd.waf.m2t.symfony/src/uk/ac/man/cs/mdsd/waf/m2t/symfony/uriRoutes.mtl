@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
 
@@ -30,11 +31,6 @@
 		else
 			path.combinePaths(keyEntity.containingAssociation().opposite.name)
 		endif
-/]
-
-
-[query public hasSingleActionMethod(page : Page) : Boolean
-	= page.units->notEmpty() and page.units->forAll(u | page.uriCommonPathKeys()->includesAll(u.uriPathKeys()))
 /]
 
 
@@ -159,20 +155,6 @@ $[key.routeParameterName(resource)/][/for]
 		in entity.attributeKeys()->select(k | not keysWithActuals->includes(k))
 /]
 
-[query private keyPath(page : Page) : String
-	= let activeKeys : Sequence(Attribute)
-		= if page.parentPage.oclIsUndefined() then
-				page.uriCommonPathKeys()
-			else
-				page.uriCommonPathKeys()->reject(k | page.parentPage.uriCommonPathKeys()->includes(k))
-			endif
-		in if activeKeys->isEmpty() then
-				''
-			else
-				activeKeys->collect(k | k.routeParameterName(page))->sep('{', '}/{', '}')->toString()
-			endif
-/]
-
 [query private keyPath(entity : EntityOrView, base : EntityOrView, unit : ContentUnit) : String
 	= let activeKeys : Sequence(Attribute) = entity.uriEntityKeys(unit)
 		in if activeKeys->isEmpty() then
@@ -266,13 +248,18 @@ $[key.routeParameterName(resource)/][/for]
 /]
 
 [query public uriActionPath(page : Page) : String
-	= let x : String
-		= if page.parentPage.oclIsUndefined() then
-				page.uriElement
+	= let units : OrderedSet(ContentUnit)
+		= page.units
+			->select(u | not u.routingType().oclIsUndefined())
+			->select(u | page.uriCommonPathKeys()->includesAll(u.routingType().uriPathKeys()))
+		in if units->isEmpty() then
+				page.uriPath()
 			else
-				page.parentPage.uriPath().combinePaths(page.uriElement)
+				let selectUnit : ContentUnit = units->first()
+				in page.uriPath()
+					.combinePaths(selectUnit.selectUriPath('', false))
+					.combinePaths(selectUnit.uriElement)
 			endif
-		in x.combinePaths(page.keyPath()).combinePaths(page.units->first().uriElement)
 /]
 
 [query public supportUriPath(unit : ContentUnit) : String

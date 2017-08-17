@@ -10,12 +10,23 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 
+
+[template public unitMethods(unit : DynamicUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
+[let collectionUnit : IndexUnit = unit.oclAsType(CollectionUnit)]
+[collectionUnit.actionMethod()/]
+[if (not collectionUnit.inlineSelectCode())]
+
+[unit.actionSupportMethods()/]
+[/if]
+[/let]
+[/template]
 
 [template public actionMethod(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
@@ -28,7 +39,7 @@
  */
 public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType())/])
 {
-[if (not page.uriCommonPathKeys()->includesAll(dynamicUnit.uriPathKeys()) or dynamicUnit.isConditionalDisplay())]
+[if (dynamicUnit.isConditionalDisplay())]
     [dynamicUnit.actionCore()/]
 
 [/if]
@@ -39,7 +50,7 @@ public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamic
 [/template]
 
 [template public actionCore(unit : DynamicUnit)
-	? (unit.oclIsKindOf(IndexUnit) or unit.oclIsKindOf(ImageUnit)) post(trim())]
+	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [if (collectionUnit.inlineSelectCode())]
 [collectionUnit.selectCode()/]
@@ -49,16 +60,17 @@ $this->[collectionUnit.selectName()/]([collectionUnit.selectMethodParameters()/]
 [/let]
 [/template]
 
-[template public selectMethod(unit : CollectionUnit) post(trim())]
-private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
+[template public actionSupportMethods(unit : DynamicUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
+[let collectionUnit : IndexUnit = unit.oclAsType(CollectionUnit)]
+[if (not collectionUnit.inlineSelectCode())]
+private function [unit.selectName()/]([collectionUnit.selectMethodParameters(true)/])
 {
-    [unit.selectCode()/]
+    [collectionUnit.selectCode()/]
 }
+[/if]
+[/let]
 [/template]
-
-[query public inlineSelectCode(unit : CollectionUnit) : Boolean
-	= not unit.hasFilters()
-/]
 
 [template private selectMethodParameters(unit : CollectionUnit) post(trim())]
 [unit.selectMethodParameters(false)/]
@@ -151,11 +163,8 @@ if (!empty($this->[unit.instanceName()/])) {
     [unit.templateParameters2()/]
 }
 [else]
-	[if (dynamicUnit.pageDisplayedOn().uriCommonPathKeys()->includesAll(dynamicUnit.uriPathKeys())) ]
+	[if (not dynamicUnit.pageDisplayedOn().hasSingleActionMethod())]
 [dynamicUnit.actionCore()/]
-	[else]
-if (!isset($this->[dynamicUnit.instanceName()/]))
-    $this->[dynamicUnit.instanceName()/] = [dynamicUnit.createInstance()/];
 	[/if]
 [unit.templateParameters2()/]
 [/if]

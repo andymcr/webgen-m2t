@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 

@@ -46,6 +46,24 @@
 	= page.units->select(u | u.hasAuthorisation())->notEmpty()
 /]
 
+[query public isRequiresRoleCommon(page : Page) : Boolean
+	= if page.units->size() < 2 then
+			true
+		else if page.units->size() = 2 then
+			page.units->first().requiresRole = page.units->last().requiresRole
+		else
+			page.units->subOrderedSet(2, page.units->size())->forAll(u | u.requiresRole = page.units->first().requiresRole)
+		endif endif
+/]
+
+[query public requiresRole(page : Page) : String
+	= if page.units->isEmpty() then
+			''
+		else
+			page.units->first().requiresRole
+		endif
+/]
+
 
 [query public hasAuthorisation(unit : ContentUnit) : Boolean
 	= unit.requiresRole <> ''
