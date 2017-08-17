@@ -4,9 +4,14 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
+
+[template public securityAnnotation(page : Page) post(trim())]
+* @Security("has_role('[page.requiresRole()/]')")
+[/template]
 
 [template public securityAnnotation(unit : ContentUnit) post(trim())]
 * @Security("has_role('[unit.requiresRole/]')")

@@ -1,0 +1,31 @@
+[comment encoding = UTF-8 /]
+[module actions(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+
+
+[query public hasSingleActionMethod(page : Page) : Boolean
+	= page.units->notEmpty()
+		and page.units->forAll(u | page.uriCommonPathKeys()->includesAll(u.uriPathKeys()))
+		and page.isRequiresRoleCommon()
+/]
+
+
+[query public hasActionSupportMethods(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			not unit.oclAsType(CollectionUnit).inlineSelectCode()
+		else
+			false
+		endif
+/]
+
+[query public inlineSelectCode(unit : CollectionUnit) : Boolean
+	= not unit.hasFilters()
+		or unit.supportedFilters->size() = 1 and unit.oclAsType(DynamicUnit).pageDisplayedOn().hasSingleActionMethod()
+/]
+
