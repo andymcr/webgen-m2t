@@ -95,9 +95,16 @@
 			else
 				null
 			endif
+		else if unit.oclIsTypeOf(CreateUnit) then
+			let createUnit : CreateUnit = unit.oclAsType(CreateUnit)
+				in if createUnit.contentType.parentEntity().oclIsUndefined() then
+						null
+					else
+						createUnit.contentType.parentEntity()
+					endif
 		else
 			unit.contentType
-		endif endif
+		endif endif endif
 /]
 
 [query public uriPathKeys(unit : ContentUnit) : Sequence(Attribute)

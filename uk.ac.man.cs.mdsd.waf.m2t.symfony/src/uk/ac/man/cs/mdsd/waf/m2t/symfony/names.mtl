@@ -181,6 +181,10 @@
 		endif
 /]
 
+[query public uniqueName(page : Page) : String
+	= page.instanceName()
+/]
+
 
 [query public actionName(unit : ContentUnit) : String
 	= unit.instanceName().concat('Action')
@@ -248,24 +252,37 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
-	= if unit.pageDisplayedOn().hasSingleActionMethod() then
+	= unit.routeName(false)
+/]
+
+[query public routeName(unit : ContentUnit, createFunction : Boolean) : String
+	= if unit.displayedOn.oclIsTypeOf(Page) and unit.pageDisplayedOn().hasSingleActionMethod() then
 			unit.pageDisplayedOn().routeName()
 		else
-			unit.routeName('')
+			if unit.pageDisplayedOn().units->size() = 1 then
+					unit.pageDisplayedOn().uniqueName()
+				else
+					if not unit.oclIsTypeOf(CreateUpdateUnit) then
+						unit.uniqueName()
+					else
+						unit.oclAsType(CreateUpdateUnit).routeName2(createFunction)
+					endif
+				endif
 		endif
 /]
 
-[query public routeName(unit : ContentUnit, suffix : String) : String
-	= if unit.displayedOn.oclIsTypeOf(Page) and unit.pageDisplayedOn().units->size() = 1 then
-			unit.pageDisplayedOn().routeName()
-		else
-			unit.uniqueName()
-			.concat(if suffix <> '' then
-					'_' + suffix
-				else
-					''
-				endif)
-		endif
+[query private routeName2(unit : CreateUpdateUnit, createFunction : Boolean) : String
+	= let uriElement : String
+		= if createFunction then
+				unit.createUriElement
+			else
+				unit.uriElement
+			endif
+		in if not uriElement.oclIsUndefined() then
+				unit.pageDisplayedOn().uniqueName().concat('_').concat(uriElement)
+			else
+				unit.uniqueName()
+			endif
 /]
 
 [query public routeName(resource : Resource) : String
