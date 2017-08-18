@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
@@ -20,9 +21,11 @@
 [query public hasActionSupportMethods(unit : DynamicUnit) : Boolean
 	= if unit.oclIsKindOf(CollectionUnit) then
 			not unit.oclAsType(CollectionUnit).inlineSelectCode()
+		else if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).hasUnitSupportActions()
 		else
 			false
-		endif
+		endif endif
 /]
 
 [query public inlineSelectCode(unit : CollectionUnit) : Boolean

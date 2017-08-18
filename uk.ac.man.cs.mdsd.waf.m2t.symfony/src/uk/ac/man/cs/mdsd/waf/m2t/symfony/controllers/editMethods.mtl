@@ -42,9 +42,9 @@
 [let routingType : EntityOrView = unit.routingType()]
 /**
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
- [unit.routeAnnotation(unit.oclAsType(CreateUpdateUnit).createUriElement, true, true)/]
+ [unit.routeAnnotation(unit.oclAsType(CreateUpdateUnit).createUriElement, true)/]
 [else]
- [unit.routeAnnotation(unit.uriElement, true, true)/]
+ [unit.routeAnnotation(unit.uriElement, true)/]
 [/if]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
@@ -79,7 +79,7 @@ if ($request->isMethod('POST')) {
 
 	[/if]
 	[for (action : UnitSupportAction | unit.unitSupportActions())]
-        [if (i > 1)]} else [/if]if ($request->request->has('[action.name.toLowerFirst()/]')) {
+    [if (i > 1)]} else [/if]if ($request->request->has('[action.name.toLowerFirst()/]')) {
         // [protected ('Support action '.concat(action.name))]
         // [/protected]
 
@@ -271,6 +271,16 @@ return [unit.redirect(null, unit.routeName(true), valueBase)/];
 return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(true), valueBase)/];
 		[/if]
 	[/if]
+[/if]
+[/let]
+[/template]
+
+[template public actionSupportMethods(unit : DynamicUnit)
+	? (unit.oclIsKindOf(EditUnit)) post(trim())]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[if (editUnit.hasUnitSupportActions())]
+[editUnit.updateFormMethod(false)/]
+
 [/if]
 [/let]
 [/template]

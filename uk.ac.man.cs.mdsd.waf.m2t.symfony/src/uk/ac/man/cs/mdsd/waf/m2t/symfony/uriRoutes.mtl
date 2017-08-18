@@ -248,17 +248,13 @@ $[key.routeParameterName(resource)/][/for]
 /]
 
 [query public uriActionPath(page : Page) : String
-	= let units : OrderedSet(ContentUnit)
-		= page.units
-			->select(u | not u.routingType().oclIsUndefined())
-			->select(u | page.uriCommonPathKeys()->includesAll(u.routingType().uriPathKeys()))
-		in if units->isEmpty() then
-				page.uriPath()
-			else
-				let selectUnit : ContentUnit = units->first()
-				in page.uriPath()
-					.combinePaths(selectUnit.selectUriPath('', false))
-					.combinePaths(selectUnit.uriElement)
+	= if page.units->isEmpty() then
+			page.uriPath()
+		else
+			let selectUnit : ContentUnit = page.units->first()
+			in page.uriPath()
+				.combinePaths(selectUnit.selectUriPath('', false))
+				.combinePaths(selectUnit.uriElement)
 			endif
 /]
 

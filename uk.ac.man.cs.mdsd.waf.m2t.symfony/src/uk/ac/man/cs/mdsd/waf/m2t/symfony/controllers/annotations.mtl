@@ -27,13 +27,13 @@
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
-[unit.routeAnnotation(unit.uriElement, false, false)/]
+[unit.routeAnnotation(unit.uriElement, false)/]
 [/template]
 
-[template public routeAnnotation(unit : ContentUnit, uriSuffix : String, createFunction : Boolean, parentPath : Boolean) post(trim())]
-[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, parentPath) <> '')]
+[template public routeAnnotation(unit : ContentUnit, uriSuffix : String, createFunction : Boolean) post(trim())]
+[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, createFunction) <> '')]
 * @Route("", name="Home")
 [/if]
-* @Route("[unit.uriPath(uriSuffix, parentPath)/]", name="[unit.routeName(createFunction)/]"[if (unit.hasValidatedRouteParameters(parentPath))]
-, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(parentPath)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
+* @Route("[unit.uriPath(uriSuffix, createFunction)/]", name="[unit.routeName(createFunction)/]"[if (unit.hasValidatedRouteParameters(createFunction))]
+, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(createFunction)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
