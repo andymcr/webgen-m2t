@@ -11,6 +11,7 @@
 
 [query public hasSingleActionMethod(page : Page) : Boolean
 	= page.units->notEmpty()
+		and page.units->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
 		and page.units->forAll(u | page.uriCommonPathKeys()->includesAll(u.uriPathKeys()))
 		and page.isRequiresRoleCommon()
 /]

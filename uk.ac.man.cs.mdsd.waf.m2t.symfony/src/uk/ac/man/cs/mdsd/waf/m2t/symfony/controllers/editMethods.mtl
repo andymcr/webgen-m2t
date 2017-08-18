@@ -31,28 +31,20 @@
 
 [/if]
 [if (editUnit.hasUnitSupportActions())]
-[editUnit.updateFormMethod('')/]
+[editUnit.updateFormMethod(false)/]
 
 [/if]
 [/let]
 [/template]
-
-[query private addSuffix(unit : EditUnit) : String
-	= if unit.oclIsTypeOf(CreateUpdateUnit) then
-			unit.oclAsType(CreateUpdateUnit).createUriElement
-		else
-			''
-		endif
-/]
 
 [template private actionAddMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [let routingType : EntityOrView = unit.routingType()]
 /**
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
- [unit.routeAnnotation(unit.oclAsType(CreateUpdateUnit).createUriElement, unit.addSuffix(), true)/]
+ [unit.routeAnnotation(unit.oclAsType(CreateUpdateUnit).createUriElement, true, true)/]
 [else]
- [unit.routeAnnotation(unit.uriElement, unit.addSuffix(), true)/]
+ [unit.routeAnnotation(unit.uriElement, true, true)/]
 [/if]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
@@ -60,65 +52,76 @@
  */
 public function [unit.actionName()/]X([page.actionMethodParameters(unit, routingType.keyEntity().container())/])
 {
-    $[unit.instanceName()/] = [unit.createInstance()/];
-    $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), unit.addSuffix(), true, false)/];
-[if (unit.hasUnitSupportActions())]
+    [unit.actionAddCore()/]
 
-    if ($request->isMethod('POST')) {
-        $formValues = $request->request->get($this->[unit.instanceName()/]->getName());
-	[if (not unit.cancelDestination.oclIsUndefined())]
-        [unit.handleCancelPost()/]
-
-	[/if]
-	[for (action : UnitSupportAction | unit.unitSupportActions())]
-        [if (i > 1)]} else [/if]if ($request->request->has('[action.name.toLowerFirst()/]')) {
-            // [protected ('Support action '.concat(action.name))]
-            // [/protected]
-
-	[/for]
-        } else {
-	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
-            [unit.customValuesBody('add')/]
-	[else]
-            $this->[unit.instanceName()/]->handleRequest($request);
-            if ($this->[unit.instanceName()/]->isValid()) {
-                [unit.saveBody(unit.contentType.parentEntity())/]
-            }
-	[/if]
-        }
-    }
-[else]
-	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
-    if ($request->isMethod('POST')) {
-		[if (not unit.cancelDestination.oclIsUndefined())]
-        [unit.handleCancelPost()/]
-		[/if]
-        [unit.customValuesBody('add')/]
-    }
-    [else]
-    $this->[unit.instanceName()/]->handleRequest($request);
-		[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancelSubmit()/]
-		[/if]
-    if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-        [unit.saveBody(unit.contentType.parentEntity())/]
-    }
-	[/if]
-[/if]
-
-[if (page.units->size() > 1 or unit.oclIsTypeOf(CreateUpdateUnit))]
     return $this->renderPage([page.renderActualParameters(routingType.container())/]);
-[else]
-    $parameters = array();
-    $parameters['['/]'title'[']'/] = '[page.displayLabel/]';
-    [page.templateParameters()/]
-    [unit.templateParameters()/]
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
-[/if]
 }
 [/let]
 [/let]
 [/template]
+
+[template public actionCore(unit : ContentUnit)
+	? (unit.oclIsTypeOf(CreateUnit)) post(trim())]
+[let createUnit : CreateUnit = unit.oclAsType(CreateUnit)]
+[createUnit.actionAddCore()/]
+[/let]
+[/template]
+
+[template private actionAddCore(unit : EditUnit) post(trim())]
+$[unit.instanceName()/] = [unit.createInstance()/];
+$this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), true, true, false)/];
+[if (unit.hasUnitSupportActions())]
+
+if ($request->isMethod('POST')) {
+    $formValues = $request->request->get($this->[unit.instanceName()/]->getName());
+	[if (not unit.cancelDestination.oclIsUndefined())]
+    [unit.handleCancelPost()/]
+
+	[/if]
+	[for (action : UnitSupportAction | unit.unitSupportActions())]
+        [if (i > 1)]} else [/if]if ($request->request->has('[action.name.toLowerFirst()/]')) {
+        // [protected ('Support action '.concat(action.name))]
+        // [/protected]
+
+	[/for]
+    } else {
+	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+        [unit.customValuesBody('add')/]
+	[else]
+        $this->[unit.instanceName()/]->handleRequest($request);
+        if ($this->[unit.instanceName()/]->isValid()) {
+            [unit.saveBody(unit.contentType.parentEntity())/]
+        }
+	[/if]
+    }
+}
+[else]
+	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+if ($request->isMethod('POST')) {
+		[if (not unit.cancelDestination.oclIsUndefined())]
+    [unit.handleCancelPost()/]
+		[/if]
+    [unit.customValuesBody('add')/]
+}
+    [else]
+$this->[unit.instanceName()/]->handleRequest($request);
+		[if (not unit.cancelDestination.oclIsUndefined())]
+[unit.handleCancelSubmit()/]
+		[/if]
+if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+    [unit.saveBody(unit.contentType.parentEntity())/]
+}
+	[/if]
+[/if]
+[/template]
+
+[query private updateSuffix(unit : EditUnit) : String
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+			unit.oclAsType(CreateUpdateUnit).uriElement
+		else
+			''
+		endif
+/]
 
 [template private actionEditMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
@@ -130,50 +133,53 @@ public function [unit.actionName()/]X([page.actionMethodParameters(unit, routing
  */
 public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType())/])
 {
-    [unit.loadSelectedInstance()/]
-[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
-[let association : Association = field.feature().oclAsType(Association)]
-    $original[field.instanceName().toUpperFirst()/] = new ArrayCollection();
-    foreach ($[unit.instanceName()/]->[field.feature().getMethodName()/]() as $[association.targetType().instanceName()/])
-        $original[field.instanceName().toUpperFirst()/]->add($[association.targetType().instanceName()/]);
-[/let]
-[/for]
-    $this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), '', false, false)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.hasDisabledFeatures())]
-    if ($request->isMethod('POST')) {
-	[if (not unit.cancelDestination.oclIsUndefined())]
-        [unit.handleCancelPost()/]
-	[/if]
-        [unit.customValuesBody('edit')/]
-    }
-[else]
-    $this->[unit.instanceName()/]->handleRequest($request);
-	[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancelSubmit()/]
-	[/if]
-    if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-	[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
-	[let association : Association = field.feature().oclAsType(Association)]
-        foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType().instanceName()/])
-            if (false === $[unit.instanceName()/]->[field.feature().getMethodName()/]()->contains($[association.targetType().instanceName()/]))
-                $this->get('[association.targetType().services(unit.pageDisplayedOn().partOf)->first().serviceName()/]')->remove($[association.targetType().instanceName()/]);
-	[/let]
-	[/for]
-        [unit.saveBody(unit.contentType)/]
-    }
-[/if]
+    [unit.actionEditCore()/]
 
-[if (not unit.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)]
     return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
-[else]
-    $parameters = array();
-    $parameters['['/]'title'[']'/] = '[page.displayLabel/]';
-    [page.templateParameters()/]
-    [unit.templateParameters()/]
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
-[/if]
 }
 [/let]
+[/template]
+
+[template public actionCore(unit : ContentUnit)
+	? (unit.oclIsTypeOf(UpdateUnit)) post(trim())]
+[let updateUnit : UpdateUnit = unit.oclAsType(UpdateUnit)]
+[updateUnit.actionEditCore()/]
+[/let]
+[/template]
+
+[template private actionEditCore(unit : EditUnit) post(trim())]
+[unit.loadSelectedInstance()/]
+[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
+[let association : Association = field.feature().oclAsType(Association)]
+$original[field.instanceName().toUpperFirst()/] = new ArrayCollection();
+foreach ($[unit.instanceName()/]->[field.feature().getMethodName()/]() as $[association.targetType().instanceName()/])
+    $original[field.instanceName().toUpperFirst()/]->add($[association.targetType().instanceName()/]);
+[/let]
+[/for]
+$this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), false, false, false)/];
+[if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.hasDisabledFeatures())]
+if ($request->isMethod('POST')) {
+	[if (not unit.cancelDestination.oclIsUndefined())]
+    [unit.handleCancelPost()/]
+	[/if]
+    [unit.customValuesBody('edit')/]
+}
+[else]
+$this->[unit.instanceName()/]->handleRequest($request);
+	[if (not unit.cancelDestination.oclIsUndefined())]
+[unit.handleCancelSubmit()/]
+	[/if]
+if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+	[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
+	[let association : Association = field.feature().oclAsType(Association)]
+    foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType().instanceName()/])
+        if (false === $[unit.instanceName()/]->[field.feature().getMethodName()/]()->contains($[association.targetType().instanceName()/]))
+            $this->get('[association.targetType().services(unit.pageDisplayedOn().partOf)->first().serviceName()/]')->remove($[association.targetType().instanceName()/]);
+	[/let]
+	[/for]
+    [unit.saveBody(unit.contentType)/]
+}
+[/if]
 [/template]
 
 [template private customValuesBody(unit : EditUnit, customTag : String) post(trim())]
@@ -197,7 +203,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 }
 [/template]
 
-[template public createForm(unit : EditUnit, entityInstance : String, suffix : String, parentPath : Boolean, placeholder : Boolean) post(trim())]
+[template public createForm(unit : EditUnit, entityInstance : String, createFunction : Boolean, parentPath : Boolean, placeholder : Boolean) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [let entity : EntityOrView = unit.contentType]
 [let pathKeys : Sequence(Attribute)
@@ -211,7 +217,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 			entity.uriPathKeys()
 		endif]
 $this->createForm([unit.typeClassName(unit.pageDisplayedOn().partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
-    'action' => $this->generateUrl('[unit.routeName(suffix)/]'[if (page.hasFilterParameters() or page.hasPagination())], [if (pathKeys->isEmpty())]
+    'action' => $this->generateUrl('[unit.routeName(createFunction)/]'[if (page.hasFilterParameters() or page.hasPagination())], [if (pathKeys->isEmpty())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
@@ -260,9 +266,9 @@ return [unit.confirmDestination.redirect()/];
 [else]
 	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
 		[if (unit.contentType.parentEntity().oclIsUndefined())]
-return [unit.redirect(null, unit.routeName(unit.addSuffix()), valueBase)/];
+return [unit.redirect(null, unit.routeName(true), valueBase)/];
 		[else]
-return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(unit.addSuffix()), valueBase)/];
+return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(true), valueBase)/];
 		[/if]
 	[/if]
 [/if]
@@ -275,18 +281,18 @@ return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(unit.addSu
 [if (editUnit.pageDisplayedOn().units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
 if (!isset($this->[editUnit.instanceName()/])) {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
-    $this->[editUnit.instanceName()/] = [editUnit.createForm(unit.instanceName(), 'create', not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm(unit.instanceName(), true, not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
 }
 [/if]
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
 [/let]
 [/template]
 
-[template private updateFormMethod(unit : EditUnit, suffix : String) post(trim())]
+[template private updateFormMethod(unit : EditUnit, createFunction : Boolean) post(trim())]
 [let contentType : EntityOrView = unit.contentType]
 private function updateForm($[contentType.instanceName()/], $values)
 {
-    $form = [unit.createForm(contentType.instanceName(), suffix, true, false)/];
+    $form = [unit.createForm(contentType.instanceName(), createFunction, true, false)/];
     $form->submit($values, false);
     foreach ($this->get('validator')->validate($[contentType.instanceName()/]) as $violation) {
         $path = $violation->getPropertyPath();
