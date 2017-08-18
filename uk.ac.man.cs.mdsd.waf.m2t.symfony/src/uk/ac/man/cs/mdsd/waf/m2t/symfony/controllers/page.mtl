@@ -45,6 +45,10 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 
 		[/if]
 	[/for]
+	[for (action : InlineAction | page.inlineActionsRequiringHandlers())]
+    [action.actionMethod(page)/]
+
+	[/for]
 [else]
 	[for (unit : DynamicUnit | page.dynamicUnits())]
     [unit.unitMethods()/]
@@ -186,11 +190,11 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
 {
     $[deleteAction.instanceName()/] = [contentType.loadInstance(unit)/];
     $this->get('[deleteAction.usedBy.oclAsType(IndexUnit).contentService().serviceName()/]')->remove($[deleteAction.instanceName()/], true);
-[if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
-    $this->redirectToRoute('[deleteAction.destination.units->first().routeName()/]');
-[else]
 
-    return $this->renderPage([page.renderActualParameters(unit.contentType())/]);
+[if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
+    return [deleteAction.destination.redirect()/];
+[else]
+    return [unit.redirect(unit.containingUnit().routingType(), unit.containingUnit().routeName(), null)/];
 [/if]
 }
 [/let]

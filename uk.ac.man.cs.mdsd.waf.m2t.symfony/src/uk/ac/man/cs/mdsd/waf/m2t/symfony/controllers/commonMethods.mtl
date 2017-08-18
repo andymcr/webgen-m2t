@@ -174,6 +174,49 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 [/template]
 
 
+[template public redirect(page : Page) post(trim())]
+$this->redirectToRoute('[page.routeName()/]'[if (page.uriCommonPathKeys()->notEmpty())]
+, array(
+    page.routeActualParameters(unit.contentType.parentEntity(), valueBase)/]
+)[/if])
+[/template]
+
+[template public redirect(unit : DynamicUnit, routingType : EntityOrView, routeName : String, valueBase : EntityOrView) post(trim())]
+[let page : Page = unit.pageDisplayedOn()]
+$this->redirectToRoute('[routeName/]'[if (page.hasFilterParameters() or page.hasPagination())]
+, [if (routingType.oclIsUndefined())]
+$request->query->all()[else]
+array_merge(
+    $request->query->all(),
+    array(
+        [routingType.routeActualParameters(valueBase, unit)/]
+))[/if]
+[else]
+	[if (not routingType.oclIsUndefined())]
+, array(
+    [routingType.routeActualParameters(valueBase, unit)/]
+)[/if]
+[/if])
+[/let]
+[/template]
+
+[template public routeActualParameters(base : EntityOrView, targetUnit : DynamicUnit) post(trim())]
+[base.routeActualParameters(base, targetUnit)/]
+[/template]
+
+[template public routeActualParameters(routeBase : EntityOrView, valueBase : EntityOrView, targetUnit : DynamicUnit) post(trim())]
+[for (key : Attribute | routeBase.uriPathKeys(targetUnit))]
+'[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
+[/for]
+[/template]
+
+[template public routeActualParameters(page : Page, routeBase : EntityOrView, valueBase : EntityOrView) post(trim())]
+[for (key : Attribute | page.uriCommonPathKeys())]
+'[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
+[/for]
+[/template]
+
+
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
 [if (page.useInputJQuery() or page.hasImageUnits())]
