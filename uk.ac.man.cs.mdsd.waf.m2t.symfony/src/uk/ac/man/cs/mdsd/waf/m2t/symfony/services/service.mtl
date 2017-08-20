@@ -358,7 +358,13 @@ public function [filter.methodName/]([filter.formals()/])
     $this->[selection.parametersMethodName()/]($query);
 	[/if]
 	[for (parameter : FormalParameter | filter.parameters)]
+		[if (filter.condition.oclIsUndefined())]
     $query->setParameter('[parameter.name/]', $[parameter.name/]);
+		[elseif (filter.condition.parameterUsedInLike(parameter, false))]
+    $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
+		[else]
+    $query->setParameter('[parameter.name/]', $[parameter.name/]);
+		[/if]
 	[/for]
 
     [selection.queryResult(service)/]

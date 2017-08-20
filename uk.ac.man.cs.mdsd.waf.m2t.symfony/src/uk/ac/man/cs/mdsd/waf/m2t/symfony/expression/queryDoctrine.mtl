@@ -261,3 +261,56 @@ $query->setParameter('now', new \DateTime('now'));
 	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
 $query->setParameter('user', $this->[userService.instanceName()/]->getUser());
 [/template]
+
+
+[query public parameterUsedInLike(expression : Expression, parameter : FormalParameter, withinLike : Boolean) : Boolean
+	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
+			expression.oclAsType(PredicateBooleanOperator).parameterUsedInLike(parameter, withinLike)
+		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
+			expression.oclAsType(PredicateEqualityOperator).parameterUsedInLike(parameter, withinLike)
+		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
+			expression.oclAsType(PredicateComparisonOperator).parameterUsedInLike(parameter, withinLike)
+		else if expression.oclIsTypeOf(PredicateIsOperator) then
+			expression.oclAsType(PredicateIsOperator).parameterUsedInLike(parameter, withinLike)
+		else if expression.oclIsTypeOf(PredicateLikeOperator) then
+			expression.oclAsType(PredicateLikeOperator).parameterUsedInLike(parameter, withinLike)
+		else if expression.oclIsTypeOf(PredicateIsEmpty) then
+			expression.oclAsType(PredicateIsEmpty).parameterUsedInLike(parameter, withinLike)
+		else if expression.oclIsTypeOf(ParameterReference) then
+			expression.oclAsType(ParameterReference).parameterUsedInLike(parameter, withinLike)
+		else
+			false
+		endif endif endif endif endif endif endif
+/]
+
+[query private parameterUsedInLike(predicate : PredicateBooleanOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
+	= predicate.expressions->select(e | e.parameterUsedInLike(parameter, withinLike))->notEmpty()
+/]
+
+[query private parameterUsedInLike(predicate : PredicateEqualityOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
+	= predicate.left.parameterUsedInLike(parameter, withinLike)
+		or predicate.right.parameterUsedInLike(parameter, withinLike)
+/]
+
+[query private parameterUsedInLike(predicate : PredicateComparisonOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
+	= predicate.left.parameterUsedInLike(parameter, withinLike)
+		or predicate.right.parameterUsedInLike(parameter, withinLike)
+/]
+
+[query private parameterUsedInLike(predicate : PredicateIsOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
+	= predicate.left.parameterUsedInLike(parameter, withinLike)
+		or predicate.right.parameterUsedInLike(parameter, withinLike)
+/]
+
+[query private parameterUsedInLike(predicate : PredicateLikeOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
+	= predicate.left.parameterUsedInLike(parameter, true)
+		or predicate.right.parameterUsedInLike(parameter, true)
+/]
+
+[query private parameterUsedInLike(predicate : PredicateIsEmpty, parameter : FormalParameter, withinLike : Boolean) : Boolean
+	= predicate.feature.parameterUsedInLike(parameter, withinLike)
+/]
+
+[query private parameterUsedInLike(variable : ParameterReference, parameter1 : FormalParameter, withinLike : Boolean) : Boolean
+	= variable.parameter = parameter1
+/]
