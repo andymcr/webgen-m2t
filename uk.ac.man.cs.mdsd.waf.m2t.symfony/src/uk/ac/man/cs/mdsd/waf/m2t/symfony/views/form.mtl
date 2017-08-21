@@ -70,23 +70,25 @@
 [/template]
 
 [template private disable(unit : DynamicUnit, accessor : String) post(trim())]
+[let twigAccessor : String = accessor.concat('.vars.data')]
 [if (not unit.oclIsKindOf(EditUnit))]
-{% if [unit.instanceName()/].data.vars.[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
+{% if [twigAccessor/].[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
 [else]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.disableCondition.oclIsUndefined())]
 		[if (editUnit.oclIsTypeOf(UpdateUnit))]
-{% if [editUnit.instanceName()/].vars.data.[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
+{% if [twigAccessor/].[unit.primaryId()/] is null %} disabled="disabled"{% endif %}
 		[/if]
 	[else] 
 		[if (editUnit.oclIsTypeOf(UpdateUnit))]
-{% if [editUnit.instanceName()/].vars.data.[unit.primaryId()/] is null or [editUnit.disableCondition.twigExpression(accessor)/] %} disabled="disabled"{% endif %}
+{% if [twigAccessor/].[unit.primaryId()/] is null or [editUnit.disableCondition.twigExpression(twigAccessor)/] %} disabled="disabled"{% endif %}
 		[else]
-{% if [editUnit.disableCondition.twigExpression(accessor)/] %} disabled="disabled"{% endif %}
+{% if [editUnit.disableCondition.twigExpression(twigAccessor)/] %} disabled="disabled"{% endif %}
 		[/if]
 	[/if]
 [/let]
 [/if]
+[/let]
 [/template]
 
 [template private primaryId(unit : DynamicUnit) post(trim())]
