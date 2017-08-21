@@ -29,13 +29,15 @@
   <li id="authentication">Logged in as {{ app.user.username }} <a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
 {% elseif not app.user %}
   <li id="authentication"><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
-[if (model.isLocallyAuthenticated())]
-[let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
 	[if (authentication.allowSelfRegistration)]
   <li id="authentication"><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
 	[/if]
-[/let]
-[/if]
+{% endif %}
+	[/let]
+	[elseif (model.isCasAuthenticated())]
+	[let authentication : CasAuthentication = model.casAuthentication()]
+{% if app.user %}
+  <li id="authentication">{{ app.user.username }}</li>
 {% endif %}
 	[/let]
 	[/if]
