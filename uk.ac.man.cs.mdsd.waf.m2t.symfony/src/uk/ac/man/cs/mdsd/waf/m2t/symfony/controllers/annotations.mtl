@@ -22,6 +22,9 @@
 [/template]
 
 [template public routeAnnotation(page : Page) post(trim())]
+[if (page = page.partOf.homePage() and page.uriActionPath() <> '')]
+* @Route("", name="Home")
+[/if]
 * @Route("[page.uriActionPath()/]", name="[page.routeName()/]"[if (page.hasValidatedRouteParameters())]
 , requirements={[for (key : Attribute | page.uriPathValidatedKeys()) separator(', ')]"[key.routeParameterName(page)/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
