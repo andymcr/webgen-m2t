@@ -16,13 +16,11 @@
  <ul>
 [/if]
 [for (page : Page | model.topMenuItems())]
-	[if (page.topMenuOption = PageTopMenuOptions::IncludeWhenAuthenticated)]
-{% if app.user %}
-	[/if]
-  <li><a href="{{ path('[page.routeName()/]') }}">{{ 'top.labels.[page.id()/]' | trans }}</a></li>
-	[if (page.topMenuOption = PageTopMenuOptions::IncludeWhenAuthenticated)]
-{% endif %}
-	[/if]
+	[if (page.topMenuRequiresRole <> '')]
+{% if is_granted('[page.topMenuRequiresRole/]') %}[/if]
+  <li><a href="{{ path('[page.routeName()/]') }}">{{ 'top.labels.[page.id()/]' | trans }}</a></li>[if (page.topMenuRequiresRole <> '')]
+{% endif %}[/if]
+
 [/for]
 [if (model.isAuthenticated())]
 	[if (model.isLocallyAuthenticated())]
