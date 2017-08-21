@@ -14,6 +14,7 @@
 	= page.units->notEmpty()
 		and page.units->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
 		and page.units->forAll(u | page.uriCommonPathKeys()->includesAll(u.uriPathKeys()))
+		and page.inlineActionsRequiringHandlers()->select(a | not a.oclIsTypeOf(DeleteAction))->isEmpty()
 		and page.isRequiresRoleCommon()
 /]
 
