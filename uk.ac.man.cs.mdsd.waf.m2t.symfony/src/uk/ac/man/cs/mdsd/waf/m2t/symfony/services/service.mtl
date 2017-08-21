@@ -184,8 +184,8 @@ $securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (
 [let entity : EntityOrView = service.serves]
 public function find([service.serves.routeParameters()/])
 {
-	$queryBuilder = $this->createQueryBuilder();
-	return $queryBuilder
+    $queryBuilder = $this->createQueryBuilder();
+    return $queryBuilder
 [if (entity.isContained() or entity.hasAssociationKeys())]
         [entity.containerJoin()/]
 [/if]
@@ -274,7 +274,7 @@ public function create([for (attribute : Attribute | entity.attributes()->select
 [template private removeMethod(service : Service) post(trim())]
 public function remove($entity, $flush = false)
 {
-	$entityManager = $this->doctrine->getManager();
+    $entityManager = $this->doctrine->getManager();
     $entityManager->remove($entity);
     if ($flush)
         $entityManager->flush();
@@ -284,7 +284,7 @@ public function remove($entity, $flush = false)
 [template private saveMethod(service : Service) post(trim())]
 public function save($entity, $flush = false)
 {
-	$entityManager = $this->doctrine->getManager();
+    $entityManager = $this->doctrine->getManager();
     $entityManager->persist($entity);
     if ($flush)
         $entityManager->flush();
@@ -361,8 +361,14 @@ public function [filter.methodName/]([filter.formals()/])
 		[if (filter.condition.oclIsUndefined())]
     $query->setParameter('[parameter.name/]', $[parameter.name/]);
 		[elseif (filter.condition.parameterUsedInLike(parameter, false))]
+			[if (parameter.dataType.oclIsUndefined())]
     $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
-		[else]
+			[elseif (parameter.dataType.isStringDataType())]
+    $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
+			[else]
+    $query->setParameter('[parameter.name/]', $[parameter.name/]);
+			[/if]	
+	[else]
     $query->setParameter('[parameter.name/]', $[parameter.name/]);
 		[/if]
 	[/for]
