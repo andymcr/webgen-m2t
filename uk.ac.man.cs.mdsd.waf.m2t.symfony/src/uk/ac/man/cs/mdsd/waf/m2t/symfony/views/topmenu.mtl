@@ -26,7 +26,7 @@
 	[if (model.isLocallyAuthenticated())]
 	[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
 {% if app.user %}
-  <li id="authentication">Logged in as {{ app.user.username }} <a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
+  <li id="authentication">{{ app.user.username }} <a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
 {% elseif not app.user %}
   <li id="authentication"><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
 	[if (authentication.allowSelfRegistration)]
