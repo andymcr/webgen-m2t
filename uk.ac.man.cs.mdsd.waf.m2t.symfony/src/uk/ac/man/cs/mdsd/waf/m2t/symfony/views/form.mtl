@@ -102,7 +102,46 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (field.isContains()) post(trim())]
+	? (field.isSingleton() and not field.isContains()) post(trim())]
+{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.disableInput or field.hasUnitTranslation())]
+, {[if (field.hasUnitTranslation())]
+ 'label': '[unit.containedId()/].labels.[field.id()/]',[/if]
+[if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]
+ 'attr': {[if (field.hasTitle())]
+ 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.disableInput or field.hasClass())],[/if][/if]
+[if (field.hasPlaceholder())]
+ 'placeholder': [field.placeholder(unit)/][if (field.disableInput or field.hasClass())],[/if][/if]
+[if (field.disableInput)]
+ 'disabled': 'disabled'[if (field.hasClass())],[/if][/if]
+[if (field.hasClass())]
+ 'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
+ }[if (field.hasUnitTranslation())], [/if][/if]
+[if (field.hasUnitTranslation())]
+'translation_domain': '[unit.translationDomain()/]'[/if]}[/if]) }}
+[/template]
+
+[template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
+	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton()) post(trim())]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
+<div>
+ {{- form_label([accessor/]) -}}
+ <div class="[attribute.name.asId()/] framed"[if (attribute.collectionUiAllowAdd)]
+ data-prototype=""[/if]>
+  {% for entry in [accessor/] %}
+  <div{% if entry.vars.errors | length > 0 %} class="error"{% endif %}>
+   {{- form_widget(entry) -}}
+   {{- form_errors(entry) -}}
+  </div>
+  {% endfor %}
+ </div>
+</div>
+[/let]
+[/let]
+[/template]
+
+[template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
+	? (field.oclIsTypeOf(UnitAssociation) and field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
 [let childFields : OrderedSet(Feature) = association.association.targetType().features->select(f | not f.isContainer())]
@@ -123,25 +162,6 @@
 [/let]
 [/let]
 [/let]
-[/template]
-
-[template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (not field.isContains()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.disableInput or field.hasUnitTranslation())]
-, {[if (field.hasUnitTranslation())]
- 'label': '[unit.containedId()/].labels.[field.id()/]',[/if]
-[if (field.hasClass() or field.hasPlaceholder() or field.hasTitle())]
- 'attr': {[if (field.hasTitle())]
- 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.disableInput or field.hasClass())],[/if][/if]
-[if (field.hasPlaceholder())]
- 'placeholder': [field.placeholder(unit)/][if (field.disableInput or field.hasClass())],[/if][/if]
-[if (field.disableInput)]
- 'disabled': 'disabled'[if (field.hasClass())],[/if][/if]
-[if (field.hasClass())]
- 'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
- }[if (field.hasUnitTranslation())], [/if][/if]
-[if (field.hasUnitTranslation())]
-'translation_domain': '[unit.translationDomain()/]'[/if]}[/if]) }}
 [/template]
 
 [template private placeholder(field : UnitField, unit : DynamicUnit) post(trim())]
