@@ -71,7 +71,9 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/template]
 
 [template private useStatements(page : Page) post(trim())]
-[for (entity : EntityOrView | page.editUnits()->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
+[for (entity : EntityOrView | page.editUnits()
+		->select(u | not u.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)
+		->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
 [for (form : DynamicUnit | page.formUnits()->sortedBy(u | u.name))]
