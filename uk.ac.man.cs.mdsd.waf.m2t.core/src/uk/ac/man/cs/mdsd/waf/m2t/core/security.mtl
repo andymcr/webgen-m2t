@@ -9,16 +9,16 @@
 	= not model.authentication.oclIsUndefined()
 /]
 
+[query public casAuthentication(model : WafModel) : CasAuthentication
+	= model.authentication.oclAsType(CasAuthentication)
+/]
+
 [query public isCasAuthenticated(model : WafModel) : Boolean
 	= if model.isAuthenticated() then
 			model.authentication.oclIsTypeOf(CasAuthentication)
 		else
 			false
 		endif
-/]
-
-[query public casAuthentication(model : WafModel) : CasAuthentication
-	= model.authentication.oclAsType(CasAuthentication)
 /]
 
 [query public isLocallyAuthenticated(model : WafModel) : Boolean

@@ -127,7 +127,7 @@
 <div>
  {{- form_label([accessor/]) -}}
  <div class="[attribute.name.asId()/] framed"[if (attribute.collectionUiAllowAdd)]
- data-prototype=""[/if]>
+ data-prototype="{{ form_widget([accessor/].vars.prototype)|e('html_attr') }}"[/if]>
   {% for entry in [accessor/] %}
   <div{% if entry.vars.errors | length > 0 %} class="error"{% endif %}>
    {{- form_widget(entry) -}}
