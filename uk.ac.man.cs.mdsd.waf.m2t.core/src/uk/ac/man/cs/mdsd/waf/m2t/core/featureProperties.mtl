@@ -1245,6 +1245,36 @@
 		endif
 /]
 
+[query public isIntegerDataType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isIntegerDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isIntegerDataTypeElement()
+					endif
+			endif
+		else
+			false -- TODO implement
+		endif
+/]
+
+[query public isIntegerDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isIntegerDataType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isIntegerDataTypeElement()
+				endif
+		endif
+/]
+
 [query public isModifiable(feature : UnitFeature) : Boolean
 	= if feature.oclIsTypeOf(UnitAttribute) then
 			let attribute : UnitAttribute = feature.oclAsType(UnitAttribute)
@@ -1340,6 +1370,36 @@
 					association.association.isSingleton()
 				else
 					association.childFeature.isSingletonElement()
+				endif
+		endif
+/]
+
+[query public isStringDataType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isStringDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isStringDataTypeElement()
+					endif
+			endif
+		else
+			false -- TODO implement
+		endif
+/]
+
+[query public isStringDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isStringDataType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isStringDataTypeElement()
 				endif
 		endif
 /]

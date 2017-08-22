@@ -52,6 +52,19 @@
 /]
 
 
+[query public isBooleanDataType(dataType : DataType) : Boolean
+	= dataType.name = 'Boolean'
+/]
+
+[query public isIntegerDataType(dataType : DataType) : Boolean
+	= dataType.name = 'Integer'
+/]
+
+[query public isStringDataType(dataType : DataType) : Boolean
+	= dataType.name = 'String'
+/]
+
+
 [query public associations(entityOrView : EntityOrView) : Sequence(Association)
 	= entityOrView.features
 		->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
@@ -330,7 +343,7 @@
 		else
 			let singleton : SingletonElement
 				= feature.oclAsType(SingletonElement)
-				in singleton.dataType.name = 'Boolean'
+				in singleton.dataType.isBooleanDataType()
 		endif endif
 /]
 
@@ -416,13 +429,13 @@
 
 [query public isIntegerDataType(feature : Feature) : Boolean
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isBooleanDataType()
+			feature.oclAsType(EncapsulatedAttribute).attribute.isIntegerDataType()
 		else if not feature.oclIsTypeOf(SingletonElement) then
 			false
 		else
 			let singleton : SingletonElement
 				= feature.oclAsType(SingletonElement)
-				in singleton.dataType.name = 'Integer'
+				in singleton.dataType.isIntegerDataType()
 		endif endif
 /]
 
@@ -513,6 +526,18 @@
 		else
 			association.isSingleton()
 		endif
+/]
+
+[query public isStringDataType(feature : Feature) : Boolean
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isStringDataType()
+		else if not feature.oclIsTypeOf(SingletonElement) then
+			false
+		else
+			let singleton : SingletonElement
+				= feature.oclAsType(SingletonElement)
+				in singleton.dataType.isStringDataType()
+		endif endif
 /]
 
 [query public isUnique(feature : Feature) : Boolean

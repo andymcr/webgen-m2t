@@ -71,7 +71,11 @@ class [association.typeClassName()/] extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 [for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
+	[if (feature.oclIsKindOf(UnitAttribute) and not feature.isSingleton())]
         $builder->[feature.formFeature(false, false)/];
+	[else]
+        $builder->[feature.formFeature()/];
+	[/if]
 [/for]
     }
 
@@ -176,30 +180,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private formFeature(field : UnitField)
-	? (field.oclIsTypeOf(UnitAttribute)) post(trim())]
+	? (field.oclIsTypeOf(UnitAttribute) and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
-[attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
+[attribute.attribute.formFeature()/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
-	? (feature.oclIsKindOf(Attribute)) post(trim())]
+[template private formFeature(feature : Feature)
+	? (feature.oclIsKindOf(Attribute) and feature.isSingleton()) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'label' => '[attribute.partOf.id()/].labels.[attribute.id()/]',
     'translation_domain' => 'entity',
-[if (not attribute.isSingleton() or not attribute.isRequired())]
+[if (not attribute.isRequired())]
     'required' => false,
 [/if]
-[if (not attribute.isSingleton())]
-    'entry_type' => [attribute.interfaceType(true)/],
-	[if (allowUiAdd)]
-    'allow_add' => true,
-	[/if]
-	[if (allowUiRemove)]
-    'allow_delete' => true,
-	[/if]
-[elseif (attribute.isDate())]
+[if (attribute.isDate())]
 	[if (attribute.dateDetails() = DateDetails::DateAndTime)]
     'date_widget' => 'single_text',
     'time_widget' => 'single_text',
@@ -227,29 +223,39 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/let]
 [/template]
 
-[template private interfaceType(attribute : Attribute) post(trim())]
-[attribute.interfaceType(false)/]
+[template private formFeature(field : UnitField)
+	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton()) post(trim())]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
+[/let]
 [/template]
 
-[template private interfaceType(attribute : Attribute, elementType : Boolean) post(trim())]
-[if (not attribute.isSingleton() and not elementType)]
-CollectionType::class
-[elseif (attribute.isEnumerationType())]
+[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
+	? (feature.oclIsKindOf(Attribute) and not feature.isSingleton()) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+add('[attribute.modelPropertyName()/]', CollectionType::class, array(
+    'label' => '[attribute.partOf.id()/].labels.[attribute.id()/]',
+    'translation_domain' => 'entity',
+    'entry_type' => [attribute.interfaceType()/],
+[if (allowUiAdd)]
+    'allow_add' => true,
+[/if]
+[if (allowUiRemove)]
+    'allow_delete' => true,
+[/if]
+[if (attribute.collectionOrmAllowAdd and attribute.collectionOrmAllowRemove)]
+    'by_reference' => false,
+[/if]
+    'required' => false,
+))
+[/let]
+[/template]
+
+[template private interfaceType(attribute : Attribute) post(trim())]
+[if (attribute.isEnumerationType())]
 ChoiceType::class
 [elseif (attribute.isBooleanDataType())]
 CheckboxType::class
-[elseif (attribute.isDataType())]
-	[if (attribute.dataType().name.toLowerCase() = 'email')]
-EmailType::class
-	[elseif (attribute.dataType().name.toLowerCase() = 'integer')]
-IntegerType::class
-	[elseif (attribute.dataType().name.toLowerCase() = 'text')]
-TextType::class
-	[elseif (attribute.dataType().name.toLowerCase() = 'textblock')]
-TextareaType::class
-	[else]
-TextType::class
-	[/if]
 [elseif (attribute.isDate())]
 	[if (attribute.dateDetails() = DateDetails::DateOnly)]
 DateType::class
@@ -257,6 +263,18 @@ DateType::class
 DateTimeType::class
 	[else]
 TimeType::class
+	[/if]
+[elseif (attribute.isIntegerDataType())]
+IntegerType::class
+[elseif (attribute.isDataType())]
+	[if (attribute.dataType().name.toLowerCase() = 'email')]
+EmailType::class
+	[elseif (attribute.dataType().name.toLowerCase() = 'text')]
+TextType::class
+	[elseif (attribute.dataType().name.toLowerCase() = 'textblock')]
+TextareaType::class
+	[else]
+TextType::class
 	[/if]
 [else]
 TextType::class
@@ -266,11 +284,11 @@ TextType::class
 [template private formFeature(field : UnitField)
 	? (field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[association.association.formFeature(association.collectionUiAllowAdd, association.collectionUiAllowRemove)/]
+[association.association.formFeature()/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
+[template private formFeature(feature : Feature)
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
@@ -307,15 +325,15 @@ add('[association.modelPropertyName()/]', [association.typeClassName()/]::class)
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(
     'entry_type' => [association.typeClassName()/]::class,
-[if (association.collectionUiAllowAdd)]
+	[if (association.collectionUiAllowAdd)]
     'allow_add' => true,
-[/if]
-[if (association.collectionUiAllowRemove)]
+	[/if]
+	[if (association.collectionUiAllowRemove)]
     'allow_delete' => true,
-[/if]
-[if (association.association.collectionOrmAllowAdd and association.association.collectionOrmAllowRemove)]
+	[/if]
+	[if (association.association.collectionOrmAllowAdd and association.association.collectionOrmAllowRemove)]
     'by_reference' => false,
-[/if]
+	[/if]
     'required' => false,
 ))
 [/if]

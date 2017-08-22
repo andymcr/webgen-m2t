@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::javascript/]
@@ -18,80 +19,98 @@
 [model.addLinks()/]
 
 [model.addFormFunctions()/]
-
-$( function() {
-[for (field : UnitField | model.formFields()->sortedBy(f | f.feature().name))]
-    [field.javascript()/]
-
-[/for]
-} );
 [/file]
 [/template]
 
 [template private containerLinks(model : WafModel) post(trim())]
+[for (field : UnitField | model.formFields()->select(f | f.oclIsKindOf(UnitAttribute) and not f.isSingleton()))]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[if (attribute.collectionUiAllowAdd or attribute.collectionUiAllowRemove)]
+[attribute.containerLink(attribute.displayLabel, model)/]
+
+[/if]
+[/let]
+[/for]
 [for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
 [let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
-	[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
-	[let target : EntityOrView = association.association.targetType()]
-var $[target.instanceName()/]Container;
-		[if (association.collectionUiAllowAdd)]
-var $add[target.name/]Link = $('<input type="button" name="add[target.name/]" value="Add [target.name/]"class="add[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
-var $new[target.name/]LinkDiv = $('<div></div>').append($add[target.name/]Link);
-		[/if]
+[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
+[association.containerLink(association.association.targetType().name, model)/]
 
-	[/let]
-	[/if]
+[/if]
 [/let]
 [/for]
 [/template]
 
+[template private containerLink(feature : UnitFeature, type : String, model : WafModel) post(trim())]
+var $[feature.instanceName()/]Container;
+[if (feature.collectionUiAllowAdd)]
+var $add[type/]Link = $('<input type="button" name="add[type/]" value="Add [type/]"class="add[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
+var $new[type/]LinkDiv = $('<div></div>').append($add[type/]Link);
+[/if]
+[/template]
+
 [template private addLinks(model : WafModel) post(trim())]
 jQuery(document).ready(function() {
+[for (field : UnitField | model.formFields()->select(f | f.isDataType() and not f.isStringDataType() and f.isSingleton()
+		 or f.oclIsKindOf(UnitAssociation) and not f.isContains())->sortedBy(f | f.feature().name))]
+    [field.attachJQueryUI()/]
+
+[/for]
+[for (field : UnitField | model.formFields()->select(f | f.oclIsKindOf(UnitAttribute) and not f.isSingleton()))]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[if (attribute.collectionUiAllowAdd or attribute.collectionUiAllowRemove)]
+    [attribute.addLink(attribute.displayLabel, model)/]
+
+[/if]
+[/let]
+[/for]
 [for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
 [let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
-	[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
-	[let target : EntityOrView = association.association.targetType()]
-    $[target.instanceName()/]Container = $('div.[association.name.asId()/]');
-    if ($[target.instanceName()/]Container) {
-		[if (association.collectionUiAllowRemove)]
-        $[target.instanceName()/]Container.children('div').each(function() {
-            add[target.name/]RemoveLink($(this));
-        });
-		[/if]
-		[if (association.collectionUiAllowAdd)]
-        $[target.instanceName()/]Container.append($new[target.name/]LinkDiv);
-        $[target.instanceName()/]Container.data('index', $[target.instanceName()/]Container.find(':input').length);
-        $add[target.name/]Link.on('click', function(e) {
-            e.preventDefault();
-            add[target.name/]AddForm($[target.instanceName()/]Container, $new[target.name/]LinkDiv);
-        });
-		[/if]
-    }
+[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
+    [association.addLink(association.association.targetType().name, model)/]
 
-	[/let]
-	[/if]
+[/if]
 [/let]
 [/for]
 });
+[/template]
+
+[template private addLink(feature : UnitFeature, type : String, model : WafModel) post(trim())]
+$[feature.instanceName()/]Container = $('div.[feature.feature().name.asId()/]');
+if ($[feature.instanceName()/]Container) {
+[if (feature.collectionUiAllowRemove)]
+    $[feature.instanceName()/]Container.children('div').each(function() {
+        add[type/]RemoveLink($(this));
+    });
+[/if]
+[if (feature.collectionUiAllowAdd)]
+    $[feature.instanceName()/]Container.append($new[type/]LinkDiv);
+    $[feature.instanceName()/]Container.data('index', $[feature.instanceName()/]Container.find(':input').length);
+    $add[type/]Link.on('click', function(e) {
+        e.preventDefault();
+        add[type/]AddForm($[feature.instanceName()/]Container, $new[type/]LinkDiv);
+    });
+[/if]
+}
 [/template]
 
 [template private addFormFunctions(model : WafModel) post(trim())]
 [for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
 [let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
 	[if (association.collectionUiAllowAdd)]
-[association.addAddFormFunction(association.association.targetType())/]
+[association.addAddFormFunction(association.association.targetType().name)/]
 
 	[/if]
 	[if (association.collectionUiAllowRemove)]
-[association.addRemoveLinkFunction(association.association.targetType(), model)/]
+[association.addRemoveLinkFunction(association.association.targetType().name, model)/]
 
 	[/if]
 [/let]
 [/for]
 [/template]
 
-[template private addAddFormFunction(association : UnitAssociation, target : EntityOrView)]
-function add[target.name/]AddForm($container, $newLinkDiv) {
+[template private addAddFormFunction(association : UnitAssociation, type : String)]
+function add[type/]AddForm($container, $newLinkDiv) {
     var prototype = $container.data('prototype');
     var index = $container.data('index');
     var $newForm = $(prototype.replace(/__name__/g, index));
@@ -100,42 +119,43 @@ function add[target.name/]AddForm($container, $newLinkDiv) {
 }
 [/template]
 
-[template private addRemoveLinkFunction(association : UnitAssociation, target : EntityOrView, model : WafModel)]
-function add[target.name/]RemoveLink($[target.instanceName()/]) {
-    var $removeLink = $('<input type="button" name="remove[target.name/]" value="Delete [target.name/]"class="delete[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
-    $[target.instanceName()/].append($removeLink);
+[template private addRemoveLinkFunction(feature : UnitFeature, type : String, model : WafModel)]
+function add[type/]RemoveLink($[feature.instanceName()/]) {
+    var $removeLink = $('<input type="button" name="remove[type/]" value="Delete [type/]"class="delete[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
+    $[feature.instanceName()/].append($removeLink);
     $removeLink.on('click', function(e) {
         e.preventDefault();
-        $[target.instanceName()/].remove();
+        $[feature.instanceName()/].remove();
     });
 }
 [/template]
 
 [query private id(field : UnitField) : String
-	= 'app_'.concat(field.feature().partOf.name.asId()).concat('_').concat(field.modelPropertyName())
+	= let unit : DynamicUnit = field.displayedOn
+		in let typeClassName : String
+			= unit.typeClassName(unit.pageDisplayedOn().partOf)
+			in typeClassName.substring(1, typeClassName.size() - 4).asId().concat('_').concat(field.modelPropertyName())
 /]
 
-[template private javascript(field : UnitField)
-	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType())) post(trim())]
+[template private attachJQueryUI(field : UnitField)
+	? (field.isIntegerDataType() and field.isSingleton()) post(trim())]
 [let dataType : Classifier = field.dataType()]
-[if (dataType.name = 'Integer')]
 $("#[field.id()/]").spinner();
-[/if]
 [/let]
 [/template]
 
-[template private javascript(field : UnitField)
-	? (field.isBooleanDataType()) post(trim())]
+[template private attachJQueryUI(field : UnitField)
+	? (field.isBooleanDataType() and field.isSingleton()) post(trim())]
 $("#[field.id()/]").checkboxradio();
 [/template]
 
-[template private javascript(field : UnitField)
-	? (field.isEnumerationType()) post(trim())]
+[template private attachJQueryUI(field : UnitField)
+	? (field.isEnumerationType() and field.isSingleton()) post(trim())]
 $("#[field.id()/]").selectmenu();
 [/template]
 
-[template private javascript(field : UnitField)
-	? (field.isDate()) post(trim())]
+[template private attachJQueryUI(field : UnitField)
+	? (field.isDate() and field.isSingleton()) post(trim())]
 [if (field.dateDetails() <> DateDetails::TimeOnly)]
 $("#[field.id()/][if (field.dateDetails() = DateDetails::DateAndTime)]_date[/if]").datepicker({
     dateFormat: $.datepicker.ISO_8601
@@ -153,7 +173,7 @@ $("#[field.id()/][if (field.dateDetails() = DateDetails::DateAndTime)]_time[/if]
 [/if]
 [/template]
 
-[template private javascript(field : UnitField)
+[template private attachJQueryUI(field : UnitField)
 	? (field.oclIsKindOf(UnitAssociation) and not field.isContains() and field.isSingleton()) post(trim())]
 if ($("#[field.id()/] option").length < 15) {
 	$("#[field.id()/]").selectmenu();
@@ -162,12 +182,12 @@ if ($("#[field.id()/] option").length < 15) {
 }
 [/template]
 
-[template private javascript(field : UnitField)
+[template private attachJQueryUI(field : UnitField)
 	? (field.oclIsKindOf(UnitAssociation) and not field.isContains() and not field.isSingleton()) post(trim())]
 $("#[field.id()/]").select2();
 [/template]
 
 
-[template private javascript(field : UnitField)
+[template private attachJQueryUI(field : UnitField)
 	? (field.oclIsKindOf(UnitAssociation) and field.isContains()) post(trim())]
 [/template]
