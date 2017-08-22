@@ -195,7 +195,7 @@ protected $updated;
 [/if]
 * @ORM\Column([if (feature.columnName().isReservedWord())]name="`[feature.columnName()/]`", [/if]type="[attribute.ormType/]"[if (not feature.isRequired())], nullable=true[/if])
 [if (attribute.slugFields->notEmpty())]
-* @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.modelPropertyName()/]"[/for]})
+* @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.columnName()/]"[/for]})
 [/if]
 [/let]
 [/template]
