@@ -177,7 +177,7 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 [template public redirect(page : Page) post(trim())]
 $this->redirectToRoute('[page.routeName()/]'[if (page.uriCommonPathKeys()->notEmpty())]
 , array(
-    page.routeActualParameters(unit.contentType.parentEntity(), valueBase)/]
+    [page.routeActualParameters(null)/]
 )[/if])
 [/template]
 
@@ -210,9 +210,9 @@ array_merge(
 [/for]
 [/template]
 
-[template public routeActualParameters(page : Page, routeBase : EntityOrView, valueBase : EntityOrView) post(trim())]
+[template public routeActualParameters(page : Page, valueBase : EntityOrView) post(trim())]
 [for (key : Attribute | page.uriCommonPathKeys())]
-'[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
+'[key.routeParameterName(page.dynamicUnits()->first().routingType())/]' => $[key.routeParameterName(valueBase)/],
 [/for]
 [/template]
 
