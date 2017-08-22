@@ -264,7 +264,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->get('[parentService.serv
 [if (not unit.confirmDestination.oclIsUndefined())]
 return [unit.confirmDestination.redirect()/];
 [else]
-	[if (unit.oclIsTypeOf(CreateUnit) or unit.hasClearLabel())]
+	[if (not unit.onSaveContinueEditing)]
 		[if (unit.contentType.parentEntity().oclIsUndefined())]
 return [unit.redirect(null, unit.routeName(true), valueBase)/];
 		[else]
