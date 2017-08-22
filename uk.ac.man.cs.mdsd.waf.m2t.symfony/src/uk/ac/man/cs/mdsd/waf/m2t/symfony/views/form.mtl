@@ -102,7 +102,8 @@
 [/template]
 
 [template private formField(field : UnitField, unit : DynamicUnit, parentAccessor : String)
-	? (field.isSingleton() and not field.isContains()) post(trim())]
+	? (field.isSingleton() and not field.isContains()
+			or field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasClass() or field.hasPlaceholder() or field.hasTitle() or field.disableInput or field.hasUnitTranslation())]
 , {[if (field.hasUnitTranslation())]
  'label': '[unit.containedId()/].labels.[field.id()/]',[/if]
