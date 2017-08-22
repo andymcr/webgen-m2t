@@ -26,7 +26,7 @@
 [for (field : UnitField | model.formFields()->select(f | f.oclIsKindOf(UnitAttribute) and not f.isSingleton()))]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [if (attribute.collectionUiAllowAdd or attribute.collectionUiAllowRemove)]
-[attribute.containerLink(attribute.displayLabel, model)/]
+[attribute.containerLink(attribute.attribute.oclAsType(EntityAttribute).singletonName, model)/]
 
 [/if]
 [/let]
@@ -56,10 +56,10 @@ jQuery(document).ready(function() {
     [field.attachJQueryUI()/]
 
 [/for]
-[for (field : UnitField | model.formFields()->select(f | f.oclIsKindOf(UnitAttribute) and not f.isSingleton()))]
+[for (field : UnitField | model.formFields()->select(f | f.oclIsTypeOf(UnitAttribute) and not f.isSingleton()))]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [if (attribute.collectionUiAllowAdd or attribute.collectionUiAllowRemove)]
-    [attribute.addLink(attribute.displayLabel, model)/]
+    [attribute.addLink(attribute.attribute.oclAsType(EntityAttribute).singletonName, model)/]
 
 [/if]
 [/let]
@@ -95,8 +95,20 @@ if ($[feature.instanceName()/]Container) {
 [/template]
 
 [template private addFormFunctions(model : WafModel) post(trim())]
-[for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
-[let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
+[for (field : UnitField | model.formFields()->select(f | f.oclIsTypeOf(UnitAttribute) and not f.isSingleton()))]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+	[if (attribute.collectionUiAllowAdd)]
+[attribute.addAddFormFunction(attribute.attribute.oclAsType(EntityAttribute).singletonName)/]
+
+	[/if]
+	[if (attribute.collectionUiAllowRemove)]
+[attribute.addRemoveLinkFunction(attribute.attribute.oclAsType(EntityAttribute).singletonName, model)/]
+
+	[/if]
+[/let]
+[/for]
+[for (field : UnitField | model.formFields()->select(f | f.isContains()))]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 	[if (association.collectionUiAllowAdd)]
 [association.addAddFormFunction(association.association.targetType().name)/]
 
@@ -109,7 +121,7 @@ if ($[feature.instanceName()/]Container) {
 [/for]
 [/template]
 
-[template private addAddFormFunction(association : UnitAssociation, type : String)]
+[template private addAddFormFunction(feature : UnitFeature, type : String)]
 function add[type/]AddForm($container, $newLinkDiv) {
     var prototype = $container.data('prototype');
     var index = $container.data('index');
