@@ -259,10 +259,10 @@ public function findAll([service.limitFormals(10)/])
 
 [template private createMethod(service : Service) post(trim())]
 [let entity : EntityOrView = service.serves]
-public function create([for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields())) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
+public function create([for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields() and a.isSingleton())) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
 {
     $new = new [entity.modelName()/]();
-[for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields()))]
+[for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields() and a.isSingleton()))]
     $new->set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]);
 [/for]
     $this->save($new, $flush);
