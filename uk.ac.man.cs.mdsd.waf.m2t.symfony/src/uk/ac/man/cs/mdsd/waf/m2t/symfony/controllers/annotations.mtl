@@ -10,11 +10,15 @@
 
 
 [template public securityAnnotation(page : Page) post(trim())]
-* @Security("has_role('[page.requiresRole()/]')")
+[if (true)]
+* @Security("[for (role : String | page.requiresRole().tokenize(',; ')) separator(' or ')]has_role('[role/]')[/for]")
+[/if]
 [/template]
 
 [template public securityAnnotation(unit : ContentUnit) post(trim())]
-* @Security("has_role('[unit.requiresRole/]')")
+[if (true)]
+* @Security("[for (role : String | unit.requiresRole.tokenize(',; ')) separator(' or ')]has_role('[role/]')[/for]")
+[/if]
 [/template]
 
 [template public securityAnnotation(action : InlineAction) post(trim())]
