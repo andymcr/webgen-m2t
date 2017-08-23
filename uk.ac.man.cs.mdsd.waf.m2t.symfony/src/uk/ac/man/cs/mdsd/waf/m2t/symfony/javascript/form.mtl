@@ -51,8 +51,9 @@ var $new[type/]LinkDiv = $('<div></div>').append($add[type/]Link);
 
 [template private addLinks(model : WafModel) post(trim())]
 jQuery(document).ready(function() {
-[for (field : UnitField | model.formFields()->select(f | f.isDataType() and not f.isStringDataType() and f.isSingleton()
-		 or f.oclIsKindOf(UnitAssociation) and not f.isContains())->sortedBy(f | f.feature().name))]
+[for (field : UnitField | model.formFields()
+		->select(f | (f.isBooleanDataType() or f.isDate() or f.isEnumerationType() or f.isIntegerDataType()) and f.isSingleton()
+			or f.oclIsKindOf(UnitAssociation) and not f.isContains())->sortedBy(f | f.feature().name))]
     [field.attachJQueryUI()/]
 
 [/for]
