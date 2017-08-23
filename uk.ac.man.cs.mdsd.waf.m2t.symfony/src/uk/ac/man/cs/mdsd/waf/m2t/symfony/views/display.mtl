@@ -316,9 +316,13 @@
   </section>
 [/if]
  </li>
-[if (not nullDisplayValue.oclIsUndefined())]
+[if (not nullDisplayValue.oclIsUndefined() or not indexUnit.emptyMessage.oclIsUndefined())]
 {% else %}
- <li>{{ '[nullDisplayValue/]' }}</li>
+	[if (not nullDisplayValue.oclIsUndefined())]
+ <li>[nullDisplayValue/]</li>
+	[else]
+<li>[indexUnit.emptyMessage/]</li>
+	[/if]
 [/if]
 {% endfor %}
 [/let]
@@ -334,15 +338,15 @@
  <thead class="[indexUnit.headerClass/]">
   <tr>
  	[for (field : UnitField | indexUnit.displayFields)]
-	[if (field.requiresRole <> '')]
+		[if (field.requiresRole <> '')]
 {% if is_granted('[field.requiresRole/]') %}
-	[/if]
+		[/if]
    <th>[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[field.entity().id()/].labels.[field.id()/]' | trans }}[/if]</th>
-	[if (field.requiresRole <> '')]
+		[if (field.requiresRole <> '')]
 {% endif %}
-	[/if]
+		[/if]
  	[/for]
 	[if (indexUnit.hasInlineActions())]
    <th>Actions</th>
@@ -359,10 +363,14 @@
    <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
   </tr>
-[if (not nullDisplayValue.oclIsUndefined())]
+[if (not nullDisplayValue.oclIsUndefined() or not indexUnit.emptyMessage.oclIsUndefined())]
 {% else %}
   <tr>
-   <td colspan="[unit.displayFields->size()/]">{{ '[nullDisplayValue/]' }}</td>
+	[if (not nullDisplayValue.oclIsUndefined())]
+   <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[nullDisplayValue/]</td>
+	[else]
+   <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[indexUnit.emptyMessage/]</td>
+	[/if]
 	[if (indexUnit.hasInlineActions())]
    <td class="actions">&nbsp;</td>
 	[/if]
