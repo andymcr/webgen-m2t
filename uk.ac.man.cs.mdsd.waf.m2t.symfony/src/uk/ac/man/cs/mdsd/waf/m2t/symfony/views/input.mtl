@@ -5,10 +5,10 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::labels/]
 
 
 [template public unitView(unit : ContentUnit)
