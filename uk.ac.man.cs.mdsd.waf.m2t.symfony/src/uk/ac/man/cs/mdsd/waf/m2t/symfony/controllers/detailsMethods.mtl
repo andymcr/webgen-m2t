@@ -52,6 +52,9 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.rou
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.defaultSelection.oclIsUndefined())]
 $this->[detailsUnit.instanceName()/] = [detailsUnit.routingType().loadInstance(detailsUnit)/];
+if (!$this->[detailsUnit.instanceName()/]) {
+    throw $this->createNotFoundException('The [detailsUnit.routingType().name/] does not exist');
+}
 [else]
 $this->[detailsUnit.instanceName()/] = [detailsUnit.getContentService()/]->[detailsUnit.defaultSelection.methodName/]();
 [/if]

@@ -111,6 +111,9 @@ $[key.routeParameterName(unit.routingType())/][/for]
 [/if]
 [if (not unit.routingType().oclIsUndefined())]
 $this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->find([unit.routingParameters()/]);
+if (!$this->[unit.routingType().instanceName()/]) {
+    throw $this->createNotFoundException('The [unit.routingType().name/] does not exist');
+}
 [/if]
 [if (unit.hasFilters())]
 [unit.filterSelect()/]
