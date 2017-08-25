@@ -332,7 +332,7 @@ private function [selection.builderMethodName()/]([selection.formals()/])
 }
 
 [if (selection.hasParameters())]
-private function [selection.parametersMethodName()/]($query)
+private function [selection.parametersMethodName()/]($query, [selection.selectionActuals()/])
 {
     [selection.queryParametersCode(userService)/]
 }
@@ -342,7 +342,7 @@ public function [selection.methodName/]([selection.formals()/])
 {
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
 [if (selection.hasParameters())]
-    $this->[selection.parametersMethodName()/]($query);
+    $this->[selection.parametersMethodName()/]($query, [selection.selectionActuals()/]);
 [/if]
 
     [selection.queryResult(service)/]
@@ -352,10 +352,10 @@ public function [selection.methodName/]([selection.formals()/])
 public function [filter.methodName/]([filter.formals()/])
 {
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
-    $queryBuilder->[if (selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
+    $queryBuilder->[if (selection.selectVia.oclIsUndefined() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
     $query = $queryBuilder->getQuery();
 	[if (selection.hasParameters())]
-    $this->[selection.parametersMethodName()/]($query);
+    $this->[selection.parametersMethodName()/]($query, [selection.selectionActuals()/]);
 	[/if]
 	[for (parameter : FormalParameter | filter.parameters)]
 		[if (filter.condition.oclIsUndefined())]
@@ -586,9 +586,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 
 [template private queryParametersCode(selection : Selection, userService : Service) post(trim())]
 [if (not selection.selectVia.oclIsUndefined())]
-	[if (selection.entities()->excludes(selection.selectVia.partOf))]
 [selection.querySelectedParameters()/]
-	[/if]
 [/if]
 [if (not selection.condition.oclIsUndefined())]
 	[if (selection.condition.hasParameter())]

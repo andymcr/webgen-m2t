@@ -147,6 +147,11 @@ if ($request->query->has('[filter.name/]Filter'))
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
+[if (not unit.routingType().oclIsUndefined())]
+    [unit.routingParameters()/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
+, [/if]
+
+[/if]
 [for (parameter : FormalParameter | filter.parameters)]
     $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())],[/if]
 [/for]

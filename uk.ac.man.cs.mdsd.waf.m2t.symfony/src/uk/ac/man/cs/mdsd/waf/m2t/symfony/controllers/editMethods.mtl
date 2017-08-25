@@ -300,13 +300,15 @@ $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceN
 
 [template private updateFormMethod(unit : EditUnit, createFunction : Boolean) post(trim())]
 [let contentType : EntityOrView = unit.contentType]
-private function updateForm($[contentType.instanceName()/], $values)
+private function updateForm($[contentType.instanceName()/], $values, $validate = true)
 {
     $form = [unit.createForm(contentType.instanceName(), createFunction, true, false)/];
     $form->submit($values, false);
-    foreach ($this->get('validator')->validate($[contentType.instanceName()/]) as $violation) {
-        $path = $violation->getPropertyPath();
-        $form->get($path)->addError(new FormError($violation->getMessage()));
+    if ($validate) {
+        foreach ($this->get('validator')->validate($[contentType.instanceName()/]) as $violation) {
+            $path = $violation->getPropertyPath();
+            $form->get($path)->addError(new FormError($violation->getMessage()));
+        }
     }
 
     return $form;
