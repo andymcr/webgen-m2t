@@ -149,7 +149,7 @@ public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.rou
 
 [template private actionEditCore(unit : EditUnit) post(trim())]
 [unit.loadSelectedInstance()/]
-if (!$this->[unit.instanceName()/]) {
+if (!$[unit.instanceName()/]) {
     throw $this->createNotFoundException('The [unit.routingType().name/] does not exist');
 }
 [for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
