@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module formType(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
@@ -71,10 +72,12 @@ class [association.typeClassName()/] extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 [for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
-	[if (feature.oclIsKindOf(UnitAttribute) and not feature.isSingleton())]
+	[if (feature.oclIsKindOf(Attribute) and feature.isSingleton())]
+        $builder->[feature.formFeature()/];
+ 	[elseif (feature.oclIsKindOf(Attribute) and not feature.isSingleton())]
         $builder->[feature.formFeature(false, false)/];
 	[else]
-        $builder->[feature.formFeature()/];
+        $builder->[feature.formFeature(null)/];
 	[/if]
 [/for]
     }
@@ -93,6 +96,9 @@ class [association.typeClassName()/] extends AbstractType
 [for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.feature().name))]
 use [feature.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
+[if (unit.associationFeatures()->select(a | not a.selection.oclIsUndefined())->notEmpty())]
+use Doctrine\ORM\EntityRepository;
+[/if]
 [if (unit.associationFeatures()->notEmpty())]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
@@ -284,11 +290,11 @@ TextType::class
 [template private formFeature(field : UnitField)
 	? (field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[association.association.formFeature()/]
+[association.association.formFeature(association.selection)/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature)
+[template private formFeature(feature : Feature, selection : Selection)
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
@@ -298,6 +304,14 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     'required' => false,
 [/if]
     'class' => '[association.appBundleName()/]:[association.modelName()/]',
+[if (not selection.oclIsUndefined())]
+    'query_builder' => function (EntityRepository $er) {
+            $queryBuilder = $er->createQueryBuilder('[selection.partOf.serves.selectName()/]');
+            return $queryBuilder
+                ->orderBy('[selection.partOf.serves.selectName()/].label', 'ASC')
+                ->where($queryBuilder->expr()->eq('[selection.partOf.serves.selectName()/].active', 1));
+        },
+[/if]
     'choice_label' => 'defaultLabel',
     'choice_translation_domain' => false,
 [if (association.isSingleton())]
