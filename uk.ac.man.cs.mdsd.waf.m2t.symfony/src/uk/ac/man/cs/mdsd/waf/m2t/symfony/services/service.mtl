@@ -352,7 +352,7 @@ public function [selection.methodName/]([selection.formals()/])
 public function [filter.methodName/]([filter.formals()/])
 {
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
-    $queryBuilder->[if (selection.selectVia.oclIsUndefined() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
+    $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
     $query = $queryBuilder->getQuery();
 	[if (selection.hasParameters())]
     $this->[selection.parametersMethodName()/]($query, [selection.selectionActuals()/]);
@@ -379,7 +379,7 @@ public function [filter.methodName/]([filter.formals()/])
 [/template]
 
 [template private formals(selection : Selection) post(trim())]
-[if (not selection.selectVia.oclIsUndefined() or selection.parameters->notEmpty())]
+[if (selection.selectPath->notEmpty() or selection.parameters->notEmpty())]
 [selection.selectionFormals()/][if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
@@ -387,7 +387,7 @@ public function [filter.methodName/]([filter.formals()/])
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
-[if (not filter.selection.selectVia.oclIsUndefined() or filter.selection.parameters->notEmpty())]
+[if (filter.selection.selectPath->notEmpty() or filter.selection.parameters->notEmpty())]
 [selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
 , [/if]
 [/if]
@@ -399,9 +399,9 @@ public function [filter.methodName/]([filter.formals()/])
 [/template]
 
 [template private selectionFormals(selection : Selection) post(trim())]
-[if (not selection.selectVia.oclIsUndefined())]
-	[for (key : Attribute | selection.selectVia.targetType().uriPathKeys()) separator(', ')]
-$[key.routeParameterName(selection.selectVia.targetType())/][/for]
+[if (selection.selectPath->notEmpty())]
+	[for (key : Attribute | selection.selectionType().uriPathKeys()) separator(', ')]
+$[key.routeParameterName(selection.selectionType())/][/for]
 [if (selection.parameters->notEmpty())]
 , [/if]
 [/if]
@@ -433,7 +433,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private actuals(selection : Selection) post(trim())]
-[if (not selection.selectVia.oclIsUndefined() or selection.parameters->notEmpty())]
+[if (selection.selectPath->notEmpty() or selection.parameters->notEmpty())]
 [selection.selectionActuals()/][if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
@@ -441,7 +441,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private actuals(filter : Filter) post(trim())]
-[if (not filter.selection.selectVia.oclIsUndefined() or filter.selection.parameters->notEmpty())]
+[if (filter.selection.selectPath->notEmpty() or filter.selection.parameters->notEmpty())]
 [selection.selectionActuals()/][if (filter.parameters->notEmpty() or filter.selection.limit > 1)]
 , [/if]
 [/if]
@@ -453,9 +453,9 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private selectionActuals(selection : Selection) post(trim())]
-[if (not selection.selectVia.oclIsUndefined())]
-	[for (key : Attribute | selection.selectVia.partOf.uriPathKeys()) separator(', ')]
-$[key.routeParameterName(selection.selectVia.partOf)/][/for]
+[if (selection.selectPath->notEmpty())]
+	[for (key : Attribute | selection.selectionType().uriPathKeys()) separator(', ')]
+$[key.routeParameterName(selection.selectionType())/][/for]
 [if (selection.parameters->notEmpty())]
 , [/if]
 [/if]
@@ -481,10 +481,10 @@ $queryBuilder = $this->createQueryBuilder();
 [if (selection.fields->notEmpty())]
 [selection.fields()/]
 [/if]
-[if (selection.joins->notEmpty() or not selection.selectVia.oclIsUndefined())]
+[if (selection.joins->notEmpty() or selection.selectPath->notEmpty())]
 [selection.joins()/]
 [/if]
-[if (not selection.selectVia.oclIsUndefined() or not selection.condition.oclIsUndefined())]
+[if (selection.selectPath->notEmpty() or not selection.condition.oclIsUndefined())]
 [selection.condition()/]
 [/if]
 [if (selection.ordering->notEmpty())]
@@ -522,12 +522,14 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 /]
 
 [template private joins(selection : Selection) post(trim())]
-[if (not selection.selectVia.oclIsUndefined())]
-	[if (selection.entities()->excludes(selection.selectVia.targetType()))]
-$queryBuilder->join('[selection.selectVia.sourceType().selectName()/].[selection.selectVia.modelPropertyName()/]', '[selection.selectVia.targetType().selectName()/]');
-	[/if]
-[if (selection.selectVia.targetType().isContained())]
-[selection.joinContainer(selection.selectVia.targetType())/]
+[if (selection.selectPath->notEmpty())]
+	[for (element : EntityAssociation | selection.selectPath)]
+		[if (selection.entities()->excludes(element.targetType()))]
+$queryBuilder->join('[element.sourceType().selectName()/].[element.modelPropertyName()/]', '[element.targetType().selectName()/]');
+		[/if]
+	[/for]
+[if (selection.selectionType().isContained())]
+[selection.joinContainer(selection.selectionType())/]
 [/if]
 [/if]
 [for (join : Association | selection.joins)]
@@ -547,8 +549,8 @@ $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/
 [/template]
 
 [template private condition(selection : Selection) post(trim())]
-[if (not selection.selectVia.oclIsUndefined())]
-[let routingEntity : EntityOrView = selection.selectVia.targetType()]
+[if (selection.selectPath->notEmpty())]
+[let routingEntity : EntityOrView = selection.selectionType()]
 	[if (routingEntity.uriPathKeys()->size() = 1)]
 	[let key : Attribute = routingEntity.uriPathKeys()->first()]
 $queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'));
@@ -563,7 +565,7 @@ $queryBuilder->where($queryBuilder->expr->andX(
 [/let]
 [/if]
 [if (not selection.condition.oclIsUndefined())]
-$queryBuilder->[if (not selection.selectVia.oclIsUndefined())]andWhere[else]where[/if]([selection.condition.queryExpression()/]);
+$queryBuilder->[if (selection.selectPath->notEmpty())]andWhere[else]where[/if]([selection.condition.queryExpression()/]);
 [/if]
 [/template]
 
@@ -585,7 +587,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/template]
 
 [template private queryParametersCode(selection : Selection, userService : Service) post(trim())]
-[if (not selection.selectVia.oclIsUndefined())]
+[if (selection.selectPath->notEmpty())]
 [selection.querySelectedParameters()/]
 [/if]
 [if (not selection.condition.oclIsUndefined())]
@@ -596,7 +598,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/template]
 
 [template private querySelectedParameters(selection : Selection) post(trim())]
-[let routingEntity : EntityOrView = selection.selectVia.targetType()]
+[let routingEntity : EntityOrView = selection.selectionType()]
 	[for (key : Attribute | routingEntity.uriPathKeys())]
 $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routeParameterName(routingEntity)/]);
 	[/for]

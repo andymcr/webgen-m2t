@@ -62,7 +62,7 @@
 /]
 
 [query public hasParameters(selection : Selection) : Boolean
-	= not selection.selectVia.oclIsUndefined()
+	= selection.selectPath->notEmpty()
 		or if selection.condition.oclIsUndefined() then
 				false
 			else
@@ -75,7 +75,7 @@
 	= if unit.selection.oclIsUndefined() then
 			false
 		else
-			not unit.selection.selectVia.oclIsUndefined()
+			unit.selection.selectPath->notEmpty()
 		endif
 /]
 

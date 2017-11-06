@@ -63,8 +63,8 @@
 /]
 
 [query public routingType(unit : CollectionUnit, forCommonKeys : Boolean) : EntityOrView
-	= if not unit.selection.selectVia.oclIsUndefined() then
-			unit.selection.selectVia.targetType()
+	= if unit.selection.selectPath->notEmpty() then
+			unit.selection.selectionType()
 		else
 			let association : EntityAssociation
 				= unit.contentType->first().containingAssociation()

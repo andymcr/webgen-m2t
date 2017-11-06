@@ -85,7 +85,7 @@ Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
 [/template]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
-[if (not unit.selection.selectVia.oclIsUndefined())]
+[if (unit.selection.selectPath->notEmpty())]
 [unit.routingParameters()/][if (unit.hasPagination())]
 , [/if][/if]
 [unit.paginationActuals()/]

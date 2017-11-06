@@ -167,6 +167,14 @@
 /]
 
 
+[query public selectionType(selection : Selection) : EntityOrView
+	= if selection.selectPath->notEmpty() then
+			selection.selectPath->last().targetType()
+		else
+			null
+		endif
+/]
+
 [query public id(menu : Menu) : String
 	= menu.name.asId()
 /]
@@ -762,8 +770,8 @@
 /]
 
 [query public selectionType(unit : CollectionUnit) : EntityOrView
-	= if not unit.selection.selectVia.oclIsUndefined() then
-			unit.selection.selectVia.targetType()
+	= if unit.selection.selectPath->notEmpty() then
+			unit.selection.selectionType()
 		else
 			let association : EntityAssociation
 				= unit.contentType->first().containingAssociation()
