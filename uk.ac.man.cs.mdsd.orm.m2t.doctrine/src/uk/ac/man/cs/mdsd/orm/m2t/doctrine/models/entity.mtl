@@ -50,7 +50,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [entity.autoIdFeature()/]
 
 [/if]
-    [entity.features()/]
+    [entity.featureProperties()/]
 
 [if (entity.oclIsTypeOf(Entity) and (entity.partOf.timestampCreation or entity.partOf.timestampUpdates))]
     [entity.timestampFeatures()/]
@@ -137,7 +137,7 @@ use AppBundle\Validator\Constraints as AppAssert;
 protected $[entity.autoKeyName/];
 [/template]
 
-[template private features(entity : EntityOrView) post(trim())]
+[template private featureProperties(entity : EntityOrView) post(trim())]
 [for (feature : Feature | entity.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isPseudo()))]
 [comment TODO sortout location features /]
 	[if (not feature.isLocation())]
@@ -374,7 +374,7 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [template private constructor(entity : EntityOrView) post(trim())]
 public function __construct()
 {
-[for (feature : Feature | entity.features)]
+[for (feature : Feature | entity.features())]
 	[if (feature.hasDefaultValue())]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue().defaultExpression()/];
 	[/if]
