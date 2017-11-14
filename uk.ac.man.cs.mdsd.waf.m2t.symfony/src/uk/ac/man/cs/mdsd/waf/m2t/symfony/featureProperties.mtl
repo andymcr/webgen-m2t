@@ -61,12 +61,15 @@
 			endif
 /]
 
-[query public hasParameters(selection : Selection) : Boolean
-	= selection.selectPath->notEmpty()
-		or if selection.condition.oclIsUndefined() then
+[query public hasFormals(selection : Selection) : Boolean
+	= selection.parameters->notEmpty()
+/]
+
+[query public hasConditionParameters(selection : Selection) : Boolean
+	= if selection.condition.oclIsUndefined() then
 				false
 			else
-				selection.condition.hasParameter()
+				selection.condition.hasParameters()
 			endif
 /]
 

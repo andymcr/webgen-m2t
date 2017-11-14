@@ -315,7 +315,7 @@ public function [selection.methodName/]([selection.formals()/])
 {
     [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
-[if (selection.hasParameters())]
+[if (selection.selectPath->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
     [selection.queryParametersCode(userService)/]
 [/if]
 
@@ -331,8 +331,9 @@ private function [selection.builderMethodName()/]([selection.formals()/])
     return $queryBuilder;
 }
 
-[if (selection.hasParameters())]
-private function [selection.parametersMethodName()/]($query, [selection.selectionActuals()/])
+[if (selection.selectPath->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
+private function [selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals())]
+, [selection.selectionActuals()/][/if])
 {
     [selection.queryParametersCode(userService)/]
 }
@@ -341,8 +342,9 @@ private function [selection.parametersMethodName()/]($query, [selection.selectio
 public function [selection.methodName/]([selection.formals()/])
 {
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
-[if (selection.hasParameters())]
-    $this->[selection.parametersMethodName()/]($query, [selection.selectionActuals()/]);
+[if (selection.selectPath->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
+    $this->[selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals())]
+, [selection.selectionActuals()/][/if]);
 [/if]
 
     [selection.queryResult(service)/]
@@ -354,8 +356,9 @@ public function [filter.methodName/]([filter.formals()/])
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
     $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
     $query = $queryBuilder->getQuery();
-	[if (selection.hasParameters())]
-    $this->[selection.parametersMethodName()/]($query, [selection.selectionActuals()/]);
+	[if (selection.selectPath->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
+    $this->[selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals())]
+, [selection.selectionActuals()/][/if]);
 	[/if]
 	[for (parameter : FormalParameter | filter.parameters)]
 		[if (filter.condition.oclIsUndefined())]
@@ -379,7 +382,7 @@ public function [filter.methodName/]([filter.formals()/])
 [/template]
 
 [template private formals(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty() or selection.parameters->notEmpty())]
+[if (selection.selectPath->notEmpty() or selection.hasFormals())]
 [selection.selectionFormals()/][if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
@@ -387,8 +390,8 @@ public function [filter.methodName/]([filter.formals()/])
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
-[if (filter.selection.selectPath->notEmpty() or filter.selection.parameters->notEmpty())]
-[selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
+[if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals())]
+[filter.selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
 , [/if]
 [/if]
 [if (filter.parameters->notEmpty())]
@@ -402,14 +405,12 @@ public function [filter.methodName/]([filter.formals()/])
 [if (selection.selectPath->notEmpty())]
 	[for (key : Attribute | selection.selectionType().uriPathKeys()) separator(', ')]
 $[key.routeParameterName(selection.selectionType())/][/for]
-[if (selection.parameters->notEmpty())]
+[if (selection.hasFormals())]
 , [/if]
 [/if]
-[if (selection.parameters->notEmpty())]
-	[for (parameter : FormalParameter | selection.parameters) separator(', ')]
+[for (parameter : FormalParameter | selection.parameters) separator(', ')]
 $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
  = [parameter.defaultValue/][/if][/for]
-[/if]
 [/template]
 
 [template private limitFormals(selection : Selection) post(trim())]
@@ -433,7 +434,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private actuals(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty() or selection.parameters->notEmpty())]
+[if (selection.selectPath->notEmpty() or selection.hasFormals())]
 [selection.selectionActuals()/][if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 , [/if]
 [/if]
@@ -441,7 +442,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private actuals(filter : Filter) post(trim())]
-[if (filter.selection.selectPath->notEmpty() or filter.selection.parameters->notEmpty())]
+[if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals())]
 [selection.selectionActuals()/][if (filter.parameters->notEmpty() or filter.selection.limit > 1)]
 , [/if]
 [/if]
@@ -456,13 +457,11 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [if (selection.selectPath->notEmpty())]
 	[for (key : Attribute | selection.selectionType().uriPathKeys()) separator(', ')]
 $[key.routeParameterName(selection.selectionType())/][/for]
-[if (selection.parameters->notEmpty())]
+[if (selection.hasFormals())]
 , [/if]
 [/if]
-[if (selection.parameters->notEmpty())]
-	[for (parameter : FormalParameter | selection.parameters) separator(', ')]
+[for (parameter : FormalParameter | selection.parameters) separator(', ')]
 $[parameter.name/][/for]
-[/if]
 [/template]
 
 [template private limitActuals(selection : Selection) post(trim())]
@@ -590,10 +589,8 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [if (selection.selectPath->notEmpty())]
 [selection.querySelectedParameters()/]
 [/if]
-[if (not selection.condition.oclIsUndefined())]
-	[if (selection.condition.hasParameter())]
+[if (selection.hasConditionParameters())]
 [selection.condition.queryParameter(userService)/]
-	[/if]
 [/if]
 [/template]
 
