@@ -194,7 +194,7 @@ return new Response("No action taken", 200);
 public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, contentType)/])
 {
     $[deleteAction.instanceName()/] = [contentType.loadInstance(unit)/];
-    if (!$this->[deleteAction.instanceName()/]) {
+    if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
     $this->get('[deleteAction.usedBy.oclAsType(IndexUnit).contentService().serviceName()/]')->remove($[deleteAction.instanceName()/], true);
