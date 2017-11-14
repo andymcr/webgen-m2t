@@ -63,17 +63,25 @@
 /]
 
 [query public routingType(unit : CollectionUnit, forCommonKeys : Boolean) : EntityOrView
-	= if unit.selection.selectPath->notEmpty() then
-			unit.selection.selectionType()
-		else
-			let association : EntityAssociation
-				= unit.contentType->first().containingAssociation()
-				in if association.oclIsUndefined() or unit.oclAsType(SelectableUnit).selectors->isEmpty() then
-						null
-					else
-						association.targetType()
-					endif
-		endif
+	= let selectType : EntityOrView
+			= if unit.selection.oclIsUndefined() then
+					null
+				else if unit.selection.selectPath->isEmpty() then
+					null
+				else
+					unit.selection.selectionType()
+				endif endif
+		in if not selectType.oclIsUndefined() then
+				selectType
+			else
+				let association : EntityAssociation
+					= unit.contentType->first().containingAssociation()
+					in if association.oclIsUndefined() or unit.oclAsType(SelectableUnit).selectors->isEmpty() then
+							null
+						else
+							association.targetType()
+						endif
+			endif
 /]
 
 [query public routingType(unit : ContentUnit) : EntityOrView
