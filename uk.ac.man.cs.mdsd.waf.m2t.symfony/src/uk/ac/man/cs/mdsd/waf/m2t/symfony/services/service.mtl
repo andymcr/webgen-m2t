@@ -555,7 +555,7 @@ $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/
 $queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'));
 	[/let]
 	[else]
-$queryBuilder->where($queryBuilder->expr->andX(
+$queryBuilder->where($queryBuilder->expr()->andX(
 		[for (key : Attribute | routingEntity.uriPathKeys())]
     $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> routingEntity.uriPathKeys()->size())],[/if]
 		[/for]
