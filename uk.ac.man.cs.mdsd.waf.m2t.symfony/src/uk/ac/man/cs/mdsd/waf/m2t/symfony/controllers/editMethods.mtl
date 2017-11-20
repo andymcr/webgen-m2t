@@ -186,7 +186,6 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [/template]
 
 [template private customValuesBody(unit : EditUnit, customTag : String) post(trim())]
-$this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
 [if (unit.customiseValues)]
 // [protected ('customise.values.'.concat(unit.instanceName()).concat('.').concat(customTag))]
 // [/protected]
@@ -197,6 +196,7 @@ $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instan
 [if (unit.isContained() and customTag = 'add')]
 [unit.setContainer()/]
 [/if]
+$this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
 foreach ($this->get('validator')->validate($[unit.instanceName()/]) as $violation) {
     $path = $violation->getPropertyPath();
    	$this->[unit.instanceName()/]->get($path)->addError(new FormError($violation->getMessage()));
