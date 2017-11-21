@@ -202,7 +202,7 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     return [deleteAction.destination.redirect()/];
 [else]
-    return [unit.redirect(unit.containingUnit().routingType(), unit.containingUnit().routeName(), null)/];
+    return [unit.redirect(unit.containingUnit().routingType(), unit.containingUnit().routeName(), contentType)/];
 [/if]
 }
 [/let]
