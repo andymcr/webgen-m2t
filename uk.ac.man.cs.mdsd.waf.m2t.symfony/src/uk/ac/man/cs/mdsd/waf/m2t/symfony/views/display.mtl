@@ -175,7 +175,7 @@
 
 [template private pageHref(unit : IndexUnit, pageNumber : String, selectionAccessor : String) post(trim())]
 {{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
-, [unit.routingType().routeActualParameters(unit.contentType(), selectionAccessor, unit.hasObjectAccess(), unit, false)/][/if]})) }}
+, [unit.routingType().routeActualParameters(unit.routingType(), selectionAccessor, unit.hasObjectAccess(), unit, false)/][/if]})) }}
 [/template]
 
 
