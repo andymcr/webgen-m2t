@@ -1,0 +1,50 @@
+[comment encoding = UTF-8 /]
+[module service(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
+
+
+[query public services(model : WafModel, entity : EntityOrView) : OrderedSet(Service)
+	= model.business.services->select(s | s.serves = entity)
+/]
+
+[query public services(entity : EntityOrView, model : WafModel) : OrderedSet(Service)
+	= model.services(entity)
+/]
+
+
+[query public hasPaginationSupport(selection : Selection) : Boolean
+	= (selection.limit = 0 or selection.limit > 1)
+		and (selection.joins->isEmpty() or selection.fields->isEmpty())
+/]
+
+[query public selectionType(selection : Selection) : EntityOrView
+	= if selection.selectPath->notEmpty() then
+			selection.selectPath->last().targetType()
+		else
+			null
+		endif
+/]
+
+
+[query public services(page : Page) : Sequence(Service)
+	= Sequence{}
+/]
+
+[comment TODO what if field has a selection?/]
+[query public selection(field : UnitField) : Selection
+	= if not field.oclIsTypeOf(UnitAssociation) then
+			null
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.units->isEmpty() then
+					null
+				else if association.units->first().oclIsKindOf(IndexUnit) then
+					association.units->first().oclAsType(IndexUnit).defaultSelection
+				else
+					null
+			endif endif
+		endif
+/]

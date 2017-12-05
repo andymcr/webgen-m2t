@@ -8,6 +8,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -383,22 +384,24 @@ public function [filter.methodName/]([filter.formals()/])
 
 [template private formals(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty() or selection.hasFormals())]
-[selection.selectionFormals()/][if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
-, [/if]
-[/if]
+[selection.selectionFormals()/][if (selection.hasPaginationSupport())]
+, [/if][/if][if (selection.hasPaginationSupport())]
 [selection.limitFormals()/]
+[/if]
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
 [if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals())]
-[filter.selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.limit <> 1)]
+[filter.selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.hasPaginationSupport())]
 , [/if]
 [/if]
 [if (filter.parameters->notEmpty())]
-[filter.filterFormals()/][if (filter.selection.limit > 1 and (filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty()))]
+[filter.filterFormals()/][if (filter.selection.hasPaginationSupport())]
 , [/if]
 [/if]
+[if (selection.hasPaginationSupport())]
 [filter.selection.limitFormals()/]
+[/if]
 [/template]
 
 [template private selectionFormals(selection : Selection) post(trim())]
@@ -414,9 +417,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private limitFormals(selection : Selection) post(trim())]
-[if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
 [selection.partOf.limitFormals(selection.limit)/]
-[/if]
 [/template]
 
 [template private limitFormals(service : Service, limit : Integer) post(trim())]
@@ -435,7 +436,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 
 [template private actuals(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty() or selection.hasFormals())]
-[selection.selectionActuals()/][if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
+[selection.selectionActuals()/][if (selection.hasPaginationSupport())]
 , [/if]
 [/if]
 [selection.limitActuals()/]
@@ -443,12 +444,11 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 
 [template private actuals(filter : Filter) post(trim())]
 [if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals())]
-[selection.selectionActuals()/][if (filter.parameters->notEmpty() or filter.selection.limit > 1)]
+[selection.selectionActuals()/][if (filter.parameters->notEmpty() or filter.selection.limit > -1)]
 , [/if]
 [/if]
 [if (filter.parameters->notEmpty())]
-[filter.filterActuals()/][if (filter.selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
-, [/if]
+[filter.filterActuals()/][if (filter.selection.hasPaginationSupport())], [/if]
 [/if]
 [filter.selection.limitActuals()/]
 [/template]
@@ -465,7 +465,7 @@ $[parameter.name/][/for]
 [/template]
 
 [template private limitActuals(selection : Selection) post(trim())]
-[if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
+[if (selection.hasPaginationSupport())]
 $offset, $limit
 [/if]
 [/template]
@@ -489,7 +489,7 @@ $queryBuilder = $this->createQueryBuilder();
 [if (selection.ordering->notEmpty())]
 [selection.orderBy()/]
 [/if]
-[if (selection.limit > 1 and (selection.joins->isEmpty() or selection.fields->isEmpty()))]
+[if (selection.hasPaginationSupport())]
 if ($limit > 0) {
     $queryBuilder->setFirstResult($offset);
     $queryBuilder->setMaxResults($limit);
@@ -605,13 +605,13 @@ $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routePara
 [template private queryResult(selection : Selection, service : Service) post(trim())]
 [if (selection.limit = 1)]
 return $query->getOneOrNullResult();
-[elseif (selection.limit < 1 or selection.joins->notEmpty() and selection.fields->notEmpty())]
-return $query->getResult();
-[else]
+[elseif (selection.hasPaginationSupport())]
 if ($limit > 0)
     return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
 else
     return $query->getResult();
+[else]
+return $query->getResult();
 [/if]
 [/template]
 
@@ -657,7 +657,7 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 [/if]
 [if (selection.limit = 1)]
     $criteria->setMaxResults(1);
-[elseif (selection.limit > 1)]
+[elseif (selection.limit > -1)]
     if ($limit > 0) {
         $criteria->setFirstResult($offset);
         $criteria->setMaxResults($limit);

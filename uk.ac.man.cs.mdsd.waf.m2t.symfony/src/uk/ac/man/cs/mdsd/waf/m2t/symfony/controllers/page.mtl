@@ -36,6 +36,10 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
+[comment    public function __construct()
+    {
+    }
+/]
 [if (page.hasSingleActionMethod())]
     [page.actionMethod()/]
 

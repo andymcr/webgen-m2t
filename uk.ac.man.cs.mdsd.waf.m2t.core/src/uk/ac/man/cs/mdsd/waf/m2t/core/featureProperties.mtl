@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
 
 
 [query public entry(entries : Sequence(String), index : Integer) : String
@@ -141,10 +142,6 @@
 	= model.pages->collect(p | p.indexUnits())
 /]
 
-[query public services(model : WafModel, entity : EntityOrView) : OrderedSet(Service)
-	= model.business.services->select(s | s.serves = entity)
-/]
-
 [query public topMenuItems(model : WafModel) : Sequence(Page)
 	= model.pages
 		->select(p | p.topMenuOption <> PageTopMenuOptions::NeverInclude)
@@ -154,10 +151,6 @@
 
 [query public id(entity : EntityOrView) : String
 	= entity.name.asId()
-/]
-
-[query public services(entity : EntityOrView, model : WafModel) : OrderedSet(Service)
-	= model.services(entity)
 /]
 
 [query private usersOf(entity : EntityOrView, model : WafModel) : Sequence(EditUnit)
@@ -374,6 +367,10 @@
 		else
 			page.parentPage.translationDomain()
 		endif
+/]
+
+[query public services(page : Page) : Sequence(Service)
+	= Sequence{}
 /]
 
 [query public useInputJQuery(page : Page) : Boolean
@@ -708,7 +705,7 @@
 	= if unit.selection.oclIsUndefined() then 
 			unit.defaultPaginationSize > 0
 		else
-			unit.defaultPaginationSize > 0 and unit.selection.limit > 1
+			unit.defaultPaginationSize > 0 and unit.selection.hasPaginationSupport()
 		endif
 
 /]
@@ -1531,22 +1528,6 @@
 		else
 			null
 		endif endif
-/]
-
-[comment TODO what if field has a selection?/]
-[query public selection(field : UnitField) : Selection
-	= if not field.oclIsTypeOf(UnitAssociation) then
-			null
-		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
-			in if association.units->isEmpty() then
-					null
-				else if association.units->first().oclIsKindOf(IndexUnit) then
-					association.units->first().oclAsType(IndexUnit).defaultSelection
-				else
-					null
-			endif endif
-		endif
 /]
 
 [query public styleClass(field : UnitField) : String
