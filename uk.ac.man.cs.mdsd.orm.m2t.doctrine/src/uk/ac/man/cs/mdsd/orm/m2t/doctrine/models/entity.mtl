@@ -5,7 +5,9 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::expression/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 
 
 [query private isReservedWord(word : String) : Boolean

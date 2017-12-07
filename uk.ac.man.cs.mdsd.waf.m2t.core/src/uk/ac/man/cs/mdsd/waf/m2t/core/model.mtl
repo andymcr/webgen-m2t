@@ -1,0 +1,57 @@
+[comment encoding = UTF-8 /]
+[module model(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
+
+
+[query public formFields(model : WafModel) : Sequence(UnitField)
+	= model.formUnits()->collect(u | u.displayFields)
+/]
+
+[query public formUnits(model : WafModel) : Sequence(DynamicUnit)
+	= model.pages->collect(p | p.formUnits())
+/]
+
+[query public galleryUnits(model : WafModel) : Sequence(GalleryUnit)
+	= model.pages->collect(p | p.galleryUnits())
+/]
+
+[query public hasAPI(model : WafModel) : Boolean
+	= if model.api.oclIsUndefined() then
+			false
+		else
+			model.api.resources->notEmpty()
+		endif
+/]
+
+[query public hasCaptchaFields(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
+/]
+
+[query public hasGalleryUnits(model : WafModel) : Boolean
+	= model.galleryUnits()->notEmpty()
+/]
+
+[query public hasImageUnits(model : WafModel) : Boolean
+	= model.imageUnits()->notEmpty()
+/]
+
+[query public hasIndexUnits(model : WafModel) : Boolean
+	= model.indexUnits()->notEmpty()
+/]
+
+[query public hasSliderUnits(model : WafModel) : Boolean
+	= model.sliderUnits()->notEmpty()
+/]
+
+[query public imageUnits(model : WafModel) : Sequence(ImageUnit)
+	= model.pages->collect(p | p.imageUnits())
+/]
+
+[query public indexUnits(model : WafModel) : Sequence(IndexUnit)
+	= model.pages->collect(p | p.indexUnits())
+/]
+
+[query public sliderUnits(model : WafModel) : Sequence(SliderUnit)
+	= model.pages->collect(p | p.sliderUnits())
+/]

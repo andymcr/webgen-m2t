@@ -1,0 +1,339 @@
+[comment encoding = UTF-8 /]
+[module features(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
+
+
+[query public columnName(feature : Feature) : String
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).columnName
+		else if feature.oclIsKindOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).columnName
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.columnName()
+		else
+			feature.oclAsType(ViewAssociation).opposite.oppositeColumnName()
+		endif endif endif
+/]
+
+[query public defaultValue(feature : Feature) : Expression
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.defaultValue()
+		else if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).defaultValue
+		else
+			null
+		endif endif
+/]
+
+[query public hasColumn(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			true
+		else if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).owningEnd
+		else
+			false
+		endif endif
+/]
+
+[query public hasDefaultValue(feature : Feature) : Boolean
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.hasDefaultValue()
+		else if feature.oclIsKindOf(Attribute) then
+			not feature.oclAsType(Attribute).defaultValue.oclIsUndefined()
+		else
+			false
+		endif endif
+/]
+
+[query public hasHtml5Attributes(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).hasValidationPattern()
+		else
+			false
+		endif
+/]
+
+[query public hasSerializationControl(feature : Feature) : Boolean
+	= let hasMaxDepth : Boolean
+		= if not feature.oclIsKindOf(Association) then
+				false
+			else
+				feature.oclAsType(Association).serializationMaxDepth > 0
+			endif
+		in feature.serializationGroups->notEmpty() or hasMaxDepth
+/]
+
+[query public hasSlugFields(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAttribute) then
+			feature.oclAsType(EntityAttribute).slugFields->notEmpty()
+		else
+			false
+		endif
+/]
+
+[query public hasValidationPattern(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(Attribute) then
+			not feature.oclAsType(Attribute).validationPattern.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public isCaseInsensitive(feature : Feature) : Boolean
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isCaseInsensitive()
+		else if feature.oclIsTypeOf(SingletonElement) then
+			feature.oclAsType(SingletonElement).caseInsensitive
+		else
+			false
+		endif endif
+/]
+
+[query public isContainer(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(Attribute) then
+			false
+		else if feature.oclIsKindOf(EntityAssociation) then
+			feature.oclAsType(EntityAssociation).container
+		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.isContainer()
+		else
+			false
+		endif endif endif
+/]
+
+[query public isContainerUnique(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).containerUnique
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isContainerUnique()
+		else
+			false
+		endif endif
+/]
+
+[query public isContains(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(Attribute) then
+			false
+		else if feature.oclIsKindOf(EntityAssociation) then
+			feature.oclAsType(EntityAssociation).contains
+		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.isContains()
+		else
+			false
+		endif endif endif
+/]
+
+[query public isEncrypted(feature : Feature) : Boolean
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isEncrypted()
+		else if feature.oclIsTypeOf(SingletonElement) then
+			feature.oclAsType(SingletonElement).encrypt
+		else
+			false
+		endif endif
+/]
+
+[query public isOppositeSingleton(association : Association) : Boolean
+	= let opposite : Association = association.opposite()
+		in if not opposite.oclIsUndefined() then
+				opposite.isSingleton()
+			else
+				false
+			endif
+/]
+
+[query public isOwningEnd(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAssociation) then
+			feature.oclAsType(EntityAssociation).owningEnd
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.isOwningEnd()
+		else
+			false
+		endif endif
+/]
+
+[query public isPrimaryKey(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).primaryKey
+		else
+			false
+		endif
+/]
+
+[query public isPseudo(feature : Feature) : Boolean
+	= if not feature.oclIsKindOf(Association) then
+			false
+		else
+			feature.oclAsType(Association).pseudo
+		endif
+/]
+
+[query public isRequired(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).required
+		else if feature.oclIsTypeOf(SingletonAssociation) then
+			feature.oclAsType(SingletonAssociation).required
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isRequired()
+		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.isRequired()
+		else
+			false
+		endif endif endif endif
+/]
+
+[query public isSingleton(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclIsKindOf(SingletonAttribute) or feature.oclIsKindOf(SingletonAssociation)
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isSingleton()
+		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.isSingleton()
+		else
+			feature.oclAsType(ViewAssociation).cardinality <> Cardinality::Many
+		endif endif endif
+/]
+
+[query public isSingleton(association : Association, entityOrView : EntityOrView) : Boolean
+	= if association.oclIsKindOf(EntityAssociation) then
+			if entityOrView.features->includes(association) then
+				association.isSingleton()
+			else
+				association.oclAsType(EntityAssociation).opposite.isSingleton()
+			endif
+		else
+			association.isSingleton()
+		endif
+/]
+
+[query public isUnique(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).unique
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isUnique()
+		else
+			false
+		endif endif
+/]
+
+[query public isValidated(feature : Feature) : Boolean
+	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.isValidated()
+		else
+			-- isUnique is an entity property
+			feature.isRequired() or feature.isContains()
+		endif
+/]
+
+[query public isVisible(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAttribute) then
+			true
+		else if feature.oclIsKindOf(EntityAssociation) then
+			feature.oclAsType(EntityAssociation).visible
+		else
+			true
+		endif endif
+/]
+
+[query public keys(association : EntityAssociation) : OrderedSet(AssociationKey)
+	= if association.keys->notEmpty() then
+			association.keys
+		else
+			association.opposite.keys
+		endif
+/]
+
+[query public modelPropertyName(feature : Feature) : String
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.name
+		else if feature.oclIsKindOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).name
+		else
+			feature.name
+		endif endif
+/]
+
+[query public opposite(association : Association) : Association
+	= if association.oclIsTypeOf(EncapsulatedAssociation) then
+			association.oclAsType(EncapsulatedAssociation).association.opposite()
+		else if association.oclIsKindOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).opposite
+		else
+			null
+		endif endif
+/]
+
+[query public oppositeColumnName(association : Association) : String
+	= let opposite : Association = association.opposite()
+		in if not opposite.oclIsUndefined() then
+				opposite.columnName()
+			else
+				'Unknown opposite'
+			endif
+/]
+
+[query public ormType(feature : Attribute) : String
+	= if feature.oclIsKindOf(EntityAttribute) then
+			feature.oclAsType(EntityAttribute).ormType
+		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.ormType()
+		else
+			'Unhandled Attribute'
+		endif endif
+/]
+
+[query public pivotTableName(feature : Feature) : String
+	= if feature.oclIsKindOf(EntityAssociation) then
+			feature.oclAsType(EntityAssociation).pivotTableName
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.pivotTableName()
+		else if feature.oclIsTypeOf(ViewAssociation) then
+			feature.oclAsType(ViewAssociation).opposite.pivotTableName()
+		else
+			'invalidPivotTableName'
+		endif endif endif
+/]
+
+[query public pluralisedPropertyName(feature : Feature) : String
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).pluralisedName
+		else if feature.oclIsKindOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.pluralisedPropertyName()
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.pluralisedPropertyName()
+		else
+			feature.modelPropertyName()
+		endif endif endif
+/]
+
+[query public singletonPropertyName(feature : Feature) : String
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).singletonName
+		else if feature.oclIsKindOf(EncapsulatedAttribute) then
+			feature.oclAsType(EncapsulatedAttribute).attribute.singletonPropertyName()
+		else if feature.oclIsKindOf(EncapsulatedAssociation) then
+			feature.oclAsType(EncapsulatedAssociation).association.singletonPropertyName()
+		else
+			feature.modelPropertyName()
+		endif endif endif
+/]
+
+[query public sourceType(association : Association) : EntityOrView
+	= if association.oclIsKindOf(EntityAssociation) then
+			association.oclAsType(EntityAssociation).partOf
+		else if association.oclIsKindOf(EncapsulatedAssociation) then
+			association.oclAsType(EncapsulatedAssociation).association.sourceType()
+		else
+			'???' -- association.oclAsType(ViewAssociation).
+		endif endif
+/]
+
+[query public targetType(association : Association) : EntityOrView
+	= let opposite : Association = association.opposite()
+		in if not opposite.oclIsUndefined() then
+				opposite.partOf
+			else
+				null
+			endif
+/]

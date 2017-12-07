@@ -4,11 +4,24 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::expression/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[query public useFunction(constant : Constant) : Boolean
+	= if constant.value.oclIsUndefined() then
+			true
+		else
+			constant.value.oclIsTypeOf(TimeLiteral)
+		endif
+/]
 
 
 [query public embeddedForms(model : WafModel) : Sequence(UnitAssociation)
@@ -39,15 +52,6 @@
 	= model.pages->collect(p | p.units)
 	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
 	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields())
-/]
-
-
-[query public useFunction(constant : Constant) : Boolean
-	= if constant.value.oclIsUndefined() then
-			true
-		else
-			constant.value.oclIsTypeOf(TimeLiteral)
-		endif
 /]
 
 

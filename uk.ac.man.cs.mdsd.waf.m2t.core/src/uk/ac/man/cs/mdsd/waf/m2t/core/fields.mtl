@@ -1,0 +1,252 @@
+[comment encoding = UTF-8 /]
+[module fields(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
+
+
+[query public defaultValue(field : UnitField) : Expression
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).defaultValue
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).defaultValue
+		else
+			null
+		endif endif
+/]
+
+[query public entity(field : UnitField) : EntityOrView
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute.partOf
+		else if field.oclIsKindOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).association.sourceType()
+		else 
+			null
+		endif endif
+/]
+
+[query public feature(field : UnitField) : Feature
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).attribute
+		else
+			field.oclAsType(UnitAssociation).association
+		endif
+/]
+
+[query public formName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.columnName()
+			else
+				let association : Association
+					= field.oclAsType(UnitAssociation).association
+					in if association.isSingleton() and association.isOwningEnd() then 
+	 						association.columnName() 
+						else 
+							association.modelPropertyName() 
+						endif 
+			endif
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else if field.oclIsTypeOf(CaptchaField) then
+			field.oclAsType(CaptchaField).name
+		else
+			'UnhandledFeature'
+		endif endif endif
+/]
+
+[query public hasDefaultValue(field : UnitField) : Boolean
+	= not field.defaultValue().oclIsUndefined()
+/]
+
+[query public hasForcedValue(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			not field.oclAsType(UnitFeature).forcedValue.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public isAssociation(field : UnitField) : Boolean
+	= if not field.oclIsTypeOf(UnitAssociation) then
+			false
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					true
+				else
+					association.childFeature.isAssociationElement()
+				endif
+		endif
+/]
+
+[query public isAssociationElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			false
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					true
+				else
+					association.childFeature.isAssociationElement()
+				endif
+		endif
+/]
+
+[query public isCaseInsensitive(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isCaseInsensitive()
+			else
+				false
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).caseInsensitive
+		else
+			false
+		endif endif
+/]
+
+[query public isContainer(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).association.isContainer()
+		else
+			false
+		endif
+/]
+
+[query public isContains(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).association.isContains()
+		else
+			false
+		endif
+/]
+
+[query public isEncrypted(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isEncrypted()
+			else
+				false
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).encrypt
+		else
+			false
+		endif endif
+/]
+
+[query public isModifiable(feature : UnitFeature) : Boolean
+	= if feature.oclIsTypeOf(UnitAttribute) then
+			let attribute : UnitAttribute = feature.oclAsType(UnitAttribute)
+				in attribute.forcedValue.oclIsUndefined()
+		else
+			let association : UnitAssociation = feature.oclAsType(UnitAssociation)
+				in if association.units->notEmpty() then
+						false
+					else
+						association.forcedValue.oclIsUndefined() and association.association.isVisible()
+					endif
+		endif
+/]
+
+[query public isObfuscated(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).obfuscateFormFields
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).obfuscateFormFields
+		else
+			false
+		endif endif
+/]
+
+[query public isPseudo(association : UnitAssociation) : Boolean
+	= association.association.isPseudo()
+/]
+
+[query public isPseudo(association : ChildPathAssociation) : Boolean
+	= if association.association.oclIsKindOf(EntityAssociation) then
+			association.association.oclAsType(EntityAssociation).isPseudo()
+		else 
+			false
+		endif
+/]
+
+[query public isRequired(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isRequired()
+			else
+				field.oclAsType(UnitAssociation).association.isRequired()
+			endif
+		else 
+			field.oclAsType(InterfaceField).required
+		endif
+/]
+
+[query public isSingleton(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isSingleton()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						association.association.isSingleton()
+					else
+						association.childFeature.isSingletonElement()
+					endif
+			endif
+		else 
+			true
+		endif
+/]
+
+[query public isSingletonElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isSingleton()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					association.association.isSingleton()
+				else
+					association.childFeature.isSingletonElement()
+				endif
+		endif
+/]
+
+[query public isUnique(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isUnique()
+			else
+				field.oclAsType(UnitAssociation).association.isUnique()
+			endif
+		else
+			false
+		endif
+/]
+
+[query public isValidated(feature : UnitFeature) : Boolean
+	= if feature.oclIsTypeOf(UnitAttribute) then
+			feature.oclAsType(UnitAttribute).attribute.isValidated()
+		else 
+			feature.oclAsType(UnitAssociation).association.isValidated()
+		endif
+/]
+
+[query public modelPropertyName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.modelPropertyName()
+			else
+				field.oclAsType(UnitAssociation).association.modelPropertyName()
+			endif
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else
+			'UnhandledFeature'
+		endif endif
+/]

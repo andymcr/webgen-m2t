@@ -1,0 +1,164 @@
+[comment encoding = UTF-8 /]
+[module pages(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units]
+
+
+[query private childGalleryUnits(page : Page) : Sequence(GalleryUnit)
+	= page.units->collect(u | u.childGalleryUnits())
+/]
+
+[query private childImageUnits(page : Page) : Sequence(ImageUnit)
+	= page.units->collect(u | u.childImageUnits())
+/]
+
+[query private childIndexUnits(page : Page) : Sequence(IndexUnit)
+	= page.units->collect(u | u.childIndexUnits())
+/]
+
+[query private childSliderUnits(page : Page) : Sequence(SliderUnit)
+	= page.units->collect(u | u.childSliderUnits())
+/]
+
+[query private childUnits(page : Page) : Sequence(ContentUnit)
+	= page.units
+		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+		->collect(u | u.childUnits())
+/]
+
+[query public collectionUnits(page : Page) : Sequence(CollectionUnit)
+	= page.dynamicUnits()->select(u | u.oclIsKindOf(CollectionUnit)).oclAsType(CollectionUnit)
+/]
+
+[query public controlUnits(page : Page) : Sequence(DynamicUnit)
+	= page.dynamicUnits()
+		->select(u | u.oclIsKindOf(ControlUnit)).oclAsType(DynamicUnit)
+/]
+
+[query public dynamicUnits(page : Page) : Sequence(DynamicUnit)
+	= page.units->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+/]
+
+[query public editUnits(page : Page) : Sequence(EditUnit)
+	= page.dynamicUnits()
+		->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
+/]
+
+[query public formUnits(page : Page) : Sequence(DynamicUnit)
+	= page.dynamicUnits()
+		->select(u | u.oclIsKindOf(ControlUnit) or u.oclIsKindOf(EditUnit)).oclAsType(DynamicUnit)
+/]
+
+[query public galleryUnits(page : Page) : Sequence(GalleryUnit)
+	= page.collectionUnits()->select(u | u.oclIsKindOf(GalleryUnit)).oclAsType(GalleryUnit)
+/]
+
+[query public hasCaptchaFields(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasCaptchaFields())->notEmpty()
+/]
+
+[query public hasChangableCollections(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasChangableCollections())->notEmpty()
+/]
+
+[query private hasChildGalleryUnits(page : Page) : Boolean
+	= page.childGalleryUnits()->notEmpty()
+/]
+
+[query private hasChildImageUnits(page : Page) : Boolean
+	= page.childImageUnits()->notEmpty()
+/]
+
+[query private hasChildIndexUnits(page : Page) : Boolean
+	= page.childIndexUnits()->notEmpty()
+/]
+
+[query private hasChildSliderUnits(page : Page) : Boolean
+	= page.childSliderUnits()->notEmpty()
+/]
+
+[query public hasEditUnits(page : Page) : Boolean
+	= page.editUnits()->notEmpty()
+/]
+
+[query public hasFilters(page : Page) : Boolean
+	= page.collectionUnits()->select(u | u.hasFilters())->notEmpty()
+/]
+
+[query public hasFormUnits(page : Page) : Boolean
+	= page.formUnits()->notEmpty()
+/]
+
+[query public hasGalleryUnits(page : Page) : Boolean
+	= page.galleryUnits()->notEmpty() or page.hasChildGalleryUnits()
+/]
+
+[query public hasImageUnits(page : Page) : Boolean
+	= page.imageUnits()->notEmpty() or page.hasChildImageUnits()
+/]
+
+[query public hasIndexUnits(page : Page) : Boolean
+	= page.indexUnits()->notEmpty() or page.hasChildIndexUnits()
+/]
+
+[query public hasNoDynamicUnits(page : Page) : Boolean
+	= page.dynamicUnits()->isEmpty()
+/]
+
+[query public hasPagination(page : Page) : Boolean
+	= page.collectionUnits()->select(u | u.hasPagination())->notEmpty()
+/]
+
+[comment query public hasParameterisedUnits(page : Page) : Boolean
+	= page.parameterisedUnits()->notEmpty()
+/]
+
+[query public hasSliderUnits(page : Page) : Boolean
+	= page.sliderUnits()->notEmpty() or page.hasChildSliderUnits()
+/]
+
+[query public imageUnits(page : Page) : Sequence(ImageUnit)
+	= page.collectionUnits()->select(u | u.oclIsKindOf(ImageUnit)).oclAsType(ImageUnit)
+/]
+
+[query public indexUnits(page : Page) : Sequence(IndexUnit)
+	= page.collectionUnits()->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
+/]
+
+[query public mapUnits(page : Page) : Sequence(MapUnit)
+	= page.units->select(u | u.oclIsKindOf(MapUnit)).oclAsType(MapUnit)
+/]
+
+[query public nonDynamicUnits(page : Page) : Set(ContentUnit)
+	= page.units->select(u | not u.oclIsKindOf(DynamicUnit))
+/]
+
+[query public sliderUnits(page : Page) : Sequence(SliderUnit)
+	= page.collectionUnits()->select(u | u.oclIsKindOf(SliderUnit)).oclAsType(SliderUnit)
+/]
+
+
+[query public pageDisplayedOn(unit : ContentUnit) : Page
+	= if unit.displayedOn.oclIsTypeOf(Page) then
+			unit.displayedOn.oclAsType(Page)
+		else
+			unit.displayedOn.oclAsType(UnitAssociation).displayedOn.pageDisplayedOn()
+		endif
+/]
+
+
+[query public model(field : UnitField) : WafModel
+	= field.pageDisplayedOn().partOf
+/]
+
+[query public model(child : ChildPathAssociation) : WafModel
+	= if child.eContainer().oclIsTypeOf(UnitAssociation) then
+			child.eContainer().oclAsType(UnitAssociation).model()
+		else
+			child.eContainer().oclAsType(ChildPathAssociation).model()
+		endif
+/]
+
+[query public pageDisplayedOn(field : UnitField) : Page
+	= field.displayedOn.pageDisplayedOn()
+/]

@@ -3,7 +3,7 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUnique/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUniqueValidator/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::entity/]

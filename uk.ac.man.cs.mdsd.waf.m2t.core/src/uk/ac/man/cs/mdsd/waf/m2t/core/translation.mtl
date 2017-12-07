@@ -2,12 +2,32 @@
 [module translation(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 
 
 [query public validXML(string : String) : String
 	= string.replaceAll('&', '&amp;')
+/]
+
+
+[query public translationDomain(page : Page) : String
+	= if page.parentPage.oclIsUndefined() then
+			if page.uriElement <> '' then
+				page.uriElement
+			else
+				'default'
+			endif
+		else
+			page.parentPage.translationDomain()
+		endif
+/]
+
+
+[query public translationDomain(unit : ContentUnit) : String
+	= unit.pageDisplayedOn().translationDomain()
 /]
 
 

@@ -1,0 +1,187 @@
+[comment encoding = UTF-8 /]
+[module entities(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features]
+
+
+[comment query public entry(entries : Sequence(String), index : Integer) : String
+	= if entries->size() < index then
+			''
+		else
+			entries->drop(index - 1)->first()
+		endif
+/]
+
+[query public hasSlugAttributes(model : OrmModel) : Boolean
+	= model.entitiesAndViews->select(e | e.hasSlugAttributes())->notEmpty()
+/]
+
+[query public manyToManyAssociations(model : OrmModel) : Sequence(EntityAssociation)
+	= model.entitiesAndViews->select(e | e.oclIsTypeOf(Entity)).oclAsType(Entity)
+		->collect(e | e.associations()).oclAsType(EntityAssociation)
+		->select(a | not a.isSingleton() and not a.opposite.isSingleton())
+/]
+
+
+[query public associations(entityOrView : EntityOrView) : Sequence(Association)
+	= entityOrView.features
+		->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
+		->select(a | a.isVisible())
+/]
+
+[query public associationKeys(entityOrView : EntityOrView) : Sequence(EntityAssociation)
+	= entityOrView.keys->select(k | k.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+/]
+
+[query public attributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.features->select(f | f.oclIsKindOf(Attribute)).oclAsType(Attribute)
+/]
+
+[query public attributesAndSingletons(entityOrView : EntityOrView) : Sequence(Feature)
+	= entityOrView.features
+		->select(f | f.oclIsKindOf(Attribute) or f.isSingleton() and f.isVisible()).oclAsType(Feature)
+/]
+
+[query public attributeKeys(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.keys->select(k | k.oclIsKindOf(Attribute)).oclAsType(Attribute)
+/]
+
+[query public collectionAssociations(entityOrView : EntityOrView) : Sequence(Association)
+	= entityOrView.associations()->select(a | not a.isSingleton() and a.isVisible())
+/]
+
+[query public container(entityOrView : EntityOrView) : EntityOrView
+	= let containingAssociation : EntityAssociation
+		= entityOrView.containingAssociation()
+		in if containingAssociation.oclIsUndefined() then
+				null
+			else
+				containingAssociation.targetType()
+			endif
+/]
+
+[query public  containerUniqueAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.attributes()->select(a | a.isContainerUnique())
+/]
+
+[query public containingAssociation(entityOrView : EntityOrView) : EntityAssociation
+	= let associations : Sequence(EntityAssociation)
+		= entityOrView.features
+			->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+			->select(a | a.container)
+		in if associations->size() = 0 then
+				null
+			else
+				associations->first()
+			endif
+/]
+
+[query public dataTypeAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.features->select(f | f.isDataType()).oclAsType(Attribute)
+/]
+
+[query public dateAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.features->select(f | f.isDate()).oclAsType(Attribute)
+/]
+
+[query public defaultValueFeatures(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.features->select(f | f.hasDefaultValue()).oclAsType(Attribute)
+/]
+
+[query public features(entityOrView : EntityOrView) : OrderedSet(Feature)
+	= entityOrView.features->select(a | a.isVisible())
+/]
+
+[query public hasAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.associations()->notEmpty()
+/]
+
+[query public hasAssociationKeys(entityOrView : EntityOrView) : Boolean
+	= entityOrView.associationKeys()->notEmpty()
+/]
+
+[query public hasAttributesOrSingletons(entityOrView : EntityOrView) : Boolean
+	= entityOrView.attributesAndSingletons()->notEmpty()
+/]
+
+[query public hasCollectionAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.collectionAssociations()->notEmpty()
+/]
+
+[query public hasDefaultLabel(entityOrView : EntityOrView) : Boolean
+	= entityOrView.labels->select(l | l.name = 'default')->notEmpty()
+/]
+
+[query public hasDefaultValueFeatures(entityOrView : EntityOrView) : Boolean
+	= entityOrView.defaultValueFeatures()->notEmpty()
+/]
+
+[query public hasInverseSingletonAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.inverseSingletonAssociations()->notEmpty()
+/]
+
+[query public hasOwnedSingletonAssociations(entityOrView : EntityOrView) : Boolean
+	= entityOrView.ownedSingletonAssociations()->notEmpty()
+/]
+
+[query public hasPrimaryKeys(entity : EntityOrView) : Boolean
+	= entity.primaryKeys()->notEmpty()
+/]
+
+[query public hasPseudoAssociations(entity : EntityOrView) : Boolean
+	= entity.pseudoAssociations()->notEmpty()
+/]
+
+[query public hasResourceAttributes(entity : EntityOrView) : Boolean
+	= entity.resourceAttributes()->notEmpty()
+/]
+
+[query public hasSlugAttributes(entity : EntityOrView) : Boolean
+	= entity.slugAttributes()->notEmpty()
+/]
+
+[query public hasValidatedFeatures(entity : EntityOrView) : Boolean
+	= entity.validatedFeatures()->notEmpty()
+/]
+
+[query public inverseSingletonAssociations(entity : EntityOrView) : Sequence(Association)
+	= entity.associations()->select(a | a.isSingleton() and not a.isOwningEnd() and a.isVisible())
+/]
+
+[query public isContained(entity : EntityOrView) : Boolean
+	= not entity.container().oclIsUndefined()
+/]
+
+[query public ownedSingletonAssociations(entity : EntityOrView) : Sequence(Association)
+	= entity.associations()->select(a | a.isSingleton() and a.isOwningEnd())
+/]
+
+[query public primaryKeys(entity : EntityOrView) : Sequence(EntityFeature)
+	= entity.features->select(f | f.isPrimaryKey()).oclAsType(EntityFeature)
+/]
+
+[query public pseudoAssociations(entity : EntityOrView) : Sequence(Association)
+	= entity.features->select(f | f.isPseudo()).oclAsType(Association)
+/]
+
+[query public resourceAttributes(entity : EntityOrView) : Sequence(SingletonResource)
+	= entity.features->select(f | f.isResource()).oclAsType(SingletonResource)
+/]
+
+[query public slugAttributes(entity : EntityOrView) : Sequence(EntityAttribute)
+	= entity.attributes()->select(a | a.hasSlugFields())
+/]
+
+[query public tableColumns(entity : Entity) : OrderedSet(Feature)
+	= entity.features->select(f | f.hasColumn())
+/]
+
+[query public  uniqueAttributes(entityOrView : EntityOrView) : Sequence(Attribute)
+	= entityOrView.attributes()->select(a | a.isUnique())
+/]
+
+[query public validatedFeatures(entityOrView : EntityOrView) : Sequence(Feature)
+	= entityOrView.features->select(f | f.isValidated()).oclAsType(Feature)
+/]

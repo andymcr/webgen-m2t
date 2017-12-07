@@ -1,0 +1,68 @@
+[comment encoding = UTF-8 /]
+[module expression(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/Service')]
+
+
+[query public hasFormals(expression : Expression) : Boolean
+	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
+			let predicate : PredicateBooleanOperator
+				= expression.oclAsType(PredicateBooleanOperator)
+				in predicate.expressions->exists(e | e.hasFormals())
+		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
+			let predicate : PredicateEqualityOperator
+				= expression.oclAsType(PredicateEqualityOperator)
+				in  predicate.left.hasFormals() or predicate.right.hasFormals()
+		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
+			let predicate : PredicateComparisonOperator
+				= expression.oclAsType(PredicateComparisonOperator)
+				in predicate.left.hasFormals() or predicate.right.hasFormals()
+		else if expression.oclIsTypeOf(PredicateIsOperator) then
+			let predicate : PredicateIsOperator
+				= expression.oclAsType(PredicateIsOperator)
+				in predicate.left.hasFormals() or predicate.right.hasFormals()
+		else if expression.oclIsTypeOf(PredicateLikeOperator) then
+			let predicate : PredicateLikeOperator
+				= expression.oclAsType(PredicateLikeOperator)
+				in predicate.left.hasFormals() or predicate.right.hasFormals()
+		else if expression.oclIsTypeOf(PredicateIsEmpty) then
+			let predicate : PredicateIsEmpty
+				= expression.oclAsType(PredicateIsEmpty)
+				in predicate.feature.hasFormals()
+		else
+			expression.oclIsTypeOf(ParameterReference)
+		endif endif endif endif endif endif
+/]
+
+
+[query public hasParameters(expression : Expression) : Boolean
+	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
+			let predicate : PredicateBooleanOperator
+				= expression.oclAsType(PredicateBooleanOperator)
+				in predicate.expressions->exists(e | e.hasParameters())
+		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
+			let predicate : PredicateEqualityOperator
+				= expression.oclAsType(PredicateEqualityOperator)
+				in  predicate.left.hasParameters() or predicate.right.hasParameters()
+		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
+			let predicate : PredicateComparisonOperator
+				= expression.oclAsType(PredicateComparisonOperator)
+				in predicate.left.hasParameters() or predicate.right.hasParameters()
+		else if expression.oclIsTypeOf(PredicateIsOperator) then
+			let predicate : PredicateIsOperator
+				= expression.oclAsType(PredicateIsOperator)
+				in predicate.left.hasParameters() or predicate.right.hasParameters()
+		else if expression.oclIsTypeOf(PredicateLikeOperator) then
+			let predicate : PredicateLikeOperator
+				= expression.oclAsType(PredicateLikeOperator)
+				in predicate.left.hasParameters() or predicate.right.hasParameters()
+		else if expression.oclIsTypeOf(PredicateIsEmpty) then
+			let predicate : PredicateIsEmpty
+				= expression.oclAsType(PredicateIsEmpty)
+				in predicate.feature.hasParameters()
+		else
+			expression.oclIsTypeOf(ParameterReference)
+				or expression.oclIsTypeOf(CurrentTime)
+				or expression.oclIsTypeOf(CurrentUser)
+		endif endif endif endif endif endif
+/]

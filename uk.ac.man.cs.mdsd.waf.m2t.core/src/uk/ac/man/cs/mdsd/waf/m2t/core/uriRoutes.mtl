@@ -3,8 +3,9 @@
 	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
 
 
 [query public keyEntity(entity : EntityOrView) : EntityOrView
@@ -170,4 +171,13 @@
 					else
 						localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
 					endif
+/]
+
+
+[query public hasRouteActual(unit : ContentUnit, key : Attribute) : Boolean
+	= not unit.routeActual(key).oclIsUndefined()
+/]
+
+[query public routeActual(unit : ContentUnit, key : Attribute) : RouteActual
+	= unit.routeActuals->any(a | a.routeParameter = key)
 /]

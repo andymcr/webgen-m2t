@@ -1,0 +1,34 @@
+[comment encoding = UTF-8 /]
+[module interface(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
+
+
+[query public asId(string : String) : String
+	= if self.size() < 2 then
+			self.toLowerCase()
+		else
+			self.substring(1, 1)
+				.concat(self.substring(2, self.size()).replaceAll('([A-Z][^A-Z])', '_$1'))
+				.toLowerCase()
+		endif
+/]
+
+
+[query public id(entity : EntityOrView) : String
+	= entity.name.asId()
+/]
+
+
+[query public id(enumerationType : EnumerationType) : String
+	= enumerationType.name.asId()
+/]
+
+
+[query public id(literal : EnumerationLiteral) : String
+	= literal.name.asId()
+/]
+
+
+[query public id(feature : Feature) : String
+	= feature.name.asId()
+/]

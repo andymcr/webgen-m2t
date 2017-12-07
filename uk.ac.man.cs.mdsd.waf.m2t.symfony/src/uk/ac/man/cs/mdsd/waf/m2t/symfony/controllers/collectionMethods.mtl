@@ -3,10 +3,10 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -77,7 +77,7 @@ private function [unit.selectName()/]([collectionUnit.selectMethodParameters(tru
 [/template]
 
 [template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
-[if (unit.oclAsType(DynamicUnit).hasFilterParameters() or unit.oclAsType(DynamicUnit).hasPagination())][if (formal)]
+[if (unit.hasFilters() or unit.hasPagination())][if (formal)]
 Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
 [if (unit.routingType().uriPathKeys()->notEmpty())]
 , [/if][/if][/if]

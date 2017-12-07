@@ -1,0 +1,342 @@
+[comment encoding = UTF-8 /]
+[module interface(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::interface]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
+
+
+[query public hasJavascript(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasJavascript())->notEmpty()
+/]
+
+[query public hasJQueryClasses(model : WafModel) : Boolean
+	= model.inputTechnology <> InputTechnologies::Html
+/]
+
+[query public homePage(model : WafModel) : Page
+	= let topPage : Page
+			= if model.topMenuItems()->notEmpty() then
+					model.topMenuItems()->first()
+				else
+					null
+				endif
+		in if not topPage.oclIsUndefined() then
+			topPage
+		else
+			if model.pages->notEmpty() then
+				model.pages->first()
+			else
+				null
+		endif endif
+/]
+
+[query public topMenuItems(model : WafModel) : Sequence(Page)
+	= model.pages
+		->select(p | p.topMenuOption <> PageTopMenuOptions::NeverInclude)
+		->sortedBy(p | p.topMenuRank).oclAsType(Page)
+/]
+
+
+[query public id(entity : EntityOrView) : String
+	= entity.name.asId()
+/]
+
+
+[query public id(feature : Feature) : String
+	= feature.name.asId()
+/]
+
+[query public usesInputJQuery(feature : Feature) : Boolean
+	= not (feature.isDataType() or feature.isUrl() or feature.isResource())
+		or feature.isBooleanDataType()
+		or feature.isEnumerationType()
+		or feature.isIntegerDataType()
+		or not feature.isSingleton()
+/]
+
+
+[query public id(menu : Menu) : String
+	= menu.name.asId()
+/]
+
+[query public id(menuEntry : MenuEntry) : String
+	= if menuEntry.oclIsKindOf(ActionMenuEntry) then
+			menuEntry.oclAsType(ActionMenuEntry).name.asId()
+		else if menuEntry.oclIsKindOf(EditStaticTextMenuEntry) then
+			menuEntry.oclAsType(EditStaticTextMenuEntry).name.asId()
+		else
+			'Unhandled'
+		endif endif
+/]
+
+
+[query public hasJavascript(page : Page) : Boolean
+	= page.hasChangableCollections()
+		or page.hasImageUnits()
+		or page.partOf.responsiveTopMenu
+/]
+
+[query public hasJQueryClasses(page : Page) : Boolean
+	= page.partOf.hasJQueryClasses()
+/]
+
+[query public id(page : Page) : String
+	= page.name.asId()
+/]
+
+[query public useInputJQuery(page : Page) : Boolean
+	= (page.hasFormUnits()
+			or page.units
+				->select(u | u.oclIsKindOf(CollectionUnit)).oclAsType(CollectionUnit)
+				->select(u | u.supportedFilters->notEmpty())
+				->notEmpty())
+		and page.partOf.hasJQueryClasses()
+/]
+
+
+[query private containerId(container : UnitContainer) : String
+	= if container.oclIsTypeOf(Page) then
+			container.oclAsType(Page).id()
+		else
+			container.oclAsType(UnitAssociation).displayedOn.containedId()
+		endif
+/]
+
+
+[query public styleClass(menu : Menu) : String
+	= menu.styleClass
+/]
+
+
+[query public cancelLabel(unit : DynamicUnit) : String
+	= if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).cancelLabel
+		else if unit.oclIsKindOf(ControlUnit) then
+			unit.oclAsType(ControlUnit).cancelLabel
+		else
+			'unexpectedUnit'
+		endif endif
+/]
+
+[query public containedId(unit : ContentUnit) : String
+	= unit.displayedOn.containerId().concat('.').concat(unit.name.asId())
+/]
+
+[query public hasClearLabel(unit : EditUnit) : Boolean
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+			not unit.oclAsType(CreateUpdateUnit).clearLabel.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public hasJQueryClasses(unit : DynamicUnit) : Boolean
+	= unit.pageDisplayedOn().hasJQueryClasses()
+/]
+
+[query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
+	= false
+/]
+
+[comment query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if unit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormHead
+				or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+				or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasMessagesOnFormFoot(unit : DynamicUnit) : Boolean
+	= false
+/]
+
+[comment query public hasMessagesOnFormFoot(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if uUnit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormFoot
+			or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasMessagesOnFeature(unit : DynamicUnit) : Boolean
+	= true
+/]
+
+[comment query public hasMessagesOnFeature(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if unit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::OnFeature
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasOmitFieldLabels(unit : DataUnit) : Boolean
+	= if unit.oclIsTypeOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).omitFieldLabels
+		else
+			unit.oclAsType(IndexUnit).omitColumnLabels
+		endif
+/]
+
+[query public id(unit : ContentUnit) : String
+	= unit.displayedOn.containerId().concat('.labels.').concat(unit.name.asId())
+/]
+
+[query public isConditionalDisplay(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(DataUnit) then
+			unit.oclAsType(DataUnit).onlyDisplayWhenNotEmpty
+		else
+			false
+		endif
+/]
+
+[query public rowClasses(unit : IndexUnit) : Sequence(String)
+	= unit.rowClasses.tokenize(' ')
+/]
+
+[query public submitLabel(unit : DynamicUnit) : String
+	= if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).confirmLabel
+		else if unit.oclIsKindOf(ControlUnit) then
+			unit.oclAsType(ControlUnit).submitLabel
+		else
+			'unexpectedUnit'
+		endif endif
+/]
+
+[query public isConditionalDisplay(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).onlyDisplayWhenNotEmpty
+		else
+			false
+		endif
+/]
+
+[query public displayClass(field : UnitField) : String
+	= if not field.oclIsTypeOf(UnitAssociation) or field.isSingleton() then
+			field.modelPropertyName()
+		else
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in if association.units->isEmpty() then
+					field.modelPropertyName()
+				else
+					association.units->first().styleClass
+				endif
+		endif
+/]
+
+[query public displayLabel(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).displayLabel
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).displayLabel
+		else 
+			'UnhandledField'
+		endif endif
+/]
+
+[query public hasClass(field : UnitField) : Boolean
+	= not field.inputClass().oclIsUndefined() or field.hasJQueryClasses()
+/]
+
+[query public hasJQueryClasses(field : UnitField) : Boolean
+	= if field.isDataType() then
+			field.dataType().name <> 'Integer'
+		else
+			field.isDate() or field.isResource() or field.isUrl()
+		endif
+			and field.displayedOn.hasJQueryClasses()
+/]
+
+[query public hasPlaceholder(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitAttribute) then
+			not field.oclAsType(UnitAttribute).placeholder.oclIsUndefined()
+		else if field.oclIsKindOf(InterfaceField) then
+			not field.oclAsType(InterfaceField).placeholder.oclIsUndefined()
+		else
+			false
+		endif endif
+/]
+
+[query public hasTitle(field : UnitField) : Boolean
+	= not field.title.oclIsUndefined()
+/]
+
+[query public id(association : UnitAssociation) : String
+	= if association.childFeature.oclIsUndefined() then
+			association.name.asId()
+		else
+			association.name.asId().concat('.').concat(association.childFeature.id())
+		endif
+/]
+
+[query public id(child : ChildPath) : String
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.id()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					association.name.asId()
+				else
+					association.name.asId().concat('.').concat(association.childFeature.id())
+				endif
+		endif
+/]
+
+[query public inputClass(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).inputClass
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).inputClass
+		else
+			null
+		endif endif
+/]
+
+[query public placeholder(field : UnitField) : String
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).placeholder
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).placeholder
+		else
+			null
+		endif endif
+/]
+
+[query public styleClass(field : UnitField) : String
+	= field.modelPropertyName().asId()
+/]

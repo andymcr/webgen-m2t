@@ -1,0 +1,339 @@
+[comment encoding = UTF-8 /]
+[module dataTypes(
+	'http://cs.manchester.ac.uk/mdsd/Expression',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
+
+
+[query public dataType(field : UnitField) : Classifier
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.dataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						null
+					else
+						association.childFeature.dataTypeElement()
+					endif
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			field.oclAsType(DataTypeField).dataType
+		else
+			null
+		endif endif
+/]
+
+[query private dataTypeElement(child : ChildPath) : Classifier
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.dataType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					null
+				else
+					association.childFeature.dataTypeElement()
+				endif
+		endif
+/]
+
+[query public dateDetails(field : UnitField) : DateDetails
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.dateDetails()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						null
+					else
+						association.childFeature.dateDetailsElement()
+					endif
+			endif
+		else if field.oclIsTypeOf(DateField) then
+			field.oclAsType(DateField).details
+		else
+			null
+		endif endif
+/]
+
+[query private dateDetailsElement(child : ChildPath) : DateDetails
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.dateDetails()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					null
+				else
+					association.childFeature.dateDetailsElement()
+				endif
+		endif
+/]
+
+[query public enumerationType(field : UnitField) : EnumerationType
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.enumerationType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						null
+					else
+						association.childFeature.enumerationTypeElement()
+					endif
+			endif
+		else if field.oclIsTypeOf(DataTypeField) then
+			let dataTypeField : DataTypeField = field.oclAsType(DataTypeField)
+				in if dataTypeField.dataType.oclIsTypeOf(EnumerationType) then
+						dataTypeField.dataType.oclAsType(EnumerationType)
+					else
+						null
+					endif
+		else
+			null
+		endif endif
+/]
+
+[query private enumerationTypeElement(child : ChildPath) : EnumerationType
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.enumerationType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					null
+				else
+					association.childFeature.enumerationTypeElement()
+				endif
+		endif
+/]
+
+[query public isBooleanDataType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isBooleanDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isBooleanDataTypeElement()
+					endif
+			endif
+		else
+			false -- TODO implement
+		endif
+/]
+
+[query private isBooleanDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isBooleanDataType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isBooleanDataTypeElement()
+				endif
+		endif
+/]
+
+[query public isDataType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isDataTypeElement()
+					endif
+			endif
+		else
+			field.oclIsTypeOf(DataTypeField)
+		endif
+/]
+
+[query private isDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isDataType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isDataTypeElement()
+				endif
+		endif
+/]
+
+[query public isDate(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isDate()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isDateElement()
+					endif
+			endif
+		else
+			field.oclIsTypeOf(DateField)
+		endif
+/]
+
+[query private isDateElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isDate()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isDateElement()
+				endif
+		endif
+/]
+
+[query public isEnumerationType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isEnumerationType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isEnumerationTypeElement()
+					endif
+			endif
+		else
+			false
+		endif
+/]
+
+[query private isEnumerationTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isEnumerationType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isEnumerationTypeElement()
+				endif
+		endif
+/]
+
+[query public isIntegerDataType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isIntegerDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isIntegerDataTypeElement()
+					endif
+			endif
+		else
+			false -- TODO implement
+		endif
+/]
+
+[query private isIntegerDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isIntegerDataType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isIntegerDataTypeElement()
+				endif
+		endif
+/]
+
+[query public isLocation(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isLocation()
+			else
+				false
+			endif
+		else
+			false
+		endif
+/]
+
+[query public isResource(field : UnitField) : Boolean
+	= if not field.oclIsTypeOf(UnitAttribute) then
+			false
+		else let attribute : UnitAttribute = field.oclAsType(UnitAttribute)
+			in attribute.attribute.oclIsKindOf(SingletonResource)
+		endif
+/]
+
+
+[query public isStringDataType(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isStringDataType()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isStringDataTypeElement()
+					endif
+			endif
+		else
+			false -- TODO implement
+		endif
+/]
+
+[query private isStringDataTypeElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isStringDataType()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isStringDataTypeElement()
+				endif
+		endif
+/]
+
+[query public isUrl(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.isUrl()
+			else
+				let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						false
+					else
+						association.childFeature.isUrlElement()
+					endif
+			endif
+		else
+			false
+		endif
+/]
+
+[query private isUrlElement(child : ChildPath) : Boolean
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).attribute.isUrl()
+		else
+			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
+			in if association.childFeature.oclIsUndefined() then
+					false
+				else
+					association.childFeature.isUrlElement()
+				endif
+		endif
+/]

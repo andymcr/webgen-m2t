@@ -6,10 +6,14 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -23,7 +27,7 @@ $this->get('translator')->trans('[message/]')
 
 
 [template public actionMethodParameters(page : Page) post(trim())]
-[if (page.hasFilterParameters() or page.hasPagination() or page.hasFormUnits())]
+[if (page.hasFilters() or page.hasPagination() or page.hasFormUnits())]
 Request $request[if (page.hasRouteParameters())]
 , [/if][/if][page.routeParameters()/]
 [/template]
@@ -34,11 +38,11 @@ Request $request[if (page.hasRouteParameters())]
 
 [template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, supportMethod : Boolean) post(trim())]
 [if (entity.oclIsUndefined())]
-	[if (page.hasFilterParameters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
+	[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request
 	[/if]
 [else]
-[if (page.hasFilterParameters() or page.hasPagination() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasUnitSupportActions())]
+[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasUnitSupportActions())]
 Request $request[if (entity.hasRouteParameters(unit))]
 , [/if][/if][entity.routeParameters(unit)/]
 [/if]
@@ -46,11 +50,11 @@ Request $request[if (entity.hasRouteParameters(unit))]
 
 [template public renderActualParameters(page : Page, entity : EntityOrView) post(trim())]
 [if (entity.oclIsUndefined())]
-	[if (page.hasFilterParameters() or page.hasPagination())]
+	[if (page.hasFilters() or page.hasPagination())]
 $request
 	[/if]
 [else]
-[if (page.hasFilterParameters() or page.hasPagination())]
+[if (page.hasFilters() or page.hasPagination())]
 $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
 $[key.routeParameterName(entity)/][/for]
@@ -183,7 +187,7 @@ $this->redirectToRoute('[page.routeName()/]'[if (page.uriCommonPathKeys()->notEm
 
 [template public redirect(unit : DynamicUnit, routingType : EntityOrView, routeName : String, valueBase : EntityOrView) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-$this->redirectToRoute('[routeName/]'[if (page.hasFilterParameters() or page.hasPagination())]
+$this->redirectToRoute('[routeName/]'[if (page.hasFilters() or page.hasPagination())]
 , [if (routingType.oclIsUndefined())]
 $request->query->all()[else]
 array_merge(
@@ -236,10 +240,10 @@ $parameters['['/]'styles'[']'/] = array(
     'css/wickedpicker.css',
 		[/if]
 	[/if]
-	[if (page.hasSliderUnits() or page.hasChildSliderUnits())]
+	[if (page.hasSliderUnits())]
     'css/blueimp-gallery.min.css',
 	[/if]
-	[if (page.hasGalleryUnits() or page.hasChildGalleryUnits())]
+	[if (page.hasGalleryUnits())]
     'css/unite-gallery.css',
 	[/if]
 );
@@ -261,11 +265,11 @@ $parameters['['/]'scripts'[']'/] = array(
     'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
 [comment     '[page.partOf.autocompleteFilename()', /]
 [/if]
-[if (page.hasSliderUnits() or page.hasChildSliderUnits())]
+[if (page.hasSliderUnits())]
 [comment    'js/jssor.slider.mini.js', /]
 [comment    'js/jquery.blueimp-gallery.min.js', /]
 [/if]
-[if (page.hasGalleryUnits() or page.hasChildGalleryUnits())]
+[if (page.hasGalleryUnits())]
     'js/unitegallery.min.js',
     'themes/ug-theme-tilesgrid.js',
 [/if]
