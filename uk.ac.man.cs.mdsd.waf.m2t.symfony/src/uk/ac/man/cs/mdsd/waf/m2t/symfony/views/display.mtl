@@ -109,8 +109,7 @@
 [template private unitFilter(filter : Filter, unit : IndexUnit, accessor : String)]
 <div class="filter">
  <form action="{{ path('[unit.routeName()/]', { [if (not unit.routingType().oclIsUndefined())]
-[unit.routingType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit, false)/][else]
-[unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit, true)/][/if] }) }}" method="get">
+[unit.routingType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit)/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
  placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
@@ -178,7 +177,7 @@
 
 [template private pageHref(unit : IndexUnit, pageNumber : String, selectionAccessor : String) post(trim())]
 {{ path('[unit.routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
-, [unit.routingType().routeActualParameters(unit.routingType(), selectionAccessor, unit.hasObjectAccess(), unit, false)/][/if]})) }}
+, [unit.routingType().routeActualParameters(unit.routingType(), selectionAccessor, unit.hasObjectAccess(), unit)/][/if]})) }}
 [/template]
 
 

@@ -17,7 +17,9 @@
 
 
 [template public unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="{{ path('[unit.supportRouteName()/]', { [unit.contentType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit, unit.oclIsKindOf(IndexUnit))/] }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+<form action="{{ path('[unit.supportRouteName()/]', { [if (not unit.routingType().oclIsUndefined())]
+[unit.routingType().routeActualParameters(unit.routingType(), accessor, unit.hasObjectAccess(), unit)/] [/if]
+ }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.unitSupportActions())]
  [action.unitSupportLink()/]
 [/for]
@@ -139,25 +141,23 @@ NULL
 [/template]
 
 [template private anchor3(action : InlineAction, routeName : String, entity : EntityOrView, routeParametersAccessor : String, label : String, title : String, confirmMessage : String, targetUnit : ContentUnit, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
-<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [entity.routeActualParameters(entity, routeParametersAccessor, objectAccess, targetUnit, false)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
+<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [entity.routeActualParameters(entity, routeParametersAccessor, objectAccess, targetUnit)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
  onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]');"[/if]>[label/]</a>
 [/template]
 
-[template public routeActualParameters(entity : EntityOrView, base : EntityOrView, accessor : String, objectAccess : Boolean, targetUnit : ContentUnit, parentPath : Boolean) post(trim())]
+[template public routeActualParameters(entity : EntityOrView, base : EntityOrView, accessor : String, objectAccess : Boolean, targetUnit : ContentUnit) post(trim())]
 [if (entity.isContained())]
-[entity.container().routeActualParameters(base, accessor.concat('.').concat(entity.containingAssociation().modelPropertyName()), objectAccess, targetUnit, parentPath)/]
+[entity.container().routeActualParameters(base, accessor.concat('.').concat(entity.containingAssociation().modelPropertyName()), objectAccess, targetUnit)/]
 [/if]
-[if (not parentPath)]
-	[for (key : Attribute | entity.uriEntityKeys(targetUnit))]
-	[let keyAccessor : String
-		= if objectAccess then
-				accessor.concat('.').concat(key.modelPropertyName())
-			else
-				accessor.concat('.').concat(key.columnName())
-			endif]
+[for (key : Attribute | entity.uriEntityKeys(targetUnit))]
+[let keyAccessor : String
+	= if objectAccess then
+			accessor.concat('.').concat(key.modelPropertyName())
+		else
+			accessor.concat('.').concat(key.columnName())
+		endif]
 '[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
-	[/let]
-	[/for]
-[/if]
+[/let]
+[/for]
 [/template]
 
