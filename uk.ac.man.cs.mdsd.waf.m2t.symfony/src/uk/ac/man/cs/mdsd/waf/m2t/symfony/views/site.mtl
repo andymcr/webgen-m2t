@@ -11,7 +11,6 @@
 <html lang="en">
 <head>
  <meta charset="UTF-8"/>
- <meta name="viewport" content="width=device-width, initial-scale=1">
 [if (not model.metaDescription.oclIsUndefined())]
  <meta name="description" content="[model.metaDescription/]">
 [/if]
@@ -20,6 +19,11 @@
  <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}"/>
  <link rel="stylesheet" type="text/css" media="not print" href="{{ asset('css/non-print.css') }}"/>
  <link rel="stylesheet" type="text/css" media="print" href="{{ asset('css/print.css') }}"/>
+[if (model.responsiveTopMenu)]
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+[/if]
 {% if styles is defined %}
 {% for style in styles  %}
 {% if style starts with 'http' %}
@@ -64,11 +68,6 @@
 <footer>
  <p>[model.copyrightText/]</p>
 </footer>
-[if (model.responsiveTopMenu)]
-<script>
-  var nav = responsiveNav(".nav-collapse");
-</script>
-[/if]
 </body>
 </html>
 [/file]
