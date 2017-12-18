@@ -124,21 +124,21 @@
 [/template]
 
 [template private pagination(unit : IndexUnit, selectionAccessor : String)]
-<ul class="unit_control">
+<ul class="unit_control pagination">
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage != 1 %}
  <li><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLabel/]</a></li>
-[if (unit.useDisabledPageLinks)]
+	[if (unit.useDisabledPageLinks)]
 {% else %}
- <li>[unit.firstPageLabel/]</li>
-[/if]
+ <li class="disabled">[unit.firstPageLabel/]</li>
+	[/if]
 {% endif %}
 [/if]
 {% if currentPage != 1 %}
  <li><a href="[unit.pageHref('currentPage - 1', selectionAccessor)/]">[unit.previousPageLabel/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
- <li>[unit.previousPageLabel/]</li>
+ <li class="disabled">[unit.previousPageLabel/]</li>
 [/if]
 {% endif %}
 [if (unit.previousNpages > 1 and unit.useDisabledPageLinks)]
@@ -147,7 +147,7 @@
 [if (unit.nextNpages > 1 or unit.previousNpages > 1)]
 {% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
  {% if page == currentPage %}
- <li>{{ page }}</li>
+ <li class="active">{{ page }}</li>
  {% else %}
  <li><a href="[unit.pageHref('page', selectionAccessor)/]">{{ page }}</a></li>
  {% endif %}
@@ -160,16 +160,16 @@
  <li><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLabel/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
- <li>[unit.nextPageLabel/]</li>
+ <li class="disabled">[unit.nextPageLabel/]</li>
 [/if]
 {% endif %}
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage != pageCount %}
  <li><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLabel/]</a></li>
-[if (unit.useDisabledPageLinks)]
+	[if (unit.useDisabledPageLinks)]
 {% else %}
- <li>[unit.lastPageLabel/]</li>
-[/if]
+ <li class="disabled">[unit.lastPageLabel/]</li>
+	[/if]
 {% endif %}
 [/if]
 </ul>
