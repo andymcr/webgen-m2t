@@ -15,15 +15,17 @@
  <meta name="description" content="[model.metaDescription/]">
 [/if]
  <title>[model.siteTitle/]{% if title is defined %}: {{ title }}{% endif %}</title>
+[if (model.responsiveTopMenu)]
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/css/materialize.min.css" media="screen"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+[/if]
+[comment
  <link rel="stylesheet" type="text/css" href="{{ asset('css/default.css') }}"/>
  <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}"/>
  <link rel="stylesheet" type="text/css" media="not print" href="{{ asset('css/non-print.css') }}"/>
  <link rel="stylesheet" type="text/css" media="print" href="{{ asset('css/print.css') }}"/>
-[if (model.responsiveTopMenu)]
- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen"/>
- <meta name="viewport" content="width=device-width, initial-scale=1">
-[/if]
+/]
 {% if styles is defined %}
 {% for style in styles  %}
 {% if style starts with 'http' %}
@@ -58,11 +60,10 @@
 </section>
 {% endblock %}
 <main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
-{% if page_message is defined %}
- <p>{{ page_message }}</p>
-{% endif %}
+ <div class="container">
 {% block content %}
 {% endblock %}
+ </div>
 </main>
 <div class="clear"></div>
 <footer>
