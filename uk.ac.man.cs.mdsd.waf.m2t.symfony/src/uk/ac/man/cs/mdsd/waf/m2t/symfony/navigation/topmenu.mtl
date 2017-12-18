@@ -1,0 +1,57 @@
+[comment encoding = UTF-8 /]
+[module topmenu(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public menu(model : WafModel)]
+[file(model.menuDirectory().concat('/topbar').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+{% trans_default_domain "navigation" %}
+<nav class="nav-extended">
+ <div class="nav-wrapper">
+  <!-- a href="#" class="brand-logo right">Logo</a -->
+  <ul id="nav-top" class="left hide-on-med-and-down">
+   [model.topMenuListItems()/]
+[if (model.isAuthenticated())]
+	[if (model.isLocallyAuthenticated())]
+	[let authentication : LocalAuthenticationSystem = model.localAuthentication()]
+{% if app.user %}
+   <li id="authentication_user">{{ app.user.username }} <a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
+{% elseif not app.user %}
+   <li id="authentication_login"><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
+	[if (authentication.allowSelfRegistration)]
+   <li id="authentication_registration"><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
+	[/if]
+{% endif %}
+	[/let]
+	[elseif (model.isCasAuthenticated())]
+	[let authentication : CasAuthentication = model.casAuthentication()]
+{% if app.user %}
+   <li id="authentication_user">{{ app.user.username }}</li>
+{% endif %}
+	[/let]
+	[/if]
+[/if]
+  </ul>
+  <ul class="sidenav" id="nav-mobile">
+   [model.topMenuListItems()/]
+  </ul>
+  <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+ </div>
+</nav>
+[/file]
+[/template]
+
+[template private topMenuListItems(model : WafModel) post(trim())]
+[for (page : Page | model.topMenuItems())]
+	[if (page.topMenuRequiresRole <> '')]
+{% if is_granted('[page.topMenuRequiresRole/]') %}[/if]
+<li><a href="{{ path('[page.routeName()/]') }}">{{ 'top.labels.[page.id()/]' | trans }}</a></li>[if (page.topMenuRequiresRole <> '')]
+{% endif %}[/if]
+
+[/for]
+[/template]
