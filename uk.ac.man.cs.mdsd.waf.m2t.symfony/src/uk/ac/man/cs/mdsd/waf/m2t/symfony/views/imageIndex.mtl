@@ -41,9 +41,9 @@
 [template private indexImage(unit : ImageIndexUnit, accessor : String)
 	? (unit.actions->isEmpty()) post(trim())]
 [if (unit.imagePathFeature.oclIsUndefined())]
-[unit.imageMissing(null, accessor)/]
+[unit.imageMissing(null, accessor, false)/]
 [else]
-[unit.imagePathFeature.imagePath(unit, accessor, accessor)/]
+[unit.imagePathFeature.imagePath(unit, accessor, accessor, false)/]
 [/if]
 [/template]
 
@@ -51,9 +51,9 @@
 	? (unit.actions->size() = 1) post(trim())]
 [let action : InlineAction = unit.actions->first()]
 [let label : String = if unit.imagePathFeature.oclIsUndefined() then
-	unit.imageMissing(null, accessor)
+	unit.imageMissing(null, accessor, false)
 	else
-		unit.imagePathFeature.imagePath(unit, accessor, accessor)
+		unit.imagePathFeature.imagePath(unit, accessor, accessor, false)
 	endif]
 [action.actionLink(unit.contentType(), unit, accessor,  label, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]
 [/let]
@@ -64,9 +64,9 @@
 	? (unit.actions->size() > 1) post(trim())]
 <div>
 [if (unit.imagePathFeature.oclIsUndefined())]
-[unit.imageMissing(null, accessor)/]
+[unit.imageMissing(null, accessor, false)/]
 [else]
-[unit.imagePathFeature.imagePath(unit, accessor, accessor)/]
+[unit.imagePathFeature.imagePath(unit, accessor, accessor, false)/]
 [/if]
 <ul>
 [for (action : InlineAction | unit.inlineActions())]

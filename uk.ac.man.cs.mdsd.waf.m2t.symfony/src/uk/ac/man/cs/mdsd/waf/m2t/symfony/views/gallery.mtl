@@ -33,7 +33,7 @@
 [template private uniteGallery(unit : GalleryUnit, accessor : String) post(trim())]
 <div id="gallery" class="[unit.contentClass/]" style="display:none;">
 {% for image in [accessor/] %}
-[unit.imagePathFeature.imagePath(unit, 'image', 'image')/]
+[unit.imagePathFeature.imagePath(unit, 'image', 'image', false)/]
 {% endfor %}
 </div>
 <script type="text/javascript"> 
@@ -66,17 +66,17 @@
 [let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
 [let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, false)/]
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
 {% if [accessor/] is not empty %}
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, false)/]
 {% endif %}
 	[else]
 {% if [accessor/] is empty %}
-[unit.imageMissing(accessor, baseAccessor)/]
+[unit.imageMissing(accessor, baseAccessor, false)/]
 {% else %}
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, false)/]
 {% endif %}
 	[/if]
 [/if]
@@ -108,7 +108,7 @@
 	[/if]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 {% else %}
-[unit.imageMissing(accessor, baseAccessor)/]
+[unit.imageMissing(accessor, baseAccessor, false)/]
 	[/if]
 {% endif %}
 [/if]
@@ -121,17 +121,17 @@
 [let attribute : ChildPathAttribute = feature.oclAsType(ChildPathAttribute)]
 [let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, false)/]
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
 {% if [accessor/] is not empty %}
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, false)/]
 {% endif %}
 	[else]
 {% if [accessor/] is empty %}
-[unit.imageMissing(accessor, baseAccessor)/]
+[unit.imageMissing(accessor, baseAccessor, false)/]
 {% else %}
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, false)/]
 {% endif %}
 	[/if]
 [/if]

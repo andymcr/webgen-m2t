@@ -20,78 +20,78 @@
 /]
 
 
-[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String)
+[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (feature.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
 [let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
-[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.columnName())]
+[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, useAnchor)/]
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
-{% if [accessor/] is not empty %}
-[unit.image(accessor, baseAccessor)/]
-{% endif %}
+{%- if [accessor/] is not empty -%}
+[unit.image(accessor, baseAccessor, useAnchor)/]
+{%- endif -%}
 	[else]
-{% if [accessor/] is empty %}
-[unit.imageMissing(accessor, baseAccessor)/]
-{% else %}
-[unit.image(accessor, baseAccessor)/]
-{% endif %}
+{%- if [accessor/] is empty -%}
+[unit.imageMissing(accessor, baseAccessor, useAnchor)/]
+{%- else -%}
+[unit.image(accessor, baseAccessor, useAnchor)/]
+{%- endif -%}
 	[/if]
 [/if]
 [/let]
 [/let]
 [/template]
 
-[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String)
+[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (feature.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
 [let association : FeaturePathAssociation = feature.oclAsType(FeaturePathAssociation)]
 [let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
 [if (association.childFeature.oclIsUndefined())]
-[unit.imageMissing(accessor, baseAccessor)/]
+[unit.imageMissing(accessor, baseAccessor, useAnchor)/]
 [else]
 	[if (association.association.isSingleton())]
 		[if (association.association.isRequired())]
-[association.childFeature.imagePath(unit, accessor, baseAccessor)/]
+[association.childFeature.imagePath(unit, accessor, baseAccessor, useAnchor)/]
 		[else]
-{% if [accessor/] is empty %}
-[unit.imageMissing(accessor, baseAccessor)/]
-{% else %}
-[association.childFeature.imagePath(unit, accessor, baseAccessor)/]
-{% endif %}
+{%- if [accessor/] is empty -%}
+[unit.imageMissing(accessor, baseAccessor, useAnchor)/]
+{%- else -%}
+[association.childFeature.imagePath(unit, accessor, baseAccessor, useAnchor)/]
+{%- endif -%}
 		[/if]
 	[else]
-{% if [accessor/] | length > 0 %}
-{% set child = [accessor/] | first %}
-[association.childFeature.imagePath(unit, 'child', baseAccessor)/]
+{%- if [accessor/] | length > 0 -%}
+{%- set child = [accessor/] | first -%}
+[association.childFeature.imagePath(unit, 'child', baseAccessor, useAnchor)/]
 		[if (not unit.missingImagePath.oclIsUndefined())]
-{% else %}
-[unit.imageMissing(accessor, baseAccessor)/]
+{%- else -%}
+[unit.imageMissing(accessor, baseAccessor, useAnchor)/]
 		[/if]
-{% endif %}
+{%- endif -%}
 	[/if]
 [/if]
 [/let]
 [/let]
 [/template]
 
-[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String)
+[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (feature.oclIsTypeOf(ChildPathAttribute)) post(trim())]
 [let attribute : ChildPathAttribute = feature.oclAsType(ChildPathAttribute)]
 [let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
 [if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor)/]
+[unit.image(accessor, baseAccessor, useAnchor)/]
 [else]
 	[if (unit.missingImagePath.oclIsUndefined())]
-{% if [accessor/] is not empty %}
-[unit.image(accessor, baseAccessor)/]
-{% endif %}
+{%- if [accessor/] is not empty -%}
+[unit.image(accessor, baseAccessor, useAnchor)/]
+{%- endif -%}
 	[else]
-{% if [accessor/] is empty %}
-[unit.imageMissing(accessor, baseAccessor)/]
-{% else %}
-[unit.image(accessor, baseAccessor)/]
-{% endif %}
+{%- if [accessor/] is empty -%}
+[unit.imageMissing(accessor, baseAccessor, useAnchor)/]
+{%- else -%}
+[unit.image(accessor, baseAccessor, useAnchor)/]
+{%- endif -%}
 	[/if]
 [/if]
 [/let]
@@ -110,36 +110,54 @@
 [/template]
 
 
-[template public imageMissing(unit : ImageUnit, accessor : String, baseAccessor : String)
+[template public imageMissing(unit : ImageUnit, accessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (not unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-<img [unit.imageMissingSrc()/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[if (useAnchor)]
+<a [unit.imageMissingSrc(useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
+[else]
+<img [unit.imageMissingSrc(useAnchor)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[/if]
 [/template]
 
-[template public imageMissing(unit : ImageUnit, accessor : String, baseAccessor : String)
+[template public imageMissing(unit : ImageUnit, accessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-<img [galleryUnit.imageMissingSrc()/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageMissingDataImage()/] [galleryUnit.imageDataDescription(baseAccessor)/]/>
+<a [galleryUnit.imageMissingSrc(useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
+[if (useAnchor)]
+[else]
+<img [galleryUnit.imageMissingSrc(useAnchor)/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageMissingDataImage()/] [galleryUnit.imageDataDescription(baseAccessor)/]/>
+[/if]
 [/let]
 [/template]
 
-[template public image(unit : ImageUnit, accessor : String, baseAccessor : String)
+[template public image(unit : ImageUnit, accessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (not unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-<img [unit.imageSrc(accessor)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[if (useAnchor)]
+<a [unit.imageSrc(accessor, useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
+[else]
+<img [unit.imageSrc(accessor, useAnchor)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[/if]
 [/template]
 
-[template public image(unit : ImageUnit, accessor : String, baseAccessor : String)
+[template public image(unit : ImageUnit, accessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-<img [galleryUnit.imageSrc(accessor)/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageDataImage(accessor)/] [galleryUnit.imageDataDescription(baseAccessor)/]/>
+[if (useAnchor)]
+<a [galleryUnit.imageSrc(accessor, useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
+[else]
+<img [galleryUnit.imageSrc(accessor, useAnchor)/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageDataImage(accessor)/] [galleryUnit.imageDataDescription(baseAccessor)/]/>
+[/if]
 [/let]
 [/template]
 
-[template private imageSrc(unit : ImageUnit, accessor : String) post(trim())]
-src="{{ [accessor/] | imagine_filter('[unit.imageFilter.name/]') }}"
+[template private imageSrc(unit : ImageUnit, accessor : String, useAnchor : Boolean) post(trim())]
+[if (useAnchor)]href[else]
+src[/if]="{{ [accessor/] | imagine_filter('[unit.imageFilter.name/]') }}"
 [/template]
 
-[template private imageMissingSrc(unit : ImageUnit) post(trim())]
-src="{{ '[unit.missingImagePath/]' | imagine_filter('[unit.imageFilter.name/]') }}"
+[template private imageMissingSrc(unit : ImageUnit, useAnchor : Boolean) post(trim())]
+[if (useAnchor)]href[else]
+src[/if]="{{ '[unit.missingImagePath/]' | imagine_filter('[unit.imageFilter.name/]') }}"
 [/template]
 
 [template private imageAlt(unit : ImageUnit, accessor : String) post(trim())]

@@ -2,8 +2,11 @@
 [module slider(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::image/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -14,8 +17,7 @@
 [if (not sliderUnit.omitCaption)]
  <h2 class="[sliderUnit.captionClass/]">[sliderUnit.displayLabel/]</h2>
 [/if]
- [comment sliderUnit.jssor()/]
- [sliderUnit.blueimp()/]
+ [sliderUnit.materializeCSS()/]
 </section>
 [/file]
 [/let]
@@ -151,11 +153,11 @@
  <ol class="indicator"></ol>
 </div>
 <div id="links">
-{% for image in [unit.instanceName()/] %}
- <a href="http://sps.andycarpenter.me.uk/{{ image.filePath }}" title="{{ image.image.title }}">
-  <!-- img src="images/thumbnails/banana.jpg" alt="Banana" -->
- </a>
+[let variable : String = unit.contentType().instanceName()]
+{% for [variable/] in [unit.instanceName()/] %}
+[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), true)/]
 {% endfor %}
+[/let]
 </div>
 <script src="{{ asset('js/blueimp-gallery.min.js') }}"></script>
 <script type="text/javascript">
@@ -166,5 +168,21 @@ blueimp.Gallery(
         carousel: true
     }
 );
+</script>
+[/template]
+
+[template private materializeCSS(unit : SliderUnit) post(trim())]
+<div id="[unit.id()/]" class="carousel">
+[let variable : String = unit.contentType().instanceName()]
+{% for [variable/] in [unit.instanceName()/] %}
+<a class="carousel-item" href="#one!">[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), false)/]</a>
+{% endfor %}
+[/let]
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.carousel').carousel();
+});
 </script>
 [/template]
