@@ -9,9 +9,9 @@
 [template public menu(menu : Menu)]
 [file(menu.menuFilename(), false)]
 {% trans_default_domain "navigation" %}
-<section  class="[menu.styleClass()/]" id="[menu.instanceName()/]">
+<div class="nav-content" id="[menu.instanceName()/]">
  [menu.menuEntries()/]
-</section>
+</div>
 [/file]
 [/template]
 
@@ -19,8 +19,7 @@
 [template private menuEntries(menu : Menu)
 	? (menu.oclIsTypeOf(GlobalMenu)) post(trim())]
 [let globalMenu : GlobalMenu = menu.oclAsType(GlobalMenu)]
-<h1 class="[globalMenu.captionClass/][if (globalMenu.omitCaption)] hidden[/if]">{{ 'label.[globalMenu.id()/]' | trans }}</h1>
-<ul class="[globalMenu.layoutClass/]">
+<ul class="tabs tabs-transparent">
 [for (entry : MenuEntry | menu.entries)]
  [entry.menuEntry()/]
 [/for]
@@ -47,7 +46,7 @@
 	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
 [let entry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
 [if (not entry.requiresRole.oclIsUndefined())]
-{% if is_granted('[entry.requiresRole/]') %}[/if]<li>[if (not entry.action.oclIsUndefined())]
+{% if is_granted('[entry.requiresRole/]') %}[/if]<li class="tab{% if app.request.attributes.get('_route') == '[entry.action.routeName()/]' %} active{% endif %}">[if (not entry.action.oclIsUndefined())]
 <a href="{{ path('[entry.action.routeName()/]'[if (not entry.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | entry.query.parameters) separator(', ')]
 '[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>[else]

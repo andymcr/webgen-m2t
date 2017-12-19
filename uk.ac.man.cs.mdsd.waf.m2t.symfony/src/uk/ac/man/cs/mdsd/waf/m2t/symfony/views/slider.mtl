@@ -172,20 +172,17 @@ blueimp.Gallery(
 [/template]
 
 [template private materializeCSS(unit : SliderUnit) post(trim())]
-<div id="[unit.id()/]" class="carousel">
+<div class="slider">
 [let variable : String = unit.contentType().instanceName()]
+ <ul class="slides">
 {% for [variable/] in [unit.instanceName()/] %}
-<a class="carousel-item" href="#one!">[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), false)/]</a>
+  <li>[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), false)/]</li>
 {% endfor %}
 [/let]
+ </ul>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){
-    $('.carousel').carousel();
-});
-autoplay()   
-function autoplay() {
-    $('.carousel').carousel('next');
-    setTimeout(autoplay, 4500);
-}</script>
+var elem = document.querySelector('.slider');
+var instance = new M.Slider(elem, {});
+</script>
 [/template]

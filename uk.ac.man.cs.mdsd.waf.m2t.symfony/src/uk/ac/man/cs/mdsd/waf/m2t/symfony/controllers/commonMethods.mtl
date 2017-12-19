@@ -247,27 +247,6 @@ $parameters['['/]'styles'[']'/] = array(
 
 [template public templateScriptParameters(page : Page) post(trim())]
 $parameters['['/]'scripts'[']'/] = array(
-    array(
-        'src'=>'https://code.jquery.com/jquery-1.12.4.min.js',
-        'integrity' => 'sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=',
-        'crossorigin' => 'anonymous',
-    ),
-[if (page.useInputJQuery() or page.partOf.responsiveTopMenu)]
-    array(
-        'src'=>'https://code.jquery.com/ui/1.12.0/jquery-ui.min.js',
-        'integrity' => 'sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=',
-        'crossorigin' => 'anonymous',
-    ),
-    'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/js/materialize.min.js',
-[comment     '[page.partOf.autocompleteFilename()', /]
-[/if]
-[if (page.partOf.responsiveTopMenu)]
-//    'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css',
-[/if]
-[if (page.hasSliderUnits())]
-[comment    'js/jssor.slider.mini.js', /]
-[comment    'js/jquery.blueimp-gallery.min.js', /]
-[/if]
 [if (page.hasGalleryUnits())]
     'js/unitegallery.min.js',
     'themes/ug-theme-tilesgrid.js',
@@ -278,9 +257,6 @@ $parameters['['/]'scripts'[']'/] = array(
 [/if]
 [if (page.hasSliderUnits())]
     '[page.partOf.javascriptImageFilename()/]',
-[/if]
-[if (page.partOf.responsiveTopMenu)]
-    'js/responsive-nav.min.js',
 [/if]
 );
 [/template]

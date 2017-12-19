@@ -32,6 +32,10 @@
 [if (not model.textEditorURL.oclIsUndefined())]
  <script src="[model.textEditorURL/]"></script>
 [/if]
+[if (model.responsiveTopMenu)]
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/js/materialize.min.js"></script>
+[comment <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+/][/if]
 {% if scripts is defined %}
 {% for script in scripts  %}
 {% if script is iterable %}
@@ -42,7 +46,7 @@
 {% endfor %}
 {% endif %}
 </head>
-<body id="page" class="framed">
+<body>
 <header>
  <h1 id="banner">[model.siteTitle/]</h1>
 </header>
