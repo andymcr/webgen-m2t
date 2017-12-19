@@ -124,21 +124,21 @@
 [/template]
 
 [template private pagination(unit : IndexUnit, selectionAccessor : String)]
-<ul class="unit_control pagination">
+<ul class="unit_control[if (unit.paginationClass <> '')] [unit.paginationClass/][/if]">
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage != 1 %}
- <li><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLabel/]</a></li>
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLinkLabel()/]</a></li>
 	[if (unit.useDisabledPageLinks)]
 {% else %}
- <li class="disabled">[unit.firstPageLabel/]</li>
+ <li class="disabled"><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLinkLabel()/]</a></li>
 	[/if]
 {% endif %}
 [/if]
 {% if currentPage != 1 %}
- <li><a href="[unit.pageHref('currentPage - 1', selectionAccessor)/]">[unit.previousPageLabel/]</a></li>
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage - 1', selectionAccessor)/]">[unit.previousPageLinkLabel()/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
- <li class="disabled">[unit.previousPageLabel/]</li>
+ <li class="disabled">[unit.previousPageLinkLabel()/]</li>
 [/if]
 {% endif %}
 [if (unit.previousNpages > 1 and unit.useDisabledPageLinks)]
@@ -146,29 +146,25 @@
 [/if]
 [if (unit.nextNpages > 1 or unit.previousNpages > 1)]
 {% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
- {% if page == currentPage %}
- <li class="active">{{ page }}</li>
- {% else %}
- <li><a href="[unit.pageHref('page', selectionAccessor)/]">{{ page }}</a></li>
- {% endif %}
+ <li{% if page == currentPage %} class="active disable"[if (unit.paginationElementClass <> '')]{% else %} class="[unit.paginationElementClass/]"[/if]{% endif %}><a href="[unit.pageHref('page', selectionAccessor)/]">{{ page }}</a></li>
 {% endfor %}
 [/if]
 [if (unit.nextNpages > 1 and unit.useDisabledPageLinks)]
 {% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li>&hellip;</li>{% endif %}
 [/if]
 {% if currentPage != pageCount %}
- <li><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLabel/]</a></li>
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLinkLabel()/]</a></li>
 [if (unit.useDisabledPageLinks)]
 {% else %}
- <li class="disabled">[unit.nextPageLabel/]</li>
+ <li class="disabled"><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLinkLabel()/]</a></li>
 [/if]
 {% endif %}
 [if (unit.useFirstLastPageLinks)]
 {% if currentPage != pageCount %}
- <li><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLabel/]</a></li>
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLinkLabel()/]</a></li>
 	[if (unit.useDisabledPageLinks)]
 {% else %}
- <li class="disabled">[unit.lastPageLabel/]</li>
+ <li class="disabled"><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLinkLabel()/]</a></li>
 	[/if]
 {% endif %}
 [/if]
@@ -180,6 +176,21 @@
 , [unit.routingType().routeActualParameters(unit.routingType(), selectionAccessor, unit.hasObjectAccess(), unit)/][/if]})) }}
 [/template]
 
+[template private firstPageLinkLabel(unit : IndexUnit) post(trim())]
+[linkLabel(unit.firstPageLabel, unit.firstPageIconName)/]
+[/template]
+
+[template private previousPageLinkLabel(unit : IndexUnit) post(trim())]
+[linkLabel(unit.previousPageLabel, unit.previousPageIconName)/]
+[/template]
+
+[template private nextPageLinkLabel(unit : IndexUnit) post(trim())]
+[linkLabel(unit.nextPageLabel, unit.nextPageIconName)/]
+[/template]
+
+[template private lastPageLinkLabel(unit : IndexUnit) post(trim())]
+[linkLabel(unit.lastPageLabel, unit.lastPageIconName)/]
+[/template]
 
 [template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]

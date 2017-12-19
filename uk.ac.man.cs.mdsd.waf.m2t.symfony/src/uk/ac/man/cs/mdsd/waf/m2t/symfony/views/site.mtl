@@ -20,12 +20,6 @@
  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/css/materialize.min.css" media="screen"/>
  <meta name="viewport" content="width=device-width, initial-scale=1">
 [/if]
-[comment
- <link rel="stylesheet" type="text/css" href="{{ asset('css/default.css') }}"/>
- <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}"/>
- <link rel="stylesheet" type="text/css" media="not print" href="{{ asset('css/non-print.css') }}"/>
- <link rel="stylesheet" type="text/css" media="print" href="{{ asset('css/print.css') }}"/>
-/]
 {% if styles is defined %}
 {% for style in styles  %}
 {% if style starts with 'http' %}
@@ -52,22 +46,30 @@
 <header>
  <h1 id="banner">[model.siteTitle/]</h1>
 </header>
+<nav class="nav-extended">
 {% block topbar %}
 {{ include('Menu/topbar[model.htmlExtension()/][model.twigExtension()/]') }}
 {% endblock %}
 {% block sidebar %}
-<section  class="menu" id="sidebar">
-</section>
+ <div class="nav-content" id="sidemenu">
+ </div>
 {% endblock %}
+</nav>
 <main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
  <div class="container">
 {% block content %}
 {% endblock %}
  </div>
 </main>
-<div class="clear"></div>
-<footer>
- <p>[model.copyrightText/]</p>
+<footer class="page-footer">
+ <div class="container">
+  <p>&nbsp;</p>
+ </div>
+ <div class="footer-copyright">
+  <div class="container">
+   <p>[model.copyrightText/]</p>
+  </div>
+ </div>
 </footer>
 </body>
 </html>

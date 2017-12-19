@@ -95,6 +95,15 @@ NULL
 [/template]
 
 
+[template public linkLabel(label : String, iconName : String) post(trim())]
+[if (iconName = '')]
+[label/]
+[else]
+<i class="material-icons">[iconName/]</i>
+[/if]
+[/template]
+
+
 [template public actionLink(action : InlineAction, entity : EntityOrView, unit : ContentUnit, routeParametersAccessor : String, label : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let delete : DeleteAction = action.oclAsType(DeleteAction)]

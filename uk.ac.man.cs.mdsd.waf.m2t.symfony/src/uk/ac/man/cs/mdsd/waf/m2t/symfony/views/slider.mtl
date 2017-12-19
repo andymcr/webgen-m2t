@@ -179,10 +179,13 @@ blueimp.Gallery(
 {% endfor %}
 [/let]
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     $('.carousel').carousel();
 });
-</script>
+autoplay()   
+function autoplay() {
+    $('.carousel').carousel('next');
+    setTimeout(autoplay, 4500);
+}</script>
 [/template]
