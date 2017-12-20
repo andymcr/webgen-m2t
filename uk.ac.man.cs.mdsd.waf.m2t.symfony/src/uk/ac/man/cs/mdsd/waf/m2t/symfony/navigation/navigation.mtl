@@ -1,0 +1,83 @@
+[comment encoding = UTF-8 /]
+[module navigation(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public menu(model : WafModel)]
+[file(model.menuDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+{% extends 'site.html.twig' %}
+
+{% block navigation %}
+[if (model.isAuthenticated())]
+[model.userDropdown()/]
+[/if]
+<nav class="nav-extended">
+ <div class="nav-wrapper">
+  <!-- a href="#" class="brand-logo left">Logo</a -->
+  <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  <ul id="nav-top" class="right hide-on-med-and-down">
+   [model.menuListItems()/]
+{% if app.user %}
+   <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}</a></li>
+{% elseif not app.user %}
+   <li><a class="dropdown-trigger" href="#!" data-target="user">[authentication.loginLabel/]</a></li>
+{% endif %}
+  </ul>
+  <ul class="sidenav" id="nav-mobile">
+   [model.menuListItems()/]
+  </ul>
+ </div>
+{% block sidebar %}
+ <div class="nav-content" id="sidemenu">
+ </div>
+{% endblock %}
+</nav>
+{% endblock %}
+[/file]
+[/template]
+
+[template private menuListItems(model : WafModel) post(trim())]
+[for (page : Page | model.topMenuItems())]
+	[if (page.topMenuRequiresRole <> '')]
+{% if is_granted('[page.topMenuRequiresRole/]') %}[/if]
+<li{% if app.request.attributes.get('_route') == '[page.routeName()/]' %} class="active"{% endif %}><a href="{{ path('[page.routeName()/]') }}">{{ 'top.labels.[page.id()/]' | trans }}</a></li>[if (page.topMenuRequiresRole <> '')]
+{% endif %}[/if]
+
+[/for]
+[/template]
+
+[template private userDropdown(model : WafModel) post(trim())]
+<ul id="user" class="dropdown-content">
+	[if (model.isLocallyAuthenticated())]
+  [model.localAuthentication().userDropdown()/]
+	[elseif (model.isCasAuthenticated())]
+  [model.casAuthentication().userDropdown()/]
+	[/if]
+</ul>
+[/template]
+
+[template private userDropdown(authentication : LocalAuthenticationSystem) post(trim())]
+{% if app.user %}
+<li><a href="{{ path('fos_user_profile_show') }}" title="User profile">Profile</a></li>
+<li><a href="{{ path('fos_user_change_password') }}" title="Change password">Password</a></li>
+<li><a href="{{ path('fos_user_security_logout') }}" title="logout">[authentication.logoutLabel/]</a></li>
+{% elseif not app.user %}
+<li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
+[if (authentication.allowSelfRegistration)]
+<li><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
+[/if]
+{% endif %}
+[/template]
+
+[template private userDropdown(authentication : CasAuthentication) post(trim())]
+{% if app.user %}
+  <li>{{ app.user.username }}&nbsp;<a href="{{ path('fos_user_security_logout') }}">[authentication.logoutLabel/]</a></li>
+{% elseif not app.user %}
+  <li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
+{% endif %}
+[/template]
