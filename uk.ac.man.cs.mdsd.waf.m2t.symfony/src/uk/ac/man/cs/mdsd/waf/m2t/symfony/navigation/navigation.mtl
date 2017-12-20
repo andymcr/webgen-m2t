@@ -11,6 +11,7 @@
 [template public menu(model : WafModel)]
 [file(model.menuDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 {% extends 'site.html.twig' %}
+{% trans_default_domain "navigation" %}
 
 {% block navigation %}
 [if (model.isAuthenticated())]
@@ -37,6 +38,12 @@
  </div>
 {% endblock %}
 </nav>
+[if (model.isAuthenticated())]
+<script>
+var elem = document.querySelector('.dropdown-trigger');
+var instance = new M.Dropdown(elem, {});
+</script>
+[/if]
 {% endblock %}
 [/file]
 [/template]
