@@ -50,15 +50,10 @@
 <header>
  <h1 id="banner">[model.siteTitle/]</h1>
 </header>
-<nav class="nav-extended">
-{% block topbar %}
-{{ include('Menu/topbar[model.htmlExtension()/][model.twigExtension()/]') }}
-{% endblock %}
-{% block sidebar %}
- <div class="nav-content" id="sidemenu">
- </div>
-{% endblock %}
+{% block navigation %}
+<nav>
 </nav>
+{% endblock %}
 <main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
  <div class="container">
 {% block content %}

@@ -8,7 +8,7 @@
 
 [template public page(page : Page)]
 [file(page.pageViewDirectory().concat('/page').concat(page.htmlExtension()).concat(page.twigExtension()), false)]
-{% extends 'site.html.twig' %}
+{% extends 'Menu/navigation.html.twig' %}
 
 [if (not page.sideMenu.oclIsUndefined())]
 {% block sidebar %}
