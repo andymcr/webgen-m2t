@@ -211,6 +211,6 @@ oci8[/if]
 [template private config(filter : ImageFilter)
 	? (filter.oclIsTypeOf(ThumbnailFilter)) post(trim())]
 [let thumbnailFilter : ThumbnailFilter = filter.oclAsType(ThumbnailFilter)]
-thumbnail: { size: ['['/][thumbnailFilter.width/], [thumbnailFilter.height/][']'/], mode: outbound }
+thumbnail: { size: ['['/][thumbnailFilter.width/], [thumbnailFilter.height/][']'/], mode: [if (thumbnailFilter.mode = ThumbnailModes::Crop)]outbound[else]inset[/if] }
 [/let]
 [/template]
