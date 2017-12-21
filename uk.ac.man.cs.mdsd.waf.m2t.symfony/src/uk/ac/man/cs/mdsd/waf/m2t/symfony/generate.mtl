@@ -29,6 +29,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::form/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::models::unit/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::navigation::navigation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::navigation::sidemenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::casAuthenticationModel/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::changePasswordForm/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::config/]
@@ -50,11 +52,9 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::imageIndex/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::input/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::page/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::sidemenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::site/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::slider/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::staticView/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::topmenu/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form::form/]
 
 
@@ -87,7 +87,7 @@
 [/if]
 
 [model.css(model.cssDirectory())/]
-[model.generateMenu()/]
+[model.menu()/]
 [model.globalMenus.menu()/]
 [model.dynamicMenus.menu()/]
 [model.generatePage()/]
