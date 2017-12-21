@@ -101,7 +101,7 @@
 	= if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).contentType
 		else if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).contentType->first()
+			unit.oclAsType(CollectionUnit).contentType()
 		else
 			null
 		endif endif

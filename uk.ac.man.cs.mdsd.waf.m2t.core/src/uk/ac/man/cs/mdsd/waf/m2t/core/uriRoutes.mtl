@@ -110,12 +110,6 @@
 			else
 				null
 			endif
-		else if unit.oclIsKindOf(ImageUnit) then
-			if unit.oclAsType(ImageUnit).defaultSelection.oclIsUndefined() then
-				unit.contentType
-			else
-				null
-			endif
 		else if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) and forCommonKeys then
 			let editUnit : EditUnit = unit.oclAsType(EditUnit)
 				in if editUnit.contentType.parentEntity().oclIsUndefined() then
@@ -125,7 +119,7 @@
 					endif
 		else
 			unit.contentType
-		endif endif endif
+		endif endif
 /]
 
 [query public uriPathKeys(unit : ContentUnit) : Sequence(Attribute)
