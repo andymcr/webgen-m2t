@@ -482,7 +482,7 @@ $queryBuilder = $this->createQueryBuilder();
 [if (selection.fields->notEmpty())]
 [selection.fields()/]
 [/if]
-[if (selection.joins->notEmpty() or selection.selectPath->notEmpty())]
+[if (selection.selectPath->notEmpty() or selection.joins->notEmpty())]
 [selection.joins()/]
 [/if]
 [if (selection.selectPath->notEmpty() or not selection.condition.oclIsUndefined())]
@@ -518,29 +518,39 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
  [alias/][/if]'
 [/template]
 
-[query private entities(selection : Selection) : Set(EntityOrView)
-	= selection.joins->collect(a | a.targetType())->asSet()
+[query private pathEntities(selection : Selection) : Set(EntityOrView)
+	= selection.selectPath->collect(p | p.targetType())->asSet()
+/]
+
+[query private containsEntities(selection : Selection) : Set(EntityOrView)
+	= selection.selectPath->collect(p | p.targetType())->asSet()
 /]
 
 [template private joins(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty())]
 	[for (element : EntityAssociation | selection.selectPath)]
-		[if (selection.entities()->excludes(element.targetType()))]
 $queryBuilder->join('[element.sourceType().selectName()/].[element.modelPropertyName()/]', '[element.targetType().selectName()/]');
-		[/if]
 	[/for]
-[if (selection.selectionType().isContained())]
-[selection.joinContainer(selection.selectionType())/]
 [/if]
+[if (not selection.selectionType().oclIsUndefined())]
+	[if (selection.selectionType().isContained())]
+[selection.joinContainer(selection.selectionType())/]
+	[/if]
 [/if]
 [for (join : Association | selection.joins)]
+	[if (selection.pathEntities()->excludes(join.targetType()))]
 $queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
+	[/if]
 [/for]
 [/template]
 
+[query private entitiesX(selection : Selection) : Set(EntityOrView)
+	= selection.joins->collect(a | a.targetType())->asSet()
+/]
+
 [template private joinContainer(selection : Selection, childType : EntityOrView) post(trim())]
 [let association : Association = childType.containingAssociation()]
-	[if (selection.entities()->union(Set{selection.partOf.serves})->excludes(association.targetType()))]
+	[if (selection.pathEntities()->excludes(association.targetType()))]
 $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/]', '[association.targetType().selectName()/]');
 	[/if]
 [if (association.targetType().isContained())]
