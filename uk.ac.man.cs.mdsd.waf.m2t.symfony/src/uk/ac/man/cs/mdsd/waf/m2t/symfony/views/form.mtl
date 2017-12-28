@@ -28,7 +28,6 @@
 [/template]
 
 [template private formOpen(unit : DynamicUnit, accessor : String) post(trim())]
-{% form_theme [accessor/] 'form/messages_on_fields.html.twig' %}
 {{ form_start([accessor/][if (not unit.contentClass.oclIsUndefined())], { 'attr': {'class': '[unit.contentClass/]'} }[/if]) }}
  {{ form_errors([accessor/]) }}
 [/template]
@@ -47,21 +46,18 @@
 
 [template private formControlAndClose(unit : DynamicUnit, accessor : String) post(trim())]
  <div class="[unit.controlClass/]">
-  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable(accessor)/][if (unit.hasJQueryClasses())]
- class="[unit.jQueryClass()/]"[/if]/>
+  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable(accessor)/]/>
 [if (unit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
 	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
 		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
-  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable(accessor)/][if (unit.hasJQueryClasses())]
- class="[unit.jQueryClass()/]"[/if]/>
+  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable(accessor)/]/>
 		[/if]
 	[/let]
 	[/if]
 	[if (not editUnit.cancelDestination.oclIsUndefined())]
-  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable(accessor)/][if (unit.hasJQueryClasses())]
- class="[unit.jQueryClass()/]"[/if]/>
+  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable(accessor)/]/>
 	[/if]
 [/let]
 [/if]
@@ -119,7 +115,7 @@
 [if (field.disableInput)]
  'disabled': 'disabled'[if (field.hasClass())],[/if][/if]
 [if (field.hasClass())]
- 'class': '[if (field.hasJQueryClasses())][field.jQueryClass()/][if (not field.inputClass().oclIsUndefined())] [/if][/if][field.inputClass()/]'[/if]
+ 'class': '[field.inputClass()/]'[/if]
  }[if (field.hasUnitTranslation())], [/if][/if]
 [if (field.hasUnitTranslation())]
 'translation_domain': '[unit.translationDomain()/]'[/if]}[/if]) }}
@@ -179,10 +175,6 @@
 [if (field.hasUnitTranslation())]
 '[unit.containedId()/].titles.[field.id()/]'[else]
 '[unit.contentType().id()/].labels.[field.id()/]'[/if]
-[/template]
-
-[template public jQueryClass(eObject : EObject) post(trim())]
-ui-corner-all ui-widget ui-widget-content
 [/template]
 
 [template public map(unit : DynamicUnit)]
@@ -260,7 +252,7 @@ function initialize() {
 		var place = autocomplete.getPlace();
 		if (place.geometry) {
 			var contentString = $('<div class="marker-info-win">' +
-				'<h2 class="place-name">' + place.name + '</h2>' +
+				'<h4 class="place-name">' + place.name + '</h4>' +
 				'<p class="place-address">' + place.formatted_address + '</p>' +
 				'<?php
 					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(

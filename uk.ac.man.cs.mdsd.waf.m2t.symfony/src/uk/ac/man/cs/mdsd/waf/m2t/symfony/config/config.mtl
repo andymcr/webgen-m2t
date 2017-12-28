@@ -166,6 +166,8 @@ liip_imagine:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'form/materialize.html.twig'
     globals:
 [for (service : Service | model.business.services)]
         [service.className().toLowerFirst()/]: "@[service.serviceName()/]"
