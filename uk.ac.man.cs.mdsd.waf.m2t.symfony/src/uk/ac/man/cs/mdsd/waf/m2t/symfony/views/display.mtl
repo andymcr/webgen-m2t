@@ -31,12 +31,7 @@
 [file(dataUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section class="[dataUnit.styleClass/]{%if [dataUnit.errorName()/] is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
- <h2 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle()/]</h2>
- <section class="[dataUnit.errorClass/]{% if not [dataUnit.errorName()/] is defined %} hidden{% endif %}">
-{% if [dataUnit.errorName()/] is defined %}
-   <p class="[dataUnit.errorClass/]">{{ [dataUnit.errorName()/] }}</p>
-{% endif %}
- </section>
+ <h4 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle()/]</h4>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.unitContent(null, accessor, 0)/]
 	[if (dataUnit.hasUnitSupportActions())]
@@ -112,13 +107,11 @@
 [unit.routingType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit)/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
- placeholder="[parameter.placeholder/]"[/if][if (unit.hasJQueryClasses())]
- class="[filter.jQueryClass()/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
+ placeholder="[parameter.placeholder/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
  required="required"[/if]
  value="{{ app.request.query.get('[parameter.name/]') }}"/>
 [/for]
-  <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"[if (unit.hasJQueryClasses())]
- class="[filter.jQueryClass()/]"[/if]/>
+  <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"/>
  </form>
 </div>
 [/template]
@@ -258,7 +251,7 @@
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
+   <h4 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h4>
 [/if]
    [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
 [if (indexUnit.hasInlineActions())]
@@ -305,7 +298,7 @@
  <li>
 [if (not indexUnit.omitCaption)]
   <section>
-   <h2 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h2>
+   <h4 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h4>
 [/if]
   [unit.detailsContent(loopVariable, depthIndex)/]
 [if (indexUnit.hasInlineActions())]
