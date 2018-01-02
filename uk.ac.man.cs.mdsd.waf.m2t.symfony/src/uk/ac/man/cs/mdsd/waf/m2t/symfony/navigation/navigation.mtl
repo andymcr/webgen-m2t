@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::image/]
 
 
 [template public menu(model : WafModel)]
@@ -19,8 +20,10 @@
 [/if]
 <nav class="nav-extended">
  <div class="nav-wrapper">
-  <!-- a href="#" class="brand-logo left">Logo</a -->
-  <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+[if (not model.logoImage.oclIsUndefined())]
+  <a href="#!" class="brand-logo left">[model.image(false)/]</a>
+[/if]
+  <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
   <ul id="nav-top" class="right hide-on-med-and-down">
    [model.menuListItems()/]
 {% if app.user %}
@@ -29,7 +32,7 @@
    <li><a class="dropdown-trigger" href="#!" data-target="user">[authentication.loginLabel/]</a></li>
 {% endif %}
   </ul>
-  <ul class="sidenav" id="nav-mobile">
+  <ul id="slide-out" class="sidenav">
    [model.menuListItems()/]
   </ul>
  </div>
@@ -40,8 +43,12 @@
 </nav>
 [if (model.isAuthenticated())]
 <script>
-var elem = document.querySelector('.dropdown-trigger');
-var instance = new M.Dropdown(elem, {});
+var sidenav = document.querySelector('.sidenav');
+var instance = new M.Sidenav(sidenav);
+[if (model.isAuthenticated())]
+var authDropdownTrigger = document.querySelector('.dropdown-trigger');
+var instance = new M.Dropdown(authDropdownTrigger);
+[/if]
 </script>
 [/if]
 {% endblock %}
