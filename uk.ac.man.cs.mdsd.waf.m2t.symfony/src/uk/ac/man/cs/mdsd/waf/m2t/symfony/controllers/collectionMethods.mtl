@@ -86,15 +86,12 @@ Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
 [if (unit.selection.selectPath->notEmpty())]
-[unit.routingParameters()/][if (unit.hasPagination())]
-, [/if][/if]
-[unit.paginationActuals()/]
+[unit.routingParameters()/][if (unit.hasPagination())], [/if][/if][unit.paginationActuals()/]
 [/template]
 
 [template private routingParameters(unit : CollectionUnit) post(trim())]
 [if (not unit.routingType().oclIsUndefined())]
-	[for (key : Attribute | unit.routingType().uriPathKeys()) separator(', ')]
-$[key.routeParameterName(unit.routingType())/][/for]
+	[unit.routingType().findActualParameters(unit.oclAsType(DynamicUnit))/]
 [/if]
 [/template]
 

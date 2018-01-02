@@ -222,20 +222,13 @@ $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id
 [if (page.useInputJQuery() or page.hasImageUnits())]
 [page.templateStyleParameters()/]
 [/if]
-[if (page.hasJavascript() or page.useInputJQuery())]
+[if (page.hasJavascript())]
 [page.templateScriptParameters()/]
 [/if]
 [/template]
 
 [template private templateStyleParameters(page : Page) post(trim())]
 $parameters['['/]'styles'[']'/] = array(
-	[if (page.useInputJQuery())]
-    'https://code.jquery.com/ui/1.12.0/themes/cupertino/jquery-ui.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css',
-		[if (page.formUnits()->collect(u | u.displayFields)->select(f | f.isDate())->notEmpty())]
-    'css/wickedpicker.css',
-		[/if]
-	[/if]
 	[if (page.hasSliderUnits())]
     'css/blueimp-gallery.min.css',
 	[/if]
