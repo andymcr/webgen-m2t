@@ -15,11 +15,9 @@
  <meta name="description" content="[model.metaDescription/]">
 [/if]
  <title>[model.siteTitle/]{% if title is defined %}: {{ title }}{% endif %}</title>
-[if (model.responsiveTopMenu)]
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/css/materialize.min.css" media="screen"/>
  <meta name="viewport" content="width=device-width, initial-scale=1">
-[/if]
 {% if styles is defined %}
 {% for style in styles  %}
 {% if style starts with 'http' %}
@@ -32,10 +30,7 @@
 [if (not model.textEditorURL.oclIsUndefined())]
  <script src="[model.textEditorURL/]"></script>
 [/if]
-[if (model.responsiveTopMenu)]
  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/js/materialize.min.js"></script>
-[comment <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-/][/if]
 {% if scripts is defined %}
 {% for script in scripts  %}
 {% if script is iterable %}
@@ -47,9 +42,6 @@
 {% endif %}
 </head>
 <body>
-<header>
- <h1 id="banner">[model.siteTitle/]</h1>
-</header>
 {% block navigation %}
 <nav>
 </nav>
