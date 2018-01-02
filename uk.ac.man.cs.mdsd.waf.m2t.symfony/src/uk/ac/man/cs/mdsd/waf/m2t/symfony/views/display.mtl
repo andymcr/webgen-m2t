@@ -30,7 +30,7 @@
 [let accessor : String = dataUnit.instanceName()]
 [file(dataUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section class="[dataUnit.styleClass/]{%if [dataUnit.errorName()/] is defined %} [dataUnit.errorClass/]{% endif %}" id="[dataUnit.instanceName()/]">
+<section class="[dataUnit.styleClass/]" id="[dataUnit.instanceName()/]">
  <h4 class="[dataUnit.captionClass/][if (dataUnit.omitCaption)] hidden[/if]">[dataUnit.unitTitle()/]</h4>
 [if (not dataUnit.oclIsKindOf(IndexUnit))]
  [dataUnit.unitContent(null, accessor, 0)/]
