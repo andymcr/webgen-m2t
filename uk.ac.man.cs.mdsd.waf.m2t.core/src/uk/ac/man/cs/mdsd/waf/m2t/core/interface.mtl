@@ -269,7 +269,7 @@
 /]
 
 [query public hasClass(field : UnitField) : Boolean
-	= not field.inputClass().oclIsUndefined() or field.hasJQueryClasses()
+	= not field.inputClass().oclIsUndefined()
 /]
 
 [query public hasJQueryClasses(field : UnitField) : Boolean
