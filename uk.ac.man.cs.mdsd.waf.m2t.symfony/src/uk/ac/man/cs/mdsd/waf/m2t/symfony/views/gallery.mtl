@@ -15,7 +15,7 @@
 [file(unit.viewFilename(), false)]
 <section class="[unit.styleClass/]" id="[unit.instanceName()/]">
 [if (not unit.omitCaption)]
- <h2 class="[unit.captionClass/]">[unit.displayLabel/]</h2>
+ <h4 class="[unit.captionClass/]">[unit.displayLabel/]</h4>
 [/if]
  [unit.unitContent(null, unit.instanceName(), 0)/]
 </section>

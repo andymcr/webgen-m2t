@@ -15,7 +15,7 @@
 [file(sliderUnit.viewFilename(), false)]
 <section class="[sliderUnit.styleClass/]" id="[sliderUnit.instanceName()/]">
 [if (not sliderUnit.omitCaption)]
- <h2 class="[sliderUnit.captionClass/]">[sliderUnit.displayLabel/]</h2>
+ <h4 class="[sliderUnit.captionClass/]">[sliderUnit.displayLabel/]</h4>
 [/if]
  [sliderUnit.materializeCSS()/]
 </section>
