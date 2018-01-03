@@ -155,8 +155,39 @@
 	= 'Controller'
 /]
 
+
 [query public instanceName(menu : Menu) : String
 	= menu.name.toLowerFirst()
+/]
+
+
+[query public routeName(entry : MenuEntry) : String
+	= if entry.oclIsTypeOf(SubmenuEntry) then
+			let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)
+				in if submenu.submenu.oclIsUndefined() then
+						'Unknown'
+					else
+						let subitems : Sequence(ActionMenuEntry)
+							= submenu.submenu.entries
+								->select(e | e.oclIsTypeOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+							in if subitems->isEmpty() then
+									'Unknown'
+								else
+									subitems->first().routeName()
+								endif
+					endif
+		else if entry.oclIsTypeOf(ActionMenuEntry) then
+			let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)
+				in if action.action.oclIsUndefined() then
+						'Unknown'
+					else
+						action.action.routeName()
+					endif
+		else if entry.oclIsTypeOf(EditStaticTextMenuEntry) then
+			null
+		else
+			'Unknown'
+		endif endif endif
 /]
 
 

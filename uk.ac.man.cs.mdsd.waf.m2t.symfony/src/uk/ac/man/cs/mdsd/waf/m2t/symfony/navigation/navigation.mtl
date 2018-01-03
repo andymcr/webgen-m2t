@@ -27,7 +27,7 @@
   <ul id="nav-top" class="right hide-on-med-and-down">
    [model.menuListItems()/]
 {% if app.user %}
-   <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}</a></li>
+   <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
 {% elseif not app.user %}
    <li><a class="dropdown-trigger" href="#!" data-target="user">[authentication.loginLabel/]</a></li>
 {% endif %}
@@ -53,16 +53,6 @@ var instance = new M.Dropdown(authDropdownTrigger);
 [/if]
 {% endblock %}
 [/file]
-[/template]
-
-[template private menuListItems(model : WafModel) post(trim())]
-[for (page : Page | model.topMenuItems())]
-	[if (page.topMenuRequiresRole <> '')]
-{% if is_granted('[page.topMenuRequiresRole/]') %}[/if]
-<li{% if app.request.attributes.get('_route') == '[page.routeName()/]' %} class="active"{% endif %}><a href="{{ path('[page.routeName()/]') }}">{{ 'top.labels.[page.id()/]' | trans }}</a></li>[if (page.topMenuRequiresRole <> '')]
-{% endif %}[/if]
-
-[/for]
 [/template]
 
 [template private userDropdown(model : WafModel) post(trim())]
@@ -94,4 +84,40 @@ var instance = new M.Dropdown(authDropdownTrigger);
 {% elseif not app.user %}
   <li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
 {% endif %}
+[/template]
+
+
+[template private menuListItems(model : WafModel) post(trim())]
+[for (entry : MenuEntry | model.globalMenus->first().entries)]
+	[if (entry.requiresRole <> '')]
+{% if is_granted('[entry.requiresRole/]') %}[/if]
+<li{% if app.request.attributes.get('_route') == '[entry.routeName()/]' %} class="active"{% endif %}>[entry.entry()/]</li>[if (entry.requiresRole <> '')]
+{% endif %}[/if]
+
+[/for]
+[/template]
+
+
+[template private entry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
+[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
+[if (submenu.submenu.oclIsUndefined())]
+<span><{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}/span>
+[else]
+<a href="{{ path('[submenu.routeName()/]') }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>
+[/if]
+[/let]
+[/template]
+
+[template private entry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[if (action.action.oclIsUndefined())]
+<span>{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</span>
+[else]
+<a href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
+, {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a>
+[/if]
+[/let]
 [/template]

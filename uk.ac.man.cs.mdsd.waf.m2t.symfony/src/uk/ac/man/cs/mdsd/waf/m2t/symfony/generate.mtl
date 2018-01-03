@@ -55,7 +55,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::site/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::slider/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::staticView/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form::form/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form::materialize/]
 
 
 [template public symfony(model : WafModel)]
@@ -88,16 +88,12 @@
 
 [model.css(model.cssDirectory())/]
 [model.menu()/]
-[model.globalMenus.menu()/]
-[model.dynamicMenus.menu()/]
+[model.contextMenus()/]
 [model.generatePage()/]
 [model.pages->select(p | p.units->notEmpty()).page()/]
 [model.pages.units.unitView()/]
 [model.formViews()/]
 
-[if (model.hasJQueryClasses())]
-[model.javascriptForm()/]
-[/if]
 [if (model.pages->select(p | p.hasJavascript())->notEmpty())]
 [model.javascriptImage()/]
 [/if]

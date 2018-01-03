@@ -14,31 +14,17 @@
 	= model.pages->select(p | p.hasJavascript())->notEmpty()
 /]
 
-[query public hasJQueryClasses(model : WafModel) : Boolean
-	= model.inputTechnology <> InputTechnologies::Html
-/]
-
 [query public homePage(model : WafModel) : Page
-	= let topPage : Page
-			= if model.topMenuItems()->notEmpty() then
-					model.topMenuItems()->first()
-				else
-					null
-				endif
-		in if not topPage.oclIsUndefined() then
-			topPage
-		else
-			if model.pages->notEmpty() then
-				model.pages->first()
+	= let homes : Sequence(ActionMenuEntry)
+		= model.globalMenus
+			->collect(m | m.entries)
+			->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+			->select(e | e.name.equalsIgnoreCase('Home'))
+		in if homes->notEmpty() then
+				homes->first().action.pageDisplayedOn()
 			else
-				null
-		endif endif
-/]
-
-[query public topMenuItems(model : WafModel) : Sequence(Page)
-	= model.pages
-		->select(p | p.topMenuOption <> PageTopMenuOptions::NeverInclude)
-		->sortedBy(p | p.topMenuRank).oclAsType(Page)
+				model.pages->first()
+			endif
 /]
 
 
@@ -51,27 +37,20 @@
 	= feature.name.asId()
 /]
 
-[query public usesInputJQuery(feature : Feature) : Boolean
-	= not (feature.isDataType() or feature.isUrl() or feature.isResource())
-		or feature.isBooleanDataType()
-		or feature.isEnumerationType()
-		or feature.isIntegerDataType()
-		or not feature.isSingleton()
-/]
-
-
 [query public id(menu : Menu) : String
 	= menu.name.asId()
 /]
 
 [query public id(menuEntry : MenuEntry) : String
-	= if menuEntry.oclIsKindOf(ActionMenuEntry) then
+	= if menuEntry.oclIsTypeOf(SubmenuEntry) then
+			menuEntry.oclAsType(SubmenuEntry).name.asId()
+		else if menuEntry.oclIsTypeOf(ActionMenuEntry) then
 			menuEntry.oclAsType(ActionMenuEntry).name.asId()
-		else if menuEntry.oclIsKindOf(EditStaticTextMenuEntry) then
+		else if menuEntry.oclIsTypeOf(EditStaticTextMenuEntry) then
 			menuEntry.oclAsType(EditStaticTextMenuEntry).name.asId()
 		else
 			'Unhandled'
-		endif endif
+		endif endif endif
 /]
 
 
@@ -80,21 +59,8 @@
 		or page.hasSliderUnits()
 /]
 
-[query public hasJQueryClasses(page : Page) : Boolean
-	= page.partOf.hasJQueryClasses()
-/]
-
 [query public id(page : Page) : String
 	= page.name.asId()
-/]
-
-[query public useInputJQuery(page : Page) : Boolean
-	= (page.hasFormUnits()
-			or page.units
-				->select(u | u.oclIsKindOf(CollectionUnit)).oclAsType(CollectionUnit)
-				->select(u | u.supportedFilters->notEmpty())
-				->notEmpty())
-		and page.partOf.hasJQueryClasses()
 /]
 
 
@@ -132,10 +98,6 @@
 		else
 			false
 		endif
-/]
-
-[query public hasJQueryClasses(unit : DynamicUnit) : Boolean
-	= unit.pageDisplayedOn().hasJQueryClasses()
 /]
 
 [query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
@@ -270,15 +232,6 @@
 
 [query public hasClass(field : UnitField) : Boolean
 	= not field.inputClass().oclIsUndefined()
-/]
-
-[query public hasJQueryClasses(field : UnitField) : Boolean
-	= if field.isDataType() then
-			field.dataType().name <> 'Integer'
-		else
-			field.isDate() or field.isResource() or field.isUrl()
-		endif
-			and field.displayedOn.hasJQueryClasses()
 /]
 
 [query public hasPlaceholder(field : UnitField) : Boolean
