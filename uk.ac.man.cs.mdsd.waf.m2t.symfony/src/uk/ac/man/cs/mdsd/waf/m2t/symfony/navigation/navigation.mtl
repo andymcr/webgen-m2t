@@ -36,7 +36,7 @@
    [model.menuListItems()/]
   </ul>
  </div>
-{% block sidebar %}
+{% block contextmenu %}
  <div class="nav-content" id="sidemenu">
  </div>
 {% endblock %}
