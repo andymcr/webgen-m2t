@@ -23,24 +23,16 @@
 /]
 
 
-[query public applicationDirectory(eObject : EObject) : String
-	= 'app'
-/]
-
-[query public appBundleDirectory(eObject : EObject) : String
-	= eObject.sourceDirectory().concat('/').concat('AppBundle')
-/]
-
 [query public apiControllersDirectory(eObject : EObject) : String
 	= eObject.controllersDirectory().concat('/').concat('Api')
 /]
 
 [query public configDirectory(eObject : EObject) : String
-	= eObject.applicationDirectory().concat('/').concat('config')
+	= 'config'
 /]
 
 [query public controllersDirectory(eObject : EObject) : String
-	= eObject.appBundleDirectory().concat('/').concat('Controller')
+	= eObject.sourceDirectory().concat('/').concat('Controller')
 /]
 
 [query public cssDirectory(eObject : EObject) : String
@@ -52,11 +44,11 @@
 /]
 
 [query public extensionsDirectory(eObject : EObject) : String
-	= eObject.appBundleDirectory().concat('/').concat('Extensions')
+	= eObject.sourceDirectory().concat('/').concat('Extensions')
 /]
 
 [query public formDirectory(eObject : EObject) : String
-	= eObject.appBundleDirectory().concat('/').concat('Form')
+	= eObject.sourceDirectory().concat('/').concat('Form')
 /]
 
 [query public formTypeDirectory(eObject : EObject) : String
@@ -64,7 +56,7 @@
 /]
 
 [query public formViewDirectory(eObject : EObject) : String
-	= eObject.viewsDirectory().concat('/').concat('form')
+	= eObject.templatesDirectory().concat('/').concat('form')
 /]
 
 [query public javascriptDirectory(eObject : EObject) : String
@@ -72,27 +64,23 @@
 /]
 
 [query public menuDirectory(eObject : EObject) : String
-	= eObject.viewsDirectory().concat('/').concat('Menu')
+	= eObject.templatesDirectory().concat('/').concat('Menu')
 /]
 
 [query public modelsDirectory(eObject : EObject) : String
-	= eObject.appBundleDirectory().concat('/').concat('Entity')
+	= eObject.sourceDirectory().concat('/').concat('Entity')
 /]
 
 [query public pageViewDirectory(page : Page) : String
-	= page.viewsDirectory().concat('/').concat(page.name)
-/]
-
-[query public resourcesDirectory(eObject : EObject) : String
-	= eObject.applicationDirectory().concat('/').concat('Resources')
+	= page.templatesDirectory().concat('/').concat(page.name)
 /]
 
 [query public securityDirectory(eObject : EObject) : String
-	= eObject.appBundleDirectory().concat('/').concat('Security')
+	= eObject.sourceDirectory().concat('/').concat('Security')
 /]
 
 [query public servicesDirectory(eObject : EObject) : String
-	= eObject.appBundleDirectory().concat('/').concat('Service')
+	= eObject.sourceDirectory().concat('/').concat('Service')
 /]
 
 [query public sourceDirectory(eObject : EObject) : String
@@ -100,15 +88,15 @@
 /]
 
 [query public transDirectory(eObject : EObject) : String
-	= eObject.resourcesDirectory().concat('/').concat('translations')
+	= 'translations'
 /]
 
 [query public twigExtensionsDirectory(eObject : EObject) : String
 	= eObject.extensionsDirectory().concat('/').concat('Twig')
 /]
 
-[query public viewsDirectory(eObject : EObject) : String
-	= eObject.resourcesDirectory().concat('/').concat('views')
+[query public templatesDirectory(eObject : EObject) : String
+	= 'templates'
 /]
 
 [query public webControllersDirectory(eObject : EObject) : String
@@ -128,7 +116,7 @@
 /]
 
 [query public fosResourcesDirectory(eObject : EObject) : String
-	= eObject.resourcesDirectory().concat('/').concat(eObject.fosUserBundleName())
+	= eObject.templatesDirectory().concat('/').concat(eObject.fosUserBundleName())
 /]
 
 [query public fosViewsDirectory(eObject : EObject) : String
@@ -148,8 +136,8 @@
 /]
 
 
-[query public appBundleNamespace(eObject : EObject) : String
-	= eObject.appBundleName()
+[query public appNamespace(eObject : EObject) : String
+	= eObject.appName()
 /]
 
 [query public apiControllersNamespace(eObject : EObject) : String
@@ -157,15 +145,19 @@
 /]
 
 [query public controllersNamespace(eObject : EObject) : String
-	= eObject.appBundleNamespace().concat('\\').concat('Controller')
+	= eObject.appNamespace().concat('\\').concat('Controller')
+/]
+
+[query public encoderNamespace(eObject : EObject) : String
+	= eObject.securityNamespace().concat('\\').concat('Encoder')
 /]
 
 [query public extensionsNamespace(eObject : EObject) : String
-	= eObject.appBundleNamespace().concat('\\').concat('Extensions')
+	= eObject.appNamespace().concat('\\').concat('Extensions')
 /]
 
 [query public formNamespace(eObject : EObject) : String
-	= eObject.appBundleNamespace().concat('\\').concat('Form')
+	= eObject.appNamespace().concat('\\').concat('Form')
 /]
 
 [query public formTypeNamespace(eObject : EObject) : String
@@ -173,11 +165,15 @@
 /]
 
 [query public modelsNamespace(eObject : EObject) : String
-	= eObject.appBundleNamespace().concat('\\').concat('Entity')
+	= eObject.appNamespace().concat('\\').concat('Entity')
+/]
+
+[query public securityNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Security')
 /]
 
 [query public servicesNamespace(eObject : EObject) : String
-	= eObject.appBundleNamespace().concat('\\').concat('Service')
+	= eObject.appNamespace().concat('\\').concat('Service')
 /]
 
 [query public twigExtensionsNamespace(eObject : EObject) : String

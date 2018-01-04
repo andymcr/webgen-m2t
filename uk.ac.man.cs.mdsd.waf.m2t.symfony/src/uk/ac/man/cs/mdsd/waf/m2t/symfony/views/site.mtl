@@ -6,7 +6,7 @@
 
 
 [template public generatePage(model : WafModel)]
-[file(model.viewsDirectory().concat('/site').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[file(model.templatesDirectory().concat('/site').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +16,7 @@
 [/if]
  <title>[model.siteTitle/]{% if title is defined %}: {{ title }}{% endif %}</title>
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/css/materialize.min.css" media="screen"/>
+ <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/css/materialize.min.css" media="screen"/>
  <meta name="viewport" content="width=device-width, initial-scale=1">
 {% if styles is defined %}
 {% for style in styles  %}
@@ -30,7 +30,7 @@
 [if (not model.textEditorURL.oclIsUndefined())]
  <script src="[model.textEditorURL/]"></script>
 [/if]
- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.2/js/materialize.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/js/materialize.min.js"></script>
 {% if scripts is defined %}
 {% for script in scripts  %}
 {% if script is iterable %}

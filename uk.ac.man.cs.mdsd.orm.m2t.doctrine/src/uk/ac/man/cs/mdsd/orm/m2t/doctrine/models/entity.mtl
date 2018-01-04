@@ -126,7 +126,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 [/if]
 [if (entity.isContained() and entity.containerUniqueAttributes()->notEmpty())]
-use AppBundle\Validator\Constraints as AppAssert;
+use [entity.validatorNamespace()/]\Constraints as AppAssert;
 [/if]
 [/template]
 

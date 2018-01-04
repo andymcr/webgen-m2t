@@ -44,10 +44,10 @@
 [if (model.isAuthenticated())]
 <script>
 var sidenav = document.querySelector('.sidenav');
-var instance = new M.Sidenav(sidenav);
+var instance = M.Sidenav.init(sidenav);
 [if (model.isAuthenticated())]
 var authDropdownTrigger = document.querySelector('.dropdown-trigger');
-var instance = new M.Dropdown(authDropdownTrigger);
+var instance = M.Dropdown.init(authDropdownTrigger);
 [/if]
 </script>
 [/if]

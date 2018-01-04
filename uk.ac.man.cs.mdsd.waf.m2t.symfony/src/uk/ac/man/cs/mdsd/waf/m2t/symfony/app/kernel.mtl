@@ -8,7 +8,7 @@
 
 
 [template public appKernel(model : WafModel)]
-[file(model.applicationDirectory()
+[file(model.sourceDirectory()
 	.concat('/')
 	.concat('AppKernel')
 	.concat(model.executableExtension()), false)]

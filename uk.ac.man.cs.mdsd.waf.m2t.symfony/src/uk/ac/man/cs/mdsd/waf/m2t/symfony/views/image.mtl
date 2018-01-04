@@ -130,12 +130,22 @@
 [/let]
 [/template]
 
+[template public image(model : WafModel, useAnchor : Boolean) post(trim())]
+[let imagePath : String = '\''.concat(model.logoImage).concat('\'')]
+[if (useAnchor)]
+<a [imagePath.imageSrc(model.logoFilters, useAnchor)/] [comment unit.imageTitle(baseAccessor)/]/>
+[else]
+<img [imagePath.imageSrc(model.logoFilters, useAnchor)/] [comment unit.imageAlt(baseAccessor)/] [comment unit.imageTitle(baseAccessor)/]/>
+[/if]
+[/let]
+[/template]
+
 [template public image(unit : ImageUnit, accessor : String, baseAccessor : String, useAnchor : Boolean)
 	? (not unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [if (useAnchor)]
-<a [unit.imageSrc(accessor, useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
+<a [accessor.imageSrc(unit.imageFilter, useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
 [else]
-<img [unit.imageSrc(accessor, useAnchor)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+<img [accessor.imageSrc(unit.imageFilter, useAnchor)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
 [/if]
 [/template]
 
@@ -143,16 +153,16 @@
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
 [if (useAnchor)]
-<a [galleryUnit.imageSrc(accessor, useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
+<a [accessor.imageSrc(galleryUnit.imageFilter, useAnchor)/] [unit.imageTitle(baseAccessor)/]/>
 [else]
-<img [galleryUnit.imageSrc(accessor, useAnchor)/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageDataImage(accessor)/] [galleryUnit.imageDataDescription(baseAccessor)/]/>
+<img [accessor.imageSrc(galleryUnit.imageFilter, useAnchor)/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageDataImage(accessor)/] [galleryUnit.imageDataDescription(baseAccessor)/]/>
 [/if]
 [/let]
 [/template]
 
-[template private imageSrc(unit : ImageUnit, accessor : String, useAnchor : Boolean) post(trim())]
+[template private imageSrc(accessor : String, manipulation : ImageManipulation, useAnchor : Boolean) post(trim())]
 [if (useAnchor)]href[else]
-src[/if]="{{ [accessor/] | imagine_filter('[unit.imageFilter.name/]') }}"
+src[/if]="{{ [accessor/][if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
 [template private imageMissingSrc(unit : ImageUnit, useAnchor : Boolean) post(trim())]

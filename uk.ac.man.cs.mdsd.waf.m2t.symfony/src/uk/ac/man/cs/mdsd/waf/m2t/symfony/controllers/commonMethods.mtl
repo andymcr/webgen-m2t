@@ -219,7 +219,7 @@ array_merge(
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
-[if (page.useInputJQuery() or page.hasImageUnits())]
+[if (page.hasImageUnits())]
 [page.templateStyleParameters()/]
 [/if]
 [if (page.hasJavascript())]
@@ -243,10 +243,6 @@ $parameters['['/]'scripts'[']'/] = array(
 [if (page.hasGalleryUnits())]
     'js/unitegallery.min.js',
     'themes/ug-theme-tilesgrid.js',
-[/if]
-[if ((page.useInputJQuery() and page.formUnits()->select(u | not u.contentType().oclIsUndefined())->notEmpty()))]
-    'js/wickedpicker.js',
-    '[page.partOf.javascriptFormFilename()/]',
 [/if]
 [if (page.hasSliderUnits())]
     '[page.partOf.javascriptImageFilename()/]',

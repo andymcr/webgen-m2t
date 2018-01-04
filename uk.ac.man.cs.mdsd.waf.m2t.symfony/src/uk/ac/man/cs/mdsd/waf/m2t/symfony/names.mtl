@@ -16,8 +16,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
-[query public appBundleName(eObject : EObject) : String
-	= 'AppBundle'
+[query public appName(eObject : EObject) : String
+	= 'App'
 /]
 
 [query public fosUserBundleName(eObject : EObject) : String

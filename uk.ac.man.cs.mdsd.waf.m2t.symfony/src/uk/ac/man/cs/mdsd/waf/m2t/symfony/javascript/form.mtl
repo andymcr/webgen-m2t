@@ -49,7 +49,7 @@
 [template private containerLink(feature : UnitFeature, type : String, model : WafModel) post(trim())]
 var $[feature.instanceName()/]Container;
 [if (feature.collectionUiAllowAdd)]
-var $add[type/]Link = $('<input type="button" name="add[type/]" value="Add [type/]"class="add[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
+var $add[type/]Link = $('<input type="button" name="add[type/]" value="Add [type/]"class="add"/>');
 var $new[type/]LinkDiv = $('<div></div>').append($add[type/]Link);
 [/if]
 [/template]
@@ -139,7 +139,7 @@ function add[type/]AddForm($container, $newLinkDiv) {
 
 [template private addRemoveLinkFunction(feature : UnitFeature, type : String, model : WafModel)]
 function add[type/]RemoveLink($[feature.instanceName()/]) {
-    var $removeLink = $('<input type="button" name="remove[type/]" value="Delete [type/]"class="delete[if (model.hasJQueryClasses())] [model.jQueryClass()/]"[/if]/>');
+    var $removeLink = $('<input type="button" name="remove[type/]" value="Delete [type/]"class="delete"/>');
     $[feature.instanceName()/].append($removeLink);
     $removeLink.on('click', function(e) {
         e.preventDefault();

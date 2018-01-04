@@ -307,7 +307,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 [if (not association.isSingleton() or not association.isRequired())]
     'required' => false,
 [/if]
-    'class' => '[association.appBundleName()/]:[association.modelName()/]',
+    'class' => '[association.appName()/]:[association.modelName()/]',
 [if (not selection.oclIsUndefined())]
     'query_builder' => function (EntityRepository $er) {
             $queryBuilder = $er->createQueryBuilder('[selection.partOf.serves.selectName()/]');

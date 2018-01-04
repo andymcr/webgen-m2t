@@ -27,12 +27,17 @@ namespace [service.servicesNamespace()/];
 
 use Doctrine\Common\Collections\Criteria;
 [if (not service.serves.oclIsUndefined())]
+use Doctrine\Common\Persistence\ManagerRegistry;
 	[if (service.serves.hasPseudoAssociations())]
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr;
 	[/if]
 [/if]
 [if (service.selections->notEmpty() or not service.serves.oclIsUndefined() and service.findAll.oclIsUndefined())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
+[/if]
+[if (service = model.userService())]
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 [/if]
 [if (not service.serves.oclIsUndefined())]
 	[if (service.serves.attributes()->notEmpty())]
@@ -74,9 +79,9 @@ class [service.className()/]
 	[/if]
 [/if]
 [if (not service.serves.oclIsUndefined() or service.uses->notEmpty())]
-    public function __construct([if (not service.serves.oclIsUndefined())]$doctrine[if (service.serves.hasPseudoAssociations())]
-, $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
-$securityTokenStorage[else]$[model.userService().instanceName()/][/if][/if][if (service.uses->notEmpty())], [/if][/if][for (uses : Service | service.uses) separator(', ')]$[uses.instanceName()/][/for])
+    public function __construct([if (not service.serves.oclIsUndefined())]ManagerRegistry $doctrine[if (service.serves.hasPseudoAssociations())]
+, EntityManagerInterface $entityManager[/if][if (model.isAuthenticated())], [if (service = model.userService())]
+TokenStorageInterface $securityTokenStorage[else][model.userService().className()/] $[model.userService().instanceName()/][/if][/if][if (service.uses->notEmpty())], [/if][/if][for (uses : Service | service.uses) separator(', ')][uses.className()/] $[uses.instanceName()/][/for])
     {
 	[if (not service.serves.oclIsUndefined())]
         $this->doctrine = $doctrine;
@@ -764,8 +769,8 @@ public function [association.findMethodName(selection)/]($[association.sourceTyp
 [/template]
 
 [template private pseudoBuilderCode(association : EntityAssociation, sourceType : EntityOrView, targetType : EntityOrView) post(trim())]
-$queryBuilder = $this->doctrine->getRepository('[targetType.appBundleName()/]:[targetType.modelName()/]')->createQueryBuilder('[targetType.selectName()/]');
-$queryBuilder->join('[sourceType.appBundleName()/]:[sourceType.modelName()/]', '[sourceType.selectName()/]', Expr\Join::WITH,[if (association.keys()->size() = 1)]
+$queryBuilder = $this->doctrine->getRepository('[targetType.appName()/]:[targetType.modelName()/]')->createQueryBuilder('[targetType.selectName()/]');
+$queryBuilder->join('[sourceType.appName()/]:[sourceType.modelName()/]', '[sourceType.selectName()/]', Expr\Join::WITH,[if (association.keys()->size() = 1)]
 [let key : AssociationKey = association.keys->first()]
 
 $queryBuilder->expr()->eq('[key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]', '[key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/]')
@@ -810,7 +815,7 @@ return $query->getResult();
 [template private getRepositoryMethod(service : Service) post(trim())]
 public function getRepository()
 {
-    return $this->doctrine->getRepository('[service.appBundleName()/]:[service.serves.modelName()/]');
+    return $this->doctrine->getRepository('[service.appName()/]:[service.serves.modelName()/]');
 }
 [/template]
 

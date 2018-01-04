@@ -18,10 +18,10 @@
 [file(unit.viewFilename(), false)]
 <section class="[unit.styleClass/]" id="[unit.instanceName()/]">
 [if (not unit.omitCaption)]
- <h2 class="[unit.captionClass/]">[unit.displayLabel/]</h2>
+ <h4 class="[unit.captionClass/]">[unit.displayLabel/]</h4>
 [/if]
- <div class="[unit.contentClass/]">
- [unit.unitContent(null, unit.instanceName(), 0)/]
+ <div class="row">
+  [unit.unitContent(null, unit.instanceName(), 0)/]
  </div>
 </section>
 [/file]
@@ -32,7 +32,16 @@
 [let imageUnit : ImageIndexUnit = unit.oclAsType(ImageIndexUnit)]
 [let variable : String = imageUnit.contentType().instanceName()]
 {% for [variable/] in [accessor/] %}
-[imageUnit.indexImage(variable)/]
+<div class="[imageUnit.columnClass/]">
+ <div class="[imageUnit.contentClass/]">
+  <div class="card-image">
+   [imageUnit.indexImage(variable)/]
+[if (not imageUnit.titleFeature.oclIsUndefined())]
+   <span class="card-title">{{ [imageUnit.titleFeature.accessor(variable)/] }}</span>
+[/if]
+  </div>
+ </div>
+</div>
 {% endfor %}
 [/let]
 [/let]
