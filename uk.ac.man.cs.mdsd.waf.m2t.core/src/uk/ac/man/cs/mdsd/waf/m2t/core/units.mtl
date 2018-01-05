@@ -293,6 +293,19 @@
 		endif
 /]
 
+[query public services(unit : DynamicUnit) : Sequence(Service)
+	= if unit.oclIsTypeOf(StaticUnit) then
+			Sequence{}
+		else
+			let contentType : EntityOrView = unit.contentType()
+				in if contentType.oclIsUndefined() then
+						Sequence{}
+					else
+						Sequence{ unit.contentService() }
+					endif
+		endif
+/]
+
 [query public urlFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
 	= unit.urlFields()
 		->select(f | f.oclIsKindOf(UnitFeature)).oclAsType(UnitFeature)

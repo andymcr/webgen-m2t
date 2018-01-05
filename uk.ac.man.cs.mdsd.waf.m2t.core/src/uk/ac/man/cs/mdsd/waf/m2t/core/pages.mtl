@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module pages(
+	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units]
 
@@ -161,4 +162,8 @@
 
 [query public pageDisplayedOn(field : UnitField) : Page
 	= field.displayedOn.pageDisplayedOn()
+/]
+
+[query public services(page : Page) : Set(Service)
+	= page.dynamicUnits()->collect(u | u.services())->asSet()
 /]

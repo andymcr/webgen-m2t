@@ -29,10 +29,6 @@
 /]
 
 
-[query public services(page : Page) : Sequence(Service)
-	= Sequence{}
-/]
-
 [comment TODO what if field has a selection?/]
 [query public selection(field : UnitField) : Selection
 	= if not field.oclIsTypeOf(UnitAssociation) then
