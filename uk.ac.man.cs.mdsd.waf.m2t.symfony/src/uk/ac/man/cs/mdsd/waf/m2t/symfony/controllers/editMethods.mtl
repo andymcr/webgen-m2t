@@ -20,7 +20,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::display/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::display/]
 
 
 [template public unitMethods(unit : ContentUnit)

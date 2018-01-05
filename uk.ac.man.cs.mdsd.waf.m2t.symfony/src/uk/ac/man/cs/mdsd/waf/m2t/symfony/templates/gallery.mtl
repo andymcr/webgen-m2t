@@ -6,8 +6,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::image/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 
 
 [template public unitView(unit : ContentUnit)

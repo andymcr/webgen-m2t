@@ -18,7 +18,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::criteriaDoctrine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::queryDoctrine/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 
 [template public service(service : Service, model : WafModel)]
 [file(service.serviceFilename(), false)]

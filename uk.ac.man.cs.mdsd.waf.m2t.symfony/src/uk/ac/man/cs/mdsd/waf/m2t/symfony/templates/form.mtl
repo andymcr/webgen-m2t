@@ -14,8 +14,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::action/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
 
 
 [template public unitContent(unit : ContentUnit, dummy : String, accessor : String, depthIndex : Integer)

@@ -13,7 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
 
 [template public unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]

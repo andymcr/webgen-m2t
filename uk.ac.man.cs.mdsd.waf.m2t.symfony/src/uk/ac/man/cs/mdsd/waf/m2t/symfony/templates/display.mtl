@@ -16,12 +16,12 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::accessor/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::action/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::gallery/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::imageIndex/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::form/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::gallery/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::imageIndex/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
 
 [template public unitView(unit : ContentUnit)
