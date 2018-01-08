@@ -164,6 +164,9 @@
 	= field.displayedOn.pageDisplayedOn()
 /]
 
-[query public services(page : Page) : Set(Service)
-	= page.dynamicUnits()->collect(u | u.services())->asSet()
+[query public services(page : Page) : Sequence(Service)
+	= page.dynamicUnits()->collect(u | u.services())
+		->asSet()
+		->asSequence()
+		->sortedBy(s | s.name)
 /]
