@@ -11,6 +11,7 @@
 
 [template public menu(model : WafModel)]
 [file(model.menuDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[let topMenu : GlobalMenu = model.globalMenus->first()]
 {% extends 'site.html.twig' %}
 {% trans_default_domain "navigation" %}
 
@@ -18,42 +19,130 @@
 [if (model.isAuthenticated())]
 [model.userDropdown()/]
 [/if]
-<nav class="nav-extended">
+[for (submenu : SubmenuEntry | topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry))]
+	[if (not submenu.submenu.oclIsUndefined())]
+[submenu.submenu.dropdown()/]
+	[/if]
+[/for]
+<nav>
  <div class="nav-wrapper">
 [if (not model.logoImage.oclIsUndefined())]
   <a href="#!" class="brand-logo left">[model.image(false)/]</a>
 [/if]
   <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-  <ul id="nav-top" class="right hide-on-med-and-down">
-   [model.menuListItems()/]
-{% if app.user %}
-   <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
-{% elseif not app.user %}
-   <li><a class="dropdown-trigger" href="#!" data-target="user">[authentication.loginLabel/]</a></li>
-{% endif %}
-  </ul>
-  <ul id="slide-out" class="sidenav">
-   [model.menuListItems()/]
-  </ul>
+  [topMenu.topItems(model)/]
+  [topMenu.sideItems()/]
  </div>
-{% block contextmenu %}
- <div class="nav-content" id="sidemenu">
- </div>
-{% endblock %}
 </nav>
 [if (model.isAuthenticated())]
 <script>
 var sidenav = document.querySelector('.sidenav');
 var instance = M.Sidenav.init(sidenav);
 [if (model.isAuthenticated())]
-var authDropdownTrigger = document.querySelector('.dropdown-trigger');
-var instance = M.Dropdown.init(authDropdownTrigger);
+var dropdownTrigger = document.querySelector('.dropdown-trigger');
+var instance = M.Dropdown.init(dropdownTrigger);
 [/if]
 </script>
 [/if]
 {% endblock %}
+[/let]
 [/file]
 [/template]
+
+
+[template private topItems(topMenu : GlobalMenu, model : WafModel) post(trim())]
+<ul id="nav-top" class="right hide-on-med-and-down">
+[for (entry : MenuEntry | topMenu.entries)]
+ [entry.topEntry()/]
+[/for]
+[if (model.isAuthenticated())]
+{%- if app.user -%}
+ <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+{%- elseif not app.user -%}
+ <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]</a></li>
+{%- endif -%}
+[/if]
+</ul>
+[/template]
+
+
+[template private sideItems(topMenu : GlobalMenu) post(trim())]
+<ul id="slide-out" class="sidenav">
+[for (entry : MenuEntry | topMenu.entries)]
+ [entry.sideEntry()/]
+[/for]
+</ul>
+[/template]
+
+
+[template private topEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
+[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
+[if (submenu.requiresRole <> '')]
+{% if is_granted('[submenu.requiresRole/]') %}[/if]
+<li>[if (submenu.submenu.oclIsUndefined())]
+<span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span>
+[else]
+<a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a></li>
+[/if]
+</li>[if (submenu.requiresRole <> '')]
+{% endif %}[/if]
+[/let]
+[/template]
+
+[template private topEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[action.entry()/]
+[/let]
+[/template]
+
+[template private sideEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
+[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
+[if (submenu.requiresRole <> '')]
+{% if is_granted('[submenu.requiresRole/]') %}[/if]
+<li><span>{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</span>
+[if (not submenu.submenu.oclIsUndefined())]
+ <ul>
+	[for (subEntry : MenuEntry | submenu.submenu.entries)]
+  [subEntry.sideEntry()/]
+	[/for]
+ </ul>
+[/if]
+</li>[if (submenu.requiresRole <> '')]
+{% endif %}[/if]
+[/let]
+[/template]
+
+[template private sideEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[action.entry()/]
+[/let]
+[/template]
+
+[template private entry(entry : ActionMenuEntry) post(trim())]
+[if (entry.requiresRole <> '')]
+{% if is_granted('[entry.requiresRole/]') %}[/if]
+<li{% if app.request.attributes.get('_route') == '[entry.routeName()/]' %} class="active"{% endif %}>[if (entry.action.oclIsUndefined())]
+<span>{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</span>[else]
+<a href="{{ path('[entry.routeName()/]'[if (not entry.query.oclIsUndefined())]
+, {[for (parameter : QueryParameter | entry.query.parameters) separator(', ')]
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>[/if]
+</li>[if (entry.requiresRole <> '')]
+{% endif %}[/if]
+[/template]
+
+
+[template private dropdown(submenu : Menu) post(trim())]
+<ul id="[submenu.id()/]" class="dropdown-content">
+[for (subEntry : MenuEntry | submenu.entries)]
+  [subEntry.topEntry()/]
+[/for]
+</ul>
+[/template]
+
 
 [template private userDropdown(model : WafModel) post(trim())]
 <ul id="user" class="dropdown-content">
@@ -84,40 +173,4 @@ var instance = M.Dropdown.init(authDropdownTrigger);
 {% elseif not app.user %}
   <li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
 {% endif %}
-[/template]
-
-
-[template private menuListItems(model : WafModel) post(trim())]
-[for (entry : MenuEntry | model.globalMenus->first().entries)]
-	[if (entry.requiresRole <> '')]
-{% if is_granted('[entry.requiresRole/]') %}[/if]
-<li{% if app.request.attributes.get('_route') == '[entry.routeName()/]' %} class="active"{% endif %}>[entry.entry()/]</li>[if (entry.requiresRole <> '')]
-{% endif %}[/if]
-
-[/for]
-[/template]
-
-
-[template private entry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
-[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
-[if (submenu.submenu.oclIsUndefined())]
-<span><{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}/span>
-[else]
-<a href="{{ path('[submenu.routeName()/]') }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>
-[/if]
-[/let]
-[/template]
-
-[template private entry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
-[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[if (action.action.oclIsUndefined())]
-<span>{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</span>
-[else]
-<a href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
-, {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
-'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a>
-[/if]
-[/let]
 [/template]
