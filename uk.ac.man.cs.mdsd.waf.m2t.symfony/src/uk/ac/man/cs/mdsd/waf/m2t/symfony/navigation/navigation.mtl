@@ -38,7 +38,7 @@
 <script>
 var sidenav = document.querySelector('.sidenav');
 var instance = M.Sidenav.init(sidenav);
-[if (model.isAuthenticated())]
+[if (topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry))->notEmpty() or model.isAuthenticated())]
 var dropdownTrigger = document.querySelector('.dropdown-trigger');
 var instance = M.Dropdown.init(dropdownTrigger);
 [/if]
@@ -81,10 +81,8 @@ var instance = M.Dropdown.init(dropdownTrigger);
 [if (submenu.requiresRole <> '')]
 {% if is_granted('[submenu.requiresRole/]') %}[/if]
 <li>[if (submenu.submenu.oclIsUndefined())]
-<span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span>
-[else]
-<a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a></li>
-[/if]
+<span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span>[else]
+<a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>[/if]
 </li>[if (submenu.requiresRole <> '')]
 {% endif %}[/if]
 [/let]
@@ -136,7 +134,7 @@ var instance = M.Dropdown.init(dropdownTrigger);
 
 
 [template private dropdown(submenu : Menu) post(trim())]
-<ul id="[submenu.id()/]" class="dropdown-content">
+<ul id="[submenu.id()/]_submenu" class="dropdown-content">
 [for (subEntry : MenuEntry | submenu.entries)]
   [subEntry.topEntry()/]
 [/for]
