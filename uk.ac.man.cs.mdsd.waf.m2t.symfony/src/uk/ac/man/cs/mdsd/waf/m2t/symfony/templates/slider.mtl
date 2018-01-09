@@ -181,8 +181,8 @@ blueimp.Gallery(
 [/let]
  </ul>
 </div>
-<script type="text/javascript">
+<script>
 var elem = document.querySelector('.slider');
-var instance = M.Slider(elem);
+var instance = M.Slider.init(elem);
 </script>
 [/template]
