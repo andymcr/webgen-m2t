@@ -18,6 +18,10 @@
 	= '.xlf'
 /]
 
+[query public yamlExtension(eObject : EObject) : String
+	= '.yaml'
+/]
+
 [query public ymlExtension(eObject : EObject) : String
 	= '.yml'
 /]
@@ -29,6 +33,10 @@
 
 [query public configDirectory(eObject : EObject) : String
 	= 'config'
+/]
+
+[query public configPackagesDirectory(eObject : EObject) : String
+	= eObject.configDirectory().concat('/').concat('packages')
 /]
 
 [query public controllersDirectory(eObject : EObject) : String
@@ -189,10 +197,6 @@
 	= eObject.javascriptDirectory().concat('/')
 		.concat('autocomplete')
 		.concat(eObject.javascriptExtension())
-/]
-
-[query public configBaseFilename(eObject : EObject) : String
-	= eObject.configDirectory().concat('/').concat('config')
 /]
 
 [query public controllerFilename(page : Page, model : WafModel) : String

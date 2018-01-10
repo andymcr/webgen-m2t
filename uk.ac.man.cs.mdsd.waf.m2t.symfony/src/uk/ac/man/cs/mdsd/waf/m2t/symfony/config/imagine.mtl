@@ -1,0 +1,56 @@
+[comment encoding = UTF-8 /]
+[module imagine(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public configImagine(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/imagine').concat(model.yamlExtension()), false)]
+liip_imagine:
+#    # valid drivers options include "gd" or "gmagick" or "imagick"
+#    driver: "gd"
+
+    cache: image_cache
+
+    loaders:
+       default:
+          stream:
+              wrapper: http://sps.andycarpenter.me.uk/
+
+    resolvers:
+       image_cache:
+          aws_s3:
+              client_config:
+                  credentials:
+                      key:    '%env(resolve:AWS_S3_KEY)%'
+                      secret: '%env(resolve:AWS_S3_SECRET)%'
+                  region:     '%env(resolve:AWS_S3_REGION)%'
+                  version:    '%env(resolve:AWS_S3_VERSION)%'
+              bucket:         '%env(resolve:AWS_S3_BUCKET)%'
+              get_options:
+                  Scheme: 'https'
+              put_options:
+                  CacheControl: 'max-age=31557600'
+
+    filter_sets:
+[for (manipulation : ImageManipulation | model.imageManipulations)]
+        [manipulation.name/]:
+	[if (manipulation.jpegQuality > 0)]
+            quality: [manipulation.jpegQuality/]
+	[/if]
+            filters:
+	[for (filter : ImageFilter | manipulation.filters)]
+                [filter.config()/]
+	[/for]
+[/for]
+[/file]
+[/template]
+
+[template private config(filter : ImageFilter)
+	? (filter.oclIsTypeOf(ThumbnailFilter)) post(trim())]
+[let thumbnailFilter : ThumbnailFilter = filter.oclAsType(ThumbnailFilter)]
+thumbnail: { size: ['['/][thumbnailFilter.width/], [thumbnailFilter.height/][']'/], mode: [if (thumbnailFilter.mode = ThumbnailModes::Crop)]outbound[else]inset[/if] }
+[/let]
+[/template]

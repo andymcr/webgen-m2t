@@ -1,0 +1,35 @@
+[comment encoding = UTF-8 /]
+[module framework(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public configFramework(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/framework').concat(model.yamlExtension()), false)]
+framework:
+    secret: '%env(APP_SECRET)%'
+    default_locale: en
+    csrf_protection: ~
+    #http_method_override: true
+
+    session:
+    #    # With this config, PHP's native session handling is used
+        handler_id: ~
+
+    templating:
+        engines: ['['/]'twig'[']'/]
+    
+    #esi: ~
+    #fragments: ~
+    php_errors:
+        log: true
+
+
+#    translator:      { fallbacks: ['['/]"%locale%"[']'/] }
+#    validation:      { enable_annotations: true }
+[if (model.hasAPI())]
+#    serializer:      { enable_annotations: true }
+[/if]
+[/file]
+[/template]
