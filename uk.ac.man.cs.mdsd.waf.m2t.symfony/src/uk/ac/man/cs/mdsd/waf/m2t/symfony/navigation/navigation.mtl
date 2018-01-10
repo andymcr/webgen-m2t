@@ -31,17 +31,21 @@
 [/if]
   <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
   [topMenu.topItems(model)/]
-  [topMenu.sideItems()/]
+  [topMenu.sideItems(model)/]
  </div>
 </nav>
 [if (model.isAuthenticated())]
 <script>
 var sidenav = document.querySelector('.sidenav');
 var instance = M.Sidenav.init(sidenav);
-[if (topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry))->notEmpty() or model.isAuthenticated())]
-var dropdownTrigger = document.querySelector('.dropdown-trigger');
-var instance = M.Dropdown.init(dropdownTrigger);
+[if (model.isAuthenticated())]
+var authDropdownTrigger = document.querySelector('.auth-dropdown-trigger');
+var instance = M.Dropdown.init(authDropdownTrigger);
 [/if]
+[for (submenu : SubmenuEntry | topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry))]
+var [submenu.name/]DropdownTrigger = document.querySelector('.[submenu.name/]-dropdown-trigger');
+var instance = M.Dropdown.init([submenu.name/]DropdownTrigger);
+[/for]
 </script>
 [/if]
 {% endblock %}
@@ -57,20 +61,32 @@ var instance = M.Dropdown.init(dropdownTrigger);
 [/for]
 [if (model.isAuthenticated())]
 {%- if app.user -%}
- <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+ <li><a class="auth-dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
 {%- elseif not app.user -%}
- <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]</a></li>
+ <li><a class="auth-dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]</a></li>
 {%- endif -%}
 [/if]
 </ul>
 [/template]
 
 
-[template private sideItems(topMenu : GlobalMenu) post(trim())]
+[template private sideItems(topMenu : GlobalMenu, model : WafModel) post(trim())]
 <ul id="slide-out" class="sidenav">
+[if (model.isAuthenticated())]
+{% if app.user %}
+ <li>{{ app.user.username }}</li>
+{% elseif not app.user %}
+ <li><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
+{% endif %}
+[/if]
 [for (entry : MenuEntry | topMenu.entries)]
  [entry.sideEntry()/]
 [/for]
+[if (model.isAuthenticated())]
+{% if app.user %}
+ <li><a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
+{% endif %}
+[/if]
 </ul>
 [/template]
 
@@ -82,7 +98,7 @@ var instance = M.Dropdown.init(dropdownTrigger);
 {% if is_granted('[submenu.requiresRole/]') %}[/if]
 <li>[if (submenu.submenu.oclIsUndefined())]
 <span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span>[else]
-<a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>[/if]
+<a class="[submenu.name/]-dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>[/if]
 </li>[if (submenu.requiresRole <> '')]
 {% endif %}[/if]
 [/let]
