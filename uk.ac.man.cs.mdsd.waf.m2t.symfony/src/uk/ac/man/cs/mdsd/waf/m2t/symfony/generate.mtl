@@ -73,7 +73,7 @@
 [model.pages->collect(p | p.units)->select(u | u.hasInterfaceFields()).oclAsType(DynamicUnit).formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 
-[if (false and model.hasAPI())]
+[if (model.hasAPI())]
 [model.api.resources.controller(model)/]
 [/if]
 

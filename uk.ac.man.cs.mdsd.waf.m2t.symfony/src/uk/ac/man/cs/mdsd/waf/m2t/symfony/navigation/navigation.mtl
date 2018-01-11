@@ -34,20 +34,7 @@
   [topMenu.sideItems(model)/]
  </div>
 </nav>
-[if (model.isAuthenticated())]
-<script>
-var sidenav = document.querySelector('.sidenav');
-var instance = M.Sidenav.init(sidenav);
-[if (model.isAuthenticated())]
-var authDropdownTrigger = document.querySelector('.auth-dropdown-trigger');
-var instance = M.Dropdown.init(authDropdownTrigger);
-[/if]
-[for (submenu : SubmenuEntry | topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry))]
-var [submenu.name/]DropdownTrigger = document.querySelector('.[submenu.name/]-dropdown-trigger');
-var instance = M.Dropdown.init([submenu.name/]DropdownTrigger);
-[/for]
-</script>
-[/if]
+[model.script(topMenu)/]
 {% endblock %}
 [/let]
 [/file]
@@ -61,9 +48,9 @@ var instance = M.Dropdown.init([submenu.name/]DropdownTrigger);
 [/for]
 [if (model.isAuthenticated())]
 {%- if app.user -%}
- <li><a class="auth-dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+ <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
 {%- elseif not app.user -%}
- <li><a class="auth-dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]</a></li>
+ <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]</a></li>
 {%- endif -%}
 [/if]
 </ul>
@@ -73,11 +60,12 @@ var instance = M.Dropdown.init([submenu.name/]DropdownTrigger);
 [template private sideItems(topMenu : GlobalMenu, model : WafModel) post(trim())]
 <ul id="slide-out" class="sidenav">
 [if (model.isAuthenticated())]
-{% if app.user %}
+{%- if app.user -%}
  <li>{{ app.user.username }}</li>
-{% elseif not app.user %}
+{%- elseif not app.user -%}
  <li><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
-{% endif %}
+{%- endif -%}
+ <li><div class="divider"></div></li>
 [/if]
 [for (entry : MenuEntry | topMenu.entries)]
  [entry.sideEntry()/]
@@ -98,7 +86,7 @@ var instance = M.Dropdown.init([submenu.name/]DropdownTrigger);
 {% if is_granted('[submenu.requiresRole/]') %}[/if]
 <li>[if (submenu.submenu.oclIsUndefined())]
 <span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span>[else]
-<a class="[submenu.name/]-dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>[/if]
+<a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>[/if]
 </li>[if (submenu.requiresRole <> '')]
 {% endif %}[/if]
 [/let]
@@ -116,14 +104,21 @@ var instance = M.Dropdown.init([submenu.name/]DropdownTrigger);
 [let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
 [if (submenu.requiresRole <> '')]
 {% if is_granted('[submenu.requiresRole/]') %}[/if]
-<li><span>{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</span>
+<li class="no-padding">
+ <ul class="collapsible collapsible-accordion">
+  <li>
+   <a class="collapsible-header">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}<i class="material-icons">arrow_drop_down</i></a>
+   <div class="collapsible-body">
 [if (not submenu.submenu.oclIsUndefined())]
- <ul>
+    <ul>
 	[for (subEntry : MenuEntry | submenu.submenu.entries)]
-  [subEntry.sideEntry()/]
+     [subEntry.sideEntry()/]
 	[/for]
- </ul>
+    </ul>
 [/if]
+   </div>
+  </li>
+ </ul>
 </li>[if (submenu.requiresRole <> '')]
 {% endif %}[/if]
 [/let]
@@ -187,4 +182,31 @@ var instance = M.Dropdown.init([submenu.name/]DropdownTrigger);
 {% elseif not app.user %}
   <li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
 {% endif %}
+[/template]
+
+[template private script(model : WafModel, topMenu : GlobalMenu) post(trim())]
+[let submenus : Sequence(SubmenuEntry) = topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry)]
+<script>
+var sidenav = document.querySelector('.sidenav');
+var instance = M.Sidenav.init(sidenav);
+[if (model.isAuthenticated() and submenus->isEmpty())]
+var trigger = document.querySelector('.dropdown-trigger');
+var instance = M.Dropdown.init(trigger);
+[else]
+var triggers = document.querySelectorAll('.dropdown-trigger');
+for (var i = 0; i < triggers.length; ++i) {
+    var instance = M.Dropdown.init(triggers['['/]i[']'/]);
+}
+[/if]
+[if (submenus->size() = 1)]
+var collapsible = document.querySelector('.collapsible');
+var instance = M.Collapsible.init(collapsible);
+[elseif (submenus->notEmpty())]
+var collapsibles = document.querySelectorAll('.collapsible');
+for (var i = 0; i < collapsibles.length; ++i) {
+    var instance = M.Collapsible.init(collapsibles['['/]i[']'/]);
+}
+</script>
+[/if]
+[/let]
 [/template]

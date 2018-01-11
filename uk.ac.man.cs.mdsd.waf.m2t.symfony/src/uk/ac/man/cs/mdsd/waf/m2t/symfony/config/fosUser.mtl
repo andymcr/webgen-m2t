@@ -1,0 +1,38 @@
+[comment encoding = UTF-8 /]
+[module fosUser(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public configFosUser(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/fos_user').concat(model.yamlExtension()), false)]
+[if (model.isLocallyAuthenticated())]
+[let authentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: [model.modelsNamespace()/]\[authentication.modelName()/]
+    from_email:
+        address:     admin@sps3.andycarpenter.me.uk
+        sender_name: Sale Photographic Society
+	[if (authentication.useCaptcha)]
+    registration:
+        form:
+            type: [authentication.formTypeNamespace()/]\[authentication.typeClassName('Registration')/]
+		[if (authentication.useEmailActivation)]
+        confirmation:
+            enabled: true
+		[/if]
+	[/if]
+[/let]
+[/if]
+[if (model.isCasAuthenticated())]
+[/if]
+[/file]
+[/template]
