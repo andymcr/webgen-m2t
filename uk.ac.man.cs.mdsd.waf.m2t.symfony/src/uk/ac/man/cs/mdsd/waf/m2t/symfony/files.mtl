@@ -71,8 +71,8 @@
 	= 'js'
 /]
 
-[query public menuDirectory(eObject : EObject) : String
-	= eObject.templatesDirectory().concat('/').concat('Menu')
+[query public navigationDirectory(eObject : EObject) : String
+	= eObject.templatesDirectory()
 /]
 
 [query public modelsDirectory(eObject : EObject) : String
@@ -249,12 +249,6 @@
 	= model.javascriptDirectory().concat('/')
 		.concat('image')
 		.concat(model.javascriptExtension())
-/]
-
-[query public menuFilename(menu : Menu) : String
-	= menu.menuDirectory().concat('/')
-		.concat(menu.instanceName())
-		.concat(menu.htmlExtension()).concat(menu.twigExtension())
 /]
 
 [query public modelFilename(unit : DynamicUnit) : String

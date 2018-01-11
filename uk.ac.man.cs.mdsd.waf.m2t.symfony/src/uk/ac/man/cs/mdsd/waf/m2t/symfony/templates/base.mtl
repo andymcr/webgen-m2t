@@ -1,12 +1,12 @@
 [comment encoding = UTF-8 /]
-[module site(
+[module base(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
 
 [template public generatePage(model : WafModel)]
-[file(model.templatesDirectory().concat('/site').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[file(model.templatesDirectory().concat('/base').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,10 +42,12 @@
 {% endif %}
 </head>
 <body>
+<header>
 {% block navigation %}
-<nav>
-</nav>
+ <nav>
+ </nav>
 {% endblock %}
+</header>
 <main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
  <div class="container">
 {% block content %}

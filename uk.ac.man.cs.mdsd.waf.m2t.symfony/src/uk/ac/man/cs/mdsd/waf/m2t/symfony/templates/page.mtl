@@ -8,13 +8,11 @@
 
 [template public page(page : Page)]
 [file(page.pageViewDirectory().concat('/page').concat(page.htmlExtension()).concat(page.twigExtension()), false)]
-{% extends 'Menu/navigation.html.twig' %}
+{% extends 'base.html.twig' %}
 
-[if (not page.contextMenu.oclIsUndefined())]
-{% block contextmenu %}
-{{ include('Menu/[page.contextMenu.instanceName()/][page.htmlExtension()/][page.twigExtension()/]') }}
+{% block navigation %}
+{{ include('navigation[page.htmlExtension()/][page.twigExtension()/]') }}
 {% endblock %}
-[/if]
 
 {% block content %}
 [for (unit : ContentUnit | page.units)]

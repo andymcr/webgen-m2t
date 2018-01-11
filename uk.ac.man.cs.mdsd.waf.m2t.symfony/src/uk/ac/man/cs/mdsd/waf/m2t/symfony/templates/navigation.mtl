@@ -9,28 +9,20 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 
 
-[template public menu(model : WafModel)]
-[file(model.menuDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[template public navigation(model : WafModel)]
+[file(model.navigationDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 [let topMenu : GlobalMenu = model.globalMenus->first()]
 {% extends 'site.html.twig' %}
 {% trans_default_domain "navigation" %}
 
 {% block navigation %}
-[if (model.isAuthenticated())]
-[model.userDropdown()/]
-[/if]
-[for (submenu : SubmenuEntry | topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry))]
-	[if (not submenu.submenu.oclIsUndefined())]
-[submenu.submenu.dropdown()/]
-	[/if]
-[/for]
 <nav>
  <div class="nav-wrapper">
 [if (not model.logoImage.oclIsUndefined())]
   <a href="#!" class="brand-logo left">[model.image(false)/]</a>
 [/if]
-  <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
   [topMenu.topItems(model)/]
+  <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
   [topMenu.sideItems(model)/]
  </div>
 </nav>
@@ -50,10 +42,34 @@
 {%- if app.user -%}
  <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
 {%- elseif not app.user -%}
- <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]</a></li>
+ <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]<i class="material-icons right">arrow_drop_down</i></a></li>
 {%- endif -%}
+ [model.userDropdown()/]
 [/if]
 </ul>
+[/template]
+
+[template private topEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
+[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
+[if (submenu.requiresRole <> '')]
+{% if is_granted('[submenu.requiresRole/]') %}[/if]
+[if (submenu.submenu.oclIsUndefined())]
+<li><span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span></li>
+[else]
+<li><a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}<i class="material-icons right">arrow_drop_down</i></a></li>
+ [submenu.submenu.dropdown()/]
+[/if]
+[if (submenu.requiresRole <> '')]
+{% endif %}[/if]
+[/let]
+[/template]
+
+[template private topEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[action.entry()/]
+[/let]
 [/template]
 
 
@@ -78,26 +94,6 @@
 </ul>
 [/template]
 
-
-[template private topEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
-[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
-[if (submenu.requiresRole <> '')]
-{% if is_granted('[submenu.requiresRole/]') %}[/if]
-<li>[if (submenu.submenu.oclIsUndefined())]
-<span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span>[else]
-<a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>[/if]
-</li>[if (submenu.requiresRole <> '')]
-{% endif %}[/if]
-[/let]
-[/template]
-
-[template private topEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
-[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[action.entry()/]
-[/let]
-[/template]
 
 [template private sideEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
@@ -155,33 +151,33 @@
 
 [template private userDropdown(model : WafModel) post(trim())]
 <ul id="user" class="dropdown-content">
-	[if (model.isLocallyAuthenticated())]
+[if (model.isLocallyAuthenticated())]
   [model.localAuthentication().userDropdown()/]
-	[elseif (model.isCasAuthenticated())]
+[elseif (model.isCasAuthenticated())]
   [model.casAuthentication().userDropdown()/]
-	[/if]
+[/if]
 </ul>
 [/template]
 
 [template private userDropdown(authentication : LocalAuthenticationSystem) post(trim())]
-{% if app.user %}
+{%- if app.user -%}
 <li><a href="{{ path('fos_user_profile_show') }}" title="User profile">Profile</a></li>
 <li><a href="{{ path('fos_user_change_password') }}" title="Change password">Password</a></li>
 <li><a href="{{ path('fos_user_security_logout') }}" title="logout">[authentication.logoutLabel/]</a></li>
-{% elseif not app.user %}
+{%- elseif not app.user -%}
 <li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
 [if (authentication.allowSelfRegistration)]
 <li><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
 [/if]
-{% endif %}
+{%- endif -%}
 [/template]
 
 [template private userDropdown(authentication : CasAuthentication) post(trim())]
-{% if app.user %}
-  <li>{{ app.user.username }}&nbsp;<a href="{{ path('fos_user_security_logout') }}">[authentication.logoutLabel/]</a></li>
-{% elseif not app.user %}
-  <li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
-{% endif %}
+{%- if app.user -%}
+<li>{{ app.user.username }}&nbsp;<a href="{{ path('fos_user_security_logout') }}">[authentication.logoutLabel/]</a></li>
+{%- elseif not app.user -%}
+<li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
+{%- endif -%}
 [/template]
 
 [template private script(model : WafModel, topMenu : GlobalMenu) post(trim())]
@@ -200,11 +196,11 @@ for (var i = 0; i < triggers.length; ++i) {
 [/if]
 [if (submenus->size() = 1)]
 var collapsible = document.querySelector('.collapsible');
-var instance = M.Collapsible.init(collapsible);
+var instance = M.Collapsible.init(collapsible, {hover: true});
 [elseif (submenus->notEmpty())]
 var collapsibles = document.querySelectorAll('.collapsible');
 for (var i = 0; i < collapsibles.length; ++i) {
-    var instance = M.Collapsible.init(collapsibles['['/]i[']'/]);
+    var instance = M.Collapsible.init(collapsibles['['/]i[']'/], {hover: true});
 }
 </script>
 [/if]
