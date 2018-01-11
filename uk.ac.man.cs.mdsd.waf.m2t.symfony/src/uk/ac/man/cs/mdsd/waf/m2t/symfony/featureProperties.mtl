@@ -78,14 +78,6 @@
 /]
 
 
-[query public routedSelection(unit : CollectionUnit) : Boolean
-	= if unit.selection.oclIsUndefined() then
-			false
-		else
-			unit.selection.selectPath->notEmpty()
-		endif
-/]
-
 [query public uniqueEnumerationFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
 	= unit.enumerationFeatures()->asSet()->asSequence()
 /]
