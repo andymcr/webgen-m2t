@@ -8,6 +8,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
 
 
 [query public associationFeatures(unit : DynamicUnit) : Sequence(UnitAssociation)
@@ -266,6 +267,19 @@
 		endif
 /]
 
+[query public routedSelection(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then
+			false
+		else
+			unit.selection.selectPath->notEmpty()
+		endif
+/]
+
+[query public routingService(unit : DynamicUnit) : Service
+	= let model : WafModel = unit.pageDisplayedOn().partOf
+		in model.services(unit.routingType())->first()
+/]
+
 [query public searchFields(unit : IndexUnit) : Bag(UnitField)
 	= unit->collect(targettingSearches.displayFields)
 /]
@@ -294,12 +308,53 @@
 /]
 
 [query public services(unit : DynamicUnit) : Sequence(Service)
-	= let contentType : EntityOrView = unit.contentType()
-		in if contentType.oclIsUndefined() then
-				Sequence{}
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).services()
+		else if unit.oclIsKindOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).services()
+		else if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).services()
+		else
+			Sequence{}
+		endif endif endif
+/]
+
+[query private services(unit : CollectionUnit) : Sequence(Service)
+	= let routingType : EntityOrView = unit.routingType()
+		in if routingType.oclIsUndefined() then
+				unit.services2()
 			else
-				Sequence{ unit.contentService() }
+				Sequence{ unit.oclAsType(DynamicUnit).routingService() }
+					->union(unit.services2())
 			endif
+/]
+
+[query private services2(unit : CollectionUnit) : Sequence(Service)
+	= if not unit.selection.oclIsUndefined() then
+			if unit.routedSelection() then
+				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
+			else
+				Sequence{ unit.selectionService() }
+			endif
+		else
+			Sequence{ unit.oclAsType(DynamicUnit).contentService() }
+		endif
+/]
+
+[query private services(unit : DetailsUnit) : Sequence(Service)
+	= if unit.defaultSelection.oclIsUndefined() then
+			Sequence{ unit.routingService() }
+		else
+			Sequence{ unit.contentService() }
+		endif
+/]
+
+[query private services(unit : EditUnit) : Sequence(Service)
+	= if unit.oclIsTypeOf(UpdateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
+			Sequence{ unit.routingService() }
+		else
+			Sequence{}
+		endif
 /]
 
 [query public urlFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
