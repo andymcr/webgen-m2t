@@ -22,7 +22,6 @@ namespace [resource.apiControllersNamespace()/];
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 [comment use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG; /]
@@ -30,7 +29,7 @@ use Swagger\Annotations as SWG; /]
 
 
 /**
- * @Route("/api")
+ * sss
  **/
 class [resource.controllerClassName()/] extends FOSRestController
 {
