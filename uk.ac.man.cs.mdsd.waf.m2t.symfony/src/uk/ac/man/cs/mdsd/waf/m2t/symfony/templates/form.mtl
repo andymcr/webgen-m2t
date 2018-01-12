@@ -24,6 +24,7 @@
 [editUnit.formOpen(accessor)/]
  [editUnit.formFields(accessor)/]
 [editUnit.formControlAndClose(accessor)/]
+[editUnit.script()/]
 [/let]
 [/template]
 
@@ -35,11 +36,11 @@
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
 [for (field : UnitField | unit.inputFields())]
 	[if (field.requiresRole <> '')]
-{% if is_granted('[field.requiresRole/]') %}
+{% if is_granted('[field.requiresRole/]') -%}
 	[/if]
 [field.formField(unit, accessor)/]
 	[if (field.requiresRole <> '')]
-{% endif %}
+{%- endif %}
 	[/if]
 [/for]
 [/template]
@@ -176,6 +177,16 @@
 '[unit.containedId()/].titles.[field.id()/]'[else]
 '[unit.contentType().id()/].labels.[field.id()/]'[/if]
 [/template]
+
+[template private script(unit : EditUnit) post(trim())]
+<script>
+var selects = document.querySelectorAll('select');
+for (var i = 0; i < selects.length; ++i) {
+    var instance = M.Select.init(selects['['/]i[']'/]);
+}
+</script>
+[/template]
+
 
 [template public map(unit : DynamicUnit)]
 [let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
@@ -337,16 +348,4 @@ google.maps.event.addDomListener(window, 'load', initialize);
  </script>
 </div>
 [/let]
-[/template]
-
-[template public formErrors(unit : DynamicUnit) post(trim())]
-<?php
-	if ( isset($[unit.fieldErrorsName()/])) {
-		foreach ($[unit.fieldErrorsName()/] AS $field => $message) {
-?>
-<p class="[unit.errorClass/]"><?php echo __($message); ?></p>
-<?php
-		}
-	} 
-?>
 [/template]

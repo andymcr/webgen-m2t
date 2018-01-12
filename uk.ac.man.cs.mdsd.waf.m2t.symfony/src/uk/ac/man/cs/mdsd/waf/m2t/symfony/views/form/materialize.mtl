@@ -8,14 +8,63 @@
 
 [template public formViews(model : WafModel)]
 [file (model.formViewDirectory().concat('/').concat('materialize').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[model.formStart()/]
+
+[model.formEnd()/]
+
+[model.formRow()/]
+
 [model.checkboxRow()/]
 
-[model.messagesOnFields()/]
+[model.choiceOptions()/]
+
+[model.divAttributes()/]
+
+[model.attributes()/]
 [/file]
 [/template]
 
-[template public checkboxRow(model : WafModel)]
-{% block checkbox_row %}
+[template private formStart(model : WafModel) post(trim())]
+{%- block form_start -%}
+    {%- do form.setMethodRendered() -%}
+    {% set method = method|upper %}
+    {%- if method in ['['/]"GET", "POST"[']'/] -%}
+        {% set form_method = method %}
+    {%- else -%}
+        {% set form_method = "POST" %}
+    {%- endif -%}
+<div class="row">
+<form name="{{ name }}" method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {%- if form_method != method -%}
+<input type="hidden" name="_method" value="{{ method }}" />
+    {%- endif -%}
+{%- endblock form_start -%}
+[/template]
+
+[template private formEnd(model : WafModel) post(trim())]
+{%- block form_end -%}
+    {%- if not render_rest is defined or render_rest -%}
+        {{ form_rest(form) }}
+    {%- endif -%}
+    </form>
+    <div>
+{%- endblock form_end -%}
+[/template]
+
+[template private formRow(model : WafModel) post(trim())]
+{%- block form_row -%}
+<div class="row">
+ <div{{ block('div_attributes') }}[comment {% if errors | length > 0 %} class="error"{% endif %}/]>
+  {{ form_widget(form) }}
+  {{ form_label(form) }}
+  {{ form_errors(form) }}
+ </div>
+</div>
+{%- endblock form_row -%}
+[/template]
+
+[template public checkboxRow(model : WafModel) post(trim())]
+{%- block checkbox_row -%}
 <p{% if errors | length > 0 %} class="error"{% endif %}>
     {% if label is not same as(false) -%}
         {% if not compound -%}
@@ -41,15 +90,45 @@
     {%- endif -%}
  {{- form_errors(form) -}}
 </p>
-{% endblock checkbox_row %}
+{%- endblock checkbox_row %}
 [/template]
 
-[template public messagesOnFields(model : WafModel)]
-{% block form_row %}
-    <div{% if errors | length > 0 %} class="error"{% endif %}>
-        {{- form_widget(form) -}}
-        {{- form_label(form) -}}
-        {{- form_errors(form) -}}
-     </div>
-{% endblock form_row %}
+[template private choiceOptions(model : WafModel) post(trim())]
+{%- block choice_widget_options %}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {% else -%}
+<option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
+        {% endif -%}
+    {% endfor %}
+{%- endblock choice_widget_options -%}
+[/template]
+
+[template private divAttributes(model : WafModel) post(trim())]
+{%- block div_attributes -%}
+    {%- for attrname, attrvalue in attr -%}
+        {%- if attrname == 'class' -%}
+            {{- " " -}}{{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock div_attributes -%}
+[/template]
+
+[template private attributes(model : WafModel) post(trim())]
+{%- block attributes -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['['/]'placeholder', 'title'[']'/] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) and attrname != 'class' -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock attributes -%}
 [/template]
