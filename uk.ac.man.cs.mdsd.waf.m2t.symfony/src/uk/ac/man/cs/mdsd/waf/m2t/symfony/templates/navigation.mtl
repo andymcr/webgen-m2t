@@ -12,7 +12,6 @@
 [template public navigation(model : WafModel)]
 [file(model.navigationDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 [let topMenu : GlobalMenu = model.globalMenus->first()]
-{% extends 'site.html.twig' %}
 {% trans_default_domain "navigation" %}
 
 {% block navigation %}
@@ -202,7 +201,7 @@ var collapsibles = document.querySelectorAll('.collapsible');
 for (var i = 0; i < collapsibles.length; ++i) {
     var instance = M.Collapsible.init(collapsibles['['/]i[']'/], {hover: true});
 }
-</script>
 [/if]
+</script>
 [/let]
 [/template]

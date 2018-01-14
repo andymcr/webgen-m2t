@@ -218,7 +218,7 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
     if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
-    $this->get('[deleteAction.usedBy.oclAsType(IndexUnit).contentService().serviceName()/]')->remove($[deleteAction.instanceName()/], true);
+    $this->[deleteAction.usedBy.oclAsType(IndexUnit).contentService().instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     return [deleteAction.destination.redirect()/];
@@ -249,7 +249,7 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
     if (!$[featureAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
-    $this->get('[featureAction.operation.partOf.serviceName()/]')->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
+    $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
 [elseif (featureAction.operation.resultType = OperationResultTypes::File)]
     $tempFilename = $this->get('[featureAction.operation.partOf.serviceName()/]')
         ->[featureAction.operation.methodName()/]([contentType.loadInstance(unit)/], '[featureAction.fileExtension/]');

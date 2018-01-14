@@ -188,6 +188,19 @@ for (var i = 0; i < selects.length; ++i) {
 [/template]
 
 
+[template public formErrors(unit : DynamicUnit) post(trim())]
+<?php
+	if ( isset($[unit.fieldErrorsName()/])) {
+		foreach ($[unit.fieldErrorsName()/] AS $field => $message) {
+?>
+<p class="[unit.errorClass/]"><?php echo __($message); ?></p>
+<?php
+		}
+	} 
+?>
+[/template]
+
+
 [template public map(unit : DynamicUnit)]
 [let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
 <div id="[unit.uniqueName()/]">
