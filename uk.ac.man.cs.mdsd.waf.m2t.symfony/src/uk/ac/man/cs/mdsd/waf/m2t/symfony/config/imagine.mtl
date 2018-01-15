@@ -49,6 +49,15 @@ liip_imagine:
 [/template]
 
 [template private config(filter : ImageFilter)
+	? (filter.oclIsTypeOf(BackgroundFilter)) post(trim())]
+[let backgroundFilter : BackgroundFilter = filter.oclAsType(BackgroundFilter)]
+background: { [if (backgroundFilter.color <> '#fff')]
+color: [backgroundFilter.color/][/if]
+size: ['['/][backgroundFilter.width/], [backgroundFilter.height/][']'/], position: [backgroundFilter.position.toString().toLowerCase()/] }
+[/let]
+[/template]
+
+[template private config(filter : ImageFilter)
 	? (filter.oclIsTypeOf(ThumbnailFilter)) post(trim())]
 [let thumbnailFilter : ThumbnailFilter = filter.oclAsType(ThumbnailFilter)]
 thumbnail: { size: ['['/][thumbnailFilter.width/], [thumbnailFilter.height/][']'/], mode: [if (thumbnailFilter.mode = ThumbnailModes::Crop)]outbound[else]inset[/if] }
