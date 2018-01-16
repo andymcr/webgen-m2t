@@ -4,18 +4,22 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::display/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
+{% trans_default_domain "entity" %}
 <section class="[unit.styleClass/]" id="[unit.instanceName()/]">
 [if (not unit.omitCaption)]
  <h4 class="[unit.captionClass/]">[unit.displayLabel/]</h4>
@@ -36,10 +40,30 @@
  <div class="[imageUnit.contentClass/]">
   <div class="card-image">
    [imageUnit.indexImage(variable)/]
-[if (not imageUnit.titleFeature.oclIsUndefined())]
+[if (imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined())]
    <span class="card-title">{{ [imageUnit.titleFeature.accessor(variable)/] }}</span>
 [/if]
   </div>
+[if (not imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
+  <div class="card-content">
+	[if (not imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined())]
+   <span class="card-title">{{ [imageUnit.titleFeature.accessor(variable)/] }}</span>
+	[/if]
+	[for (field : UnitField | imageUnit.displayFields)]
+		[if (field.isConditionalDisplay())]
+{% if not ([field.hideWhen.twigExpression(variable)/]) %}
+		[/if]
+   <p>[if (not imageUnit.omitFieldLabels)]
+[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
+[field.displayValue(variable, true, depthIndex)/]</p>
+		[if (field.isConditionalDisplay())]
+{% endif %}
+		[/if]
+	[/for]
+  </div>
+[/if]
  </div>
 </div>
 {% endfor %}

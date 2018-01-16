@@ -62,37 +62,35 @@
 
 [template private fieldTranslations(unit : DynamicUnit, page : Page)
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
-[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[for (field : UnitField | editUnit.displayFields)]
-	[if (field.hasUnitTranslation())]
-<trans-unit id="[editUnit.containedId()/].labels.[field.id()/]">
- <source>[editUnit.containedId()/].labels.[field.id()/]</source>
- <target>[field.displayLabel.validXML()/]</target>
+[for (field : UnitField | unit.displayFields)]
+	[if (field.hasCustomisedLabel())]
+<trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
+ <source>[unit.containedId()/].labels.[field.labelId()/]</source>
+ <target>[field.displayLabel().validXML()/]</target>
 </trans-unit>
-		[if (field.hasPlaceholder())]
-<trans-unit id="[editUnit.containedId()/].placeholders.[field.id()/]">
- <source>[editUnit.containedId()/].placeholders.[field.id()/]</source>
+	[/if]
+	[if (field.hasCustomisedPlaceholder())]
+<trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
+ <source>[unit.containedId()/].placeholders.[field.placeholderId()/]</source>
  <target>[field.placeholder().validXML()/]</target>
 </trans-unit>
-		[/if]
-		[if (field.hasTitle())]
-<trans-unit id="[editUnit.containedId()/].titles.[field.id()/]">
- <source>[editUnit.containedId()/].titles.[field.id()/]</source>
+	[/if]
+	[if (field.hasCustomisedTitle())]
+<trans-unit id="[unit.containedId()/].titles.[field.titleId()/]">
+ <source>[unit.containedId()/].titles.[field.titleId()/]</source>
  <target>[field.title.validXML()/]</target>
 </trans-unit>
-		[/if]
-[/if]
+	[/if]
 [/for]
-[/let]
 [/template]
 
 [template private fieldTranslations(unit : DynamicUnit, page : Page)
-	? (unit.oclIsKindOf(DataUnit)) post (trim())]
+	? (not unit.oclIsKindOf(EditUnit)) post (trim())]
 [for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
 	[if (field.hasCustomisedLabel())]
-<trans-unit id="[unit.containedId()/].labels.[field.id()/]">
- <source>[unit.containedId()/].labels.[field.id()/]</source>
- <target>[field.displayLabel.validXML()/]</target>
+<trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
+ <source>[unit.containedId()/].labels.[field.labelId()/]</source>
+ <target>[field.displayLabel().validXML()/]</target>
 </trans-unit>
 	[/if]
 	[if (field.oclIsTypeOf(UnitAssociation))]

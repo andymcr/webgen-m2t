@@ -199,14 +199,6 @@
 		endif endif
 /]
 
-[query public isConditionalDisplay(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).onlyDisplayWhenNotEmpty
-		else
-			false
-		endif
-/]
-
 [query public displayClass(field : UnitField) : String
 	= if not field.oclIsTypeOf(UnitAssociation) or field.isSingleton() then
 			field.modelPropertyName()
@@ -221,13 +213,38 @@
 /]
 
 [query public displayLabel(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).displayLabel
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).displayLabel
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).displayLabel()
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).displayLabel
 		else 
 			'UnhandledField'
+		endif endif endif
+/]
+
+[query private displayLabel(association : UnitAssociation) : String
+	= if association.displayLabel <> association.association.displayLabel then
+			association.displayLabel
+		else if association.childFeature.oclIsUndefined() then
+			association.displayLabel
+		else
+			association.childFeature.displayLabel()
 		endif endif
+/]
+
+[query private displayLabel(feature : ChildPath) : String
+	= if feature.oclIsTypeOf(ChildPathAttribute) then
+			feature.oclAsType(ChildPathAttribute).attribute.displayLabel
+		else
+			let association : ChildPathAssociation = feature.oclAsType(ChildPathAssociation)
+				in if association.childFeature.oclIsUndefined() then
+						association.association.displayLabel
+					else
+						association.childFeature.displayLabel()
+					endif
+		endif
 /]
 
 [query public hasClass(field : UnitField) : Boolean
@@ -235,7 +252,7 @@
 /]
 
 [query public hasPlaceholder(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitAttribute) then
+	= if field.oclIsTypeOf(UnitAttribute) then
 			not field.oclAsType(UnitAttribute).placeholder.oclIsUndefined()
 		else if field.oclIsKindOf(InterfaceField) then
 			not field.oclAsType(InterfaceField).placeholder.oclIsUndefined()
@@ -277,6 +294,10 @@
 		else
 			null
 		endif endif
+/]
+
+[query public isConditionalDisplay(field : UnitField) : Boolean
+	= not field.hideWhen.oclIsUndefined()
 /]
 
 [query public placeholder(field : UnitField) : String

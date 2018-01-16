@@ -32,9 +32,9 @@
 
 
 [query private entityId(field : UnitField) : String
-	= if field.oclIsKindOf(UnitAttribute) then
+	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.partOf.id()
-		else if field.oclIsKindOf(UnitAssociation) then
+		else if field.oclIsTypeOf(UnitAssociation) then
 			field.oclAsType(UnitAssociation).association.sourceType().id()
 		else if field.oclIsKindOf(InterfaceField) then
 			'Unexpected'
@@ -44,9 +44,9 @@
 /]
 
 [query private fieldId(field : UnitField) : String
-	= if field.oclIsKindOf(UnitAttribute) then
+	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).name.asId()
-		else if field.oclIsKindOf(UnitAssociation) then
+		else if field.oclIsTypeOf(UnitAssociation) then
 			field.oclAsType(UnitAssociation).id()
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name.asId()
@@ -93,15 +93,62 @@
 		or (field.hasTitle() and field.hasCustomisedTitle())
 /]
 
-[query public id(field : UnitField) : String
-	= let fieldsWithName : OrderedSet(UnitField)
-		= field.displayedOn.displayFields
-			->select(f | f.hasCustomisedLabel())
-			->select(f | f.fieldId() = field.fieldId())
-		in if fieldsWithName->size() < 2 then
-				field.fieldId()
-			else
-				field.entityId().concat('_').concat(field.fieldId())
-			endif			
+[query public labelId(field : UnitField) : String
+	= if not field.hasCustomisedLabel() then
+			field.name().asId()
+		else
+			let fieldsWithName : OrderedSet(UnitField)
+				= field.displayedOn.displayFields
+					->select(f | f.hasCustomisedLabel())
+					->select(f | f.fieldId() = field.fieldId())
+				in if fieldsWithName->size() < 2 then
+						field.fieldId()
+					else
+						field.entityId().concat('_').concat(field.fieldId())
+					endif
+		endif	
 /]
 
+[query private name(field : UnitField) : String
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).name
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).name
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else
+			'Unhandled'
+		endif endif endif
+/]
+
+[query public placeholderId(field : UnitField) : String
+	= if not field.hasCustomisedPlaceholder() then
+			field.name().asId()
+		else
+			let fieldsWithName : OrderedSet(UnitField)
+				= field.displayedOn.displayFields
+					->select(f | f.hasCustomisedLabel())
+					->select(f | f.fieldId() = field.fieldId())
+				in if fieldsWithName->size() < 2 then
+						field.fieldId()
+					else
+						field.entityId().concat('_').concat(field.fieldId())
+					endif
+		endif	
+/]
+
+[query public titleId(field : UnitField) : String
+	= if not field.hasCustomisedTitle() then
+			field.name().asId()
+		else
+			let fieldsWithName : OrderedSet(UnitField)
+				= field.displayedOn.displayFields
+					->select(f | f.hasCustomisedLabel())
+					->select(f | f.fieldId() = field.fieldId())
+				in if fieldsWithName->size() < 2 then
+						field.fieldId()
+					else
+						field.entityId().concat('_').concat(field.fieldId())
+					endif
+		endif	
+/]

@@ -17,6 +17,16 @@
 		endif endif
 /]
 
+[query public displayLabel(field : UnitField) : Expression
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).defaultValue
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).defaultValue
+		else
+			null
+		endif endif
+/]
+
 [query public entity(field : UnitField) : EntityOrView
 	= if field.oclIsKindOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.partOf

@@ -209,8 +209,8 @@
  <li class="[field.displayClass()/]">[field.displayValue(accessor, true, depthIndex)/]</li>
 	[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
-{{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">[field.displayValue(accessor, true, depthIndex)/]</dd>
 	[/if]
 	[if (field.isConditionalDisplay())]
@@ -222,8 +222,8 @@
  <li class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</li>
 				[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
-{{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.id()/]' | trans }}[/if]</dt>
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</dd>
 				[/if]
 			[/if]
@@ -334,8 +334,8 @@
 {% if is_granted('[field.requiresRole/]') %}
 		[/if]
    <th>[if (field.hasCustomisedLabel())]
-{{ '[unit.containedId()/].labels.[field.id()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[field.entity().id()/].labels.[field.id()/]' | trans }}[/if]</th>
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[field.entity().id()/].labels.[field.labelId()/]' | trans }}[/if]</th>
 		[if (field.requiresRole <> '')]
 {% endif %}
 		[/if]
