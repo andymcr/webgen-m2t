@@ -181,7 +181,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 	[let association : Association = field.feature().oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType().instanceName()/])
         if (false === $[unit.instanceName()/]->[field.feature().getMethodName()/]()->contains($[association.targetType().instanceName()/]))
-            $this->get('[association.targetType().services(unit.pageDisplayedOn().partOf)->first().serviceName()/]')->remove($[association.targetType().instanceName()/]);
+            $this->[association.targetType().services(unit.pageDisplayedOn().partOf)->first().instanceServiceName()/]->remove($[association.targetType().instanceName()/]);
 	[/let]
 	[/for]
     [unit.saveBody(unit.contentType)/]

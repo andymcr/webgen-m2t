@@ -42,14 +42,14 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
 [if (page.services()->notEmpty())]
 	[for (service : Service | page.services())]
-    private $[service.instanceName()/];
+    private $[service.instanceServiceName()/];
 
 	[/for]
     public function __construct([for (service : Service | page.services()) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for])
     {
 	[for (service : Service | page.services())]
-        $this->[service.instanceName()/] = $[service.instanceName()/];
+        $this->[service.instanceServiceName()/] = $[service.instanceName()/];
 	[/for]
     }
 
@@ -251,7 +251,7 @@ public function [action.actionName()/]([page.actionMethodParameters(unit, conten
     }
     $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
 [elseif (featureAction.operation.resultType = OperationResultTypes::File)]
-    $tempFilename = $this->get('[featureAction.operation.partOf.serviceName()/]')
+    $tempFilename = $this->[featureAction.operation.partOf.instanceServiceName()/]
         ->[featureAction.operation.methodName()/]([contentType.loadInstance(unit)/], '[featureAction.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
     $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[featureAction.fileExtension/]';

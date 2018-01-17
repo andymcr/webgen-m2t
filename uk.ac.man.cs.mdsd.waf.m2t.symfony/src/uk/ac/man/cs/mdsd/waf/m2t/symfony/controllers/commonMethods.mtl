@@ -63,11 +63,11 @@ $[key.routeParameterName(entity)/][/for]
 
 
 [template public getContentService(unit : DynamicUnit) post(trim())]
-$this->[unit.contentService().instanceName()/]
+$this->[unit.contentService().instanceServiceName()/]
 [/template]
 
 [template public getSelectionService(unit : CollectionUnit) post(trim())]
-$this->[unit.selectionService().instanceName()/]
+$this->[unit.selectionService().instanceServiceName()/]
 [/template]
 
 [template public loadInstance(entity : EntityOrView, unit : DynamicUnit) post(trim())]

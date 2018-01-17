@@ -115,14 +115,14 @@ find[else]
 [if (not resource.limit.oclIsUndefined())]
 $this->offset = $request->query->getInt('[resource.limit.parameters->first().name/]', 1);
 [/if]
-[if (not unit.selectionType.oclIsUndefined())]
-$this->[unit.selectionType.instanceName()/] = [unit.getSelectionService()/]->find([unit.selectableParameters()/]);
-[/if]
-[if (not unit.selectionType.oclIsUndefined() and not unit.containingFeature.oclIsUndefined())]
-[unit.childSelect()/]
-[else]
-[unit.contentSelect()/]
-[/if]
+[comment if (not unit.selectionType.oclIsUndefined())/]
+$this->[comment unit.selectionType.instanceName()/] = [comment unit.getSelectionService()/]->find([comment unit.selectableParameters()/]);
+[comment if/]
+[comment if (not unit.selectionType.oclIsUndefined() and not unit.containingFeature.oclIsUndefined())/]
+[comment unit.childSelect()/]
+[comment else/]
+[comment unit.contentSelect()/]
+[comment if/]
 [/template]
 
 [template private contentSelect(unit : CollectionUnit) post(trim())]
@@ -132,39 +132,39 @@ else
 [/if]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.routedSelection())]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [comment unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);
 	[else]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[unit.selection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [comment unit.getSelectionService()/]->[unit.selection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);
 	[/if]
 [elseif (unit.oclIsKindOf(DataUnit))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
 	[if (not dataUnit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[dataUnit.defaultSelection.instanceName()/]([unit.selectableParameters()/][unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [comment unit.getSelectionService()/]->[dataUnit.defaultSelection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);
 	[else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [comment unit.oclAsType(DynamicUnit).getContentService()/]->findAll([comment unit.paginationActuals()/]);
 	[/if]
 [/let]
 [else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [comment unit.oclAsType(DynamicUnit).getContentService()/]->findAll([comment unit.paginationActuals()/]);
 [/if]
 [/template]
 
 [template private contentFilterSelect(unit : CollectionUnit) post(trim())]
-[for (f : Filter | unit.filters()) separator('else')]
-if ([for (parameter : FilterParameter | f.parameters) separator(' && ')]
-$request->query->has('[parameter.name/]')[/for])
-    [unit.contentFilterCall(f)/]
-[/for]
+[comment for (f : Filter | unit.filters()) separator('else')/]
+if ([comment for (parameter : FilterParameter | f.parameters) separator(' && ')/]
+$request->query->has('[comment parameter.name/]')[comment for/])
+    [comment unit.contentFilterCall(f)/]
+[comment for/]
 [/template]
 
 [template private contentFilterCall(unit : CollectionUnit, filter : Filter)]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.selection.instanceName()/](
+$this->[unit.instanceName()/] = [comment unit.oclAsType(DynamicUnit).getContentService()/]->[filter.selection.instanceName()/](
 [for (parameter : FormalParameter | filter.selection.parameters)]
-[let actual : FilterParameter = filter.matchingActual(parameter)]
-    $request->query->get('[actual.name/]'),
-[/let]
+[comment let actual : FilterParameter = filter.matchingActual(parameter)/]
+    $request->query->get('[comment actual.name/]'),
+[comment let/]
 [/for]
-    [unit.paginationActuals()/]
+    [comment unit.paginationActuals()/]
 );
 [/template]
 

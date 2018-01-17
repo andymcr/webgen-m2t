@@ -178,11 +178,7 @@
 /]
 
 [query public isConditionalDisplay(unit : DynamicUnit) : Boolean
-	= if unit.oclIsKindOf(DataUnit) then
-			unit.oclAsType(DataUnit).onlyDisplayWhenNotEmpty
-		else
-			false
-		endif
+	= not unit.hideWhen.oclIsUndefined()
 /]
 
 [query public rowClasses(unit : IndexUnit) : Sequence(String)

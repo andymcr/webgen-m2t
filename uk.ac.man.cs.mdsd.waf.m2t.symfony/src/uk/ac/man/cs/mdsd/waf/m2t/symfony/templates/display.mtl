@@ -20,7 +20,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::form/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::gallery/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::imageIndex/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
 

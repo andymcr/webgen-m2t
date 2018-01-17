@@ -36,10 +36,24 @@ date()
 
 
 [template public twigExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
+[let path : FeaturePathAttribute = guard.oclAsType(FeaturePathAttribute)]
+[accessor/].[path.attribute.modelPropertyName()/]
+[/let] 
+[/template]
+
+[template public twigExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
+[let path : FeaturePathAssociation = guard.oclAsType(FeaturePathAssociation)]
+[accessor/].[path.association.modelPropertyName()/]
+[/let] 
+[/template]
+
+[template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(FeatureReference)) post(trim())]
 [let path : FeatureReference = guard.oclAsType(FeatureReference)]
 [accessor/].[path.feature.modelPropertyName()/]
-[/let]
+[/let] 
 [/template]
 
 [template public featureReference(feature : Feature, accessor : String) post(trim())]

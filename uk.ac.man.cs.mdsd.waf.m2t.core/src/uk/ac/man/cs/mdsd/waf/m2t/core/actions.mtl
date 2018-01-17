@@ -211,7 +211,7 @@
 		else if action.oclIsTypeOf(SelectAction) then
 			let selectAction : SelectAction = action.oclAsType(SelectAction)
 				in if selectAction.target.oclIsKindOf(EditUnit) then
-						selectAction.target.oclAsType(EditUnit).disableCondition
+						selectAction.target.oclAsType(EditUnit).disableWhen
 					else
 						null
 					endif
