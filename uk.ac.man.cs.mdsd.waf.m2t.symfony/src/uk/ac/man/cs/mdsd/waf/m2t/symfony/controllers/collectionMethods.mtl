@@ -110,7 +110,7 @@ if (!$this->[unit.routingType().instanceName()/]) {
     throw $this->createNotFoundException('The [unit.routingType().name/] does not exist');
 }
 	[if (dynamicUnit.isConditionalDisplay())]
-if (!([dynamicUnit.hideWhen.controllerExpression('x')/])) {
+if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.routingType().instanceName()))/])) {
     [unit.selectCode2()/]
 }
     [else]

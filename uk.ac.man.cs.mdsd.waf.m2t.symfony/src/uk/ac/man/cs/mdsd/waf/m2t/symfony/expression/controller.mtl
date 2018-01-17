@@ -39,11 +39,34 @@ $now
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
-	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
-[let path : FeatureReference = expression.oclAsType(FeatureReference)]
-[accessor/]->[path.feature.getMethodName()/]()
-[/let]
+[template public controllerExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
+[let path : FeaturePathAttribute = guard.oclAsType(FeaturePathAttribute)]
+[accessor/]->[path.attribute.getMethodName()/]()
+[/let] 
+[/template]
+
+[template public controllerExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
+[let path : FeaturePathAssociation = guard.oclAsType(FeaturePathAssociation)]
+[accessor/]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
+[path.childFeature.pathExpression()/][/if]
+[/let] 
+[/template]
+
+[template public pathExpression(path : ChildPath)
+	? (path.oclIsTypeOf(ChildPathAttribute)) post(trim())]
+[let attribute : ChildPathAttribute = path.oclAsType(ChildPathAttribute)]
+->[attribute.attribute.getMethodName()/]()
+[/let] 
+[/template]
+
+[template public pathExpression(path : ChildPath)
+	? (path.oclIsTypeOf(ChildPathAssociation)) post(trim())]
+[let association : ChildPathAssociation = path.oclAsType(ChildPathAssociation)]
+->[association.association.getMethodName()/]()[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.pathExpression()/][/if]
+[/let] 
 [/template]
 
 [template public controllerExpression(expression : Expression, accessor : String)

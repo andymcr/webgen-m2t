@@ -34,7 +34,6 @@ date()
 [/let]
 [/template]
 
-
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
 [let path : FeaturePathAttribute = guard.oclAsType(FeaturePathAttribute)]
@@ -45,14 +44,23 @@ date()
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
 [let path : FeaturePathAssociation = guard.oclAsType(FeaturePathAssociation)]
-[accessor/].[path.association.modelPropertyName()/]
+[accessor/].[path.association.modelPropertyName()/][if (not path.childFeature.oclIsUndefined())]
+[path.childFeature.pathExpression()/][/if]
 [/let] 
 [/template]
 
-[template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(FeatureReference)) post(trim())]
-[let path : FeatureReference = guard.oclAsType(FeatureReference)]
-[accessor/].[path.feature.modelPropertyName()/]
+[template public pathExpression(path : ChildPath)
+	? (path.oclIsTypeOf(ChildPathAttribute)) post(trim())]
+[let attribute : ChildPathAttribute = path.oclAsType(ChildPathAttribute)]
+.[attribute.attribute.modelPropertyName()/]
+[/let] 
+[/template]
+
+[template public pathExpression(path : ChildPath)
+	? (path.oclIsTypeOf(ChildPathAssociation)) post(trim())]
+[let association : ChildPathAssociation = path.oclAsType(ChildPathAssociation)]
+.[association.association.modelPropertyName()/][if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.pathExpression()/][/if]
 [/let] 
 [/template]
 
