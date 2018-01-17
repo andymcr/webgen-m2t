@@ -111,13 +111,13 @@ if (!$this->[unit.routingType().instanceName()/]) {
 }
 	[if (dynamicUnit.isConditionalDisplay())]
 if (!([dynamicUnit.hideWhen.controllerExpression('x')/])) {
-    [comment unit.selectCode2()/]
+    [unit.selectCode2()/]
 }
     [else]
-[comment unit.selectCode2()/]
+[unit.selectCode2()/]
 	[/if]
 [else]
-[comment unit.selectCode2()/]
+[unit.selectCode2()/]
 [/if]
 [/let]
 [/template]
