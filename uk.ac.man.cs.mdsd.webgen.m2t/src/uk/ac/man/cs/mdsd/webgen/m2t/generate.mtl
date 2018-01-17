@@ -3,7 +3,6 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::generate/]
-[import uk::ac::man::cs::mdsd::waf::m2t::kohana::generate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::generate/]
 
 
@@ -22,7 +21,7 @@
 [elseif (model.frameworkTechnology = FrameworkTechnologies::CakePHP)]
 [elseif (model.frameworkTechnology = FrameworkTechnologies::CodeIgniter)]
 [elseif (model.frameworkTechnology = FrameworkTechnologies::Kohana)]
-[model.kohana()/]
+[comment model.kohana()/]
 [elseif (model.frameworkTechnology = FrameworkTechnologies::Laravel)]
 [elseif (model.frameworkTechnology = FrameworkTechnologies::Symfony)]
 [model.symfony()/]
