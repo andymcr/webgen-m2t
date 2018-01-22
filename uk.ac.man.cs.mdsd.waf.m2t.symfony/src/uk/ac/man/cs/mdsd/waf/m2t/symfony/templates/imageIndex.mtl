@@ -38,31 +38,12 @@
 {% for [variable/] in [accessor/] %}
 <div class="[imageUnit.columnClass/]">
  <div class="[imageUnit.contentClass/]">
-  <div class="card-image">
-   [imageUnit.indexImage(variable)/]
-[if (imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined())]
-   <span class="card-title">{{ [imageUnit.titleFeature.accessor(variable)/] }}</span>
-[/if]
-  </div>
+  [imageUnit.image(variable)/]
 [if (not imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
-  <div class="card-content">
-	[if (not imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined())]
-   <span class="card-title">{{ [imageUnit.titleFeature.accessor(variable)/] }}</span>
-	[/if]
-	[for (field : UnitField | imageUnit.displayFields)]
-		[if (field.isConditionalDisplay())]
-{% if not ([field.hideWhen.twigExpression(variable)/]) %}
-		[/if]
-   <p>[if (not imageUnit.omitFieldLabels)]
-[if (field.hasCustomisedLabel())]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
-[field.displayValue(variable, true, depthIndex)/]</p>
-		[if (field.isConditionalDisplay())]
-{% endif %}
-		[/if]
-	[/for]
-  </div>
+  [imageUnit.content(variable, depthIndex)/]
+[/if]
+[if (imageUnit.hasInlineActions())]
+  [imageUnit.actions(variable)/]
 [/if]
  </div>
 </div>
@@ -71,8 +52,16 @@
 [/let]
 [/template]
 
-[template private indexImage(unit : ImageIndexUnit, accessor : String)
-	? (unit.actions->isEmpty()) post(trim())]
+[template private image(unit : ImageIndexUnit, variable : String) post(trim())]
+<div class="card-image">
+ [unit.indexImage(variable)/]
+[if (unit.overlayTitle and not unit.titleFeature.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateTitle)] truncate[/if]">{{ [unit.titleFeature.accessor(variable)/] }}</span>
+[/if]
+</div>
+[/template]
+
+[template private indexImage(unit : ImageIndexUnit, accessor : String) post(trim())]
 [if (unit.imagePathFeature.oclIsUndefined())]
 [unit.imageMissing(null, accessor, false)/]
 [else]
@@ -80,31 +69,35 @@
 [/if]
 [/template]
 
-[template private indexImage(unit : ImageIndexUnit, accessor : String)
-	? (unit.actions->size() = 1) post(trim())]
-[let action : InlineAction = unit.actions->first()]
-[let label : String = if unit.imagePathFeature.oclIsUndefined() then
-	unit.imageMissing(null, accessor, false)
-	else
-		unit.imagePathFeature.imagePath(unit, accessor, accessor, false)
-	endif]
-[action.actionLink(unit.contentType(), unit, accessor,  label, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]
-[/let]
-[/let]
+[template private content(unit : ImageIndexUnit, variable : String, depthIndex : Integer) post(trim())]
+<div class="card-content">
+	[if (not unit.overlayTitle and not unit.titleFeature.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateTitle)] truncate[/if]">{{ [unit.titleFeature.accessor(variable)/] }}</span>
+	[/if]
+	[for (field : UnitField | unit.displayFields)]
+		[if (field.isConditionalDisplay())]
+{%- if not ([field.hideWhen.twigExpression(variable)/]) %}
+		[/if]
+ <p>[if (not unit.omitFieldLabels)]
+[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
+[field.displayValue(variable, true, depthIndex)/]</p>
+		[if (field.isConditionalDisplay())]
+{%- endif %}
+		[/if]
+	[/for]
+</div>
 [/template]
 
-[template private indexImage(unit : ImageIndexUnit, accessor : String)
-	? (unit.actions->size() > 1) post(trim())]
-<div>
-[if (unit.imagePathFeature.oclIsUndefined())]
-[unit.imageMissing(null, accessor, false)/]
-[else]
-[unit.imagePathFeature.imagePath(unit, accessor, accessor, false)/]
-[/if]
-<ul>
+[template private actions(unit : ImageIndexUnit, variable : String) post(trim())]
+<div class="card-action">
 [for (action : InlineAction | unit.inlineActions())]
- <li>[action.actionLink(unit.contentType(), unit, accessor, action.displayLabel, accessor.concat('.defaultLabel()'), accessor, unit.hasObjectAccess())/]</li>
+	[if (unit.hasObjectAccess())]
+ [action.actionLink(unit.contentType(), unit, variable, action.displayLabel, variable.concat('.defaultLabel()'), variable, unit.hasObjectAccess())/]
+	[else]
+ [action.actionLink(unit.contentType(), unit, variable, action.displayLabel, null, variable, unit.hasObjectAccess())/]
+	[/if]
 [/for]
-</ul>
 </div>
 [/template]
