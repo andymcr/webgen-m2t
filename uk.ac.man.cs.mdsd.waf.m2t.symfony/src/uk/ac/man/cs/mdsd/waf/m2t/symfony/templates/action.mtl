@@ -13,6 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
 
@@ -125,7 +126,14 @@ NULL
 [let select : SelectAction = action.oclAsType(SelectAction)]
 [let page : Page = select.immediateUnit().pageDisplayedOn()]
 [let targetUnit : ContentUnit = select.target.oclAsType(ContentUnit)]
-[action.anchor(targetUnit.routeName(), select.target.oclAsType(DynamicUnit).routingType(), routeParametersAccessor, label, title, null, conditionAccessor, targetUnit, page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
+[let selectValueAccessor : String =
+	if select.valuePath.oclIsUndefined() then
+		routeParametersAccessor
+	else
+		select.valuePath.accessor(routeParametersAccessor)
+	endif]
+[action.anchor(targetUnit.routeName(), select.target.oclAsType(DynamicUnit).routingType(), selectValueAccessor, label, title, null, conditionAccessor, targetUnit, page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
+[/let]
 [/let]
 [/let]
 [/let]
