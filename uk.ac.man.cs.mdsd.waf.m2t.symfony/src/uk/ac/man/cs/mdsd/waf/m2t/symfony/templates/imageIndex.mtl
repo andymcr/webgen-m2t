@@ -14,6 +14,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::display/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -72,7 +73,7 @@
 [template private content(unit : ImageIndexUnit, variable : String, depthIndex : Integer) post(trim())]
 <div class="card-content">
 	[if (not unit.overlayTitle and not unit.titleFeature.oclIsUndefined())]
- <span class="card-title[if (unit.truncateTitle)] truncate[/if]">{{ [unit.titleFeature.accessor(variable)/] }}</span>
+ <span class="card-title[if (unit.truncateTitle)] truncate[/if]">{{ [unit.titleFeature.accessor(variable)/][unit.titleFeature.valueLabel()/] }}</span>
 	[/if]
 	[for (field : UnitField | unit.displayFields)]
 		[if (field.isConditionalDisplay())]

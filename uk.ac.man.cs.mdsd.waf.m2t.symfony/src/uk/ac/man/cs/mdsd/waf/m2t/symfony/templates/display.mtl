@@ -520,15 +520,11 @@
 [association.inlineActions()
 	->first().actionLink(association.association.targetType(), association.displayedOn, accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor, association.displayedOn.hasObjectAccess())/]
 [else]
-{{ [if (association.valueDisplay.oclIsUndefined())]
-[accessor/].defaultLabel()[else]
-[association.valueDisplay.label(accessor)/][/if]
-| default('[if (not association.nullDisplayValue.oclIsUndefined())]
+{{ [accessor/][association.valueLabel()/] | default('[if (not association.nullDisplayValue.oclIsUndefined())]
 [association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
 [/if]
 [/template]
-
 
 [template public getImmediateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
 [if (field.oclIsTypeOf(UnitFeature))]

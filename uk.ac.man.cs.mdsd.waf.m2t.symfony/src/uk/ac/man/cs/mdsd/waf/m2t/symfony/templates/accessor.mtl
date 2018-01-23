@@ -151,9 +151,11 @@ if not association.childFeature.oclIsUndefined() then
 [query public accessor(feature : FeaturePath, parentAccessor : String) : String
 	= if feature.oclIsTypeOf(FeaturePathAttribute) then
 			feature.oclAsType(FeaturePathAttribute).accessor(parentAccessor)
-		else
+		else if feature.oclIsTypeOf(FeaturePathAssociation) then
 			feature.oclAsType(FeaturePathAssociation).accessor(parentAccessor)
-		endif
+		else
+			feature.oclAsType(FeaturePathLabel).accessor(parentAccessor)
+		endif endif
 /]
 
 [query public accessor(attribute : FeaturePathAttribute, parentAccessor : String) : String
@@ -168,6 +170,10 @@ if not association.childFeature.oclIsUndefined() then
 			else
 				association.childFeature.accessor(accessor)
 			endif
+/]
+
+[query public accessor(label : FeaturePathLabel, parentAccessor : String) : String
+	= parentAccessor
 /]
 
 [query public accessor(child : ChildPath, parentAccessor : String) : String

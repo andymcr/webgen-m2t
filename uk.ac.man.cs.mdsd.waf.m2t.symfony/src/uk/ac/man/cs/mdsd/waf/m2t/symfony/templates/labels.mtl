@@ -7,6 +7,81 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
+[query public valueLabel(association : UnitAssociation) : String
+	= if association.childFeature.oclIsUndefined() then
+			'.defaultLabel()'
+		else
+			association.childFeature.valueLabel()
+		endif
+/]
+
+[query private valueLabel(child : ChildPath) : String
+	= if child.oclIsTypeOf(ChildPathAttribute) then
+			child.oclAsType(ChildPathAttribute).valueLabel()
+		else
+			child.oclAsType(ChildPathAssociation).valueLabel()
+		endif
+/]
+
+[query private valueLabel(child : ChildPathAttribute) : String
+	= ''
+/]
+
+[query private valueLabel(child : ChildPathAssociation) : String
+	= if child.childFeature.oclIsUndefined() then
+		let label : String
+			= if child.valueDisplay.oclIsUndefined() then
+					'defaultLabel()'
+				else
+					if child.valueDisplay.oclIsTypeOf(ModelLabel) then
+						child.valueDisplay.oclAsType(ModelLabel).name.concat('Label()')
+					else
+						child.valueDisplay.oclAsType(Attribute).name.concat('Label()')
+					endif
+				endif
+			in '.'.concat(label)
+		else
+ 			child.childFeature.valueLabel()
+		endif
+/]
+
+[query public valueLabel(path : FeaturePath) : String
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			path.oclAsType(FeaturePathAttribute).valueLabel()
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).valueLabel()
+		else
+			path.oclAsType(FeaturePathLabel).valueLabel()
+		endif endif
+/]
+
+[query private valueLabel(path : FeaturePathAttribute) : String
+	= ''
+/]
+
+[query private valueLabel(path : FeaturePathAssociation) : String
+	= if path.childFeature.oclIsUndefined() then
+		let label : String
+			= if path.valueDisplay.oclIsUndefined() then
+						'defaultLabel()'
+					else
+						if path.valueDisplay.oclIsTypeOf(ModelLabel) then
+							path.valueDisplay.oclAsType(ModelLabel).name.concat('Label()')
+						else
+							path.valueDisplay.oclAsType(Attribute).name.concat('Label()')
+						endif
+					endif
+			in '.'.concat(label)
+		else
+ 			path.childFeature.valueLabel()
+		endif
+/]
+
+[query private valueLabel(path : FeaturePathLabel) : String
+	= '.'.concat(path.label.name).concat('Label()')
+/]
+
+
 [template public label(label : Label, accessor : String)
 	? (label.oclIsTypeOf(ModelLabel))  post(trim())]
 [let modelLabel : ModelLabel = label.oclAsType(ModelLabel)]

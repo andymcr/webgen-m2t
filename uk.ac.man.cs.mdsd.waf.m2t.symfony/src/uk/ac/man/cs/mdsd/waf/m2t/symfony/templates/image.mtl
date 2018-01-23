@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
 
 [query public thumbFilter(unit : ImageUnit) : ThumbnailFilter
@@ -172,13 +173,13 @@ src[/if]="{{ '[unit.missingImagePath/]' | imagine_filter('[unit.imageFilter.name
 
 [template private imageAlt(unit : ImageUnit, accessor : String) post(trim())]
 [if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(accessor)/] }}"
+alt="{{ [unit.titleFeature.accessor(accessor)/][unit.titleFeature.valueLabel()/] }}"
 [/if]
 [/template]
 
 [template private imageTitle(unit : ImageUnit, accessor : String) post(trim())]
 [if (not unit.titleFeature.oclIsUndefined())]
-title="{{ [unit.titleFeature.accessor(accessor)/] }}"
+title="{{ [unit.titleFeature.accessor(accessor)/][unit.titleFeature.valueLabel()/] }}"
 [/if]
 [/template]
 
