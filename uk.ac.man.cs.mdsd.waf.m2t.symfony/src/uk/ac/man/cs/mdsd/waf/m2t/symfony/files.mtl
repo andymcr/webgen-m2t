@@ -107,6 +107,10 @@
 	= 'templates'
 /]
 
+[query public thirdPartyBundlesDirectory(eObject : EObject) : String
+	= eObject.templatesDirectory().concat('/').concat('bundles')
+/]
+
 [query public webControllersDirectory(eObject : EObject) : String
 	= eObject.controllersDirectory().concat('/').concat('Web')
 /]
@@ -123,14 +127,6 @@
 	= eObject.fosViewsDirectory().concat('/').concat('Profile')
 /]
 
-[query public fosResourcesDirectory(eObject : EObject) : String
-	= eObject.templatesDirectory().concat('/').concat(eObject.fosUserBundleName())
-/]
-
-[query public fosViewsDirectory(eObject : EObject) : String
-	= eObject.fosResourcesDirectory().concat('/').concat('views')
-/]
-
 [query public fosRegistrationDirectory(eObject : EObject) : String
 	= eObject.fosViewsDirectory().concat('/').concat('Registration')
 /]
@@ -141,6 +137,10 @@
 
 [query public fosSecurityDirectory(eObject : EObject) : String
 	= eObject.fosViewsDirectory().concat('/').concat('Security')
+/]
+
+[query public fosViewsDirectory(eObject : EObject) : String
+	= eObject.thirdPartyBundlesDirectory().concat('/').concat(eObject.fosUserBundleName())
 /]
 
 
