@@ -21,10 +21,15 @@
 /]
 
 
-[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, useAnchor : Boolean)
+[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, objectAccess : Boolean, useAnchor : Boolean)
 	? (feature.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
 [let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
-[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
+[let accessor : String = parentAccessor.concat('.')
+		.concat(if objectAccess then
+					attribute.attribute.modelPropertyName()
+				else
+					attribute.attribute.columnName()
+				endif)]
 [if (attribute.attribute.isRequired())]
 [unit.image(accessor, baseAccessor, useAnchor)/]
 [else]
@@ -44,7 +49,7 @@
 [/let]
 [/template]
 
-[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, useAnchor : Boolean)
+[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, objectAccess : Boolean, useAnchor : Boolean)
 	? (feature.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
 [let association : FeaturePathAssociation = feature.oclAsType(FeaturePathAssociation)]
 [let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
@@ -76,10 +81,15 @@
 [/let]
 [/template]
 
-[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, useAnchor : Boolean)
+[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, objectAccess : Boolean, useAnchor : Boolean)
 	? (feature.oclIsTypeOf(ChildPathAttribute)) post(trim())]
 [let attribute : ChildPathAttribute = feature.oclAsType(ChildPathAttribute)]
-[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
+[let accessor : String = parentAccessor.concat('.')
+		.concat(if objectAccess then
+					attribute.attribute.modelPropertyName()
+				else
+					attribute.attribute.columnName()
+				endif)]
 [if (attribute.attribute.isRequired())]
 [unit.image(accessor, baseAccessor, useAnchor)/]
 [else]
@@ -99,12 +109,12 @@
 [/let]
 [/template]
 
-[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String)
+[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, objectAccess : Boolean)
 	? (feature.oclIsTypeOf(ChildPathAssociation)) post(trim())]
 [let association : ChildPathAssociation = feature.oclAsType(ChildPathAssociation)]
 [let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
 [if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.imagePath(unit, accessor, baseAccessor)/]
+[association.childFeature.imagePath(unit, accessor, baseAccessor, objectAccess)/]
 [/if]
 [/let]
 [/let]

@@ -15,21 +15,24 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::display/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
-[file(unit.viewFilename(), false)]
+[let imageUnit : ImageIndexUnit = unit.oclAsType(ImageUnit)]
+[file(imageUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section class="[unit.styleClass/]" id="[unit.instanceName()/]">
-[if (not unit.omitCaption)]
- <h4 class="[unit.captionClass/]">[unit.displayLabel/]</h4>
+<section class="[imageUnit.styleClass/]" id="[imageUnit.instanceName()/]">
+[if (not imageUnit.omitCaption)]
+ <h4 class="[imageUnit.captionClass/]">[imageUnit.unitTitle()/]</h4>
 [/if]
- <div class="row">
-  [unit.unitContent(null, unit.instanceName(), 0)/]
+ <div class="[imageUnit.contentClass/]">
+  [imageUnit.unitContent(null, imageUnit.instanceName(), 0)/]
  </div>
 </section>
 [/file]
+[/let]
 [/template]
 
 [template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
@@ -38,7 +41,7 @@
 [let variable : String = imageUnit.contentType().instanceName()]
 {% for [variable/] in [accessor/] %}
 <div class="[imageUnit.columnClass/]">
- <div class="[imageUnit.contentClass/]">
+ <div class="card[if (imageUnit.sizeClass <> '')] [imageUnit.sizeClass/][/if]">
   [imageUnit.image(variable)/]
 [if (not imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
   [imageUnit.content(variable, depthIndex)/]
@@ -66,7 +69,7 @@
 [if (unit.imagePathFeature.oclIsUndefined())]
 [unit.imageMissing(null, accessor, false)/]
 [else]
-[unit.imagePathFeature.imagePath(unit, accessor, accessor, false)/]
+[unit.imagePathFeature.imagePath(unit, accessor, accessor, unit.hasObjectAccess(), false)/]
 [/if]
 [/template]
 

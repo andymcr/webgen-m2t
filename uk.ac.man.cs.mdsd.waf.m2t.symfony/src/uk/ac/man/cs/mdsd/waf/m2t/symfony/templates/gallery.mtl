@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
@@ -33,7 +34,7 @@
 [template private uniteGallery(unit : GalleryUnit, accessor : String) post(trim())]
 <div id="gallery" class="[unit.contentClass/]" style="display:none;">
 {% for image in [accessor/] %}
-[unit.imagePathFeature.imagePath(unit, 'image', 'image', false)/]
+[unit.imagePathFeature.imagePath(unit, 'image', 'image', unit.hasObjectAccess(), false)/]
 {% endfor %}
 </div>
 <script type="text/javascript"> 

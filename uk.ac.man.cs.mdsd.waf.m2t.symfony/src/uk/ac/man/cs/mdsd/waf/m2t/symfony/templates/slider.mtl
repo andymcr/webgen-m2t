@@ -155,7 +155,7 @@
 <div id="links">
 [let variable : String = unit.contentType().instanceName()]
 {% for [variable/] in [unit.instanceName()/] %}
-[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), true)/]
+[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), unit.hasObjectAccess(), true)/]
 {% endfor %}
 [/let]
 </div>
@@ -176,7 +176,7 @@ blueimp.Gallery(
 [let variable : String = unit.contentType().instanceName()]
  <ul class="slides">
 {% for [variable/] in [unit.instanceName()/] %}
-  <li>[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), false)/]</li>
+  <li>[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), unit.hasObjectAccess(), false)/]</li>
 {% endfor %}
 [/let]
  </ul>

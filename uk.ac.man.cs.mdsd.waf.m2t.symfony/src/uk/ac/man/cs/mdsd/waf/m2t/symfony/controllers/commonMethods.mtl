@@ -219,7 +219,7 @@ array_merge(
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
-[if (page.hasImageUnits())]
+[if (page.hasGalleryUnits())]
 [page.templateStyleParameters()/]
 [/if]
 [if (page.hasJavascript())]

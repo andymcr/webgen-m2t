@@ -21,6 +21,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::form/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::gallery/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -60,42 +61,6 @@
 </section>
 [/file]
 [/let]
-[/let]
-[/template]
-
-
-[template private unitTitle(unit : DataUnit)
-	? (unit.title.oclIsUndefined()) post(trim())]
-[unit.unitTitle('')/]
-[/template]
-
-[template private unitTitle(unit : DataUnit)
-	? (not unit.title.oclIsUndefined()) post(trim())]
-[let contentAccessor : String = unit.instanceName()]
-[if (unit.oclIsKindOf(SingletonUnit))]
-[unit.unitTitle(contentAccessor)/]
-[else]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[unit.unitTitle(collectionUnit.routingType().instanceName())/]
-[/let]
-[/if]
-[/let]
-[/template]
-
-[template private unitTitle(unit : DataUnit, accessor : String)
-	? (unit.title.oclIsUndefined()) post(trim())]
-{{ '[unit.id()/]' | trans({}, '[unit.translationDomain()/]') }}
-[/template]
-
-[template private unitTitle(unit : DataUnit, accessor : String)
-	? (not unit.title.oclIsUndefined()) post(trim())]
-[let labelAccessor : String
-	= if unit.title.oclIsKindOf(Attribute) then
-			accessor.concat('.').concat(unit.title.oclAsType(Attribute).modelPropertyName())
-		else
-			accessor
-		endif]
-{{ [unit.title.label(labelAccessor)/] }}
 [/let]
 [/template]
 
