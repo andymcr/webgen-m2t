@@ -1,0 +1,66 @@
+[comment encoding = UTF-8 /]
+[module titles(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
+
+
+[template public unitTitle(unit : DataUnit)
+	? (unit.title.oclIsUndefined()) post(trim())]
+[unit.title()/]
+[/template]
+
+[template public unitTitle(unit : DataUnit)
+	? (not unit.title.oclIsUndefined()) post(trim())]
+[let contentAccessor : String = unit.instanceName()]
+[if (unit.oclIsKindOf(SingletonUnit))]
+[unit.title(unit.title, contentAccessor)/]
+[else]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+[unit.title(unit.title, collectionUnit.routingType().instanceName())/]
+[/let]
+[/if]
+[/let]
+[/template]
+
+[template public unitTitle(unit : IndexUnit, accessor : String)
+	? (unit.title.oclIsUndefined()) post(trim())]
+[unit.title()/]
+[/template]
+
+[template public unitTitle(unit : IndexUnit, accessor : String)
+	? (not unit.title.oclIsUndefined()) post(trim())]
+[unit.title(unit.title, accessor)/]
+[/template]
+
+[template public unitTitle(unit : ImageIndexUnit)
+	? (unit.title.oclIsUndefined()) post(trim())]
+[unit.title()/]
+[/template]
+
+[template public unitTitle(unit : ImageIndexUnit)
+	? (not unit.title.oclIsUndefined()) post(trim())]
+[unit.title(unit.title, unit.routingType().instanceName())/]
+[/template]
+
+[template private title(unit : DynamicUnit) post(trim())]
+{{ '[unit.id()/]' | trans({}, '[unit.translationDomain()/]') }}
+[/template]
+
+[template private title(unit : DynamicUnit, title : Label, accessor : String) post(trim())]
+[let labelAccessor : String
+	= if title.oclIsKindOf(Attribute) then
+			accessor.concat('.').concat(title.oclAsType(Attribute).modelPropertyName())
+		else
+			accessor
+		endif]
+{{ [title.label(labelAccessor)/] }}
+[/let]
+[/template]
+
+
