@@ -89,7 +89,7 @@ if ($request->isMethod('POST')) {
 
 	[/for]
     } else {
-	[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+	[if (unit.hasCustomisedBody())]
         [unit.customValuesBody('add')/]
 	[else]
         $this->[unit.instanceName()/]->handleRequest($request);
@@ -259,7 +259,7 @@ array_merge(
 [let entityOrView : EntityOrView = unit.contentType]
 [let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
 [let parentService : Service = entityOrView.container().services(unit.pageDisplayedOn().partOf)->first()]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceName()/]->find([entityOrView.container().routeParameters()/]));
+$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([entityOrView.container().routeParameters()/]));
 [/let]
 [/let]
 [/let]

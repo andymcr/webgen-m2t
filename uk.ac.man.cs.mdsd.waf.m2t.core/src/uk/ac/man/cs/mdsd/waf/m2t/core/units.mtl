@@ -77,6 +77,15 @@
 		->select(f | not f.isSingleton())
 /]
 
+[query public containerService(unit : DynamicUnit) : Service
+	= let model : WafModel = unit.pageDisplayedOn().partOf
+		in if unit.isContained() then
+			model.services(unit.contentType().container())->first()
+		else
+			null
+		endif
+/]
+
 [query public containingAssociation(unit : DynamicUnit) : Association
 	= if unit.contentType().oclIsUndefined() then
 			null
@@ -173,6 +182,12 @@
 				->select(f | f.collectionUiAllowAdd or f.collectionUiAllowRemove)
 				->notEmpty()
 		endif
+/]
+
+[query public hasCustomisedBody(unit : EditUnit) : Boolean
+	= unit.customiseValues
+		or unit.hasForcedValueFeatures()
+		or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation()))
 /]
 
 [query public hasDefaultValueFields(unit : ContentUnit) : Boolean
@@ -350,11 +365,21 @@
 /]
 
 [query private services(unit : EditUnit) : Sequence(Service)
-	= if unit.oclIsTypeOf(UpdateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
-			Sequence{ unit.routingService() }
-		else
-			Sequence{}
-		endif
+	= let containerService : Sequence(Service)
+		= if unit.hasCustomisedBody() and unit.isContained() then
+				if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit)then
+					Sequence{ unit.containerService() }
+				else
+					Sequence{}
+				endif
+			else
+				Sequence{}
+			endif
+		in if unit.oclIsTypeOf(UpdateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
+				Sequence{ unit.routingService() }
+			else
+				Sequence{}
+			endif->union(containerService)
 /]
 
 [query public urlFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
