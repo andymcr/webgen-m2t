@@ -67,9 +67,9 @@
 
 [template private indexImage(unit : ImageIndexUnit, accessor : String) post(trim())]
 [if (unit.imagePathFeature.oclIsUndefined())]
-[unit.imageMissing(null, accessor, false)/]
+[unit.imageMissing(null, accessor, '')/]
 [else]
-[unit.imagePathFeature.imagePath(unit, accessor, accessor, unit.hasObjectAccess(), false)/]
+[unit.imagePathFeature.imagePath(unit, accessor, accessor, '')/]
 [/if]
 [/template]
 

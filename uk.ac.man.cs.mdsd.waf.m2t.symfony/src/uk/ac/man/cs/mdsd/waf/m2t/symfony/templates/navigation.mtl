@@ -18,7 +18,7 @@
 <nav>
  <div class="nav-wrapper">
 [if (not model.logoImage.oclIsUndefined())]
-  <a href="#!" class="brand-logo left">[model.image(false)/]</a>
+  <a href="#!" class="brand-logo left">[model.image()/]</a>
 [/if]
   [topMenu.topItems(model)/]
   <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
