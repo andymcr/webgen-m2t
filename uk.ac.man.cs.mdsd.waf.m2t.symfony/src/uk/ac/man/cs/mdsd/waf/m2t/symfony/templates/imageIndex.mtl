@@ -20,7 +20,7 @@
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
-[let imageUnit : ImageIndexUnit = unit.oclAsType(ImageUnit)]
+[let imageUnit : ImageIndexUnit = unit.oclAsType(ImageIndexUnit)]
 [file(imageUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section class="[imageUnit.styleClass/]" id="[imageUnit.instanceName()/]">
@@ -41,13 +41,13 @@
 [let variable : String = imageUnit.contentType().instanceName()]
 {% for [variable/] in [accessor/] %}
 <div class="[imageUnit.columnClass/]">
- <div class="card[if (imageUnit.sizeClass <> '')] [imageUnit.sizeClass/][/if]">
-  [imageUnit.image(variable)/]
-[if (not imageUnit.overlayTitle and not imageUnit.titleFeature.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
-  [imageUnit.content(variable, depthIndex)/]
+ <div class="[imageUnit.cardClass/]">
+  [imageUnit.cardImage(variable)/]
+[if (not imageUnit.overlayTitle and not imageUnit.imageTitleFeature.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
+  [imageUnit.cardContent(variable, depthIndex)/]
 [/if]
 [if (imageUnit.hasInlineActions())]
-  [imageUnit.actions(variable)/]
+  [imageUnit.cardActions(variable)/]
 [/if]
  </div>
 </div>
@@ -56,27 +56,19 @@
 [/let]
 [/template]
 
-[template private image(unit : ImageIndexUnit, variable : String) post(trim())]
+[template private cardImage(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-image">
- [unit.indexImage(variable)/]
-[if (unit.overlayTitle and not unit.titleFeature.oclIsUndefined())]
- <span class="card-title[if (unit.truncateTitle)] truncate[/if]">{{ [unit.titleFeature.accessor(variable)/] }}</span>
+ [unit.image(variable)/]
+[if (unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{% [unit.imageTitleFeature.accessor(variable)/] %}</span>
 [/if]
 </div>
 [/template]
 
-[template private indexImage(unit : ImageIndexUnit, accessor : String) post(trim())]
-[if (unit.imagePathFeature.oclIsUndefined())]
-[unit.imageMissing(null, accessor, '')/]
-[else]
-[unit.imagePathFeature.imagePath(unit, accessor, accessor, '')/]
-[/if]
-[/template]
-
-[template private content(unit : ImageIndexUnit, variable : String, depthIndex : Integer) post(trim())]
+[template private cardContent(unit : ImageIndexUnit, variable : String, depthIndex : Integer) post(trim())]
 <div class="card-content">
-	[if (not unit.overlayTitle and not unit.titleFeature.oclIsUndefined())]
- <span class="card-title[if (unit.truncateTitle)] truncate[/if]">{{ [unit.titleFeature.accessor(variable)/][unit.titleFeature.valueLabel()/] }}</span>
+	[if (not unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{{ [unit.imageTitleFeature.accessor(variable)/][unit.imageTitleFeature.valueLabel()/] }}</span>
 	[/if]
 	[for (field : UnitField | unit.displayFields)]
 		[if (field.isConditionalDisplay())]
@@ -94,7 +86,7 @@
 </div>
 [/template]
 
-[template private actions(unit : ImageIndexUnit, variable : String) post(trim())]
+[template private cardActions(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-action">
 [for (action : InlineAction | unit.inlineActions())]
 	[if (unit.hasObjectAccess())]

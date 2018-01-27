@@ -38,12 +38,12 @@
 [unit.title(unit.title, accessor)/]
 [/template]
 
-[template public unitTitle(unit : ImageIndexUnit)
+[template public unitTitle(unit : ImageUnit)
 	? (unit.title.oclIsUndefined()) post(trim())]
 [unit.title()/]
 [/template]
 
-[template public unitTitle(unit : ImageIndexUnit)
+[template public unitTitle(unit : ImageUnit)
 	? (not unit.title.oclIsUndefined()) post(trim())]
 [unit.title(unit.title, unit.routingType().instanceName())/]
 [/template]

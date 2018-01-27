@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -15,7 +16,7 @@
 [file(sliderUnit.viewFilename(), false)]
 <section class="[sliderUnit.styleClass/]" id="[sliderUnit.instanceName()/]">
 [if (not sliderUnit.omitCaption)]
- <h4 class="[sliderUnit.captionClass/]">[sliderUnit.displayLabel/]</h4>
+ <h4 class="[sliderUnit.captionClass/]">[sliderUnit.unitTitle()/]</h4>
 [/if]
  [sliderUnit.materializeCSS()/]
 </section>
@@ -23,40 +24,12 @@
 [/let]
 [/template]
 
-[template private blueimp(unit : SliderUnit) post(trim())]
-<div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-carousel blueimp-gallery-controls">
- <div class="slides"></div>
- <h3 class="title"></h3>
- <a class="prev">&lt;</a>
- <a class="next">&gt;</a>
- <a class="play-pause"></a>
- <ol class="indicator"></ol>
-</div>
-<div id="links">
-[let variable : String = unit.contentType().instanceName()]
-{% for [variable/] in [unit.instanceName()/] %}
-[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), '#')/]
-{% endfor %}
-[/let]
-</div>
-<script src="{{ asset('js/blueimp-gallery.min.js') }}"></script>
-<script type="text/javascript">
-blueimp.Gallery(
-    document.getElementById('links').getElementsByTagName('a'),
-    {
-        container: '#blueimp-gallery-carousel',
-        carousel: true
-    }
-);
-</script>
-[/template]
-
 [template private materializeCSS(unit : SliderUnit) post(trim())]
 <div class="slider">
-[let variable : String = unit.contentType().instanceName()]
  <ul class="slides">
+[let variable : String = unit.contentType().instanceName()]
 {% for [variable/] in [unit.instanceName()/] %}
-  <li>[unit.imagePathFeature.imagePath(unit, variable, variable.concat('.image'), '')/]</li>
+  <li>[unit.image(variable)/]</li>
 {% endfor %}
 [/let]
  </ul>

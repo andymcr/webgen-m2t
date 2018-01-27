@@ -22,178 +22,120 @@
 /]
 
 
-[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, href : String)
-	? (feature.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
-[let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
-[let accessor : String = parentAccessor.concat('.')
-		.concat(if unit.hasObjectAccess() then
-					attribute.attribute.modelPropertyName()
-				else
-					attribute.attribute.columnName()
-				endif)]
-[if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor, href)/]
-[else]
-	[if (unit.missingImagePath.oclIsUndefined())]
-{%- if [accessor/] is not empty -%}
-[unit.image(accessor, baseAccessor, href)/]
-{%- endif -%}
-	[else]
-{%- if [accessor/] is empty -%}
-[unit.imageMissing(accessor, baseAccessor, href)/]
-{%- else -%}
-[unit.image(accessor, baseAccessor, href)/]
-{%- endif -%}
-	[/if]
-[/if]
-[/let]
-[/let]
-[/template]
-
-[template public imagePath(feature : FeaturePath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, href : String)
-	? (feature.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
-[let association : FeaturePathAssociation = feature.oclAsType(FeaturePathAssociation)]
-[let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
-[if (association.childFeature.oclIsUndefined())]
-[unit.imageMissing(accessor, baseAccessor, href)/]
-[else]
-	[if (association.association.isSingleton())]
-		[if (association.association.isRequired())]
-[association.childFeature.imagePath(unit, accessor, baseAccessor, href)/]
-		[else]
-{%- if [accessor/] is empty -%}
-[unit.imageMissing(accessor, baseAccessor, href)/]
-{%- else -%}
-[association.childFeature.imagePath(unit, accessor, baseAccessor, href)/]
-{%- endif -%}
-		[/if]
-	[else]
-{%- if [accessor/] | length > 0 -%}
-{%- set child = [accessor/] | first -%}
-[association.childFeature.imagePath(unit, 'child', baseAccessor, href)/]
-		[if (not unit.missingImagePath.oclIsUndefined())]
-{%- else -%}
-[unit.imageMissing(accessor, baseAccessor, href)/]
-		[/if]
-{%- endif -%}
-	[/if]
-[/if]
-[/let]
-[/let]
-[/template]
-
-[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, href : String)
-	? (feature.oclIsTypeOf(ChildPathAttribute)) post(trim())]
-[let attribute : ChildPathAttribute = feature.oclAsType(ChildPathAttribute)]
-[let accessor : String = parentAccessor.concat('.')
-		.concat(if unit.hasObjectAccess() then
-					attribute.attribute.modelPropertyName()
-				else
-					attribute.attribute.columnName()
-				endif)]
-[if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor, href)/]
-[else]
-	[if (unit.missingImagePath.oclIsUndefined())]
-{%- if [accessor/] is not empty -%}
-[unit.image(accessor, baseAccessor, href)/]
-{%- endif -%}
-	[else]
-{%- if [accessor/] is empty -%}
-[unit.imageMissing(accessor, baseAccessor, href)/]
-{%- else -%}
-[unit.image(accessor, baseAccessor, href)/]
-{%- endif -%}
-	[/if]
-[/if]
-[/let]
-[/let]
-[/template]
-
-[template public imagePath(feature : ChildPath, unit : ImageUnit, parentAccessor : String, baseAccessor : String, href : String)
-	? (feature.oclIsTypeOf(ChildPathAssociation)) post(trim())]
-[let association : ChildPathAssociation = feature.oclAsType(ChildPathAssociation)]
-[let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
-[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.imagePath(unit, accessor, baseAccessor, href)/]
-[/if]
-[/let]
-[/let]
-[/template]
-
-
-[template public imageMissing(unit : ImageUnit, accessor : String, baseAccessor : String, href : String)
-	? (not unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-[if (href <> '')]
-<a href="[href/]">[/if]
-<img [unit.imageMissingSrc()/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>[if (href <> '')]
-</a>[/if]
-[/template]
-
-[template public imageMissing(unit : ImageUnit, accessor : String, baseAccessor : String, href : String)
-	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-[let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-[if (href <> '')]
-<a href="[href/]">[/if]
-<img [galleryUnit.imageMissingSrc()/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageMissingDataImage()/] [galleryUnit.imageDataDescription(baseAccessor)/]/>[if (href <> '')]
-</a>[/if]
-[/let]
-[/template]
-
 [template public image(model : WafModel) post(trim())]
 [let imagePath : String = '\''.concat(model.logoImage).concat('\'')]
 <img [imagePath.imageSrc(model.logoFilters)/]/>
 [/let]
 [/template]
 
-[template public image(unit : ImageUnit, accessor : String, baseAccessor : String, href : String)
-	? (not unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-[if (href <> '')]
-<a href="[href/]">[/if]
-<img [accessor.imageSrc(unit.imageFilter)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>[if (href <> '')]
-</a>[/if]
+[template public image(unit : ImageUnit, baseAccessor : String) post(trim())]
+[if (unit.imagePathFeature.oclIsUndefined())]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.imageMissing(unit.imageFilter, baseAccessor)/]
+	[/if]
+[elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.imageMissing(unit.imageFilter, baseAccessor)/]
+	[/if]
+[else]
+[let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
+{%- if [imageAccessor/] is not empty -%}
+[unit.image(unit.imageFilter, imageAccessor, baseAccessor)/]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+{%- else -%}
+[unit.imageMissing(unit.imageFilter, baseAccessor)/]
+	[/if]
+{%- endif -%}
+[/let]
+[/if]
 [/template]
 
-[template public image(unit : ImageUnit, accessor : String, baseAccessor : String, href : String)
-	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-[let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-[if (href <> '')]
-<a href="[href/]">[/if]
-<img [accessor.imageSrc(galleryUnit.imageFilter)/] [galleryUnit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/] [galleryUnit.imageDataImage(accessor)/] [galleryUnit.imageDataDescription(baseAccessor)/]/>[if (href <> '')]
-</a>[/if]
-[/let]
+
+[template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String) post(trim())]
+<img [unit.imageMissingSrc(manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[/template]
+
+[template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String,  baseAccessor : String) post(trim())]
+<img [accessor.imageSrc(manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[/template]
+
+[template public imageMissingSrc(unit : ImageUnit, manipulation : ImageManipulation) post(trim())]
+src="{{ '[unit.missingImagePath/]'[if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
 [template private imageSrc(accessor : String, manipulation : ImageManipulation) post(trim())]
 src="{{ [accessor/][if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
-[template private imageMissingSrc(unit : ImageUnit) post(trim())]
-src="{{ '[unit.missingImagePath/]' | imagine_filter('[unit.imageFilter.name/]') }}"
-[/template]
-
-[template private imageAlt(unit : ImageUnit, accessor : String) post(trim())]
-[if (not unit.titleFeature.oclIsUndefined())]
-alt="{{ [unit.titleFeature.accessor(accessor)/][unit.titleFeature.valueLabel()/] }}"
+[template public imageAlt(unit : ImageUnit, baseAccessor : String) post(trim())]
+[if (not unit.imageTitleFeature.oclIsUndefined())]
+alt="{{ [unit.imageTitleFeature.accessor(baseAccessor)/][unit.imageTitleFeature.valueLabel()/] }}"
 [/if]
 [/template]
 
-[template private imageTitle(unit : ImageUnit, accessor : String) post(trim())]
-[if (not unit.titleFeature.oclIsUndefined())]
-title="{{ [unit.titleFeature.accessor(accessor)/][unit.titleFeature.valueLabel()/] }}"
+[template public imageTitle(unit : ImageUnit, baseAccessor : String) post(trim())]
+[if (not unit.imageTitleFeature.oclIsUndefined())]
+title="{{ [unit.imageTitleFeature.accessor(baseAccessor)/][unit.imageTitleFeature.valueLabel()/] }}"
 [/if]
 [/template]
 
-[template private imageDataImage(unit : GalleryUnit, accessor : String) post(trim())]
-data-image="[if (unit.fullSizeFilter.oclIsUndefined())]
-http://sps.andycarpenter.me.uk/{{ [accessor/] }}[else]
-{{ [accessor/] | imagine_filter('[unit.imageFilter.name/]') }}[/if]"
-[/template]
 
-[template private imageMissingDataImage(unit : GalleryUnit) post(trim())]
-data-image="http://sps.andycarpenter.me.uk/[unit.missingImagePath/]"
-[/template]
+[query public imagePath(path : FeaturePath, unit : ImageUnit, parentAccessor : String) : String
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			path.oclAsType(FeaturePathAttribute).imagePath(parentAccessor, unit.hasObjectAccess())
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).imagePath(parentAccessor, unit.hasObjectAccess())
+		else
+			null
+		endif endif
+/]
 
-[template private imageDataDescription(unit : ImageUnit, accessor : String) post(trim())]
-data-description="?????"
-[/template]
+[query private imagePath(attribute : FeaturePathAttribute, parentAccessor : String, objectAccess : Boolean) : String
+	= let localAccessor : String
+			= if objectAccess then
+					attribute.attribute.modelPropertyName()
+				else
+					attribute.attribute.columnName()
+				endif
+		in parentAccessor.concat('.').concat(localAccessor)
+/]
+
+[query private imagePath(association : FeaturePathAssociation, parentAccessor : String, objectAccess : Boolean) : String
+	= if association.childFeature.oclIsUndefined() then
+			null
+		else
+			association.childFeature.imagePath(
+				parentAccessor.concat('.').concat(association.association.modelPropertyName()),
+				objectAccess)
+		endif
+/]
+
+[query private imagePath(path : ChildPath, parentAccessor : String, objectAccess : Boolean) : String
+	= if path.oclIsTypeOf(ChildPathAttribute) then
+			path.oclAsType(ChildPathAttribute).imagePath(parentAccessor, objectAccess)
+		else if path.oclIsTypeOf(ChildPathAssociation) then
+			path.oclAsType(ChildPathAssociation).imagePath(parentAccessor, objectAccess)
+		else
+			null
+		endif endif
+/]
+
+[query private imagePath(attribute : ChildPathAttribute, parentAccessor : String, objectAccess : Boolean) : String
+	= let localAccessor : String
+			= if objectAccess then
+					attribute.attribute.modelPropertyName()
+				else
+					attribute.attribute.columnName()
+				endif
+		in parentAccessor.concat('.').concat(localAccessor)
+/]
+
+[query private imagePath(association : ChildPathAssociation, parentAccessor : String, objectAccess : Boolean) : String
+	= if association.childFeature.oclIsUndefined() then
+			null
+		else
+			association.childFeature.imagePath(
+				parentAccessor.concat('.').concat(association.association.modelPropertyName()),
+				objectAccess)
+		endif
+/]

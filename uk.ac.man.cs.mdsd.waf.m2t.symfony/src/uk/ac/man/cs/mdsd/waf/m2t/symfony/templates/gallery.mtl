@@ -9,33 +9,40 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
-[file(unit.viewFilename(), false)]
-<section class="[unit.styleClass/]" id="[unit.instanceName()/]">
-[if (not unit.omitCaption)]
- <h4 class="[unit.captionClass/]">[unit.displayLabel/]</h4>
+[let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
+[file(galleryUnit.viewFilename(), false)]
+{% trans_default_domain "entity" %}
+<section class="[galleryUnit.styleClass/]" id="[galleryUnit.instanceName()/]">
+[if (not galleryUnit.omitCaption)]
+ <h4 class="[galleryUnit.captionClass/]">[galleryUnit.unitTitle()/]</h4>
 [/if]
- [unit.unitContent(null, unit.instanceName(), 0)/]
+ <div class="[galleryUnit.contentClass/]">
+  [galleryUnit.unitContent(null, galleryUnit.instanceName(), 0)/]
+ </div>
 </section>
 [/file]
+[/let]
 [/template]
 
 [template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-[galleryUnit.uniteGallery(accessor)/]
+[galleryUnit.blueimpGallery(accessor)/]
 [/let]
 [/template]
 
 
 [template private uniteGallery(unit : GalleryUnit, accessor : String) post(trim())]
+[let variable : String = 'image']
 <div id="gallery" class="[unit.contentClass/]" style="display:none;">
-{% for image in [accessor/] %}
-[unit.imagePathFeature.imagePath(unit, 'image', 'image', '')/]
-{% endfor %}
+{%- for [variable/] in [accessor/] -%}
+ [unit.image(variable)/]
+{%- endfor -%}
 </div>
 <script type="text/javascript"> 
     jQuery(document).ready(function(){ 
@@ -60,99 +67,10 @@
         });
     }); 
 </script>
-[/template]
-
-[template private uniteGallery(feature : FeaturePath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
-	? (feature.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
-[let attribute : FeaturePathAttribute = feature.oclAsType(FeaturePathAttribute)]
-[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
-[if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor, '')/]
-[else]
-	[if (unit.missingImagePath.oclIsUndefined())]
-{% if [accessor/] is not empty %}
-[unit.image(accessor, baseAccessor, '')/]
-{% endif %}
-	[else]
-{% if [accessor/] is empty %}
-[unit.imageMissing(accessor, baseAccessor, '')/]
-{% else %}
-[unit.image(accessor, baseAccessor, '')/]
-{% endif %}
-	[/if]
-[/if]
-[/let]
 [/let]
 [/template]
 
-[template private uniteGallery(feature : FeaturePath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
-	? (feature.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
-[let association : FeaturePathAssociation = feature.oclAsType(FeaturePathAssociation)]
-[let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
-[if (association.association.isSingleton())]
-	[if (association.association.isRequired())]
-		[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.uniteGallery(unit, accessor, baseAccessor)/]
-		[/if]
-	[else]
-{% if [accessor/] is empty %}
-		[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.uniteGallery(unit, accessor, baseAccessor)/]
-		[/if]
-{% endif %}
-	[/if]
-[else]
-{% if [accessor/] | length > 0 %}
-{% set child = [accessor/] | first %}
-	[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.uniteGallery(unit, 'child', baseAccessor)/]
-	[/if]
-	[if (not unit.missingImagePath.oclIsUndefined())]
-{% else %}
-[unit.imageMissing(accessor, baseAccessor, '')/]
-	[/if]
-{% endif %}
-[/if]
-[/let]
-[/let]
-[/template]
-
-[template private uniteGallery(feature : ChildPath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
-	? (feature.oclIsTypeOf(ChildPathAttribute)) post(trim())]
-[let attribute : ChildPathAttribute = feature.oclAsType(ChildPathAttribute)]
-[let accessor : String = parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())]
-[if (attribute.attribute.isRequired())]
-[unit.image(accessor, baseAccessor, '')/]
-[else]
-	[if (unit.missingImagePath.oclIsUndefined())]
-{% if [accessor/] is not empty %}
-[unit.image(accessor, baseAccessor, '')/]
-{% endif %}
-	[else]
-{% if [accessor/] is empty %}
-[unit.imageMissing(accessor, baseAccessor, '')/]
-{% else %}
-[unit.image(accessor, baseAccessor, '')/]
-{% endif %}
-	[/if]
-[/if]
-[/let]
-[/let]
-[/template]
-
-[template private uniteGallery(feature : ChildPath, unit : GalleryUnit, parentAccessor : String, baseAccessor : String)
-	? (feature.oclIsTypeOf(ChildPathAssociation)) post(trim())]
-[let association : ChildPathAssociation = feature.oclAsType(ChildPathAssociation)]
-[let accessor : String = parentAccessor.concat('.').concat(association.association.modelPropertyName())]
-[if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.uniteGallery(unit, accessor, baseAccessor)/]
-[/if]
-[/let]
-[/let]
-[/template]
-
-
-[template private blueimp(unit : GalleryUnit) post(trim())]
+[template private blueimpGallery(unit : GalleryUnit, accessor : String) post(trim())]
 <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls">
  <h3 class="title"></h3>
  <a class="prev">&lt;</a>
@@ -161,11 +79,11 @@
  <ol class="indicator"></ol>
 </div>
 <div id="links">
-{% for image in [unit.instanceName()/] %}
- <a href="http://sps.andycarpenter.me.uk/{{ image.filePath }}" title="{{ image.image.title }}">
-  <!-- img src="images/thumbnails/banana.jpg" alt="Banana" -->
- </a>
+[let variable : String = 'image']
+{% for [variable/] in [unit.instanceName()/] %}
+ [unit.blueimpImage(variable)/]
 {% endfor %}
+[/let]
 </div>
 <script src="{{ asset('js/blueimp-gallery.min.js') }}"></script>
 <script type="text/javascript">
@@ -177,4 +95,36 @@ blueimp.Gallery(
     }
 );
 </script>
+[/template]
+
+[template public blueimpImage(unit : ImageUnit, baseAccessor : String) post(trim())]
+[if (unit.imagePathFeature.oclIsUndefined())]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.blueimpMissing(unit, baseAccessor)/]/>
+	[/if]
+[elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.blueimpMissing(unit, baseAccessor)/]
+	[/if]
+[else]
+[let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
+{%- if [imageAccessor/] is not empty -%}
+[unit.blueimpX(unit, imageAccessor, baseAccessor)/]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+{%- else -%}
+[unit.blueimpMissing(unit, baseAccessor)/]
+	[/if]
+{%- endif -%}
+[/let]
+[/if]
+[/template]
+
+[template public blueimpMissing(unit : ImageUnit, baseAccessor : String) post(trim())]
+<a [unit.imageMissingSrc(unit, unit.imageFilter)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[/template]
+
+[template public blueimpX(unit : ImageUnit, imageAccessor : String, baseAccessor : String) post(trim())]
+<a [unit.imageMissingSrc(unit, unit.imageFilter)/] [unit.imageTitle(baseAccessor)/]>
+ [unit.image(unit.imageFilter, imageAccessor, baseAccessor)/]
+</a>
 [/template]

@@ -66,9 +66,15 @@
 						'defaultLabel()'
 					else
 						if path.valueDisplay.oclIsTypeOf(ModelLabel) then
-							path.valueDisplay.oclAsType(ModelLabel).name.concat('Label()')
+							let modelLabel : ModelLabel
+								= path.valueDisplay.oclAsType(ModelLabel)
+								in if modelLabel.name.endsWith('Label') then
+										modelLabel.name.concat('()')
+									else
+										modelLabel.name.concat('Label()')
+									endif
 						else
-							path.valueDisplay.oclAsType(Attribute).name.concat('Label()')
+							path.valueDisplay.oclAsType(Attribute).name
 						endif
 					endif
 			in '.'.concat(label)
@@ -78,14 +84,20 @@
 /]
 
 [query private valueLabel(path : FeaturePathLabel) : String
-	= '.'.concat(path.label.name).concat('Label()')
+	= let suffix : String
+		= if path.label.name.endsWith('Label') then
+				'()'
+			else
+				'Label()'
+			endif
+		in '.'.concat(path.label.name).concat(suffix)
 /]
 
 
 [template public label(label : Label, accessor : String)
 	? (label.oclIsTypeOf(ModelLabel))  post(trim())]
 [let modelLabel : ModelLabel = label.oclAsType(ModelLabel)]
-[accessor/].[modelLabel.name/]Label()
+[accessor/].[modelLabel.name/][if (not modelLabel.name.endsWith('Label'))]Label[/if]()
 [/let]
 [/template]
 
