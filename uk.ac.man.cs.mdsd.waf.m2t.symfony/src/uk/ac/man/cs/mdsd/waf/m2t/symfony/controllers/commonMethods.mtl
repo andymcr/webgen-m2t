@@ -222,30 +222,23 @@ $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id
 [if (page.hasGalleryUnits())]
 [page.templateStyleParameters()/]
 [/if]
-[if (page.hasJavascript())]
+[if (page.hasGalleryUnits())]
 [page.templateScriptParameters()/]
 [/if]
 [/template]
 
 [template private templateStyleParameters(page : Page) post(trim())]
 $parameters['['/]'styles'[']'/] = array(
-	[if (page.hasSliderUnits())]
-//    'css/blueimp-gallery.min.css',
-	[/if]
-	[if (page.hasGalleryUnits())]
- //   'css/unite-gallery.css',
-	[/if]
+[if (page.hasGalleryUnits())]
+    'css/blueimp-gallery.min.css',
+[/if]
 );
 [/template]
 
 [template public templateScriptParameters(page : Page) post(trim())]
 $parameters['['/]'scripts'[']'/] = array(
 [if (page.hasGalleryUnits())]
-//    'js/unitegallery.min.js',
-//    'themes/ug-theme-tilesgrid.js',
-[/if]
-[if (page.hasSliderUnits())]
-//    '[page.partOf.javascriptImageFilename()/]',
+    'js/blueimp-gallery.min.js',
 [/if]
 );
 [/template]

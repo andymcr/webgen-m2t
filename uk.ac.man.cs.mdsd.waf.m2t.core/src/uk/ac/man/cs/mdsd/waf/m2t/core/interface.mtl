@@ -10,10 +10,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
 
 
-[query public hasJavascript(model : WafModel) : Boolean
-	= model.pages->select(p | p.hasJavascript())->notEmpty()
-/]
-
 [query public homePage(model : WafModel) : Page
 	= let homes : Sequence(ActionMenuEntry)
 		= model.globalMenus
@@ -53,11 +49,6 @@
 		endif endif endif
 /]
 
-
-[query public hasJavascript(page : Page) : Boolean
-	= page.hasGalleryUnits()
-		or page.hasSliderUnits()
-/]
 
 [query public id(page : Page) : String
 	= page.name.asId()
