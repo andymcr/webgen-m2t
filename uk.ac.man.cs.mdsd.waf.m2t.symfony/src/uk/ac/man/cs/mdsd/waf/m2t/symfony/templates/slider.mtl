@@ -36,6 +36,14 @@
 </div>
 <script>
 var elem = document.querySelector('.slider');
-var instance = M.Slider.init(elem);
+var instance = M.Slider.init(elem[if (unit.showTime > 0 or unit.transitionTime > 0)], {
+	[if (unit.showTime > 0)]
+        interval: [unit.showTime/][if (unit.transitionTime > 0)],
+[/if]
+	[/if]
+	[if (unit.transitionTime > 0)]
+        duration: [unit.transitionTime/]
+	[/if]
+    }[/if]);
 </script>
 [/template]

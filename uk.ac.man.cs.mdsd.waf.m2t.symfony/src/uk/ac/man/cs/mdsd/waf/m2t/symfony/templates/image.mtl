@@ -24,7 +24,7 @@
 
 [template public image(model : WafModel) post(trim())]
 [let imagePath : String = '\''.concat(model.logoImage).concat('\'')]
-<img [imagePath.imageSrc(model.logoFilters)/]/>
+<img [imagePath.imageSrc('src', model.logoFilters)/]/>
 [/let]
 [/template]
 
@@ -52,19 +52,19 @@
 
 
 [template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String) post(trim())]
-<img [unit.imageMissingSrc(manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+<img [unit.imageMissingSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
 [/template]
 
 [template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String,  baseAccessor : String) post(trim())]
-<img [accessor.imageSrc(manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+<img [accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
 [/template]
 
-[template public imageMissingSrc(unit : ImageUnit, manipulation : ImageManipulation) post(trim())]
-src="{{ '[unit.missingImagePath/]'[if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
+[template public imageMissingSrc(unit : ImageUnit, key : String, manipulation : ImageManipulation) post(trim())]
+[key/]="{{ '[unit.missingImagePath/]'[if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
-[template private imageSrc(accessor : String, manipulation : ImageManipulation) post(trim())]
-src="{{ [accessor/][if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
+[template public imageSrc(accessor : String, key : String, manipulation : ImageManipulation) post(trim())]
+[key/]="{{ [accessor/][if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
 [template public imageAlt(unit : ImageUnit, baseAccessor : String) post(trim())]

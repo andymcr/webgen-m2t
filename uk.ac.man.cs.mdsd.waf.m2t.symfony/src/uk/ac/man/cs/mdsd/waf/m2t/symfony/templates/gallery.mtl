@@ -71,7 +71,8 @@
 [/template]
 
 [template private blueimpGallery(unit : GalleryUnit, accessor : String) post(trim())]
-<div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls">
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+ <div class="slides"></div>
  <h3 class="title"></h3>
  <a class="prev">&lt;</a>
  <a class="next">&gt;</a>
@@ -81,23 +82,33 @@
 <div id="links">
 [let variable : String = 'image']
 {% for [variable/] in [unit.instanceName()/] %}
- [unit.blueimpImage(variable)/]
+ [unit.blueimpEntry(variable)/]
 {% endfor %}
 [/let]
 </div>
 <script src="{{ asset('js/blueimp-gallery.min.js') }}"></script>
-<script type="text/javascript">
-blueimp.Gallery(
-    document.getElementById('links').getElementsByTagName('a'),
-    {
-        container: '#blueimp-gallery-carousel',
-        carousel: true
-    }
-);
+<script>
+document.getElementById('links').onclick = function (event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement,
+        link = target.src ? target.parentNode : target,
+        options = {
+            index: link,
+[if (unit.showTime > 0)]
+            slideshowInterval: [unit.showTime/],
+[/if]
+[if (unit.transitionTime > 0)]
+            transitionSpeed: [unit.transitionTime/],
+[/if]
+            event: event
+        },
+        links = this.getElementsByTagName('a');
+    blueimp.Gallery(links, options);
+};
 </script>
 [/template]
 
-[template public blueimpImage(unit : ImageUnit, baseAccessor : String) post(trim())]
+[template public blueimpEntry(unit : GalleryUnit, baseAccessor : String) post(trim())]
 [if (unit.imagePathFeature.oclIsUndefined())]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 [unit.blueimpMissing(unit, baseAccessor)/]/>
@@ -109,7 +120,7 @@ blueimp.Gallery(
 [else]
 [let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
 {%- if [imageAccessor/] is not empty -%}
-[unit.blueimpX(unit, imageAccessor, baseAccessor)/]
+[unit.blueimpImage(unit, imageAccessor, baseAccessor)/]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
 [unit.blueimpMissing(unit, baseAccessor)/]
@@ -119,12 +130,14 @@ blueimp.Gallery(
 [/if]
 [/template]
 
-[template public blueimpMissing(unit : ImageUnit, baseAccessor : String) post(trim())]
-<a [unit.imageMissingSrc(unit, unit.imageFilter)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[template public blueimpMissing(unit : GalleryUnit, baseAccessor : String) post(trim())]
+<a [unit.imageMissingSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor)/]>
+ [unit.imageMissing(unit.imageFilter, baseAccessor)/]
+</a>
 [/template]
 
-[template public blueimpX(unit : ImageUnit, imageAccessor : String, baseAccessor : String) post(trim())]
-<a [unit.imageMissingSrc(unit, unit.imageFilter)/] [unit.imageTitle(baseAccessor)/]>
+[template public blueimpImage(unit : GalleryUnit, imageAccessor : String, baseAccessor : String) post(trim())]
+<a [imageAccessor.imageSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor)/]>
  [unit.image(unit.imageFilter, imageAccessor, baseAccessor)/]
 </a>
 [/template]

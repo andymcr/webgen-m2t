@@ -222,7 +222,7 @@ $parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id
 [if (page.hasGalleryUnits())]
 [page.templateStyleParameters()/]
 [/if]
-[if (page.hasGalleryUnits())]
+[if (false and page.hasGalleryUnits())]
 [page.templateScriptParameters()/]
 [/if]
 [/template]
