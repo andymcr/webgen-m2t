@@ -47,7 +47,9 @@
   [imageUnit.cardContent(variable, depthIndex)/]
 [/if]
 [if (imageUnit.hasInlineActions())]
+	[if (not imageUnit.overlaySingleSelectAction or  imageUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
   [imageUnit.cardActions(variable)/]
+	[/if]
 [/if]
  </div>
 </div>
@@ -58,7 +60,13 @@
 
 [template private cardImage(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-image">
+[if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[let action : InlineAction = unit.inlineActions()->first()]
+ [action.actionLink(unit.contentType(), unit, variable, unit.image(variable), null, variable, unit.hasObjectAccess())/]
+[/let]
+[else]
  [unit.image(variable)/]
+[/if]
 [if (unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
  <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{% [unit.imageTitleFeature.accessor(variable)/] %}</span>
 [/if]
