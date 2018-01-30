@@ -20,7 +20,7 @@
 
 [template public unitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[let collectionUnit : IndexUnit = unit.oclAsType(CollectionUnit)]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [collectionUnit.actionMethod()/]
 [if (not collectionUnit.inlineSelectCode())]
 
