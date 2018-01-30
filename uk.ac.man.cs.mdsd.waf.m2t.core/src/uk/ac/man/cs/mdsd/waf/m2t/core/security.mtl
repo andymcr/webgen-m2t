@@ -42,8 +42,17 @@
 	= page.authenticationUnits()->notEmpty()
 /]
 
+[query public hasAuthorisation(action : InlineAction) : Boolean
+	= action.hasAuthorisationRole() or action.hasAuthorisationRoles()
+/]
+
 [query public hasAuthorisation(page : Page) : Boolean
-	= page.units->select(u | u.hasAuthorisation())->notEmpty()
+	= page.units->select(u | u.hasAuthorisationRole())->notEmpty()
+		or page.units->select(u | u.hasAuthorisationRoles())->notEmpty()
+/]
+
+[query public hasAuthorisation(unit : ContentUnit) : Boolean
+	= unit.hasAuthorisationRole() or unit.hasAuthorisationRoles()
 /]
 
 [query public isRequiresRoleCommon(page : Page) : Boolean
@@ -65,12 +74,52 @@
 /]
 
 
-[query public hasAuthorisation(unit : ContentUnit) : Boolean
-	= unit.requiresRole <> ''
+[query public hasAuthorisationRole(action : InlineAction) : Boolean
+	= action.roles()->size() = 1
+/]
+
+[query public hasAuthorisationRole(page : Page) : Boolean
+	= page.units->select(u | u.hasAuthorisationRole())->notEmpty()
+/]
+
+[query public hasAuthorisationRole(unit : ContentUnit) : Boolean
+	= unit.roles()->size() = 1
  		or if unit.oclIsKindOf(DynamicUnit) then
-				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.requiresRole() <> '')->notEmpty()
+				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.hasAuthorisationRole())->notEmpty()
 			else
 				false
 			endif
 /]
 
+[query public hasAuthorisationRoles(action : InlineAction) : Boolean
+	= action.roles()->size() > 1
+/]
+
+[query public hasAuthorisationRoles(page : Page) : Boolean
+	= page.units->select(u | u.hasAuthorisationRoles())->notEmpty()
+/]
+
+[query public hasAuthorisationRoles(unit : ContentUnit) : Boolean
+	= unit.roles()->size() > 1
+ 		or if unit.oclIsKindOf(DynamicUnit) then
+				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.hasAuthorisationRoles())->notEmpty()
+			else
+				false
+			endif
+/]
+
+[query public roles(action : InlineAction) : Sequence(String)
+	= action.requiresRole().trim().tokenize(',; ')
+/]
+
+[query public roles(page : Page) : Sequence(String)
+	= if page.units->isEmpty() then
+			Sequence{}
+		else
+			page.units->first().roles()
+		endif
+/]
+
+[query public roles(unit : ContentUnit) : Sequence(String)
+	= unit.requiresRole.trim().tokenize(',; ')
+/]

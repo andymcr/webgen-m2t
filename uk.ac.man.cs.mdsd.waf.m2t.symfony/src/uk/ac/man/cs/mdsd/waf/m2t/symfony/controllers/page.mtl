@@ -101,7 +101,10 @@ use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-[if (page.hasAuthorisation())]
+[if (page.hasAuthorisationRole())]
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+[/if]
+[if (page.hasAuthorisationRoles())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -129,7 +132,7 @@ use [service.servicesNamespace()/]\[service.className()/];
 [template private actionMethod(page : Page) post(trim())]
 /**
  [page.routeAnnotation()/]
-[if (page.requiresRole() <> '')]
+[if (page.hasAuthorisation())]
  [page.securityAnnotation()/]
 [/if]
  */
@@ -168,7 +171,7 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
 	[if (unit.hasUnitSupportActions() and not unit.oclIsKindOf(EditUnit))]
 /**
  * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
-[if (unit.requiresRole <> '')]
+[if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
 [/if]
  */
@@ -208,7 +211,7 @@ return new Response("No action taken", 200);
 [let contentType : EntityOrView = unit.contentType()]
 /**
  * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
-[if (deleteAction.requiresRole <> '')]
+[if (deleteAction.hasAuthorisation())]
  [deleteAction.securityAnnotation()/]
 [/if]
  */
@@ -238,7 +241,7 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
 [let contentType : EntityOrView = unit.contentType()]
 /**
  * @Route("[featureAction.uriPath()/]", name="[featureAction.routeName()/]")
-[if (featureAction.requiresRole <> '')]
+[if (featureAction.hasAuthorisation())]
  [featureAction.securityAnnotation()/]
 [/if]
  */

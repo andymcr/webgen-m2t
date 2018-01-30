@@ -9,21 +9,32 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
-
 [template public securityAnnotation(page : Page) post(trim())]
 [if (true)]
-* @Security("[for (role : String | page.requiresRole().tokenize(',; ')) separator(' or ')]has_role('[role/]')[/for]")
+[if (page.hasAuthorisationRoles())]
+* @Security("[for (role : String | page.roles()) separator(' or ')]has_role('[role/]')[/for]")
+[else]
+* @IsGranted("[page.requiresRole()/]")
+[/if]
 [/if]
 [/template]
 
 [template public securityAnnotation(unit : ContentUnit) post(trim())]
 [if (true)]
-* @Security("[for (role : String | unit.requiresRole.tokenize(',; ')) separator(' or ')]has_role('[role/]')[/for]")
+[if (unit.hasAuthorisationRoles())]
+* @Security("[for (role : String | unit.roles()) separator(' or ')]has_role('[role/]')[/for]")
+[else]
+* @IsGranted("[unit.requiresRole/]")
+[/if]
 [/if]
 [/template]
 
 [template public securityAnnotation(action : InlineAction) post(trim())]
-* @Security("has_role('[action.requiresRole()/]')")
+[if (action.hasAuthorisationRoles())]
+* @Security("[for (role : String | action.roles()) separator(' or ')]has_role('[role/]')[/for]")
+[else]
+* @IsGranted("[action.requiresRole()/]")
+[/if]
 [/template]
 
 [template public routeAnnotation(page : Page) post(trim())]
