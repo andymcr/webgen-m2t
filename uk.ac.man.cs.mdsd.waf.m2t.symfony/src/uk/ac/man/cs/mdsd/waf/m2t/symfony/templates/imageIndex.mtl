@@ -12,6 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::badge/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::display/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
@@ -60,6 +61,9 @@
 
 [template private cardImage(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-image">
+[if (unit.badges->notEmpty())]
+ [unit.badges.badge(variable)/]
+[/if]
 [if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
 [let action : InlineAction = unit.inlineActions()->first()]
  [action.actionLink(unit.contentType(), unit, variable, unit.image(variable), null, variable, unit.hasObjectAccess())/]

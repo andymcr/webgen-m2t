@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module badge(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
+
+
+[template public badge(badge : Badge, accessor : String) post(trim())]
+[if (not badge.displayWhen.oclIsUndefined())]
+{% if [badge.displayWhen.twigExpression(accessor)/] %}[/if]
+<span class="[if (not badge.newWhen.oclIsUndefined())]
+{% if [badge.newWhen.twigExpression(accessor)/] %} new{% endif%}[/if]badge">[if (not badge.value.oclIsUndefined())]
+[badge.value(accessor)/][elseif (badge.iconName <> '')]
+[badge.icon()/][/if]
+</span>[if (not badge.displayWhen.oclIsUndefined())]
+{% endif %}[/if]
+[/template]
+
+[template private value(badge : Badge, accessor : String) post(trim())]
+{{ [badge.value.twigExpression(accessor)/] }}
+[/template]
+
+[template private icon(badge : Badge) post(trim())]
+<i class="material-icons">[badge.iconName/]</i>
+[/template]
