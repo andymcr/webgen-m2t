@@ -104,8 +104,16 @@ title="{{ [unit.imageTitleFeature.accessor(baseAccessor)/][unit.imageTitleFeatur
 	= if association.childFeature.oclIsUndefined() then
 			null
 		else
+			let localElement : String
+				= association.association.modelPropertyName().concat(
+					if association.association.isSingleton() then
+						''
+					else
+						'.0'
+					endif)
+				in 
 			association.childFeature.imagePath(
-				parentAccessor.concat('.').concat(association.association.modelPropertyName()),
+				parentAccessor.concat('.').concat(localElement),
 				objectAccess)
 		endif
 /]
