@@ -222,6 +222,10 @@
 		endif
 /]
 
+[query public hasObjectAccess(unit : CollectionUnit) : Boolean
+	= unit.oclAsType(DynamicUnit).hasObjectAccess()
+/]
+
 [query public hasObjectAccess(unit : DynamicUnit) : Boolean
 	= if unit.oclIsKindOf(CollectionUnit) then
 			let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)

@@ -33,16 +33,16 @@
 		else
 			accessor
 		endif]
-	[if (indexUnit.hasFilters())]
+[if (indexUnit.hasFilters())]
  [indexUnit.unitFilters(selectionAccessor)/]
-	[/if]
+[/if]
  [indexUnit.unitContent(null, accessor, 0)/]
-	[if (indexUnit.hasPagination())]
+[if (indexUnit.hasPagination())]
  [indexUnit.pagination(selectionAccessor)/]
-	[/if]
-	[if (indexUnit.hasUnitSupportActions())]
+[/if]
+[if (indexUnit.hasUnitSupportActions())]
  [indexUnit.unitSupportLinks(accessor)/]
-	[/if]
+[/if]
 [/let]
 </section>
 [/file]
