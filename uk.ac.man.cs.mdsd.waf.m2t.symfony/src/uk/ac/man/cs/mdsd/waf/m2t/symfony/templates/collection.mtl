@@ -31,52 +31,91 @@
 [/template]
 
 
-[template public pagination(unit : CollectionUnit, selectionAccessor : String) post(trim())]
+[template public pagination(unit : CollectionUnit, accessor : String) post(trim())]
+{%- if pageCount > 1 -%}
 <ul class="unit_control[if (unit.paginationClass <> '')] [unit.paginationClass/][/if]">
 [if (unit.useFirstLastPageLinks)]
-{% if currentPage != 1 %}
- <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLinkLabel()/]</a></li>
-	[if (unit.useDisabledPageLinks)]
-{% else %}
- <li class="disabled"><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLinkLabel()/]</a></li>
-	[/if]
-{% endif %}
+ [unit.firstPageLink(accessor)/]
 [/if]
-{% if currentPage != 1 %}
- <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage - 1', selectionAccessor)/]">[unit.previousPageLinkLabel()/]</a></li>
-[if (unit.useDisabledPageLinks)]
-{% else %}
- <li class="disabled">[unit.previousPageLinkLabel()/]</li>
-[/if]
-{% endif %}
-[if (unit.previousNpages > 1 and unit.useDisabledPageLinks)]
+ [unit.previousPageLink(accessor)/]
+[if (unit.previousNpages > 1)]
 {% if max(1, currentPage - [unit.previousNpages/]) > 1 %}<li>&hellip;</li>{% endif %}
 [/if]
 [if (unit.nextNpages > 1 or unit.previousNpages > 1)]
 {% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
- <li{% if page == currentPage %} class="active disable"[if (unit.paginationElementClass <> '')]{% else %} class="[unit.paginationElementClass/]"[/if]{% endif %}><a href="[unit.pageHref('page', selectionAccessor)/]">{{ page }}</a></li>
+ <li{% if page == currentPage %} class="active disable"[if (unit.paginationElementClass <> '')]{% else %} class="[unit.paginationElementClass/]"[/if]{% endif %}><a href="[unit.pageHref('page', accessor)/]">{{ page }}</a></li>
 {% endfor %}
 [/if]
 [if (unit.nextNpages > 1 and unit.useDisabledPageLinks)]
 {% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li>&hellip;</li>{% endif %}
 [/if]
-{% if currentPage != pageCount %}
- <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLinkLabel()/]</a></li>
-[if (unit.useDisabledPageLinks)]
-{% else %}
- <li class="disabled"><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLinkLabel()/]</a></li>
-[/if]
-{% endif %}
+ [unit.nextPageLink(accessor)/]
 [if (unit.useFirstLastPageLinks)]
-{% if currentPage != pageCount %}
- <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLinkLabel()/]</a></li>
-	[if (unit.useDisabledPageLinks)]
-{% else %}
- <li class="disabled"><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLinkLabel()/]</a></li>
-	[/if]
-{% endif %}
+ [unit.lastPageLink(accessor)/]
 [/if]
 </ul>
+{%- endif -%}
+[/template]
+
+[template private firstPageLink(unit : CollectionUnit, accessor : String) post(trim())]
+{%- if currentPage != 1 -%}
+<li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('1', accessor)/]">[unit.firstPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="disabled"><a href="[unit.pageHref('1', accessor)/]">[unit.firstPageLinkLabel()/]</a></li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private previousPageLink(unit : CollectionUnit, accessor : String) post(trim())]
+{%- if currentPage != 1 -%}
+<li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage - 1', accessor)/]">[unit.previousPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="disabled">[unit.previousPageLinkLabel()/]</li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private previousNPagesLinks(unit : CollectionUnit, accessor : String) post(trim())]
+[if (unit.useDisabledPageLinks)]
+{% if max(1, currentPage - [unit.previousNpages/]) > 1 %}<li>&hellip;</li>{% endif %}
+[/if]
+[if (unit.nextNpages > 1 or unit.previousNpages > 1)]
+{% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
+<li{% if page == currentPage %} class="active disable"[if (unit.paginationElementClass <> '')]{% else %} class="[unit.paginationElementClass/]"[/if]{% endif %}><a href="[unit.pageHref('page', accessor)/]">{{ page }}</a></li>
+{% endfor %}
+[/if]
+[/template]
+
+[template private nextNPagesLinks(unit : CollectionUnit, accessor : String) post(trim())]
+{%- if currentPage != 1 -%}
+<li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage - 1', accessor)/]">[unit.previousPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="disabled">[unit.previousPageLinkLabel()/]</li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private nextPageLink(unit : CollectionUnit, accessor : String) post(trim())]
+{%- if currentPage != pageCount -%}
+<li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage + 1', accessor)/]">[unit.nextPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="disabled"><a href="[unit.pageHref('currentPage + 1', accessor)/]">[unit.nextPageLinkLabel()/]</a></li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private lastPageLink(unit : CollectionUnit, accessor : String) post(trim())]
+{%- if currentPage != pageCount -%}
+<li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('pageCount', accessor)/]">[unit.lastPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="disabled"><a href="[unit.pageHref('pageCount', accessor)/]">[unit.lastPageLinkLabel()/]</a></li>
+[/if]
+{%- endif -%}
 [/template]
 
 [template private pageHref(unit : CollectionUnit, pageNumber : String, selectionAccessor : String) post(trim())]
