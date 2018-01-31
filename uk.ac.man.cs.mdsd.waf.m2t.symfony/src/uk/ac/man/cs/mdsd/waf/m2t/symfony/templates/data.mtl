@@ -1,0 +1,159 @@
+[comment encoding = UTF-8 /]
+[module data(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::value/]
+
+
+[template public getImmediateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[if (field.oclIsTypeOf(UnitFeature))]
+[field.oclAsType(UnitFeature).getImmediateValue(parentAccessor, objectAccess)/]
+[else]
+NULL
+[/if]
+[/template]
+
+[template private getImmediateValue(feature : UnitFeature, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[if (feature.oclIsTypeOf(UnitAttribute))]
+[feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor, objectAccess)/]
+[else]
+[feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor, objectAccess)/]
+[/if]
+[/template]
+
+[template private getImmediateValue(attribute : UnitAttribute, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor, attribute.alias(), objectAccess))/]
+[/template]
+
+[template private getImmediateValue(association : UnitAssociation, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[if (association.isPseudo())]
+[association.pseudoAccessor(parentAccessor)/]
+[else]
+[association.propertyAccessor(parentAccessor, association.alias(), objectAccess)/]
+[/if]
+[/template]
+
+
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and field.isSingleton()) post(trim())]
+[if (field.oclIsKindOf(InterfaceField))]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
+[else]
+[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+[feature.displayAttribute(feature.accessor(parentAccessor, field.alias(), objectAccess), parentAccessor)/]
+[/let]
+[/if]
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and not field.isSingleton()) post(trim())]
+[if (field.oclIsKindOf(InterfaceField))]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
+[else]
+[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+[let variable : String = 'value']
+{% for [variable/] in [feature.accessor(parentAccessor, field.alias(), objectAccess)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+<p>[feature.displayAttribute(variable, parentAccessor)/]</p>[else]
+<span>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if]{% endfor %}
+[/let]
+[/let]
+[/if]
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? (field.isEnumerationType()) post(trim())]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (field.maximumDisplaySize > 0)]
+ | truncate([field.maximumDisplaySize/])[/if] }}
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? (field.isDate()) post(trim())]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
+('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
+ | truncate([field.maximumDisplaySize/])[/if] }}
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
+	? (field.isBooleanDataType()) post(trim())] 
+<input type="checkbox"{% if [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} checked="checked"{% endif %} disabled="disabled"/>
+[/template] 
+ 
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? (field.isResource() and field.isSingleton()) post(trim())]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[let accessor : String = field.accessor(parentAccessor, field.alias(), objectAccess)]
+<?php
+[if (not attribute.isConditionalDisplay())]
+    if (!empty([attribute.getValue(accessor)/]))
+[/if]
+        echo HTML::anchor(
+            [attribute.getValue(accessor)/],
+            '[attribute.displayLabel()/]',
+            NULL, NULL, FALSE);
+?>
+[/let]
+[/let]
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? (field.isAssociation() and field.isSingleton()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
+[association.displayAssociation(accessor, parentAccessor)/]
+[/let]
+[/let]
+[/template]
+
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? (field.isAssociation() and not field.isSingleton()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
+[let variable : String = 'value']
+{% for [variable/] in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+<p>[association.displayAssociation(variable, variable)/]</p>[else]
+<span>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.nullDisplayValue.oclIsUndefined())]
+{% else %}{{ '[association.nullDisplayValue/]' }}[/if]{% endfor %}
+[/let]
+[/let]
+[/let]
+[/template]
+
+[template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
+[if (feature.hasInlineActions())]
+[let parentEntity : EntityOrView
+		= if feature.oclIsKindOf(UnitAttribute) then 
+				feature.oclAsType(UnitAttribute).attribute.partOf
+			else
+				feature.oclAsType(UnitAssociation).association.sourceType()
+			endif]
+[feature.inlineActions()
+	->first().actionLink(parentEntity, feature.displayedOn, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess())/]
+[/let]
+[else]
+{{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
+ | truncate([feature.maximumDisplaySize/])[/if] }}
+[/if]
+[/template]
+
+[template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
+[if (association.hasInlineActions())]
+[association.inlineActions()
+	->first().actionLink(association.association.targetType(), association.displayedOn, accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor, association.displayedOn.hasObjectAccess())/]
+[else]
+{{ [accessor/][association.valueLabel()/] | default('[if (not association.nullDisplayValue.oclIsUndefined())]
+[association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
+ | truncate([association.maximumDisplaySize/] - 3)[/if] }}
+[/if]
+[/template]
+

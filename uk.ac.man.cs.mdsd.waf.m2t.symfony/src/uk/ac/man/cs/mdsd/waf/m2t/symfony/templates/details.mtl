@@ -1,0 +1,142 @@
+[comment encoding = UTF-8 /]
+[module details(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::badge/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::data/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::index/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
+
+
+[template public unitView(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[let accessor : String = detailsUnit.instanceName()]
+[file(detailsUnit.viewFilename(), false)]
+{% trans_default_domain "entity" %}
+<section class="[detailsUnit.styleClass/]" id="[detailsUnit.instanceName()/]">
+ <h4 class="[detailsUnit.captionClass/][if (detailsUnit.omitCaption)] hidden[/if]">[detailsUnit.unitTitle()/]</h4>
+ [detailsUnit.unitContent(null, accessor, 0)/]
+	[if (detailsUnit.hasUnitSupportActions())]
+  [detailsUnit.unitSupportLinks(accessor)/]
+	[/if]
+</section>
+[/file]
+[/let]
+[/let]
+[/template]
+
+[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthInteger : Integer)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[detailsUnit.detailsContent(accessor, depthInteger)/]
+[/let]
+[/template]
+
+[template public detailsContent(unit : DataUnit, accessor : String, depthInteger : Integer) post(trim())]
+[if (unit.hasOmitFieldLabels())]
+<ul class="[unit.contentClass/]">
+[else]
+<dl class="[unit.contentClass/]">
+[/if]
+[for (field : UnitField | unit.displayFields)]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
+	[if (field.isConditionalDisplay())]
+{% if [field.getImmediateValue(accessor, unit.hasObjectAccess())/] is not null %}
+	[/if]
+	[if (unit.hasOmitFieldLabels())]
+ <li class="[field.displayClass()/]">[field.displayField(accessor, unit.hasObjectAccess(), depthInteger)/]</li>
+	[else]
+ <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
+ <dd class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</dd>
+	[/if]
+	[if (field.isConditionalDisplay())]
+		[if (field.oclIsKindOf(UnitFeature))]
+		[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+			[if (not feature.nullDisplayValue.oclIsUndefined())]
+{% else %}
+				[if (unit.hasOmitFieldLabels())]
+ <li class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</li>
+				[else]
+ <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
+ <dd class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</dd>
+				[/if]
+			[/if]
+		[/let]
+		[/if]
+{% endif %}
+	[/if]
+	[if (field.requiresRole <> '')]
+{% endif %}
+	[/if]
+[/for]
+[if (unit.hasOmitFieldLabels())]
+</ul>
+[else]
+</dl>
+[/if]
+[/template]
+
+[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
+	? (not field.isAssociation()) post(trim())]
+[field.displayValue(parentAccessor, objectAccess)/]
+[/template]
+
+[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
+	? (field.isAssociation() and field.isSingleton()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.units->isEmpty())]
+[field.displayValue(parentAccessor, objectAccess)/]
+[else]
+[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
+[association.units->first().unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
+[/let]
+[/if]
+[/let]
+[/template]
+
+[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
+	? (field.isAssociation() and not field.isSingleton()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.units->isEmpty())]
+[field.displayValue(parentAccessor, objectAccess)/]
+[else]
+[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
+[let embeddedUnit : ContentUnit = association.units->first()]
+	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
+[association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
+	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
+[association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
+	[else]
+	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
+[association.units.unitContent(association.nullDisplayValue,
+	association.serviceAccessor()
+		.concat('.').concat(association.name).concat(indexUnit.defaultSelection.instanceName().toUpperFirst())
+		.concat('(').concat(parentAccessor).concat(')'), depthIndex + 1)/]
+	[/let]
+	[/if]
+[/let]
+[/let]
+[/if]
+[/let]
+[/template]

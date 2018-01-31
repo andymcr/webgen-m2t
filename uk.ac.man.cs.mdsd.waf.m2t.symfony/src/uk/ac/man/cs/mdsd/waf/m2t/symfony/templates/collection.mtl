@@ -1,0 +1,102 @@
+[comment encoding = UTF-8 /]
+[module collection(
+	'http://cs.manchester.ac.uk/mdsd/Service',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
+
+
+[template public unitFilters(unit : CollectionUnit, accessor : String) post(trim())]
+[for(filter : Filter | unit.supportedFilters)]
+[filter.unitFilter(unit, accessor)/]
+[/for]
+[/template]
+
+[template private unitFilter(filter : Filter, unit : CollectionUnit, accessor : String) post(trim())]
+<div class="filter">
+ <form action="{{ path('[unit.oclAsType(ContentUnit).routeName()/]', { [if (not unit.routingType().oclIsUndefined())]
+[unit.routingType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit.oclAsType(ContentUnit))/][/if] }) }}" method="get">
+[for (parameter : FormalParameter | filter.parameters)]
+  <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
+ placeholder="[parameter.placeholder/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
+ required="required"[/if]
+ value="{{ app.request.query.get('[parameter.name/]') }}"/>
+[/for]
+  <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"/>
+ </form>
+</div>
+[/template]
+
+
+[template public pagination(unit : CollectionUnit, selectionAccessor : String) post(trim())]
+<ul class="unit_control[if (unit.paginationClass <> '')] [unit.paginationClass/][/if]">
+[if (unit.useFirstLastPageLinks)]
+{% if currentPage != 1 %}
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLinkLabel()/]</a></li>
+	[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li class="disabled"><a href="[unit.pageHref('1', selectionAccessor)/]">[unit.firstPageLinkLabel()/]</a></li>
+	[/if]
+{% endif %}
+[/if]
+{% if currentPage != 1 %}
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage - 1', selectionAccessor)/]">[unit.previousPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li class="disabled">[unit.previousPageLinkLabel()/]</li>
+[/if]
+{% endif %}
+[if (unit.previousNpages > 1 and unit.useDisabledPageLinks)]
+{% if max(1, currentPage - [unit.previousNpages/]) > 1 %}<li>&hellip;</li>{% endif %}
+[/if]
+[if (unit.nextNpages > 1 or unit.previousNpages > 1)]
+{% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
+ <li{% if page == currentPage %} class="active disable"[if (unit.paginationElementClass <> '')]{% else %} class="[unit.paginationElementClass/]"[/if]{% endif %}><a href="[unit.pageHref('page', selectionAccessor)/]">{{ page }}</a></li>
+{% endfor %}
+[/if]
+[if (unit.nextNpages > 1 and unit.useDisabledPageLinks)]
+{% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li>&hellip;</li>{% endif %}
+[/if]
+{% if currentPage != pageCount %}
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li class="disabled"><a href="[unit.pageHref('currentPage + 1', selectionAccessor)/]">[unit.nextPageLinkLabel()/]</a></li>
+[/if]
+{% endif %}
+[if (unit.useFirstLastPageLinks)]
+{% if currentPage != pageCount %}
+ <li[if (unit.paginationElementClass <> '')] class="[unit.paginationElementClass/]"[/if]><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLinkLabel()/]</a></li>
+	[if (unit.useDisabledPageLinks)]
+{% else %}
+ <li class="disabled"><a href="[unit.pageHref('pageCount', selectionAccessor)/]">[unit.lastPageLinkLabel()/]</a></li>
+	[/if]
+{% endif %}
+[/if]
+</ul>
+[/template]
+
+[template private pageHref(unit : CollectionUnit, pageNumber : String, selectionAccessor : String) post(trim())]
+{{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
+, [unit.routingType().routeActualParameters(unit.routingType(), selectionAccessor, unit.hasObjectAccess(), unit.oclAsType(ContentUnit))/][/if]})) }}
+[/template]
+
+[template private firstPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.firstPageLabel, unit.firstPageIconName)/]
+[/template]
+
+[template private previousPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.previousPageLabel, unit.previousPageIconName)/]
+[/template]
+
+[template private nextPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.nextPageLabel, unit.nextPageIconName)/]
+[/template]
+
+[template private lastPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.lastPageLabel, unit.lastPageIconName)/]
+[/template]
+

@@ -1,0 +1,206 @@
+[comment encoding = UTF-8 /]
+[module index(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::collection/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::data/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::value/]
+
+
+[template public unitView(unit : ContentUnit)
+	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
+[let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
+[let accessor : String = indexUnit.instanceName()]
+[file(indexUnit.viewFilename(), false)]
+{% trans_default_domain "entity" %}
+<section class="[indexUnit.styleClass/]" id="[indexUnit.instanceName()/]">
+ <h4 class="[indexUnit.captionClass/][if (indexUnit.omitCaption)] hidden[/if]">[indexUnit.unitTitle()/]</h4>
+[let selectionAccessor : String
+	= if not indexUnit.routingType().oclIsUndefined() then
+			indexUnit.routingType().instanceName()
+		else
+			accessor
+		endif]
+	[if (indexUnit.hasFilters())]
+ [indexUnit.unitFilters(selectionAccessor)/]
+	[/if]
+ [indexUnit.unitContent(null, accessor, 0)/]
+	[if (indexUnit.hasPagination())]
+ [indexUnit.pagination(selectionAccessor)/]
+	[/if]
+	[if (indexUnit.hasUnitSupportActions())]
+ [indexUnit.unitSupportLinks(accessor)/]
+	[/if]
+[/let]
+</section>
+[/file]
+[/let]
+[/let]
+[/template]
+
+[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
+[let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
+<ul class="[indexUnit.contentClass/]">
+[let loopVariable : String = 'entry'.concat(if depthIndex > 0 then depthIndex.toString() else '' endif)]
+{% for [loopVariable/] in [accessor/] %}
+ <li>
+[if (not indexUnit.omitCaption)]
+  <section>
+   <h4 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h4>
+[/if]
+   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
+[if (indexUnit.hasInlineActions())]
+<span class="actions">[indexUnit.actions(loopVariable)/]</span>
+[/if]
+[if (not indexUnit.omitCaption)]
+  </section>
+[/if]
+ </li>
+[if (not nullDisplayValue.oclIsUndefined())]
+{% else %}
+ <li>{{ '[nullDisplayValue/]' }}</li>
+[/if]
+{% endfor %}
+[/let]
+</ul>
+[/let]
+[/template]
+
+[template private entry(unit : IndexLineDirectionUnit, accessor : String, objectAccess : Boolean, depthIndex : Integer) post(trim())]
+[for (field : UnitField | unit.displayFields) ]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
+	[if (field.isConditionalDisplay())]
+{% if [field.getImmediateValue(accessor, unit.hasObjectAccess())/] is not null %}
+	[/if]
+<span class="[field.modelPropertyName()/]">[field.displayValue(accessor, objectAccess)/]</span>
+	[if (field.isConditionalDisplay())]
+{% endif %}
+	[/if]
+	[if (field.requiresRole <> '')]
+{% endif %}
+	[/if]
+[/for]
+[/template]
+
+[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
+[let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
+<ul class="[indexUnit.contentClass/]">
+[let loopVariable : String = 'entry'.concat(if depthIndex > 0 then depthIndex.toString() else '' endif)]
+{% for [loopVariable/] in [accessor/] %}
+ <li>
+[if (not indexUnit.omitCaption)]
+  <section>
+   <h4 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h4>
+[/if]
+  [comment unit.detailsContent(loopVariable, depthIndex)/]
+[if (indexUnit.hasInlineActions())]
+  <td class="actions">[indexUnit.actions(loopVariable)/]</td>
+[/if]
+[if (not indexUnit.omitCaption)]
+  </section>
+[/if]
+ </li>
+[if (not nullDisplayValue.oclIsUndefined() or not indexUnit.emptyMessage.oclIsUndefined())]
+{% else %}
+	[if (not nullDisplayValue.oclIsUndefined())]
+ <li>[nullDisplayValue/]</li>
+	[else]
+<li>[indexUnit.emptyMessage/]</li>
+	[/if]
+[/if]
+{% endfor %}
+[/let]
+</ul>
+[/let]
+[/template]
+
+[template public unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
+[let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
+<table class="[indexUnit.contentClass/]">
+[if (not indexUnit.omitColumnLabels)]
+ <thead class="[indexUnit.headerClass/]">
+  <tr>
+ 	[for (field : UnitField | indexUnit.displayFields)]
+		[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+		[/if]
+   <th>[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[field.entity().id()/].labels.[field.labelId()/]' | trans }}[/if]</th>
+		[if (field.requiresRole <> '')]
+{% endif %}
+		[/if]
+ 	[/for]
+	[if (indexUnit.hasInlineActions())]
+   <th>Actions</th>
+	[/if]
+  </tr>
+ </thead>
+[/if]
+ <tbody>
+[let loopVariable : String = 'entry'.concat(if depthIndex > 0 then depthIndex.toString() else '' endif)]
+{% for [loopVariable/] in [accessor/] %}
+  <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
+   [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
+[if (indexUnit.hasInlineActions())]
+   <td class="actions">[indexUnit.actions(loopVariable)/]</td>
+[/if]
+  </tr>
+[if (not nullDisplayValue.oclIsUndefined() or not indexUnit.emptyMessage.oclIsUndefined())]
+{% else %}
+  <tr>
+	[if (not nullDisplayValue.oclIsUndefined())]
+   <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[nullDisplayValue/]</td>
+	[else]
+   <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[indexUnit.emptyMessage/]</td>
+	[/if]
+	[if (indexUnit.hasInlineActions())]
+   <td class="actions">&nbsp;</td>
+	[/if]
+  </tr>
+[/if]
+{% endfor %}
+[/let]
+ </tbody>
+</table>
+[/let]
+[/template]
+
+[template private entry(unit : IndexGridUnit, accessor : String, objectAccess : Boolean, depthIndex : Integer) post(trim())]
+[for (field : UnitField | unit.displayFields)]
+	[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+	[/if]
+<td class="[field.styleClass()/]">[field.displayValue(accessor, objectAccess)/]</td>
+	[if (field.requiresRole <> '')]
+{% endif %}
+	[/if]
+[/for]
+[/template]
+
+[template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
+[for (action : InlineAction | unit.inlineActions())]
+	[if (unit.hasObjectAccess())]
+[action.actionLink(unit.contentType(), unit, rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'), rowAccessor, unit.hasObjectAccess())/]
+	[else]
+[action.actionLink(unit.contentType(), unit, rowAccessor, action.displayLabel, null, rowAccessor, unit.hasObjectAccess())/]
+	[/if]
+[/for]
+[/template]

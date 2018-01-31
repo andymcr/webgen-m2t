@@ -13,7 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::badge/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::display/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::data/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
@@ -45,7 +45,7 @@
  <div class="[imageUnit.cardClass/]">
   [imageUnit.cardImage(variable)/]
 [if (not imageUnit.overlayTitle and not imageUnit.imageTitleFeature.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
-  [imageUnit.cardContent(variable, depthIndex)/]
+  [imageUnit.cardContent(variable)/]
 [/if]
 [if (imageUnit.hasInlineActions())]
 	[if (not imageUnit.overlaySingleSelectAction or  imageUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
@@ -77,7 +77,7 @@
 </div>
 [/template]
 
-[template private cardContent(unit : ImageIndexUnit, variable : String, depthIndex : Integer) post(trim())]
+[template private cardContent(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-content">
 	[if (not unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
  <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{{ [unit.imageTitleFeature.accessor(variable)/][unit.imageTitleFeature.valueLabel()/] }}</span>
@@ -90,7 +90,7 @@
 [if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
-[field.displayValue(variable, true, depthIndex)/]</p>
+[field.displayValue(variable, true)/]</p>
 		[if (field.isConditionalDisplay())]
 {%- endif %}
 		[/if]

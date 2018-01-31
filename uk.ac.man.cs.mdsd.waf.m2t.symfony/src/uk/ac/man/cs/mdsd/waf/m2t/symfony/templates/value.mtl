@@ -1,0 +1,74 @@
+[comment encoding = UTF-8 /]
+[module value(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
+
+
+[template public getValue(field : UnitField, accessor : String) post(trim())]
+[if (field.oclIsTypeOf(UnitFeature))]
+[field.oclAsType(UnitFeature).getValue(accessor)/]
+[else]
+NULL
+[/if]
+[/template]
+
+[template public getValue(feature : UnitFeature, accessor : String) post(trim())]
+[if (feature.oclIsTypeOf(UnitAttribute))]
+[feature.oclAsType(UnitAttribute).getValue(accessor)/]
+[else]
+[feature.oclAsType(UnitAssociation).getValue(accessor)/]
+[/if]
+[/template]
+
+[template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
+[attribute.attribute.getValue(accessor)/]
+[/template]
+
+[template public getValue(association : UnitAssociation, accessor : String) post(trim())]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(accessor)/]
+[else]
+	[if (not association.valueDisplay.oclIsUndefined())]
+[association.valueDisplay.label(accessor)/]
+	[else]
+[accessor/].defaultLabel()
+	[/if]
+[/if]
+[/template]
+
+[template private getValue(child : ChildPath, accessor : String)
+	? (child.oclIsTypeOf(ChildPathAttribute)) post(trim())]
+[let attribute : ChildPathAttribute = child.oclAsType(ChildPathAttribute)]
+[attribute.attribute.getValue(accessor)/]
+[/let]
+[/template]
+
+[template private getValue(child : ChildPath, accessor : String)
+	? (child.oclIsTypeOf(ChildPathAssociation)) post(trim())]
+[let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(accessor)/]
+[else]
+[accessor/].defaultLabel()
+[/if]
+[/let]
+[/template]
+
+
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isDataType() and not attribute.isEnumerationType()
+		or attribute.isDate() or attribute.isUrl() or attribute.isResource()) post(trim())]
+[accessor/]
+[/template]
+
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isEnumerationType()) post(trim())]
+[accessor/] | [attribute.enumerationType().filterName()/] | trans({}, 'entity')
+[/template]
