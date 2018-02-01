@@ -63,7 +63,7 @@ $this->[collectionUnit.selectName()/]([collectionUnit.selectMethodParameters()/]
 
 [template public actionSupportMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[let collectionUnit : IndexUnit = unit.oclAsType(CollectionUnit)]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [if (not collectionUnit.inlineSelectCode())]
 private function [unit.selectName()/]([collectionUnit.selectMethodParameters(true)/])
 {
