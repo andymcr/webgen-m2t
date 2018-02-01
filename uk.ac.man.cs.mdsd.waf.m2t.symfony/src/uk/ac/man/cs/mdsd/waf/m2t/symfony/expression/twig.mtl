@@ -8,6 +8,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 
 
 [template public twigExpression(guard : Expression, accessor : String)
@@ -35,32 +36,9 @@ date()
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
-[let path : FeaturePathAttribute = guard.oclAsType(FeaturePathAttribute)]
-[accessor/].[path.attribute.modelPropertyName()/]
-[/let] 
-[/template]
-
-[template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
-[let path : FeaturePathAssociation = guard.oclAsType(FeaturePathAssociation)]
-[accessor/].[path.association.modelPropertyName()/][if (not path.childFeature.oclIsUndefined())]
-[path.childFeature.pathExpression()/][/if]
-[/let] 
-[/template]
-
-[template public pathExpression(path : ChildPath)
-	? (path.oclIsTypeOf(ChildPathAttribute)) post(trim())]
-[let attribute : ChildPathAttribute = path.oclAsType(ChildPathAttribute)]
-.[attribute.attribute.modelPropertyName()/]
-[/let] 
-[/template]
-
-[template public pathExpression(path : ChildPath)
-	? (path.oclIsTypeOf(ChildPathAssociation)) post(trim())]
-[let association : ChildPathAssociation = path.oclAsType(ChildPathAssociation)]
-.[association.association.modelPropertyName()/][if (not association.childFeature.oclIsUndefined())]
-[association.childFeature.pathExpression()/][/if]
+	? (guard.oclIsKindOf(FeaturePath)) post(trim())]
+[let path : FeaturePath = guard.oclAsType(FeaturePath)]
+[path.accessor(accessor)/]
 [/let] 
 [/template]
 
