@@ -247,6 +247,9 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
  */
 public function [action.actionName()/]([page.actionMethodParameters(unit, contentType)/])
 {
+[if (unit.hasPagination())]
+    [unit.oclAsType(CollectionUnit).notePage()/]
+[/if]
 [if (featureAction.operation.resultType = OperationResultTypes::None)]
     $[featureAction.instanceName()/] = [contentType.loadInstance(unit)/];
     if (!$[featureAction.instanceName()/]) {

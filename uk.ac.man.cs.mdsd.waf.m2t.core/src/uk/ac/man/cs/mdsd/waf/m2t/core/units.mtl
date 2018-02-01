@@ -257,6 +257,14 @@
 
 /]
 
+[query public hasPagination(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).hasPagination()
+		else
+			false
+		endif
+/]
+
 [query public inputFields(unit : DynamicUnit) : OrderedSet(UnitField)
 	= unit.displayFields->select(f |
 		if f.oclIsKindOf(UnitFeature) then

@@ -15,6 +15,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
@@ -23,6 +24,19 @@
 
 [template public translate(message : String) post(trim())]
 $this->get('translator')->trans('[message/]')
+[/template]
+
+
+[template public notePage(unit : CollectionUnit) post(trim())]
+[unit.pageVariable()/] = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
+[/template]
+
+[template public pageVariable(unit : CollectionUnit) post(trim())]
+[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionalDisplay())]
+$page
+[else]
+$this->page
+[/if]
 [/template]
 
 
