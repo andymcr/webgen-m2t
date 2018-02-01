@@ -105,7 +105,7 @@
 				in if association.childFeature.oclIsUndefined() then
 						accessor
 					else
-						association.childFeature.accessor(accessor)
+						association.childFeature.accessor(accessor.concat(association.association.associationIndex()))
 					endif 
 		endif
 /]
@@ -168,7 +168,7 @@ if not association.childFeature.oclIsUndefined() then
 		in if association.childFeature.oclIsUndefined() then
 				accessor
 			else
-				association.childFeature.accessor(accessor)
+				association.childFeature.accessor(accessor.concat(association.association.associationIndex()))
 			endif
 /]
 
@@ -197,7 +197,7 @@ if not association.childFeature.oclIsUndefined() then
 				in if child.childFeature.oclIsUndefined() then
 					childAccessor
 				else
-					child.childFeature.accessor(childAccessor)
+					child.childFeature.accessor(childAccessor.concat(child.association.associationIndex()))
 				endif
 		endif
 /]
@@ -216,4 +216,12 @@ if not association.childFeature.oclIsUndefined() then
 
 [query private serviceAccessor(association : ChildPathAssociation) : String
 	= association.association.sourceType().services(association.model())->first().className().toLowerFirst()
+/]
+
+[query public associationIndex(association : Association) : String
+	= if association.isSingleton() then
+			''
+		else
+			'.0'
+		endif
 /]
