@@ -38,7 +38,7 @@
  [dynamicUnit.securityAnnotation()/]
 [/if]
  */
-public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType())/])
+public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType(), false)/])
 {
 [if (dynamicUnit.isConditionalDisplay())]
     [dynamicUnit.actionCore()/]
@@ -92,7 +92,7 @@ Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
 
 [template private routingParameters(unit : CollectionUnit) post(trim())]
 [if (not unit.routingType().oclIsUndefined())]
-	[unit.routingType().findActualParameters(unit.oclAsType(DynamicUnit))/]
+	[unit.oclAsType(DynamicUnit).findActualParameters(unit.routingType(), false)/]
 [/if]
 [/template]
 

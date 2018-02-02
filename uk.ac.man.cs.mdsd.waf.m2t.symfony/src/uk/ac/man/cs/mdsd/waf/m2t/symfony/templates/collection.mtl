@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module collection(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
@@ -16,9 +17,10 @@
 [/template]
 
 [template private unitFilter(filter : Filter, unit : CollectionUnit, accessor : String) post(trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 <div class="filter">
- <form action="{{ path('[unit.oclAsType(ContentUnit).routeName()/]', { [if (not unit.routingType().oclIsUndefined())]
-[unit.routingType().routeActualParameters(unit.contentType(), accessor, unit.hasObjectAccess(), unit.oclAsType(ContentUnit))/][/if] }) }}" method="get">
+ <form action="{{ path('[dynamicUnit.routeName()/]', { [if (not dynamicUnit.routingType().oclIsUndefined())]
+[dynamicUnit.routeActualParameters(false, dynamicUnit.routingType(), dynamicUnit.contentType(), accessor, dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
  placeholder="[parameter.placeholder/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
@@ -28,6 +30,7 @@
   <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"/>
  </form>
 </div>
+[/let]
 [/template]
 
 
@@ -120,7 +123,7 @@
 
 [template private pageHref(unit : CollectionUnit, pageNumber : String, selectionAccessor : String) post(trim())]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
-, [unit.routingType().routeActualParameters(unit.routingType(), selectionAccessor, unit.hasObjectAccess(), unit.oclAsType(ContentUnit))/][/if]})) }}
+, [unit.oclAsType(ContentUnit).routeActualParameters(false, unit.routingType(), unit.routingType(), selectionAccessor, unit.hasObjectAccess())/][/if]})) }}
 [/template]
 
 [template private firstPageLinkLabel(unit : CollectionUnit) post(trim())]

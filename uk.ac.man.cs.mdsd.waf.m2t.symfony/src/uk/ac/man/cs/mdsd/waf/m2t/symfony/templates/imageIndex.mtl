@@ -83,7 +83,7 @@
 [/if]
 [if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
 [let action : InlineAction = unit.inlineActions()->first()]
- [action.actionLink(unit.contentType(), unit, variable, unit.image(variable), null, variable, unit.hasObjectAccess())/]
+ [action.actionLink(unit.contentType(), variable, unit.image(variable), null, variable, unit.hasObjectAccess())/]
 [/let]
 [else]
  [unit.image(variable)/]
@@ -119,9 +119,9 @@
 <div class="card-action">
 [for (action : InlineAction | unit.inlineActions())]
 	[if (unit.hasObjectAccess())]
- [action.actionLink(unit.contentType(), unit, variable, action.displayLabel, variable.concat('.defaultLabel()'), variable, unit.hasObjectAccess())/]
+ [action.actionLink(unit.contentType(), variable, action.displayLabel, variable.concat('.defaultLabel()'), variable, unit.hasObjectAccess())/]
 	[else]
- [action.actionLink(unit.contentType(), unit, variable, action.displayLabel, null, variable, unit.hasObjectAccess())/]
+ [action.actionLink(unit.contentType(), variable, action.displayLabel, null, variable, unit.hasObjectAccess())/]
 	[/if]
 [/for]
 </div>

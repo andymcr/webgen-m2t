@@ -175,10 +175,10 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.supportActionName()/]([page.actionMethodParameters(unit, unit.routingType(), true)/])
+public function [unit.supportActionName()/]([page.actionMethodParameters(unit, unit.routingType(), true, true)/])
 {
 	[if (unit.oclIsTypeOf(DetailsUnit))]
-    $[unit.contentType().instanceName()/] = [unit.routingType().loadInstance(unit)/];
+    $[unit.contentType().instanceName()/] = [unit.loadInstance(unit.routingType(), true)/];
     [unit.actionHandlers()/]
 	[else]
     [unit.actionHandlers()/]
@@ -215,9 +215,9 @@ return new Response("No action taken", 200);
  [deleteAction.securityAnnotation()/]
 [/if]
  */
-public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, contentType)/])
+public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, contentType, true)/])
 {
-    $[deleteAction.instanceName()/] = [contentType.loadInstance(unit)/];
+    $[deleteAction.instanceName()/] = [unit.loadInstance(contentType, true)/];
     if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
@@ -245,20 +245,20 @@ public function [deleteAction.actionName()/]([page.actionMethodParameters(unit, 
  [featureAction.securityAnnotation()/]
 [/if]
  */
-public function [action.actionName()/]([page.actionMethodParameters(unit, contentType)/])
+public function [action.actionName()/]([page.actionMethodParameters(unit, contentType, true)/])
 {
 [if (unit.hasPagination())]
     [unit.oclAsType(CollectionUnit).notePage()/]
 [/if]
 [if (featureAction.operation.resultType = OperationResultTypes::None)]
-    $[featureAction.instanceName()/] = [contentType.loadInstance(unit)/];
+    $[featureAction.instanceName()/] = [unit.loadInstance(contentType, true)/];
     if (!$[featureAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
     $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
 [elseif (featureAction.operation.resultType = OperationResultTypes::File)]
     $tempFilename = $this->[featureAction.operation.partOf.instanceServiceName()/]
-        ->[featureAction.operation.methodName()/]([contentType.loadInstance(unit)/], '[featureAction.fileExtension/]');
+        ->[featureAction.operation.methodName()/]([unit.loadInstance(contentType, true)/], '[featureAction.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
     $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[featureAction.fileExtension/]';
     $response->setContentDisposition(

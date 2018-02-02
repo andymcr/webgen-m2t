@@ -50,9 +50,9 @@
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit, uriSuffix : String, createFunction : Boolean) post(trim())]
-[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, createFunction) <> '')]
+[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, false, createFunction) <> '')]
 * @Route("", name="Home")
 [/if]
-* @Route("[unit.uriPath(uriSuffix, createFunction)/]", name="[unit.routeName(createFunction)/]"[if (unit.hasValidatedRouteParameters(createFunction))]
+* @Route("[unit.uriPath(uriSuffix, false, createFunction)/]", name="[unit.routeName(createFunction)/]"[if (unit.hasValidatedRouteParameters(createFunction))]
 , requirements={[for (key : Attribute | unit.uriPathValidatedKeys(createFunction)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]

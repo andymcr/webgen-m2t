@@ -53,7 +53,7 @@
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]X([page.actionMethodParameters(unit, routingType.keyEntity().container())/])
+public function [unit.actionName()/]X([page.actionMethodParameters(unit, routingType.keyEntity().container(), false)/])
 {
     [unit.actionAddCore()/]
 
@@ -134,7 +134,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType())/])
+public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType(), false)/])
 {
     [unit.actionEditCore()/]
 
@@ -217,10 +217,10 @@ if ($this->[unit.instanceName()/]->isValid()) {
 			if entity.parentEntity().oclIsUndefined() then
 				Sequence{}
 			else
-				entity.parentEntity().uriPathKeys()
+				unit.uriPathKeys(entity.parentEntity(), false)
 			endif
 		else
-			entity.uriPathKeys()
+			unit.uriPathKeys(entity, false)
 		endif]
 $this->createForm([unit.typeClassName(unit.pageDisplayedOn().partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(createFunction)/]'[if (page.hasFilters() or page.hasPagination())], [if (pathKeys->isEmpty())]
@@ -230,10 +230,10 @@ array_merge(
         array(
 		[if (parentPath)]
 			[if (not unit.contentType.parentEntity().oclIsUndefined())]
-            [unit.contentType.parentEntity().routeActualParameters(unit)/]
+            [unit.routeActualParameters(unit.contentType.parentEntity())/]
 			[/if]
 		[else]
-            [entity.routeActualParameters(unit)/]
+            [unit.routeActualParameters(entity)/]
 		[/if]
     ))[/if]
 [else]
@@ -241,10 +241,10 @@ array_merge(
 , array(
 		[if (parentPath)]
 			[if (not unit.contentType.parentEntity().oclIsUndefined())]
-        [unit.contentType.parentEntity().routeActualParameters(unit)/]
+        [unit.routeActualParameters(unit.contentType.parentEntity())/]
 			[/if]
 		[else]
-        [entity.routeActualParameters(unit)/]
+        [unit.routeActualParameters(entity)/]
 		[/if]
     )[/if]
 [/if]),
@@ -258,7 +258,7 @@ array_merge(
 [let entityOrView : EntityOrView = unit.contentType]
 [let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
 [let parentService : Service = entityOrView.container().services(unit.pageDisplayedOn().partOf)->first()]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([entityOrView.container().routeParameters()/]));
+$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([unit.routeParameters(entityOrView.container(), false)/]));
 [/let]
 [/let]
 [/let]

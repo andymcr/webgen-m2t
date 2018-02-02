@@ -46,19 +46,19 @@ Request $request[if (page.hasRouteParameters())]
 , [/if][/if][page.routeParameters()/]
 [/template]
 
-[template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView) post(trim())]
-[page.actionMethodParameters(unit, entity, false)/]
+[template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
+[page.actionMethodParameters(unit, entity, includeContentKeys, false)/]
 [/template]
 
-[template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, supportMethod : Boolean) post(trim())]
+[template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean, supportMethod : Boolean) post(trim())]
 [if (entity.oclIsUndefined())]
 	[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request
 	[/if]
 [else]
 [if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasUnitSupportActions())]
-Request $request[if (entity.hasRouteParameters(unit))]
-, [/if][/if][entity.routeParameters(unit)/]
+Request $request[if (unit.hasRouteParameters(entity, includeContentKeys))]
+, [/if][/if][unit.routeParameters(entity, includeContentKeys)/]
 [/if]
 [/template]
 
@@ -84,12 +84,12 @@ $this->[unit.contentService().instanceServiceName()/]
 $this->[unit.selectionService().instanceServiceName()/]
 [/template]
 
-[template public loadInstance(entity : EntityOrView, unit : DynamicUnit) post(trim())]
-[unit.getContentService()/]->find([entity.findActualParameters(unit)/])
+[template public loadInstance(unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
+[unit.getContentService()/]->find([unit.findActualParameters(entity, includeContentKeys)/])
 [/template]
 
-[template public findActualParameters(entity : EntityOrView, unit : DynamicUnit) post(trim())]
-[for (key : Attribute | entity.uriPathKeys()) separator (', ')]
+[template public findActualParameters(unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
+[for (key : Attribute | unit.uriPathKeys(entity, includeContentKeys)) separator (', ')]
 [let parameterName : String = key.routeParameterName(entity)]
 	[if (unit.hasRouteActual(key))]
 [unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()))/][elseif (key.encodeUriKey)]
@@ -100,11 +100,11 @@ $[parameterName/][/if]
 [/template]
 
 [template public loadSelectedInstance(unit : EditUnit) post(trim())]
-$[unit.instanceName()/] = [unit.routingType().loadInstance(unit)/];
+$[unit.instanceName()/] = [unit.loadInstance(unit.routingType(), false)/];
 [/template]
 
 [template public loadSelectedInstance(unit : ImageUnit) post(trim())]
-$this->[unit.instanceName()/] = [unit.routingType().loadInstance(unit)/];
+$this->[unit.instanceName()/] = [unit.loadInstance(unit.routingType(), false)/];
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]
@@ -203,30 +203,30 @@ $request->query->all()[else]
 array_merge(
     $request->query->all(),
     array(
-        [routingType.routeActualParameters(valueBase, unit)/]
+        [unit.routeActualParameters(routingType, valueBase)/]
 ))[/if]
 [else]
 	[if (not routingType.oclIsUndefined())]
 , array(
-    [routingType.routeActualParameters(valueBase, unit)/]
+    [unit.routeActualParameters(routingType, valueBase)/]
 )[/if]
 [/if])
 [/let]
 [/template]
 
-[template public routeActualParameters(base : EntityOrView, targetUnit : DynamicUnit) post(trim())]
-[base.routeActualParameters(base, targetUnit)/]
-[/template]
-
-[template public routeActualParameters(routeBase : EntityOrView, valueBase : EntityOrView, targetUnit : DynamicUnit) post(trim())]
-[for (key : Attribute | routeBase.uriPathKeys(targetUnit))]
-'[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
-[/for]
-[/template]
-
 [template public routeActualParameters(page : Page, valueBase : EntityOrView) post(trim())]
 [for (key : Attribute | page.uriCommonPathKeys())]
 '[key.routeParameterName(page.dynamicUnits()->first().routingType())/]' => $[key.routeParameterName(valueBase)/],
+[/for]
+[/template]
+
+[template public routeActualParameters(targetUnit : DynamicUnit, base : EntityOrView) post(trim())]
+[targetUnit.routeActualParameters(base, base)/]
+[/template]
+
+[template public routeActualParameters(targetUnit : DynamicUnit, routeBase : EntityOrView, valueBase : EntityOrView) post(trim())]
+[for (key : Attribute | targetUnit.uriPathKeys(routeBase, false))]
+'[key.routeParameterName(routeBase)/]' => $[key.routeParameterName(valueBase)/],
 [/for]
 [/template]
 
