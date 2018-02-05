@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
@@ -354,6 +355,12 @@
 				Sequence{ unit.oclAsType(DynamicUnit).routingService() }
 					->union(unit.services2())
 			endif
+				->union(
+					if unit.oclAsType(DynamicUnit).hasInlineActions() then
+						Sequence{ unit.oclAsType(DynamicUnit).contentService() }
+					else
+						Sequence{}
+					endif)
 /]
 
 [query private services2(unit : CollectionUnit) : Sequence(Service)

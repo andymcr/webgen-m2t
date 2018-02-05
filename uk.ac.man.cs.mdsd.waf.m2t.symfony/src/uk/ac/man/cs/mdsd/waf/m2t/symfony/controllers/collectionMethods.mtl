@@ -80,19 +80,21 @@ private function [unit.selectName()/]([collectionUnit.selectMethodParameters(tru
 [template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
 [if (unit.hasFilters() or unit.hasPagination())][if (formal)]
 Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
-[if (unit.routingType().uriPathKeys()->notEmpty())]
+[if (unit.hasRouteParameters(unit.routingType(), false))]
 , [/if][/if][/if]
 [unit.routingParameters()/]
 [/template]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
-[if (unit.selection.selectPath->notEmpty())]
-[unit.routingParameters()/][if (unit.hasPagination())], [/if][/if][unit.paginationActuals()/]
+[if (not unit.routingType().oclIsUndefined())]
+[if (unit.hasRouteParameters(unit.routingType(), false))]
+[unit.routingParameters()/][if (unit.hasPagination())]
+, [/if][/if][/if][unit.paginationActuals()/]
 [/template]
 
 [template private routingParameters(unit : CollectionUnit) post(trim())]
 [if (not unit.routingType().oclIsUndefined())]
-	[unit.oclAsType(DynamicUnit).findActualParameters(unit.routingType(), false)/]
+[unit.routeParametersX(unit.routingType(), false)/]
 [/if]
 [/template]
 
@@ -105,7 +107,8 @@ Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
 [template private selectCode(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (not unit.routingType().oclIsUndefined())]
-$this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->find([unit.routingParameters()/]);
+$this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->[if (unit.findContainerSelection.oclIsUndefined())]
+find[else][unit.findContainerSelection.methodName/][/if]([unit.routingParameters()/]);
 if (!$this->[unit.routingType().instanceName()/]) {
     throw $this->createNotFoundException('The [unit.routingType().name/] does not exist');
 }
@@ -136,8 +139,7 @@ else
 $this->[unit.instanceName()/] = [dynamicUnit.getContentService()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
 $this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
-[unit.filter.methodName/][else][unit.selection.methodName/][/if]
-([unit.selectionParameters()/]);
+[unit.filter.methodName/][else][unit.selection.methodName/][/if]([unit.selectionParameters()/]);
 	[/if]
 [elseif (unit.oclIsKindOf(DataUnit))]
 [let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
@@ -148,7 +150,7 @@ $this->[dataUnit.instanceName()/] = [dataUnit.getContentService()/]->findAll([un
 	[/if]
 [/let]
 [else]
-$this->[unit.instanceName()/] = [dynamicUnit.getContentService()/]->[unit.selection.methodName/]([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [unit.selection.partOf.instanceServiceName()/]->[unit.selection.methodName/]([unit.paginationActuals()/]);
 [/if]
 [/let]
 [/template]

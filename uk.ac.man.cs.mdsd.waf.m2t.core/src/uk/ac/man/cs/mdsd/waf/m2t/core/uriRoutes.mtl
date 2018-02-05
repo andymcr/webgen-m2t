@@ -74,6 +74,12 @@
 			endif
 /]
 
+[query public uriPathKeys(unit : CollectionUnit, entity : EntityOrView, selection : Selection) : Sequence(Attribute)
+	= let keysWithActuals : Sequence(Attribute)
+		= unit.oclAsType(DynamicUnit).routeActuals->collect(a | a.routeParameter)
+		in entity.uriPathKeys()->select(k | not keysWithActuals->includes(k) and selection.selectionKeys()->includes(k))
+/]
+
 
 [query public uriCommonPathKeys(page : Page) : Sequence(Attribute)
 	= if page.units->isEmpty() then
@@ -92,8 +98,16 @@
 	= page.uriCommonPathKeys()->notEmpty()
 /]
 
+[query public hasRouteParameters(unit : CollectionUnit, entity : EntityOrView, includeContentKeys : Boolean) : Boolean
+	= unit.oclAsType(ContentUnit).hasRouteParameters(entity, includeContentKeys)
+/]
+
 [query public hasRouteParameters(unit : ContentUnit, entity : EntityOrView, includeContentKeys : Boolean) : Boolean
 	= unit.uriPathKeys(entity, includeContentKeys)->notEmpty()
+/]
+
+[query public hasRouteParameters(unit : CollectionUnit, entity : EntityOrView, selection : Selection) : Boolean
+	= unit.uriPathKeys(entity, selection)->notEmpty()
 /]
 
 [query public hasRouteParameters(entity : EntityOrView) : Boolean
@@ -217,7 +231,7 @@
 		endif endif
 /]
 
-[query private selectionKeys(selection : Selection) : Collection(Attribute)
+[query public selectionKeys(selection : Selection) : Collection(Attribute)
 	= if selection.selectPath->notEmpty() then
 			selection.selectionType().uriPathKeys()
 		else if selection.condition.oclIsUndefined() then

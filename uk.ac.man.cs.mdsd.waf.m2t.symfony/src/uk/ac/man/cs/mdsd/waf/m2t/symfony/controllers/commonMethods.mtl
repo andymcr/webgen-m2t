@@ -47,16 +47,12 @@ Request $request[if (page.hasRouteParameters())]
 [/template]
 
 [template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
-[page.actionMethodParameters(unit, entity, includeContentKeys, false)/]
-[/template]
-
-[template public actionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean, supportMethod : Boolean) post(trim())]
 [if (entity.oclIsUndefined())]
 	[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request
 	[/if]
 [else]
-[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit) or supportMethod and unit.hasUnitSupportActions())]
+[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request[if (unit.hasRouteParameters(entity, includeContentKeys))]
 , [/if][/if][unit.routeParameters(entity, includeContentKeys)/]
 [/if]
@@ -75,6 +71,17 @@ $[key.routeParameterName(entity)/][/for]
 [/if]
 [/template]
 
+[template public actionMethodParameters(page : Page, unit : CollectionUnit, entity : EntityOrView, selection : Selection) post(trim())]
+[if (entity.oclIsUndefined())]
+	[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
+Request $request
+	[/if]
+[else]
+Request $request[if (unit.hasRouteParameters(entity, selection))]
+, [/if][unit.routeParameters(entity, selection)/]
+[/if]
+[/template]
+
 
 [template public getContentService(unit : DynamicUnit) post(trim())]
 $this->[unit.contentService().instanceServiceName()/]
@@ -88,7 +95,11 @@ $this->[unit.selectionService().instanceServiceName()/]
 [unit.getContentService()/]->find([unit.findActualParameters(entity, includeContentKeys)/])
 [/template]
 
-[template public findActualParameters(unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
+[template private findActualParametersX(unit : CollectionUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
+[unit.oclAsType(DynamicUnit).findActualParameters(entity, includeContentKeys)/]
+[/template]
+
+[template private findActualParameters(unit : DynamicUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(entity, includeContentKeys)) separator (', ')]
 [let parameterName : String = key.routeParameterName(entity)]
 	[if (unit.hasRouteActual(key))]

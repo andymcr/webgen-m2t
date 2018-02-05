@@ -1,7 +1,8 @@
 [comment encoding = UTF-8 /]
 [module uriRoutes(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/API',
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -40,8 +41,17 @@
 $[key.routeParameterName(page)/][/for]
 [/template]
 
+[template public routeParametersX(unit : CollectionUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
+[unit.oclAsType(ContentUnit).routeParameters(entity, includeContentKeys)/]
+[/template]
+
 [template public routeParameters(unit : ContentUnit, entity : EntityOrView, includeContentKeys : Boolean) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(entity, includeContentKeys)) separator (', ')]
+$[key.routeParameterName(entity)/][/for]
+[/template]
+
+[template public routeParameters(unit : CollectionUnit, entity : EntityOrView, selection : Selection) post(trim())]
+[for (key : Attribute | unit.uriPathKeys(entity, selection)) separator (', ')]
 $[key.routeParameterName(entity)/][/for]
 [/template]
 
