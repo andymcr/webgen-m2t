@@ -82,6 +82,11 @@ Request $request[if (unit.hasRouteParameters(entity, selection))]
 [/if]
 [/template]
 
+[template public supportActionMethodParameters(page : Page, unit : DynamicUnit, entity : EntityOrView) post(trim())]
+Request $request[if (unit.hasRouteParameters(entity, false))]
+, [/if][unit.routeParameters(entity, false)/]
+[/template]
+
 
 [template public getContentService(unit : DynamicUnit) post(trim())]
 $this->[unit.contentService().instanceServiceName()/]

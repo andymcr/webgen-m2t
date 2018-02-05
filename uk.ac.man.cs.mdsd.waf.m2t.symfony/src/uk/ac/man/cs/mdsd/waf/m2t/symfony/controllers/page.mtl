@@ -175,7 +175,7 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.supportActionName()/]([page.actionMethodParameters(unit, unit.routingType(), true)/])
+public function [unit.supportActionName()/]([page.supportActionMethodParameters(unit, unit.routingType())/])
 {
 	[if (unit.oclIsTypeOf(DetailsUnit))]
     $[unit.contentType().instanceName()/] = [unit.loadInstance(unit.routingType(), true)/];
