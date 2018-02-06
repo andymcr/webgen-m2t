@@ -135,22 +135,13 @@ if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.routingTy
 else
 [/if]
 [if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
-	[if (unit.routedSelection())]
-$this->[unit.instanceName()/] = [dynamicUnit.getContentService()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
+	[if (unit.filter.oclIsUndefined())]
+$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceServiceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
-$this->[unit.instanceName()/] = [unit.getSelectionService()/]->[if (not unit.filter.oclIsUndefined())]
-[unit.filter.methodName/][else][unit.selection.methodName/][/if]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceServiceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
-[elseif (unit.oclIsKindOf(DataUnit))]
-[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
-	[if (not dataUnit.defaultSelection.oclIsUndefined())]
-$this->[dataUnit.instanceName()/] = [unit.getSelectionService()/]->[dataUnit.defaultSelection.methodName/]([unit.selectionParameters()/]);
-	[else]
-$this->[dataUnit.instanceName()/] = [dataUnit.getContentService()/]->findAll([unit.paginationActuals()/]);
-	[/if]
-[/let]
 [else]
-$this->[unit.instanceName()/] = [unit.selection.partOf.instanceServiceName()/]->[unit.selection.methodName/]([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
 [/if]
 [/let]
 [/template]

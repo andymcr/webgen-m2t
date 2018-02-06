@@ -50,13 +50,13 @@ public function [unit.actionName()/]([unit.actionMethodParameters(unit.routingTy
 [template public actionCore(unit : ContentUnit)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[if (detailsUnit.defaultSelection.oclIsUndefined())]
+[if (detailsUnit.selection.oclIsUndefined())]
 $this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance(detailsUnit.routingType(), false)/];
 if (!$this->[detailsUnit.instanceName()/]) {
     throw $this->createNotFoundException('The [detailsUnit.routingType().name/] does not exist');
 }
 [else]
-$this->[detailsUnit.instanceName()/] = [detailsUnit.getContentService()/]->[detailsUnit.defaultSelection.methodName/]();
+$this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.partOf.instanceServiceName()/]->[detailsUnit.selection.methodName/]();
 [/if]
 [/let]
 [/template]

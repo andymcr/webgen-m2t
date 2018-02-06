@@ -37,8 +37,8 @@
 			let association : UnitAssociation = field.oclAsType(UnitAssociation)
 			in if association.units->isEmpty() then
 					null
-				else if association.units->first().oclIsKindOf(IndexUnit) then
-					association.units->first().oclAsType(IndexUnit).defaultSelection
+				else if association.units->first().oclIsKindOf(DetailsUnit) then
+					association.units->first().oclAsType(DetailsUnit).selection
 				else
 					null
 			endif endif

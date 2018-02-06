@@ -235,12 +235,12 @@
 				else
 					collectionUnit.selection.joins->isEmpty() or collectionUnit.selection.fields->isEmpty()
 				endif
-		else if unit.oclIsKindOf(DataUnit) then
-			let dataUnit : DataUnit = unit.oclAsType(DataUnit)
-				in if dataUnit.defaultSelection.oclIsUndefined() then
+		else if unit.oclIsKindOf(DetailsUnit) then
+			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
+				in if detailsUnit.selection.oclIsUndefined() then
 					true
 				else
-					dataUnit.defaultSelection.joins->isEmpty() or dataUnit.defaultSelection.fields->isEmpty()
+					detailsUnit.selection.joins->isEmpty() or detailsUnit.selection.fields->isEmpty()
 				endif
 		else if unit.oclIsKindOf(EditUnit) then
 			true
@@ -383,7 +383,7 @@
 /]
 
 [query private services(unit : DetailsUnit) : Sequence(Service)
-	= if unit.defaultSelection.oclIsUndefined() then
+	= if unit.selection.oclIsUndefined() then
 			Sequence{ unit.routingService() }
 		else
 			Sequence{ unit.contentService() }

@@ -101,12 +101,12 @@
 					else
 						attribute.attribute.alias(unit.selection)
 					endif
-		else if attribute.displayedOn.oclIsKindOf(DataUnit) then
-			let unit : DataUnit = attribute.displayedOn.oclAsType(DataUnit)
-				in if unit.defaultSelection.oclIsUndefined() then
+		else if attribute.displayedOn.oclIsKindOf(DetailsUnit) then
+			let unit : DetailsUnit = attribute.displayedOn.oclAsType(DetailsUnit)
+				in if unit.selection.oclIsUndefined() then
 						null
 					else
-						attribute.attribute.alias(unit.defaultSelection)
+						attribute.attribute.alias(unit.selection)
 					endif
 		else
 			null

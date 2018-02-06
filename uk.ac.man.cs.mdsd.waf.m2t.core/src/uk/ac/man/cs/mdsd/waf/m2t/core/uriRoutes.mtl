@@ -178,8 +178,8 @@
 /]
 
 [query public routingType(unit : SingletonUnit, forCommonKeys : Boolean) : EntityOrView
-	= if unit.oclIsKindOf(DataUnit) then
-			if unit.oclAsType(DataUnit).defaultSelection.oclIsUndefined() then
+	= if unit.oclIsKindOf(DetailsUnit) then
+			if unit.oclAsType(DetailsUnit).selection.oclIsUndefined() then
 				unit.contentType
 			else
 				null
@@ -251,14 +251,14 @@
 [query public selectionKeys(unit : SingletonUnit, routingType : EntityOrView) : Set(Attribute)
 	= if unit.oclIsKindOf(DetailsUnit) then
 			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
-				in if detailsUnit.defaultSelection.oclIsUndefined() then
+				in if detailsUnit.selection.oclIsUndefined() then
 						if routingType.oclIsUndefined() then
 							Set{}
 						else
 							routingType.uriPathKeys()->asSet()
 						endif
 					else
-						detailsUnit.defaultSelection.selectionKeys()
+						detailsUnit.selection.selectionKeys()
 					endif
 		else
 			if routingType.oclIsUndefined() then

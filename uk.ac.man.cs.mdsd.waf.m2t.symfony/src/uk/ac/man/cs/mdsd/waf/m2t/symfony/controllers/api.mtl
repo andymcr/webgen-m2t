@@ -136,10 +136,10 @@ $this->[unit.instanceName()/] = [comment unit.oclAsType(DynamicUnit).getContentS
 	[else]
 $this->[unit.instanceName()/] = [comment unit.getSelectionService()/]->[unit.selection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);
 	[/if]
-[elseif (unit.oclIsKindOf(DataUnit))]
-[let dataUnit : DataUnit = unit.oclAsType(DataUnit)]
-	[if (not dataUnit.defaultSelection.oclIsUndefined())]
-$this->[unit.instanceName()/] = [comment unit.getSelectionService()/]->[dataUnit.defaultSelection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);
+[elseif (unit.oclIsKindOf(DetailsUnit))]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+	[if (not detailsUnit.selection.oclIsUndefined())]
+$this->[unit.instanceName()/] = [comment unit.getSelectionService()/]->[detailsUnit.selection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);
 	[else]
 $this->[unit.instanceName()/] = [comment unit.oclAsType(DynamicUnit).getContentService()/]->findAll([comment unit.paginationActuals()/]);
 	[/if]

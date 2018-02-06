@@ -125,13 +125,13 @@
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
 [association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
-	[elseif (embeddedUnit.oclAsType(IndexUnit).defaultSelection.oclIsUndefined())]
+	[elseif (embeddedUnit.oclAsType(IndexUnit).selection.oclIsUndefined())]
 [association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
 	[else]
 	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
 [association.units.unitContent(association.nullDisplayValue,
 	association.serviceAccessor()
-		.concat('.').concat(association.name).concat(indexUnit.defaultSelection.instanceName().toUpperFirst())
+		.concat('.').concat(association.name).concat(indexUnit.selection.instanceName().toUpperFirst())
 		.concat('(').concat(parentAccessor).concat(')'), depthIndex + 1)/]
 	[/let]
 	[/if]
