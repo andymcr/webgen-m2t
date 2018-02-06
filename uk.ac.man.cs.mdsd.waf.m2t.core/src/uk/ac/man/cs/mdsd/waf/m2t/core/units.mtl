@@ -255,7 +255,6 @@
 		else
 			unit.defaultPaginationSize > 0 and unit.selection.hasPaginationSupport()
 		endif
-
 /]
 
 [query public hasPagination(unit : DynamicUnit) : Boolean
@@ -263,6 +262,14 @@
 			unit.oclAsType(CollectionUnit).hasPagination()
 		else
 			false
+		endif
+/]
+
+[query public hasSelectCondition(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then 
+			false
+		else
+			not unit.selection.condition.oclIsUndefined()
 		endif
 /]
 

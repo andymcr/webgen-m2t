@@ -170,7 +170,7 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
 [for (unit : DynamicUnit | page.dynamicUnits())]
 	[if (unit.hasUnitSupportActions() and not unit.oclIsKindOf(EditUnit))]
 /**
- * @Route("[unit.supportUriPath()/]", name="[unit.supportRouteName()/]")
+ [unit.routeAnnotationSupport('support')/]
 [if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
 [/if]
@@ -207,10 +207,10 @@ return new Response("No action taken", 200);
 [template private actionMethod(action : InlineAction, page : Page)
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : DynamicUnit = action.immediateUnit()]
+[let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
 [let contentType : EntityOrView = unit.contentType()]
 /**
- * @Route("[deleteAction.uriPath()/]", name="[deleteAction.routeName()/]")
+ [unit.routeAnnotation(contentType, deleteAction.uriElement, true, deleteAction.routeName())/]
 [if (deleteAction.hasAuthorisation())]
  [deleteAction.securityAnnotation()/]
 [/if]
@@ -221,13 +221,14 @@ public function [deleteAction.actionName()/]([page.actionParameters(deleteAction
     if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
-    $this->[deleteAction.usedBy.oclAsType(IndexUnit).contentService().instanceName()/]->remove($[deleteAction.instanceName()/], true);
+    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentService().instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     return [deleteAction.destination.redirect()/];
 [else]
-    return [unit.redirect(unit.containingUnit().routingType(), unit.containingUnit().routeName(), contentType)/];
-[/if]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+    return [dynamicUnit.redirect(dynamicUnit.containingUnit().routingType(), dynamicUnit.containingUnit().routeName(), unit.contentType())/];
+[/let][/if]
 }
 [/let]
 [/let]
@@ -237,10 +238,10 @@ public function [deleteAction.actionName()/]([page.actionParameters(deleteAction
 [template private actionMethod(action : InlineAction, page : Page)
 	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
 [let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[let unit : DynamicUnit = action.immediateUnit()]
+[let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
 [let contentType : EntityOrView = unit.contentType()]
 /**
- * @Route("[featureAction.uriPath()/]", name="[featureAction.routeName()/]")
+ [unit.routeAnnotation(contentType, featureAction.uriElement, true, featureAction.routeName())/]
 [if (featureAction.hasAuthorisation())]
  [featureAction.securityAnnotation()/]
 [/if]
@@ -258,7 +259,7 @@ public function [action.actionName()/]([page.actionParameters(featureAction, uni
     $this->[featureAction.operation.partOf.instanceServiceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
 [elseif (featureAction.operation.resultType = OperationResultTypes::File)]
     $tempFilename = $this->[featureAction.operation.partOf.instanceServiceName()/]
-        ->[featureAction.operation.methodName()/]([unit.loadInstance(contentType, true)/], '[featureAction.fileExtension/]');
+        ->[featureAction.operation.methodName()/]([unit.oclAsType(DynamicUnit).loadInstance(contentType, true)/], '[featureAction.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
     $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[featureAction.fileExtension/]';
     $response->setContentDisposition(
@@ -278,32 +279,18 @@ public function [action.actionName()/]([page.actionParameters(featureAction, uni
 [/let]
 [/template]
 
-[template private actionParameters(page : Page, action : InlineAction, unit : DynamicUnit) post(trim())]
-[if (not unit.oclIsKindOf(CollectionUnit))]
-[page.actionMethodParameters(unit, unit.contentType(), true)/]
+[template private actionParameters(page : Page, action : InlineAction, unit : CollectionUnit) post(trim())]
+[if (unit.findElementSelection.oclIsUndefined())]
+[unit.oclAsType(DynamicUnit).actionMethodParameters(unit.contentType(), true)/]
 [else]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-	[if (collectionUnit.findElementSelection.oclIsUndefined())]
-[page.actionMethodParameters(unit, unit.contentType(), true)/]
-	[else]
-[page.actionMethodParameters(collectionUnit, unit.contentType(), collectionUnit.findElementSelection)/]
-	[/if]
-[/let]
+[unit.actionMethodParameters(unit.contentType(), unit.findElementSelection)/]
 [/if]
 [/template]
 
-[template private loadElement(unit : DynamicUnit) post(trim())]
-[let contentType : EntityOrView = unit.contentType()]
-[if (not unit.oclIsKindOf(CollectionUnit))]
-[unit.loadInstance(contentType, true)/]
+[template private loadElement(unit : CollectionUnit) post(trim())]
+[if (unit.findElementSelection.oclIsUndefined())]
+[unit.oclAsType(DynamicUnit).loadInstance(unit.contentType(), true)/]
 [else]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-	[if (collectionUnit.findElementSelection.oclIsUndefined())]
-[unit.loadInstance(contentType, true)/]
-	[else]
-[unit.getContentService()/]->[collectionUnit.findElementSelection.methodName/]([collectionUnit.routeParameters(contentType, collectionUnit.findElementSelection)/])
-	[/if]
-[/let]
+[unit.oclAsType(DynamicUnit).getContentService()/]->[unit.findElementSelection.methodName/]([unit.routeParameters(unit.contentType(), unit.findElementSelection)/])
 [/if]
-[/let]
 [/template]

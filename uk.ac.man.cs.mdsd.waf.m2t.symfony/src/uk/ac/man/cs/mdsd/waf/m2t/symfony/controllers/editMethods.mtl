@@ -45,15 +45,15 @@
 [let routingType : EntityOrView = unit.routingType()]
 /**
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
- [unit.routeAnnotation(unit.oclAsType(CreateUpdateUnit).createUriElement, true)/]
+ [unit.routeAnnotation(routingType, routingType.keyEntity().container(), unit.oclAsType(CreateUpdateUnit).createUriElement, unit.routeName(true))/]
 [else]
- [unit.routeAnnotation(unit.uriElement, true)/]
+ [unit.routeAnnotation(routingType, routingType.keyEntity().container(), unit.uriElement, unit.routeName(true))/]
 [/if]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]X([page.actionMethodParameters(unit, routingType.keyEntity().container(), false)/])
+public function [unit.actionName()/]X([unit.actionMethodParameters(routingType.keyEntity().container(), false)/])
 {
     [unit.actionAddCore()/]
 
@@ -129,12 +129,12 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [template private actionEditMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- [unit.routeAnnotation()/]
+ [unit.routeAnnotation(unit.routingType(), unit.routingType(), unit.uriElement, unit.routeName())/]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType(), false)/])
+public function [unit.actionName()/]([unit.actionMethodParameters(unit.routingType(), false)/])
 {
     [unit.actionEditCore()/]
 

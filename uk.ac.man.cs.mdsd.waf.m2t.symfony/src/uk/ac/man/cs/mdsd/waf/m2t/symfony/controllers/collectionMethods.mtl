@@ -33,12 +33,12 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let page : Page = dynamicUnit.pageDisplayedOn()]
 /**
- [dynamicUnit.routeAnnotation()/]
+ [unit.routeAnnotation(unit.routingType(), dynamicUnit.uriElement, false, dynamicUnit.routeName())/]
 [if (dynamicUnit.requiresRole <> '')]
  [dynamicUnit.securityAnnotation()/]
 [/if]
  */
-public function [dynamicUnit.actionName()/]([page.actionMethodParameters(dynamicUnit, unit.routingType(), false)/])
+public function [dynamicUnit.actionName()/]([dynamicUnit.actionMethodParameters(unit.routingType(), false)/])
 {
 [if (dynamicUnit.isConditionalDisplay())]
     [dynamicUnit.actionCore()/]

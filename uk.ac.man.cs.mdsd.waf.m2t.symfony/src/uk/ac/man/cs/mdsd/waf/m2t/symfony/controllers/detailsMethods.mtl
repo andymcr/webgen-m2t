@@ -36,7 +36,7 @@
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([page.actionMethodParameters(unit, unit.routingType(), false)/])
+public function [unit.actionName()/]([unit.actionMethodParameters(unit.routingType(), false)/])
 {
 [if (unit.isConditionalDisplay())]
     [unit.actionCore()/]

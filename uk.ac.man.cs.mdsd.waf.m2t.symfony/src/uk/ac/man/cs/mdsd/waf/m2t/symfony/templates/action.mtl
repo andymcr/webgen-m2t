@@ -104,11 +104,11 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]');"[/if]>[linkContent/]</a>
 [/template]
 
-[template public routeActualParameters(targetUnit : ContentUnit, includeContentKeys : Boolean, entity : EntityOrView, base : EntityOrView, accessor : String, objectAccess : Boolean) post(trim())]
-[if (entity.isContained())]
-[targetUnit.routeActualParameters(includeContentKeys, entity.container(), base, accessor.concat('.').concat(entity.containingAssociation().modelPropertyName()), objectAccess)/]
+[template public routeActualParameters(targetUnit : ContentUnit, includeContentKeys : Boolean, routingType : EntityOrView, base : EntityOrView, accessor : String, objectAccess : Boolean) post(trim())]
+[if (routingType.isContained())]
+[targetUnit.routeActualParameters(includeContentKeys, routingType.container(), base, accessor.concat('.').concat(routingType.containingAssociation().modelPropertyName()), objectAccess)/]
 [/if]
-[for (key : Attribute | entity.uriEntityKeys(targetUnit, includeContentKeys))]
+[for (key : Attribute | routingType.uriEntityKeys(targetUnit, routingType, includeContentKeys))]
 [let keyAccessor : String
 	= if objectAccess then
 			accessor.concat('.').concat(key.modelPropertyName())

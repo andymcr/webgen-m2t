@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
@@ -38,21 +39,47 @@
 [/template]
 
 [template public routeAnnotation(page : Page) post(trim())]
-[if (page = page.partOf.homePage() and page.uriActionPath() <> '')]
-* @Route("", name="Home")
+[if (page.units->isEmpty())]
+* @Route("[page.uriPath()/]", name="[page.routeName()/]")
+[else]
+[let unit : ContentUnit = page.units->first()]
+	[if (unit.oclIsTypeOf(StaticUnit))]
+[unit.oclAsType(StaticUnit).routeAnnotation()/]
+	[elseif (unit.oclIsTypeOf(DetailsUnit))]
+[unit.oclAsType(DetailsUnit).routeAnnotation()/]
+	[elseif (unit.oclIsKindOf(EditUnit))]
+[unit.oclAsType(EditUnit).routeAnnotation(null, null, unit.uriElement, unit.routeName())/]
+	[elseif (unit.oclIsKindOf(CollectionUnit))]
+[unit.oclAsType(CollectionUnit).routeAnnotation(unit.routingType(false), unit.uriElement, false, unit.routeName())/]
+	[/if]
+[/let]
 [/if]
-* @Route("[page.uriActionPath()/]", name="[page.routeName()/]"[if (page.hasValidatedRouteParameters())]
-, requirements={[for (key : Attribute | page.uriPathValidatedKeys()) separator(', ')]"[key.routeParameterName(page)/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
 
-[template public routeAnnotation(unit : ContentUnit) post(trim())]
-[unit.routeAnnotation(unit.uriElement, false)/]
+[template public routeAnnotation(unit : StaticUnit) post(trim())]
+[unit.routeAnnotationX(null, null, unit.uriElement, false, unit.routeName())/]
 [/template]
 
-[template public routeAnnotation(unit : ContentUnit, uriSuffix : String, createFunction : Boolean) post(trim())]
-[if (unit.isHomeUnit() and unit.uriPath(uriSuffix, false, createFunction) <> '')]
+[template public routeAnnotation(unit : DetailsUnit) post(trim())]
+[unit.routeAnnotationX(unit.contentType, unit.contentType, unit.uriElement, false, unit.routeName())/]
+[/template]
+
+[template public routeAnnotation(unit : EditUnit, pathType : EntityOrView, routingType : EntityOrView, suffix : String, routeName : String) post(trim())]
+[unit.routeAnnotationX(pathType, routingType, suffix, false, routeName)/]
+[/template]
+
+[template public routeAnnotation(unit : CollectionUnit, routingType : EntityOrView, suffix : String, includeContentKeys : Boolean, routeName : String) post(trim())]
+[unit.oclAsType(ContentUnit).routeAnnotationX(routingType, routingType, suffix, includeContentKeys, routeName)/]
+[/template]
+
+[template public routeAnnotationSupport(unit : DynamicUnit, suffix : String) post(trim())]
+[unit.routeAnnotationX(unit.routingType(), unit.routingType(), unit.uriElement.combinePaths(suffix), false, unit.supportRouteName())/]
+[/template]
+
+[template private routeAnnotationX(unit : ContentUnit, pathType : EntityOrView, routingType : EntityOrView, suffix : String, includeContentKeys : Boolean, routeName : String) post(trim())]
+[if (unit.isHomeUnit() and unit.pageDisplayedOn().uriPath(unit, pathType, routingType, suffix, includeContentKeys) <> '')]
 * @Route("", name="Home")
 [/if]
-* @Route("[unit.uriPath(uriSuffix, false, createFunction)/]", name="[unit.routeName(createFunction)/]"[if (unit.hasValidatedRouteParameters(createFunction))]
-, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(createFunction)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
+* @Route("[unit.pageDisplayedOn().uriPath(unit, pathType, routingType, suffix, includeContentKeys)/]", name="[routeName/]"[if (unit.hasValidatedRouteParameters(false))]
+, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(false)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]
