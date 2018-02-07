@@ -42,24 +42,22 @@
 
 [template private actionAddMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-[let routingType : EntityOrView = unit.routingType()]
 /**
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
- [unit.routeAnnotation(routingType, routingType.keyEntity().container(), unit.oclAsType(CreateUpdateUnit).createUriElement, unit.routeName(true))/]
+ [unit.routeAnnotation(unit.contentType, unit.contentType.parentEntity(), unit.oclAsType(CreateUpdateUnit).createUriElement, unit.routeName(true))/]
 [else]
- [unit.routeAnnotation(routingType, routingType.keyEntity().container(), unit.uriElement, unit.routeName(true))/]
+ [unit.routeAnnotation(unit.contentType, unit.contentType.parentEntity(), unit.uriElement, unit.routeName(true))/]
 [/if]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]X([unit.actionMethodParameters(routingType.keyEntity().container(), false)/])
+public function [unit.actionName()/]X([unit.actionMethodParameters(unit.contentType.parentEntity())/])
 {
     [unit.actionAddCore()/]
 
-    return $this->renderPage([page.renderActualParameters(routingType.container())/]);
+    return $this->renderPage([page.renderActualParameters(unit.contentType.parentEntity())/]);
 }
-[/let]
 [/let]
 [/template]
 
@@ -72,7 +70,7 @@ public function [unit.actionName()/]X([unit.actionMethodParameters(routingType.k
 
 [template private actionAddCore(unit : EditUnit) post(trim())]
 $[unit.instanceName()/] = [unit.createInstance()/];
-$this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), true, true, false)/];
+$this->[unit.instanceName()/] = [unit.createForm(unit.contentType.parentEntity(), unit.instanceName(), true, false)/];
 [if (unit.hasUnitSupportActions())]
 
 if ($request->isMethod('POST')) {
@@ -129,16 +127,16 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [template private actionEditMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- [unit.routeAnnotation(unit.routingType(), unit.routingType(), unit.uriElement, unit.routeName())/]
+ [unit.routeAnnotation(unit.contentType, unit.contentType, unit.uriElement, unit.routeName())/]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([unit.actionMethodParameters(unit.routingType(), false)/])
+public function [unit.actionName()/]([unit.actionMethodParameters()/])
 {
     [unit.actionEditCore()/]
 
-    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.contentType.parentEntity(), unit.contentType)/]);
 }
 [/let]
 [/template]
@@ -151,9 +149,9 @@ public function [unit.actionName()/]([unit.actionMethodParameters(unit.routingTy
 [/template]
 
 [template private actionEditCore(unit : EditUnit) post(trim())]
-[unit.loadSelectedInstance()/]
+$[unit.instanceName()/] = [unit.loadInstance()/];
 if (!$[unit.instanceName()/]) {
-    throw $this->createNotFoundException('The [unit.routingType().name/] does not exist');
+    throw $this->createNotFoundException('The [unit.contentType.name/] does not exist');
 }
 [for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
 [let association : Association = field.feature().oclAsType(Association)]
@@ -162,7 +160,7 @@ foreach ($[unit.instanceName()/]->[field.feature().getMethodName()/]() as $[asso
     $original[field.instanceName().toUpperFirst()/]->add($[association.targetType().instanceName()/]);
 [/let]
 [/for]
-$this->[unit.instanceName()/] = [unit.createForm(unit.instanceName(), false, false, false)/];
+$this->[unit.instanceName()/] = [unit.createForm(unit.contentType, unit.instanceName(), false, false)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.hasDisabledFeatures())]
 if ($request->isMethod('POST')) {
 	[if (not unit.cancelDestination.oclIsUndefined())]
@@ -209,48 +207,23 @@ if ($this->[unit.instanceName()/]->isValid()) {
 }
 [/template]
 
-[template public createForm(unit : EditUnit, entityInstance : String, createFunction : Boolean, parentPath : Boolean, placeholder : Boolean) post(trim())]
+[template public createForm(unit : EditUnit, routingType : EntityOrView, entityInstance : String, createFunction : Boolean, placeholder : Boolean) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-[let entity : EntityOrView = unit.contentType]
-[let pathKeys : Sequence(Attribute)
-	= if parentPath then
-			if entity.parentEntity().oclIsUndefined() then
-				Sequence{}
-			else
-				unit.uriPathKeys(entity.parentEntity(), false)
-			endif
-		else
-			unit.uriPathKeys(entity, false)
-		endif]
-$this->createForm([unit.typeClassName(unit.pageDisplayedOn().partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
-    'action' => $this->generateUrl('[unit.routeName(createFunction)/]'[if (page.hasFilters() or page.hasPagination())], [if (pathKeys->isEmpty())]
+$this->createForm([unit.typeClassName(page.partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
+    'action' => $this->generateUrl('[unit.routeName(createFunction)/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasRouteParameters(routingType))]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
         array(
-		[if (parentPath)]
-			[if (not unit.contentType.parentEntity().oclIsUndefined())]
-            [unit.routeActualParameters(unit.contentType.parentEntity())/]
-			[/if]
-		[else]
-            [unit.routeActualParameters(entity)/]
-		[/if]
+            [unit.routeActualParameters(routingType, routingType)/]
     ))[/if]
 [else]
-	[if (pathKeys->notEmpty())]
+	[if (unit.hasRouteParameters(routingType))]
 , array(
-		[if (parentPath)]
-			[if (not unit.contentType.parentEntity().oclIsUndefined())]
-        [unit.routeActualParameters(unit.contentType.parentEntity())/]
-			[/if]
-		[else]
-        [unit.routeActualParameters(entity)/]
-		[/if]
+        [unit.routeActualParameters(routingType, routingType)/]
     )[/if]
 [/if]),
 )[/if])
-[/let]
-[/let]
 [/let]
 [/template]
 
@@ -258,7 +231,7 @@ array_merge(
 [let entityOrView : EntityOrView = unit.contentType]
 [let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
 [let parentService : Service = entityOrView.container().services(unit.pageDisplayedOn().partOf)->first()]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([unit.routeParameters(entityOrView.container(), false)/]));
+$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([unit.routeParameters(entityOrView.parentEntity())/]));
 [/let]
 [/let]
 [/let]
@@ -297,7 +270,7 @@ return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(true), val
 [if (editUnit.pageDisplayedOn().units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
 if (!isset($this->[editUnit.instanceName()/])) {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
-    $this->[editUnit.instanceName()/] = [editUnit.createForm(unit.instanceName(), true, not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm(editUnit.contentType.parentEntity(), unit.instanceName(), not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
 }
 [/if]
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
@@ -308,8 +281,11 @@ $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceN
 [let contentType : EntityOrView = unit.contentType]
 private function updateForm($[contentType.instanceName()/], $values, $validate = true)
 {
-    $form = [unit.createForm(contentType.instanceName(), createFunction, true, false)/];
-    $form->submit($values, false);
+[if (createFunction)]
+    $form = [unit.createForm(unit.contentType.parentEntity(), contentType.instanceName(), createFunction, false)/];
+[else]
+    $form = [unit.createForm(unit.contentType, contentType.instanceName(), createFunction, false)/];
+[/if]    $form->submit($values, false);
     if ($validate) {
         foreach ($this->get('validator')->validate($[contentType.instanceName()/]) as $violation) {
             $path = $violation->getPropertyPath();

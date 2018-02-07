@@ -1,8 +1,11 @@
 [comment encoding = UTF-8 /]
 [module pages(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
 
 
 [query private childGalleryUnits(page : Page) : Sequence(GalleryUnit)
@@ -34,10 +37,6 @@
 [query public controlUnits(page : Page) : Sequence(DynamicUnit)
 	= page.dynamicUnits()
 		->select(u | u.oclIsKindOf(ControlUnit)).oclAsType(DynamicUnit)
-/]
-
-[query public dynamicUnits(page : Page) : Sequence(DynamicUnit)
-	= page.units->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
 /]
 
 [query public editUnits(page : Page) : Sequence(EditUnit)
@@ -170,3 +169,57 @@
 		->asSequence()
 		->sortedBy(s | s.name)
 /]
+[query public services(unit : DynamicUnit) : Sequence(Service)
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).services()
+		else if unit.oclIsKindOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).services()
+		else if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).services()
+		else
+			Sequence{}
+		endif endif endif
+/]
+
+[query private services(unit : CollectionUnit) : Sequence(Service)
+	= let routingType : EntityOrView = unit.routingType()
+		in if routingType.oclIsUndefined() then
+				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
+			else
+				Sequence{ unit.oclAsType(DynamicUnit).routingService() }
+					->append(unit.oclAsType(DynamicUnit).contentService())
+			endif
+				->union(
+					if unit.oclAsType(DynamicUnit).hasInlineActions() then
+						Sequence{ unit.oclAsType(DynamicUnit).contentService() }
+					else
+						Sequence{}
+					endif)
+/]
+
+[query private services(unit : DetailsUnit) : Sequence(Service)
+	= if unit.selection.oclIsUndefined() then
+			Sequence{ unit.routingService() }
+		else
+			Sequence{ unit.contentService() }
+		endif
+/]
+
+[query private services(unit : EditUnit) : Sequence(Service)
+	= let containerService : Sequence(Service)
+		= if unit.hasCustomisedBody() and unit.isContained() then
+				if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit)then
+					Sequence{ unit.containerService() }
+				else
+					Sequence{}
+				endif
+			else
+				Sequence{}
+			endif
+		in if unit.oclIsTypeOf(UpdateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
+				Sequence{ unit.routingService() }
+			else
+				Sequence{}
+			endif->union(containerService)
+/]
+

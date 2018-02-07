@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
@@ -165,17 +166,29 @@
 $[key.routeParameterName(page)/][/for]
 [/template]
 
-[template public routeParametersX(unit : CollectionUnit, routingType : EntityOrView, includeContentKeys : Boolean) post(trim())]
-[unit.oclAsType(ContentUnit).routeParameters(routingType, includeContentKeys)/]
-[/template]
-
-[template public routeParameters(unit : ContentUnit, routingType : EntityOrView, includeContentKeys : Boolean) post(trim())]
-[for (key : Attribute | unit.uriPathKeys(routingType, includeContentKeys)) separator (', ')]
-$[key.routeParameterName(routingType)/][/for]
+[template public routeParameters(unit : CollectionUnit) post(trim())]
+[if (unit.hasSelectCondition())]
+[unit.routeParameters(unit.contentType->first(), unit.selection)/]
+[else]
+[unit.oclAsType(ContentUnit).routeParameters(unit.routingType())/]
+[/if]
 [/template]
 
 [template public routeParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(routingType, selection)) separator (', ')]
+$[key.routeParameterName(routingType)/][/for]
+[/template]
+
+[template public routeParameters(unit : ContentUnit) post(trim())]
+[if (unit.hasSelectCondition())]
+[unit.oclAsType(CollectionUnit).routeParameters()/]
+[else]
+[unit.routeParameters(unit.routingType())/]
+[/if]
+[/template]
+
+[template public routeParameters(unit : ContentUnit, routingType : EntityOrView) post(trim())]
+[for (key : Attribute | unit.uriPathKeys(routingType)) separator (', ')]
 $[key.routeParameterName(routingType)/][/for]
 [/template]
 

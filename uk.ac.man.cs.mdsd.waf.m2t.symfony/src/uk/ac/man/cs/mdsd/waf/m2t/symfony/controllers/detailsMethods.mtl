@@ -36,7 +36,7 @@
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([unit.actionMethodParameters(unit.routingType(), false)/])
+public function [unit.actionName()/]([unit.actionMethodParameters()/])
 {
 [if (unit.isConditionalDisplay())]
     [unit.actionCore()/]
@@ -51,7 +51,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters(unit.routingTy
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.selection.oclIsUndefined())]
-$this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance(detailsUnit.routingType(), false)/];
+$this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance()/];
 if (!$this->[detailsUnit.instanceName()/]) {
     throw $this->createNotFoundException('The [detailsUnit.routingType().name/] does not exist');
 }

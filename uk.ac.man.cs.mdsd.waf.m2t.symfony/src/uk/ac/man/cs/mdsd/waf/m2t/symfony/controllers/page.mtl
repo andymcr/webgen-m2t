@@ -175,10 +175,11 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.supportActionName()/]([page.supportActionMethodParameters(unit, unit.routingType())/])
+public function [unit.supportActionName()/](Request $request[if (unit.hasRouteParameters())]
+, [/if][unit.routeParameters()/])
 {
 	[if (unit.oclIsTypeOf(DetailsUnit))]
-    $[unit.contentType().instanceName()/] = [unit.loadInstance(unit.routingType(), true)/];
+    $[unit.contentType().instanceName()/] = [unit.loadInstance()/];
     [unit.actionHandlers()/]
 	[else]
     [unit.actionHandlers()/]
@@ -215,9 +216,9 @@ return new Response("No action taken", 200);
  [deleteAction.securityAnnotation()/]
 [/if]
  */
-public function [deleteAction.actionName()/]([page.actionParameters(deleteAction, unit)/])
+public function [deleteAction.actionName()/]([deleteAction.actionMethodParameters(unit, page)/])
 {
-    $[deleteAction.instanceName()/] = [unit.loadElement()/];
+    $[deleteAction.instanceName()/] = [deleteAction.loadInstance(unit)/];
     if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
@@ -246,20 +247,20 @@ public function [deleteAction.actionName()/]([page.actionParameters(deleteAction
  [featureAction.securityAnnotation()/]
 [/if]
  */
-public function [action.actionName()/]([page.actionParameters(featureAction, unit)/])
+public function [action.actionName()/]([featureAction.actionMethodParameters(unit, page)/])
 {
 [if (unit.hasPagination())]
     [unit.oclAsType(CollectionUnit).notePage()/]
 [/if]
 [if (featureAction.operation.resultType = OperationResultTypes::None)]
-    $[featureAction.instanceName()/] = [unit.loadElement()/];
+    $[featureAction.instanceName()/] = [featureAction.loadInstance(unit)/];
     if (!$[featureAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
     $this->[featureAction.operation.partOf.instanceServiceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
 [elseif (featureAction.operation.resultType = OperationResultTypes::File)]
     $tempFilename = $this->[featureAction.operation.partOf.instanceServiceName()/]
-        ->[featureAction.operation.methodName()/]([unit.oclAsType(DynamicUnit).loadInstance(contentType, true)/], '[featureAction.fileExtension/]');
+        ->[featureAction.operation.methodName()/]([featureAction.loadInstance(unit)/], '[featureAction.fileExtension/]');
     $response = new BinaryFileResponse($tempFilename);
     $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[featureAction.fileExtension/]';
     $response->setContentDisposition(
@@ -277,20 +278,4 @@ public function [action.actionName()/]([page.actionParameters(featureAction, uni
 [/let]
 [/let]
 [/let]
-[/template]
-
-[template private actionParameters(page : Page, action : InlineAction, unit : CollectionUnit) post(trim())]
-[if (unit.findElementSelection.oclIsUndefined())]
-[unit.oclAsType(DynamicUnit).actionMethodParameters(unit.contentType(), true)/]
-[else]
-[unit.actionMethodParameters(unit.contentType(), unit.findElementSelection)/]
-[/if]
-[/template]
-
-[template private loadElement(unit : CollectionUnit) post(trim())]
-[if (unit.findElementSelection.oclIsUndefined())]
-[unit.oclAsType(DynamicUnit).loadInstance(unit.contentType(), true)/]
-[else]
-[unit.oclAsType(DynamicUnit).getContentService()/]->[unit.findElementSelection.methodName/]([unit.routeParameters(unit.contentType(), unit.findElementSelection)/])
-[/if]
 [/template]

@@ -8,6 +8,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
@@ -38,7 +39,7 @@
  [dynamicUnit.securityAnnotation()/]
 [/if]
  */
-public function [dynamicUnit.actionName()/]([dynamicUnit.actionMethodParameters(unit.routingType(), false)/])
+public function [dynamicUnit.actionName()/]([unit.actionMethodParameters()/])
 {
 [if (dynamicUnit.isConditionalDisplay())]
     [dynamicUnit.actionCore()/]
@@ -79,23 +80,15 @@ private function [unit.selectName()/]([collectionUnit.selectMethodParameters(tru
 
 [template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
 [if (unit.hasFilters() or unit.hasPagination())][if (formal)]
-Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
-[if (unit.hasRouteParameters(unit.routingType(), false))]
-, [/if][/if][/if]
-[unit.routingParameters()/]
+Request [/if]$request[if (unit.hasRouteParameters())]
+, [/if][/if]
+[unit.routeParameters()/]
 [/template]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
-[if (not unit.routingType().oclIsUndefined())]
-[if (unit.hasRouteParameters(unit.routingType(), false))]
-[unit.routingParameters()/][if (unit.hasPagination())]
-, [/if][/if][/if][unit.paginationActuals()/]
-[/template]
-
-[template private routingParameters(unit : CollectionUnit) post(trim())]
-[if (not unit.routingType().oclIsUndefined())]
-[unit.routeParametersX(unit.routingType(), false)/]
-[/if]
+[if (unit.hasRouteParameters())]
+[unit.routeParameters()/][if (unit.hasPagination())]
+, [/if][/if][unit.paginationActuals()/]
 [/template]
 
 [template private paginationActuals(unit : CollectionUnit) post(trim())]
@@ -108,7 +101,7 @@ Request [/if]$request[if (not unit.routingType().oclIsUndefined())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (not unit.routingType().oclIsUndefined())]
 $this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->[if (unit.findContainerSelection.oclIsUndefined())]
-find[else][unit.findContainerSelection.methodName/][/if]([unit.routingParameters()/]);
+find[else][unit.findContainerSelection.methodName/][/if]([unit.routeParameters()/]);
 if (!$this->[unit.routingType().instanceName()/]) {
     throw $this->createNotFoundException('The [unit.routingType().name/] does not exist');
 }
@@ -156,7 +149,7 @@ if ($request->query->has('[filter.name/]Filter'))
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
 [if (not unit.routingType().oclIsUndefined())]
-    [unit.routingParameters()/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
+    [unit.routeParameters()/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]
 
 [/if]

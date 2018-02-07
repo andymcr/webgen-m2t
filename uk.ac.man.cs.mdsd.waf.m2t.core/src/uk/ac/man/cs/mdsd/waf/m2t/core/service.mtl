@@ -20,6 +20,32 @@
 		and (selection.joins->isEmpty() or selection.fields->isEmpty())
 /]
 
+[query public hasSelectCondition(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then 
+			unit.oclAsType(CollectionUnit).hasSelectCondition()
+		else if unit.oclIsTypeOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).hasSelectCondition()
+		else
+			false
+		endif endif
+/]
+
+[query public hasSelectCondition(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then 
+			false
+		else
+			not unit.selection.condition.oclIsUndefined()
+		endif
+/]
+
+[query public hasSelectCondition(unit : DetailsUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then 
+			false
+		else
+			not unit.selection.condition.oclIsUndefined()
+		endif
+/]
+
 [query public selectionType(selection : Selection) : EntityOrView
 	= if selection.selectPath->notEmpty() then
 			selection.selectPath->last().targetType()
