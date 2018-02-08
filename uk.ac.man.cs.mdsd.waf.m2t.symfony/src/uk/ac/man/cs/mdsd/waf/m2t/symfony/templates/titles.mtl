@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
@@ -22,7 +23,7 @@
 [unit.title(unit.title, contentAccessor)/]
 [else]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[unit.title(unit.title, collectionUnit.routingType().instanceName())/]
+[unit.title(unit.title, collectionUnit.containerType().instanceName())/]
 [/let]
 [/if]
 [/let]
@@ -45,7 +46,7 @@
 
 [template public unitTitle(unit : ImageUnit)
 	? (not unit.title.oclIsUndefined()) post(trim())]
-[unit.title(unit.title, unit.routingType().instanceName())/]
+[unit.title(unit.title, unit.containerType().instanceName())/]
 [/template]
 
 [template private title(unit : DynamicUnit) post(trim())]
