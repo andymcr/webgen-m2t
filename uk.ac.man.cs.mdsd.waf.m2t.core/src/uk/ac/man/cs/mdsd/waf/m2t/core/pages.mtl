@@ -182,27 +182,19 @@
 /]
 
 [query private services(unit : CollectionUnit) : Sequence(Service)
-	= let routingType : EntityOrView = unit.routingType()
-		in if routingType.oclIsUndefined() then
+	= let containerService : Service = unit.oclAsType(DynamicUnit).containerService()
+		in if containerService.oclIsUndefined() then
+				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
+			else if unit.omitContainerLoad then
 				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
 			else
-				Sequence{ unit.oclAsType(DynamicUnit).routingService() }
-					->append(unit.oclAsType(DynamicUnit).contentService())
-			endif
-				->union(
-					if unit.oclAsType(DynamicUnit).hasInlineActions() then
-						Sequence{ unit.oclAsType(DynamicUnit).contentService() }
-					else
-						Sequence{}
-					endif)
+				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
+					->append(unit.oclAsType(DynamicUnit).containerService())
+			endif endif
 /]
 
 [query private services(unit : DetailsUnit) : Sequence(Service)
-	= if unit.selection.oclIsUndefined() then
-			Sequence{ unit.routingService() }
-		else
-			Sequence{ unit.contentService() }
-		endif
+	= Sequence{ unit.contentService() }
 /]
 
 [query private services(unit : EditUnit) : Sequence(Service)
@@ -216,10 +208,7 @@
 			else
 				Sequence{}
 			endif
-		in if unit.oclIsTypeOf(UpdateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
-				Sequence{ unit.routingService() }
-			else
-				Sequence{}
-			endif->union(containerService)
+		in Sequence{ unit.contentService() }
+				->union(containerService)
 /]
 

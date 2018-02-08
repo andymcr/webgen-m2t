@@ -99,20 +99,17 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[if (not unit.routingType().oclIsUndefined())]
-	[if (not unit.omitContainerLoad)]
+[if (not unit.omitContainerLoad and not unit.containerType().oclIsUndefined())]
 [unit.loadContainer()/]
-	[/if]
-	[if (dynamicUnit.isConditionalDisplay())]
+[/if]
+[if (dynamicUnit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
 if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.routingType().instanceName()))/])) {
     [unit.selectCode2()/]
 }
-    [else]
-[unit.selectCode2()/]
-	[/if]
 [else]
 [unit.selectCode2()/]
 [/if]
+
 [/let]
 [/template]
 
@@ -161,10 +158,13 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 [/template]
 
 [template private loadContainer(unit : CollectionUnit) post(trim())]
-$this->[unit.instanceParentName()/] = [unit.getSelectionService()/]->[if (unit.findContainerSelection.oclIsUndefined())]
-find[else][unit.findContainerSelection.methodName/][/if]([unit.routeParameters()/]);
+[if (unit.findContainerSelection.oclIsUndefined())]
+$this->[unit.instanceParentName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.routeParameters()/]);
+[else]
+$this->[unit.instanceParentName()/] = $this->[unit.findContainerSelection.partOf.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.containerType(), unit.findContainerSelection)/]);
+[/if]
 if (!$this->[unit.instanceParentName()/]) {
-    throw $this->createNotFoundException('The [unit.selectionType().name/] does not exist');
+    throw $this->createNotFoundException('The [unit.containerType().name/] does not exist');
 }
 [/template]
 

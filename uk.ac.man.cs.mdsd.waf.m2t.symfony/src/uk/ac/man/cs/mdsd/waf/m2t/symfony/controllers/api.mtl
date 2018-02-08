@@ -131,7 +131,7 @@ $this->[comment unit.selectionType.instanceName()/] = [comment unit.getSelection
 else
 [/if]
 [if (not unit.selection.oclIsUndefined())]
-	[if (unit.routedSelection())]
+	[if (false)]
 $this->[unit.instanceName()/] = [comment unit.oclAsType(DynamicUnit).getContentService()/]->[unit.selection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);
 	[else]
 $this->[unit.instanceName()/] = [comment unit.getSelectionService()/]->[unit.selection.instanceName()/]([comment unit.selectableParameters()/][comment unit.paginationActuals()/]);

@@ -111,10 +111,6 @@ $[key.routeParameterName(valueBase)/][/for]
 $this->[unit.contentService().instanceServiceName()/]
 [/template]
 
-[template public getSelectionService(unit : CollectionUnit) post(trim())]
-$this->[unit.selectionService().instanceServiceName()/]
-[/template]
-
 [template public loadInstance(unit : DynamicUnit) post(trim())]
 [unit.getContentService()/]->find([unit.findActualParameters()/])
 [/template]
