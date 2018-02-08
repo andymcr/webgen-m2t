@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
@@ -250,6 +251,10 @@
 
 [query public instanceName(unit : CollectionUnit) : String
 	= unit.oclAsType(DynamicUnit).instanceName()
+/]
+
+[query public instanceParentName(unit : CollectionUnit) : String
+	= unit.selectionType().instanceName()
 /]
 
 [query public instanceName(resource : Resource) : String

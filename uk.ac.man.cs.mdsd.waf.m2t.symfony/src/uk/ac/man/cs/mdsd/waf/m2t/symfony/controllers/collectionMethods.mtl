@@ -100,11 +100,7 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [template private selectCode(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (not unit.routingType().oclIsUndefined())]
-$this->[unit.routingType().instanceName()/] = [unit.getSelectionService()/]->[if (unit.findContainerSelection.oclIsUndefined())]
-find[else][unit.findContainerSelection.methodName/][/if]([unit.routeParameters()/]);
-if (!$this->[unit.routingType().instanceName()/]) {
-    throw $this->createNotFoundException('The [unit.routingType().name/] does not exist');
-}
+[unit.loadContainer()/]
 	[if (dynamicUnit.isConditionalDisplay())]
 if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.routingType().instanceName()))/])) {
     [unit.selectCode2()/]
@@ -162,6 +158,26 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 );
 [/template]
 
+[template private loadContainer(unit : CollectionUnit) post(trim())]
+$this->[unit.instanceParentName()/] = [unit.getSelectionService()/]->[if (unit.findContainerSelection.oclIsUndefined())]
+find[else][unit.findContainerSelection.methodName/][/if]([unit.routeParameters()/]);
+if (!$this->[unit.instanceParentName()/]) {
+    throw $this->createNotFoundException('The [unit.selectionType().name/] does not exist');
+}
+[/template]
+
+[template private loadCollection(unit : CollectionUnit) post(trim())]
+[if (not unit.selection.oclIsUndefined())]
+	[if (unit.filter.oclIsUndefined())]
+$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceServiceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
+	[else]
+$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceServiceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
+	[/if]
+[else]
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+[/if]
+[/template]
+
 [template public templateParameters(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (dynamicUnit.isConditionalDisplay())]
@@ -180,7 +196,7 @@ if (!empty($this->[unit.instanceName()/])) {
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
 	[if (not unit.routingType().oclIsUndefined())]
-$parameters['['/]'[unit.routingType().instanceName()/]'[']'/] = $this->[unit.routingType().instanceName()/];
+$parameters['['/]'[unit.instanceParentName()/]'[']'/] = $this->[unit.instanceParentName()/];
 	[/if]
 [/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
