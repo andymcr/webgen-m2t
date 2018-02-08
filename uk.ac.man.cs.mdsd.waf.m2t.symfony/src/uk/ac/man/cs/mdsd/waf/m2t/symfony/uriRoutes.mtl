@@ -43,7 +43,7 @@
 		else
 			let selectUnit : ContentUnit = page.units->first()
 			in page.uriPath2()
-				.combinePaths(selectUnit.uriPath(null, null, selectUnit.uriElement, false))
+				.combinePaths(selectUnit.uriPath(null, null, selectUnit.uriElement))
 			endif
 /]
 
@@ -55,37 +55,37 @@
 		endif
 /]
 
-[query public uriPath(page : Page, unit : ContentUnit, routingType : EntityOrView, pathType : EntityOrView, suffix : String, includeContentKeys : Boolean) :String
-	= page.uriPath2().combinePaths(unit.uriPath(routingType, pathType, suffix, includeContentKeys))
+[query public uriPath(page : Page, unit : ContentUnit, routingType : EntityOrView, pathType : EntityOrView, suffix : String) :String
+	= page.uriPath2().combinePaths(unit.uriPath(routingType, pathType, suffix))
 /]
 
-[query private uriPath(unit : ContentUnit, pathType : EntityOrView, routingType : EntityOrView, suffix : String, includeContentKeys : Boolean) :String
+[query private uriPath(unit : ContentUnit, pathType : EntityOrView, routingType : EntityOrView, suffix : String) :String
 	= if pathType.oclIsUndefined() then
 			suffix
 		else
-			pathType.uriPath(unit, routingType, includeContentKeys).combinePaths(suffix)
+			pathType.uriPath(unit, routingType).combinePaths(suffix)
 		endif
 /]
 
-[query private uriPath(pathType : EntityOrView, unit : ContentUnit, routingType : EntityOrView, includeContentKeys : Boolean) : String
-	= pathType.uriPath(routingType, unit, routingType, includeContentKeys)
+[query private uriPath(pathType : EntityOrView, unit : ContentUnit, routingType : EntityOrView) : String
+	= pathType.uriPath(routingType, unit, routingType)
 /]
 
-[query private uriPath(pathType : EntityOrView, baseType : EntityOrView, unit : ContentUnit, routingType : EntityOrView, includeContentKeys : Boolean) : String
+[query private uriPath(pathType : EntityOrView, baseType : EntityOrView, unit : ContentUnit, routingType : EntityOrView) : String
 	= let keyEntity : EntityOrView = pathType.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				''
 			else if not keyEntity.isContained() then
-				keyEntity.keyPath(baseType, unit, routingType, includeContentKeys)
+				keyEntity.keyPath(baseType, unit, routingType)
 			else
-				keyEntity.container().uriPath(baseType, unit, routingType, includeContentKeys)
+				keyEntity.container().uriPath(baseType, unit, routingType)
 					.appendContainingAssociation(keyEntity)
-					.combinePaths(keyEntity.keyPath(baseType, unit, routingType, includeContentKeys))
+					.combinePaths(keyEntity.keyPath(baseType, unit, routingType))
 			endif endif
 /]
 
-[query private keyPath(pathType : EntityOrView, baseType : EntityOrView, unit : ContentUnit, routingType : EntityOrView, includeContentKeys : Boolean) : String
-	= let activeKeys : Sequence(Attribute) = pathType.uriEntityKeys(unit, routingType, includeContentKeys)
+[query private keyPath(pathType : EntityOrView, baseType : EntityOrView, unit : ContentUnit, routingType : EntityOrView) : String
+	= let activeKeys : Sequence(Attribute) = pathType.uriEntityKeys(unit, routingType)
 		in if activeKeys->isEmpty() then
 				''
 			else
@@ -238,7 +238,7 @@ $[key.routeParameterName(resource)/][/for]
 	= let homeUnits : Sequence(ContentUnit)
 		= model.pages
 			->collect(p | p.units)
-			->select(u | u.uriPath(null, null, '', false) = '')
+			->select(u | u.uriPath(null, null, '') = '')
 		in if homeUnits->notEmpty() then
 				homeUnits->first()
 			else

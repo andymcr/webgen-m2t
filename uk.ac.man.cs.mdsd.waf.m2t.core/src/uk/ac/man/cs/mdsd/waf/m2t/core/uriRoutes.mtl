@@ -80,7 +80,7 @@
 	= if routingType.oclIsUndefined() then
 			Sequence{}
 		else
-			routingType.uriPathKeys()->select(k | unit.selectionKeys(routingType, false)->includes(k))
+			routingType.uriPathKeys()->select(k | unit.selectionKeys(routingType)->includes(k))
 		endif
 /]
 
@@ -99,10 +99,10 @@
 			endif
 /]
 
-[query public uriEntityKeys(pathType : EntityOrView, unit : ContentUnit, routingType : EntityOrView, includeContentKeys : Boolean) : Sequence(Attribute)
+[query public uriEntityKeys(pathType : EntityOrView, unit : ContentUnit, routingType : EntityOrView) : Sequence(Attribute)
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.routeActuals->collect(a | a.routeParameter)
-		in pathType.attributeKeys()->select(k | not keysWithActuals->includes(k) and unit.selectionKeys(routingType, includeContentKeys)->includes(k))
+		in pathType.attributeKeys()->select(k | not keysWithActuals->includes(k) and unit.selectionKeys(routingType)->includes(k))
 /]
 
 [query private parentUriPathKeys(entity : EntityOrView) : Sequence(Attribute)
@@ -150,7 +150,7 @@
 
 [query public routingType(unit : ContentUnit, forCommonKeys : Boolean) : EntityOrView
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).routingType(forCommonKeys)
+			unit.oclAsType(CollectionUnit).routingType()
 		else if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).routingType(forCommonKeys)
 		else
@@ -159,18 +159,16 @@
 /]
 
 [query public routingType(unit : CollectionUnit) : EntityOrView
-	= unit.routingType(false)
-/]
-
-[query public routingType(unit : CollectionUnit, forCommonKeys : Boolean) : EntityOrView
 	= let selectType : EntityOrView
 			= if unit.selection.oclIsUndefined() then
 					null
 				else if unit.selection.selectPath->notEmpty() then
 					unit.selection.selectionType()
+				else if unit.selection.selectionKeys()->notEmpty() then
+					unit.contentType->first()
 				else
 					null
-				endif endif
+				endif endif endif
 		in if not selectType.oclIsUndefined() then
 				selectType
 			else
@@ -237,17 +235,17 @@
 /]
 
 
-[query public selectionKeys(unit : ContentUnit, routingType : EntityOrView, includeContentKeys : Boolean) : Set(Attribute)
+[query public selectionKeys(unit : ContentUnit, routingType : EntityOrView) : Set(Attribute)
 	= if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).selectionKeys(routingType)
 		else if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).selectionKeys(routingType, includeContentKeys)
+			unit.oclAsType(CollectionUnit).selectionKeys(routingType)
 		else
 			Set{}
 		endif endif
 /]
 
-[query public selectionKeys(unit : CollectionUnit, routingType : EntityOrView, includeContentKeys : Boolean) : Set(Attribute)
+[query public selectionKeys(unit : CollectionUnit, routingType : EntityOrView) : Set(Attribute)
 	= let routingKeys : Set(Attribute)
 		= if unit.hasSelectCondition() then
 				unit.selection.selectionKeys()

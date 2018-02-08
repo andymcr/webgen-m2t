@@ -42,7 +42,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters()/])
     [unit.actionCore()/]
 
 [/if]
-    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.contentType)/]);
 }
 [/let]
 [/template]
@@ -53,7 +53,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters()/])
 [if (detailsUnit.selection.oclIsUndefined())]
 $this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance()/];
 if (!$this->[detailsUnit.instanceName()/]) {
-    throw $this->createNotFoundException('The [detailsUnit.routingType().name/] does not exist');
+    throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
 }
 [else]
 $this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.partOf.instanceServiceName()/]->[detailsUnit.selection.methodName/]();

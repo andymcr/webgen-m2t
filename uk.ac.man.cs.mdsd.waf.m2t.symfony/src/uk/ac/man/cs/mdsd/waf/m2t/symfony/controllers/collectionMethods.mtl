@@ -34,7 +34,7 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [let page : Page = dynamicUnit.pageDisplayedOn()]
 /**
- [unit.routeAnnotation(unit.routingType(), dynamicUnit.uriElement, false, dynamicUnit.routeName())/]
+ [unit.routeAnnotation(unit.routingType(), dynamicUnit.uriElement, dynamicUnit.routeName())/]
 [if (dynamicUnit.requiresRole <> '')]
  [dynamicUnit.securityAnnotation()/]
 [/if]

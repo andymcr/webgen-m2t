@@ -50,36 +50,36 @@
 	[elseif (unit.oclIsKindOf(EditUnit))]
 [unit.oclAsType(EditUnit).routeAnnotation(null, null, unit.uriElement, unit.routeName())/]
 	[elseif (unit.oclIsKindOf(CollectionUnit))]
-[unit.oclAsType(CollectionUnit).routeAnnotation(unit.routingType(false), unit.uriElement, false, unit.routeName())/]
+[unit.oclAsType(CollectionUnit).routeAnnotation(unit.routingType(false), unit.uriElement, unit.routeName())/]
 	[/if]
 [/let]
 [/if]
 [/template]
 
 [template public routeAnnotation(unit : StaticUnit) post(trim())]
-[unit.routeAnnotationX(null, null, unit.uriElement, false, unit.routeName())/]
+[unit.routeAnnotationX(null, null, unit.uriElement, unit.routeName())/]
 [/template]
 
 [template public routeAnnotation(unit : DetailsUnit) post(trim())]
-[unit.routeAnnotationX(unit.contentType, unit.contentType, unit.uriElement, false, unit.routeName())/]
+[unit.routeAnnotationX(unit.contentType, unit.contentType, unit.uriElement, unit.routeName())/]
 [/template]
 
 [template public routeAnnotation(unit : EditUnit, pathType : EntityOrView, routingType : EntityOrView, suffix : String, routeName : String) post(trim())]
-[unit.routeAnnotationX(pathType, routingType, suffix, false, routeName)/]
+[unit.routeAnnotationX(pathType, routingType, suffix, routeName)/]
 [/template]
 
-[template public routeAnnotation(unit : CollectionUnit, routingType : EntityOrView, suffix : String, includeContentKeys : Boolean, routeName : String) post(trim())]
-[unit.oclAsType(ContentUnit).routeAnnotationX(routingType, routingType, suffix, includeContentKeys, routeName)/]
+[template public routeAnnotation(unit : CollectionUnit, routingType : EntityOrView, suffix : String, routeName : String) post(trim())]
+[unit.oclAsType(ContentUnit).routeAnnotationX(routingType, routingType, suffix, routeName)/]
 [/template]
 
 [template public routeAnnotationSupport(unit : DynamicUnit, suffix : String) post(trim())]
-[unit.routeAnnotationX(unit.routingType(), unit.routingType(), unit.uriElement.combinePaths(suffix), false, unit.supportRouteName())/]
+[unit.routeAnnotationX(unit.routingType(), unit.routingType(), unit.uriElement.combinePaths(suffix), unit.supportRouteName())/]
 [/template]
 
-[template private routeAnnotationX(unit : ContentUnit, pathType : EntityOrView, routingType : EntityOrView, suffix : String, includeContentKeys : Boolean, routeName : String) post(trim())]
-[if (unit.isHomeUnit() and unit.pageDisplayedOn().uriPath(unit, pathType, routingType, suffix, includeContentKeys) <> '')]
+[template private routeAnnotationX(unit : ContentUnit, pathType : EntityOrView, routingType : EntityOrView, suffix : String, routeName : String) post(trim())]
+[if (unit.isHomeUnit() and unit.pageDisplayedOn().uriPath(unit, pathType, routingType, suffix) <> '')]
 * @Route("", name="Home")
 [/if]
-* @Route("[unit.pageDisplayedOn().uriPath(unit, pathType, routingType, suffix, includeContentKeys)/]", name="[routeName/]"[if (unit.hasValidatedRouteParameters(false))]
+* @Route("[unit.pageDisplayedOn().uriPath(unit, pathType, routingType, suffix)/]", name="[routeName/]"[if (unit.hasValidatedRouteParameters(false))]
 , requirements={[for (key : Attribute | unit.uriPathValidatedKeys(false)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
 [/template]

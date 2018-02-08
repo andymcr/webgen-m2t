@@ -104,18 +104,42 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
  onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]');"[/if]>[linkContent/]</a>
 [/template]
 
-[template public routeActualParameters(targetUnit : ContentUnit, includeContentKeys : Boolean, routingType : EntityOrView, base : EntityOrView, accessor : String, objectAccess : Boolean) post(trim())]
-[if (routingType.isContained())]
-[targetUnit.routeActualParameters(includeContentKeys, routingType.container(), base, accessor.concat('.').concat(routingType.containingAssociation().modelPropertyName()), objectAccess)/]
+[template public routeActualParameters(targetUnit : ContentUnit, includeContentKeys : Boolean, routingType : EntityOrView, valueBase : EntityOrView, accessor : String, objectAccess : Boolean) post(trim())]
+[if (includeContentKeys)]
+[routingType.routeActualParameters(valueBase, accessor, objectAccess)/]
+[else]
+[targetUnit.routeActualParameters(routingType, valueBase, accessor, objectAccess)/]
 [/if]
-[for (key : Attribute | routingType.uriEntityKeys(targetUnit, routingType, includeContentKeys))]
+[/template]
+
+[template public routeActualParameters(routingType : EntityOrView, valueBase : EntityOrView, accessor : String, objectAccess : Boolean) post(trim())]
+[if (routingType.isContained())]
+[routingType.container().routeActualParameters(valueBase, accessor.concat('.').concat(routingType.containingAssociation().modelPropertyName()), objectAccess)/]
+[/if]
+[for (key : Attribute | routingType.attributeKeys())]
 [let keyAccessor : String
 	= if objectAccess then
 			accessor.concat('.').concat(key.modelPropertyName())
 		else
 			accessor.concat('.').concat(key.columnName())
 		endif]
-'[key.routeParameterName(base)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
+'[key.routeParameterName(valueBase)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
+[/let]
+[/for]
+[/template]
+
+[template public routeActualParameters(targetUnit : ContentUnit, routingType : EntityOrView, valueBase : EntityOrView, accessor : String, objectAccess : Boolean) post(trim())]
+[if (routingType.isContained())]
+[targetUnit.routeActualParameters(routingType.container(), valueBase, accessor.concat('.').concat(routingType.containingAssociation().modelPropertyName()), objectAccess)/]
+[/if]
+[for (key : Attribute | routingType.uriEntityKeys(targetUnit, valueBase))]
+[let keyAccessor : String
+	= if objectAccess then
+			accessor.concat('.').concat(key.modelPropertyName())
+		else
+			accessor.concat('.').concat(key.columnName())
+		endif]
+'[key.routeParameterName(valueBase)/]': [key.getValue(keyAccessor)/][if (key.isDate())].format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
 [/let]
 [/for]
 [/template]
