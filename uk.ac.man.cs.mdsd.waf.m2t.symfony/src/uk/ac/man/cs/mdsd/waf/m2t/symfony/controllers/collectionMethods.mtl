@@ -100,7 +100,9 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [template private selectCode(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (not unit.routingType().oclIsUndefined())]
+	[if (not unit.omitContainerLoad)]
 [unit.loadContainer()/]
+	[/if]
 	[if (dynamicUnit.isConditionalDisplay())]
 if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.routingType().instanceName()))/])) {
     [unit.selectCode2()/]
@@ -195,7 +197,7 @@ if (!empty($this->[unit.instanceName()/])) {
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
-	[if (not unit.routingType().oclIsUndefined())]
+	[if (not unit.routingType().oclIsUndefined() and not unit.omitContainerLoad)]
 $parameters['['/]'[unit.instanceParentName()/]'[']'/] = $this->[unit.instanceParentName()/];
 	[/if]
 [/if]
