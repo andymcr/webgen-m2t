@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module imageIndex(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
@@ -25,11 +25,11 @@
 	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
 [let imageUnit : ImageIndexUnit = unit.oclAsType(ImageIndexUnit)]
 [let accessor : String = imageUnit.instanceName()]
-[let selectionAccessor : String
-	= if not imageUnit.routingType().oclIsUndefined() then
-			imageUnit.routingType().instanceName()
+[let containerAccessor : String
+	= if imageUnit.contentType().isContained() and not imageUnit.omitContainerLoad then
+			imageUnit.instanceParentName()
 		else
-			accessor
+			''
 		endif]
 [file(imageUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
@@ -39,11 +39,11 @@
 [/if]
  <div class="[imageUnit.contentClass/]">
 [if (imageUnit.hasFilters())]
- [imageUnit.unitFilters(selectionAccessor)/]
+ [imageUnit.unitFilters(containerAccessor)/]
 [/if]
   [imageUnit.unitContent(null, accessor, 0)/]
 [if (imageUnit.hasPagination())]
- [imageUnit.pagination(selectionAccessor)/]
+ [imageUnit.pagination(containerAccessor)/]
 [/if]
  </div>
 </section>
@@ -115,13 +115,13 @@
 </div>
 [/template]
 
-[template private cardActions(unit : ImageIndexUnit, variable : String) post(trim())]
+[template private cardActions(unit : ImageIndexUnit, valueAccessor : String) post(trim())]
 <div class="card-action">
 [for (action : InlineAction | unit.inlineActions())]
 	[if (unit.hasObjectAccess())]
- [action.actionLink(unit.contentType(), variable, action.displayLabel, variable.concat('.defaultLabel()'), variable, unit.hasObjectAccess())/]
+ [action.actionLink(unit.contentType(), valueAccessor, action.displayLabel, valueAccessor.concat('.defaultLabel()'), valueAccessor, unit.hasObjectAccess())/]
 	[else]
- [action.actionLink(unit.contentType(), variable, action.displayLabel, null, variable, unit.hasObjectAccess())/]
+ [action.actionLink(unit.contentType(), valueAccessor, action.displayLabel, null, valueAccessor, unit.hasObjectAccess())/]
 	[/if]
 [/for]
 </div>

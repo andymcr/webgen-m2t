@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module index(
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')][import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
@@ -23,29 +23,29 @@
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [let accessor : String = indexUnit.instanceName()]
+[let containerAccessor : String
+	= if indexUnit.contentType().isContained() and not indexUnit.omitContainerLoad then
+			indexUnit.instanceParentName()
+		else
+			''
+		endif]
 [file(indexUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section class="[indexUnit.styleClass/]" id="[indexUnit.instanceName()/]">
  <h4 class="[indexUnit.captionClass/][if (indexUnit.omitCaption)] hidden[/if]">[indexUnit.unitTitle()/]</h4>
-[let selectionAccessor : String
-	= if not indexUnit.routingType().oclIsUndefined() then
-			indexUnit.routingType().instanceName()
-		else
-			accessor
-		endif]
 [if (indexUnit.hasFilters())]
- [indexUnit.unitFilters(selectionAccessor)/]
+ [indexUnit.unitFilters(containerAccessor)/]
 [/if]
  [indexUnit.unitContent(null, accessor, 0)/]
 [if (indexUnit.hasPagination())]
- [indexUnit.pagination(selectionAccessor)/]
+ [indexUnit.pagination(containerAccessor)/]
 [/if]
 [if (indexUnit.hasUnitSupportActions())]
  [indexUnit.unitSupportLinks(accessor)/]
 [/if]
-[/let]
 </section>
 [/file]
+[/let]
 [/let]
 [/let]
 [/template]
