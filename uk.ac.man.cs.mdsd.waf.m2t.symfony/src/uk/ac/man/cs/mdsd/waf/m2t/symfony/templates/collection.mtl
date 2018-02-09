@@ -125,13 +125,13 @@
 [/template]
 
 [template private pageHref(unit : CollectionUnit, pageNumber : String) post(trim())]
-[if (unit.paginationContainer.oclIsUndefined())]
+[if (unit.paginationParent.oclIsUndefined())]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
 , [unit.oclAsType(ContentUnit).routeActualParameters(unit.contentType().container(), 
 	unit.contentType().container(), unit.instanceParentName(), unit.hasObjectAccess())/][/if]})) }}
 [else]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
-, [unit.oclAsType(ContentUnit).routeActualParameters(paginationContainer, paginationContainer, 
+, [unit.oclAsType(ContentUnit).routeActualParameters(paginationParent, paginationParent, 
 	unit.containerAccessor(), unit.hasObjectAccess())/][/if]})) }}
 [/if]
 [/template]
