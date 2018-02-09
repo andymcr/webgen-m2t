@@ -19,7 +19,7 @@
 
 [template public unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
 <form action="{{ path('[unit.supportRouteName()/]', { [if (not unit.routingType().oclIsUndefined())]
-[unit.routeActualParameters(false, unit.routingType(), unit.routingType(), accessor, unit.hasObjectAccess())/] [/if]
+[unit.routeActualParameters(unit.routingType(), unit.routingType(), accessor, unit.hasObjectAccess())/] [/if]
  }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
 [for (action : UnitSupportAction | unit.unitSupportActions())]
  [action.unitSupportLink()/]
@@ -78,8 +78,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	linkContent, title, null, conditionAccessor, 
 	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
 [else]
-[action.anchor(targetUnit.routeName(), targetUnit, targetUnit.routingType(), selectAction.valuePath.pathType(), 
-	selectAction.valuePath.accessor(valueAccessor), linkContent, title, null, conditionAccessor, 
+[action.anchor(targetUnit.routeName(), targetUnit, targetUnit.routingType(), 
+	selectAction.valuePath.pathType(valueType), selectAction.valuePath.accessor(valueAccessor), linkContent, 
+	title, null, conditionAccessor, 
 	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
 [/if]
 [/let]
@@ -87,36 +88,48 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[query private pathType(path : FeaturePath) : EntityOrView
+[query public pathType(path : FeaturePath, sourceType : EntityOrView) : EntityOrView
 	= if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).pathType()
+			path.oclAsType(FeaturePathAssociation).pathType(sourceType)
 		else
 			null
 		endif
 /]
 
-[query private pathType(path : FeaturePathAssociation) : EntityOrView
-	= if path.childFeature.oclIsUndefined() then
-			path.association.targetType()
-		else
-			path.childFeature.pathType()
-		endif
+[query private pathType(path : FeaturePathAssociation, sourceType : EntityOrView) : EntityOrView
+	= let targetType : EntityOrView
+		= if path.association.sourceType() = sourceType then
+				path.association.targetType()
+			else
+				path.association.sourceType()
+			endif
+		in if path.childFeature.oclIsUndefined() then
+				targetType
+			else
+				path.childFeature.pathType(targetType)
+			endif
 /]
 
-[query private pathType(path : ChildPath) : EntityOrView
+[query private pathType(path : ChildPath, sourceType : EntityOrView) : EntityOrView
 	= if path.oclIsTypeOf(ChildPathAssociation) then
-			path.oclAsType(ChildPathAssociation).pathType()
+			path.oclAsType(ChildPathAssociation).pathType(sourceType)
 		else
 			null
 		endif
 /]
 
-[query private pathType(path : ChildPathAssociation) : EntityOrView
-	= if path.childFeature.oclIsUndefined() then
-			path.association.targetType()
-		else
-			path.childFeature.pathType()
-		endif
+[query private pathType(path : ChildPathAssociation, sourceType : EntityOrView) : EntityOrView
+	= let targetType : EntityOrView
+		= if path.association.sourceType() = sourceType then
+				path.association.targetType()
+			else
+				path.association.sourceType()
+			endif
+		in if path.childFeature.oclIsUndefined() then
+				targetType
+			else
+				path.childFeature.pathType(targetType)
+			endif
 /]
 
 [template private anchor(action : InlineAction, routeName : String, targetUnit : ContentUnit, 
@@ -145,35 +158,16 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [/template]
 
-[template private anchor3(action : InlineAction, routeName : String, targetUnit : ContentUnit, routingType : EntityOrView, 
-	valueType : EntityOrView, valueAccessor : String, linkContent : String, title : String, 
-	confirmMessage : String, targetSamePage : Boolean, 
-	objectAccess : Boolean) post(trim())]
-<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [targetUnit.routeActualParameters(not action.oclIsTypeOf(SelectAction), routingType, valueType, valueAccessor, objectAccess)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
+[template private anchor3(action : InlineAction, routeName : String, targetUnit : ContentUnit, 
+	routingType : EntityOrView, valueType : EntityOrView, valueAccessor : String, linkContent : String, 
+	title : String, confirmMessage : String, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
+<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [targetUnit.routeActualParameters(routingType, valueType, valueAccessor, objectAccess)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
  onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]');"[/if]>[linkContent/]</a>
-[/template]
-
-[template public routeActualParameters(targetUnit : ContentUnit, includeContentKeys : Boolean, 
-	routingType : EntityOrView, valueType : EntityOrView, valueAccessor : String, 
-	objectAccess : Boolean) post(trim())]
-[if (includeContentKeys)]
-[routingType.routeActualParameters(valueType, valueAccessor, objectAccess)/]
-[else]
-[targetUnit.routeActualParameters(routingType, valueType, valueAccessor, objectAccess)/]
-[/if]
-[/template]
-
-[template public routeActualParameters(routingType : EntityOrView, valueType : EntityOrView, 
-	valueAccessor : String, objectAccess : Boolean) post(trim())]
-[for (key : Attribute | routingType.uriPathKeys())]
-'[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, objectAccess))/][if (key.isDate())]
-.format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
-[/for]
 [/template]
 
 [template public routeActualParameters(targetUnit : ContentUnit, routingType : EntityOrView, 
 	valueType : EntityOrView, valueAccessor : String, objectAccess : Boolean) post(trim())]
-[for (key : Attribute | targetUnit.uriPathKeys())]
+[for (key : Attribute | targetUnit.uriPathKeys(routingType))]
 '[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, objectAccess))/][if (key.isDate())]
 .format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
 [/for]

@@ -23,29 +23,22 @@
 	? (unit.oclIsKindOf(IndexUnit)) post(trim())]
 [let indexUnit : IndexUnit = unit.oclAsType(IndexUnit)]
 [let accessor : String = indexUnit.instanceName()]
-[let containerAccessor : String
-	= if indexUnit.contentType().isContained() and not indexUnit.omitContainerLoad then
-			indexUnit.instanceParentName()
-		else
-			''
-		endif]
 [file(indexUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section class="[indexUnit.styleClass/]" id="[indexUnit.instanceName()/]">
  <h4 class="[indexUnit.captionClass/][if (indexUnit.omitCaption)] hidden[/if]">[indexUnit.unitTitle()/]</h4>
 [if (indexUnit.hasFilters())]
- [indexUnit.unitFilters(containerAccessor)/]
+ [indexUnit.unitFilters()/]
 [/if]
  [indexUnit.unitContent(null, accessor, 0)/]
 [if (indexUnit.hasPagination())]
- [indexUnit.pagination(containerAccessor)/]
+ [indexUnit.pagination()/]
 [/if]
 [if (indexUnit.hasUnitSupportActions())]
  [indexUnit.unitSupportLinks(accessor)/]
 [/if]
 </section>
 [/file]
-[/let]
 [/let]
 [/let]
 [/template]

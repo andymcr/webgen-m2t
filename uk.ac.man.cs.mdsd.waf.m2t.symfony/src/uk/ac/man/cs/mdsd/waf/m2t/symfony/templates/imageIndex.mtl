@@ -25,12 +25,6 @@
 	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
 [let imageUnit : ImageIndexUnit = unit.oclAsType(ImageIndexUnit)]
 [let accessor : String = imageUnit.instanceName()]
-[let containerAccessor : String
-	= if imageUnit.contentType().isContained() and not imageUnit.omitContainerLoad then
-			imageUnit.instanceParentName()
-		else
-			''
-		endif]
 [file(imageUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section class="[imageUnit.styleClass/]" id="[imageUnit.instanceName()/]">
@@ -39,16 +33,15 @@
 [/if]
  <div class="[imageUnit.contentClass/]">
 [if (imageUnit.hasFilters())]
- [imageUnit.unitFilters(containerAccessor)/]
+ [imageUnit.unitFilters()/]
 [/if]
   [imageUnit.unitContent(null, accessor, 0)/]
 [if (imageUnit.hasPagination())]
- [imageUnit.pagination(containerAccessor)/]
+ [imageUnit.pagination()/]
 [/if]
  </div>
 </section>
 [/file]
-[/let]
 [/let]
 [/let]
 [/template]

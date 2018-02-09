@@ -148,27 +148,27 @@ if not association.childFeature.oclIsUndefined() then
 	= association.association.sourceType().services(association.model())->first().className().toLowerFirst()
 /]
 
-[query public accessor(feature : FeaturePath, parentAccessor : String) : String
-	= if feature.oclIsTypeOf(FeaturePathAttribute) then
-			feature.oclAsType(FeaturePathAttribute).accessor(parentAccessor)
-		else if feature.oclIsTypeOf(FeaturePathAssociation) then
-			feature.oclAsType(FeaturePathAssociation).accessor(parentAccessor)
+[query public accessor(path : FeaturePath, parentAccessor : String) : String
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			path.oclAsType(FeaturePathAttribute).accessor(parentAccessor)
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).accessor(parentAccessor)
 		else
-			feature.oclAsType(FeaturePathLabel).accessor(parentAccessor)
+			path.oclAsType(FeaturePathLabel).accessor(parentAccessor)
 		endif endif
 /]
 
-[query public accessor(attribute : FeaturePathAttribute, parentAccessor : String) : String
-	= parentAccessor.concat('.').concat(attribute.attribute.modelPropertyName())
+[query public accessor(path : FeaturePathAttribute, parentAccessor : String) : String
+	= parentAccessor.concat('.').concat(path.attribute.modelPropertyName())
 /]
 
-[query public accessor(association : FeaturePathAssociation, parentAccessor : String) : String
+[query public accessor(path : FeaturePathAssociation, parentAccessor : String) : String
 	= let accessor : String
-		= parentAccessor.concat('.').concat(association.association.modelPropertyName())
-		in if association.childFeature.oclIsUndefined() then
+		= parentAccessor.concat('.').concat(path.association.modelPropertyName())
+		in if path.childFeature.oclIsUndefined() then
 				accessor
 			else
-				association.childFeature.accessor(accessor.concat(association.association.associationIndex()))
+				path.childFeature.accessor(accessor.concat(path.association.associationIndex()))
 			endif
 /]
 
@@ -202,13 +202,13 @@ if not association.childFeature.oclIsUndefined() then
 		endif
 /]
 
-[query private pseudoAccessor(association : ChildPathAssociation, parentAccessor : String) : String
+[query private pseudoAccessor(child : ChildPathAssociation, parentAccessor : String) : String
 	= let accessor : String
-		= association.serviceAccessor()
+		= child.serviceAccessor()
 			.concat('.').concat(association.name)
 			.concat('(').concat(parentAccessor).concat(')')
-		in if not association.childFeature.oclIsUndefined() then
-				association.childFeature.accessor(accessor)
+		in if not child.childFeature.oclIsUndefined() then
+				child.childFeature.accessor(accessor)
 			else
 				accessor
 			endif
