@@ -11,30 +11,30 @@
 
 [template public navigation(model : WafModel)]
 [file(model.navigationDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
-[let topMenu : GlobalMenu = model.globalMenus->first()]
+[let menu : Menu = model.menus->first()]
 {% trans_default_domain "navigation" %}
 
 {% block navigation %}
-<nav>
+<nav class="no-print">
  <div class="nav-wrapper">
 [if (not model.logoImage.oclIsUndefined())]
   <a href="#!" class="brand-logo left">[model.image()/]</a>
 [/if]
-  [topMenu.topItems(model)/]
+  [menu.topItems(model)/]
   <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-  [topMenu.sideItems(model)/]
+  [menu.sideItems(model)/]
  </div>
 </nav>
-[model.script(topMenu)/]
+[model.script(menu)/]
 {% endblock %}
 [/let]
 [/file]
 [/template]
 
 
-[template private topItems(topMenu : GlobalMenu, model : WafModel) post(trim())]
+[template private topItems(menu : Menu, model : WafModel) post(trim())]
 <ul id="nav-top" class="right hide-on-med-and-down">
-[for (entry : MenuEntry | topMenu.entries)]
+[for (entry : MenuEntry | menu.entries)]
  [entry.topEntry()/]
 [/for]
 [if (model.isAuthenticated())]
@@ -53,15 +53,24 @@
 [let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
 [if (submenu.requiresRole <> '')]
 {% if is_granted('[submenu.requiresRole/]') %}[/if]
-[if (submenu.submenu.oclIsUndefined())]
+[if (submenu.entries->isEmpty())]
 <li><span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span></li>
 [else]
-<li><a class="dropdown-trigger" href="#!" data-target="[submenu.submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}<i class="material-icons right">arrow_drop_down</i></a></li>
- [submenu.submenu.dropdown()/]
+<li><a class="dropdown-trigger" href="#!" data-target="[submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}<i class="material-icons right">arrow_drop_down</i></a>
+ [submenu.dropdown()/]
+</li>
 [/if]
 [if (submenu.requiresRole <> '')]
 {% endif %}[/if]
 [/let]
+[/template]
+
+[template private dropdown(submenu : Menu) post(trim())]
+<ul id="[submenu.id()/]_submenu" class="dropdown-content">
+[for (subEntry : MenuEntry | submenu.entries)]
+  [subEntry.topEntry()/]
+[/for]
+</ul>
 [/template]
 
 [template private topEntry(entry : MenuEntry)
@@ -72,7 +81,7 @@
 [/template]
 
 
-[template private sideItems(topMenu : GlobalMenu, model : WafModel) post(trim())]
+[template private sideItems(menu : Menu, model : WafModel) post(trim())]
 <ul id="slide-out" class="sidenav">
 [if (model.isAuthenticated())]
 {%- if app.user -%}
@@ -82,7 +91,7 @@
 {%- endif -%}
  <li><div class="divider"></div></li>
 [/if]
-[for (entry : MenuEntry | topMenu.entries)]
+[for (entry : MenuEntry | menu.entries)]
  [entry.sideEntry()/]
 [/for]
 [if (model.isAuthenticated())]
@@ -92,7 +101,6 @@
 [/if]
 </ul>
 [/template]
-
 
 [template private sideEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
@@ -104,9 +112,9 @@
   <li>
    <a class="collapsible-header">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}<i class="material-icons">arrow_drop_down</i></a>
    <div class="collapsible-body">
-[if (not submenu.submenu.oclIsUndefined())]
+[if (submenu.entries->notEmpty())]
     <ul>
-	[for (subEntry : MenuEntry | submenu.submenu.entries)]
+	[for (subEntry : MenuEntry | submenu.entries)]
      [subEntry.sideEntry()/]
 	[/for]
     </ul>
@@ -127,24 +135,15 @@
 [/template]
 
 [template private entry(entry : ActionMenuEntry) post(trim())]
-[if (entry.requiresRole <> '')]
-{% if is_granted('[entry.requiresRole/]') %}[/if]
+[if (entry.action.requiresRole <> '')]
+{% if is_granted('[entry.action.requiresRole/]') %}[/if]
 <li{% if app.request.attributes.get('_route') == '[entry.routeName()/]' %} class="active"{% endif %}>[if (entry.action.oclIsUndefined())]
 <span>{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</span>[else]
 <a href="{{ path('[entry.routeName()/]'[if (not entry.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | entry.query.parameters) separator(', ')]
 '[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>[/if]
-</li>[if (entry.requiresRole <> '')]
+</li>[if (entry.action.requiresRole <> '')]
 {% endif %}[/if]
-[/template]
-
-
-[template private dropdown(submenu : Menu) post(trim())]
-<ul id="[submenu.id()/]_submenu" class="dropdown-content">
-[for (subEntry : MenuEntry | submenu.entries)]
-  [subEntry.topEntry()/]
-[/for]
-</ul>
 [/template]
 
 
@@ -179,8 +178,8 @@
 {%- endif -%}
 [/template]
 
-[template private script(model : WafModel, topMenu : GlobalMenu) post(trim())]
-[let submenus : Sequence(SubmenuEntry) = topMenu.entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry)]
+[template private script(model : WafModel, menu : Menu) post(trim())]
+[let submenus : Sequence(SubmenuEntry) = menu.entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry)]
 <script>
 var sidenav = document.querySelector('.sidenav');
 var instance = M.Sidenav.init(sidenav);

@@ -12,7 +12,7 @@
 
 [query public homePage(model : WafModel) : Page
 	= let homes : Sequence(ActionMenuEntry)
-		= model.globalMenus
+		= model.menus
 			->collect(m | m.entries)
 			->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
 			->select(e | e.name.equalsIgnoreCase('Home'))

@@ -165,11 +165,11 @@
 [query public routeName(entry : MenuEntry) : String
 	= if entry.oclIsTypeOf(SubmenuEntry) then
 			let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)
-				in if submenu.submenu.oclIsUndefined() then
+				in if submenu.oclIsUndefined() then
 						'Unknown'
 					else
 						let subitems : Sequence(ActionMenuEntry)
-							= submenu.submenu.entries
+							= submenu.entries
 								->select(e | e.oclIsTypeOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
 							in if subitems->isEmpty() then
 									'Unknown'

@@ -12,7 +12,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
-[for (menu : Menu | model.globalMenus)]
+[for (menu : Menu | model.menus)]
    [menu.translations()/]
 [/for]
   </body>
@@ -33,7 +33,7 @@
  <source>[menu.id()/].labels.[submenuEntry.id()/]</source>
  <target>[submenuEntry.displayLabel.validXML()/]</target>
 </trans-unit>
-[submenuEntry.submenu.translations()/]
+[submenuEntry.translations()/]
 	[/let]
 	[elseif (entry.oclIsTypeOf(ActionMenuEntry))]
 	[let actionEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
