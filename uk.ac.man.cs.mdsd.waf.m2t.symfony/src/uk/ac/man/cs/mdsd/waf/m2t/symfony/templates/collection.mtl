@@ -25,12 +25,20 @@
 [dynamicUnit.routeActualParameters(dynamicUnit.routingType(), dynamicUnit.contentType().container(), 
 	unit.containerAccessor(), dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
-  <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
+  <div class="row">
+   <div class="col s10 m10 l11">
+    <input type="text" name="[parameter.name/]"[if (not parameter.placeholder.oclIsUndefined())]
  placeholder="[parameter.placeholder/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
  required="required"[/if]
  value="{{ app.request.query.get('[parameter.name/]') }}"/>
+   </div>
+	[if (i = filter.parameters->size())]
+   <div class="col s1 m1 l1">
+    <button type="submit" name="[filter.name/]Filter"><i class="material-icons">search</i></button>
+   </div>
+	[/if]
+  </div>
 [/for]
-  <input type="submit" name="[filter.name/]Filter" value="[filter.displayLabel/]"/>
  </form>
 </div>
 [/let]
@@ -39,27 +47,29 @@
 
 [template public pagination(unit : CollectionUnit) post(trim())]
 {%- if pageCount > 1 -%}
-<ul class="unit_control[if (unit.paginationClass <> '')] [unit.paginationClass/][/if]">
+<div>
+ <ul class="unit_control[if (unit.paginationClass <> '')] [unit.paginationClass/][/if]">
 [if (unit.useFirstLastPageLinks)]
- [unit.firstPageLink()/]
+  [unit.firstPageLink()/]
 [/if]
- [unit.previousPageLink()/]
+  [unit.previousPageLink()/]
 [if (unit.previousNpages > 1)]
-{% if max(1, currentPage - [unit.previousNpages/]) > 1 %}<li>&hellip;</li>{% endif %}
+ {% if max(1, currentPage - [unit.previousNpages/]) > 1 %}<li>&hellip;</li>{% endif %}
 [/if]
 [if (unit.nextNpages > 1 or unit.previousNpages > 1)]
-{% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
- <li{% if page == currentPage %} class="active disable"[if (unit.paginationElementClass <> '')]{% else %} class="[unit.paginationElementClass/]"[/if]{% endif %}><a href="[unit.pageHref('page')/]">{{ page }}</a></li>
-{% endfor %}
+ {% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
+  <li{% if page == currentPage %} class="active disable"[if (unit.paginationElementClass <> '')]{% else %} class="[unit.paginationElementClass/]"[/if]{% endif %}><a href="[unit.pageHref('page')/]">{{ page }}</a></li>
+ {% endfor %}
 [/if]
 [if (unit.nextNpages > 1 and unit.useDisabledPageLinks)]
-{% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li>&hellip;</li>{% endif %}
+ {% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li>&hellip;</li>{% endif %}
 [/if]
- [unit.nextPageLink()/]
+  [unit.nextPageLink()/]
 [if (unit.useFirstLastPageLinks)]
- [unit.lastPageLink()/]
+  [unit.lastPageLink()/]
 [/if]
-</ul>
+ </ul>
+</div>
 {%- endif -%}
 [/template]
 

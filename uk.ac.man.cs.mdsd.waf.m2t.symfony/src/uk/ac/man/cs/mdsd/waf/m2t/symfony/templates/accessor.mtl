@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module accessor(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
@@ -9,6 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 
 
 [query public keyAccessor(attribute : Attribute, entity : EntityOrView, parentAccessor : String) : String
@@ -148,23 +150,31 @@ if not association.childFeature.oclIsUndefined() then
 	= association.association.sourceType().services(association.model())->first().className().toLowerFirst()
 /]
 
-[query public accessor(path : FeaturePath, parentAccessor : String) : String
+[query public accessor(path : FeaturePath, parentAccessor : String, selection : Selection) : String
 	= if path.oclIsTypeOf(FeaturePathAttribute) then
-			path.oclAsType(FeaturePathAttribute).accessor(parentAccessor)
+			path.oclAsType(FeaturePathAttribute).accessor(parentAccessor, selection)
 		else if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).accessor(parentAccessor)
+			path.oclAsType(FeaturePathAssociation).accessor(parentAccessor, selection)
 		else
 			path.oclAsType(FeaturePathLabel).accessor(parentAccessor)
 		endif endif
 /]
 
-[query public accessor(path : FeaturePathAttribute, parentAccessor : String) : String
-	= parentAccessor.concat('.').concat(path.attribute.modelPropertyName())
+[query public accessor(path : FeaturePathAttribute, parentAccessor : String, selection : Selection) : String
+	= if path.attribute.alias(selection).oclIsUndefined() then
+			parentAccessor.concat('.').concat(path.attribute.modelPropertyName())
+		else
+			parentAccessor.concat('.').concat(path.attribute.alias(selection))
+		endif
 /]
 
-[query public accessor(path : FeaturePathAssociation, parentAccessor : String) : String
+[query public accessor(path : FeaturePathAssociation, parentAccessor : String, selection : Selection) : String
 	= let accessor : String
-		= parentAccessor.concat('.').concat(path.association.modelPropertyName())
+		= if path.association.alias(selection).oclIsUndefined() then
+				parentAccessor.concat('.').concat(path.association.modelPropertyName())
+			else
+				parentAccessor.concat('.').concat(path.association.alias(selection))
+			endif
 		in if path.childFeature.oclIsUndefined() then
 				accessor
 			else

@@ -79,7 +79,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
 [else]
 [action.anchor(targetUnit.routeName(), targetUnit, targetUnit.routingType(), 
-	selectAction.valuePath.pathType(valueType), selectAction.valuePath.accessor(valueAccessor), linkContent, 
+	selectAction.valuePath.pathType(valueType), selectAction.valuePath.accessor(valueAccessor, null), linkContent, 
 	title, null, conditionAccessor, 
 	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
 [/if]

@@ -56,13 +56,17 @@
 
 
 [query public alias(field : Feature, selection : Selection) : String
-	= let fieldNames : Sequence(String)
-		= selection.fields->collect(f | f.modelPropertyName())
-		in if fieldNames->select(n | n = field.modelPropertyName())->size() > 1 then
-				field.partOf.selectName().concat(field.name.toUpperFirst())
-			else
-				null
-			endif
+	= if selection.oclIsUndefined() then
+			null
+		else
+			let fieldNames : Sequence(String)
+				= selection.fields->collect(f | f.modelPropertyName())
+				in if fieldNames->select(n | n = field.modelPropertyName())->size() > 1 then
+						field.partOf.selectName().concat(field.name.toUpperFirst())
+					else
+						null
+					endif
+		endif
 /]
 
 [query public hasFormals(selection : Selection) : Boolean

@@ -69,13 +69,13 @@
 
 [template public imageAlt(unit : ImageUnit, baseAccessor : String) post(trim())]
 [if (not unit.imageTitleFeature.oclIsUndefined())]
-alt="{{ [unit.imageTitleFeature.accessor(baseAccessor)/][unit.imageTitleFeature.valueLabel()/] }}"
+alt="{{ [unit.imageTitleFeature.accessor(baseAccessor, unit.selection)/][unit.imageTitleFeature.valueLabel()/] }}"
 [/if]
 [/template]
 
 [template public imageTitle(unit : ImageUnit, baseAccessor : String) post(trim())]
 [if (not unit.imageTitleFeature.oclIsUndefined())]
-title="{{ [unit.imageTitleFeature.accessor(baseAccessor)/][unit.imageTitleFeature.valueLabel()/] }}"
+title="{{ [unit.imageTitleFeature.accessor(baseAccessor, unit.selection)/][unit.imageTitleFeature.valueLabel()/] }}"
 [/if]
 [/template]
 

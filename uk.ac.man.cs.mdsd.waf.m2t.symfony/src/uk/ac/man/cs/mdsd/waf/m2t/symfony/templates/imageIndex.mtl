@@ -31,15 +31,15 @@
 [if (not imageUnit.omitCaption)]
  <h4 class="[imageUnit.captionClass/]">[imageUnit.unitTitle()/]</h4>
 [/if]
- <div class="[imageUnit.contentClass/]">
 [if (imageUnit.hasFilters())]
  [imageUnit.unitFilters()/]
 [/if]
+ <div class="[imageUnit.contentClass/]">
   [imageUnit.unitContent(null, accessor, 0)/]
+ </div>
 [if (imageUnit.hasPagination())]
  [imageUnit.pagination()/]
 [/if]
- </div>
 </section>
 [/file]
 [/let]
@@ -82,7 +82,7 @@
  [unit.image(variable)/]
 [/if]
 [if (unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
- <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{% [unit.imageTitleFeature.accessor(variable)/] %}</span>
+ <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{% [unit.imageTitleFeature.accessor(variable, unit.selection)/] %}</span>
 [/if]
 </div>
 [/template]
@@ -90,7 +90,7 @@
 [template private cardContent(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-content">
 	[if (not unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
- <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{{ [unit.imageTitleFeature.accessor(variable)/][unit.imageTitleFeature.valueLabel()/] }}</span>
+ <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{{ [unit.imageTitleFeature.accessor(variable, unit.selection)/][unit.imageTitleFeature.valueLabel()/] }}</span>
 	[/if]
 	[for (field : UnitField | unit.displayFields)]
 		[if (field.isConditionalDisplay())]
