@@ -41,7 +41,7 @@
 [let variable : String = 'image']
 <div id="gallery" class="[unit.contentClass/]" style="display:none;">
 {%- for [variable/] in [accessor/] -%}
- [unit.image(variable)/]
+ [unit.image(variable, '')/]
 {%- endfor -%}
 </div>
 <script type="text/javascript"> 
@@ -132,12 +132,12 @@ document.getElementById('links').onclick = function (event) {
 
 [template public blueimpMissing(unit : GalleryUnit, baseAccessor : String) post(trim())]
 <a [unit.imageMissingSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor)/]>
- [unit.imageMissing(unit.imageFilter, baseAccessor)/]
+ [unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
 </a>
 [/template]
 
 [template public blueimpImage(unit : GalleryUnit, imageAccessor : String, baseAccessor : String) post(trim())]
 <a [imageAccessor.imageSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor)/]>
- [unit.image(unit.imageFilter, imageAccessor, baseAccessor)/]
+ [unit.image(unit.imageFilter, imageAccessor, baseAccessor, '')/]
 </a>
 [/template]

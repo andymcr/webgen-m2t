@@ -40,6 +40,9 @@
 [if (imageUnit.hasPagination())]
  [imageUnit.pagination()/]
 [/if]
+[if (imageUnit.enableImageEnlargement)]
+[imageUnit.script()/]
+[/if]
 </section>
 [/file]
 [/let]
@@ -70,21 +73,23 @@
 [/template]
 
 [template private cardImage(unit : ImageIndexUnit, variable : String) post(trim())]
+[let imageClass : String = if unit.enableImageEnlargement then 'materialboxed' else '' endif]
 <div class="card-image">
 [if (unit.badges->notEmpty())]
  [unit.badges.badge(variable)/]
 [/if]
 [if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
 [let action : InlineAction = unit.inlineActions()->first()]
- [action.actionLink(unit.contentType(), variable, unit.image(variable), null, variable, unit.hasObjectAccess())/]
+ [action.actionLink(unit.contentType(), variable, unit.image(variable, imageClass), null, variable, unit.hasObjectAccess())/]
 [/let]
 [else]
- [unit.image(variable)/]
+ [unit.image(variable, imageClass)/]
 [/if]
 [if (unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
  <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{% [unit.imageTitleFeature.accessor(variable, unit.selection)/] %}</span>
 [/if]
 </div>
+[/let]
 [/template]
 
 [template private cardContent(unit : ImageIndexUnit, variable : String) post(trim())]
@@ -96,7 +101,7 @@
 		[if (field.isConditionalDisplay())]
 {%- if not ([field.hideWhen.twigExpression(variable)/]) %}
 		[/if]
- <p>[if (not unit.omitFieldLabels)]
+ <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
 [if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
@@ -118,4 +123,13 @@
 	[/if]
 [/for]
 </div>
+[/template]
+
+[template private script(unit : ImageIndexUnit) post(trim())]
+<script>
+ var images = document.querySelectorAll('.materialboxed');
+  for (var i = 0; i < images.length; ++i) {
+      var instance = M.Materialbox.init(images['['/]i[']'/]);
+  }
+</script>
 [/template]

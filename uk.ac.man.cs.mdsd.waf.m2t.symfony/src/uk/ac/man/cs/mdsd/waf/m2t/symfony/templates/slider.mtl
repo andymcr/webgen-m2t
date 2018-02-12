@@ -29,7 +29,7 @@
  <ul class="slides">
 [let variable : String = unit.contentType().instanceName()]
 {% for [variable/] in [unit.instanceName()/] %}
-  <li>[unit.image(variable)/]</li>
+  <li>[unit.image(variable, '')/]</li>
 {% endfor %}
 [/let]
  </ul>

@@ -28,35 +28,43 @@
 [/let]
 [/template]
 
-[template public image(unit : ImageUnit, baseAccessor : String) post(trim())]
+[template public image(unit : ImageUnit, baseAccessor : String, imageClass : String) post(trim())]
 [if (unit.imagePathFeature.oclIsUndefined())]
 	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.imageMissing(unit.imageFilter, baseAccessor)/]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
 	[/if]
 [elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
 	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.imageMissing(unit.imageFilter, baseAccessor)/]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
 	[/if]
 [else]
 [let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
 {%- if [imageAccessor/] is not empty -%}
-[unit.image(unit.imageFilter, imageAccessor, baseAccessor)/]
+[unit.image(unit.imageFilter, imageAccessor, baseAccessor, imageClass)/]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
-[unit.imageMissing(unit.imageFilter, baseAccessor)/]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
 	[/if]
 {%- endif -%}
 [/let]
 [/if]
 [/template]
 
+[query public missingImageFilter(unit : ImageUnit) : ImageManipulation
+	= if unit.missingImageFilter.oclIsUndefined() then
+			unit.imageFilter
+		else
+			unit.missingImageFilter
+		endif
+/]
 
 [template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String) post(trim())]
 <img [unit.imageMissingSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
 [/template]
 
-[template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String,  baseAccessor : String) post(trim())]
-<img [accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String, 
+	baseAccessor : String, imageClass : String) post(trim())]
+<img [if (imageClass) <> '']class="[imageClass/]" [/if][accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
 [/template]
 
 [template public imageMissingSrc(unit : ImageUnit, key : String, manipulation : ImageManipulation) post(trim())]
