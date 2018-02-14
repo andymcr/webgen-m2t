@@ -149,9 +149,9 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [/if]
 [for (parameter : FormalParameter | filter.parameters)]
-    $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())],[/if]
+    $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or unit.hasPagination())],[/if]
 [/for]
-[if (filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
+[if (unit.hasPagination())]
     [unit.paginationActuals()/]
 [/if]
 );
