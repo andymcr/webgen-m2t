@@ -12,6 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::framework/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::imagine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::services/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::api/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::extensions::extensions/]
@@ -47,6 +48,7 @@
 
 [template public symfony(model : WafModel)]
 [model.configFramework()/]
+[model.configServices()/]
 [if (model.hasImageUnits())]
 [model.configImagine()/]
 [/if]

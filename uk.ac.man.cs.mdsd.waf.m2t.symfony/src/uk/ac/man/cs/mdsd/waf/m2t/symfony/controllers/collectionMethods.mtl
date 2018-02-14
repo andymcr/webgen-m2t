@@ -93,7 +93,11 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 
 [template private paginationActuals(unit : CollectionUnit) post(trim())]
 [if (unit.hasPagination())]
+	[if (unit.maximumPaginationSize > 0)]
+([unit.pageVariable()/] - 1) * [unit.pageSizeVariable()/], [unit.pageSizeVariable()/]
+	[else]
 ([unit.pageVariable()/] - 1) * [unit.defaultPaginationSize/], [unit.defaultPaginationSize/]
+	[/if]
 [/if]
 [/template]
 
@@ -204,6 +208,11 @@ $parameters['['/]'[unit.instanceParentName()/]'[']'/] = $this->[unit.instancePar
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (unit.hasPagination())]
 $parameters['['/]'currentPage'[']'/] = [unit.pageVariable()/];
+	[if (unit.maximumPaginationSize > 0)]
+$parameters['['/]'pageCount'[']'/] = ceil($this->[unit.instanceName()/]->count() / [unit.pageSizeVariable()/]);
+$parameters['['/]'[unit.paginationSizeParameterName()/]'[']'/] = [unit.pageSizeVariable()/];
+	[else]
 $parameters['['/]'pageCount'[']'/] = ceil($this->[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]);
+	[/if]
 [/if]
 [/template]

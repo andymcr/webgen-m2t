@@ -282,12 +282,12 @@
 	= 'logout'
 /]
 
-[query public paginationLimitParameterName(unit : CollectionUnit) : String
-	= 'limit'
-/]
-
 [query public paginationPageParameterName(unit : CollectionUnit) : String
 	= 'page'
+/]
+
+[query public paginationSizeParameterName(unit : CollectionUnit) : String
+	= 'pageSize'
 /]
 
 [query public routeName(unit : ContentUnit) : String

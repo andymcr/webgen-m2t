@@ -30,6 +30,9 @@ $this->get('translator')->trans('[message/]')
 
 [template public notePage(unit : CollectionUnit) post(trim())]
 [unit.pageVariable()/] = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
+[if (unit.maximumPaginationSize > 0)]
+[unit.pageSizeVariable()/] = min([unit.maximumPaginationSize/], $request->query->getInt('[unit.paginationSizeParameterName()/]', [unit.defaultPaginationSize/]));
+[/if]
 [/template]
 
 [template public pageVariable(unit : CollectionUnit) post(trim())]
@@ -37,6 +40,14 @@ $this->get('translator')->trans('[message/]')
 $page
 [else]
 $this->page
+[/if]
+[/template]
+
+[template public pageSizeVariable(unit : CollectionUnit) post(trim())]
+[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionalDisplay())]
+$pageSize
+[else]
+$this->pageSize
 [/if]
 [/template]
 
