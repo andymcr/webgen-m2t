@@ -13,8 +13,12 @@ framework:
     #http_method_override: true
 
     session:
-    #    # With this config, PHP's native session handling is used
+[if (model.useDbSessionStorage)]
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+[else]
+    # With this config, PHP's native session handling is used
         handler_id: ~
+[/if]
 
     templating:
         engines: ['['/]'twig'[']'/]
