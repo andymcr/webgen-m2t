@@ -6,12 +6,9 @@
 
 
 [template public loginForm(authentication : LocalAuthenticationSystem)]
-[file (authentication.fosSecurityDirectory().concat('/').concat('login').concat(authentication.htmlExtension()).concat(authentication.twigExtension()), false)]
-{% extends "FOSUserBundle::layout.html.twig" %}
-
+[file (authentication.fosSecurityDirectory().concat('/').concat('login_content').concat(authentication.htmlExtension()).concat(authentication.twigExtension()), false)]
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% block fos_user_content %}
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
@@ -41,6 +38,5 @@
 <div>
  <a href="{{ path('fos_user_resetting_request') }}">Forgot password ?</a>
 </div>
-{% endblock fos_user_content %}
 [/file]
 [/template]

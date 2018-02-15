@@ -8,6 +8,7 @@
 [template public resetRequestForm(authentication : LocalAuthenticationSystem)]
 [file (authentication.fosResettingDirectory().concat('/').concat('request_content').concat(authentication.htmlExtension()).concat(authentication.twigExtension()), false)]
 {% trans_default_domain 'FOSUserBundle' %}
+
 <form method="POST" action="{{ path('fos_user_resetting_send_email') }}" class="fos_user_resetting_request">
  <div>
 {% if invalid_username is defined %}
