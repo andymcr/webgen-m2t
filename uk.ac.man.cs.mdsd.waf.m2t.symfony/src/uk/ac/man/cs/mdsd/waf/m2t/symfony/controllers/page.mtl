@@ -211,7 +211,7 @@ return new Response("No action taken", 200);
 [let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
 [let contentType : EntityOrView = unit.contentType()]
 /**
- [unit.routeAnnotation(contentType, deleteAction.uriElement, deleteAction.routeName())/]
+ [unit.routeAnnotation(deleteAction.routeName(), contentType, deleteAction.uriElement)/]
 [if (deleteAction.hasAuthorisation())]
  [deleteAction.securityAnnotation()/]
 [/if]
@@ -242,7 +242,7 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
 [let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
 [let contentType : EntityOrView = unit.contentType()]
 /**
- [unit.routeAnnotation(contentType, featureAction.uriElement, featureAction.routeName())/]
+ [unit.routeAnnotation(featureAction.routeName(), contentType, featureAction.uriElement)/]
 [if (featureAction.hasAuthorisation())]
  [featureAction.securityAnnotation()/]
 [/if]

@@ -46,6 +46,14 @@
 		endif
 /]
 
+[query public hasSelectPath(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then 
+			false
+		else
+			not unit.selection.selectPath->notEmpty()
+		endif
+/]
+
 [query public selectionType(selection : Selection) : EntityOrView
 	= if selection.selectPath->notEmpty() then
 			selection.selectPath->last().targetType()

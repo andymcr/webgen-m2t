@@ -99,10 +99,10 @@
 			endif
 /]
 
-[query public uriEntityKeys(pathType : EntityOrView, unit : ContentUnit, routingType : EntityOrView) : Sequence(Attribute)
+[query public uriEntityKeys(elementType : EntityOrView, unit : ContentUnit, routingType : EntityOrView) : Sequence(Attribute)
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.routeActuals->collect(a | a.routeParameter)
-		in pathType.attributeKeys()->select(k | not keysWithActuals->includes(k) and unit.selectionKeys(routingType)->includes(k))
+		in elementType.attributeKeys()->select(k | not keysWithActuals->includes(k) and unit.selectionKeys(routingType)->includes(k))
 /]
 
 [query private parentUriPathKeys(entity : EntityOrView) : Sequence(Attribute)
@@ -246,13 +246,13 @@
 /]
 
 [query public selectionKeys(unit : CollectionUnit, routingType : EntityOrView) : Set(Attribute)
-	= let routingKeys : Set(Attribute)
 		= if unit.hasSelectCondition() then
 				unit.selection.selectionKeys()
 			else
 				routingType.uriPathKeys()->asSet()
 			endif
-		in routingKeys->union(unit.contentType->first().attributeKeys()->asSet())
+	-- = let routingKeys : Set(Attribute)
+	--	in routingKeys->union(unit.contentType->first().attributeKeys()->asSet())
 /]
 
 [query public selectionKeys(unit : SingletonUnit, routingType : EntityOrView) : Set(Attribute)

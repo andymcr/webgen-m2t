@@ -44,9 +44,9 @@
 [let page : Page = unit.pageDisplayedOn()]
 /**
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
- [unit.routeAnnotation(unit.contentType, unit.contentType.parentEntity(), unit.oclAsType(CreateUpdateUnit).createUriElement, unit.routeName(true))/]
+ [unit.routeAnnotationCreate(unit.routeName(true), unit.oclAsType(CreateUpdateUnit).createUriElement)/]
 [else]
- [unit.routeAnnotation(unit.contentType, unit.contentType.parentEntity(), unit.uriElement, unit.routeName(true))/]
+ [unit.routeAnnotation()/]
 [/if]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
@@ -127,7 +127,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [template private actionEditMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 /**
- [unit.routeAnnotation(unit.contentType, unit.contentType, unit.uriElement, unit.routeName())/]
+ [unit.routeAnnotation()/]
 [if (unit.requiresRole <> '')]
  [unit.securityAnnotation()/]
 [/if]
