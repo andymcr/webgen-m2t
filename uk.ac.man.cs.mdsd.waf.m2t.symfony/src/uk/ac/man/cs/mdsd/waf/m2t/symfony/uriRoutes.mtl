@@ -14,6 +14,16 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
 
+[query public hasCommonUriPaths(page : Page) : Boolean
+	= if page.units->size() < 2 then
+			true
+		else if page.units->size() = 2 then
+			page.units->first().uriPath() = page.units->last().uriPath()
+		else
+			page.units->subOrderedSet(2, page.units->size())->forAll(u | u.uriPath() = page.units->first().uriPath())
+		endif endif
+/]
+
 [query public uriPath(page : Page) : String
 	= if page.units->isEmpty() then
 			page.uriPagePath()
@@ -33,34 +43,19 @@
 /]
 
 [query public uriPath(unit : CollectionUnit) : String
-	= let uriElement : String = unit.oclAsType(DynamicUnit).uriElement
-		in if (unit.hasSelectCondition()) then
-				let contentType : EntityOrView = unit.contentType->first()
-					in if unit.selectionKeys(contentType)->intersection(contentType.attributeKeys()->asSet())->notEmpty() then
-							unit.uriPath(contentType, uriElement)
-						else
-							if unit.routingType().oclIsUndefined() then
-								unit.uriPath(uriElement)
-							else
-								unit.uriPath(unit.routingType(), uriElement)
-							endif
-						endif
-			else if unit.routingType().oclIsUndefined() then
-				unit.uriPath(uriElement)
-			else
-				unit.oclAsType(ContentUnit).uriPath(unit.routingType(), uriElement)
-			endif endif
-/]
-
-[query private uriPath(unit : CollectionUnit, suffix : String) : String
-	= unit.oclAsType(DynamicUnit).pageDisplayedOn().uriPagePath()
-		.combinePaths(suffix)
+	= unit.uriPath(unit.routingType(), unit.oclAsType(DynamicUnit).uriElement)
 /]
 
 [query public uriPath(unit : CollectionUnit, routingType : EntityOrView, suffix : String) : String
-	= unit.oclAsType(DynamicUnit).pageDisplayedOn().uriPagePath()
-		.combinePaths(routingType.uriPath(routingType, unit))
-		.combinePaths(suffix)
+	= if routingType.oclIsUndefined() then
+			unit.oclAsType(DynamicUnit).uriPath(suffix)
+		else if unit.hasSelectCondition() then
+			unit.oclAsType(DynamicUnit).pageDisplayedOn().uriPagePath()
+				.combinePaths(routingType.uriPath(routingType, unit, unit.selection))
+				.combinePaths(suffix)
+		else
+			unit.oclAsType(DynamicUnit).uriPath(routingType, suffix)
+		endif endif
 /]
 
 [query public uriPath(unit : ContentUnit) : String
@@ -79,21 +74,42 @@
 /]
 
 [query public uriPath(unit : ContentUnit, routingType : EntityOrView, suffix : String) : String
-	= unit.pageDisplayedOn().uriPagePath()
-		.combinePaths(routingType.uriPath(routingType))
-		.combinePaths(suffix)
+	= if routingType.oclIsUndefined() then
+			unit.uriPath(suffix)
+		else
+			let keyPath : String
+				= if routingType.oclIsUndefined() then
+						''
+					else
+						routingType.uriPath(routingType)
+					endif
+				in unit.pageDisplayedOn().uriPagePath()
+					.combinePaths(keyPath)
+					.combinePaths(suffix)
+		endif
 /]
 
 [query public uriPath(unit : ContentUnit, routingType : EntityOrView, parentType : EntityOrView, suffix : String) : String
 	= if parentType.oclIsUndefined() then
-			unit.pageDisplayedOn().uriPagePath()
-				.combinePaths(suffix)
+			unit.uriPath(suffix)
 		else
 			unit.pageDisplayedOn().uriPagePath()
 				.combinePaths(parentType.uriPath(parentType))
 				.appendContainingAssociation(routingType)
-		.combinePaths(suffix)
+				.combinePaths(suffix)
 		endif
+/]
+
+[query public uriPath(action : InlineAction, unit : CollectionUnit, suffix : String) : String
+	= let keyPath : String
+		= if unit.findElementSelection.oclIsUndefined() then
+				unit.contentType().uriPath(unit.contentType())
+			else
+				unit.contentType().uriPath(unit.contentType(), unit, unit.findElementSelection)
+			endif
+		in unit.oclAsType(DynamicUnit).pageDisplayedOn().uriPagePath()
+			.combinePaths(keyPath)
+			.combinePaths(suffix)
 /]
 
 [query private uriPath(elementType : EntityOrView, routingType : EntityOrView) : String
@@ -107,14 +123,14 @@
 			endif
 /]
 
-[query private uriPath(elementType : EntityOrView, routingType : EntityOrView, unit : CollectionUnit) : String
+[query private uriPath(elementType : EntityOrView, routingType : EntityOrView, unit : CollectionUnit, selection : Selection) : String
 	= let keyType : EntityOrView = elementType.keyEntity()
 		in if not keyType.isContained() then
-				keyType.keyPath(routingType, unit)
+				keyType.keyPath(routingType, unit, selection)
 			else
-				keyType.container().uriPath(routingType, unit)
+				keyType.container().uriPath(routingType, unit, selection)
 					.appendContainingAssociation(keyType)
-					.combinePaths(keyType.keyPath(routingType, unit))
+					.combinePaths(keyType.keyPath(routingType, unit, selection))
 			endif
 /]
 
@@ -127,8 +143,8 @@
 			endif
 /]
 
-[query private keyPath(elementType : EntityOrView, routingType : EntityOrView, unit : CollectionUnit) : String
-	= let activeKeys : Sequence(Attribute) = elementType.uriEntityKeys(unit.oclAsType(DynamicUnit), routingType)
+[query private keyPath(elementType : EntityOrView, routingType : EntityOrView, unit : CollectionUnit, selection : Selection) : String
+	= let activeKeys : Sequence(Attribute) = elementType.uriEntityKeys(unit, selection)
 		in if activeKeys->isEmpty() then
 				''
 			else

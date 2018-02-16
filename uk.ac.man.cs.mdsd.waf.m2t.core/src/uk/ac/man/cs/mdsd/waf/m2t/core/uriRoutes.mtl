@@ -105,6 +105,12 @@
 		in elementType.attributeKeys()->select(k | not keysWithActuals->includes(k) and unit.selectionKeys(routingType)->includes(k))
 /]
 
+[query public uriEntityKeys(elementType : EntityOrView, unit : CollectionUnit, selection : Selection) : Sequence(Attribute)
+	= let keysWithActuals : Sequence(Attribute)
+		= unit.oclAsType(DynamicUnit).routeActuals->collect(a | a.routeParameter)
+		in elementType.attributeKeys()->select(k | not keysWithActuals->includes(k) and selection.selectionKeys()->includes(k))
+/]
+
 [query private parentUriPathKeys(entity : EntityOrView) : Sequence(Attribute)
 	= let parentEntity : EntityOrView = entity.parentEntity()
 		in if not parentEntity.oclIsUndefined() then

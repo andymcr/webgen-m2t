@@ -64,8 +64,8 @@
 [unit.routeAnnotation(routeName, unit.uriPath(unit.contentType, unit.contentType.parentEntity(), suffix))/]
 [/template]
 
-[template public routeAnnotation(unit : CollectionUnit, routeName : String, routingType : EntityOrView, suffix : String) post(trim())]
-[unit.oclAsType(ContentUnit).routeAnnotation(routeName, unit.uriPath(routingType, suffix))/]
+[template public routeAnnotation(action : InlineAction, unit : CollectionUnit, suffix : String) post(trim())]
+[unit.oclAsType(DynamicUnit).routeAnnotation(action.routeName(), action.uriPath(unit, suffix))/]
 [/template]
 
 [template public routeAnnotationSupport(unit : DynamicUnit, suffix : String) post(trim())]
