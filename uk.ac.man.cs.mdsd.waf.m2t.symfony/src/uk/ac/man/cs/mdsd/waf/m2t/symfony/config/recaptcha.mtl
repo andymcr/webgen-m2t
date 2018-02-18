@@ -1,0 +1,15 @@
+[comment encoding = UTF-8 /]
+[module recaptcha(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public configRecaptcha(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/ewz_recaptcha').concat(model.yamlExtension()), false)]
+ewz_recaptcha:
+    public_key:  '%env(resolve:RECAPTCHA_PUBLIC_KEY)%'
+    private_key: '%env(resolve:RECAPTCHA_PRIVATE_KEY)%'
+[/file]
+[/template]
