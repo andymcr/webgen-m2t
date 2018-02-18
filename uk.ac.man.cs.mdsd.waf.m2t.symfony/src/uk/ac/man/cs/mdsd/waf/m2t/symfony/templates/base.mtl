@@ -16,7 +16,8 @@
 [/if]
  <title>[model.siteTitle/]{% if title is defined %}: {{ title }}{% endif %}</title>
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/css/materialize.min.css" media="screen"/>
+[comment  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/css/materialize.min.css" media="screen"/> /]
+ <link type="text/css" rel="stylesheet" href="{{ asset('css/materialize.css') }}" media="screen"/>
  <link rel="stylesheet" href="https://unpkg.com/gutenberg-css@0.4" media="print">
  <link rel="stylesheet" href="https://unpkg.com/gutenberg-css@0.4/dist/themes/oldstyle.min.css" media="print"> <meta name="viewport" content="width=device-width, initial-scale=1">
 {%- if styles is defined -%}
