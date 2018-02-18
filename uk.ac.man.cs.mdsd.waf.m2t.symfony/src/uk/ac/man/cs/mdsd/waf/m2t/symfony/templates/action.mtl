@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -49,10 +50,11 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : DynamicUnit = deleteAction.immediateUnit()]
-[let page : Page = unit.pageDisplayedOn()]
-[action.anchor(deleteAction.routeName(), unit, valueType, valueType, valueAccessor, unit.selection(), linkContent, 
-	title, deleteAction.confirmMessage, conditionAccessor, page.hasFilters() or page.hasPagination(), 
+[let unit : CollectionUnit = deleteAction.immediateUnit().oclAsType(CollectionUnit)]
+[let page : Page = deleteAction.immediateUnit().pageDisplayedOn()]
+[action.anchor(deleteAction.routeName(), 
+	deleteAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
+	linkContent, title, deleteAction.confirmMessage, conditionAccessor, page.hasFilters() or page.hasPagination(), 
 	objectAccess)/]
 [/let]
 [/let]
@@ -63,8 +65,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
 [let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[let unit : DynamicUnit = featureAction.immediateUnit()]
-[action.anchor(featureAction.routeName(), unit, valueType, valueType, valueAccessor, unit.selection(),
+[let unit : CollectionUnit = featureAction.immediateUnit().oclAsType(CollectionUnit)]
+[action.anchor(featureAction.routeName(), 
+	featureAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
 	linkContent, title, featureAction.confirmMessage, conditionAccessor, true, objectAccess)/]
 [/let]
 [/let]
@@ -77,17 +80,24 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let unit : DynamicUnit = selectAction.immediateUnit()]
 [let page : Page = unit.pageDisplayedOn()]
 [let targetUnit : ContentUnit = selectAction.target.oclAsType(ContentUnit)]
+[let routingParameters : String
+	= if targetUnit.oclIsKindOf(CollectionUnit) then
+			if targetUnit.oclAsType(CollectionUnit).hasSelectCondition() then
+				targetUnit.oclAsType(CollectionUnit).routeActualParameters(targetUnit.routingType(), targetUnit.oclAsType(CollectionUnit).selection, valueType, valueAccessor, unit.selection(), objectAccess)
+			else
+				targetUnit.routingType().routeActualParameters(valueType, valueAccessor, unit.selection(), objectAccess)
+			endif
+		else
+			targetUnit.routingType().routeActualParameters(valueType, valueAccessor, unit.selection(), objectAccess)
+		endif]
 [if (selectAction.valuePath.oclIsUndefined())]
-[action.anchor(targetUnit.routeName(), targetUnit, targetUnit.routingType(), valueType, valueAccessor, 
-	unit.selection(), linkContent, title, null, conditionAccessor, 
+[action.anchor(targetUnit.routeName(), routingParameters, linkContent, title, null, conditionAccessor, 
 	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
 [else]
-[action.anchor(targetUnit.routeName(), targetUnit, targetUnit.routingType(), 
-	selectAction.valuePath.pathType(valueType),
-	selectAction.valuePath.accessor(valueAccessor, unit.selection()), unit.selection(),
-	linkContent, title, null, conditionAccessor, 
+[action.anchor(targetUnit.routeName(), routingParameters, linkContent, title, null, conditionAccessor, 
 	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
 [/if]
+[/let]
 [/let]
 [/let]
 [/let]
@@ -148,47 +158,64 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 			endif
 /]
 
-[template private anchor(action : InlineAction, routeName : String, targetUnit : ContentUnit, 
-	routingType : EntityOrView, valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, 
+[template private anchor(action : InlineAction, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, conditionAccessor : String, 
 	targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
 [if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
 {% if is_granted('[action.requiresRole()/]') %}[/if]
-[action.anchor2(routeName, targetUnit, routingType, valueType, valueAccessor, valueSelection, linkContent, title, 
-	confirmMessage, conditionAccessor, targetSamePage, objectAccess)/][if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
+[action.anchor2(routeName, routingParameters, linkContent, title, confirmMessage, conditionAccessor, targetSamePage, objectAccess)/][if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
 {% endif %}[/if]
 [/template]
 
-[template private anchor2(action : InlineAction, routeName : String, targetUnit : ContentUnit, 
-	routingType : EntityOrView, valueType : EntityOrView, valueAccessor : String, 
-	valueSelection : Selection, linkContent : String, title : String, confirmMessage : String, 
-	conditionAccessor : String, targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
+[template private anchor2(action : InlineAction, routeName : String, routingParameters : String, 
+	linkContent : String, title : String, confirmMessage : String, 	conditionAccessor : String, 
+	targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
 [if (action.displayWhen.oclIsUndefined())]
 	[if (action.enableWhen().oclIsUndefined())]
-[action.anchor3(routeName, targetUnit, routingType, valueType, valueAccessor, valueSelection, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]
+[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]
 	[else]
-{% if [if (action.oclIsTypeOf(SelectAction))]not ([/if][action.enableWhen().twigExpression(conditionAccessor)/][if (action.oclIsTypeOf(SelectAction))])[/if] %}[action.anchor3(routeName, targetUnit, routingType, valueType, valueAccessor, valueSelection, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}[linkContent/]{% endif %}
+{% if [if (action.oclIsTypeOf(SelectAction))]not ([/if][action.enableWhen().twigExpression(conditionAccessor)/][if (action.oclIsTypeOf(SelectAction))])[/if] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}[linkContent/]{% endif %}
 	[/if]
 [else]
-{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, targetUnit, routingType, valueType, valueAccessor, valueSelection, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]{% endif %}
+{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]{% endif %}
 [/if]
 [/template]
 
-[template private anchor3(action : InlineAction, routeName : String, targetUnit : ContentUnit, 
-	routingType : EntityOrView, valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, 
+[template private anchor3(action : InlineAction, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, targetSamePage : Boolean, 
 	objectAccess : Boolean) post(trim())]
-<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [targetUnit.routeActualParameters(routingType, valueType, valueAccessor, valueSelection, objectAccess)/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
+<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
  onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]');"[/if]>[linkContent/]</a>
 [/template]
 
-[template public routeActualParameters(targetUnit : ContentUnit, routingType : EntityOrView, 
-	valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) 
-	post(trim())]
-[for (key : Attribute | targetUnit.uriPathKeys(routingType))]
-'[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, valueSelection, objectAccess))/][if (key.isDate())]
-.format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if],
+
+[template private routeActualParameters(action : InlineAction, unit : CollectionUnit, valueType : EntityOrView, 
+	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+[if (unit.findElementSelection.oclIsUndefined())]
+[unit.contentType().routeActualParameters(valueType, valueAccessor, valueSelection, objectAccess)/]
+[else]
+[unit.routeActualParameters(unit.contentType(), unit.findElementSelection, valueType, valueAccessor, valueSelection, objectAccess)/]
+[/if]
+[/template]
+
+[template public routeActualParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection, 
+	valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+[for (key : Attribute | unit.uriPathKeys(routingType, selection))]
+[key.routeActualParameter(routingType, valueType, valueAccessor, valueSelection, objectAccess)/],
 [/for]
+[/template]
+
+[template private routeActualParameters(routingType : EntityOrView, valueType : EntityOrView, 
+	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+[for (key : Attribute | routingType.uriPathKeys())]
+[key.routeActualParameter(routingType, valueType, valueAccessor, valueSelection, objectAccess)/],
+[/for]
+[/template]
+
+[template private routeActualParameter(key : Attribute, routingType : EntityOrView, valueType : EntityOrView, 
+	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+'[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, valueSelection, objectAccess))/][if (key.isDate())]
+.format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if]
 [/template]
 
 [query private keyAccessor(key : Attribute, valueType : EntityOrView, parentAccessor : String, 
