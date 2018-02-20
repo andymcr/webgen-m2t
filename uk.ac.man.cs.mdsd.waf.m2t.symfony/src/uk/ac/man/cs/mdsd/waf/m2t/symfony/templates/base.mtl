@@ -32,7 +32,7 @@
 [if (not model.textEditorURL.oclIsUndefined())]
  <script src="[model.textEditorURL/]"></script>
 [/if]
- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/js/materialize.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
 {% if scripts is defined %}
 {% for script in scripts  %}
 {% if script is iterable %}
