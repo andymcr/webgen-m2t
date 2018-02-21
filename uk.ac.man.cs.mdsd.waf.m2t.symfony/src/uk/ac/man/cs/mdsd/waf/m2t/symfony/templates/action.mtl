@@ -80,29 +80,70 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [let unit : DynamicUnit = selectAction.immediateUnit()]
 [let page : Page = unit.pageDisplayedOn()]
 [let targetUnit : ContentUnit = selectAction.target.oclAsType(ContentUnit)]
+[let valueType2 : EntityOrView 
+	= if selectAction.valuePath.oclIsUndefined() then
+			valueType
+		else
+			selectAction.valuePath.pathType()
+		endif]
+[let valueAccessor2 : String
+	= if selectAction.valuePath.oclIsUndefined() then
+			valueAccessor
+		else
+			selectAction.valuePath.accessor(valueAccessor, unit.selection())
+		endif]
 [let routingParameters : String
 	= if targetUnit.oclIsKindOf(CollectionUnit) then
 			if targetUnit.oclAsType(CollectionUnit).hasSelectCondition() then
-				targetUnit.oclAsType(CollectionUnit).routeActualParameters(targetUnit.routingType(), targetUnit.oclAsType(CollectionUnit).selection, valueType, valueAccessor, unit.selection(), objectAccess)
+				targetUnit.oclAsType(CollectionUnit).routeActualParameters(targetUnit.routingType(), targetUnit.oclAsType(CollectionUnit).selection, valueType2, valueAccessor2, unit.selection(), objectAccess)
 			else
-				targetUnit.routingType().routeActualParameters(valueType, valueAccessor, unit.selection(), objectAccess)
+				targetUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
 			endif
 		else
-			targetUnit.routingType().routeActualParameters(valueType, valueAccessor, unit.selection(), objectAccess)
+			targetUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
 		endif]
-[if (selectAction.valuePath.oclIsUndefined())]
 [action.anchor(targetUnit.routeName(), routingParameters, linkContent, title, null, conditionAccessor, 
 	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
-[else]
-[action.anchor(targetUnit.routeName(), routingParameters, linkContent, title, null, conditionAccessor, 
-	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
-[/if]
+[/let]
+[/let]
 [/let]
 [/let]
 [/let]
 [/let]
 [/let]
 [/template]
+
+[query private pathType(path : FeaturePath) : EntityOrView
+	= if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).pathType()
+		else
+			null
+		endif
+/]
+
+[query private pathType(path : FeaturePathAssociation) : EntityOrView
+	= if path.childFeature.oclIsUndefined() then
+			path.association.targetType()
+		else
+			path.childFeature.pathType()
+		endif
+/]
+
+[query private pathType(path : ChildPath) : EntityOrView
+	= if path.oclIsTypeOf(ChildPathAssociation) then
+			path.oclAsType(ChildPathAssociation).pathType()
+		else
+			null
+		endif
+/]
+
+[query private pathType(path : ChildPathAssociation) : EntityOrView
+	= if path.childFeature.oclIsUndefined() then
+				path.association.targetType()
+			else
+				path.childFeature.pathType()
+			endif
+/]
 
 [query private selection(unit : ContentUnit) : Selection
 	= if unit.oclIsKindOf(CollectionUnit) then
@@ -112,50 +153,6 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		else
 			null
 		endif endif
-/]
-
-[query public pathType(path : FeaturePath, sourceType : EntityOrView) : EntityOrView
-	= if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).pathType(sourceType)
-		else
-			null
-		endif
-/]
-
-[query private pathType(path : FeaturePathAssociation, sourceType : EntityOrView) : EntityOrView
-	= let targetType : EntityOrView
-		= if path.association.sourceType() = sourceType then
-				path.association.targetType()
-			else
-				path.association.sourceType()
-			endif
-		in if path.childFeature.oclIsUndefined() then
-				targetType
-			else
-				path.childFeature.pathType(targetType)
-			endif
-/]
-
-[query private pathType(path : ChildPath, sourceType : EntityOrView) : EntityOrView
-	= if path.oclIsTypeOf(ChildPathAssociation) then
-			path.oclAsType(ChildPathAssociation).pathType(sourceType)
-		else
-			null
-		endif
-/]
-
-[query private pathType(path : ChildPathAssociation, sourceType : EntityOrView) : EntityOrView
-	= let targetType : EntityOrView
-		= if path.association.sourceType() = sourceType then
-				path.association.targetType()
-			else
-				path.association.sourceType()
-			endif
-		in if path.childFeature.oclIsUndefined() then
-				targetType
-			else
-				path.childFeature.pathType(targetType)
-			endif
 /]
 
 [template private anchor(action : InlineAction, routeName : String, routingParameters : String, 
