@@ -8,7 +8,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
 
 
 [query public associationFeatures(unit : DynamicUnit) : Sequence(UnitAssociation)
@@ -97,19 +96,25 @@
 /]
 
 [query public containerType(unit : CollectionUnit) : EntityOrView
-	= let contentContainerType : EntityOrView
+	=  unit.containerType(unit.selection)
+/]
+
+[query public containerType(unit : CollectionUnit, selection : Selection) : EntityOrView
+	=  let contentContainerType : EntityOrView
 		= if unit.contentType->notEmpty() then
 				unit.contentType->first().container()
 			else
 				null
 			endif 
-		in if unit.selection.oclIsUndefined() then
+		in if selection.oclIsUndefined() then
 				contentContainerType
-			else if unit.selection.selectPath->notEmpty() then
+			else if selection.selectPath->notEmpty() then
 				unit.selection.selectionType()
+			else if selection.parameters->isEmpty() then
+				null
 			else
-				contentContainerType
-			endif endif
+				selection.partOf.serves
+			endif endif endif
 /]
 
 [query public containerType(unit : SingletonUnit) : EntityOrView

@@ -22,7 +22,7 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 <div class="filter">
  <form action="{{ path('[dynamicUnit.routeName()/]', { [if (not dynamicUnit.routingType().oclIsUndefined())]
-[unit.routeActualParameters(unit.routingType(), unit.selection, unit.contentType().container(), 
+[unit.routeActualParameters(unit.containerType(), unit.selection, unit.contentType().container(), 
 	unit.containerAccessor(), unit.selection, dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <div class="row">
@@ -136,13 +136,12 @@
 
 [template private pageHref(unit : CollectionUnit, pageNumber : String) post(trim())]
 [if (unit.paginationParent.oclIsUndefined())]
-{{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
-, [unit.routeActualParameters(unit.contentType().container(), unit.selection,
-	unit.contentType().container(), unit.instanceParentName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
+{{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters())]
+, [unit.routeActualParameters(unit.contentType().container(), unit.containerAccessor(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
 [else]
-{{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (not unit.routingType().oclIsUndefined())]
-, [unit.routeActualParameters(paginationParent, unit.selection, paginationParent, 
-	unit.containerAccessor(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
+{{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters(paginationParent, unit.selection))]
+, [unit.routeActualParameters(paginationParent, unit.selection, unit.paginationParent, 
+	unit.paginationParent.instanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
 [/if]
 [/template]
 

@@ -62,7 +62,7 @@ Request $request[if (page.hasRouteParameters())]
 [if (unit.hasSelectCondition())]
 [unit.actionMethodParameters(unit.contentType(), unit.selection)/]
 [else]
-[unit.oclAsType(ContentUnit).actionMethodParameters(unit.routingType())/]
+[unit.oclAsType(ContentUnit).actionMethodParameters(unit.containerType())/]
 [/if]
 [/template]
 
@@ -143,7 +143,7 @@ $this->[unit.findElementSelection.partOf.instanceServiceName()/]->[unit.findElem
 [if (unit.hasSelectCondition())]
 [unit.findActualParameters(unit.contentType(), unit.selection)/]
 [else]
-[unit.oclAsType(ContentUnit).findActualParameters(unit.routingType())/]
+[unit.oclAsType(ContentUnit).findActualParameters(unit.containerType())/]
 [/if]
 [/template]
 
@@ -304,7 +304,7 @@ array_merge(
 [if (targetUnit.hasSelectCondition())]
 [targetUnit.routeActualParameters(targetUnit.contentType(), targetUnit.selection, valueBase)/]
 [else]
-[targetUnit.oclAsType(ContentUnit).routeActualParameters(targetUnit.routingType(), valueBase)/]
+[targetUnit.oclAsType(ContentUnit).routeActualParameters(targetUnit.containerType(), valueBase)/]
 [/if]
 [/template]
 

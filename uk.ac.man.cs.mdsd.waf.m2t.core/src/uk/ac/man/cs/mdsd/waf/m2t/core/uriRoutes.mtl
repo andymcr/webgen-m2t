@@ -8,6 +8,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units]
 
 
 [query public keyEntity(entity : EntityOrView) : EntityOrView
@@ -48,7 +49,7 @@
 	= if unit.hasSelectCondition() then
 			unit.uriPathKeys(unit.contentType->first(), unit.selection)
 		else
-			unit.oclAsType(ContentUnit).uriPathKeys(unit.routingType())
+			unit.oclAsType(ContentUnit).uriPathKeys(unit.containerType())
 		endif
 /]
 
@@ -156,36 +157,12 @@
 
 [query public routingType(unit : ContentUnit, forCommonKeys : Boolean) : EntityOrView
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).routingType()
+			unit.oclAsType(CollectionUnit).containerType()
 		else if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).routingType(forCommonKeys)
 		else
 			null
 		endif endif
-/]
-
-[query public routingType(unit : CollectionUnit) : EntityOrView
-	= let selectType : EntityOrView
-			= if unit.selection.oclIsUndefined() then
-					null
-				else if unit.selection.selectPath->notEmpty() then
-					unit.selection.selectionType()
-				else if unit.selection.selectionKeys()->notEmpty() then
-					unit.contentType->first()
-				else
-					null
-				endif endif endif
-		in if not selectType.oclIsUndefined() then
-				selectType
-			else
-				let association : EntityAssociation
-					= unit.contentType->first().containingAssociation()
-					in if association.oclIsUndefined() or unit.oclAsType(SelectableUnit).selectors->isEmpty() then
-							null
-						else
-							association.targetType()
-						endif
-			endif
 /]
 
 [query public routingType(unit : SingletonUnit) : EntityOrView

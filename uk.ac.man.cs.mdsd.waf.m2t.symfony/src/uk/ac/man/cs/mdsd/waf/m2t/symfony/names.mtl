@@ -254,7 +254,7 @@
 /]
 
 [query public instanceParentName(unit : CollectionUnit) : String
-	= unit.containerType().instanceName()
+	= unit.contentType().container().instanceName()
 /]
 
 [query public instanceName(resource : Resource) : String

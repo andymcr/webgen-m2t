@@ -45,7 +45,7 @@ public function [dynamicUnit.actionName()/]([unit.actionMethodParameters()/])
     [dynamicUnit.actionCore()/]
 
 [/if]
-    return $this->renderPage([page.renderActualParameters(unit.routingType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.containerType())/]);
 }
 [/let]
 [/let]
@@ -106,8 +106,8 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [if (not unit.omitContainerLoad and not unit.containerType().oclIsUndefined())]
 [unit.loadContainer()/]
 [/if]
-[if (dynamicUnit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
-if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.routingType().instanceName()))/])) {
+[if (dynamicUnit.isConditionalDisplay() and not unit.containerType().oclIsUndefined())]
+if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.containerType().instanceName()))/])) {
     [unit.selectCode2()/]
 }
 [else]
@@ -147,7 +147,7 @@ if ($request->query->has('[filter.name/]Filter'))
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
-[if (not unit.routingType().oclIsUndefined())]
+[if (not unit.containerType().oclIsUndefined())]
     [unit.routeParameters()/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]
 
@@ -163,7 +163,7 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [template private loadContainer(unit : CollectionUnit) post(trim())]
 [if (unit.findContainerSelection.oclIsUndefined())]
-$this->[unit.instanceParentName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.routingType())/]);
+$this->[unit.instanceParentName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.containerType())/]);
 [else]
 $this->[unit.instanceParentName()/] = $this->[unit.findContainerSelection.partOf.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.containerType(), unit.findContainerSelection)/]);
 [/if]
@@ -201,7 +201,7 @@ if (!empty($this->[unit.instanceName()/])) {
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
-	[if (not unit.routingType().oclIsUndefined() and not unit.omitContainerLoad)]
+	[if (not unit.containerType().oclIsUndefined() and not unit.omitContainerLoad)]
 $parameters['['/]'[unit.instanceParentName()/]'[']'/] = $this->[unit.instanceParentName()/];
 	[/if]
 [/if]

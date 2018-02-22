@@ -2,6 +2,7 @@
 [module titles(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
@@ -23,7 +24,7 @@
 [unit.title(unit.title, contentAccessor)/]
 [else]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[unit.title(unit.title, collectionUnit.containerType().instanceName())/]
+[unit.title(unit.title, collectionUnit.contentType().container().instanceName())/]
 [/let]
 [/if]
 [/let]
@@ -46,7 +47,7 @@
 
 [template public unitTitle(unit : ImageUnit)
 	? (not unit.title.oclIsUndefined()) post(trim())]
-[unit.title(unit.title, unit.containerType().instanceName())/]
+[unit.title(unit.title, unit.contentType().container().instanceName())/]
 [/template]
 
 [template private title(unit : DynamicUnit) post(trim())]

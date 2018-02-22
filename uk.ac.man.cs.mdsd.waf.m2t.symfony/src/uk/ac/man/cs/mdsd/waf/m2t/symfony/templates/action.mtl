@@ -195,6 +195,13 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/if]
 [/template]
 
+[template public routeActualParameters(unit : CollectionUnit, 
+	valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+[for (key : Attribute | unit.uriPathKeys())]
+[key.routeActualParameter(unit.containerType(), valueType, valueAccessor, valueSelection, objectAccess)/],
+[/for]
+[/template]
+
 [template public routeActualParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection, 
 	valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(routingType, selection))]
