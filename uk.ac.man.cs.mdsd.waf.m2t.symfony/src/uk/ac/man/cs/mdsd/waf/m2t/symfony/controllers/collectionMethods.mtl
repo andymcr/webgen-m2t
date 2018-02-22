@@ -163,7 +163,7 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [template private loadContainer(unit : CollectionUnit) post(trim())]
 [if (unit.findContainerSelection.oclIsUndefined())]
-$this->[unit.instanceParentName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.routeParameters()/]);
+$this->[unit.instanceParentName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.routingType())/]);
 [else]
 $this->[unit.instanceParentName()/] = $this->[unit.findContainerSelection.partOf.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.containerType(), unit.findContainerSelection)/]);
 [/if]

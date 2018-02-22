@@ -227,7 +227,7 @@ $[key.routeParameterName(page)/][/for]
 
 [template public routeParameters(unit : CollectionUnit) post(trim())]
 [if (unit.hasSelectCondition())]
-[unit.routeParameters(unit.contentType->first(), unit.selection)/]
+[unit.routeParameters(unit.contentType(), unit.selection)/]
 [else]
 [unit.oclAsType(ContentUnit).routeParameters(unit.routingType())/]
 [/if]
