@@ -22,8 +22,8 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 <div class="filter">
  <form action="{{ path('[dynamicUnit.routeName()/]', { [if (not dynamicUnit.routingType().oclIsUndefined())]
-[unit.routeActualParameters(unit.containerType(), unit.selection, unit.contentType().container(), 
-	unit.containerAccessor(), unit.selection, dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
+[unit.routeActualParameters(unit.collectionType(), unit.selection, unit.contentType().container(), 
+	unit.containerInstanceName(), unit.selection, dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <div class="row">
    <div class="col s10 m10 l11">
@@ -137,11 +137,11 @@
 [template private pageHref(unit : CollectionUnit, pageNumber : String) post(trim())]
 [if (unit.paginationParent.oclIsUndefined())]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters())]
-, [unit.routeActualParameters(unit.contentType().container(), unit.containerAccessor(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
+, [unit.routeActualParameters(unit.contentType().container(), unit.containerInstanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
 [else]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters(paginationParent, unit.selection))]
 , [unit.routeActualParameters(paginationParent, unit.selection, unit.paginationParent, 
-	unit.paginationParent.instanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
+	unit.containerInstanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
 [/if]
 [/template]
 
@@ -160,7 +160,3 @@
 [template private lastPageLinkLabel(unit : CollectionUnit) post(trim())]
 [linkLabel(unit.lastPageLabel, unit.lastPageIconName)/]
 [/template]
-
-[query private containerAccessor(unit : CollectionUnit) : String
-	= unit.instanceParentName()
-/]

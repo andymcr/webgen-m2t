@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
@@ -45,7 +46,7 @@ public function [dynamicUnit.actionName()/]([unit.actionMethodParameters()/])
     [dynamicUnit.actionCore()/]
 
 [/if]
-    return $this->renderPage([page.renderActualParameters(unit.containerType())/]);
+    return $this->renderPage([page.renderActualParameters(unit.collectionType())/]);
 }
 [/let]
 [/let]
@@ -103,11 +104,11 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[if (not unit.omitContainerLoad and not unit.containerType().oclIsUndefined())]
+[if (not unit.omitContainerLoad and not unit.collectionType().oclIsUndefined())]
 [unit.loadContainer()/]
 [/if]
-[if (dynamicUnit.isConditionalDisplay() and not unit.containerType().oclIsUndefined())]
-if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.containerType().instanceName()))/])) {
+[if (dynamicUnit.isConditionalDisplay() and not unit.collectionType().oclIsUndefined())]
+if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.collectionType().instanceName()))/])) {
     [unit.selectCode2()/]
 }
 [else]
@@ -147,7 +148,7 @@ if ($request->query->has('[filter.name/]Filter'))
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
-[if (not unit.containerType().oclIsUndefined())]
+[if (not unit.collectionType().oclIsUndefined())]
     [unit.routeParameters()/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]
 
@@ -163,12 +164,16 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [template private loadContainer(unit : CollectionUnit) post(trim())]
 [if (unit.findContainerSelection.oclIsUndefined())]
-$this->[unit.instanceParentName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.containerType())/]);
+$this->[unit.containerInstanceName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.collectionType())/]);
 [else]
-$this->[unit.instanceParentName()/] = $this->[unit.findContainerSelection.partOf.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.containerType(), unit.findContainerSelection)/]);
+$this->[unit.containerInstanceName()/] = $this->[unit.findContainerSelection.partOf.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.collectionType(), unit.findContainerSelection)/]);
 [/if]
-if (!$this->[unit.instanceParentName()/]) {
-    throw $this->createNotFoundException('The [unit.containerType().name/] does not exist');
+if (!$this->[unit.containerInstanceName()/]) {
+[if (unit.paginationParent.oclIsUndefined())]
+    throw $this->createNotFoundException('The [unit.contentType().container().name/] does not exist');
+[else]
+    throw $this->createNotFoundException('The [unit.paginationParent.name/] does not exist');
+[/if]
 }
 [/template]
 
@@ -201,8 +206,8 @@ if (!empty($this->[unit.instanceName()/])) {
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
-	[if (not unit.containerType().oclIsUndefined() and not unit.omitContainerLoad)]
-$parameters['['/]'[unit.instanceParentName()/]'[']'/] = $this->[unit.instanceParentName()/];
+	[if (not unit.collectionType().oclIsUndefined() and not unit.omitContainerLoad)]
+$parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
 	[/if]
 [/if]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];

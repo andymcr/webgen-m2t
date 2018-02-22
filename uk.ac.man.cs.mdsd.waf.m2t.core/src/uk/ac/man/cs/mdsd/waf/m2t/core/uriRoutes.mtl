@@ -49,7 +49,7 @@
 	= if unit.hasSelectCondition() then
 			unit.uriPathKeys(unit.contentType->first(), unit.selection)
 		else
-			unit.oclAsType(ContentUnit).uriPathKeys(unit.containerType())
+			unit.oclAsType(ContentUnit).uriPathKeys(unit.collectionType())
 		endif
 /]
 
@@ -157,7 +157,7 @@
 
 [query public routingType(unit : ContentUnit, forCommonKeys : Boolean) : EntityOrView
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).containerType()
+			unit.oclAsType(CollectionUnit).collectionType()
 		else if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).routingType(forCommonKeys)
 		else

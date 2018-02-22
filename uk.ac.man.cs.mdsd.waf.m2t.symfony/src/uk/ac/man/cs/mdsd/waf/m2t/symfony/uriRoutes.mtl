@@ -43,7 +43,7 @@
 /]
 
 [query public uriPath(unit : CollectionUnit) : String
-	= unit.uriPath(unit.containerType(), unit.oclAsType(DynamicUnit).uriElement)
+	= unit.uriPath(unit.collectionType(), unit.oclAsType(DynamicUnit).uriElement)
 /]
 
 [query public uriPath(unit : CollectionUnit, routingType : EntityOrView, suffix : String) : String
@@ -229,7 +229,7 @@ $[key.routeParameterName(page)/][/for]
 [if (unit.hasSelectCondition())]
 [unit.routeParameters(unit.contentType(), unit.selection)/]
 [else]
-[unit.oclAsType(ContentUnit).routeParameters(unit.containerType())/]
+[unit.oclAsType(ContentUnit).routeParameters(unit.collectionType())/]
 [/if]
 [/template]
 

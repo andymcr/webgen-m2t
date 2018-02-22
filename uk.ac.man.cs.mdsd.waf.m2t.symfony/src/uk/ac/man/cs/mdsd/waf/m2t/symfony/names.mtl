@@ -225,6 +225,14 @@
 	= unit.instanceName().concat('Action')
 /]
 
+[query public containerInstanceName(unit : CollectionUnit) : String
+	= if unit.paginationParent.oclIsUndefined() then
+			unit.contentType().container().instanceName()
+		else
+			unit.paginationParent.instanceName()
+		endif
+/]
+
 [query public controllerName(unit : DynamicUnit) : String
 	= unit.pageDisplayedOn().controllerName()
 /]
@@ -253,9 +261,6 @@
 	= unit.oclAsType(DynamicUnit).instanceName()
 /]
 
-[query public instanceParentName(unit : CollectionUnit) : String
-	= unit.contentType().container().instanceName()
-/]
 
 [query public instanceName(resource : Resource) : String
 	= resource.name.toLowerFirst()

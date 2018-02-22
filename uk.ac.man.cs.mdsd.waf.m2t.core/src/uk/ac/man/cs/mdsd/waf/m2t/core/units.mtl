@@ -76,6 +76,28 @@
 		->select(f | not f.isSingleton())
 /]
 
+[query public collectionType(unit : CollectionUnit) : EntityOrView
+	=  unit.collectionType(unit.selection)
+/]
+
+[query public collectionType(unit : CollectionUnit, selection : Selection) : EntityOrView
+	=  let contentContainerType : EntityOrView
+		= if unit.contentType->notEmpty() then
+				unit.contentType->first().container()
+			else
+				null
+			endif 
+		in if selection.oclIsUndefined() then
+				contentContainerType
+			else if selection.selectPath->notEmpty() then
+				unit.selection.selectionType()
+			else if selection.parameters->isEmpty() then
+				null
+			else
+				selection.partOf.serves
+			endif endif endif
+/]
+
 [query public containerService(unit : DynamicUnit) : Service
 	= let model : WafModel = unit.oclAsType(DynamicUnit).pageDisplayedOn().partOf
 		in if not unit.containerType().oclIsUndefined() then
@@ -96,25 +118,11 @@
 /]
 
 [query public containerType(unit : CollectionUnit) : EntityOrView
-	=  unit.containerType(unit.selection)
-/]
-
-[query public containerType(unit : CollectionUnit, selection : Selection) : EntityOrView
-	=  let contentContainerType : EntityOrView
-		= if unit.contentType->notEmpty() then
-				unit.contentType->first().container()
-			else
-				null
-			endif 
-		in if selection.oclIsUndefined() then
-				contentContainerType
-			else if selection.selectPath->notEmpty() then
-				unit.selection.selectionType()
-			else if selection.parameters->isEmpty() then
-				null
-			else
-				selection.partOf.serves
-			endif endif endif
+	= if unit.paginationParent.oclIsUndefined() then
+			unit.contentType().container()
+		else
+			unit.paginationParent
+		endif
 /]
 
 [query public containerType(unit : SingletonUnit) : EntityOrView
