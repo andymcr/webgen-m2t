@@ -118,11 +118,21 @@
 /]
 
 [query public containerType(unit : CollectionUnit) : EntityOrView
-	= if unit.paginationParent.oclIsUndefined() then
-			unit.contentType().container()
-		else
-			unit.paginationParent
-		endif
+	= let contentContainerType : EntityOrView
+		= if unit.contentType->notEmpty() then
+				unit.contentType->first().container()
+			else
+				null
+			endif 
+		in if not unit.paginationParent.oclIsUndefined() then
+				unit.paginationParent
+			else if unit.selection.oclIsUndefined() then
+				contentContainerType
+			else if unit.selection.selectPath->notEmpty() then
+				unit.selection.selectionType()
+			else
+				contentContainerType
+			endif endif endif
 /]
 
 [query public containerType(unit : SingletonUnit) : EntityOrView

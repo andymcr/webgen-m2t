@@ -170,7 +170,7 @@ $this->[unit.containerInstanceName()/] = $this->[unit.findContainerSelection.par
 [/if]
 if (!$this->[unit.containerInstanceName()/]) {
 [if (unit.paginationParent.oclIsUndefined())]
-    throw $this->createNotFoundException('The [unit.contentType().container().name/] does not exist');
+    throw $this->createNotFoundException('The [unit.containerType().name/] does not exist');
 [else]
     throw $this->createNotFoundException('The [unit.paginationParent.name/] does not exist');
 [/if]

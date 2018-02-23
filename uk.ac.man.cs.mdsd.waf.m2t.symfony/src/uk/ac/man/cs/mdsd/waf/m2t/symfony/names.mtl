@@ -227,7 +227,7 @@
 
 [query public containerInstanceName(unit : CollectionUnit) : String
 	= if unit.paginationParent.oclIsUndefined() then
-			unit.contentType().container().instanceName()
+			unit.containerType().instanceName()
 		else
 			unit.paginationParent.instanceName()
 		endif
