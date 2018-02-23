@@ -42,10 +42,6 @@
  */
 public function [dynamicUnit.actionName()/]([unit.actionMethodParameters()/])
 {
-[if (dynamicUnit.isConditionalDisplay())]
-    [dynamicUnit.actionCore()/]
-
-[/if]
     return $this->renderPage([page.renderActualParameters(unit.collectionType())/]);
 }
 [/let]
@@ -191,16 +187,10 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[if (dynamicUnit.isConditionalDisplay())]
-if (!empty($this->[unit.instanceName()/])) {
-    [unit.templateParameters2()/]
-}
-[else]
-	[if (not dynamicUnit.pageDisplayedOn().hasSingleActionMethod())]
+[if (not dynamicUnit.pageDisplayedOn().hasSingleActionMethod())]
 [dynamicUnit.actionCore()/]
-	[/if]
-[unit.templateParameters2()/]
 [/if]
+[unit.templateParameters2()/]
 [/let]
 [/template]
 
