@@ -6,13 +6,13 @@
 
 [template public badge(badge : Badge, accessor : String) post(trim())]
 [if (not badge.displayWhen.oclIsUndefined())]
-{% if [badge.displayWhen.twigExpression(accessor)/] %}[/if]
+{%- if [badge.displayWhen.twigExpression(accessor)/] -%}[/if]
 <span class="[if (not badge.newWhen.oclIsUndefined())]
-{% if [badge.newWhen.twigExpression(accessor)/] %} new{% endif%}[/if]badge">[if (not badge.value.oclIsUndefined())]
+{%- if [badge.newWhen.twigExpression(accessor)/] -%} new{%- endif -%}[/if]badge">[if (not badge.value.oclIsUndefined())]
 [badge.value(accessor)/][elseif (badge.iconName <> '')]
 [badge.icon()/][/if]
 </span>[if (not badge.displayWhen.oclIsUndefined())]
-{% endif %}[/if]
+{%- endif -%}[/if]
 [/template]
 
 [template private value(badge : Badge, accessor : String) post(trim())]
