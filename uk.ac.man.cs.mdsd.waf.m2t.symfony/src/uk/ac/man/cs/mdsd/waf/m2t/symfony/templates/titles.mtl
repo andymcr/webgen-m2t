@@ -24,7 +24,7 @@
 [unit.title(unit.title, contentAccessor)/]
 [else]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[unit.title(unit.title, collectionUnit.contentType().container().instanceName())/]
+[unit.title(unit.title, collectionUnit.containerType().instanceName())/]
 [/let]
 [/if]
 [/let]
@@ -47,7 +47,7 @@
 
 [template public unitTitle(unit : ImageUnit)
 	? (not unit.title.oclIsUndefined()) post(trim())]
-[unit.title(unit.title, unit.contentType().container().instanceName())/]
+[unit.title(unit.title, unit.containerType().instanceName())/]
 [/template]
 
 [template private title(unit : DynamicUnit) post(trim())]
