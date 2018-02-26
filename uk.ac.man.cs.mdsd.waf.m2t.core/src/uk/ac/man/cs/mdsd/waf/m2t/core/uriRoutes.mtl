@@ -46,11 +46,13 @@
 /]
 
 [query public uriPathKeys(unit : CollectionUnit) : Sequence(Attribute)
-	= if unit.hasSelectCondition() then
+	= if unit.hasSelectPath() then
+			unit.oclAsType(ContentUnit).uriPathKeys(unit.selection.selectionType())
+		else if unit.hasSelectCondition() then
 			unit.uriPathKeys(unit.collectionType(), unit.selection)
 		else
 			unit.oclAsType(ContentUnit).uriPathKeys(unit.collectionType())
-		endif
+		endif endif
 /]
 
 [query public uriPathKeys(unit : CollectionUnit, routingType : EntityOrView, selection : Selection) : Sequence(Attribute)
