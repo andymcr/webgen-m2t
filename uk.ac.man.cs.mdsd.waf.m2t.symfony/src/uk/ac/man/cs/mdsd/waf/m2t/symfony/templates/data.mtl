@@ -155,7 +155,7 @@ NULL
 [association.inlineActions()
 	->first().actionLink(association.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor, association.displayedOn.hasObjectAccess())/]
 [else]
-{{ [accessor/][association.valueLabel()/] | default('[if (not association.nullDisplayValue.oclIsUndefined())]
+{{ [association.getValue(accessor)/] | default('[if (not association.nullDisplayValue.oclIsUndefined())]
 [association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
  | truncate([association.maximumDisplaySize/] - 3)[/if] }}
 [/if]

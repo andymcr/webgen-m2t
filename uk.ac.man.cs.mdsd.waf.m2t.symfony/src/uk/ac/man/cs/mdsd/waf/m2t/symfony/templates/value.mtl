@@ -56,7 +56,11 @@ NULL
 [if (not association.childFeature.oclIsUndefined())]
 [association.childFeature.getValue(accessor)/]
 [else]
+	[if (not association.valueDisplay.oclIsUndefined())]
+[association.valueDisplay.label(accessor)/]
+	[else]
 [accessor/].defaultLabel()
+	[/if]
 [/if]
 [/let]
 [/template]
