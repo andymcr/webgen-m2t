@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
@@ -86,9 +87,12 @@ NULL
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
 	? (field.isBooleanDataType()) post(trim())] 
-<input type="checkbox"{% if [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} checked="checked"{% endif %} disabled="disabled"/>
+<label for="[field.displayedOn.name.asId()/].[field.feature().id()/]">
+ <input type="checkbox" id="[field.displayedOn.name.asId()/].[field.feature().id()/]"{% if [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} checked="checked"{% endif %} disabled="disabled"/>
+ <span></span>
+</label>
 [/template] 
- 
+
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isResource() and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]

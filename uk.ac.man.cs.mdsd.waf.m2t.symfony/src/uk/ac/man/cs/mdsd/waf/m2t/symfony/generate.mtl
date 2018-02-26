@@ -56,7 +56,9 @@
 [model.configSecurity()/]
 [if (model.isLocallyAuthenticated())]
 [model.configFosUser()/]
+	[if (model.localAuthentication().allowSelfRegistration and model.localAuthentication().useCaptcha)]
 [model.configRecaptcha()/]
+	[/if]
 [/if]
 
 [model.business.services.service(model)/]
