@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::service/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -21,9 +22,9 @@
 [template private unitFilter(filter : Filter, unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 <div class="filter">
- <form action="{{ path('[dynamicUnit.routeName()/]', { [if (not dynamicUnit.routingType().oclIsUndefined())]
-[unit.routeActualParameters(unit.collectionType(), unit.selection, unit.contentType().container(), 
-	unit.containerInstanceName(), unit.selection, dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
+ <form action="{{ path('[dynamicUnit.routeName()/]', { [if (unit.hasRouteParameters(unit.collectionType(), filter.selection))]
+[unit.routeActualParameters(unit.collectionType(), filter.selection, unit.collectionType(), 
+	unit.containerInstanceName(), filter.selection, dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
 [for (parameter : FormalParameter | filter.parameters)]
   <div class="row">
    <div class="col s10 m10 l11">
@@ -135,14 +136,8 @@
 [/template]
 
 [template private pageHref(unit : CollectionUnit, pageNumber : String) post(trim())]
-[if (unit.paginationParent.oclIsUndefined())]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters())]
-, [unit.routeActualParameters(unit.contentType().container(), unit.containerInstanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
-[else]
-{{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters(paginationParent, unit.selection))]
-, [unit.routeActualParameters(paginationParent, unit.selection, unit.paginationParent, 
-	unit.containerInstanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
-[/if]
+, [unit.routeActualParameters(unit.containerType(), unit.containerInstanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
 [/template]
 
 [template private firstPageLinkLabel(unit : CollectionUnit) post(trim())]
