@@ -87,8 +87,8 @@ NULL
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
 	? (field.isBooleanDataType()) post(trim())] 
-<label for="[field.displayedOn.name.asId()/].[field.feature().id()/]">
- <input type="checkbox" id="[field.displayedOn.name.asId()/].[field.feature().id()/]"{% if [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} checked="checked"{% endif %} disabled="disabled"/>
+<label for="[field.displayedOn.name.asId()/].[field.feature().id()/]"{% if not [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} hidden="hidden"{% endif %}>
+ <input type="checkbox" id="[field.displayedOn.name.asId()/].[field.feature().id()/]" checked="checked" disabled="disabled"/>
  <span></span>
 </label>
 [/template] 
