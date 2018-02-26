@@ -53,27 +53,27 @@
 [/template]
 
 [template public routeAnnotation(unit : CollectionUnit) post(trim())]
-[unit.oclAsType(ContentUnit).routeAnnotation(unit.oclAsType(DynamicUnit).routeName(), unit.uriPath())/]
+[unit.oclAsType(ContentUnit).routeAnnotation(unit.oclAsType(DynamicUnit).routeName(), unit.uriPath(), true)/]
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
-[unit.routeAnnotation(unit.routeName(), unit.uriPath())/]
+[unit.routeAnnotation(unit.routeName(), unit.uriPath(), true)/]
 [/template]
 
 [template public routeAnnotationCreate(unit : EditUnit, routeName : String, suffix : String) post(trim())]
-[unit.routeAnnotation(routeName, unit.uriPath(unit.contentType, unit.contentType.parentEntity(), suffix))/]
+[unit.routeAnnotation(routeName, unit.uriPath(unit.contentType, unit.contentType.parentEntity(), suffix), true)/]
 [/template]
 
 [template public routeAnnotation(action : InlineAction, unit : CollectionUnit, suffix : String) post(trim())]
-[unit.oclAsType(DynamicUnit).routeAnnotation(action.routeName(), action.uriPath(unit, suffix))/]
+[unit.oclAsType(DynamicUnit).routeAnnotation(action.routeName(), action.uriPath(unit, suffix), false)/]
 [/template]
 
 [template public routeAnnotationSupport(unit : DynamicUnit, suffix : String) post(trim())]
-[unit.routeAnnotation(unit.supportRouteName(), unit.uriPath(unit.routingType(), unit.uriElement.combinePaths(suffix)))/]
+[unit.routeAnnotation(unit.supportRouteName(), unit.uriPath(unit.routingType(), unit.uriElement.combinePaths(suffix)), true)/]
 [/template]
 
-[template private routeAnnotation(unit : ContentUnit, routeName : String, uriPath : String) post(trim())]
-[if (unit.isHomeUnit() and uriPath <> '')]
+[template private routeAnnotation(unit : ContentUnit, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
+[if (potentialHomeRoute and unit.isHomeUnit() and uriPath <> '')]
 * @Route("", name="Home")
 [/if]
 * @Route("[uriPath/]", name="[routeName/]"[if (unit.hasValidatedRouteParameters(false))]
