@@ -47,7 +47,7 @@
 
 [query public uriPathKeys(unit : CollectionUnit) : Sequence(Attribute)
 	= if unit.hasSelectCondition() then
-			unit.uriPathKeys(unit.contentType->first(), unit.selection)
+			unit.uriPathKeys(unit.collectionType(), unit.selection)
 		else
 			unit.oclAsType(ContentUnit).uriPathKeys(unit.collectionType())
 		endif

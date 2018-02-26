@@ -60,7 +60,7 @@ Request $request[if (page.hasRouteParameters())]
 
 [template public actionMethodParameters(unit : CollectionUnit) post(trim())]
 [if (unit.hasSelectCondition())]
-[unit.actionMethodParameters(unit.contentType(), unit.selection)/]
+[unit.actionMethodParameters(unit.collectionType(), unit.selection)/]
 [else]
 [unit.oclAsType(ContentUnit).actionMethodParameters(unit.collectionType())/]
 [/if]
