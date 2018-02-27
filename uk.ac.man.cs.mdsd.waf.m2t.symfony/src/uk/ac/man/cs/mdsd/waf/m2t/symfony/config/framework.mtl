@@ -29,7 +29,7 @@ framework:
         log: true
 
 
-#    validation:      { enable_annotations: true }
+    validation: { enable_annotations: true }
 [if (model.hasAPI())]
 #    serializer:      { enable_annotations: true }
 [/if]

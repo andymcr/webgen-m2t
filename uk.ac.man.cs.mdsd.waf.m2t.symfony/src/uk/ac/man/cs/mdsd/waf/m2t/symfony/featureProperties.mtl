@@ -84,13 +84,29 @@
 /]
 
 
-[query public hasValidation(page : Page) : Boolean
-	= page.editUnits()->select(u | u.hasUnitSupportActions())->notEmpty()
+[query public hasExplicitValidation(page : Page) : Boolean
+	= page.editUnits()->select(u | u.hasExplicitValidation())->notEmpty()
 /]
 
 
 [query public uniqueEnumerationFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
 	= unit.enumerationFeatures()->asSet()->asSequence()
+/]
+
+[query public hasExplicitValidation(unit : EditUnit) : Boolean
+	= let commonValidation : Boolean
+		= unit.hasUnitSupportActions() or unit.customiseValues or unit.hasForcedValueFeatures()
+		in let addValidation : Boolean
+			= unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())
+			in let editValidation : Boolean
+				= unit.hasDisabledFeatures()
+				in if unit.oclIsTypeOf(CreateUnit) then
+						commonValidation or addValidation
+					else if unit.oclIsTypeOf(UpdateUnit) then
+						commonValidation or editValidation
+					else
+						commonValidation or addValidation or editValidation
+					endif endif
 /]
 
 

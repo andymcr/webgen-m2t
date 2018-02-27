@@ -45,17 +45,17 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     private $[service.instanceServiceName()/];
 
 	[/for]
-	[if (page.hasValidation())]
+	[if (page.hasExplicitValidation())]
     private $validatorService;
 
 	[/if]
     public function __construct([for (service : Service | page.services()) separator (', ')]
-[service.className()/] $[service.instanceName()/][/for][if (page.hasValidation())][if (page.services()->notEmpty())], [/if]ValidatorInterface $validator[/if])
+[service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())][if (page.services()->notEmpty())], [/if]ValidatorInterface $validator[/if])
     {
 	[for (service : Service | page.services())]
         $this->[service.instanceServiceName()/] = $[service.instanceName()/];
 	[/for]
-	[if (page.hasValidation())]
+	[if (page.hasExplicitValidation())]
         $this->validatorService = $validator;
 	[/if]
     }
@@ -127,7 +127,7 @@ use Symfony\Component\HttpFoundation\Response;
 [if (page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 [/if]
-[if (page.hasValidation())]
+[if (page.hasExplicitValidation())]
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 [for (service : Service | page.services())]
