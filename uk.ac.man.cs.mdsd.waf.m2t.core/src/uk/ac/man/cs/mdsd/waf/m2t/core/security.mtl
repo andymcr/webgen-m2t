@@ -46,6 +46,11 @@
 	= action.hasAuthorisationRole() or action.hasAuthorisationRoles()
 /]
 
+[query public hasAnyAuthorisationRole(page : Page) : Boolean
+	= page.hasAuthorisationRole()
+		or page.inlineActionsRequiringHandlers()->select(a | a.hasAuthorisationRole())->notEmpty()
+/]
+
 [query public hasAuthorisation(page : Page) : Boolean
 	= page.units->select(u | u.hasAuthorisationRole())->notEmpty()
 		or page.units->select(u | u.hasAuthorisationRoles())->notEmpty()
@@ -84,11 +89,6 @@
 
 [query public hasAuthorisationRole(unit : ContentUnit) : Boolean
 	= unit.roles()->size() = 1
- 		or if unit.oclIsKindOf(DynamicUnit) then
-				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.hasAuthorisationRole())->notEmpty()
-			else
-				false
-			endif
 /]
 
 [query public hasAuthorisationRoles(action : InlineAction) : Boolean
@@ -101,11 +101,6 @@
 
 [query public hasAuthorisationRoles(unit : ContentUnit) : Boolean
 	= unit.roles()->size() > 1
- 		or if unit.oclIsKindOf(DynamicUnit) then
-				unit.oclAsType(DynamicUnit).inlineActionsRequiringHandlers()->select(a | a.hasAuthorisationRoles())->notEmpty()
-			else
-				false
-			endif
 /]
 
 [query public roles(action : InlineAction) : Sequence(String)

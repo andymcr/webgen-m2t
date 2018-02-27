@@ -108,7 +108,7 @@ use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-[if (page.hasAuthorisationRole())]
+[if (page.hasAnyAuthorisationRole())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [/if]
 [if (page.hasAuthorisationRoles())]

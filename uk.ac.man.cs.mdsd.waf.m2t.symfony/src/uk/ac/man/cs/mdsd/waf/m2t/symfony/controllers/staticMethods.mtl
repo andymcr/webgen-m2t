@@ -2,6 +2,7 @@
 [module staticMethods(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -22,7 +23,7 @@
 [let page : Page = unit.pageDisplayedOn()]
 /**
  [unit.routeAnnotation()/]
-[if (unit.requiresRole <> '')]
+[if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
 [/if]
  */

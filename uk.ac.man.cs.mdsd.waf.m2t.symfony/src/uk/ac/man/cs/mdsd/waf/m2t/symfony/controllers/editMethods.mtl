@@ -11,6 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -48,7 +49,7 @@
 [else]
  [unit.routeAnnotation()/]
 [/if]
-[if (unit.requiresRole <> '')]
+[if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
 [/if]
  */
@@ -128,7 +129,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [let page : Page = unit.pageDisplayedOn()]
 /**
  [unit.routeAnnotation()/]
-[if (unit.requiresRole <> '')]
+[if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
 [/if]
  */

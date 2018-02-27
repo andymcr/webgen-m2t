@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -32,7 +33,7 @@
 [let page : Page = unit.pageDisplayedOn()]
 /**
  [unit.routeAnnotation()/]
-[if (unit.requiresRole <> '')]
+[if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
 [/if]
  */

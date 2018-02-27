@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -36,7 +37,7 @@
 [let page : Page = dynamicUnit.pageDisplayedOn()]
 /**
  [unit.routeAnnotation()/]
-[if (dynamicUnit.requiresRole <> '')]
+[if (dynamicUnit.hasAuthorisation())]
  [dynamicUnit.securityAnnotation()/]
 [/if]
  */
