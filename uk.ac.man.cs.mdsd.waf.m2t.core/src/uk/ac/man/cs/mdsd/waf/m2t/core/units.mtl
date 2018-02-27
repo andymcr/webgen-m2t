@@ -124,15 +124,13 @@
 			else
 				null
 			endif 
-		in if not unit.paginationParent.oclIsUndefined() then
-				unit.paginationParent
-			else if unit.selection.oclIsUndefined() then
+		in if unit.selection.oclIsUndefined() then
 				contentContainerType
 			else if unit.selection.selectPath->notEmpty() then
 				unit.selection.selectionType()
 			else
 				contentContainerType
-			endif endif endif
+			endif endif
 /]
 
 [query public containerType(unit : SingletonUnit) : EntityOrView

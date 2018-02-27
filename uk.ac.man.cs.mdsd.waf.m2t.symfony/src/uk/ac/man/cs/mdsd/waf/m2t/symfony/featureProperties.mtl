@@ -5,9 +5,11 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::expression/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
@@ -79,6 +81,11 @@
 			else
 				selection.condition.hasParameters()
 			endif
+/]
+
+
+[query public hasValidation(page : Page) : Boolean
+	= page.editUnits()->select(u | u.hasUnitSupportActions())->notEmpty()
 /]
 
 

@@ -287,7 +287,7 @@ private function updateForm($[contentType.instanceName()/], $values, $validate =
     $form = [unit.createForm(unit.contentType, contentType.instanceName(), createFunction, false)/];
 [/if]    $form->submit($values, false);
     if ($validate) {
-        foreach ($this->get('validator')->validate($[contentType.instanceName()/]) as $violation) {
+        foreach ($this->validatorService->validate($[contentType.instanceName()/]) as $violation) {
             $path = $violation->getPropertyPath();
             $form->get($path)->addError(new FormError($violation->getMessage()));
         }

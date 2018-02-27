@@ -165,11 +165,7 @@ $this->[unit.containerInstanceName()/] = $this->[unit.oclAsType(DynamicUnit).con
 $this->[unit.containerInstanceName()/] = $this->[unit.findContainerSelection.partOf.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.collectionType(), unit.findContainerSelection)/]);
 [/if]
 if (!$this->[unit.containerInstanceName()/]) {
-[if (unit.paginationParent.oclIsUndefined())]
     throw $this->createNotFoundException('The [unit.containerType().name/] does not exist');
-[else]
-    throw $this->createNotFoundException('The [unit.paginationParent.name/] does not exist');
-[/if]
 }
 [/template]
 

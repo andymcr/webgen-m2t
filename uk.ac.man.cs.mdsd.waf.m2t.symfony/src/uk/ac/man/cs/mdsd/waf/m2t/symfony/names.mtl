@@ -226,11 +226,7 @@
 /]
 
 [query public containerInstanceName(unit : CollectionUnit) : String
-	= if unit.paginationParent.oclIsUndefined() then
-			unit.containerType().instanceName()
-		else
-			unit.paginationParent.instanceName()
-		endif
+	= unit.containerType().instanceName()
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
