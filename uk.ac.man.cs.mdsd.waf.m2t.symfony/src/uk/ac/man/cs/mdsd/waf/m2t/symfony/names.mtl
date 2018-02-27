@@ -226,7 +226,7 @@
 /]
 
 [query public containerInstanceName(unit : CollectionUnit) : String
-	= unit.containerType().instanceName()
+	= unit.containerType.instanceName()
 /]
 
 [query public controllerName(unit : DynamicUnit) : String

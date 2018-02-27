@@ -98,22 +98,6 @@
 			endif endif endif
 /]
 
-[query public containerType(unit : CollectionUnit) : EntityOrView
-	= let contentContainerType : EntityOrView
-		= if unit.contentType->notEmpty() then
-				unit.contentType->first().container()
-			else
-				null
-			endif 
-		in if unit.selection.oclIsUndefined() then
-				contentContainerType
-			else if unit.selection.selectPath->notEmpty() then
-				unit.selection.selectionType()
-			else
-				contentContainerType
-			endif endif
-/]
-
 [query public containingAssociation(unit : DynamicUnit) : Association
 	= if unit.contentType().oclIsUndefined() then
 			null

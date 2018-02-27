@@ -137,7 +137,7 @@
 
 [template private pageHref(unit : CollectionUnit, pageNumber : String) post(trim())]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters())]
-, [unit.routeActualParameters(unit.containerType(), unit.containerInstanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
+, [unit.routeActualParameters(unit.containerType, unit.containerInstanceName(), unit.selection, unit.hasObjectAccess())/][/if]})) }}
 [/template]
 
 [template private firstPageLinkLabel(unit : CollectionUnit) post(trim())]
