@@ -164,51 +164,8 @@
 /]
 
 [query public services(page : Page) : Sequence(Service)
-	= page.dynamicUnits()->collect(u | u.services())
+	= page.dynamicUnits()->collect(u | u.servicesUsed)
 		->asSet()
 		->asSequence()
 		->sortedBy(s | s.name)
 /]
-[query public services(unit : DynamicUnit) : Sequence(Service)
-	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).services()
-		else if unit.oclIsKindOf(DetailsUnit) then
-			unit.oclAsType(DetailsUnit).services()
-		else if unit.oclIsKindOf(EditUnit) then
-			unit.oclAsType(EditUnit).services()
-		else
-			Sequence{}
-		endif endif endif
-/]
-
-[query private services(unit : CollectionUnit) : Sequence(Service)
-	= let containerService : Service = unit.oclAsType(DynamicUnit).containerService()
-		in if containerService.oclIsUndefined() then
-				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
-			else if unit.omitContainerLoad then
-				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
-			else
-				Sequence{ unit.oclAsType(DynamicUnit).contentService() }
-					->append(unit.oclAsType(DynamicUnit).containerService())
-			endif endif
-/]
-
-[query private services(unit : DetailsUnit) : Sequence(Service)
-	= Sequence{ unit.contentService() }
-/]
-
-[query private services(unit : EditUnit) : Sequence(Service)
-	= let containerService : Sequence(Service)
-		= if unit.hasCustomisedBody() and unit.isContained() then
-				if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit)then
-					Sequence{ unit.containerService() }
-				else
-					Sequence{}
-				endif
-			else
-				Sequence{}
-			endif
-		in Sequence{ unit.contentService() }
-				->union(containerService)
-/]
-

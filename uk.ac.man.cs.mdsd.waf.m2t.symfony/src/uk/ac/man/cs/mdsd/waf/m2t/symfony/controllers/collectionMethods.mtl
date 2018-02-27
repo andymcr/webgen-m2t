@@ -161,9 +161,9 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 
 [template private loadContainer(unit : CollectionUnit) post(trim())]
 [if (unit.findContainerSelection.oclIsUndefined())]
-$this->[unit.containerInstanceName()/] = $this->[unit.oclAsType(DynamicUnit).containerService().instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.collectionType())/]);
+$this->[unit.containerInstanceName()/] = $this->[unit.containerService.instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.collectionType())/]);
 [else]
-$this->[unit.containerInstanceName()/] = $this->[unit.findContainerSelection.partOf.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.collectionType(), unit.findContainerSelection)/]);
+$this->[unit.containerInstanceName()/] = $this->[unit.containerService.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.collectionType(), unit.findContainerSelection)/]);
 [/if]
 if (!$this->[unit.containerInstanceName()/]) {
     throw $this->createNotFoundException('The [unit.containerType().name/] does not exist');

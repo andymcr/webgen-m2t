@@ -98,25 +98,6 @@
 			endif endif endif
 /]
 
-[query public containerService(unit : DynamicUnit) : Service
-	= let model : WafModel = unit.oclAsType(DynamicUnit).pageDisplayedOn().partOf
-		in if not unit.containerType().oclIsUndefined() then
-				model.services(unit.containerType())->first()
-			else
-				null
-			endif
-/]
-
-[query public containerType(unit : DynamicUnit) : EntityOrView
-	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).containerType()
-		else if unit.oclIsKindOf(SingletonUnit) then
-			unit.oclAsType(SingletonUnit).containerType()
-		else
-			null
-		endif endif
-/]
-
 [query public containerType(unit : CollectionUnit) : EntityOrView
 	= let contentContainerType : EntityOrView
 		= if unit.contentType->notEmpty() then
@@ -131,14 +112,6 @@
 			else
 				contentContainerType
 			endif endif
-/]
-
-[query public containerType(unit : SingletonUnit) : EntityOrView
-	= if unit.contentType.oclIsUndefined() then
-			null
-		else
-			unit.contentType.container()
-		endif
 /]
 
 [query public containingAssociation(unit : DynamicUnit) : Association
