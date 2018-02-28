@@ -14,7 +14,7 @@
 /]
 
 
-[query public id(entity : EntityOrView) : String
+[query public id(entity : Entity) : String
 	= entity.name.asId()
 /]
 

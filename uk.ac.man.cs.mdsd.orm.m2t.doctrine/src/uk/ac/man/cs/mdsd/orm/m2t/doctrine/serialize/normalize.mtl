@@ -9,7 +9,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
 
-[template public normalizer(entity : EntityOrView)]
+[template public normalizer(entity : Entity)]
 [file(entity.normalizerFilename(entity), false)]
 <?php
 namespace [entity.normalizerNamespace()/];

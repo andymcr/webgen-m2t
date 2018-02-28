@@ -17,7 +17,7 @@
 /]
 
 
-[template public model(entity : EntityOrView)]
+[template public model(entity : Entity)]
 [file(entity.modelFilename(), false)]
 <?php
 namespace [entity.modelsNamespace()/];
@@ -100,7 +100,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
 [/file]
 [/template]
 
-[template private useStatements(entity : EntityOrView) post(trim())]
+[template private useStatements(entity : Entity) post(trim())]
 use Doctrine\ORM\Mapping as ORM;
 [if (entity.collectionAssociations()->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
@@ -130,7 +130,7 @@ use [entity.validatorNamespace()/]\Constraints as AppAssert;
 [/if]
 [/template]
 
-[template private autoIdFeature(entity : EntityOrView) post(trim())]
+[template private autoIdFeature(entity : Entity) post(trim())]
 /**
  * @ORM\Id
  * @ORM\Column(type="[entity.autoKeyPersistentType/]")
@@ -139,7 +139,7 @@ use [entity.validatorNamespace()/]\Constraints as AppAssert;
 protected $[entity.autoKeyName/];
 [/template]
 
-[template private featureProperties(entity : EntityOrView) post(trim())]
+[template private featureProperties(entity : Entity) post(trim())]
 [for (feature : Feature | entity.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isPseudo()))]
 [comment TODO sortout location features /]
 	[if (not feature.isLocation())]
@@ -162,7 +162,7 @@ protected $[feature.modelPropertyName()/];
 [/for]
 [/template]
 
-[template private timestampFeatures(entity : EntityOrView) post(trim())]
+[template private timestampFeatures(entity : Entity) post(trim())]
 [if (entity.partOf.timestampCreation)]
 /**
  * @ORM\Column(type="datetime")
@@ -314,8 +314,8 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/template]
 
 [template private primaryKeysOwning(association : CollectionAssociation) post(trim())]
-[if (association.partOf.primaryKeys()->size() = 1)]
-[let key : EntityFeature = association.partOf.primaryKeys()->first()]
+[if (association.partOf.oclAsType(Entity).primaryKeys()->size() = 1)]
+[let key : EntityFeature = association.partOf.oclAsType(Entity).primaryKeys()->first()]
 *     joinColumns={@ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)},
 [/let]
 [else]
@@ -373,7 +373,7 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/if]
 [/template]
 
-[template private constructor(entity : EntityOrView) post(trim())]
+[template private constructor(entity : Entity) post(trim())]
 public function __construct()
 {
 [for (feature : Feature | entity.features())]
@@ -390,7 +390,7 @@ public function __construct()
 }
 [/template]
 
-[template private encoderSelectionMethod(entity : EntityOrView) post(trim())]
+[template private encoderSelectionMethod(entity : Entity) post(trim())]
 public function getEncoderName()
 {
     if ($this->created < new \DateTime('2016-01-01 00:00'))
@@ -400,7 +400,7 @@ public function getEncoderName()
 }
 [/template]
 
-[template private idMethods(entity : EntityOrView) post(trim())]
+[template private idMethods(entity : Entity) post(trim())]
 public function getId()
 {
     return $this->[entity.autoKeyName/];
@@ -528,7 +528,7 @@ public function [feature.removeMethodName()/]($[feature.singletonPropertyName()/
 }
 [/template]
 
-[template private userInterfaceMethods(entity : EntityOrView) post(trim())]
+[template private userInterfaceMethods(entity : Entity) post(trim())]
 public function getPassword() 
 { 
     return null; 
@@ -544,7 +544,7 @@ public function eraseCredentials()
 } 
 [/template]
 
-[template private timestampMethods(entity : EntityOrView) post(trim())]
+[template private timestampMethods(entity : Entity) post(trim())]
 [if (entity.partOf.timestampCreation)]
 public function getCreated()
 {

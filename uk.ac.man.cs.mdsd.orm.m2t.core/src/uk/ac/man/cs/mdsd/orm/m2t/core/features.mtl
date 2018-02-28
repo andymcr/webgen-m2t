@@ -195,9 +195,9 @@
 		endif endif endif
 /]
 
-[query public isSingleton(association : Association, entityOrView : EntityOrView) : Boolean
+[query public isSingleton(association : Association, entity : Entity) : Boolean
 	= if association.oclIsKindOf(EntityAssociation) then
-			if entityOrView.features->includes(association) then
+			if entity.features->includes(association) then
 				association.isSingleton()
 			else
 				association.oclAsType(EntityAssociation).opposite.isSingleton()
@@ -319,7 +319,7 @@
 		endif endif endif
 /]
 
-[query public sourceType(association : Association) : EntityOrView
+[query public sourceType(association : Association) : Entity
 	= if association.oclIsKindOf(EntityAssociation) then
 			association.oclAsType(EntityAssociation).partOf
 		else if association.oclIsKindOf(EncapsulatedAssociation) then
@@ -329,10 +329,10 @@
 		endif endif
 /]
 
-[query public targetType(association : Association) : EntityOrView
+[query public targetType(association : Association) : Entity
 	= let opposite : Association = association.opposite()
 		in if not opposite.oclIsUndefined() then
-				opposite.partOf
+				opposite.partOf.oclAsType(Entity)
 			else
 				null
 			endif
