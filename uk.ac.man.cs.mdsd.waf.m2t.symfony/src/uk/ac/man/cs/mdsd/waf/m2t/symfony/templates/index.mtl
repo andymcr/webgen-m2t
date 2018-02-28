@@ -35,7 +35,7 @@
  [indexUnit.pagination()/]
 [/if]
 [if (indexUnit.hasUnitSupportActions())]
- [indexUnit.unitSupportLinks(accessor)/]
+ [indexUnit.unitSupportLinks(indexUnit.containerInstanceName())/]
 [/if]
 </section>
 [/file]

@@ -21,9 +21,17 @@
 
 
 [template public unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-<form action="{{ path('[unit.supportRouteName()/]', { [if (not unit.routingType().oclIsUndefined())]
+[if (unit.oclIsKindOf(CollectionUnit))]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+<form action="{{ path('[unit.supportRouteName()/]'[if (collectionUnit.hasRouteParameters())]
+, { [collectionUnit.routeActualParameters(collectionUnit.containerType, accessor, collectionUnit.selection, unit.hasObjectAccess())/] }[/if]
+) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+[/let]
+[else]
+<form action="{{ path('[unit.supportRouteName()/]', { [if (unit.hasRouteParameters(unit.routingType()))]
 [unit.routeActualParameters(unit.routingType(), unit.routingType(), accessor, unit.selection(), unit.hasObjectAccess())/] [/if]
  }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
+[/if]
 [for (action : UnitSupportAction | unit.unitSupportActions())]
  [action.unitSupportLink()/]
 [/for]
