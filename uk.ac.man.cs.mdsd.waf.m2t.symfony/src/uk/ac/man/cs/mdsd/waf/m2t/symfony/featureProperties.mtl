@@ -32,7 +32,7 @@
 		->select(f | f.isContains()).oclAsType(UnitAssociation)
 /]
 
-[query public formEntities(model : WafModel) : Set(EntityOrView)
+[query public formEntities(model : WafModel) : Set(Entity)
 	= model.pages
 		->collect(p | p.units)
 		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
@@ -64,7 +64,7 @@
 			let fieldNames : Sequence(String)
 				= selection.fields->collect(f | f.modelPropertyName())
 				in if fieldNames->select(n | n = field.modelPropertyName())->size() > 1 then
-						field.partOf.selectName().concat(field.name.toUpperFirst())
+						field.partOf.oclAsType(Entity).selectName().concat(field.name.toUpperFirst())
 					else
 						null
 					endif

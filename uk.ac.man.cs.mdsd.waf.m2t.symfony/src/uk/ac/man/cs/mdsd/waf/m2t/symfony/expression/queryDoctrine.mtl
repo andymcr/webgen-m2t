@@ -45,7 +45,7 @@ $queryBuilder->expr()->literal('[literal.value/]')
 
 [template private featureReference(feature : Feature) 
 	? (feature.oclIsKindOf(Attribute)) post(trim())]
-'[feature.partOf.selectName()/].[feature.columnName()/]'
+'[feature.partOf.oclAsType(Entity).selectName()/].[feature.columnName()/]'
 [/template]
 
 [template private featureReference(feature : Feature) 

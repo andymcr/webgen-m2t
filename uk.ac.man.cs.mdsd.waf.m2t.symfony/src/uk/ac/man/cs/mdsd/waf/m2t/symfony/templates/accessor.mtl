@@ -13,7 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 
 
-[query public keyAccessor(attribute : Attribute, entity : EntityOrView, parentAccessor : String) : String
+[query public keyAccessor(attribute : Attribute, entity : Entity, parentAccessor : String) : String
 	= if entity.features->includes(attribute) then
 			parentAccessor.concat('->').concat(attribute.getMethodName()).concat('()')
 		else

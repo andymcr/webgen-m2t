@@ -19,19 +19,19 @@
 /]
 
 
-[query public instanceName(entity : EntityOrView) : String
+[query public instanceName(entity : Entity) : String
 	= entity.name.toLowerFirst()
 /]
 
-[query public modelClassName(entity : EntityOrView) : String
+[query public modelClassName(entity : Entity) : String
 	= entity.name
 /]
 
-[query public modelName(entity : EntityOrView) : String
+[query public modelName(entity : Entity) : String
 	= entity.name
 /]
 
-[query public normalizerClassName(entity : EntityOrView) : String
+[query public normalizerClassName(entity : Entity) : String
 	= entity.name.concat('Normalizer')
 /]
 

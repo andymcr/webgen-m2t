@@ -96,7 +96,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/template]
 
 [template private useStatements(page : Page) post(trim())]
-[for (entity : EntityOrView | page.editUnits()
+[for (entity : Entity | page.editUnits()
 		->select(u | not u.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)
 		->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
@@ -160,7 +160,7 @@ public function [page.actionName()/]([page.actionMethodParameters()/])
 private function renderPage([if (page.hasFilters() or page.hasPagination())]
 Request $request[if (page.uriCommonPathKeys()->notEmpty())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
-$[key.routeParameterName(page.uriCommonPathKeys()->last().partOf)/][/for])
+$[key.routeParameterName(page.uriCommonPathKeys()->last().partOf.oclAsType(Entity))/][/for])
 {
     [page.renderCore()/]
 }
@@ -218,7 +218,7 @@ return new Response("No action taken", 200);
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
 [let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
-[let contentType : EntityOrView = unit.contentType()]
+[let contentType : Entity = unit.contentType()]
 /**
  [deleteAction.routeAnnotation(unit, deleteAction.uriElement)/]
 [if (deleteAction.hasAuthorisation())]
@@ -249,7 +249,7 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
 	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
 [let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
 [let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
-[let contentType : EntityOrView = unit.contentType()]
+[let contentType : Entity = unit.contentType()]
 /**
  [featureAction.routeAnnotation(unit, featureAction.uriElement)/]
 [if (featureAction.hasAuthorisation())]

@@ -208,7 +208,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 }
 [/template]
 
-[template public createForm(unit : EditUnit, routingType : EntityOrView, entityInstance : String, createFunction : Boolean, placeholder : Boolean) post(trim())]
+[template public createForm(unit : EditUnit, routingType : Entity, entityInstance : String, createFunction : Boolean, placeholder : Boolean) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 $this->createForm([unit.typeClassName(page.partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(createFunction)/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasRouteParameters(routingType))]
@@ -229,16 +229,14 @@ array_merge(
 [/template]
 
 [template public setContainer(unit : EditUnit) post(trim())]
-[let entityOrView : EntityOrView = unit.contentType]
-[let modelPropertyName : String = entityOrView.containingAssociation().modelPropertyName().toUpperFirst()]
-[let parentService : Service = entityOrView.container().services(unit.pageDisplayedOn().partOf)->first()]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([unit.routeParameters(entityOrView.parentEntity())/]));
-[/let]
+[let modelPropertyName : String = unit.contentType.containingAssociation().modelPropertyName().toUpperFirst()]
+[let parentService : Service = unit.contentType.container().services(unit.pageDisplayedOn().partOf)->first()]
+$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([unit.routeParameters(unit.contentType.parentEntity())/]));
 [/let]
 [/let]
 [/template]
 
-[template private saveBody(unit : EditUnit, valueBase : EntityOrView) post(trim())]
+[template private saveBody(unit : EditUnit, valueBase : Entity) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [unit.getContentService()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
@@ -279,16 +277,15 @@ $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceN
 [/template]
 
 [template private updateFormMethod(unit : EditUnit, createFunction : Boolean) post(trim())]
-[let contentType : EntityOrView = unit.contentType]
 private function updateForm($[contentType.instanceName()/], $values, $validate = true)
 {
 [if (createFunction)]
-    $form = [unit.createForm(unit.contentType.parentEntity(), contentType.instanceName(), createFunction, false)/];
+    $form = [unit.createForm(unit.contentType.parentEntity(), unit.contentType.instanceName(), createFunction, false)/];
 [else]
     $form = [unit.createForm(unit.contentType, contentType.instanceName(), createFunction, false)/];
 [/if]    $form->submit($values, false);
     if ($validate) {
-        foreach ($this->validatorService->validate($[contentType.instanceName()/]) as $violation) {
+        foreach ($this->validatorService->validate($[unit.contentType.instanceName()/]) as $violation) {
             $path = $violation->getPropertyPath();
             $form->get($path)->addError(new FormError($violation->getMessage()));
         }
@@ -296,5 +293,4 @@ private function updateForm($[contentType.instanceName()/], $values, $validate =
 
     return $form;
 }
-[/let]
 [/template]

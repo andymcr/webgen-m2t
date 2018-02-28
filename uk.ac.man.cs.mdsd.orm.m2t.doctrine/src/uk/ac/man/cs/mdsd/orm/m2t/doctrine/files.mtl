@@ -63,13 +63,13 @@
 		.concat(type.executableExtension())
 /]
 
-[query public modelFilename(entity : EntityOrView) : String
+[query public modelFilename(entity : Entity) : String
 	= entity.modelsDirectory().concat('/')
 		.concat(entity.modelClassName())
 		.concat(entity.executableExtension())
 /]
 
-[query public normalizerFilename(entity : EntityOrView) : String
+[query public normalizerFilename(entity : Entity) : String
 	= entity.normalizerDirectory().concat('/')
 		.concat(entity.normalizerClassName())
 		.concat(entity.executableExtension())

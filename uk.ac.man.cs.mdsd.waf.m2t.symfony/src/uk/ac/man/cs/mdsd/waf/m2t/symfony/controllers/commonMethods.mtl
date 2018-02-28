@@ -66,7 +66,7 @@ Request $request[if (page.hasRouteParameters())]
 [/if]
 [/template]
 
-[template public actionMethodParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection) post(trim())]
+[template public actionMethodParameters(unit : CollectionUnit, routingType : Entity, selection : Selection) post(trim())]
 [let page : Page = unit.oclAsType(DynamicUnit).pageDisplayedOn()]
 [if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request[if (unit.hasRouteParameters(routingType, selection))]
@@ -82,7 +82,7 @@ Request $request[if (unit.hasRouteParameters(routingType, selection))]
 [/if]
 [/template]
 
-[template public actionMethodParameters(unit : ContentUnit, routingType : EntityOrView) post(trim())]
+[template public actionMethodParameters(unit : ContentUnit, routingType : Entity) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 [if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request[if (unit.hasRouteParameters(routingType))]
@@ -90,7 +90,7 @@ Request $request[if (unit.hasRouteParameters(routingType))]
 [/let]
 [/template]
 
-[template public actionMethodParameters(routingType : EntityOrView, page : Page) post(trim())]
+[template public actionMethodParameters(routingType : Entity, page : Page) post(trim())]
 [if (page.hasFilters() or page.hasPagination())]
 Request $request[if (routingType.hasRouteParameters())]
 , [/if][/if][routingType.routeParameters(routingType)/]
@@ -105,11 +105,11 @@ Request $request[if (routingType.hasRouteParameters())]
 [/template]
 
 
-[template public renderActualParameters(page : Page, routingType : EntityOrView) post(trim())]
+[template public renderActualParameters(page : Page, routingType : Entity) post(trim())]
 [page.renderActualParameters(routingType, routingType)/]
 [/template]
 
-[template public renderActualParameters(page : Page, routingType : EntityOrView, valueBase : EntityOrView) post(trim())]
+[template public renderActualParameters(page : Page, routingType : Entity, valueBase : Entity) post(trim())]
 [if (page.hasFilters() or page.hasPagination())]
 $request[if (page.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator (', ')]
@@ -147,7 +147,7 @@ $this->[unit.findElementSelection.partOf.instanceServiceName()/]->[unit.findElem
 [/if]
 [/template]
 
-[template private findActualParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection) post(trim())]
+[template private findActualParameters(unit : CollectionUnit, routingType : Entity, selection : Selection) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(routingType, selection)) separator (', ')]
 [key.findActualParameter(unit.oclAsType(ContentUnit), routingType)/][/for]
 [/template]
@@ -160,7 +160,7 @@ $this->[unit.findElementSelection.partOf.instanceServiceName()/]->[unit.findElem
 [/if]
 [/template]
 
-[template private findActualParameters(unit : ContentUnit, routingType : EntityOrView) post(trim())]
+[template private findActualParameters(unit : ContentUnit, routingType : Entity) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(routingType)) separator (', ')]
 [key.findActualParameter(unit, routingType)/][/for]
 [/template]
@@ -173,12 +173,12 @@ $this->[unit.findElementSelection.partOf.instanceServiceName()/]->[unit.findElem
 [/if]
 [/template]
 
-[template private findActualParameters(routingType : EntityOrView, unit : ContentUnit) post(trim())]
+[template private findActualParameters(routingType : Entity, unit : ContentUnit) post(trim())]
 [for (key : Attribute | routingType.uriPathKeys()) separator (', ')]
 [key.findActualParameter(unit, routingType)/][/for]
 [/template]
 
-[template private findActualParameter(key : Attribute, unit : ContentUnit, routingType : EntityOrView) post(trim())]
+[template private findActualParameter(key : Attribute, unit : ContentUnit, routingType : Entity) post(trim())]
 [let parameterName : String = key.routeParameterName(routingType)]
 	[if (unit.hasRouteActual(key))]
 [unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()))/][elseif (key.encodeUriKey)]
@@ -275,7 +275,7 @@ $this->redirectToRoute('[page.routeName()/]'[if (page.uriCommonPathKeys()->notEm
 )[/if])
 [/template]
 
-[template public redirect(unit : DynamicUnit, routingType : EntityOrView, routeName : String, valueBase : EntityOrView) post(trim())]
+[template public redirect(unit : DynamicUnit, routingType : Entity, routeName : String, valueBase : Entity) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
 $this->redirectToRoute('[routeName/]'[if (page.hasFilters() or page.hasPagination())]
 , [if (routingType.oclIsUndefined())]
@@ -294,13 +294,13 @@ array_merge(
 [/let]
 [/template]
 
-[template private routeActualParameters(page : Page, valueBase : EntityOrView) post(trim())]
+[template private routeActualParameters(page : Page, valueBase : Entity) post(trim())]
 [for (key : Attribute | page.uriCommonPathKeys())]
 '[key.routeParameterName(page.dynamicUnits()->first().routingType())/]' => $[key.routeParameterName(valueBase)/],
 [/for]
 [/template]
 
-[template private routeActualParameters(targetUnit : CollectionUnit, valueBase : EntityOrView) post(trim())]
+[template private routeActualParameters(targetUnit : CollectionUnit, valueBase : Entity) post(trim())]
 [if (targetUnit.hasSelectCondition())]
 [targetUnit.routeActualParameters(targetUnit.contentType(), targetUnit.selection, valueBase)/]
 [else]
@@ -308,13 +308,13 @@ array_merge(
 [/if]
 [/template]
 
-[template private routeActualParameters(targetUnit : CollectionUnit, routingType : EntityOrView, selection : Selection, valueBase : EntityOrView) post(trim())]
+[template private routeActualParameters(targetUnit : CollectionUnit, routingType : Entity, selection : Selection, valueBase : Entity) post(trim())]
 [for (key : Attribute | targetUnit.uriPathKeys(routingType, selection)) separator (', ')]
 [key.findActualParameter(targetUnit.oclAsType(ContentUnit), routingType)/]
 [/for]
 [/template]
 
-[template public routeActualParameters(targetUnit : ContentUnit, valueBase : EntityOrView) post(trim())]
+[template public routeActualParameters(targetUnit : ContentUnit, valueBase : Entity) post(trim())]
 [if (targetUnit.oclIsKindOf(CollectionUnit))]
 [targetUnit.oclAsType(CollectionUnit).routeActualParameters(valueBase)/]
 [else]
@@ -322,7 +322,7 @@ array_merge(
 [/if]
 [/template]
 
-[template public routeActualParameters(targetUnit : ContentUnit, routingType : EntityOrView, valueBase : EntityOrView) post(trim())]
+[template public routeActualParameters(targetUnit : ContentUnit, routingType : Entity, valueBase : Entity) post(trim())]
 [for (key : Attribute | targetUnit.uriPathKeys(routingType))]
 '[key.routeParameterName(routingType)/]' => $[key.routeParameterName(valueBase)/],
 [/for]

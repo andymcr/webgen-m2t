@@ -11,7 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units]
 
 
-[query public keyEntity(entity : EntityOrView) : EntityOrView
+[query public keyEntity(entity : Entity) : Entity
 	= if entity.attributeKeys()->notEmpty() then
 			entity
 		else if entity.isContained() then
@@ -21,8 +21,8 @@
 		endif endif
 /]
 
-[query public parentEntity(entity : EntityOrView) : EntityOrView
-	= let keyEntity : EntityOrView = entity.keyEntity()
+[query public parentEntity(entity : Entity) : Entity
+	= let keyEntity : Entity = entity.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				null
 			else if not keyEntity.isContained() then
@@ -55,7 +55,7 @@
 		endif endif
 /]
 
-[query public uriPathKeys(unit : CollectionUnit, routingType : EntityOrView, selection : Selection) : Sequence(Attribute)
+[query public uriPathKeys(unit : CollectionUnit, routingType : Entity, selection : Selection) : Sequence(Attribute)
 	= if routingType.oclIsUndefined() then
 			Sequence{}
 		else
@@ -79,7 +79,7 @@
 		endif
 /]
 
-[query public uriPathKeys(unit : ContentUnit, routingType : EntityOrView) : Sequence(Attribute)
+[query public uriPathKeys(unit : ContentUnit, routingType : Entity) : Sequence(Attribute)
 	= if routingType.oclIsUndefined() then
 			Sequence{}
 		else
@@ -87,8 +87,8 @@
 		endif
 /]
 
-[query public uriPathKeys(routingType : EntityOrView) : Sequence(Attribute)
-	= let keyEntity : EntityOrView = routingType.keyEntity()
+[query public uriPathKeys(routingType : Entity) : Sequence(Attribute)
+	= let keyEntity : Entity = routingType.keyEntity()
 		in if keyEntity.oclIsUndefined() then
 				Sequence{}
 			else
@@ -102,20 +102,20 @@
 			endif
 /]
 
-[query public uriEntityKeys(elementType : EntityOrView, unit : ContentUnit, routingType : EntityOrView) : Sequence(Attribute)
+[query public uriEntityKeys(elementType : Entity, unit : ContentUnit, routingType : Entity) : Sequence(Attribute)
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.routeActuals->collect(a | a.routeParameter)
 		in elementType.attributeKeys()->select(k | not keysWithActuals->includes(k) and unit.selectionKeys(routingType)->includes(k))
 /]
 
-[query public uriEntityKeys(elementType : EntityOrView, unit : CollectionUnit, selection : Selection) : Sequence(Attribute)
+[query public uriEntityKeys(elementType : Entity, unit : CollectionUnit, selection : Selection) : Sequence(Attribute)
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.oclAsType(DynamicUnit).routeActuals->collect(a | a.routeParameter)
 		in elementType.attributeKeys()->select(k | not keysWithActuals->includes(k) and selection.selectionKeys()->includes(k))
 /]
 
-[query private parentUriPathKeys(entity : EntityOrView) : Sequence(Attribute)
-	= let parentEntity : EntityOrView = entity.parentEntity()
+[query private parentUriPathKeys(entity : Entity) : Sequence(Attribute)
+	= let parentEntity : Entity = entity.parentEntity()
 		in if not parentEntity.oclIsUndefined() then
 				parentEntity.uriPathKeys()
 			else
@@ -132,7 +132,7 @@
 	= unit.uriPathKeys()->notEmpty()
 /]
 
-[query public hasRouteParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection) : Boolean
+[query public hasRouteParameters(unit : CollectionUnit, routingType : Entity, selection : Selection) : Boolean
 	= unit.uriPathKeys(routingType, selection)->notEmpty()
 /]
 
@@ -144,20 +144,20 @@
 		endif
 /]
 
-[query public hasRouteParameters(unit : ContentUnit, routingType : EntityOrView) : Boolean
+[query public hasRouteParameters(unit : ContentUnit, routingType : Entity) : Boolean
 	= unit.uriPathKeys(routingType)->notEmpty()
 /]
 
-[query public hasRouteParameters(routingType : EntityOrView) : Boolean
+[query public hasRouteParameters(routingType : Entity) : Boolean
 	= routingType.uriPathKeys()->notEmpty()
 /]
 
 
-[query public routingType(unit : ContentUnit) : EntityOrView
+[query public routingType(unit : ContentUnit) : Entity
 	= unit.routingType(false)
 /]
 
-[query public routingType(unit : ContentUnit, forCommonKeys : Boolean) : EntityOrView
+[query public routingType(unit : ContentUnit, forCommonKeys : Boolean) : Entity
 	= if unit.oclIsKindOf(CollectionUnit) then
 			unit.oclAsType(CollectionUnit).collectionType()
 		else if unit.oclIsKindOf(SingletonUnit) then
@@ -167,11 +167,11 @@
 		endif endif
 /]
 
-[query public routingType(unit : SingletonUnit) : EntityOrView
+[query public routingType(unit : SingletonUnit) : Entity
 	= unit.routingType(false)
 /]
 
-[query public routingType(unit : SingletonUnit, forCommonKeys : Boolean) : EntityOrView
+[query public routingType(unit : SingletonUnit, forCommonKeys : Boolean) : Entity
 	= if unit.oclIsKindOf(DetailsUnit) then
 			if unit.oclAsType(DetailsUnit).selection.oclIsUndefined() then
 				unit.contentType
@@ -200,7 +200,7 @@
 /]
 
 [query public uriPathKeys(resource : Resource) : Sequence(Attribute)
-	= let keyEntity : EntityOrView = resource.service.serves.keyEntity()
+	= let keyEntity : Entity = resource.service.serves.keyEntity()
 		in let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
 			in let parentKeys : Sequence(Attribute) = resource.parentUriPathKeys()
 				in if localKeys->isEmpty() then
@@ -220,7 +220,7 @@
 /]
 
 
-[query public selectionKeys(unit : ContentUnit, routingType : EntityOrView) : Set(Attribute)
+[query public selectionKeys(unit : ContentUnit, routingType : Entity) : Set(Attribute)
 	= if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).selectionKeys(routingType)
 		else if unit.oclIsKindOf(CollectionUnit) then
@@ -230,7 +230,7 @@
 		endif endif
 /]
 
-[query public selectionKeys(unit : CollectionUnit, routingType : EntityOrView) : Set(Attribute)
+[query public selectionKeys(unit : CollectionUnit, routingType : Entity) : Set(Attribute)
 		= if unit.hasSelectCondition() then
 				unit.selection.selectionKeys()
 			else
@@ -240,7 +240,7 @@
 	--	in routingKeys->union(unit.contentType->first().attributeKeys()->asSet())
 /]
 
-[query public selectionKeys(unit : SingletonUnit, routingType : EntityOrView) : Set(Attribute)
+[query public selectionKeys(unit : SingletonUnit, routingType : Entity) : Set(Attribute)
 	= if unit.oclIsKindOf(DetailsUnit) then
 			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
 				in if detailsUnit.selection.oclIsUndefined() then

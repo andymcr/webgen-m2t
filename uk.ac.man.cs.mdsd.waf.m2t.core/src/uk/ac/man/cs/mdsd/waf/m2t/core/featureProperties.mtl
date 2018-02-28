@@ -17,14 +17,14 @@
 /]
 
 
-[query private usersOf(entity : EntityOrView, model : WafModel) : Sequence(EditUnit)
+[query private usersOf(entity : Entity, model : WafModel) : Sequence(EditUnit)
 	= model.pages->collect(
 		p | p.units
 			->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
 			->select(u | u.contentType = entity))
 /]
 
-[query private usersOf(entity : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+[query private usersOf(entity : Entity, unit : EditUnit) : Sequence(EditUnit)
 	= if unit.contentType = entity then
 			Sequence{unit}
 		else
@@ -32,7 +32,7 @@
 		endif->union(entity.nestedUsersOf(unit))
 /]
 
-[query private nestedUsersOf(entity : EntityOrView, unit : EditUnit) : Sequence(EditUnit)
+[query private nestedUsersOf(entity : Entity, unit : EditUnit) : Sequence(EditUnit)
 	= unit.displayFields
 		->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
 		->select(a | a.units->notEmpty())

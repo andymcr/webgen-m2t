@@ -6,11 +6,11 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
 
 
-[query public services(model : WafModel, entity : EntityOrView) : OrderedSet(Service)
+[query public services(model : WafModel, entity : Entity) : OrderedSet(Service)
 	= model.business.services->select(s | s.serves = entity)
 /]
 
-[query public services(entity : EntityOrView, model : WafModel) : OrderedSet(Service)
+[query public services(entity : Entity, model : WafModel) : OrderedSet(Service)
 	= model.services(entity)
 /]
 
@@ -54,7 +54,7 @@
 		endif
 /]
 
-[query public selectionType(selection : Selection) : EntityOrView
+[query public selectionType(selection : Selection) : Entity
 	= if selection.selectPath->notEmpty() then
 			selection.selectPath->last().targetType()
 		else

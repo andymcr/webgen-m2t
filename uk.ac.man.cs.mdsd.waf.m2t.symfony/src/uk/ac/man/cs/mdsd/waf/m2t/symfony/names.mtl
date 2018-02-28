@@ -59,7 +59,7 @@
 /]
 
 
-[query public formsUsing(entity : EntityOrView, model : WafModel) : Sequence(DynamicUnit)
+[query public formsUsing(entity : Entity, model : WafModel) : Sequence(DynamicUnit)
 	= model.pages
 		->collect(p | p.units)
 		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
@@ -68,16 +68,16 @@
 		->sortedBy(u | u.name)
 /]
 
-[query public instanceName(entityOrView : EntityOrView) : String
-	= entityOrView.name.toLowerFirst()
+[query public instanceName(entity : Entity) : String
+	= entity.name.toLowerFirst()
 /]
 
-[query public routeName(entityOrView : EntityOrView) : String
-	= entityOrView.name.toLowerFirst()
+[query public routeName(entity : Entity) : String
+	= entity.name.toLowerFirst()
 /]
 
-[query public selectName(entityOrView : EntityOrView) : String
-	= entityOrView.name.toLowerFirst()
+[query public selectName(entity : Entity) : String
+	= entity.name.toLowerFirst()
 /]
 
 
@@ -107,7 +107,7 @@
 /]
 
 [query public selectName(association : Association, service : Service) : String
-	= let entityOrView : EntityOrView
+	= let entity : Entity
 		= if service.serves.features->includes(association) then
 				if association.oclIsKindOf(EntityAssociation) then
 					association.oclAsType(EntityAssociation).targetType()
@@ -117,7 +117,7 @@
 			else
 				association.sourceType()
 			endif
-		in entityOrView.selectName()
+		in entity.selectName()
 /]
 
 

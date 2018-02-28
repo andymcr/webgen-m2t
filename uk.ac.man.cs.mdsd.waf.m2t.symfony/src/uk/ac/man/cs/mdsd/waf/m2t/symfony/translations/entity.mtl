@@ -22,8 +22,8 @@
 [for (enumerationType : EnumerationType | model.persistence.enumerationTypes())]
    [enumerationType.translations()/]
 [/for]
-[for (entityOrView : EntityOrView | model.persistence.entitiesAndViews)]
-   [entityOrView.translations()/]
+[for (entity : Entity | model.persistence.entitiesAndViews)]
+   [entity.translations()/]
 [/for]
   </body>
  </file>
@@ -40,7 +40,7 @@
 [/for]
 [/template]
 
-[template private translations(entity : EntityOrView) post(trim())]
+[template private translations(entity : Entity) post(trim())]
 <trans-unit id="label.[entity.id()/]">
  <source>label.[entity.id()/]</source>
  <target>[entity.displayLabel.validXML()/]</target>

@@ -159,7 +159,7 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 );
 [/template]
 
-[template private loadContainer(unit : CollectionUnit) post(trim())]
+[template public loadContainer(unit : CollectionUnit) post(trim())]
 [if (unit.findContainerSelection.oclIsUndefined())]
 $this->[unit.containerInstanceName()/] = $this->[unit.containerService.instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.collectionType())/]);
 [else]

@@ -189,7 +189,7 @@ TokenStorageInterface $securityTokenStorage[else][model.userService().className(
 [/template]
 
 [template private findMethod(service : Service) post(trim())]
-[let entity : EntityOrView = service.serves]
+[let entity : Entity = service.serves]
 public function find([service.serves.routeParameters()/])
 {
     $queryBuilder = $this->createQueryBuilder();
@@ -214,8 +214,8 @@ public function find([service.serves.routeParameters()/])
 [/let]
 [/template]
 
-[template private containerJoin(entity : EntityOrView) post(trim())]
-[let container : EntityOrView = entity.container()]
+[template private containerJoin(entity : Entity) post(trim())]
+[let container : Entity = entity.container()]
 ->join('[entity.selectName()/].[entity.containingAssociation().modelPropertyName()/]', '[container.selectName()/]')
 [if (container.isContained())]
 [container.containerJoin()/]
@@ -226,8 +226,8 @@ public function find([service.serves.routeParameters()/])
 [/for]
 [/template]
 
-[template private findWhere(entityOrView : EntityOrView, base : EntityOrView) post(trim())]
-[let keys : Sequence(Attribute) = entityOrView.uriPathKeys()]
+[template private findWhere(entity : Entity, base : Entity) post(trim())]
+[let keys : Sequence(Attribute) = entity.uriPathKeys()]
 [for (key : Attribute | keys->subSequence(1, keys->size() - 1))]
 $queryBuilder->expr()->andX([key.findWhere(base)/],
 [/for]
@@ -236,8 +236,8 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 [/let]
 [/template]
 
-[template private findWhere(key : Attribute, base : EntityOrView) post(trim())]
-$queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(base)/]')
+[template private findWhere(key : Attribute, base : Entity) post(trim())]
+$queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(base)/]')
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
@@ -266,7 +266,7 @@ public function findAll([service.limitFormals(10)/])
 /]
 
 [template private createMethod(service : Service) post(trim())]
-[let entity : EntityOrView = service.serves]
+[let entity : Entity = service.serves]
 public function create([for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields() and a.isSingleton())) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
 {
     $new = new [entity.modelName()/]();
@@ -519,15 +519,15 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 [/template]
 
 [template private field(field : Feature, alias : String) post(trim())]
-'[field.partOf.selectName()/].[field.columnName()/][if (not alias.oclIsUndefined())]
+'[field.partOf.oclAsType(Entity).selectName()/].[field.columnName()/][if (not alias.oclIsUndefined())]
  [alias/][/if]'
 [/template]
 
-[query private pathEntities(selection : Selection) : Set(EntityOrView)
+[query private pathEntities(selection : Selection) : Set(Entity)
 	= selection.selectPath->collect(p | p.targetType())->asSet()
 /]
 
-[query private containsEntities(selection : Selection) : Set(EntityOrView)
+[query private containsEntities(selection : Selection) : Set(Entity)
 	= selection.selectPath->collect(p | p.targetType())->asSet()
 /]
 
@@ -544,16 +544,16 @@ $queryBuilder->join('[element.sourceType().selectName()/].[element.modelProperty
 [/if]
 [for (join : Association | selection.joins)]
 	[if (selection.pathEntities()->excludes(join.targetType()))]
-$queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
+$queryBuilder->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
 	[/if]
 [/for]
 [/template]
 
-[query private entitiesX(selection : Selection) : Set(EntityOrView)
+[query private entitiesX(selection : Selection) : Set(Entity)
 	= selection.joins->collect(a | a.targetType())->asSet()
 /]
 
-[template private joinContainer(selection : Selection, childType : EntityOrView) post(trim())]
+[template private joinContainer(selection : Selection, childType : Entity) post(trim())]
 [let association : Association = childType.containingAssociation()]
 	[if (selection.pathEntities()->excludes(association.targetType()))]
 $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/]', '[association.targetType().selectName()/]');
@@ -566,15 +566,15 @@ $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/
 
 [template private condition(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty())]
-[let routingEntity : EntityOrView = selection.selectionType()]
+[let routingEntity : Entity = selection.selectionType()]
 	[if (routingEntity.uriPathKeys()->size() = 1)]
 	[let key : Attribute = routingEntity.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'));
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'));
 	[/let]
 	[else]
 $queryBuilder->where($queryBuilder->expr()->andX(
 		[for (key : Attribute | routingEntity.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> routingEntity.uriPathKeys()->size())],[/if]
+    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> routingEntity.uriPathKeys()->size())],[/if]
 		[/for]
 ));
 	[/if]
@@ -612,7 +612,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/template]
 
 [template private querySelectedParameters(selection : Selection) post(trim())]
-[let routingEntity : EntityOrView = selection.selectionType()]
+[let routingEntity : Entity = selection.selectionType()]
 	[for (key : Attribute | routingEntity.uriPathKeys())]
 $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routeParameterName(routingEntity)/]);
 	[/for]
@@ -635,7 +635,7 @@ return $query->getResult();
 [template private childSelectionMethods(service : Service, model : WafModel) post(trim())]
 [for (association : Association | service.serves.associations())]
 	[if (not association.isSingleton(service.serves))]
-	[let targetType : EntityOrView = association.targetType()]
+	[let targetType : Entity = association.targetType()]
 		[if (not targetType.oclIsUndefined())]
 		[let targetService : Service = targetType.services(model)->first()]
 			[for (selection : Selection | targetService.selections->select(s | s.fields->isEmpty()))]
@@ -696,7 +696,7 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 }
 [/template]
 
-[template private pseudoAssociationMethods(entity : EntityOrView, model : WafModel) post(trim())]
+[template private pseudoAssociationMethods(entity : Entity, model : WafModel) post(trim())]
 [for (association : Association | entity.associations())]
 	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
 	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
@@ -768,33 +768,33 @@ public function [association.findMethodName(selection)/]($[association.sourceTyp
 [/for]
 [/template]
 
-[template private pseudoBuilderCode(association : EntityAssociation, sourceType : EntityOrView, targetType : EntityOrView) post(trim())]
+[template private pseudoBuilderCode(association : EntityAssociation, sourceType : Entity, targetType : Entity) post(trim())]
 $queryBuilder = $this->doctrine->getRepository('[targetType.appName()/]:[targetType.modelName()/]')->createQueryBuilder('[targetType.selectName()/]');
 $queryBuilder->join('[sourceType.appName()/]:[sourceType.modelName()/]', '[sourceType.selectName()/]', Expr\Join::WITH,[if (association.keys()->size() = 1)]
 [let key : AssociationKey = association.keys->first()]
 
-$queryBuilder->expr()->eq('[key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]', '[key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/]')
+$queryBuilder->expr()->eq('[key.targetFeature.partOf.oclAsType(Entity).selectName()/].[key.targetFeature.columnName/]', '[key.sourceFeature.partOf.oclAsType(Entity).selectName()/].[key.sourceFeature.columnName/]')
 [/let]
 [else]
  $queryBuilder->expr()->andX(
 	[for (key : AssociationKey | association.keys)]
-    $queryBuilder->expr()->eq('[key.targetFeature.partOf.selectName()/].[key.targetFeature.columnName/]', '[key.sourceFeature.partOf.selectName()/].[key.sourceFeature.columnName/]')[if (i < association.keys->size())],[/if]
+    $queryBuilder->expr()->eq('[key.targetFeature.partOf.oclAsType(Entity).selectName()/].[key.targetFeature.columnName/]', '[key.sourceFeature.partOf.oclAsType(Entity).selectName()/].[key.sourceFeature.columnName/]')[if (i < association.keys->size())],[/if]
 	[/for]
 )[/if]);
 [if (sourceType.uriPathKeys()->size() = 1)]
 [let key : Attribute = sourceType.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]'));
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]'));
 [/let]
 [else]
 $queryBuilder->where($queryBuilder->expr()->andX(
 	[for (key : Attribute | sourceType.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
+    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
 	[/for]
 ));
 [/if]
 [/template]
 
-[template private pseudoParameterCode(sourceType : EntityOrView) post(trim())]
+[template private pseudoParameterCode(sourceType : Entity) post(trim())]
 [for (key : Attribute | sourceType.uriPathKeys())]
 $query->setParameter('[key.routeParameterName(sourceType)/]', [key.keyAccessor(sourceType, '$'.concat(sourceType.selectName()))/]);
 [/for]

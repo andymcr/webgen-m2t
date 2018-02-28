@@ -54,7 +54,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 
-[template public actionLink(action : InlineAction, valueType : EntityOrView, valueAccessor : String, 
+[template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
@@ -69,7 +69,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, valueType : EntityOrView, valueAccessor : String, 
+[template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
 [let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
@@ -81,14 +81,14 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, valueType : EntityOrView, valueAccessor : String, 
+[template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
 [let unit : DynamicUnit = selectAction.immediateUnit()]
 [let page : Page = unit.pageDisplayedOn()]
 [let targetUnit : ContentUnit = selectAction.target.oclAsType(ContentUnit)]
-[let valueType2 : EntityOrView 
+[let valueType2 : Entity 
 	= if selectAction.valuePath.oclIsUndefined() then
 			valueType
 		else
@@ -121,7 +121,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[query private pathType(path : FeaturePath) : EntityOrView
+[query private pathType(path : FeaturePath) : Entity
 	= if path.oclIsTypeOf(FeaturePathAssociation) then
 			path.oclAsType(FeaturePathAssociation).pathType()
 		else
@@ -129,7 +129,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		endif
 /]
 
-[query private pathType(path : FeaturePathAssociation) : EntityOrView
+[query private pathType(path : FeaturePathAssociation) : Entity
 	= if path.childFeature.oclIsUndefined() then
 			path.association.targetType()
 		else
@@ -137,7 +137,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		endif
 /]
 
-[query private pathType(path : ChildPath) : EntityOrView
+[query private pathType(path : ChildPath) : Entity
 	= if path.oclIsTypeOf(ChildPathAssociation) then
 			path.oclAsType(ChildPathAssociation).pathType()
 		else
@@ -145,7 +145,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		endif
 /]
 
-[query private pathType(path : ChildPathAssociation) : EntityOrView
+[query private pathType(path : ChildPathAssociation) : Entity
 	= if path.childFeature.oclIsUndefined() then
 				path.association.targetType()
 			else
@@ -194,7 +194,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 
-[template private routeActualParameters(action : InlineAction, unit : CollectionUnit, valueType : EntityOrView, 
+[template private routeActualParameters(action : InlineAction, unit : CollectionUnit, valueType : Entity, 
 	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 [if (unit.findElementSelection.oclIsUndefined())]
 [unit.contentType().routeActualParameters(valueType, valueAccessor, valueSelection, objectAccess)/]
@@ -204,33 +204,33 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 [template public routeActualParameters(unit : CollectionUnit, 
-	valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+	valueType : Entity, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 [for (key : Attribute | unit.uriPathKeys())]
 [key.routeActualParameter(unit.collectionType(), valueType, valueAccessor, valueSelection, objectAccess)/],
 [/for]
 [/template]
 
-[template public routeActualParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection, 
-	valueType : EntityOrView, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+[template public routeActualParameters(unit : CollectionUnit, routingType : Entity, selection : Selection, 
+	valueType : Entity, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(routingType, selection))]
 [key.routeActualParameter(routingType, valueType, valueAccessor, valueSelection, objectAccess)/],
 [/for]
 [/template]
 
-[template private routeActualParameters(routingType : EntityOrView, valueType : EntityOrView, 
+[template private routeActualParameters(routingType : Entity, valueType : Entity, 
 	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 [for (key : Attribute | routingType.uriPathKeys())]
 [key.routeActualParameter(routingType, valueType, valueAccessor, valueSelection, objectAccess)/],
 [/for]
 [/template]
 
-[template private routeActualParameter(key : Attribute, routingType : EntityOrView, valueType : EntityOrView, 
+[template private routeActualParameter(key : Attribute, routingType : Entity, valueType : Entity, 
 	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 '[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, valueSelection, objectAccess))/][if (key.isDate())]
 .format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if]
 [/template]
 
-[query private keyAccessor(key : Attribute, valueType : EntityOrView, parentAccessor : String, 
+[query private keyAccessor(key : Attribute, valueType : Entity, parentAccessor : String, 
 		valueSelection : Selection, objectAccess : Boolean) : String
 	= if not objectAccess then
 			if key.alias(valueSelection).oclIsUndefined() then

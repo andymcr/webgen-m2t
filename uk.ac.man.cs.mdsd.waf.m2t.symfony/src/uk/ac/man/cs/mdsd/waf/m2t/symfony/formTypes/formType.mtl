@@ -17,7 +17,7 @@
 
 
 [template public formTypes(model : WafModel)]
-[for (entity : EntityOrView | model.formEntities())]
+[for (entity : Entity | model.formEntities())]
 	[for (form : DynamicUnit | entity.formsUsing(model))]
 	[let sameModel : Sequence(DynamicUnit) = form.sameModel(model)]
 		[if (form = sameModel->first())]
@@ -200,7 +200,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 	? (feature.oclIsKindOf(Attribute) and feature.isSingleton()) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
-    'label' => '[attribute.partOf.id()/].labels.[attribute.id()/]',
+    'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
     'translation_domain' => 'entity',
 [if (not attribute.isRequired())]
     'required' => false,
@@ -244,7 +244,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 	? (feature.oclIsKindOf(Attribute) and not feature.isSingleton()) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', CollectionType::class, array(
-    'label' => '[attribute.partOf.id()/].labels.[attribute.id()/]',
+    'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
     'translation_domain' => 'entity',
     'entry_type' => [attribute.interfaceType()/],
 [if (allowUiAdd)]

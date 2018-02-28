@@ -46,7 +46,7 @@
 	= unit.uriPath(unit.collectionType(), unit.oclAsType(DynamicUnit).uriElement)
 /]
 
-[query public uriPath(unit : CollectionUnit, routingType : EntityOrView, suffix : String) : String
+[query public uriPath(unit : CollectionUnit, routingType : Entity, suffix : String) : String
 	= if routingType.oclIsUndefined() then
 			unit.oclAsType(DynamicUnit).uriPath(suffix)
 		else if unit.hasSelectCondition() then
@@ -73,7 +73,7 @@
 		.combinePaths(suffix)
 /]
 
-[query public uriPath(unit : ContentUnit, routingType : EntityOrView, suffix : String) : String
+[query public uriPath(unit : ContentUnit, routingType : Entity, suffix : String) : String
 	= if routingType.oclIsUndefined() then
 			unit.uriPath(suffix)
 		else
@@ -89,7 +89,7 @@
 		endif
 /]
 
-[query public uriPath(unit : ContentUnit, routingType : EntityOrView, parentType : EntityOrView, suffix : String) : String
+[query public uriPath(unit : ContentUnit, routingType : Entity, parentType : Entity, suffix : String) : String
 	= if parentType.oclIsUndefined() then
 			unit.uriPath(suffix)
 		else
@@ -112,8 +112,8 @@
 			.combinePaths(suffix)
 /]
 
-[query private uriPath(elementType : EntityOrView, routingType : EntityOrView) : String
-	= let keyType : EntityOrView = elementType.keyEntity()
+[query private uriPath(elementType : Entity, routingType : Entity) : String
+	= let keyType : Entity = elementType.keyEntity()
 		in if not keyType.isContained() then
 				keyType.keyPath(routingType)
 			else
@@ -123,8 +123,8 @@
 			endif
 /]
 
-[query private uriPath(elementType : EntityOrView, routingType : EntityOrView, unit : CollectionUnit, selection : Selection) : String
-	= let keyType : EntityOrView = elementType.keyEntity()
+[query private uriPath(elementType : Entity, routingType : Entity, unit : CollectionUnit, selection : Selection) : String
+	= let keyType : Entity = elementType.keyEntity()
 		in if not keyType.isContained() then
 				keyType.keyPath(routingType, unit, selection)
 			else
@@ -134,7 +134,7 @@
 			endif
 /]
 
-[query private keyPath(elementType : EntityOrView, routingType : EntityOrView) : String
+[query private keyPath(elementType : Entity, routingType : Entity) : String
 	= let activeKeys : Sequence(Attribute) = elementType.attributeKeys()
 		in if activeKeys->isEmpty() then
 				''
@@ -143,7 +143,7 @@
 			endif
 /]
 
-[query private keyPath(elementType : EntityOrView, routingType : EntityOrView, unit : CollectionUnit, selection : Selection) : String
+[query private keyPath(elementType : Entity, routingType : Entity, unit : CollectionUnit, selection : Selection) : String
 	= let activeKeys : Sequence(Attribute) = elementType.uriEntityKeys(unit, selection)
 		in if activeKeys->isEmpty() then
 				''
@@ -179,7 +179,7 @@
 				endif
 /]
 
-[query private keyPath(entity : EntityOrView, base : Resource) : String
+[query private keyPath(entity : Entity, base : Resource) : String
 	= if entity.attributeKeys()->isEmpty() then
 			''
 		else
@@ -200,7 +200,7 @@
 /]
 
 [query public uriPathValidatedKeys(unit : ContentUnit, parentPath : Boolean) : Sequence(Attribute)
-	= let selectType : EntityOrView
+	= let selectType : Entity
 			= if not parentPath then
 					unit.routingType()
 				else
@@ -235,7 +235,7 @@ $[key.routeParameterName(page)/][/for]
 [/if]
 [/template]
 
-[template public routeParameters(unit : CollectionUnit, routingType : EntityOrView, selection : Selection) post(trim())]
+[template public routeParameters(unit : CollectionUnit, routingType : Entity, selection : Selection) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(routingType, selection)) separator (', ')]
 $[key.routeParameterName(routingType)/][/for]
 [/template]
@@ -248,12 +248,12 @@ $[key.routeParameterName(routingType)/][/for]
 [/if]
 [/template]
 
-[template public routeParameters(unit : ContentUnit, routingType : EntityOrView) post(trim())]
+[template public routeParameters(unit : ContentUnit, routingType : Entity) post(trim())]
 [for (key : Attribute | unit.uriPathKeys(routingType)) separator (', ')]
 $[key.routeParameterName(routingType)/][/for]
 [/template]
 
-[template public routeParameters(routingType : EntityOrView) post(trim())]
+[template public routeParameters(routingType : Entity) post(trim())]
 [for (key : Attribute | routingType.uriPathKeys()) separator (', ')]
 $[key.routeParameterName(routingType)/][/for]
 [/template]
@@ -262,18 +262,18 @@ $[key.routeParameterName(routingType)/][/for]
 	= if page.uriCommonPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
-			attribute.partOf.modelName().toLowerFirst()
+			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif
 /]
 
-[query public routeParameterName(attribute : Attribute, routingType : EntityOrView) : String
+[query public routeParameterName(attribute : Attribute, routingType : Entity) : String
 	= if routingType.oclIsUndefined() then
 			attribute.name
 		else if routingType.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
-			attribute.partOf.modelName().toLowerFirst()
+			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif endif
 /]
@@ -289,7 +289,7 @@ $[key.routeParameterName(resource)/][/for]
 		else if resource.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
-			attribute.partOf.modelName().toLowerFirst()
+			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif endif
 /]
@@ -309,7 +309,7 @@ $[key.routeParameterName(resource)/][/for]
 		endif endif endif endif
 /]
 
-[query private appendContainingAssociation(path : String, keyEntity : EntityOrView) : String
+[query private appendContainingAssociation(path : String, keyEntity : Entity) : String
 	= if keyEntity.containingAssociation().oclIsUndefined() then
 			path
 		else

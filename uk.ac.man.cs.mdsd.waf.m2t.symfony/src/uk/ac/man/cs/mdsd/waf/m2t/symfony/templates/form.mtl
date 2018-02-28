@@ -93,7 +93,7 @@
 [/template]
 
 [template private primaryId(unit : DynamicUnit) post(trim())]
-[let contentType : EntityOrView = unit.contentType()]
+[let contentType : Entity = unit.contentType()]
 [if (contentType.primaryKeys()->isEmpty())]
 [contentType.autoKeyName/]
 [else]

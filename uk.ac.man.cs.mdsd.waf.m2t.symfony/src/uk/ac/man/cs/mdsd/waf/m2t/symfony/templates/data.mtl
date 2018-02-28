@@ -135,7 +135,7 @@ NULL
 
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
 [if (feature.hasInlineActions())]
-[let parentEntity : EntityOrView
+[let parentEntity : Entity
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else

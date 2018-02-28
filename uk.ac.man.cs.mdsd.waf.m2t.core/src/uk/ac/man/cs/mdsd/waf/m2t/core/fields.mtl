@@ -27,9 +27,9 @@
 		endif endif
 /]
 
-[query public entity(field : UnitField) : EntityOrView
+[query public entity(field : UnitField) : Entity
 	= if field.oclIsKindOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.partOf
+			field.oclAsType(UnitAttribute).attribute.partOf.oclAsType(Entity)
 		else if field.oclIsKindOf(UnitAssociation) then
 			field.oclAsType(UnitAssociation).association.sourceType()
 		else 

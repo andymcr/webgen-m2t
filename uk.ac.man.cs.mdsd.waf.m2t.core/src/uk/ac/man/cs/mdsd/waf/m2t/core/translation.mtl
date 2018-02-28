@@ -33,7 +33,7 @@
 
 [query private entityId(field : UnitField) : String
 	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.partOf.id()
+			field.oclAsType(UnitAttribute).attribute.partOf.oclAsType(Entity).id()
 		else if field.oclIsTypeOf(UnitAssociation) then
 			field.oclAsType(UnitAssociation).association.sourceType().id()
 		else if field.oclIsKindOf(InterfaceField) then

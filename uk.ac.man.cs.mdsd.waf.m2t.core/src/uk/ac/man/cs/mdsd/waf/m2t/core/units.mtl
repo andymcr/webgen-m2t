@@ -76,12 +76,12 @@
 		->select(f | not f.isSingleton())
 /]
 
-[query public collectionType(unit : CollectionUnit) : EntityOrView
+[query public collectionType(unit : CollectionUnit) : Entity
 	=  unit.collectionType(unit.selection)
 /]
 
-[query public collectionType(unit : CollectionUnit, selection : Selection) : EntityOrView
-	=  let contentContainerType : EntityOrView
+[query public collectionType(unit : CollectionUnit, selection : Selection) : Entity
+	=  let contentContainerType : Entity
 		= if unit.contentType->notEmpty() then
 				unit.contentType->first().container()
 			else
@@ -119,7 +119,7 @@
 		in model.services(unit.contentType())->first()
 /]
 
-[query public contentType(unit : ContentUnit) : EntityOrView
+[query public contentType(unit : ContentUnit) : Entity
 	= if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).contentType
 		else if unit.oclIsKindOf(CollectionUnit) then
@@ -129,7 +129,7 @@
 		endif endif
 /]
 
-[query public contentType(unit : CollectionUnit) : EntityOrView
+[query public contentType(unit : CollectionUnit) : Entity
 	= unit.contentType->first()
 /]
 
