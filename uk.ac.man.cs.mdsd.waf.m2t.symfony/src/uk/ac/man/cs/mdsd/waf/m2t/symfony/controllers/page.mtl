@@ -181,17 +181,20 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
 	[if (unit.hasUnitSupportActions() and not unit.oclIsKindOf(EditUnit))]
 /**
  [unit.routeAnnotationSupport('support')/]
-[if (unit.hasAuthorisation())]
+		[if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
-[/if]
+		[/if]
  */
-public function [unit.supportActionName()/]([unit.actionMethodParameters(page)/])
+public function [unit.supportActionName()/](Request $request[if (unit.hasRouteParameters())]
+, [unit.routeParameters()/][/if])
 {
-	[if (unit.oclIsTypeOf(DetailsUnit))]
+		[if (unit.oclIsTypeOf(DetailsUnit))]
     $[unit.contentType().instanceName()/] = [unit.loadInstance()/];
-	[elseif (unit.oclIsKindOf(CollectionUnit))]
+		[elseif (unit.oclIsKindOf(CollectionUnit))]
+			[if (not unit.oclAsType(CollectionUnit).containerType.oclIsUndefined())]
     [unit.oclAsType(CollectionUnit).loadContainer()/]
-	[/if]
+			[/if]
+		[/if]
     [unit.actionHandlers()/]
 }
 
