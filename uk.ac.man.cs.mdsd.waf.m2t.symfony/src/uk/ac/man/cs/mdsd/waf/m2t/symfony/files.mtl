@@ -22,10 +22,6 @@
 	= '.yaml'
 /]
 
-[query public ymlExtension(eObject : EObject) : String
-	= '.yml'
-/]
-
 
 [query public apiControllersDirectory(eObject : EObject) : String
 	= eObject.controllersDirectory().concat('/').concat('Api')

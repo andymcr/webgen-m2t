@@ -7,6 +7,19 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
 
+[query public yamlExtension(eObject : EObject) : String
+	= '.yaml'
+/]
+
+
+[query public configDirectory(eObject : EObject) : String
+	= 'config'
+/]
+
+[query public configPackagesDirectory(eObject : EObject) : String
+	= eObject.configDirectory().concat('/').concat('packages')
+/]
+
 [query public constraintsDirectory(eObject : EObject) : String
 	= eObject.validatorDirectory().concat('/').concat('Constraints')
 /]

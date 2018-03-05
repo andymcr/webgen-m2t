@@ -1,0 +1,20 @@
+[comment encoding = UTF-8 /]
+[module stofDoctrineExtensions(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+
+
+[template public configStofDoctrineExtensions(model : WafModel)]
+[let persistence : OrmModel = model.persistence]
+[file (persistence.configPackagesDirectory().concat('/stof_doctrine_extensions').concat(persistence.yamlExtension()), false)]
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+[if (persistence.timestampCreation or persistence.timestampUpdates)]
+            timestampable: true
+[/if]
+[/file]
+[/let]
+[/template]

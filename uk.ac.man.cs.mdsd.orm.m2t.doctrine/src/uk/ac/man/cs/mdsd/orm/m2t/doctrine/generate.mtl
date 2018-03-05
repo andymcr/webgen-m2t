@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::stofDoctrineExtensions/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUnique/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUniqueValidator/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::entity/]
@@ -12,6 +13,8 @@
 
 
 [template public doctrine(model : WafModel, supportTranslation : Boolean)]
+[model.configStofDoctrineExtensions()/]
+
 [model.persistence.enumerationTypes().model(supportTranslation)/]
 [model.persistence.entitiesAndViews->select(eov | eov.oclIsKindOf(Entity)).oclAsType(Entity).model()/]
 [model.persistence.entitiesAndViews->select(eov | eov.oclIsKindOf(Entity)).oclAsType(Entity).normalizer()/]
