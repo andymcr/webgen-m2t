@@ -166,13 +166,13 @@
 [/template]
 
 [template private placeholder(field : UnitField, unit : DynamicUnit) post(trim())]
-[if (field.hasCustomisedPlaceholder())]
+[if (field.hasUnitTranslation())]
 '[unit.containedId()/].placeholders.[field.placeholderId()/]'[else]
 '[unit.contentType().id()/].labels.[field.placeholderId()/]'[/if]
 [/template]
 
 [template private title(field : UnitField, unit : DynamicUnit) post(trim())]
-[if (field.hasCustomisedTitle())]
+[if (field.hasUnitTranslation())]
 '[unit.containedId()/].titles.[field.titleId()/]'[else]
 '[unit.contentType().id()/].labels.[field.titleId()/]'[/if]
 [/template]

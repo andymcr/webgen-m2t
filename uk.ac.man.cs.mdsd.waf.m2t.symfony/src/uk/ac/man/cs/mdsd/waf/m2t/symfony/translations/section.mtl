@@ -63,19 +63,17 @@
 [template private fieldTranslations(unit : DynamicUnit, page : Page)
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
 [for (field : UnitField | unit.displayFields)]
-	[if (field.hasCustomisedLabel())]
+	[if (field.hasUnitTranslation())]
 <trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
  <source>[unit.containedId()/].labels.[field.labelId()/]</source>
  <target>[field.displayLabel().validXML()/]</target>
 </trans-unit>
-	[/if]
-	[if (field.hasCustomisedPlaceholder())]
+		[if (not field.oclIsTypeOf(UnitAssociation))]
 <trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
  <source>[unit.containedId()/].placeholders.[field.placeholderId()/]</source>
  <target>[field.placeholder().validXML()/]</target>
 </trans-unit>
-	[/if]
-	[if (field.hasCustomisedTitle())]
+		[/if]
 <trans-unit id="[unit.containedId()/].titles.[field.titleId()/]">
  <source>[unit.containedId()/].titles.[field.titleId()/]</source>
  <target>[field.title.validXML()/]</target>
