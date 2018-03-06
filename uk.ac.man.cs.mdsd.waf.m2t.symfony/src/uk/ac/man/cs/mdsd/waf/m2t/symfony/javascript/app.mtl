@@ -1,0 +1,26 @@
+[comment encoding = UTF-8 /]
+[module app(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::embedded/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::imageIndex/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::navigation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::select/]
+
+
+[template public javascript(model : WafModel)]
+[file(model.javascriptAssetsDirectory().concat('/').concat('app').concat(model.javascriptExtension()), false)]
+[model.javascriptNavigation()/]
+
+[model.javascriptSelect()/]
+
+[if (model.hasImageIndexUnits())]
+[model.javascriptImageIndex()/]
+
+[/if]
+
+[model.javascriptEmbedded()/]
+[/file]
+[/template]

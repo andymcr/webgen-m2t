@@ -21,6 +21,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::enumerationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::formType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::unitType/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::app/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::changePasswordTemplate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::fosTemplate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::legacyEncoder/]
@@ -105,6 +106,8 @@
 [/if]
 
 [model.css(model.cssDirectory())/]
+
+[model.javascript()/]
 
 [model.extensions()/]
 [/template]

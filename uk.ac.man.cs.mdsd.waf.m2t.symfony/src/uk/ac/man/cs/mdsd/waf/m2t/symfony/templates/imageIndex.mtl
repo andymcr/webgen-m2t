@@ -40,9 +40,6 @@
 [if (imageUnit.hasPagination())]
  [imageUnit.pagination()/]
 [/if]
-[if (imageUnit.enableImageEnlargement)]
-[imageUnit.script()/]
-[/if]
 </section>
 [/file]
 [/let]
@@ -127,11 +124,3 @@
 </div>
 [/template]
 
-[template private script(unit : ImageIndexUnit) post(trim())]
-<script>
- var images = document.querySelectorAll('.materialboxed');
-  for (var i = 0; i < images.length; ++i) {
-      var instance = M.Materialbox.init(images['['/]i[']'/]);
-  }
-</script>
-[/template]

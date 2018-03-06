@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module index(
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')][import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
@@ -35,7 +36,10 @@
  [indexUnit.pagination()/]
 [/if]
 [if (indexUnit.hasUnitSupportActions())]
+	[if (indexUnit.containerType.oclIsUndefined())]
+	[else]
  [indexUnit.unitSupportLinks(indexUnit.containerInstanceName())/]
+	[/if]
 [/if]
 </section>
 [/file]

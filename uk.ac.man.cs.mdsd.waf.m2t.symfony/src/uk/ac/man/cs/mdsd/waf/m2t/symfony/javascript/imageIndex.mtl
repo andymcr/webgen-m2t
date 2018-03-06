@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module imageIndex(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+
+
+[template public javascriptImageIndex(model : WafModel) post(trim())]
+var images = document.querySelectorAll('.materialboxed');
+for (var i = 0; i < images.length; ++i) {
+    var instance = M.Materialbox.init(images['['/]i[']'/]);
+}
+[/template]

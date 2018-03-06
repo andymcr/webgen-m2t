@@ -27,6 +27,10 @@
 	= eObject.controllersDirectory().concat('/').concat('Api')
 /]
 
+[query public assetsDirectory(eObject : EObject) : String
+	= 'assets'
+/]
+
 [query public configDirectory(eObject : EObject) : String
 	= 'config'
 /]
@@ -63,8 +67,12 @@
 	= eObject.templatesDirectory().concat('/').concat('form')
 /]
 
+[query public javascriptAssetsDirectory(eObject : EObject) : String
+	= eObject.assetsDirectory().concat('/').concat('js')
+/]
+
 [query public javascriptDirectory(eObject : EObject) : String
-	= 'js'
+	= 'build/js'
 /]
 
 [query public navigationDirectory(eObject : EObject) : String
@@ -233,18 +241,6 @@
 	= association.formTypeDirectory().concat('/')
 		.concat(association.typeClassName())
 		.concat(association.executableExtension())
-/]
-
-[query public javascriptFormFilename(model : WafModel) : String
-	= model.javascriptDirectory().concat('/')
-		.concat('input')
-		.concat(model.javascriptExtension())
-/]
-
-[query public javascriptImageFilename(model : WafModel) : String
-	= model.javascriptDirectory().concat('/')
-		.concat('image')
-		.concat(model.javascriptExtension())
 /]
 
 [query public modelFilename(unit : DynamicUnit) : String

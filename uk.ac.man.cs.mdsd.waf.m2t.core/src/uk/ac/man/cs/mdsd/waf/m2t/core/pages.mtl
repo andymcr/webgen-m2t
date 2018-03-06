@@ -12,8 +12,8 @@
 	= page.units->collect(u | u.childGalleryUnits())
 /]
 
-[query private childImageUnits(page : Page) : Sequence(ImageUnit)
-	= page.units->collect(u | u.childImageUnits())
+[query private childImageIndexUnits(page : Page) : Sequence(ImageIndexUnit)
+	= page.units->collect(u | u.childImageIndexUnits())
 /]
 
 [query private childIndexUnits(page : Page) : Sequence(IndexUnit)
@@ -65,8 +65,8 @@
 	= page.childGalleryUnits()->notEmpty()
 /]
 
-[query private hasChildImageUnits(page : Page) : Boolean
-	= page.childImageUnits()->notEmpty()
+[query private hasChildImageIndexUnits(page : Page) : Boolean
+	= page.childImageIndexUnits()->notEmpty()
 /]
 
 [query private hasChildIndexUnits(page : Page) : Boolean
@@ -93,8 +93,12 @@
 	= page.galleryUnits()->notEmpty() or page.hasChildGalleryUnits()
 /]
 
+[query public hasImageIndexUnits(page : Page) : Boolean
+	= page.imageIndexUnits()->notEmpty() or page.hasChildImageIndexUnits()
+/]
+
 [query public hasImageUnits(page : Page) : Boolean
-	= page.imageUnits()->notEmpty() or page.hasChildImageUnits()
+	= page.imageUnits()->notEmpty()
 /]
 
 [query public hasIndexUnits(page : Page) : Boolean
@@ -109,12 +113,12 @@
 	= page.collectionUnits()->select(u | u.hasPagination())->notEmpty()
 /]
 
-[comment query public hasParameterisedUnits(page : Page) : Boolean
-	= page.parameterisedUnits()->notEmpty()
-/]
-
 [query public hasSliderUnits(page : Page) : Boolean
 	= page.sliderUnits()->notEmpty() or page.hasChildSliderUnits()
+/]
+
+[query public imageIndexUnits(page : Page) : Sequence(ImageIndexUnit)
+	= page.collectionUnits()->select(u | u.oclIsTypeOf(ImageIndexUnit)).oclAsType(ImageIndexUnit)
 /]
 
 [query public imageUnits(page : Page) : Sequence(ImageUnit)

@@ -32,6 +32,10 @@
 	= model.galleryUnits()->notEmpty()
 /]
 
+[query public hasImageIndexUnits(model : WafModel) : Boolean
+	= model.imageIndexUnits()->notEmpty()
+/]
+
 [query public hasImageUnits(model : WafModel) : Boolean
 	= model.imageUnits()->notEmpty()
 /]
@@ -42,6 +46,10 @@
 
 [query public hasSliderUnits(model : WafModel) : Boolean
 	= model.sliderUnits()->notEmpty()
+/]
+
+[query public imageIndexUnits(model : WafModel) : Sequence(ImageIndexUnit)
+	= model.pages->collect(p | p.imageIndexUnits())
 /]
 
 [query public imageUnits(model : WafModel) : Sequence(ImageUnit)

@@ -40,9 +40,9 @@
 		->select(u | u.oclIsKindOf(GalleryUnit)).oclAsType(GalleryUnit)
 /]
 
-[query public childImageUnits(unit : ContentUnit) : Sequence(ImageUnit)
+[query public childImageIndexUnits(unit : ContentUnit) : Sequence(ImageIndexUnit)
 	= unit.childUnits()
-		->select(u | u.oclIsKindOf(ImageUnit)).oclAsType(ImageUnit)
+		->select(u | u.oclIsTypeOf(ImageIndexUnit)).oclAsType(ImageIndexUnit)
 /]
 
 [query public childIndexUnits(unit : ContentUnit) : Sequence(IndexUnit)

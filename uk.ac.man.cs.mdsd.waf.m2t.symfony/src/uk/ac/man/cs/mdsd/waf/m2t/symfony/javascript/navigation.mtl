@@ -1,0 +1,31 @@
+[comment encoding = UTF-8 /]
+[module navigation(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+
+
+[template public javascriptNavigation(model : WafModel) post(trim())]
+[let submenus : Sequence(SubmenuEntry)
+	= model.menus->first().entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry)]
+var sidenav = document.querySelector('.sidenav');
+var instance = M.Sidenav.init(sidenav);
+[if (model.isAuthenticated() and submenus->isEmpty())]
+var trigger = document.querySelector('.dropdown-trigger');
+var instance = M.Dropdown.init(trigger);
+[else]
+var triggers = document.querySelectorAll('.dropdown-trigger');
+for (var i = 0; i < triggers.length; ++i) {
+    var instance = M.Dropdown.init(triggers['['/]i[']'/]);
+}
+[/if]
+[if (submenus->size() = 1)]
+var collapsible = document.querySelector('.collapsible');
+var instance = M.Collapsible.init(collapsible, {hover: true});
+[elseif (submenus->notEmpty())]
+var collapsibles = document.querySelectorAll('.collapsible');
+for (var i = 0; i < collapsibles.length; ++i) {
+    var instance = M.Collapsible.init(collapsibles['['/]i[']'/], {hover: true});
+}
+[/if]
+[/let]
+[/template]

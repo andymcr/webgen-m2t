@@ -24,7 +24,6 @@
 [editUnit.formOpen(accessor)/]
  [editUnit.formFields(accessor)/]
 [editUnit.formControlAndClose(accessor)/]
-[editUnit.script()/]
 [/let]
 [/template]
 
@@ -152,13 +151,13 @@
  <div class="[association.name.asId()/] framed"[if (association.collectionUiAllowAdd)]
  data-prototype="[for (feature : Feature | childFields)]
 {{ form_row([accessor/].vars.prototype.[feature.modelPropertyName()/])|e('html_attr') }}[/for]"[/if]>
-{% for entry in [accessor/] %}
-<div[if (childFields->size() > 1)] class="framed"[/if]>
+  {%- for entry in [accessor/] -%}
+  <div[if (childFields->size() > 1)] class="framed"[/if]>
 [for (feature : Feature | childFields)]
-{{ form_row(entry.[feature.modelPropertyName()/], { 'attr': {'class': '[feature.name.asId()/]'} } ) }}
+   {{ form_row(entry.[feature.modelPropertyName()/], { 'attr': {'class': '[feature.name.asId()/]'} } ) }}
 [/for]
-</div>
-{% endfor %}
+  </div>
+  {%- endfor -%}
  </div>
 </div>
 [/let]
@@ -176,15 +175,6 @@
 [if (field.hasCustomisedTitle())]
 '[unit.containedId()/].titles.[field.titleId()/]'[else]
 '[unit.contentType().id()/].labels.[field.titleId()/]'[/if]
-[/template]
-
-[template private script(unit : EditUnit) post(trim())]
-<script>
-var selects = document.querySelectorAll('select');
-for (var i = 0; i < selects.length; ++i) {
-    var instance = M.FormSelect.init(selects['['/]i[']'/]);
-}
-</script>
 [/template]
 
 

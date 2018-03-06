@@ -1,0 +1,124 @@
+[comment encoding = UTF-8 /]
+[module embedded(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::javascript/]
+
+
+[template public javascriptEmbedded(model : WafModel) post(trim())]
+[model.embeddedAttributes()/]
+
+[model.embeddedContainers()/]
+[/template]
+
+[template private embeddedAttributes(model : WafModel) post(trim())]
+[for (field : UnitField | model.formFields()->select(f | f.oclIsKindOf(UnitAttribute) and not f.isSingleton()))]
+[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[if (attribute.collectionUiAllowAdd or attribute.collectionUiAllowRemove)]
+[attribute.addLinks(attribute.attribute.oclAsType(EntityAttribute).singletonName)/]
+
+	[if (attribute.collectionUiAllowAdd)]
+[attribute.addForm(attribute.attribute.oclAsType(EntityAttribute).singletonName)/]
+
+	[/if]
+	[if (attribute.collectionUiAllowRemove)]
+[attribute.removeLink(attribute.attribute.oclAsType(EntityAttribute).singletonName)/]
+
+	[/if]
+[/if]
+[/let]
+[/for]
+[/template]
+
+[template private embeddedContainers(model : WafModel) post(trim())]
+[for (contains : UnitField | model.formFields()->select(f | f.isContains()))]
+[let association : UnitAssociation = contains.oclAsType(UnitAssociation)]
+[if (association.collectionUiAllowAdd or association.collectionUiAllowRemove)]
+[association.addLinks(association.association.targetType().name)/]
+
+	[if (association.collectionUiAllowAdd)]
+[association.addLink(association.association.targetType().name)/]
+
+[association.addForm(association.association.targetType().name)/]
+
+	[/if]
+	[if (association.collectionUiAllowRemove)]
+[association.removeLink(association.association.targetType().name)/]
+
+	[/if]
+[/if]
+[/let]
+[/for]
+[/template]
+
+[template private addLinks(feature : UnitFeature, type : String) post(trim())]
+[if (feature.collectionUiAllowRemove)]
+var [feature.feature().name/] = document.querySelectorAll('div.[feature.feature().name.asId()/] > div');
+for (var i = 0; i < [feature.feature().name/].length; ++i) {
+    [type.toLowerFirst()/]RemoveLink([feature.feature().name/]['['/]i[']'/]);
+}
+[/if]
+[if (feature.collectionUiAllowAdd)]
+var [feature.feature().name/]Container = document.querySelector('div.[feature.feature().name.asId()/]');
+if ([feature.feature().name/]Container) {
+    [feature.feature().name/]Container.dataset.index = [feature.feature().name/].length;
+    [type.toLowerFirst()/]AddLink([feature.feature().name/]Container);
+}
+[/if]
+[/template]
+
+[template private addLink(feature : UnitFeature, type : String)]
+function [type.toLowerFirst()/]AddLink(container) {
+    var addDiv = document.createElement('div');
+    var button = document.createElement('input');
+    addDiv.append(button);
+    button.type = 'button';
+    button.name = 'add[type.toUpperFirst()/]';
+    button.value = 'Add [type/]'
+    button.onclick = function(e) {
+        e.preventDefault();
+        [type.toLowerFirst()/]AddForm(container, addDiv);
+    };
+    [feature.feature().name/]Container.append(addDiv);
+}
+[/template]
+
+[template private addForm(feature : UnitFeature, type : String)]
+function [type.toLowerFirst()/]AddForm(container, addDiv) {
+    var template = document.createElement('template');
+    template.innerHTML = container.dataset.prototype.replace(/__name__/g, container.dataset.index);
+    container.dataset.index = Number(container.dataset.index) + 1;
+    var newDiv = document.createElement('div');
+    newDiv.appendChild(template.content);
+    addDiv.before(newDiv);
+}
+[/template]
+
+[template private removeLink(feature : UnitFeature, type : String)]
+function [type.toLowerFirst()/]RemoveLink([feature.instanceName()/]) {
+    var button = document.createElement('input');
+    [feature.instanceName()/].append(button);
+    button.type = 'button';
+    button.name = 'remove[type.toUpperFirst()/]';
+    button.value = 'Delete [type/]'
+    button.onclick = function(e) {
+        e.preventDefault();
+        [feature.instanceName()/].remove();
+    };
+}
+[/template]
+
+[query private id(field : UnitField) : String
+	= let unit : DynamicUnit = field.displayedOn
+		in let typeClassName : String
+			= unit.typeClassName(unit.pageDisplayedOn().partOf)
+			in typeClassName.substring(1, typeClassName.size() - 4).asId().concat('_').concat(field.modelPropertyName())
+/]

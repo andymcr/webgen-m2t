@@ -65,6 +65,7 @@
 {% block content %}
 {% endblock %}
  </div>
+ <script src="{{ asset('[model.javascriptDirectory()/]/app.js') }}"></script>
 </main>
 <footer class="page-footer">
  <div class="container">
