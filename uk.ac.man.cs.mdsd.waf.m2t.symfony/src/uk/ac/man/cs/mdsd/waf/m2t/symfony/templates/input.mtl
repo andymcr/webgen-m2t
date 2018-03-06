@@ -11,6 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::form/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 
 
 [template public unitView(unit : ContentUnit)
@@ -20,9 +21,9 @@
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] | length > 0 %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
 [if (dynamicUnit.oclIsKindOf(EditUnit))]
- <h2 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[dynamicUnit.oclAsType(EditUnit).unitTitle(dynamicUnit.instanceName())/]</h2>
+ <h4 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[dynamicUnit.oclAsType(EditUnit).unitTitle(dynamicUnit.instanceName())/]</h4>
 [else]
- <h2 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}]</h2>
+ <h4 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}]</h4>
 [/if]
 {% if [dynamicUnit.errorName()/] | length > 0 %}
  <section class="[dynamicUnit.errorClass/]">
@@ -62,22 +63,4 @@
 </section>
 [/let]
 [/file]
-[/template]
-
-
-[template private unitTitle(unit : EditUnit, unitAccessor : String)
-	? (unit.title.oclIsUndefined())  post(trim())]
-{{ '[unit.id()/]' | trans }}
-[/template]
-
-[template private unitTitle(unit : EditUnit, unitAccessor : String)
-	? (not unit.title.oclIsUndefined())  post(trim())]
-[let labelAccessor : String
-	= if unit.title.oclIsKindOf(Attribute) then
-			unitAccessor.concat('.').concat(unit.title.oclAsType(Attribute).modelPropertyName())
-		else
-			unitAccessor
-		endif]
-{% if [unit.title.label(labelAccessor)/].vars.value is not null %}{{ [unit.title.label(labelAccessor)/].vars.value }}{% else %}{{ 'unit.id()/]' | trans }}{% endif %}
-[/let]
 [/template]
