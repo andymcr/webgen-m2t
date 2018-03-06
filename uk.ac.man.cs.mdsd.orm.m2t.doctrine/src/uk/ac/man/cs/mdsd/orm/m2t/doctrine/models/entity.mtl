@@ -563,14 +563,24 @@ public function getUpdated()
 [template private label(label : ModelLabel) post(trim())]
 public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if]()
 {
-    return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
+[if (label.customise)]
+    // [protected ('label.'.concat(label.name))]
+    [label.label2()/]
+    // [/protected]
+[else]
+    [label.label2()/]
+[/if]
+}
+[/template]
+
+[template private label2(label : ModelLabel) post(trim())]
+return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
 $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 [let attribute : ModelLabelAttribute = feature.oclAsType(ModelLabelAttribute)]
 [attribute.attribute.columnName()/][if (attribute.attribute.isDate())]->format('[attribute.dateFormat/]')[/if][/let][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
 [association.association.modelPropertyName()/]->get[if (association.dynamicLabel.oclIsUndefined())]Default[else][association.dynamicLabel.name.toUpperFirst()/][/if]Label()[/let]
 [/if][/for]);
-}
 [/template]
 
 [template private resourceSaveMethod(resource : SingletonResource) post(trim())]
