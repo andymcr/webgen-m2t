@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
@@ -22,7 +23,7 @@
 [for (enumerationType : EnumerationType | model.persistence.enumerationTypes())]
    [enumerationType.translations()/]
 [/for]
-[for (entity : Entity | model.persistence.entitiesAndViews)]
+[for (entity : Entity | model.persistence.entitiesAndViews.oclAsType(Entity))]
    [entity.translations()/]
 [/for]
   </body>
@@ -45,7 +46,7 @@
  <source>label.[entity.id()/]</source>
  <target>[entity.displayLabel.validXML()/]</target>
 </trans-unit>
-[for (feature : Feature | entity.features)]
+[for (feature : Feature | entity.features->select(f | not f.isHidden() and not f.isPseudo()))]
 <trans-unit id="[entity.id()/].labels.[feature.id()/]">
  <source>[entity.id()/].labels.[feature.id()/]</source>
  <target>[feature.displayLabel.validXML()/]</target>

@@ -124,6 +124,14 @@
 		endif endif endif
 /]
 
+[query public isDerived(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityFeature) then
+			feature.oclAsType(EntityFeature).derived
+		else
+			false
+		endif
+/]
+
 [query public isEncrypted(feature : Feature) : Boolean
 	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
 			feature.oclAsType(EncapsulatedAttribute).attribute.isEncrypted()
@@ -132,6 +140,14 @@
 		else
 			false
 		endif endif
+/]
+
+[query public isHidden(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(EntityAttribute) then
+			feature.oclAsType(EntityAttribute).hidden
+		else
+			false
+		endif
 /]
 
 [query public isOppositeSingleton(association : Association) : Boolean
