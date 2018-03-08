@@ -234,7 +234,7 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
     if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
-    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentService().instanceName()/]->remove($[deleteAction.instanceName()/], true);
+    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentService().instanceServiceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     return [deleteAction.destination.redirect()/];
