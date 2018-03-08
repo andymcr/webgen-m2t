@@ -37,6 +37,7 @@
 [/if]
 [if (indexUnit.hasUnitSupportActions())]
 	[if (indexUnit.containerType.oclIsUndefined())]
+ [indexUnit.unitSupportLinks(accessor)/]
 	[else]
  [indexUnit.unitSupportLinks(indexUnit.containerInstanceName())/]
 	[/if]
