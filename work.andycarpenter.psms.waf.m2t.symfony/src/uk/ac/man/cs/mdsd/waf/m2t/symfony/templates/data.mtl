@@ -133,6 +133,13 @@ NULL
 [/let]
 [/template]
 
+[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+	? (field.oclIsTypeOf(UnitLabel)) post(trim())]
+[let label : UnitLabel = field.oclAsType(UnitLabel)]
+[label.label.label(parentAccessor)/]
+[/let]
+[/template]
+
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
 [if (feature.hasInlineActions())]
 [let parentEntity : Entity
