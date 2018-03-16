@@ -71,15 +71,15 @@
 	[if (field.isConditionalDisplay())]
 		[if (field.oclIsKindOf(UnitFeature))]
 		[let feature : UnitFeature = field.oclAsType(UnitFeature)]
-			[if (not feature.nullDisplayValue.oclIsUndefined())]
+			[if (not feature.defaultDisplayValue.oclIsUndefined())]
 {% else %}
 				[if (unit.hasOmitFieldLabels())]
- <li class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</li>
+ <li class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</li>
 				[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
- <dd class="[field.displayClass()/]">{{ '[feature.nullDisplayValue/]' }}</dd>
+ <dd class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</dd>
 				[/if]
 			[/if]
 		[/let]
@@ -109,7 +109,7 @@
 [field.displayValue(parentAccessor, objectAccess)/]
 [else]
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
-[association.units->first().unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
+[association.units->first().unitContent(association.defaultDisplayValue, accessor, depthIndex + 1)/]
 [/let]
 [/if]
 [/let]
@@ -124,12 +124,12 @@
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [let embeddedUnit : ContentUnit = association.units->first()]
 	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-[association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
+[association.units.unitContent(association.defaultDisplayValue, accessor, depthIndex + 1)/]
 	[elseif (embeddedUnit.oclAsType(IndexUnit).selection.oclIsUndefined())]
-[association.units.unitContent(association.nullDisplayValue, accessor, depthIndex + 1)/]
+[association.units.unitContent(association.defaultDisplayValue, accessor, depthIndex + 1)/]
 	[else]
 	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[association.units.unitContent(association.nullDisplayValue,
+[association.units.unitContent(association.defaultDisplayValue,
 	association.serviceAccessor()
 		.concat('.').concat(association.name).concat(indexUnit.selection.instanceName().toUpperFirst())
 		.concat('(').concat(parentAccessor).concat(')'), depthIndex + 1)/]

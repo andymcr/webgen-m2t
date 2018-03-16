@@ -11,6 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
@@ -66,7 +67,8 @@ NULL
 [let variable : String = 'value']
 {% for [variable/] in [feature.accessor(parentAccessor, field.alias(), objectAccess)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[feature.displayAttribute(variable, parentAccessor)/]</p>[else]
-<span>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if]{% endfor %}
+<span>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if][if (not feature.emptyDisplayValue.oclIsUndefined())]
+{% else %}{{ '[feature.emptyDisplayValue/]' }}[/if]{% endfor %}
 [/let]
 [/let]
 [/if]
@@ -126,8 +128,8 @@ NULL
 [let variable : String = 'value']
 {% for [variable/] in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <p>[association.displayAssociation(variable, variable)/]</p>[else]
-<span>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.nullDisplayValue.oclIsUndefined())]
-{% else %}{{ '[association.nullDisplayValue/]' }}[/if]{% endfor %}
+<span>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyDisplayValue.oclIsUndefined())]
+{% else %}{{ '[association.emptyDisplayValue/]' }}[/if]{% endfor %}
 [/let]
 [/let]
 [/let]
@@ -152,8 +154,7 @@ NULL
 	->first().actionLink(parentEntity, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess())/]
 [/let]
 [else]
-{{ [feature.getValue(accessor)/] | default('')[if (feature.maximumDisplaySize > 0)]
- | truncate([feature.maximumDisplaySize/])[/if] }}
+[feature.displayFeature(accessor)/]
 [/if]
 [/template]
 
@@ -162,9 +163,29 @@ NULL
 [association.inlineActions()
 	->first().actionLink(association.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor, association.displayedOn.hasObjectAccess())/]
 [else]
-{{ [association.getValue(accessor)/] | default('[if (not association.nullDisplayValue.oclIsUndefined())]
-[association.nullDisplayValue/][/if]')[if (association.maximumDisplaySize > 0)]
- | truncate([association.maximumDisplaySize/] - 3)[/if] }}
+[association.displayFeature(accessor)/]
 [/if]
 [/template]
 
+[template private displayFeature(feature : UnitFeature, accessor : String) post(trim())]
+[if (feature.displayDefaultWhen.oclIsUndefined())]
+{{ [feature.getValue(accessor)/][if (not feature.defaultDisplayValue.oclIsUndefined())]
+ | default('[feature.defaultDisplayValue/]')[/if][if (feature.maximumDisplaySize > 0)]
+ [feature.truncate()/][/if] }}
+[else]
+{%- if [feature.displayDefaultWhen.twigExpression(accessor)/] -%}
+	[if (feature.maximumDisplaySize <= 0)]
+[feature.defaultDisplayValue/]
+	[else]
+{{ '[feature.defaultDisplayValue/]' [feature.truncate()/] }}
+	[/if]
+{%- else -%}
+{{ [feature.getValue(accessor)/][if (feature.maximumDisplaySize > 0)]
+ [feature.truncate()/][/if] }}
+{%- endif -%}
+[/if]
+[/template]
+
+[template private truncate(feature : UnitFeature) post(trim())]
+| truncate([feature.maximumDisplaySize/] - 3)
+[/template]

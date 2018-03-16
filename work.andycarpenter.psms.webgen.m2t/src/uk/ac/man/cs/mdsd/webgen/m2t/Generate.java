@@ -340,11 +340,11 @@ public class Generate extends AbstractAcceleoGenerator {
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
-        if (!isInWorkspace(uk.ac.man.cs.mdsd.orm.OrmPackage.class)) {
-            resourceSet.getPackageRegistry().put(uk.ac.man.cs.mdsd.orm.OrmPackage.eINSTANCE.getNsURI(), uk.ac.man.cs.mdsd.orm.OrmPackage.eINSTANCE);
+        if (!isInWorkspace(work.andycarpenter.psms.orm.OrmPackage.class)) {
+            resourceSet.getPackageRegistry().put(work.andycarpenter.psms.orm.OrmPackage.eINSTANCE.getNsURI(), work.andycarpenter.psms.orm.OrmPackage.eINSTANCE);
         }
-        if (!isInWorkspace(uk.ac.man.cs.mdsd.waf.WafPackage.class)) {
-            resourceSet.getPackageRegistry().put(uk.ac.man.cs.mdsd.waf.WafPackage.eINSTANCE.getNsURI(), uk.ac.man.cs.mdsd.waf.WafPackage.eINSTANCE);
+        if (!isInWorkspace(work.andycarpenter.psms.waf.WafPackage.class)) {
+            resourceSet.getPackageRegistry().put(work.andycarpenter.psms.waf.WafPackage.eINSTANCE.getNsURI(), work.andycarpenter.psms.waf.WafPackage.eINSTANCE);
         }
         
         /*
