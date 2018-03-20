@@ -45,7 +45,7 @@ use [service.modelsNamespace()/]\[service.serves.modelClassName()/];
 	[/if]
 [/if]
 [if (service.operations->notEmpty())]
-// [protected ('operations')]
+// [protected ('operations.use')]
 // [/protected]
 [/if]
 
@@ -56,6 +56,11 @@ class [service.className()/]
 
 
 [/for]
+[if (service.operations->notEmpty())]
+// [protected ('operations.constants')]
+// [/protected]
+
+[/if]
 [if (not service.serves.oclIsUndefined())]
     private $doctrine;
 
@@ -63,6 +68,11 @@ class [service.className()/]
     private $entityManager;
 
 	[/if]
+[/if]
+[if (service.operations->notEmpty())]
+// [protected ('operations.variables')]
+// [/protected]
+
 [/if]
 [for (uses : Service | service.uses)]
     private $[uses.instanceServiceName()/];
