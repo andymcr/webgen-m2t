@@ -2,12 +2,12 @@
 [module entity(
 	'http://cs.manchester.ac.uk/mdsd/Expression',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::expression/]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::expression/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 
 
 [query private isReservedWord(word : String) : Boolean
@@ -45,6 +45,9 @@ namespace [entity.modelsNamespace()/];
  * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entity.containingAssociation().opposite().modelPropertyName()/]")
 	[/for]
 [/if]
+[if (entity.hasResourceAttributes())]
+ * @Vich\Uploadable
+[/if]
  **/
 class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements UserInterface[/if]
 {
@@ -58,7 +61,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [entity.timestampFeatures()/]
 
 [/if]
-[if (entity.hasDefaultValueFeatures() or entity.hasCollectionAssociations() or entity.implementsUserInterface)]
+[if (entity.hasDefaultValueFeatures() or entity.hasResourceAttributes() or entity.hasCollectionAssociations() or entity.implementsUserInterface)]
     [entity.constructor()/]
 
 [/if]
@@ -82,20 +85,6 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [label.label()/]
 
 [/for]
-[for (resource : SingletonResource | entity.resourceAttributes())]
-	[resource.resourceSaveMethod()/]
-
-[/for]
-[if (entity.hasResourceAttributes())]
-/*	public function save(Validation $validation = NULL)
-	{
-[for (feature : SingletonResource | entity.resourceAttributes())]
-		$this->_save_[feature.modelPropertyName()/]();
-[/for]
-		parent::save($validation);
-	}
-*/
-[/if]
 }
 [/file]
 [/template]
@@ -111,6 +100,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 [if (entity.unique->notEmpty() or entity.uniqueAttributes()->notEmpty())]
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 [/if]
+[if (entity.hasResourceAttributes())]
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+[/if]
 [if (entity.implementsUserInterface)]
 use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
@@ -124,6 +117,10 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 [/if]
 [if (entity.hasValidatedFeatures())]
 use Symfony\Component\Validator\Constraints as Assert;
+[/if]
+[if (entity.hasResourceAttributes())]
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 [/if]
 [if (entity.isContained() and entity.containerUniqueAttributes()->notEmpty())]
 use [entity.validatorNamespace()/]\Constraints as AppAssert;
@@ -142,21 +139,36 @@ protected $[entity.autoKeyName/];
 [template private featureProperties(entity : Entity) post(trim())]
 [for (feature : Feature | entity.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isPseudo()))]
 [comment TODO sortout location features /]
-	[if (not feature.isLocation())]
+	[if (not feature.isLocation() and not feature.isResource())]
 /**
   [feature.ormAnnotation()/]
-	[if (feature.isValidated())]
+		[if (feature.isValidated())]
   [feature.validationAnnotation()/]
-	[/if]
-	[if (feature.hasSerializationControl())]
+		[/if]
+		[if (feature.hasSerializationControl())]
   [feature.serializationAnnotation()/]
-	[/if]
+		[/if]
   **/
-	[if (feature.oclIsKindOf(Attribute))]
+		[if (feature.oclIsKindOf(Attribute))]
 protected $[feature.columnName()/];
-	[else]
+		[else]
 protected $[feature.modelPropertyName()/];
-	[/if]
+		[/if]
+
+	[elseif (feature.isResource())]
+/**
+ * @Vich\UploadableField(mapping="[feature.modelPropertyName()/]", fileNameProperty="[feature.modelPropertyName()/].name", size="[feature.modelPropertyName()/].size", mimeType="[feature.modelPropertyName()/].mimeType", originalName="[feature.modelPropertyName()/].originalName", dimensions="[feature.modelPropertyName()/].dimensions")
+ *
+ * @var File
+ **/
+protected $[feature.modelPropertyName()/]File;
+
+/**
+ * @ORM\Embedded(class="Vich\UploaderBundle\Entity\File")
+ *
+ * @var EmbeddedFile
+ **/
+protected $[feature.modelPropertyName()/];
 
 	[/if]
 [/for]
@@ -386,6 +398,9 @@ public function __construct()
 	[if (feature.oclIsTypeOf(CollectionAssociation))]
     $this->[feature.modelPropertyName()/] = new ArrayCollection();
 	[/if]
+	[if (feature.isResource())]
+    $this->[feature.modelPropertyName()/]  = new EmbeddedFile();
+	[/if]
 [/for]
 }
 [/template]
@@ -408,6 +423,12 @@ public function getId()
 [/template]
 
 [template private featureMethods(feature : Feature) post(trim())]
+[if (feature.isResource())]
+[feature.getFileMethod()/]
+
+[feature.setFileMethod()/]
+
+[/if]
 [feature.getMethod()/]
 
 [if (not feature.isDerived())]
@@ -452,6 +473,13 @@ return $this->[feature.modelPropertyName()/];
 [/if]
 [/template]
 
+[template private getFileMethod(feature : Feature) post(trim())]
+public function [feature.getMethodName()/]File(): ?File
+{
+    return $this->[feature.modelPropertyName()/]File;
+}
+[/template]
+
 [template private setMethod(feature : Feature)
 	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
 [let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
@@ -484,6 +512,21 @@ $this->[element.columnName/] = trim($[element.instanceName()/]);
 [elseif (attribute.oclIsTypeOf(SingletonDate))]
 $this->[attribute.columnName/] = $[attribute.instanceName()/];
 [/if]
+[/template]
+
+[template private setFileMethod(feature : Feature) post(trim())]
+/**
+ * @param File|UploadedFile $[feature.getMethodName()/]
+ **/
+public function [feature.setMethodName()/]File(?File $[feature.instanceName()/] = null)
+{
+    $this->[feature.modelPropertyName()/]File = $[feature.instanceName()/];
+    if (null !== $[feature.instanceName()/]) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+        $this->updated = new \DateTimeImmutable();
+    }
+}
 [/template]
 
 [template private setMethod(feature : Feature)
@@ -609,40 +652,4 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
 [association.association.modelPropertyName()/]->get[if (association.dynamicLabel.oclIsUndefined())]Default[else][association.dynamicLabel.name.toUpperFirst()/][/if]Label()[/let]
 [/if][/for]);
-[/template]
-
-[template private resourceSaveMethod(resource : SingletonResource) post(trim())]
-private function _save_[resource.modelPropertyName()/]()
-{
-	$validation = Validation::factory($_FILES);
-	$validation
-		->rules('[resource.modelPropertyName()/]', array(
-[if (resource.isRequired())]
-			array('not_empty'),
-			array('Upload::not_empty'),
-[/if]
-			array('Upload::valid'),
-			array('Upload::size', array(':value', [comment resource.maximumUploadSize/])),
-[comment if (resource.validUploadExtensions->notEmpty())/]
-			array('Upload::type', array(':value', array([comment for (extension : String | resource.validUploadExtensions) separator(', ')/]'[comment extension/]'[comment /for/]))),
-[comment /if/]
-		));
-	if ($validation->check() === FALSE)
-		throw new ORM_Validation_Exception($this->errors_filename(), $validation);
-
-	if ($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'error'[']'/] === UPLOAD_ERR_NO_FILE)
-		return;
-
-	if (!empty($this->[resource.columnName/])) 
-		$filename = str_replace(' ', '_', pathinfo($this->[resource.columnName/], PATHINFO_FILENAME));
-	else
-		$filename = str_replace(' ', '_', pathinfo($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_FILENAME));
-	$extension = pathinfo($_FILES['['/]'[resource.modelPropertyName()/]'[']'/]['['/]'name'[']'/], PATHINFO_EXTENSION);
-[comment if (resource.uploadsWithinWebsite = true) /]
-	$filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, DOCROOT . '[comment resource.relativeUploadDirectory/]');
-	$this->[resource.columnName/] = '[comment resource.relativeUploadDirectory/]/' . $filename . '.' . $extension;
-[comment else/]
-	$filepath = Upload::save($_FILES['['/]'[resource.modelPropertyName()/]'[']'/], $filename . '.' . $extension, 'c:\websites\files');
-[comment /if/]
-}
 [/template]

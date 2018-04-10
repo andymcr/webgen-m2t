@@ -6,6 +6,10 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
 
 
+[query public hasResourceAttributes(model : OrmModel) : Boolean
+	= model.entitiesAndViews->select(e | e.oclAsType(Entity).hasResourceAttributes())->notEmpty()
+/]
+
 [query public hasSlugAttributes(model : OrmModel) : Boolean
 	= model.entitiesAndViews->select(e | e.oclAsType(Entity).hasSlugAttributes())->notEmpty()
 /]
