@@ -76,15 +76,29 @@ NULL
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isEnumerationType()) post(trim())]
+[if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (field.maximumDisplaySize > 0)]
- | truncate([field.maximumDisplaySize/])[/if] }}
+ [field.truncate()/][/if][if (not field.escapeHTML)]
+ | raw[/if] }}
+[else]
+[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+	[if (feature.displayDefaultWhen.oclIsUndefined())]
+{{ [feature.getValue(field.accessor(parentAccessor, feature.alias(), objectAccess))/][if (not feature.defaultDisplayValue.oclIsUndefined())]
+ | default('[feature.defaultDisplayValue/]')[/if][if (feature.maximumDisplaySize > 0)]
+ [feature.truncate()/][/if][if (not feature.escapeHTML)]
+ | raw[/if] }}
+	[else]
+[comment 'todo'/]
+	[/if]
+[/let]
+[/if]
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isDate()) post(trim())]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
- | truncate([field.maximumDisplaySize/])[/if] }}
+ [field.truncate()/][/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
@@ -154,7 +168,7 @@ NULL
 	->first().actionLink(parentEntity, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'), parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess())/]
 [/let]
 [else]
-[feature.displayFeature(accessor)/]
+[feature.displayFeature(accessor, parentAccessor)/]
 [/if]
 [/template]
 
@@ -163,29 +177,33 @@ NULL
 [association.inlineActions()
 	->first().actionLink(association.association.targetType(), accessor, '{{ '.concat(accessor).concat('.defaultLabel()').concat(' }}'), accessor.concat('.defaultLabel()'), accessor, association.displayedOn.hasObjectAccess())/]
 [else]
-[association.displayFeature(accessor)/]
+[association.displayFeature(accessor, parentAccessor)/]
 [/if]
 [/template]
 
-[template private displayFeature(feature : UnitFeature, accessor : String) post(trim())]
+[template private displayFeature(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
 [if (feature.displayDefaultWhen.oclIsUndefined())]
 {{ [feature.getValue(accessor)/][if (not feature.defaultDisplayValue.oclIsUndefined())]
  | default('[feature.defaultDisplayValue/]')[/if][if (feature.maximumDisplaySize > 0)]
- [feature.truncate()/][/if] }}
+ [feature.truncate()/][/if][if (not feature.escapeHTML)]
+ | raw[/if] }}
 [else]
-{%- if [feature.displayDefaultWhen.twigExpression(accessor)/] -%}
+{%- if [feature.displayDefaultWhen.twigExpression(parentAccessor)/] -%}
 	[if (feature.maximumDisplaySize <= 0)]
 [feature.defaultDisplayValue/]
 	[else]
-{{ '[feature.defaultDisplayValue/]' [feature.truncate()/] }}
+{{ '[feature.defaultDisplayValue/]'[if (feature.maximumDisplaySize > 0)]
+ [feature.truncate()/][/if][if (not feature.escapeHTML)]
+ | raw[/if] }}
 	[/if]
 {%- else -%}
 {{ [feature.getValue(accessor)/][if (feature.maximumDisplaySize > 0)]
- [feature.truncate()/][/if] }}
+ [feature.truncate()/][/if][if (not feature.escapeHTML)]
+ | raw[/if] }}
 {%- endif -%}
 [/if]
 [/template]
 
-[template private truncate(feature : UnitFeature) post(trim())]
+[template private truncate(feature : UnitField) post(trim())]
 | truncate([feature.maximumDisplaySize/] - 3)
 [/template]

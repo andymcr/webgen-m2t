@@ -98,7 +98,7 @@
 	[/if]
 	[for (field : UnitField | unit.displayFields)]
 		[if (field.isConditionalDisplay())]
-{%- if not ([field.hideWhen.twigExpression(variable)/]) %}
+ {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
 		[/if]
  <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
 [if (field.hasCustomisedLabel())]
