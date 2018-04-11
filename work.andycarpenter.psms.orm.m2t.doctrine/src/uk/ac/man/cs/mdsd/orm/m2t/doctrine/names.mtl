@@ -37,7 +37,7 @@
 
 
 [query public addMethodName(feature : Feature) : String
-	= 'add'.concat(feature.singletonPropertyName().toUpperFirst())
+	= 'add'.concat(feature.singletonName.toUpperFirst())
 /]
 
 [query public getMethodName(feature : Feature) : String
@@ -51,17 +51,11 @@
 /]
 
 [query private booleanPrefix(feature : Feature) : String
-	= if feature.oclIsKindOf(EntityFeature) then
-			if feature.oclAsType(EntityFeature).booleanIsHasChoice = IsHasChoices::isA then
-				'is'
-			else
-				'has'
-			endif
-		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.booleanPrefix()
+	= if feature.booleanIsHasChoice = IsHasChoices::isA then
+			'is'
 		else
-			feature.oclAsType(EncapsulatedAssociation).association.booleanPrefix()
-		endif endif
+			'has'
+		endif
 /]
 
 [query public instanceName(feature : Feature) : String
@@ -69,17 +63,11 @@
 /]
 
 [query public modelName(association : Association) : String
-	= if association.oclIsKindOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).targetType().modelName()
-		else if association.oclIsTypeOf(EncapsulatedAssociation) then
-			association.oclAsType(EncapsulatedAssociation).association.modelName()
-		else
-			'xxx'
-		endif endif
+	= association.targetType().modelName()
 /]
 
 [query public removeMethodName(feature : Feature) : String
-	= 'remove'.concat(feature.singletonPropertyName().toUpperFirst())
+	= 'remove'.concat(feature.singletonName.toUpperFirst())
 /]
 
 [query public setMethodName(feature : Feature) : String

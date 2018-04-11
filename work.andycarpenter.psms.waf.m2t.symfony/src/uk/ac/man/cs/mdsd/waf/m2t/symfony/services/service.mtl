@@ -175,7 +175,7 @@ TokenStorageInterface $securityTokenStorage[else][model.userService().className(
     [service.childSelectionMethods(model)/]
 
 	[/if]
-	[if (service.serves.associations()->select(a | a.oclIsKindOf(EntityAssociation) and a.isPseudo())->notEmpty())]
+	[if (service.serves.associations()->select(a | a.isPseudo())->notEmpty())]
     [service.serves.pseudoAssociationMethods(model)/]
 
 	[/if]
@@ -231,7 +231,7 @@ public function find([service.serves.routeParameters()/])
 [container.containerJoin()/]
 [/if]
 [/let]
-[for (key : EntityAssociation | entity.associationKeys()->select(k | not k.container))]
+[for (key : Association | entity.associationKeys()->select(k | not k.container))]
 ->join('[entity.selectName()/].[key.modelPropertyName()/]', '[key.targetType().selectName()/]')
 [/for]
 [/template]
@@ -247,7 +247,7 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 [/template]
 
 [template private findWhere(key : Attribute, base : Entity) post(trim())]
-$queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(base)/]')
+$queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(base)/]')
 [/template]
 
 [template private findAllMethod(service : Service) post(trim())]
@@ -529,7 +529,7 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 [/template]
 
 [template private field(field : Feature, alias : String) post(trim())]
-'[field.partOf.oclAsType(Entity).selectName()/].[field.columnName()/][if (not alias.oclIsUndefined())]
+'[field.partOf.oclAsType(Entity).selectName()/].[field.columnName/][if (not alias.oclIsUndefined())]
  [alias/][/if]'
 [/template]
 
@@ -543,7 +543,7 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 
 [template private joins(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty())]
-	[for (element : EntityAssociation | selection.selectPath)]
+	[for (element : Association | selection.selectPath)]
 $queryBuilder->join('[element.sourceType().selectName()/].[element.modelPropertyName()/]', '[element.targetType().selectName()/]');
 	[/for]
 [/if]
@@ -579,12 +579,12 @@ $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/
 [let routingEntity : Entity = selection.selectionType()]
 	[if (routingEntity.uriPathKeys()->size() = 1)]
 	[let key : Attribute = routingEntity.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]'));
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]'));
 	[/let]
 	[else]
 $queryBuilder->where($queryBuilder->expr()->andX(
 		[for (key : Attribute | routingEntity.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> routingEntity.uriPathKeys()->size())],[/if]
+    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> routingEntity.uriPathKeys()->size())],[/if]
 		[/for]
 ));
 	[/if]
@@ -708,16 +708,14 @@ public function [association.childSelectionName(selection)/]($[service.instanceN
 
 [template private pseudoAssociationMethods(entity : Entity, model : WafModel) post(trim())]
 [for (association : Association | entity.associations())]
-	[if (association.oclIsKindOf(EntityAssociation) and association.isPseudo())]
-	[let entityAssociation : EntityAssociation = association.oclAsType(EntityAssociation)]
-[entityAssociation.pseudoAssociationMethod(entityAssociation.targetType().services(model)->first())/]
+	[if (association.isPseudo())]
+[association.pseudoAssociationMethod(association.targetType().services(model)->first())/]
 
-	[/let]
 	[/if]
 [/for]
 [/template]
 
-[template private pseudoAssociationMethod(association : EntityAssociation, targetService : Service)
+[template private pseudoAssociationMethod(association : Association, targetService : Service)
 	? (targetService.selections->isEmpty()) post(trim())]
 public function [association.name/]($[association.sourceType().selectName()/])
 {
@@ -730,7 +728,7 @@ public function [association.name/]($[association.sourceType().selectName()/])
 }
 [/template]
 
-[template private pseudoAssociationMethod(association : EntityAssociation, targetService : Service)
+[template private pseudoAssociationMethod(association : Association, targetService : Service)
 	? (targetService.selections->notEmpty()) post(trim())]
 private function [association.builderMethodName()/]()
 {
@@ -778,7 +776,7 @@ public function [association.findMethodName(selection)/]($[association.sourceTyp
 [/for]
 [/template]
 
-[template private pseudoBuilderCode(association : EntityAssociation, sourceType : Entity, targetType : Entity) post(trim())]
+[template private pseudoBuilderCode(association : Association, sourceType : Entity, targetType : Entity) post(trim())]
 $queryBuilder = $this->doctrine->getRepository('[targetType.appName()/]:[targetType.modelName()/]')->createQueryBuilder('[targetType.selectName()/]');
 $queryBuilder->join('[sourceType.appName()/]:[sourceType.modelName()/]', '[sourceType.selectName()/]', Expr\Join::WITH,[if (association.keys()->size() = 1)]
 [let key : AssociationKey = association.keys->first()]
@@ -793,12 +791,12 @@ $queryBuilder->expr()->eq('[key.targetFeature.partOf.oclAsType(Entity).selectNam
 )[/if]);
 [if (sourceType.uriPathKeys()->size() = 1)]
 [let key : Attribute = sourceType.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]'));
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(sourceType)/]'));
 [/let]
 [else]
 $queryBuilder->where($queryBuilder->expr()->andX(
 	[for (key : Attribute | sourceType.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName()/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
+    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(sourceType)/]')[if (i <sourceType.uriPathKeys()->size())],[/if]
 	[/for]
 ));
 [/if]
@@ -810,7 +808,7 @@ $query->setParameter('[key.routeParameterName(sourceType)/]', [key.keyAccessor(s
 [/for]
 [/template]
 
-[template private pseudoQueryResult(association : EntityAssociation) post(trim())]
+[template private pseudoQueryResult(association : Association) post(trim())]
 [if (association.isSingleton())]
 	[if (association.isRequired())]
 return $query->getSingleResult();

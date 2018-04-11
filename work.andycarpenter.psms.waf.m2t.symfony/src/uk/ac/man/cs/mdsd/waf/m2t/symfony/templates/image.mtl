@@ -103,7 +103,7 @@ title="{{ [unit.imageTitleFeature.accessor(baseAccessor, unit.selection)/][unit.
 			= if objectAccess then
 					attribute.attribute.modelPropertyName()
 				else
-					attribute.attribute.columnName()
+					attribute.attribute.columnName
 				endif
 		in parentAccessor.concat('.').concat(localAccessor)
 /]
@@ -141,7 +141,7 @@ title="{{ [unit.imageTitleFeature.accessor(baseAccessor, unit.selection)/][unit.
 			= if objectAccess then
 					attribute.attribute.modelPropertyName()
 				else
-					attribute.attribute.columnName()
+					attribute.attribute.columnName
 				endif
 		in parentAccessor.concat('.').concat(localAccessor)
 /]

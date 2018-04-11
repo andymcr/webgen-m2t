@@ -46,12 +46,12 @@ class [entity.normalizerClassName()/] extends ObjectNormalizer
 [/template]
 
 [template private data(feature : Feature, accessor : String)
-	? (feature.oclIsKindOf(EntityAttribute)) post(trim())]
+	? (feature.oclIsKindOf(Attribute)) post(trim())]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMethodName()/]();
 [/template]
 
 [template private data(feature : Feature, accessor : String)
-	? (feature.oclIsKindOf(EntityAssociation) and feature.isSingleton()) post(trim())]
+	? (feature.oclIsKindOf(Association) and feature.isSingleton()) post(trim())]
 [if (feature.isRequired())]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize([accessor/]->[feature.getMethodName()/](), $format, $context);
 [else]
@@ -62,7 +62,7 @@ if ($[feature.instanceName()/])
 [/template]
 
 [template private data(feature : Feature, accessor : String)
-	? (feature.oclIsKindOf(EntityAssociation) and not feature.isSingleton()) post(trim())]
+	? (feature.oclIsKindOf(Association) and not feature.isSingleton()) post(trim())]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMethodName()/]()->map(
     function ($item) use ($format, $context) {
         return $this->serializer->normalize($item, $format, $context);

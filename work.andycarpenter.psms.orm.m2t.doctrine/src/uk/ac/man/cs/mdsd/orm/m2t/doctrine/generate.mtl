@@ -16,8 +16,8 @@
 [model.configStofDoctrineExtensions()/]
 
 [model.persistence.enumerationTypes().model(supportTranslation)/]
-[model.persistence.entitiesAndViews->select(eov | eov.oclIsKindOf(Entity)).oclAsType(Entity).model()/]
-[model.persistence.entitiesAndViews->select(eov | eov.oclIsKindOf(Entity)).oclAsType(Entity).normalizer()/]
+[model.persistence.entities.model()/]
+[model.persistence.entities.normalizer()/]
 
 [model.persistence.containerUnique()/]
 [model.persistence.containerUniqueValidator()/]

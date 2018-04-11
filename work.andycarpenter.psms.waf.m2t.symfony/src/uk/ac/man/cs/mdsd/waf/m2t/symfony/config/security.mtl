@@ -29,7 +29,7 @@ security:
         cas:
             entity:
                 class: [authentication.modelsNamespace()/]\[authentication.user.modelName()/]
-                property: [authentication.userKey.columnName()/]
+                property: [authentication.userKey.columnName/]
 	[else]
         in_memory:
             memory:

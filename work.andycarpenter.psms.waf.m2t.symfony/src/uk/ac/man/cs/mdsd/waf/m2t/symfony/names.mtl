@@ -109,11 +109,7 @@
 [query public selectName(association : Association, service : Service) : String
 	= let entity : Entity
 		= if service.serves.features->includes(association) then
-				if association.oclIsKindOf(EntityAssociation) then
-					association.oclAsType(EntityAssociation).targetType()
-				else
-					association.sourceType() -- TODO fix
-				endif
+				association.targetType()
 			else
 				association.sourceType()
 			endif

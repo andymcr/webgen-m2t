@@ -23,14 +23,14 @@
 [for (field : UnitField | model.formFields()->select(f | f.oclIsKindOf(UnitAttribute) and not f.isSingleton()))]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [if (attribute.collectionUiAllowAdd or attribute.collectionUiAllowRemove)]
-[attribute.addLinks(attribute.attribute.oclAsType(EntityAttribute).singletonName)/]
+[attribute.addLinks(attribute.attribute.singletonName)/]
 
 	[if (attribute.collectionUiAllowAdd)]
-[attribute.addForm(attribute.attribute.oclAsType(EntityAttribute).singletonName)/]
+[attribute.addForm(attribute.attribute.singletonName)/]
 
 	[/if]
 	[if (attribute.collectionUiAllowRemove)]
-[attribute.removeLink(attribute.attribute.oclAsType(EntityAttribute).singletonName)/]
+[attribute.removeLink(attribute.attribute.singletonName)/]
 
 	[/if]
 [/if]

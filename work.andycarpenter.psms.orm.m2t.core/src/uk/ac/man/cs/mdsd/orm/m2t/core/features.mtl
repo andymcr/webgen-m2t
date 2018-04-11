@@ -4,26 +4,12 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
 
 
-[query public columnName(feature : Feature) : String
-	= if feature.oclIsKindOf(EntityFeature) then
-			feature.oclAsType(EntityFeature).columnName
-		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).columnName
-		else if feature.oclIsKindOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.columnName()
-		else
-			feature.oclAsType(ViewAssociation).opposite.oppositeColumnName()
-		endif endif endif
-/]
-
 [query public defaultValue(feature : Feature) : Expression
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.defaultValue()
-		else if feature.oclIsKindOf(Attribute) then
+	= if feature.oclIsKindOf(Attribute) then
 			feature.oclAsType(Attribute).defaultValue
 		else
 			null
-		endif endif
+		endif
 /]
 
 [query public hasColumn(feature : Feature) : Boolean
@@ -37,13 +23,11 @@
 /]
 
 [query public hasDefaultValue(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.hasDefaultValue()
-		else if feature.oclIsKindOf(Attribute) then
+	= if feature.oclIsKindOf(Attribute) then
 			not feature.oclAsType(Attribute).defaultValue.oclIsUndefined()
 		else
 			false
-		endif endif
+		endif
 /]
 
 [query public hasHtml5Attributes(feature : Feature) : Boolean
@@ -65,8 +49,8 @@
 /]
 
 [query public hasSlugFields(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityAttribute) then
-			feature.oclAsType(EntityAttribute).slugFields->notEmpty()
+	= if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).slugFields->notEmpty()
 		else
 			false
 		endif
@@ -81,70 +65,60 @@
 /]
 
 [query public isCaseInsensitive(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isCaseInsensitive()
-		else if feature.oclIsTypeOf(SingletonElement) then
+	= if feature.oclIsTypeOf(SingletonElement) then
 			feature.oclAsType(SingletonElement).caseInsensitive
 		else
 			false
-		endif endif
+		endif
 /]
 
 [query public isContainer(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(Attribute) then
 			false
-		else if feature.oclIsKindOf(EntityAssociation) then
-			feature.oclAsType(EntityAssociation).container
-		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.isContainer()
-		else
-			false
-		endif endif endif
-/]
-
-[query public isContainerUnique(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(SingletonAttribute) then
-			feature.oclAsType(SingletonAttribute).containerUnique
-		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isContainerUnique()
+		else if feature.oclIsKindOf(Association) then
+			feature.oclAsType(Association).container
 		else
 			false
 		endif endif
 /]
 
+[query public isContainerUnique(feature : Feature) : Boolean
+	= if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).containerUnique
+		else
+			false
+		endif
+/]
+
 [query public isContains(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(Attribute) then
 			false
-		else if feature.oclIsKindOf(EntityAssociation) then
-			feature.oclAsType(EntityAssociation).contains
-		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.isContains()
+		else if feature.oclIsKindOf(Association) then
+			feature.oclAsType(Association).contains
 		else
 			false
-		endif endif endif
+		endif endif
 /]
 
 [query public isDerived(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityFeature) then
-			feature.oclAsType(EntityFeature).derived
+	= if feature.oclIsKindOf(Feature) then
+			feature.oclAsType(Feature).derived
 		else
 			false
 		endif
 /]
 
 [query public isEncrypted(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isEncrypted()
-		else if feature.oclIsTypeOf(SingletonElement) then
+	= if feature.oclIsTypeOf(SingletonElement) then
 			feature.oclAsType(SingletonElement).encrypt
 		else
 			false
-		endif endif
+		endif
 /]
 
 [query public isHidden(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityAttribute) then
-			feature.oclAsType(EntityAttribute).hidden
+	= if feature.oclIsKindOf(Attribute) then
+			feature.oclAsType(Attribute).hidden
 		else
 			false
 		endif
@@ -160,18 +134,16 @@
 /]
 
 [query public isOwningEnd(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityAssociation) then
-			feature.oclAsType(EntityAssociation).owningEnd
-		else if feature.oclIsKindOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.isOwningEnd()
+	= if feature.oclIsKindOf(Association) then
+			feature.oclAsType(Association).owningEnd
 		else
 			false
-		endif endif
+		endif
 /]
 
 [query public isPrimaryKey(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityFeature) then
-			feature.oclAsType(EntityFeature).primaryKey
+	= if feature.oclIsKindOf(Feature) then
+			feature.oclAsType(Feature).primaryKey
 		else
 			false
 		endif
@@ -190,33 +162,21 @@
 			feature.oclAsType(SingletonAttribute).required
 		else if feature.oclIsTypeOf(SingletonAssociation) then
 			feature.oclAsType(SingletonAssociation).required
-		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isRequired()
-		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.isRequired()
 		else
 			false
-		endif endif endif endif
+		endif endif
 /]
 
 [query public isSingleton(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityFeature) then
-			feature.oclIsKindOf(SingletonAttribute) or feature.oclIsKindOf(SingletonAssociation)
-		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isSingleton()
-		else if feature.oclIsTypeOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.isSingleton()
-		else
-			feature.oclAsType(ViewAssociation).cardinality <> Cardinality::Many
-		endif endif endif
+	= feature.oclIsKindOf(SingletonAttribute) or feature.oclIsKindOf(SingletonAssociation)
 /]
 
 [query public isSingleton(association : Association, entity : Entity) : Boolean
-	= if association.oclIsKindOf(EntityAssociation) then
+	= if association.oclIsKindOf(Association) then
 			if entity.features->includes(association) then
 				association.isSingleton()
 			else
-				association.oclAsType(EntityAssociation).opposite.isSingleton()
+				association.oclAsType(Association).opposite.isSingleton()
 			endif
 		else
 			association.isSingleton()
@@ -226,33 +186,27 @@
 [query public isUnique(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(SingletonAttribute) then
 			feature.oclAsType(SingletonAttribute).unique
-		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isUnique()
 		else
 			false
-		endif endif
-/]
-
-[query public isValidated(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isValidated()
-		else
-			-- isUnique is an entity property
-			feature.isRequired() or feature.isContains()
 		endif
 /]
 
+[query public isValidated(feature : Feature) : Boolean
+	= -- isUnique is an entity property
+		feature.isRequired() or feature.isContains()
+/]
+
 [query public isVisible(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(EntityAttribute) then
+	= if feature.oclIsKindOf(Attribute) then
 			true
-		else if feature.oclIsKindOf(EntityAssociation) then
-			feature.oclAsType(EntityAssociation).visible
+		else if feature.oclIsKindOf(Association) then
+			feature.oclAsType(Association).visible
 		else
 			true
 		endif endif
 /]
 
-[query public keys(association : EntityAssociation) : OrderedSet(AssociationKey)
+[query public keys(association : Association) : OrderedSet(AssociationKey)
 	= if association.keys->notEmpty() then
 			association.keys
 		else
@@ -263,86 +217,42 @@
 [query public modelPropertyName(feature : Feature) : String
 	= if feature.oclIsKindOf(SingletonAttribute) then
 			feature.name
-		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).name
 		else
 			feature.name
-		endif endif
+		endif
 /]
 
 [query public opposite(association : Association) : Association
-	= if association.oclIsTypeOf(EncapsulatedAssociation) then
-			association.oclAsType(EncapsulatedAssociation).association.opposite()
-		else if association.oclIsKindOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).opposite
+	= if association.oclIsKindOf(Association) then
+			association.oclAsType(Association).opposite
 		else
 			null
-		endif endif
+		endif
 /]
 
 [query public oppositeColumnName(association : Association) : String
 	= let opposite : Association = association.opposite()
 		in if not opposite.oclIsUndefined() then
-				opposite.columnName()
+				opposite.columnName
 			else
 				'Unknown opposite'
 			endif
 /]
 
-[query public ormType(feature : Attribute) : String
-	= if feature.oclIsKindOf(EntityAttribute) then
-			feature.oclAsType(EntityAttribute).ormType
-		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.ormType()
-		else
-			'Unhandled Attribute'
-		endif endif
-/]
-
 [query public pivotTableName(feature : Feature) : String
-	= if feature.oclIsKindOf(EntityAssociation) then
-			feature.oclAsType(EntityAssociation).pivotTableName
-		else if feature.oclIsKindOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.pivotTableName()
-		else if feature.oclIsTypeOf(ViewAssociation) then
-			feature.oclAsType(ViewAssociation).opposite.pivotTableName()
+	= if feature.oclIsKindOf(Association) then
+			feature.oclAsType(Association).pivotTableName
 		else
 			'invalidPivotTableName'
-		endif endif endif
-/]
-
-[query public pluralisedPropertyName(feature : Feature) : String
-	= if feature.oclIsKindOf(EntityFeature) then
-			feature.oclAsType(EntityFeature).pluralisedName
-		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.pluralisedPropertyName()
-		else if feature.oclIsKindOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.pluralisedPropertyName()
-		else
-			feature.modelPropertyName()
-		endif endif endif
-/]
-
-[query public singletonPropertyName(feature : Feature) : String
-	= if feature.oclIsKindOf(EntityFeature) then
-			feature.oclAsType(EntityFeature).singletonName
-		else if feature.oclIsKindOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.singletonPropertyName()
-		else if feature.oclIsKindOf(EncapsulatedAssociation) then
-			feature.oclAsType(EncapsulatedAssociation).association.singletonPropertyName()
-		else
-			feature.modelPropertyName()
-		endif endif endif
+		endif
 /]
 
 [query public sourceType(association : Association) : Entity
-	= if association.oclIsKindOf(EntityAssociation) then
-			association.oclAsType(EntityAssociation).partOf
-		else if association.oclIsKindOf(EncapsulatedAssociation) then
-			association.oclAsType(EncapsulatedAssociation).association.sourceType()
+	= if association.oclIsKindOf(Association) then
+			association.oclAsType(Association).partOf
 		else
 			'???' -- association.oclAsType(ViewAssociation).
-		endif endif
+		endif
 /]
 
 [query public targetType(association : Association) : Entity

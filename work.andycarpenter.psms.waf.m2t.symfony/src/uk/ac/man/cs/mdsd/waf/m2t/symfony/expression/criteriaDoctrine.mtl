@@ -38,7 +38,7 @@ new \DateTime()
 [/template]
 
 [template public featureReference(feature : Feature) post(trim())]
-'[feature.columnName()/]'
+'[feature.columnName/]'
 [/template]
 
 [template public criteriaExpression(expression : Expression)

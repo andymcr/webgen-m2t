@@ -23,119 +23,85 @@
 
 
 [query public dataType(feature : Feature) : Classifier
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.dataType()
-		else if feature.oclIsTypeOf(SingletonElement) then
+	= if feature.oclIsTypeOf(SingletonElement) then
 			feature.oclAsType(SingletonElement).dataType
 		else if feature.oclIsTypeOf(CollectionElement) then
 			feature.oclAsType(CollectionElement).collectionType.elementType
 		else
 			null
-		endif endif endif
+		endif endif
 /]
 
 [query public dateDetails(feature : Feature) : DateDetails
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.dateDetails()
-		else if feature.oclIsKindOf(DateAttribute) then
+	= if feature.oclIsKindOf(DateAttribute) then
 			feature.oclAsType(DateAttribute).details
 		else
 			null
-		endif endif
+		endif
 /]
 
 [query public enumerationType(feature : Feature) : EnumerationType
 	= if feature.oclIsKindOf(SingletonElement) then
 			feature.oclAsType(SingletonElement).dataType.oclAsType(EnumerationType)
-		else if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.enumerationType()
 		else
 			null
-		endif endif
+		endif
 /]
 
 [query public isBooleanDataType(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isBooleanDataType()
-		else if not feature.oclIsTypeOf(SingletonElement) then
+	= if not feature.oclIsTypeOf(SingletonElement) then
 			false
 		else
 			let singleton : SingletonElement
 				= feature.oclAsType(SingletonElement)
 				in singleton.dataType.isBooleanDataType()
-		endif endif
+		endif
 /]
 
 [query public isDataType(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isDataType()
-		else
-			feature.oclIsTypeOf(SingletonElement) or feature.oclIsTypeOf(CollectionElement)
-		endif
+	= feature.oclIsTypeOf(SingletonElement) or feature.oclIsTypeOf(CollectionElement)
 /]
 
 [query public isDate(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isDate()
-		else
-			feature.oclIsKindOf(DateAttribute)
-		endif
+	= feature.oclIsKindOf(DateAttribute)
 /]
 
 [query public isEnumerationType(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isEnumerationType()
-		else if not feature.oclIsKindOf(SingletonElement) then
+	= if not feature.oclIsKindOf(SingletonElement) then
 			false
 		else let element : SingletonElement = feature.oclAsType(SingletonElement)
 			in element.dataType.oclIsTypeOf(EnumerationType)
-		endif endif
+		endif
 /]
 
 [query public isIntegerDataType(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isIntegerDataType()
-		else if not feature.oclIsTypeOf(SingletonElement) then
+	= if not feature.oclIsTypeOf(SingletonElement) then
 			false
 		else
 			let singleton : SingletonElement
 				= feature.oclAsType(SingletonElement)
 				in singleton.dataType.isIntegerDataType()
-		endif endif
+		endif
 /]
 
 [query public isLocation(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isLocation()
-		else
-			feature.oclIsTypeOf(SingletonLocation)
-		endif
+	= feature.oclIsTypeOf(SingletonLocation)
 /]
 
 [query public isResource(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isResource()
-		else
-			feature.oclIsKindOf(SingletonResource)
-		endif
+	= feature.oclIsKindOf(SingletonResource)
 /]
 
 [query public isStringDataType(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isStringDataType()
-		else if not feature.oclIsTypeOf(SingletonElement) then
+	= if not feature.oclIsTypeOf(SingletonElement) then
 			false
 		else
 			let singleton : SingletonElement
 				= feature.oclAsType(SingletonElement)
 				in singleton.dataType.isStringDataType()
-		endif endif
+		endif
 /]
 
 [query public isUrl(feature : Feature) : Boolean
-	= if feature.oclIsTypeOf(EncapsulatedAttribute) then
-			feature.oclAsType(EncapsulatedAttribute).attribute.isUrl()
-		else
-			feature.oclIsTypeOf(SingletonURL)
-		endif
+	= feature.oclIsTypeOf(SingletonURL)
 /]

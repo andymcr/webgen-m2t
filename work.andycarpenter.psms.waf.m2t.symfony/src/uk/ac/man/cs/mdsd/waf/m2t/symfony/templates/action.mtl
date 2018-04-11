@@ -234,7 +234,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		valueSelection : Selection, objectAccess : Boolean) : String
 	= if not objectAccess then
 			if key.alias(valueSelection).oclIsUndefined() then
-				parentAccessor.concat('.').concat(key.columnName())
+				parentAccessor.concat('.').concat(key.columnName)
 			else
 				parentAccessor.concat('.').concat(key.alias(valueSelection))
 			endif

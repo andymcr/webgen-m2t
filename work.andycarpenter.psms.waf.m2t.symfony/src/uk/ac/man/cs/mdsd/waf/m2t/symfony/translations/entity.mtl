@@ -23,7 +23,7 @@
 [for (enumerationType : EnumerationType | model.persistence.enumerationTypes())]
    [enumerationType.translations()/]
 [/for]
-[for (entity : Entity | model.persistence.entitiesAndViews.oclAsType(Entity))]
+[for (entity : Entity | model.persistence.entities)]
    [entity.translations()/]
 [/for]
   </body>

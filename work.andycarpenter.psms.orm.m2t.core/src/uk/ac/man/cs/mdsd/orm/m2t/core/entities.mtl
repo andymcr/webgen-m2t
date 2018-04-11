@@ -7,16 +7,16 @@
 
 
 [query public hasResourceAttributes(model : OrmModel) : Boolean
-	= model.entitiesAndViews->select(e | e.oclAsType(Entity).hasResourceAttributes())->notEmpty()
+	= model.entities->select(e | e.oclAsType(Entity).hasResourceAttributes())->notEmpty()
 /]
 
 [query public hasSlugAttributes(model : OrmModel) : Boolean
-	= model.entitiesAndViews->select(e | e.oclAsType(Entity).hasSlugAttributes())->notEmpty()
+	= model.entities->select(e | e.oclAsType(Entity).hasSlugAttributes())->notEmpty()
 /]
 
-[query public manyToManyAssociations(model : OrmModel) : Sequence(EntityAssociation)
-	= model.entitiesAndViews->select(e | e.oclIsTypeOf(Entity)).oclAsType(Entity)
-		->collect(e | e.associations()).oclAsType(EntityAssociation)
+[query public manyToManyAssociations(model : OrmModel) : Sequence(Association)
+	= model.entities
+		->collect(e | e.associations()).oclAsType(Association)
 		->select(a | not a.isSingleton() and not a.opposite.isSingleton())
 /]
 
@@ -27,8 +27,8 @@
 		->select(a | a.isVisible())
 /]
 
-[query public associationKeys(entity : Entity) : Sequence(EntityAssociation)
-	= entity.keys->select(k | k.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+[query public associationKeys(entity : Entity) : Sequence(Association)
+	= entity.keys->select(k | k.oclIsKindOf(Association)).oclAsType(Association)
 /]
 
 [query public attributes(entity : Entity) : Sequence(Attribute)
@@ -49,7 +49,7 @@
 /]
 
 [query public container(entity : Entity) : Entity
-	= let containingAssociation : EntityAssociation
+	= let containingAssociation : Association
 		= entity.containingAssociation()
 		in if containingAssociation.oclIsUndefined() then
 				null
@@ -62,10 +62,10 @@
 	= entity.attributes()->select(a | a.isContainerUnique())
 /]
 
-[query public containingAssociation(entity : Entity) : EntityAssociation
-	= let associations : Sequence(EntityAssociation)
+[query public containingAssociation(entity : Entity) : Association
+	= let associations : Sequence(Association)
 		= entity.features
-			->select(f | f.oclIsKindOf(EntityAssociation)).oclAsType(EntityAssociation)
+			->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
 			->select(a | a.container)
 		in if associations->size() = 0 then
 				null
@@ -154,8 +154,8 @@
 	= entity.associations()->select(a | a.isSingleton() and a.isOwningEnd())
 /]
 
-[query public primaryKeys(entity : Entity) : Sequence(EntityFeature)
-	= entity.features->select(f | f.isPrimaryKey()).oclAsType(EntityFeature)
+[query public primaryKeys(entity : Entity) : OrderedSet(Feature)
+	= entity.features->select(f | f.isPrimaryKey())
 /]
 
 [query public pseudoAssociations(entity : Entity) : Sequence(Association)
@@ -166,7 +166,7 @@
 	= entity.features->select(f | f.isResource()).oclAsType(SingletonResource)
 /]
 
-[query public slugAttributes(entity : Entity) : Sequence(EntityAttribute)
+[query public slugAttributes(entity : Entity) : Sequence(Attribute)
 	= entity.attributes()->select(a | a.hasSlugFields())
 /]
 
