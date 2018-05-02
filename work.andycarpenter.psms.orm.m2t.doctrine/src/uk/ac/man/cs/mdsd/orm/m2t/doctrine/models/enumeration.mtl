@@ -14,6 +14,7 @@
 [file(type.modelFilename(), false)]
 <?php
 namespace [type.modelsNamespace()/];
+
 class [type.modelClassName()/]
 {
 [for (literal : EnumerationLiteral | type.enumerations)]
