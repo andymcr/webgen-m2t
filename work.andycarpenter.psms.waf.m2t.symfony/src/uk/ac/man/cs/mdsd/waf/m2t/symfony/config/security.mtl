@@ -88,7 +88,7 @@ security:
 		[/if]
         # [protected ('access.control')]
 		[if (model.isAuthenticated())]
-        - { path: ^/, requires_channel: https }
+        - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
 		[/if]
         # [/protected]
 	[/if]
