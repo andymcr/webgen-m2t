@@ -31,8 +31,13 @@
 [if (indexUnit.hasFilters())]
  [indexUnit.unitFilters()/]
 [/if]
+[if (indexUnit.hasPagination()
+		and indexUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
+ [indexUnit.pagination()/]
+[/if]
  [indexUnit.unitContent(null, accessor, 0)/]
-[if (indexUnit.hasPagination())]
+[if (indexUnit.hasPagination()
+		and indexUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [indexUnit.pagination()/]
 [/if]
 [if (indexUnit.hasUnitSupportActions())]

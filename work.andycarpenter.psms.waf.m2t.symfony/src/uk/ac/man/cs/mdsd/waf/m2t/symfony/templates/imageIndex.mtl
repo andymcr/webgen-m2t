@@ -34,10 +34,15 @@
 [if (imageUnit.hasFilters())]
  [imageUnit.unitFilters()/]
 [/if]
+[if (imageUnit.hasPagination()
+		and imageUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
+ [imageUnit.pagination()/]
+[/if]
  <div class="[imageUnit.contentClass/]">
   [imageUnit.unitContent(null, accessor, 0)/]
  </div>
-[if (imageUnit.hasPagination())]
+[if (imageUnit.hasPagination()
+		and imageUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [imageUnit.pagination()/]
 [/if]
 </section>
