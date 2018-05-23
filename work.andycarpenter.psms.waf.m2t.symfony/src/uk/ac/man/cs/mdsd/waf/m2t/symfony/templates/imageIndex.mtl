@@ -22,28 +22,28 @@
 
 
 [template public unitView(unit : ContentUnit)
-	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
-[let imageUnit : ImageIndexUnit = unit.oclAsType(ImageIndexUnit)]
-[let accessor : String = imageUnit.instanceName()]
-[file(imageUnit.viewFilename(), false)]
+	? (unit.oclIsTypeOf(CardsUnit)) post(trim())]
+[let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
+[let accessor : String = cardsUnit.instanceName()]
+[file(cardsUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section class="[imageUnit.styleClass/]" id="[imageUnit.instanceName()/]">
-[if (not imageUnit.omitCaption)]
- <h4 class="[imageUnit.captionClass/]">[imageUnit.unitTitle()/]</h4>
+<section class="[cardsUnit.styleClass/]" id="[cardsUnit.instanceName()/]">
+[if (not cardsUnit.omitCaption)]
+ <h4 class="[cardsUnit.captionClass/]">[cardsUnit.unitTitle()/]</h4>
 [/if]
-[if (imageUnit.hasFilters())]
- [imageUnit.unitFilters()/]
+[if (cardsUnit.hasFilters())]
+ [cardsUnit.unitFilters()/]
 [/if]
-[if (imageUnit.hasPagination()
-		and imageUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
- [imageUnit.pagination()/]
+[if (cardsUnit.hasPagination()
+		and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
+ [cardsUnit.pagination()/]
 [/if]
- <div class="[imageUnit.contentClass/]">
-  [imageUnit.unitContent(null, accessor, 0)/]
+ <div class="[cardsUnit.contentClass/]">
+  [cardsUnit.unitContent(null, accessor, 0)/]
  </div>
-[if (imageUnit.hasPagination()
-		and imageUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
- [imageUnit.pagination()/]
+[if (cardsUnit.hasPagination()
+		and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
+ [cardsUnit.pagination()/]
 [/if]
 </section>
 [/file]
@@ -59,11 +59,11 @@
 <div class="[imageUnit.columnClass/]">
  <div class="[imageUnit.cardClass/]">
   [imageUnit.cardImage(variable)/]
-[if (not imageUnit.overlayTitle and not imageUnit.imageTitleFeature.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
+[if (not imageUnit.overlayTitle and not imageUnit.elementTitle.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
   [imageUnit.cardContent(variable)/]
 [/if]
 [if (imageUnit.hasInlineActions())]
-	[if (not imageUnit.overlaySingleSelectAction or  imageUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
+	[if (not imageUnit.overlaySingleSelectAction or imageUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
   [imageUnit.cardActions(variable)/]
 	[/if]
 [/if]
@@ -89,8 +89,8 @@
 [else]
  [unit.image(variable, imageClass)/]
 [/if]
-[if (unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
- <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{% [unit.imageTitleFeature.accessor(variable, unit.selection)/] %}</span>
+[if (unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{% [unit.elementTitle.accessor(variable, unit.selection)/] %}</span>
 [/if]
 </div>
 [/let]
@@ -98,8 +98,8 @@
 
 [template private cardContent(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-content">
-	[if (not unit.overlayTitle and not unit.imageTitleFeature.oclIsUndefined())]
- <span class="card-title[if (unit.truncateImageTitle)] truncate[/if]">{{ [unit.imageTitleFeature.accessor(variable, unit.selection)/][unit.imageTitleFeature.valueLabel()/] }}</span>
+	[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
 	[/if]
 	[for (field : UnitField | unit.displayFields)]
 		[if (field.isConditionalDisplay())]
@@ -117,7 +117,7 @@
 </div>
 [/template]
 
-[template private cardActions(unit : ImageIndexUnit, valueAccessor : String) post(trim())]
+[template private cardActions(unit : CardsUnit, valueAccessor : String) post(trim())]
 <div class="card-action">
 [for (action : InlineAction | unit.inlineActions())]
 	[if (unit.hasObjectAccess())]

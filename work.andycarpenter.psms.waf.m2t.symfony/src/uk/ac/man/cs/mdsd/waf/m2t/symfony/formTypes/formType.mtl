@@ -18,8 +18,8 @@
 
 [template public formTypes(model : WafModel)]
 [for (entity : Entity | model.formEntities())]
-	[for (form : DynamicUnit | entity.formsUsing(model))]
-	[let sameModel : Sequence(DynamicUnit) = form.sameModel(model)]
+	[for (form : SingletonUnit | entity.formsUsing(model))]
+	[let sameModel : Sequence(SingletonUnit) = form.sameModel(model)]
 		[if (form = sameModel->first())]
 [form.entityFormType(model)/]
 		[/if]
@@ -31,7 +31,7 @@
 [/for]
 [/template]
 
-[template private entityFormType(unit : DynamicUnit, model : WafModel)]
+[template private entityFormType(unit : SingletonUnit, model : WafModel)]
 [file(unit.formTypeFilename(model), false)]
 <?php
 namespace [unit.formTypeNamespace()/];
@@ -46,7 +46,7 @@ class [unit.typeClassName(model)/] extends AbstractType
 [for (feature : UnitField | unit.displayFields->sortedBy(f | f.feature().name))]
         $builder->[feature.formFeature()/];
 [/for]
-[if (unit.contentType().allowFormTypeCustomisation)]
+[if (unit.contentType.allowFormTypeCustomisation)]
 
     // [protected ('form customisation')]
     // [/protected]
@@ -96,7 +96,7 @@ class [association.typeClassName()/] extends AbstractType
 [/file]
 [/template]
 
-[template private useStatements(unit : DynamicUnit) post(trim())]
+[template private useStatements(unit : SingletonUnit) post(trim())]
 [for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.feature().name))]
 use [feature.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
@@ -140,7 +140,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
-[if (unit.contentType().allowFormTypeCustomisation)]
+[if (unit.contentType.allowFormTypeCustomisation)]
 // [protected ('custom.uses')]
 // [/protected]
 [/if]

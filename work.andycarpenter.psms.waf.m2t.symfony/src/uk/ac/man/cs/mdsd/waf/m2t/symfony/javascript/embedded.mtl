@@ -117,8 +117,5 @@ function [type.toLowerFirst()/]RemoveLink([feature.instanceName()/]) {
 [/template]
 
 [query private id(field : UnitField) : String
-	= let unit : DynamicUnit = field.displayedOn
-		in let typeClassName : String
-			= unit.typeClassName(unit.pageDisplayedOn().partOf)
-			in typeClassName.substring(1, typeClassName.size() - 4).asId().concat('_').concat(field.modelPropertyName())
+	= field.displayedOn.instanceName().asId().concat('_').concat(field.modelPropertyName())
 /]

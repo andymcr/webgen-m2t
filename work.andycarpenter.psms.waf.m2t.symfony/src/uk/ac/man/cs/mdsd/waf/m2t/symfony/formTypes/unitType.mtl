@@ -9,7 +9,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public formType(unit : DynamicUnit)]
+[template public formType(unit : SingletonUnit)]
 [let model : WafModel = unit.pageDisplayedOn().partOf]
 [file(unit.formTypeFilename(model), false)]
 <?php

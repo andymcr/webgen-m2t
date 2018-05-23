@@ -70,7 +70,7 @@
 
 [model.persistence.enumerationTypes().formType()/]
 [model.formTypes()/]
-[model.pages->collect(p | p.units)->select(u | u.hasInterfaceFields()).oclAsType(DynamicUnit).formType()/]
+[model.pages->collect(p | p.units)->select(u | u.hasInterfaceFields()).oclAsType(SingletonUnit).formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 
 [if (model.hasAPI())]

@@ -156,14 +156,6 @@
 		endif
 /]
 
-[query public hasOmitFieldLabels(unit : DataUnit) : Boolean
-	= if unit.oclIsTypeOf(DetailsUnit) then
-			unit.oclAsType(DetailsUnit).omitFieldLabels
-		else
-			unit.oclAsType(IndexUnit).omitColumnLabels
-		endif
-/]
-
 [query public id(unit : ContentUnit) : String
 	= unit.displayedOn.containerId().concat('.labels.').concat(unit.name.asId())
 /]

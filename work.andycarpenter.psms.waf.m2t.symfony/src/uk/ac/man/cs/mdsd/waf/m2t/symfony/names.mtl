@@ -59,10 +59,10 @@
 /]
 
 
-[query public formsUsing(entity : Entity, model : WafModel) : Sequence(DynamicUnit)
+[query public formsUsing(entity : Entity, model : WafModel) : Sequence(SingletonUnit)
 	= model.pages
 		->collect(p | p.units)
-		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+		->select(u | u.oclIsKindOf(SingletonUnit)).oclAsType(SingletonUnit)
 		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))
 		->select(u | u.contentType() = entity)
 		->sortedBy(u | u.name)
@@ -325,8 +325,8 @@
 	= resource.instanceName()
 /]
 
-[query public sameModel(form : DynamicUnit, model : WafModel) : Sequence(DynamicUnit)
-	= let forms : Sequence(DynamicUnit) = form.contentType().formsUsing(model)
+[query public sameModel(form : SingletonUnit, model : WafModel) : Sequence(SingletonUnit)
+	= let forms : Sequence(SingletonUnit) = form.contentType.formsUsing(model)
 		in if forms->size() < 2 then
 				forms
 			else
@@ -361,7 +361,7 @@
 			endif
 /]
 
-[query public typeClassName(unit : DynamicUnit, model : WafModel) : String
+[query public typeClassName(unit : SingletonUnit, model : WafModel) : String
 	= if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
 			unit.typeClassNameForm()
 		else
@@ -369,7 +369,7 @@
 		endif
 /]
 
-[query private typeClassNameEntity(unit : DynamicUnit, model : WafModel) : String
+[query private typeClassNameEntity(unit : SingletonUnit, model : WafModel) : String
 	= let sameModel : Sequence(DynamicUnit) = unit.sameModel(model)
 		in unit.typePrefix()
 			.concat(unit.contentType().modelName())

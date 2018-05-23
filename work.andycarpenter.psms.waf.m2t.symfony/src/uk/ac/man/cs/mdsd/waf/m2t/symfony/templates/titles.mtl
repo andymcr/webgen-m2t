@@ -12,50 +12,41 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
 
-[template public unitTitle(unit : DataUnit)
+[template public unitTitle(unit : SingletonUnit)
 	? (unit.title.oclIsUndefined()) post(trim())]
 [unit.title()/]
 [/template]
 
-[template public unitTitle(unit : DataUnit)
+[template public unitTitle(unit : SingletonUnit)
 	? (not unit.title.oclIsUndefined()) post(trim())]
 [let contentAccessor : String = unit.instanceName()]
-[if (unit.oclIsKindOf(SingletonUnit))]
 [unit.title(unit.title, contentAccessor)/]
-[else]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[unit.title(unit.title, collectionUnit.containerType.instanceName())/]
-[/let]
-[/if]
 [/let]
 [/template]
 
-[template public unitTitle(unit : IndexUnit, accessor : String)
-	? (unit.title.oclIsUndefined()) post(trim())]
+[template public unitTitle(unit : CollectionUnit)
+	? (unit.unitTitle.oclIsUndefined()) post(trim())]
 [unit.title()/]
 [/template]
 
-[template public unitTitle(unit : IndexUnit, accessor : String)
-	? (not unit.title.oclIsUndefined()) post(trim())]
-[unit.title(unit.title, accessor)/]
+[template public unitTitle(unit : CollectionUnit)
+	? (not unit.unitTitle.oclIsUndefined()) post(trim())]
+[let contentAccessor : String = unit.containerType.instanceName()]
+[unit.title(unit.unitTitle, contentAccessor)/]
+[/let]
 [/template]
 
-[template public unitTitle(unit : ImageUnit)
-	? (unit.title.oclIsUndefined()) post(trim())]
+[template public unitTitle(unit : CollectionUnit, contentAccessor : String)
+	? (unit.unitTitle.oclIsUndefined()) post(trim())]
 [unit.title()/]
 [/template]
 
-[template public unitTitle(unit : ImageUnit)
-	? (not unit.title.oclIsUndefined()) post(trim())]
-[unit.title(unit.title, unit.containerType.instanceName())/]
+[template public unitTitle(unit : CollectionUnit, contentAccessor : String)
+	? (not unit.unitTitle.oclIsUndefined()) post(trim())]
+[unit.title(unit.unitTitle, contentAccessor)/]
 [/template]
 
-[template public unitTitle(unit : EditUnit, accessor : String)
-	? (unit.title.oclIsUndefined()) post(trim())]
-[unit.title()/]
-[/template]
-
-[template public unitTitle(unit : EditUnit, accessor : String)
+[template public unitTitleX(unit : EditUnit, accessor : String)
 	? (not unit.title.oclIsUndefined()) post(trim())]
 [let unitAccessor : String = accessor.concat('.vars.value')]
 [let labelAccessor : String

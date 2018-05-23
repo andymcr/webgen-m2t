@@ -47,8 +47,8 @@
 [/let]
 [/template]
 
-[template public detailsContent(unit : DataUnit, accessor : String, depthInteger : Integer) post(trim())]
-[if (unit.hasOmitFieldLabels())]
+[template public detailsContent(unit : DetailsUnit, accessor : String, depthInteger : Integer) post(trim())]
+[if (unit.omitFieldLabels)]
 <ul class="[unit.contentClass/]">
 [else]
 <dl class="[unit.contentClass/]">
@@ -60,12 +60,12 @@
 	[if (field.isConditionalDisplay())]
 {% if [field.getImmediateValue(accessor, unit.hasObjectAccess())/] is not null %}
 	[/if]
-	[if (unit.hasOmitFieldLabels())]
+	[if (unit.omitFieldLabels)]
  <li class="[field.displayClass()/]">[field.displayField(accessor, unit.hasObjectAccess(), depthInteger)/]</li>
 	[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
+{{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</dd>
 	[/if]
 	[if (field.isConditionalDisplay())]
@@ -73,12 +73,12 @@
 		[let feature : UnitFeature = field.oclAsType(UnitFeature)]
 			[if (not feature.defaultDisplayValue.oclIsUndefined())]
 {% else %}
-				[if (unit.hasOmitFieldLabels())]
+				[if (unit.omitFieldLabels)]
  <li class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</li>
 				[else]
  <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
+{{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</dd>
 				[/if]
 			[/if]
@@ -90,7 +90,7 @@
 {% endif %}
 	[/if]
 [/for]
-[if (unit.hasOmitFieldLabels())]
+[if (unit.omitFieldLabels)]
 </ul>
 [else]
 </dl>

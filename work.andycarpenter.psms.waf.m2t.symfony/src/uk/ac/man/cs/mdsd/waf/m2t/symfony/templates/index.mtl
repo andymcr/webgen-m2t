@@ -53,7 +53,7 @@
 [/let]
 [/template]
 
-[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+[template protected unitContent(unit : IndexUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(IndexLineDirectionUnit)) post(trim())]
 [let indexUnit : IndexLineDirectionUnit = unit.oclAsType(IndexLineDirectionUnit)]
 <ul class="[indexUnit.contentClass/]">
@@ -100,7 +100,7 @@
 [/for]
 [/template]
 
-[template protected unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+[template protected unitContent(unit : IndexUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(IndexPageDirectionUnit)) post(trim())]
 [let indexUnit : IndexPageDirectionUnit = unit.oclAsType(IndexPageDirectionUnit)]
 <ul class="[indexUnit.contentClass/]">
@@ -133,7 +133,7 @@
 [/let]
 [/template]
 
-[template public unitContent(unit : DataUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+[template public unitContent(unit : IndexUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
 <table class="[indexUnit.contentClass/]">

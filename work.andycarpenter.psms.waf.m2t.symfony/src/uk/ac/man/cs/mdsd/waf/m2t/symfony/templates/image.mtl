@@ -76,14 +76,14 @@
 [/template]
 
 [template public imageAlt(unit : ImageUnit, baseAccessor : String) post(trim())]
-[if (not unit.imageTitleFeature.oclIsUndefined())]
-alt="{{ [unit.imageTitleFeature.accessor(baseAccessor, unit.selection)/][unit.imageTitleFeature.valueLabel()/] }}"
+[if (not unit.elementTitle.oclIsUndefined())]
+alt="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}"
 [/if]
 [/template]
 
 [template public imageTitle(unit : ImageUnit, baseAccessor : String) post(trim())]
-[if (not unit.imageTitleFeature.oclIsUndefined())]
-title="{{ [unit.imageTitleFeature.accessor(baseAccessor, unit.selection)/][unit.imageTitleFeature.valueLabel()/] }}"
+[if (not unit.elementTitle.oclIsUndefined())]
+title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}"
 [/if]
 [/template]
 

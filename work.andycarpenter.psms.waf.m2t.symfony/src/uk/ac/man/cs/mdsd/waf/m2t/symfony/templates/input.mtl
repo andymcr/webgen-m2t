@@ -17,26 +17,22 @@
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section class="[dynamicUnit.styleClass/]{%if [dynamicUnit.errorName()/] | length > 0 %} [dynamicUnit.errorClass/]{% endif %}" id="[dynamicUnit.instanceName()/]">
-[if (dynamicUnit.oclIsKindOf(EditUnit))]
- <h4 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[dynamicUnit.oclAsType(EditUnit).unitTitle(dynamicUnit.instanceName())/]</h4>
-[else]
- <h4 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">{{ '[unit.id()/]' | trans }}]</h4>
-[/if]
-{% if [dynamicUnit.errorName()/] | length > 0 %}
- <section class="[dynamicUnit.errorClass/]">
-  <p class="[dynamicUnit.errorClass/]">{{ [dynamicUnit.errorName()/] }}</p>
-[if (dynamicUnit.hasMessagesOnFormHead())]
-  [dynamicUnit.formErrors()/]
+<section class="[singletonUnit.styleClass/]{%if [singletonUnit.errorName()/] | length > 0 %} [singletonUnit.errorClass/]{% endif %}" id="[singletonUnit.instanceName()/]">
+ <h4 class="[singletonUnit.captionClass/][if (singletonUnit.omitCaption)] hidden[/if]">[singletonUnit.unitTitle()/]</h4>
+{% if [singletonUnit.errorName()/] | length > 0 %}
+ <section class="[singletonUnit.errorClass/]">
+  <p class="[singletonUnit.errorClass/]">{{ [singletonUnit.errorName()/] }}</p>
+[if (singletonUnit.hasMessagesOnFormHead())]
+  [singletonUnit.formErrors()/]
 [/if]
  </section>
 {% endif %}
 [if (unit.oclIsTypeOf(MapUnit))]
- [dynamicUnit.map()/]
+ [singletonUnit.map()/]
 [else]
- [dynamicUnit.unitContent(null, dynamicUnit.instanceName(), 0)/]
+ [singletonUnit.unitContent(null, singletonUnit.instanceName(), 0)/]
 [/if]
 </section>
 [/let]

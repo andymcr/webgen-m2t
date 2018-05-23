@@ -44,9 +44,9 @@
 		->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
 /]
 
-[query public formUnits(page : Page) : Sequence(DynamicUnit)
+[query public formUnits(page : Page) : Sequence(SingletonUnit)
 	= page.dynamicUnits()
-		->select(u | u.oclIsKindOf(ControlUnit) or u.oclIsKindOf(EditUnit)).oclAsType(DynamicUnit)
+		->select(u | u.oclIsKindOf(ControlUnit) or u.oclIsKindOf(EditUnit)).oclAsType(SingletonUnit)
 /]
 
 [query public galleryUnits(page : Page) : Sequence(GalleryUnit)
