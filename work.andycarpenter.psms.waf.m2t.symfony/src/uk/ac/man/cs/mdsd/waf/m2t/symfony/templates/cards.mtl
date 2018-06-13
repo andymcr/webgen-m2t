@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module imageIndex(
+[module cards(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
@@ -51,20 +51,30 @@
 [/let]
 [/template]
 
-[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
-	? (unit.oclIsTypeOf(ImageIndexUnit)) post(trim())]
-[let imageUnit : ImageIndexUnit = unit.oclAsType(ImageIndexUnit)]
-[let variable : String = imageUnit.contentType().instanceName()]
+[template private unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+	? (unit.oclIsTypeOf(CardsUnit)) post(trim())]
+[let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
+[let variable : String = cardsUnit.contentType().instanceName()]
 {% for [variable/] in [accessor/] %}
-<div class="[imageUnit.columnClass/]">
- <div class="[imageUnit.cardClass/]">
+<div class="[cardsUnit.columnClass/]">
+ <div class="[cardsUnit.cardClass/]">
+[if (cardsUnit.oclIsTypeOf(CardsIndexUnit))]
+[let textUnit : CardsIndexUnit = cardsUnit.oclAsType(CardsIndexUnit)]
+	[if (not textUnit.elementTitle.oclIsUndefined() or textUnit.displayFields->notEmpty())]
+  [textUnit.cardContent(variable)/]
+	[/if]
+[/let]
+[elseif (cardsUnit.oclIsTypeOf(ImageIndexUnit))]
+[let imageUnit : ImageIndexUnit = cardsUnit.oclAsType(ImageIndexUnit)]
   [imageUnit.cardImage(variable)/]
-[if (not imageUnit.overlayTitle and not imageUnit.elementTitle.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
+	[if (not imageUnit.overlayTitle and not imageUnit.elementTitle.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
   [imageUnit.cardContent(variable)/]
+	[/if]
+[/let]
 [/if]
-[if (imageUnit.hasInlineActions())]
-	[if (not imageUnit.overlaySingleSelectAction or imageUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
-  [imageUnit.cardActions(variable)/]
+[if (cardsUnit.hasInlineActions())]
+	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
+  [cardsUnit.cardActions(variable)/]
 	[/if]
 [/if]
  </div>
@@ -96,6 +106,27 @@
 [/let]
 [/template]
 
+[template private cardContent(unit : CardsIndexUnit, variable : String) post(trim())]
+<div class="card-content">
+	[if (unit.elementTitle.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
+	[/if]
+	[for (field : UnitField | unit.displayFields)]
+		[if (field.isConditionalDisplay())]
+ {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
+		[/if]
+ <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
+[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
+[field.displayValue(variable, true)/]</p>
+		[if (field.isConditionalDisplay())]
+{%- endif %}
+		[/if]
+	[/for]
+</div>
+[/template]
+
 [template private cardContent(unit : ImageIndexUnit, variable : String) post(trim())]
 <div class="card-content">
 	[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
@@ -115,6 +146,22 @@
 		[/if]
 	[/for]
 </div>
+[/template]
+
+[template private cardFields(unit : CardsUnit, variable : String) post(trim())]
+[for (field : UnitField | unit.displayFields)]
+	[if (field.isConditionalDisplay())]
+ {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
+	[/if]
+ <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
+[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
+[field.displayValue(variable, true)/]</p>
+	[if (field.isConditionalDisplay())]
+{%- endif %}
+	[/if]
+[/for]
 [/template]
 
 [template private cardActions(unit : CardsUnit, valueAccessor : String) post(trim())]
