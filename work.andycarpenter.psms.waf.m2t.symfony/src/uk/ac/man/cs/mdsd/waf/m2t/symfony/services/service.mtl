@@ -604,14 +604,6 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/if]
 [/template]
 
-[template private order(order : Order) post(trim())]
-[if (order.oclIsTypeOf(Asc))]
-'ASC'
-[else]
-'DESC'
-[/if]
-[/template]
-
 [template private queryParametersCode(selection : Selection, userService : Service) post(trim())]
 [if (selection.selectPath->notEmpty())]
 [selection.querySelectedParameters()/]

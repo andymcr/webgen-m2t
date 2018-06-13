@@ -196,6 +196,15 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 /]
 
 
+[template public order(order : Order) post(trim())]
+[if (order.oclIsTypeOf(Asc))]
+'ASC'
+[else]
+'DESC'
+[/if]
+[/template]
+
+
 [template public queryParameter(expression : Expression, userService : Service)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
