@@ -101,7 +101,7 @@ class [association.typeClassName()/] extends AbstractType
 [for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.feature().name))]
 use [feature.modelsNamespace()/]\[feature.enumerationType().modelName()/];
 [/for]
-[if (unit.associationFeatures()->select(a | not a.selection.oclIsUndefined())->notEmpty())]
+[if (unit.associationFeatures()->select(a | not a.options.oclIsUndefined())->notEmpty())]
 use Doctrine\ORM\EntityRepository;
 [/if]
 [if (unit.associationFeatures()->notEmpty())]
@@ -295,11 +295,11 @@ TextType::class
 [template private formFeature(field : UnitField)
 	? (field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[association.association.formFeature(association.selection)/]
+[association.association.formFeature(association.options, association.filteredOptions.oclIsUndefined())/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature, selection : Selection)
+[template private formFeature(feature : Feature, selection : Selection, allOptions : Boolean)
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
@@ -309,8 +309,12 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     'required' => false,
 [/if]
     'class' => '[association.appName()/]:[association.modelName()/]',
-[if (not selection.oclIsUndefined())]
+[if (allOptions)]
+	[if (not selection.oclIsUndefined())]
     [selection.options()/]
+	[/if]
+[else]
+    'choices' => array(),
 [/if]
     'choice_label' => 'defaultLabel',
     'choice_translation_domain' => false,
