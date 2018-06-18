@@ -159,8 +159,7 @@
 
 [query public isRequired(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(SingletonAttribute) then
-			let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)
-				in attribute.required and attribute.slugFields->isEmpty()
+			feature.oclAsType(SingletonAttribute).required
 		else if feature.oclIsTypeOf(SingletonAssociation) then
 			feature.oclAsType(SingletonAssociation).required
 		else

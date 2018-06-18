@@ -240,7 +240,7 @@ protected $updated;
 [if (attribute.primaryKey)]
 * @ORM\Id
 [/if]
-* @ORM\Column([if (feature.columnName.isReservedWord())]name="`[feature.columnName/]`", [/if]type="[attribute.ormType/]"[if (not attribute.isRequired() and attribute.slugFields->isEmpty())], nullable=true[/if])
+* @ORM\Column([if (feature.columnName.isReservedWord())]name="`[feature.columnName/]`", [/if]type="[attribute.ormType/]"[if (not attribute.isRequired())], nullable=true[/if])
 [if (attribute.slugFields->notEmpty())]
 * @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.columnName/]"[/for]})
 [/if]
@@ -389,11 +389,7 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [template private validationAnnotation(feature : Feature) post(trim())]
 [if (feature.isRequired())]
 	[if (feature.oclIsKindOf(Attribute))]
-		[if (feature.oclAsType(Attribute).slugFields->isEmpty())]
 * @Assert\NotBlank
-		[else]
-* @Assert\NotBlank
-		[/if]
 	[else]
 * @Assert\NotNull
 	[/if]
