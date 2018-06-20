@@ -72,9 +72,11 @@
 [let labelAccessor : String
 	= if title.oclIsKindOf(Attribute) then
 			accessor.concat('.').concat(title.oclAsType(Attribute).modelPropertyName())
+		else if unit.oclIsKindOf(EditUnit) then
+			accessor.concat('.vars.value')
 		else
 			accessor
-		endif]
+		endif endif]
 {{ [title.label(labelAccessor)/] }}
 [/let]
 [/template]
