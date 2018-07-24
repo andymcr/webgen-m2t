@@ -14,8 +14,10 @@
 [file(model.javascriptAssetsDirectory().concat('/').concat('app').concat(model.javascriptExtension()), false)]
 [model.javascriptNavigation()/]
 
+[if (model.hasInputAssociations())]
 [model.javascriptSelect()/]
 
+[/if]
 [if (model.hasImageIndexUnits())]
 [model.javascriptImageIndex()/]
 
