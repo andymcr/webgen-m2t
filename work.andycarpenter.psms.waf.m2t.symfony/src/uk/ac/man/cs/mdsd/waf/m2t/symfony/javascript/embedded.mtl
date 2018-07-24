@@ -4,6 +4,7 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
@@ -26,6 +27,8 @@
 [attribute.addLinks(attribute.attribute.singletonName)/]
 
 	[if (attribute.collectionUiAllowAdd)]
+[attribute.addLink(attribute.attribute.singletonName)/]
+
 [attribute.addForm(attribute.attribute.singletonName)/]
 
 	[/if]
@@ -61,13 +64,13 @@
 
 [template private addLinks(feature : UnitFeature, type : String) post(trim())]
 [if (feature.collectionUiAllowRemove)]
-var [feature.feature().name/] = document.querySelectorAll('div.[feature.feature().name.asId()/] > div');
+var [feature.feature().name/] = document.querySelectorAll('#[feature.displayedOn.formId()/] > div > div.[feature.feature().name.asId()/] > div');
 for (var i = 0; i < [feature.feature().name/].length; ++i) {
     [type.toLowerFirst()/]RemoveLink([feature.feature().name/]['['/]i[']'/]);
 }
 [/if]
 [if (feature.collectionUiAllowAdd)]
-var [feature.feature().name/]Container = document.querySelector('div.[feature.feature().name.asId()/]');
+var [feature.feature().name/]Container = document.querySelector('#[feature.displayedOn.formId()/] > div > div.[feature.feature().name.asId()/]');
 if ([feature.feature().name/]Container) {
     [feature.feature().name/]Container.dataset.index = [feature.feature().name/].length;
     [type.toLowerFirst()/]AddLink([feature.feature().name/]Container);
