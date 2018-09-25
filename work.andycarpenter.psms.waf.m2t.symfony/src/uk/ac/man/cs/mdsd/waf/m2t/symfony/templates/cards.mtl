@@ -22,7 +22,7 @@
 
 
 [template public unitView(unit : ContentUnit)
-	? (unit.oclIsTypeOf(CardsUnit)) post(trim())]
+	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let accessor : String = cardsUnit.instanceName()]
 [file(cardsUnit.viewFilename(), false)]
@@ -52,7 +52,7 @@
 [/template]
 
 [template private unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
-	? (unit.oclIsTypeOf(CardsUnit)) post(trim())]
+	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let variable : String = cardsUnit.contentType().instanceName()]
 {% for [variable/] in [accessor/] %}
