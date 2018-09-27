@@ -8,6 +8,18 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units]
+
+
+[query public formId(unit : DynamicUnit) : String
+	= let typeName : String
+		= unit.contentType().name.asId()
+		in if false then
+				typeName
+			else
+				typeName
+			endif
+/]
 
 
 [query public homePage(model : WafModel) : Page

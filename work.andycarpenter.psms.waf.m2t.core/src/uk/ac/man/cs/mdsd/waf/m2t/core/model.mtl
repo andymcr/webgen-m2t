@@ -2,6 +2,7 @@
 [module model(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units]
 
 
 [query public formFields(model : WafModel) : Sequence(UnitField)
@@ -44,6 +45,10 @@
 	= model.indexUnits()->notEmpty()
 /]
 
+[query public hasInputAssociations(model : WafModel) : Boolean
+	= model.inputAssociations()->notEmpty()
+/]
+
 [query public hasSliderUnits(model : WafModel) : Boolean
 	= model.sliderUnits()->notEmpty()
 /]
@@ -58,6 +63,11 @@
 
 [query public indexUnits(model : WafModel) : Sequence(IndexUnit)
 	= model.pages->collect(p | p.indexUnits())
+/]
+
+[query public inputAssociations(model : WafModel) : Sequence(UnitAssociation)
+	= model.formUnits()
+		->collect(u | u.associationFeatures())
 /]
 
 [query public sliderUnits(model : WafModel) : Sequence(SliderUnit)
