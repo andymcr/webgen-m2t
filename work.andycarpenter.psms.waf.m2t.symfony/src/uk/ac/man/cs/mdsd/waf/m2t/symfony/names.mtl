@@ -321,6 +321,11 @@
 			endif
 /]
 
+[query public routeName(association : UnitAssociation) : String
+	= association.displayedOn.uniqueName()
+		.concat('_').concat(association.name)
+/]
+
 [query public routeName(resource : Resource) : String
 	= resource.instanceName()
 /]
@@ -399,6 +404,12 @@
 	= unit.name.toLowerFirst()
 /]
 
+
+[query public actionName(association : UnitAssociation) : String
+	= association.displayedOn.instanceName()
+		.concat(association.name.toUpperFirst())
+		.concat('Action')
+/]
 
 [query public instanceName(field : UnitField) : String
 	= if field.oclIsTypeOf(UnitAttribute) then
