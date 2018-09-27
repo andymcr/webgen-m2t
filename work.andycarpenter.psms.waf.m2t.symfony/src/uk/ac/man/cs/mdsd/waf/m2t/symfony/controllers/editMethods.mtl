@@ -26,6 +26,12 @@
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[for (association : UnitAssociation | editUnit.associationFeatures())]
+	[if (not association.filteredOptions.oclIsUndefined())]
+[association.optionsMethod(editUnit)/]
+
+	[/if]
+[/for]
 [if (not editUnit.oclIsTypeOf(UpdateUnit))]
 [editUnit.actionAddMethod()/]
 
@@ -39,6 +45,41 @@
 
 [/if]
 [/let]
+[/template]
+
+[template private optionsMethod(association : UnitAssociation, unit : EditUnit) post(trim())]
+/**
+ [association.routeAnnotation(unit)/]
+[if (unit.hasAuthorisation())]
+ [unit.securityAnnotation()/]
+[/if]
+ */
+public function [association.actionName()/]([association.filteredOptions.optionFormals()/])
+{
+    $selection = $this->[association.filteredOptions.selection.partOf.instanceServiceName()/]->[association.filteredOptions.methodName/]([association.filteredOptions.selectionActuals()/]);
+    $matches = array();
+    foreach ($selection as $option) {
+        $matches['['/]$option->getId()[']'/] = $option->defaultLabel();
+    }
+
+    return new JsonResponse($matches);
+}
+[/template]
+
+[template private optionFormals(filter : Filter) post(trim())]
+[for (parameter : FormalParameter | filter.selection.parameters) separator(', ')]
+$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
+ = [parameter.defaultValue/][/if][/for][if (filter.selection.parameters->notEmpty() and filter.parameters->notEmpty())]
+, [/if][for (parameter : FormalParameter | filter.parameters) separator(', ')]
+$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
+ = [parameter.defaultValue/][/if][/for]
+[/template]
+
+[template private selectionActuals(filter : Filter) post(trim())]
+[for (parameter : FormalParameter | filter.selection.parameters) separator(', ')]
+$[parameter.name/][/for][if (filter.selection.parameters->notEmpty() and filter.parameters->notEmpty())]
+, [/if][for (parameter : FormalParameter | filter.parameters) separator(', ')]
+$[parameter.name/][/for]
 [/template]
 
 [template private actionAddMethod(unit : EditUnit) post(trim())]

@@ -99,7 +99,7 @@
 			association.pseudoAccessorWithChild(parentAccessor)
 		else 
 			let accessor : String
-				= if association.selection.oclIsUndefined() then
+				= if association.options.oclIsUndefined() then
 						association.propertyAccessor(parentAccessor, alias, objectAccess)
 					else
 						association.collectionAccessor(parentAccessor)
@@ -115,10 +115,10 @@
 
 [query public pseudoAccessor(association : UnitAssociation, parentAccessor : String) : String
 	= let methodName : String
-		= if association.selection.oclIsUndefined() then
+		= if association.options.oclIsUndefined() then
 				association.name
 			else
-				association.association.findMethodName(association.selection)
+				association.association.findMethodName(association.options)
 			endif
 		in association.serviceAccessor()
 			.concat('.').concat(methodName)
@@ -141,7 +141,7 @@ if not association.childFeature.oclIsUndefined() then
 	= association.serviceAccessor()
 				.concat('.')
 .concat(association.name)
-.concat(association.selection.instanceName().toUpperFirst())
+.concat(association.options.instanceName().toUpperFirst())
 -- .concat(association.path.childSelectionName(association.selection))
 				.concat('(').concat(parentAccessor).concat(')')
 /]

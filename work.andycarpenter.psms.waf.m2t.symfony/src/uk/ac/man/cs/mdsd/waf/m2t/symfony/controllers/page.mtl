@@ -191,9 +191,14 @@ public function [unit.supportActionName()/](Request $request[if (unit.hasRoutePa
 		[if (unit.oclIsTypeOf(DetailsUnit))]
     $[unit.contentType().instanceName()/] = [unit.loadInstance()/];
 		[elseif (unit.oclIsKindOf(CollectionUnit))]
+		[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 			[if (not unit.oclAsType(CollectionUnit).containerType.oclIsUndefined())]
-    [unit.oclAsType(CollectionUnit).loadContainer()/]
+    $[collectionUnit.containerInstanceName()/] = [unit.oclAsType(CollectionUnit).loadContainerInstance()/]
+    if (!$[collectionUnit.containerInstanceName()/]) {
+        throw $this->createNotFoundException('The [collectionUnit.containerType.name/] does not exist');
+    }
 			[/if]
+		[/let]
 		[/if]
     [unit.actionHandlers()/]
 }

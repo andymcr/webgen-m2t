@@ -64,6 +64,10 @@
 [unit.routeAnnotation(routeName, unit.uriPath(unit.contentType, unit.contentType.parentEntity(), suffix), true)/]
 [/template]
 
+[template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]
+[unit.routeAnnotation(association.routeName(), unit.uriPath(unit.contentType, unit.contentType.parentEntity(), association.name), true)/]
+[/template]
+
 [template public routeAnnotation(action : InlineAction, unit : CollectionUnit, suffix : String) post(trim())]
 [unit.oclAsType(DynamicUnit).routeAnnotation(action.routeName(), action.uriPath(unit, suffix), false)/]
 [/template]
