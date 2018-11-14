@@ -58,14 +58,14 @@
 {% for [variable/] in [accessor/] %}
 <div class="[cardsUnit.columnClass/]">
  <div class="[cardsUnit.cardClass/]">
-[if (cardsUnit.oclIsTypeOf(CardsIndexUnit))]
-[let textUnit : CardsIndexUnit = cardsUnit.oclAsType(CardsIndexUnit)]
+[if (cardsUnit.oclIsTypeOf(TextCardsUnit))]
+[let textUnit : TextCardsUnit = cardsUnit.oclAsType(TextCardsUnit)]
 	[if (not textUnit.elementTitle.oclIsUndefined() or textUnit.displayFields->notEmpty())]
   [textUnit.cardContent(variable)/]
 	[/if]
 [/let]
-[elseif (cardsUnit.oclIsTypeOf(ImageIndexUnit))]
-[let imageUnit : ImageIndexUnit = cardsUnit.oclAsType(ImageIndexUnit)]
+[elseif (cardsUnit.oclIsTypeOf(ImageCardsUnit))]
+[let imageUnit : ImageCardsUnit = cardsUnit.oclAsType(ImageCardsUnit)]
   [imageUnit.cardImage(variable)/]
 	[if (not imageUnit.overlayTitle and not imageUnit.elementTitle.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
   [imageUnit.cardContent(variable)/]
@@ -84,7 +84,7 @@
 [/let]
 [/template]
 
-[template private cardImage(unit : ImageIndexUnit, variable : String) post(trim())]
+[template private cardImage(unit : ImageCardsUnit, variable : String) post(trim())]
 [let imageClass : String = if unit.enableImageEnlargement then 'materialboxed' else '' endif]
 <div class="card-image">
 [if (unit.badges->notEmpty())]
@@ -106,9 +106,9 @@
 [/let]
 [/template]
 
-[template private cardContent(unit : CardsIndexUnit, variable : String) post(trim())]
+[template private cardContent(unit : TextCardsUnit, variable : String) post(trim())]
 <div class="card-content">
-	[if (unit.elementTitle.oclIsUndefined())]
+	[if (not unit.elementTitle.oclIsUndefined())]
  <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
 	[/if]
 	[for (field : UnitField | unit.displayFields)]
@@ -127,7 +127,7 @@
 </div>
 [/template]
 
-[template private cardContent(unit : ImageIndexUnit, variable : String) post(trim())]
+[template private cardContent(unit : ImageCardsUnit, variable : String) post(trim())]
 <div class="card-content">
 	[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
  <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
