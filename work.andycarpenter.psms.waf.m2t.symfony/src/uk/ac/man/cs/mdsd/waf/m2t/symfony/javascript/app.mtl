@@ -18,7 +18,7 @@
 [model.javascriptSelect()/]
 
 [/if]
-[if (model.hasImageIndexUnits())]
+[if (model.hasImageCardsUnits())]
 [model.javascriptImageIndex()/]
 
 [/if]

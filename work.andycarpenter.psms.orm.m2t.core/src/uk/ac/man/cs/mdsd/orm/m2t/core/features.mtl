@@ -158,13 +158,7 @@
 /]
 
 [query public isRequired(feature : Feature) : Boolean
-	= if feature.oclIsKindOf(SingletonAttribute) then
-			feature.oclAsType(SingletonAttribute).required
-		else if feature.oclIsTypeOf(SingletonAssociation) then
-			feature.oclAsType(SingletonAssociation).required
-		else
-			false
-		endif endif
+	= feature.cardinality = Cardinality::Required
 /]
 
 [query public isSingleton(feature : Feature) : Boolean

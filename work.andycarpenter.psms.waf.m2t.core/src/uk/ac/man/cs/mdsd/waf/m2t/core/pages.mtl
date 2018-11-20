@@ -12,8 +12,8 @@
 	= page.units->collect(u | u.childGalleryUnits())
 /]
 
-[query private childImageIndexUnits(page : Page) : Sequence(ImageIndexUnit)
-	= page.units->collect(u | u.childImageIndexUnits())
+[query private childImageCardsUnits(page : Page) : Sequence(ImageCardsUnit)
+	= page.units->collect(u | u.childImageCardsUnits())
 /]
 
 [query private childIndexUnits(page : Page) : Sequence(IndexUnit)
@@ -65,8 +65,8 @@
 	= page.childGalleryUnits()->notEmpty()
 /]
 
-[query private hasChildImageIndexUnits(page : Page) : Boolean
-	= page.childImageIndexUnits()->notEmpty()
+[query private hasChildImageCardsUnits(page : Page) : Boolean
+	= page.childImageCardsUnits()->notEmpty()
 /]
 
 [query private hasChildIndexUnits(page : Page) : Boolean
@@ -93,8 +93,8 @@
 	= page.galleryUnits()->notEmpty() or page.hasChildGalleryUnits()
 /]
 
-[query public hasImageIndexUnits(page : Page) : Boolean
-	= page.imageIndexUnits()->notEmpty() or page.hasChildImageIndexUnits()
+[query public hasImageCardsUnits(page : Page) : Boolean
+	= page.imageCardsUnits()->notEmpty() or page.hasChildImageCardsUnits()
 /]
 
 [query public hasImageUnits(page : Page) : Boolean
@@ -117,8 +117,8 @@
 	= page.sliderUnits()->notEmpty() or page.hasChildSliderUnits()
 /]
 
-[query public imageIndexUnits(page : Page) : Sequence(ImageIndexUnit)
-	= page.collectionUnits()->select(u | u.oclIsTypeOf(ImageIndexUnit)).oclAsType(ImageIndexUnit)
+[query public imageCardsUnits(page : Page) : Sequence(ImageCardsUnit)
+	= page.collectionUnits()->select(u | u.oclIsTypeOf(ImageCardsUnit)).oclAsType(ImageCardsUnit)
 /]
 
 [query public imageUnits(page : Page) : Sequence(ImageUnit)
