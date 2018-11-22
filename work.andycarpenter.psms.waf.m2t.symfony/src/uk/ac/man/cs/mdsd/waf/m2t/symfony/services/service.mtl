@@ -170,11 +170,6 @@ TokenStorageInterface $securityTokenStorage[else][model.userService().className(
 
 [/for]
 [if (not service.serves.oclIsUndefined())]
-	[if (service.serves.associations()->select(a | not a.isSingleton(service.serves))
-		->collect(a | a.targetType().services(model)->first().selections->select(s | s.fields->isEmpty()))->notEmpty())]
-    [service.childSelectionMethods(model)/]
-
-	[/if]
 	[if (service.serves.associations()->select(a | a.isPseudo())->notEmpty())]
     [service.serves.pseudoAssociationMethods(model)/]
 
@@ -632,70 +627,6 @@ else
 [else]
 return $query->getResult();
 [/if]
-[/template]
-
-[template private childSelectionMethods(service : Service, model : WafModel) post(trim())]
-[for (association : Association | service.serves.associations())]
-	[if (not association.isSingleton(service.serves))]
-	[let targetType : Entity = association.targetType()]
-		[if (not targetType.oclIsUndefined())]
-		[let targetService : Service = targetType.services(model)->first()]
-			[for (selection : Selection | targetService.selections->select(s | s.fields->isEmpty()))]
-				[if (selection.joins->isEmpty())]
-					[if (not selection.condition.oclIsUndefined() or selection.ordering->notEmpty())]
-[service.childCriteriaMethod(association, selection)/]
-
-					[/if]
-				[else]
-					[if (not selection.condition.oclIsUndefined())]
-[service.childFilterMethod(association, selection)/]
-
-					[/if]
-				[/if]
-			[/for]
-		[/let]
-		[/if]
-	[/let]
-	[/if]
-[/for]
-[/template]
-
-[template private childCriteriaMethod(service : Service, association : Association, selection : Selection) post(trim())]
-public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.limit <> 1)], [selection.criteriaLimitFormals()/][/if])
-{
-    $criteria = Criteria::create();
-[if (not selection.condition.oclIsUndefined())]
-    $criteria->where([selection.condition.criteriaExpression()/]);
-[/if]
-[if (selection.ordering->size() > 0)]
-    $criteria->orderBy(array(
-	[for (order : Order | selection.ordering)]
-        [order.path.criteriaExpression()/] => [if (selection.ordering->first().oclIsTypeOf(Asc))]Criteria::ASC[else]Criteria::DESC[/if],
-	[/for]
-    ));
-[/if]
-[if (selection.limit = 1)]
-    $criteria->setMaxResults(1);
-[elseif (selection.limit > -1)]
-    if ($limit > 0) {
-        $criteria->setFirstResult($offset);
-        $criteria->setMaxResults($limit);
-    }
-[/if]
-
-    return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->matching($criteria);
-}
-[/template]
-
-[template private childFilterMethod(service : Service, association : Association, selection : Selection) post(trim())]
-public function [association.childSelectionName(selection)/]($[service.instanceName()/][if (selection.limit <> 1)], [selection.criteriaLimitFormals()/][/if])
-{
-
-    return $[service.instanceName()/]->get[association.modelPropertyName().toUpperFirst()/]()->filter(
-        function ($[association.targetType().instanceName()/]) [comment use () /]{
-            return true;
-        });
-}
 [/template]
 
 [template private pseudoAssociationMethods(entity : Entity, model : WafModel) post(trim())]
