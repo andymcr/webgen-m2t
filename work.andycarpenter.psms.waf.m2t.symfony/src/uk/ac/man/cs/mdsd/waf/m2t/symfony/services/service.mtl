@@ -767,5 +767,5 @@ public function [operation.methodName()/]([operation.formalParameters()/])
 
 [template private formalParameters(operation : BusinessOperation) post(trim())]
 [for (parameter : FormalParameter | operation.parameters) separator(', ')]
-$[parameter.name/][/for]
+$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())] = [parameter.defaultValue/][/if][/for]
 [/template]
