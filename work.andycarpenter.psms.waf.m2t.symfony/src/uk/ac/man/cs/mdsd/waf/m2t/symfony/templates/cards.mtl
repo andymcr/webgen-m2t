@@ -64,6 +64,13 @@
   [textUnit.cardContent(variable)/]
 	[/if]
 [/let]
+[elseif (cardsUnit.oclIsTypeOf(DateCardsUnit))]
+[let dateUnit : DateCardsUnit = cardsUnit.oclAsType(DateCardsUnit)]
+  [dateUnit.dateImage(variable)/]
+	[if (not dateUnit.elementTitle.oclIsUndefined() or dateUnit.displayFields->notEmpty())]
+  [dateUnit.cardContent(variable)/]
+	[/if]
+[/let]
 [elseif (cardsUnit.oclIsTypeOf(ImageCardsUnit))]
 [let imageUnit : ImageCardsUnit = cardsUnit.oclAsType(ImageCardsUnit)]
   [imageUnit.cardImage(variable)/]
@@ -82,6 +89,31 @@
 {% endfor %}
 [/let]
 [/let]
+[/template]
+
+[template private dateImage(unit : DateCardsUnit, variable : String) post(trim())]
+<div class="card-image">
+[if (unit.badges->notEmpty())]
+	[for (badge : Badge | unit.badges)]
+ [badge.badge(variable)/]
+	[/for]
+[/if]
+[if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[let action : InlineAction = unit.inlineActions()->first()]
+ [action.actionLink(unit.contentType(), variable, unit.dateIcon(variable), null, variable, unit.hasObjectAccess())/]
+[/let]
+[else]
+ [unit.dateIcon(variable)/]
+[/if]
+</div>
+[/template]
+
+[template private dateIcon(unit : DateCardsUnit, variable : String) post(trim())]
+<time datetime="{{ [unit.elementDate.accessor(variable, unit.selection)/] | date }}" class="xxxx">
+ <em>{{ [unit.elementDate.accessor(variable, unit.selection)/] | date('l') }}</em>
+ <strong>{{ [unit.elementDate.accessor(variable, unit.selection)/] | date('j') }}</strong>
+ <em>{{ [unit.elementDate.accessor(variable, unit.selection)/] | date('F') }}</em>
+</time>
 [/template]
 
 [template private cardImage(unit : ImageCardsUnit, variable : String) post(trim())]
@@ -107,6 +139,27 @@
 [/template]
 
 [template private cardContent(unit : TextCardsUnit, variable : String) post(trim())]
+<div class="card-content">
+	[if (not unit.elementTitle.oclIsUndefined())]
+ <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
+	[/if]
+	[for (field : UnitField | unit.displayFields)]
+		[if (field.isConditionalDisplay())]
+ {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
+		[/if]
+ <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
+[if (field.hasCustomisedLabel())]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
+[field.displayValue(variable, true)/]</p>
+		[if (field.isConditionalDisplay())]
+{%- endif %}
+		[/if]
+	[/for]
+</div>
+[/template]
+
+[template private cardContent(unit : DateCardsUnit, variable : String) post(trim())]
 <div class="card-content">
 	[if (not unit.elementTitle.oclIsUndefined())]
  <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
