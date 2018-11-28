@@ -25,7 +25,6 @@
 <?php
 namespace [service.servicesNamespace()/];
 
-use Doctrine\Common\Collections\Criteria;
 [if (not service.serves.oclIsUndefined())]
 use Doctrine\Common\Persistence\ManagerRegistry;
 	[if (service.serves.hasPseudoAssociations())]
