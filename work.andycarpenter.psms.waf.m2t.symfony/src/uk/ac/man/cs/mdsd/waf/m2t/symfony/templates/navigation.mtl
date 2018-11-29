@@ -38,11 +38,12 @@
 [/for]
 [if (model.isAuthenticated())]
 {%- if app.user -%}
- <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+ <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a>
 {%- elseif not app.user -%}
- <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]<i class="material-icons right">arrow_drop_down</i></a></li>
+ <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]<i class="material-icons right">arrow_drop_down</i></a>
 {%- endif -%}
  [model.userDropdown()/]
+ </li>
 [/if]
 </ul>
 [/template]

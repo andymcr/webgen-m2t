@@ -1,0 +1,18 @@
+[comment encoding = UTF-8 /]
+[module pickers(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+
+
+[template public datePickers(model : WafModel) post(trim())]
+var datePickers = document.querySelectorAll('.datepicker');
+for (var i = 0; i < datePickers.length; ++i) {
+    var instance = M.FormSelect.init(datePickers['['/]i[']'/]);
+}
+[/template]
+
+[template public timePickers(model : WafModel) post(trim())]
+var timePickers = document.querySelectorAll('.timepicker');
+for (var i = 0; i < timePickers.length; ++i) {
+    var instance = M.FormSelect.init(timePickers['['/]i[']'/]);
+}
+[/template]
