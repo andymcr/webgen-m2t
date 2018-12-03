@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::embedded/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::imageIndex/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::navigation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::pickers/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::select/]
 
 
@@ -14,6 +15,14 @@
 [file(model.javascriptAssetsDirectory().concat('/').concat('app').concat(model.javascriptExtension()), false)]
 [model.javascriptNavigation()/]
 
+[if (model.hasDateFields())]
+[model.datePickers()/]
+
+[/if]
+[if (model.hasTimeFields())]
+[model.timePickers()/]
+
+[/if]
 [if (model.hasInputAssociations())]
 [model.javascriptSelect()/]
 

@@ -29,6 +29,10 @@
 	= model.pages->select(p | p.hasCaptchaFields())->notEmpty()
 /]
 
+[query public hasDateFields(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasDateFields())->notEmpty()
+/]
+
 [query public hasGalleryUnits(model : WafModel) : Boolean
 	= model.galleryUnits()->notEmpty()
 /]
@@ -51,6 +55,10 @@
 
 [query public hasSliderUnits(model : WafModel) : Boolean
 	= model.sliderUnits()->notEmpty()
+/]
+
+[query public hasTimeFields(model : WafModel) : Boolean
+	= model.pages->select(p | p.hasTimeFields())->notEmpty()
 /]
 
 [query public imageCardsUnits(model : WafModel) : Sequence(ImageCardsUnit)

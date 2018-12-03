@@ -6,13 +6,17 @@
 [template public datePickers(model : WafModel) post(trim())]
 var datePickers = document.querySelectorAll('.datepicker');
 for (var i = 0; i < datePickers.length; ++i) {
-    var instance = M.FormSelect.init(datePickers['['/]i[']'/]);
+    var instance = M.Datepicker.init(datePickers['['/]i[']'/], {
+            format: 'yyyy-mm-dd'
+        });
 }
 [/template]
 
 [template public timePickers(model : WafModel) post(trim())]
 var timePickers = document.querySelectorAll('.timepicker');
 for (var i = 0; i < timePickers.length; ++i) {
-    var instance = M.FormSelect.init(timePickers['['/]i[']'/]);
+    var instance = M.Timepicker.init(timePickers['['/]i[']'/], {
+            twelveHour: false
+        });
 }
 [/template]

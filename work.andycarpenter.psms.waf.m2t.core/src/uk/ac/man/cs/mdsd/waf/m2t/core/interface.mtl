@@ -238,8 +238,12 @@
 		endif
 /]
 
-[query public hasClass(field : UnitField) : Boolean
-	= not field.inputClass().oclIsUndefined()
+[query public hasInputColumnClass(field : UnitField) : Boolean
+	= not field.inputColumnClass().oclIsUndefined()
+/]
+
+[query public hasInputElementClass(field : UnitField) : Boolean
+	= not field.inputElementClass().oclIsUndefined()
 /]
 
 [query public hasPlaceholder(field : UnitField) : Boolean
@@ -277,9 +281,19 @@
 		endif
 /]
 
-[query public inputClass(field : UnitField) : String
+[query public inputColumnClass(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).inputClass
+			field.oclAsType(UnitFeature).inputColumnClass
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).inputClass
+		else
+			null
+		endif endif
+/]
+
+[query public inputElementClass(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).inputElementClass
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).inputClass
 		else

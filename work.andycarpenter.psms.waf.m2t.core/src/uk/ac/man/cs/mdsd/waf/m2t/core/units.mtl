@@ -206,6 +206,10 @@
 		or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation()))
 /]
 
+[query public hasDateFields(unit : DynamicUnit) : Boolean
+	= unit.dateFields()->notEmpty()
+/]
+
 [query public hasDefaultValueFields(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).defaultValueFields()->notEmpty()
@@ -278,6 +282,10 @@
 		else
 			false
 		endif
+/]
+
+[query public hasTimeFields(unit : DynamicUnit) : Boolean
+	= unit.dateFields()->notEmpty()
 /]
 
 [query public inputFields(unit : DynamicUnit) : OrderedSet(UnitField)

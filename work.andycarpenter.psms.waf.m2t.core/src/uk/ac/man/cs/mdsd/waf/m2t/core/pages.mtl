@@ -77,6 +77,10 @@
 	= page.childSliderUnits()->notEmpty()
 /]
 
+[query public hasDateFields(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasDateFields())->notEmpty()
+/]
+
 [query public hasEditUnits(page : Page) : Boolean
 	= page.editUnits()->notEmpty()
 /]
@@ -115,6 +119,10 @@
 
 [query public hasSliderUnits(page : Page) : Boolean
 	= page.sliderUnits()->notEmpty() or page.hasChildSliderUnits()
+/]
+
+[query public hasTimeFields(page : Page) : Boolean
+	= page.dynamicUnits()->select(u | u.hasTimeFields())->notEmpty()
 /]
 
 [query public imageCardsUnits(page : Page) : Sequence(ImageCardsUnit)
