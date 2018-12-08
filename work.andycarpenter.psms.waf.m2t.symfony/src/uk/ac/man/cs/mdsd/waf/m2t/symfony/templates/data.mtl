@@ -152,7 +152,7 @@ NULL
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.oclIsTypeOf(UnitLabel)) post(trim())]
 [let label : UnitLabel = field.oclAsType(UnitLabel)]
-[label.label.label(parentAccessor)/]
+{{ [label.label.label(parentAccessor)/] }}
 [/let]
 [/template]
 
