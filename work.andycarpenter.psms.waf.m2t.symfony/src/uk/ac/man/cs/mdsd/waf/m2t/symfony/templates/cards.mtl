@@ -140,73 +140,43 @@
 
 [template private cardContent(unit : TextCardsUnit, variable : String) post(trim())]
 <div class="card-content">
-	[if (not unit.elementTitle.oclIsUndefined())]
+[if (not unit.elementTitle.oclIsUndefined())]
  <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
-	[/if]
-	[for (field : UnitField | unit.displayFields)]
-		[if (field.isConditionalDisplay())]
- {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
-		[/if]
- <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
-[if (field.hasCustomisedLabel())]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
-[field.displayValue(variable, true)/]</p>
-		[if (field.isConditionalDisplay())]
-{%- endif %}
-		[/if]
-	[/for]
+[/if]
+[if (unit.displayFields->notEmpty())]
+ [unit.cardFields(variable)/]
+[/if]
 </div>
 [/template]
 
 [template private cardContent(unit : DateCardsUnit, variable : String) post(trim())]
 <div class="card-content">
-	[if (not unit.elementTitle.oclIsUndefined())]
+[if (not unit.elementTitle.oclIsUndefined())]
  <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
-	[/if]
-	[for (field : UnitField | unit.displayFields)]
-		[if (field.isConditionalDisplay())]
- {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
-		[/if]
- <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
-[if (field.hasCustomisedLabel())]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
-[field.displayValue(variable, true)/]</p>
-		[if (field.isConditionalDisplay())]
-{%- endif %}
-		[/if]
-	[/for]
+[/if]
+[if (unit.displayFields->notEmpty())]
+ [unit.cardFields(variable)/]
+[/if]
 </div>
 [/template]
 
 [template private cardContent(unit : ImageCardsUnit, variable : String) post(trim())]
 <div class="card-content">
-	[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
+[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
  <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
-	[/if]
-	[for (field : UnitField | unit.displayFields)]
-		[if (field.isConditionalDisplay())]
- {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
-		[/if]
- <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
-[if (field.hasCustomisedLabel())]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
-[field.displayValue(variable, true)/]</p>
-		[if (field.isConditionalDisplay())]
-{%- endif %}
-		[/if]
-	[/for]
+[/if]
+[if (unit.displayFields->notEmpty())]
+ [unit.cardFields(variable)/]
+[/if]
 </div>
 [/template]
 
 [template private cardFields(unit : CardsUnit, variable : String) post(trim())]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.isConditionalDisplay())]
- {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
+{% if not ([field.hideWhen.twigExpression(variable)/]) -%}
 	[/if]
- <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
+<p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
 [if (field.hasCustomisedLabel())]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
