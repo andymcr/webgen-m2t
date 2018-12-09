@@ -295,11 +295,11 @@ TextType::class
 [template private formFeature(field : UnitField)
 	? (field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[association.association.formFeature(association.options, association.filteredOptions.oclIsUndefined())/]
+[association.association.formFeature(association.options, association.valueDisplay, association.filteredOptions.oclIsUndefined())/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature, selection : Selection, allOptions : Boolean)
+[template private formFeature(feature : Feature, selection : Selection, valueLabel : ModelLabel, allOptions : Boolean)
 	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
@@ -316,7 +316,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 [else]
     'choices' => array(),
 [/if]
-    'choice_label' => 'defaultLabel',
+    'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,
 [if (association.isSingleton())]
 	[if (not association.placeholder.oclIsUndefined())]
