@@ -100,14 +100,14 @@ Criteria::expr()->[predicate.operator()/]([predicate.left.twigExpression(accesso
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateIsNull)) post(trim())]
 [let predicate : PredicateIsNull = guard.oclAsType(PredicateIsNull)]
-[predicate.feature.twigExpression(accessor)/] is [if (predicate.negated)]not [/if]null[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] null[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = guard.oclAsType(PredicateIsEmpty)]
-Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.twigExpression(accessor)/], '0')[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] empty[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/let]
 [/template]
 
