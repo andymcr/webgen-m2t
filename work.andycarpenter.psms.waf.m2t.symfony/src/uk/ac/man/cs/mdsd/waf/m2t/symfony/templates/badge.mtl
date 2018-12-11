@@ -2,6 +2,7 @@
 [module badge(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::value/]
 
 
 [template public badge(badge : Badge, accessor : String) post(trim())]
@@ -16,7 +17,7 @@
 [/template]
 
 [template private value(badge : Badge, accessor : String) post(trim())]
-{{ [badge.value.twigExpression(accessor)/] }}
+{{ [badge.value.getValue(accessor)/] }}
 [/template]
 
 [template private icon(badge : Badge) post(trim())]
