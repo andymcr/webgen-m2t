@@ -38,9 +38,17 @@
 		and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
  [cardsUnit.pagination()/]
 [/if]
+[if (cardsUnit.selection.grouping->isEmpty())]
  <div class="[cardsUnit.contentClass/]">
   [cardsUnit.unitContent(null, accessor, 0)/]
  </div>
+[else]
+ {% set [cardsUnit.selection.grouping->first().name/] = null %}
+ [cardsUnit.unitContent(null, accessor, 0)/]
+ {% if [accessor/] | length > 0 %}
+ </div>
+ {% endif %}
+[/if]
 [if (cardsUnit.hasPagination()
 		and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [cardsUnit.pagination()/]
@@ -56,6 +64,16 @@
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let variable : String = cardsUnit.contentType().instanceName()]
 {% for [variable/] in [accessor/] %}
+[if (cardsUnit.selection.grouping->notEmpty())]
+ {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
+  {% if [cardsUnit.selection.grouping->first().name/] is not null %}
+ </div>
+  {% endif %}
+ {% set [cardsUnit.selection.grouping->first().name/] = [variable/].enteredIn.title %}
+ <h5>{{ [variable/].enteredIn.title }}</h5>
+ <div class="row">
+ {% endif%}
+[/if]
 <div class="[cardsUnit.columnClass/]">
  <div class="[cardsUnit.cardClass/]">
 [if (cardsUnit.oclIsTypeOf(TextCardsUnit))]
