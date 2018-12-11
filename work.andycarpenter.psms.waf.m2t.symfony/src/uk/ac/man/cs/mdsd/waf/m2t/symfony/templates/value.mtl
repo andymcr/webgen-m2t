@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -41,6 +42,31 @@ NULL
 [accessor/].defaultLabel()
 	[/if]
 [/if]
+[/template]
+
+[template public getValue(path : FeaturePath, accessor : String) post(trim())]
+[if (path.oclIsTypeOf(FeaturePathAttribute))]
+[path.oclAsType(FeaturePathAttribute).getValue(accessor)/]
+[elseif (path.oclIsTypeOf(FeaturePathAssociation))]
+[path.oclAsType(FeaturePathAssociation).getValue(accessor)/]
+[else]
+[path.oclAsType(FeaturePathLabel).getValue(accessor)/]
+[/if]
+[/template]
+
+[template public getValue(path : FeaturePathAttribute, accessor : String) post(trim())]
+[accessor/].[path.attribute.modelPropertyName()/]
+[/template]
+
+[template public getValue(path : FeaturePathAssociation, accessor : String) post(trim())]
+[let x : String
+		= accessor.concat('.').concat(path.association.modelPropertyName())]
+[if (path.childFeature.oclIsUndefined())]
+[x/].defaultLabel()
+[else]
+[path.childFeature.getValue(x)/]
+[/if]
+[/let]
 [/template]
 
 [template private getValue(child : ChildPath, accessor : String)
