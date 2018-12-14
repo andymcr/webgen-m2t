@@ -114,7 +114,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [if (page.hasAuthorisationRoles())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
 [if (page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
