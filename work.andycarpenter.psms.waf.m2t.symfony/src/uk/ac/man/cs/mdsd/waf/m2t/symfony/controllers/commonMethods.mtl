@@ -24,7 +24,7 @@
 
 
 [template public translate(message : String) post(trim())]
-$this->get('translator')->trans('[message/]')
+$this->translationService->trans('[message/]')
 [/template]
 
 
@@ -330,7 +330,7 @@ array_merge(
 
 
 [template public templateParameters(page : Page) post(trim())]
-$parameters['['/]'title'[']'/] = $this->get('translator')->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
+$parameters['['/]'title'[']'/] = $this->translationService->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
 [if (page.hasGalleryUnits())]
 [page.templateStyleParameters()/]
 [/if]
