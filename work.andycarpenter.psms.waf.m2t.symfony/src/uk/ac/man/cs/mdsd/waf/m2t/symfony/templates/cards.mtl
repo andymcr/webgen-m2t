@@ -195,7 +195,7 @@
 {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
 	[/if]
 <p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
-[if (field.hasCustomisedLabel())]
+[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
 [field.displayValue(variable, true)/]</p>

@@ -144,7 +144,7 @@
 		[if (field.requiresRole <> '')]
 {% if is_granted('[field.requiresRole/]') %}
 		[/if]
-   <th>[if (field.hasCustomisedLabel())]
+   <th>[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[field.entity().id()/].labels.[field.labelId()/]' | trans }}[/if]</th>
 		[if (field.requiresRole <> '')]

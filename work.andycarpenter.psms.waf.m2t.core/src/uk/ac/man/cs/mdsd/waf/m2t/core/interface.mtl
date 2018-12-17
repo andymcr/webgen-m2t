@@ -203,41 +203,6 @@
 		endif
 /]
 
-[query public displayLabel(field : UnitField) : String
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).displayLabel
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).displayLabel()
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).displayLabel
-		else 
-			'UnhandledField'
-		endif endif endif
-/]
-
-[query private displayLabel(association : UnitAssociation) : String
-	= if association.displayLabel <> association.association.displayLabel then
-			association.displayLabel
-		else if association.childFeature.oclIsUndefined() then
-			association.displayLabel
-		else
-			association.childFeature.displayLabel()
-		endif endif
-/]
-
-[query private displayLabel(feature : ChildPath) : String
-	= if feature.oclIsTypeOf(ChildPathAttribute) then
-			feature.oclAsType(ChildPathAttribute).attribute.displayLabel
-		else
-			let association : ChildPathAssociation = feature.oclAsType(ChildPathAssociation)
-				in if association.childFeature.oclIsUndefined() then
-						association.association.displayLabel
-					else
-						association.childFeature.displayLabel()
-					endif
-		endif
-/]
-
 [query public hasInputColumnClass(field : UnitField) : Boolean
 	= not field.inputColumnClass().oclIsUndefined()
 /]

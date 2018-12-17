@@ -77,15 +77,13 @@ NULL
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isEnumerationType()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (field.maximumDisplaySize > 0)]
- [field.truncate()/][/if][if (not field.escapeHTML)]
+{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (not field.escapeHTML)]
  | raw[/if] }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 	[if (feature.displayDefaultWhen.oclIsUndefined())]
 {{ [feature.getValue(field.accessor(parentAccessor, feature.alias(), objectAccess))/][if (not feature.defaultDisplayValue.oclIsUndefined())]
- | default('[feature.defaultDisplayValue/]')[/if][if (feature.maximumDisplaySize > 0)]
- [feature.truncate()/][/if][if (not feature.escapeHTML)]
+ | default('[feature.defaultDisplayValue/]')[/if][if (not feature.escapeHTML)]
  | raw[/if] }}
 	[else]
 [comment 'todo'/]
@@ -97,8 +95,7 @@ NULL
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isDate()) post(trim())]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
-('[field.dateFormat/]')[/if][if (field.maximumDisplaySize > 0)]
- [field.truncate()/][/if] }}
+('[field.dateFormat/]')[/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
@@ -184,26 +181,18 @@ NULL
 [template private displayFeature(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
 [if (feature.displayDefaultWhen.oclIsUndefined())]
 {{ [feature.getValue(accessor)/][if (not feature.defaultDisplayValue.oclIsUndefined())]
- | default('[feature.defaultDisplayValue/]')[/if][if (feature.maximumDisplaySize > 0)]
- [feature.truncate()/][/if][if (not feature.escapeHTML)]
+ | default('[feature.defaultDisplayValue/]')[/if][if (not feature.escapeHTML)]
  | raw[/if] }}
 [else]
 {%- if [feature.displayDefaultWhen.twigExpression(parentAccessor)/] -%}
-	[if (feature.maximumDisplaySize <= 0)]
-[feature.defaultDisplayValue/]
+	[if (not feature.escapeHTML)]
+{{ '[feature.defaultDisplayValue/]' | raw }}
 	[else]
-{{ '[feature.defaultDisplayValue/]'[if (feature.maximumDisplaySize > 0)]
- [feature.truncate()/][/if][if (not feature.escapeHTML)]
- | raw[/if] }}
+[feature.defaultDisplayValue/]
 	[/if]
 {%- else -%}
-{{ [feature.getValue(accessor)/][if (feature.maximumDisplaySize > 0)]
- [feature.truncate()/][/if][if (not feature.escapeHTML)]
+{{ [feature.getValue(accessor)/][if (not feature.escapeHTML)]
  | raw[/if] }}
 {%- endif -%}
 [/if]
-[/template]
-
-[template private truncate(feature : UnitField) post(trim())]
-| truncate([feature.maximumDisplaySize/] - 3)
 [/template]

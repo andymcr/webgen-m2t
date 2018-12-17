@@ -55,17 +55,6 @@
 		endif endif endif
 /]
 
-[query public hasCustomisedLabel(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.displayLabel <> field.oclAsType(UnitAttribute).attribute.displayLabel
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.displayLabel <> field.oclAsType(UnitAssociation).association.displayLabel
-				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
-		else
-			field.oclIsKindOf(InterfaceField)
-		endif endif
-/]
-
 [query public hasCustomisedPlaceholder(field : UnitField) : Boolean
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).placeholder <> field.oclAsType(UnitAttribute).attribute.displayLabel
@@ -88,18 +77,18 @@
 /]
 
 [query public hasUnitTranslation(field : UnitField) : Boolean
-	= field.hasCustomisedLabel()
+	= field.hasCustomisedDisplayLabel
 		or (field.hasPlaceholder() and field.hasCustomisedPlaceholder())
 		or (field.hasTitle() and field.hasCustomisedTitle())
 /]
 
 [query public labelId(field : UnitField) : String
-	= if not field.hasCustomisedLabel() then
+	= if not field.hasCustomisedDisplayLabel then
 			field.name().asId()
 		else
 			let fieldsWithName : OrderedSet(UnitField)
 				= field.displayedOn.displayFields
-					->select(f | f.hasCustomisedLabel())
+					->select(f | f.hasCustomisedDisplayLabel)
 					->select(f | f.fieldId() = field.fieldId())
 				in if fieldsWithName->size() < 2 then
 						field.fieldId()
@@ -127,7 +116,7 @@
 		else
 			let fieldsWithName : OrderedSet(UnitField)
 				= field.displayedOn.displayFields
-					->select(f | f.hasCustomisedLabel())
+					->select(f | f.hasCustomisedDisplayLabel)
 					->select(f | f.fieldId() = field.fieldId())
 				in if fieldsWithName->size() < 2 then
 						field.fieldId()
@@ -143,7 +132,7 @@
 		else
 			let fieldsWithName : OrderedSet(UnitField)
 				= field.displayedOn.displayFields
-					->select(f | f.hasCustomisedLabel())
+					->select(f | f.hasCustomisedDisplayLabel)
 					->select(f | f.fieldId() = field.fieldId())
 				in if fieldsWithName->size() < 2 then
 						field.fieldId()

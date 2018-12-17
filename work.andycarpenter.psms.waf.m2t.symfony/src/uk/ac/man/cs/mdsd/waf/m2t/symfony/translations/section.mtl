@@ -66,7 +66,7 @@
 	[if (field.hasUnitTranslation())]
 <trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
  <source>[unit.containedId()/].labels.[field.labelId()/]</source>
- <target>[field.displayLabel().validXML()/]</target>
+ <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
 		[if (not field.oclIsTypeOf(UnitAssociation))]
 <trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
@@ -85,22 +85,11 @@
 [template private fieldTranslations(unit : DynamicUnit, page : Page)
 	? (not unit.oclIsKindOf(EditUnit)) post (trim())]
 [for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
-	[if (field.hasCustomisedLabel())]
+	[if (field.hasCustomisedDisplayLabel)]
 <trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
  <source>[unit.containedId()/].labels.[field.labelId()/]</source>
- <target>[field.displayLabel().validXML()/]</target>
+ <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
 	[/if]
-	[if (field.oclIsTypeOf(UnitAssociation))]
-	[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-		[if (association.units->notEmpty())]
-[association.translations(page)/]
-		[/if]
-	[/let]
-	[/if]
 [/for]
-[/template]
-
-[template private translations(association : UnitAssociation, page : Page) post(trim())]
-[association.units->first().translations(page)/]
 [/template]

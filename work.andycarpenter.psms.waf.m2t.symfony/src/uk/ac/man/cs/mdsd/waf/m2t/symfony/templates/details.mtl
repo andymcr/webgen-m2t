@@ -63,7 +63,7 @@
 	[if (unit.omitFieldLabels)]
  <li class="[field.displayClass()/]">[field.displayField(accessor, unit.hasObjectAccess(), depthInteger)/]</li>
 	[else]
- <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
+ <dt class="[field.displayClass()/]">[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</dd>
@@ -76,7 +76,7 @@
 				[if (unit.omitFieldLabels)]
  <li class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</li>
 				[else]
- <dt class="[field.displayClass()/]">[if (field.hasCustomisedLabel())]
+ <dt class="[field.displayClass()/]">[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
  <dd class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</dd>
