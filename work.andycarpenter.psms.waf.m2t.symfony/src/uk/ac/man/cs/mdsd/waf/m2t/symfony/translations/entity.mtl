@@ -51,15 +51,5 @@
  <source>[entity.id()/].labels.[feature.id()/]</source>
  <target>[feature.displayLabel.validXML()/]</target>
 </trans-unit>
-[if (feature.oclIsKindOf(Association))]
-[let association : Association = feature.oclAsType(Association)]
-	[if (not association.placeholder.oclIsUndefined())]
-<trans-unit id="[entity.id()/].placeholders.[association.id()/]">
- <source>[entity.id()/].placeholders.[association.id()/]</source>
- <target>[association.placeholder.validXML()/]</target>
-</trans-unit>
-	[/if]
-[/let]
-[/if]
 [/for]
 [/template]

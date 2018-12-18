@@ -113,22 +113,19 @@
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
 	? (field.isSingleton() and not field.isContains()
 			or field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasInputColumnClass() or field.hasInputElementClass() or field.hasPlaceholder() or field.hasTitle() or field.disableInput or field.hasUnitTranslation())]
+{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasInputColumnClass() or field.hasInputElementClass() or field.hasPlaceholder() or field.disableInput or field.hasUnitTranslation())]
 , {[if (field.hasUnitTranslation())]
  'label': '[unit.containedId()/].labels.[field.labelId()/]',[/if]
-[if (field.hasInputColumnClass() or field.hasInputElementClass() or field.hasPlaceholder() or field.hasTitle())]
- 'attr': {[if (field.hasTitle())]
- 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.disableInput or field.hasInputColumnClass() or field.hasInputElementClass())],[/if][/if]
-[if (field.hasPlaceholder())]
+ 'attr': { 'title': [field.title(unit)/][if (field.hasPlaceholder() or field.disableInput or field.hasInputColumnClass() or field.hasInputElementClass())]
+,[/if][if (field.hasPlaceholder())]
  'placeholder': [field.placeholder(unit)/][if (field.disableInput or field.hasInputColumnClass() or field.hasInputElementClass())],[/if][/if]
 [if (field.disableInput)]
  'disabled': 'disabled'[if (field.hasInputColumnClass() or field.hasInputElementClass())],[/if][/if]
 [if (field.hasInputColumnClass())]
- 'columnclass': '[field.inputColumnClass()/][if (field.hasInputElementClass())],[/if]'[/if]
-[if (field.hasInputElementClass())]
- 'class': '[field.inputElementClass()/]'[/if]
- }[if (field.hasUnitTranslation())], [/if][/if]
-[if (field.hasUnitTranslation())]
+ 'columnclass': '[field.inputColumnClass()/]'[if (field.hasInputElementClass())]
+,[/if][/if][if (field.hasInputElementClass())]
+ 'class': '[field.inputElementClass()/]'[/if] }[if (field.hasUnitTranslation())]
+, [/if][if (field.hasUnitTranslation())]
 'translation_domain': '[unit.translationDomain()/]'[/if]}[/if]) }}
 [/template]
 
@@ -179,13 +176,13 @@
 [template private placeholder(field : UnitField, unit : SingletonUnit) post(trim())]
 [if (field.hasUnitTranslation())]
 '[unit.containedId()/].placeholders.[field.placeholderId()/]'[else]
-'[unit.contentType.id()/].labels.[field.placeholderId()/]'[/if]
+'[unit.contentType.id()/].labels.[field.labelId()/]'[/if]
 [/template]
 
 [template private title(field : UnitField, unit : SingletonUnit) post(trim())]
 [if (field.hasUnitTranslation())]
 '[unit.containedId()/].titles.[field.titleId()/]'[else]
-'[unit.contentType.id()/].labels.[field.titleId()/]'[/if]
+'[unit.contentType.id()/].labels.[field.labelId()/]'[/if]
 [/template]
 
 

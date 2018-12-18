@@ -68,7 +68,7 @@
  <source>[unit.containedId()/].labels.[field.labelId()/]</source>
  <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
-		[if (not field.oclIsTypeOf(UnitAssociation))]
+		[if (field.oclIsTypeOf(UnitAttribute) or field.oclIsTypeOf(InterfaceField))]
 <trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
  <source>[unit.containedId()/].placeholders.[field.placeholderId()/]</source>
  <target>[field.placeholder().validXML()/]</target>

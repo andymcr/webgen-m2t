@@ -319,11 +319,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,
 [if (association.isSingleton())]
-	[if (not association.placeholder.oclIsUndefined())]
-    'placeholder' => '[association.sourceType().id()/].placeholders.[association.id()/]',
-	[else]
     'placeholder' => 'actions.labels.select_one',
-	[/if]
 [else]
     'multiple' => true,
 [/if]

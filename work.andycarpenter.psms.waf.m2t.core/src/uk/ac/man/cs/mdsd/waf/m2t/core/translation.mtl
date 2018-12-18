@@ -55,89 +55,44 @@
 		endif endif endif
 /]
 
-[query public hasCustomisedPlaceholder(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).placeholder <> field.oclAsType(UnitAttribute).attribute.displayLabel
-		else if field.oclIsTypeOf(UnitAssociation) then
-			false
-		else
-			field.oclIsKindOf(InterfaceField)
-		endif endif
-/]
-
-[query public hasCustomisedTitle(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.title <> field.oclAsType(UnitAttribute).attribute.displayLabel
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.title <> field.oclAsType(UnitAssociation).association.displayLabel
-				or not field.oclAsType(UnitAssociation).childFeature.oclIsUndefined()
-		else
-			field.oclIsKindOf(InterfaceField)
-		endif endif
-/]
-
 [query public hasUnitTranslation(field : UnitField) : Boolean
 	= field.hasCustomisedDisplayLabel
-		or (field.hasPlaceholder() and field.hasCustomisedPlaceholder())
-		or (field.hasTitle() and field.hasCustomisedTitle())
+		or field.hasCustomisedPlaceholder()
+		or field.hasCustomisedTitle
 /]
 
 [query public labelId(field : UnitField) : String
-	= if not field.hasCustomisedDisplayLabel then
-			field.name().asId()
-		else
-			let fieldsWithName : OrderedSet(UnitField)
-				= field.displayedOn.displayFields
-					->select(f | f.hasCustomisedDisplayLabel)
-					->select(f | f.fieldId() = field.fieldId())
-				in if fieldsWithName->size() < 2 then
-						field.fieldId()
-					else
-						field.entityId().concat('_').concat(field.fieldId())
-					endif
-		endif	
-/]
-
-[query private name(field : UnitField) : String
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).name
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).name
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).name
-		else
-			'Unhandled'
-		endif endif endif
+	= let fieldsWithName : OrderedSet(UnitField)
+			= field.displayedOn.displayFields
+				->select(f | f.hasCustomisedDisplayLabel)
+				->select(f | f.fieldId() = field.fieldId())
+			in if fieldsWithName->size() < 2 then
+					field.fieldId()
+				else
+					field.entityId().concat('_').concat(field.fieldId())
+				endif
 /]
 
 [query public placeholderId(field : UnitField) : String
-	= if not field.hasCustomisedPlaceholder() then
-			field.name().asId()
-		else
-			let fieldsWithName : OrderedSet(UnitField)
-				= field.displayedOn.displayFields
-					->select(f | f.hasCustomisedDisplayLabel)
-					->select(f | f.fieldId() = field.fieldId())
-				in if fieldsWithName->size() < 2 then
-						field.fieldId()
-					else
-						field.entityId().concat('_').concat(field.fieldId())
-					endif
-		endif	
+	= let fieldsWithName : OrderedSet(UnitField)
+			= field.displayedOn.displayFields
+				->select(f | f.oclIsTypeOf(UnitAttribute) or f.oclIsTypeOf(InterfaceField))
+				->select(f | f.fieldId() = field.fieldId())
+			in if fieldsWithName->size() < 2 then
+					field.fieldId()
+				else
+					field.entityId().concat('_').concat(field.fieldId())
+				endif
 /]
 
 [query public titleId(field : UnitField) : String
-	= if not field.hasCustomisedTitle() then
-			field.name().asId()
-		else
-			let fieldsWithName : OrderedSet(UnitField)
-				= field.displayedOn.displayFields
-					->select(f | f.hasCustomisedDisplayLabel)
-					->select(f | f.fieldId() = field.fieldId())
-				in if fieldsWithName->size() < 2 then
-						field.fieldId()
-					else
-						field.entityId().concat('_').concat(field.fieldId())
-					endif
-		endif	
+	= let fieldsWithName : OrderedSet(UnitField)
+			= field.displayedOn.displayFields
+				->select(f | not f.oclIsTypeOf(UnitLabel))
+				->select(f | f.fieldId() = field.fieldId())
+			in if fieldsWithName->size() < 2 then
+					field.fieldId()
+				else
+					field.entityId().concat('_').concat(field.fieldId())
+				endif
 /]

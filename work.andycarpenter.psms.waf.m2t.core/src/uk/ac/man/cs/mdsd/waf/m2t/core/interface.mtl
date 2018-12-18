@@ -203,6 +203,16 @@
 		endif
 /]
 
+[query public hasCustomisedPlaceholder(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).hasCustomisedPlaceholder
+		else if field.oclIsTypeOf(InterfaceField) then
+			field.oclAsType(InterfaceField).hasCustomisedPlaceholder
+		else
+			false
+		endif endif
+/]
+
 [query public hasInputColumnClass(field : UnitField) : Boolean
 	= not field.inputColumnClass().oclIsUndefined()
 /]
@@ -212,17 +222,7 @@
 /]
 
 [query public hasPlaceholder(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			not field.oclAsType(UnitAttribute).placeholder.oclIsUndefined()
-		else if field.oclIsKindOf(InterfaceField) then
-			not field.oclAsType(InterfaceField).placeholder.oclIsUndefined()
-		else
-			false
-		endif endif
-/]
-
-[query public hasTitle(field : UnitField) : Boolean
-	= not field.title.oclIsUndefined()
+	= field.oclIsTypeOf(UnitAttribute) or field.oclIsTypeOf(InterfaceField)
 /]
 
 [query public id(association : UnitAssociation) : String
