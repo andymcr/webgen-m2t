@@ -27,8 +27,8 @@
 [/template]
 
 [template private translations(page : Page) post(trim())]
-<trans-unit id="label.[page.id()/]">
- <source>label.[page.id()/]</source>
+<trans-unit id="label.[page.pageId()/]">
+ <source>label.[page.pageId()/]</source>
  <target>[page.displayLabel.validXML()/]</target>
 </trans-unit>
 [for (unit : ContentUnit | page.units)]

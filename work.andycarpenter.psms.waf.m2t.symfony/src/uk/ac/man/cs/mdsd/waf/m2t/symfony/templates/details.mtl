@@ -105,38 +105,13 @@
 [template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? (field.isAssociation() and field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (association.units->isEmpty())]
 [field.displayValue(parentAccessor, objectAccess)/]
-[else]
-[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
-[association.units->first().unitContent(association.defaultDisplayValue, accessor, depthIndex + 1)/]
-[/let]
-[/if]
 [/let]
 [/template]
 
 [template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
 	? (field.isAssociation() and not field.isSingleton()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (association.units->isEmpty())]
 [field.displayValue(parentAccessor, objectAccess)/]
-[else]
-[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
-[let embeddedUnit : ContentUnit = association.units->first()]
-	[if (not embeddedUnit.oclIsKindOf(IndexUnit))]
-[association.units.unitContent(association.defaultDisplayValue, accessor, depthIndex + 1)/]
-	[elseif (embeddedUnit.oclAsType(IndexUnit).selection.oclIsUndefined())]
-[association.units.unitContent(association.defaultDisplayValue, accessor, depthIndex + 1)/]
-	[else]
-	[let indexUnit : IndexUnit = embeddedUnit.oclAsType(IndexUnit)]
-[association.units.unitContent(association.defaultDisplayValue,
-	association.serviceAccessor()
-		.concat('.').concat(association.name).concat(indexUnit.selection.instanceName().toUpperFirst())
-		.concat('(').concat(parentAccessor).concat(')'), depthIndex + 1)/]
-	[/let]
-	[/if]
-[/let]
-[/let]
-[/if]
 [/let]
 [/template]

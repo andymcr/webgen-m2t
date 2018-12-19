@@ -8,28 +8,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
 
 
-[query private childGalleryUnits(page : Page) : Sequence(GalleryUnit)
-	= page.units->collect(u | u.childGalleryUnits())
-/]
-
-[query private childImageCardsUnits(page : Page) : Sequence(ImageCardsUnit)
-	= page.units->collect(u | u.childImageCardsUnits())
-/]
-
-[query private childIndexUnits(page : Page) : Sequence(IndexUnit)
-	= page.units->collect(u | u.childIndexUnits())
-/]
-
-[query private childSliderUnits(page : Page) : Sequence(SliderUnit)
-	= page.units->collect(u | u.childSliderUnits())
-/]
-
-[query private childUnits(page : Page) : Sequence(ContentUnit)
-	= page.units
-		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
-		->collect(u | u.childUnits())
-/]
-
 [query public collectionUnits(page : Page) : Sequence(CollectionUnit)
 	= page.dynamicUnits()->select(u | u.oclIsKindOf(CollectionUnit)).oclAsType(CollectionUnit)
 /]
@@ -61,22 +39,6 @@
 	= page.dynamicUnits()->select(u | u.hasChangableCollections())->notEmpty()
 /]
 
-[query private hasChildGalleryUnits(page : Page) : Boolean
-	= page.childGalleryUnits()->notEmpty()
-/]
-
-[query private hasChildImageCardsUnits(page : Page) : Boolean
-	= page.childImageCardsUnits()->notEmpty()
-/]
-
-[query private hasChildIndexUnits(page : Page) : Boolean
-	= page.childIndexUnits()->notEmpty()
-/]
-
-[query private hasChildSliderUnits(page : Page) : Boolean
-	= page.childSliderUnits()->notEmpty()
-/]
-
 [query public hasDateFields(page : Page) : Boolean
 	= page.dynamicUnits()->select(u | u.hasDateFields())->notEmpty()
 /]
@@ -94,11 +56,11 @@
 /]
 
 [query public hasGalleryUnits(page : Page) : Boolean
-	= page.galleryUnits()->notEmpty() or page.hasChildGalleryUnits()
+	= page.galleryUnits()->notEmpty()
 /]
 
 [query public hasImageCardsUnits(page : Page) : Boolean
-	= page.imageCardsUnits()->notEmpty() or page.hasChildImageCardsUnits()
+	= page.imageCardsUnits()->notEmpty()
 /]
 
 [query public hasImageUnits(page : Page) : Boolean
@@ -106,7 +68,7 @@
 /]
 
 [query public hasIndexUnits(page : Page) : Boolean
-	= page.indexUnits()->notEmpty() or page.hasChildIndexUnits()
+	= page.indexUnits()->notEmpty()
 /]
 
 [query public hasNoDynamicUnits(page : Page) : Boolean
@@ -118,7 +80,7 @@
 /]
 
 [query public hasSliderUnits(page : Page) : Boolean
-	= page.sliderUnits()->notEmpty() or page.hasChildSliderUnits()
+	= page.sliderUnits()->notEmpty()
 /]
 
 [query public hasTimeFields(page : Page) : Boolean

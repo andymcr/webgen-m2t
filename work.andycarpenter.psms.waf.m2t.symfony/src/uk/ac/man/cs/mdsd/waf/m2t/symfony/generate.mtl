@@ -22,7 +22,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::authenticationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::enumerationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::formType/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::unitType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::app/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::changePasswordTemplate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::fosTemplate/]
@@ -70,7 +69,6 @@
 
 [model.persistence.enumerationTypes().formType()/]
 [model.formTypes()/]
-[model.pages->collect(p | p.units)->select(u | u.hasInterfaceFields()).oclAsType(SingletonUnit).formType()/]
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 
 [if (model.hasAPI())]

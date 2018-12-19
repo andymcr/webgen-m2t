@@ -62,17 +62,8 @@
 /]
 
 
-[query public id(page : Page) : String
+[query public pageId(page : Page) : String
 	= page.name.asId()
-/]
-
-
-[query private containerId(container : UnitContainer) : String
-	= if container.oclIsTypeOf(Page) then
-			container.oclAsType(Page).id()
-		else
-			container.oclAsType(UnitAssociation).displayedOn.containedId()
-		endif
 /]
 
 
@@ -92,7 +83,7 @@
 /]
 
 [query public containedId(unit : ContentUnit) : String
-	= unit.displayedOn.containerId().concat('.').concat(unit.name.asId())
+	= unit.displayedOn.pageId().concat('.').concat(unit.name.asId())
 /]
 
 [query public hasClearLabel(unit : EditUnit) : Boolean
@@ -169,7 +160,7 @@
 /]
 
 [query public id(unit : ContentUnit) : String
-	= unit.displayedOn.containerId().concat('.labels.').concat(unit.name.asId())
+	= unit.displayedOn.pageId().concat('.labels.').concat(unit.name.asId())
 /]
 
 [query public isConditionalDisplay(unit : DynamicUnit) : Boolean
@@ -191,16 +182,7 @@
 /]
 
 [query public displayClass(field : UnitField) : String
-	= if not field.oclIsTypeOf(UnitAssociation) or field.isSingleton() then
-			field.modelPropertyName()
-		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
-			in if association.units->isEmpty() then
-					field.modelPropertyName()
-				else
-					association.units->first().styleClass
-				endif
-		endif
+	= field.modelPropertyName()
 /]
 
 [query public hasCustomisedPlaceholder(field : UnitField) : Boolean
@@ -214,11 +196,11 @@
 /]
 
 [query public hasInputColumnClass(field : UnitField) : Boolean
-	= not field.inputColumnClass().oclIsUndefined()
+	= field.inputColumnClass() <> ''
 /]
 
 [query public hasInputElementClass(field : UnitField) : Boolean
-	= not field.inputElementClass().oclIsUndefined()
+	= field.inputElementClass() <> ''
 /]
 
 [query public hasPlaceholder(field : UnitField) : Boolean

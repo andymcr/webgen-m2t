@@ -57,15 +57,9 @@
 
 
 [query public fieldSelectActions(unit : DynamicUnit) : Sequence(SelectAction)
-	= let childActions : Sequence(SelectAction)
-		= unit.childDynamicUnits()->collect(c | c.fieldSelectActions())
-		in childActions->iterate (
-			a;
-			actions : Sequence(SelectAction)
-				= unit.displayFields
-					->select(f | f.oclIsKindOf(InlineActionContainer)).oclAsType(InlineActionContainer)
-					->collect(c | c.inlineSelectActions())
-			| actions->append(a))
+	= unit.displayFields
+		->select(f | f.oclIsKindOf(InlineActionContainer)).oclAsType(InlineActionContainer)
+		->collect(c | c.inlineSelectActions())
 /]
 
 [query public hasFieldSelectActions(unit : DynamicUnit) : Boolean
@@ -97,69 +91,39 @@
 /]
 
 [query public inlineActions(unit : DynamicUnit) : OrderedSet(InlineAction)
-	= let childActions : Sequence(InlineAction)
-		= unit.childDynamicUnits()->collect(c | c.inlineActions())
-		in childActions->iterate (
-			a;
-			actions : OrderedSet(InlineAction)
-				= if unit.oclIsKindOf(InlineActionContainer) then
-						unit.oclAsType(InlineActionContainer).inlineActions()
-					else
-						OrderedSet{}
-					endif
-			| actions->append(a))
+	= if unit.oclIsKindOf(InlineActionContainer) then
+			unit.oclAsType(InlineActionContainer).inlineActions()
+		else
+			OrderedSet{}
+		endif
 /]
 
 [query public inlineActionsRequiringHandlers(unit : DynamicUnit) : OrderedSet(InlineAction)
-	= let childActions : Sequence(InlineAction)
-		= unit.childDynamicUnits()->collect(c | c.inlineActionsRequiringHandlers())
-		in childActions->iterate (
-			a;
-			actions : OrderedSet(InlineAction)
-				= if unit.oclIsKindOf(InlineActionContainer) then
-						unit.oclAsType(InlineActionContainer).inlineActionsRequiringHandlers()
-					else
-						OrderedSet{}
-					endif
-			| actions->append(a))
+	= if unit.oclIsKindOf(InlineActionContainer) then
+			unit.oclAsType(InlineActionContainer).inlineActionsRequiringHandlers()
+		else
+			OrderedSet{}
+		endif
 /]
 
 [query public inlineDeleteActions(unit : DynamicUnit) : Sequence(DeleteAction)
-	= let childActions : Sequence(DeleteAction)
-		= unit.childDynamicUnits()->collect(c | c.inlineDeleteActions())
-		in childActions->iterate (
-			a;
-			actions : Sequence(DeleteAction)
-				= if unit.oclIsKindOf(InlineActionContainer) then
-						unit.oclAsType(InlineActionContainer).inlineDeleteActions()
-					else
-						Sequence{}
-					endif
-			| actions->append(a))
+	= if unit.oclIsKindOf(InlineActionContainer) then
+			unit.oclAsType(InlineActionContainer).inlineDeleteActions()
+		else
+			Sequence{}
+		endif
 /]
 
 [query public inlineFileActions(unit : DynamicUnit) : Sequence(FeatureSupportAction)
-	= let childActions : Sequence(FeatureSupportAction)
-		= unit.childDynamicUnits()->collect(c | c.inlineFileActions())
-		in childActions->iterate (
-			a;
-			actions : Sequence(FeatureSupportAction)
-				= if unit.oclIsKindOf(InlineActionContainer) then
-						unit.oclAsType(InlineActionContainer).inlineFileActions()
-					else
-						Sequence{}
-					endif
-			| actions->append(a))
+	= if unit.oclIsKindOf(InlineActionContainer) then
+			unit.oclAsType(InlineActionContainer).inlineFileActions()
+		else
+			Sequence{}
+		endif
 /]
 
 [query public unitSupportActions(unit : DynamicUnit) : OrderedSet(UnitSupportAction)
-	= let childActions : Sequence(UnitSupportAction)
-		= unit.childDynamicUnits()->collect(c | c.unitSupportActions())
-		in childActions->iterate (
-			a;
-			actions : OrderedSet(UnitSupportAction)
-				= unit.supportActions->select(a | not a.disable)
-			| actions->append(a))
+	= unit.supportActions->select(a | not a.disable)
 /]
 
 

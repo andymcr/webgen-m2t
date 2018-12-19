@@ -155,11 +155,7 @@
 				in attribute.forcedValue.oclIsUndefined()
 		else
 			let association : UnitAssociation = feature.oclAsType(UnitAssociation)
-				in if association.units->notEmpty() then
-						false
-					else
-						association.forcedValue.oclIsUndefined() and association.association.isVisible()
-					endif
+				in association.forcedValue.oclIsUndefined() and association.association.isVisible()
 		endif
 /]
 

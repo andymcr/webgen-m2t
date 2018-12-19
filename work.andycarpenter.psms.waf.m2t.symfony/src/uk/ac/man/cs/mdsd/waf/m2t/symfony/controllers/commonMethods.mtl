@@ -330,7 +330,7 @@ array_merge(
 
 
 [template public templateParameters(page : Page) post(trim())]
-$parameters['['/]'title'[']'/] = $this->translationService->trans('label.[page.id()/]', array(), '[page.translationDomain()/]');
+$parameters['['/]'title'[']'/] = $this->translationService->trans('label.[page.pageId()/]', array(), '[page.translationDomain()/]');
 [if (page.hasGalleryUnits())]
 [page.templateStyleParameters()/]
 [/if]

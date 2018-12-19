@@ -61,20 +61,3 @@
 			null
 		endif
 /]
-
-
-[comment TODO what if field has a selection?/]
-[query public selection(field : UnitField) : Selection
-	= if not field.oclIsTypeOf(UnitAssociation) then
-			null
-		else
-			let association : UnitAssociation = field.oclAsType(UnitAssociation)
-			in if association.units->isEmpty() then
-					null
-				else if association.units->first().oclIsKindOf(DetailsUnit) then
-					association.units->first().oclAsType(DetailsUnit).selection
-				else
-					null
-			endif endif
-		endif
-/]

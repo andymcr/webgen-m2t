@@ -30,42 +30,6 @@
 		->select(f | f.oclIsTypeOf(CaptchaField)).oclAsType(CaptchaField)
 /]
 
-[query public childDynamicUnits(unit : ContentUnit) : Sequence(DynamicUnit)
-	= unit.childUnits()
-		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
-/]
-
-[query public childGalleryUnits(unit : ContentUnit) : Sequence(GalleryUnit)
-	= unit.childUnits()
-		->select(u | u.oclIsKindOf(GalleryUnit)).oclAsType(GalleryUnit)
-/]
-
-[query public childImageCardsUnits(unit : ContentUnit) : Sequence(ImageCardsUnit)
-	= unit.childUnits()
-		->select(u | u.oclIsTypeOf(ImageCardsUnit)).oclAsType(ImageCardsUnit)
-/]
-
-[query public childIndexUnits(unit : ContentUnit) : Sequence(IndexUnit)
-	= unit.childUnits()
-		->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
-/]
-
-[query public childSliderUnits(unit : ContentUnit) : Sequence(SliderUnit)
-	= unit.childUnits()
-		->select(u | u.oclIsKindOf(SliderUnit)).oclAsType(SliderUnit)
-/]
-
-[query public childUnits(unit : ContentUnit) : Sequence(ContentUnit)
-	= if unit.oclIsKindOf(DynamicUnit) then
-			unit.oclAsType(DynamicUnit).displayFields
-				->select(f | f.oclIsTypeOf(UnitAssociation)).oclAsType(UnitAssociation)
-				->select(a | a.units->notEmpty())
-				->collect(a | a.units)
-		else
-			Sequence{}
-		endif
-/]
-
 [query public collectionFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
 	= unit.collectionFields()
 		->select(f | f.oclIsKindOf(UnitFeature)).oclAsType(UnitFeature)

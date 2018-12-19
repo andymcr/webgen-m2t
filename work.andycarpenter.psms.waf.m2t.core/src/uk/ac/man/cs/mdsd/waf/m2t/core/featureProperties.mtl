@@ -29,16 +29,7 @@
 			Sequence{unit}
 		else
 			Sequence{}
-		endif->union(entity.nestedUsersOf(unit))
-/]
-
-[query private nestedUsersOf(entity : Entity, unit : EditUnit) : Sequence(EditUnit)
-	= unit.displayFields
-		->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
-		->select(a | a.units->notEmpty())
-		->iterate(a;
-			units : Sequence(EditUnit) = Sequence{}
-			| units->union(entity.usersOf(a.units->first().oclAsType(EditUnit))))
+		endif
 /]
 
 
@@ -61,9 +52,4 @@
 		else
 			false
 		endif
-/]
-
-
-[query public hasSelection(field : UnitField) : Boolean
-	= not field.selection().oclIsUndefined()
 /]
