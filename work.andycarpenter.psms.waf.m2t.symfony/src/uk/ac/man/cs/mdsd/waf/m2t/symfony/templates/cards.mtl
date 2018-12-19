@@ -190,19 +190,27 @@
 [/template]
 
 [template private cardFields(unit : CardsUnit, variable : String) post(trim())]
+[if (not unit.omitFieldLabels)]
+<dl>
+[/if]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.isConditionalDisplay())]
 {% if not ([field.hideWhen.twigExpression(variable)/]) -%}
 	[/if]
-<p[if (field.truncate)] class="truncate"[/if]>[if (not unit.omitFieldLabels)]
-[if (field.hasCustomisedDisplayLabel)]
+[if (not unit.omitFieldLabels)]
+ <dt[if (field.truncate)] class="truncate"[/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]: [/if]
-[field.displayValue(variable, true)/]</p>
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]<dt><dd[if (field.truncate)] class="truncate"[/if]>[field.displayValue(variable, true)/]</dd>
+[else]
+<p[if (field.truncate)] class="truncate"[/if]>[field.displayValue(variable, true)/]</p>
+[/if]
 	[if (field.isConditionalDisplay())]
 {%- endif %}
 	[/if]
 [/for]
+[if (not unit.omitFieldLabels)]
+</dl>
+[/if]
 [/template]
 
 [template private cardActions(unit : CardsUnit, valueAccessor : String) post(trim())]

@@ -9,7 +9,11 @@
 
 [query public valueLabel(association : UnitAssociation) : String
 	= if association.childFeature.oclIsUndefined() then
-			'.defaultLabel()'
+			if association.valueDisplay.oclIsUndefined() then
+				'.defaultLabel()'
+			else
+				association.valueDisplay.valueLabel()
+			endif
 		else
 			association.childFeature.valueLabel()
 		endif
@@ -29,17 +33,11 @@
 
 [query private valueLabel(child : ChildPathAssociation) : String
 	= if child.childFeature.oclIsUndefined() then
-		let label : String
-			= if child.valueDisplay.oclIsUndefined() then
-					'defaultLabel()'
-				else
-					if child.valueDisplay.oclIsTypeOf(ModelLabel) then
-						child.valueDisplay.oclAsType(ModelLabel).name.concat('Label()')
-					else
-						child.valueDisplay.oclAsType(Attribute).name.concat('Label()')
-					endif
-				endif
-			in '.'.concat(label)
+			if child.valueDisplay.oclIsUndefined() then
+				'.defaultLabel()'
+			else
+				child.valueDisplay.valueLabel()
+			endif
 		else
  			child.childFeature.valueLabel()
 		endif
@@ -61,36 +59,26 @@
 
 [query private valueLabel(path : FeaturePathAssociation) : String
 	= if path.childFeature.oclIsUndefined() then
-		let label : String
-			= if path.valueDisplay.oclIsUndefined() then
-						'defaultLabel()'
-					else
-						if path.valueDisplay.oclIsTypeOf(ModelLabel) then
-							let modelLabel : ModelLabel
-								= path.valueDisplay.oclAsType(ModelLabel)
-								in if modelLabel.name.endsWith('Label') then
-										modelLabel.name.concat('()')
-									else
-										modelLabel.name.concat('Label()')
-									endif
-						else
-							path.valueDisplay.oclAsType(Attribute).name
-						endif
-					endif
-			in '.'.concat(label)
+			if path.valueDisplay.oclIsUndefined() then
+				'.defaultLabel()'
+			else
+				path.valueDisplay.valueLabel()
+			endif
 		else
  			path.childFeature.valueLabel()
 		endif
 /]
 
 [query private valueLabel(path : FeaturePathLabel) : String
-	= let suffix : String
-		= if path.label.name.endsWith('Label') then
-				'()'
-			else
-				'Label()'
-			endif
-		in '.'.concat(path.label.name).concat(suffix)
+	= path.label.valueLabel()
+/]
+
+[query private valueLabel(label : ModelLabel) : String
+	= if label.name.endsWith('Label') then
+			'.'.concat(label.name.toLowerFirst()).concat('()')
+		else
+			'.'.concat(label.name.toLowerFirst()).concat('Label()')
+		endif
 /]
 
 
