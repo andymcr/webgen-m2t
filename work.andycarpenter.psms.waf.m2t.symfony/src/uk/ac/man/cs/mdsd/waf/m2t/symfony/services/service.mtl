@@ -221,7 +221,7 @@ public function find([service.serves.routeParameters()/])
 [template private containerJoin(entity : Entity) post(trim())]
 [let container : Entity = entity.container()]
 ->join('[entity.selectName()/].[entity.containingAssociation().modelPropertyName()/]', '[container.selectName()/]')
-[if (container.isContained())]
+[if (container.isContained() and entity <> container)]
 [container.containerJoin()/]
 [/if]
 [/let]

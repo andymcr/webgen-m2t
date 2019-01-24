@@ -116,11 +116,13 @@
 
 [query private parentUriPathKeys(entity : Entity) : Sequence(Attribute)
 	= let parentEntity : Entity = entity.parentEntity()
-		in if not parentEntity.oclIsUndefined() then
-				parentEntity.uriPathKeys()
-			else
+		in if parentEntity.oclIsUndefined() then
 				Sequence{}
-			endif
+			else if entity = parentEntity then
+				Sequence{}
+			else
+				parentEntity.uriPathKeys()
+			endif endif
 /]
 
 
