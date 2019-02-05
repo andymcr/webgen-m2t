@@ -527,18 +527,15 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
  [alias/][/if]'
 [/template]
 
-[query private pathEntities(selection : Selection) : Set(Entity)
-	= selection.selectPath->collect(p | p.targetType())->asSet()
-/]
-
-[query private containsEntities(selection : Selection) : Set(Entity)
-	= selection.selectPath->collect(p | p.targetType())->asSet()
-/]
-
 [template private joins(selection : Selection) post(trim())]
+[for (join : Association | selection.joins)]
+$queryBuilder->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
+[/for]
 [if (selection.selectPath->notEmpty())]
 	[for (element : Association | selection.selectPath)]
+		[if (selection.joins->excludes(element))]
 $queryBuilder->join('[element.sourceType().selectName()/].[element.modelPropertyName()/]', '[element.targetType().selectName()/]');
+		[/if]
 	[/for]
 [/if]
 [if (not selection.selectionType().oclIsUndefined())]
@@ -546,22 +543,11 @@ $queryBuilder->join('[element.sourceType().selectName()/].[element.modelProperty
 [selection.joinContainer(selection.selectionType())/]
 	[/if]
 [/if]
-[for (join : Association | selection.joins)]
-	[if (selection.pathEntities()->excludes(join.targetType()))]
-$queryBuilder->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
-	[/if]
-[/for]
 [/template]
-
-[query private entitiesX(selection : Selection) : Set(Entity)
-	= selection.joins->collect(a | a.targetType())->asSet()
-/]
 
 [template private joinContainer(selection : Selection, childType : Entity) post(trim())]
 [let association : Association = childType.containingAssociation()]
-	[if (selection.pathEntities()->excludes(association.targetType()))]
 $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/]', '[association.targetType().selectName()/]');
-	[/if]
 [if (association.targetType().isContained())]
 [selection.joinContainer(association.targetType())/]
 [/if]
