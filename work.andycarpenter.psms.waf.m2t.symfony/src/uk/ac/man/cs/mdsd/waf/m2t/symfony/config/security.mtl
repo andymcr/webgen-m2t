@@ -14,7 +14,8 @@ security:
 [if (model.isAuthenticated())]
     encoders:
 	[if (model.isLocallyAuthenticated())]
-        FOS\UserBundle\Model\UserInterface: bcrypt
+        App\Entity\MyUser:
+            algorithm: auto
         legacy_encoder:
             id: 'App\Security\Encoder\LegacyEncoder'
 	[else]
@@ -23,8 +24,6 @@ security:
 
     providers:
 	[if (model.isLocallyAuthenticated())]
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
 	[elseif (model.isCasAuthenticated())]
         cas:
             entity:
@@ -53,14 +52,14 @@ security:
             switch_user: true
             # activate different ways to authenticate
 	[if (model.isLocallyAuthenticated())]
-            form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-            logout: true
+#            form_login:
+#                provider: fos_userbundle
+#                csrf_token_generator: security.csrf.token_manager
+#            logout: true
 		[if (model.localAuthentication().allowRememberMe)]
-            remember_me:
-                secret:   '%kernel.secret%'
-                lifetime: 1209600 # 14 days
+ #           remember_me:
+ #               secret:   '%kernel.secret%'
+ #               lifetime: 1209600 # 14 days
 		[/if]
 	[elseif (model.isCasAuthenticated())]
             guard:
