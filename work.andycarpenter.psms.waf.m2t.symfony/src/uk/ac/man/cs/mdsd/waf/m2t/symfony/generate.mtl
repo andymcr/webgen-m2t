@@ -15,8 +15,9 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::services/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::vichUploader/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::api/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::page/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::extensions::extensions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::authenticationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::enumerationType/]
@@ -83,6 +84,8 @@
 [model.sectionsTranslations()/]
 
 
+[if (model.isAuthenticated())]
+[model.securityController()/]
 [if (model.isLocallyAuthenticated())]
 [let authentication : LocalAuthenticationSystem = model.localAuthentication()]
 [authentication.model()/]
@@ -101,6 +104,7 @@
 [elseif (model.isCasAuthenticated())]
 [let authentication : CasAuthentication = model.casAuthentication()]
 [/let]
+[/if]
 [/if]
 
 [model.css(model.cssDirectory())/]

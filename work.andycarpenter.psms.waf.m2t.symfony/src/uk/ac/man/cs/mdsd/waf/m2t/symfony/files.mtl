@@ -203,6 +203,16 @@
 		.concat(eObject.javascriptExtension())
 /]
 
+[query public controllerFilename(authentication : Authentication, model : WafModel) : String
+	= if model.hasAPI() then
+			authentication.webControllersDirectory()
+		else
+			authentication.controllersDirectory()
+		endif.concat('/')
+			.concat(authentication.controllerClassName())
+			.concat(authentication.executableExtension())
+/]
+
 [query public controllerFilename(page : Page, model : WafModel) : String
 	= if model.hasAPI() then
 			page.webControllersDirectory()

@@ -1,0 +1,40 @@
+[comment encoding = UTF-8 /]
+[module security(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[template public securityController(model : WafModel)]
+[let authentication : Authentication = model.authentication]
+[file(authentication.controllerFilename(model), false)]
+<?php
+[if (model.hasAPI())]
+namespace [model.webControllersNamespace()/];
+[else]
+namespace [model.controllersNamespace()/];
+[/if]
+
+use Symfony\Component\Routing\Annotation\Route;
+
+
+class [authentication.controllerClassName()/] extends [model.baseControllerClassName()/]
+{
+    /**
+     * @Route("/login", name="login", methods={"GET", "POST"})
+     */
+    public function login(AuthenticationUtils $authenticationUtils)
+    {
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+        return $this->render('security/login.html.twig', ['['/]
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        [']'/]);
+    }
+
+}
+[/file]
+[/let]
+[/template]
