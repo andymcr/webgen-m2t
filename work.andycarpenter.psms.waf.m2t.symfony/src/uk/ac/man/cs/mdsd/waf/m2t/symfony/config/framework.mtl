@@ -24,9 +24,6 @@ framework:
         cookie_secure: true
 [/if]
 
-    templating:
-        engines: ['['/]'twig'[']'/]
-    
     #esi: ~
     #fragments: ~
     php_errors:
