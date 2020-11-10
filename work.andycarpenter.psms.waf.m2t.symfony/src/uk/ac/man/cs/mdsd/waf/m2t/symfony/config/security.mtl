@@ -11,13 +11,13 @@
 [template public configSecurity(model : WafModel)]
 [file (model.configPackagesDirectory().concat('/').concat('security').concat(model.yamlExtension()), false)]
 security:
+    enable_authenticator_manager: true
+
 [if (model.isAuthenticated())]
     encoders:
 	[if (model.isLocallyAuthenticated())]
         App\Entity\MyUser:
             algorithm: auto
-        legacy_encoder:
-            id: 'App\Security\Encoder\LegacyEncoder'
 	[else]
         Symfony\Component\Security\Core\User\User: plaintext
 	[/if]
