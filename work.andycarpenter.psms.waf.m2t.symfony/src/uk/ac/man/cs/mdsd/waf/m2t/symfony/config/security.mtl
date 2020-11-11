@@ -51,10 +51,9 @@ security:
             lazy: true
             switch_user: true
 	[if (model.isLocallyAuthenticated())]
-            form_login: ~
+            form_login:
                 login_path: login
                 check_path: login
-                csrf_token_generator: security.csrf.token_manager
 #            logout: true
 		[if (model.localAuthentication().allowRememberMe)]
  #           remember_me:
