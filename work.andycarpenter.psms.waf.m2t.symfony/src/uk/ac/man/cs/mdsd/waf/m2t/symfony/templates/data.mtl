@@ -138,7 +138,7 @@ NULL
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [let variable : String = 'value']
 {% for [variable/] in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
-<p>[association.displayAssociation(variable, variable)/]</p>[else]
+<p[if (field.truncate)] class="truncate"[/if]>[association.displayAssociation(variable, variable)/]</p>[else]
 <span>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyDisplayValue.oclIsUndefined())]
 {% else %}{{ '[association.emptyDisplayValue/]' }}[/if]{% endfor %}
 [/let]

@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -38,7 +39,13 @@
 [unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
 	[/if]
 [else]
+	[if (not unit.imagePathFeature.isRequired() and unit.imagePathFeature.hasChild())]
+		[if (unit.imagePathFeature.isSingleton())]
 {%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] is not empty -%}
+		[else]
+{%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] | length > 0 -%}
+		[/if]
+	[/if]
 [let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
 {%- if [imageAccessor/] is not empty -%}
 [unit.image(unit.imageFilter, imageAccessor, baseAccessor, imageClass)/]
@@ -48,11 +55,13 @@
 	[/if]
 {%- endif -%}
 [/let]
+	[if (not unit.imagePathFeature.isRequired() and unit.imagePathFeature.hasChild())]
 {%- else -%}
-	[if (not unit.missingImagePath.oclIsUndefined())]
+		[if (not unit.missingImagePath.oclIsUndefined())]
 [unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
-	[/if]
+		[/if]
 {%- endif -%}
+	[/if]
 [/if]
 [/template]
 

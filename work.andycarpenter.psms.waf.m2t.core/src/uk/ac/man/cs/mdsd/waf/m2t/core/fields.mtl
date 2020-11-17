@@ -67,6 +67,20 @@
 		endif endif endif
 /]
 
+[query public hasChild(path : FeaturePath) : Boolean
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			false
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).hasChild()
+		else
+			false
+		endif endif
+/]
+
+[query public hasChild(path : FeaturePathAssociation) : Boolean
+	= not path.childFeature.oclIsUndefined()
+/]
+
 [query public hasDefaultValue(field : UnitField) : Boolean
 	= not field.defaultValue().oclIsUndefined()
 /]
@@ -177,6 +191,24 @@
 	= association.association.isPseudo()
 /]
 
+[query public isRequired(path : FeaturePath) : Boolean
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			path.oclAsType(FeaturePathAttribute).isRequired()
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).isRequired()
+		else
+			false
+		endif endif
+/]
+
+[query public isRequired(path : FeaturePathAttribute) : Boolean
+	= path.attribute.isRequired()
+/]
+
+[query public isRequired(path : FeaturePathAssociation) : Boolean
+	= path.association.isRequired()
+/]
+
 [query public isRequired(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
@@ -187,6 +219,24 @@
 		else 
 			field.oclAsType(InterfaceField).required
 		endif
+/]
+
+[query public isSingleton(path : FeaturePath) : Boolean
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			path.oclAsType(FeaturePathAttribute).isSingleton()
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).isSingleton()
+		else
+			false
+		endif endif
+/]
+
+[query public isSingleton(path : FeaturePathAttribute) : Boolean
+	= path.attribute.isSingleton()
+/]
+
+[query public isSingleton(path : FeaturePathAssociation) : Boolean
+	= path.association.isSingleton()
 /]
 
 [query public isSingleton(field : UnitField) : Boolean
