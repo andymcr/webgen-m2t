@@ -160,6 +160,16 @@ if not association.childFeature.oclIsUndefined() then
 		endif endif
 /]
 
+[query public localAccessor(path : FeaturePath, parentAccessor : String, selection : Selection) : String
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			path.oclAsType(FeaturePathAttribute).accessor(parentAccessor, selection)
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).localAccessor(parentAccessor, selection)
+		else
+			path.oclAsType(FeaturePathLabel).accessor(parentAccessor)
+		endif endif
+/]
+
 [query public accessor(path : FeaturePathAttribute, parentAccessor : String, selection : Selection) : String
 	= if path.attribute.alias(selection).oclIsUndefined() then
 			parentAccessor.concat('.').concat(path.attribute.modelPropertyName())
@@ -169,17 +179,20 @@ if not association.childFeature.oclIsUndefined() then
 /]
 
 [query public accessor(path : FeaturePathAssociation, parentAccessor : String, selection : Selection) : String
-	= let accessor : String
-		= if path.association.alias(selection).oclIsUndefined() then
-				parentAccessor.concat('.').concat(path.association.modelPropertyName())
-			else
-				parentAccessor.concat('.').concat(path.association.alias(selection))
-			endif
+	= let accessor : String = path.localAccessor(parentAccessor, selection)
 		in if path.childFeature.oclIsUndefined() then
 				accessor
 			else
 				path.childFeature.accessor(accessor.concat(path.association.associationIndex()))
 			endif
+/]
+
+[query public localAccessor(path : FeaturePathAssociation, parentAccessor : String, selection : Selection) : String
+	= if path.association.alias(selection).oclIsUndefined() then
+			parentAccessor.concat('.').concat(path.association.modelPropertyName())
+		else
+			parentAccessor.concat('.').concat(path.association.alias(selection))
+		endif
 /]
 
 [query public accessor(label : FeaturePathLabel, parentAccessor : String) : String

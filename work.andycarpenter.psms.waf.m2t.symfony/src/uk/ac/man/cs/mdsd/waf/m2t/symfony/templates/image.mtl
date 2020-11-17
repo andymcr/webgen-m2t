@@ -38,6 +38,7 @@
 [unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
 	[/if]
 [else]
+{%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] is not empty -%}
 [let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
 {%- if [imageAccessor/] is not empty -%}
 [unit.image(unit.imageFilter, imageAccessor, baseAccessor, imageClass)/]
@@ -47,6 +48,11 @@
 	[/if]
 {%- endif -%}
 [/let]
+{%- else -%}
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+	[/if]
+{%- endif -%}
 [/if]
 [/template]
 
