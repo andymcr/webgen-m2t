@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
@@ -111,7 +112,6 @@ use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 [if (page.editUnits()->collect(u | u.inputFields())->select(f | f.isContains())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 [if (page.hasAnyAuthorisationRole())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [/if]
@@ -131,10 +131,11 @@ use Symfony\Component\HttpFoundation\Response;
 [if (page.hasInlineFileActions())]
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 [/if]
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Annotation\Route;
 [if (page.hasExplicitValidation())]
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
+use Symfony\Contracts\Translation\TranslatorInterface;
 [for (service : Service | page.services())]
 use [service.servicesNamespace()/]\[service.className()/];
 [/for]
