@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -79,16 +80,16 @@
 	= eObject.templatesDirectory()
 /]
 
-[query public modelsDirectory(eObject : EObject) : String
-	= eObject.sourceDirectory().concat('/').concat('Entity')
-/]
-
 [query public pageViewDirectory(page : Page) : String
 	= page.templatesDirectory().concat('/').concat(page.name)
 /]
 
 [query public securityDirectory(eObject : EObject) : String
 	= eObject.sourceDirectory().concat('/').concat('Security')
+/]
+
+[query public securityViewDirectory(authentication : Authentication) : String
+	= authentication.templatesDirectory().concat('/').concat('security')
 /]
 
 [query public servicesDirectory(eObject : EObject) : String
@@ -111,40 +112,12 @@
 	= 'templates'
 /]
 
-[query public thirdPartyBundlesDirectory(eObject : EObject) : String
-	= eObject.templatesDirectory().concat('/').concat('bundles')
-/]
-
 [query public webControllersDirectory(eObject : EObject) : String
 	= eObject.controllersDirectory().concat('/').concat('Web')
 /]
 
 [query public webDirectory(eObject : EObject) : String
 	= 'web'
-/]
-
-[query public fosChangePasswordDirectory(eObject : EObject) : String
-	= eObject.fosViewsDirectory().concat('/').concat('ChangePassword')
-/]
-
-[query public fosProfileDirectory(eObject : EObject) : String
-	= eObject.fosViewsDirectory().concat('/').concat('Profile')
-/]
-
-[query public fosRegistrationDirectory(eObject : EObject) : String
-	= eObject.fosViewsDirectory().concat('/').concat('Registration')
-/]
-
-[query public fosResettingDirectory(eObject : EObject) : String
-	= eObject.fosViewsDirectory().concat('/').concat('Resetting')
-/]
-
-[query public fosSecurityDirectory(eObject : EObject) : String
-	= eObject.fosViewsDirectory().concat('/').concat('Security')
-/]
-
-[query public fosViewsDirectory(eObject : EObject) : String
-	= eObject.thirdPartyBundlesDirectory().concat('/').concat(eObject.fosUserBundleName())
 /]
 
 
@@ -176,8 +149,8 @@
 	= eObject.formNamespace().concat('\\').concat('Type')
 /]
 
-[query public modelsNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Entity')
+[query public repositoryNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Repository')
 /]
 
 [query public securityNamespace(eObject : EObject) : String
