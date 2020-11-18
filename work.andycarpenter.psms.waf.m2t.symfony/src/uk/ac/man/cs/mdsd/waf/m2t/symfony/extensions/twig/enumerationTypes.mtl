@@ -2,6 +2,7 @@
 [module enumerationTypes(
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
