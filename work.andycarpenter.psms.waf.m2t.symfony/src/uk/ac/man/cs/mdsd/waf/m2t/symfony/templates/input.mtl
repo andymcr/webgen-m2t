@@ -19,16 +19,8 @@
 [file(unit.viewFilename(), false)]
 [let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section class="[singletonUnit.styleClass/]{%if [singletonUnit.errorName()/] | length > 0 %} [singletonUnit.errorClass/]{% endif %}" id="[singletonUnit.instanceName()/]">
+<section class="[singletonUnit.styleClass/]" id="[singletonUnit.instanceName()/]">
  <h4 class="[singletonUnit.captionClass/][if (singletonUnit.omitCaption)] hidden[/if]">[singletonUnit.unitTitle()/]</h4>
-{% if [singletonUnit.errorName()/] | length > 0 %}
- <section class="[singletonUnit.errorClass/]">
-  <p class="[singletonUnit.errorClass/]">{{ [singletonUnit.errorName()/] }}</p>
-[if (singletonUnit.hasMessagesOnFormHead())]
-  [singletonUnit.formErrors()/]
-[/if]
- </section>
-{% endif %}
 [if (unit.oclIsTypeOf(MapUnit))]
  [singletonUnit.map()/]
 [else]
