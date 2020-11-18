@@ -186,19 +186,6 @@
 [/template]
 
 
-[template public formErrors(unit : SingletonUnit) post(trim())]
-<?php
-	if ( isset($[unit.fieldErrorsName()/])) {
-		foreach ($[unit.fieldErrorsName()/] AS $field => $message) {
-?>
-<p class="[unit.errorClass/]"><?php echo __($message); ?></p>
-<?php
-		}
-	} 
-?>
-[/template]
-
-
 [template public map(unit : DynamicUnit)]
 [let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
 <div id="[unit.uniqueName()/]">

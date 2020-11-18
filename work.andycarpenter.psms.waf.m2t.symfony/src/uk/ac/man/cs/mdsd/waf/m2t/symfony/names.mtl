@@ -25,8 +25,8 @@
 	= 'FOSUserBundle'
 /]
 
-[query public authPrefix(eObject : EObject) : String
-	= 'Auth'
+[query public securityPrefix(eObject : EObject) : String
+	= 'Security'
 /]
 
 [query public typePrefix(eObject : EObject) : String
@@ -117,12 +117,16 @@
 /]
 
 
-[query public modelName(authentication : Authentication) : String
-	= authentication.authPrefix().concat('Authentication')
+[query public controllerClassName(security : Authentication) : String
+	= security.securityPrefix().concat('Controller').toUpperFirst()
 /]
 
-[query public typeClassName(authentication : LocalAuthenticationSystem, element : String) : String
-	= authentication.authPrefix().concat(element).concat(authentication.typeSuffix())
+[query public modelName(security : Authentication) : String
+	= security.securityPrefix().concat('User')
+/]
+
+[query public typeClassName(security : LocalAuthenticationSystem, element : String) : String
+	= security.securityPrefix().concat(element).concat(security.typeSuffix())
 /]
 
 
@@ -229,20 +233,12 @@
 	= unit.pageDisplayedOn().controllerName()
 /]
 
-[query public errorName(unit : DynamicUnit) : String
-	= unit.instanceName().concat('_error')
-/]
-
 [query private featureNames(form : DynamicUnit) : Sequence(String)
 	= form.displayFields
 		->select(f | f.oclIsKindOf(UnitFeature))
 		->collect(f | f.feature())
 		->sortedBy(f | f.name)
 		->collect(f | f.name)
-/]
-
-[query public fieldErrorsName(unit : DynamicUnit) : String
-	= unit.instanceName().concat('_field_errors')
 /]
 
 [query public instanceName(unit : ContentUnit) : String
