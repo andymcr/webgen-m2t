@@ -85,6 +85,15 @@
 	= not field.defaultValue().oclIsUndefined()
 /]
 
+[query public hasDynamicChoices(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitAssociation) then
+			let association : UnitAssociation = field.oclAsType(UnitAssociation)
+				in not association.filteredOptions.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
 [query public hasForcedValue(field : UnitField) : Boolean
 	= if field.oclIsKindOf(UnitFeature) then
 			not field.oclAsType(UnitFeature).forcedValue.oclIsUndefined()

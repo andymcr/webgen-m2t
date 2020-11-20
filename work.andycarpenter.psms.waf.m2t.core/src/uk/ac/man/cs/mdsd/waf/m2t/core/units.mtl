@@ -186,6 +186,10 @@
 	= unit.displayFields->select(f | f.disableInput)->notEmpty()
 /]
 
+[query public hasDynamicChoices(unit : DynamicUnit) : Boolean
+	= unit.displayFields->select(f | f.hasDynamicChoices())->notEmpty()
+/]
+
 [query public hasEncryptedFeatures(unit : DynamicUnit) : Boolean
 	= unit.encryptedFeatures()->notEmpty()
 /]

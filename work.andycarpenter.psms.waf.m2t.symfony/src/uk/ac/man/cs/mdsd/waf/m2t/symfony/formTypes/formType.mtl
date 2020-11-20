@@ -34,6 +34,7 @@
 
 [template private entityFormType(unit : SingletonUnit, model : WafModel)]
 [file(unit.formTypeFilename(model), false)]
+[let dataInstance : String = unit.contentType().instanceName()]
 <?php
 namespace [unit.formTypeNamespace()/];
 
@@ -44,8 +45,12 @@ class [unit.typeClassName(model)/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+[if (unit.hasDynamicChoices())]
+        $[dataInstance/] = $options['['/]'data'[']'/] ?? null;
+
+[/if]
 [for (feature : UnitField | unit.displayFields->sortedBy(f | f.feature().name))]
-        $builder->[feature.formFeature()/];
+        $builder->[feature.formField(dataInstance)/];
 [/for]
 [if (unit.contentType.allowFormTypeCustomisation)]
 
@@ -61,6 +66,7 @@ class [unit.typeClassName(model)/] extends AbstractType
         ));
     }
 }
+[/let]
 [/file]
 [/template]
 
@@ -78,11 +84,11 @@ class [association.typeClassName()/] extends AbstractType
     {
 [for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
 	[if (feature.oclIsKindOf(Attribute) and feature.isSingleton())]
-        $builder->[feature.formFeature()/];
+        $builder->[feature.oclAsType(Attribute).formFeature()/];
  	[elseif (feature.oclIsKindOf(Attribute) and not feature.isSingleton())]
-        $builder->[feature.formFeature(false, false)/];
-	[else]
-        $builder->[feature.formFeature(null)/];
+        $builder->[feature.oclAsType(Attribute).formFeature(false, false)/];
+	[elseif (feature.oclIsKindOf(Association))]
+        $builder->[feature.oclAsType(Association).formFeature(null, false, null, null)/];
 	[/if]
 [/for]
     }
@@ -190,15 +196,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/let]
 [/template]
 
-[template private formFeature(field : UnitField)
+[template private formField(field : UnitField, dataInstance : String)
 	? (field.oclIsTypeOf(UnitAttribute) and field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [attribute.attribute.formFeature()/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature)
-	? (feature.oclIsKindOf(Attribute) and feature.isSingleton()) post(trim())]
+[template private formFeature(feature : Attribute)
+	? (feature.isSingleton()) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
@@ -234,15 +240,15 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/let]
 [/template]
 
-[template private formFeature(field : UnitField)
+[template private formField(field : UnitField, dataInstance : String)
 	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature, allowUiAdd : Boolean, allowUiRemove : Boolean)
-	? (feature.oclIsKindOf(Attribute) and not feature.isSingleton()) post(trim())]
+[template private formFeature(feature : Attribute, allowUiAdd : Boolean, allowUiRemove : Boolean)
+	? (not feature.isSingleton()) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', CollectionType::class, array(
     'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
@@ -292,15 +298,15 @@ TextType::class
 [/if]
 [/template]
 
-[template private formFeature(field : UnitField)
+[template private formField(field : UnitField, dataInstance : String)
 	? (field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[association.association.formFeature(association.options, association.valueDisplay, association.filteredOptions.oclIsUndefined())/]
+[association.association.formFeature(association.valueDisplay, not association.hasDynamicChoices(), association.options, dataInstance)/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Feature, selection : Selection, valueLabel : ModelLabel, allOptions : Boolean)
-	? (feature.oclIsKindOf(Association) and not feature.isContains()) post(trim())]
+[template private formFeature(feature : Association, valueLabel : ModelLabel, allOptions : Boolean, selection : Selection, dataInstance : String)
+	? (not feature.isContains()) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
     'label' => '[association.sourceType().id()/].labels.[association.id()/]',
@@ -314,7 +320,9 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     [selection.options()/]
 	[/if]
 [else]
-    'choices' => array(),
+    'choices' => !is_null($[dataInstance/]) && !is_null($[dataInstance/]->[feature.getMethodName()/]())
+        ? array(['['/]$[dataInstance/]->[feature.getMethodName()/]()[']'/])
+        : array(),
 [/if]
     'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,
@@ -356,7 +364,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 },
 [/template]
 
-[template private formFeature(feature : UnitField)
+[template private formField(feature : UnitField, dataInstance : String)
 	? (feature.oclIsTypeOf(UnitAssociation) and feature.isContains()) post(trim())]
 [let association : UnitAssociation = feature.oclAsType(UnitAssociation)]
 [if (association.isSingleton())]
