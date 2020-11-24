@@ -15,14 +15,15 @@
 {% trans_default_domain "navigation" %}
 
 {% block navigation %}
-<nav class="no-print">
- <div class="nav-wrapper">
+<nav class="navbar navbar-expand-lg">
 [if (not model.logoImage.oclIsUndefined())]
-  <a href="#!" class="brand-logo left">[model.image()/]</a>
+ <a href="#!" class="navbar-brand">[model.image()/]</a>
 [/if]
+ <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+ </button>
+ <div class="collapse navbar-collapse" id="navbarNav">
   [menu.topItems(model)/]
-  <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-  [menu.sideItems(model)/]
  </div>
 </nav>
 {% endblock %}
@@ -32,20 +33,28 @@
 
 
 [template private topItems(menu : Menu, model : WafModel) post(trim())]
-<ul id="nav-top" class="right hide-on-med-and-down">
+<div class="navbar-nav">
 [for (entry : MenuEntry | menu.entries)]
  [entry.topEntry()/]
 [/for]
 [if (model.isAuthenticated())]
-{%- if app.user -%}
- <li><a class="dropdown-trigger" href="#!" data-target="user">{{ app.user.username }}<i class="material-icons right">arrow_drop_down</i></a>
-{%- elseif not app.user -%}
- <li><a class="dropdown-trigger" href="#!" data-target="user">[model.authentication.loginLabel/]<i class="material-icons right">arrow_drop_down</i></a>
-{%- endif -%}
  [model.userDropdown()/]
- </li>
 [/if]
-</ul>
+</div>
+[/template]
+
+[template private topEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[if (action.action.requiresRole <> '')]
+{% if is_granted('[action.action.requiresRole/]') %}[/if]
+<a class="nav-link{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
+ disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
+, {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">
+{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a>[if (action.action.requiresRole <> '')]
+{% endif %}[/if]
+[/let]
 [/template]
 
 [template private topEntry(entry : MenuEntry)
@@ -54,126 +63,77 @@
 [if (submenu.requiresRole <> '')]
 {% if is_granted('[submenu.requiresRole/]') %}[/if]
 [if (submenu.entries->isEmpty())]
-<li><span><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/span></li>
+<a class="nav-link disabled"><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/a>
 [else]
-<li><a class="dropdown-trigger" href="#!" data-target="[submenu.id()/]_submenu">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}<i class="material-icons right">arrow_drop_down</i></a>
- [submenu.dropdown()/]
-</li>
+<span class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#[submenu.id()/]_submenu" role="button" aria-expanded="false">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>
+ [submenu.subDropdown()/]
+</span>
 [/if]
 [if (submenu.requiresRole <> '')]
 {% endif %}[/if]
 [/let]
 [/template]
 
-[template private dropdown(submenu : Menu) post(trim())]
-<ul id="[submenu.id()/]_submenu" class="dropdown-content">
+[template private subDropdown(submenu : Menu) post(trim())]
+<ul id="[submenu.id()/]_submenu" class="dropdown-menu">
 [for (subEntry : MenuEntry | submenu.entries)]
-  [subEntry.topEntry()/]
+  [subEntry.dropEntry()/]
 [/for]
 </ul>
 [/template]
 
-[template private topEntry(entry : MenuEntry)
+[template private dropEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
 [let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[action.entry()/]
-[/let]
-[/template]
-
-
-[template private sideItems(menu : Menu, model : WafModel) post(trim())]
-<ul id="slide-out" class="sidenav">
-[if (model.isAuthenticated())]
-{%- if app.user -%}
- <li>{{ app.user.username }}</li>
-{%- elseif not app.user -%}
- <li><a href="{{ path('fos_user_security_login') }}">[model.authentication.loginLabel/]</a></li>
-{%- endif -%}
- <li><div class="divider"></div></li>
-[/if]
-[for (entry : MenuEntry | menu.entries)]
- [entry.sideEntry()/]
-[/for]
-[if (model.isAuthenticated())]
-{% if app.user %}
- <li><a href="{{ path('fos_user_security_logout') }}">[model.authentication.logoutLabel/]</a></li>
-{% endif %}
-[/if]
-</ul>
-[/template]
-
-[template private sideEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
-[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
-[if (submenu.requiresRole <> '')]
-{% if is_granted('[submenu.requiresRole/]') %}[/if]
-<li class="no-padding">
- <ul class="collapsible collapsible-accordion">
-  <li>
-   <a class="collapsible-header">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}<i class="material-icons">arrow_drop_down</i></a>
-   <div class="collapsible-body">
-[if (submenu.entries->notEmpty())]
-    <ul>
-	[for (subEntry : MenuEntry | submenu.entries)]
-     [subEntry.sideEntry()/]
-	[/for]
-    </ul>
-[/if]
-   </div>
-  </li>
- </ul>
-</li>[if (submenu.requiresRole <> '')]
+[if (action.action.requiresRole <> '')]
+{% if is_granted('[action.action.requiresRole/]') %}[/if]
+<li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
+ disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
+, {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a></li>[if (action.action.requiresRole <> '')]
 {% endif %}[/if]
 [/let]
-[/template]
-
-[template private sideEntry(entry : MenuEntry)
-	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
-[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[action.entry()/]
-[/let]
-[/template]
-
-[template private entry(entry : ActionMenuEntry) post(trim())]
-[if (entry.action.requiresRole <> '')]
-{% if is_granted('[entry.action.requiresRole/]') %}[/if]
-<li{% if app.request.attributes.get('_route') == '[entry.routeName()/]' %} class="active"{% endif %}>[if (entry.action.oclIsUndefined())]
-<span>{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</span>[else]
-<a href="{{ path('[entry.routeName()/]'[if (not entry.query.oclIsUndefined())]
-, {[for (parameter : QueryParameter | entry.query.parameters) separator(', ')]
-'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[entry.partOf.id()/].labels.[entry.id()/]' | trans }}</a>[/if]
-</li>[if (entry.action.requiresRole <> '')]
-{% endif %}[/if]
 [/template]
 
 
 [template private userDropdown(model : WafModel) post(trim())]
-<ul id="user" class="dropdown-content">
+<span class="nav-item dropdown">
+{%- if app.user -%}
+ <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
+{%- elseif not app.user -%}
+ <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.authentication.loginLabel/]</a>
+{%- endif -%}
 [if (model.isLocallyAuthenticated())]
-  [model.localAuthentication().userDropdown()/]
+ [model.localAuthentication().userDropdown()/]
 [elseif (model.isCasAuthenticated())]
-  [model.casAuthentication().userDropdown()/]
+ [model.casAuthentication().userDropdown()/]
 [/if]
+ </li>
+</span>
+[/template]
+
+[template private userDropdown(security : LocalAuthenticationSystem) post(trim())]
+<ul id="user-dropdown" class="dropdown-menu">
+{%- if app.user -%}
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'xxx' %} active{% endif %}" href="xx">Profile</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'yyy' %} active{% endif %}" href="yyy">Password</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'logout' %} active{% endif %}" href="{{ path('logout') }}">[security.logoutLabel/]</a></li>
+{%- elseif not app.user -%}
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'login' %} active{% endif %}" href="{{ path('login') }}">[security.loginLabel/]</a></li>
+[if (security.allowSelfRegistration)]
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'register' %} active{% endif %}" href="{{ path('register') }}">Register</a></li>
+[/if]
+{%- endif -%}
 </ul>
 [/template]
 
-[template private userDropdown(authentication : LocalAuthenticationSystem) post(trim())]
-{%- if app.user -%}
-<li><a href="{{ path('fos_user_profile_show') }}" title="User profile">Profile</a></li>
-<li><a href="{{ path('fos_user_change_password') }}" title="Change password">Password</a></li>
-<li><a href="{{ path('fos_user_security_logout') }}" title="logout">[authentication.logoutLabel/]</a></li>
-{%- elseif not app.user -%}
-<li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
-[if (authentication.allowSelfRegistration)]
-<li><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
-[/if]
-{%- endif -%}
-[/template]
-
 [template private userDropdown(authentication : CasAuthentication) post(trim())]
+<ul id="user-dropdown" class="dropdown-menu">
 {%- if app.user -%}
-<li>{{ app.user.username }}&nbsp;<a href="{{ path('fos_user_security_logout') }}">[authentication.logoutLabel/]</a></li>
+<li>{{ app.user.username }}&nbsp;<a href="{{ path('logout') }}">[authentication.logoutLabel/]</a></li>
 {%- elseif not app.user -%}
-<li><a href="{{ path('fos_user_security_login') }}">[authentication.loginLabel/]</a></li>
+<li><a href="{{ path('login') }}">[authentication.loginLabel/]</a></li>
 {%- endif -%}
+</ul>
 [/template]
