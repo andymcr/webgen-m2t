@@ -88,8 +88,12 @@
 	= eObject.sourceDirectory().concat('/').concat('Security')
 /]
 
-[query public securityViewDirectory(authentication : Authentication) : String
-	= authentication.templatesDirectory().concat('/').concat('security')
+[query public securityViewDirectorySuffix(security : Authentication) : String
+	= 'security'
+/]
+
+[query public securityViewDirectory(security : Authentication) : String
+	= security.templatesDirectory().concat('/').concat(security.securityViewDirectorySuffix())
 /]
 
 [query public servicesDirectory(eObject : EObject) : String

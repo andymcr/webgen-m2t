@@ -21,10 +21,6 @@
 	= 'App'
 /]
 
-[query public fosUserBundleName(eObject : EObject) : String
-	= 'FOSUserBundle'
-/]
-
 [query public securityPrefix(eObject : EObject) : String
 	= 'Security'
 /]
@@ -39,6 +35,19 @@
 
 [query public unitPrefix(eObject : EObject) : String
 	= 'Unit'
+/]
+
+
+[query public changePasswordName(eObject : EObject) : String
+	= 'ChangePassword'
+/]
+
+[query public resetPasswordRequestName(eObject : EObject) : String
+	= 'ResetPasswordRequest'
+/]
+
+[query public securityUserName(eObject : EObject) : String
+	= 'User'
 /]
 
 
@@ -117,16 +126,28 @@
 /]
 
 
+[query public changePasswordTypeClassName(security : LocalAuthenticationSystem) : String
+	= security.typeClassName(security.changePasswordName())
+/]
+
 [query public controllerClassName(security : Authentication) : String
 	= security.securityPrefix().concat('Controller').toUpperFirst()
 /]
 
-[query public modelName(security : Authentication) : String
-	= security.securityPrefix().concat('User')
+[query public resetPasswordRequestModelName(security : LocalAuthenticationSystem) : String
+	= security.securityPrefix().concat(security.resetPasswordRequestName())
+/]
+
+[query public resetPasswordRequestTypeClassName(security : LocalAuthenticationSystem) : String
+	= security.typeClassName(security.resetPasswordRequestName())
 /]
 
 [query public typeClassName(security : LocalAuthenticationSystem, element : String) : String
 	= security.securityPrefix().concat(element).concat(security.typeSuffix())
+/]
+
+[query public userModelName(security : Authentication) : String
+	= security.securityPrefix().concat(security.securityUserName())
 /]
 
 

@@ -1,11 +1,13 @@
 [comment encoding = UTF-8 /]
 [module security(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
 [template public configSecurity(model : WafModel)]
@@ -16,13 +18,18 @@ security:
 [if (model.isAuthenticated())]
     encoders:
 	[if (model.isLocallyAuthenticated())]
-        App\Entity\MyUser: auto
+        [model.modelsNamespace()/]\[authentication.userModelName()/]: auto
 	[else]
         Symfony\Component\Security\Core\User\User: plaintext
 	[/if]
 
     providers:
 	[if (model.isLocallyAuthenticated())]
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: [model.modelsNamespace()/]\[authentication.userModelName()/]
+                property: email
 	[elseif (model.isCasAuthenticated())]
         cas:
             entity:
@@ -47,7 +54,6 @@ security:
             security: false
 
         main:
-            anonymous: true
             lazy: true
             switch_user: true
 	[if (model.isLocallyAuthenticated())]
@@ -70,7 +76,6 @@ security:
                  provider: in_memory
 	[/if]
 
-	[if (model.isAuthenticated())]
     # [protected ('role.hierarchy')]
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -79,17 +84,16 @@ security:
     # [/protected]
 
     access_control:
-		[if (model.isLocallyAuthenticated())]
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-		[/if]
-        # [protected ('access.control')]
-		[if (model.isAuthenticated())]
-        - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-		[/if]
-        # [/protected]
+	[if (model.isLocallyAuthenticated())]
+        - { path: ^/login$, roles: PUBLIC_ACCESS, requires_channel: https }
+        - { path: ^/register, roles: PUBLIC_ACCESS, requires_channel: https }
+        - { path: ^/resetting, roles: PUBLIC_ACCESS, requires_channel: https }
 	[/if]
+        # [protected ('access.control')]
+	[if (model.isAuthenticated())]
+        - { path: ^/, roles: PUBLIC_ACCESS, requires_channel: https }
+	[/if]
+        # [/protected]
 [/if]
 [/file]
 [/template]

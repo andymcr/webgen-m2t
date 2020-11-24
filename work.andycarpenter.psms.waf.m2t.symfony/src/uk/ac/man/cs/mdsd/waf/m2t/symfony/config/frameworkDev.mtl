@@ -1,0 +1,15 @@
+[comment encoding = UTF-8 /]
+[module frameworkDev(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public configFrameworkDev(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/dev').concat('/framework').concat(model.yamlExtension()), false)]
+framework:
+    session:
+        handler_id: ~
+[/file]
+[/template]
