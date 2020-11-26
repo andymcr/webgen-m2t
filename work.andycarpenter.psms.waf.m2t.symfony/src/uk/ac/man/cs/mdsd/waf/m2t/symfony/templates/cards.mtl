@@ -30,28 +30,18 @@
 {% trans_default_domain "entity" %}
 <section class="[cardsUnit.styleClass/]" id="[cardsUnit.instanceName()/]">
 [if (not cardsUnit.omitCaption)]
- <h4 class="[cardsUnit.captionClass/]">[cardsUnit.unitTitle()/]</h4>
+<h4 class="[cardsUnit.captionClass/]">[cardsUnit.unitTitle()/]</h4>
 [/if]
 [if (cardsUnit.hasFilters())]
- [cardsUnit.unitFilters()/]
+[cardsUnit.unitFilters()/]
 [/if]
 [if (cardsUnit.hasPagination()
-		and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
- [cardsUnit.pagination()/]
+	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
+[cardsUnit.pagination()/]
 [/if]
-[if (cardsUnit.selection.grouping->isEmpty())]
- <div class="[cardsUnit.contentClass/]">
-  [cardsUnit.unitContent(null, accessor, 0)/]
- </div>
-[else]
- {% set [cardsUnit.selection.grouping->first().name/] = null %}
- [cardsUnit.unitContent(null, accessor, 0)/]
- {% if [accessor/] | length > 0 %}
- </div>
- {% endif %}
-[/if]
+[cardsUnit.unitContent(null, accessor, 0)/]
 [if (cardsUnit.hasPagination()
-		and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
+	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [cardsUnit.pagination()/]
 [/if]
 </section>
@@ -64,6 +54,13 @@
 	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let variable : String = cardsUnit.contentType().instanceName()]
+[if (cardsUnit.selection.grouping->notEmpty())]
+{% set [cardsUnit.selection.grouping->first().name/] = null %}
+[/if]
+<div class="[cardsUnit.contentClass/]">
+[if (cardsUnit.selection.grouping->isEmpty())]
+ <div class="[cardsUnit.rowClass/]">
+[/if]
 {% for [variable/] in [accessor/] %}
 [if (cardsUnit.selection.grouping->notEmpty())]
  {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
@@ -72,138 +69,149 @@
   {% endif %}
  {% set [cardsUnit.selection.grouping->first().name/] = [variable/].enteredIn.title %}
  <h5>{{ [variable/].enteredIn.title }}</h5>
- <div class="row">
+ <div class="[cardsUnit.rowClass/]">
  {% endif%}
 [/if]
-<div class="[cardsUnit.columnClass/]">
- <div class="[cardsUnit.cardClass/]">
-[if (cardsUnit.oclIsTypeOf(TextCardsUnit))]
-[let textUnit : TextCardsUnit = cardsUnit.oclAsType(TextCardsUnit)]
-	[if (not textUnit.elementTitle.oclIsUndefined() or textUnit.displayFields->notEmpty())]
-  [textUnit.cardContent(variable)/]
-	[/if]
-[/let]
-[elseif (cardsUnit.oclIsTypeOf(DateCardsUnit))]
-[let dateUnit : DateCardsUnit = cardsUnit.oclAsType(DateCardsUnit)]
-  [dateUnit.dateImage(variable)/]
-	[if (not dateUnit.elementTitle.oclIsUndefined() or dateUnit.displayFields->notEmpty())]
-  [dateUnit.cardContent(variable)/]
-	[/if]
-[/let]
-[elseif (cardsUnit.oclIsTypeOf(ImageCardsUnit))]
-[let imageUnit : ImageCardsUnit = cardsUnit.oclAsType(ImageCardsUnit)]
-  [imageUnit.cardImage(variable)/]
-	[if (not imageUnit.overlayTitle and not imageUnit.elementTitle.oclIsUndefined() or imageUnit.displayFields->notEmpty())]
-  [imageUnit.cardContent(variable)/]
-	[/if]
-[/let]
+  <div class="[cardsUnit.columnClass/]">
+   <div class="[cardsUnit.cardClass/]">
+[if (cardsUnit.badges->notEmpty())]
+    [cardsUnit.header(variable)/]
 [/if]
+    [cardsUnit.cardBody(variable)/]
 [if (cardsUnit.hasInlineActions())]
 	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
-  [cardsUnit.cardActions(variable)/]
+  [cardsUnit.footer(variable)/]
 	[/if]
 [/if]
+   </div>
+  </div>
+{% endfor %}
  </div>
 </div>
-{% endfor %}
 [/let]
 [/let]
 [/template]
 
-[template private dateImage(unit : DateCardsUnit, variable : String) post(trim())]
-<div class="card-image">
-[if (unit.badges->notEmpty())]
-	[for (badge : Badge | unit.badges)]
- [badge.badge(variable)/]
-	[/for]
-[/if]
-[if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
-[let action : InlineAction = unit.inlineActions()->first()]
- [action.actionLink(unit.contentType(), variable, unit.dateIcon(variable), null, variable, unit.hasObjectAccess())/]
+[template private header(unit : CardsUnit, cardAccessor : String) post(trim())]
+<div class="card-header">
+[for (badge : Badge | unit.badges)]
+ [badge.badge(cardAccessor)/]
+[/for]
+</div>
+[/template]
+
+[template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
+<div class="card-footer">
+ <nav class="nav nav-pills nav-justified">
+[for (action : InlineAction | unit.inlineActions())]
+	[if (unit.hasObjectAccess())]
+  [action.actionLink(unit.contentType(), cardAccessor, action.displayLabel,
+		cardAccessor.concat('.defaultLabel()'), cardAccessor, unit.hasObjectAccess(), 'nav-link m-1')/]
+	[else]
+  [action.actionLink(unit.contentType(), cardAccessor, action.displayLabel, null,
+		cardAccessor, unit.hasObjectAccess(), 'nav-link m-1')/]
+	[/if]
+[/for]
+ </nav>
+</div>
+[/template]
+
+[template private cardBody(unit : CardsUnit, cardAccessor : String) post(trim())]
+<div class="card-body">
+[if (unit.oclIsTypeOf(TextCardsUnit))]
+[let textUnit : TextCardsUnit = unit.oclAsType(TextCardsUnit)]
+	[if (not textUnit.elementTitle.oclIsUndefined() or textUnit.displayFields->notEmpty())]
+ [textUnit.cardTitle(cardAccessor)/]
+	[/if]
 [/let]
-[else]
- [unit.dateIcon(variable)/]
+[elseif (unit.oclIsTypeOf(DateCardsUnit))]
+[let dateUnit : DateCardsUnit = unit.oclAsType(DateCardsUnit)]
+ [dateUnit.cardTitle(cardAccessor)/]
+[/let]
+[elseif (unit.oclIsTypeOf(ImageCardsUnit))]
+[let imageUnit : ImageCardsUnit = unit.oclAsType(ImageCardsUnit)]
+ [imageUnit.cardTitle(cardAccessor)/]
+[/let]
+[/if]
+[if (unit.displayFields->notEmpty())]
+ [unit.cardFields(cardAccessor)/]
 [/if]
 </div>
 [/template]
 
-[template private dateIcon(unit : DateCardsUnit, variable : String) post(trim())]
-<time datetime="{{ [unit.elementDate.accessor(variable, unit.selection)/] | date }}" class="xxxx">
- <em>{{ [unit.elementDate.accessor(variable, unit.selection)/] | date('l') }}</em>
- <strong>{{ [unit.elementDate.accessor(variable, unit.selection)/] | date('j') }}</strong>
- <em>{{ [unit.elementDate.accessor(variable, unit.selection)/] | date('F') }}</em>
+[template private cardTitle(unit : TextCardsUnit, cardAccessor : String) post(trim())]
+[if (not unit.elementTitle.oclIsUndefined())]
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.accessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
+[/if]
+[/template]
+
+[template private cardTitle(unit : DateCardsUnit, cardAccessor : String) post(trim())]
+[unit.dateImage(cardAccessor)/]
+[if (not unit.elementTitle.oclIsUndefined() or unit.displayFields->notEmpty())]
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.accessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
+[/if]
+[/template]
+
+[template private dateImage(unit : DateCardsUnit, cardAccessor : String) post(trim())]
+<div class="card-image img-fluid">
+[if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[let action : InlineAction = unit.inlineActions()->first()]
+ [action.actionLink(unit.contentType(), cardAccessor, unit.dateIcon(cardAccessor),
+	null, cardAccessor, unit.hasObjectAccess(), null)/]
+[/let]
+[else]
+ [unit.dateIcon(cardAccessor)/]
+[/if]
+</div>
+[/template]
+
+[template private dateIcon(unit : DateCardsUnit, cardAccessor : String) post(trim())]
+<time datetime="{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date }}" class="xxxx">
+ <em>{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date('l') }}</em>
+ <strong>{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date('j') }}</strong>
+ <em>{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date('F') }}</em>
 </time>
 [/template]
 
-[template private cardImage(unit : ImageCardsUnit, variable : String) post(trim())]
-[let imageClass : String = if unit.enableImageEnlargement then 'materialboxed' else '' endif]
-<div class="card-image">
-[if (unit.badges->notEmpty())]
-	[for (badge : Badge | unit.badges)]
- [badge.badge(variable)/]
-	[/for]
+[template private cardTitle(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
+[unit.cardImage(cardAccessor)/]
+[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined() or unit.displayFields->notEmpty())]
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if] mt-2">{{ [unit.elementTitle.accessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
 [/if]
+[/template]
+
+[template private cardImage(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
+[let imageClass : String = 'card-img-top']
 [if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
 [let action : InlineAction = unit.inlineActions()->first()]
- [action.actionLink(unit.contentType(), variable, unit.image(variable, imageClass), null, variable, unit.hasObjectAccess())/]
+ [action.actionLink(unit.contentType(), cardAccessor, unit.image(cardAccessor, imageClass),
+	null, cardAccessor, unit.hasObjectAccess(), null)/]
 [/let]
 [else]
- [unit.image(variable, imageClass)/]
+ [unit.image(cardAccessor, imageClass)/]
 [/if]
 [if (unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
- <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{% [unit.elementTitle.accessor(variable, unit.selection)/] %}</span>
-[/if]
+<div class="card-img-overlay">
+ <span class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{% [unit.elementTitle.accessor(cardAccessor, unit.selection)/] %}</span>
 </div>
+[/if]
 [/let]
 [/template]
 
-[template private cardContent(unit : TextCardsUnit, variable : String) post(trim())]
-<div class="card-content">
-[if (not unit.elementTitle.oclIsUndefined())]
- <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
-[/if]
-[if (unit.displayFields->notEmpty())]
- [unit.cardFields(variable)/]
-[/if]
-</div>
-[/template]
-
-[template private cardContent(unit : DateCardsUnit, variable : String) post(trim())]
-<div class="card-content">
-[if (not unit.elementTitle.oclIsUndefined())]
- <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
-[/if]
-[if (unit.displayFields->notEmpty())]
- [unit.cardFields(variable)/]
-[/if]
-</div>
-[/template]
-
-[template private cardContent(unit : ImageCardsUnit, variable : String) post(trim())]
-<div class="card-content">
-[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
- <span class="card-title[if (unit.truncateElementTitle)] truncate[/if]">{{ [unit.elementTitle.accessor(variable, unit.selection)/][unit.elementTitle.valueLabel()/] }}</span>
-[/if]
-[if (unit.displayFields->notEmpty())]
- [unit.cardFields(variable)/]
-[/if]
-</div>
-[/template]
-
-[template private cardFields(unit : CardsUnit, variable : String) post(trim())]
+[template private cardFields(unit : CardsUnit, cardAccessor : String) post(trim())]
 [if (not unit.omitFieldLabels)]
 <dl>
 [/if]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.isConditionalDisplay())]
-{% if not ([field.hideWhen.twigExpression(variable)/]) -%}
+{% if not ([field.hideWhen.twigExpression(cardAccessor)/]) -%}
 	[/if]
 [if (not unit.omitFieldLabels)]
- <dt[if (field.truncate and field.isSingleton())] class="truncate"[/if]>[if (field.hasCustomisedDisplayLabel)]
+ <dt[if (field.truncate and field.isSingleton())] class="text-truncate"[/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]<dt><dd[if (field.truncate)] class="truncate"[/if]>[field.displayValue(variable, true)/]</dd>
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]<dt><dd[if (field.truncate)] class="text-truncate"[/if]>[field.displayValue(cardAccessor, true)/]</dd>
 [else]
-<p[if (field.truncate)] class="truncate"[/if]>[field.displayValue(variable, true)/]</p>
+<div[if (field.truncate)] class="text-truncate"[/if]>[field.displayValue(cardAccessor, true)/]</div>
 [/if]
 	[if (field.isConditionalDisplay())]
 {%- endif %}
@@ -213,16 +221,3 @@
 </dl>
 [/if]
 [/template]
-
-[template private cardActions(unit : CardsUnit, valueAccessor : String) post(trim())]
-<div class="card-action">
-[for (action : InlineAction | unit.inlineActions())]
-	[if (unit.hasObjectAccess())]
- [action.actionLink(unit.contentType(), valueAccessor, action.displayLabel, valueAccessor.concat('.defaultLabel()'), valueAccessor, unit.hasObjectAccess())/]
-	[else]
- [action.actionLink(unit.contentType(), valueAccessor, action.displayLabel, null, valueAccessor, unit.hasObjectAccess())/]
-	[/if]
-[/for]
-</div>
-[/template]
-

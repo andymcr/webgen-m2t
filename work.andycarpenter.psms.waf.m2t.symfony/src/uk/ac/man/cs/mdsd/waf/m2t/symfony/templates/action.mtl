@@ -55,7 +55,8 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 
 [template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
-	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
+	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
+	classAttribute : String)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
 [let unit : CollectionUnit = deleteAction.immediateUnit().oclAsType(CollectionUnit)]
@@ -63,26 +64,29 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [action.anchor(deleteAction.routeName(), 
 	deleteAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
 	linkContent, title, deleteAction.confirmMessage, conditionAccessor, page.hasFilters() or page.hasPagination(), 
-	objectAccess)/]
+	objectAccess, classAttribute)/]
 [/let]
 [/let]
 [/let]
 [/template]
 
 [template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
-	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
+	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
+	classAttribute : String)
 	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
 [let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
 [let unit : CollectionUnit = featureAction.immediateUnit().oclAsType(CollectionUnit)]
 [action.anchor(featureAction.routeName(), 
 	featureAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
-	linkContent, title, featureAction.confirmMessage, conditionAccessor, true, objectAccess)/]
+	linkContent, title, featureAction.confirmMessage, conditionAccessor, true, objectAccess,
+	classAttribute)/]
 [/let]
 [/let]
 [/template]
 
 [template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
-	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean)
+	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
+	classAttribute : String)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
 [let unit : DynamicUnit = selectAction.immediateUnit()]
@@ -111,7 +115,8 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 			targetUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
 		endif]
 [action.anchor(targetUnit.routeName(), routingParameters, linkContent, title, null, conditionAccessor, 
-	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess)/]
+	page = targetUnit.pageDisplayedOn() and (page.hasFilters() or page.hasPagination()), objectAccess,
+	classAttribute)/]
 [/let]
 [/let]
 [/let]
@@ -165,32 +170,37 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 
 [template private anchor(action : InlineAction, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, conditionAccessor : String, 
-	targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
+	targetSamePage : Boolean, objectAccess : Boolean, classAttribute : String) post(trim())]
 [if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
 {% if is_granted('[action.requiresRole()/]') %}[/if]
-[action.anchor2(routeName, routingParameters, linkContent, title, confirmMessage, conditionAccessor, targetSamePage, objectAccess)/][if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
+[action.anchor2(routeName, routingParameters, linkContent, title, confirmMessage, conditionAccessor, targetSamePage, objectAccess, classAttribute)/][if (action.requiresRole() <> '' and action.requiresRole() <> action.immediateUnit().requiresRole)]
 {% endif %}[/if]
 [/template]
 
 [template private anchor2(action : InlineAction, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, 	conditionAccessor : String, 
-	targetSamePage : Boolean, objectAccess : Boolean) post(trim())]
+	targetSamePage : Boolean, objectAccess : Boolean, classAttribute : String) post(trim())]
 [if (action.displayWhen.oclIsUndefined())]
 	[if (action.enableWhen().oclIsUndefined())]
-[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]
+[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess, classAttribute)/]
 	[else]
-{% if [if (action.oclIsTypeOf(SelectAction))]not ([/if][action.enableWhen().twigExpression(conditionAccessor)/][if (action.oclIsTypeOf(SelectAction))])[/if] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]{% else %}[linkContent/]{% endif %}
+{% if [if (action.oclIsTypeOf(SelectAction))]not ([/if][action.enableWhen().twigExpression(conditionAccessor)/][if (action.oclIsTypeOf(SelectAction))])[/if] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess, classAttribute)/]{% else %}[linkContent/]{% endif %}
 	[/if]
 [else]
-{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess)/]{% endif %}
+{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess, classAttribute)/]{% endif %}
 [/if]
 [/template]
 
 [template private anchor3(action : InlineAction, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, targetSamePage : Boolean, 
-	objectAccess : Boolean) post(trim())]
-<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
- onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())] {{ [title/] }}[/if]');"[/if]>[linkContent/]</a>
+	objectAccess : Boolean, classAttribute : String) post(trim())]
+<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())]
+ {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
+ onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())]
+ {{ [title/] }}[/if]');"[/if][if (not classAttribute.oclIsUndefined() or not action.anchorClass.oclIsUndefined())]
+ class="[if (not action.anchorClass.oclIsUndefined())]
+[action.anchorClass/][if (not classAttribute.oclIsUndefined())] [/if][/if] [if (not classAttribute.oclIsUndefined())]
+[classAttribute/][/if]"[/if]>[linkContent/]</a>
 [/template]
 
 
