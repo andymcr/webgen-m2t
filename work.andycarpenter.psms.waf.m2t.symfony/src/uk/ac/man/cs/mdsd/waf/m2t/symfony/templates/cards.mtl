@@ -57,36 +57,34 @@
 [if (cardsUnit.selection.grouping->notEmpty())]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
 [/if]
-<div class="[cardsUnit.contentClass/]">
 [if (cardsUnit.selection.grouping->isEmpty())]
- <div class="[cardsUnit.rowClass/]">
+<div class="[cardsUnit.rowClass/] mb-3">
 [/if]
 {% for [variable/] in [accessor/] %}
 [if (cardsUnit.selection.grouping->notEmpty())]
- {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
-  {% if [cardsUnit.selection.grouping->first().name/] is not null %}
- </div>
-  {% endif %}
- {% set [cardsUnit.selection.grouping->first().name/] = [variable/].enteredIn.title %}
- <h5>{{ [variable/].enteredIn.title }}</h5>
- <div class="[cardsUnit.rowClass/]">
- {% endif%}
+{% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
+ {% if [cardsUnit.selection.grouping->first().name/] is not null %}
+</div>
+ {% endif %}
+{% set [cardsUnit.selection.grouping->first().name/] = [variable/].enteredIn.title %}
+<h5>{{ [variable/].enteredIn.title }}</h5>
+<div class="[cardsUnit.rowClass/]">
+{% endif%}
 [/if]
-  <div class="[cardsUnit.columnClass/]">
-   <div class="[cardsUnit.cardClass/]">
+ <div class="[cardsUnit.columnClass/]">
+  <div class="[cardsUnit.cardClass/]">
 [if (cardsUnit.badges->notEmpty())]
-    [cardsUnit.header(variable)/]
+   [cardsUnit.header(variable)/]
 [/if]
-    [cardsUnit.cardBody(variable)/]
+   [cardsUnit.cardBody(variable)/]
 [if (cardsUnit.hasInlineActions())]
 	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
-  [cardsUnit.footer(variable)/]
+   [cardsUnit.footer(variable)/]
 	[/if]
 [/if]
-   </div>
   </div>
-{% endfor %}
  </div>
+{% endfor %}
 </div>
 [/let]
 [/let]
