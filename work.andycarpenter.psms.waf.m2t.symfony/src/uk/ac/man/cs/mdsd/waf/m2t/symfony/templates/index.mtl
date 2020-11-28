@@ -26,7 +26,7 @@
 [let accessor : String = indexUnit.instanceName()]
 [file(indexUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section class="[indexUnit.styleClass/]" id="[indexUnit.instanceName()/]">
+<section [if (not indexUnit.sectionClass.oclIsUndefined())] class="[indexUnit.sectionClass/]" [/if]id="[indexUnit.instanceName()/]">
  <h4 class="[indexUnit.captionClass/][if (indexUnit.omitCaption)] hidden[/if]">[indexUnit.unitTitle()/]</h4>
 [if (indexUnit.hasFilters())]
  [indexUnit.unitFilters()/]

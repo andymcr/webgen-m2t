@@ -14,7 +14,7 @@
 	? (unit.oclIsTypeOf(SliderUnit)) post(trim())]
 [let sliderUnit : SliderUnit = unit.oclAsType(SliderUnit)]
 [file(sliderUnit.viewFilename(), false)]
-<section class="[sliderUnit.styleClass/]" id="[sliderUnit.instanceName()/]">
+<section [if (not sliderUnit.sectionClass.oclIsUndefined())] class="[sliderUnit.sectionClass/]" [/if]id="[sliderUnit.instanceName()/]">
 [if (not sliderUnit.omitCaption)]
  <h4 class="[sliderUnit.captionClass/]">[sliderUnit.unitTitle()/]</h4>
 [/if]

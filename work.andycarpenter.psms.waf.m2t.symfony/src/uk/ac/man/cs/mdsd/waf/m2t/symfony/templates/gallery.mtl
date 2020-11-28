@@ -17,7 +17,7 @@
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
 [file(galleryUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section class="[galleryUnit.styleClass/]" id="[galleryUnit.instanceName()/]">
+<section [if (not galleryUnit.sectionClass.oclIsUndefined())] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceName()/]">
 [if (not galleryUnit.omitCaption)]
  <h4 class="[galleryUnit.captionClass/]">[galleryUnit.unitTitle()/]</h4>
 [/if]

@@ -28,7 +28,7 @@
 [let accessor : String = detailsUnit.instanceName()]
 [file(detailsUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section class="[detailsUnit.styleClass/]" id="[detailsUnit.instanceName()/]">
+<section [if (not detailsUnit.sectionClass.oclIsUndefined())] class="[detailsUnit.sectionClass/]" [/if]id="[detailsUnit.instanceName()/]">
  <h4 class="[detailsUnit.captionClass/][if (detailsUnit.omitCaption)] hidden[/if]">[detailsUnit.unitTitle()/]</h4>
  [detailsUnit.unitContent(null, accessor, 0)/]
 	[if (detailsUnit.hasUnitSupportActions())]

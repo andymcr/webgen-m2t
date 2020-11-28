@@ -10,7 +10,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::form/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 
 
@@ -19,12 +18,12 @@
 [file(unit.viewFilename(), false)]
 [let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section class="[singletonUnit.styleClass/]" id="[singletonUnit.instanceName()/]">
- <h4 class="[singletonUnit.captionClass/][if (singletonUnit.omitCaption)] hidden[/if]">[singletonUnit.unitTitle()/]</h4>
+<section [if (not singletonUnit.sectionClass.oclIsUndefined())] class="[singletonUnit.sectionClass/]" [/if]id="[singletonUnit.instanceName()/]">
+<h4 [if (not singletonUnit.captionClass.oclIsUndefined())] class="[singletonUnit.captionClass/][/if][if (singletonUnit.omitCaption)] hidden[/if]">[singletonUnit.unitTitle()/]</h4>
 [if (unit.oclIsTypeOf(MapUnit))]
- [singletonUnit.map()/]
+[singletonUnit.map()/]
 [else]
- [singletonUnit.unitContent(null, singletonUnit.instanceName(), 0)/]
+[singletonUnit.unitContent(null, singletonUnit.instanceName(), 0)/]
 [/if]
 </section>
 [/let]
@@ -36,8 +35,8 @@
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section class="[dynamicUnit.styleClass/]" id="[dynamicUnit.instanceName()/]">
- <h2 class="[dynamicUnit.captionClass/][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h2>
+<section [if (not dynamicUnit.sectionClass.oclIsUndefined())] class="[dynamicUnit.sectionClass/]" [/if]id="[dynamicUnit.instanceName()/]">
+ <h2 [if (not dynamicUnit.captionClass.oclIsUndefined())] class="[dynamicUnit.captionClass/][/if][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h2>
  <div class="unit_padding">
 [if (dynamicUnit.hasInterfaceFields())]
 [let accessor : String = '?']

@@ -28,7 +28,7 @@
 [let accessor : String = cardsUnit.instanceName()]
 [file(cardsUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section class="[cardsUnit.styleClass/]" id="[cardsUnit.instanceName()/]">
+<section [if (not cardsUnit.sectionClass.oclIsUndefined())] class="[cardsUnit.sectionClass/]" [/if]id="[cardsUnit.instanceName()/]">
 [if (not cardsUnit.omitCaption)]
 <h4 class="[cardsUnit.captionClass/]">[cardsUnit.unitTitle()/]</h4>
 [/if]

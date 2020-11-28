@@ -11,7 +11,7 @@
 	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
 [file(staticUnit.viewFilename(), false)]
-<section class="[staticUnit.styleClass/]" id="[staticUnit.instanceName()/]">
+<section [if (not staticUnit.sectionClass.oclIsUndefined())] class="[staticUnit.sectionClass/]" [/if]id="[staticUnit.instanceName()/]">
  <h4 class="[staticUnit.captionClass/][if (staticUnit.omitCaption)] hidden[/if]">[staticUnit.displayLabel/]</h4>
 [if (staticUnit.pageDisplayedOn().partOf.staticUnitsEditable)]
   <div class="[staticUnit.contentClass/]">{{ [staticUnit.instanceName()/].content }}</div>

@@ -292,7 +292,7 @@
 		endif
 /]
 
-[query public logoutActionName(unit : LoginUnit) : String
+[query public logoutActionName(security : Authentication) : String
 	= 'logout'
 /]
 
