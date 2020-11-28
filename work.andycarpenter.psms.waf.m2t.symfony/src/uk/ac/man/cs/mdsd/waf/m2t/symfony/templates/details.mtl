@@ -58,7 +58,7 @@
 {% if is_granted('[field.requiresRole/]') %}
 	[/if]
 	[if (field.isConditionalDisplay())]
-{% if [field.getImmediateValue(accessor, unit.hasObjectAccess())/] is not null %}
+{% if [field.hideWhen.twigExpression(accessor)/] %}
 	[/if]
 	[if (unit.omitFieldLabels)]
  <li class="[field.displayClass()/]">[field.displayField(accessor, unit.hasObjectAccess(), depthInteger)/]</li>
