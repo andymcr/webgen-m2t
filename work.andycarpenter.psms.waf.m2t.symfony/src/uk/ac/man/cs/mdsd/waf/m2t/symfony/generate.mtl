@@ -48,7 +48,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translations::entity/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translations::section/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translations::navigation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form::materialize/]
 
 
 [template public symfony(model : WafModel)]
@@ -81,7 +80,6 @@
 [model.generatePage()/]
 [model.pages->select(p | p.units->notEmpty()).page()/]
 [model.pages.units.unitView()/]
-[model.formViews()/]
 
 [model.entityTranslations()/]
 [model.navigationTranslations()/]
