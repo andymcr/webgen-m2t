@@ -19,7 +19,8 @@
 [let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section [if (not singletonUnit.sectionClass.oclIsUndefined())] class="[singletonUnit.sectionClass/]" [/if]id="[singletonUnit.instanceName()/]">
-<h4 [if (not singletonUnit.captionClass.oclIsUndefined())] class="[singletonUnit.captionClass/][/if][if (singletonUnit.omitCaption)] hidden[/if]">[singletonUnit.unitTitle()/]</h4>
+<h4[if (not singletonUnit.sectionClass.oclIsUndefined() or singletonUnit.omitCaption)]
+ class="[if (not singletonUnit.sectionClass.oclIsUndefined())][singletonUnit.captionClass/][/if] [if (singletonUnit.omitCaption)] hidden[/if]"[/if]>[singletonUnit.unitTitle()/]</h4>
 [if (unit.oclIsTypeOf(MapUnit))]
 [singletonUnit.map()/]
 [else]

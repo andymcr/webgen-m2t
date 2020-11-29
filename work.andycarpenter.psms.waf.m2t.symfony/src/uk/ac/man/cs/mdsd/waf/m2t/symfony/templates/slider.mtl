@@ -16,7 +16,8 @@
 [file(sliderUnit.viewFilename(), false)]
 <section [if (not sliderUnit.sectionClass.oclIsUndefined())] class="[sliderUnit.sectionClass/]" [/if]id="[sliderUnit.instanceName()/]">
 [if (not sliderUnit.omitCaption)]
- <h4 class="[sliderUnit.captionClass/]">[sliderUnit.unitTitle()/]</h4>
+ <h4[if (not sliderUnit.sectionClass.oclIsUndefined() or sliderUnit.omitCaption)]
+ class="[if (not sliderUnit.sectionClass.oclIsUndefined())][sliderUnit.captionClass/][/if] [if (sliderUnit.omitCaption)] hidden[/if]"[/if]>[sliderUnit.unitTitle()/]</h4>
 [/if]
  [sliderUnit.materializeCSS()/]
 </section>

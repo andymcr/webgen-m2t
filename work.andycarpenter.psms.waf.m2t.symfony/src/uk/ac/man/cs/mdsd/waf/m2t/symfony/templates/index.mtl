@@ -27,7 +27,8 @@
 [file(indexUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section [if (not indexUnit.sectionClass.oclIsUndefined())] class="[indexUnit.sectionClass/]" [/if]id="[indexUnit.instanceName()/]">
- <h4 class="[indexUnit.captionClass/][if (indexUnit.omitCaption)] hidden[/if]">[indexUnit.unitTitle()/]</h4>
+ <h4[if (not indexUnit.sectionClass.oclIsUndefined() or indexUnit.omitCaption)]
+ class="[if (not indexUnit.sectionClass.oclIsUndefined())][indexUnit.captionClass/][/if] [if (indexUnit.omitCaption)] hidden[/if]"[/if]>[indexUnit.unitTitle()/]</h4>
 [if (indexUnit.hasFilters())]
  [indexUnit.unitFilters()/]
 [/if]
