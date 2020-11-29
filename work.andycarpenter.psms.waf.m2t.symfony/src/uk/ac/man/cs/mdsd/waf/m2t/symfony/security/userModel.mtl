@@ -32,6 +32,11 @@ class [security.userModelName()/] implements UserInterface
     protected $id;
 
     /**
+     * @ORM\Column(type="string", length=20, unique=true)
+     */
+    private $username;
+
+    /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -94,7 +99,14 @@ class [security.userModelName()/] implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     /**

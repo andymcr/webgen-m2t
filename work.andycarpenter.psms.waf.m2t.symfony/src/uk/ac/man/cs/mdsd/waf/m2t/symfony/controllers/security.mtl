@@ -2,6 +2,7 @@
 [module security(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -20,6 +21,7 @@ namespace [model.controllersNamespace()/];
 
 [if (model.isLocallyAuthenticated())]
 [let localSecurity : LocalAuthenticationSystem = model.localAuthentication()]
+use [localSecurity.modelsNamespace()/]\[security.userModelName()/];
 use [localSecurity.formTypeNamespace()/]\[localSecurity.changePasswordTypeClassName()/];
 use [localSecurity.formTypeNamespace()/]\[localSecurity.resetPasswordRequestTypeClassName()/];
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -175,7 +177,7 @@ class [authentication.controllerClassName()/] extends [model.baseControllerClass
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('[model.homePage().routeName()/]');
         }
 
         return $this->render('[security.securityViewDirectorySuffix()/]/reset.html.twig', ['['/]
