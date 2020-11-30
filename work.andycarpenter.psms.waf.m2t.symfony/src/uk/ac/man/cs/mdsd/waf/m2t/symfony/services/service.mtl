@@ -195,7 +195,7 @@ TokenStorageInterface $securityTokenStorage[else][model.userService().className(
 
 [template private findMethod(service : Service) post(trim())]
 [let entity : Entity = service.serves]
-public function find([service.serves.routeParameters()/])
+public function find([entity.routeParameters()/])
 {
     $queryBuilder = $this->createQueryBuilder();
     return $queryBuilder
@@ -328,7 +328,7 @@ public function [selection.methodName/]([selection.formals()/])
 {
     [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
-[if (selection.selectPath->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
+[if (selection.uriPathKeys()->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
     [selection.queryParametersCode(userService)/]
 [/if]
 
@@ -417,12 +417,10 @@ public function [filter.methodName/]([filter.formals()/])
 [/template]
 
 [template private selectionFormals(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty())]
-	[for (key : Attribute | selection.selectionType().uriPathKeys()) separator(', ')]
+[for (key : Attribute | selection.uriPathKeys()) separator(', ')]
 $[key.routeParameterName(selection.selectionType())/][/for]
-[if (selection.hasFormals())]
+[if (selection.uriPathKeys()->notEmpty() and selection.hasFormals())]
 , [/if]
-[/if]
 [for (parameter : FormalParameter | selection.parameters) separator(', ')]
 $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
  = [parameter.defaultValue/][/if][/for]
@@ -556,16 +554,16 @@ $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/
 [/template]
 
 [template private condition(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty())]
+[if (selection.uriPathKeys()->notEmpty())]
 [let routingEntity : Entity = selection.selectionType()]
-	[if (routingEntity.uriPathKeys()->size() = 1)]
-	[let key : Attribute = routingEntity.uriPathKeys()->first()]
+	[if (selection.uriPathKeys()->size() = 1)]
+	[let key : Attribute = selection.uriPathKeys()->first()]
 $queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]'));
 	[/let]
 	[else]
 $queryBuilder->where($queryBuilder->expr()->andX(
-		[for (key : Attribute | routingEntity.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> routingEntity.uriPathKeys()->size())],[/if]
+		[for (key : Attribute | selection.uriPathKeys())]
+    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> selection.uriPathKeys()->size())],[/if]
 		[/for]
 ));
 	[/if]
@@ -586,7 +584,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/template]
 
 [template private queryParametersCode(selection : Selection, userService : Service) post(trim())]
-[if (selection.selectPath->notEmpty())]
+[if (selection.uriPathKeys()->notEmpty())]
 [selection.querySelectedParameters()/]
 [/if]
 [if (selection.hasConditionParameters())]
@@ -596,7 +594,7 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 
 [template private querySelectedParameters(selection : Selection) post(trim())]
 [let routingEntity : Entity = selection.selectionType()]
-	[for (key : Attribute | routingEntity.uriPathKeys())]
+	[for (key : Attribute | selection.uriPathKeys())]
 $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routeParameterName(routingEntity)/]);
 	[/for]
 [/let]
