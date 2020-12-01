@@ -101,7 +101,7 @@
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
 <div class="card-footer">
- <nav class="nav nav-pills nav-justified">
+ <nav[if (not unit.actionNavigationClass.oclIsUndefined())] class="[unit.actionNavigationClass/]"[/if]>
 [for (action : InlineAction | unit.inlineActions())]
 	[if (unit.hasObjectAccess())]
   [action.actionLink(unit.contentType(), cardAccessor, action.displayLabel,
@@ -125,11 +125,15 @@
 [/let]
 [elseif (unit.oclIsTypeOf(DateCardsUnit))]
 [let dateUnit : DateCardsUnit = unit.oclAsType(DateCardsUnit)]
+	[if (not dateUnit.elementTitle.oclIsUndefined())]
  [dateUnit.cardTitle(cardAccessor)/]
+	[/if]
 [/let]
 [elseif (unit.oclIsTypeOf(ImageCardsUnit))]
 [let imageUnit : ImageCardsUnit = unit.oclAsType(ImageCardsUnit)]
+	[if (not imageUnit.elementTitle.oclIsUndefined())]
  [imageUnit.cardTitle(cardAccessor)/]
+	[/if]
 [/let]
 [/if]
 [if (unit.displayFields->notEmpty())]
