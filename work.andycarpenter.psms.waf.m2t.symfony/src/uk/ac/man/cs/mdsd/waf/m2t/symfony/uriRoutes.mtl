@@ -128,9 +128,14 @@
 		in if not keyType.isContained() then
 				keyType.keyPath(routingType, unit, selection)
 			else
-				keyType.container().uriPath(routingType, unit, selection)
-					.appendContainingAssociation(keyType)
-					.combinePaths(keyType.keyPath(routingType, unit, selection))
+				let keyPath : String = keyType.keyPath(routingType, unit, selection)
+				in if keyPath <> '' then
+						keyType.container().uriPath(routingType, unit, selection)
+							.appendContainingAssociation(keyType)
+							.combinePaths(keyPath)
+					else
+						keyType.container().uriPath(routingType, unit, selection)
+					endif
 			endif
 /]
 
