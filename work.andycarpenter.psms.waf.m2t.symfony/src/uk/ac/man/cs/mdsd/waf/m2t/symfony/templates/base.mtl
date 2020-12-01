@@ -42,8 +42,7 @@
 <body>
 <header>
 {% block navigation %}
- <nav>
- </nav>
+{{ include('navigation[model.htmlExtension()/][model.twigExtension()/]') }}
 {% endblock %}
 </header>
 <main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
