@@ -1,7 +1,10 @@
 [comment encoding = UTF-8 /]
 [module expression(
 	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/Service')]
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service',
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 
 
 [query public hasFormals(expression : Expression) : Boolean
@@ -29,9 +32,13 @@
 			let predicate : PredicateIsEmpty
 				= expression.oclAsType(PredicateIsEmpty)
 				in predicate.feature.hasFormals()
+		else if expression.oclIsTypeOf(PredicateIsNull) then
+			let predicate : PredicateIsNull
+				= expression.oclAsType(PredicateIsNull)
+				in predicate.feature.hasFormals()
 		else
 			expression.oclIsTypeOf(ParameterReference)
-		endif endif endif endif endif endif
+		endif endif endif endif endif endif endif
 /]
 
 
@@ -60,9 +67,13 @@
 			let predicate : PredicateIsEmpty
 				= expression.oclAsType(PredicateIsEmpty)
 				in predicate.feature.hasParameters()
+		else if expression.oclIsTypeOf(PredicateIsNull) then
+			let predicate : PredicateIsNull
+				= expression.oclAsType(PredicateIsNull)
+				in predicate.feature.hasParameters()
 		else
 			expression.oclIsTypeOf(ParameterReference)
 				or expression.oclIsTypeOf(CurrentTime)
 				or expression.oclIsTypeOf(CurrentUser)
-		endif endif endif endif endif endif
+		endif endif endif endif endif endif endif
 /]
