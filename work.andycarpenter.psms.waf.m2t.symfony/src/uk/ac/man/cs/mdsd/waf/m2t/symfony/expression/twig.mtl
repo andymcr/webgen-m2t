@@ -28,6 +28,16 @@ date('[guard.oclAsType(TimeLiteral).value/]')[if (guard.suffixes->notEmpty())] [
 date()[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/template]
 
+
+[template public controllerExpression(expression : Expression, accessor : String)
+	? (expression.oclIsTypeOf(FunctionCall)) post(trim())]
+[let call : FunctionCall = expression.oclAsType(FunctionCall)]
+[call.name/]([for (actual : Expression | call.actuals) separator(', ')]
+[actual.controllerExpression(accessor)/][/for])
+[/let]
+[/template]
+
+
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(ConstantReference)) post(trim())]
 [let constant : ConstantReference = guard.oclAsType(ConstantReference)]

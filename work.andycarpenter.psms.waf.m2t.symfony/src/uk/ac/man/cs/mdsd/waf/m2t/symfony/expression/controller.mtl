@@ -28,7 +28,16 @@ $time
 
 [template public controllerExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
-$now
+new \DateTime()
+[/template]
+
+
+[template public controllerExpression(expression : Expression, accessor : String)
+	? (expression.oclIsTypeOf(FunctionCall)) post(trim())]
+[let call : FunctionCall = expression.oclAsType(FunctionCall)]
+[call.name/]([for (actual : Expression | call.actuals) separator(', ')]
+[actual.controllerExpression(accessor)/][/for])
+[/let]
 [/template]
 
 
@@ -42,7 +51,8 @@ $now
 [template public controllerExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
 [let path : FeaturePathAttribute = guard.oclAsType(FeaturePathAttribute)]
-[accessor/]->[path.attribute.getMethodName()/]()
+[accessor/]->[path.attribute.getMethodName()/]()[if (guard.suffixes->notEmpty())]
+ [guard.suffixes()/][/if]
 [/let] 
 [/template]
 
@@ -50,7 +60,8 @@ $now
 	? (guard.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
 [let path : FeaturePathAssociation = guard.oclAsType(FeaturePathAssociation)]
 [accessor/]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
-[path.childFeature.pathExpression()/][/if]
+[path.childFeature.pathExpression()/][/if][if (guard.suffixes->notEmpty())]
+ [guard.suffixes()/][/if]
 [/let] 
 [/template]
 
@@ -95,18 +106,15 @@ $this->getUser()
 [template public controllerExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
-[predicate.left.controllerExpression(accessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor)/]
+[predicate.left.controllerExpression(accessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor)/][if (expression.suffixes->notEmpty())]
+ [expression.suffixes()/][/if]
 [/let]
 [/template]
 
 [template public controllerExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-[if (predicate.left.oclIsTypeOf(CurrentTime) or predicate.left.oclIsTypeOf(TimeLiteral))]
-[predicate.left.controllerExpression(accessor)/]->diff([predicate.right.controllerExpression(accessor)/])->format('%R') == '[if (predicate.operator = ComparisionOperator::GreaterThan)]-[else]+[/if]'
-[else]
-[predicate.left.controllerExpression(accessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor)/]
-[/if]
+[predicate.left.controllerExpression(accessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor)/][if (expression.suffixes->notEmpty())] [expression.suffixes()/][/if]
 [/let]
 [/template]
 
@@ -242,4 +250,9 @@ $now = new \DateTime();
 [let literal : TimeLiteral = expression.oclAsType(TimeLiteral)]
 $time = new \DateTime('[literal.value/]');
 [/let]
+[/template]
+
+[template private suffixes(expression : Expression) post(trim())]
+[for (suffix : String | expression.suffixes)]
+[suffix/][/for]
 [/template]
