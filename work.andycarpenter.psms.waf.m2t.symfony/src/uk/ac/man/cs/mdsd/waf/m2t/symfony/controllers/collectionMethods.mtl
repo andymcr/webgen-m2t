@@ -6,6 +6,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::expression/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
@@ -100,19 +101,17 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [/template]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (not unit.omitContainerLoad and not unit.collectionType().oclIsUndefined())]
 [unit.loadContainer()/]
 [/if]
-[if (dynamicUnit.isConditionalDisplay() and not unit.collectionType().oclIsUndefined())]
-if (!([dynamicUnit.hideWhen.controllerExpression('$this->'.concat(unit.collectionType().instanceName()))/])) {
+[if (unit.isConditionalDisplay() and not unit.collectionType().oclIsUndefined())]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanceName()))/])) {
     [unit.selectCode2()/]
 }
 [else]
 [unit.selectCode2()/]
 [/if]
 
-[/let]
 [/template]
 
 [template private selectCode2(unit : CollectionUnit) post(trim())]
@@ -196,12 +195,16 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()
 [/template]
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
-[if (not unit.selection.oclIsUndefined())]
-	[if (not unit.collectionType().oclIsUndefined() and not unit.omitContainerLoad)]
+[if (not unit.omitContainerLoad and not unit.collectionType().oclIsUndefined())]
 $parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
-	[/if]
 [/if]
+[if (unit.isConditionalDisplay() and not unit.collectionType().oclIsUndefined())]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanceName()))/])) {
+	$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+}
+[else]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+[/if]
 [if (unit.hasPagination())]
 $parameters['['/]'currentPage'[']'/] = [unit.pageVariable()/];
 	[if (unit.maximumPaginationSize > 0)]
