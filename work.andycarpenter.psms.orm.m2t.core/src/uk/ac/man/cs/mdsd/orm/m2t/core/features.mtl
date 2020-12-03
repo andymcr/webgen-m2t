@@ -125,12 +125,11 @@
 /]
 
 [query public isOppositeSingleton(association : Association) : Boolean
-	= let opposite : Association = association.opposite()
-		in if not opposite.oclIsUndefined() then
-				opposite.isSingleton()
-			else
-				false
-			endif
+	= if not association.opposite.oclIsUndefined() then
+			association.opposite.isSingleton()
+		else
+			false
+		endif
 /]
 
 [query public isOwningEnd(feature : Feature) : Boolean
@@ -216,21 +215,12 @@
 		endif
 /]
 
-[query public opposite(association : Association) : Association
-	= if association.oclIsKindOf(Association) then
-			association.oclAsType(Association).opposite
-		else
-			null
-		endif
-/]
-
 [query public oppositeColumnName(association : Association) : String
-	= let opposite : Association = association.opposite()
-		in if not opposite.oclIsUndefined() then
-				opposite.columnName
-			else
-				'Unknown opposite'
-			endif
+	= if not association.opposite.oclIsUndefined() then
+			opposite.columnName
+		else
+			'Unknown opposite'
+		endif
 /]
 
 [query public pivotTableName(feature : Feature) : String
@@ -250,10 +240,9 @@
 /]
 
 [query public targetType(association : Association) : Entity
-	= let opposite : Association = association.opposite()
-		in if not opposite.oclIsUndefined() then
-				opposite.partOf.oclAsType(Entity)
-			else
-				null
-			endif
+	= if not association.opposite.oclIsUndefined() then
+			opposite.partOf.oclAsType(Entity)
+		else
+			null
+		endif
 /]

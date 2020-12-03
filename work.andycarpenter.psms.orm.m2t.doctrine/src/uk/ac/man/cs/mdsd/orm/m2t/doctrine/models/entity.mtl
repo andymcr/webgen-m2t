@@ -42,7 +42,7 @@ namespace [entity.modelsNamespace()/];
 [/for]
 [if (entity.isContained())]
 	[for (attribute : Attribute | entity.containerUniqueAttributes())]
- * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entity.containingAssociation().opposite().modelPropertyName()/]")
+ * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entity.containingAssociation().opposite.modelPropertyName()/]")
 	[/for]
 [/if]
 [if (entity.hasResourceAttributes())]
@@ -589,11 +589,11 @@ public function [feature.addMethodName()/]($[feature.singletonName/])
 [if (feature.oclIsKindOf(Association) and not feature.isOwningEnd())]
 [let association : Association = feature.oclAsType(Association)]
 	[if (association.isOppositeSingleton())]
-    $[association.singletonName/]->[association.opposite().setMethodName()/]($this);
+    $[association.singletonName/]->[association.opposite.setMethodName()/]($this);
 	[else]
-    $[association.singletonName/]->[if (association.opposite().collectionOrmAllowAdd)]
-[association.opposite().addMethodName()/][else]
-[association.opposite().getMethodName()/]->add[/if](this);
+    $[association.singletonName/]->[if (association.opposite.collectionOrmAllowAdd)]
+[association.opposite.addMethodName()/][else]
+[association.opposite.getMethodName()/]->add[/if](this);
 	[/if]
 [/let]
 [/if]
@@ -611,11 +611,11 @@ public function [feature.removeMethodName()/]($[feature.singletonName/])
 [if (feature.oclIsKindOf(Association) and not feature.isOwningEnd())]
 [let association : Association = feature.oclAsType(Association)]
 	[if (association.isOppositeSingleton())]
-    $[association.singletonName/]->[association.opposite().setMethodName()/](null);
+    $[association.singletonName/]->[association.opposite.setMethodName()/](null);
 	[else]
-    $[association.singletonName/]->[if (association.opposite().collectionOrmAllowRemove)]
-[association.opposite().removeMethodName()/][else]
-[association.opposite().getMethodName()/]->removeElement[/if](this);
+    $[association.singletonName/]->[if (association.opposite.collectionOrmAllowRemove)]
+[association.opposite.removeMethodName()/][else]
+[association.opposite.getMethodName()/]->removeElement[/if](this);
 	[/if]
 [/let]
 [/if]
