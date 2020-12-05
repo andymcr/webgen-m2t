@@ -2,24 +2,42 @@
 [module page(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public page(page : Page)]
+[template public page(page : Page) post(trim())]
 [file(page.pageViewDirectory().concat('/page').concat(page.htmlExtension()).concat(page.twigExtension()), false)]
 {% extends 'base.html.twig' %}
 
 {% block content %}
 [for (unit : ContentUnit | page.units)]
-	[if (not unit.oclIsTypeOf(StaticUnit))]
+	[if (unit.oclIsTypeOf(StaticUnit))]
+[unit.unitContent(page)/]
+	[else]
+		[if (not unit.oclIsKindOf(CollectionUnit))]
+[unit.unitContent(page)/]
+		[else]
+		[let collection : CollectionUnit = unit.oclAsType(CollectionUnit)]
+			[if (collection.hideWhen.oclIsUndefined())]
+[unit.unitContent(page)/]
+			[else]
 {% if [unit.instanceName()/] is defined %}
-	[/if]
-{{ include('[page.name/]/[unit.instanceName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
-	[if (not unit.oclIsTypeOf(StaticUnit))]
+[unit.unitContent(page)/]
+{% else %}
+<h5>{{ '[collection.containedId()/].labels.hiddenMessage' | trans({}, 'default') }}</h5>
 {% endif %}
+			[/if]
+		[/let]
+		[/if]
 	[/if]
 [/for]
 {% endblock %}
 [/file]
 [/template]
+
+[template private unitContent(unit : ContentUnit, page : Page) post(trim())]
+{{ include('[page.name/]/[unit.instanceName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
+[/template]
+
