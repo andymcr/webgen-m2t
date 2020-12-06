@@ -50,9 +50,9 @@
 
 [template public detailsContent(unit : DetailsUnit, accessor : String, depthInteger : Integer) post(trim())]
 [if (unit.omitFieldLabels)]
-<ul class="[unit.contentClass/]">
+<ul[if (not unit.fieldListClass.oclIsUndefined())] class="[unit.fieldListClass/]"[/if]>
 [else]
-<dl class="[unit.contentClass/]">
+<dl[if (not unit.fieldListClass.oclIsUndefined())] class="[unit.fieldListClass/]"[/if]>
 [/if]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.requiresRole <> '')]
@@ -62,12 +62,12 @@
 {% if [field.hideWhen.twigExpression(accessor)/] %}
 	[/if]
 	[if (unit.omitFieldLabels)]
- <li class="[field.displayClass()/]">[field.displayField(accessor, unit.hasObjectAccess(), depthInteger)/]</li>
+ <li[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>[field.displayField(accessor, unit.hasObjectAccess(), depthInteger)/]</li>
 	[else]
- <dt class="[field.displayClass()/]">[if (field.hasCustomisedDisplayLabel)]
+ <dt[if (not unit.fieldLabelClass.oclIsUndefined())] class="[unit.fieldLabelClass/]"[/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
- <dd class="[field.displayClass()/]">[field.displayValue(accessor, true)/]</dd>
+ <dd[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>[field.displayValue(accessor, true)/]</dd>
 	[/if]
 	[if (field.isConditionalDisplay())]
 		[if (field.oclIsKindOf(UnitFeature))]
@@ -75,12 +75,12 @@
 			[if (not feature.defaultDisplayValue.oclIsUndefined())]
 {% else %}
 				[if (unit.omitFieldLabels)]
- <li class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</li>
+ <li[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>{{ '[feature.defaultDisplayValue/]' }}</li>
 				[else]
- <dt class="[field.displayClass()/]">[if (field.hasCustomisedDisplayLabel)]
+ <dt[if (not unit.fieldLabelClass.oclIsUndefined())] class="[unit.fieldLabelClass/]"[/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
- <dd class="[field.displayClass()/]">{{ '[feature.defaultDisplayValue/]' }}</dd>
+ <dd[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>{{ '[feature.defaultDisplayValue/]' }}</dd>
 				[/if]
 			[/if]
 		[/let]
