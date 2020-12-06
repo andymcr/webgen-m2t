@@ -16,6 +16,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::badge/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::data/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::index/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
@@ -49,53 +50,7 @@
 [/template]
 
 [template public detailsContent(unit : DetailsUnit, accessor : String, depthInteger : Integer) post(trim())]
-[if (unit.omitFieldLabels)]
-<ul[if (not unit.fieldListClass.oclIsUndefined())] class="[unit.fieldListClass/]"[/if]>
-[else]
-<dl[if (not unit.fieldListClass.oclIsUndefined())] class="[unit.fieldListClass/]"[/if]>
-[/if]
-[for (field : UnitField | unit.displayFields)]
-	[if (field.requiresRole <> '')]
-{% if is_granted('[field.requiresRole/]') %}
-	[/if]
-	[if (field.isConditionalDisplay())]
-{% if [field.hideWhen.twigExpression(accessor)/] %}
-	[/if]
-	[if (unit.omitFieldLabels)]
- <li[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>[field.displayField(accessor, unit.hasObjectAccess(), depthInteger)/]</li>
-	[else]
- <dt[if (not unit.fieldLabelClass.oclIsUndefined())] class="[unit.fieldLabelClass/]"[/if]>[if (field.hasCustomisedDisplayLabel)]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
- <dd[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>[field.displayValue(accessor, true)/]</dd>
-	[/if]
-	[if (field.isConditionalDisplay())]
-		[if (field.oclIsKindOf(UnitFeature))]
-		[let feature : UnitFeature = field.oclAsType(UnitFeature)]
-			[if (not feature.defaultDisplayValue.oclIsUndefined())]
-{% else %}
-				[if (unit.omitFieldLabels)]
- <li[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>{{ '[feature.defaultDisplayValue/]' }}</li>
-				[else]
- <dt[if (not unit.fieldLabelClass.oclIsUndefined())] class="[unit.fieldLabelClass/]"[/if]>[if (field.hasCustomisedDisplayLabel)]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
- <dd[if (not unit.fieldValueClass.oclIsUndefined())] class="[unit.fieldValueClass/]"[/if]>{{ '[feature.defaultDisplayValue/]' }}</dd>
-				[/if]
-			[/if]
-		[/let]
-		[/if]
-{% endif %}
-	[/if]
-	[if (field.requiresRole <> '')]
-{% endif %}
-	[/if]
-[/for]
-[if (unit.omitFieldLabels)]
-</ul>
-[else]
-</dl>
-[/if]
+[unit.fields(accessor)/]
 [/template]
 
 [template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)

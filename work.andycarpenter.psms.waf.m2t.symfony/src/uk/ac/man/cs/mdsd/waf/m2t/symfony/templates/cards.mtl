@@ -17,6 +17,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::badge/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::collection/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::data/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
@@ -137,7 +138,7 @@
 [/let]
 [/if]
 [if (unit.displayFields->notEmpty())]
- [unit.cardFields(cardAccessor)/]
+ [unit.fields(cardAccessor)/]
 [/if]
 </div>
 [/template]
@@ -199,36 +200,4 @@
 </div>
 [/if]
 [/let]
-[/template]
-
-[template private cardFields(unit : CardsUnit, cardAccessor : String) post(trim())]
-[if (not unit.omitFieldLabels)]
-<dl[if (not unit.fieldListClass.oclIsUndefined())] class="[unit.fieldListClass/]"[/if]>
-[/if]
-[for (field : UnitField | unit.displayFields)]
-	[if (field.isConditionalDisplay())]
-{% if not ([field.hideWhen.twigExpression(cardAccessor)/]) -%}
-	[/if]
-[if (not unit.omitFieldLabels)]
- <dt[if (not unit.fieldListClass.oclIsUndefined() or field.truncate and field.isSingleton())]
- class="[if (not unit.fieldListClass.oclIsUndefined())]
-[unit.fieldListClass/]"[/if][if (field.truncate and field.isSingleton())]
-text-truncate[/if]"[/if]>[if (field.hasCustomisedDisplayLabel)]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
-<dd[if (not unit.fieldValueClass.oclIsUndefined() or field.truncate)] class="[if (not unit.fieldValueClass.oclIsUndefined())]
-[unit.fieldValueClass/] [/if][if (field.truncate)]
-text-truncate[/if]"[/if]>[field.displayValue(cardAccessor, true)/]</dd>
-[else]
-<div[if (not unit.fieldValueClass.oclIsUndefined() or field.truncate)] class="[if (not unit.fieldValueClass.oclIsUndefined())]
-[unit.fieldValueClass/] [/if][if (field.truncate)]
-text-truncate[/if]"[/if]>[field.displayValue(cardAccessor, true)/]</div>
-[/if]
-	[if (field.isConditionalDisplay())]
-{%- endif %}
-	[/if]
-[/for]
-[if (not unit.omitFieldLabels)]
-</dl>
-[/if]
 [/template]

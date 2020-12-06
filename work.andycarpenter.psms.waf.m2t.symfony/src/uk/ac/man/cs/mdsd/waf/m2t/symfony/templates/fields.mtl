@@ -1,0 +1,77 @@
+[comment encoding = UTF-8 /]
+[module fields(
+	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::data/]
+
+
+[template public fields(unit : DynamicUnit, unitAccessor : String) post(trim())]
+[if (unit.hasOmittedFieldLabels())]
+<ul[if (not unit.fieldListClass.oclIsUndefined())] class="[unit.fieldListClass/]"[/if]>
+[else]
+<dl[if (not unit.fieldListClass.oclIsUndefined())] class="[unit.fieldListClass/]"[/if]>
+[/if]
+[for (field : UnitField | unit.displayFields)]
+ [field.field(unit, unitAccessor)/]
+[/for]
+[if (unit.hasOmittedFieldLabels())]
+</ul>
+[else]
+</dl>
+[/if]
+[/template]
+
+[template private field(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
+[if (field.requiresRole <> '')]
+{% if is_granted('[field.requiresRole/]') %}
+[/if]
+[if (field.isConditionalDisplay())]
+{% if not ([field.hideWhen.twigExpression(unitAccessor)/]) -%}
+[/if]
+[if (unit.hasOmittedFieldLabels())]
+[field.unlabelledField(unit, unitAccessor)/]
+[else]
+[field.labelledField(unit, unitAccessor)/]
+[/if]
+[if (field.isConditionalDisplay())]
+{%- endif %}
+[/if]
+[if (field.requiresRole <> '')]
+{% endif %}
+[/if]
+[/template]
+
+[template private labelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
+[field.fieldLabel(unit)/]
+<dd[if (field.hasFieldValueClass() or field.truncate and field.isSingleton())] [field.valueClassDefinition()/][/if]>[field.displayValue(unitAccessor, true)/]</dd>
+[/template]
+
+[template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
+<li[if (field.hasFieldValueClass() or field.truncate and field.isSingleton())] [field.valueClassDefinition()/][/if]>[field.displayValue(unitAccessor, true)/]</li>
+[/template]
+
+[template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
+<dt[if (field.hasFieldLabelClass())] [field.labelClassDefinition()/][/if]>[if (field.hasCustomisedDisplayLabel)]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
+[/template]
+
+[template private fieldValue(field : UnitField, unit : DynamicUnit) post(trim())]
+<dt[if (field.hasFieldLabelClass())] [field.labelClassDefinition()/][/if]>[if (field.hasCustomisedDisplayLabel)]
+{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
+[/template]
+
+[template private labelClassDefinition(field : UnitField) post(trim())]
+class="[field.fieldLabelClass()/]"
+[/template]
+
+[template private valueClassDefinition(field : UnitField) post(trim())]
+class="[if (field.hasFieldValueClass())]
+[field.fieldValueClass()/][if (field.truncate and field.isSingleton())] [/if][/if][if (field.truncate and field.isSingleton())]
+text-truncate[/if]"
+[/template]

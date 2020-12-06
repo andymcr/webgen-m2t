@@ -159,6 +159,16 @@
 		endif
 /]
 
+[query public hasOmittedFieldLabels(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).omitFieldLabels
+		else if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).omitFieldLabels
+		else
+			false
+		endif endif
+/]
+
 [query public id(unit : ContentUnit) : String
 	= unit.displayedOn.pageId().concat('.labels.').concat(unit.name.asId())
 /]
@@ -181,8 +191,21 @@
 		endif endif
 /]
 
-[query public displayClass(field : UnitField) : String
-	= field.modelPropertyName()
+
+[query public fieldLabelClass(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).fieldLabelClass
+		else
+			null
+		endif
+/]
+
+[query public fieldValueClass(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			field.oclAsType(UnitFeature).fieldValueClass
+		else
+			null
+		endif
 /]
 
 [query public hasCustomisedPlaceholder(field : UnitField) : Boolean
@@ -195,16 +218,31 @@
 		endif endif
 /]
 
-[query public hasInputElementClass(field : UnitField) : Boolean
-	= not field.inputElementClass().oclIsUndefined()
+[query public hasFieldLabelClass(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			let feature : UnitFeature = field.oclAsType(UnitFeature)
+				in not feature.fieldLabelClass.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public hasFieldValueClass(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			let feature : UnitFeature = field.oclAsType(UnitFeature)
+				in not feature.fieldValueClass.oclIsUndefined()
+		else
+			false
+		endif
 /]
 
 [query public hasInputGroupClass(field : UnitField) : Boolean
-	= not field.inputGroupClass().oclIsUndefined()
-/]
-
-[query public hasInputLabelClass(field : UnitField) : Boolean
-	= not field.inputLabelClass().oclIsUndefined()
+	= if field.oclIsKindOf(UnitFeature) then
+			let feature : UnitFeature = field.oclAsType(UnitFeature)
+				in not feature.inputGroupClass.oclIsUndefined()
+		else
+			false
+		endif
 /]
 
 [query public hasPlaceholder(field : UnitField) : Boolean
@@ -232,34 +270,12 @@
 		endif
 /]
 
-[query public inputElementClass(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).inputElementClass
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).inputClass
-		else
-			null
-		endif endif
-/]
-
 [query public inputGroupClass(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
 			field.oclAsType(UnitFeature).inputGroupClass
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).inputClass
 		else
 			null
-		endif endif
-/]
-
-[query public inputLabelClass(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).inputLabelClass
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).inputClass
-		else
-			null
-		endif endif
+		endif
 /]
 
 [query public isConditionalDisplay(field : UnitField) : Boolean
