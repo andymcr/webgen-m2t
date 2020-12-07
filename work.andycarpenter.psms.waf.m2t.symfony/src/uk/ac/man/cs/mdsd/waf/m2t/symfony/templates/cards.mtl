@@ -74,7 +74,7 @@
 {% endif%}
 [/if]
  <div class="[cardsUnit.columnClass/]">
-  <div class="[cardsUnit.cardClass/]">
+  <div[if (not cardsUnit.cardClass.oclIsUndefined())] class="[cardsUnit.cardClass/]"[/if]>
 [if (cardsUnit.badges->notEmpty())]
    [cardsUnit.header(variable)/]
 [/if]
@@ -93,7 +93,7 @@
 [/template]
 
 [template private header(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div class="card-header">
+<div[if (not unit.cardHeaderClass.oclIsUndefined())] class="[unit.cardHeaderClass/]"[/if]>
 [for (badge : Badge | unit.badges)]
  [badge.badge(cardAccessor)/]
 [/for]
@@ -101,7 +101,7 @@
 [/template]
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div class="card-footer">
+<div[if (not unit.cardFooterClass.oclIsUndefined())] class="[unit.cardFooterClass/]"[/if]>
  <nav[if (not unit.actionNavigationClass.oclIsUndefined())] class="[unit.actionNavigationClass/]"[/if]>
 [for (action : InlineAction | unit.inlineActions())]
 	[if (unit.hasObjectAccess())]
