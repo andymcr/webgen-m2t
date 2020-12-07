@@ -138,7 +138,7 @@
 	? (unit.oclIsTypeOf(IndexGridUnit)) post(trim())]
 [let indexUnit : IndexGridUnit = unit.oclAsType(IndexGridUnit)]
 <table class="[indexUnit.contentClass/]">
-[if (not indexUnit.omitColumnLabels)]
+[if (not indexUnit.hasOmittedFieldLabels())]
  <thead class="[indexUnit.headerClass/]">
   <tr>
  	[for (field : UnitField | indexUnit.displayFields)]

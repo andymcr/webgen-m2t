@@ -25,8 +25,10 @@
 			[else]
 {% if [unit.instanceName()/] is defined %}
 [unit.unitContent(page)/]
+				[if (not collection.messageWhenHidden.oclIsUndefined())]
 {% else %}
 <h5>{{ '[collection.containedId()/].labels.hiddenMessage' | trans({}, 'default') }}</h5>
+				[/if]
 {% endif %}
 			[/if]
 		[/let]

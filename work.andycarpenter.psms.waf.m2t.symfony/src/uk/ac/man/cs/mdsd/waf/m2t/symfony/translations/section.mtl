@@ -58,7 +58,7 @@
 [/if]
 [if (unit.oclIsKindOf(CollectionUnit))]
 [let collection : CollectionUnit = unit.oclAsType(CollectionUnit)]
-	[if (not collection.hideWhen.oclIsUndefined() and collection.messageWhenHidden <> '')]
+	[if (not collection.hideWhen.oclIsUndefined() and not collection.messageWhenHidden.oclIsUndefined())]
 <trans-unit id="[collection.containedId()/].labels.hiddenMessage">
  <source>[collection.containedId()/].labels.hiddenMessage</source>
  <target>[collection.messageWhenHidden.validXML()/]</target>
