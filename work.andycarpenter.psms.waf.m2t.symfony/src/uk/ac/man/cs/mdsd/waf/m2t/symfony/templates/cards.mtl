@@ -117,7 +117,7 @@
 [/template]
 
 [template private cardBody(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div class="card-body">
+<div[if (not unit.cardBodyClass.oclIsUndefined())] class="[unit.cardBodyClass/]"[/if]>
 [if (unit.oclIsTypeOf(TextCardsUnit))]
 [let textUnit : TextCardsUnit = unit.oclAsType(TextCardsUnit)]
 	[if (not textUnit.elementTitle.oclIsUndefined() or textUnit.displayFields->notEmpty())]
