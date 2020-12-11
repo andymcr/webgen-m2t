@@ -50,17 +50,7 @@
 <dd[if (field.hasFieldValueClass() or field.truncate and field.isSingleton())] [field.valueClassDefinition()/][/if]>[field.displayValue(unitAccessor, true)/]</dd>
 [/template]
 
-[template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
-<li[if (field.hasFieldValueClass() or field.truncate and field.isSingleton())] [field.valueClassDefinition()/][/if]>[field.displayValue(unitAccessor, true)/]</li>
-[/template]
-
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
-<dt[if (field.hasFieldLabelClass())] [field.labelClassDefinition()/][/if]>[if (field.hasCustomisedDisplayLabel)]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
-[/template]
-
-[template private fieldValue(field : UnitField, unit : DynamicUnit) post(trim())]
 <dt[if (field.hasFieldLabelClass())] [field.labelClassDefinition()/][/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[unit.contentType().id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
@@ -68,6 +58,10 @@
 
 [template private labelClassDefinition(field : UnitField) post(trim())]
 class="[field.fieldLabelClass()/]"
+[/template]
+
+[template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
+<li[if (field.hasFieldValueClass() or field.truncate and field.isSingleton())] [field.valueClassDefinition()/][/if]>[field.displayValue(unitAccessor, true)/]</li>
 [/template]
 
 [template private valueClassDefinition(field : UnitField) post(trim())]
