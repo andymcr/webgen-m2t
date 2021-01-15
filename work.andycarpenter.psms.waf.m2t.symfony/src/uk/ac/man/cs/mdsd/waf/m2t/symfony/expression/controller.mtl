@@ -65,14 +65,14 @@ new \DateTime()
 [/let] 
 [/template]
 
-[template public pathExpression(path : ChildPath)
+[template public pathExpression(path : FeatureChildPath)
 	? (path.oclIsTypeOf(ChildPathAttribute)) post(trim())]
 [let attribute : ChildPathAttribute = path.oclAsType(ChildPathAttribute)]
 ->[attribute.attribute.getMethodName()/]()
 [/let] 
 [/template]
 
-[template public pathExpression(path : ChildPath)
+[template public pathExpression(path : FeatureChildPath)
 	? (path.oclIsTypeOf(ChildPathAssociation)) post(trim())]
 [let association : ChildPathAssociation = path.oclAsType(ChildPathAssociation)]
 ->[association.association.getMethodName()/]()[if (not association.childFeature.oclIsUndefined())]

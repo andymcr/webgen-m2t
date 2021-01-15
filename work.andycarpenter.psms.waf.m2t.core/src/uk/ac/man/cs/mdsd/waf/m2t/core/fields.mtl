@@ -115,7 +115,7 @@
 		endif
 /]
 
-[query public isAssociationElement(child : ChildPath) : Boolean
+[query public isAssociationElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			false
 		else
@@ -265,7 +265,7 @@
 		endif
 /]
 
-[query public isSingletonElement(child : ChildPath) : Boolean
+[query public isSingletonElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isSingleton()
 		else

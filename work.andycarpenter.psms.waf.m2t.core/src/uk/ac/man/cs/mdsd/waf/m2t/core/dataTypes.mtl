@@ -25,7 +25,7 @@
 		endif endif
 /]
 
-[query private dataTypeElement(child : ChildPath) : Classifier
+[query private dataTypeElement(child : FeatureChildPath) : Classifier
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.dataType()
 		else
@@ -57,7 +57,7 @@
 		endif endif
 /]
 
-[query private dateDetailsElement(child : ChildPath) : DateDetails
+[query private dateDetailsElement(child : FeatureChildPath) : DateDetails
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.dateDetails()
 		else
@@ -94,7 +94,7 @@
 		endif endif
 /]
 
-[query private enumerationTypeElement(child : ChildPath) : EnumerationType
+[query private enumerationTypeElement(child : FeatureChildPath) : EnumerationType
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.enumerationType()
 		else
@@ -124,7 +124,7 @@
 		endif
 /]
 
-[query private isBooleanDataTypeElement(child : ChildPath) : Boolean
+[query private isBooleanDataTypeElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isBooleanDataType()
 		else
@@ -154,7 +154,7 @@
 		endif
 /]
 
-[query private isDataTypeElement(child : ChildPath) : Boolean
+[query private isDataTypeElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isDataType()
 		else
@@ -184,7 +184,7 @@
 		endif
 /]
 
-[query private isDateElement(child : ChildPath) : Boolean
+[query private isDateElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isDate()
 		else
@@ -214,7 +214,7 @@
 		endif
 /]
 
-[query private isEnumerationTypeElement(child : ChildPath) : Boolean
+[query private isEnumerationTypeElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isEnumerationType()
 		else
@@ -244,7 +244,7 @@
 		endif
 /]
 
-[query private isIntegerDataTypeElement(child : ChildPath) : Boolean
+[query private isIntegerDataTypeElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isIntegerDataType()
 		else
@@ -295,7 +295,7 @@
 		endif
 /]
 
-[query private isStringDataTypeElement(child : ChildPath) : Boolean
+[query private isStringDataTypeElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isStringDataType()
 		else
@@ -325,7 +325,7 @@
 		endif
 /]
 
-[query private isUrlElement(child : ChildPath) : Boolean
+[query private isUrlElement(child : FeatureChildPath) : Boolean
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.isUrl()
 		else

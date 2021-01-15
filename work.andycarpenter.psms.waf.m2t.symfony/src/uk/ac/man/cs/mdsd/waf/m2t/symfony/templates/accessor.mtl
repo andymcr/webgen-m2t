@@ -199,7 +199,7 @@ if not association.childFeature.oclIsUndefined() then
 	= parentAccessor
 /]
 
-[query public accessor(child : ChildPath, parentAccessor : String) : String
+[query public accessor(child : FeatureChildPath, parentAccessor : String) : String
 	=  if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).accessor(parentAccessor)
 		else

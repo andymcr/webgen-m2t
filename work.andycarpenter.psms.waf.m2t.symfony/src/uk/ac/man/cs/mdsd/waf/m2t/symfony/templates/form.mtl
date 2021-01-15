@@ -118,7 +118,7 @@
 [if (field.hasInputGroupClass())]
  row_attr: { class: '[field.inputGroupClass()/]' },[/if]
 [if (field.hasFieldLabelClass())]
- label_attr: { class: '[field.FieldLabelClass()/]' },[/if]
+ label_attr: { class: '[field.fieldLabelClass()/]' },[/if]
  attr: {[if (field.disableInput)]
  disabled: 'disabled',[/if]
 [if (field.hasFieldLabelClass())]

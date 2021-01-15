@@ -141,7 +141,7 @@ title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.eleme
 		endif
 /]
 
-[query private imagePath(path : ChildPath, parentAccessor : String, objectAccess : Boolean) : String
+[query private imagePath(path : FeatureChildPath, parentAccessor : String, objectAccess : Boolean) : String
 	= if path.oclIsTypeOf(ChildPathAttribute) then
 			path.oclAsType(ChildPathAttribute).imagePath(parentAccessor, objectAccess)
 		else if path.oclIsTypeOf(ChildPathAssociation) then

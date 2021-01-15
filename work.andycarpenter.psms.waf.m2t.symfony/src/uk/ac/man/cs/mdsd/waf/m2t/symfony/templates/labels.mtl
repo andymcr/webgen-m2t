@@ -19,7 +19,7 @@
 		endif
 /]
 
-[query private valueLabel(child : ChildPath) : String
+[query private valueLabel(child : FeatureChildPath) : String
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).valueLabel()
 		else

@@ -257,7 +257,7 @@
 		endif
 /]
 
-[query public id(child : ChildPath) : String
+[query public id(child : FeatureChildPath) : String
 	= if child.oclIsTypeOf(ChildPathAttribute) then
 			child.oclAsType(ChildPathAttribute).attribute.id()
 		else

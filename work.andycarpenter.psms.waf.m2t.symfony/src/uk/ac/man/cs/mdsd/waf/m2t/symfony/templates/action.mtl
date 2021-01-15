@@ -49,7 +49,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [if (iconName = '')]
 [label/]
 [else]
-<i class="material-icons">[iconName/]</i>
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+</svg>
 [/if]
 [/template]
 
@@ -142,7 +144,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		endif
 /]
 
-[query private pathType(path : ChildPath) : Entity
+[query private pathType(path : FeatureChildPath) : Entity
 	= if path.oclIsTypeOf(ChildPathAssociation) then
 			path.oclAsType(ChildPathAssociation).pathType()
 		else
@@ -194,7 +196,9 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [template private anchor3(action : InlineAction, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, targetSamePage : Boolean, 
 	objectAccess : Boolean, classAttribute : String) post(trim())]
-<a href="{{ path('[routeName/]', [if (targetSamePage)]app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)])[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())]
+<a href="{{ path('[routeName/]', [if (targetSamePage)]
+app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)]
+)[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())]
  {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
  onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())]
  {{ [title/] }}[/if]');"[/if][if (not classAttribute.oclIsUndefined() or not action.anchorClass.oclIsUndefined())]
