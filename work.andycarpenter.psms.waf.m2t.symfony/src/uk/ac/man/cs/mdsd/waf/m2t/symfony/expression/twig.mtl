@@ -72,6 +72,13 @@ $this->get('people')->getId()
 
 
 [template public twigExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(PredicateBooleanVariable)) post(trim())]
+[let predicate : PredicateBooleanVariable = guard.oclAsType(PredicateBooleanVariable)]
+[if (predicate.negated)]not [/if][predicate.feature.twigExpression(accessor)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[/let]
+[/template]
+
+[template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = guard.oclAsType(PredicateBooleanOperator)]
 [for (expression : Expression | predicate.expressions)]

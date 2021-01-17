@@ -96,6 +96,13 @@ $this->getUser()
 
 
 [template public controllerExpression(expression : Expression, accessor : String)
+	? (expression.oclIsTypeOf(PredicateBooleanVariable)) post(trim())]
+[let predicate : PredicateBooleanVariable = expression.oclAsType(PredicateBooleanVariable)]
+[if (predicate.negated)]$queryBuilder->expr()->not([/if][predicate.feature.controllerExpression(accessor)/][if (predicate.negated)])[/if]
+[/let]
+[/template]
+
+[template public controllerExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
 [predicate.expressions->first().controllerExpression(accessor)/][for (expression : Expression | predicate.expressions->subOrderedSet(2, predicate.expressions->size()))]
