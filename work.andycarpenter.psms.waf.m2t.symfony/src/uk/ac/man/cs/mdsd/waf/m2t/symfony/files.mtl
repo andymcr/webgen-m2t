@@ -125,10 +125,6 @@
 /]
 
 
-[query public appNamespace(eObject : EObject) : String
-	= eObject.appName()
-/]
-
 [query public apiControllersNamespace(eObject : EObject) : String
 	= eObject.controllersNamespace().concat('\\').concat('Api')
 /]
@@ -151,10 +147,6 @@
 
 [query public formTypeNamespace(eObject : EObject) : String
 	= eObject.formNamespace().concat('\\').concat('Type')
-/]
-
-[query public repositoryNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Repository')
 /]
 
 [query public securityNamespace(eObject : EObject) : String

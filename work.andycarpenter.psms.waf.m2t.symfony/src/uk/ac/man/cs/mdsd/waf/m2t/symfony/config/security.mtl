@@ -57,10 +57,14 @@ security:
             lazy: true
             switch_user: true
 	[if (model.isLocallyAuthenticated())]
+#            logout_on_user_change: true
             form_login:
                 login_path: login
                 check_path: login
 #            logout: true
+#            guard:
+#                authenticators:
+#                    - App\Security\LoginFormAuthenticator
 		[if (model.localAuthentication().allowRememberMe)]
  #           remember_me:
  #               secret:   '%kernel.secret%'

@@ -3,8 +3,10 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
@@ -52,8 +54,8 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 	[/if]
     private $translationService;
 
-    public function __construct([for (service : Service | page.services()) separator (', ')]
-[service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
+    public function __construct([for (repository : Service | page.services()->select(s | not s.serves.oclIsUndefined())) separator (', ')]
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (page.hasExplicitValidation())]
 [if (page.services()->notEmpty())], [/if]ValidatorInterface $validator[/if][if (page.services()->notEmpty())], [/if]TranslatorInterface $translator)
     {
 	[for (service : Service | page.services())]
@@ -136,7 +138,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
-[for (service : Service | page.services())]
+[for (repository : Service | page.services()->select(s | not s.serves.oclIsUndefined()))]
+use [repository.repositoryNamespace()/]\[repository.repositoryClassName()/];
+[/for]
+[for (service : Service | page.services()->select(s | s.operations->notEmpty()))]
 use [service.servicesNamespace()/]\[service.className()/];
 [/for]
 [if (page.hasUnitSupportActions())]

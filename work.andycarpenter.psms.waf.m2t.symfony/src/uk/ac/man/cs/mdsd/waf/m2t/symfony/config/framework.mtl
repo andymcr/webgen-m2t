@@ -10,8 +10,6 @@
 [file (model.configPackagesDirectory().concat('/framework').concat(model.yamlExtension()), false)]
 framework:
     secret: '%env(APP_SECRET)%'
-    csrf_protection: ~
-    #http_method_override: true
 
     session:
 [if (model.useDbSessionStorage)]
@@ -24,8 +22,7 @@ framework:
         cookie_secure: true
 [/if]
 
-    #esi: ~
-    #fragments: ~
+    fragments: ~
     php_errors:
         log: true
 

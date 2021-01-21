@@ -9,6 +9,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUniqueValidator/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::entity/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::enumeration/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::repository/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::serialize::normalize/]
 
 
@@ -16,9 +17,11 @@
 [model.configStofDoctrineExtensions()/]
 
 [model.persistence.enumerationTypes().model(supportTranslation)/]
-[model.persistence.entities.model()/]
+[model.persistence.entities.model(model.business)/]
 [model.persistence.entities.normalizer()/]
 
 [model.persistence.containerUnique()/]
 [model.persistence.containerUniqueValidator()/]
+
+[model.business.services->select(s | not s.serves.oclIsUndefined()).repository()/]
 [/template]

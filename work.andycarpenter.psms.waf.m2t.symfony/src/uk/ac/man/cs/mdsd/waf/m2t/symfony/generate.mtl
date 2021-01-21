@@ -66,14 +66,14 @@
 [if (model.persistence.hasResourceAttributes())]
 [model.configVichUploader()/]
 [/if]
-[model.business.services.service(model)/]
+[model.business.services->select(s | s.operations->notEmpty()).service()/]
 
 [model.persistence.enumerationTypes().formType()/]
 [model.formTypes()/]
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 
 [if (model.hasAPI())]
-[model.api.resources.controller(model)/]
+[comment model.api.resources.controller(model)/]
 [/if]
 
 [model.navigation()/]

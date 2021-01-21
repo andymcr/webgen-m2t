@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module expression(
 	'http://cs.manchester.ac.uk/mdsd/Expression')]
-[import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
+[import work::andycarpenter::psms::expression::m2t::core::literals/]
 
 
 [template public defaultExpression(expression : Expression)

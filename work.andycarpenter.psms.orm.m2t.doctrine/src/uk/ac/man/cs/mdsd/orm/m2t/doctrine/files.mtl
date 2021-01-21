@@ -2,7 +2,7 @@
 [module files(
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://cs.manchester.ac.uk/mdsd/Service')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
@@ -32,6 +32,10 @@
 	= eObject.serializerDirectory().concat('/').concat('Normalizer')
 /]
 
+[query public repositoryDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Repository')
+/]
+
 [query public serializerDirectory(eObject : EObject) : String
 	= eObject.sourceDirectory().concat('/').concat('Serializer')
 /]
@@ -46,7 +50,7 @@
 
 
 [query public appNamespace(eObject : EObject) : String
-	= 'App'
+	= eObject.appName()
 /]
 
 [query public constraintsNamespace(eObject : EObject) : String
@@ -59,6 +63,10 @@
 
 [query public normalizerNamespace(eObject : EObject) : String
 	= eObject.serializerNamespace().concat('\\').concat('Normalizer')
+/]
+
+[query public repositoryNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Repository')
 /]
 
 [query public serializerNamespace(eObject : EObject) : String
@@ -86,4 +94,10 @@
 	= entity.normalizerDirectory().concat('/')
 		.concat(entity.normalizerClassName())
 		.concat(entity.executableExtension())
+/]
+
+[query public repositoryFilename(dataAccess : Service) : String
+	= dataAccess.repositoryDirectory().concat('/')
+		.concat(dataAccess.repositoryClassName())
+		.concat(dataAccess.executableExtension())
 /]

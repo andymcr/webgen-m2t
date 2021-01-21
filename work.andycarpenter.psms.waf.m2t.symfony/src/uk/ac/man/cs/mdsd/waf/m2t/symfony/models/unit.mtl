@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module unit(
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::expression::m2t::core::literals/]
+[import work::andycarpenter::psms::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]

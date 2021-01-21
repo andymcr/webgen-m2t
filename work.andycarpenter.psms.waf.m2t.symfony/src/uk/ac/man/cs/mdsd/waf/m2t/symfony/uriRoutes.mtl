@@ -5,7 +5,9 @@
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::selection/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
@@ -258,11 +260,6 @@ $[key.routeParameterName(routingType)/][/for]
 $[key.routeParameterName(routingType)/][/for]
 [/template]
 
-[template public routeParameters(routingType : Entity) post(trim())]
-[for (key : Attribute | routingType.uriPathKeys()) separator (', ')]
-$[key.routeParameterName(routingType)/][/for]
-[/template]
-
 [query public routeParameterName(attribute : Attribute, page : Page) : String
 	= if page.uriCommonPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
@@ -270,17 +267,6 @@ $[key.routeParameterName(routingType)/][/for]
 			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif
-/]
-
-[query public routeParameterName(attribute : Attribute, routingType : Entity) : String
-	= if routingType.oclIsUndefined() then
-			attribute.name
-		else if routingType.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
-			attribute.name
-		else
-			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
-				.concat(attribute.name.toUpperFirst())
-		endif endif
 /]
 
 [template public routeParameters(resource : Resource) post(trim())]

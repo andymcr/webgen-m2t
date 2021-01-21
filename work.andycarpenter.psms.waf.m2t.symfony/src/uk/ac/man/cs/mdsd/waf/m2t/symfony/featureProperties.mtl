@@ -4,9 +4,10 @@
 	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
 	'http://cs.manchester.ac.uk/mdsd/Service',
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+[import work::andycarpenter::psms::expression::m2t::core::expression/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::expression/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
@@ -15,15 +16,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
-
-
-[query public useFunction(constant : Constant) : Boolean
-	= if constant.value.oclIsUndefined() then
-			true
-		else
-			constant.value.oclIsTypeOf(TimeLiteral)
-		endif
-/]
 
 
 [query public embeddedForms(model : WafModel) : Sequence(UnitAssociation)
@@ -54,33 +46,6 @@
 	= model.pages->collect(p | p.units)
 	->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
 	->select(u | u.hasInterfaceFields() or u.hasDefaultValueFields())
-/]
-
-
-[query public alias(field : Feature, selection : Selection) : String
-	= if selection.oclIsUndefined() then
-			null
-		else
-			let fieldNames : Sequence(String)
-				= selection.fields->collect(f | f.modelPropertyName())
-				in if fieldNames->select(n | n = field.modelPropertyName())->size() > 1 then
-						field.partOf.oclAsType(Entity).selectName().concat(field.name.toUpperFirst())
-					else
-						null
-					endif
-		endif
-/]
-
-[query public hasFormals(selection : Selection) : Boolean
-	= selection.parameters->notEmpty()
-/]
-
-[query public hasConditionParameters(selection : Selection) : Boolean
-	= if selection.condition.oclIsUndefined() then
-				false
-			else
-				selection.condition.hasParameters()
-			endif
 /]
 
 

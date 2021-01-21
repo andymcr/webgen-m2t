@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module selection(
+	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
+	'http://cs.manchester.ac.uk/mdsd/Service')]
+[import work::andycarpenter::psms::expression::m2t::core::expression/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::features]
+
+
+[query public hasConditionParameters(selection : Selection) : Boolean
+	= if selection.condition.oclIsUndefined() then
+				false
+			else
+				selection.condition.hasParameters()
+			endif
+/]
+
+[query public hasFormals(selection : Selection) : Boolean
+	= selection.parameters->notEmpty()
+/]
+
+[query public hasPaginationSupport(selection : Selection) : Boolean
+	= (selection.limit = 0 or selection.limit > 1)
+		and (selection.joins->isEmpty() or selection.fields->isEmpty())
+/]
+
+[query public selectionType(selection : Selection) : Entity
+	= if selection.selectPath->notEmpty() then
+			selection.selectPath->last().targetType()
+		else
+			null
+		endif
+/]

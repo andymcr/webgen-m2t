@@ -5,6 +5,7 @@
 	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::selection/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]

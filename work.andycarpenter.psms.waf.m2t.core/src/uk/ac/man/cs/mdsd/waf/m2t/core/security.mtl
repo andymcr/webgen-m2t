@@ -34,14 +34,6 @@
 /]
 
 
-[query public authenticationUnits(page : Page) : Sequence(AuthenticationUnit)
-	= page.units->select(u | u.oclIsKindOf(AuthenticationUnit)).oclAsType(AuthenticationUnit)
-/]
-
-[query public hasAuthenticationUnit(page : Page) : Boolean
-	= page.authenticationUnits()->notEmpty()
-/]
-
 [query public hasAuthorisation(action : InlineAction) : Boolean
 	= action.hasAuthorisationRole() or action.hasAuthorisationRoles()
 /]
