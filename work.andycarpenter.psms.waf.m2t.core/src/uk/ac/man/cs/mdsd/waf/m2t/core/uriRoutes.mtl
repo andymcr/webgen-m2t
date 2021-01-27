@@ -1,10 +1,10 @@
 [comment encoding = UTF-8 /]
 [module uriRoutes(
 	'http://cs.manchester.ac.uk/mdsd/API',
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::selection/]
@@ -152,7 +152,7 @@
 /]
 
 [query public uriPathKeys(resource : Resource) : Sequence(Attribute)
-	= let keyEntity : Entity = resource.service.serves.keyEntity()
+	= let keyEntity : Entity = resource.repository.serves.keyEntity()
 		in let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
 			in let parentKeys : Sequence(Attribute) = resource.parentUriPathKeys()
 				in if localKeys->isEmpty() then

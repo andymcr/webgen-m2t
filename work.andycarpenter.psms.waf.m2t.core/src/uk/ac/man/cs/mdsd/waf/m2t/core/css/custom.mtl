@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module custom(
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 
 
 [template public customCSS(model : WafModel, cssDirectory : String)]

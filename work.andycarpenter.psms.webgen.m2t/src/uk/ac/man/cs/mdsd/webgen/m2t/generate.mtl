@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module generate(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::generate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::generate/]
 
@@ -13,7 +13,7 @@
 [elseif (model.persistence.ormTechnology = OrmTechnologies::Idiorm)]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::Kohana)]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::DoctrineORM)]
-[model.doctrine(true)/]
+[model.persistence.doctrine(true)/]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::DoctrineODM)]
 [/if]
 

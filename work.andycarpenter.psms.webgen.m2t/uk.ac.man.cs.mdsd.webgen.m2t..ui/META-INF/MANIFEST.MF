@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Symfony Module IDE Plug-in
-Bundle-SymbolicName: work.andycarpenter.psms.webgen.m2t..ui;singleton:=true
+Bundle-SymbolicName: work.andycarpenter.psms.webgen.m2t.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: uk.ac.man.cs.mdsd.webgen.m2t.ui.Activator
 Bundle-Vendor: Eclipse Modeling Project

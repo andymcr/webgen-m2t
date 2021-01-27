@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module gallery(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]

@@ -1,19 +1,27 @@
 [comment encoding = UTF-8 /]
 [module service(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::constant/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::queryDoctrine/]
 
 [template public service(service : Service)]
 [file(service.serviceFilename(), false)]
 <?php
-namespace [service.servicesNamespace()/];
+namespace [service.serviceNamespace()/];
 
+[if (not service.serves.oclIsUndefined())]
+use [service.repositoryNamespace()/]\[service.className()/];
+[/if]
+[for (repository : Repository | service.uses)]
+use [repository.repositoryNamespace()/]\[repository.className()/];
+[/for]
 // [protected ('use')]
 // [/protected]
 
@@ -30,16 +38,16 @@ class [service.className()/]
 // [protected ('variables')]
 // [/protected]
 
-[for (uses : Service | service.uses)]
-    private $[uses.instanceServiceName()/];
+[for (repository : Repository | service.uses)]
+    private $[repository.instanceName()/];
 
 [/for]
-[if (service.uses->notEmpty())]
-    public function __construct([for (uses : Service | service.uses) separator(', ')]
-[uses.className()/] $[uses.instanceName()/][/for])
+[if (service.uses->select(s | not s.serves.oclIsUndefined())->notEmpty())]
+    public function __construct([for (repository : Repository | service.uses) separator(', ')]
+[repository.className()/] $[repository.instanceName()/][/for])
     {
-	[for (uses : Service | service.uses)]
-        $this->[uses.instanceServiceName()/] =  $[uses.instanceName()/]; // [uses.name/]
+	[for (repository : Repository | service.uses)]
+        $this->[repository.instanceName()/] =  $[repository.instanceName()/]Repository;
 	[/for]
     }
 

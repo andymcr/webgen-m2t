@@ -1,9 +1,9 @@
 [comment encoding = UTF-8 /]
 [module uriRoutes(
 	'http://cs.manchester.ac.uk/mdsd/API',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -182,7 +182,7 @@
 			in if baseUriOnly then
 					baseUri
 				else
-					baseUri.combinePaths(resource.service.serves.keyEntity().keyPath(base))
+					baseUri.combinePaths(resource.repository.serves.keyEntity().keyPath(base))
 				endif
 /]
 

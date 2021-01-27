@@ -1,15 +1,16 @@
 [comment encoding = UTF-8 /]
 [module casAuthenticationModel(
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public model(authentication  : CasAuthentication)]
-[file (authentication.modelsDirectory().concat('/').concat(authentication.modelName()).concat(authentication.executableExtension()), false)]
+[template public model(security  : CasAuthentication)]
+[file (security.modelsDirectory().concat('/').concat(security.userModelName()).concat(security.executableExtension()), false)]
 <?php
-namespace [authentication.modelsNamespace()/];
+namespace [security.modelsNamespace()/];
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity
  * @ORM\Table(name="ACSO.Resit_Roles")
  **/
-class [authentication.modelName()/] implements UserInterface
+class [security.userModelName()/] implements UserInterface
 {
     /**
      * @ORM\Id

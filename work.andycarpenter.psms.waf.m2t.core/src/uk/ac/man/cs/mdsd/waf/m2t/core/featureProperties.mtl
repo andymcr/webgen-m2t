@@ -1,9 +1,10 @@
 [comment encoding = UTF-8 /]
 [module featureProperties(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::service]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units]
 

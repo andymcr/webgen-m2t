@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module repository(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::constant/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
@@ -14,7 +14,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
 
-[template public repository(repository : Service)]
+[template public repository(repository : Repository)]
 [file(repository.repositoryFilename(), false)]
 <?php
 namespace [repository.repositoryNamespace()/];
@@ -28,7 +28,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
 [/if]
 
-class [repository.repositoryClassName()/] extends [repository.baseRepositoryClassName()/]
+class [repository.className()/] extends [repository.baseRepositoryClassName()/]
 {
 [for (constant : Constant | repository.constants)]
     [if (constant.useFunction())]private[else]public[/if] static $[constant.name/] = [if (constant.useFunction())]null[else][constant.value.queryExpression()/][/if];
@@ -83,9 +83,9 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 [/file]
 [/template]
 
-[template private findMethod(repository : Service) post(trim())]
+[template private findMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
-public function findOne([entity.routeParameters()/])
+public function [repository.serves.findMethodName()/]([entity.routeParameters()/])
 {
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
     return $queryBuilder
@@ -135,7 +135,7 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(base)/]')
 [/template]
 
-[template private findAllMethod(repository : Service) post(trim())]
+[template private findAllMethod(repository : Repository) post(trim())]
 public function findAll([repository.limitFormals(10)/])
 {
     if ($offset < 0)
@@ -150,7 +150,7 @@ public function findAll([repository.limitFormals(10)/])
 }
 [/template]
 
-[template private createMethod(repository : Service) post(trim())]
+[template private createMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
 public function create([for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields() and a.isSingleton())) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
 {
@@ -164,7 +164,7 @@ public function create([for (attribute : Attribute | entity.attributes()->select
 [/let]
 [/template]
 
-[template private removeMethod(repository : Service) post(trim())]
+[template private removeMethod(repository : Repository) post(trim())]
 public function remove($entity, $flush = false)
 {
     $this->_em->remove($entity);
@@ -173,7 +173,7 @@ public function remove($entity, $flush = false)
 }
 [/template]
 
-[template private saveMethod(repository : Service) post(trim())]
+[template private saveMethod(repository : Repository) post(trim())]
 public function save($entity, $flush = false)
 {
     $this->_em->persist($entity);
@@ -182,7 +182,7 @@ public function save($entity, $flush = false)
 }
 [/template]
 
-[template private selectionMethod(selection : Selection, repository : Service)
+[template private selectionMethod(selection : Selection, repository : Repository)
 	? (selection.filters->isEmpty()) post(trim())]
 public function [selection.methodName/]([selection.formals()/])
 {
@@ -196,7 +196,7 @@ public function [selection.methodName/]([selection.formals()/])
 }
 [/template]
 
-[template private selectionMethod(selection : Selection, service : Service, userService : Service)
+[template private selectionMethod(selection : Selection, service : Repository, userService : Repository)
 	? (selection.filters->notEmpty()) post(trim())]
 private function [selection.builderMethodName()/]([selection.formals()/])
 {
@@ -290,7 +290,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [selection.partOf.limitFormals(selection.limit)/]
 [/template]
 
-[template private limitFormals(service : Service, limit : Integer) post(trim())]
+[template private limitFormals(service : Repository, limit : Integer) post(trim())]
 $offset = 0, $limit = [limit/]
 [/template]
 
@@ -460,7 +460,7 @@ $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routePara
 [/let]
 [/template]
 
-[template private queryResult(selection : Selection, service : Service) post(trim())]
+[template private queryResult(selection : Selection, service : Repository) post(trim())]
 [if (selection.limit = 1)]
 return $query->getOneOrNullResult();
 [elseif (selection.hasPaginationSupport())]
@@ -473,14 +473,14 @@ return $query->getResult();
 [/if]
 [/template]
 
-[template private getRepositoryMethod(service : Service) post(trim())]
+[template private getRepositoryMethod(service : Repository) post(trim())]
 public function getRepository()
 {
     return $this->doctrine->getRepository('[service.appName()/]:[service.serves.modelName()/]');
 }
 [/template]
 
-[template private formalParameters(operation : BusinessOperation) post(trim())]
-[for (parameter : FormalParameter | operation.parameters) separator(', ')]
+[template private formalParameters(parameters : FormalParameterList) post(trim())]
+[for (parameter : FormalParameter | parameters.parameters) separator(', ')]
 $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())] = [parameter.defaultValue/][/if][/for]
 [/template]

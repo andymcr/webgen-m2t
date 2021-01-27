@@ -1,8 +1,7 @@
 [comment encoding = UTF-8 /]
 [module entity(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
@@ -17,25 +16,17 @@
 		in reserved->includes(word)
 /]
 
-[query private repositories(entity : Entity, business : ServiceModel) : OrderedSet(Service)
-	= business.services->select(s | s.serves = entity)
-/]
-
-[query private hasRepositories(entity : Entity, business : ServiceModel) : Boolean
-	= entity.repositories(business)->notEmpty()
-/]
-
-[template public model(entity : Entity, business : ServiceModel)]
+[template public model(entity : Entity)]
 [file(entity.modelFilename(), false)]
 <?php
 namespace [entity.modelsNamespace()/];
 
-[entity.useStatements(business)/]
+[entity.useStatements()/]
 
 
 /**
- * @ORM\Entity[if(entity.hasRepositories(business))]
-(repositoryClass=[entity.repositories(business)->first().repositoryClassName()/]::class)[/if]
+ * @ORM\Entity[if(not entity.repository.oclIsUndefined())]
+(repositoryClass=[entity.repository.className()/]::class)[/if]
 
  * @ORM\Table(name="[entity.tableName/]")
 [if (entity.unique->notEmpty())]
@@ -107,7 +98,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
 [/file]
 [/template]
 
-[template private useStatements(entity : Entity, business : ServiceModel) post(trim())]
+[template private useStatements(entity : Entity) post(trim())]
 use Doctrine\ORM\Mapping as ORM;
 [if (entity.collectionAssociations()->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
@@ -146,8 +137,8 @@ use [entity.validatorNamespace()/]\Constraints as AppAssert;
 [if (entity.implementForumUser)]
 use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
 [/if]
-[if(entity.hasRepositories(business))]
-use [entity.repositoryNamespace()/]\[entity.repositories(business)->first().repositoryClassName()/];
+[if(not entity.repository.oclIsUndefined())]
+use [entity.repositoryNamespace()/]\[entity.repository.className()/];
 [/if]
 [/template]
 

@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module interface(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 
 
 [query public asId(string : String) : String

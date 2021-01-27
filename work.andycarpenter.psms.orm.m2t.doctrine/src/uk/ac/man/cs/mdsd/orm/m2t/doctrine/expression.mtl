@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module expression(
-	'http://cs.manchester.ac.uk/mdsd/Expression')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/Base')]
 [import work::andycarpenter::psms::expression::m2t::core::literals/]
 
 

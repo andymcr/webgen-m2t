@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module generate(
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::custom/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::default/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::css::nonPrint/]

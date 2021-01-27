@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module detailsMethods(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
@@ -57,7 +57,7 @@ if (!$this->[detailsUnit.instanceName()/]) {
     throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
 }
 [else]
-$this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.partOf.instanceServiceName()/]->[detailsUnit.selection.methodName/]();
+$this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.partOf.instanceName()/]->[detailsUnit.selection.methodName/]();
 [/if]
 [/let]
 [/template]

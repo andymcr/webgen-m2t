@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module generate(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::stofDoctrineExtensions/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUnique/]
@@ -13,15 +13,15 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::serialize::normalize/]
 
 
-[template public doctrine(model : WafModel, supportTranslation : Boolean)]
+[template public doctrine(model : OrmModel, supportTranslation : Boolean)]
 [model.configStofDoctrineExtensions()/]
 
-[model.persistence.enumerationTypes().model(supportTranslation)/]
-[model.persistence.entities.model(model.business)/]
-[model.persistence.entities.normalizer()/]
+[comment model.enumerationTypes().model(supportTranslation)/]
+[model.entities.model()/]
+[comment model.entities.normalizer()/]
 
-[model.persistence.containerUnique()/]
-[model.persistence.containerUniqueValidator()/]
+[model.containerUnique()/]
+[model.containerUniqueValidator()/]
 
-[model.business.services->select(s | not s.serves.oclIsUndefined()).repository()/]
+[model.repositories.repository()/]
 [/template]

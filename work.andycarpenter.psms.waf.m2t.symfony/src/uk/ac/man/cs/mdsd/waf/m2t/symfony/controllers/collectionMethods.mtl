@@ -1,10 +1,12 @@
 [comment encoding = UTF-8 /]
 [module collectionMethods(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import work::andycarpenter::psms::expression::m2t::core::expression/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
@@ -124,9 +126,9 @@ else
 [/if]
 [if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceServiceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
-$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceServiceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
 [else]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
@@ -166,18 +168,18 @@ if (!$this->[unit.containerInstanceName()/]) {
 
 [template public loadContainerInstance(unit : CollectionUnit) post(trim())]
 [if (unit.findContainerSelection.oclIsUndefined())]
-$this->[unit.containerService.instanceServiceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.collectionType())/]);
+$this->[unit.containerRepository.instanceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.collectionType())/]);
 [else]
-$this->[unit.containerService.instanceServiceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.collectionType(), unit.findContainerSelection)/]);
+$this->[unit.containerRepository.instanceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.collectionType(), unit.findContainerSelection)/]);
 [/if]
 [/template]
 
 [template private loadCollection(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceServiceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
-$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceServiceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
 [else]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);

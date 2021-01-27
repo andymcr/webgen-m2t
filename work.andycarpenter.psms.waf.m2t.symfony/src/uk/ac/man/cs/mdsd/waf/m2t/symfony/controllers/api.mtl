@@ -1,9 +1,10 @@
 [comment encoding = UTF-8 /]
 [module api(
 	'http://cs.manchester.ac.uk/mdsd/API',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
@@ -76,7 +77,7 @@ class [resource.controllerClassName()/] extends AbstractFOSRestController
  **/
 public function getOne[resource.service.name/]Action([resource.routeParameters()/])
 {
-    return $this->get('[resource.service.serviceName()/]')->[if (resource.getOne.oclIsUndefined())]
+    return $this->get('[resource.service.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
 find[else]
 [resource.getOne.instanceName()/][/if]([resource.service.serves.routeParameters()/]);
 }
@@ -100,11 +101,11 @@ public function get[resource.service.name/]Action(ParamFetcher $paramFetcher[if 
 , [resource.parentResource.routeParameters()/][/if])
 {
 [if (resource.parentResource.oclIsUndefined())]
-    return $this->get('[resource.service.serviceName()/]')->[if (resource.getAll.oclIsUndefined())]
+    return $this->get('[resource.service.instanceName()/]')->[if (resource.getAll.oclIsUndefined())]
 findAll[else]
 [resource.getAll.instanceName()/][/if]($paramFetcher->get("page"), $paramFetcher->get("pageSize"));
 [else]
-    return $this->get('[resource.parentResource.service.serviceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
+    return $this->get('[resource.parentResource.service.instanceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
 find[else]
 [resource.parentResource.getOne.instanceName()/][/if]([resource.parentResource.service.serves.routeParameters()/]);
 [/if]

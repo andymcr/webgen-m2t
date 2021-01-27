@@ -2,9 +2,10 @@
 [module names(
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://cs.manchester.ac.uk/mdsd/API',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -87,6 +88,10 @@
 /]
 
 
+[query public instanceName(repository : Repository) : String
+	= repository.className().toLowerFirst()
+/]
+
 
 [query public changePasswordTypeClassName(security : LocalAuthenticationSystem) : String
 	= security.typeClassName(security.changePasswordName())
@@ -117,12 +122,8 @@
 	= service.name.concat('Service')
 /]
 
-[query public instanceName(repository : Service) : String
-	= repository.name.toLowerFirst()
-/]
-
-[query public instanceServiceName(repository : Service) : String
-	= repository.repositoryClassName().toLowerFirst()
+[query public instanceName(service : Service) : String
+	= service.className().toLowerFirst()
 /]
 
 [query public methodName(operation : BusinessOperation) : String
@@ -303,6 +304,18 @@
 [query public routeName(resource : Resource) : String
 	= resource.instanceName()
 /]
+
+
+[query public className(container : ConstantContainer) : String
+	= if container.oclIsTypeOf(Repository) then
+			container.oclAsType(Repository).className()
+		else if container.oclIsTypeOf(Service) then
+			container.oclAsType(Service).className()
+		else
+			'Unknown'
+		endif endif
+/]
+
 
 [query public sameModel(form : SingletonUnit, model : WafModel) : Sequence(SingletonUnit)
 	= let forms : Sequence(SingletonUnit) = form.contentType.formsUsing(model)

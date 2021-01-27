@@ -1,9 +1,10 @@
 [comment encoding = UTF-8 /]
 [module editMethods(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
@@ -57,7 +58,7 @@
  */
 public function [association.actionName()/]([association.filteredOptions.optionFormals()/])
 {
-    $selection = $this->[association.filteredOptions.selection.partOf.instanceServiceName()/]->[association.filteredOptions.methodName/]([association.filteredOptions.selectionActuals()/]);
+    $selection = $this->[association.filteredOptions.selection.partOf.instanceName()/]->[association.filteredOptions.methodName/]([association.filteredOptions.selectionActuals()/]);
     $matches = array();
     foreach ($selection as $option) {
         $matches['['/]$option->getId()[']'/] = $option->defaultLabel();
@@ -221,7 +222,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 	[let association : Association = field.feature().oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType().instanceName()/])
         if (false === $[unit.instanceName()/]->[field.feature().getMethodName()/]()->contains($[association.targetType().instanceName()/]))
-            $this->[association.targetType().services(unit.pageDisplayedOn().partOf)->first().instanceServiceName()/]->remove($[association.targetType().instanceName()/]);
+            $this->[association.targetType().services(unit.pageDisplayedOn().partOf)->first().instanceName()/]->remove($[association.targetType().instanceName()/]);
 	[/let]
 	[/for]
     [unit.saveBody(unit.contentType)/]
@@ -273,7 +274,7 @@ array_merge(
 [template public setContainer(unit : EditUnit) post(trim())]
 [let modelPropertyName : String = unit.contentType.containingAssociation().modelPropertyName().toUpperFirst()]
 [let parentService : Service = unit.contentType.container().services(unit.pageDisplayedOn().partOf)->first()]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceServiceName()/]->find([unit.routeParameters(unit.contentType.parentEntity())/]));
+$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceName()/]->find([unit.routeParameters(unit.contentType.parentEntity())/]));
 [/let]
 [/let]
 [/template]

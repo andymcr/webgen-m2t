@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module dataTypes(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 
 
 [query public enumerationTypes(model : OrmModel) : Sequence(EnumerationType)

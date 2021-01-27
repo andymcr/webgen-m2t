@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module page(
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -43,23 +43,34 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[if (page.services()->notEmpty())]
-	[for (service : Service | page.services())]
-    private $[service.instanceServiceName()/];
+[for (repository : Service | page.repositories())]
+    private $[repository.instanceName()/];
 
-	[/for]
-	[if (page.hasExplicitValidation())]
+[/for]
+[for (service : Service | page.services())]
+    private $[service.instanceName()/];
+
+[/for]
+[if (page.hasExplicitValidation())]
     private $validatorService;
 
-	[/if]
+[/if]
     private $translationService;
 
-    public function __construct([for (repository : Service | page.services()->select(s | not s.serves.oclIsUndefined())) separator (', ')]
-[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (page.hasExplicitValidation())]
-[if (page.services()->notEmpty())], [/if]ValidatorInterface $validator[/if][if (page.services()->notEmpty())], [/if]TranslatorInterface $translator)
+[if (page.repositories()->notEmpty() or page.services()->notEmpty() or page.hasExplicitValidation())]
+    public function __construct([for (repository : Service | page.repositories()) separator (', ')]
+[repository.className()/] $[repository.instanceName()/][/for][if (page.repositories()->notEmpty() and page.services()->notEmpty())]
+, [/if][for (service : Service | page.services()) separator (', ')]
+[service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
+[if (page.repositories()->notEmpty() or page.services()->notEmpty())]
+, [/if]ValidatorInterface $validator[/if][if (page.repositories()->notEmpty() or page.services()->notEmpty())]
+, [/if]TranslatorInterface $translator)
     {
+	[for (repository : Service | page.repositories())]
+        $this->[repository.instanceName()/] = $[repository.instanceName()/];
+	[/for]
 	[for (service : Service | page.services())]
-        $this->[service.instanceServiceName()/] = $[service.instanceName()/];
+        $this->[service.instanceName()/] = $[service.instanceName()/];
 	[/for]
 	[if (page.hasExplicitValidation())]
         $this->validatorService = $validator;
@@ -111,6 +122,12 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 [for (form : SingletonUnit | page.formUnits()->sortedBy(u | u.name))]
 use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 [/for]
+[for (repository : Service | page.repositories())]
+use [repository.repositoryNamespace()/]\[repository.className()/];
+[/for]
+[for (service : Service | page.services())]
+use [service.serviceNamespace()/]\[service.className()/];
+[/for]
 [if (page.editUnits()->collect(u | u.inputFields())->select(f | f.isContains())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
@@ -138,12 +155,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
-[for (repository : Service | page.services()->select(s | not s.serves.oclIsUndefined()))]
-use [repository.repositoryNamespace()/]\[repository.repositoryClassName()/];
-[/for]
-[for (service : Service | page.services()->select(s | s.operations->notEmpty()))]
-use [service.servicesNamespace()/]\[service.className()/];
-[/for]
 [if (page.hasUnitSupportActions())]
 // [protected ('support.use')]
 // [/protected]
@@ -250,7 +261,7 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
     if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
-    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentService().instanceServiceName()/]->remove($[deleteAction.instanceName()/], true);
+    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentService().instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     return [deleteAction.destination.redirect()/];
@@ -277,25 +288,24 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
  */
 public function [action.actionName()/]([featureAction.actionMethodParameters(unit, page)/])
 {
-[if (unit.hasPagination())]
-    [unit.oclAsType(CollectionUnit).notePage()/]
-[/if]
 [if (featureAction.operation.resultType = OperationResultTypes::None)]
+	[if (unit.hasPagination())]
+    [unit.oclAsType(CollectionUnit).notePage()/]
+	[/if]
     $[featureAction.instanceName()/] = [featureAction.loadInstance(unit)/];
     if (!$[featureAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
-    $this->[featureAction.operation.partOf.instanceServiceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
+    $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
 [elseif (featureAction.operation.resultType = OperationResultTypes::File)]
-    $tempFilename = $this->[featureAction.operation.partOf.instanceServiceName()/]
-        ->[featureAction.operation.methodName()/]([featureAction.loadInstance(unit)/], '[featureAction.fileExtension/]');
-    $response = new BinaryFileResponse($tempFilename);
-    $filename = $[contentType.uriPathKeys()->first().routeParameterName(contentType)/] . '[featureAction.fileExtension/]';
-    $response->setContentDisposition(
-        ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-        $filename
+    $file = $this->[featureAction.operation.partOf.instanceName()/]Service->[featureAction.operation.methodName()/](
+        [featureAction.loadInstance(unit)/],
+        '[featureAction.fileExtension/]'
     );
-    $response->headers->set('Content-type', mime_content_type($tempFilename));
+    $response = $this->file($file);
+//    if (!empty($report->getContentType())) {
+//        $response->headers->set('Content-Type', $report->getContentType());
+//    }
     return $response;
 [/if]
 [if (featureAction.operation.resultType = OperationResultTypes::None)]

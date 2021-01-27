@@ -2,9 +2,9 @@
 [module files(
 	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service',
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
@@ -153,7 +153,7 @@
 	= eObject.appNamespace().concat('\\').concat('Security')
 /]
 
-[query public servicesNamespace(eObject : EObject) : String
+[query public serviceNamespace(eObject : EObject) : String
 	= eObject.appNamespace().concat('\\').concat('Service')
 /]
 

@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module names(
 	'http://www.eclipse.org/emf/2002/Ecore',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
@@ -29,6 +29,10 @@
 	= type.name
 /]
 
+
+[query public findMethodName(entity : Entity) : String
+	= 'findOne'
+/]
 
 [query public instanceName(entity : Entity) : String
 	= entity.name.toLowerFirst()
@@ -106,12 +110,17 @@
 /]
 
 
-[query public instanceName(repository : Service) : String
-	= repository.name.toLowerFirst()
+[query public className(repository : Repository) : String
+	= repository.name.concat('Repository')
 /]
 
-[query public repositoryClassName(repository : Service) : String
-	= repository.name.concat('Repository')
+
+[query public className(container : ConstantContainer) : String
+	= if container.oclIsTypeOf(Repository) then
+			container.oclAsType(Repository).className()
+		else
+			'Unknown'
+		endif
 /]
 
 
@@ -145,9 +154,9 @@
 	= association.name.concat('Parameters')
 /]
 
-[query public selectName(association : Association, service : Service) : String
+[query public selectName(association : Association, repository : Repository) : String
 	= let entity : Entity
-		= if service.serves.features->includes(association) then
+		= if repository.serves.features->includes(association) then
 				association.targetType()
 			else
 				association.sourceType()

@@ -1,7 +1,6 @@
 [comment encoding = UTF-8 /]
 [module constant(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/Service')]
+	'http://andycarpenter.work/psm/Base')]
 
 [query public useFunction(constant : Constant) : Boolean
 	= if constant.value.oclIsUndefined() then

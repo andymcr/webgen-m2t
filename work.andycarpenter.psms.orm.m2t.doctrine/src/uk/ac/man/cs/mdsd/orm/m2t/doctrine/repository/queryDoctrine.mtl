@@ -1,8 +1,8 @@
 [comment encoding = UTF-8 /]
 [module queryDoctrine(
-	'http://cs.manchester.ac.uk/mdsd/Expression',
-	'http://cs.manchester.ac.uk/mdsd/ObjectRelationalMapping',
-	'http://cs.manchester.ac.uk/mdsd/Service')]
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 [import work::andycarpenter::psms::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::constant/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
@@ -31,7 +31,7 @@ $queryBuilder->expr()->literal('[literal.value/]')
 [template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(ConstantReference)) post(trim())]
 [let constant : ConstantReference = expression.oclAsType(ConstantReference)]
-[constant.value.definedBy.repositoryClassName()/]::[constant.value.name/][if (constant.value.useFunction())]()[/if]
+[constant.value.definedBy.className()/]::[constant.value.name/][if (constant.value.useFunction())]()[/if]
 [/let]
 [/template]
 

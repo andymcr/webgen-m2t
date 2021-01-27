@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module literals(
-	'http://cs.manchester.ac.uk/mdsd/Expression')]
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/Expression')]
 
 [template public valueExpression(expression : Expression)
 	? (expression.oclIsTypeOf(NullLiteral)) post(trim())]

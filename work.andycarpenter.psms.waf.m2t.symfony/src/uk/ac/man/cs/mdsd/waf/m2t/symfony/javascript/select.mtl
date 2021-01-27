@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module select(
-	'http://cs.manchester.ac.uk/mdsd/WebApplicationFramework')]
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
 
 
 [template public javascriptSelect(model : WafModel) post(trim())]
