@@ -5,7 +5,7 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units]
 
 

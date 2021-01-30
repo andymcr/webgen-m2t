@@ -235,10 +235,10 @@
 
 [query public modelName(unit : ContentUnit) : String
 	= if unit.oclIsTypeOf(StaticUnit) then
-			if unit.oclAsType(StaticUnit).service.oclIsUndefined() then
+			if unit.oclAsType(StaticUnit).repository.oclIsUndefined() then
 				'None'
 			else
-				unit.oclAsType(StaticUnit).service.serves.modelName()
+				unit.oclAsType(StaticUnit).repository.serves.modelName()
 			endif
 		else
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)

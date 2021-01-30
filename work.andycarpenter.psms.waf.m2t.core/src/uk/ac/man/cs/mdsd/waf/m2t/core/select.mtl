@@ -1,18 +1,9 @@
 [comment encoding = UTF-8 /]
-[module service(
+[module select(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
-
-
-[query public services(model : WafModel, entity : Entity) : OrderedSet(Service)
-	= model.business.services->select(s | s.serves = entity)
-/]
-
-[query public services(entity : Entity, model : WafModel) : OrderedSet(Service)
-	= model.services(entity)
-/]
 
 
 [query public hasSelectCondition(unit : ContentUnit) : Boolean

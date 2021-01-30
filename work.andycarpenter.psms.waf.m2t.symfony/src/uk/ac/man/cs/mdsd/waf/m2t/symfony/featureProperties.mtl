@@ -12,7 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -32,11 +32,11 @@
 		->collect(u | u.contentType())->asSet()
 /]
 
-[query public userService(model : WafModel) : Service
+[query public userRepository(model : WafModel) : Repository
 	= if model.isLocallyAuthenticated() then
-			model.localAuthentication().user.services(model)->first()
+			model.localAuthentication().user.repository
 		else if model.isCasAuthenticated() then
-			model.casAuthentication().user.services(model)->first()
+			model.casAuthentication().user.repository
 		else
 			null
 		endif endif

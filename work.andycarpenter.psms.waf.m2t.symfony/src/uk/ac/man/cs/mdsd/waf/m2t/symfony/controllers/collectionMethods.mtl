@@ -12,7 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::service/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::select/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
@@ -131,7 +131,7 @@ $this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceName()/]->
 $this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll([unit.paginationActuals()/]);
 [/if]
 [/let]
 [/template]
@@ -144,7 +144,7 @@ if ($request->query->has('[filter.name/]Filter'))
 [/template]
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->[filter.methodName/](
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->[filter.methodName/](
 [if (unit.hasRouteParameters(unit.collectionType(), filter.selection))]
     [unit.routeParameters(unit.collectionType(), filter.selection)/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]
@@ -182,7 +182,7 @@ $this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceName()/]->
 $this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentService()/]->findAll([unit.paginationActuals()/]);
+$this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll([unit.paginationActuals()/]);
 [/if]
 [/template]
 

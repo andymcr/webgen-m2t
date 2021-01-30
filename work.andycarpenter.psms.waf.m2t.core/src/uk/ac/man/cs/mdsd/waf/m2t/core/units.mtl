@@ -8,7 +8,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::selection/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 
 
 [query public associationFeatures(unit : DynamicUnit) : Sequence(UnitAssociation)
@@ -79,9 +79,8 @@
 		endif
 /]
 
-[query public contentService(unit : DynamicUnit) : Service
-	= let model : WafModel = unit.pageDisplayedOn().partOf
-		in model.services(unit.contentType())->first()
+[query public contentRepository(unit : DynamicUnit) : Repository
+	= unit.contentType().repository
 /]
 
 [query public contentType(unit : ContentUnit) : Entity

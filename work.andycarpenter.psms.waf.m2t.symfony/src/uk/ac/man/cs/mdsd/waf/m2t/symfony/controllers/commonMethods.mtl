@@ -15,7 +15,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::service/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::select/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -121,17 +121,17 @@ $[key.routeParameterName(valueBase)/][/for]
 [/template]
 
 
-[template public getContentService(unit : DynamicUnit) post(trim())]
-$this->[unit.contentService().instanceName()/]
+[template public getContentRepository(unit : DynamicUnit) post(trim())]
+$this->[unit.contentRepository().instanceName()/]
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getContentService()/]->[unit.contentType().findMethodName()/]([unit.findActualParameters()/])
+[unit.getContentRepository()/]->[unit.contentType().findMethodName()/]([unit.findActualParameters()/])
 [/template]
 
 [template public loadInstance(action : InlineAction, unit : CollectionUnit) post(trim())]
 [if (unit.findElementSelection.oclIsUndefined())]
-[unit.oclAsType(DynamicUnit).getContentService()/]->[unit.contentType().findMethodName()/]([unit.contentType().findActualParameters(unit.oclAsType(ContentUnit))/])
+[unit.oclAsType(DynamicUnit).getContentRepository()/]->[unit.contentType().findMethodName()/]([unit.contentType().findActualParameters(unit.oclAsType(ContentUnit))/])
 [else]
 $this->[unit.findElementSelection.partOf.instanceName()/]->[unit.findElementSelection.methodName/]([unit.findActualParameters(unit.contentType(), unit.findElementSelection)/])
 [/if]

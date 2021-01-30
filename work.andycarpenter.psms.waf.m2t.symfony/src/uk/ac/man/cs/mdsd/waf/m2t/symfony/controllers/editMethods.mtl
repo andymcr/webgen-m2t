@@ -14,7 +14,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -222,7 +222,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 	[let association : Association = field.feature().oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType().instanceName()/])
         if (false === $[unit.instanceName()/]->[field.feature().getMethodName()/]()->contains($[association.targetType().instanceName()/]))
-            $this->[association.targetType().services(unit.pageDisplayedOn().partOf)->first().instanceName()/]->remove($[association.targetType().instanceName()/]);
+            $this->[association.targetType().repository.instanceName()/]->remove($[association.targetType().instanceName()/]);
 	[/let]
 	[/for]
     [unit.saveBody(unit.contentType)/]
@@ -273,15 +273,15 @@ array_merge(
 
 [template public setContainer(unit : EditUnit) post(trim())]
 [let modelPropertyName : String = unit.contentType.containingAssociation().modelPropertyName().toUpperFirst()]
-[let parentService : Service = unit.contentType.container().services(unit.pageDisplayedOn().partOf)->first()]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentService.instanceName()/]->find([unit.routeParameters(unit.contentType.parentEntity())/]));
+[let parentRepository : Repository = unit.contentType.container().repository]
+$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentRepository.instanceName()/]->find([unit.routeParameters(unit.contentType.parentEntity())/]));
 [/let]
 [/let]
 [/template]
 
 [template private saveBody(unit : EditUnit, valueBase : Entity) post(trim())]
 [let page : Page = unit.pageDisplayedOn()]
-[unit.getContentService()/]->save($[unit.instanceName()/], true);
+[unit.getContentRepository()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
 return [unit.confirmDestination.redirect()/];
 [else]

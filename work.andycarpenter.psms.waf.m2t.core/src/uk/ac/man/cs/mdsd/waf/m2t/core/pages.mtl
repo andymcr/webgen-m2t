@@ -107,7 +107,7 @@
 	= page.units->select(u | not u.oclIsKindOf(DynamicUnit))
 /]
 
-[query public repositories(page : Page) : Sequence(Service)
+[query public repositories(page : Page) : Sequence(Repository)
 	= page.dynamicUnits()->collect(u | u.repositoriesUsed)
 		->asSet()
 		->asSequence()

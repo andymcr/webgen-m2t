@@ -13,7 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::service]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -43,7 +43,7 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[for (repository : Service | page.repositories())]
+[for (repository : Repository | page.repositories())]
     private $[repository.instanceName()/];
 
 [/for]
@@ -58,7 +58,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     private $translationService;
 
 [if (page.repositories()->notEmpty() or page.services()->notEmpty() or page.hasExplicitValidation())]
-    public function __construct([for (repository : Service | page.repositories()) separator (', ')]
+    public function __construct([for (repository : Repository | page.repositories()) separator (', ')]
 [repository.className()/] $[repository.instanceName()/][/for][if (page.repositories()->notEmpty() and page.services()->notEmpty())]
 , [/if][for (service : Service | page.services()) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
@@ -66,7 +66,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 , [/if]ValidatorInterface $validator[/if][if (page.repositories()->notEmpty() or page.services()->notEmpty())]
 , [/if]TranslatorInterface $translator)
     {
-	[for (repository : Service | page.repositories())]
+	[for (repository : Repository | page.repositories())]
         $this->[repository.instanceName()/] = $[repository.instanceName()/];
 	[/for]
 	[for (service : Service | page.services())]
@@ -122,7 +122,7 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 [for (form : SingletonUnit | page.formUnits()->sortedBy(u | u.name))]
 use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
 [/for]
-[for (repository : Service | page.repositories())]
+[for (repository : Repository | page.repositories())]
 use [repository.repositoryNamespace()/]\[repository.className()/];
 [/for]
 [for (service : Service | page.services())]
@@ -261,7 +261,7 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
     if (!$[deleteAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
-    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentService().instanceName()/]->remove($[deleteAction.instanceName()/], true);
+    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentRepository().instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
     return [deleteAction.destination.redirect()/];
