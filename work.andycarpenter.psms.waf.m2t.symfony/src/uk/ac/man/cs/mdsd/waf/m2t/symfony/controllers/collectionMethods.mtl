@@ -126,9 +126,9 @@ else
 [/if]
 [if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
-$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
 [else]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll([unit.paginationActuals()/]);
@@ -177,9 +177,9 @@ $this->[unit.containerRepository.instanceName()/]->[unit.findContainerSelection.
 [template private loadCollection(unit : CollectionUnit) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-$this->[unit.instanceName()/] = $this->[unit.selection.partOf.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
-$this->[unit.instanceName()/] = $this->[unit.filter.selection.partOf.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
+$this->[unit.instanceName()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
 [else]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll([unit.paginationActuals()/]);

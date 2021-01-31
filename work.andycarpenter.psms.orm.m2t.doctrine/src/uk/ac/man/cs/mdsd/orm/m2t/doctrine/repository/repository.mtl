@@ -75,7 +75,7 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
     [repository.saveMethod()/]
 
 [for (selection : Selection | repository.selections)]
-    [selection.selectionMethod(repository)/]
+    [selection.selectionMethod()/]
 
 [/for]
     [repository.getRepositoryMethod()/]
@@ -182,7 +182,7 @@ public function save($entity, $flush = false)
 }
 [/template]
 
-[template private selectionMethod(selection : Selection, repository : Repository)
+[template private selectionMethod(selection : Selection)
 	? (selection.filters->isEmpty()) post(trim())]
 public function [selection.methodName/]([selection.formals()/])
 {
@@ -192,11 +192,11 @@ public function [selection.methodName/]([selection.formals()/])
     [selection.queryParametersCode()/]
 [/if]
 
-    [selection.queryResult(repository)/]
+    [selection.queryResult()/]
 }
 [/template]
 
-[template private selectionMethod(selection : Selection, service : Repository, userService : Repository)
+[template private selectionMethod(selection : Selection)
 	? (selection.filters->notEmpty()) post(trim())]
 private function [selection.builderMethodName()/]([selection.formals()/])
 {
@@ -220,7 +220,7 @@ public function [selection.methodName/]([selection.formals()/])
 , [selection.selectionActuals()/][/if]);
 [/if]
 
-    [selection.queryResult(service)/]
+    [selection.queryResult()/]
 }
 [for (filter : Filter | selection.filters)]
 
@@ -249,7 +249,7 @@ public function [filter.methodName/]([filter.formals()/])
 		[/if]
 	[/for]
 
-    [selection.queryResult(service)/]
+    [selection.queryResult()/]
 }
 [/for]
 [/template]
@@ -287,7 +287,7 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private limitFormals(selection : Selection) post(trim())]
-[selection.partOf.limitFormals(selection.limit)/]
+[selection.definedBy.limitFormals(selection.limit)/]
 [/template]
 
 [template private limitFormals(service : Repository, limit : Integer) post(trim())]
@@ -346,7 +346,7 @@ $[parameter.name/][/for]
 [/template]
 
 [template private builderCode(selection : Selection) post(trim())]
-$queryBuilder = $this->createQueryBuilder('[selection.partOf.serves.selectName()/]');
+$queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
 [if (selection.fields->notEmpty())]
 [selection.fields()/]
 [/if]
@@ -460,12 +460,12 @@ $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routePara
 [/let]
 [/template]
 
-[template private queryResult(selection : Selection, service : Repository) post(trim())]
+[template private queryResult(selection : Selection) post(trim())]
 [if (selection.limit = 1)]
 return $query->getOneOrNullResult();
 [elseif (selection.hasPaginationSupport())]
 if ($limit > 0)
-    return new Paginator($query[if (service.serves.primaryKeys()->size() > 1)], false[/if]);
+    return new Paginator($query[if (selection.definedBy.serves.primaryKeys()->size() > 1)], false[/if]);
 else
     return $query->getResult();
 [else]

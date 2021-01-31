@@ -58,7 +58,7 @@
  */
 public function [association.actionName()/]([association.filteredOptions.optionFormals()/])
 {
-    $selection = $this->[association.filteredOptions.selection.partOf.instanceName()/]->[association.filteredOptions.methodName/]([association.filteredOptions.selectionActuals()/]);
+    $selection = $this->[association.filteredOptions.selection.definedBy.instanceName()/]->[association.filteredOptions.methodName/]([association.filteredOptions.selectionActuals()/]);
     $matches = array();
     foreach ($selection as $option) {
         $matches['['/]$option->getId()[']'/] = $option->defaultLabel();

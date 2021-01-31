@@ -133,7 +133,7 @@ $this->[unit.contentRepository().instanceName()/]
 [if (unit.findElementSelection.oclIsUndefined())]
 [unit.oclAsType(DynamicUnit).getContentRepository()/]->[unit.contentType().findMethodName()/]([unit.contentType().findActualParameters(unit.oclAsType(ContentUnit))/])
 [else]
-$this->[unit.findElementSelection.partOf.instanceName()/]->[unit.findElementSelection.methodName/]([unit.findActualParameters(unit.contentType(), unit.findElementSelection)/])
+$this->[unit.findElementSelection.definedBy.instanceName()/]->[unit.findElementSelection.methodName/]([unit.findActualParameters(unit.contentType(), unit.findElementSelection)/])
 [/if]
 [/template]
 

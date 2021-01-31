@@ -341,7 +341,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 
 [template private options(selection : Selection) post(trim())]
 'query_builder' => function (EntityRepository $er) {
-    $queryBuilder = $er->createQueryBuilder('[selection.partOf.serves.selectName()/]');
+    $queryBuilder = $er->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
     return $queryBuilder
 [for (join : Association | selection.joins)]
         ->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]')

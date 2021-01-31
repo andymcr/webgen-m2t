@@ -57,7 +57,7 @@ if (!$this->[detailsUnit.instanceName()/]) {
     throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
 }
 [else]
-$this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.partOf.instanceName()/]->[detailsUnit.selection.methodName/]();
+$this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.definedBy.instanceName()/]->[detailsUnit.selection.methodName/]();
 [/if]
 [/let]
 [/template]

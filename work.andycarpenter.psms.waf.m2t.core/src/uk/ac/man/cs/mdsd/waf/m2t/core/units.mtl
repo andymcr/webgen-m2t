@@ -59,7 +59,7 @@
 			else if selection.parameters->isEmpty() then
 				null
 			else
-				selection.partOf.serves
+				selection.definedBy.serves
 			endif endif endif
 /]
 
