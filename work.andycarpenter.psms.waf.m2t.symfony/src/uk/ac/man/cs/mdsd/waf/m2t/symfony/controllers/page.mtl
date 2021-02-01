@@ -289,16 +289,15 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
 public function [action.actionName()/]([featureAction.actionMethodParameters(unit, page)/])
 {
 [if (featureAction.operation.resultType = OperationResultTypes::None)]
-	[if (unit.hasPagination())]
-    [unit.oclAsType(CollectionUnit).notePage()/]
-	[/if]
     $[featureAction.instanceName()/] = [featureAction.loadInstance(unit)/];
     if (!$[featureAction.instanceName()/]) {
         throw $this->createNotFoundException('The [contentType.name/] does not exist');
     }
     $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
+    $this->addFlash('notice', 'operation done');
+    return [unit.oclAsType(DynamicUnit).redirect(unit.containerType, unit.routeName(true), unit.containerType)/];
 [elseif (featureAction.operation.resultType = OperationResultTypes::File)]
-    $file = $this->[featureAction.operation.partOf.instanceName()/]Service->[featureAction.operation.methodName()/](
+    $file = $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/](
         [featureAction.loadInstance(unit)/],
         '[featureAction.fileExtension/]'
     );
@@ -310,7 +309,7 @@ public function [action.actionName()/]([featureAction.actionMethodParameters(uni
 [/if]
 [if (featureAction.operation.resultType = OperationResultTypes::None)]
 
-    return $this->renderPage([page.renderActualParameters(unit.contentType())/]);
+//    return $this->renderPage([page.renderActualParameters(unit.contentType())/]);
 [/if]
 }
 [/let]
