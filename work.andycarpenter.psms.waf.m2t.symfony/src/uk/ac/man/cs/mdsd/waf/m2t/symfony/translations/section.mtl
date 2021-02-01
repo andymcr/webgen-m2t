@@ -2,6 +2,7 @@
 [module section(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -67,7 +68,14 @@
 [/let]
 [/if]
 [if (unit.oclIsKindOf(DynamicUnit))]
-[unit.oclAsType(DynamicUnit).fieldTranslations(page)/]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+	[if (dynamicUnit.hasFieldTranslations())]
+[dynamicUnit.fieldTranslations(page)/]
+	[/if]
+	[for (action : InlineAction | dynamicUnit.inlineActionsWithMessages())]
+[action.actionTranslations()/]
+	[/for]
+[/let]
 [/if]
 [/template]
 
@@ -103,4 +111,26 @@
 </trans-unit>
 	[/if]
 [/for]
+[/template]
+
+[template private actionTranslations(action : InlineAction)
+	? (action.oclIsKindOf(FeatureSupportAction)) post (trim())]
+[let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+[if (not featureAction.confirmMessage.oclIsUndefined())]
+[featureAction.actionMessageTranslation('confirmMessage', featureAction.confirmMessage)/]
+[/if]
+[if (not featureAction.failureMessage.oclIsUndefined())]
+[featureAction.actionMessageTranslation('failureMessage', featureAction.failureMessage)/]
+[/if]
+[if (not featureAction.successMessage.oclIsUndefined())]
+[featureAction.actionMessageTranslation('successMessage', featureAction.successMessage)/]
+[/if]
+[/let]
+[/template]
+
+[template private actionMessageTranslation(action : InlineAction, x : String, message : String) post (trim())]
+<trans-unit id="[action.containedId()/].[x/]">
+ <source>[action.containedId()/].[x/]</source>
+ <target>[message.validXML()/]</target>
+</trans-unit>
 [/template]

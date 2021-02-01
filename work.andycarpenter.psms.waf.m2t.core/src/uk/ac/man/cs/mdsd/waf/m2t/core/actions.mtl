@@ -98,6 +98,14 @@
 		endif
 /]
 
+[query public inlineActionsWithMessages(unit : DynamicUnit) : OrderedSet(InlineAction)
+	= if unit.oclIsKindOf(InlineActionContainer) then
+			unit.oclAsType(InlineActionContainer).inlineActionsWithMessages()
+		else
+			OrderedSet{}
+		endif
+/]
+
 [query public inlineActionsRequiringHandlers(unit : DynamicUnit) : OrderedSet(InlineAction)
 	= if unit.oclIsKindOf(InlineActionContainer) then
 			unit.oclAsType(InlineActionContainer).inlineActionsRequiringHandlers()
@@ -133,6 +141,10 @@
 
 [query public inlineActions(container : InlineActionContainer) : OrderedSet(InlineAction)
 	= container.actions->select(a | not a.disable)
+/]
+
+[query public inlineActionsWithMessages(container : InlineActionContainer) : OrderedSet(InlineAction)
+	= container.inlineActions()->select(a | a.hasMessages())
 /]
 
 [query public inlineActionsRequiringHandlers(container : InlineActionContainer) : OrderedSet(InlineAction)
@@ -181,6 +193,18 @@
 		else
 			null
 		endif endif endif
+/]
+
+[query private hasMessages(action : InlineAction) : Boolean
+	= if action.oclIsTypeOf(FeatureSupportAction) then
+			let featureAction : FeatureSupportAction
+				= action.oclAsType(FeatureSupportAction)
+				in not featureAction.confirmMessage.oclIsUndefined()
+					or not featureAction.failureMessage.oclIsUndefined()
+					or not featureAction.successMessage.oclIsUndefined()
+		else
+			false
+		endif
 /]
 
 [query public requiresRole(action : InlineAction) : String

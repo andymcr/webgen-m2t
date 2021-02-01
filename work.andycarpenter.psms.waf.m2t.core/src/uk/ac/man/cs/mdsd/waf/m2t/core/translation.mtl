@@ -61,6 +61,10 @@
 		or field.hasCustomisedTitle
 /]
 
+[query public hasFieldTranslations(unit : DynamicUnit) : Boolean
+	= unit.displayFields->select(f | f.hasUnitTranslation())->notEmpty()
+/]
+
 [query public labelId(field : UnitField) : String
 	= let fieldsWithName : OrderedSet(UnitField)
 			= field.displayedOn.displayFields
@@ -95,4 +99,8 @@
 				else
 					field.entityId().concat('_').concat(field.fieldId())
 				endif
+/]
+
+[query public actionId(action : InlineAction) : String
+	= action.name.asId()
 /]

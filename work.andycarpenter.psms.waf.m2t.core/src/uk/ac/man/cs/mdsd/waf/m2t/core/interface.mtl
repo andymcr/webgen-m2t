@@ -87,6 +87,10 @@
 	= unit.displayedOn.pageId().concat('.').concat(unit.name.asId())
 /]
 
+[query public containedId(action : InlineAction) : String
+	= action.unit().containedId().concat('.actions.').concat(action.name.asId())
+/]
+
 [query public hasClearLabel(unit : EditUnit) : Boolean
 	= if unit.oclIsTypeOf(CreateUpdateUnit) then
 			not unit.oclAsType(CreateUpdateUnit).clearLabel.oclIsUndefined()

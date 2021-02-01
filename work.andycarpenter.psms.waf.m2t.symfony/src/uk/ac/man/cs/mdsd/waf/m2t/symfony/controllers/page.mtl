@@ -10,10 +10,12 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::select]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -334,31 +336,42 @@ public function [action.actionName()/]([featureAction.actionMethodParameters(uni
 [template private actionMethodBody(action : FeatureSupportAction)
 	? (action.operation.resultType = OperationResultTypes::None and action.usedBy.oclIsKindOf(CollectionUnit)) post(trim())]
 [let unit : CollectionUnit = action.usedBy.oclAsType(CollectionUnit)]
+[let page : Page = action.usedBy.oclAsType(DynamicUnit).displayedOn]
 $[action.instanceName()/] = [action.loadInstance(unit)/];
 if (!$[action.instanceName()/]) {
     throw $this->createNotFoundException('The [unit.contentType().name/] does not exist');
 }
-[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
 $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
 [if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined())]
 if ($result)
 {
-    $this->addFlash('notice', '[action.successMessage/]');
+    $this->addFlash('success', $this->translationService->trans(
+        '[action.containedId()/].successMessage',
+        array(), '[page.translationDomain()/]'
+    ));
 } else {
-    $this->addFlash('notice', '[action.failureMessage/]');
+    $this->addFlash('error', $this->translationService->trans(
+        '[action.containedId()/].failureMessage',
+        array(), '[page.translationDomain()/]'
+    ));
 }
 [elseif (not action.successMessage.oclIsUndefined())]
-if ($result)
-{
-    $this->addFlash('notice', '[action.successMessage/]');
-}
+$this->addFlash('success', $this->translationService->trans(
+    '[action.containedId()/].successMessage',
+    array(), '[page.translationDomain()/]'
+));
 [elseif (not action.failureMessage.oclIsUndefined())]
 if (!$result)
 {
-    $this->addFlash('notice', '[action.failureMessage/]');
+    $this->addFlash('error', $this->translationService->trans(
+        '[action.containedId()/].failureMessage',
+        array(), '[page.translationDomain()/]'
+    ));
 }
 [/if]
 return [unit.oclAsType(DynamicUnit).redirect(unit.containerType, unit.routeName(true), unit.containerType)/];
+[/let]
 [/let]
 [/template]
 
