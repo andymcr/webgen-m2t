@@ -74,7 +74,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [entity.idMethods()/]
 
 [/if]
-[for (feature : Feature | entity.features->select(f | not f.isHidden() and not f.isPseudo()))]
+[for (feature : Feature | entity.features->select(f | not f.isHidden()))]
     [feature.featureMethods()/]
 
 [/for]
@@ -152,7 +152,7 @@ protected $[entity.autoKeyName/];
 [/template]
 
 [template private featureProperties(entity : Entity) post(trim())]
-[for (feature : Feature | entity.features->select(f | f.isVisible() or f.isOwningEnd())->select(f | not f.isPseudo()))]
+[for (feature : Feature | entity.features->select(f | f.isVisible() or f.isOwningEnd()))]
 [comment TODO sortout location features /]
 	[if (not feature.isLocation() and not feature.isResource())]
 /**

@@ -192,14 +192,6 @@
 		endif endif
 /]
 
-[query public isPseudo(association : UnitAssociation) : Boolean
-	= association.association.isPseudo()
-/]
-
-[query public isPseudo(association : ChildPathAssociation) : Boolean
-	= association.association.isPseudo()
-/]
-
 [query public isRequired(path : FeaturePath) : Boolean
 	= if path.oclIsTypeOf(FeaturePathAttribute) then
 			path.oclAsType(FeaturePathAttribute).isRequired()

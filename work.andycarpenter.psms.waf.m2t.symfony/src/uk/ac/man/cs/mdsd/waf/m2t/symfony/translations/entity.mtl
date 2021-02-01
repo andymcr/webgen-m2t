@@ -47,7 +47,7 @@
  <source>label.[entity.id()/]</source>
  <target>[entity.displayLabel.validXML()/]</target>
 </trans-unit>
-[for (feature : Feature | entity.features->select(f | not f.isHidden() and not f.isPseudo()))]
+[for (feature : Feature | entity.features->select(f | not f.isHidden()))]
 <trans-unit id="[entity.id()/].labels.[feature.id()/]">
  <source>[entity.id()/].labels.[feature.id()/]</source>
  <target>[feature.displayLabel.validXML()/]</target>

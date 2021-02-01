@@ -95,47 +95,19 @@
 /]
 
 [query public accessor(association : UnitAssociation, parentAccessor : String, alias : String, objectAccess : Boolean) : String
-	= if association.isPseudo() then
-			association.pseudoAccessorWithChild(parentAccessor)
-		else 
-			let accessor : String
-				= if association.options.oclIsUndefined() then
-						association.propertyAccessor(parentAccessor, alias, objectAccess)
-					else
-						association.collectionAccessor(parentAccessor)
-					endif
-				in if association.childFeature.oclIsUndefined() then
-						accessor
-					else
-						association.childFeature.accessor(accessor.concat(association.association.associationIndex()))
-					endif 
-		endif
-/]
-
-
-[query public pseudoAccessor(association : UnitAssociation, parentAccessor : String) : String
-	= let methodName : String
+	= let accessor : String
 		= if association.options.oclIsUndefined() then
-				association.name
+				association.propertyAccessor(parentAccessor, alias, objectAccess)
 			else
-				association.association.findMethodName(association.options)
+				association.collectionAccessor(parentAccessor)
 			endif
-		in association.repositoryAccessor()
-			.concat('.').concat(methodName)
-			.concat('(').concat(parentAccessor).concat(')')
+		in if association.childFeature.oclIsUndefined() then
+				accessor
+			else
+				association.childFeature.accessor(accessor.concat(association.association.associationIndex()))
+			endif 
 /]
 
-[query private pseudoAccessorWithChild(association : UnitAssociation, parentAccessor : String) : String
-	= let accessor : String = association.pseudoAccessor(parentAccessor)
-		in -- if not association.selection.oclIsUndefined() then
-				-- association.collectionAccessor(accessor)
-			-- else 
-if not association.childFeature.oclIsUndefined() then
-				association.childFeature.accessor(accessor)
-			else
-				accessor
-			endif -- endif
-/]
 
 [query private collectionAccessor(association : UnitAssociation, parentAccessor : String) : String
 	= association.repositoryAccessor()
@@ -212,28 +184,12 @@ if not association.childFeature.oclIsUndefined() then
 /]
 
 [query private accessor(child : ChildPathAssociation, parentAccessor : String) : String
-	=  if child.isPseudo() then
-			child.pseudoAccessor(parentAccessor)
-		else
-			let childAccessor : String
-				= parentAccessor.concat('.').concat(child.association.modelPropertyName())
-				in if child.childFeature.oclIsUndefined() then
-					childAccessor
-				else
-					child.childFeature.accessor(childAccessor.concat(child.association.associationIndex()))
-				endif
-		endif
-/]
-
-[query private pseudoAccessor(child : ChildPathAssociation, parentAccessor : String) : String
-	= let accessor : String
-		= child.repositoryAccessor()
-			.concat('.').concat(association.name)
-			.concat('(').concat(parentAccessor).concat(')')
-		in if not child.childFeature.oclIsUndefined() then
-				child.childFeature.accessor(accessor)
+	=  let childAccessor : String
+		= parentAccessor.concat('.').concat(child.association.modelPropertyName())
+		in if child.childFeature.oclIsUndefined() then
+				childAccessor
 			else
-				accessor
+				child.childFeature.accessor(childAccessor.concat(child.association.associationIndex()))
 			endif
 /]
 

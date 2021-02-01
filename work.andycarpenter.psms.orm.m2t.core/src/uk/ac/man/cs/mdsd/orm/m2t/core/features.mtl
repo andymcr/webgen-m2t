@@ -148,14 +148,6 @@
 		endif
 /]
 
-[query public isPseudo(feature : Feature) : Boolean
-	= if not feature.oclIsKindOf(Association) then
-			false
-		else
-			feature.oclAsType(Association).pseudo
-		endif
-/]
-
 [query public isRequired(feature : Feature) : Boolean
 	= feature.cardinality = Cardinality::Required
 /]

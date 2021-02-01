@@ -39,11 +39,7 @@ NULL
 [/template]
 
 [template private getImmediateValue(association : UnitAssociation, parentAccessor : String, objectAccess : Boolean) post(trim())]
-[if (association.isPseudo())]
-[association.pseudoAccessor(parentAccessor)/]
-[else]
 [association.propertyAccessor(parentAccessor, association.alias(), objectAccess)/]
-[/if]
 [/template]
 
 

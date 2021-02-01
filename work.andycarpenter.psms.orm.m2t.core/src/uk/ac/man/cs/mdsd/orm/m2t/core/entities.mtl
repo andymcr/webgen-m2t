@@ -126,10 +126,6 @@
 	= entity.primaryKeys()->notEmpty()
 /]
 
-[query public hasPseudoAssociations(entity : Entity) : Boolean
-	= entity.pseudoAssociations()->notEmpty()
-/]
-
 [query public hasResourceAttributes(entity : Entity) : Boolean
 	= entity.resourceAttributes()->notEmpty()
 /]
@@ -156,10 +152,6 @@
 
 [query public primaryKeys(entity : Entity) : OrderedSet(Feature)
 	= entity.features->select(f | f.isPrimaryKey())
-/]
-
-[query public pseudoAssociations(entity : Entity) : Sequence(Association)
-	= entity.features->select(f | f.isPseudo()).oclAsType(Association)
 /]
 
 [query public resourceAttributes(entity : Entity) : Sequence(SingletonResource)
