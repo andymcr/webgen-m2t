@@ -52,7 +52,7 @@
 	= if routingType.oclIsUndefined() then
 			unit.oclAsType(DynamicUnit).uriPath(suffix)
 		else if unit.hasSelectCondition() then
-			unit.oclAsType(DynamicUnit).pageDisplayedOn().uriPagePath()
+			unit.oclAsType(DynamicUnit).displayedOn.uriPagePath()
 				.combinePaths(routingType.uriPath(routingType, unit, unit.selection))
 				.combinePaths(suffix)
 		else
@@ -71,7 +71,7 @@
 /]
 
 [query private uriPath(unit : ContentUnit, suffix : String) : String
-	= unit.pageDisplayedOn().uriPagePath()
+	= unit.displayedOn.uriPagePath()
 		.combinePaths(suffix)
 /]
 
@@ -85,7 +85,7 @@
 					else
 						routingType.uriPath(routingType)
 					endif
-				in unit.pageDisplayedOn().uriPagePath()
+				in unit.displayedOn.uriPagePath()
 					.combinePaths(keyPath)
 					.combinePaths(suffix)
 		endif
@@ -95,7 +95,7 @@
 	= if parentType.oclIsUndefined() then
 			unit.uriPath(suffix)
 		else
-			unit.pageDisplayedOn().uriPagePath()
+			unit.displayedOn.uriPagePath()
 				.combinePaths(parentType.uriPath(parentType))
 				.appendContainingAssociation(routingType)
 				.combinePaths(suffix)
@@ -109,7 +109,7 @@
 			else
 				unit.contentType().uriPath(unit.contentType(), unit, unit.findElementSelection)
 			endif
-		in unit.oclAsType(DynamicUnit).pageDisplayedOn().uriPagePath()
+		in unit.oclAsType(DynamicUnit).displayedOn.uriPagePath()
 			.combinePaths(keyPath)
 			.combinePaths(suffix)
 /]
@@ -323,12 +323,12 @@ $[key.routeParameterName(resource)/][/for]
 
 [query public isHomeUnit(unit : ContentUnit) : Boolean
 	= let explicitHome : ContentUnit
-		= unit.pageDisplayedOn().partOf.explicitHomeUnit()
+		= unit.displayedOn.partOf.explicitHomeUnit()
 		in if not explicitHome.oclIsUndefined() then
 				explicitHome = unit
 			else 
 				let homePage : Page
-					= unit.pageDisplayedOn().partOf.homePage()
+					= unit.displayedOn.partOf.homePage()
 					in if homePage.units->notEmpty() then
 							homePage.units->first() = unit
 						else

@@ -13,7 +13,7 @@
 [file(staticUnit.viewFilename(), false)]
 <section [if (not staticUnit.sectionClass.oclIsUndefined())] class="[staticUnit.sectionClass/]" [/if]id="[staticUnit.instanceName()/]">
  <h4 class="[staticUnit.captionClass/][if (staticUnit.omitCaption)] hidden[/if]">[staticUnit.displayLabel/]</h4>
-[if (staticUnit.pageDisplayedOn().partOf.staticUnitsEditable)]
+[if (staticUnit.displayedOn.partOf.staticUnitsEditable)]
   <div class="[staticUnit.contentClass/]">{{ [staticUnit.instanceName()/].content }}</div>
 [else]
   <div class="[staticUnit.contentClass/]">[staticUnit.content/]</div>

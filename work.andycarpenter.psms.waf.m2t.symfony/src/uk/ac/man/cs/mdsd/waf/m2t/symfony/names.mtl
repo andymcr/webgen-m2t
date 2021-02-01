@@ -209,7 +209,7 @@
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
-	= unit.pageDisplayedOn().controllerName()
+	= unit.displayedOn.controllerName()
 /]
 
 [query private featureNames(form : DynamicUnit) : Sequence(String)
@@ -267,11 +267,11 @@
 /]
 
 [query public routeName(unit : ContentUnit, createFunction : Boolean) : String
-	= if unit.displayedOn.oclIsTypeOf(Page) and unit.pageDisplayedOn().hasSingleActionMethod() then
-			unit.pageDisplayedOn().routeName()
+	= if unit.displayedOn.oclIsTypeOf(Page) and unit.displayedOn.hasSingleActionMethod() then
+			unit.displayedOn.routeName()
 		else
-			if unit.pageDisplayedOn().units->size() = 1 then
-					unit.pageDisplayedOn().uniqueName()
+			if unit.displayedOn.units->size() = 1 then
+					unit.displayedOn.uniqueName()
 				else
 					if not unit.oclIsTypeOf(CreateUpdateUnit) then
 						unit.uniqueName()
@@ -290,7 +290,7 @@
 				unit.uriElement
 			endif
 		in if not uriElement.oclIsUndefined() then
-				unit.pageDisplayedOn().uniqueName().concat('_').concat(uriElement)
+				unit.displayedOn.uniqueName().concat('_').concat(uriElement)
 			else
 				unit.uniqueName()
 			endif
@@ -345,7 +345,7 @@
 
 [query public thumbName(unit : ImageUnit) : String
 	= let units : Sequence(ImageUnit)
-		= unit.pageDisplayedOn().partOf.imageUnits()
+		= unit.displayedOn.partOf.imageUnits()
 		in if unit->collect(u | u.name)->select(n | n = unit.name)->size() > 1 then
 				unit.instanceName()
 			else
@@ -374,7 +374,7 @@
 /]
 
 [query private typeClassNameForm(unit : DynamicUnit) : String
-	= 'Unit'.concat(unit.pageDisplayedOn().name).concat(unit.name).concat(unit.typeSuffix())
+	= 'Unit'.concat(unit.displayedOn.name).concat(unit.name).concat(unit.typeSuffix())
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
@@ -471,6 +471,6 @@
 /]
 
 [query public routeName(action : InlineAction) : String
-	= action.immediateUnit().containingUnit().routeName()
+	= action.unit().routeName()
 		.concat('_').concat(action.name.toLowerFirst())
 /]

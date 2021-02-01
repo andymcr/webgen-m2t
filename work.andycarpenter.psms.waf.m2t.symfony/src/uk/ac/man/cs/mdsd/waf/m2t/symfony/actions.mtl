@@ -30,6 +30,6 @@
 
 [query public inlineSelectCode(unit : CollectionUnit) : Boolean
 	= not unit.hasFilters()
-		or unit.supportedFilters->size() = 1 and unit.oclAsType(DynamicUnit).pageDisplayedOn().hasSingleActionMethod()
+		or unit.supportedFilters->size() = 1 and unit.oclAsType(DynamicUnit).displayedOn.hasSingleActionMethod()
 /]
 

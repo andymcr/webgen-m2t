@@ -36,7 +36,6 @@
 
 [template public actionMethod(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[let page : Page = dynamicUnit.pageDisplayedOn()]
 /**
  [unit.routeAnnotation()/]
 [if (dynamicUnit.hasAuthorisation())]
@@ -45,9 +44,8 @@
  */
 public function [dynamicUnit.actionName()/]([unit.actionMethodParameters()/])
 {
-    return $this->renderPage([page.renderActualParameters(unit.collectionType())/]);
+    return $this->renderPage([dynamicUnit.displayedOn.renderActualParameters(unit.collectionType())/]);
 }
-[/let]
 [/let]
 [/template]
 
@@ -188,7 +186,7 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepositor
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[if (not dynamicUnit.pageDisplayedOn().hasSingleActionMethod())]
+[if (not dynamicUnit.displayedOn.hasSingleActionMethod())]
 [dynamicUnit.actionCore()/]
 [/if]
 [unit.templateParameters2()/]

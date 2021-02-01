@@ -85,7 +85,7 @@ $[parameter.name/][/for]
 [/template]
 
 [template private actionAddMethod(unit : EditUnit) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
+[let page : Page = unit.displayedOn]
 /**
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
  [unit.routeAnnotationCreate(unit.routeName(true), unit.oclAsType(CreateUpdateUnit).createUriElement)/]
@@ -169,7 +169,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 /]
 
 [template private actionEditMethod(unit : EditUnit) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
+[let page : Page = unit.displayedOn]
 /**
  [unit.routeAnnotation()/]
 [if (unit.hasAuthorisation())]
@@ -252,7 +252,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 [/template]
 
 [template public createForm(unit : EditUnit, routingType : Entity, entityInstance : String, createFunction : Boolean, placeholder : Boolean) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
+[let page : Page = unit.displayedOn]
 $this->createForm([unit.typeClassName(page.partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
     'action' => $this->generateUrl('[unit.routeName(createFunction)/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasRouteParameters(routingType))]
 $request->query->all()[else]
@@ -280,7 +280,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]($this->[parentRepository.instan
 [/template]
 
 [template private saveBody(unit : EditUnit, valueBase : Entity) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
+[let page : Page = unit.displayedOn]
 [unit.getContentRepository()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
 return [unit.confirmDestination.redirect()/];
@@ -309,7 +309,7 @@ return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(true), val
 [template public templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[if (editUnit.pageDisplayedOn().units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
+[if (editUnit.displayedOn.units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
 if (!isset($this->[editUnit.instanceName()/])) {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
     $this->[editUnit.instanceName()/] = [editUnit.createForm(editUnit.contentType.parentEntity(), unit.instanceName(), not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];

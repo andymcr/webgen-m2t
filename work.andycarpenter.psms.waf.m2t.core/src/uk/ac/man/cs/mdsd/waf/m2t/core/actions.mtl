@@ -156,10 +156,10 @@
 
 [query public controller(action : InlineAction) : Page
 	= if action.oclIsTypeOf(SelectAction) then
-			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).pageDisplayedOn()
+			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).displayedOn
 		else
 			if action.usedBy.oclIsKindOf(DynamicUnit) then
-				action.usedBy.oclAsType(DynamicUnit).pageDisplayedOn()
+				action.usedBy.oclAsType(DynamicUnit).displayedOn
 			else
 				null
 			endif
@@ -183,14 +183,6 @@
 		endif endif endif
 /]
 
-[query public immediateUnit(action : InlineAction) : DynamicUnit
-	= if action.usedBy.oclIsKindOf(DynamicUnit) then
-			action.usedBy.oclAsType(DynamicUnit)
-		else
-			action.usedBy.oclAsType(UnitFeature).displayedOn
-		endif
-/]
-
 [query public requiresRole(action : InlineAction) : String
 	= if action.oclIsTypeOf(DeleteAction) then
 			action.oclAsType(DeleteAction).requiresRole
@@ -201,4 +193,12 @@
 		else
 			''
 		endif endif endif
+/]
+
+[query public unit(action : InlineAction) : DynamicUnit
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit)
+		else
+			action.usedBy.oclAsType(UnitFeature).displayedOn
+		endif
 /]

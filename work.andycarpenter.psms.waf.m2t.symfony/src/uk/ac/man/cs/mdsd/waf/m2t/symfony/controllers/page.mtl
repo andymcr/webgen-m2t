@@ -89,7 +89,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		[/if]
 	[/for]
 	[for (action : InlineAction | page.inlineActionsRequiringHandlers())]
-    [action.actionMethod(page)/]
+    [action.actionMethod()/]
 
 	[/for]
 [else]
@@ -97,7 +97,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     [unit.unitMethods()/]
 
 		[for (action : InlineAction | unit.inlineActionsRequiringHandlers())]
-    [action.actionMethod(page)/]
+    [action.actionMethod()/]
 
 		[/for]
 	[/for]
@@ -244,10 +244,10 @@ if ($request->query->has('[action.actionName()/]')) {
 return new Response("No action taken", 200);
 [/template]
 
-[template private actionMethod(action : InlineAction, page : Page)
+[template private actionMethod(action : InlineAction)
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
+[let unit : CollectionUnit = action.unit().oclAsType(CollectionUnit)]
 [let contentType : Entity = unit.contentType()]
 /**
  [deleteAction.routeAnnotation(unit, deleteAction.uriElement)/]
@@ -255,7 +255,7 @@ return new Response("No action taken", 200);
  [deleteAction.securityAnnotation()/]
 [/if]
  */
-public function [deleteAction.actionName()/]([deleteAction.actionMethodParameters(unit, page)/])
+public function [deleteAction.actionName()/]([deleteAction.actionMethodParameters(unit, deleteAction.unit().displayedOn)/])
 {
     $[deleteAction.instanceName()/] = [deleteAction.loadInstance(unit)/];
     if (!$[deleteAction.instanceName()/]) {
@@ -267,7 +267,7 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
     return [deleteAction.destination.redirect()/];
 [else]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-    return [dynamicUnit.redirect(dynamicUnit.containingUnit().routingType(), dynamicUnit.containingUnit().routeName(), unit.contentType())/];
+    return [dynamicUnit.redirect(dynamicUnit.routingType(), dynamicUnit.routeName(), unit.contentType())/];
 [/let][/if]
 }
 [/let]
@@ -275,10 +275,10 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
 [/let]
 [/template]
 
-[template private actionMethod(action : InlineAction, page : Page)
-	? (action.oclIsTypeOf(FeatureSupportAction)) post(trim())]
+[template private actionMethod(action : InlineAction)
+	? (action.oclIsTypeOf(FeatureSupportAction) and action.usedBy.oclIsKindOf(UnitFeature)) post(trim())]
 [let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[let unit : CollectionUnit = action.immediateUnit().oclAsType(CollectionUnit)]
+[let unit : CollectionUnit = action.unit().oclAsType(CollectionUnit)]
 [let contentType : Entity = unit.contentType()]
 /**
  [featureAction.routeAnnotation(unit, featureAction.uriElement)/]
@@ -286,7 +286,7 @@ public function [deleteAction.actionName()/]([deleteAction.actionMethodParameter
  [featureAction.securityAnnotation()/]
 [/if]
  */
-public function [action.actionName()/]([featureAction.actionMethodParameters(unit, page)/])
+public function [action.actionName()/]([featureAction.actionMethodParameters(unit, featureAction.unit().displayedOn)/])
 {
 [if (featureAction.operation.resultType = OperationResultTypes::None)]
     $[featureAction.instanceName()/] = [featureAction.loadInstance(unit)/];
@@ -307,12 +307,72 @@ public function [action.actionName()/]([featureAction.actionMethodParameters(uni
 //    }
     return $response;
 [/if]
-[if (featureAction.operation.resultType = OperationResultTypes::None)]
-
-//    return $this->renderPage([page.renderActualParameters(unit.contentType())/]);
-[/if]
 }
 [/let]
 [/let]
+[/let]
+[/template]
+
+[template private actionMethod(action : InlineAction)
+	? (action.oclIsTypeOf(FeatureSupportAction) and action.usedBy.oclIsKindOf(CollectionUnit)) post(trim())]
+[let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+[let unit : CollectionUnit = action.usedBy.oclAsType(CollectionUnit)]
+/**
+ [featureAction.routeAnnotation(unit, featureAction.uriElement)/]
+[if (featureAction.hasAuthorisation())]
+ [featureAction.securityAnnotation()/]
+[/if]
+ */
+public function [action.actionName()/]([featureAction.actionMethodParameters(unit, featureAction.unit().displayedOn)/])
+{
+    [featureAction.actionMethodBody()/]
+}
+[/let]
+[/let]
+[/template]
+
+[template private actionMethodBody(action : FeatureSupportAction)
+	? (action.operation.resultType = OperationResultTypes::None and action.usedBy.oclIsKindOf(CollectionUnit)) post(trim())]
+[let unit : CollectionUnit = action.usedBy.oclAsType(CollectionUnit)]
+$[action.instanceName()/] = [action.loadInstance(unit)/];
+if (!$[action.instanceName()/]) {
+    throw $this->createNotFoundException('The [unit.contentType().name/] does not exist');
+}
+[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
+[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined())]
+if ($result)
+{
+    $this->addFlash('notice', '[action.successMessage/]');
+} else {
+    $this->addFlash('notice', '[action.failureMessage/]');
+}
+[elseif (not action.successMessage.oclIsUndefined())]
+if ($result)
+{
+    $this->addFlash('notice', '[action.successMessage/]');
+}
+[elseif (not action.failureMessage.oclIsUndefined())]
+if (!$result)
+{
+    $this->addFlash('notice', '[action.failureMessage/]');
+}
+[/if]
+return [unit.oclAsType(DynamicUnit).redirect(unit.containerType, unit.routeName(true), unit.containerType)/];
+[/let]
+[/template]
+
+[template private actionMethodBody(action : FeatureSupportAction)
+	? (action.operation.resultType = OperationResultTypes::File and action.usedBy.oclIsKindOf(CollectionUnit)) post(trim())]
+[let unit : CollectionUnit = action.usedBy.oclAsType(CollectionUnit)]
+    $file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/](
+        [action.loadInstance(unit)/],
+        '[action.fileExtension/]'
+    );
+    $response = $this->file($file);
+//    if (!empty($report->getContentType())) {
+//        $response->headers->set('Content-Type', $report->getContentType());
+//    }
+    return $response;
 [/let]
 [/template]

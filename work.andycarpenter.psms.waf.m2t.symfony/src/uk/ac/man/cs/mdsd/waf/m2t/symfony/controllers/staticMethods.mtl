@@ -20,7 +20,7 @@
 [/template]
 
 [template private actionMethod(unit : StaticUnit) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
+[let page : Page = unit.displayedOn]
 /**
  [unit.routeAnnotation()/]
 [if (unit.hasAuthorisation())]
@@ -29,7 +29,7 @@
  */
 public function [unit.actionName()/]()
 {
-[if (unit.pageDisplayedOn().partOf.staticUnitsEditable)]
+[if (page.partOf.staticUnitsEditable)]
    $this->[unit.instanceName()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
 
 [/if]
@@ -47,11 +47,9 @@ public function [unit.actionName()/]()
 
 [template private templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(StaticUnit)) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
-[if (unit.pageDisplayedOn().partOf.staticUnitsEditable)]
+[if (unit.displayedOn.partOf.staticUnitsEditable)]
 $parameters['['/]'[staticUnit.instanceName()/]'[']'/] = $this->[staticUnit.instanceName()/];
 [/if]
-[/let]
 [/let]
 [/template]

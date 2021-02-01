@@ -30,7 +30,6 @@
 [/template]
 
 [template private actionMethod(unit : DetailsUnit) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
 /**
  [unit.routeAnnotation()/]
 [if (unit.hasAuthorisation())]
@@ -43,9 +42,8 @@ public function [unit.actionName()/]([unit.actionMethodParameters()/])
     [unit.actionCore()/]
 
 [/if]
-    return $this->renderPage([page.renderActualParameters(unit.contentType)/]);
+    return $this->renderPage([unit.displayedOn.renderActualParameters(unit.contentType)/]);
 }
-[/let]
 [/template]
 
 [template public actionCore(unit : ContentUnit)
@@ -64,17 +62,15 @@ $this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.definedBy.i
 
 [template private templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
-[let page : Page = unit.pageDisplayedOn()]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.isConditionalDisplay())]
 if (isset($this->[detailsUnit.instanceName()/]))
     $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [else]
-	[if (not page.hasSingleActionMethod()) ]
+	[if (not detailsUnit.displayedOn.hasSingleActionMethod()) ]
 [unit.actionCore()/]
 	[/if]
 $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [/if]
-[/let]
 [/let]
 [/template]

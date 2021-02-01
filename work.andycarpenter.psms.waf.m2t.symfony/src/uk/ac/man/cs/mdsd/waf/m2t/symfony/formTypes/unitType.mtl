@@ -10,7 +10,7 @@
 
 
 [template public formType(unit : SingletonUnit)]
-[let model : WafModel = unit.pageDisplayedOn().partOf]
+[let model : WafModel = unit.displayedOn.partOf]
 [file(unit.formTypeFilename(model), false)]
 <?php
 namespace [unit.formTypeNamespace()/];

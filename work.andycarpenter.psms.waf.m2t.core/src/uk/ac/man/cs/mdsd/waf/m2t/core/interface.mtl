@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::interface]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
@@ -29,7 +30,7 @@
 			->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
 			->select(e | e.name.equalsIgnoreCase('Home'))
 		in if homes->notEmpty() then
-				homes->first().action.pageDisplayedOn()
+				homes->first().action.displayedOn
 			else
 				model.pages->first()
 			endif

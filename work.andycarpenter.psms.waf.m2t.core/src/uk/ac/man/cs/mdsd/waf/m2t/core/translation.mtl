@@ -27,7 +27,7 @@
 
 
 [query public translationDomain(unit : ContentUnit) : String
-	= unit.pageDisplayedOn().translationDomain()
+	= unit.displayedOn.translationDomain()
 /]
 
 

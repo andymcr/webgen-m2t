@@ -125,17 +125,8 @@
 /]
 
 
-[query public pageDisplayedOn(unit : ContentUnit) : Page
-	= if unit.displayedOn.oclIsTypeOf(Page) then
-			unit.displayedOn.oclAsType(Page)
-		else
-			unit.displayedOn.oclAsType(UnitAssociation).displayedOn.pageDisplayedOn()
-		endif
-/]
-
-
 [query public model(field : UnitField) : WafModel
-	= field.pageDisplayedOn().partOf
+	= field.displayedOn.displayedOn.partOf
 /]
 
 [query public model(child : ChildPathAssociation) : WafModel
@@ -145,8 +136,3 @@
 			child.eContainer().oclAsType(ChildPathAssociation).model()
 		endif
 /]
-
-[query public pageDisplayedOn(field : UnitField) : Page
-	= field.displayedOn.pageDisplayedOn()
-/]
-
