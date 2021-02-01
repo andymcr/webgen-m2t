@@ -74,6 +74,8 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
 
     [repository.saveMethod()/]
 
+    [repository.flushMethod()/]
+
 [for (selection : Selection | repository.selections)]
     [selection.selectionMethod()/]
 
@@ -169,7 +171,9 @@ public function remove($entity, $flush = false)
 {
     $this->_em->remove($entity);
     if ($flush)
-        $this->_em->flush();
+    {
+        $this->flush();
+    }
 }
 [/template]
 
@@ -178,7 +182,16 @@ public function save($entity, $flush = false)
 {
     $this->_em->persist($entity);
     if ($flush)
-        $this->_em->flush();
+    {
+        $this->flush();
+    }
+}
+[/template]
+
+[template private flushMethod(repository : Repository) post(trim())]
+public function flush()
+{
+    $this->_em->flush();
 }
 [/template]
 
