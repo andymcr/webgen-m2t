@@ -335,14 +335,6 @@
 	= unit.oclAsType(DynamicUnit).selectName()
 /]
 
-[query public supportActionName(unit : ContentUnit) : String
-	= unit.instanceName().concat('Support').concat('Action')
-/]
-
-[query public supportRouteName(unit : ContentUnit) : String
-	= unit.uniqueName().concat('_support')
-/]
-
 [query public thumbName(unit : ImageUnit) : String
 	= let units : Sequence(ImageUnit)
 		= unit.displayedOn.partOf.imageUnits()
@@ -421,17 +413,12 @@
 /]
 
 
-[query public actionName(action : UnitSupportAction) : String
-	= action.name.toLowerFirst()
-/]
-
-
-[query public actionName(action : InlineAction) : String
+[query public actionName(action : Action) : String
 	= let name : String
 		= if action.usedBy.oclIsKindOf(DynamicUnit) then
-				let actions : Sequence(InlineAction)
+				let actions : Sequence(Action)
 					= action.controller().units
-						->select(u | u.oclIsKindOf(InlineActionContainer)).oclAsType(InlineActionContainer)
+						->select(u | u.oclIsKindOf(ActionContainer)).oclAsType(ActionContainer)
 						->collect(c | c.actions)
 					in 
 				if actions->select(a | a.name.toLowerCase() = action.name.toLowerCase())->size() < 2  then
@@ -450,7 +437,7 @@
 		in name.concat('Action')
 /]
 
-[query public instanceName(action : InlineAction) : String
+[query public instanceName(action : Action) : String
 	= action.name.toLowerFirst()
 /]
 
@@ -462,7 +449,7 @@
 		endif
 /]
 
-[query public modelName(action : FeatureSupportAction) : String
+[query public modelName(action : OperationAction) : String
 	= if action.usedBy.oclIsKindOf(DynamicUnit) then
 			action.usedBy.oclAsType(DynamicUnit).modelName()
 		else
@@ -470,7 +457,7 @@
 		endif
 /]
 
-[query public routeName(action : InlineAction) : String
+[query public routeName(action : Action) : String
 	= action.unit().routeName()
 		.concat('_').concat(action.name.toLowerFirst())
 /]

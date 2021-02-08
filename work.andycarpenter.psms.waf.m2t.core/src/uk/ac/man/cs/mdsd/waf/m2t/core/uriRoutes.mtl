@@ -9,100 +9,9 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::selection/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::actions]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units]
-
-
-[query public uriCommonPathKeys(page : Page) : Sequence(Attribute)
-	= if page.units->isEmpty() then
-			Sequence{}
-		else if page.units->size() = 1 then
-			page.units->first().uriPathKeys()
-		else
-			page.units->subOrderedSet(2, page.units->size())->iterate(u;
-				common : Sequence(Attribute) = page.units->first().uriPathKeys()
-				| common->select(k | u.uriPathKeys()->includes(k)))
-		endif endif
-/]
-
-[query public uriPathKeys(unit : CollectionUnit) : Sequence(Attribute)
-	= if unit.hasSelectPath() then
-			unit.oclAsType(ContentUnit).uriPathKeys(unit.selection.selectionType())
-		else if unit.hasSelectCondition() then
-			unit.uriPathKeys(unit.collectionType(), unit.selection)
-		else
-			unit.oclAsType(ContentUnit).uriPathKeys(unit.collectionType())
-		endif endif
-/]
-
-[query public uriPathKeys(unit : CollectionUnit, routingType : Entity, selection : Selection) : Sequence(Attribute)
-	= if routingType.oclIsUndefined() then
-			Sequence{}
-		else
-			let selectionKeys : Collection(Attribute)
-				=  if selection.condition.oclIsUndefined() then
-						routingType.uriPathKeys()
-					else
-						selection.selectionKeys()
-					endif
-				in let keysWithActuals : Sequence(Attribute)
-					= unit.oclAsType(DynamicUnit).routeActuals->collect(a | a.routeParameter)
-					in routingType.uriPathKeys()->select(k | not keysWithActuals->includes(k) and selectionKeys->includes(k))
-		endif
-/]
-
-[query public uriPathKeys(unit : ContentUnit) : Sequence(Attribute)
-	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).uriPathKeys()
-		else
-			unit.uriPathKeys(unit.routingType())
-		endif
-/]
-
-[query public uriPathKeys(unit : ContentUnit, routingType : Entity) : Sequence(Attribute)
-	= if routingType.oclIsUndefined() then
-			Sequence{}
-		else
-			routingType.uriPathKeys()->select(k | unit.selectionKeys(routingType)->includes(k))
-		endif
-/]
-
-[query public uriEntityKeys(elementType : Entity, unit : ContentUnit, routingType : Entity) : Sequence(Attribute)
-	= let keysWithActuals : Sequence(Attribute)
-		= unit.routeActuals->collect(a | a.routeParameter)
-		in elementType.attributeKeys()->select(k | not keysWithActuals->includes(k) and unit.selectionKeys(routingType)->includes(k))
-/]
-
-[query public uriEntityKeys(elementType : Entity, unit : CollectionUnit, selection : Selection) : Sequence(Attribute)
-	= let keysWithActuals : Sequence(Attribute)
-		= unit.oclAsType(DynamicUnit).routeActuals->collect(a | a.routeParameter)
-		in elementType.attributeKeys()->select(k | not keysWithActuals->includes(k) and selection.selectionKeys()->includes(k))
-/]
-
-
-[query public hasRouteParameters(page : Page) : Boolean
-	= page.uriCommonPathKeys()->notEmpty()
-/]
-
-[query public hasRouteParameters(unit : CollectionUnit) : Boolean
-	= unit.uriPathKeys()->notEmpty()
-/]
-
-[query public hasRouteParameters(unit : CollectionUnit, routingType : Entity, selection : Selection) : Boolean
-	= unit.uriPathKeys(routingType, selection)->notEmpty()
-/]
-
-[query public hasRouteParameters(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).hasRouteParameters()
-		else
-			unit.hasRouteParameters(unit.routingType())
-		endif
-/]
-
-[query public hasRouteParameters(unit : ContentUnit, routingType : Entity) : Boolean
-	= unit.uriPathKeys(routingType)->notEmpty()
-/]
 
 
 [query public routingType(unit : ContentUnit) : Entity
@@ -111,12 +20,38 @@
 
 [query public routingType(unit : ContentUnit, forCommonKeys : Boolean) : Entity
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).collectionType()
+			unit.oclAsType(CollectionUnit).routingType()
+		else if unit.oclIsKindOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).routingType()
 		else if unit.oclIsKindOf(SingletonUnit) then
 			unit.oclAsType(SingletonUnit).routingType(forCommonKeys)
 		else
 			null
-		endif endif
+		endif endif endif
+/]
+
+[query public routingType(unit : CollectionUnit) : Entity
+	=  if unit.selection.oclIsUndefined() then
+			unit.contentType->first().parentEntity()
+		else if unit.hasSelectPath() then
+			unit.selection.selectionType().keyEntity()
+		else if selection.parameters->notEmpty() then
+			unit.selection.definedBy.serves.keyEntity()
+		else
+			unit.contentType->first().parentEntity()
+		endif endif endif
+/]
+
+[query public routingType(unit : DetailsUnit) : Entity
+	=  if unit.selection.oclIsUndefined() then
+			unit.contentType.keyEntity()
+		else if unit.hasSelectPath() then
+			unit.selection.selectionType().keyEntity()
+		else if selection.parameters->notEmpty() then
+			unit.selection.definedBy.serves.keyEntity()
+		else
+			unit.contentType.keyEntity()
+		endif endif endif
 /]
 
 [query public routingType(unit : SingletonUnit) : Entity
@@ -124,42 +59,125 @@
 /]
 
 [query public routingType(unit : SingletonUnit, forCommonKeys : Boolean) : Entity
-	= if unit.oclIsKindOf(DetailsUnit) then
-			if unit.oclAsType(DetailsUnit).selection.oclIsUndefined() then
-				unit.contentType
-			else
-				null
-			endif
-		else if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) and forCommonKeys then
-			let editUnit : EditUnit = unit.oclAsType(EditUnit)
-				in if editUnit.contentType.parentEntity().oclIsUndefined() then
-						null
-					else
-						editUnit.contentType.parentEntity()
-					endif
+	= if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) and forCommonKeys then
+			unit.contentType.parentEntity()
 		else
-			unit.contentType
+			unit.contentType.keyEntity()
+		endif
+/]
+
+
+[query public hasRouteParameters(page : Page) : Boolean
+	= page.routeParameters()->notEmpty()
+/]
+
+[query public hasRouteParameters(unit : ContentUnit) : Boolean
+	= unit.routeParameters()->notEmpty()
+/]
+
+[query public hasRouteParameters(unit : ContentUnit, selection : Selection) : Boolean
+	= unit.routeParameters(selection)->notEmpty()
+/]
+
+[query public hasCreateRouteParameters(unit : EditUnit) : Boolean
+	= unit.routeCreateParameters()->notEmpty()
+/]
+
+[query public hasRouteParameters(unit : ContentUnit, routingType : Entity) : Boolean
+	= unit.routeParameters(routingType)->notEmpty()
+/]
+
+[query public hasRouteParameters(action : Action) : Boolean
+	= action.routeParameters()->notEmpty()
+/]
+
+[query public routeParameters(page : Page) : Sequence(Attribute)
+	= if page.units->isEmpty() then
+			Sequence{}
+		else if page.units->size() = 1 then
+			page.units->first().routeParameters()
+		else
+			page.units->subOrderedSet(2, page.units->size())->iterate(u;
+				common : Sequence(Attribute) = page.units->first().routeParameters()
+				| common->select(k | u.routeParameters()->includes(k)))
 		endif endif
 /]
 
-
-[query private parentUriPathKeys(resource : Resource) : Sequence(Attribute)
-	= if not resource.parentResource.oclIsUndefined() then
-				resource.parentResource.uriPathKeys()
-			else
-				Sequence{}
-			endif
+[query public routeParameters(unit : ContentUnit) : Sequence(Attribute)
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.routeParameters(unit.oclAsType(CollectionUnit).selection)
+		else if unit.oclIsKindOf(DetailsUnit) then
+			unit.routeParameters(unit.oclAsType(DetailsUnit).selection)
+		else
+			unit.routeParameters(unit.routingType())
+		endif endif
 /]
 
-[query public uriPathKeys(resource : Resource) : Sequence(Attribute)
-	= let keyEntity : Entity = resource.repository.serves.keyEntity()
-		in let localKeys : Sequence(Attribute) = keyEntity.attributeKeys()
-			in let parentKeys : Sequence(Attribute) = resource.parentUriPathKeys()
-				in if localKeys->isEmpty() then
-						parentKeys
+[query public routeParameters(unit : ContentUnit, selection : Selection) : Sequence(Attribute)
+	= if selection.oclIsUndefined() then
+			unit.routeParameters(unit.routingType())
+		else if selection.selectPath->notEmpty() then
+			unit.routeParameters(selection.selectionType())
+		else if selection.condition.oclIsUndefined() then
+			unit.routeParameters(unit.routingType())
+		else
+			unit.routeParameters(unit.routingType().uriPathKeys(), selection.selectionKeys())
+		endif endif endif
+/]
+
+[query public routeCreateParameters(unit : EditUnit) : Sequence(Attribute)
+	= unit.routeParameters(unit.contentType.parentEntity())
+/]
+
+[query public routeParameters(unit : ContentUnit, routingType : Entity) : Sequence(Attribute)
+	= if routingType.oclIsUndefined() then
+			Sequence{}
+		else
+			unit.routeParameters(routingType.uriPathKeys())
+		endif
+/]
+
+[query public routeParameters(unit : ContentUnit, routingType : Entity, selection : Selection) : Sequence(Attribute)
+	= if routingType.oclIsUndefined() then
+			Sequence{}
+		else if selection.oclIsUndefined() then
+			unit.routeParameters(routingType.uriPathKeys())
+		else if selection.selectPath->notEmpty() then
+			unit.routeParameters(selection.selectionType().uriPathKeys())
+		else if selection.condition.oclIsUndefined() then
+			unit.routeParameters(routingType.uriPathKeys())
+		else
+			unit.routeParameters(routingType.uriPathKeys(), selection.selectionKeys())					
+		endif endif endif endif
+/]
+
+[query public routeParameters(action : Action) : Sequence(Attribute)
+	= if action.unit().oclIsKindOf(CollectionUnit) then
+			let collectionUnit : CollectionUnit = action.unit().oclAsType(CollectionUnit)
+				in if not collectionUnit.findElementSelection.oclIsUndefined() then
+						collectionUnit.routeParameters(collectionUnit.contentType(), collectionUnit.findElementSelection)
 					else
-						localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
+						collectionUnit.routeParameters(collectionUnit.contentType().uriPathKeys())
 					endif
+		else if action.unit().oclIsKindOf(DetailsUnit) then
+			action.unit().routeParameters(action.unit().routingType().uriPathKeys())
+		else
+			action.unit().routeParameters()
+		endif endif
+/]
+
+[query private routeParameters(unit : ContentUnit, uriPathKeys : Sequence(Attribute)) : Sequence(Attribute)
+	= unit.routeParameters(uriPathKeys, uriPathKeys->asSet())
+/]
+
+[query private routeParameters(unit : ContentUnit, uriPathKeys : Sequence(Attribute), selectionKeys : Set(Attribute)) : Sequence(Attribute)
+	= let keysWithActuals : Sequence(Attribute)
+		= unit.routeActuals->collect(a | a.routeParameter)
+		in uriPathKeys->select(k | not keysWithActuals->includes(k) and selectionKeys->includes(k))
+/]
+
+[query public routeParameters(resource : Resource) : Sequence(Attribute)
+	= Sequence{}
 /]
 
 
@@ -169,46 +187,4 @@
 
 [query public routeActual(unit : ContentUnit, key : Attribute) : RouteActual
 	= unit.routeActuals->any(a | a.routeParameter = key)
-/]
-
-
-[query public selectionKeys(unit : ContentUnit, routingType : Entity) : Set(Attribute)
-	= if unit.oclIsKindOf(SingletonUnit) then
-			unit.oclAsType(SingletonUnit).selectionKeys(routingType)
-		else if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).selectionKeys(routingType)
-		else
-			Set{}
-		endif endif
-/]
-
-[query public selectionKeys(unit : CollectionUnit, routingType : Entity) : Set(Attribute)
-		= if unit.hasSelectCondition() then
-				unit.selection.selectionKeys()
-			else
-				routingType.uriPathKeys()->asSet()
-			endif
-	-- = let routingKeys : Set(Attribute)
-	--	in routingKeys->union(unit.contentType->first().attributeKeys()->asSet())
-/]
-
-[query public selectionKeys(unit : SingletonUnit, routingType : Entity) : Set(Attribute)
-	= if unit.oclIsKindOf(DetailsUnit) then
-			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
-				in if detailsUnit.selection.oclIsUndefined() then
-						if routingType.oclIsUndefined() then
-							Set{}
-						else
-							routingType.uriPathKeys()->asSet()
-						endif
-					else
-						detailsUnit.selection.selectionKeys()
-					endif
-		else
-			if routingType.oclIsUndefined() then
-				Set{}
-			else
-				routingType.uriPathKeys()->asSet()
-			endif
-		endif
 /]

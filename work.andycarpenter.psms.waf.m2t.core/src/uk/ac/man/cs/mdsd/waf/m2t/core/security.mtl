@@ -34,13 +34,13 @@
 /]
 
 
-[query public hasAuthorisation(action : InlineAction) : Boolean
+[query public hasAuthorisation(action : Action) : Boolean
 	= action.hasAuthorisationRole() or action.hasAuthorisationRoles()
 /]
 
 [query public hasAnyAuthorisationRole(page : Page) : Boolean
 	= page.hasAuthorisationRole()
-		or page.inlineActionsRequiringHandlers()->select(a | a.hasAuthorisationRole())->notEmpty()
+		or page.actionsRequiringHandlers()->select(a | a.hasAuthorisationRole())->notEmpty()
 /]
 
 [query public hasAuthorisation(page : Page) : Boolean
@@ -71,7 +71,7 @@
 /]
 
 
-[query public hasAuthorisationRole(action : InlineAction) : Boolean
+[query public hasAuthorisationRole(action : Action) : Boolean
 	= action.roles()->size() = 1
 /]
 
@@ -83,7 +83,7 @@
 	= unit.roles()->size() = 1
 /]
 
-[query public hasAuthorisationRoles(action : InlineAction) : Boolean
+[query public hasAuthorisationRoles(action : Action) : Boolean
 	= action.roles()->size() > 1
 /]
 
@@ -95,7 +95,7 @@
 	= unit.roles()->size() > 1
 /]
 
-[query public roles(action : InlineAction) : Sequence(String)
+[query public roles(action : Action) : Sequence(String)
 	= action.requiresRole().trim().tokenize(',; ')
 /]
 

@@ -87,7 +87,7 @@
 	= unit.displayedOn.pageId().concat('.').concat(unit.name.asId())
 /]
 
-[query public containedId(action : InlineAction) : String
+[query public containedId(action : Action) : String
 	= action.unit().containedId().concat('.actions.').concat(action.name.asId())
 /]
 

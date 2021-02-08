@@ -22,31 +22,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::value/]
 
 
-[template public unitSupportLinks(unit : DynamicUnit, accessor : String) post(trim())]
-[if (unit.oclIsKindOf(CollectionUnit))]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-<form action="{{ path('[unit.supportRouteName()/]'[if (collectionUnit.hasRouteParameters())]
-, { [collectionUnit.routeActualParameters(collectionUnit.containerType, accessor, collectionUnit.selection, unit.hasObjectAccess())/] }[/if]
-) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
-[/let]
-[else]
-<form action="{{ path('[unit.supportRouteName()/]', { [if (unit.hasRouteParameters(unit.routingType()))]
-[unit.routeActualParameters(unit.routingType(), unit.routingType(), accessor, unit.selection(), unit.hasObjectAccess())/] [/if]
- }) }}" id="[unit.instanceName()/]" class="[unit.controlClass/]">
-[/if]
-[for (action : UnitSupportAction | unit.unitSupportActions())]
- [action.unitSupportLink()/]
-[/for]
-</form>
-[/template]
-
-[template public unitSupportLink(action : UnitSupportAction) post(trim())]
-<input type="submit" name="[action.actionName()/]" value="[action.displayLabel/]"[if (not action.confirmMessage.oclIsUndefined())]
-onclick="return confirm('[action.confirmMessage/]');"[/if]/>
-[/template]
-
-
-
 [template public linkLabel(label : String, iconName : String) post(trim())]
 [if (iconName = '')]
 [label/]
@@ -58,7 +33,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/template]
 
 
-[template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
+[template public actionLink(action : Action, valueType : Entity, valueAccessor : String, 
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
 	classAttribute : String)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
@@ -74,11 +49,11 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
+[template public actionLink(action : Action, valueType : Entity, valueAccessor : String, 
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
 	classAttribute : String)
-	? (action.oclIsTypeOf(FeatureSupportAction))  post(trim())]
-[let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
+	? (action.oclIsTypeOf(OperationAction))  post(trim())]
+[let featureAction : OperationAction = action.oclAsType(OperationAction)]
 [let unit : CollectionUnit = featureAction.unit().oclAsType(CollectionUnit)]
 [action.anchor(featureAction.routeName(), 
 	featureAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
@@ -88,7 +63,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 [/let]
 [/template]
 
-[template public actionLink(action : InlineAction, valueType : Entity, valueAccessor : String, 
+[template public actionLink(action : Action, valueType : Entity, valueAccessor : String, 
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
 	classAttribute : String)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
@@ -172,7 +147,7 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 		endif endif
 /]
 
-[template private anchor(action : InlineAction, routeName : String, routingParameters : String, 
+[template private anchor(action : Action, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, conditionAccessor : String, 
 	targetSamePage : Boolean, objectAccess : Boolean, classAttribute : String) post(trim())]
 [if (action.requiresRole() <> '' and action.requiresRole() <> action.unit().requiresRole)]
@@ -181,21 +156,21 @@ onclick="return confirm('[action.confirmMessage/]');"[/if]/>
 {% endif %}[/if]
 [/template]
 
-[template private anchor2(action : InlineAction, routeName : String, routingParameters : String, 
+[template private anchor2(action : Action, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, 	conditionAccessor : String, 
 	targetSamePage : Boolean, objectAccess : Boolean, classAttribute : String) post(trim())]
 [if (action.displayWhen.oclIsUndefined())]
-	[if (action.enableWhen().oclIsUndefined())]
+	[if (action.enableWhen.oclIsUndefined())]
 [action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess, classAttribute)/]
 	[else]
-{% if [if (action.oclIsTypeOf(SelectAction))]not ([/if][action.enableWhen().twigExpression(conditionAccessor)/][if (action.oclIsTypeOf(SelectAction))])[/if] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess, classAttribute)/]{% else %}[linkContent/]{% endif %}
+{% if [if (action.oclIsTypeOf(SelectAction))]not ([/if][action.enableWhen.twigExpression(conditionAccessor)/][if (action.oclIsTypeOf(SelectAction))])[/if] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess, classAttribute)/]{% else %}[linkContent/]{% endif %}
 	[/if]
 [else]
 {% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(routeName, routingParameters, linkContent, title, confirmMessage, targetSamePage, objectAccess, classAttribute)/]{% endif %}
 [/if]
 [/template]
 
-[template private anchor3(action : InlineAction, routeName : String, routingParameters : String, 
+[template private anchor3(action : Action, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, targetSamePage : Boolean, 
 	objectAccess : Boolean, classAttribute : String) post(trim())]
 <a href="{{ path('[routeName/]', [if (targetSamePage)]
@@ -210,7 +185,7 @@ app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)]
 [/template]
 
 
-[template private routeActualParameters(action : InlineAction, unit : CollectionUnit, valueType : Entity, 
+[template private routeActualParameters(action : Action, unit : CollectionUnit, valueType : Entity, 
 	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 [if (unit.findElementSelection.oclIsUndefined())]
 [unit.contentType().routeActualParameters(valueType, valueAccessor, valueSelection, objectAccess)/]
@@ -221,14 +196,14 @@ app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)]
 
 [template public routeActualParameters(unit : CollectionUnit, 
 	valueType : Entity, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
-[for (key : Attribute | unit.uriPathKeys())]
-[key.routeActualParameter(unit.collectionType(), valueType, valueAccessor, valueSelection, objectAccess)/],
+[for (key : Attribute | unit.routeParameters())]
+[key.routeActualParameter(unit.routingType(), valueType, valueAccessor, valueSelection, objectAccess)/],
 [/for]
 [/template]
 
 [template public routeActualParameters(unit : CollectionUnit, routingType : Entity, selection : Selection, 
 	valueType : Entity, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
-[for (key : Attribute | unit.uriPathKeys(routingType, selection))]
+[for (key : Attribute | unit.routeParameters(routingType, selection))]
 [key.routeActualParameter(routingType, valueType, valueAccessor, valueSelection, objectAccess)/],
 [/for]
 [/template]

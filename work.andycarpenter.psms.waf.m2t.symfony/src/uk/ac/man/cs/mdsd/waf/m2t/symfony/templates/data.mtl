@@ -150,14 +150,14 @@ NULL
 [/template]
 
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
-[if (feature.hasInlineActions())]
+[if (feature.hasActions())]
 [let parentEntity : Entity
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
 				feature.oclAsType(UnitAssociation).association.sourceType()
 			endif]
-[feature.inlineActions()
+[feature.actions()
 	->first().actionLink(parentEntity, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'),
 		parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess(), null)/]
 [/let]
@@ -167,8 +167,8 @@ NULL
 [/template]
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
-[if (association.hasInlineActions())]
-[association.inlineActions()
+[if (association.hasActions())]
+[association.actions()
 	->first().actionLink(association.association.targetType(), accessor,
 		'{{ '.concat(accessor).concat(association.valueLabel()).concat(' }}'), accessor.concat(association.valueLabel()),
 		accessor, association.displayedOn.hasObjectAccess(), null)/]

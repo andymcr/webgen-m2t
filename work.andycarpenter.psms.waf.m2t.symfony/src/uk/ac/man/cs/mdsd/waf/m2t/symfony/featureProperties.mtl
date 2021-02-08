@@ -60,7 +60,7 @@
 
 [query public hasExplicitValidation(unit : EditUnit) : Boolean
 	= let commonValidation : Boolean
-		= unit.hasUnitSupportActions() or unit.customiseValues or unit.hasForcedValueFeatures()
+		= unit.hasOperationActions() or unit.customiseValues or unit.hasForcedValueFeatures()
 		in let addValidation : Boolean
 			= unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())
 			in let editValidation : Boolean

@@ -29,47 +29,41 @@
 [collectionUnit.actionMethod()/]
 [if (not collectionUnit.inlineSelectCode())]
 
-[unit.actionSupportMethods()/]
+[collectionUnit.actionSupportMethods()/]
 [/if]
 [/let]
 [/template]
 
 [template public actionMethod(unit : CollectionUnit) post(trim())]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 /**
  [unit.routeAnnotation()/]
-[if (dynamicUnit.hasAuthorisation())]
- [dynamicUnit.securityAnnotation()/]
+[if (unit.hasAuthorisation())]
+ [unit.securityAnnotation()/]
 [/if]
  */
-public function [dynamicUnit.actionName()/]([unit.actionMethodParameters()/])
+public function [unit.actionName()/]([unit.actionMethodFormals()/])
 {
-    return $this->renderPage([dynamicUnit.displayedOn.renderActualParameters(unit.collectionType())/]);
+    return $this->renderPage([unit.oclAsType(DynamicUnit).renderMethodActuals()/]);
 }
-[/let]
 [/template]
 
-[template public actionCore(unit : DynamicUnit)
+[template public actionCore(unit : CollectionUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[if (collectionUnit.inlineSelectCode())]
-[collectionUnit.selectCode()/]
+[if (unit.inlineSelectCode())]
+[unit.selectCode()/]
 [else]
-$this->[collectionUnit.selectName()/]([collectionUnit.selectMethodParameters()/]);
+$this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
-[/let]
 [/template]
 
-[template public actionSupportMethods(unit : DynamicUnit)
+[template public actionSupportMethods(unit : CollectionUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[if (not collectionUnit.inlineSelectCode())]
-private function [unit.selectName()/]([collectionUnit.selectMethodParameters(true)/])
+[if (not unit.inlineSelectCode())]
+private function [unit.selectName()/]([unit.selectMethodParameters(true)/])
 {
-    [collectionUnit.selectCode()/]
+    [unit.selectCode()/]
 }
 [/if]
-[/let]
 [/template]
 
 [template private selectMethodParameters(unit : CollectionUnit) post(trim())]
@@ -80,12 +74,12 @@ private function [unit.selectName()/]([collectionUnit.selectMethodParameters(tru
 [if (unit.hasFilters() or unit.hasPagination())][if (formal)]
 Request [/if]$request[if (unit.hasRouteParameters())]
 , [/if][/if]
-[unit.routeParameters()/]
+[unit.routeParameterList()/]
 [/template]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
 [if (unit.hasRouteParameters())]
-[unit.routeParameters()/][if (unit.hasPagination())]
+[unit.routeParameterList()/][if (unit.hasPagination())]
 , [/if][/if][unit.paginationActuals()/]
 [/template]
 
@@ -100,10 +94,10 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [/template]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
-[if (not unit.omitContainerLoad and not unit.collectionType().oclIsUndefined())]
+[if (not unit.omitContainerLoad and not unit.routingType().oclIsUndefined())]
 [unit.loadContainer()/]
 [/if]
-[if (unit.isConditionalDisplay() and not unit.collectionType().oclIsUndefined())]
+[if (unit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
 if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanceName()))/])) {
     [unit.selectCode2()/]
 }
@@ -114,7 +108,6 @@ if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanc
 [/template]
 
 [template private selectCode2(unit : CollectionUnit) post(trim())]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (unit.hasPagination())]
 [unit.notePage()/]
 [/if]
@@ -131,7 +124,13 @@ $this->[unit.instanceName()/] = $this->[unit.filter.selection.definedBy.instance
 [else]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll([unit.paginationActuals()/]);
 [/if]
-[/let]
+[/template]
+
+[template public notePage(unit : CollectionUnit) post(trim())]
+[unit.pageVariable()/] = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
+[if (unit.maximumPaginationSize > 0)]
+[unit.pageSizeVariable()/] = min([unit.maximumPaginationSize/], $request->query->getInt('[unit.paginationSizeParameterName()/]', [unit.defaultPaginationSize/]));
+[/if]
 [/template]
 
 [template private filterSelect(unit : CollectionUnit) post(trim())]
@@ -143,8 +142,8 @@ if ($request->query->has('[filter.name/]Filter'))
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
 $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->[filter.methodName/](
-[if (unit.hasRouteParameters(unit.collectionType(), filter.selection))]
-    [unit.routeParameters(unit.collectionType(), filter.selection)/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
+[if (unit.hasRouteParameters(filter.selection))]
+    [unit.routeParameterList(filter.selection)/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]
 
 [/if]
@@ -166,9 +165,9 @@ if (!$this->[unit.containerInstanceName()/]) {
 
 [template public loadContainerInstance(unit : CollectionUnit) post(trim())]
 [if (unit.findContainerSelection.oclIsUndefined())]
-$this->[unit.containerRepository.instanceName()/]->find([unit.oclAsType(DynamicUnit).routeParameters(unit.collectionType())/]);
+$this->[unit.containerRepository.instanceName()/]->find([unit.routeParameterList()/]);
 [else]
-$this->[unit.containerRepository.instanceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameters(unit.collectionType(), unit.findContainerSelection)/]);
+$this->[unit.containerRepository.instanceName()/]->[unit.findContainerSelection.methodName/]([unit.routeParameterList(unit.findContainerSelection)/]);
 [/if]
 [/template]
 
@@ -185,19 +184,17 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepositor
 [/template]
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[if (not dynamicUnit.displayedOn.hasSingleActionMethod())]
-[dynamicUnit.actionCore()/]
+[if (not unit.displayedOn.hasSingleActionMethod())]
+[unit.actionCore()/]
 [/if]
 [unit.templateParameters2()/]
-[/let]
 [/template]
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
-[if (not unit.omitContainerLoad and not unit.collectionType().oclIsUndefined())]
+[if (not unit.omitContainerLoad and not unit.routingType().oclIsUndefined())]
 $parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
 [/if]
-[if (unit.isConditionalDisplay() and not unit.collectionType().oclIsUndefined())]
+[if (unit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
 if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanceName()))/])) {
 	$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 }
@@ -212,5 +209,21 @@ $parameters['['/]'[unit.paginationSizeParameterName()/]'[']'/] = [unit.pageSizeV
 	[else]
 $parameters['['/]'pageCount'[']'/] = ceil($this->[unit.instanceName()/]->count() / [unit.defaultPaginationSize/]);
 	[/if]
+[/if]
+[/template]
+
+[template public pageVariable(unit : CollectionUnit) post(trim())]
+[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionalDisplay())]
+$page
+[else]
+$this->page
+[/if]
+[/template]
+
+[template public pageSizeVariable(unit : CollectionUnit) post(trim())]
+[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionalDisplay())]
+$pageSize
+[else]
+$this->pageSize
 [/if]
 [/template]

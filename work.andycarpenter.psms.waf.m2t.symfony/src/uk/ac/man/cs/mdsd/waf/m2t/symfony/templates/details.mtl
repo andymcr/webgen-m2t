@@ -33,9 +33,6 @@
  <h4[if (not detailsUnit.sectionClass.oclIsUndefined() or detailsUnit.omitCaption)]
  class="[if (not detailsUnit.sectionClass.oclIsUndefined())][detailsUnit.captionClass/][/if] [if (detailsUnit.omitCaption)] hidden[/if]"[/if]>[detailsUnit.unitTitle()/]</h4>
  [detailsUnit.unitContent(null, accessor, 0)/]
-	[if (detailsUnit.hasUnitSupportActions())]
-  [detailsUnit.unitSupportLinks(accessor)/]
-	[/if]
 </section>
 [/file]
 [/let]

@@ -2,6 +2,7 @@
 [module annotations(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
@@ -10,6 +11,47 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+
+
+[template public routeAnnotation(page : Page) post(trim())]
+[if (page.units->isEmpty())]
+* @Route("[page.uriPath()/]", name="[page.routeName()/]")
+[else]
+[page.units->first().routeAnnotation()/]
+[/if]
+[/template]
+
+[template public routeAnnotation(unit : ContentUnit) post(trim())]
+[unit.routeAnnotation(unit.routeName(), unit.uriPath(unit), true)/]
+[/template]
+
+[template public routeCreateAnnotation(unit : EditUnit) post(trim())]
+[let suffix : String
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+			unit.oclAsType(CreateUpdateUnit).createUriElement
+		else
+			unit.uriElement
+		endif]
+[unit.routeAnnotation(unit.routeName(true), unit.uriCreatePath(suffix), true)/]
+[/let]
+[/template]
+
+[template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]
+[unit.routeAnnotation(association.routeName(), unit.uriPath(unit.contentType, association.name), true)/]
+[/template]
+
+[template public routeAnnotation(action : Action, suffix : String) post(trim())]
+[action.unit().routeAnnotation(action.routeName(), action.uriPath(suffix), false)/]
+[/template]
+
+[template private routeAnnotation(unit : ContentUnit, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
+[if (potentialHomeRoute and unit.isHomeUnit() and uriPath <> '')]
+* @Route("", name="Home")
+[/if]
+* @Route("[uriPath/]", name="[routeName/]"[if (unit.hasValidatedRouteParameters(false))]
+, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(false)) separator(', ')]"[key.routeParameterName(unit.contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
+[/template]
+
 
 [template public securityAnnotation(page : Page) post(trim())]
 [if (true)]
@@ -31,57 +73,10 @@
 [/if]
 [/template]
 
-[template public securityAnnotation(action : InlineAction) post(trim())]
+[template public securityAnnotation(action : Action) post(trim())]
 [if (action.hasAuthorisationRoles())]
 * @Security("[for (role : String | action.roles()) separator(' or ')]has_role('[role/]')[/for]")
 [else]
 * @IsGranted("[action.requiresRole()/]")
 [/if]
 [/template]
-
-[template public routeAnnotation(page : Page) post(trim())]
-[if (page.units->isEmpty())]
-* @Route("[page.uriPath()/]", name="[page.routeName()/]")
-[else]
-[let unit : ContentUnit = page.units->first()]
-	[if (unit.oclIsKindOf(CollectionUnit))]
-[unit.oclAsType(CollectionUnit).routeAnnotation()/]
-	[elseif (unit.oclIsKindOf(ContentUnit))]
-[unit.oclAsType(ContentUnit).routeAnnotation()/]
-	[/if]
-[/let]
-[/if]
-[/template]
-
-[template public routeAnnotation(unit : CollectionUnit) post(trim())]
-[unit.oclAsType(ContentUnit).routeAnnotation(unit.oclAsType(DynamicUnit).routeName(), unit.uriPath(), true)/]
-[/template]
-
-[template public routeAnnotation(unit : ContentUnit) post(trim())]
-[unit.routeAnnotation(unit.routeName(), unit.uriPath(), true)/]
-[/template]
-
-[template public routeAnnotationCreate(unit : EditUnit, routeName : String, suffix : String) post(trim())]
-[unit.routeAnnotation(routeName, unit.uriPath(unit.contentType, unit.contentType.parentEntity(), suffix), true)/]
-[/template]
-
-[template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]
-[unit.routeAnnotation(association.routeName(), unit.uriPath(unit.contentType, unit.contentType.parentEntity(), association.name), true)/]
-[/template]
-
-[template public routeAnnotation(action : InlineAction, unit : CollectionUnit, suffix : String) post(trim())]
-[unit.oclAsType(DynamicUnit).routeAnnotation(action.routeName(), action.uriPath(unit, suffix), false)/]
-[/template]
-
-[template public routeAnnotationSupport(unit : DynamicUnit, suffix : String) post(trim())]
-[unit.routeAnnotation(unit.supportRouteName(), unit.uriPath(unit.routingType(), unit.uriElement.combinePaths(suffix)), true)/]
-[/template]
-
-[template private routeAnnotation(unit : ContentUnit, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
-[if (potentialHomeRoute and unit.isHomeUnit() and uriPath <> '')]
-* @Route("", name="Home")
-[/if]
-* @Route("[uriPath/]", name="[routeName/]"[if (unit.hasValidatedRouteParameters(false))]
-, requirements={[for (key : Attribute | unit.uriPathValidatedKeys(false)) separator(', ')]"[key.routeParameterName(unit.oclAsType(DynamicUnit).contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
-[/template]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]

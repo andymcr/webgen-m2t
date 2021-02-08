@@ -35,15 +35,11 @@
 	[/if]
 [/for]
 [if (not editUnit.oclIsTypeOf(UpdateUnit))]
-[editUnit.actionAddMethod()/]
+[editUnit.actionCreateMethod()/]
 
 [/if]
 [if (not editUnit.oclIsTypeOf(CreateUnit))]
 [editUnit.actionEditMethod()/]
-
-[/if]
-[if (editUnit.hasUnitSupportActions())]
-[editUnit.updateFormMethod(false)/]
 
 [/if]
 [/let]
@@ -84,23 +80,19 @@ $[parameter.name/][/for][if (filter.selection.parameters->notEmpty() and filter.
 $[parameter.name/][/for]
 [/template]
 
-[template private actionAddMethod(unit : EditUnit) post(trim())]
+[template private actionCreateMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.displayedOn]
 /**
-[if (unit.oclIsTypeOf(CreateUpdateUnit))]
- [unit.routeAnnotationCreate(unit.routeName(true), unit.oclAsType(CreateUpdateUnit).createUriElement)/]
-[else]
- [unit.routeAnnotation()/]
-[/if]
+ [unit.routeCreateAnnotation()/]
 [if (unit.hasAuthorisation())]
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]X([unit.actionMethodParameters(unit.contentType.parentEntity())/])
+public function [unit.actionName()/]X([unit.actionCreateMethodFormals()/])
 {
-    [unit.actionAddCore()/]
+    [unit.actionCreateCore()/]
 
-    return $this->renderPage([page.renderActualParameters(unit.contentType.parentEntity())/]);
+    return $this->renderPage([unit.renderMethodCreateActuals()/]);
 }
 [/let]
 [/template]
@@ -108,14 +100,15 @@ public function [unit.actionName()/]X([unit.actionMethodParameters(unit.contentT
 [template public actionCore(unit : ContentUnit)
 	? (unit.oclIsTypeOf(CreateUnit)) post(trim())]
 [let createUnit : CreateUnit = unit.oclAsType(CreateUnit)]
-[createUnit.actionAddCore()/]
+[createUnit.actionCreateCore()/]
 [/let]
 [/template]
 
-[template private actionAddCore(unit : EditUnit) post(trim())]
+[template private actionCreateCore(unit : EditUnit) post(trim())]
+[let sourceParameters : Sequence(Attribute) = unit.routeCreateParameters()]
 $[unit.instanceName()/] = [unit.createInstance()/];
-$this->[unit.instanceName()/] = [unit.createForm(unit.contentType.parentEntity(), unit.instanceName(), true, false)/];
-[if (unit.hasUnitSupportActions())]
+$this->[unit.instanceName()/] = [unit.createForm(unit.oclIsTypeOf(CreateUpdateUnit), sourceParameters)/];
+[if (unit.hasOperationActions())]
 
 if ($request->isMethod('POST')) {
     $formValues = $request->request->get($this->[unit.instanceName()/]->getName());
@@ -123,19 +116,13 @@ if ($request->isMethod('POST')) {
     [unit.handleCancelPost()/]
 
 	[/if]
-	[for (action : UnitSupportAction | unit.unitSupportActions())]
-    [if (i > 1)]} else [/if]if ($request->request->has('[action.name.toLowerFirst()/]')) {
-        // [protected ('Support action '.concat(action.name))]
-        // [/protected]
-
-	[/for]
     } else {
 	[if (unit.hasCustomisedBody())]
-        [unit.customValuesBody('add')/]
+        [unit.customValuesBody('add', sourceParameters)/]
 	[else]
         $this->[unit.instanceName()/]->handleRequest($request);
         if ($this->[unit.instanceName()/]->isValid()) {
-            [unit.saveBody(unit.contentType.parentEntity())/]
+            [unit.saveBody(sourceParameters)/]
         }
 	[/if]
     }
@@ -146,7 +133,7 @@ if ($request->isMethod('POST')) {
 		[if (not unit.cancelDestination.oclIsUndefined())]
     [unit.handleCancelPost()/]
 		[/if]
-    [unit.customValuesBody('add')/]
+    [unit.customValuesBody('add', sourceParameters)/]
 }
     [else]
 $this->[unit.instanceName()/]->handleRequest($request);
@@ -154,10 +141,11 @@ $this->[unit.instanceName()/]->handleRequest($request);
 [unit.handleCancelSubmit()/]
 		[/if]
 if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-    [unit.saveBody(unit.contentType.parentEntity())/]
+    [unit.saveBody(sourceParameters)/]
 }
 	[/if]
 [/if]
+[/let]
 [/template]
 
 [query private updateSuffix(unit : EditUnit) : String
@@ -176,11 +164,11 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([unit.actionMethodParameters()/])
+public function [unit.actionName()/]([unit.actionMethodFormals()/])
 {
     [unit.actionEditCore()/]
 
-    return $this->renderPage([page.renderActualParameters(unit.contentType.parentEntity(), unit.contentType)/]);
+    return $this->renderPage([unit.renderMethodActuals()/]);
 }
 [/let]
 [/template]
@@ -193,6 +181,7 @@ public function [unit.actionName()/]([unit.actionMethodParameters()/])
 [/template]
 
 [template private actionEditCore(unit : EditUnit) post(trim())]
+[let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
 $[unit.instanceName()/] = [unit.loadInstance()/];
 if (!$[unit.instanceName()/]) {
     throw $this->createNotFoundException('The [unit.contentType.name/] does not exist');
@@ -204,13 +193,13 @@ foreach ($[unit.instanceName()/]->[field.feature().getMethodName()/]() as $[asso
     $original[field.instanceName().toUpperFirst()/]->add($[association.targetType().instanceName()/]);
 [/let]
 [/for]
-$this->[unit.instanceName()/] = [unit.createForm(unit.contentType, unit.instanceName(), false, false)/];
+$this->[unit.instanceName()/] = [unit.createForm(false, sourceParameters)/];
 [if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.hasDisabledFeatures())]
 if ($request->isMethod('POST')) {
 	[if (not unit.cancelDestination.oclIsUndefined())]
     [unit.handleCancelPost()/]
 	[/if]
-    [unit.customValuesBody('edit')/]
+    [unit.customValuesBody('edit', sourceParameters)/]
 }
 [else]
 $this->[unit.instanceName()/]->handleRequest($request);
@@ -225,12 +214,13 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
             $this->[association.targetType().repository.instanceName()/]->remove($[association.targetType().instanceName()/]);
 	[/let]
 	[/for]
-    [unit.saveBody(unit.contentType)/]
+    [unit.saveBody(sourceParameters)/]
 }
 [/if]
+[/let]
 [/template]
 
-[template private customValuesBody(unit : EditUnit, customTag : String) post(trim())]
+[template private customValuesBody(unit : EditUnit, customTag : String, sourceParameters : Sequence(Attribute)) post(trim())]
 [if (unit.customiseValues)]
 // [protected ('customise.values.'.concat(unit.instanceName()).concat('.').concat(customTag))]
 // [/protected]
@@ -247,24 +237,28 @@ foreach ($this->validatorService->validate($[unit.instanceName()/]) as $violatio
    	$this->[unit.instanceName()/]->get($path)->addError(new FormError($violation->getMessage()));
 }
 if ($this->[unit.instanceName()/]->isValid()) {
-    [unit.saveBody(unit.contentType.parentEntity())/]
+    [unit.saveBody(sourceParameters)/]
 }
 [/template]
 
-[template public createForm(unit : EditUnit, routingType : Entity, entityInstance : String, createFunction : Boolean, placeholder : Boolean) post(trim())]
+[template private createForm(unit : EditUnit, updateCreate : Boolean, sourceParameters : Sequence(Attribute)) post(trim())]
+[unit.createForm(unit.routingType(updateCreate), unit.routeName(updateCreate), false, sourceParameters)/]
+[/template]
+
+[template private createForm(unit : EditUnit, routingType : Entity, routeName : String, placeholder : Boolean, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName(page.partOf)/]::class, $[entityInstance/][if (not placeholder)], array(
-    'action' => $this->generateUrl('[unit.routeName(createFunction)/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasRouteParameters(routingType))]
+$this->createForm([unit.typeClassName(page.partOf)/]::class, $[unit.instanceName()/][if (not placeholder)], array(
+    'action' => $this->generateUrl('[routeName/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasRouteParameters(routingType))]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
         array(
-            [unit.routeActualParameters(routingType, routingType)/]
+            [unit.routeActualParameters(routingType, sourceParameters)/]
     ))[/if]
 [else]
 	[if (unit.hasRouteParameters(routingType))]
 , array(
-        [unit.routeActualParameters(routingType, routingType)/]
+        [unit.routeActualParameters(routingType, sourceParameters)/]
     )[/if]
 [/if]),
 )[/if])
@@ -274,34 +268,20 @@ array_merge(
 [template public setContainer(unit : EditUnit) post(trim())]
 [let modelPropertyName : String = unit.contentType.containingAssociation().modelPropertyName().toUpperFirst()]
 [let parentRepository : Repository = unit.contentType.container().repository]
-$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentRepository.instanceName()/]->find([unit.routeParameters(unit.contentType.parentEntity())/]));
+$[unit.instanceName()/]->set[modelPropertyName/]($this->[parentRepository.instanceName()/]->find([unit.routeCreateParameterList()/]));
 [/let]
 [/let]
 [/template]
 
-[template private saveBody(unit : EditUnit, valueBase : Entity) post(trim())]
+[template private saveBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
 [unit.getContentRepository()/]->save($[unit.instanceName()/], true);
 [if (not unit.confirmDestination.oclIsUndefined())]
 return [unit.confirmDestination.redirect()/];
 [else]
 	[if (not unit.onSaveContinueEditing)]
-		[if (unit.contentType.parentEntity().oclIsUndefined())]
-return [unit.redirect(null, unit.routeName(true), valueBase)/];
-		[else]
-return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(true), valueBase)/];
-		[/if]
+return [unit.redirectCreate(unit.routeName(true), sourceParameters)/];
 	[/if]
-[/if]
-[/let]
-[/template]
-
-[template public actionSupportMethods(unit : DynamicUnit)
-	? (unit.oclIsKindOf(EditUnit)) post(trim())]
-[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[if (editUnit.hasUnitSupportActions())]
-[editUnit.updateFormMethod(false)/]
-
 [/if]
 [/let]
 [/template]
@@ -312,28 +292,9 @@ return [unit.redirect(unit.contentType.parentEntity(), unit.routeName(true), val
 [if (editUnit.displayedOn.units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
 if (!isset($this->[editUnit.instanceName()/])) {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
-    $this->[editUnit.instanceName()/] = [editUnit.createForm(editUnit.contentType.parentEntity(), unit.instanceName(), not unit.oclIsTypeOf(UpdateUnit), unit.oclIsTypeOf(UpdateUnit))/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm(editUnit.oclIsTypeOf(CreateUpdateUnit), editUnit.routeCreateParameters())/];
 }
 [/if]
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
 [/let]
-[/template]
-
-[template private updateFormMethod(unit : EditUnit, createFunction : Boolean) post(trim())]
-private function updateForm($[contentType.instanceName()/], $values, $validate = true)
-{
-[if (createFunction)]
-    $form = [unit.createForm(unit.contentType.parentEntity(), unit.contentType.instanceName(), createFunction, false)/];
-[else]
-    $form = [unit.createForm(unit.contentType, contentType.instanceName(), createFunction, false)/];
-[/if]    $form->submit($values, false);
-    if ($validate) {
-        foreach ($this->validatorService->validate($[unit.contentType.instanceName()/]) as $violation) {
-            $path = $violation->getPropertyPath();
-            $form->get($path)->addError(new FormError($violation->getMessage()));
-        }
-    }
-
-    return $form;
-}
 [/template]

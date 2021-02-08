@@ -22,7 +22,7 @@
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.actionMethod()/]
 
-[for (action : InlineAction | detailsUnit.fieldSelectActions())]
+[for (action : Action | detailsUnit.fieldSelectActions())]
 [comment action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
 
 [/for]
@@ -36,13 +36,13 @@
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([unit.actionMethodParameters()/])
+public function [unit.actionName()/]([unit.actionMethodFormals()/])
 {
 [if (unit.isConditionalDisplay())]
     [unit.actionCore()/]
 
 [/if]
-    return $this->renderPage([unit.displayedOn.renderActualParameters(unit.contentType)/]);
+    return $this->renderPage([unit.renderMethodActuals()/]);
 }
 [/template]
 

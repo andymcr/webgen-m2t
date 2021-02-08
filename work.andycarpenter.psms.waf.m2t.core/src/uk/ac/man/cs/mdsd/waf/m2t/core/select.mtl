@@ -6,16 +6,6 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
 
 
-[query public hasSelectCondition(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(CollectionUnit) then 
-			unit.oclAsType(CollectionUnit).hasSelectCondition()
-		else if unit.oclIsTypeOf(DetailsUnit) then
-			unit.oclAsType(DetailsUnit).hasSelectCondition()
-		else
-			false
-		endif endif
-/]
-
 [query public hasSelectCondition(unit : CollectionUnit) : Boolean
 	= if unit.selection.oclIsUndefined() then 
 			false
@@ -33,6 +23,14 @@
 /]
 
 [query public hasSelectPath(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then 
+			false
+		else
+			unit.selection.selectPath->notEmpty()
+		endif
+/]
+
+[query public hasSelectPath(unit : DetailsUnit) : Boolean
 	= if unit.selection.oclIsUndefined() then 
 			false
 		else

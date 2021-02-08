@@ -80,8 +80,8 @@
    [cardsUnit.header(variable)/]
 [/if]
    [cardsUnit.cardBody(variable)/]
-[if (cardsUnit.hasInlineActions())]
-	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
+[if (cardsUnit.hasActions())]
+	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
    [cardsUnit.footer(variable)/]
 	[/if]
 [/if]
@@ -104,7 +104,7 @@
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
 <div[if (not unit.cardFooterClass.oclIsUndefined())] class="[unit.cardFooterClass/]"[/if]>
  <nav[if (not unit.actionNavigationClass.oclIsUndefined())] class="[unit.actionNavigationClass/]"[/if]>
-[for (action : InlineAction | unit.inlineActions())]
+[for (action : Action | unit.actions())]
 	[if (unit.hasObjectAccess())]
   [action.actionLink(unit.contentType(), cardAccessor, action.displayLabel,
 		cardAccessor.concat('.defaultLabel()'), cardAccessor, unit.hasObjectAccess(), 'nav-link m-1')/]
@@ -159,8 +159,8 @@
 
 [template private dateImage(unit : DateCardsUnit, cardAccessor : String) post(trim())]
 <div class="card-image img-fluid">
-[if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
-[let action : InlineAction = unit.inlineActions()->first()]
+[if (unit.overlaySingleSelectAction and unit.actions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[let action : Action = unit.actions()->first()]
  [action.actionLink(unit.contentType(), cardAccessor, unit.dateIcon(cardAccessor),
 	null, cardAccessor, unit.hasObjectAccess(), null)/]
 [/let]
@@ -187,8 +187,8 @@
 
 [template private cardImage(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [let imageClass : String = 'card-img-top']
-[if (unit.overlaySingleSelectAction and unit.inlineActions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
-[let action : InlineAction = unit.inlineActions()->first()]
+[if (unit.overlaySingleSelectAction and unit.actions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[let action : Action = unit.actions()->first()]
  [action.actionLink(unit.contentType(), cardAccessor, unit.image(cardAccessor, imageClass),
 	null, cardAccessor, unit.hasObjectAccess(), null)/]
 [/let]

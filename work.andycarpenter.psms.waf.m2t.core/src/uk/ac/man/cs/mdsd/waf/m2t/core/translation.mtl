@@ -101,6 +101,6 @@
 				endif
 /]
 
-[query public actionId(action : InlineAction) : String
+[query public actionId(action : Action) : String
 	= action.name.asId()
 /]

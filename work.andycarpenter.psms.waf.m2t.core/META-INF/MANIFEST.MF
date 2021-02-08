@@ -15,4 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  com.google.guava,
  work.andycarpenter.psms.orm.m2t.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11

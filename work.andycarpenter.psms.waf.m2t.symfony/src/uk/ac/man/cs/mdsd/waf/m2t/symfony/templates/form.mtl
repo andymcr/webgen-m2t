@@ -70,8 +70,8 @@
 	[/if]
 [/let]
 [/if]
-[for (action : UnitSupportAction | unit.unitSupportActions())]
-  [action.unitSupportLink()/]
+[for (action : Action | unit.actions())]
+  [comment action.actionLink()/]
 [/for]
  </div>
 {{ form_row([accessor/]._token) }}

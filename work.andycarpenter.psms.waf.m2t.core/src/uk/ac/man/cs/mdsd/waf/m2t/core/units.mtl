@@ -41,28 +41,6 @@
 		->select(f | not f.isSingleton())
 /]
 
-[query public collectionType(unit : CollectionUnit) : Entity
-	=  unit.collectionType(unit.selection)
-/]
-
-[query public collectionType(unit : CollectionUnit, selection : Selection) : Entity
-	=  let contentContainerType : Entity
-		= if unit.contentType->notEmpty() then
-				unit.contentType->first().container()
-			else
-				null
-			endif 
-		in if selection.oclIsUndefined() then
-				contentContainerType
-			else if selection.selectPath->notEmpty() then
-				unit.selection.selectionType()
-			else if selection.parameters->isEmpty() then
-				null
-			else
-				selection.definedBy.serves
-			endif endif endif
-/]
-
 [query public containingAssociation(unit : DynamicUnit) : Association
 	= if unit.contentType().oclIsUndefined() then
 			null

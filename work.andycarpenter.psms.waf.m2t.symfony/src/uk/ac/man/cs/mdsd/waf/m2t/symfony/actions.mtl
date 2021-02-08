@@ -12,8 +12,8 @@
 [query public hasSingleActionMethod(page : Page) : Boolean
 	= page.units->notEmpty()
 		and page.units->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
-		and page.units->forAll(u | page.uriCommonPathKeys()->includesAll(u.uriPathKeys()))
-		and page.inlineActionsRequiringHandlers()->select(a | not a.oclIsTypeOf(DeleteAction))->isEmpty()
+		and page.units->forAll(u | page.routeParameters()->includesAll(u.routeParameters()))
+		and page.actionsRequiringHandlers()->select(a | not a.oclIsTypeOf(DeleteAction))->isEmpty()
 		and page.isRequiresRoleCommon()
 /]
 
@@ -22,7 +22,7 @@
 	= if unit.oclIsKindOf(CollectionUnit) then
 			not unit.oclAsType(CollectionUnit).inlineSelectCode()
 		else if unit.oclIsKindOf(EditUnit) then
-			unit.oclAsType(EditUnit).hasUnitSupportActions()
+			unit.oclAsType(EditUnit).hasOperationActions()
 		else
 			false
 		endif endif
@@ -30,6 +30,6 @@
 
 [query public inlineSelectCode(unit : CollectionUnit) : Boolean
 	= not unit.hasFilters()
-		or unit.supportedFilters->size() = 1 and unit.oclAsType(DynamicUnit).displayedOn.hasSingleActionMethod()
+		or unit.supportedFilters->size() = 1 and unit.displayedOn.hasSingleActionMethod()
 /]
 

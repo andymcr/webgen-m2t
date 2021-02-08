@@ -41,11 +41,11 @@
 		and indexUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [indexUnit.pagination()/]
 [/if]
-[if (indexUnit.hasUnitSupportActions())]
+[if (indexUnit.hasActions())]
 	[if (indexUnit.containerType.oclIsUndefined())]
- [indexUnit.unitSupportLinks(accessor)/]
+ [comment indexUnit.unitSupportLinks(accessor)/]
 	[else]
- [indexUnit.unitSupportLinks(indexUnit.containerInstanceName())/]
+ [comment indexUnit.unitSupportLinks(indexUnit.containerInstanceName())/]
 	[/if]
 [/if]
 </section>
@@ -66,7 +66,7 @@
    <h4 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h4>
 [/if]
    [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
-[if (indexUnit.hasInlineActions())]
+[if (indexUnit.hasActions())]
 <span class="actions">[indexUnit.actions(loopVariable)/]</span>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -113,7 +113,7 @@
    <h4 class="[indexUnit.captionClass/]">[indexUnit.unitTitle(loopVariable)/]</h4>
 [/if]
   [comment unit.detailsContent(loopVariable, depthIndex)/]
-[if (indexUnit.hasInlineActions())]
+[if (indexUnit.hasActions())]
   <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
 [if (not indexUnit.omitCaption)]
@@ -152,7 +152,7 @@
 {% endif %}
 		[/if]
  	[/for]
-	[if (indexUnit.hasInlineActions())]
+	[if (indexUnit.hasActions())]
    <th>Actions</th>
 	[/if]
   </tr>
@@ -163,7 +163,7 @@
 {% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | indexUnit.rowClasses()) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
    [indexUnit.entry(loopVariable, indexUnit.hasObjectAccess(), depthIndex)/]
-[if (indexUnit.hasInlineActions())]
+[if (indexUnit.hasActions())]
    <td class="actions">[indexUnit.actions(loopVariable)/]</td>
 [/if]
   </tr>
@@ -175,7 +175,7 @@
 	[else]
    <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[indexUnit.emptyMessage/]</td>
 	[/if]
-	[if (indexUnit.hasInlineActions())]
+	[if (indexUnit.hasActions())]
    <td class="actions">&nbsp;</td>
 	[/if]
   </tr>
@@ -200,7 +200,7 @@
 [/template]
 
 [template private actions(unit : IndexUnit, rowAccessor : String) post(trim())]
-[for (action : InlineAction | unit.inlineActions())]
+[for (action : Action | unit.actions())]
 	[if (unit.hasObjectAccess())]
 [action.actionLink(unit.contentType(), rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'),
 	rowAccessor, unit.hasObjectAccess(), null)/]
