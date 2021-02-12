@@ -60,9 +60,19 @@
 	= routingType.uriPathKeys()->notEmpty()
 /]
 
-[query public uriPathKeys(selection : Selection) : Sequence(Attribute)
+[query public selectionKeys(selection : Selection) : Set(Attribute)
+	= if selection.selectPath->notEmpty() then
+			selection.uriPathKeys()->asSet()
+		else if selection.condition.oclIsUndefined() then
+			Set{}
+		else
+			selection.condition.selectionKeys()
+		endif endif
+/]
+
+[query private uriPathKeys(selection : Selection) : Sequence(Attribute)
 	= let pathKeys : Sequence(Attribute)
-		= if selection.selectionType().oclIsUndefined() then
+		= if selection.selectPath->isEmpty() then
 				Sequence{}
 			else
 				selection.selectionType().uriPathKeys()
@@ -78,17 +88,6 @@
 						keys->append(key)
 					endif)
 		endif
-/]
-
-
-[query public selectionKeys(selection : Selection) : Set(Attribute)
-	= if selection.selectPath->notEmpty() then
-			selection.uriPathKeys()->asSet()
-		else if selection.condition.oclIsUndefined() then
-			Set{}
-		else
-			selection.condition.selectionKeys()
-		endif endif
 /]
 
 [query private selectionKeys(predicate : Predicate) : Set(Attribute)

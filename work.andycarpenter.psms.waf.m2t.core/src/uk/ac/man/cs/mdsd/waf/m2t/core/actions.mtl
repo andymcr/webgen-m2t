@@ -15,14 +15,6 @@
 	= page.dynamicUnits()->collect(u | u.actionsRequiringHandlers())
 /]
 
-[query public deleteActions(page : Page) : Sequence(DeleteAction)
-	= page.dynamicUnits()->collect(u | u.deleteActions())
-/]
-
-[query public fieldSelectActions(page : Page) : Sequence(Action)
-	= page.dynamicUnits()->collect(u | u.fieldSelectActions())
-/]
-
 [query public fileActions(page : Page) : Sequence(OperationAction)
 	= page.dynamicUnits()->collect(u | u.fileActions())
 /]
@@ -35,24 +27,8 @@
 	= page.actionsRequiringHandlers()->notEmpty()
 /]
 
-[query public hasDeleteActions(page : Page) : Boolean
-	= page.deleteActions()->notEmpty()
-/]
-
-[query public hasFieldSelectActions(page : Page) : Boolean
-	= page.fieldSelectActions()->notEmpty()
-/]
-
 [query public hasFileActions(page : Page) : Boolean
 	= page.fileActions()->notEmpty()
-/]
-
-[query public hasOperationActions(page : Page) : Boolean
-	= page.operationActions()->notEmpty()
-/]
-
-[query public operationActions(page : Page) : Sequence(OperationAction)
-	= page.dynamicUnits()->collect(u | u.operationActions())
 /]
 
 
@@ -68,16 +44,6 @@
 	= unit.oclAsType(ActionContainer).actionsRequiringHandlers()
 /]
 
-[query public deleteActions(unit : DynamicUnit) : Sequence(DeleteAction)
-	= unit.oclAsType(ActionContainer).deleteActions()
-/]
-
-[query public fieldSelectActions(unit : DynamicUnit) : Sequence(SelectAction)
-	= unit.displayFields
-		->select(f | f.oclIsKindOf(ActionContainer)).oclAsType(ActionContainer)
-		->collect(c | c.selectActions())
-/]
-
 [query public fileActions(unit : DynamicUnit) : Sequence(OperationAction)
 	= unit.oclAsType(ActionContainer).fileActions()
 /]
@@ -90,24 +56,8 @@
 	= unit.actions()->notEmpty()
 /]
 
-[query public hasDeleteActions(unit : DynamicUnit) : Boolean
-	= unit.deleteActions()->notEmpty()
-/]
-
-[query public hasFieldSelectActions(unit : DynamicUnit) : Boolean
-	= unit.fieldSelectActions()->notEmpty()
-/]
-
 [query public hasFileActions(unit : DynamicUnit) : Boolean
 	= unit.fileActions()->notEmpty()
-/]
-
-[query public hasOperationActions(unit : DynamicUnit) : Boolean
-	= unit.operationActions()->notEmpty()
-/]
-
-[query public operationActions(unit : DynamicUnit) : Sequence(OperationAction)
-	= unit.oclAsType(ActionContainer).operationActions()
 /]
 
 
@@ -140,22 +90,15 @@
 	= container.actions()->select(a | not a.oclIsTypeOf(SelectAction))
 /]
 
-[query public deleteActions(container : ActionContainer) : Sequence(DeleteAction)
-	= container.actions()->select(a | a.oclIsTypeOf(DeleteAction)).oclAsType(DeleteAction)
-/]
-
 [query public fileActions(container : ActionContainer) : Sequence(OperationAction)
 	= container.operationActions()
-		->select(a | not a.operation.oclIsUndefined())
 		->select(a | a.operation.resultType = OperationResultTypes::File)
 /]
 
-[query public operationActions(container : ActionContainer) : Sequence(OperationAction)
-	= container.actions()->select(a | a.oclIsTypeOf(OperationAction)).oclAsType(OperationAction)
-/]
-
-[query public selectActions(container : ActionContainer) : Sequence(SelectAction)
-	= container.actions()->select(a | a.oclIsTypeOf(SelectAction)).oclAsType(SelectAction)
+[query private operationActions(container : ActionContainer) : Sequence(OperationAction)
+	= container.actions()
+		->select(a | a.oclIsKindOf(OperationAction)).oclAsType(OperationAction)
+		->select(a | not a.operation.oclIsUndefined())
 /]
 
 
@@ -182,7 +125,7 @@
 			action.oclAsType(SelectAction).target.oclAsType(DynamicUnit).requiresRole
 		else if action.oclIsTypeOf(DeleteAction) then
 			action.oclAsType(DeleteAction).requiresRole
-		else if action.oclIsTypeOf(OperationAction) then
+		else if action.oclIsKindOf(OperationAction) then
 			action.oclAsType(OperationAction).requiresRole
 		else 
 			''

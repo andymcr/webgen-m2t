@@ -7,6 +7,7 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework',
 	'http://cs.manchester.ac.uk/mdsd/API')]
 [import work::andycarpenter::psms::expression::m2t::core::literals/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
@@ -31,7 +32,6 @@
 $this->translationService->trans('[message/]')
 [/template]
 
-
 [template public actionMethodFormals(page : Page) post(trim())]
 [if (page.hasFilters() or page.hasPagination())]
 Request $request[if (page.hasRouteParameters())]
@@ -45,6 +45,14 @@ Request $request[if (page.hasRouteParameters())]
 Request $request[if (unit.hasRouteParameters())]
 , [/if][/if]
 [unit.routeParameterList()/]
+[/let]
+[/template]
+
+[template public actionContainerMethodFormals(unit : ContentUnit) post(trim())]
+[let page : Page = unit.displayedOn]
+Request $request[if (unit.hasContainerRouteParameters())]
+, [/if]
+[unit.routeContainerParameterList()/]
 [/let]
 [/template]
 
@@ -74,12 +82,28 @@ Request $request[if (action.hasRouteParameters())]
 [/let]
 [/template]
 
+[template public actionContainerMethodFormals(action : Action) post(trim())]
+[let page : Page = action.unit().displayedOn]
+[if (page.hasFilters() or page.hasPagination())]
+Request $request[if (action.hasContainerRouteParameters())]
+, [/if][/if]
+[action.routeContainerParameterList()/]
+[/let]
+[/template]
+
 
 [template public renderMethodActuals(unit : ContentUnit) post(trim())]
 [if (unit.displayedOn.hasFilters() or unit.displayedOn.hasPagination())]
 $request[if (unit.displayedOn.hasRouteParameters())]
 , [/if][/if]
 [unit.displayedOn.routeParameterList(unit.routeParameters())/]
+[/template]
+
+[template public renderMethodContainerActuals(unit : ContentUnit) post(trim())]
+[if (unit.displayedOn.hasFilters() or unit.displayedOn.hasPagination())]
+$request[if (unit.hasContainerRouteParameters())]
+, [/if][/if]
+[unit.routeContainerParameterList()/]
 [/template]
 
 [template public renderMethodCreateActuals(unit : EditUnit) post(trim())]
@@ -107,6 +131,10 @@ $[key.routeParameterName(sourceParameters)/][/for]
 [unit.routeParameterList(unit.routeParameters())/]
 [/template]
 
+[template public routeContainerParameterList(unit : ContentUnit) post(trim())]
+[unit.routeParameterList(unit.routeContainerParameters())/]
+[/template]
+
 [template public routeCreateParameterList(unit : EditUnit) post(trim())]
 [unit.routeParameterList(unit.routeCreateParameters())/]
 [/template]
@@ -119,9 +147,44 @@ $[key.routeParameterName(sourceParameters)/][/for]
 [action.unit().routeParameterList(action.routeParameters())/]
 [/template]
 
+[template public routeContainerParameterList(action : Action) post(trim())]
+[action.unit().routeParameterList(action.routeContainerParameters())/]
+[/template]
+
 [template public routeParameterList(resource : Resource) post(trim())]
 [for (key : Attribute | resource.routeParameters()) separator (', ')]
 $[key.routeParameterName(resource)/][/for]
+[/template]
+
+
+[template public getContainerRepository(unit : DynamicUnit) post(trim())]
+$this->[unit.containerType().repository.instanceName()/]
+[/template]
+
+[template public loadContainer(unit : DynamicUnit) post(trim())]
+[if (unit.containerType().oclIsUndefined())]
+// uncontained
+[else]
+$this->[unit.containerInstanceName()/] = [unit.loadContainerInstance()/]
+if (!$this->[unit.containerInstanceName()/])
+{
+    throw $this->createNotFoundException('The [unit.containerType().name/] does not exist');
+}
+[/if]
+[/template]
+
+[template private loadContainerInstance(unit : DynamicUnit) post(trim())]
+[if (unit.oclIsKindOf(CollectionUnit))]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+	[if (collectionUnit.findContainerSelection.oclIsUndefined())]
+[unit.getContainerRepository()/]->[unit.containerType().findMethodName()/]([unit.routeContainerParameterList()/]);
+	[else]
+[unit.getContainerRepository()/]->[collectionUnit.findContainerSelection.methodName/]([unit.routeContainerParameterList()/]);
+	[/if]
+[/let]
+[else]
+[unit.getContainerRepository()/]->[unit.containerType().findMethodName()/]([unit.routeContainerParameterList()/]);
+[/if]
 [/template]
 
 
@@ -134,6 +197,14 @@ $this->[unit.contentRepository().instanceName()/]
 [/template]
 
 [template public loadInstance(action : Action) post(trim())]
+$[action.instanceName()/] = [action.loadInstance2()/];
+if (!$[action.instanceName()/])
+{
+    throw $this->createNotFoundException('The [action.unit().contentType().name/] does not exist');
+}
+[/template]
+
+[template public loadInstance2(action : Action) post(trim())]
 [if (action.unit().oclIsKindOf(CollectionUnit))]
 [let unit : CollectionUnit = action.unit().oclAsType(CollectionUnit)]
 	[if (unit.findElementSelection.oclIsUndefined())]
@@ -220,11 +291,15 @@ $request->query->all()[/if]
 [/template]
 
 [template public routeActualParameters(targetUnit : ContentUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[targetUnit.routeActualParameters(targetUnit.routingType(), sourceParameters)/]
+[targetUnit.routeActualParameters(targetUnit.routeParameters(), sourceParameters)/]
 [/template]
 
-[template public routeActualParameters(targetUnit : ContentUnit, routingType : Entity, sourceParameters : Sequence(Attribute)) post(trim())]
-[targetUnit.routeActualParameters(targetUnit.routeParameters(routingType), sourceParameters)/]
+[template public routeContainerActualParameters(targetUnit : ContentUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[targetUnit.routeActualParameters(targetUnit.routeContainerParameters(), sourceParameters)/]
+[/template]
+
+[template public routeCreateActualParameters(targetUnit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[targetUnit.routeActualParameters(targetUnit.routeCreateParameters(), sourceParameters)/]
 [/template]
 
 [template private routeActualParameters(targetUnit : ContentUnit, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]

@@ -3,6 +3,7 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -84,13 +85,13 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [if (page.hasSingleActionMethod())]
     [page.actionMethod()/]
 
-	[for (unit : DynamicUnit | page.dynamicUnits())]
-		[if (unit.hasActionSupportMethods())]
+	[if (page.hasSupportMethods())]
+		[for (unit : ContentUnit | page.units->select(u | u.hasSupportMethods()))]
     [unit.actionSupportMethods()/]
 
-		[/if]
-	[/for]
-	[for (action : InlineAction | page.inlineActionsRequiringHandlers())]
+		[/for]
+	[/if]
+	[for (action : Action | page.actionsRequiringHandlers())]
     [action.actionMethod()/]
 
 	[/for]
@@ -98,17 +99,11 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 	[for (unit : DynamicUnit | page.dynamicUnits())]
     [unit.unitMethods()/]
 
-		[for (action : InlineAction | unit.inlineActionsRequiringHandlers())]
+		[for (action : Action | unit.actionsRequiringHandlers())]
     [action.actionMethod()/]
 
 		[/for]
 	[/for]
-[/if]
-[if (page.hasUnitSupportActions())]
-    [page.unitSupportActionMethods()/]
-
-[/if]
-[if (not page.hasSingleActionMethod())]
     [page.renderMethod()/]
 [/if]
 }
@@ -140,27 +135,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
-[if (page.hasInlineFileActions())]
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-[/if]
-[if (page.hasFilters() or page.hasPagination() or page.hasEditUnits() or page.hasUnitSupportActions())]
+[if (page.hasFilters() or page.hasPagination() or page.hasEditUnits())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
-[if (page.hasInlineFileActions() or page.dynamicUnits()->select(u | not u.oclIsKindOf(EditUnit) and u.hasUnitSupportActions())->notEmpty())]
+[if (page.hasFileActions())]
 use Symfony\Component\HttpFoundation\Response;
-[/if]
-[if (page.hasInlineFileActions())]
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 [/if]
 use Symfony\Component\Routing\Annotation\Route;
 [if (page.hasExplicitValidation())]
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
-[if (page.hasUnitSupportActions())]
-// [protected ('support.use')]
-// [/protected]
-[/if]
 [/template]
 
 [template private actionMethod(page : Page) post(trim())]
@@ -170,7 +155,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  [page.securityAnnotation()/]
 [/if]
  */
-public function [page.actionName()/]([page.actionMethodParameters()/])
+public function [page.actionName()/]([page.actionMethodFormals()/])
 {
 [for (unit : DynamicUnit | page.dynamicUnits())]
     [unit.actionCore()/]
@@ -182,9 +167,9 @@ public function [page.actionName()/]([page.actionMethodParameters()/])
 
 [template private renderMethod(page : Page) post(trim())]
 private function renderPage([if (page.hasFilters() or page.hasPagination())]
-Request $request[if (page.uriCommonPathKeys()->notEmpty())]
-, [/if][/if][for (key : Attribute | page.uriCommonPathKeys()) separator(', ')]
-$[key.routeParameterName(page.uriCommonPathKeys()->last().partOf.oclAsType(Entity))/][/for])
+Request $request[if (page.hasRouteParameters())]
+, [/if][/if][for (key : Attribute | page.routeParameters()) separator(', ')]
+$[key.routeParameterName(page.routeParameters()->last().partOf.oclAsType(Entity))/][/for])
 {
     [page.renderCore()/]
 }
@@ -200,192 +185,140 @@ $parameters = array();
 return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/template]
 
-[template private unitSupportActionMethods(page : Page) post(trim())]
-[for (unit : DynamicUnit | page.dynamicUnits())]
-	[if (unit.hasUnitSupportActions() and not unit.oclIsKindOf(EditUnit))]
-/**
- [unit.routeAnnotationSupport('support')/]
-		[if (unit.hasAuthorisation())]
- [unit.securityAnnotation()/]
-		[/if]
- */
-public function [unit.supportActionName()/](Request $request[if (unit.hasRouteParameters())]
-, [unit.routeParameters()/][/if])
-{
-		[if (unit.oclIsTypeOf(DetailsUnit))]
-    $[unit.contentType().instanceName()/] = [unit.loadInstance()/];
-		[elseif (unit.oclIsKindOf(CollectionUnit))]
-		[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-			[if (not unit.oclAsType(CollectionUnit).containerType.oclIsUndefined())]
-    $[collectionUnit.containerInstanceName()/] = [unit.oclAsType(CollectionUnit).loadContainerInstance()/]
-    if (!$[collectionUnit.containerInstanceName()/]) {
-        throw $this->createNotFoundException('The [collectionUnit.containerType.name/] does not exist');
-    }
-			[/if]
-		[/let]
-		[/if]
-    [unit.actionHandlers()/]
-}
 
-	[/if]
-[/for]
-/* [protected (page.instanceName().concat('.support'))]
- */
-/* [/protected]
- */
-[/template]
-
-[template private actionHandlers(unit : DynamicUnit) post(trim())]
-[for (action : UnitSupportAction | unit.unitSupportActions())]
-if ($request->query->has('[action.actionName()/]')) {
-    // [protected ('support.'.concat(action.actionName()))]
-    // [/protected]
-}
-
-[/for]
-return new Response("No action taken", 200);
-[/template]
-
-[template private actionMethod(action : InlineAction)
+[template private actionMethod(action : Action)
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : CollectionUnit = action.unit().oclAsType(CollectionUnit)]
-[let contentType : Entity = unit.contentType()]
+[let unit : DynamicUnit = action.unit()]
 /**
- [deleteAction.routeAnnotation(unit, deleteAction.uriElement)/]
+ [deleteAction.routeAnnotation(deleteAction.uriElement)/]
 [if (deleteAction.hasAuthorisation())]
  [deleteAction.securityAnnotation()/]
 [/if]
  */
-public function [deleteAction.actionName()/]([deleteAction.actionMethodParameters(unit, deleteAction.unit().displayedOn)/])
+public function [deleteAction.actionName()/]([action.actionMethodFormals()/])
 {
-    $[deleteAction.instanceName()/] = [deleteAction.loadInstance(unit)/];
-    if (!$[deleteAction.instanceName()/]) {
-        throw $this->createNotFoundException('The [contentType.name/] does not exist');
-    }
-    $this->[deleteAction.usedBy.oclAsType(DynamicUnit).contentRepository().instanceName()/]->remove($[deleteAction.instanceName()/], true);
+    [deleteAction.loadInstance()/]
+    $this->[unit.contentRepository().instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
-[if (not deleteAction.destination.oclIsUndefined() and deleteAction.destination.units->notEmpty())]
-    return [deleteAction.destination.redirect()/];
+[if (unit.oclIsKindOf(CollectionUnit))]
+    return [action.redirect(unit.routeName(), deleteAction.routeParameters())/];
 [else]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-    return [dynamicUnit.redirect(dynamicUnit.routingType(), dynamicUnit.routeName(), unit.contentType())/];
-[/let][/if]
+[/if]
 }
-[/let]
 [/let]
 [/let]
 [/template]
 
-[template private actionMethod(action : InlineAction)
-	? (action.oclIsTypeOf(FeatureSupportAction) and action.usedBy.oclIsKindOf(UnitFeature)) post(trim())]
-[let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[let unit : CollectionUnit = action.unit().oclAsType(CollectionUnit)]
-[let contentType : Entity = unit.contentType()]
+[template private actionMethod(action : Action)
+	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(UnitFeature)) post(trim())]
+[let operationAction : OperationAction = action.oclAsType(OperationAction)]
+[let unit : DynamicUnit = action.unit()]
 /**
- [featureAction.routeAnnotation(unit, featureAction.uriElement)/]
-[if (featureAction.hasAuthorisation())]
- [featureAction.securityAnnotation()/]
+ [operationAction.routeAnnotation(operationAction.uriElement)/]
+[if (operationAction.hasAuthorisation())]
+ [operationAction.securityAnnotation()/]
 [/if]
  */
-public function [action.actionName()/]([featureAction.actionMethodParameters(unit, featureAction.unit().displayedOn)/])
+public function [operationAction.actionName()/]([unit.actionMethodFormals()/])
 {
-[if (featureAction.operation.resultType = OperationResultTypes::None)]
-    $[featureAction.instanceName()/] = [featureAction.loadInstance(unit)/];
-    if (!$[featureAction.instanceName()/]) {
-        throw $this->createNotFoundException('The [contentType.name/] does not exist');
-    }
-    $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/]($[featureAction.instanceName()/]);
-    $this->addFlash('notice', 'operation done');
-    return [unit.oclAsType(DynamicUnit).redirect(unit.containerType, unit.routeName(true), unit.containerType)/];
-[elseif (featureAction.operation.resultType = OperationResultTypes::File)]
-    $file = $this->[featureAction.operation.partOf.instanceName()/]->[featureAction.operation.methodName()/](
-        [featureAction.loadInstance(unit)/],
-        '[featureAction.fileExtension/]'
-    );
-    $response = $this->file($file);
-//    if (!empty($report->getContentType())) {
-//        $response->headers->set('Content-Type', $report->getContentType());
-//    }
-    return $response;
+[if (operationAction.operation.resultType = OperationResultTypes::None)]
+[elseif (operationAction.operation.resultType = OperationResultTypes::File)]
 [/if]
 }
 [/let]
 [/let]
-[/let]
 [/template]
 
-[template private actionMethod(action : InlineAction)
-	? (action.oclIsTypeOf(FeatureSupportAction) and action.usedBy.oclIsKindOf(CollectionUnit)) post(trim())]
-[let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[let unit : CollectionUnit = action.usedBy.oclAsType(CollectionUnit)]
+[template private actionMethod(action : Action)
+	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(DynamicUnit)) post(trim())]
+[let operationAction : OperationAction = action.oclAsType(OperationAction)]
+[let unit : DynamicUnit = operationAction.unit()]
 /**
- [featureAction.routeAnnotation(unit, featureAction.uriElement)/]
-[if (featureAction.hasAuthorisation())]
- [featureAction.securityAnnotation()/]
+[if (action.oclIsTypeOf(InstanceOperationAction))]
+ [operationAction.routeAnnotation(operationAction.uriElement)/]
+[elseif (action.oclIsTypeOf(ContainerOperationAction))]
+ [operationAction.routeContainerAnnotation()/]
+[else]
+ [operationAction.routeGeneralAnnotation()/]
+[/if]
+[if (operationAction.hasAuthorisation())]
+ [operationAction.securityAnnotation()/]
 [/if]
  */
-public function [action.actionName()/]([featureAction.actionMethodParameters(unit, featureAction.unit().displayedOn)/])
+public function [operationAction.actionName()/]([if (action.oclIsTypeOf(InstanceOperationAction))]
+[action.actionMethodFormals()/][elseif (action.oclIsTypeOf(ContainerOperationAction))]
+[action.actionContainerMethodFormals()/][else]
+[/if])
 {
-    [featureAction.actionMethodBody()/]
+[if (not operationAction.operation.oclIsUndefined())]
+    [operationAction.actionMethodBody()/]
+[/if]
 }
 [/let]
 [/let]
 [/template]
 
-[template private actionMethodBody(action : FeatureSupportAction)
-	? (action.operation.resultType = OperationResultTypes::None and action.usedBy.oclIsKindOf(CollectionUnit)) post(trim())]
-[let unit : CollectionUnit = action.usedBy.oclAsType(CollectionUnit)]
-[let page : Page = action.usedBy.oclAsType(DynamicUnit).displayedOn]
-$[action.instanceName()/] = [action.loadInstance(unit)/];
-if (!$[action.instanceName()/]) {
-    throw $this->createNotFoundException('The [unit.contentType().name/] does not exist');
-}
+[template private actionMethodBody(action : OperationAction)
+	? (action.oclIsTypeOf(InstanceOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
+[let unit : DynamicUnit = action.unit()]
+[action.loadInstance()/]
 [if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
 $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined())]
-if ($result)
-{
-    $this->addFlash('success', $this->translationService->trans(
-        '[action.containedId()/].successMessage',
-        array(), '[page.translationDomain()/]'
-    ));
-} else {
-    $this->addFlash('error', $this->translationService->trans(
-        '[action.containedId()/].failureMessage',
-        array(), '[page.translationDomain()/]'
-    ));
-}
-[elseif (not action.successMessage.oclIsUndefined())]
-$this->addFlash('success', $this->translationService->trans(
-    '[action.containedId()/].successMessage',
-    array(), '[page.translationDomain()/]'
-));
-[elseif (not action.failureMessage.oclIsUndefined())]
-if (!$result)
-{
-    $this->addFlash('error', $this->translationService->trans(
-        '[action.containedId()/].failureMessage',
-        array(), '[page.translationDomain()/]'
-    ));
-}
+[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[action.actionResultFlash()/]
 [/if]
-return [unit.oclAsType(DynamicUnit).redirect(unit.containerType, unit.routeName(true), unit.containerType)/];
-[/let]
+return [action.redirect(unit.routeName(true), action.routeParameters())/];
 [/let]
 [/template]
 
-[template private actionMethodBody(action : FeatureSupportAction)
-	? (action.operation.resultType = OperationResultTypes::File and action.usedBy.oclIsKindOf(CollectionUnit)) post(trim())]
-[let unit : CollectionUnit = action.usedBy.oclAsType(CollectionUnit)]
-    $file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/](
-        [action.loadInstance(unit)/],
-        '[action.fileExtension/]'
-    );
-    $response = $this->file($file);
-//    if (!empty($report->getContentType())) {
-//        $response->headers->set('Content-Type', $report->getContentType());
-//    }
-    return $response;
+[template private actionMethodBody(action : OperationAction)
+	? (action.oclIsTypeOf(ContainerOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
+[let unit : DynamicUnit = action.unit()]
+[action.unit().loadContainer()/];
+[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
+[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[action.actionResultFlash()/]
+[/if]
+return [action.redirect(unit.routeName(true), action.routeContainerParameters())/];
 [/let]
+[/template]
+
+[template private actionMethodBody(action : OperationAction)
+	? (action.oclIsTypeOf(GeneralOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
+[let unit : DynamicUnit = action.unit()]
+[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
+[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[action.actionResultFlash()/]
+[/if]
+return [action.redirect(unit.routeName(true), action.routeContainerParameters())/];
+[/let]
+[/template]
+
+[template private actionMethodBody(action : OperationAction)
+	? (action.oclIsTypeOf(InstanceOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
+[action.loadInstance()/]
+$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
+$response = $this->file($file, $[action.unit().instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
+ . '[action.fileExtension/]'[/if]);
+return $response;
+[/template]
+
+[template private actionMethodBody(action : OperationAction)
+	? (action.oclIsTypeOf(ContainerOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
+[action.unit().loadContainer()/];
+$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
+$response = $this->file($file, $[action.unit().instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
+ . '[action.fileExtension/]'[/if]);
+return $response;
+[/template]
+
+[template private actionMethodBody(action : OperationAction)
+	? (action.oclIsTypeOf(GeneralOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
+$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
+$response = $this->file($file, '[action.instanceName()/][if (not action.fileExtension.oclIsUndefined())]
+ . [action.fileExtension/][/if]');
+return $response;
 [/template]

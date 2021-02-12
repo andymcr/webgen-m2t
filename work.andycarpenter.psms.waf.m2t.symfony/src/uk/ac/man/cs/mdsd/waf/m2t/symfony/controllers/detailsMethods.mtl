@@ -21,11 +21,6 @@
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [detailsUnit.actionMethod()/]
-
-[for (action : Action | detailsUnit.fieldSelectActions())]
-[comment action.generateActionMethod('$this->'.concat(detailsUnit.instanceName()).concat('_error'))/]
-
-[/for]
 [/let]
 [/template]
 

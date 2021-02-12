@@ -204,8 +204,12 @@
 	= unit.instanceName().concat('Action')
 /]
 
-[query public containerInstanceName(unit : CollectionUnit) : String
-	= unit.containerType.instanceName()
+[query public containerInstanceName(unit : DynamicUnit) : String
+	= if unit.containerType().oclIsUndefined() then
+			'uncontained'
+		else
+			unit.containerType().instanceName()
+		endif
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
@@ -438,7 +442,18 @@
 /]
 
 [query public instanceName(action : Action) : String
-	= action.name.toLowerFirst()
+	= if action.oclIsTypeOf(DeleteAction)
+				or action.oclIsKindOf(InstanceOperationAction) then
+			action.unit().contentType().name.toLowerFirst()
+		else if action.oclIsTypeOf(ContainerOperationAction) then
+			if action.unit().contentType().isContained() then
+				action.unit().contentType().container().name.toLowerFirst()
+			else
+				action.name.toLowerFirst()
+			endif
+		else
+			action.name.toLowerFirst()
+		endif endif
 /]
 
 [query public modelName(action : DeleteAction) : String

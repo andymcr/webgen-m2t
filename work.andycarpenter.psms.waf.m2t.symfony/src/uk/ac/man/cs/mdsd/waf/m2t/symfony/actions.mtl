@@ -13,23 +13,19 @@
 	= page.units->notEmpty()
 		and page.units->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
 		and page.units->forAll(u | page.routeParameters()->includesAll(u.routeParameters()))
-		and page.actionsRequiringHandlers()->select(a | not a.oclIsTypeOf(DeleteAction))->isEmpty()
 		and page.isRequiresRoleCommon()
 /]
 
-
-[query public hasActionSupportMethods(unit : DynamicUnit) : Boolean
-	= if unit.oclIsKindOf(CollectionUnit) then
-			not unit.oclAsType(CollectionUnit).inlineSelectCode()
-		else if unit.oclIsKindOf(EditUnit) then
-			unit.oclAsType(EditUnit).hasOperationActions()
-		else
-			false
-		endif endif
+[query public hasSupportMethods(page : Page) : Boolean
+	= page.units->select(u | u.hasSupportMethods())->notEmpty()
 /]
+
 
 [query public inlineSelectCode(unit : CollectionUnit) : Boolean
 	= not unit.hasFilters()
 		or unit.supportedFilters->size() = 1 and unit.displayedOn.hasSingleActionMethod()
 /]
 
+[query public hasSupportMethods(unit : ContentUnit) : Boolean
+	= unit.oclIsKindOf(CollectionUnit) and not unit.oclAsType(CollectionUnit).inlineSelectCode()
+/]

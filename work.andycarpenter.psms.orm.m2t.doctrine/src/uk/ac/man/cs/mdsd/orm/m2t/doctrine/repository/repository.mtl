@@ -134,7 +134,7 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 [/template]
 
 [template private findWhere(key : Attribute, base : Entity) post(trim())]
-$queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(base)/]')
+$queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key.routeParameterName(base)/]')
 [/template]
 
 [template private findAllMethod(repository : Repository) post(trim())]
@@ -395,13 +395,13 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 [/template]
 
 [template private field(field : Feature, alias : String) post(trim())]
-'[field.partOf.oclAsType(Entity).selectName()/].[field.columnName/][if (not alias.oclIsUndefined())]
+'[field.partOf.selectName()/].[field.columnName/][if (not alias.oclIsUndefined())]
  [alias/][/if]'
 [/template]
 
 [template private joins(selection : Selection) post(trim())]
 [for (join : Association | selection.joins)]
-$queryBuilder->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
+$queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]');
 [/for]
 [if (selection.selectPath->notEmpty())]
 	[for (element : Association | selection.selectPath)]
@@ -409,19 +409,19 @@ $queryBuilder->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPr
 $queryBuilder->join('[element.sourceType().selectName()/].[element.modelPropertyName()/]', '[element.targetType().selectName()/]');
 		[/if]
 	[/for]
-[/if]
-[if (not selection.selectionType().oclIsUndefined())]
 	[if (selection.selectionType().isContained())]
-[selection.joinContainer(selection.selectionType())/]
+[selection.joinContainer(selection.selectionType(), selection.joins->collect(a | a.partOf))/]
 	[/if]
 [/if]
 [/template]
 
-[template private joinContainer(selection : Selection, childType : Entity) post(trim())]
+[template private joinContainer(selection : Selection, childType : Entity, explicitJoins : Sequence(Entity)) post(trim())]
 [let association : Association = childType.containingAssociation()]
+[if (explicitJoins->excludes(childType))]
 $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/]', '[association.targetType().selectName()/]');
+[/if]
 [if (association.targetType().isContained())]
-[selection.joinContainer(association.targetType())/]
+[selection.joinContainer(association.targetType(), explicitJoins)/]
 [/if]
 [/let]
 [/template]
@@ -431,12 +431,12 @@ $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/
 [let routingEntity : Entity = selection.selectionType()]
 	[if (selection.uriPathKeys()->size() = 1)]
 	[let key : Attribute = selection.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]'));
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]'));
 	[/let]
 	[else]
 $queryBuilder->where($queryBuilder->expr()->andX(
 		[for (key : Attribute | selection.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.oclAsType(Entity).selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> selection.uriPathKeys()->size())],[/if]
+    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> selection.uriPathKeys()->size())],[/if]
 		[/for]
 ));
 	[/if]

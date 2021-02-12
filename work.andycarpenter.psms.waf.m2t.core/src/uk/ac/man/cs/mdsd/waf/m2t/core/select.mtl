@@ -21,19 +21,3 @@
 			not unit.selection.condition.oclIsUndefined()
 		endif
 /]
-
-[query public hasSelectPath(unit : CollectionUnit) : Boolean
-	= if unit.selection.oclIsUndefined() then 
-			false
-		else
-			unit.selection.selectPath->notEmpty()
-		endif
-/]
-
-[query public hasSelectPath(unit : DetailsUnit) : Boolean
-	= if unit.selection.oclIsUndefined() then 
-			false
-		else
-			unit.selection.selectPath->notEmpty()
-		endif
-/]

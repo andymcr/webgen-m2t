@@ -41,6 +41,31 @@
 		->select(f | not f.isSingleton())
 /]
 
+[query public containerType(unit : DynamicUnit) : Entity
+	= if unit.oclIsKindOf(CollectionUnit) then
+			let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
+				in if collectionUnit.findContainerSelection.oclIsUndefined() then
+						unit.containerType(collectionUnit.selection)
+					else
+						unit.containerType(collectionUnit.findContainerSelection)
+					endif
+		else if unit.oclIsKindOf(DetailsUnit) then
+			unit.containerType(unit.oclAsType(DetailsUnit).selection)
+		else
+			unit.contentType().container()
+		endif endif
+/]
+
+[query private containerType(unit : DynamicUnit, selection : Selection) : Entity
+	= if selection.oclIsUndefined() then
+			unit.contentType().container()
+		else if selection.selectPath->notEmpty() then
+			selection.selectionType()
+		else
+			null -- unit.contentType().container()
+		endif endif
+/]
+
 [query public containingAssociation(unit : DynamicUnit) : Association
 	= if unit.contentType().oclIsUndefined() then
 			null

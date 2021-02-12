@@ -25,23 +25,28 @@
 [unit.routeAnnotation(unit.routeName(), unit.uriPath(unit), true)/]
 [/template]
 
-[template public routeCreateAnnotation(unit : EditUnit) post(trim())]
-[let suffix : String
-	= if unit.oclIsTypeOf(CreateUpdateUnit) then
-			unit.oclAsType(CreateUpdateUnit).createUriElement
-		else
-			unit.uriElement
-		endif]
+[template public routeContainerAnnotation(unit : ContentUnit, suffix : String) post(trim())]
+[unit.routeAnnotation(unit.routeName(true), unit.uriContainerPath(suffix), true)/]
+[/template]
+
+[template public routeCreateAnnotation(unit : EditUnit, suffix : String) post(trim())]
 [unit.routeAnnotation(unit.routeName(true), unit.uriCreatePath(suffix), true)/]
-[/let]
 [/template]
 
 [template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]
-[unit.routeAnnotation(association.routeName(), unit.uriPath(unit.contentType, association.name), true)/]
+[comment unit.routeAnnotation(association.routeName(), unit.uriPath(unit.contentType, association.name), true)/]
 [/template]
 
 [template public routeAnnotation(action : Action, suffix : String) post(trim())]
 [action.unit().routeAnnotation(action.routeName(), action.uriPath(suffix), false)/]
+[/template]
+
+[template public routeContainerAnnotation(action : OperationAction) post(trim())]
+[action.unit().routeAnnotation(action.routeName(), action.uriContainerPath(), false)/]
+[/template]
+
+[template public routeGeneralAnnotation(action : OperationAction) post(trim())]
+[action.unit().routeAnnotation(action.routeName(), action.uriGeneralPath(), false)/]
 [/template]
 
 [template private routeAnnotation(unit : ContentUnit, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]

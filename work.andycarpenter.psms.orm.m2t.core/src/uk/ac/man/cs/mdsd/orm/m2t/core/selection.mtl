@@ -26,7 +26,7 @@
 	= if selection.selectPath->notEmpty() then
 			selection.selectPath->last().targetType()
 		else
-			null
+			selection.definedBy.serves
 		endif
 /]
 
