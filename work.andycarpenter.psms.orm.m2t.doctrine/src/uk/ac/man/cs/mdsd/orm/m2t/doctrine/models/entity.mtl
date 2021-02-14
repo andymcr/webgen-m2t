@@ -39,7 +39,7 @@ namespace [entity.modelsNamespace()/];
 	[/if]
 [/if]
 [for (attribute : Attribute | entity.uniqueAttributes())]
- * @UniqueEntity("[attribute.columnName/]"[if (not attribute.isRequired())], ignoreNull="false"[/if])
+ * @UniqueEntity("[attribute.columnName/]")
 [/for]
 [if (entity.isContained())]
 	[for (attribute : Attribute | entity.containerUniqueAttributes())]
