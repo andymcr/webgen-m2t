@@ -72,7 +72,7 @@
 	[if (dynamicUnit.hasFieldTranslations())]
 [dynamicUnit.fieldTranslations(page)/]
 	[/if]
-	[for (action : InlineAction | dynamicUnit.inlineActionsWithMessages())]
+	[for (action : Action | dynamicUnit.actionsWithMessages())]
 [action.actionTranslations()/]
 	[/for]
 [/let]
@@ -113,22 +113,19 @@
 [/for]
 [/template]
 
-[template private actionTranslations(action : InlineAction)
-	? (action.oclIsKindOf(FeatureSupportAction)) post (trim())]
-[let featureAction : FeatureSupportAction = action.oclAsType(FeatureSupportAction)]
-[if (not featureAction.confirmMessage.oclIsUndefined())]
-[featureAction.actionMessageTranslation('confirmMessage', featureAction.confirmMessage)/]
+[template private actionTranslations(action : Action) post (trim())]
+[if (not action.confirmMessage.oclIsUndefined())]
+[action.actionMessageTranslation('confirmMessage', action.confirmMessage)/]
 [/if]
-[if (not featureAction.failureMessage.oclIsUndefined())]
-[featureAction.actionMessageTranslation('failureMessage', featureAction.failureMessage)/]
+[if (not action.failureMessage.oclIsUndefined())]
+[action.actionMessageTranslation('failureMessage', action.failureMessage)/]
 [/if]
-[if (not featureAction.successMessage.oclIsUndefined())]
-[featureAction.actionMessageTranslation('successMessage', featureAction.successMessage)/]
+[if (not action.successMessage.oclIsUndefined())]
+[action.actionMessageTranslation('successMessage', action.successMessage)/]
 [/if]
-[/let]
 [/template]
 
-[template private actionMessageTranslation(action : InlineAction, x : String, message : String) post (trim())]
+[template private actionMessageTranslation(action : Action, x : String, message : String) post (trim())]
 <trans-unit id="[action.containedId()/].[x/]">
  <source>[action.containedId()/].[x/]</source>
  <target>[message.validXML()/]</target>
