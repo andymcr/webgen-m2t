@@ -197,6 +197,14 @@
 	= unit.forcedValueFeatures()->notEmpty()
 /]
 
+[query public hasGroupedResults(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then
+			false
+		else
+			unit.selection.grouping->notEmpty()
+		endif
+/]
+
 [query public hasInterfaceFields(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).interfaceFields()->notEmpty()

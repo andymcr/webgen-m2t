@@ -57,14 +57,13 @@
 	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let variable : String = cardsUnit.contentType().instanceName()]
-[if (cardsUnit.selection.grouping->notEmpty())]
+[if (cardsUnit.hasGroupedResults())]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
-[/if]
-[if (cardsUnit.selection.grouping->isEmpty())]
+[else]
 <div class="[cardsUnit.rowClass/] mb-3">
 [/if]
 {% for [variable/] in [accessor/] %}
-[if (cardsUnit.selection.grouping->notEmpty())]
+[if (cardsUnit.hasGroupedResults())]
 {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
  {% if [cardsUnit.selection.grouping->first().name/] is not null %}
 </div>
