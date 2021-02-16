@@ -13,7 +13,7 @@
 [let model : WafModel = unit.displayedOn.partOf]
 [file(unit.formTypeFilename(model), false)]
 <?php
-namespace [unit.formTypeNamespace()/];
+namespace [unit.formNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

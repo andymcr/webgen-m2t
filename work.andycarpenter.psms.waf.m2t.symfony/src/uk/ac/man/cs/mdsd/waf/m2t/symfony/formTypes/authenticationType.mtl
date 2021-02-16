@@ -18,7 +18,7 @@
 [template public registrationFormType(authentication : LocalAuthenticationSystem)]
 [file(authentication.formTypeFilename('Registration'), false)]
 <?php
-namespace [authentication.formTypeNamespace()/];
+namespace [authentication.formNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

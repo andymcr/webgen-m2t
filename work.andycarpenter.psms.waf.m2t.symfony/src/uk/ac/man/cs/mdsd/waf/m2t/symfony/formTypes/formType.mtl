@@ -36,7 +36,7 @@
 [file(unit.formTypeFilename(model), false)]
 [let dataInstance : String = unit.contentType().instanceName()]
 <?php
-namespace [unit.formTypeNamespace()/];
+namespace [unit.formNamespace()/];
 
 [unit.useStatements()/]
 
@@ -73,7 +73,7 @@ class [unit.typeClassName(model)/] extends AbstractType
 [template public formType(association : UnitAssociation)]
 [file(association.formTypeFilename(), false)]
 <?php
-namespace [association.formTypeNamespace()/];
+namespace [association.formNamespace()/];
 
 [association.useStatements()/]
 

@@ -60,10 +60,6 @@
 	= eObject.sourceDirectory().concat('/').concat('Form')
 /]
 
-[query public formTypeDirectory(eObject : EObject) : String
-	= eObject.formDirectory().concat('/').concat('Type')
-/]
-
 [query public formViewDirectory(eObject : EObject) : String
 	= eObject.templatesDirectory().concat('/').concat('form')
 /]
@@ -145,10 +141,6 @@
 	= eObject.appNamespace().concat('\\').concat('Form')
 /]
 
-[query public formTypeNamespace(eObject : EObject) : String
-	= eObject.formNamespace().concat('\\').concat('Type')
-/]
-
 [query public securityNamespace(eObject : EObject) : String
 	= eObject.appNamespace().concat('\\').concat('Security')
 /]
@@ -199,25 +191,25 @@
 /]
 
 [query public formTypeFilename(type : EnumerationType) : String
-	= type.formTypeDirectory().concat('/')
+	= type.formDirectory().concat('/')
 		.concat(type.typeClassName())
 		.concat(type.executableExtension())
 /]
 
 [query public formTypeFilename(authentication : LocalAuthenticationSystem, element : String) : String
-	= authentication.formTypeDirectory().concat('/')
+	= authentication.formDirectory().concat('/')
 		.concat(authentication.typeClassName(element))
 		.concat(authentication.executableExtension())
 /]
 
 [query public formTypeFilename(unit : SingletonUnit, model : WafModel) : String
-	= unit.formTypeDirectory().concat('/')
+	= unit.formDirectory().concat('/')
 		.concat(unit.typeClassName(model))
 		.concat(unit.executableExtension())
 /]
 
 [query public formTypeFilename(association : UnitAssociation) : String
-	= association.formTypeDirectory().concat('/')
+	= association.formDirectory().concat('/')
 		.concat(association.typeClassName())
 		.concat(association.executableExtension())
 /]

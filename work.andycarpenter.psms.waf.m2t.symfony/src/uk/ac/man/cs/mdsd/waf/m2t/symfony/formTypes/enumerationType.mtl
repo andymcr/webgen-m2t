@@ -12,7 +12,7 @@
 [template public formType(type : EnumerationType)]
 [file(type.formTypeFilename(), false)]
 <?php
-namespace [type.formTypeNamespace()/];
+namespace [type.formNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
