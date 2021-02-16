@@ -26,10 +26,6 @@
 	= 'Security'
 /]
 
-[query public typePrefix(eObject : EObject) : String
-	= 'App'
-/]
-
 [query public typeSuffix(eObject : EObject) : String
 	= 'Type'
 /]
@@ -61,7 +57,7 @@
 /]
 
 [query public typeClassName(type : EnumerationType) : String
-	= type.typePrefix().concat(type.name).concat(type.typeSuffix())
+	= type.name.concat(type.typeSuffix())
 /]
 
 [query public modelName(type : EnumerationType) : String
@@ -359,8 +355,7 @@
 
 [query private typeClassNameEntity(unit : SingletonUnit, model : WafModel) : String
 	= let sameModel : Sequence(DynamicUnit) = unit.sameModel(model)
-		in unit.typePrefix()
-			.concat(unit.contentType().modelName())
+		in unit.contentType().modelName()
 			.concat(if sameModel->size() <> unit.contentType().formsUsing(model)->size() then
 					unit.name
 				else
@@ -409,7 +404,7 @@
 /]
 
 [query public typeClassName(association : UnitAssociation) : String
-	= association.typePrefix().concat(association.association.targetType().modelName()).concat(association.typeSuffix())
+	= association.association.targetType().modelName().concat(association.typeSuffix())
 /]
 
 [query public uniqueName(field : UnitField) : String
