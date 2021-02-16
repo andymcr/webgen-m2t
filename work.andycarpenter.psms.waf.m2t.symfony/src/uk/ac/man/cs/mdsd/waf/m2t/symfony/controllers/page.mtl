@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
+[import uk::ac::man::cs::mdsd::orm::m2t::core::selection]
 [import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
@@ -15,7 +16,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
@@ -60,7 +60,6 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/if]
     private $translationService;
 
-[if (page.repositories()->notEmpty() or page.services()->notEmpty() or page.hasExplicitValidation())]
     public function __construct([for (repository : Repository | page.repositories()) separator (', ')]
 [repository.className()/] $[repository.instanceName()/][/for][if (page.repositories()->notEmpty() and page.services()->notEmpty())]
 , [/if][for (service : Service | page.services()) separator (', ')]
@@ -81,7 +80,6 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
         $this->translationService = $translator;
     }
 
-[/if]
 [if (page.hasSingleActionMethod())]
     [page.actionMethod()/]
 
@@ -117,7 +115,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
 [for (form : SingletonUnit | page.formUnits()->sortedBy(u | u.name))]
-use [form.formTypeNamespace()/]\[form.typeClassName(page.partOf)/];
+use [form.formNamespace()/]\[form.typeClassName(page.partOf)/];
 [/for]
 [for (repository : Repository | page.repositories())]
 use [repository.repositoryNamespace()/]\[repository.className()/];
