@@ -133,13 +133,10 @@
 				unit.routeParameters(routingType.uriPathKeys(),
 					routingType.uriPathKeys()->asSet())
 			endif
-		else if selection.selectPath->notEmpty() then
-			unit.routeParameters(selection.selectionType().uriPathKeys(), selection.selectionKeys())
-		else if not routingType.oclIsUndefined() then
-			unit.routeParameters(routingType.uriPathKeys(), selection.selectionKeys())
 		else
-			Sequence{}
-		endif endif endif
+			unit.routeParameters(selection.selectionType().uriPathKeys(),
+				selection.selectionKeys())
+		endif
 /]
 
 [query public routeParameters(action : Action) : Sequence(Attribute)
@@ -153,12 +150,12 @@
 /]
 
 [query public routeCreateParameters(unit : EditUnit) : Sequence(Attribute)
-	= if (unit.contentType.keyEntity().container().oclIsUndefined()) then
+	= if (unit.contentType.parentEntity().oclIsUndefined()) then
 			Sequence{}
 		else
 			unit.routeParameters(
-				unit.contentType.keyEntity().container().uriPathKeys(),
-				unit.contentType.keyEntity().container().uriPathKeys()->asSet())
+				unit.contentType.parentEntity().uriPathKeys(),
+				unit.contentType.parentEntity().uriPathKeys()->asSet())
 		endif
 /]
 
@@ -173,17 +170,17 @@
 		else if unit.oclIsKindOf(DetailsUnit) then
 			unit.routeContainerParameters(unit.oclAsType(DetailsUnit).selection)
 		else
-			unit.routeContainerParameters(unit.contentType().container(), Set{})
+			unit.routeContainerParameters(unit.contentType().parentEntity(), Set{})
 		endif endif
 /]
 
 [query private routeContainerParameters(unit : ContentUnit, selection : Selection) : Sequence(Attribute)
 	= if selection.oclIsUndefined() then
-			unit.routeContainerParameters(unit.contentType().container(), Set{})
+			unit.routeContainerParameters(unit.contentType().parentEntity(), Set{})
 		else if selection.selectPath->notEmpty() then
 			unit.routeContainerParameters(selection.selectionType(), selection.selectionKeys())
 		else
-			unit.routeContainerParameters(unit.contentType().container(), selection.selectionKeys())
+			unit.routeContainerParameters(unit.contentType().parentEntity(), selection.selectionKeys())
 		endif endif
 /]
 
@@ -198,10 +195,10 @@
 [query public routeContainerParameters(action : Action) : Sequence(Attribute)
 	= if action.unit().oclIsKindOf(CollectionUnit) then
 			action.unit().routeParameters(
-				action.unit().contentType().container(),
+				action.unit().contentType().parentEntity(),
 				action.unit().oclAsType(CollectionUnit).findContainerSelection)
 		else
-			action.unit().routeParameters(action.unit().contentType().container(), null)
+			action.unit().routeParameters(action.unit().contentType().parentEntity(), null)
 		endif
 /]
 
