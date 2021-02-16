@@ -239,8 +239,8 @@ protected $updated;
 [/template]
 
 [template private ormAnnotation(feature : Feature)
-	? (feature.oclIsKindOf(Attribute)) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
+	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
+[let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
 [if (attribute.primaryKey)]
 * @ORM\Id
 [/if]
@@ -248,6 +248,13 @@ protected $updated;
 [if (attribute.slugFields->notEmpty())]
 * @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.columnName/]"[/for]})
 [/if]
+[/let]
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(CollectionElement)) post(trim())]
+[let attribute : CollectionElement = feature.oclAsType(CollectionElement)]
+* @ORM\Column([if (feature.columnName.isReservedWord())]name="`[feature.columnName/]`", [/if]type="[attribute.collectionType.ormType/]")
 [/let]
 [/template]
 
@@ -423,7 +430,7 @@ public function __construct()
 	[if (feature.hasDefaultValue())]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue().defaultExpression()/];
 	[/if]
-	[if (feature.oclIsTypeOf(CollectionAttribute))]
+	[if (feature.oclIsKindOf(CollectionAttribute))]
     $this->[feature.modelPropertyName()/] = Array();
 	[/if]
 	[if (feature.oclIsTypeOf(CollectionAssociation))]
@@ -433,16 +440,6 @@ public function __construct()
     $this->[feature.modelPropertyName()/]  = new EmbeddedFile();
 	[/if]
 [/for]
-}
-[/template]
-
-[template private encoderSelectionMethod(entity : Entity) post(trim())]
-public function getEncoderName()
-{
-    if ($this->created < new \DateTime('2016-01-01 00:00'))
-        return 'legacy_encoder';
-
-    return null;
 }
 [/template]
 
