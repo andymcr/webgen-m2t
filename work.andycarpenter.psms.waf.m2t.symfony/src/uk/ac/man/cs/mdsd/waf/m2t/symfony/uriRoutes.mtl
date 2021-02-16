@@ -68,9 +68,10 @@
 [query private uriPath(unit : ContentUnit, routingType : Entity, selection : Selection) : String
 	= if selection.oclIsUndefined() then
 			unit.uriPath(routingType, unit.uriElement, unit.routeParameters())
+-- for collection unit selection type /= routing type
 		else if selection.selectPath->notEmpty() then
 			unit.uriPath(selection.selectionType(), unit.uriElement, unit.routeParameters())
-		else 
+		else
 			unit.uriPath(routingType, unit.uriElement, unit.routeParameters())
 		endif endif
 /]
