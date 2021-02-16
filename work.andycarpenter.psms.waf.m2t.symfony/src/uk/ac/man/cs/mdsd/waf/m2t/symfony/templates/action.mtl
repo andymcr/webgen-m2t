@@ -52,7 +52,7 @@
 [template public actionLink(action : Action, valueType : Entity, valueAccessor : String, 
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
 	classAttribute : String)
-	? (action.oclIsTypeOf(OperationAction))  post(trim())]
+	? (action.oclIsKindOf(OperationAction))  post(trim())]
 [let featureAction : OperationAction = action.oclAsType(OperationAction)]
 [let unit : CollectionUnit = featureAction.unit().oclAsType(CollectionUnit)]
 [action.anchor(featureAction.routeName(), 
