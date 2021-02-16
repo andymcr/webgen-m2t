@@ -30,8 +30,7 @@
 	= if page.units->isEmpty() then
 			page.uriPagePath()
 		else
-			page.uriPagePath()
-				.combinePaths(page.units->first().uriPath())
+			page.units->first().uriPath()
 		endif
 /]
 
@@ -312,33 +311,4 @@
 		else
 			path.combinePaths(keyEntity.containingAssociation().opposite.name)
 		endif
-/]
-
-
-[query private explicitHomeUnit(model : WafModel) : ContentUnit
-	= let homeUnits : Sequence(ContentUnit)
-		= model.pages
-			->collect(p | p.units)
-			->select(u | u.uriPath() = '')
-		in if homeUnits->notEmpty() then
-				homeUnits->first()
-			else
-				null
-			endif
-/]
-
-[query public isHomeUnit(unit : ContentUnit) : Boolean
-	= let explicitHome : ContentUnit
-		= unit.displayedOn.partOf.explicitHomeUnit()
-		in if not explicitHome.oclIsUndefined() then
-				explicitHome = unit
-			else 
-				let homePage : Page
-					= unit.displayedOn.partOf.homePage()
-					in if homePage.units->notEmpty() then
-							homePage.units->first() = unit
-						else
-							false
-						endif
-			endif
 /]

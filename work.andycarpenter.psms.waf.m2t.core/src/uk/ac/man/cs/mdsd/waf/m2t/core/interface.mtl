@@ -23,16 +23,26 @@
 /]
 
 
-[query public homePage(model : WafModel) : Page
+[query private homeUnit(model : WafModel) : ContentUnit
 	= let homes : Sequence(ActionMenuEntry)
 		= model.menus
 			->collect(m | m.entries)
 			->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
 			->select(e | e.name.equalsIgnoreCase('Home'))
 		in if homes->notEmpty() then
-				homes->first().action.displayedOn
+				homes->first().action
 			else
-				model.pages->first()
+				null
+			endif
+/]
+
+[query public isHomeUnit(unit : ContentUnit) : Boolean
+	= let homeUnit : ContentUnit
+		= unit.displayedOn.partOf.homeUnit()
+		in if homeUnit.oclIsUndefined() then
+				false
+			else
+				homeUnit = unit
 			endif
 /]
 

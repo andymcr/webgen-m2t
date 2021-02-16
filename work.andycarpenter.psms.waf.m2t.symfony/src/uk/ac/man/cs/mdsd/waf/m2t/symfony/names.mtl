@@ -14,6 +14,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
@@ -184,11 +185,7 @@
 /]
 
 [query public routeName(page : Page) : String
-	= if page.dynamicUnits()->isEmpty() or page.hasSingleActionMethod() then
-			page.instanceName()
-		else
-			page.dynamicUnits()->first().routeName()
-		endif
+	= page.uniqueName()
 /]
 
 [query public uniqueName(page : Page) : String
@@ -267,18 +264,20 @@
 /]
 
 [query public routeName(unit : ContentUnit, createFunction : Boolean) : String
-	= if unit.displayedOn.oclIsTypeOf(Page) and unit.displayedOn.hasSingleActionMethod() then
-			unit.displayedOn.routeName()
+	= if unit.displayedOn.hasSingleActionMethod() then
+			unit.displayedOn.uniqueName()
 		else
-			if unit.displayedOn.units->size() = 1 then
-					unit.displayedOn.uniqueName()
-				else
-					if not unit.oclIsTypeOf(CreateUpdateUnit) then
-						unit.uniqueName()
+			let routingUnits : OrderedSet(ContentUnit)
+				= unit.displayedOn.routingUnits()
+				in if routingUnits->size() = 1 and routingUnits->first() = unit then
+						unit.displayedOn.uniqueName()
 					else
-						unit.oclAsType(CreateUpdateUnit).routeName2(createFunction)
+						if not unit.oclIsTypeOf(CreateUpdateUnit) then
+							unit.uniqueName()
+						else
+							unit.oclAsType(CreateUpdateUnit).routeName2(createFunction)
+						endif
 					endif
-				endif
 		endif
 /]
 
@@ -303,6 +302,11 @@
 
 [query public routeName(resource : Resource) : String
 	= resource.instanceName()
+/]
+
+[query public routingUnits(page : Page) : OrderedSet(ContentUnit)
+	= page.units
+		->select(u | u.routeParameters() = page.routeParameters())
 /]
 
 
