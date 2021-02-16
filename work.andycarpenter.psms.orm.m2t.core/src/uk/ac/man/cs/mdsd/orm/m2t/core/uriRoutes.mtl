@@ -70,7 +70,7 @@
 		endif endif
 /]
 
-[query private uriPathKeys(selection : Selection) : Sequence(Attribute)
+[query public uriPathKeys(selection : Selection) : Sequence(Attribute)
 	= let pathKeys : Sequence(Attribute)
 		= if selection.selectPath->isEmpty() then
 				Sequence{}
