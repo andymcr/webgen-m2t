@@ -43,7 +43,7 @@ namespace [unit.formNamespace()/];
 
 class [unit.typeClassName(model)/] extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 [if (unit.hasDynamicChoices())]
         $[dataInstance/] = $options['['/]'data'[']'/] ?? null;
@@ -59,7 +59,7 @@ class [unit.typeClassName(model)/] extends AbstractType
 [/if]
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => '[unit.modelsNamespace()/]\[unit.modelName()/]'
@@ -80,7 +80,7 @@ namespace [association.formNamespace()/];
 
 class [association.typeClassName()/] extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 [for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
 	[if (feature.oclIsKindOf(Attribute) and feature.isSingleton())]
@@ -93,7 +93,7 @@ class [association.typeClassName()/] extends AbstractType
 [/for]
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => '[association.modelsNamespace()/]\[association.association.targetType().modelName()/]'

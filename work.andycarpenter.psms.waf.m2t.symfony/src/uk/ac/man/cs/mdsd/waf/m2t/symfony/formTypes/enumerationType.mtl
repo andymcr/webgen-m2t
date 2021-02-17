@@ -20,7 +20,7 @@ use [type.modelsNamespace()/]\[type.modelName()/];
 
 class [type.typeClassName()/] extends AbstractType
 {
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'choices' => [type.modelName()/]::options()
@@ -32,7 +32,7 @@ class [type.typeClassName()/] extends AbstractType
 		return 'choice';
 	}
 
-	public function getName()
+	public function getName(): String
 	{
 		return '[type.formTypeName()/]';
 	}
