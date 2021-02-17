@@ -177,7 +177,7 @@ class [authentication.controllerClassName()/] extends [model.baseControllerClass
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('[model.homePage().routeName()/]');
+            return $this->redirectToRoute('[model.homeUnit().routeName()/]');
         }
 
         return $this->render('[security.securityViewDirectorySuffix()/]/reset.html.twig', ['['/]

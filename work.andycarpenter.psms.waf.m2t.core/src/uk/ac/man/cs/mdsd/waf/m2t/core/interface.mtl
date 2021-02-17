@@ -13,7 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
 
 
-[query private homeUnit(model : WafModel) : ContentUnit
+[query public homeUnit(model : WafModel) : ContentUnit
 	= let homes : Sequence(ActionMenuEntry)
 		= model.menus
 			->collect(m | m.entries)

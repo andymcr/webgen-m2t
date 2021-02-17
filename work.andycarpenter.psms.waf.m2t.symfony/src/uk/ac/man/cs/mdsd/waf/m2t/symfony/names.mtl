@@ -170,7 +170,7 @@
 
 
 [query public actionName(page : Page) : String
-	= page.instanceName().concat('Action')
+	= page.instanceName()
 /]
 
 [query public controllerName(page : Page) : String
@@ -195,7 +195,7 @@
 
 
 [query public actionName(unit : ContentUnit) : String
-	= unit.instanceName().concat('Action')
+	= unit.instanceName()
 /]
 
 [query public containerInstanceName(unit : DynamicUnit) : String
@@ -413,27 +413,29 @@
 
 
 [query public actionName(action : Action) : String
-	= let name : String
-		= if action.usedBy.oclIsKindOf(DynamicUnit) then
-				let actions : Sequence(Action)
-					= action.controller().units
-						->select(u | u.oclIsKindOf(ActionContainer)).oclAsType(ActionContainer)
-						->collect(c | c.actions)
-					in 
-				if actions->select(a | a.name.toLowerCase() = action.name.toLowerCase())->size() < 2  then
-					action.name.toLowerFirst()
-				else
-					action.usedBy.oclAsType(DynamicUnit).instanceName()
-						.concat(action.name.toUpperFirst())
-				endif
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.actionName(action.usedBy.oclAsType(DynamicUnit))
+		else
+			action.actionName(action.usedBy.oclAsType(UnitAssociation))
+		endif
+/]
+
+[query private actionName(action : Action, unit : DynamicUnit) : String
+	= let siblings : Sequence(Action)
+		= unit.displayedOn.actionsRequiringHandlers()
+		in if siblings->select(a | a.name.equalsIgnoreCase(action.name))->size() < 2  then
+				action.uniqueName()
 			else
-				let association : UnitAssociation
-						= action.usedBy.oclAsType(UnitAssociation)
-					in association.displayedOn.instanceName()
-					.concat(association.name.toUpperFirst())
-					.concat(action.name.toUpperFirst())
+				unit.instanceName().concat(action.name.toUpperFirst())
 			endif
-		in name.concat('Action')
+/]
+
+[query private actionName(action : Action, association : UnitAssociation) : String
+	= let association : UnitAssociation
+		= action.usedBy.oclAsType(UnitAssociation)
+		in association.displayedOn.instanceName()
+			.concat(association.name.toUpperFirst())
+			.concat(action.name.toUpperFirst())
 /]
 
 [query public instanceName(action : Action) : String
