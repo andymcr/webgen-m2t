@@ -92,7 +92,9 @@ class [service.className()/]
 [/template]
 
 [template private businessOperation(operation : BusinessOperation) post(trim())]
-public function [operation.methodName()/]([operation.formalParameters()/])
+public function [operation.methodName()/]([operation.formalParameters()/]): [if (operation.resultType = OperationResultTypes::File)]
+File[else]void[/if]
+
 {
     // [protected ('operation.'.concat(operation.methodName()))]
     // [/protected]
