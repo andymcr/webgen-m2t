@@ -94,7 +94,7 @@ $[parameter.name/][/for]
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]X([unit.actionCreateMethodFormals()/])
+public function [unit.actionName()/]X([unit.actionCreateMethodFormals()/]): Response
 {
     [unit.actionCreateCore()/]
 
@@ -134,14 +134,6 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [/let]
 [/template]
 
-[query private updateSuffix(unit : EditUnit) : String
-	= if unit.oclIsTypeOf(CreateUpdateUnit) then
-			unit.oclAsType(CreateUpdateUnit).uriElement
-		else
-			''
-		endif
-/]
-
 [template private actionUpdateMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.displayedOn]
 /**
@@ -150,7 +142,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([unit.actionMethodFormals()/])
+public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
     [unit.actionUpdateCore()/]
 

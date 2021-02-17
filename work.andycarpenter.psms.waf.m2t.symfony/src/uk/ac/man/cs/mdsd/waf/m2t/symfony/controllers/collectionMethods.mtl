@@ -42,7 +42,7 @@
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([unit.actionMethodFormals()/])
+public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
     return $this->renderPage([unit.oclAsType(DynamicUnit).renderMethodActuals()/]);
 }
@@ -61,7 +61,7 @@ $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [if (not collectionUnit.inlineSelectCode())]
-private function [collectionUnit.selectName()/]([collectionUnit.selectMethodParameters(true)/])
+private function [collectionUnit.selectName()/]([collectionUnit.selectMethodParameters(true)/]): void
 {
     [collectionUnit.selectCode()/]
 }

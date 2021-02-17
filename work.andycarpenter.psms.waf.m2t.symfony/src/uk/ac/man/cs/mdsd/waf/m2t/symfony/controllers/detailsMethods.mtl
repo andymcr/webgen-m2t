@@ -31,7 +31,7 @@
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/]([unit.actionMethodFormals()/])
+public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
 [if (unit.isConditionalDisplay())]
     [unit.actionCore()/]

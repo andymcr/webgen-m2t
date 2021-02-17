@@ -136,9 +136,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
 [if (page.hasFilters() or page.hasPagination() or page.hasEditUnits())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
-[if (page.hasFileActions())]
 use Symfony\Component\HttpFoundation\Response;
-[/if]
 use Symfony\Component\Routing\Annotation\Route;
 [if (page.hasExplicitValidation())]
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -153,7 +151,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  [page.securityAnnotation()/]
 [/if]
  */
-public function [page.actionName()/]([page.actionMethodFormals()/])
+public function [page.actionName()/]([page.actionMethodFormals()/]): Response
 {
 [for (unit : DynamicUnit | page.dynamicUnits())]
     [unit.actionCore()/]
@@ -167,7 +165,7 @@ public function [page.actionName()/]([page.actionMethodFormals()/])
 private function renderPage([if (page.hasFilters() or page.hasPagination())]
 Request $request[if (page.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | page.routeParameters()) separator(', ')]
-$[key.routeParameterName(page.routeParameters()->last().partOf.oclAsType(Entity))/][/for])
+$[key.routeParameterName(page.routeParameters()->last().partOf.oclAsType(Entity))/][/for]): Response
 {
     [page.renderCore()/]
 }
@@ -194,7 +192,7 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
  [deleteAction.securityAnnotation()/]
 [/if]
  */
-public function [deleteAction.actionName()/]([action.actionMethodFormals()/])
+public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
 {
     [deleteAction.loadInstance()/]
     $this->[unit.contentRepository().instanceName()/]->remove($[deleteAction.instanceName()/], true);
@@ -218,7 +216,8 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/])
  [operationAction.securityAnnotation()/]
 [/if]
  */
-public function [operationAction.actionName()/]([unit.actionMethodFormals()/])
+public function [operationAction.actionName()/]([unit.actionMethodFormals()/]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
+Response[else]File[/if]
 {
 [if (operationAction.operation.resultType = OperationResultTypes::None)]
 [elseif (operationAction.operation.resultType = OperationResultTypes::File)]
@@ -247,7 +246,9 @@ public function [operationAction.actionName()/]([unit.actionMethodFormals()/])
 public function [operationAction.actionName()/]([if (action.oclIsTypeOf(InstanceOperationAction))]
 [action.actionMethodFormals()/][elseif (action.oclIsTypeOf(ContainerOperationAction))]
 [action.actionContainerMethodFormals()/][else]
-[/if])
+[/if]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
+Response[else]File[/if]
+
 {
 [if (not operationAction.operation.oclIsUndefined())]
     [operationAction.actionMethodBody()/]
