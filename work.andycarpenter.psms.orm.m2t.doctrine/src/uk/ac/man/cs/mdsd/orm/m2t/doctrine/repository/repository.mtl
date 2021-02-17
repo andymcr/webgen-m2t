@@ -21,6 +21,9 @@ namespace [repository.repositoryNamespace()/];
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+[if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
+use Doctrine\ORM\QueryBuilder;
+[/if]
 [if (repository.selections->notEmpty() or repository.findAll.oclIsUndefined())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [/if]
@@ -80,14 +83,13 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
     [selection.selectionMethod()/]
 
 [/for]
-    [repository.getRepositoryMethod()/]
 }
 [/file]
 [/template]
 
 [template private findMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
-public function [repository.serves.findMethodName()/]([entity.routeParameters()/])
+public function [repository.serves.findMethodName()/]([entity.routeParameters()/]): ?[repository.serves.modelName()/]
 {
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
     return $queryBuilder
@@ -138,10 +140,10 @@ $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key
 [/template]
 
 [template private findAllMethod(repository : Repository) post(trim())]
-public function findAll([repository.limitFormals(10)/])
+public function findAll([repository.limitFormals(10)/]): object
 {
     if ($offset < 0)
-	    return $this->getRepository()->findAll();
+	    return parent::findAll();
     else {
         $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
         $queryBuilder->setFirstResult($offset);
@@ -154,7 +156,7 @@ public function findAll([repository.limitFormals(10)/])
 
 [template private createMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
-public function create([for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields() and a.isSingleton())) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false)
+public function create([for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields() and a.isSingleton())) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false): [repository.serves.modelName()/]
 {
     $new = new [entity.modelName()/]();
 [for (attribute : Attribute | entity.attributes()->select(a | not a.hasSlugFields() and a.isSingleton()))]
@@ -167,7 +169,7 @@ public function create([for (attribute : Attribute | entity.attributes()->select
 [/template]
 
 [template private removeMethod(repository : Repository) post(trim())]
-public function remove($entity, $flush = false)
+public function remove($entity, $flush = false): void
 {
     $this->_em->remove($entity);
     if ($flush)
@@ -178,7 +180,7 @@ public function remove($entity, $flush = false)
 [/template]
 
 [template private saveMethod(repository : Repository) post(trim())]
-public function save($entity, $flush = false)
+public function save($entity, $flush = false): void
 {
     $this->_em->persist($entity);
     if ($flush)
@@ -189,7 +191,7 @@ public function save($entity, $flush = false)
 [/template]
 
 [template private flushMethod(repository : Repository) post(trim())]
-public function flush()
+public function flush(): void
 {
     $this->_em->flush();
 }
@@ -197,7 +199,9 @@ public function flush()
 
 [template private selectionMethod(selection : Selection)
 	? (selection.filters->isEmpty()) post(trim())]
-public function [selection.methodName/]([selection.formals()/])
+public function [selection.methodName/]([selection.formals()/]): [if (selection.limit = 1)]
+?[selection.definedBy.serves.modelName()/][else]object[/if]
+
 {
     [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
@@ -211,7 +215,7 @@ public function [selection.methodName/]([selection.formals()/])
 
 [template private selectionMethod(selection : Selection)
 	? (selection.filters->notEmpty()) post(trim())]
-private function [selection.builderMethodName()/]([selection.formals()/])
+private function [selection.builderMethodName()/]([selection.formals()/]): QueryBuilder
 {
     [selection.builderCode()/]
     return $queryBuilder;
@@ -219,13 +223,15 @@ private function [selection.builderMethodName()/]([selection.formals()/])
 
 [if (selection.selectPath->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
 private function [selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals())]
-, [selection.selectionActuals()/][/if])
+, [selection.selectionActuals()/][/if]) : void
 {
     [selection.queryParametersCode()/]
 }
 
 [/if]
-public function [selection.methodName/]([selection.formals()/])
+public function [selection.methodName/]([selection.formals()/]): [if (selection.limit = 1)]
+?[selection.definedBy.serves.modelName()/][else]object[/if]
+
 {
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
 [if (selection.selectPath->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
@@ -237,7 +243,9 @@ public function [selection.methodName/]([selection.formals()/])
 }
 [for (filter : Filter | selection.filters)]
 
-public function [filter.methodName/]([filter.formals()/])
+public function [filter.methodName/]([filter.formals()/]): [if (selection.limit = 1)]
+?[selection.definedBy.serves.modelName()/][else]object[/if]
+
 {
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
     $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
@@ -484,13 +492,6 @@ else
 [else]
 return $query->getResult();
 [/if]
-[/template]
-
-[template private getRepositoryMethod(service : Repository) post(trim())]
-public function getRepository()
-{
-    return $this->doctrine->getRepository('[service.appName()/]:[service.serves.modelName()/]');
-}
 [/template]
 
 [template private formalParameters(parameters : FormalParameterList) post(trim())]
