@@ -26,11 +26,11 @@
 [/template]
 
 [template public routeContainerAnnotation(unit : ContentUnit, suffix : String) post(trim())]
-[unit.routeAnnotation(unit.routeName(true), unit.uriContainerPath(suffix), true)/]
+[unit.routeAnnotation(unit.routeName(), unit.uriContainerPath(suffix), true)/]
 [/template]
 
 [template public routeCreateAnnotation(unit : EditUnit, suffix : String) post(trim())]
-[unit.routeAnnotation(unit.routeName(true), unit.uriCreatePath(suffix), true)/]
+[unit.routeAnnotation(unit.routeCreateName(), unit.uriCreatePath(suffix), true)/]
 [/template]
 
 [template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]

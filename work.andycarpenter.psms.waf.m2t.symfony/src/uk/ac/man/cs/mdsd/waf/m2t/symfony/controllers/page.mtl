@@ -200,7 +200,7 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/])
     $this->[unit.contentRepository().instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (unit.oclIsKindOf(CollectionUnit))]
-    return [action.redirect(unit.routeName(), deleteAction.routeParameters())/];
+    return [action.redirect(action.routeActionReturnName(), deleteAction.routeParameters())/];
 [else]
 [/if]
 }
@@ -266,7 +266,7 @@ $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operati
 [if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
 [action.actionResultFlash()/]
 [/if]
-return [action.redirect(unit.routeName(true), action.routeParameters())/];
+return [action.redirect(action.routeActionReturnName(), action.routeParameters())/];
 [/let]
 [/template]
 
@@ -279,7 +279,7 @@ $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operati
 [if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
 [action.actionResultFlash()/]
 [/if]
-return [action.redirect(unit.routeName(true), action.routeContainerParameters())/];
+return [action.redirect(action.routeActionReturnName(), action.routeContainerParameters())/];
 [/let]
 [/template]
 
@@ -291,7 +291,7 @@ $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operati
 [if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
 [action.actionResultFlash()/]
 [/if]
-return [action.redirect(unit.routeName(true), action.routeContainerParameters())/];
+return [action.redirect(action.routeActionReturnName(), action.routeContainerParameters())/];
 [/let]
 [/template]
 

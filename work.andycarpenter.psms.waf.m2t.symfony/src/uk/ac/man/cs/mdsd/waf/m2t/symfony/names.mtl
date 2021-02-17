@@ -11,6 +11,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
@@ -259,40 +260,46 @@
 	= 'pageSize'
 /]
 
-[query public routeName(unit : ContentUnit) : String
-	= unit.routeName(false)
-/]
-
-[query public routeName(unit : ContentUnit, createFunction : Boolean) : String
-	= if unit.displayedOn.hasSingleActionMethod() then
-			unit.displayedOn.uniqueName()
-		else
-			let routingUnits : OrderedSet(ContentUnit)
-				= unit.displayedOn.routingUnits()
-				in if routingUnits->size() = 1 and routingUnits->first() = unit then
-						unit.displayedOn.uniqueName()
-					else
-						if not unit.oclIsTypeOf(CreateUpdateUnit) then
-							unit.uniqueName()
-						else
-							unit.oclAsType(CreateUpdateUnit).routeName2(createFunction)
-						endif
-					endif
-		endif
-/]
-
-[query private routeName2(unit : CreateUpdateUnit, createFunction : Boolean) : String
-	= let uriElement : String
-		= if createFunction then
-				unit.createUriElement
-			else
-				unit.uriElement
-			endif
-		in if not uriElement.oclIsUndefined() then
-				unit.displayedOn.uniqueName().concat('_').concat(uriElement)
+[query public routeCreateName(unit : EditUnit) : String
+	= if unit.oclIsTypeOf(UpdateUnit) then
+			if unit.uriElement <> '' then
+				unit.displayedOn.uniqueName()
+					.concat('_').concat(unit.uriElement)
 			else
 				unit.uniqueName()
 			endif
+		else if unit.oclIsTypeOf(CreateUpdateUnit) then
+			let createUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)
+				in if createUnit.createUriElement <> '' then
+					unit.displayedOn.uniqueName()
+						.concat('_').concat(createUnit.createUriElement)
+				else
+					unit.uniqueName()
+				endif
+		else
+			unit.uniqueName()
+		endif endif
+/]
+
+[query public routeName(unit : ContentUnit) : String
+	= if unit.isRoutingUnit() then
+			unit.displayedOn.uniqueName()
+		else
+			if unit.oclIsKindOf(EditUnit) and unit.uriElement <> '' then
+				unit.displayedOn.uniqueName()
+					.concat('_').concat(unit.uriElement)
+			else
+				unit.uniqueName()
+			endif
+		endif
+/]
+
+[query public routeSaveName(unit : EditUnit) : String
+	= if unit.displayedOn.hasRoutingUnits() then
+			unit.displayedOn.uniqueName()
+		else
+			unit.uniqueName()
+		endif
 /]
 
 [query public routeName(association : UnitAssociation) : String
@@ -302,11 +309,6 @@
 
 [query public routeName(resource : Resource) : String
 	= resource.instanceName()
-/]
-
-[query public routingUnits(page : Page) : OrderedSet(ContentUnit)
-	= page.units
-		->select(u | u.routeParameters() = page.routeParameters())
 /]
 
 
@@ -373,13 +375,7 @@
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
-	= let key : String
-		= if unit.displayedOn.oclIsTypeOf(Page) then
-				unit.displayedOn.oclAsType(Page).instanceName()
-			else
-				unit.displayedOn.oclAsType(UnitAssociation).displayedOn.uniqueName()
-			endif
-		in key.concat('_').concat(unit.instanceName())
+	= unit.displayedOn.uniqueName().concat('_').concat(unit.instanceName())
 /]
 
 [query public viewName(unit : ContentUnit) : String
@@ -443,15 +439,15 @@
 [query public instanceName(action : Action) : String
 	= if action.oclIsTypeOf(DeleteAction)
 				or action.oclIsKindOf(InstanceOperationAction) then
-			action.unit().contentType().name.toLowerFirst()
+			action.unit().contentType().instanceName()
 		else if action.oclIsTypeOf(ContainerOperationAction) then
 			if action.unit().contentType().isContained() then
-				action.unit().contentType().container().name.toLowerFirst()
+				action.unit().contentType().container().instanceName()
 			else
-				action.name.toLowerFirst()
+				action.uniqueName()
 			endif
 		else
-			action.name.toLowerFirst()
+			action.uniqueName()
 		endif endif
 /]
 
@@ -471,7 +467,31 @@
 		endif
 /]
 
+[query public routeActionReturnName(action : Action) : String
+	= let page : Page = action.unit().displayedOn
+		in if page.hasRoutingUnits() then
+				page.uniqueName()
+			else
+				action.unit().routeName()
+			endif
+/]
+
 [query public routeName(action : Action) : String
-	= action.unit().routeName()
-		.concat('_').concat(action.name.toLowerFirst())
+	= let page : Page = action.unit().displayedOn
+		in if page.hasRoutingUnits() then
+				if page.actionsRequiringHandlers()->select(a | a.name = action.name)->size() = 1 then
+					page.uniqueName()
+						.concat('_').concat(action.uniqueName())
+				else
+					action.unit().routeName()
+						.concat('_').concat(action.uniqueName())
+				endif
+			else
+				action.unit().routeName()
+					.concat('_').concat(action.uniqueName())
+			endif
+/]
+
+[query private uniqueName(action : Action) : String
+	= action.name.toLowerFirst()
 /]

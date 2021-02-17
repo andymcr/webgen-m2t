@@ -10,17 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units]
-
-
-[query public formId(unit : DynamicUnit) : String
-	= let typeName : String
-		= unit.contentType().name.asId()
-		in if false then
-				typeName
-			else
-				typeName
-			endif
-/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
 
 
 [query private homeUnit(model : WafModel) : ContentUnit
@@ -36,25 +26,6 @@
 			endif
 /]
 
-[query public isHomeUnit(unit : ContentUnit) : Boolean
-	= let homeUnit : ContentUnit
-		= unit.displayedOn.partOf.homeUnit()
-		in if homeUnit.oclIsUndefined() then
-				false
-			else
-				homeUnit = unit
-			endif
-/]
-
-
-[query public id(entity : Entity) : String
-	= entity.name.asId()
-/]
-
-
-[query public id(feature : Feature) : String
-	= feature.name.asId()
-/]
 
 [query public id(menu : Menu) : String
 	= menu.name.asId()
@@ -72,14 +43,22 @@
 		endif endif endif
 /]
 
+[query public styleClass(menu : Menu) : String
+	= menu.styleClass
+/]
+
+
+[query public hasRoutingUnits(page : Page) : Boolean
+	= page.routingUnits()->notEmpty()
+/]
 
 [query public pageId(page : Page) : String
 	= page.name.asId()
 /]
 
-
-[query public styleClass(menu : Menu) : String
-	= menu.styleClass
+[query public routingUnits(page : Page) : OrderedSet(ContentUnit)
+	= page.units
+		->select(u | u.routeParameters() = page.routeParameters())
 /]
 
 
@@ -97,8 +76,14 @@
 	= unit.displayedOn.pageId().concat('.').concat(unit.name.asId())
 /]
 
-[query public containedId(action : Action) : String
-	= action.unit().containedId().concat('.actions.').concat(action.name.asId())
+[query public formId(unit : DynamicUnit) : String
+	= let typeName : String
+		= unit.contentType().name.asId()
+		in if false then
+				typeName
+			else
+				typeName
+			endif
 /]
 
 [query public hasClearLabel(unit : EditUnit) : Boolean
@@ -190,6 +175,26 @@
 
 [query public isConditionalDisplay(unit : DynamicUnit) : Boolean
 	= not unit.hideWhen.oclIsUndefined()
+/]
+
+[query public isHomeUnit(unit : ContentUnit) : Boolean
+	= let homeUnit : ContentUnit
+		= unit.displayedOn.partOf.homeUnit()
+		in if homeUnit.oclIsUndefined() then
+				false
+			else
+				homeUnit = unit
+			endif
+/]
+
+[query public isRoutingUnit(unit : ContentUnit) : Boolean
+	= let routingUnits : OrderedSet(ContentUnit)
+		= unit.displayedOn.routingUnits()
+		in if routingUnits->isEmpty() then
+				false
+			else
+				routingUnits->first() = unit
+			endif
 /]
 
 [query public rowClasses(unit : IndexUnit) : Sequence(String)
@@ -309,4 +314,18 @@
 
 [query public styleClass(field : UnitField) : String
 	= field.modelPropertyName().asId()
+/]
+
+
+[query public id(entity : Entity) : String
+	= entity.name.asId()
+/]
+
+
+[query public id(feature : Feature) : String
+	= feature.name.asId()
+/]
+
+[query public containedId(action : Action) : String
+	= action.unit().containedId().concat('.actions.').concat(action.name.asId())
 /]

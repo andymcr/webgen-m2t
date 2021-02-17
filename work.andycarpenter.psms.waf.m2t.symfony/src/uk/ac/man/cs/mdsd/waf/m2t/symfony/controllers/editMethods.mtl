@@ -39,7 +39,7 @@
 
 [/if]
 [if (not editUnit.oclIsTypeOf(CreateUnit))]
-[editUnit.actionEditMethod()/]
+[editUnit.actionUpdateMethod()/]
 
 [/if]
 [/let]
@@ -142,7 +142,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 		endif
 /]
 
-[template private actionEditMethod(unit : EditUnit) post(trim())]
+[template private actionUpdateMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.displayedOn]
 /**
  [unit.routeAnnotation()/]
@@ -152,7 +152,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
  */
 public function [unit.actionName()/]([unit.actionMethodFormals()/])
 {
-    [unit.actionEditCore()/]
+    [unit.actionUpdateCore()/]
 
     return $this->renderPage([unit.renderMethodActuals()/]);
 }
@@ -162,11 +162,11 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/])
 [template public actionCore(unit : ContentUnit)
 	? (unit.oclIsTypeOf(UpdateUnit)) post(trim())]
 [let updateUnit : UpdateUnit = unit.oclAsType(UpdateUnit)]
-[updateUnit.actionEditCore()/]
+[updateUnit.actionUpdateCore()/]
 [/let]
 [/template]
 
-[template private actionEditCore(unit : EditUnit) post(trim())]
+[template private actionUpdateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
 $[unit.instanceName()/] = [unit.loadInstance()/];
 if (!$[unit.instanceName()/]) {
@@ -230,7 +230,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 [template private createForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
 $this->createForm([unit.typeClassName(page.partOf)/]::class, $[unit.instanceName()/], array(
-    'action' => $this->generateUrl('[unit.routeName(true)/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasCreateRouteParameters())]
+    'action' => $this->generateUrl('[unit.routeCreateName()/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasCreateRouteParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
@@ -282,7 +282,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]([unit.getContainerRepository()/
 return [unit.confirmDestination.redirect()/];
 [else]
 	[if (not unit.onSaveContinueEditing)]
-return [unit.redirectCreate(unit.routeName(true), sourceParameters)/];
+return [unit.redirectCreate(unit.routeSaveName(), sourceParameters)/];
 	[/if]
 [/if]
 [/let]
