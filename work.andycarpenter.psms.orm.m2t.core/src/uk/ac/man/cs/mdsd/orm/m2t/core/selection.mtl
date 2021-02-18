@@ -5,11 +5,26 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::core::features]
 
 
+[query public hasCurrentUser(repository : Repository) : Boolean
+	= repository.selections
+		->select(s | s.hasCurrentUser())
+		->notEmpty()
+/]
+
+
 [query public hasConditionParameters(selection : Selection) : Boolean
 	= if selection.condition.oclIsUndefined() then
 				false
 			else
 				selection.condition.hasParameters()
+			endif
+/]
+
+[query public hasCurrentUser(selection : Selection) : Boolean
+	= if selection.condition.oclIsUndefined() then
+				false
+			else
+				selection.condition.hasCurrentUser()
 			endif
 /]
 
