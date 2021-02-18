@@ -4,6 +4,41 @@
 	'http://andycarpenter.work/psm/Base')]
 
 
+[query public hasCurrentUser(expression : Expression) : Boolean
+	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
+			let predicate : PredicateBooleanOperator
+				= expression.oclAsType(PredicateBooleanOperator)
+				in predicate.expressions->exists(e | e.hasCurrentUser())
+		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
+			let predicate : PredicateEqualityOperator
+				= expression.oclAsType(PredicateEqualityOperator)
+				in  predicate.left.hasCurrentUser() or predicate.right.hasCurrentUser()
+		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
+			let predicate : PredicateComparisonOperator
+				= expression.oclAsType(PredicateComparisonOperator)
+				in predicate.left.hasCurrentUser() or predicate.right.hasCurrentUser()
+		else if expression.oclIsTypeOf(PredicateIsOperator) then
+			let predicate : PredicateIsOperator
+				= expression.oclAsType(PredicateIsOperator)
+				in predicate.left.hasCurrentUser() or predicate.right.hasCurrentUser()
+		else if expression.oclIsTypeOf(PredicateLikeOperator) then
+			let predicate : PredicateLikeOperator
+				= expression.oclAsType(PredicateLikeOperator)
+				in predicate.left.hasCurrentUser() or predicate.right.hasCurrentUser()
+		else if expression.oclIsTypeOf(PredicateIsEmpty) then
+			let predicate : PredicateIsEmpty
+				= expression.oclAsType(PredicateIsEmpty)
+				in predicate.feature.hasCurrentUser()
+		else if expression.oclIsTypeOf(PredicateIsNull) then
+			let predicate : PredicateIsNull
+				= expression.oclAsType(PredicateIsNull)
+				in predicate.feature.hasCurrentUser()
+		else
+			expression.oclIsTypeOf(CurrentUser)
+		endif endif endif endif endif endif endif
+/]
+
+
 [query public hasFormals(expression : Expression) : Boolean
 	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
 			let predicate : PredicateBooleanOperator
