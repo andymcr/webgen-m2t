@@ -27,6 +27,9 @@ use Doctrine\ORM\QueryBuilder;
 [if (repository.selections->notEmpty() or repository.findAll.oclIsUndefined())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [/if]
+[if (repository.hasCurrentUser())]
+use Symfony\Component\Security\Core\Security;
+[/if]
 [if (repository.serves.attributes()->notEmpty())]
 use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
 [/if]
@@ -38,9 +41,16 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
 
 
 [/for]
-    public function __construct(ManagerRegistry $managerRegistry)
+[if (repository.hasCurrentUser())]
+    private $security;
+
+[/if]
+    public function __construct(ManagerRegistry $managerRegistry[if (repository.hasCurrentUser())], Security $security[/if])
     {
         parent::__construct($managerRegistry, [repository.serves.modelClassName()/]::class);
+[if (repository.hasCurrentUser())]
+        $this->security = $security;
+[/if]
     }
 
 [for (constant : Constant | repository.constants->select(c | c.useFunction()))]
@@ -140,7 +150,7 @@ $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key
 [/template]
 
 [template private findAllMethod(repository : Repository) post(trim())]
-public function findAll([repository.limitFormals(10)/]): object
+public function findAll([repository.limitFormals(10)/])
 {
     if ($offset < 0)
 	    return parent::findAll();
@@ -199,8 +209,8 @@ public function flush(): void
 
 [template private selectionMethod(selection : Selection)
 	? (selection.filters->isEmpty()) post(trim())]
-public function [selection.methodName/]([selection.formals()/]): [if (selection.limit = 1)]
-?[selection.definedBy.serves.modelName()/][else]object[/if]
+public function [selection.methodName/]([selection.formals()/])[if (selection.limit = 1)]
+: ?[selection.definedBy.serves.modelName()/][elseif (not selection.hasPaginationSupport())]: array[/if]
 
 {
     [selection.builderCode()/]
@@ -229,8 +239,8 @@ private function [selection.parametersMethodName()/]($query[if (selection.select
 }
 
 [/if]
-public function [selection.methodName/]([selection.formals()/]): [if (selection.limit = 1)]
-?[selection.definedBy.serves.modelName()/][else]object[/if]
+public function [selection.methodName/]([selection.formals()/])[if (selection.limit = 1)]
+: ?[selection.definedBy.serves.modelName()/][elseif (not selection.hasPaginationSupport())]: array[/if]
 
 {
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
@@ -243,8 +253,8 @@ public function [selection.methodName/]([selection.formals()/]): [if (selection.
 }
 [for (filter : Filter | selection.filters)]
 
-public function [filter.methodName/]([filter.formals()/]): [if (selection.limit = 1)]
-?[selection.definedBy.serves.modelName()/][else]object[/if]
+public function [filter.methodName/]([filter.formals()/])[if (selection.limit = 1)]
+: ?[selection.definedBy.serves.modelName()/][elseif (not selection.hasPaginationSupport())]: array[/if]
 
 {
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
