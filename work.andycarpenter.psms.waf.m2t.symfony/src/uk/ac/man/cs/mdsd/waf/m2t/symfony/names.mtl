@@ -282,7 +282,7 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
-	= if unit.isRoutingUnit() then
+	= if unit.displayedOn.hasSingleActionMethod() or unit.isRoutingUnit() then
 			unit.displayedOn.uniqueName()
 		else
 			if unit.oclIsKindOf(EditUnit) and unit.uriElement <> '' then

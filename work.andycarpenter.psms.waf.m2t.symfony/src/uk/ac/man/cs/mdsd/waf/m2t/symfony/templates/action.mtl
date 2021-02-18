@@ -53,11 +53,11 @@
 	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
 	classAttribute : String)
 	? (action.oclIsKindOf(OperationAction))  post(trim())]
-[let featureAction : OperationAction = action.oclAsType(OperationAction)]
-[let unit : CollectionUnit = featureAction.unit().oclAsType(CollectionUnit)]
-[action.anchor(featureAction.routeName(), 
-	featureAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
-	linkContent, title, featureAction.confirmMessage, conditionAccessor, true, objectAccess,
+[let operationAction : OperationAction = action.oclAsType(OperationAction)]
+[let unit : CollectionUnit = operationAction.unit().oclAsType(CollectionUnit)]
+[action.anchor(operationAction.routeName(), 
+	operationAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
+	linkContent, title, operationAction.confirmMessage, conditionAccessor, true, objectAccess,
 	classAttribute)/]
 [/let]
 [/let]

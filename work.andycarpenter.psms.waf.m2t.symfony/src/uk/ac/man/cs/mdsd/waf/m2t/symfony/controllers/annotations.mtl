@@ -51,7 +51,7 @@
 
 [template private routeAnnotation(unit : ContentUnit, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
 [if (potentialHomeRoute and unit.isHomeUnit())]
-* @Route("", name="Home")
+* @Route("", name="[routeName/]")
 [else]
 * @Route("[uriPath/]", name="[routeName/]"[if (unit.hasValidatedRouteParameters(false))]
 , requirements={[for (key : Attribute | unit.uriPathValidatedKeys(false)) separator(', ')]"[key.routeParameterName(unit.contentType())/]" = "[key.validationPattern/]"[/for]}[/if])
