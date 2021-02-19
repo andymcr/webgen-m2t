@@ -18,10 +18,8 @@
 [file(galleryUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
 <section [if (not galleryUnit.sectionClass.oclIsUndefined())] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceName()/]">
-[if (not galleryUnit.omitCaption)]
-<h4[if (not galleryUnit.sectionClass.oclIsUndefined() or galleryUnit.omitCaption)]
- class="[if (not galleryUnit.sectionClass.oclIsUndefined())][galleryUnit.captionClass/][/if] [if (galleryUnit.omitCaption)] hidden[/if]"[/if]>[galleryUnit.unitTitle()/]</h4>
-[/if]
+<h4[if (not galleryUnit.captionClass.oclIsUndefined() or galleryUnit.omitCaption)]
+ class="[if (not galleryUnit.captionClass.oclIsUndefined())][galleryUnit.captionClass/][/if] [if (galleryUnit.omitCaption)] hidden[/if]"[/if]>[galleryUnit.unitTitle()/]</h4>
  <div class="[galleryUnit.contentClass/]">
   [galleryUnit.unitContent(null, galleryUnit.instanceName(), 0)/]
  </div>

@@ -12,7 +12,8 @@
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
 [file(staticUnit.viewFilename(), false)]
 <section [if (not staticUnit.sectionClass.oclIsUndefined())] class="[staticUnit.sectionClass/]" [/if]id="[staticUnit.instanceName()/]">
- <h4 class="[staticUnit.captionClass/][if (staticUnit.omitCaption)] hidden[/if]">[staticUnit.displayLabel/]</h4>
+ <h4[if (not staticUnit.captionClass.oclIsUndefined() or staticUnit.omitCaption)]
+ class="[if (not staticUnit.captionClass.oclIsUndefined())][staticUnit.captionClass/][/if][if (staticUnit.omitCaption)] hidden[/if]"[/if]>[staticUnit.displayLabel/]</h4>
 [if (staticUnit.displayedOn.partOf.staticUnitsEditable)]
   <div class="[staticUnit.contentClass/]">{{ [staticUnit.instanceName()/].content }}</div>
 [else]

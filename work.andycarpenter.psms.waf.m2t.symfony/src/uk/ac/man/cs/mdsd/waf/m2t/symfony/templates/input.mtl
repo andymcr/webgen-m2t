@@ -19,8 +19,8 @@
 [let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section [if (not singletonUnit.sectionClass.oclIsUndefined())] class="[singletonUnit.sectionClass/]" [/if]id="[singletonUnit.instanceName()/]">
-<h4[if (not singletonUnit.sectionClass.oclIsUndefined() or singletonUnit.omitCaption)]
- class="[if (not singletonUnit.sectionClass.oclIsUndefined())][singletonUnit.captionClass/][/if] [if (singletonUnit.omitCaption)] hidden[/if]"[/if]>[singletonUnit.unitTitle()/]</h4>
+<h4[if (not singletonUnit.captionClass.oclIsUndefined() or singletonUnit.omitCaption)]
+ class="[if (not singletonUnit.captionClass.oclIsUndefined())][singletonUnit.captionClass/][/if][if (singletonUnit.omitCaption)] hidden[/if]"[/if]>[singletonUnit.unitTitle()/]</h4>
 [if (unit.oclIsTypeOf(MapUnit))]
 [singletonUnit.map()/]
 [else]
@@ -37,7 +37,8 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section [if (not dynamicUnit.sectionClass.oclIsUndefined())] class="[dynamicUnit.sectionClass/]" [/if]id="[dynamicUnit.instanceName()/]">
- <h2 [if (not dynamicUnit.captionClass.oclIsUndefined())] class="[dynamicUnit.captionClass/][/if][if (dynamicUnit.omitCaption)] hidden[/if]">[unit.displayLabel/]</h2>
+ <h2[if (not dynamicUnit.captionClass.oclIsUndefined() or dynamicUnit.omitCaption)]
+ class="[if (not dynamicUnit.captionClass.oclIsUndefined())][dynamicUnit.captionClass/][/if][if (dynamicUnit.omitCaption)] hidden[/if]"[/if]>[unit.displayLabel/]</h2>
  <div class="unit_padding">
 [if (dynamicUnit.hasInterfaceFields())]
 [let accessor : String = '?']
