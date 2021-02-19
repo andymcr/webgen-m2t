@@ -266,7 +266,7 @@ $query->setParameter('now', new \DateTime('now'));
 
 [template public queryParameter(expression : Expression)
 	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
-$query->setParameter('user', $this->security->getUser());
+$query->setParameter('user', $this->security->getUser()->getUserDetails());
 [/template]
 
 
