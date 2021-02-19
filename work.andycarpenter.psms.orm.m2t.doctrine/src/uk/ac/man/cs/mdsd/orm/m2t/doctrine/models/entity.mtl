@@ -66,7 +66,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [entity.timestampFeatures()/]
 
 [/if]
-[if (entity.hasDefaultValueFeatures() or entity.hasResourceAttributes() or entity.hasCollectionAssociations() or entity.implementsUserInterface)]
+[if (entity.hasDefaultValueFeatures() or entity.hasResourceAttributes() or entity.hasCollectionAssociations())]
     [entity.constructor()/]
 
 [/if]
@@ -624,16 +624,58 @@ public function [feature.removeMethodName()/]($[feature.singletonName/])
 [/template]
 
 [template private userInterfaceMethods(entity : Entity) post(trim())]
-public function getPassword() 
+[if (entity.features->select(f | f.name = 'roles')->isEmpty())]
+/**
+ * @see UserInterface
+ */
+public function getRoles(): array
+{
+    $roles = $this->roles;
+    // guarantee every user at least has ROLE_USER
+    $roles['['/][']'/] = 'ROLE_USER';
+
+    return array_unique($roles);
+}
+
+public function setRoles(array $roles): self
+{
+    $this->roles = $roles;
+
+    return $this;
+}
+
+[/if]
+[if (entity.features->select(f | f.name = 'password')->isEmpty())]
+/**
+ * @see UserInterface
+ */
+public function getPassword(): ?string
+{ 
+    return (string) $this->password; 
+} 
+
+public function setPassword(string $password): self
+{
+    $this->password = $password;
+
+    return $this;
+}
+
+[/if]
+/**
+ * Returning a salt is only needed, if you are not using a modern
+ * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+ *
+ * @see UserInterface
+ */
+public function getSalt(): ?string
 { 
     return null; 
 } 
 
-public function getSalt() 
-{ 
-    return null; 
-} 
-
+/**
+ * @see UserInterface
+ */
 public function eraseCredentials() 
 { 
 } 
