@@ -22,7 +22,7 @@
 	[for (form : SingletonUnit | entity.formsUsing(model))]
 	[let sameModel : Sequence(SingletonUnit) = form.sameModel(model)]
 		[if (form = sameModel->first())]
-[form.entityFormType(model)/]
+[form.entityFormType()/]
 		[/if]
 	[/let]
 	[/for]
@@ -32,8 +32,8 @@
 [/for]
 [/template]
 
-[template private entityFormType(unit : SingletonUnit, model : WafModel)]
-[file(unit.formTypeFilename(model), false)]
+[template private entityFormType(unit : SingletonUnit)]
+[file(unit.formTypeFilename(), false)]
 [let dataInstance : String = unit.contentType().instanceName()]
 <?php
 namespace [unit.formNamespace()/];
@@ -41,7 +41,7 @@ namespace [unit.formNamespace()/];
 [unit.useStatements()/]
 
 
-class [unit.typeClassName(model)/] extends AbstractType
+class [unit.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

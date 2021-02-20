@@ -4,13 +4,14 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
 
 [query public hasSingleActionMethod(page : Page) : Boolean
-	= page.units->notEmpty()
+	= page.nonSecurityUnits()->notEmpty()
 		and page.units->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
 		and page.units->forAll(u | page.routeParameters()->includesAll(u.routeParameters()))
 		and page.isRequiresRoleCommon()

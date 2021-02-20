@@ -18,7 +18,7 @@ security:
 [if (model.isAuthenticated())]
     encoders:
 	[if (model.isLocallyAuthenticated())]
-        [model.modelsNamespace()/]\[authentication.oclAsType(LocalAuthenticationSystem).authentication.modelName()/]: auto
+        [model.modelsNamespace()/]\[authentication.oclAsType(LocalAuthenticationSystem).authenticationModel.modelName()/]: auto
 	[else]
         Symfony\Component\Security\Core\User\User: plaintext
 	[/if]
@@ -29,7 +29,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: [model.modelsNamespace()/]\[localAuthentication.authentication.modelName()/]
+                class: [model.modelsNamespace()/]\[localAuthentication.authenticationModel.modelName()/]
 		[if (localAuthentication.authenticationKey <> AuthenticationKeyTypes::Any)]
                 property: [if (localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
 email[elseif (localAuthentication.authenticationKey = AuthenticationKeyTypes::Username)]
@@ -66,7 +66,7 @@ username[/if]
 	[if (model.isLocallyAuthenticated())]
             custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
-                path: [model.localAuthentication().logoutRouteName/]
+                path: [model.localAuthentication().logoutUnit.routeName()/]
 		[if (model.localAuthentication().allowRememberMe)]
  #           remember_me:
  #               secret:   '%kernel.secret%'

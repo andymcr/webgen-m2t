@@ -90,6 +90,10 @@
 	= entity.features->select(a | a.isVisible())
 /]
 
+[query public getFeature(entity : Entity, name : String) : Feature
+	= entity.features->any(f | f.name = name)
+/]
+
 [query public hasAssociations(entity : Entity) : Boolean
 	= entity.associations()->notEmpty()
 /]

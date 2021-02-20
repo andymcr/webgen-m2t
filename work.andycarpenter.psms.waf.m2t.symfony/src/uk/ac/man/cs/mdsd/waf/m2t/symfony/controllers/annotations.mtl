@@ -22,7 +22,11 @@
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
+[if (unit.oclIsKindOf(SecurityUnit))]
+[unit.routeAnnotation(unit.routeName(), unit.uriSecurityPath(unit), false)/]
+[else]
 [unit.routeAnnotation(unit.routeName(), unit.uriPath(unit), true)/]
+[/if]
 [/template]
 
 [template public routeContainerAnnotation(unit : ContentUnit, suffix : String) post(trim())]

@@ -95,6 +95,10 @@
 	= unit.roles()->size() > 1
 /]
 
+[query public localAuthentication(unit : ContentUnit) : LocalAuthenticationSystem
+	= unit.displayedOn.partOf.localAuthentication()
+/]
+
 [query public roles(action : Action) : Sequence(String)
 	= action.requiresRole().trim().tokenize(',; ')
 /]

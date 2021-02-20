@@ -29,6 +29,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::detailsMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::editMethods/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::securityMethods/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::staticMethods/]
 
 
@@ -115,7 +116,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
 [for (form : SingletonUnit | page.formUnits()->sortedBy(u | u.name))]
-use [form.formNamespace()/]\[form.typeClassName(page.partOf)/];
+use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
 [for (repository : Repository | page.repositories())]
 use [repository.repositoryNamespace()/]\[repository.className()/];
@@ -138,10 +139,18 @@ use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+[if (page.hasForgottenPasswordUnits())]
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+[/if]
 [if (page.hasExplicitValidation())]
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
+[if (page.hasForgottenPasswordUnits())]
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+[/if]
 [/template]
 
 [template private actionMethod(page : Page) post(trim())]

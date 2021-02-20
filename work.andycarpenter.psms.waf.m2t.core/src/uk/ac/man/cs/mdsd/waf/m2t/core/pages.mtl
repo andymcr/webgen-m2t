@@ -22,6 +22,10 @@
 		->select(u | u.oclIsKindOf(EditUnit)).oclAsType(EditUnit)
 /]
 
+[query private forgottenPasswordUnits(page : Page) : Sequence(ForgottenPasswordUnit)
+	= page.units->select(u | u.oclIsKindOf(ForgottenPasswordUnit)).oclAsType(ForgottenPasswordUnit)
+/]
+
 [query public formUnits(page : Page) : Sequence(SingletonUnit)
 	= page.dynamicUnits()
 		->select(u | u.oclIsKindOf(ControlUnit) or u.oclIsKindOf(EditUnit)).oclAsType(SingletonUnit)
@@ -51,6 +55,10 @@
 	= page.collectionUnits()->select(u | u.hasFilters())->notEmpty()
 /]
 
+[query public hasForgottenPasswordUnits(page : Page) : Boolean
+	= page.forgottenPasswordUnits()->notEmpty()
+/]
+
 [query public hasFormUnits(page : Page) : Boolean
 	= page.formUnits()->notEmpty()
 /]
@@ -71,8 +79,16 @@
 	= page.indexUnits()->notEmpty()
 /]
 
-[query public hasNoDynamicUnits(page : Page) : Boolean
-	= page.dynamicUnits()->isEmpty()
+[query public hasLoginUnits(page : Page) : Boolean
+	= page.loginUnits()->notEmpty()
+/]
+
+[query public hasNonDynamicUnits(page : Page) : Boolean
+	= page.nonDynamicUnits()->isEmpty()
+/]
+
+[query public hasNonSecurityUnits(page : Page) : Boolean
+	= page.nonSecurityUnits()->isEmpty()
 /]
 
 [query public hasPagination(page : Page) : Boolean
@@ -99,6 +115,10 @@
 	= page.collectionUnits()->select(u | u.oclIsKindOf(IndexUnit)).oclAsType(IndexUnit)
 /]
 
+[query private loginUnits(page : Page) : Sequence(LoginUnit)
+	= page.units->select(u | u.oclIsKindOf(LoginUnit)).oclAsType(LoginUnit)
+/]
+
 [query public mapUnits(page : Page) : Sequence(MapUnit)
 	= page.units->select(u | u.oclIsKindOf(MapUnit)).oclAsType(MapUnit)
 /]
@@ -107,12 +127,21 @@
 	= page.units->select(u | not u.oclIsKindOf(DynamicUnit))
 /]
 
+[query public nonSecurityUnits(page : Page) : Set(ContentUnit)
+	= page.units->select(u | not u.oclIsKindOf(SecurityUnit))
+/]
+
 [query public repositories(page : Page) : Sequence(Repository)
 	= page.dynamicUnits()->collect(u | u.repositoriesUsed)
 		->asSet()
 		->asSequence()
 		->sortedBy(s | s.name)
 /]
+
+[query public securityUnits(page : Page) : Sequence(SecurityUnit)
+	= page.units->select(u | u.oclIsKindOf(SecurityUnit)).oclAsType(SecurityUnit)
+/]
+
 [query public services(page : Page) : Sequence(Service)
 	= page.dynamicUnits()->collect(u | u.servicesUsed)
 		->asSet()

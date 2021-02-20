@@ -26,7 +26,7 @@
 
 
 [template public unitMethods(unit : ContentUnit)
-	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
+	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsKindOf(SecurityUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [for (association : UnitAssociation | editUnit.associationFeatures())]
 	[if (not association.filteredOptions.oclIsUndefined())]
@@ -221,7 +221,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 
 [template private createForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName(page.partOf)/]::class, $[unit.instanceName()/], array(
+$this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
     'action' => $this->generateUrl('[unit.routeCreateName()/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasCreateRouteParameters())]
 $request->query->all()[else]
 array_merge(
@@ -241,7 +241,7 @@ array_merge(
 
 [template private updateForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName(page.partOf)/]::class, $[unit.instanceName()/], array(
+$this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
     'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
