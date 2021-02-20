@@ -119,9 +119,11 @@
 [query public isHidden(feature : Feature) : Boolean
 	= if feature.oclIsKindOf(Attribute) then
 			feature.oclAsType(Attribute).hidden
+		else if feature.oclIsKindOf(Association) then
+			not feature.oclAsType(Association).visible
 		else
 			false
-		endif
+		endif endif
 /]
 
 [query public isOppositeSingleton(association : Association) : Boolean
