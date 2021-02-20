@@ -15,15 +15,23 @@
 
 [query public homeUnit(model : WafModel) : ContentUnit
 	= let homes : Sequence(ActionMenuEntry)
-		= model.menus
-			->collect(m | m.entries)
-			->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+		= model.menus.menuEntries()
 			->select(e | e.name.equalsIgnoreCase('Home'))
 		in if homes->notEmpty() then
 				homes->first().action
 			else
 				null
 			endif
+/]
+
+[query private menuEntries(menu : Menu) : Sequence(ActionMenuEntry)
+	= menu.entries
+		->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+		->union(
+			menu.entries
+				->select(e | e.oclIsKindOf(SubmenuEntry)).oclAsType(SubmenuEntry)
+				->collect(m | m.menuEntries())
+			)
 /]
 
 
