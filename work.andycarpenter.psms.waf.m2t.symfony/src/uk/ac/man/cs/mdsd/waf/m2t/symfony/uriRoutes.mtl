@@ -36,7 +36,7 @@
 
 [query private uriPagePath(page : Page) : String
 	= if page.parentPage.oclIsUndefined() then
-			page.uriElement
+			'/'.concat(page.uriElement)
 		else
 			page.parentPage.uriPagePath().combinePaths(page.uriElement)
 		endif
@@ -175,6 +175,11 @@
 [query public uriGeneralPath(action : OperationAction) : String
 	= action.unit().displayedOn.uriPagePath()
 		.combinePaths(action.uriElement)
+/]
+
+[query public uriSecurityPath(unit : ContentUnit) : String
+	= unit.displayedOn.uriPagePath()
+		.combinePaths(unit.uriElement)
 /]
 
 
