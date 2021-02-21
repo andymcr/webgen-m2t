@@ -33,7 +33,7 @@
  <target>[page.displayLabel.validXML()/]</target>
 </trans-unit>
 [for (unit : ContentUnit | page.units)]
-[unit.translations(page)/]
+[unit.translations()/]
 [/for]
 [for (child : Page | page.childPages)]
 [child.translations()/]
@@ -50,59 +50,54 @@
 		endif endif
 /]
 
-[template private translations(unit : ContentUnit, page : Page) post(trim())]
+[template private translations(unit : ContentUnit) post(trim())]
 [if (not unit.omitCaption)]
 <trans-unit id="[unit.id()/]">
  <source>[unit.id()/]</source>
  <target>[unit.displayLabel.validXML()/]</target>
 </trans-unit>
 [/if]
-[if (unit.oclIsKindOf(CollectionUnit))]
+[if (unit.hasUnitTranslations())]
+[unit.unitTranslations()/]
+[/if]
+[if (unit.hasFieldTranslations())]
+[unit.fieldTranslations()/]
+[/if]
+[for (action : Action | unit.actionsWithMessages())]
+[action.translations()/]
+[/for]
+[/template]
+
+[template private unitTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post (trim())]
 [let collection : CollectionUnit = unit.oclAsType(CollectionUnit)]
-	[if (not collection.hideWhen.oclIsUndefined() and not collection.messageWhenHidden.oclIsUndefined())]
+[if (not collection.hideWhen.oclIsUndefined() and not collection.messageWhenHidden.oclIsUndefined())]
 <trans-unit id="[collection.containedId()/].labels.hiddenMessage">
  <source>[collection.containedId()/].labels.hiddenMessage</source>
  <target>[collection.messageWhenHidden.validXML()/]</target>
 </trans-unit>
-	[/if]
-[/let]
 [/if]
-[if (unit.oclIsKindOf(DynamicUnit))]
-[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-	[if (dynamicUnit.hasFieldTranslations())]
-[dynamicUnit.fieldTranslations(page)/]
-	[/if]
-	[for (action : Action | dynamicUnit.actionsWithMessages())]
-[action.actionTranslations()/]
-	[/for]
 [/let]
-[/if]
 [/template]
 
-[template private fieldTranslations(unit : DynamicUnit, page : Page)
+[template private unitTranslations(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
-[for (field : UnitField | unit.displayFields)]
-	[if (field.hasUnitTranslation())]
-<trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
- <source>[unit.containedId()/].labels.[field.labelId()/]</source>
- <target>[field.displayLabel.validXML()/]</target>
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+<trans-unit id="[editUnit.containedId()/].labels.[editUnit.submitId()/]">
+ <source>[editUnit.containedId()/].labels.[editUnit.submitId()/]</source>
+ <target>[editUnit.confirmLabel.validXML()/]</target>
 </trans-unit>
-		[if (field.oclIsTypeOf(UnitAttribute) or field.oclIsTypeOf(InterfaceField))]
-<trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
- <source>[unit.containedId()/].placeholders.[field.placeholderId()/]</source>
- <target>[field.placeholder().validXML()/]</target>
+[if (not editUnit.cancelDestination.oclIsUndefined())]
+<trans-unit id="[editUnit.containedId()/].labels.[editUnit.cancelId()/]">
+ <source>[editUnit.containedId()/].labels.[editUnit.cancelId()/]</source>
+ <target>[editUnit.cancelLabel.validXML()/]</target>
 </trans-unit>
-		[/if]
-<trans-unit id="[unit.containedId()/].titles.[field.titleId()/]">
- <source>[unit.containedId()/].titles.[field.titleId()/]</source>
- <target>[field.title.validXML()/]</target>
-</trans-unit>
-	[/if]
-[/for]
+[/if]
+[/let]
 [/template]
 
-[template private fieldTranslations(unit : DynamicUnit, page : Page)
-	? (not unit.oclIsKindOf(EditUnit)) post (trim())]
+[template private fieldTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(DynamicUnit)) post (trim())]
 [for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
 	[if (field.hasCustomisedDisplayLabel)]
 <trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
@@ -110,10 +105,24 @@
  <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
 	[/if]
+	[if (unit.oclIsKindOf(EditUnit))]
+		[if (field.hasCustomisedPlaceholder())]
+<trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
+ <source>[unit.containedId()/].placeholders.[field.placeholderId()/]</source>
+ <target>[field.placeholder().validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (field.hasCustomisedTitle)]
+<trans-unit id="[unit.containedId()/].titles.[field.titleId()/]">
+ <source>[unit.containedId()/].titles.[field.titleId()/]</source>
+ <target>[field.title.validXML()/]</target>
+</trans-unit>
+		[/if]
+	[/if]
 [/for]
 [/template]
 
-[template private actionTranslations(action : Action) post (trim())]
+[template private translations(action : Action) post (trim())]
 [if (not action.confirmMessage.oclIsUndefined())]
 [action.actionMessageTranslation('confirmMessage', action.confirmMessage)/]
 [/if]

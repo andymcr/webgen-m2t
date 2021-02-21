@@ -118,22 +118,22 @@
 {%- if app.user -%}
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'xxx' %} active{% endif %}" href="xx">Profile</a></li>
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'yyy' %} active{% endif %}" href="yyy">Password</a></li>
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'logout' %} active{% endif %}" href="{{ path('logout') }}">[security.logoutLabel/]</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'logout' %} active{% endif %}" href="{{ path('[security.logoutUnit.routeName()/]') }}">[security.logoutLabel/]</a></li>
 {%- elseif not app.user -%}
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'login' %} active{% endif %}" href="{{ path('login') }}">[security.loginLabel/]</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'login' %} active{% endif %}" href="{{ path('[security.loginUnit.routeName()/]') }}">[security.loginLabel/]</a></li>
 [if (security.allowSelfRegistration)]
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'register' %} active{% endif %}" href="{{ path('register') }}">Register</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'register' %} active{% endif %}" href="{{ path('[security.registrationUnit.routeName()/]') }}">Register</a></li>
 [/if]
 {%- endif -%}
 </ul>
 [/template]
 
-[template private userDropdown(authentication : CasAuthentication) post(trim())]
+[template private userDropdown(security : CasAuthentication) post(trim())]
 <ul id="user-dropdown" class="dropdown-menu">
 {%- if app.user -%}
-<li>{{ app.user.username }}&nbsp;<a href="{{ path('logout') }}">[authentication.logoutLabel/]</a></li>
+<li>{{ app.user.username }}&nbsp;<a href="{{ path('app_logout') }}">[security.logoutLabel/]</a></li>
 {%- elseif not app.user -%}
-<li><a href="{{ path('login') }}">[authentication.loginLabel/]</a></li>
+<li><a href="{{ path('login') }}">[security.loginLabel/]</a></li>
 {%- endif -%}
 </ul>
 [/template]

@@ -36,10 +36,6 @@
 	= unit.oclAsType(ActionContainer).actions()->asSequence()
 /]
 
-[query public actionsWithMessages(unit : DynamicUnit) : Sequence(Action)
-	= unit.oclAsType(ActionContainer).actionsWithMessages()
-/]
-
 [query public actionsRequiringHandlers(unit : DynamicUnit) : Sequence(Action)
 	= unit.oclAsType(ActionContainer).actionsRequiringHandlers()
 /]
@@ -65,10 +61,6 @@
 	= feature.oclAsType(ActionContainer).actions()->asSequence()
 /]
 
-[query public actionsWithMessages(feature : UnitFeature) : Sequence(Action)
-	= feature.oclAsType(ActionContainer).actionsWithMessages()
-/]
-
 [query public actionsRequiringHandlers(feature : UnitFeature) : Sequence(Action)
 	= feature.oclAsType(ActionContainer).actionsRequiringHandlers()
 /]
@@ -80,10 +72,6 @@
 
 [query public actions(container : ActionContainer) : Sequence(Action)
 	= container.actions->select(a | not a.disable)->asSequence()
-/]
-
-[query public actionsWithMessages(container : ActionContainer) : Sequence(Action)
-	= container.actions()->select(a | a.hasMessages())->asSequence()
 /]
 
 [query public actionsRequiringHandlers(container : ActionContainer) : Sequence(Action)
@@ -118,12 +106,6 @@
 				null
 			endif
 		endif
-/]
-
-[query private hasMessages(action : Action) : Boolean
-	= not action.confirmMessage.oclIsUndefined()
-			or not action.failureMessage.oclIsUndefined()
-			or not action.successMessage.oclIsUndefined()
 /]
 
 [query public requiresRole(action : Action) : String

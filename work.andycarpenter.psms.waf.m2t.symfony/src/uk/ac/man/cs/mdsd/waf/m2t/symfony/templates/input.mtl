@@ -17,6 +17,11 @@
 	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
+[if (unit.oclIsKindOf(SecurityUnit))]
+{% extends 'base.html.twig' %}
+
+{% block content %}
+[/if]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section [if (not singletonUnit.sectionClass.oclIsUndefined())] class="[singletonUnit.sectionClass/]" [/if]id="[singletonUnit.instanceName()/]">
 <h4[if (not singletonUnit.captionClass.oclIsUndefined() or singletonUnit.omitCaption)]
@@ -27,6 +32,9 @@
 [singletonUnit.unitContent(null, singletonUnit.instanceName(), 0)/]
 [/if]
 </section>
+[if (unit.oclIsKindOf(SecurityUnit))]
+{% endblock %}
+[/if]
 [/let]
 [/file]
 [/template]

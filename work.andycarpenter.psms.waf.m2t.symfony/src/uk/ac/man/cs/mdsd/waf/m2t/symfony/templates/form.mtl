@@ -53,27 +53,23 @@
 [/for]
 [/template]
 
-[template private formControlAndClose(unit : SingletonUnit, accessor : String) post(trim())]
- <div class="[unit.controlClass/]">
-  <input type="submit" name="save" value="[unit.submitLabel()/]"[unit.disable(accessor)/]/>
-[if (unit.oclIsKindOf(EditUnit))]
-[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-	[if (editUnit.oclIsTypeOf(CreateUpdateUnit))]
-	[let createUpdateUnit : CreateUpdateUnit = editUnit.oclAsType(CreateUpdateUnit)]
-		[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
-  <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[editUnit.disable(accessor)/]/>
-		[/if]
-	[/let]
-	[/if]
-	[if (not editUnit.cancelDestination.oclIsUndefined())]
-  <input type="submit" name="cancel" value="[editUnit.cancelLabel/]"[editUnit.disable(accessor)/]/>
+[template private formControlAndClose(unit : EditUnit, accessor : String) post(trim())]
+<div[if (not unit.controlClass.oclIsUndefined())] class="[unit.controlClass/]"[/if]>
+ <input type="submit" name="[unit.submitId()/]" value="{{ '[unit.containedId()/].labels.[unit.submitId()/]' | trans }}"[unit.disable(accessor)/]/>
+[if (unit.oclIsTypeOf(CreateUpdateUnit))]
+[let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
+	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
+ <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[unit.disable(accessor)/]/>
 	[/if]
 [/let]
+[/if]
+[if (not unit.cancelDestination.oclIsUndefined())]
+ <input type="submit" name="[unit.cancelId()/]" value="{{ '[unit.containedId()/].labels.[unit.cancelId()/]' | trans }}"[unit.disable(accessor)/]/>
 [/if]
 [for (action : Action | unit.actions())]
   [comment action.actionLink()/]
 [/for]
- </div>
+</div>
 {{ form_row([accessor/]._token) }}
 {{ form_end([accessor/], {'render_rest': false}) }}
 [/template]
@@ -113,7 +109,7 @@
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
 	? (field.isSingleton() and not field.isContains()
 			or field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor, null, true)/], {[if (field.hasUnitTranslation())]
+{{ form_row([field.propertyAccessor(parentAccessor, null, true)/], {[if (field.hasCustomisedDisplayLabel)]
  label: '[unit.containedId()/].labels.[field.labelId()/]',[/if]
 [if (field.hasInputGroupClass())]
  row_attr: { class: '[field.inputGroupClass()/]' },[/if]
@@ -125,8 +121,8 @@
  class: '[field.fieldLabelClass()/]',[/if]
 [if (field.hasPlaceholder())]
  placeholder: [field.placeholder(unit)/],[/if]
- title: [field.title(unit)/], }[if (field.hasUnitTranslation())]
-, [/if][if (field.hasUnitTranslation())]
+ title: [field.title(unit)/], }[if (field.hasCustomisedTitle)]
+, [/if][if (field.hasCustomisedTitle)]
 translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/template]
 
@@ -173,13 +169,13 @@ translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/template]
 
 [template private placeholder(field : UnitField, unit : SingletonUnit) post(trim())]
-[if (field.hasUnitTranslation())]
+[if (field.hasCustomisedPlaceholder())]
 '[unit.containedId()/].placeholders.[field.placeholderId()/]'[else]
 '[unit.contentType.id()/].labels.[field.labelId()/]'[/if]
 [/template]
 
 [template private title(field : UnitField, unit : SingletonUnit) post(trim())]
-[if (field.hasUnitTranslation())]
+[if (field.hasCustomisedTitle)]
 '[unit.containedId()/].titles.[field.titleId()/]'[else]
 '[unit.contentType.id()/].labels.[field.labelId()/]'[/if]
 [/template]
@@ -241,7 +237,7 @@ function initialize() {
 					var contentString = $('<div class="marker-info-win">' +
 						'<p class="place-address">' + results['['/]1[']'/].formatted_address + '</p>' +
 						'<?php
-							echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
+							echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.confirmLabel/]', array(
 								'type' => 'submit',
 								'class' => 'save-marker'
 							));
@@ -263,7 +259,7 @@ function initialize() {
 				'<h4 class="place-name">' + place.name + '</h4>' +
 				'<p class="place-address">' + place.formatted_address + '</p>' +
 				'<?php
-					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.submitLabel()/]', array(
+					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.confirmLabel/]', array(
 						'type' => 'submit',
 						'class' => 'save-marker'
 					));
