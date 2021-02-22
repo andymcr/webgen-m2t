@@ -84,11 +84,11 @@
 /]
 
 [query public hasNonDynamicUnits(page : Page) : Boolean
-	= page.nonDynamicUnits()->isEmpty()
+	= page.nonDynamicUnits()->notEmpty()
 /]
 
 [query public hasNonSecurityUnits(page : Page) : Boolean
-	= page.nonSecurityUnits()->isEmpty()
+	= page.nonSecurityUnits()->notEmpty()
 /]
 
 [query public hasPagination(page : Page) : Boolean
