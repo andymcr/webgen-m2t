@@ -55,7 +55,7 @@
 
 [template private formControlAndClose(unit : EditUnit, accessor : String) post(trim())]
 <div[if (not unit.controlClass.oclIsUndefined())] class="[unit.controlClass/]"[/if]>
- <input type="submit" name="[unit.submitId()/]" value="{{ '[unit.containedId()/].labels.[unit.submitId()/]' | trans }}"[unit.disable(accessor)/]/>
+ <button type="submit" name="[unit.submitId()/]">{{ '[unit.containedId()/].labels.[unit.submitId()/]' | trans }}[unit.disable(accessor)/]</button>
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
 	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
@@ -67,7 +67,7 @@
  <input type="submit" name="[unit.cancelId()/]" value="{{ '[unit.containedId()/].labels.[unit.cancelId()/]' | trans }}"[unit.disable(accessor)/]/>
 [/if]
 [for (action : Action | unit.actions())]
-  [comment action.actionLink()/]
+ [action.actionLink(unit.contentType, 'accessor', action.displayLabel, 'Title', 'conditionAccessor', unit.hasObjectAccess(), null)/]
 [/for]
 </div>
 {{ form_row([accessor/]._token) }}
@@ -109,7 +109,8 @@
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
 	? (field.isSingleton() and not field.isContains()
 			or field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
-{{ form_row([field.propertyAccessor(parentAccessor, null, true)/], {[if (field.hasCustomisedDisplayLabel)]
+[comment if any of display Label, placeholder or title translated, translation for a;ll must be used /]
+{{ form_row([field.propertyAccessor(parentAccessor, null, true)/], {[if (field.hasTranslations())]
  label: '[unit.containedId()/].labels.[field.labelId()/]',[/if]
 [if (field.hasInputGroupClass())]
  row_attr: { class: '[field.inputGroupClass()/]' },[/if]
@@ -120,9 +121,9 @@
 [if (field.hasFieldLabelClass())]
  class: '[field.fieldLabelClass()/]',[/if]
 [if (field.hasPlaceholder())]
- placeholder: [field.placeholder(unit)/],[/if]
- title: [field.title(unit)/], }[if (field.hasCustomisedTitle)]
-, [/if][if (field.hasCustomisedTitle)]
+ placeholder: [field.placeholder()/],[/if]
+ title: [field.title()/], }[if (field.hasTranslations())]
+, [/if][if (field.hasTranslations())]
 translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/template]
 
@@ -168,16 +169,16 @@ translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/let]
 [/template]
 
-[template private placeholder(field : UnitField, unit : SingletonUnit) post(trim())]
-[if (field.hasCustomisedPlaceholder())]
-'[unit.containedId()/].placeholders.[field.placeholderId()/]'[else]
-'[unit.contentType.id()/].labels.[field.labelId()/]'[/if]
+[template private placeholder(field : UnitField) post(trim())]
+[if (field.hasTranslations())]
+'[field.displayedOn.containedId()/].placeholders.[field.placeholderId()/]'[else]
+'[field.displayedOn.contentType().id()/].labels.[field.labelId()/]'[/if]
 [/template]
 
-[template private title(field : UnitField, unit : SingletonUnit) post(trim())]
-[if (field.hasCustomisedTitle)]
-'[unit.containedId()/].titles.[field.titleId()/]'[else]
-'[unit.contentType.id()/].labels.[field.labelId()/]'[/if]
+[template private title(field : UnitField) post(trim())]
+[if (field.hasTranslations())]
+'[field.displayedOn.containedId()/].titles.[field.titleId()/]'[else]
+'[field.displayedOn.contentType().id()/].labels.[field.labelId()/]'[/if]
 [/template]
 
 

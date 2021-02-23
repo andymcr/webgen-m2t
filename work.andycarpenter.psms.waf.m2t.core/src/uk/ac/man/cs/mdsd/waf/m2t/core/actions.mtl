@@ -76,6 +76,7 @@
 
 [query public actionsRequiringHandlers(container : ActionContainer) : Sequence(Action)
 	= container.actions()
+		->select(a | not a.oclIsTypeOf(SecurityAction))
 		->select(a | not a.oclIsTypeOf(SelectAction))
 		->select(a | if a.oclIsKindOf(OperationAction) then
 						not a.oclAsType(OperationAction).operation.oclIsUndefined()

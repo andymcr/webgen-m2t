@@ -13,6 +13,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::select/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
@@ -60,6 +61,16 @@
 	linkContent, title, operationAction.confirmMessage, conditionAccessor, true, objectAccess,
 	classAttribute)/]
 [/let]
+[/let]
+[/template]
+
+[template public actionLink(action : Action, valueType : Entity, valueAccessor : String, 
+	linkContent : String, title : String, conditionAccessor : String, objectAccess : Boolean,
+	classAttribute : String)
+	? (action.oclIsTypeOf(SecurityAction))  post(trim())]
+[let securityAction : SecurityAction = action.oclAsType(SecurityAction)]
+[action.anchorX(securityAction.target.oclAsType(ContentUnit).routeName(),
+	securityAction.attributes(), securityAction.linkContent())/]
 [/let]
 [/template]
 
@@ -147,6 +158,7 @@
 		endif endif
 /]
 
+
 [template private anchor(action : Action, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, conditionAccessor : String, 
 	targetSamePage : Boolean, objectAccess : Boolean, classAttribute : String) post(trim())]
@@ -182,6 +194,24 @@ app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)]
  class="[if (not action.anchorClass.oclIsUndefined())]
 [action.anchorClass/][if (not classAttribute.oclIsUndefined())] [/if][/if] [if (not classAttribute.oclIsUndefined())]
 [classAttribute/][/if]"[/if]>[linkContent/]</a>
+[/template]
+
+[template private anchorX(action : Action, path : String, attributes : String, linkContent : String)]
+<a href="{{ path('[path/]') }}" [attributes/]>[linkContent/]</a>
+[/template]
+
+
+[template private attributes(action : SecurityAction) post(trim())]
+[if (not action.anchorClass.oclIsUndefined())]
+class="[action.anchorClass/]"
+[/if]
+[/template]
+
+
+[template private linkContent(action : SecurityAction) post(trim())]
+[let target : ContentUnit = action.target.oclAsType(ContentUnit)]
+<button type="button" class="btn">{{ '[action.unit().containedId()/].labels.[action.actionId()/]' | trans }}</button>
+[/let]
 [/template]
 
 
