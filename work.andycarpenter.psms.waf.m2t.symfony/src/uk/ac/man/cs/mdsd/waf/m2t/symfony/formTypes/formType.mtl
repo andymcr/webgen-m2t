@@ -136,6 +136,11 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'integer')->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
+[if (unit.dataTypeFeatures(false)
+	->select(f | f.oclIsTypeOf(UnitAttribute)).oclAsType(UnitAttribute)
+	->select(a | a.attribute.isPassword())->notEmpty())]
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+[/if]
 [if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'string')->notEmpty()
 		or unit.urlFeatures()->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -283,6 +288,8 @@ TimeType::class
 	[/if]
 [elseif (attribute.isIntegerDataType())]
 IntegerType::class
+[elseif (attribute.isPassword())]
+PasswordType::class
 [elseif (attribute.isDataType())]
 	[if (attribute.dataType().name.toLowerCase() = 'email')]
 EmailType::class

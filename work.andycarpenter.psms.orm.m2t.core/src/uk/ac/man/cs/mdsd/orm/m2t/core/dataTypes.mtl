@@ -88,6 +88,16 @@
 	= feature.oclIsTypeOf(SingletonLocation)
 /]
 
+[query public isPassword(feature : Feature) : Boolean
+	= if not feature.oclIsTypeOf(SingletonElement) then
+			false
+		else
+			let singleton : SingletonElement
+				= feature.oclAsType(SingletonElement)
+				in singleton.obfuscateFormFields
+		endif
+/]
+
 [query public isResource(feature : Feature) : Boolean
 	= feature.oclIsKindOf(SingletonResource)
 /]
