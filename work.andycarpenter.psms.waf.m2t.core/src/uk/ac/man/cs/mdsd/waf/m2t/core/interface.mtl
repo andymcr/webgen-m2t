@@ -13,16 +13,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
 
 
-[query public id(entity : Entity) : String
-	= entity.name.asId()
-/]
-
-
-[query public id(feature : Feature) : String
-	= feature.name.asId()
-/]
-
-
 [query public homeUnit(model : WafModel) : ContentUnit
 	= let homes : Sequence(ActionMenuEntry)
 		= model.menus.menuEntries()
@@ -34,14 +24,14 @@
 			endif
 /]
 
-[query private menuEntries(menu : Menu) : Sequence(ActionMenuEntry)
-	= menu.entries
-		->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
-		->union(
-			menu.entries
-				->select(e | e.oclIsKindOf(SubmenuEntry)).oclAsType(SubmenuEntry)
-				->collect(m | m.menuEntries())
-			)
+
+[query public id(entity : Entity) : String
+	= entity.name.asId()
+/]
+
+
+[query public id(feature : Feature) : String
+	= feature.name.asId()
 /]
 
 
@@ -59,6 +49,16 @@
 		else
 			'Unhandled'
 		endif endif endif
+/]
+
+[query private menuEntries(menu : Menu) : Sequence(ActionMenuEntry)
+	= menu.entries
+		->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+		->union(
+			menu.entries
+				->select(e | e.oclIsKindOf(SubmenuEntry)).oclAsType(SubmenuEntry)
+				->collect(m | m.menuEntries())
+			)
 /]
 
 [query public styleClass(menu : Menu) : String
@@ -79,6 +79,14 @@
 		->select(u | u.routeParameters() = page.routeParameters())
 /]
 
+
+[query public actionsWithMessages(unit : ContentUnit) : Sequence(Action)
+	= if unit.oclIsKindOf(ActionContainer) then
+			unit.oclAsType(ActionContainer).actionsWithMessages()
+		else
+			Sequence{}
+		endif
+/]
 
 [query public cancelId(unit : EditUnit) : String
 	= 'cancel'
@@ -106,6 +114,10 @@
 			else
 				typeName
 			endif
+/]
+
+[query public hasActionsWithMessages(unit : ContentUnit) : Boolean
+	= unit.actionsWithMessages()->notEmpty()
 /]
 
 [query public hasClearLabel(unit : EditUnit) : Boolean
@@ -227,6 +239,10 @@
 	= 'submit'
 /]
 
+
+[query private actionsWithMessages(feature : UnitFeature) : Sequence(Action)
+	= feature.oclAsType(ActionContainer).actionsWithMessages()
+/]
 
 [query private entityId(field : UnitField) : String
 	= if field.oclIsTypeOf(UnitAttribute) then
@@ -393,10 +409,21 @@
 /]
 
 
+[query private actionsWithMessages(container : ActionContainer) : Sequence(Action)
+	= container.actions()->select(a | a.hasMessages())->asSequence()
+/]
+
+
 [query public actionId(action : Action) : String
 	= action.name.asId()
 /]
 
 [query public containedId(action : Action) : String
 	= action.unit().containedId().concat('.actions.').concat(action.name.asId())
+/]
+
+[query private hasMessages(action : Action) : Boolean
+	= not action.confirmMessage.oclIsUndefined()
+			or not action.failureMessage.oclIsUndefined()
+			or not action.successMessage.oclIsUndefined()
 /]

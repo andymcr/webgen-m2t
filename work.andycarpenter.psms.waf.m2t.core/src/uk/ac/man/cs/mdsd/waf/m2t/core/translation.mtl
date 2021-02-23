@@ -27,22 +27,10 @@
 /]
 
 
-[query public actionsWithMessages(unit : ContentUnit) : Sequence(Action)
-	= if unit.oclIsKindOf(ActionContainer) then
-			unit.oclAsType(ActionContainer).actionsWithMessages()
-		else
-			Sequence{}
-		endif
-/]
-
-[query public hasActionsWithMessages(unit : ContentUnit) : Boolean
-	= unit.actionsWithMessages()->notEmpty()
-/]
-
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).displayFields
-				->select(f | f.hasTranslation())->notEmpty()
+				->select(f | f.hasTranslations())->notEmpty()
 		else
 			false
 		endif
@@ -55,6 +43,7 @@
 					and not collectionUnit.messageWhenHidden.oclIsUndefined()
 		else
 			unit.oclIsKindOf(EditUnit)
+			or unit.oclIsKindOf(SecurityUnit)
 		endif
 /]
 
@@ -63,22 +52,8 @@
 /]
 
 
-[query public hasTranslation(field : UnitField) : Boolean
+[query public hasTranslations(field : UnitField) : Boolean
 	= field.hasCustomisedDisplayLabel
 		or field.hasCustomisedPlaceholder()
 		or field.hasCustomisedTitle
-/]
-
-[query private actionsWithMessages(feature : UnitFeature) : Sequence(Action)
-	= feature.oclAsType(ActionContainer).actionsWithMessages()
-/]
-
-[query private actionsWithMessages(container : ActionContainer) : Sequence(Action)
-	= container.actions()->select(a | a.hasMessages())->asSequence()
-/]
-
-[query private hasMessages(action : Action) : Boolean
-	= not action.confirmMessage.oclIsUndefined()
-			or not action.failureMessage.oclIsUndefined()
-			or not action.successMessage.oclIsUndefined()
 /]

@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
@@ -63,9 +64,11 @@
 [if (unit.hasFieldTranslations())]
 [unit.fieldTranslations()/]
 [/if]
-[for (action : Action | unit.actionsWithMessages())]
+[if (unit.oclIsKindOf(DynamicUnit))]
+	[for (action : Action | unit.oclAsType(DynamicUnit).actions())]
 [action.translations()/]
-[/for]
+	[/for]
+[/if]
 [/template]
 
 [template private unitTranslations(unit : ContentUnit)
@@ -96,26 +99,31 @@
 [/let]
 [/template]
 
+[template private unitTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(SecurityUnit)) post (trim())]
+[let securityUnit : SecurityUnit = unit.oclAsType(SecurityUnit)]
+[/let]
+[/template]
+
 [template private fieldTranslations(unit : ContentUnit)
 	? (unit.oclIsKindOf(DynamicUnit)) post (trim())]
 [for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
-	[if (field.hasCustomisedDisplayLabel)]
+	[if (field.hasCustomisedDisplayLabel or unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
 <trans-unit id="[unit.containedId()/].labels.[field.labelId()/]">
  <source>[unit.containedId()/].labels.[field.labelId()/]</source>
  <target>[field.displayLabel.validXML()/]</target>
 </trans-unit>
 	[/if]
-	[if (unit.oclIsKindOf(EditUnit))]
-		[if (field.hasCustomisedPlaceholder())]
-<trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
- <source>[unit.containedId()/].placeholders.[field.placeholderId()/]</source>
- <target>[field.placeholder().validXML()/]</target>
-</trans-unit>
-		[/if]
-		[if (field.hasCustomisedTitle)]
+	[if (unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
+[comment form translates all or none of display label, title and placeholder /]
 <trans-unit id="[unit.containedId()/].titles.[field.titleId()/]">
  <source>[unit.containedId()/].titles.[field.titleId()/]</source>
  <target>[field.title.validXML()/]</target>
+</trans-unit>
+		[if (field.hasPlaceholder())]
+<trans-unit id="[unit.containedId()/].placeholders.[field.placeholderId()/]">
+ <source>[unit.containedId()/].placeholders.[field.placeholderId()/]</source>
+ <target>[field.placeholder().validXML()/]</target>
 </trans-unit>
 		[/if]
 	[/if]
@@ -123,6 +131,10 @@
 [/template]
 
 [template private translations(action : Action) post (trim())]
+<trans-unit id="[action.unit().containedId()/].labels.[action.actionId()/]">
+ <source>[action.unit().containedId()/].labels.[action.actionId()/]</source>
+ <target>[action.displayLabel.validXML()/]</target>
+</trans-unit>
 [if (not action.confirmMessage.oclIsUndefined())]
 [action.actionMessageTranslation('confirmMessage', action.confirmMessage)/]
 [/if]
