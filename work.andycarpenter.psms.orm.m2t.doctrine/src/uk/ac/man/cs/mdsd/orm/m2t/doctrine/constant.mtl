@@ -2,6 +2,7 @@
 [module constant(
 	'http://andycarpenter.work/psm/Base')]
 
+
 [query public useFunction(constant : Constant) : Boolean
 	= if constant.value.oclIsUndefined() then
 			true

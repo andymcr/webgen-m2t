@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module units(
+	'http://andycarpenter.work/psm/ObjectRelationalMapping',
+	'http://andycarpenter.work/psm/service',
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
+
+
+[query public hasObjectAccess(unit : CollectionUnit) : Boolean
+	= unit.oclAsType(DynamicUnit).hasObjectAccess()
+/]
+
+[query public hasObjectAccess(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
+				in if collectionUnit.selection.oclIsUndefined() then
+					true
+				else
+					collectionUnit.selection.joins->isEmpty() or collectionUnit.selection.fields->isEmpty()
+				endif
+		else if unit.oclIsKindOf(DetailsUnit) then
+			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
+				in if detailsUnit.selection.oclIsUndefined() then
+					true
+				else
+					detailsUnit.selection.joins->isEmpty() or detailsUnit.selection.fields->isEmpty()
+				endif
+		else if unit.oclIsKindOf(EditUnit) then
+			true
+		else
+			false
+		endif endif endif
+/]

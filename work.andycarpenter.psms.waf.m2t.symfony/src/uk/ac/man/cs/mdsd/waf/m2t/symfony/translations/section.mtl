@@ -2,11 +2,9 @@
 [module section(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 
 
 [template public sectionsTranslations(model : WafModel)]
@@ -21,6 +19,16 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
+[if (page.hasAnyEditUnits)]
+   <trans-unit id="[page.pageId()/].labels.cancel">
+    <source>[page.pageId()/].labels.cancel</source>
+    <target>[page.partOf.defaultCancelLabel.validXML()/]</target>
+   </trans-unit>
+   <trans-unit id="[page.pageId()/].labels.save">
+    <source>[page.pageId()/].labels.save</source>
+    <target>[page.partOf.defaultSaveLabel.validXML()/]</target>
+   </trans-unit>
+[/if]
    [page.translations()/]
   </body>
  </file>
@@ -29,8 +37,8 @@
 [/template]
 
 [template private translations(page : Page) post(trim())]
-<trans-unit id="label.[page.pageId()/]">
- <source>label.[page.pageId()/]</source>
+<trans-unit id="[page.pageId()/].labels.title">
+ <source>[page.pageId()/].labels.title</source>
  <target>[page.displayLabel.validXML()/]</target>
 </trans-unit>
 [for (unit : ContentUnit | page.units)]
@@ -65,7 +73,7 @@
 [unit.fieldTranslations()/]
 [/if]
 [if (unit.oclIsKindOf(DynamicUnit))]
-	[for (action : Action | unit.oclAsType(DynamicUnit).actions())]
+	[for (action : Action | unit.oclAsType(DynamicUnit).actions)]
 [action.translations()/]
 	[/for]
 [/if]
@@ -86,11 +94,13 @@
 [template private unitTranslations(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[if (editUnit.hasCustomisedSubmitLabel())]
 <trans-unit id="[editUnit.containedId()/].labels.[editUnit.submitId()/]">
  <source>[editUnit.containedId()/].labels.[editUnit.submitId()/]</source>
  <target>[editUnit.confirmLabel.validXML()/]</target>
 </trans-unit>
-[if (not editUnit.cancelDestination.oclIsUndefined())]
+[/if]
+[if (not editUnit.cancelDestination.oclIsUndefined() and editUnit.hasCustomisedCancelLabel())]
 <trans-unit id="[editUnit.containedId()/].labels.[editUnit.cancelId()/]">
  <source>[editUnit.containedId()/].labels.[editUnit.cancelId()/]</source>
  <target>[editUnit.cancelLabel.validXML()/]</target>
@@ -131,8 +141,8 @@
 [/template]
 
 [template private translations(action : Action) post (trim())]
-<trans-unit id="[action.unit().containedId()/].labels.[action.actionId()/]">
- <source>[action.unit().containedId()/].labels.[action.actionId()/]</source>
+<trans-unit id="[action.parentUnit.containedId()/].labels.[action.actionId()/]">
+ <source>[action.parentUnit.containedId()/].labels.[action.actionId()/]</source>
  <target>[action.displayLabel.validXML()/]</target>
 </trans-unit>
 [if (not action.confirmMessage.oclIsUndefined())]

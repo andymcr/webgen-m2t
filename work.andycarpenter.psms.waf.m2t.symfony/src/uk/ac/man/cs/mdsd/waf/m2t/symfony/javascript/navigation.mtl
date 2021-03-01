@@ -1,7 +1,6 @@
 [comment encoding = UTF-8 /]
 [module navigation(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 
 
 [template public javascriptNavigation(model : WafModel) post(trim())]
@@ -9,7 +8,7 @@
 	= model.menus->first().entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry)]
 var sidenav = document.querySelector('.sidenav');
 var instance = M.Sidenav.init(sidenav);
-[if (model.isAuthenticated() and submenus->isEmpty())]
+[if (model.isAuthenticated and submenus->isEmpty())]
 var trigger = document.querySelector('.dropdown-trigger');
 var instance = M.Dropdown.init(trigger);
 [else]

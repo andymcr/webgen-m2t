@@ -5,18 +5,10 @@
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import work::andycarpenter::psms::expression::m2t::core::expression/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::selection/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::select/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
@@ -38,7 +30,7 @@
 [template public actionMethod(unit : CollectionUnit) post(trim())]
 /**
  [unit.routeAnnotation()/]
-[if (unit.hasAuthorisation())]
+[if (unit.isAuthorised)]
  [unit.securityAnnotation()/]
 [/if]
  */
@@ -74,7 +66,7 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 [/template]
 
 [template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
-[if (unit.hasFilters() or unit.hasPagination())][if (formal)]
+[if (unit.hasFilters or unit.hasPagination)][if (formal)]
 Request [/if]$request[if (unit.hasRouteParameters())]
 , [/if][/if]
 [unit.routeParameterList()/]
@@ -82,12 +74,12 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
 [if (unit.hasRouteParameters())]
-[unit.routeParameterList()/][if (unit.hasPagination())]
+[unit.routeParameterList()/][if (unit.hasPagination)]
 , [/if][/if][unit.paginationActuals()/]
 [/template]
 
 [template private paginationActuals(unit : CollectionUnit) post(trim())]
-[if (unit.hasPagination())]
+[if (unit.hasPagination)]
 	[if (unit.maximumPaginationSize > 0)]
 ([unit.pageVariable()/] - 1) * [unit.pageSizeVariable()/], [unit.pageSizeVariable()/]
 	[else]
@@ -97,7 +89,7 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [/template]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
-[if (not unit.omitContainerLoad and not unit.containerType().oclIsUndefined())]
+[if (unit.isContained and not unit.omitContainerLoad)]
 [unit.oclAsType(DynamicUnit).loadContainer()/]
 [/if]
 [if (unit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
@@ -111,14 +103,14 @@ if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanc
 [/template]
 
 [template private selectCode2(unit : CollectionUnit) post(trim())]
-[if (unit.hasPagination())]
+[if (unit.hasPagination)]
 [unit.notePage()/]
 [/if]
-[if (unit.hasFilters())]
+[if (unit.hasFilters)]
 [unit.filterSelect()/]
 else
 [/if]
-[if (unit.hasFilters())]    [/if][if (not unit.selection.oclIsUndefined())]
+[if (unit.hasFilters)]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
 $this->[unit.instanceName()/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
 	[else]
@@ -151,9 +143,9 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepositor
 
 [/if]
 [for (parameter : FormalParameter | filter.parameters)]
-    $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or unit.hasPagination())],[/if]
+    $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or unit.hasPagination)],[/if]
 [/for]
-[if (unit.hasPagination())]
+[if (unit.hasPagination)]
     [unit.paginationActuals()/]
 [/if]
 );
@@ -178,8 +170,18 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepositor
 [unit.templateParameters2()/]
 [/template]
 
+[query private containingTypeX(unit : CollectionUnit) : Entity
+	= if not unit.findContainerSelection.oclIsUndefined() then
+			unit.findContainerSelection.definedBy.serves
+		else if unit.selection.selectPath->notEmpty() then
+			unit.selection.selectPath->last().targetType
+		else
+			unit.contentType.containingType
+		endif endif
+/]
+
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
-[if (not unit.omitContainerLoad and not unit.containerType().oclIsUndefined())]
+[if (unit.isContained and not unit.omitContainerLoad)]
 $parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
 [/if]
 [if (unit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
@@ -189,7 +191,7 @@ if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanc
 [else]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [/if]
-[if (unit.hasPagination())]
+[if (unit.hasPagination)]
 $parameters['['/]'currentPage'[']'/] = [unit.pageVariable()/];
 	[if (unit.maximumPaginationSize > 0)]
 $parameters['['/]'pageCount'[']'/] = ceil($this->[unit.instanceName()/]->count() / [unit.pageSizeVariable()/]);

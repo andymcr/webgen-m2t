@@ -2,11 +2,7 @@
 [module translation(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 
 
 [query public validXML(string : String) : String
@@ -15,14 +11,10 @@
 
 
 [query public translationDomain(page : Page) : String
-	= if page.parentPage.oclIsUndefined() then
-			if page.name.equalsIgnoreCase('home') then
-				'default'
-			else
-				page.name.toLower()
-			endif
+	= if page.rootPage.name.equalsIgnoreCase('home') then
+			'default'
 		else
-			page.parentPage.translationDomain()
+			page.rootPage.name.toLower()
 		endif
 /]
 
@@ -41,10 +33,13 @@
 			let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
 				in not collectionUnit.hideWhen.oclIsUndefined()
 					and not collectionUnit.messageWhenHidden.oclIsUndefined()
+		else if unit.oclIsKindOf(EditUnit) then
+			let editUnit : EditUnit = unit.oclAsType(EditUnit)
+				in editUnit.hasCustomisedCancelLabel()
+					or editUnit.hasCustomisedSubmitLabel()
 		else
-			unit.oclIsKindOf(EditUnit)
-			or unit.oclIsKindOf(SecurityUnit)
-		endif
+			false
+		endif endif
 /]
 
 [query public translationDomain(unit : ContentUnit) : String

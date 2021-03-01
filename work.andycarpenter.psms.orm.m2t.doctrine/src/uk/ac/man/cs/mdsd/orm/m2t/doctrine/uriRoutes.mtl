@@ -1,9 +1,184 @@
 [comment encoding = UTF-8 /]
 [module uriRoutes(
+	'http://andycarpenter.work/psm/Expression',
+	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
+
+[query public keyEntity(entity : Entity) : Entity
+	= if entity.attributeKeys->notEmpty() then
+			entity
+		else if entity.isContained then
+			entity.containingType.keyEntity()
+		else
+			null
+		endif endif
+/]
+
+[query public parentEntity(entity : Entity) : Entity
+	= let keyEntity : Entity = entity.keyEntity()
+		in if keyEntity.oclIsUndefined() then
+				null
+			else if not keyEntity.isContained then
+				null
+			else
+				keyEntity.containingType.keyEntity()
+			endif endif
+/]
+
+
+[query public uriPathKeys(routingType : Entity) : Sequence(Attribute)
+	= let keyEntity : Entity = routingType.keyEntity()
+		in if keyEntity.oclIsUndefined() then
+				Sequence{}
+			else
+				let localKeys : OrderedSet(Attribute) = keyEntity.attributeKeys
+					in let parentKeys : Sequence(Attribute) = routingType.parentUriPathKeys()
+						in if localKeys->isEmpty() then
+								parentKeys
+							else
+								localKeys->iterate(k; j : Sequence(Attribute) = parentKeys | j->append(k))
+							endif
+			endif
+/]
+
+[query private parentUriPathKeys(entity : Entity) : Sequence(Attribute)
+	= let parentEntity : Entity = entity.parentEntity()
+		in if parentEntity.oclIsUndefined() then
+				Sequence{}
+			else if entity = parentEntity then
+				Sequence{}
+			else
+				parentEntity.uriPathKeys()
+			endif endif
+/]
+
+[query public hasRouteParameters(routingType : Entity) : Boolean
+	= routingType.uriPathKeys()->notEmpty()
+/]
+
+[query public selectionKeys(selection : Selection) : Set(Attribute)
+	= if selection.selectPath->notEmpty() then
+			selection.uriPathKeys()->asSet()
+		else if selection.condition.oclIsUndefined() then
+			Set{}
+		else
+			selection.condition.selectionKeys()
+		endif endif
+/]
+
+[query public uriPathKeys(selection : Selection) : Sequence(Attribute)
+	= let pathKeys : Sequence(Attribute)
+		= if selection.selectPath->isEmpty() then
+				Sequence{}
+			else
+				selection.selectionType.uriPathKeys()
+			endif
+		in if selection.condition.oclIsUndefined() then
+			pathKeys
+		else
+			pathKeys->iterate(key;
+				keys : Sequence(Attribute) = Sequence{}
+				| if selection.condition.resolvedKeys()->includes(key) then
+						keys
+					else
+						keys->append(key)
+					endif)
+		endif
+/]
+
+[query private selectionKeys(predicate : Predicate) : Set(Attribute)
+	= if predicate.oclIsTypeOf(PredicateEqualityOperator) then
+			let attribute : Attribute 
+				= predicate.oclAsType(PredicateEqualityOperator).selectionKeys()
+				in if attribute.oclIsUndefined() then
+						Set{}
+					else
+						Set{ attribute }
+					endif
+		else if predicate.oclIsTypeOf(PredicateBooleanOperator) then
+			predicate.oclAsType(PredicateBooleanOperator).selectionKeys()
+		else
+			Set{}
+		endif endif
+/]
+
+[query private selectionKeys(predicate : PredicateEqualityOperator) : Attribute
+	= if predicate.left.oclIsTypeOf(FeatureReference) and predicate.right.oclIsTypeOf(ParameterReference) then
+			let feature : Feature = predicate.left.oclAsType(FeatureReference).feature
+				in if feature.oclIsKindOf(Attribute) then
+						feature.oclAsType(Attribute)
+					else
+						null
+					endif
+		else if predicate.left.oclIsTypeOf(ParameterReference) and predicate.right.oclIsTypeOf(FeatureReference) then
+			let feature : Feature = predicate.right.oclAsType(FeatureReference).feature
+				in if feature.oclIsKindOf(Attribute) then
+						feature.oclAsType(Attribute)
+					else
+						null
+					endif
+		else
+			null
+		endif endif
+/]
+
+[query private selectionKeys(predicate : PredicateBooleanOperator) : Set(Attribute)
+	= predicate.expressions->iterate(
+			e : Predicate;
+			attributes : Set(Attribute) = Set{}
+			| attributes->union(e.selectionKeys()))
+/]
+
+[query private resolvedKeys(predicate : Predicate) : Set(Attribute)
+	= if predicate.oclIsTypeOf(PredicateEqualityOperator) then
+			predicate.oclAsType(PredicateEqualityOperator).resolvedKeys()
+		else if predicate.oclIsTypeOf(PredicateBooleanOperator) then
+			predicate.oclAsType(PredicateBooleanOperator).resolvedKeys()
+		else
+			Set{}
+		endif endif
+/]
+
+[query private resolvedKeys(predicate : PredicateEqualityOperator) : Set(Attribute)
+	= if predicate.left.oclIsTypeOf(FeatureReference) and predicate.right.oclIsTypeOf(CurrentUser) then
+			let feature : Feature = predicate.left.oclAsType(FeatureReference).feature
+				in if feature.oclIsKindOf(Association) then
+						feature.oclAsType(Association).targetType.uriPathKeys()->asSet()
+					else
+						Set{}
+					endif
+		else if predicate.left.oclIsTypeOf(CurrentUser) and predicate.right.oclIsTypeOf(FeatureReference) then
+			let feature : Feature = predicate.right.oclAsType(FeatureReference).feature
+				in if feature.oclIsKindOf(Association) then
+					feature.oclAsType(Association).targetType.uriPathKeys()->asSet()
+					else
+						Set{}
+					endif
+		else
+			Set{}
+		endif endif
+/]
+
+[query private resolvedKeys(predicate : PredicateBooleanOperator) : Set(Attribute)
+	= predicate.expressions->iterate(
+			e : Predicate;
+			attributes : Set(Attribute) = Set{}
+			| attributes->union(e.resolvedKeys()))
+/]
+
+
+[query public routeParameterName(attribute : Attribute, routingType : Entity) : String
+	= if routingType.oclIsUndefined() then
+			attribute.name
+		else if routingType.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
+			attribute.name
+		else
+			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
+				.concat(attribute.name.toUpperFirst())
+		endif endif
+/]
 
 [template public routeParameters(routingType : Entity) post(trim())]
 [for (key : Attribute | routingType.uriPathKeys()) separator (', ')]

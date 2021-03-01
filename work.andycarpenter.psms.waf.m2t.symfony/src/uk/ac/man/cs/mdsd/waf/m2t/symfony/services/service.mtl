@@ -4,12 +4,13 @@
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::constant/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constant/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
 
 [template public service(service : Service)]
 [file(service.serviceFilename(), false)]

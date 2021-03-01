@@ -2,13 +2,11 @@
 [module extensions(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::extensions::twig::enumerationTypes/]
 
 
 [template public extensions(model : WafModel)]
-[if (model.persistence.enumerationTypes()->notEmpty())]
+[if (model.persistence.enumerationTypes->notEmpty())]
 [model.persistence.twigEnumerationTypes()/]
 [/if]
 [/template]

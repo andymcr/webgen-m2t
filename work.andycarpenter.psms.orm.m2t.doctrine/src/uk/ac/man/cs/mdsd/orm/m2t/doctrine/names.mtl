@@ -3,9 +3,6 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 
 
 [query public appName(eObject : EObject) : String
@@ -50,17 +47,6 @@
 	= entity.name.toLowerFirst()
 /]
 
-[query public routeParameterName(attribute : Attribute, routingType : Entity) : String
-	= if routingType.oclIsUndefined() then
-			attribute.name
-		else if routingType.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
-			attribute.name
-		else
-			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
-				.concat(attribute.name.toUpperFirst())
-		endif endif
-/]
-
 [query public selectName(entity : Entity) : String
 	= entity.name.toLowerFirst()
 /]
@@ -75,9 +61,13 @@
 	= 'add'.concat(feature.singletonName.toUpperFirst())
 /]
 
+[query public modelPropertyName(feature : Feature) : String
+	= feature.name
+/]
+
 [query public getMethodName(feature : Feature) : String
 	= let prefix : String
-		= if feature.isBooleanDataType() then
+		= if feature.isBooleanFeature then
 				feature.booleanPrefix()
 			else
 				'get'
@@ -98,7 +88,7 @@
 /]
 
 [query public modelName(association : Association) : String
-	= association.targetType().modelName()
+	= association.targetType.modelName()
 /]
 
 [query public removeMethodName(feature : Feature) : String
@@ -157,9 +147,9 @@
 [query public selectName(association : Association, repository : Repository) : String
 	= let entity : Entity
 		= if repository.serves.features->includes(association) then
-				association.targetType()
+				association.targetType
 			else
-				association.sourceType()
+				association.sourceType
 			endif
 		in entity.selectName()
 /]

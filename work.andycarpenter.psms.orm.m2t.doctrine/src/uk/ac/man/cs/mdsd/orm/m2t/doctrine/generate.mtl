@@ -3,7 +3,6 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::stofDoctrineExtensions/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUnique/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUniqueValidator/]
@@ -16,7 +15,7 @@
 [template public doctrine(model : OrmModel, supportTranslation : Boolean)]
 [model.configStofDoctrineExtensions()/]
 
-[model.enumerationTypes().model(supportTranslation)/]
+[comment model.enumerationTypes.model(supportTranslation)/]
 [model.entities.model()/]
 [model.entities.normalizer()/]
 

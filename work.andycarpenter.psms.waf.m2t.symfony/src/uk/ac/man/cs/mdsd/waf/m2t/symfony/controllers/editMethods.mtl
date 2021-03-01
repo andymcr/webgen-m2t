@@ -5,17 +5,7 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -28,8 +18,8 @@
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsKindOf(SecurityUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[for (association : UnitAssociation | editUnit.associationFeatures())]
-	[if (not association.filteredOptions.oclIsUndefined())]
+[for (association : UnitAssociation | editUnit.associationFields)]
+	[if (association.hasDynamicChoices)]
 [association.optionsMethod(editUnit)/]
 
 	[/if]
@@ -48,13 +38,13 @@
 [template private optionsMethod(association : UnitAssociation, unit : EditUnit) post(trim())]
 /**
  [association.routeAnnotation(unit)/]
-[if (unit.hasAuthorisation())]
+[if (unit.isAuthorised)]
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [association.actionName()/]([association.filteredOptions.optionFormals()/])
+public function [association.actionName()/]([association.optionsFilter.optionFormals()/])
 {
-    $selection = $this->[association.filteredOptions.selection.definedBy.instanceName()/]->[association.filteredOptions.methodName/]([association.filteredOptions.selectionActuals()/]);
+    $selection = $this->[association.optionsFilter.selection.definedBy.instanceName()/]->[association.optionsFilter.methodName/]([association.optionsFilter.selectionActuals()/]);
     $matches = array();
     foreach ($selection as $option) {
         $matches['['/]$option->getId()[']'/] = $option->defaultLabel();
@@ -90,7 +80,7 @@ $[parameter.name/][/for]
 		endif]
 /**
  [unit.routeCreateAnnotation(suffix)/]
-[if (unit.hasAuthorisation())]
+[if (unit.isAuthorised)]
  [unit.securityAnnotation()/]
 [/if]
  */
@@ -115,7 +105,8 @@ public function [unit.actionName()/]X([unit.actionCreateMethodFormals()/]): Resp
 [let sourceParameters : Sequence(Attribute) = unit.routeCreateParameters()]
 $[unit.instanceName()/] = [unit.createInstance()/];
 $this->[unit.instanceName()/] = [unit.createForm(sourceParameters)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures() or (unit.isContained() and not unit.displayedAssociations()->includes(unit.containingAssociation())))]
+[if (unit.customiseValues or unit.hasForcedValueFields
+	or (unit.isContained and not unit.hasExplicitlyEditedContainer))]
 if ($request->isMethod('POST')) {
 	[if (not unit.cancelDestination.oclIsUndefined())]
     [unit.handleCancelPost()/]
@@ -138,7 +129,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [let page : Page = unit.displayedOn]
 /**
  [unit.routeAnnotation()/]
-[if (unit.hasAuthorisation())]
+[if (unit.isAuthorised)]
  [unit.securityAnnotation()/]
 [/if]
  */
@@ -164,15 +155,15 @@ $[unit.instanceName()/] = [unit.loadInstance()/];
 if (!$[unit.instanceName()/]) {
     throw $this->createNotFoundException('The [unit.contentType.name/] does not exist');
 }
-[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
-[let association : Association = field.feature().oclAsType(Association)]
+[for (field : UnitField | unit.formFields->select(f | f.isContains))]
+[let association : Association = field.persistentFeature.oclAsType(Association)]
 $original[field.instanceName().toUpperFirst()/] = new ArrayCollection();
-foreach ($[unit.instanceName()/]->[field.feature().getMethodName()/]() as $[association.targetType().instanceName()/])
-    $original[field.instanceName().toUpperFirst()/]->add($[association.targetType().instanceName()/]);
+foreach ($[unit.instanceName()/]->[field.persistentFeature.getMethodName()/]() as $[association.targetType.instanceName()/])
+    $original[field.instanceName().toUpperFirst()/]->add($[association.targetType.instanceName()/]);
 [/let]
 [/for]
 $this->[unit.instanceName()/] = [unit.updateForm(sourceParameters)/];
-[if (unit.customiseValues or unit.hasForcedValueFeatures() or unit.hasDisabledFeatures())]
+[if (unit.customiseValues or unit.hasForcedValueFields or unit.hasDisabledFields)]
 if ($request->isMethod('POST')) {
 	[if (not unit.cancelDestination.oclIsUndefined())]
     [unit.handleCancelPost()/]
@@ -185,11 +176,11 @@ $this->[unit.instanceName()/]->handleRequest($request);
 [unit.handleCancelSubmit()/]
 	[/if]
 if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-	[for (field : UnitField | unit.inputFields()->select(f | f.isContains()))]
-	[let association : Association = field.feature().oclAsType(Association)]
-    foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType().instanceName()/])
-        if (false === $[unit.instanceName()/]->[field.feature().getMethodName()/]()->contains($[association.targetType().instanceName()/]))
-            $this->[association.targetType().repository.instanceName()/]->remove($[association.targetType().instanceName()/]);
+	[for (field : UnitField | unit.formFields->select(f | f.isContains))]
+	[let association : Association = field.persistentFeature.oclAsType(Association)]
+    foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType.instanceName()/])
+        if (false === $[unit.instanceName()/]->[field.persistentFeature.getMethodName()/]()->contains($[association.targetType.instanceName()/]))
+            $this->[association.targetType.repository.instanceName()/]->remove($[association.targetType.instanceName()/]);
 	[/let]
 	[/for]
     [unit.saveBody(sourceParameters)/]
@@ -203,10 +194,10 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 // [protected ('customise.values.'.concat(unit.instanceName()).concat('.').concat(customTag))]
 // [/protected]
 [/if]
-[if (unit.hasForcedValueFeatures())]
+[if (unit.hasForcedValueFields)]
 // forced values [comment unit.forcedFeatureValues()/]
 [/if]
-[if (unit.isContained() and customTag = 'add')]
+[if (unit.isContained and customTag = 'add')]
 [unit.setContainer()/]
 [/if]
 $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
@@ -222,7 +213,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 [template private createForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
 $this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
-    'action' => $this->generateUrl('[unit.routeCreateName()/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasCreateRouteParameters())]
+    'action' => $this->generateUrl('[unit.routeCreateName()/]'[if (page.hasFilters or page.hasPagination)], [if (not unit.hasCreateRouteParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
@@ -242,7 +233,7 @@ array_merge(
 [template private updateForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
 $this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
-    'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFilters() or page.hasPagination())], [if (not unit.hasRouteParameters())]
+    'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFilters or page.hasPagination)], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
@@ -260,9 +251,9 @@ array_merge(
 [/template]
 
 [template public setContainer(unit : EditUnit) post(trim())]
-[let modelPropertyName : String = unit.contentType.containingAssociation().modelPropertyName().toUpperFirst()]
-[let parentRepository : Repository = unit.contentType.container().repository]
-$[unit.instanceName()/]->set[modelPropertyName/]([unit.getContainerRepository()/]->[unit.containerType().findMethodName()/]([unit.routeCreateParameterList()/]));
+[let modelPropertyName : String = unit.contentType.containingAssociation.modelPropertyName().toUpperFirst()]
+[let parentRepository : Repository = unit.contentType.containingType.repository]
+$[unit.instanceName()/]->set[modelPropertyName/]([unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeCreateParameterList()/]));
 [/let]
 [/let]
 [/template]

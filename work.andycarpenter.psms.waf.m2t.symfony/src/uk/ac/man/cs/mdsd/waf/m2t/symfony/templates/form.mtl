@@ -3,15 +3,11 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
@@ -27,8 +23,8 @@
 [/let]
 [/template]
 
-[template private formOpen(unit : SingletonUnit, accessor : String) post(trim())]
-{{ form_start([accessor/], { attr: { id: '[unit.formId()/]'[if (not unit.contentClass.oclIsUndefined())], class: '[unit.contentClass/]'[/if] }}) }}
+[template private formOpen(unit : EditUnit, accessor : String) post(trim())]
+{{ form_start([accessor/], { attr: { id: '[unit.formId()/]'[if (unit.hasContentClass)], class: '[unit.contentClass/]'[/if] }}) }}
  {{ form_errors([accessor/]) }}
 [/template]
 
@@ -42,20 +38,20 @@
 /]
 
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
-[for (field : UnitField | unit.inputFields())]
-	[if (field.requiresRole <> '')]
-{% if is_granted('[field.requiresRole/]') -%}
+[for (field : UnitField | unit.formFields)]
+	[if (field.isAuthorised)]
+{% if is_granted('[field.authorisationRoles/]') -%}
 	[/if]
 [field.formField(unit, accessor)/]
-	[if (field.requiresRole <> '')]
+	[if (field.isAuthorised)]
 {%- endif %}
 	[/if]
 [/for]
 [/template]
 
 [template private formControlAndClose(unit : EditUnit, accessor : String) post(trim())]
-<div[if (not unit.controlClass.oclIsUndefined())] class="[unit.controlClass/]"[/if]>
- <button type="submit" name="[unit.submitId()/]">{{ '[unit.containedId()/].labels.[unit.submitId()/]' | trans }}[unit.disable(accessor)/]</button>
+<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
+ <button type="submit" name="[unit.submitId()/]">{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
 	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
@@ -64,14 +60,30 @@
 [/let]
 [/if]
 [if (not unit.cancelDestination.oclIsUndefined())]
- <input type="submit" name="[unit.cancelId()/]" value="{{ '[unit.containedId()/].labels.[unit.cancelId()/]' | trans }}"[unit.disable(accessor)/]/>
+ <input type="submit" name="[unit.cancelId()/]" value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/]/>
 [/if]
-[for (action : Action | unit.actions())]
+[for (action : Action | unit.actions)]
  [action.actionLink(unit.contentType, 'accessor', action.displayLabel, 'Title', 'conditionAccessor', unit.hasObjectAccess(), null)/]
 [/for]
 </div>
 {{ form_row([accessor/]._token) }}
 {{ form_end([accessor/], {'render_rest': false}) }}
+[/template]
+
+[template private submitLabel(unit : EditUnit) post(trim())]
+[if (unit.hasCustomisedSubmitLabel())]
+[unit.containedId()/].labels.[unit.submitId()/]
+[else]
+[unit.displayedOn.rootPage.pageId()/].labels.save
+[/if]
+[/template]
+
+[template private cancelLabel(unit : EditUnit) post(trim())]
+[if (unit.hasCustomisedCancelLabel())]
+[unit.containedId()/].labels.[unit.submitId()/]
+[else]
+[unit.displayedOn.rootPage.pageId()/].labels.cancel
+[/if]
 [/template]
 
 [template private disable(unit : SingletonUnit, accessor : String) post(trim())]
@@ -98,17 +110,17 @@
 
 [template private primaryId(unit : SingletonUnit) post(trim())]
 [let contentType : Entity = unit.contentType]
-[if (contentType.primaryKeys()->isEmpty())]
+[if (contentType.hasPrimaryKeys)]
 [contentType.autoKeyName/]
 [else]
-[contentType.primaryKeys()->first().modelPropertyName()/]
+[contentType.primaryKeys->first().modelPropertyName()/]
 [/if]
 [/let]
 [/template]
 
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
-	? (field.isSingleton() and not field.isContains()
-			or field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
+	? (field.isSingleton and not field.isContains
+			or field.oclIsTypeOf(UnitAssociation) and not field.isContains) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for a;ll must be used /]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/], {[if (field.hasTranslations())]
  label: '[unit.containedId()/].labels.[field.labelId()/]',[/if]
@@ -116,7 +128,7 @@
  row_attr: { class: '[field.inputGroupClass()/]' },[/if]
 [if (field.hasFieldLabelClass())]
  label_attr: { class: '[field.fieldLabelClass()/]' },[/if]
- attr: {[if (field.disableInput)]
+ attr: {[if (field.isDisabled)]
  disabled: 'disabled',[/if]
 [if (field.hasFieldLabelClass())]
  class: '[field.fieldLabelClass()/]',[/if]
@@ -128,7 +140,7 @@ translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/template]
 
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
-	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton()) post(trim())]
+	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
  {{- form_label([accessor/]) -}}
@@ -146,10 +158,10 @@ translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/template]
 
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
-	? (field.oclIsTypeOf(UnitAssociation) and field.isContains()) post(trim())]
+	? (field.isAssociationField and field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
-[let childFields : OrderedSet(Feature) = association.association.targetType().features->select(f | not f.isContainer())]
+[let childFields : OrderedSet(Feature) = association.association.targetType.features->select(f | not f.isContainer)]
 <div>
  {{- form_label([accessor/]) -}}
  <div class="[association.name.asId()/] framed"[if (association.collectionUiAllowAdd)]
@@ -172,13 +184,13 @@ translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [template private placeholder(field : UnitField) post(trim())]
 [if (field.hasTranslations())]
 '[field.displayedOn.containedId()/].placeholders.[field.placeholderId()/]'[else]
-'[field.displayedOn.contentType().id()/].labels.[field.labelId()/]'[/if]
+'[field.displayedOn.contentType.id()/].labels.[field.labelId()/]'[/if]
 [/template]
 
 [template private title(field : UnitField) post(trim())]
 [if (field.hasTranslations())]
 '[field.displayedOn.containedId()/].titles.[field.titleId()/]'[else]
-'[field.displayedOn.contentType().id()/].labels.[field.labelId()/]'[/if]
+'[field.displayedOn.contentType.id()/].labels.[field.labelId()/]'[/if]
 [/template]
 
 

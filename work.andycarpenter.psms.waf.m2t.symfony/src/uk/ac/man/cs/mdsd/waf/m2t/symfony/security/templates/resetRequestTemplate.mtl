@@ -1,17 +1,28 @@
 [comment encoding = UTF-8 /]
 [module resetRequestTemplate(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public resetRequestTemplate(security : LocalAuthenticationSystem)]
-[file (security.securityViewDirectory().concat('/').concat('request').concat(security.htmlExtension()).concat(authentication.twigExtension()), false)]
+[template public unitView(unit : ContentUnit)
+	? (unit.oclIsTypeOf(ForgottenPasswordUnit)) post(trim())]
+[let resetUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
+[resetUnit.resetRequestView()/]
+[resetUnit.resetEmailView()/]
+[resetUnit.resetCheckView()/]
+[/let]
+[/template]
+
+[template public resetRequestView(unit : ForgottenPasswordUnit)]
+[file(unit.viewResetRequestFilename(), false)]
+{% trans_default_domain "entity" %}
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
-
 {% block content %}
+<section [if (unit.hasSectionClass)] class="[unit.sectionClass/]" [/if]id="[unit.instanceName()/]">
+<h4[if (unit.hasCaptionClass or unit.omitCaption)]
+ class="[if (unit.hasCaptionClass)][unit.captionClass/][/if] [if (unit.omitCaption)] hidden[/if]"[/if]>xx</h4>
     {% for flashError in app.flashes('reset_password_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
@@ -28,6 +39,34 @@
 
         <button class="btn btn-primary">Send password reset email</button>
     {{ form_end(requestForm) }}
+</section>
+{% endblock %}
+[/file]
+[/template]
+
+[template public resetEmailView(unit : ForgottenPasswordUnit)]
+[file(unit.viewResetEmailFilename(), false)]
+<h1>Hi!</h1>
+
+<p>To reset your password, please visit the following link</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>This link will expire in {{ tokenLifetime|date('g') }} hour(s).</p>
+
+<p>Cheers!</p>
+[/file]
+[/template]
+
+[template public resetCheckView(unit : ForgottenPasswordUnit)]
+[file(unit.viewResetCheckFilename(), false)]
+{% extends 'base.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+
+{% block content %}
+    <p>An email has been sent that contains a link that you can click to reset your password. This link will expire in {{ tokenLifetime|date('g') }} hour(s).</p>
+    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
 {% endblock %}
 [/file]
 [/template]

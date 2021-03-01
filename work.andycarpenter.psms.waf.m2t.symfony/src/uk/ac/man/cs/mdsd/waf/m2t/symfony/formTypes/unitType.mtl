@@ -3,8 +3,6 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
@@ -17,7 +15,7 @@ namespace [unit.formNamespace()/];
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-[if (unit.hasCaptchaFields())]
+[if (unit.hasCaptchaFields)]
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 [/if]
@@ -27,7 +25,7 @@ class [unit.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-[for (field : InterfaceField | unit.interfaceFields())]
+[for (field : InterfaceField | unit.interfaceFields)]
         $builder->[field.formFeature()/];
 [/for]
     }
@@ -46,7 +44,7 @@ class [unit.typeClassName()/] extends AbstractType
 	? (not field.oclIsTypeOf(CaptchaField)) post(trim())]
 add('[field.modelPropertyName()/]', [field.interfaceType()/], array(
     'label' => '[field.displayLabel/]',
-[if (not field.isRequired())]
+[if (not field.isRequired)]
     'required' => FALSE,
 [/if]
 [if (field.oclIsTypeOf(DataTypeField))]

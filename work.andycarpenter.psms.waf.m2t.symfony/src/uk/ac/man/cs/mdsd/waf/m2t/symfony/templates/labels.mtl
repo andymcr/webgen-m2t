@@ -3,7 +3,6 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
@@ -92,10 +91,10 @@
 [template public label(label : Label, accessor : String)
 	? (label.oclIsKindOf(Attribute))  post(trim())]
 [let attribute : Attribute = label.oclAsType(Attribute)]
-	[if (not attribute.isEnumerationType())]
+	[if (not attribute.isEnumerationFeature)]
 [accessor/]
 	[else]
-[accessor/] | [attribute.enumerationType().filterName()/]
+[accessor/] | [attribute.enumerationType.filterName()/]
 	[/if]
 [/let]
 [/template]

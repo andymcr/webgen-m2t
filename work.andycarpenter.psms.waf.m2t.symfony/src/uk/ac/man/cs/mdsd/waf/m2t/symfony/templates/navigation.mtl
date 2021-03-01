@@ -1,10 +1,8 @@
 [comment encoding = UTF-8 /]
 [module navigation(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 
@@ -37,7 +35,7 @@
 [for (entry : MenuEntry | menu.entries)]
  [entry.topEntry()/]
 [/for]
-[if (model.isAuthenticated())]
+[if (model.isAuthenticated)]
  [model.userDropdown()/]
 [/if]
 </div>
@@ -46,13 +44,13 @@
 [template private topEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
 [let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[if (action.action.requiresRole <> '')]
-{% if is_granted('[action.action.requiresRole/]') %}[/if]
+[if (action.action.isAuthorised)]
+{% if is_granted('[action.action.authorisationRoles/]') %}[/if]
 <a class="nav-link{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
  disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
 '[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">
-{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a>[if (action.action.requiresRole <> '')]
+{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a>[if (action.action.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -60,8 +58,8 @@
 [template private topEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
 [let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
-[if (submenu.requiresRole <> '')]
-{% if is_granted('[submenu.requiresRole/]') %}[/if]
+[if (submenu.isAuthorised)]
+{% if is_granted('[submenu.authorisationRoles/]') %}[/if]
 [if (submenu.entries->isEmpty())]
 <a class="nav-link disabled"><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/a>
 [else]
@@ -70,7 +68,7 @@
  [submenu.subDropdown()/]
 </span>
 [/if]
-[if (submenu.requiresRole <> '')]
+[if (submenu.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -86,12 +84,12 @@
 [template private dropEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
 [let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[if (action.action.requiresRole <> '')]
-{% if is_granted('[action.action.requiresRole/]') %}[/if]
+[if (action.action.isAuthorised)]
+{% if is_granted('[action.action.authorisationRoles/]') %}[/if]
 <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
  disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
-'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a></li>[if (action.action.requiresRole <> '')]
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a></li>[if (action.action.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -102,14 +100,14 @@
 {%- if app.user -%}
  <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
 {%- elseif not app.user -%}
-[if (model.isLocallyAuthenticated())]
- <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.localAuthentication().loginUnit.displayLabel/]</a>
+[if (model.isLocallyAuthenticated)]
+ <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.localAuthentication.loginUnit.displayLabel/]</a>
 {%- endif -%}
- [model.localAuthentication().userDropdown()/]
-[elseif (model.isCasAuthenticated())]
- <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.authentication.oclAsType(CasAuthentication).loginLabel/]</a>
+ [model.localAuthentication.userDropdown()/]
+[elseif (model.isCasAuthenticated)]
+ <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.casAuthentication.loginLabel/]</a>
 {%- endif -%}
- [model.casAuthentication().userDropdown()/]
+ [model.casAuthentication.userDropdown()/]
 [/if]
  </li>
 </span>

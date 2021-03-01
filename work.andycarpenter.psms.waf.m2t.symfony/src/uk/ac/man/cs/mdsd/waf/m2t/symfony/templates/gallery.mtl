@@ -2,11 +2,9 @@
 [module gallery(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
@@ -17,9 +15,9 @@
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
 [file(galleryUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section [if (not galleryUnit.sectionClass.oclIsUndefined())] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceName()/]">
-<h4[if (not galleryUnit.captionClass.oclIsUndefined() or galleryUnit.omitCaption)]
- class="[if (not galleryUnit.captionClass.oclIsUndefined())][galleryUnit.captionClass/][/if] [if (galleryUnit.omitCaption)] hidden[/if]"[/if]>[galleryUnit.unitTitle()/]</h4>
+<section [if (galleryUnit.hasSectionClass)] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceName()/]">
+<h4[if (galleryUnit.hasCaptionClass or galleryUnit.omitCaption)]
+ class="[if (galleryUnit.hasCaptionClass)][galleryUnit.captionClass/][/if] [if (galleryUnit.omitCaption)] hidden[/if]"[/if]>[galleryUnit.unitTitle()/]</h4>
  <div class="[galleryUnit.contentClass/]">
   [galleryUnit.unitContent(null, galleryUnit.instanceName(), 0)/]
  </div>
@@ -38,7 +36,7 @@
 
 [template private uniteGallery(unit : GalleryUnit, accessor : String) post(trim())]
 [let variable : String = 'image']
-<div id="gallery" class="[unit.contentClass/]" style="display:none;">
+<div id="gallery"[if (unit.hasContentClass)] class="[unit.contentClass/]"[/if] style="display:none;">
 {%- for [variable/] in [accessor/] -%}
  [unit.image(variable, '')/]
 {%- endfor -%}

@@ -2,15 +2,10 @@
 [module details(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
@@ -29,9 +24,9 @@
 [let accessor : String = detailsUnit.instanceName()]
 [file(detailsUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section [if (not detailsUnit.sectionClass.oclIsUndefined())] class="[detailsUnit.sectionClass/]" [/if]id="[detailsUnit.instanceName()/]">
- <h4[if (not detailsUnit.captionClass.oclIsUndefined() or detailsUnit.omitCaption)]
- class="[if (not detailsUnit.captionClass.oclIsUndefined())][detailsUnit.captionClass/][/if] [if (detailsUnit.omitCaption)] hidden[/if]"[/if]>[detailsUnit.unitTitle()/]</h4>
+<section [if (detailsUnit.hasSectionClass)] class="[detailsUnit.sectionClass/]" [/if]id="[detailsUnit.instanceName()/]">
+ <h4[if (detailsUnit.hasCaptionClass or detailsUnit.omitCaption)]
+ class="[if (detailsUnit.hasCaptionClass)][detailsUnit.captionClass/][/if] [if (detailsUnit.omitCaption)] hidden[/if]"[/if]>[detailsUnit.unitTitle()/]</h4>
  [detailsUnit.unitContent(null, accessor, 0)/]
 </section>
 [/file]
@@ -51,19 +46,19 @@
 [/template]
 
 [template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
-	? (not field.isAssociation()) post(trim())]
+	? (not field.isAssociationField) post(trim())]
 [field.displayValue(parentAccessor, objectAccess)/]
 [/template]
 
 [template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
-	? (field.isAssociation() and field.isSingleton()) post(trim())]
+	? (field.isAssociationField and field.isSingleton) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [field.displayValue(parentAccessor, objectAccess)/]
 [/let]
 [/template]
 
 [template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
-	? (field.isAssociation() and not field.isSingleton()) post(trim())]
+	? (field.isAssociationField and not field.isSingleton) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [field.displayValue(parentAccessor, objectAccess)/]
 [/let]

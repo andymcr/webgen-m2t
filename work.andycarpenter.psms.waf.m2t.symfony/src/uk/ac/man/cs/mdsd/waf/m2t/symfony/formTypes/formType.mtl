@@ -3,18 +3,31 @@
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[query private formEntities(model : WafModel) : Set(Entity)
+	= model.pages
+		->collect(p | p.units)
+		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
+		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))
+		->collect(u | u.contentType)->asSet()
+/]
+
+[query private embeddedForms(model : WafModel) : Sequence(UnitAssociation)
+	= model.formUnits
+		->collect(u | u.displayFields)
+		->select(f | f.isContains).oclAsType(UnitAssociation)
+/]
+
+[query private uniqueEnumerationFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
+	= unit.enumerationFields->asSet()->asSequence()
+/]
 
 
 [template public formTypes(model : WafModel)]
@@ -34,7 +47,7 @@
 
 [template private entityFormType(unit : SingletonUnit)]
 [file(unit.formTypeFilename(), false)]
-[let dataInstance : String = unit.contentType().instanceName()]
+[let dataInstance : String = unit.contentType.instanceName()]
 <?php
 namespace [unit.formNamespace()/];
 
@@ -45,11 +58,11 @@ class [unit.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-[if (unit.hasDynamicChoices())]
+[if (unit.hasDynamicChoiceFields)]
         $[dataInstance/] = $options['['/]'data'[']'/] ?? null;
 
 [/if]
-[for (feature : UnitField | unit.displayFields->sortedBy(f | f.feature().name))]
+[for (feature : UnitField | unit.displayFields->sortedBy(f | f.persistentFeature.name))]
         $builder->[feature.formField(dataInstance)/];
 [/for]
 [if (unit.contentType.allowFormTypeCustomisation)]
@@ -82,10 +95,10 @@ class [association.typeClassName()/] extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-[for (feature : Feature | association.association.targetType().features->select(f | not f.isContainer())->sortedBy(f | f.name))]
-	[if (feature.oclIsKindOf(Attribute) and feature.isSingleton())]
+[for (feature : Feature | association.association.targetType.features->select(f | not f.isContainer)->sortedBy(f | f.name))]
+	[if (feature.oclIsKindOf(Attribute) and feature.isSingleton)]
         $builder->[feature.oclAsType(Attribute).formFeature()/];
- 	[elseif (feature.oclIsKindOf(Attribute) and not feature.isSingleton())]
+ 	[elseif (feature.oclIsKindOf(Attribute) and not feature.isSingleton)]
         $builder->[feature.oclAsType(Attribute).formFeature(false, false)/];
 	[elseif (feature.oclIsKindOf(Association))]
         $builder->[feature.oclAsType(Association).formFeature(null, false, null, null)/];
@@ -96,7 +109,7 @@ class [association.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
-            'data_class' => '[association.modelsNamespace()/]\[association.association.targetType().modelName()/]'
+            'data_class' => '[association.modelsNamespace()/]\[association.association.targetType.modelName()/]'
         ));
     }
 }
@@ -104,51 +117,48 @@ class [association.typeClassName()/] extends AbstractType
 [/template]
 
 [template private useStatements(unit : SingletonUnit) post(trim())]
-[for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.feature().name))]
-use [feature.modelsNamespace()/]\[feature.enumerationType().modelName()/];
+[for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.persistentFeature.name))]
+use [feature.modelsNamespace()/]\[feature.enumerationType.modelName()/];
 [/for]
-[if (unit.associationFeatures()->select(a | not a.options.oclIsUndefined())->notEmpty())]
+[if (unit.hasAssociationFields and not unit.hasDynamicChoiceFields)]
 use Doctrine\ORM\EntityRepository;
 [/if]
-[if (unit.associationFeatures()->notEmpty())]
+[if (unit.hasAssociationFields)]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (unit.booleanFeatures()->notEmpty())]
+[if (unit.hasBooleanFields)]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (unit.enumerationFeatures()->notEmpty())]
+[if (unit.hasEnumerationFields)]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (unit.collectionFeatures()->select(f | f.oclIsTypeOf(UnitAttribute) or f.isContains())->notEmpty())]
+[if (unit.collectionFeatures->select(f | f.oclIsTypeOf(UnitAttribute) or f.isContains)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
-[if (unit.dateFeatures()->select(f | f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
+[if (unit.dateFields->select(f | f.dateDetails = DateDetails::DateOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (unit.dateFeatures()->select(f | f.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
+[if (unit.dateFields->select(f | f.dateDetails = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'email')->notEmpty())]
+[if (unit.hasEmailFields)]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'integer')->notEmpty())]
+[if (unit.hasIntegerFields)]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (unit.dataTypeFeatures(false)
-	->select(f | f.oclIsTypeOf(UnitAttribute)).oclAsType(UnitAttribute)
-	->select(a | a.attribute.isPassword())->notEmpty())]
+[if (unit.hasObfuscatedFields)]
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 [/if]
-[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'string')->notEmpty()
-		or unit.urlFeatures()->notEmpty())]
+[if (unit.hasStringFields or unit.hasUrlFields)]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (unit.dataTypeFeatures(false)->select(f | f.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
+[if (unit.hasTextareaFields)]
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 [/if]
-[if (unit.dateFeatures()->select(f | f.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
+[if (unit.dateFields->select(f | f.dateDetails = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -159,42 +169,41 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private useStatements(association : UnitAssociation) post(trim())]
-[let features : OrderedSet(Feature) = association.association.targetType().features->select(f | not f.isContainer())]
-[for (feature : Feature | features->select(f | f.isEnumerationType())->sortedBy(f | f.name))]
-use [feature.modelsNamespace()/]\[feature.enumerationType().modelName()/];
+[let features : OrderedSet(Feature) = association.association.targetType.features->select(f | not f.isContainer)]
+[for (feature : Feature | features->select(f | f.isEnumerationFeature)->sortedBy(f | f.name))]
+use [feature.modelsNamespace()/]\[feature.enumerationType.modelName()/];
 [/for]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (features->select(f | f.isBooleanDataType())->notEmpty())]
+[if (features->select(f | f.isBooleanFeature)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (features->select(f | f.isEnumerationType())->notEmpty())]
+[if (features->select(f | f.isEnumerationFeature)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (features->select(f | not f.isSingleton())->notEmpty())]
+[if (features->select(f | not f.isSingleton)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
-[if (features->select(f | f.isDate() and f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
+[if (features->select(f | f.isDateFeature and (f.dateDetails = DateDetails::DateOnly))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (features->select(f | f.isDate() and f.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
+[if (features->select(f | f.isDateFeature and (f.dateDetails = DateDetails::DateAndTime))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'email')->notEmpty())]
+[if (features->select(f | f.isEmailFeature)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'integer')->notEmpty())]
+[if (features->select(f | f.isIntegerFeature)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'string')->notEmpty()
-		or features->select(f | f.isUrl())->notEmpty())]
+[if (features->select(f | f.isStringFeature or f.isUrlFeature)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (features->select(f | f.isDataType())->select(f | f.dataType().name.toLowerCase() = 'textblock')->notEmpty())]
+[if (features->select(f | f.isTextareaFeature)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 [/if]
-[if (features->select(f | f.isDate() and f.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
+[if (features->select(f | f.isDateFeature and (f.dateDetails = DateDetails::TimeOnly))->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -202,41 +211,41 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private formField(field : UnitField, dataInstance : String)
-	? (field.oclIsTypeOf(UnitAttribute) and field.isSingleton()) post(trim())]
+	? (field.isAttributeField and field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [attribute.attribute.formFeature()/]
 [/let]
 [/template]
 
 [template private formFeature(feature : Attribute)
-	? (feature.isSingleton()) post(trim())]
+	? (feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
     'translation_domain' => 'entity',
-[if (not attribute.isRequired())]
+[if (not attribute.isRequired)]
     'required' => false,
 [/if]
-[if (attribute.isDate())]
-	[if (attribute.dateDetails() = DateDetails::DateAndTime)]
+[if (attribute.isDateFeature)]
+	[if (attribute.dateDetails = DateDetails::DateAndTime)]
     'date_widget' => 'single_text',
     'time_widget' => 'single_text',
-	[elseif (attribute.dateDetails() <> DateDetails::DateAndTime)]
+	[elseif (attribute.dateDetails <> DateDetails::DateAndTime)]
     'widget' => 'single_text',
-		[if (attribute.dateDetails() = DateDetails::TimeOnly)]
+		[if (attribute.dateDetails = DateDetails::TimeOnly)]
     'with_seconds' => TRUE,
 		[/if]
 	[/if]
-[elseif (attribute.isEnumerationType())]
-    'choices' => [attribute.enumerationType().modelName()/]::values(),
+[elseif (attribute.isEnumerationFeature)]
+    'choices' => [attribute.enumerationType.modelName()/]::values(),
     'placeholder' => 'actions.labels.select_one',
 [/if]
-[if (attribute.hasHtml5Attributes())]
+[if (attribute.hasHtml5Attributes)]
     'attr' => array(
 	[if (false)] [comment not attribute.placeholder.oclIsUndefined())/]
         'placeholder' => '[comment attribute.placeholder/]',
 	[/if]
-	[if (attribute.hasValidationPattern())]
+	[if (attribute.hasValidationPattern)]
         'pattern' => '[attribute.validationPattern/]',
 	[/if]
     ),
@@ -246,14 +255,14 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [/template]
 
 [template private formField(field : UnitField, dataInstance : String)
-	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton()) post(trim())]
+	? (field.isAttributeField and not field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
 [/let]
 [/template]
 
 [template private formFeature(feature : Attribute, allowUiAdd : Boolean, allowUiRemove : Boolean)
-	? (not feature.isSingleton()) post(trim())]
+	? (not feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', CollectionType::class, array(
     'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
@@ -274,71 +283,65 @@ add('[attribute.modelPropertyName()/]', CollectionType::class, array(
 [/template]
 
 [template private interfaceType(attribute : Attribute) post(trim())]
-[if (attribute.isEnumerationType())]
-ChoiceType::class
-[elseif (attribute.isBooleanDataType())]
+[if (attribute.isBooleanFeature)]
 CheckboxType::class
-[elseif (attribute.isDate())]
-	[if (attribute.dateDetails() = DateDetails::DateOnly)]
+[elseif (attribute.isDateFeature)]
+	[if (attribute.dateDetails = DateDetails::DateOnly)]
 DateType::class
-	[elseif (attribute.dateDetails() = DateDetails::DateAndTime)]
+	[elseif (attribute.dateDetails = DateDetails::DateAndTime)]
 DateTimeType::class
 	[else]
 TimeType::class
 	[/if]
-[elseif (attribute.isIntegerDataType())]
-IntegerType::class
-[elseif (attribute.isPassword())]
-PasswordType::class
-[elseif (attribute.isDataType())]
-	[if (attribute.dataType().name.toLowerCase() = 'email')]
+[elseif (attribute.isEmailFeature)]
 EmailType::class
-	[elseif (attribute.dataType().name.toLowerCase() = 'text')]
-TextType::class
-	[elseif (attribute.dataType().name.toLowerCase() = 'textblock')]
+[elseif (attribute.isEnumerationFeature)]
+ChoiceType::class
+[elseif (attribute.isIntegerFeature)]
+IntegerType::class
+[elseif (attribute.isObfuscatedFeature)]
+PasswordType::class
+[elseif (attribute.isTextareaFeature)]
 TextareaType::class
-	[else]
-TextType::class
-	[/if]
 [else]
 TextType::class
 [/if]
 [/template]
 
 [template private formField(field : UnitField, dataInstance : String)
-	? (field.oclIsTypeOf(UnitAssociation) and not field.isContains()) post(trim())]
+	? (field.isAssociationField and not field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[association.association.formFeature(association.valueDisplay, not association.hasDynamicChoices(), association.options, dataInstance)/]
+[association.association.formFeature(association.valueDisplay, association.hasDynamicChoices, association.options, dataInstance)/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Association, valueLabel : ModelLabel, allOptions : Boolean, selection : Selection, dataInstance : String)
-	? (not feature.isContains()) post(trim())]
+[template private formFeature(feature : Association, valueLabel : ModelLabel, hasDynamicChoices : Boolean, selection : Selection, dataInstance : String)
+	? (not feature.isContains) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
-    'label' => '[association.sourceType().id()/].labels.[association.id()/]',
+    'label' => '[association.sourceType.id()/].labels.[association.id()/]',
     'translation_domain' => 'entity',
-[if (not association.isSingleton() or not association.isRequired())]
+[if (not association.isSingleton or not association.isRequired)]
     'required' => false,
 [/if]
     'class' => '[association.appName()/]:[association.modelName()/]',
-[if (allOptions)]
-	[if (not selection.oclIsUndefined())]
-    [selection.options()/]
-	[/if]
-[else]
+[if (hasDynamicChoices)]
     'choices' => !is_null($[dataInstance/]) && !is_null($[dataInstance/]->[feature.getMethodName()/]())
         ? array(['['/]$[dataInstance/]->[feature.getMethodName()/]()[']'/])
         : array(),
+[else]
+	[if (not selection.oclIsUndefined())]
+    [selection.options()/]
+	[/if]
 [/if]
     'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,
-[if (association.isSingleton())]
+[if (association.isSingleton)]
     'placeholder' => 'actions.labels.select_one',
 [else]
     'multiple' => true,
 [/if]
-[if (association.sourceType().allowFormTypeCustomisation)]
+[if (association.sourceType.allowFormTypeCustomisation)]
 // [protected ('custom.'.concat(association.modelPropertyName()))]
 // [/protected]
 [/if]
@@ -351,7 +354,7 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
     $queryBuilder = $er->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
     return $queryBuilder
 [for (join : Association | selection.joins)]
-        ->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType().selectName()/]')
+        ->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
 [/for]
 [if (selection.ordering->notEmpty())]
         ->orderBy([selection.ordering->first().path.queryExpression()/], [selection.ordering->first().order()/])[if (selection.ordering->size() = 1 and selection.condition.oclIsUndefined())]
@@ -371,10 +374,10 @@ add('[association.modelPropertyName()/]', EntityType::class, array(
 },
 [/template]
 
-[template private formField(feature : UnitField, dataInstance : String)
-	? (feature.oclIsTypeOf(UnitAssociation) and feature.isContains()) post(trim())]
-[let association : UnitAssociation = feature.oclAsType(UnitAssociation)]
-[if (association.isSingleton())]
+[template private formField(field : UnitField, dataInstance : String)
+	? (field.isAssociationField and field.isContains) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.isSingleton)]
 add('[association.modelPropertyName()/]', [association.typeClassName()/]::class)
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, array(

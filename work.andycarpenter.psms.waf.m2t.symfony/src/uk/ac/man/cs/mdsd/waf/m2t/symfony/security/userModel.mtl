@@ -2,12 +2,11 @@
 [module userModel(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public userModel(security  : LocalAuthenticationSystem)]
+[template public userModel(security  : Authentication)]
 [file (security.modelsDirectory().concat('/').concat(security.userModelName()).concat(security.executableExtension()), false)]
 <?php
 namespace [security.modelsNamespace()/];

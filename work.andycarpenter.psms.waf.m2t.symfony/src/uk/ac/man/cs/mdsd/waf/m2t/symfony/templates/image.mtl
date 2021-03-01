@@ -2,12 +2,11 @@
 [module image(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 
@@ -39,8 +38,8 @@
 [unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
 	[/if]
 [else]
-	[if (not unit.imagePathFeature.isRequired() and unit.imagePathFeature.hasChild())]
-		[if (unit.imagePathFeature.isSingleton())]
+	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
+		[if (unit.imagePathFeature.isSingleton)]
 {%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] is not empty -%}
 		[else]
 {%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] | length > 0 -%}
@@ -55,7 +54,7 @@
 	[/if]
 {%- endif -%}
 [/let]
-	[if (not unit.imagePathFeature.isRequired() and unit.imagePathFeature.hasChild())]
+	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
 {%- else -%}
 		[if (not unit.missingImagePath.oclIsUndefined())]
 [unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
@@ -129,7 +128,7 @@ title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.eleme
 		else
 			let localElement : String
 				= association.association.modelPropertyName().concat(
-					if association.association.isSingleton() then
+					if association.association.isSingleton then
 						''
 					else
 						'.0'
@@ -167,7 +166,7 @@ title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.eleme
 		else
 			let localElement : String
 				= association.association.modelPropertyName().concat(
-					if association.association.isSingleton() then
+					if association.association.isSingleton then
 						''
 					else
 						'.0'

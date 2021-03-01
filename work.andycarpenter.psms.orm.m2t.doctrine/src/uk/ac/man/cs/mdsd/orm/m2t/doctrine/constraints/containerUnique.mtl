@@ -1,7 +1,6 @@
 [comment encoding = UTF-8 /]
 [module containerUnique(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 

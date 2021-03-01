@@ -3,24 +3,23 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::select/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::value/]
+
+
+[query private hasSelectCondition(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then 
+			false
+		else
+			not unit.selection.condition.oclIsUndefined()
+		endif
+/]
 
 
 [template public linkLabel(label : String, iconName : String) post(trim())]
@@ -39,11 +38,11 @@
 	classAttribute : String)
 	? (action.oclIsTypeOf(DeleteAction))  post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : CollectionUnit = deleteAction.unit().oclAsType(CollectionUnit)]
-[let page : Page = deleteAction.unit().displayedOn]
+[let unit : CollectionUnit = deleteAction.parentUnit.oclAsType(CollectionUnit)]
+[let page : Page = deleteAction.parentUnit.displayedOn]
 [action.anchor(deleteAction.routeName(), 
 	deleteAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
-	linkContent, title, deleteAction.confirmMessage, conditionAccessor, page.hasFilters() or page.hasPagination(), 
+	linkContent, title, deleteAction.confirmMessage, conditionAccessor, page.hasFilters or page.hasPagination, 
 	objectAccess, classAttribute)/]
 [/let]
 [/let]
@@ -55,7 +54,7 @@
 	classAttribute : String)
 	? (action.oclIsKindOf(OperationAction))  post(trim())]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
-[let unit : CollectionUnit = operationAction.unit().oclAsType(CollectionUnit)]
+[let unit : CollectionUnit = operationAction.parentUnit.oclAsType(CollectionUnit)]
 [action.anchor(operationAction.routeName(), 
 	operationAction.routeActualParameters(unit, valueType, valueAccessor, unit.selection, objectAccess), 
 	linkContent, title, operationAction.confirmMessage, conditionAccessor, true, objectAccess,
@@ -79,7 +78,7 @@
 	classAttribute : String)
 	? (action.oclIsTypeOf(SelectAction))  post(trim())]
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
-[let unit : DynamicUnit = selectAction.unit()]
+[let unit : DynamicUnit = selectAction.parentUnit]
 [let page : Page = unit.displayedOn]
 [let targetUnit : ContentUnit = selectAction.target.oclAsType(ContentUnit)]
 [let valueType2 : Entity 
@@ -96,16 +95,18 @@
 		endif]
 [let routingParameters : String
 	= if targetUnit.oclIsKindOf(CollectionUnit) then
-			if targetUnit.oclAsType(CollectionUnit).hasSelectCondition() then
-				targetUnit.oclAsType(CollectionUnit).routeActualParameters(targetUnit.routingType(), targetUnit.oclAsType(CollectionUnit).selection, valueType2, valueAccessor2, unit.selection(), objectAccess)
-			else
-				targetUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
-			endif
+			let collectionUnit : CollectionUnit = targetUnit.oclAsType(CollectionUnit)
+				in if collectionUnit.hasSelectCondition() then
+						collectionUnit.routeActualParameters(collectionUnit.routingType(), collectionUnit.selection, valueType2, valueAccessor2, unit.selection(), objectAccess)
+					else
+						collectionUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
+					endif
 		else
-			targetUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
+			let singletonUnit : SingletonUnit = targetUnit.oclAsType(SingletonUnit)
+				in singletonUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
 		endif]
 [action.anchor(targetUnit.routeName(), routingParameters, linkContent, title, null, conditionAccessor, 
-	page = targetUnit.displayedOn and (page.hasFilters() or page.hasPagination()), objectAccess,
+	page = targetUnit.displayedOn and (page.hasFilters or page.hasPagination), objectAccess,
 	classAttribute)/]
 [/let]
 [/let]
@@ -126,7 +127,7 @@
 
 [query private pathType(path : FeaturePathAssociation) : Entity
 	= if path.childFeature.oclIsUndefined() then
-			path.association.targetType()
+			path.association.targetType
 		else
 			path.childFeature.pathType()
 		endif
@@ -142,7 +143,7 @@
 
 [query private pathType(path : ChildPathAssociation) : Entity
 	= if path.childFeature.oclIsUndefined() then
-				path.association.targetType()
+				path.association.targetType
 			else
 				path.childFeature.pathType()
 			endif
@@ -162,9 +163,9 @@
 [template private anchor(action : Action, routeName : String, routingParameters : String, 
 	linkContent : String, title : String, confirmMessage : String, conditionAccessor : String, 
 	targetSamePage : Boolean, objectAccess : Boolean, classAttribute : String) post(trim())]
-[if (action.requiresRole() <> '' and action.requiresRole() <> action.unit().requiresRole)]
-{% if is_granted('[action.requiresRole()/]') %}[/if]
-[action.anchor2(routeName, routingParameters, linkContent, title, confirmMessage, conditionAccessor, targetSamePage, objectAccess, classAttribute)/][if (action.requiresRole() <> '' and action.requiresRole() <> action.unit().requiresRole)]
+[if (action.isAuthorised and action.hasCustomisedAuthorisation)]
+{% if is_granted('[action.authorisationRoles.trim()/]') %}[/if]
+[action.anchor2(routeName, routingParameters, linkContent, title, confirmMessage, conditionAccessor, targetSamePage, objectAccess, classAttribute)/][if (action.isAuthorised and action.hasCustomisedAuthorisation)]
 {% endif %}[/if]
 [/template]
 
@@ -210,7 +211,7 @@ class="[action.anchorClass/]"
 
 [template private linkContent(action : SecurityAction) post(trim())]
 [let target : ContentUnit = action.target.oclAsType(ContentUnit)]
-<button type="button" class="btn">{{ '[action.unit().containedId()/].labels.[action.actionId()/]' | trans }}</button>
+<button type="button" class="btn">{{ '[action.parentUnit.containedId()/].labels.[action.actionId()/]' | trans }}</button>
 [/let]
 [/template]
 
@@ -218,9 +219,9 @@ class="[action.anchorClass/]"
 [template private routeActualParameters(action : Action, unit : CollectionUnit, valueType : Entity, 
 	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 [if (unit.findElementSelection.oclIsUndefined())]
-[unit.contentType().routeActualParameters(valueType, valueAccessor, valueSelection, objectAccess)/]
+[unit.contentType.routeActualParameters(valueType, valueAccessor, valueSelection, objectAccess)/]
 [else]
-[unit.routeActualParameters(unit.contentType(), unit.findElementSelection, valueType, valueAccessor, valueSelection, objectAccess)/]
+[unit.routeActualParameters(unit.contentType, unit.findElementSelection, valueType, valueAccessor, valueSelection, objectAccess)/]
 [/if]
 [/template]
 
@@ -247,7 +248,7 @@ class="[action.anchorClass/]"
 
 [template private routeActualParameter(key : Attribute, routingType : Entity, valueType : Entity, 
 	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
-'[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, valueSelection, objectAccess))/][if (key.isDate())]
+'[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, valueSelection, objectAccess))/][if (key.isDateFeature)]
 .format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if]
 [/template]
 
@@ -259,10 +260,10 @@ class="[action.anchorClass/]"
 			else
 				parentAccessor.concat('.').concat(key.alias(valueSelection))
 			endif
-		else if valueType.attributeKeys()->includes(key) then
+		else if valueType.attributeKeys->includes(key) then
 			parentAccessor.concat('.').concat(key.modelPropertyName())
-		else if not valueType.container().oclIsUndefined() then
-			key.keyAccessor(valueType.container(), parentAccessor.concat('.').concat(valueType.containingAssociation().modelPropertyName()), valueSelection, objectAccess)
+		else if not valueType.isContained then
+			key.keyAccessor(valueType.containingType, parentAccessor.concat('.').concat(valueType.containingAssociation.modelPropertyName()), valueSelection, objectAccess)
 		else
 			''
 		endif endif endif

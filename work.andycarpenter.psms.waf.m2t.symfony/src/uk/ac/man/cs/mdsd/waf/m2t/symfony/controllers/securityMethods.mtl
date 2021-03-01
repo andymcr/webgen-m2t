@@ -1,10 +1,7 @@
 [comment encoding = UTF-8 /]
 [module securityMethods(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
@@ -16,7 +13,7 @@
 [let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
 /**
  [unit.routeAnnotation()/]
-[if (unit.hasAuthorisation())]
+[if (unit.isAuthorised)]
  [unit.securityAnnotation()/]
 [/if]
  */
@@ -32,23 +29,20 @@ public function [unit.actionName()/](): Response
 [let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
 /**
  [unit.routeAnnotation()/]
-[if (unit.hasAuthorisation())]
+[if (unit.isAuthorised)]
  [unit.securityAnnotation()/]
 [/if]
  */
 public function [unit.actionName()/](AuthenticationUtils $authenticationUtils): Response
 {
-    $[loginUnit.instanceName()/] = [loginUnit.createInstance()/];
-    $[loginUnit.instanceName()/]->[if (unit.localAuthentication().authenticationKey = AuthenticationKeyTypes::Email)]
-[unit.localAuthentication().authenticationModel.getFeature('email').setMethodName()/][else]
-[unit.localAuthentication().authenticationModel.getFeature('username').setMethodName()/][/if]($authenticationUtils->getLastUsername());
-    $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[loginUnit.instanceName()/], array(
-        'action' => $this->generateUrl('[loginUnit.routeName()/]')
+    $[unit.instanceName()/] = new [unit.modelName()/];
+    $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[unit.instanceName()/], array(
+        'action' => $this->generateUrl('[unit.routeName()/]'),
+        'csrf_token_id' => '[unit.displayedOn.partOf.siteName/]_authenticate',
     ));
-    $error = $authenticationUtils->getLastAuthenticationError();
     return $this->render('[unit.displayedOn.name/]/[unit.viewName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
-        '[loginUnit.instanceName()/]' => $[loginUnit.formName()/]->createView(),
-        'error'         => $error,
+        '[unit.instanceName()/]' => $[loginUnit.formName()/]->createView(),
+        '[unit.instanceName()/]_error' => $authenticationUtils->getLastAuthenticationError(),
     [']'/]);
 }
 [/let]
@@ -59,7 +53,7 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils): 
 [let logoutUnit : LogoutUnit = unit.oclAsType(LogoutUnit)]
 /**
  [unit.routeAnnotation()/]
-[if (unit.hasAuthorisation())]
+[if (unit.isAuthorised)]
  [unit.securityAnnotation()/]
 [/if]
  */
@@ -75,7 +69,7 @@ public function [unit.actionName()/](): Response
 [let resetUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
 /**
  [resetUnit.routeAnnotation()/]
-[if (resetUnit.hasAuthorisation())]
+[if (resetUnit.isAuthorised)]
  [resetUnit.securityAnnotation()/]
 [/if]
  */
@@ -86,7 +80,7 @@ public function [unit.actionName()/]Request(Request $request, MailerInterface $m
 
     if ($form->isSubmitted() && $form->isValid()) {
         return $this->processSendingPasswordResetEmail(
-            $form->get('[if (unit.localAuthentication().authenticationKey = AuthenticationKeyTypes::Email)]
+            $form->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
 email[else]username[/if]')->getData(),
             $mailer
         );

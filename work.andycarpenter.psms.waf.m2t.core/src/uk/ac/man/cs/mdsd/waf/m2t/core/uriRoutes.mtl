@@ -5,20 +5,14 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::selection/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
 
 
-[query public routingType(unit : ContentUnit) : Entity
+[query public routingType(unit : DynamicUnit) : Entity
 	= unit.routingType(false)
 /]
 
-[query public routingType(unit : ContentUnit, forCommonKeys : Boolean) : Entity
+[query public routingType(unit : DynamicUnit, forCommonKeys : Boolean) : Entity
 	= if unit.oclIsKindOf(CollectionUnit) then
 			unit.oclAsType(CollectionUnit).routingType()
 		else if unit.oclIsKindOf(DetailsUnit) then
@@ -32,11 +26,11 @@
 
 [query public routingType(unit : CollectionUnit) : Entity
 	=  if unit.selection.oclIsUndefined() then
-			unit.contentType->first().parentEntity()
+			unit.contentType.parentEntity()
 		else if unit.selection.selectPath->notEmpty() then
-			unit.selection.selectionType().keyEntity()
+			unit.selection.selectionType.keyEntity()
 		else
-			unit.contentType->first().parentEntity()
+			unit.contentType.parentEntity()
 		endif endif
 /]
 
@@ -44,7 +38,7 @@
 	=  if unit.selection.oclIsUndefined() then
 			unit.contentType.keyEntity()
 		else if unit.selection.selectPath->notEmpty() then
-			unit.selection.selectionType().keyEntity()
+			unit.selection.selectionType.keyEntity()
 		else
 			unit.contentType.keyEntity()
 		endif endif
@@ -67,15 +61,15 @@
 	= page.routeParameters()->notEmpty()
 /]
 
-[query public hasRouteParameters(unit : ContentUnit) : Boolean
+[query public hasRouteParameters(unit : DynamicUnit) : Boolean
 	= unit.routeParameters()->notEmpty()
 /]
 
-[query public hasRouteParameters(unit : ContentUnit, selection : Selection) : Boolean
+[query public hasRouteParameters(unit : DynamicUnit, selection : Selection) : Boolean
 	= unit.routeParameters(selection)->notEmpty()
 /]
 
-[query public hasContainerRouteParameters(unit : ContentUnit) : Boolean
+[query public hasContainerRouteParameters(unit : DynamicUnit) : Boolean
 	= unit.routeContainerParameters()->notEmpty()
 /]
 
@@ -95,37 +89,37 @@
 	= if page.units->isEmpty() then
 			Sequence{}
 		else if page.units->size() = 1 then
-			page.units->first().routeParameters()
+			page.dynamicUnits->first().routeParameters()
 		else
-			page.units->subOrderedSet(2, page.units->size())->iterate(u;
-				common : Sequence(Attribute) = page.units->first().routeParameters()
+			page.dynamicUnits->subOrderedSet(2, page.dynamicUnits->size())->iterate(u;
+				common : Sequence(Attribute) = page.dynamicUnits->first().routeParameters()
 				| common->select(k | u.routeParameters()->includes(k)))
 		endif endif
 /]
 
-[query public routeParameters(unit : ContentUnit) : Sequence(Attribute)
+[query public routeParameters(unit : DynamicUnit) : Sequence(Attribute)
 	= if unit.oclIsKindOf(CollectionUnit) then
 			unit.routeParameters(unit.oclAsType(CollectionUnit).selection)
 		else if unit.oclIsKindOf(DetailsUnit) then
 			unit.routeParameters(unit.oclAsType(DetailsUnit).selection)
 		else
-			unit.routeParameters(unit.contentType())
+			unit.routeParameters(unit.contentType)
 		endif endif
 /]
 
-[query public routeParameters(unit : ContentUnit, selection : Selection) : Sequence(Attribute)
+[query public routeParameters(unit : DynamicUnit, selection : Selection) : Sequence(Attribute)
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.routeParameters(unit.contentType().parentEntity(), selection)
+			unit.routeParameters(unit.contentType.parentEntity(), selection)
 		else
-			unit.routeParameters(unit.contentType(), selection)
+			unit.routeParameters(unit.contentType, selection)
 		endif
 /]
 
-[query private routeParameters(unit : ContentUnit, routingType : Entity) : Sequence(Attribute)
+[query private routeParameters(unit : DynamicUnit, routingType : Entity) : Sequence(Attribute)
 	= unit.routeParameters(routingType, null)
 /]
 
-[query public routeParameters(unit : ContentUnit, routingType : Entity, selection : Selection) : Sequence(Attribute)
+[query public routeParameters(unit : DynamicUnit, routingType : Entity, selection : Selection) : Sequence(Attribute)
 	= if selection.oclIsUndefined() then
 			if routingType.oclIsUndefined() then
 				Sequence{}
@@ -134,18 +128,18 @@
 					routingType.uriPathKeys()->asSet())
 			endif
 		else
-			unit.routeParameters(selection.selectionType().uriPathKeys(),
+			unit.routeParameters(selection.selectionType.uriPathKeys(),
 				selection.selectionKeys())
 		endif
 /]
 
 [query public routeParameters(action : Action) : Sequence(Attribute)
-	= if action.unit().oclIsKindOf(CollectionUnit) then
-			action.unit().routeParameters(
-				action.unit().contentType(),
-				action.unit().oclAsType(CollectionUnit).findElementSelection)
+	= if action.parentUnit.oclIsKindOf(CollectionUnit) then
+			action.parentUnit.routeParameters(
+				action.parentUnit.contentType,
+				action.parentUnit.oclAsType(CollectionUnit).findElementSelection)
 		else
-			action.unit().routeParameters(action.unit().contentType(), null)
+			action.parentUnit.routeParameters(action.parentUnit.contentType, null)
 		endif
 /]
 
@@ -159,7 +153,7 @@
 		endif
 /]
 
-[query public routeContainerParameters(unit : ContentUnit) : Sequence(Attribute)
+[query public routeContainerParameters(unit : DynamicUnit) : Sequence(Attribute)
 	= if unit.oclIsKindOf(CollectionUnit) then
 			let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
 				in if collectionUnit.findContainerSelection.oclIsUndefined() then
@@ -170,21 +164,21 @@
 		else if unit.oclIsKindOf(DetailsUnit) then
 			unit.routeContainerParameters(unit.oclAsType(DetailsUnit).selection)
 		else
-			unit.routeContainerParameters(unit.contentType().parentEntity(), Set{})
+			unit.routeContainerParameters(unit.contentType.parentEntity(), Set{})
 		endif endif
 /]
 
-[query private routeContainerParameters(unit : ContentUnit, selection : Selection) : Sequence(Attribute)
+[query private routeContainerParameters(unit : DynamicUnit, selection : Selection) : Sequence(Attribute)
 	= if selection.oclIsUndefined() then
-			unit.routeContainerParameters(unit.contentType().parentEntity(), Set{})
+			unit.routeContainerParameters(unit.contentType.parentEntity(), Set{})
 		else if selection.selectPath->notEmpty() then
-			unit.routeContainerParameters(selection.selectionType(), selection.selectionKeys())
+			unit.routeContainerParameters(selection.selectionType, selection.selectionKeys())
 		else
-			unit.routeContainerParameters(unit.contentType().parentEntity(), selection.selectionKeys())
+			unit.routeContainerParameters(unit.contentType.parentEntity(), selection.selectionKeys())
 		endif endif
 /]
 
-[query private routeContainerParameters(unit : ContentUnit, containerType : Entity, selectionKeys : Set(Attribute)) : Sequence(Attribute)
+[query private routeContainerParameters(unit : DynamicUnit, containerType : Entity, selectionKeys : Set(Attribute)) : Sequence(Attribute)
 	= if containerType.oclIsUndefined() then
 			Sequence{}
 		else
@@ -193,16 +187,16 @@
 /]
 
 [query public routeContainerParameters(action : Action) : Sequence(Attribute)
-	= if action.unit().oclIsKindOf(CollectionUnit) then
-			action.unit().routeParameters(
-				action.unit().contentType().parentEntity(),
-				action.unit().oclAsType(CollectionUnit).findContainerSelection)
+	= if action.parentUnit.oclIsKindOf(CollectionUnit) then
+			action.parentUnit.routeParameters(
+				action.parentUnit.contentType.parentEntity(),
+				action.parentUnit.oclAsType(CollectionUnit).findContainerSelection)
 		else
-			action.unit().routeParameters(action.unit().contentType().parentEntity(), null)
+			action.parentUnit.routeParameters(action.parentUnit.contentType.parentEntity(), null)
 		endif
 /]
 
-[query private routeParameters(unit : ContentUnit, uriPathKeys : Sequence(Attribute), selectionKeys : Set(Attribute)) : Sequence(Attribute)
+[query private routeParameters(unit : DynamicUnit, uriPathKeys : Sequence(Attribute), selectionKeys : Set(Attribute)) : Sequence(Attribute)
 	= let keysWithActuals : Sequence(Attribute)
 		= unit.routeActuals->collect(a | a.routeParameter)
 		in uriPathKeys->select(k | not keysWithActuals->includes(k) and selectionKeys->includes(k))
@@ -213,10 +207,10 @@
 /]
 
 
-[query public hasRouteActual(unit : ContentUnit, key : Attribute) : Boolean
+[query public hasRouteActual(unit : DynamicUnit, key : Attribute) : Boolean
 	= not unit.routeActual(key).oclIsUndefined()
 /]
 
-[query public routeActual(unit : ContentUnit, key : Attribute) : RouteActual
+[query public routeActual(unit : DynamicUnit, key : Attribute) : RouteActual
 	= unit.routeActuals->any(a | a.routeParameter = key)
 /]

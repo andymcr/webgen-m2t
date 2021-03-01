@@ -1,16 +1,20 @@
 [comment encoding = UTF-8 /]
 [module interface(
+	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::interface]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]
+
+
+[query public asId(string : String) : String
+	= if self.size() < 2 then
+			self.toLowerCase()
+		else
+			self.substring(1, 1)
+				.concat(self.substring(2, self.size()).replaceAll('([A-Z][^A-Z])', '_$1'))
+				.toLowerCase()
+		endif
+/]
 
 
 [query public homeUnit(model : WafModel) : ContentUnit
@@ -22,6 +26,16 @@
 			else
 				null
 			endif
+/]
+
+
+[query public id(enumerationType : EnumerationType) : String
+	= enumerationType.name.asId()
+/]
+
+
+[query public id(literal : EnumerationLiteral) : String
+	= literal.name.asId()
 /]
 
 
@@ -75,18 +89,10 @@
 /]
 
 [query public routingUnits(page : Page) : OrderedSet(ContentUnit)
-	= page.units
+	= page.dynamicUnits
 		->select(u | u.routeParameters() = page.routeParameters())
 /]
 
-
-[query public actionsWithMessages(unit : ContentUnit) : Sequence(Action)
-	= if unit.oclIsKindOf(ActionContainer) then
-			unit.oclAsType(ActionContainer).actionsWithMessages()
-		else
-			Sequence{}
-		endif
-/]
 
 [query public cancelId(unit : EditUnit) : String
 	= 'cancel'
@@ -108,16 +114,12 @@
 
 [query public formId(unit : DynamicUnit) : String
 	= let typeName : String
-		= unit.contentType().name.asId()
+		= unit.contentType.name.asId()
 		in if false then
 				typeName
 			else
 				typeName
 			endif
-/]
-
-[query public hasActionsWithMessages(unit : ContentUnit) : Boolean
-	= unit.actionsWithMessages()->notEmpty()
 /]
 
 [query public hasClearLabel(unit : EditUnit) : Boolean
@@ -126,6 +128,14 @@
 		else
 			false
 		endif
+/]
+
+[query public hasCustomisedCancelLabel(unit : EditUnit) : Boolean
+	= unit.cancelLabel <> unit.displayedOn.partOf.defaultCancelLabel
+/]
+
+[query public hasCustomisedSubmitLabel(unit : EditUnit) : Boolean
+	= unit.confirmLabel <> unit.displayedOn.partOf.defaultSaveLabel
 /]
 
 [query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
@@ -240,15 +250,11 @@
 /]
 
 
-[query private actionsWithMessages(feature : UnitFeature) : Sequence(Action)
-	= feature.oclAsType(ActionContainer).actionsWithMessages()
-/]
-
 [query private entityId(field : UnitField) : String
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).attribute.partOf.oclAsType(Entity).id()
 		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).association.sourceType().id()
+			field.oclAsType(UnitAssociation).association.sourceType.id()
 		else if field.oclIsKindOf(InterfaceField) then
 			'Unexpected'
 		else
@@ -392,10 +398,6 @@
 				endif
 /]
 
-[query public styleClass(field : UnitField) : String
-	= field.modelPropertyName().asId()
-/]
-
 [query public titleId(field : UnitField) : String
 	= let fieldsWithName : OrderedSet(UnitField)
 			= field.displayedOn.displayFields
@@ -409,21 +411,10 @@
 /]
 
 
-[query private actionsWithMessages(container : ActionContainer) : Sequence(Action)
-	= container.actions()->select(a | a.hasMessages())->asSequence()
-/]
-
-
 [query public actionId(action : Action) : String
 	= action.name.asId()
 /]
 
 [query public containedId(action : Action) : String
-	= action.unit().containedId().concat('.actions.').concat(action.name.asId())
-/]
-
-[query private hasMessages(action : Action) : Boolean
-	= not action.confirmMessage.oclIsUndefined()
-			or not action.failureMessage.oclIsUndefined()
-			or not action.successMessage.oclIsUndefined()
+	= action.parentUnit.containedId().concat('.actions.').concat(action.name.asId())
 /]

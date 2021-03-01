@@ -3,9 +3,16 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
+
+[query public executableExtension(eObject : EObject) : String
+	= '.php'
+/]
+
+[query public xmlExtension(eObject : EObject) : String
+	= '.xml'
+/]
 
 [query public yamlExtension(eObject : EObject) : String
 	= '.yaml'

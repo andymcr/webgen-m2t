@@ -2,28 +2,20 @@
 [module actions(
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 
 
 [query public hasSingleActionMethod(page : Page) : Boolean
-	= page.nonSecurityUnits()->notEmpty()
-		and page.units->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
-		and page.units->forAll(u | page.routeParameters()->includesAll(u.routeParameters()))
-		and page.isRequiresRoleCommon()
+	= page.nonSecurityUnits->notEmpty()
+		and page.dynamicUnits->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
+		and page.dynamicUnits->forAll(u | page.routeParameters()->includesAll(u.routeParameters()))
+		and page.hasCommonUnitAuthentication
 /]
 
-[query public hasSupportMethods(page : Page) : Boolean
-	= page.units->select(u | u.hasSupportMethods())->notEmpty()
-/]
 
 
 [query public inlineSelectCode(unit : CollectionUnit) : Boolean
-	= not unit.hasFilters()
+	= not unit.hasFilters
 		or unit.supportedFilters->size() = 1 and unit.displayedOn.hasSingleActionMethod()
 /]
 

@@ -1,17 +1,13 @@
 [comment encoding = UTF-8 /]
 [module cards(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::featureProperties/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
@@ -30,18 +26,18 @@
 [let accessor : String = cardsUnit.instanceName()]
 [file(cardsUnit.viewFilename(), false)]
 {% trans_default_domain "entity" %}
-<section [if (not cardsUnit.sectionClass.oclIsUndefined())] class="[cardsUnit.sectionClass/]" [/if]id="[cardsUnit.instanceName()/]">
-<h4[if (not cardsUnit.captionClass.oclIsUndefined() or cardsUnit.omitCaption)]
- class="[if (not cardsUnit.captionClass.oclIsUndefined())][cardsUnit.captionClass/][/if] [if (cardsUnit.omitCaption)] hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
-[if (cardsUnit.hasFilters())]
+<section [if (cardsUnit.hasSectionClass)] class="[cardsUnit.sectionClass/]" [/if]id="[cardsUnit.instanceName()/]">
+<h4[if (cardsUnit.hasCaptionClass or cardsUnit.omitCaption)]
+ class="[if (cardsUnit.hasCaptionClass)][cardsUnit.captionClass/][/if] [if (cardsUnit.omitCaption)] hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
+[if (cardsUnit.hasFilters)]
 [cardsUnit.unitFilters()/]
 [/if]
-[if (cardsUnit.hasPagination()
+[if (cardsUnit.hasPagination
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
 [cardsUnit.pagination()/]
 [/if]
 [cardsUnit.unitContent(null, accessor, 0)/]
-[if (cardsUnit.hasPagination()
+[if (cardsUnit.hasPagination
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [cardsUnit.pagination()/]
 [/if]
@@ -54,14 +50,14 @@
 [template private unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
 	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
-[let variable : String = cardsUnit.contentType().instanceName()]
-[if (cardsUnit.hasGroupedResults())]
+[let variable : String = cardsUnit.contentType.instanceName()]
+[if (cardsUnit.hasGroupedResults)]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
 [else]
 <div class="[cardsUnit.rowClass/] mb-3">
 [/if]
 {% for [variable/] in [accessor/] %}
-[if (cardsUnit.hasGroupedResults())]
+[if (cardsUnit.hasGroupedResults)]
 {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
  {% if [cardsUnit.selection.grouping->first().name/] is not null %}
 </div>
@@ -72,13 +68,13 @@
 {% endif%}
 [/if]
  <div class="[cardsUnit.columnClass/]">
-  <div[if (not cardsUnit.cardClass.oclIsUndefined())] class="[cardsUnit.cardClass/]"[/if]>
+  <div[if (cardsUnit.hasCardClass)] class="[cardsUnit.cardClass/]"[/if]>
 [if (cardsUnit.badges->notEmpty())]
    [cardsUnit.header(variable)/]
 [/if]
    [cardsUnit.cardBody(variable)/]
-[if (cardsUnit.hasActions())]
-	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions()->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
+[if (cardsUnit.hasActions)]
+	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
    [cardsUnit.footer(variable)/]
 	[/if]
 [/if]
@@ -91,7 +87,7 @@
 [/template]
 
 [template private header(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div[if (not unit.cardHeaderClass.oclIsUndefined())] class="[unit.cardHeaderClass/]"[/if]>
+<div[if (unit.hasCardHeaderClass)] class="[unit.cardHeaderClass/]"[/if]>
 [for (badge : Badge | unit.badges)]
  [badge.badge(cardAccessor)/]
 [/for]
@@ -99,14 +95,14 @@
 [/template]
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div[if (not unit.cardFooterClass.oclIsUndefined())] class="[unit.cardFooterClass/]"[/if]>
+<div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
  <nav[if (not unit.actionNavigationClass.oclIsUndefined())] class="[unit.actionNavigationClass/]"[/if]>
-[for (action : Action | unit.actions())]
+[for (action : Action | unit.actions)]
 	[if (unit.hasObjectAccess())]
-  [action.actionLink(unit.contentType(), cardAccessor, action.displayLabel,
+  [action.actionLink(unit.contentType, cardAccessor, action.displayLabel,
 		cardAccessor.concat('.defaultLabel()'), cardAccessor, unit.hasObjectAccess(), 'nav-link m-1')/]
 	[else]
-  [action.actionLink(unit.contentType(), cardAccessor, action.displayLabel, null,
+  [action.actionLink(unit.contentType, cardAccessor, action.displayLabel, null,
 		cardAccessor, unit.hasObjectAccess(), 'nav-link m-1')/]
 	[/if]
 [/for]
@@ -115,7 +111,7 @@
 [/template]
 
 [template private cardBody(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div[if (not unit.cardBodyClass.oclIsUndefined())] class="[unit.cardBodyClass/]"[/if]>
+<div[if (unit.hasCardBodyClass)] class="[unit.cardBodyClass/]"[/if]>
 [if (unit.oclIsTypeOf(TextCardsUnit))]
 [let textUnit : TextCardsUnit = unit.oclAsType(TextCardsUnit)]
 	[if (not textUnit.elementTitle.oclIsUndefined() or textUnit.displayFields->notEmpty())]
@@ -156,9 +152,9 @@
 
 [template private dateImage(unit : DateCardsUnit, cardAccessor : String) post(trim())]
 <div class="card-image img-fluid">
-[if (unit.overlaySingleSelectAction and unit.actions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
-[let action : Action = unit.actions()->first()]
- [action.actionLink(unit.contentType(), cardAccessor, unit.dateIcon(cardAccessor),
+[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[let action : Action = unit.actions->first()]
+ [action.actionLink(unit.contentType, cardAccessor, unit.dateIcon(cardAccessor),
 	null, cardAccessor, unit.hasObjectAccess(), null)/]
 [/let]
 [else]
@@ -184,9 +180,9 @@
 
 [template private cardImage(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [let imageClass : String = 'card-img-top']
-[if (unit.overlaySingleSelectAction and unit.actions()->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
-[let action : Action = unit.actions()->first()]
- [action.actionLink(unit.contentType(), cardAccessor, unit.image(cardAccessor, imageClass),
+[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[let action : Action = unit.actions->first()]
+ [action.actionLink(unit.contentType, cardAccessor, unit.image(cardAccessor, imageClass),
 	null, cardAccessor, unit.hasObjectAccess(), null)/]
 [/let]
 [else]

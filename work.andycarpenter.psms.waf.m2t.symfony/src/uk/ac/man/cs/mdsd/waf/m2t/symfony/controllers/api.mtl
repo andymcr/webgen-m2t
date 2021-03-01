@@ -5,14 +5,12 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 
 
 [template public controller(resource : Resource, model : WafModel)]
@@ -73,13 +71,13 @@ class [resource.controllerClassName()/] extends AbstractFOSRestController
  *     },
  * )
  *
- * @return [resource.service.serves.modelClassName()/]
+ * @return [resource.repository.serves.modelClassName()/]
  **/
-public function getOne[resource.service.name/]Action([resource.routeParameters()/])
+public function getOne[resource.repository.name/]Action([resource.routeParameterList()/])
 {
-    return $this->get('[resource.service.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
+    return $this->get('[resource.repository.instanceName()/]')->[if (resource.getOne.oclIsUndefined())]
 find[else]
-[resource.getOne.instanceName()/][/if]([resource.service.serves.routeParameters()/]);
+[resource.getOne.instanceName()/][/if]([resource.repository.serves.routeParameterList()/]);
 }
 [/template]
 
@@ -97,17 +95,17 @@ find[else]
  *
  * @return array
  **/
-public function get[resource.service.name/]Action(ParamFetcher $paramFetcher[if (not resource.parentResource.oclIsUndefined())]
-, [resource.parentResource.routeParameters()/][/if])
+public function get[resource.repository.name/]Action(ParamFetcher $paramFetcher[if (not resource.parentResource.oclIsUndefined())]
+, [resource.parentResource.routeParameterList()/][/if])
 {
 [if (resource.parentResource.oclIsUndefined())]
-    return $this->get('[resource.service.instanceName()/]')->[if (resource.getAll.oclIsUndefined())]
+    return $this->get('[resource.repository.instanceName()/]')->[if (resource.getAll.oclIsUndefined())]
 findAll[else]
 [resource.getAll.instanceName()/][/if]($paramFetcher->get("page"), $paramFetcher->get("pageSize"));
 [else]
-    return $this->get('[resource.parentResource.service.instanceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
+    return $this->get('[resource.parentResource.repository.instanceName()/]')->[if (resource.parentResource.getOne.oclIsUndefined())]
 find[else]
-[resource.parentResource.getOne.instanceName()/][/if]([resource.parentResource.service.serves.routeParameters()/]);
+[resource.parentResource.getOne.instanceName()/][/if]([resource.parentResource.repository.serves.routeParameterList()/]);
 [/if]
 }
 [/template]
@@ -127,7 +125,7 @@ $this->[comment unit.selectionType.instanceName()/] = [comment unit.getSelection
 [/template]
 
 [template private contentSelect(unit : CollectionUnit) post(trim())]
-[if (unit.hasFilters())]
+[if (unit.hasFilters)]
 [unit.contentFilterSelect()/]
 else
 [/if]

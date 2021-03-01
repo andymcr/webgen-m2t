@@ -2,19 +2,17 @@
 [module input(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::form/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 
 
 [template public unitView(unit : ContentUnit)
-	? (unit.oclIsKindOf(EditUnit) or unit.oclIsKindOf(ControlUnit) and not unit.oclIsTypeOf(SearchUnit)) post(trim())]
+	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [file(unit.viewFilename(), false)]
 [let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
 [if (unit.oclIsKindOf(SecurityUnit))]
@@ -23,9 +21,16 @@
 {% block content %}
 [/if]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section [if (not singletonUnit.sectionClass.oclIsUndefined())] class="[singletonUnit.sectionClass/]" [/if]id="[singletonUnit.instanceName()/]">
-<h4[if (not singletonUnit.captionClass.oclIsUndefined() or singletonUnit.omitCaption)]
- class="[if (not singletonUnit.captionClass.oclIsUndefined())][singletonUnit.captionClass/][/if][if (singletonUnit.omitCaption)] hidden[/if]"[/if]>[singletonUnit.unitTitle()/]</h4>
+<section[if (singletonUnit.hasSectionClass)] class="[singletonUnit.sectionClass/]"[/if] id="[singletonUnit.instanceName()/]">
+<h4[if (singletonUnit.hasCaptionClass or singletonUnit.omitCaption)]
+ class="[if (singletonUnit.hasCaptionClass)][singletonUnit.captionClass/][/if][if (singletonUnit.omitCaption)] hidden[/if]"[/if]>[singletonUnit.unitTitle()/]</h4>
+[if (unit.oclIsKindOf(SecurityUnit))]
+
+{% if [unit.instanceName()/]_error %}
+<div class="alert alert-danger">{{ [unit.instanceName()/]_error.messageKey|trans([unit.instanceName()/]_error.messageData, 'security') }}</div>
+{% endif %}
+
+[/if]
 [if (unit.oclIsTypeOf(MapUnit))]
 [singletonUnit.map()/]
 [else]
@@ -44,11 +49,11 @@
 [file(unit.viewFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section [if (not dynamicUnit.sectionClass.oclIsUndefined())] class="[dynamicUnit.sectionClass/]" [/if]id="[dynamicUnit.instanceName()/]">
- <h2[if (not dynamicUnit.captionClass.oclIsUndefined() or dynamicUnit.omitCaption)]
- class="[if (not dynamicUnit.captionClass.oclIsUndefined())][dynamicUnit.captionClass/][/if][if (dynamicUnit.omitCaption)] hidden[/if]"[/if]>[unit.displayLabel/]</h2>
+<section [if (dynamicUnit.hasSectionClass)] class="[dynamicUnit.sectionClass/]" [/if]id="[dynamicUnit.instanceName()/]">
+ <h2[if (dynamicUnit.hasCaptionClass or dynamicUnit.omitCaption)]
+ class="[if (dynamicUnit.hasCaptionClass)][dynamicUnit.captionClass/][/if][if (dynamicUnit.omitCaption)] hidden[/if]"[/if]>[unit.displayLabel/]</h2>
  <div class="unit_padding">
-[if (dynamicUnit.hasInterfaceFields())]
+[if (dynamicUnit.hasInterfaceFields)]
 [let accessor : String = '?']
   <?php
 	$unit_fields = [accessor/]->unit_fields();

@@ -3,9 +3,6 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
@@ -15,16 +12,16 @@
 security:
     enable_authenticator_manager: true
 
-[if (model.isAuthenticated())]
+[if (model.isAuthenticated)]
     encoders:
-	[if (model.isLocallyAuthenticated())]
+	[if (model.isLocallyAuthenticated)]
         [model.modelsNamespace()/]\[authentication.oclAsType(LocalAuthenticationSystem).authenticationModel.modelName()/]: auto
 	[else]
         Symfony\Component\Security\Core\User\User: plaintext
 	[/if]
 
     providers:
-	[if (model.isLocallyAuthenticated())]
+	[if (model.isLocallyAuthenticated)]
 	[let localAuthentication : LocalAuthenticationSystem = model.authentication.oclAsType(LocalAuthenticationSystem)]
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
@@ -37,7 +34,7 @@ username[/if]
 
 		[/if]
 	[/let]
-	[elseif (model.isCasAuthenticated())]
+	[elseif (model.isCasAuthenticated)]
         cas:
             entity:
                 class: [authentication.modelsNamespace()/]\[authentication.user.modelName()/]
@@ -63,16 +60,16 @@ username[/if]
             lazy: true
 #            login_throttling: null
             switch_user: true
-	[if (model.isLocallyAuthenticated())]
+	[if (model.isLocallyAuthenticated)]
             custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
-                path: [model.localAuthentication().logoutUnit.routeName()/]
-		[if (model.localAuthentication().allowRememberMe)]
+                path: [model.localAuthentication.logoutUnit.routeName()/]
+		[if (model.localAuthentication.allowRememberMe)]
  #           remember_me:
  #               secret:   '%kernel.secret%'
  #               lifetime: 1209600 # 14 days
 		[/if]
-	[elseif (model.isCasAuthenticated())]
+	[elseif (model.isCasAuthenticated)]
             guard:
                 authenticators:
                     - app.cas_authenticator
@@ -90,13 +87,13 @@ username[/if]
     # [/protected]
 
     access_control:
-	[if (model.isLocallyAuthenticated())]
+	[if (model.isLocallyAuthenticated)]
         - { path: ^/login$, roles: PUBLIC_ACCESS, requires_channel: https }
         - { path: ^/register, roles: PUBLIC_ACCESS, requires_channel: https }
         - { path: ^/resetting, roles: PUBLIC_ACCESS, requires_channel: https }
 	[/if]
         # [protected ('access.control')]
-	[if (model.isAuthenticated())]
+	[if (model.isAuthenticated)]
         - { path: ^/, roles: PUBLIC_ACCESS, requires_channel: https }
 	[/if]
         # [/protected]

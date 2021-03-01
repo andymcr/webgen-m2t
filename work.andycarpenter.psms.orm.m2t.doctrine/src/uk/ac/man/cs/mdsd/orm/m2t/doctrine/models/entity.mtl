@@ -2,9 +2,6 @@
 [module entity(
 	'http://andycarpenter.work/psm/Expression',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::expression/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
@@ -38,21 +35,21 @@ namespace [entity.modelsNamespace()/];
  * )
 	[/if]
 [/if]
-[for (attribute : Attribute | entity.uniqueAttributes())]
+[for (attribute : Attribute | entity.uniqueAttributes)]
  * @UniqueEntity("[attribute.columnName/]")
 [/for]
-[if (entity.isContained())]
-	[for (attribute : Attribute | entity.containerUniqueAttributes())]
- * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entity.containingAssociation().opposite.modelPropertyName()/]")
+[if (entity.isContained)]
+	[for (attribute : Attribute | entity.containerUniqueAttributes)]
+ * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entity.containingAssociation.opposite.modelPropertyName()/]")
 	[/for]
 [/if]
-[if (entity.hasResourceAttributes())]
+[if (entity.hasResourceAttributes)]
  * @Vich\Uploadable
 [/if]
  **/
 class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements UserInterface[/if][if (entity.implementForumUser)] implements ForumUserInterface[/if]
 {
-[if (not entity.hasPrimaryKeys())]
+[if (not entity.hasPrimaryKeys)]
     [entity.autoIdFeature()/]
 
 [/if]
@@ -66,15 +63,15 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [entity.timestampFeatures()/]
 
 [/if]
-[if (entity.hasDefaultValueFeatures() or entity.hasResourceAttributes() or entity.hasCollectionAssociations())]
+[if (entity.hasFeaturesWithDefaultValue or entity.hasResourceAttributes or entity.hasCollectionAssociations)]
     [entity.constructor()/]
 
 [/if]
-[if (not entity.hasPrimaryKeys())]
+[if (not entity.hasPrimaryKeys)]
     [entity.idMethods()/]
 
 [/if]
-[for (feature : Feature | entity.features->select(f | not f.isHidden()))]
+[for (feature : Feature | entity.features)]
     [feature.featureMethods()/]
 
 [/for]
@@ -100,16 +97,16 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
 
 [template private useStatements(entity : Entity) post(trim())]
 use Doctrine\ORM\Mapping as ORM;
-[if (entity.collectionAssociations()->notEmpty())]
+[if (entity.hasCollectionAssociations)]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates or entity.hasSlugAttributes())]
+[if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates or entity.hasSlugAttributes)]
 use Gedmo\Mapping\Annotation as Gedmo;
 [/if]
-[if (entity.unique->notEmpty() or entity.uniqueAttributes()->notEmpty())]
+[if (entity.unique->notEmpty() or entity.hasUniqueAttributes)]
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 [/if]
-[if (entity.hasResourceAttributes())]
+[if (entity.hasResourceAttributes)]
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 [/if]
@@ -120,18 +117,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 [/if]
 [if (entity.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
-	->select(a | a.isVisible() or a.isOwningEnd())
+	->select(a | a.isVisible or a.isOwningEnd)
 	->select(a | a.serializationMaxDepth > 0)->notEmpty())]
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 [/if]
-[if (entity.hasValidatedFeatures())]
+[if (entity.hasValidatedFeatures)]
 use Symfony\Component\Validator\Constraints as Assert;
 [/if]
-[if (entity.hasResourceAttributes())]
+[if (entity.hasResourceAttributes)]
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 [/if]
-[if (entity.isContained() and entity.containerUniqueAttributes()->notEmpty())]
+[if (entity.isContained and entity.containerUniqueAttributes->notEmpty())]
 use [entity.validatorNamespace()/]\Constraints as AppAssert;
 [/if]
 [if (entity.implementForumUser)]
@@ -152,15 +149,15 @@ protected $[entity.autoKeyName/];
 [/template]
 
 [template private featureProperties(entity : Entity) post(trim())]
-[for (feature : Feature | entity.features->select(f | f.isVisible() or f.isOwningEnd()))]
+[for (feature : Feature | entity.features->select(f | f.isVisible or f.isOwningEnd))]
 [comment TODO sortout location features /]
-	[if (not feature.isLocation() and not feature.isResource())]
+	[if (not feature.isLocationFeature and not feature.isResourceFeature)]
 /**
   [feature.ormAnnotation()/]
-		[if (feature.isValidated())]
+		[if (feature.isValidated)]
   [feature.validationAnnotation()/]
 		[/if]
-		[if (feature.hasSerializationControl())]
+		[if (feature.hasSerializationControl)]
   [feature.serializationAnnotation()/]
 		[/if]
   **/
@@ -170,7 +167,7 @@ protected $[feature.columnName/];
 protected $[feature.modelPropertyName()/];
 		[/if]
 
-	[elseif (feature.isResource())]
+	[elseif (feature.isResourceFeature)]
 /**
  * @Vich\UploadableField(mapping="[feature.modelPropertyName()/]", fileNameProperty="[feature.modelPropertyName()/].name", size="[feature.modelPropertyName()/].size", mimeType="[feature.modelPropertyName()/].mimeType", originalName="[feature.modelPropertyName()/].originalName", dimensions="[feature.modelPropertyName()/].dimensions")
  *
@@ -241,10 +238,10 @@ protected $updated;
 [template private ormAnnotation(feature : Feature)
 	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
 [let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
-[if (attribute.primaryKey)]
+[if (attribute.isPrimaryKey)]
 * @ORM\Id
 [/if]
-* @ORM\Column([if (feature.columnName.isReservedWord())]name="`[feature.columnName/]`", [/if]type="[attribute.ormType/]"[if (not attribute.isRequired())], nullable=true[/if])
+* @ORM\Column([if (feature.columnName.isReservedWord())]name="`[feature.columnName/]`", [/if]type="[attribute.ormType/]"[if (not attribute.isRequired)], nullable=true[/if])
 [if (attribute.slugFields->notEmpty())]
 * @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.columnName/]"[/for]})
 [/if]
@@ -259,23 +256,23 @@ protected $updated;
 [/template]
 
 [template private ormAnnotation(feature : Feature)
-	? (feature.oclIsKindOf(Association) and feature.isSingleton()) post(trim())]
+	? (feature.oclIsKindOf(Association) and feature.isSingleton) post(trim())]
 [let association : SingletonAssociation = feature.oclAsType(SingletonAssociation)]
 [let opposite : Association = association.opposite]
-[if (association.primaryKey)]
+[if (association.isPrimaryKey)]
 * @ORM\Id
 [/if]
-* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
-, [if (association.isOwningEnd())]
-inversedBy[else]mappedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains())]
-, [if (association.isOwningEnd())]orphanRemoval=true[else]cascade={"persist", "remove"}[/if][/if][/if])
-[if (association.isOwningEnd())]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
+, [if (association.isOwningEnd)]
+inversedBy[else]mappedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains)]
+, [if (association.isOwningEnd)]orphanRemoval=true[else]cascade={"persist", "remove"}[/if][/if][/if])
+[if (association.isOwningEnd)]
 	[if (association.keys->notEmpty())]
 [association.explicitKeys()/]
-	[elseif (association.targetType().primaryKeys()->notEmpty())]
+	[elseif (association.targetType.hasPrimaryKeys)]
 [association.primaryKeys()/]
 	[else]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[association.targetType().oclAsType(Entity).autoKeyName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[association.targetType.autoKeyName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])
 	[/if]
 [/if]
 [/let]
@@ -283,30 +280,30 @@ inversedBy[else]mappedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/template]
 
 [template private ormAnnotation(feature : Feature)
-	? (feature.oclIsKindOf(Association) and not feature.isSingleton()) post(trim())]
+	? (feature.oclIsKindOf(Association) and not feature.isSingleton) post(trim())]
 [let association : CollectionAssociation = feature.oclAsType(CollectionAssociation)]
 [let opposite : Association = association.opposite]
-* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible() or opposite.isOwningEnd())]
-, [if (association.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd())]
-mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains())]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
+, [if (association.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd)]
+mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains)]
 , cascade={"persist", "remove"}[/if][/if])
-[if (association.owningEnd)]
+[if (association.isOwningEnd)]
 * @ORM\JoinTable(name="[association.pivotTableName/]",
 	[if (association.keys->notEmpty())]
 [association.explicitKeysOwning()/]
-	[elseif (association.sourceType().primaryKeys()->notEmpty())]
+	[elseif (association.sourceType.primaryKeys->notEmpty())]
 [association.primaryKeysOwning()/]
 	[else]
-*     joinColumns={@ORM\JoinColumn(name="[association.columnName/]"[if (association.sourceType().autoKeyName.toLowerCase() <> 'id')]
-, referencedColumnName="[association.sourceType().autoKeyName.toLowerCase()/]"[/if], nullable=false)},
+*     joinColumns={@ORM\JoinColumn(name="[association.columnName/]"[if (association.sourceType.autoKeyName.toLowerCase() <> 'id')]
+, referencedColumnName="[association.sourceType.autoKeyName.toLowerCase()/]"[/if], nullable=false)},
 	[/if]
 	[if (association.keys->notEmpty())]
 [association.explicitKeysInverse()/]
-	[elseif (association.targetType().primaryKeys()->notEmpty())]
+	[elseif (association.targetType.primaryKeys->notEmpty())]
 [association.primaryKeysInverse()/]
 	[else]
-*     inverseJoinColumns={@ORM\JoinColumn(name="[association.opposite.columnName/]"[if (association.targetType().autoKeyName.toLowerCase() <> 'id')]
-, referencedColumnName="[association.targetType().autoKeyName.toLowerCase()/]"[/if], nullable=false)})
+*     inverseJoinColumns={@ORM\JoinColumn(name="[association.opposite.columnName/]"[if (association.targetType.autoKeyName.toLowerCase() <> 'id')]
+, referencedColumnName="[association.targetType.autoKeyName.toLowerCase()/]"[/if], nullable=false)})
 	[/if]
 [/if]
 [/let]
@@ -316,12 +313,12 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [template private explicitKeys(association : SingletonAssociation) post(trim())]
 [if (association.keys->size() = 1)]
 [let key : AssociationKey = association.keys->first()]
-* @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+* @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])
 [/let]
 [else]
 * @ORM\JoinColumns({[for (key : AssociationKey | association.keys) separator(',')]
 
-*     @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
+*     @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])[/for]
 
 * })
 [/if]
@@ -356,26 +353,26 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/template]
 
 [template private primaryKeys(association : SingletonAssociation) post(trim())]
-[if (association.targetType().primaryKeys()->size() = 1)]
-[let key : Feature = association.targetType().primaryKeys()->first()]
-* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])
+[if (association.targetType.primaryKeys->size() = 1)]
+[let key : Feature = association.targetType.primaryKeys->first()]
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])
 [/let]
 [else]
-* @ORM\JoinColumns({[for (key : Feature | association.targetType().primaryKeys()) separator(',')]
+* @ORM\JoinColumns({[for (key : Feature | association.targetType.primaryKeys) separator(',')]
 
-*     @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired())], nullable=false[/if])[/for]
+*     @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])[/for]
 
 * })
 [/if]
 [/template]
 
 [template private primaryKeysOwning(association : CollectionAssociation) post(trim())]
-[if (association.partOf.oclAsType(Entity).primaryKeys()->size() = 1)]
-[let key : Feature = association.partOf.oclAsType(Entity).primaryKeys()->first()]
+[if (association.partOf.oclAsType(Entity).primaryKeys->size() = 1)]
+[let key : Feature = association.partOf.oclAsType(Entity).primaryKeys->first()]
 *     joinColumns={@ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)},
 [/let]
 [else]
-*     joinColumns={[for (key : Feature | association.sourceType().primaryKeys()) separator(',')]
+*     joinColumns={[for (key : Feature | association.sourceType.primaryKeys) separator(',')]
 
 *         @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
 
@@ -384,12 +381,12 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/template]
 
 [template private primaryKeysInverse(association : CollectionAssociation) post(trim())]
-[if (association.targetType().primaryKeys()->size() = 1)]
-[let key : Feature = association.targetType().primaryKeys()->first()]
+[if (association.targetType.primaryKeys->size() = 1)]
+[let key : Feature = association.targetType.primaryKeys->first()]
 *     inverseJoinColumns={@ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)},
 [/let]
 [else]
-*     inverseJoinColumns={[for (key : Feature | association.targetType().primaryKeys()) separator(',')]
+*     inverseJoinColumns={[for (key : Feature | association.targetType.primaryKeys) separator(',')]
 
 *         @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
 
@@ -398,14 +395,14 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/template]
 
 [template private validationAnnotation(feature : Feature) post(trim())]
-[if (feature.isRequired())]
+[if (feature.isRequired)]
 	[if (feature.oclIsKindOf(Attribute))]
 * @Assert\NotBlank
 	[else]
 * @Assert\NotNull
 	[/if]
 [/if]
-[if (feature.isContains())]
+[if (feature.isContains)]
 * @Assert\Valid
 [/if]
 [/template]
@@ -426,9 +423,9 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [template private constructor(entity : Entity) post(trim())]
 public function __construct()
 {
-[for (feature : Feature | entity.features())]
-	[if (feature.hasDefaultValue())]
-    $this->[feature.modelPropertyName()/] = [feature.defaultValue().defaultExpression()/];
+[for (feature : Feature | entity.features)]
+	[if (feature.hasDefaultValue)]
+    $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
 	[/if]
 	[if (feature.oclIsKindOf(CollectionAttribute))]
     $this->[feature.modelPropertyName()/] = Array();
@@ -436,7 +433,7 @@ public function __construct()
 	[if (feature.oclIsTypeOf(CollectionAssociation))]
     $this->[feature.modelPropertyName()/] = new ArrayCollection();
 	[/if]
-	[if (feature.isResource())]
+	[if (feature.isResourceFeature)]
     $this->[feature.modelPropertyName()/]  = new EmbeddedFile();
 	[/if]
 [/for]
@@ -451,7 +448,7 @@ public function getId()
 [/template]
 
 [template private featureMethods(feature : Feature) post(trim())]
-[if (feature.isResource())]
+[if (feature.isResourceFeature)]
 [feature.getFileMethod()/]
 
 [feature.setFileMethod()/]
@@ -459,8 +456,8 @@ public function getId()
 [/if]
 [feature.getMethod()/]
 
-[if (not feature.isDerived())]
-	[if (feature.isSingleton())]
+[if (not feature.isDerived)]
+	[if (feature.isSingleton)]
 [feature.setMethod()/]
 
 	[else]
@@ -479,7 +476,7 @@ public function getId()
 [template private getMethod(feature : Feature) post(trim())]
 public function [feature.getMethodName()/]()
 {
-[if (feature.isDerived())]
+[if (feature.isDerived)]
     // [protected (feature.name.concat('.getMethod'))]
     [feature.getMethodCore()/]
     // [/protected]
@@ -527,7 +524,7 @@ public function [attribute.setMethodName()/]($[attribute.instanceName()/])
 $this->[element.columnName/] = strtolower(trim($[element.instanceName()/]));
 	[elseif (element.encrypt)]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
-	[elseif (element.isEnumerationType() or element.isBooleanDataType())]
+	[elseif (element.isEnumerationFeature or element.isBooleanFeature)]
 $this->[element.columnName/] = $[element.instanceName()/];
 	[else]
 $this->[element.columnName/] = trim($[element.instanceName()/]);
@@ -572,7 +569,7 @@ public function set[association.modelPropertyName().toUpperFirst()/]($[associati
 [template private addMethod(feature : Feature) post(trim())]
 public function [feature.addMethodName()/]($[feature.singletonName/])
 {
-[if (feature.isUnique())]
+[if (feature.isUnique)]
     if (!in_array($[feature.singletonName/], $this->[feature.modelPropertyName()/], true)) {
 	[if (feature.oclIsKindOf(Attribute))]
         $this->[feature.columnName/]['['/][']'/] = $[feature.singletonName/];
@@ -587,9 +584,9 @@ public function [feature.addMethodName()/]($[feature.singletonName/])
     $this->[feature.modelPropertyName()/]->add($[feature.singletonName/]);
 	[/if]
 [/if]
-[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd())]
+[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd)]
 [let association : Association = feature.oclAsType(Association)]
-	[if (association.isOppositeSingleton())]
+	[if (association.isOppositeSingleton)]
     $[association.singletonName/]->[association.opposite.setMethodName()/]($this);
 	[else]
     $[association.singletonName/]->[if (association.opposite.collectionOrmAllowAdd)]
@@ -609,9 +606,9 @@ public function [feature.removeMethodName()/]($[feature.singletonName/])
 [else]
     $this->[feature.modelPropertyName()/]->removeElement($[feature.singletonName/]);
 [/if]
-[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd())]
+[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd)]
 [let association : Association = feature.oclAsType(Association)]
-	[if (association.isOppositeSingleton())]
+	[if (association.isOppositeSingleton)]
     $[association.singletonName/]->[association.opposite.setMethodName()/](null);
 	[else]
     $[association.singletonName/]->[if (association.opposite.collectionOrmAllowRemove)]
@@ -801,7 +798,7 @@ public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Lab
 return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
 $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 [let attribute : ModelLabelAttribute = feature.oclAsType(ModelLabelAttribute)]
-[attribute.attribute.columnName/][if (attribute.attribute.isDate())]->format('[attribute.dateFormat/]')[/if][/let][else]
+[attribute.attribute.columnName/][if (attribute.attribute.isDateFeature)]->format('[attribute.dateFormat/]')[/if][/let][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
 [association.association.modelPropertyName()/]->get[if (association.valueDisplay.oclIsUndefined())]Default[else][association.valueDisplay.name.toUpperFirst()/][/if]Label()[/let]
 [/if][/for]);

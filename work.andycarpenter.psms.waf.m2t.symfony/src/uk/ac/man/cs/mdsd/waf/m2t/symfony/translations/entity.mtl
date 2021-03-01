@@ -3,12 +3,9 @@
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 
 
 [template public entityTranslations(model : WafModel)]
@@ -21,7 +18,7 @@
  <source>actions.labels.select_one</source>
  <target>Please select one</target>
 </trans-unit>
-[for (enumerationType : EnumerationType | model.persistence.enumerationTypes())]
+[for (enumerationType : EnumerationType | model.persistence.enumerationTypes)]
    [enumerationType.translations()/]
 [/for]
 [for (entity : Entity | model.persistence.entities)]
@@ -47,7 +44,7 @@
  <source>label.[entity.id()/]</source>
  <target>[entity.displayLabel.validXML()/]</target>
 </trans-unit>
-[for (feature : Feature | entity.features->select(f | not f.isHidden()))]
+[for (feature : Feature | entity.features)]
 <trans-unit id="[entity.id()/].labels.[feature.id()/]">
  <source>[entity.id()/].labels.[feature.id()/]</source>
  <target>[feature.displayLabel.validXML()/]</target>

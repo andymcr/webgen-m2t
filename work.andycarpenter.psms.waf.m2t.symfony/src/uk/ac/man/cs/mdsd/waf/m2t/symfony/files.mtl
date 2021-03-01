@@ -6,10 +6,20 @@
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
+
+[query public htmlExtension(eObject : EObject) : String
+	= '.html'
+/]
+
+[query public javascriptExtension(eObject : EObject) : String
+	= '.js'
+/]
+
+[query public executableExtension(eObject : EObject) : String
+	= '.php'
+/]
 
 [query public twigExtension(eObject : EObject) : String
 	= '.twig'
@@ -17,6 +27,10 @@
 
 [query public xlfExtension(eObject : EObject) : String
 	= '.xlf'
+/]
+
+[query public xmlExtension(eObject : EObject) : String
+	= '.xml'
 /]
 
 [query public yamlExtension(eObject : EObject) : String
@@ -165,7 +179,7 @@
 /]
 
 [query public controllerFilename(authentication : Authentication, model : WafModel) : String
-	= if model.hasAPI() then
+	= if model.hasAPI then
 			authentication.webControllersDirectory()
 		else
 			authentication.controllersDirectory()
@@ -175,7 +189,7 @@
 /]
 
 [query public controllerFilename(page : Page, model : WafModel) : String
-	= if model.hasAPI() then
+	= if model.hasAPI then
 			page.webControllersDirectory()
 		else
 			page.controllersDirectory()
@@ -202,9 +216,9 @@
 		.concat(authentication.executableExtension())
 /]
 
-[query public formTypeFilename(unit : SingletonUnit, model : WafModel) : String
+[query public formTypeFilename(unit : SingletonUnit) : String
 	= unit.formDirectory().concat('/')
-		.concat(unit.typeClassName(model))
+		.concat(unit.typeClassName())
 		.concat(unit.executableExtension())
 /]
 
@@ -233,6 +247,24 @@
 [query public viewFilename(unit : ContentUnit) : String
 	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
 		.concat(unit.viewName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+/]
+
+[query public viewResetCheckFilename(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
+		.concat(unit.viewResetCheckName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+/]
+
+[query public viewResetEmailFilename(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
+		.concat(unit.viewResetEmailName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+/]
+
+[query public viewResetRequestFilename(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
+		.concat(unit.viewResetRequestName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 

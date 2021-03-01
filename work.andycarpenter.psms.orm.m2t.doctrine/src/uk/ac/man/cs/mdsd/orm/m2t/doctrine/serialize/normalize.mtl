@@ -1,8 +1,6 @@
 [comment encoding = UTF-8 /]
 [module normalize(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 
@@ -28,7 +26,7 @@ class [entity.normalizerClassName()/] extends ObjectNormalizer
         if (array_key_exists('keys_only', $context))
         {
             $data = array();
-[for (key : Attribute | entity.attributeKeys())]
+[for (key : Attribute | entity.attributeKeys)]
             $data['['/]'[key.modelPropertyName()/]'[']'/] = $object->[key.getMethodName()/]();
 [/for]
    	        return $data;
@@ -49,8 +47,8 @@ $data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMet
 [/template]
 
 [template private data(feature : Feature, accessor : String)
-	? (feature.oclIsKindOf(Association) and feature.isSingleton()) post(trim())]
-[if (feature.isRequired())]
+	? (feature.oclIsKindOf(Association) and feature.isSingleton) post(trim())]
+[if (feature.isRequired)]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize([accessor/]->[feature.getMethodName()/](), $format, $context);
 [else]
 $[feature.instanceName()/] = [accessor/]->[feature.getMethodName()/]();
@@ -60,7 +58,7 @@ if ($[feature.instanceName()/])
 [/template]
 
 [template private data(feature : Feature, accessor : String)
-	? (feature.oclIsKindOf(Association) and not feature.isSingleton()) post(trim())]
+	? (feature.oclIsKindOf(Association) and not feature.isSingleton) post(trim())]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMethodName()/]()->map(
     function ($item) use ($format, $context) {
         return $this->serializer->normalize($item, $format, $context);

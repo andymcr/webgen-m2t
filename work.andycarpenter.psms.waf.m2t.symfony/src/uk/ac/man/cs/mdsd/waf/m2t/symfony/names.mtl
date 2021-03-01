@@ -6,18 +6,46 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
+
+
+[query public alias(field : UnitField) : String
+	= if field.oclIsKindOf(InterfaceField) then
+			null
+		else if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).alias()
+		else
+			field.oclAsType(UnitAssociation).alias()
+		endif endif
+/]
+
+[query public alias(attribute : UnitAttribute) : String
+	= if attribute.displayedOn.oclIsKindOf(CollectionUnit) then
+			let unit : CollectionUnit = attribute.displayedOn.oclAsType(CollectionUnit)
+				in if unit.selection.oclIsUndefined() then
+						null
+					else
+						attribute.attribute.alias(unit.selection)
+					endif
+		else if attribute.displayedOn.oclIsKindOf(DetailsUnit) then
+			let unit : DetailsUnit = attribute.displayedOn.oclAsType(DetailsUnit)
+				in if unit.selection.oclIsUndefined() then
+						null
+					else
+						attribute.attribute.alias(unit.selection)
+					endif
+		else
+			null
+		endif endif
+/]
+
+[query public alias(association : UnitAssociation) : String
+	= null
+/]
 
 
 [query public appName(eObject : EObject) : String
@@ -45,10 +73,6 @@
 	= 'ResetPasswordRequest'
 /]
 
-[query public securityUserName(eObject : EObject) : String
-	= 'User'
-/]
-
 
 [query public filterName(type : EnumerationType) : String
 	= type.name.toLowerFirst()
@@ -72,7 +96,7 @@
 		->collect(p | p.units)
 		->select(u | u.oclIsKindOf(SingletonUnit)).oclAsType(SingletonUnit)
 		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))
-		->select(u | u.contentType() = entity)
+		->select(u | u.contentType = entity)
 		->sortedBy(u | u.name)
 /]
 
@@ -112,7 +136,7 @@
 /]
 
 [query public userModelName(security : Authentication) : String
-	= security.securityPrefix().concat(security.securityUserName())
+	= security.securityPrefix().concat('User')
 /]
 
 
@@ -199,10 +223,10 @@
 /]
 
 [query public containerInstanceName(unit : DynamicUnit) : String
-	= if unit.containerType().oclIsUndefined() then
-			'uncontained'
+	= if unit.isContained then
+			unit.containingType.instanceName()
 		else
-			unit.containerType().instanceName()
+			'uncontained'
 		endif
 /]
 
@@ -213,9 +237,13 @@
 [query private featureNames(form : DynamicUnit) : Sequence(String)
 	= form.displayFields
 		->select(f | f.oclIsKindOf(UnitFeature))
-		->collect(f | f.feature())
+		->collect(f | f.persistentFeature)
 		->sortedBy(f | f.name)
 		->collect(f | f.name)
+/]
+
+[query public formName(unit : EditUnit) : String
+	= unit.name.toLowerFirst().concat('Form')
 /]
 
 [query public instanceName(unit : ContentUnit) : String
@@ -240,10 +268,10 @@
 			endif
 		else
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-				in if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
+				in if dynamicUnit.hasDefaultValueFields or dynamicUnit.hasInterfaceFields then
 						dynamicUnit.typeClassName(null)
 					else
-						dynamicUnit.contentType().modelName()
+						dynamicUnit.contentType.modelName()
 					endif
 		endif
 /]
@@ -323,7 +351,7 @@
 /]
 
 
-[query public sameModel(form : SingletonUnit, model : WafModel) : Sequence(SingletonUnit)
+[query public sameModel(form : DynamicUnit, model : WafModel) : Sequence(SingletonUnit)
 	= let forms : Sequence(SingletonUnit) = form.contentType.formsUsing(model)
 		in if forms->size() < 2 then
 				forms
@@ -342,8 +370,8 @@
 /]
 
 [query public thumbName(unit : ImageUnit) : String
-	= let units : Sequence(ImageUnit)
-		= unit.displayedOn.partOf.imageUnits()
+	= let units : OrderedSet(ImageUnit)
+		= unit.displayedOn.partOf.imageUnits
 		in if unit->collect(u | u.name)->select(n | n = unit.name)->size() > 1 then
 				unit.instanceName()
 			else
@@ -351,19 +379,19 @@
 			endif
 /]
 
-[query public typeClassName(unit : SingletonUnit, model : WafModel) : String
-	= if unit.hasDefaultValueFields() or unit.hasInterfaceFields() then
+[query public typeClassName(unit : DynamicUnit) : String
+	= if unit.hasDefaultValueFields or unit.hasInterfaceFields then
 			unit.typeClassNameForm()
 		else
-			unit.typeClassNameEntity(model)
+			unit.typeClassNameEntity(unit.displayedOn.partOf)
 		endif
 /]
 
-[query private typeClassNameEntity(unit : SingletonUnit, model : WafModel) : String
+[query private typeClassNameEntity(unit : DynamicUnit, model : WafModel) : String
 	= let sameModel : Sequence(DynamicUnit) = unit.sameModel(model)
-		in unit.contentType().modelName()
-			.concat(if sameModel->size() <> unit.contentType().formsUsing(model)->size() then
-					unit.name
+		in unit.contentType.modelName()
+			.concat(if sameModel->size() <> unit.contentType.formsUsing(model)->size() then
+					unit.name.toUpperFirst()
 				else
 					''
 				endif)
@@ -382,11 +410,45 @@
 	= unit.name.toLowerFirst()
 /]
 
+[query public viewResetCheckName(unit : ForgottenPasswordUnit) : String
+	= unit.name.toLowerFirst().concat('_check')
+/]
+
+[query public viewResetEmailName(unit : ForgottenPasswordUnit) : String
+	= unit.name.toLowerFirst().concat('_email')
+/]
+
+[query public viewResetRequestName(unit : ForgottenPasswordUnit) : String
+	= unit.name.toLowerFirst().concat('_request')
+/]
+
 
 [query public actionName(association : UnitAssociation) : String
 	= association.displayedOn.instanceName()
 		.concat(association.name.toUpperFirst())
 		.concat('Action')
+/]
+
+[query public formName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.columnName
+			else
+				let association : Association
+					= field.oclAsType(UnitAssociation).association
+					in if association.isSingleton and association.isOwningEnd then 
+	 						association.columnName 
+						else 
+							association.modelPropertyName() 
+						endif 
+			endif
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else if field.oclIsTypeOf(CaptchaField) then
+			field.oclAsType(CaptchaField).name
+		else
+			'UnhandledFeature'
+		endif endif endif
 /]
 
 [query public instanceName(field : UnitField) : String
@@ -399,12 +461,26 @@
 		endif endif.toLowerFirst()
 /]
 
+[query public modelPropertyName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.modelPropertyName()
+			else
+				field.oclAsType(UnitAssociation).association.modelPropertyName()
+			endif
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else
+			'UnhandledFeature'
+		endif endif
+/]
+
 [query public optionsName(field : UnitField) : String
 	= field.uniqueName().concat('_options')
 /]
 
 [query public typeClassName(association : UnitAssociation) : String
-	= association.association.targetType().modelName().concat(association.typeSuffix())
+	= association.association.targetType.modelName().concat(association.typeSuffix())
 /]
 
 [query public uniqueName(field : UnitField) : String
@@ -421,9 +497,9 @@
 /]
 
 [query private actionName(action : Action, unit : DynamicUnit) : String
-	= let siblings : Sequence(Action)
-		= unit.displayedOn.actionsRequiringHandlers()
-		in if siblings->select(a | a.name.equalsIgnoreCase(action.name))->size() < 2  then
+	= let actionsWithName : OrderedSet(Action)
+		= unit.displayedOn.actionsWithoutTarget->select(a | a.name.equalsIgnoreCase(action.name))
+		in if actionsWithName->size() < 2  then
 				action.uniqueName()
 			else
 				unit.instanceName().concat(action.name.toUpperFirst())
@@ -441,10 +517,10 @@
 [query public instanceName(action : Action) : String
 	= if action.oclIsTypeOf(DeleteAction)
 				or action.oclIsKindOf(InstanceOperationAction) then
-			action.unit().contentType().instanceName()
+			action.parentUnit.contentType.instanceName()
 		else if action.oclIsTypeOf(ContainerOperationAction) then
-			if action.unit().contentType().isContained() then
-				action.unit().contentType().container().instanceName()
+			if action.parentUnit.contentType.isContained then
+				action.parentUnit.contentType.containingType.instanceName()
 			else
 				action.uniqueName()
 			endif
@@ -470,26 +546,26 @@
 /]
 
 [query public routeActionReturnName(action : Action) : String
-	= let page : Page = action.unit().displayedOn
+	= let page : Page = action.parentUnit.displayedOn
 		in if page.hasRoutingUnits() then
 				page.uniqueName()
 			else
-				action.unit().routeName()
+				action.parentUnit.routeName()
 			endif
 /]
 
 [query public routeName(action : Action) : String
-	= let page : Page = action.unit().displayedOn
+	= let page : Page = action.parentUnit.displayedOn
 		in if page.hasRoutingUnits() then
-				if page.actionsRequiringHandlers()->select(a | a.name = action.name)->size() = 1 then
+				if page.actionsWithoutTarget->select(a | a.name = action.name)->size() = 1 then
 					page.uniqueName()
 						.concat('_').concat(action.uniqueName())
 				else
-					action.unit().routeName()
+					action.parentUnit.routeName()
 						.concat('_').concat(action.uniqueName())
 				endif
 			else
-				action.unit().routeName()
+				action.parentUnit.routeName()
 					.concat('_').concat(action.uniqueName())
 			endif
 /]

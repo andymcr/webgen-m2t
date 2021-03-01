@@ -2,9 +2,7 @@
 [module enumerationTypes(
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::dataTypes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
@@ -27,7 +25,7 @@ class EnumerationTypes extends Twig_Extension
     public function getFilters()
     {
         return array(
-[for (enumerationType : EnumerationType | model.enumerationTypes())]
+[for (enumerationType : EnumerationType | model.enumerationTypes)]
             '[enumerationType.filterName()/]' => new Twig_SimpleFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelName()/]', 'value')),
 [/for]
         );

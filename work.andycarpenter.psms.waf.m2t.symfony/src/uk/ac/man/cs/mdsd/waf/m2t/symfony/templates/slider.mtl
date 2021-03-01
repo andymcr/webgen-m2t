@@ -3,9 +3,8 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
@@ -15,11 +14,9 @@
 	? (unit.oclIsTypeOf(SliderUnit)) post(trim())]
 [let sliderUnit : SliderUnit = unit.oclAsType(SliderUnit)]
 [file(sliderUnit.viewFilename(), false)]
-<section [if (not sliderUnit.sectionClass.oclIsUndefined())] class="[sliderUnit.sectionClass/]" [/if]id="[sliderUnit.instanceName()/]">
-[if (not sliderUnit.omitCaption)]
- <h4[if (not sliderUnit.captionClass.oclIsUndefined() or sliderUnit.omitCaption)]
- class="[if (not sliderUnit.captionClass.oclIsUndefined())][sliderUnit.captionClass/][/if] [if (sliderUnit.omitCaption)] hidden[/if]"[/if]>[sliderUnit.unitTitle()/]</h4>
-[/if]
+<section [if (sliderUnit.hasSectionClass)] class="[sliderUnit.sectionClass/]" [/if]id="[sliderUnit.instanceName()/]">
+ <h4[if (sliderUnit.hasCaptionClass or sliderUnit.omitCaption)]
+ class="[if (sliderUnit.hasCaptionClass)][sliderUnit.captionClass/][/if] [if (sliderUnit.omitCaption)] hidden[/if]"[/if]>[sliderUnit.unitTitle()/]</h4>
  [sliderUnit.materializeCSS()/]
 </section>
 [/file]
@@ -29,7 +26,7 @@
 [template private materializeCSS(unit : SliderUnit) post(trim())]
 <div class="slider">
  <ul class="slides">
-[let variable : String = unit.contentType().instanceName()]
+[let variable : String = unit.contentType.instanceName()]
 {% for [variable/] in [unit.instanceName()/] %}
   <li>[unit.image(variable, '')/]</li>
 {% endfor %}

@@ -1,8 +1,6 @@
 [comment encoding = UTF-8 /]
 [module imagine(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
 

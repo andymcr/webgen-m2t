@@ -3,22 +3,16 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::select]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 
 
 [query public keyAccessor(attribute : Attribute, entity : Entity, parentAccessor : String) : String
 	= if entity.features->includes(attribute) then
 			parentAccessor.concat('->').concat(attribute.getMethodName()).concat('()')
 		else
-			attribute.keyAccessor(entity.container(),
-				parentAccessor.concat('->').concat(entity.containingAssociation().getMethodName().concat('()')))
+			attribute.keyAccessor(entity.containingType,
+				parentAccessor.concat('->').concat(entity.containingAssociation.getMethodName().concat('()')))
 		endif
 /]
 
@@ -119,7 +113,7 @@
 /]
 
 [query public repositoryAccessor(association : UnitAssociation) : String
-	= association.association.sourceType().repository.className().toLowerFirst()
+	= association.association.sourceType.repository.className().toLowerFirst()
 /]
 
 [query public accessor(path : FeaturePath, parentAccessor : String, selection : Selection) : String
@@ -194,11 +188,11 @@
 /]
 
 [query private repositoryAccessor(association : ChildPathAssociation) : String
-	= association.association.sourceType().repository.className().toLowerFirst()
+	= association.association.sourceType.repository.className().toLowerFirst()
 /]
 
 [query public associationIndex(association : Association) : String
-	= if association.isSingleton() then
+	= if association.isSingleton then
 			''
 		else
 			'.0'

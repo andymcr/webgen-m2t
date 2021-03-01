@@ -2,15 +2,9 @@
 [module data(
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::features/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::accessor/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::action/]
@@ -44,7 +38,7 @@ NULL
 
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
-	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and field.isSingleton()) post(trim())]
+	? ((field.isDataTypeField and not field.isBooleanField and not field.isEnumerationField) and field.isSingleton) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
 [else]
@@ -55,7 +49,7 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
-	? ((field.isDataType() and not field.isBooleanDataType() and not field.isEnumerationType()) and not field.isSingleton()) post(trim())]
+	? ((field.isDataTypeField and not field.isBooleanField and not field.isEnumerationField) and not field.isSingleton) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
 [else]
@@ -71,7 +65,7 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
-	? (field.isEnumerationType()) post(trim())]
+	? (field.isEnumerationField) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (not field.escapeHTML)]
  | raw[/if] }}
@@ -89,21 +83,21 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
-	? (field.isDate()) post(trim())]
+	? (field.isDateField) post(trim())]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if] }}
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
-	? (field.isBooleanDataType()) post(trim())] 
-<label for="[field.displayedOn.name.asId()/].[field.feature().id()/]"{% if not [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} hidden="hidden"{% endif %}>
- <input type="checkbox" id="[field.displayedOn.name.asId()/].[field.feature().id()/]" checked="checked" disabled="disabled"/>
+	? (field.isBooleanField) post(trim())] 
+<label for="[field.displayedOn.name.asId()/].[field.persistentFeature.id()/]"{% if not [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} hidden="hidden"{% endif %}>
+ <input type="checkbox" id="[field.displayedOn.name.asId()/].[field.persistentFeature.id()/]" checked="checked" disabled="disabled"/>
  <span></span>
 </label>
 [/template] 
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
-	? (field.isResource() and field.isSingleton()) post(trim())]
+	? (field.isResourceField and field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [let accessor : String = field.accessor(parentAccessor, field.alias(), objectAccess)]
 <?php
@@ -112,7 +106,7 @@ NULL
 [/if]
         echo HTML::anchor(
             [attribute.getValue(accessor)/],
-            '[attribute.displayLabel()/]',
+            '[attribute.displayLabel/]',
             NULL, NULL, FALSE);
 ?>
 [/let]
@@ -120,7 +114,7 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
-	? (field.isAssociation() and field.isSingleton()) post(trim())]
+	? (field.isAssociationField and field.isSingleton) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [association.displayAssociation(accessor, parentAccessor)/]
@@ -129,7 +123,7 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
-	? (field.isAssociation() and not field.isSingleton()) post(trim())]
+	? (field.isAssociationField and not field.isSingleton) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [let variable : String = 'value']
@@ -150,14 +144,14 @@ NULL
 [/template]
 
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
-[if (feature.hasActions())]
+[if (feature.hasActions)]
 [let parentEntity : Entity
 		= if feature.oclIsKindOf(UnitAttribute) then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
 			else
-				feature.oclAsType(UnitAssociation).association.sourceType()
+				feature.oclAsType(UnitAssociation).association.sourceType
 			endif]
-[feature.actions()
+[feature.actions
 	->first().actionLink(parentEntity, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'),
 		parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess(), null)/]
 [/let]
@@ -167,9 +161,9 @@ NULL
 [/template]
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
-[if (association.hasActions())]
-[association.actions()
-	->first().actionLink(association.association.targetType(), accessor,
+[if (association.hasActions)]
+[association.actions
+	->first().actionLink(association.association.targetType, accessor,
 		'{{ '.concat(accessor).concat(association.valueLabel()).concat(' }}'), accessor.concat(association.valueLabel()),
 		accessor, association.displayedOn.hasObjectAccess(), null)/]
 [else]

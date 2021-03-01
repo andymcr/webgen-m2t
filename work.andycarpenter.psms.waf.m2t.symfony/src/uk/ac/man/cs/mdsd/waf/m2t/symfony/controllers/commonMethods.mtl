@@ -7,23 +7,14 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework',
 	'http://cs.manchester.ac.uk/mdsd/API')]
 [import work::andycarpenter::psms::expression::m2t::core::literals/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::select/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
 
@@ -33,22 +24,22 @@ $this->translationService->trans('[message/]')
 [/template]
 
 [template public actionMethodFormals(page : Page) post(trim())]
-[if (page.hasFilters() or page.hasPagination())]
+[if (page.hasFilters or page.hasPagination)]
 Request $request[if (page.hasRouteParameters())]
 , [/if][/if]
 [page.routeParameterList(page.routeParameters())/]
 [/template]
 
-[template public actionMethodFormals(unit : ContentUnit) post(trim())]
+[template public actionMethodFormals(unit : DynamicUnit) post(trim())]
 [let page : Page = unit.displayedOn]
-[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
+[if (page.hasFilters or page.hasPagination or unit.oclIsKindOf(EditUnit))]
 Request $request[if (unit.hasRouteParameters())]
 , [/if][/if]
 [unit.routeParameterList()/]
 [/let]
 [/template]
 
-[template public actionContainerMethodFormals(unit : ContentUnit) post(trim())]
+[template public actionContainerMethodFormals(unit : DynamicUnit) post(trim())]
 [let page : Page = unit.displayedOn]
 Request $request[if (unit.hasContainerRouteParameters())]
 , [/if]
@@ -64,9 +55,9 @@ Request $request[if (unit.hasCreateRouteParameters())]
 [/let]
 [/template]
 
-[template public actionMethodFormals(unit : ContentUnit, selection : Selection) post(trim())]
+[template public actionMethodFormals(unit : DynamicUnit, selection : Selection) post(trim())]
 [let page : Page = unit.displayedOn]
-[if (page.hasFilters() or page.hasPagination() or unit.oclIsKindOf(EditUnit))]
+[if (page.hasFilters or page.hasPagination or unit.oclIsKindOf(EditUnit))]
 Request $request[if (unit.hasRouteParameters(selection))]
 , [/if][/if]
 [unit.routeParameterList(selection)/]
@@ -74,8 +65,8 @@ Request $request[if (unit.hasRouteParameters(selection))]
 [/template]
 
 [template public actionMethodFormals(action : Action) post(trim())]
-[let page : Page = action.unit().displayedOn]
-[if (page.hasFilters() or page.hasPagination())]
+[let page : Page = action.parentUnit.displayedOn]
+[if (page.hasFilters or page.hasPagination)]
 Request $request[if (action.hasRouteParameters())]
 , [/if][/if]
 [action.routeParameterList()/]
@@ -83,8 +74,8 @@ Request $request[if (action.hasRouteParameters())]
 [/template]
 
 [template public actionContainerMethodFormals(action : Action) post(trim())]
-[let page : Page = action.unit().displayedOn]
-[if (page.hasFilters() or page.hasPagination())]
+[let page : Page = action.parentUnit.displayedOn]
+[if (page.hasFilters or page.hasPagination)]
 Request $request[if (action.hasContainerRouteParameters())]
 , [/if][/if]
 [action.routeContainerParameterList()/]
@@ -92,22 +83,22 @@ Request $request[if (action.hasContainerRouteParameters())]
 [/template]
 
 
-[template public renderMethodActuals(unit : ContentUnit) post(trim())]
-[if (unit.displayedOn.hasFilters() or unit.displayedOn.hasPagination())]
+[template public renderMethodActuals(unit : DynamicUnit) post(trim())]
+[if (unit.displayedOn.hasFilters or unit.displayedOn.hasPagination)]
 $request[if (unit.displayedOn.hasRouteParameters())]
 , [/if][/if]
 [unit.displayedOn.routeParameterList(unit.routeParameters())/]
 [/template]
 
-[template public renderMethodContainerActuals(unit : ContentUnit) post(trim())]
-[if (unit.displayedOn.hasFilters() or unit.displayedOn.hasPagination())]
+[template public renderMethodContainerActuals(unit : DynamicUnit) post(trim())]
+[if (unit.displayedOn.hasFilters or unit.displayedOn.hasPagination)]
 $request[if (unit.hasContainerRouteParameters())]
 , [/if][/if]
 [unit.routeContainerParameterList()/]
 [/template]
 
 [template public renderMethodCreateActuals(unit : EditUnit) post(trim())]
-[if (unit.displayedOn.hasFilters() or unit.displayedOn.hasPagination())]
+[if (unit.displayedOn.hasFilters or unit.displayedOn.hasPagination)]
 $request[if (unit.hasCreateRouteParameters())]
 , [/if][/if]
 [unit.routeCreateParameterList()/]
@@ -123,15 +114,15 @@ $[key.routeParameterName(sourceParameters)/][/for]
 [page.routeParameterList(page.routeParameters(), sourceParameters)/]
 [/template]
 
-[template private routeParameterList(unit : ContentUnit, parameters : Sequence(Attribute)) post(trim())]
+[template private routeParameterList(unit : DynamicUnit, parameters : Sequence(Attribute)) post(trim())]
 [unit.displayedOn.routeParameterList(parameters, parameters)/]
 [/template]
 
-[template public routeParameterList(unit : ContentUnit) post(trim())]
+[template public routeParameterList(unit : DynamicUnit) post(trim())]
 [unit.routeParameterList(unit.routeParameters())/]
 [/template]
 
-[template public routeContainerParameterList(unit : ContentUnit) post(trim())]
+[template public routeContainerParameterList(unit : DynamicUnit) post(trim())]
 [unit.routeParameterList(unit.routeContainerParameters())/]
 [/template]
 
@@ -139,16 +130,16 @@ $[key.routeParameterName(sourceParameters)/][/for]
 [unit.routeParameterList(unit.routeCreateParameters())/]
 [/template]
 
-[template public routeParameterList(unit : ContentUnit, selection : Selection) post(trim())]
+[template public routeParameterList(unit : DynamicUnit, selection : Selection) post(trim())]
 [unit.routeParameterList(unit.routeParameters(selection))/]
 [/template]
 
 [template public routeParameterList(action : Action) post(trim())]
-[action.unit().routeParameterList(action.routeParameters())/]
+[action.parentUnit.routeParameterList(action.routeParameters())/]
 [/template]
 
 [template public routeContainerParameterList(action : Action) post(trim())]
-[action.unit().routeParameterList(action.routeContainerParameters())/]
+[action.parentUnit.routeParameterList(action.routeContainerParameters())/]
 [/template]
 
 [template public routeParameterList(resource : Resource) post(trim())]
@@ -158,18 +149,18 @@ $[key.routeParameterName(resource)/][/for]
 
 
 [template public getContainerRepository(unit : DynamicUnit) post(trim())]
-$this->[unit.containerType().repository.instanceName()/]
+$this->[unit.containingType.repository.instanceName()/]
 [/template]
 
 [template public loadContainer(unit : DynamicUnit) post(trim())]
-[if (unit.containerType().oclIsUndefined())]
-// uncontained
-[else]
+[if (unit.isContained)]
 $this->[unit.containerInstanceName()/] = [unit.loadContainerInstance()/]
 if (!$this->[unit.containerInstanceName()/])
 {
-    throw $this->createNotFoundException('The [unit.containerType().name/] does not exist');
+    throw $this->createNotFoundException('The [unit.containingType.name/] does not exist');
 }
+[else]
+// uncontained
 [/if]
 [/template]
 
@@ -177,44 +168,44 @@ if (!$this->[unit.containerInstanceName()/])
 [if (unit.oclIsKindOf(CollectionUnit))]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 	[if (collectionUnit.findContainerSelection.oclIsUndefined())]
-[unit.getContainerRepository()/]->[unit.containerType().findMethodName()/]([unit.routeContainerParameterList()/]);
+[unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeContainerParameterList()/]);
 	[else]
 [unit.getContainerRepository()/]->[collectionUnit.findContainerSelection.methodName/]([unit.routeContainerParameterList()/]);
 	[/if]
 [/let]
 [else]
-[unit.getContainerRepository()/]->[unit.containerType().findMethodName()/]([unit.routeContainerParameterList()/]);
+[unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeContainerParameterList()/]);
 [/if]
 [/template]
 
 
 [template public getContentRepository(unit : DynamicUnit) post(trim())]
-$this->[unit.contentRepository().instanceName()/]
+$this->[unit.contentRepository.instanceName()/]
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
-[unit.getContentRepository()/]->[unit.contentType().findMethodName()/]([unit.findActualParameterList()/])
+[unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([unit.findActualParameterList()/])
 [/template]
 
 [template public loadInstance(action : Action) post(trim())]
 $[action.instanceName()/] = [action.loadInstance2()/];
 if (!$[action.instanceName()/])
 {
-    throw $this->createNotFoundException('The [action.unit().contentType().name/] does not exist');
+    throw $this->createNotFoundException('The [action.parentUnit.contentType.name/] does not exist');
 }
 [/template]
 
 [template public loadInstance2(action : Action) post(trim())]
-[if (action.unit().oclIsKindOf(CollectionUnit))]
-[let unit : CollectionUnit = action.unit().oclAsType(CollectionUnit)]
+[if (action.parentUnit.oclIsKindOf(CollectionUnit))]
+[let unit : CollectionUnit = action.parentUnit.oclAsType(CollectionUnit)]
 	[if (unit.findElementSelection.oclIsUndefined())]
-[unit.getContentRepository()/]->[unit.contentType().findMethodName()/]([action.findActualParameterList()/])
+[unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([action.findActualParameterList()/])
 	[else]
 $this->[unit.findElementSelection.definedBy.instanceName()/]->[unit.findElementSelection.methodName/]([action.findActualParameterList()/])
 	[/if]
 [/let]
 [else]
-[action.unit().getContentRepository()/]->[action.unit().contentType().findMethodName()/]([action.findActualParameterList()/])
+[action.parentUnit.getContentRepository()/]->[action.parentUnit.contentType.findMethodName()/]([action.findActualParameterList()/])
 [/if]
 [/template]
 
@@ -223,20 +214,20 @@ new [unit.modelName()/]()
 [/template]
 
 
-[template public findActualParameterList(unit : ContentUnit) post(trim())]
+[template public findActualParameterList(unit : DynamicUnit) post(trim())]
 [unit.findActualParameterList(unit.routeParameters())/]
 [/template]
 
 [template public findActualParameterList(action : Action) post(trim())]
-[action.unit().findActualParameterList(action.routeParameters())/]
+[action.parentUnit.findActualParameterList(action.routeParameters())/]
 [/template]
 
-[template private findActualParameterList(unit : ContentUnit, parameters : Sequence(Attribute)) post(trim())]
+[template private findActualParameterList(unit : DynamicUnit, parameters : Sequence(Attribute)) post(trim())]
 [for (key : Attribute | parameters) separator (', ')]
 [unit.findActualParameter(key, parameters)/][/for]
 [/template]
 
-[template private findActualParameter(unit : ContentUnit, key : Attribute, parameters : Sequence(Attribute)) post(trim())]
+[template private findActualParameter(unit : DynamicUnit, key : Attribute, parameters : Sequence(Attribute)) post(trim())]
 [let parameterName : String = key.routeParameterName(parameters)]
 [if (unit.hasRouteActual(key))]
 [unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()))/]
@@ -261,12 +252,12 @@ $this->redirectToRoute('[page.routeName()/]'[if (page.routeParameters()->notEmpt
 [/template]
 
 [template public redirect(action : Action, routeName : String, sourceParameters : Sequence(Attribute)) post(trim())]
-[action.unit().redirect(routeName, action.unit().routeParameters(), sourceParameters)/]
+[action.parentUnit.redirect(routeName, action.parentUnit.routeParameters(), sourceParameters)/]
 [/template]
 
-[template private redirect(unit : ContentUnit, routeName : String, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
+[template private redirect(unit : DynamicUnit, routeName : String, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->redirectToRoute('[routeName/]'[if (page.hasFilters() or page.hasPagination())]
+$this->redirectToRoute('[routeName/]'[if (page.hasFilters or page.hasPagination)]
 , [if (routeParameters->notEmpty())]
 array_merge(
     $request->query->all(),
@@ -290,11 +281,11 @@ $request->query->all()[/if]
 [/for]
 [/template]
 
-[template public routeActualParameters(targetUnit : ContentUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[template public routeActualParameters(targetUnit : DynamicUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [targetUnit.routeActualParameters(targetUnit.routeParameters(), sourceParameters)/]
 [/template]
 
-[template public routeContainerActualParameters(targetUnit : ContentUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[template public routeContainerActualParameters(targetUnit : DynamicUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [targetUnit.routeActualParameters(targetUnit.routeContainerParameters(), sourceParameters)/]
 [/template]
 
@@ -302,7 +293,7 @@ $request->query->all()[/if]
 [targetUnit.routeActualParameters(targetUnit.routeCreateParameters(), sourceParameters)/]
 [/template]
 
-[template private routeActualParameters(targetUnit : ContentUnit, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
+[template private routeActualParameters(targetUnit : DynamicUnit, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
 [for (key : Attribute | routeParameters)]
 '[key.routeParameterName(routeParameters)/]' => $[key.routeParameterName(sourceParameters)/],
 [/for]
@@ -310,7 +301,7 @@ $request->query->all()[/if]
 
 
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]
-[for (field : UnitField | unit.defaultValueFields())]
+[for (field : UnitField | unit.defaultValueFields)]
 [if (field.oclIsTypeOf(UnitAttribute))]
 $this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
 [else]
@@ -344,7 +335,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [/template]
 
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
-[for (feature : UnitField | unit.forcedValueFeatures())]
+[for (feature : UnitField | unit.forcedValueFields)]
 [let value : Expression = feature.oclAsType(UnitFeature).forcedValue]
 $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/];
 [/let]
@@ -353,8 +344,8 @@ $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/
 
 [template public generateInterfaceFieldValidation(unit : DynamicUnit) post(trim())]
 $extra_validation = Validation::factory($_POST);
-[for (field : InterfaceField | unit.interfaceFields())]
-	[if (field.isRequired())]
+[for (field : InterfaceField | unit.interfaceFields)]
+	[if (field.isRequired)]
 $extra_validation->rule('[field.modelPropertyName()/]', 'not_empty');
 	[/if]
 	[if (field.oclIsTypeOf(DateField))]
@@ -368,14 +359,14 @@ $extra_validation->rule('[field.modelPropertyName()/]', 'matches', array(':valid
 
 
 [template public generateClearEncryptedFeatures(unit : DynamicUnit) post(trim())]
-[for (field : UnitField | unit.encryptedFeatures())]
+[for (field : UnitField | unit.encryptedFields)]
 $this->[unit.instanceName()/]->[field.modelPropertyName()/] = '';
 [/for]
 [/template]
 
 [template public generateRememberInterfaceFields(unit : DynamicUnit) post(trim())]
 $this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
-	(field : UnitField | unit.interfaceFields())
+	(field : UnitField | unit.interfaceFields)
 	separator (', ')]'[field.formName()/]'[/for]));
 [/template]
 
@@ -387,17 +378,17 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = $this->translationService->trans('label.[page.pageId()/]', array(), '[page.translationDomain()/]');
-[if (page.hasGalleryUnits())]
+[if (page.hasGalleryUnits)]
 [page.templateStyleParameters()/]
 [/if]
-[if (false and page.hasGalleryUnits())]
+[if (false and page.hasGalleryUnits)]
 [page.templateScriptParameters()/]
 [/if]
 [/template]
 
 [template private templateStyleParameters(page : Page) post(trim())]
 $parameters['['/]'styles'[']'/] = array(
-[if (page.hasGalleryUnits())]
+[if (page.hasGalleryUnits)]
     'css/blueimp-gallery.min.css',
 [/if]
 );
@@ -405,15 +396,15 @@ $parameters['['/]'styles'[']'/] = array(
 
 [template public templateScriptParameters(page : Page) post(trim())]
 $parameters['['/]'scripts'[']'/] = array(
-[if (page.hasGalleryUnits())]
+[if (page.hasGalleryUnits)]
     'js/blueimp-gallery.min.js',
 [/if]
 );
 [/template]
 
 [template public actionResultFlash(action : Action) post(trim())]
-[let page : Page = action.unit().displayedOn]
-[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined())]
+[let page : Page = action.parentUnit.displayedOn]
+[if (action.hasSuccessMessage and action.hasFailureMessage)]
 if ($result)
 {
     $this->addFlash('success', $this->translationService->trans(
@@ -426,12 +417,12 @@ if ($result)
         array(), '[page.translationDomain()/]'
     ));
 }
-[elseif (not action.successMessage.oclIsUndefined())]
+[elseif (action.hasSuccessMessage)]
 $this->addFlash('success', $this->translationService->trans(
     '[action.containedId()/].successMessage',
     array(), '[page.translationDomain()/]'
 ));
-[elseif (not action.failureMessage.oclIsUndefined())]
+[elseif (action.hasFailureMessage)]
 if (!$result)
 {
     $this->addFlash('error', $this->translationService->trans(

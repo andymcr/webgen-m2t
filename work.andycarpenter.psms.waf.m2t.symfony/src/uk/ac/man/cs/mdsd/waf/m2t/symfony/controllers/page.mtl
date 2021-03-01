@@ -3,26 +3,15 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::entities/]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::selection]
-[import uk::ac::man::cs::mdsd::orm::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::actions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::interface/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::model/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::pages/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::security]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::translation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::featureProperties/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::collectionMethods/]
@@ -33,10 +22,45 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::staticMethods/]
 
 
+[query private hasSingleAuthorisationRole (page : Page) : Boolean
+	= units->exists(u | u.authorisationRoles.trim().tokenize(',; ')->size() = 1)
+		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() = 1))
+/]
+
+[query private hasMultipleAuthorisationRoles (page : Page) : Boolean
+	= units->exists(u | u.authorisationRoles.trim().tokenize(',; ')->size() > 1)
+		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() > 1))
+/]
+
+[query private hasSupportMethods(page : Page) : Boolean
+	= page.units->select(u | u.hasSupportMethods())->notEmpty()
+/]
+
+[query private hasExplicitValidation(page : Page) : Boolean
+	= page.editUnits->select(u | u.hasExplicitValidation())->notEmpty()
+/]
+
+[query private hasExplicitValidation(unit : EditUnit) : Boolean
+	= let commonValidation : Boolean
+		= unit.customiseValues or unit.hasForcedValueFields
+		in let addValidation : Boolean
+			= unit.isContained and not unit.hasExplicitlyEditedContainer
+			in let editValidation : Boolean
+				= false -- unit.hasDisabledFeatures
+				in if unit.oclIsTypeOf(CreateUnit) then
+						commonValidation or addValidation
+					else if unit.oclIsTypeOf(UpdateUnit) then
+						commonValidation or editValidation
+					else
+						commonValidation or addValidation or editValidation
+					endif endif
+/]
+
+
 [template public controller(page : Page, model : WafModel)]
 [file(page.controllerFilename(model), false)]
 <?php
-[if (model.hasAPI())]
+[if (model.hasAPI)]
 namespace [page.webControllersNamespace()/];
 [else]
 namespace [page.controllersNamespace()/];
@@ -47,11 +71,11 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[for (repository : Repository | page.repositories())]
+[for (repository : Repository | page.repositories->sortedBy(r | r.name))]
     private $[repository.instanceName()/];
 
 [/for]
-[for (service : Service | page.services())]
+[for (service : Service | page.services->sortedBy(s | s.name))]
     private $[service.instanceName()/];
 
 [/for]
@@ -61,18 +85,18 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/if]
     private $translationService;
 
-    public function __construct([for (repository : Repository | page.repositories()) separator (', ')]
-[repository.className()/] $[repository.instanceName()/][/for][if (page.repositories()->notEmpty() and page.services()->notEmpty())]
-, [/if][for (service : Service | page.services()) separator (', ')]
+    public function __construct([for (repository : Repository | page.repositories->sortedBy(r | r.name)) separator (', ')]
+[repository.className()/] $[repository.instanceName()/][/for][if (page.repositories->notEmpty() and page.services->notEmpty())]
+, [/if][for (service : Service | page.services->sortedBy(s | s.name)) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
-[if (page.repositories()->notEmpty() or page.services()->notEmpty())]
-, [/if]ValidatorInterface $validator[/if][if (page.repositories()->notEmpty() or page.services()->notEmpty())]
+[if (page.repositories->notEmpty() or page.hasServices)]
+, [/if]ValidatorInterface $validator[/if][if (page.repositories->notEmpty() or page.hasServices)]
 , [/if]TranslatorInterface $translator)
     {
-	[for (repository : Repository | page.repositories())]
+	[for (repository : Repository | page.repositories->sortedBy(r | r.name))]
         $this->[repository.instanceName()/] = $[repository.instanceName()/];
 	[/for]
-	[for (service : Service | page.services())]
+	[for (service : Service | page.services->sortedBy(s | s.name))]
         $this->[service.instanceName()/] = $[service.instanceName()/];
 	[/for]
 	[if (page.hasExplicitValidation())]
@@ -90,15 +114,15 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 
 		[/for]
 	[/if]
-	[for (action : Action | page.actionsRequiringHandlers())]
+	[for (action : Action | page.actionsWithoutTarget)]
     [action.actionMethod()/]
 
 	[/for]
 [else]
-	[for (unit : DynamicUnit | page.dynamicUnits())]
+	[for (unit : DynamicUnit | page.dynamicUnits)]
     [unit.unitMethods()/]
 
-		[for (action : Action | unit.actionsRequiringHandlers())]
+		[for (action : Action | unit.actionsWithoutTarget)]
     [action.actionMethod()/]
 
 		[/for]
@@ -110,43 +134,43 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/template]
 
 [template private useStatements(page : Page) post(trim())]
-[for (entity : Entity | page.editUnits()
+[for (entity : Entity | page.editUnits
 		->select(u | not u.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)
 		->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelName()/];
 [/for]
-[for (form : SingletonUnit | page.formUnits()->sortedBy(u | u.name))]
+[for (form : DynamicUnit | page.formUnits->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
-[for (repository : Repository | page.repositories())]
+[for (repository : Repository | page.repositories->sortedBy(r | r.name))]
 use [repository.repositoryNamespace()/]\[repository.className()/];
 [/for]
-[for (service : Service | page.services())]
+[for (service : Service | page.services->sortedBy(s | s.name))]
 use [service.serviceNamespace()/]\[service.className()/];
 [/for]
-[if (page.editUnits()->collect(u | u.inputFields())->select(f | f.isContains())->notEmpty())]
+[if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (page.hasAnyAuthorisationRole())]
+[if (page.hasSingleAuthorisationRole())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [/if]
-[if (page.hasAuthorisationRoles())]
+[if (page.hasMultipleAuthorisationRoles())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
-[if (page.hasFilters() or page.hasPagination() or page.hasEditUnits())]
+[if (page.hasFilters or page.hasPagination or page.hasEditUnits)]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-[if (page.hasForgottenPasswordUnits())]
+[if (page.hasForgottenPasswordUnits)]
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 [/if]
 [if (page.hasExplicitValidation())]
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
-[if (page.hasForgottenPasswordUnits())]
+[if (page.hasForgottenPasswordUnits)]
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
@@ -156,13 +180,13 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 [template private actionMethod(page : Page) post(trim())]
 /**
  [page.routeAnnotation()/]
-[if (page.hasAuthorisation())]
+[if (page.isAuthorised)]
  [page.securityAnnotation()/]
 [/if]
  */
 public function [page.actionName()/]([page.actionMethodFormals()/]): Response
 {
-[for (unit : DynamicUnit | page.dynamicUnits())]
+[for (unit : DynamicUnit | page.dynamicUnits)]
     [unit.actionCore()/]
 
 [/for]
@@ -171,7 +195,7 @@ public function [page.actionName()/]([page.actionMethodFormals()/]): Response
 [/template]
 
 [template private renderMethod(page : Page) post(trim())]
-private function renderPage([if (page.hasFilters() or page.hasPagination())]
+private function renderPage([if (page.hasFilters or page.hasPagination)]
 Request $request[if (page.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | page.routeParameters()) separator(', ')]
 $[key.routeParameterName(page.routeParameters()->last().partOf.oclAsType(Entity))/][/for]): Response
@@ -194,17 +218,17 @@ return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtensio
 [template private actionMethod(action : Action)
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : DynamicUnit = action.unit()]
+[let unit : DynamicUnit = action.parentUnit]
 /**
  [deleteAction.routeAnnotation(deleteAction.uriElement)/]
-[if (deleteAction.hasAuthorisation())]
+[if (deleteAction.isAuthorised)]
  [deleteAction.securityAnnotation()/]
 [/if]
  */
 public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
 {
     [deleteAction.loadInstance()/]
-    $this->[unit.contentRepository().instanceName()/]->remove($[deleteAction.instanceName()/], true);
+    $this->[unit.contentRepository.instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (unit.oclIsKindOf(CollectionUnit))]
     return [action.redirect(action.routeActionReturnName(), deleteAction.routeParameters())/];
@@ -218,10 +242,10 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): R
 [template private actionMethod(action : Action)
 	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(UnitFeature)) post(trim())]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
-[let unit : DynamicUnit = action.unit()]
+[let unit : DynamicUnit = action.parentUnit]
 /**
  [operationAction.routeAnnotation(operationAction.uriElement)/]
-[if (operationAction.hasAuthorisation())]
+[if (operationAction.isAuthorised)]
  [operationAction.securityAnnotation()/]
 [/if]
  */
@@ -239,7 +263,7 @@ Response[else]File[/if]
 [template private actionMethod(action : Action)
 	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(DynamicUnit)) post(trim())]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
-[let unit : DynamicUnit = operationAction.unit()]
+[let unit : DynamicUnit = operationAction.parentUnit]
 /**
 [if (action.oclIsTypeOf(InstanceOperationAction))]
  [operationAction.routeAnnotation(operationAction.uriElement)/]
@@ -248,7 +272,7 @@ Response[else]File[/if]
 [else]
  [operationAction.routeGeneralAnnotation()/]
 [/if]
-[if (operationAction.hasAuthorisation())]
+[if (operationAction.isAuthorised)]
  [operationAction.securityAnnotation()/]
 [/if]
  */
@@ -269,11 +293,11 @@ Response[else]File[/if]
 
 [template private actionMethodBody(action : OperationAction)
 	? (action.oclIsTypeOf(InstanceOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
-[let unit : DynamicUnit = action.unit()]
+[let unit : DynamicUnit = action.parentUnit]
 [action.loadInstance()/]
-[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
 $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[if (action.hasSuccessMessage or action.hasFailureMessage)]
 [action.actionResultFlash()/]
 [/if]
 return [action.redirect(action.routeActionReturnName(), action.routeParameters())/];
@@ -282,11 +306,11 @@ return [action.redirect(action.routeActionReturnName(), action.routeParameters()
 
 [template private actionMethodBody(action : OperationAction)
 	? (action.oclIsTypeOf(ContainerOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
-[let unit : DynamicUnit = action.unit()]
-[action.unit().loadContainer()/];
-[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[let unit : DynamicUnit = action.parentUnit]
+[action.parentUnit.loadContainer()/];
+[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
 $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[if (action.hasSuccessMessage or action.hasFailureMessage)]
 [action.actionResultFlash()/]
 [/if]
 return [action.redirect(action.routeActionReturnName(), action.routeContainerParameters())/];
@@ -295,10 +319,10 @@ return [action.redirect(action.routeActionReturnName(), action.routeContainerPar
 
 [template private actionMethodBody(action : OperationAction)
 	? (action.oclIsTypeOf(GeneralOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
-[let unit : DynamicUnit = action.unit()]
-[if (not action.successMessage.oclIsUndefined() and not action.failureMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[let unit : DynamicUnit = action.parentUnit]
+[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
 $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-[if (not action.successMessage.oclIsUndefined() or not action.failureMessage.oclIsUndefined())]
+[if (action.hasSuccessMessage or action.hasFailureMessage)]
 [action.actionResultFlash()/]
 [/if]
 return [action.redirect(action.routeActionReturnName(), action.routeContainerParameters())/];
@@ -309,16 +333,16 @@ return [action.redirect(action.routeActionReturnName(), action.routeContainerPar
 	? (action.oclIsTypeOf(InstanceOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
 [action.loadInstance()/]
 $file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-$response = $this->file($file, $[action.unit().instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
+$response = $this->file($file, $[action.parentUnit.instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
  . '[action.fileExtension/]'[/if]);
 return $response;
 [/template]
 
 [template private actionMethodBody(action : OperationAction)
 	? (action.oclIsTypeOf(ContainerOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
-[action.unit().loadContainer()/];
+[action.parentUnit.loadContainer()/];
 $file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-$response = $this->file($file, $[action.unit().instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
+$response = $this->file($file, $[action.parentUnit.instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
  . '[action.fileExtension/]'[/if]);
 return $response;
 [/template]

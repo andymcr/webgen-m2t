@@ -3,9 +3,6 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import work::andycarpenter::psms::expression::m2t::core::literals/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::dataTypes/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::fields/]
-[import uk::ac::man::cs::mdsd::waf::m2t::core::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
@@ -16,16 +13,16 @@ namespace [unit.modelsNamespace()/];
 
 class [unit.modelName()/] extends [comment unit services->first() modelName()/]
 {
-[for (field : InterfaceField | unit.interfaceFields())]
+[for (field : InterfaceField | unit.interfaceFields)]
     [field.fieldFeature()/]
 
 [/for]
 
-[if (unit.hasDefaultValueFields())]
+[if (unit.hasDefaultValueFields)]
     [unit.constructor()/]
 
 [/if]
-[for (field : InterfaceField | unit.interfaceFields())]
+[for (field : InterfaceField | unit.interfaceFields)]
     [field.fieldMethods()/]
 
 [/for]
@@ -42,7 +39,7 @@ protected $[field.modelPropertyName()/];
 [template private constructor(unit : DynamicUnit) post(trim())]
 public function __construct()
 {
-[for (field : UnitField | unit.defaultValueFields())]
+[for (field : UnitField | unit.defaultValueFields)]
 	[if (field.oclIsTypeOf(UnitAttribute))]
 //	$this->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
 	[else]
@@ -53,7 +50,7 @@ public function __construct()
 [/template]
 
 [template private fieldMethods(field : InterfaceField) post(trim())]
-public function [if (field.isBooleanDataType())]is[else]get[/if][field.modelPropertyName().toUpperFirst()/]()
+public function [if (field.isBooleanField)]is[else]get[/if][field.modelPropertyName().toUpperFirst()/]()
 {
     return $this->[field.modelPropertyName()/];
 }
