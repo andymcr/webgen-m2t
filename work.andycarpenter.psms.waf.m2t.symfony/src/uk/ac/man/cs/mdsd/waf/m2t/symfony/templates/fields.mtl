@@ -45,25 +45,25 @@
 
 [template private labelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
 [field.fieldLabel(unit)/]
-<dd[if (field.hasFieldValueClass() or field.truncate and field.isSingleton)] [field.valueClassDefinition()/][/if]>[field.displayValue(unitAccessor, true)/]</dd>
+<dd[if (field.hasFieldValueClass or (field.truncate and field.isSingleton))] [field.valueClass()/][/if]>[field.displayValue(unitAccessor, true)/]</dd>
 [/template]
 
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
-<dt[if (field.hasFieldLabelClass())] [field.labelClassDefinition()/][/if]>[if (field.hasCustomisedDisplayLabel)]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[unit.contentType.id()/].labels.[field.labelId()/]' | trans }}[/if]</dt>
+<dt[if (field.hasFieldLabelClass)] [field.labelClass()/][/if]>[if (field.hasCustomisedDisplayLabel)]
+{{ '[field.customisedDisplayLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[field.defaultDisplayLabelId()/]' | trans }}[/if]</dt>
 [/template]
 
-[template private labelClassDefinition(field : UnitField) post(trim())]
-class="[field.fieldLabelClass()/]"
+[template private labelClass(field : UnitField) post(trim())]
+class="[field.fieldLabelClass/]"
 [/template]
 
 [template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
-<li[if (field.hasFieldValueClass() or field.truncate and field.isSingleton)] [field.valueClassDefinition()/][/if]>[field.displayValue(unitAccessor, true)/]</li>
+<li[if (field.hasFieldValueClass or (field.truncate and field.isSingleton))] [field.valueClass()/][/if]>[field.displayValue(unitAccessor, true)/]</li>
 [/template]
 
-[template private valueClassDefinition(field : UnitField) post(trim())]
-class="[if (field.hasFieldValueClass())]
-[field.fieldValueClass()/][if (field.truncate and field.isSingleton)] [/if][/if][if (field.truncate and field.isSingleton)]
+[template private valueClass(field : UnitField) post(trim())]
+class="[if (field.hasFieldValueClass)]
+[field.fieldValueClass/][if (field.truncate and field.isSingleton)] [/if][/if][if (field.truncate and field.isSingleton)]
 text-truncate[/if]"
 [/template]

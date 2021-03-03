@@ -189,10 +189,10 @@
 <a href="{{ path('[routeName/]', [if (targetSamePage)]
 app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)]
 )[/if]) }}" title="[action.displayLabel/][if (not title.oclIsUndefined())]
- {{ [title/] }}[/if]"[if (not confirmMessage.oclIsUndefined())]
- onclick="return confirm('[confirmMessage/][if (not title.oclIsUndefined())]
- {{ [title/] }}[/if]');"[/if][if (not classAttribute.oclIsUndefined() or not action.anchorClass.oclIsUndefined())]
- class="[if (not action.anchorClass.oclIsUndefined())]
+ {{ [title/] }}[/if]"[if (action.hasConfirmMessage)]
+ onclick="return confirm('[action.confirmMessage/][if (not title.oclIsUndefined())]
+ {{ [title/] }}[/if]');"[/if][if (not classAttribute.oclIsUndefined() or action.hasAnchorClass)]
+ class="[if (action.hasAnchorClass)]
 [action.anchorClass/][if (not classAttribute.oclIsUndefined())] [/if][/if] [if (not classAttribute.oclIsUndefined())]
 [classAttribute/][/if]"[/if]>[linkContent/]</a>
 [/template]
@@ -203,7 +203,7 @@ app.request.query.all|merge([/if]{ [routingParameters/] }[if (targetSamePage)]
 
 
 [template private attributes(action : SecurityAction) post(trim())]
-[if (not action.anchorClass.oclIsUndefined())]
+[if (action.hasAnchorClass)]
 class="[action.anchorClass/]"
 [/if]
 [/template]
@@ -262,7 +262,7 @@ class="[action.anchorClass/]"
 			endif
 		else if valueType.attributeKeys->includes(key) then
 			parentAccessor.concat('.').concat(key.modelPropertyName())
-		else if not valueType.isContained then
+		else if valueType.isContained then
 			key.keyAccessor(valueType.containingType, parentAccessor.concat('.').concat(valueType.containingAssociation.modelPropertyName()), valueSelection, objectAccess)
 		else
 			''

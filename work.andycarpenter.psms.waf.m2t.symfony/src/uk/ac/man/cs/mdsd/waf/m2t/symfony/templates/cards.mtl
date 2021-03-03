@@ -96,7 +96,7 @@
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
 <div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
- <nav[if (not unit.actionNavigationClass.oclIsUndefined())] class="[unit.actionNavigationClass/]"[/if]>
+ <nav[if (unit.hasActionNavigationClassClass)] class="[unit.actionNavigationClass/]"[/if]>
 [for (action : Action | unit.actions)]
 	[if (unit.hasObjectAccess())]
   [action.actionLink(unit.contentType, cardAccessor, action.displayLabel,
@@ -126,9 +126,7 @@
 [/let]
 [elseif (unit.oclIsTypeOf(ImageCardsUnit))]
 [let imageUnit : ImageCardsUnit = unit.oclAsType(ImageCardsUnit)]
-	[if (not imageUnit.elementTitle.oclIsUndefined())]
  [imageUnit.cardTitle(cardAccessor)/]
-	[/if]
 [/let]
 [/if]
 [if (unit.displayFields->notEmpty())]
@@ -173,7 +171,7 @@
 
 [template private cardTitle(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [unit.cardImage(cardAccessor)/]
-[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined() or unit.displayFields->notEmpty())]
+[if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
 <h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if] mt-2">{{ [unit.elementTitle.accessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
 [/if]
 [/template]

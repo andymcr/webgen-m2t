@@ -17,15 +17,15 @@
 
 {% block content %}
 {% trans_default_domain "[loginUnit.translationDomain()/]" %}
-<section[if (not loginUnit.sectionClass.oclIsUndefined())] class="[loginUnit.sectionClass/]" [/if]id="[loginUnit.instanceName()/]">
-<h4[if (not loginUnit.captionClass.oclIsUndefined() or loginUnit.omitCaption)]
- class="[if (not loginUnit.captionClass.oclIsUndefined())][loginUnit.captionClass/][/if][if (loginUnit.omitCaption)] hidden[/if]"[/if]>[loginUnit.unitTitle()/]</h4>
+<section[if (not loginUnit.hasSectionClass)] class="[loginUnit.sectionClass/]" [/if]id="[loginUnit.instanceName()/]">
+<h4[if (not loginUnit.hasCaptionClass or loginUnit.omitCaption)]
+ class="[if (not loginUnit.hasCaptionClass)][loginUnit.captionClass/][/if][if (loginUnit.omitCaption)] hidden[/if]"[/if]>[loginUnit.unitTitle()/]</h4>
 
 {% if error %}
 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
-<form action="{{ path('[loginUnit.routeName()/]') }}" method="post"[if (loginUnit.contentClass.oclIsUndefined())] class="[loginUnit.contentClass/]"[/if]>
+<form action="{{ path('[loginUnit.routeName()/]') }}" method="post"[if (loginUnit.hasContentClass)] class="[loginUnit.contentClass/]"[/if]>
  <div class="form-group row">
   <label for="username" class="col-form-label col-sm-2">{{ '[loginUnit.containedId()/].labels.username'|trans }}</label>
   <div class="col-sm-10">
@@ -46,7 +46,7 @@
   </label>
  </div>
 [/if]
- <div[if (not loginUnit.controlClass.oclIsUndefined())] class="[loginUnit.controlClass/]"[/if]>
+ <div[if (not loginUnit.hasControlClass)] class="[loginUnit.controlClass/]"[/if]>
   <button type="submit" id="submit" name="_submit">{{ '[unit.containedId()/].labels.submit'|trans }}</button>
 [for (action : Action | loginUnit.actions)]
   [action.actionLink(null, 'accessor', action.displayLabel, 'Title', 'conditionAccessor', false, null)/]

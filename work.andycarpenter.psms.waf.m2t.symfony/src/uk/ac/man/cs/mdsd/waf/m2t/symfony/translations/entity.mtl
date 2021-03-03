@@ -45,8 +45,8 @@
  <target>[entity.displayLabel.validXML()/]</target>
 </trans-unit>
 [for (feature : Feature | entity.features)]
-<trans-unit id="[entity.id()/].labels.[feature.id()/]">
- <source>[entity.id()/].labels.[feature.id()/]</source>
+<trans-unit id="[feature.displayLabelId()/]">
+ <source>[feature.displayLabelId()/]</source>
  <target>[feature.displayLabel.validXML()/]</target>
 </trans-unit>
 [/for]

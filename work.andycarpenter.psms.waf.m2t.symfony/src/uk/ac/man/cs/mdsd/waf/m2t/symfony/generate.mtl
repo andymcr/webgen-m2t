@@ -67,7 +67,7 @@
 [model.navigation()/]
 [model.generatePage()/]
 [model.pages->select(p | p.hasNonSecurityUnits).page()/]
-[comment model.pages.units.unitView()/]
+[model.pages.units.unitView()/]
 
 [model.entityTranslations()/]
 [model.navigationTranslations()/]

@@ -142,8 +142,8 @@
 {% if is_granted('[field.authorisationRoles/]') %}
 		[/if]
    <th>[if (field.hasCustomisedDisplayLabel)]
-{{ '[unit.containedId()/].labels.[field.labelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[field.entity().id()/].labels.[field.labelId()/]' | trans }}[/if]</th>
+{{ '[field.customisedDisplayLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[field.defaultDisplayLabelId()/]' | trans }}[/if]</th>
 		[if (field.isAuthorised)]
 {% endif %}
 		[/if]
@@ -188,7 +188,7 @@
 	[if (field.isAuthorised)]
 {% if is_granted('[field.authorisationRoles/]') %}
 	[/if]
-<td class="[comment field.fieldValueClass/]">[field.displayValue(accessor, objectAccess)/]</td>
+<td[if (field.oclIsKindOf(UnitFeature))] class="[field.oclAsType(UnitFeature).persistentFeature.name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayValue(accessor, objectAccess)/]</td>
 	[if (field.isAuthorised)]
 {% endif %}
 	[/if]

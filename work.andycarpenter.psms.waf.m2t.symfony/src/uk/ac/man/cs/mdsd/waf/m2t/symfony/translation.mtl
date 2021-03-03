@@ -10,6 +10,19 @@
 /]
 
 
+[query public displayLabelId(feature : Feature) : String
+	= feature.partOf.id().concat('.labels').concat('.').concat(feature.id())
+/]
+
+[query public placeholderId(feature : Feature) : String
+	= feature.partOf.id().concat('.placeholders').concat('.').concat(feature.id())
+/]
+
+[query public titleId(feature : Feature) : String
+	= feature.partOf.id().concat('.titles').concat('.').concat(feature.id())
+/]
+
+
 [query public translationDomain(page : Page) : String
 	= if page.rootPage.name.equalsIgnoreCase('home') then
 			'default'
@@ -47,8 +60,55 @@
 /]
 
 
+
+[query public customisedDisplayLabelId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.labels').concat('.').concat(field.fieldId())
+/]
+
+[query public customisedPlaceholderId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.placeholders').concat('.').concat(field.fieldId())
+/]
+
+[query public customisedTitleId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.titles').concat('.').concat(field.fieldId())
+/]
+
+[query public defaultDisplayLabelId(field : UnitField) : String
+	= field.persistentFeature.displayLabelId()
+/]
+
+[query public defaultPlaceholderId(field : UnitField) : String
+	= field.persistentFeature.displayLabelId()
+/]
+
+[query public defaultTitleId(field : UnitField) : String
+	= field.persistentFeature.displayLabelId()
+/]
+
+[comment consider fields with feature paths, which might have same persistent feature name/]
+[query private fieldId(field : UnitField) : String
+	= if field.oclIsKindOf(InterfaceField) then
+			field.id()
+		else
+			let featuresWithName : Sequence(Feature)
+				= field.displayedOn.featureFields
+						->collect(f | f.persistentFeature)
+						->select(f | f.name = field.persistentFeature.name)
+				in if featuresWithName->size() = 1 then
+						field.id()
+					else
+						field.persistentFeature.partOf.id().concat('.').concat(field.id())
+					endif
+		endif
+/]
+
 [query public hasTranslations(field : UnitField) : Boolean
 	= field.hasCustomisedDisplayLabel
-		or field.hasCustomisedPlaceholder()
+		or field.hasCustomisedPlaceholder
 		or field.hasCustomisedTitle
+/]
+
+
+[query public titleId(badge : Badge) : String
+	= badge.title.displayLabelId()
 /]

@@ -7,8 +7,8 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 
 
 [query private formEntities(model : WafModel) : Set(Entity)
@@ -221,7 +221,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 	? (feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
-    'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
+    'label' => '[attribute.displayLabelId()/]',
     'translation_domain' => 'entity',
 [if (not attribute.isRequired)]
     'required' => false,
@@ -265,7 +265,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 	? (not feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 add('[attribute.modelPropertyName()/]', CollectionType::class, array(
-    'label' => '[attribute.partOf.oclAsType(Entity).id()/].labels.[attribute.id()/]',
+    'label' => '[attribute.displayLabelId()/]',
     'translation_domain' => 'entity',
     'entry_type' => [attribute.interfaceType()/],
 [if (allowUiAdd)]
@@ -319,7 +319,7 @@ TextType::class
 	? (not feature.isContains) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 add('[association.modelPropertyName()/]', EntityType::class, array(
-    'label' => '[association.sourceType.id()/].labels.[association.id()/]',
+    'label' => '[association.displayLabelId()/]',
     'translation_domain' => 'entity',
 [if (not association.isSingleton or not association.isRequired)]
     'required' => false,

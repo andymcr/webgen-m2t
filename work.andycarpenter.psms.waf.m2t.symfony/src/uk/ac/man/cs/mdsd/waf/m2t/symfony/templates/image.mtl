@@ -123,7 +123,7 @@ title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.eleme
 /]
 
 [query private imagePath(association : FeaturePathAssociation, parentAccessor : String, objectAccess : Boolean) : String
-	= if association.childFeature.oclIsUndefined() then
+	= if not association.hasChild then
 			null
 		else
 			let localElement : String
@@ -161,7 +161,7 @@ title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.eleme
 /]
 
 [query private imagePath(association : ChildPathAssociation, parentAccessor : String, objectAccess : Boolean) : String
-	= if association.childFeature.oclIsUndefined() then
+	= if not association.hasChild then
 			null
 		else
 			let localElement : String

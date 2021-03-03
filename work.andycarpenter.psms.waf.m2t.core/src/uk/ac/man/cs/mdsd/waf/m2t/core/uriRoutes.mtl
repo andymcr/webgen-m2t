@@ -86,9 +86,9 @@
 /]
 
 [query public routeParameters(page : Page) : Sequence(Attribute)
-	= if page.units->isEmpty() then
+	= if page.dynamicUnits->isEmpty() then
 			Sequence{}
-		else if page.units->size() = 1 then
+		else if page.dynamicUnits->size() = 1 then
 			page.dynamicUnits->first().routeParameters()
 		else
 			page.dynamicUnits->subOrderedSet(2, page.dynamicUnits->size())->iterate(u;

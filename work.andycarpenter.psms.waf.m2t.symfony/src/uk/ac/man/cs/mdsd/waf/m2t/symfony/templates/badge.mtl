@@ -1,7 +1,7 @@
 [comment encoding = UTF-8 /]
 [module badge(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::value/]
@@ -12,7 +12,7 @@
 {%- if [badge.displayWhen.twigExpression(accessor)/] -%}[/if]
 <span[if (not badge.badgeClass.oclIsUndefined())]
  class="[badge.badgeClass/]"[/if][if (not badge.title.oclIsUndefined())]
- title="{{ '[badge.title.partOf.id()/].labels.[badge.title.id()/]' | trans }}"[/if]>[if (not badge.value.oclIsUndefined())]
+ title="{{ '[badge.titleId()/]' | trans }}"[/if]>[if (not badge.value.oclIsUndefined())]
 [badge.value(accessor)/][elseif (badge.iconName <> '')]
 [badge.icon()/][/if]
 </span>[if (not badge.displayWhen.oclIsUndefined())]

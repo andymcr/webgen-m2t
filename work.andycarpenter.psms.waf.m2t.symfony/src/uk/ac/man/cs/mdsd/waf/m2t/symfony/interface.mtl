@@ -250,46 +250,6 @@
 /]
 
 
-[query private entityId(field : UnitField) : String
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.partOf.oclAsType(Entity).id()
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).association.sourceType.id()
-		else if field.oclIsKindOf(InterfaceField) then
-			'Unexpected'
-		else
-			'Unhandled'
-		endif endif endif
-/]
-
-[query private fieldId(field : UnitField) : String
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).name.asId()
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).id()
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).name.asId()
-		else
-			'Unhandled'
-		endif endif endif
-/]
-
-[query public fieldLabelClass(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).fieldLabelClass
-		else
-			null
-		endif
-/]
-
-[query public fieldValueClass(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).fieldValueClass
-		else
-			null
-		endif
-/]
-
 [query public hasCustomisedPlaceholder(field : UnitField) : Boolean
 	= if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).hasCustomisedPlaceholder
@@ -300,80 +260,24 @@
 		endif endif
 /]
 
-[query public hasFieldLabelClass(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitFeature) then
-			let feature : UnitFeature = field.oclAsType(UnitFeature)
-				in not feature.fieldLabelClass.oclIsUndefined()
-		else
-			false
-		endif
-/]
-
-[query public hasFieldValueClass(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitFeature) then
-			let feature : UnitFeature = field.oclAsType(UnitFeature)
-				in not feature.fieldValueClass.oclIsUndefined()
-		else
-			false
-		endif
-/]
-
-[query public hasInputGroupClass(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitFeature) then
-			let feature : UnitFeature = field.oclAsType(UnitFeature)
-				in not feature.inputGroupClass.oclIsUndefined()
-		else
-			false
-		endif
-/]
-
 [query public hasPlaceholder(field : UnitField) : Boolean
 	= field.oclIsTypeOf(UnitAttribute) or field.oclIsTypeOf(InterfaceField)
 /]
 
-[query public id(association : UnitAssociation) : String
-	= if association.childFeature.oclIsUndefined() then
-			association.name.asId()
+[query public id(field : UnitField) : String
+	= if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name.asId()
 		else
-			association.name.asId().concat('.').concat(association.childFeature.id())
+			field.persistentFeature.id()
 		endif
 /]
 
-[query public id(child : FeatureChildPath) : String
-	= if child.oclIsTypeOf(ChildPathAttribute) then
-			child.oclAsType(ChildPathAttribute).attribute.id()
-		else
-			let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)
-			in if association.childFeature.oclIsUndefined() then
-					association.name.asId()
-				else
-					association.name.asId().concat('.').concat(association.childFeature.id())
-				endif
-		endif
-/]
-
-[query public inputGroupClass(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			field.oclAsType(UnitFeature).inputGroupClass
-		else
-			null
-		endif
+[query public interfaceId(field : UnitField) : String
+	= field.displayedOn.id().concat('.').concat(field.id())
 /]
 
 [query public isConditionalDisplay(field : UnitField) : Boolean
 	= not field.hideWhen.oclIsUndefined()
-/]
-
-[query public labelId(field : UnitField) : String
-	= let fieldsWithName : OrderedSet(UnitField)
-			= field.displayedOn.displayFields
-				->select(f | f.hasCustomisedDisplayLabel)
-				->select(f | f.fieldId() = field.fieldId())
-			in if fieldsWithName->size() < 2 then
-					field.fieldId()
-				else
-					field.entityId().concat('_').concat(field.fieldId())
-				endif
 /]
 
 [query public placeholder(field : UnitField) : String
@@ -386,28 +290,9 @@
 		endif endif
 /]
 
-[query public placeholderId(field : UnitField) : String
-	= let fieldsWithName : OrderedSet(UnitField)
-			= field.displayedOn.displayFields
-				->select(f | f.oclIsTypeOf(UnitAttribute) or f.oclIsTypeOf(InterfaceField))
-				->select(f | f.fieldId() = field.fieldId())
-			in if fieldsWithName->size() < 2 then
-					field.fieldId()
-				else
-					field.entityId().concat('_').concat(field.fieldId())
-				endif
-/]
 
-[query public titleId(field : UnitField) : String
-	= let fieldsWithName : OrderedSet(UnitField)
-			= field.displayedOn.displayFields
-				->select(f | not f.oclIsTypeOf(UnitLabel))
-				->select(f | f.fieldId() = field.fieldId())
-			in if fieldsWithName->size() < 2 then
-					field.fieldId()
-				else
-					field.entityId().concat('_').concat(field.fieldId())
-				endif
+[query public id(badge : Badge) : String
+	= 'title'
 /]
 
 
