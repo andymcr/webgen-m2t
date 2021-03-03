@@ -22,32 +22,28 @@
 [/template]
 
 [template private translations(menu : Menu) post(trim())]
-<trans-unit id="label.[menu.id()/]">
- <source>label.[menu.id()/]</source>
- <target>[menu.displayLabel.validXML()/]</target>
-</trans-unit>
 [for (entry : MenuEntry | menu.entries)]
 	[if (entry.oclIsTypeOf(SubmenuEntry))]
-	[let submenuEntry : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
-<trans-unit id="[menu.id()/].labels.[submenuEntry.id()/]">
- <source>[menu.id()/].labels.[submenuEntry.id()/]</source>
- <target>[submenuEntry.displayLabel.validXML()/]</target>
+	[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
+<trans-unit id="[submenu.displayLabelId()/]">
+ <source>[submenu.displayLabelId()/]</source>
+ <target>[submenu.displayLabel.validXML()/]</target>
 </trans-unit>
-[submenuEntry.translations()/]
+[submenu.translations()/]
 	[/let]
 	[elseif (entry.oclIsTypeOf(ActionMenuEntry))]
-	[let actionEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-<trans-unit id="[menu.id()/].labels.[actionEntry.id()/]">
- <source>[menu.id()/].labels.[actionEntry.id()/]</source>
- <target>[actionEntry.displayLabel.validXML()/]</target>
+	[let menuEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+<trans-unit id="[menuEntry.displayLabelId()/]">
+ <source>[menuEntry.displayLabelId()/]</source>
+ <target>[menuEntry.displayLabel.validXML()/]</target>
 </trans-unit>
 	[/let]
 	[elseif (entry.oclIsTypeOf(EditStaticTextMenuEntry))]
-	[let staticEntry : EditStaticTextMenuEntry = entry.oclAsType(EditStaticTextMenuEntry)]
-   <trans-unit id="[menu.id()/].labels.[staticEntry.id()/]">
-    <source>[menu.id()/].labels.[staticEntry.id()/]</source>
-    <target>[staticEntry.displayLabel.validXML()/]</target>
-   </trans-unit>
+	[let menuEntry : EditStaticTextMenuEntry = entry.oclAsType(EditStaticTextMenuEntry)]
+<trans-unit id="[menuEntry.displayLabelId()/]">
+ <source>[menuEntry.displayLabelId()/]</source>
+ <target>[menuEntry.displayLabel.validXML()/]</target>
+</trans-unit>
 	[/let]
 	[/if]
 [/for]

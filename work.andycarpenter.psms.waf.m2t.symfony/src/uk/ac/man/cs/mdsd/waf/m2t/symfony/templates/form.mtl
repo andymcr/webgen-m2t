@@ -74,7 +74,7 @@
 [if (unit.hasCustomisedSubmitLabel())]
 [unit.containedId()/].labels.[unit.submitId()/]
 [else]
-[unit.displayedOn.rootPage.pageId()/].labels.save
+[unit.displayedOn.rootPage.id()/].labels.save
 [/if]
 [/template]
 
@@ -82,7 +82,7 @@
 [if (unit.hasCustomisedCancelLabel())]
 [unit.containedId()/].labels.[unit.submitId()/]
 [else]
-[unit.displayedOn.rootPage.pageId()/].labels.cancel
+[unit.displayedOn.rootPage.id()/].labels.cancel
 [/if]
 [/template]
 

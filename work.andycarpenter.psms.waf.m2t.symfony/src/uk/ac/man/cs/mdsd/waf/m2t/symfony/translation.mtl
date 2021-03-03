@@ -23,6 +23,31 @@
 /]
 
 
+[query public labelId(menu : Menu) : String
+	= if menu.oclIsTypeOf(SubmenuEntry) then
+			menu.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menu.name.asId())
+		else
+			menu.name.asId()
+		endif
+/]
+
+[query public displayLabelId(menuEntry : ActionMenuEntry) : String
+	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.name.asId())
+/]
+
+[query public displayLabelId(menuEntry : EditStaticTextMenuEntry) : String
+	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.name.asId())
+/]
+
+[query public displayLabelId(menuEntry : SubmenuEntry) : String
+	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.name.asId())
+/]
+
+
+[query public displayLabelId(page : Page) : String
+	= page.id().concat('.caption')
+/]
+
 [query public translationDomain(page : Page) : String
 	= if page.rootPage.name.equalsIgnoreCase('home') then
 			'default'
@@ -31,6 +56,10 @@
 		endif
 /]
 
+
+[query public displayLabelId(unit : ContentUnit) : String
+	= unit.containedId().concat('.caption')
+/]
 
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
@@ -58,7 +87,6 @@
 [query public translationDomain(unit : ContentUnit) : String
 	= unit.displayedOn.translationDomain()
 /]
-
 
 
 [query public customisedDisplayLabelId(field : UnitField) : String

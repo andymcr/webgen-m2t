@@ -28,6 +28,32 @@
 			endif
 /]
 
+[query private menuEntries(menu : Menu) : Sequence(ActionMenuEntry)
+	= menu.entries
+		->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+		->union(
+			menu.entries
+				->select(e | e.oclIsKindOf(SubmenuEntry)).oclAsType(SubmenuEntry)
+				->collect(m | m.menuEntries())
+			)
+/]
+
+[query public labelId(menu : Menu) : String
+	= if menu.oclIsTypeOf(SubmenuEntry) then
+			menu.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menu.name.asId())
+		else
+			menu.name.asId()
+		endif
+/]
+
+[query public id(menuEntry : SubmenuEntry) : String
+	= if menuEntry.partOf.oclIsTypeOf(SubmenuEntry) then
+			menuEntry.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menuEntry.name.asId())
+		else
+			menuEntry.name.asId()
+		endif
+/]
+
 
 [query public id(enumerationType : EnumerationType) : String
 	= enumerationType.name.asId()
@@ -49,32 +75,6 @@
 /]
 
 
-[query public id(menu : Menu) : String
-	= menu.name.asId()
-/]
-
-[query public id(menuEntry : MenuEntry) : String
-	= if menuEntry.oclIsTypeOf(SubmenuEntry) then
-			menuEntry.oclAsType(SubmenuEntry).name.asId()
-		else if menuEntry.oclIsTypeOf(ActionMenuEntry) then
-			menuEntry.oclAsType(ActionMenuEntry).name.asId()
-		else if menuEntry.oclIsTypeOf(EditStaticTextMenuEntry) then
-			menuEntry.oclAsType(EditStaticTextMenuEntry).name.asId()
-		else
-			'Unhandled'
-		endif endif endif
-/]
-
-[query private menuEntries(menu : Menu) : Sequence(ActionMenuEntry)
-	= menu.entries
-		->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
-		->union(
-			menu.entries
-				->select(e | e.oclIsKindOf(SubmenuEntry)).oclAsType(SubmenuEntry)
-				->collect(m | m.menuEntries())
-			)
-/]
-
 [query public styleClass(menu : Menu) : String
 	= menu.styleClass
 /]
@@ -84,7 +84,7 @@
 	= page.routingUnits()->notEmpty()
 /]
 
-[query public pageId(page : Page) : String
+[query public id(page : Page) : String
 	= page.name.asId()
 /]
 
@@ -109,7 +109,7 @@
 /]
 
 [query public containedId(unit : ContentUnit) : String
-	= unit.displayedOn.pageId().concat('.').concat(unit.name.asId())
+	= unit.displayedOn.id().concat('.').concat(unit.name.asId())
 /]
 
 [query public formId(unit : DynamicUnit) : String
@@ -214,7 +214,7 @@
 /]
 
 [query public id(unit : ContentUnit) : String
-	= unit.displayedOn.pageId().concat('.labels.').concat(unit.name.asId())
+	= unit.displayedOn.id().concat('.labels.').concat(unit.name.asId())
 /]
 
 [query public isConditionalDisplay(unit : DynamicUnit) : Boolean

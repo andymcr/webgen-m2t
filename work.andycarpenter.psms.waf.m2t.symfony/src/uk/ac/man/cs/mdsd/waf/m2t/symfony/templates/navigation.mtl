@@ -4,6 +4,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 
 
@@ -50,7 +51,7 @@
  disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
 '[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">
-{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a>[if (action.action.isAuthorised)]
+{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -61,10 +62,10 @@
 [if (submenu.isAuthorised)]
 {% if is_granted('[submenu.authorisationRoles/]') %}[/if]
 [if (submenu.entries->isEmpty())]
-<a class="nav-link disabled"><{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}/a>
+<a class="nav-link disabled"><{{ '[submenu.displayLabelId()/]' | trans }}/a>
 [else]
 <span class="nav-item dropdown">
- <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#[submenu.id()/]_submenu" role="button" aria-expanded="false">{{ '[submenu.partOf.id()/].labels.[submenu.id()/]' | trans }}</a>
+ <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#[submenu.id()/]" role="button" aria-expanded="false">{{ '[submenu.displayLabelId()/]' | trans }}</a>
  [submenu.subDropdown()/]
 </span>
 [/if]
@@ -73,8 +74,8 @@
 [/let]
 [/template]
 
-[template private subDropdown(submenu : Menu) post(trim())]
-<ul id="[submenu.id()/]_submenu" class="dropdown-menu">
+[template private subDropdown(submenu : SubmenuEntry) post(trim())]
+<ul id="[submenu.id()/]" class="dropdown-menu">
 [for (subEntry : MenuEntry | submenu.entries)]
   [subEntry.dropEntry()/]
 [/for]
@@ -89,7 +90,7 @@
 <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
  disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
 , {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
-'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.partOf.id()/].labels.[action.id()/]' | trans }}</a></li>[if (action.action.isAuthorised)]
+'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -98,14 +99,14 @@
 [template private userDropdown(model : WafModel) post(trim())]
 <span class="nav-item dropdown">
 {%- if app.user -%}
- <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
+ <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
 {%- elseif not app.user -%}
 [if (model.isLocallyAuthenticated)]
- <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.localAuthentication.loginUnit.displayLabel/]</a>
+ <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.localAuthentication.loginUnit.displayLabel/]</a>
 {%- endif -%}
  [model.localAuthentication.userDropdown()/]
 [elseif (model.isCasAuthenticated)]
- <a class="dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.casAuthentication.loginLabel/]</a>
+ <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.casAuthentication.loginLabel/]</a>
 {%- endif -%}
  [model.casAuthentication.userDropdown()/]
 [/if]
@@ -118,7 +119,7 @@
 {%- if app.user -%}
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'xxx' %} active{% endif %}" href="xx">Profile</a></li>
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'yyy' %} active{% endif %}" href="yyy">Password</a></li>
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.logoutUnit.routeName()/]' %} active{% endif %}" href="{{ path('[security.logoutUnit.routeName()/]') }}">{{ '[security.logoutUnit.containedId()/].labels.logout' | trans }}</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.logoutUnit.routeName()/]' %} active{% endif %}" href="{{ path('[security.logoutUnit.routeName()/]') }}">{{ '[security.logoutUnit.containedId()/].labels.logout' | trans({}, 'security') }}</a></li>
 {%- elseif not app.user -%}
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.loginUnit.routeName()/]' %} active{% endif %}" href="{{ path('[security.loginUnit.routeName()/]') }}">[security.loginUnit.displayLabel/]</a></li>
 [if (security.allowSelfRegistration)]

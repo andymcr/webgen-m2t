@@ -20,12 +20,12 @@
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
 [if (page.hasAnyEditUnits)]
-   <trans-unit id="[page.pageId()/].labels.cancel">
-    <source>[page.pageId()/].labels.cancel</source>
+   <trans-unit id="[page.id()/].labels.cancel">
+    <source>[page.id()/].labels.cancel</source>
     <target>[page.partOf.defaultCancelLabel.validXML()/]</target>
    </trans-unit>
-   <trans-unit id="[page.pageId()/].labels.save">
-    <source>[page.pageId()/].labels.save</source>
+   <trans-unit id="[page.id()/].labels.save">
+    <source>[page.id()/].labels.save</source>
     <target>[page.partOf.defaultSaveLabel.validXML()/]</target>
    </trans-unit>
 [/if]
@@ -37,8 +37,8 @@
 [/template]
 
 [template private translations(page : Page) post(trim())]
-<trans-unit id="[page.pageId()/].labels.title">
- <source>[page.pageId()/].labels.title</source>
+<trans-unit id="[page.displayLabelId()/]">
+ <source>[page.displayLabelId()/]</source>
  <target>[page.displayLabel.validXML()/]</target>
 </trans-unit>
 [for (unit : ContentUnit | page.units)]
@@ -49,23 +49,11 @@
 [/for]
 [/template]
 
-[query public entityLabel(field : UnitField) : String
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).attribute.displayLabel
-		else if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).association.displayLabel
-		else
-			field.displayLabel
-		endif endif
-/]
-
 [template private translations(unit : ContentUnit) post(trim())]
-[if (not unit.omitCaption)]
-<trans-unit id="[unit.id()/]">
- <source>[unit.id()/]</source>
+<trans-unit id="[unit.displayLabelId()/]">
+ <source>[unit.displayLabelId()/]</source>
  <target>[unit.displayLabel.validXML()/]</target>
 </trans-unit>
-[/if]
 [if (unit.hasUnitTranslations())]
 [unit.unitTranslations()/]
 [/if]

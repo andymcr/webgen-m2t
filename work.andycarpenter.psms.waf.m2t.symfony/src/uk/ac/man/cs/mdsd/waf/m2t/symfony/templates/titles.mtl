@@ -44,26 +44,8 @@
 [unit.title(unit.unitTitle, contentAccessor)/]
 [/template]
 
-[template public unitTitleX(unit : EditUnit, accessor : String)
-	? (not unit.title.oclIsUndefined()) post(trim())]
-[let unitAccessor : String = accessor.concat('.vars.value')]
-[let labelAccessor : String
-	= if title.oclIsKindOf(Attribute) then
-			unitAccessor.concat('.').concat(title.oclAsType(Attribute).modelPropertyName())
-		else
-			unitAccessor
-		endif]
-[if (unit.oclIsTypeOf(CreateUpdateUnit))]
-{%- if [unitAccessor/] is not null -%}{{ [title.label(labelAccessor)/] }}{%- else -%}[unit.title()/]{%- endif -%}
-[else]
-{{ [title.label(labelAccessor)/] }}
-[/if]
-[/let]
-[/let]
-[/template]
-
 [template private title(unit : DynamicUnit) post(trim())]
-{{ '[unit.id()/]' | trans[if (not unit.oclIsKindOf(EditUnit))]({}, '[unit.translationDomain()/]')[/if] }}
+{{ '[unit.displayLabelId()/]' | trans[if (not unit.oclIsKindOf(EditUnit))]({}, '[unit.translationDomain()/]')[/if] }}
 [/template]
 
 [template private title(unit : DynamicUnit, title : Label, accessor : String) post(trim())]
