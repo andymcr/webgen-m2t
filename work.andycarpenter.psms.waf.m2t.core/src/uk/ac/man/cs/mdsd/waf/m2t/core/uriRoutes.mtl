@@ -214,3 +214,13 @@
 [query public routeActual(unit : DynamicUnit, key : Attribute) : RouteActual
 	= unit.routeActuals->any(a | a.routeParameter = key)
 /]
+
+
+[query public isDislayedOnlyOnExplicitRoute(unit : CollectionUnit) : Boolean
+	= unit.oclAsType(DynamicUnit).isDislayedOnlyOnExplicitRoute()
+/]
+
+[query public isDislayedOnlyOnExplicitRoute(unit : DynamicUnit) : Boolean
+	= not unit.oclIsKindOf(CreateUpdateUnit)
+		and not unit.displayedOn.routeParameters()->includesAll(unit.routeParameters())
+/]

@@ -28,7 +28,7 @@
  */
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
-[if (unit.isConditionalDisplay())]
+[if (unit.isConditionallyDisplayed)]
     [unit.actionCore()/]
 
 [/if]
@@ -53,7 +53,7 @@ $this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.definedBy.i
 [template private templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[if (detailsUnit.isConditionalDisplay())]
+[if (detailsUnit.isConditionallyDisplayed)]
 if (isset($this->[detailsUnit.instanceName()/]))
     $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
 [else]

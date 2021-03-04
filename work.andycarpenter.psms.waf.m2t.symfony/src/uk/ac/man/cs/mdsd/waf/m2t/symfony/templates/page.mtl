@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module page(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
@@ -15,23 +16,19 @@
 	[if (unit.oclIsTypeOf(StaticUnit))]
 [unit.unitContent(page)/]
 	[else]
-		[if (not unit.oclIsKindOf(CollectionUnit))]
-[unit.unitContent(page)/]
-		[else]
-		[let collection : CollectionUnit = unit.oclAsType(CollectionUnit)]
-			[if (collection.hideWhen.oclIsUndefined())]
-[unit.unitContent(page)/]
-			[else]
-{% if [unit.instanceName()/] is defined %}
-[unit.unitContent(page)/]
-				[if (not collection.messageWhenHidden.oclIsUndefined())]
+	[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+		[if (dynamicUnit.isConditionallyDisplayed or dynamicUnit.isDislayedOnlyOnExplicitRoute())]
+{% if [dynamicUnit.instanceName()/] is defined %}
+[dynamicUnit.unitContent(page)/]
+			[if (dynamicUnit.hasHiddenMessage)]
 {% else %}
-<h5>{{ '[collection.containedId()/].labels.hiddenMessage' | trans({}, 'default') }}</h5>
-				[/if]
-{% endif %}
+<h5>{{ '[dynamicUnit.containedId()/].labels.hiddenMessage' | trans({}, 'default') }}</h5>
 			[/if]
-		[/let]
+{% endif %}
+		[else]
+[unit.unitContent(page)/]
 		[/if]
+	[/let]
 	[/if]
 [/for]
 {% endblock %}

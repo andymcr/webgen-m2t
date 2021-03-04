@@ -36,7 +36,7 @@
  */
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
-[if (not unit.displayedOn.routeParameters()->includesAll(unit.routeParameters()))]
+[if (unit.isDislayedOnlyOnExplicitRoute())]
     [unit.actionCore()/]
 
 [/if]
@@ -106,7 +106,7 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 	[if (not unit.omitContainerLoad)]
 [unit.oclAsType(DynamicUnit).loadContainer()/]
 	[/if]
-	[if (unit.isConditionalDisplay())]
+	[if (unit.isConditionallyDisplayed)]
 		[if (unit.containingTypeLoadedElsewhere())]
 if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containingTypeLoadedBy().instanceName()))/])) {
 		[else]
@@ -184,40 +184,31 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepositor
 [/template]
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
-[if (unit.displayedOn.routeParameters()->includesAll(unit.routeParameters()))]
-	[if (not unit.displayedOn.hasSingleActionMethod())]
+[if (not unit.displayedOn.hasSingleActionMethod() and not unit.isDislayedOnlyOnExplicitRoute())]
 [unit.actionCore()/]
-	[/if]
-[unit.templateParameters2()/]
-[else]
+[/if]
+[if (unit.isDislayedOnlyOnExplicitRoute())]
 if (isset($this->[unit.instanceName()/])) {
-	[if (not unit.omitContainerLoad)]
-    $parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
-	[/if]
-    $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+    [unit.templateParameters2()/]
 }
+[elseif (unit.isConditionallyDisplayed)]
+	[if (unit.containingTypeLoadedElsewhere())]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containingTypeLoadedBy().instanceName()))/])) {
+	[else]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containerInstanceName()))/])) {
+	[/if]
+    [unit.templateParameters2()/]
+}
+[else]
+[unit.templateParameters2()/]
 [/if]
 [/template]
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
-[if (unit.isContained)]
-	[if (not unit.omitContainerLoad)]
+[if (unit.isContained and not unit.omitContainerLoad)]
 $parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
-	[/if]
-	[if (unit.isConditionalDisplay())]
-		[if (unit.containingTypeLoadedElsewhere())]
-if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containingTypeLoadedBy().instanceName()))/])) {
-		[else]
-if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containerInstanceName()))/])) {
-		[/if]
-    $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
-}
-	[else]
-$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
-	[/if]
-[else]
-$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [/if]
+$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [if (unit.hasPagination)]
 $parameters['['/]'currentPage'[']'/] = [unit.pageVariable()/];
 	[if (unit.maximumPaginationSize > 0)]
@@ -230,7 +221,7 @@ $parameters['['/]'pageCount'[']'/] = ceil($this->[unit.instanceName()/]->count()
 [/template]
 
 [template public pageVariable(unit : CollectionUnit) post(trim())]
-[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionalDisplay())]
+[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionallyDisplayed)]
 $page
 [else]
 $this->page
@@ -238,7 +229,7 @@ $this->page
 [/template]
 
 [template public pageSizeVariable(unit : CollectionUnit) post(trim())]
-[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionalDisplay())]
+[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionallyDisplayed)]
 $pageSize
 [else]
 $this->pageSize

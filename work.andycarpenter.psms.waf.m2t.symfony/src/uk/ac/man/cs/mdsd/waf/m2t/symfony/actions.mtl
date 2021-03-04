@@ -8,7 +8,7 @@
 [query public hasSingleActionMethod(page : Page) : Boolean
 	= page.nonSecurityUnits->notEmpty()
 		and page.dynamicUnits->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
-		and page.dynamicUnits->forAll(u | page.routeParameters()->includesAll(u.routeParameters()))
+		and page.dynamicUnits->forAll(u | not u.isDislayedOnlyOnExplicitRoute())
 		and page.hasCommonUnitAuthentication
 /]
 

@@ -217,10 +217,6 @@
 	= unit.displayedOn.id().concat('.labels.').concat(unit.name.asId())
 /]
 
-[query public isConditionalDisplay(unit : DynamicUnit) : Boolean
-	= not unit.hideWhen.oclIsUndefined()
-/]
-
 [query public isHomeUnit(unit : ContentUnit) : Boolean
 	= let homeUnit : ContentUnit
 		= unit.displayedOn.partOf.homeUnit()
