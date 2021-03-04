@@ -11,7 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(NullLiteral)
 		or expression.oclIsTypeOf(BooleanLiteral)
 		or expression.oclIsTypeOf(IntegerLiteral)
@@ -19,47 +19,51 @@
 [expression.valueExpression()/]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(TimeLiteral)) post(trim())]
 [let literal : TimeLiteral = expression.oclAsType(TimeLiteral)]
 $time
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
 new \DateTime()
 [/template]
 
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(FunctionCall)) post(trim())]
 [let call : FunctionCall = expression.oclAsType(FunctionCall)]
 [call.name/]([for (actual : Expression | call.actuals) separator(', ')]
-[actual.controllerExpression(accessor)/][/for])
+[actual.controllerExpression(accessor, parentAccessor)/][/for])
 [/let]
 [/template]
 
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(ConstantReference)) post(trim())]
 [let constant : ConstantReference = expression.oclAsType(ConstantReference)]
 \[constant.value.serviceNamespace()/]\[constant.value.definedBy.className()/]::[constant.value.name/][if (constant.value.useFunction())]()[/if]
 [/let]
 [/template]
 
-[template public controllerExpression(guard : Expression, accessor : String)
+[template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
 	? (guard.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
 [let path : FeaturePathAttribute = guard.oclAsType(FeaturePathAttribute)]
-[accessor/]->[path.attribute.getMethodName()/]()[if (guard.suffixes->notEmpty())]
+[if (path.useContainerAsContext)]
+[parentAccessor/][else]
+[/if]->[path.attribute.getMethodName()/]()[if (guard.suffixes->notEmpty())]
  [guard.suffixes()/][/if]
 [/let] 
 [/template]
 
-[template public controllerExpression(guard : Expression, accessor : String)
+[template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
 	? (guard.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
 [let path : FeaturePathAssociation = guard.oclAsType(FeaturePathAssociation)]
-[accessor/]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
+[if (path.useContainerAsContext)]
+[parentAccessor/][else]
+[/if]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
 [path.childFeature.pathExpression()/][/if][if (guard.suffixes->notEmpty())]
  [guard.suffixes()/][/if]
 [/let] 
@@ -80,14 +84,14 @@ new \DateTime()
 [/let] 
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
 [let path : ParameterReference = expression.oclAsType(ParameterReference)]
 ':[path.parameter.name/]'
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
 [let path : CurrentUser = expression.oclAsType(CurrentUser)]
 $this->getUser()
@@ -95,61 +99,61 @@ $this->getUser()
 [/template]
 
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateBooleanVariable)) post(trim())]
 [let predicate : PredicateBooleanVariable = expression.oclAsType(PredicateBooleanVariable)]
-[if (predicate.negated)]$queryBuilder->expr()->not([/if][predicate.feature.controllerExpression(accessor)/][if (predicate.negated)])[/if]
+[if (predicate.negated)]$queryBuilder->expr()->not([/if][predicate.feature.controllerExpression(accessor, parentAccessor)/][if (predicate.negated)])[/if]
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
-[predicate.expressions->first().controllerExpression(accessor)/][for (expression : Expression | predicate.expressions->subOrderedSet(2, predicate.expressions->size()))]
- [predicate.operator()/] [expression.controllerExpression(accessor)/][/for]
+[predicate.expressions->first().controllerExpression(accessor, parentAccessor)/][for (expression : Expression | predicate.expressions->subOrderedSet(2, predicate.expressions->size()))]
+ [predicate.operator()/] [expression.controllerExpression(accessor, parentAccessor)/][/for]
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
-[predicate.left.controllerExpression(accessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor)/][if (expression.suffixes->notEmpty())]
+[predicate.left.controllerExpression(accessor, parentAccessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor, parentAccessor)/][if (expression.suffixes->notEmpty())]
  [expression.suffixes()/][/if]
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-[predicate.left.controllerExpression(accessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor)/][if (expression.suffixes->notEmpty())] [expression.suffixes()/][/if]
+[predicate.left.controllerExpression(accessor, parentAccessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor, parentAccessor)/][if (expression.suffixes->notEmpty())] [expression.suffixes()/][/if]
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
 [let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
-[predicate.left.controllerExpression(accessor)/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.controllerExpression(accessor)/]
+[predicate.left.controllerExpression(accessor, parentAccessor)/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.controllerExpression(accessor, parentAccessor)/]
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
 [let predicate : PredicateLikeOperator = expression.oclAsType(PredicateLikeOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([predicate.left.controllerExpression(accessor)/], [predicate.right.controllerExpression(accessor)/])
+$queryBuilder->expr()->[predicate.operator()/]([predicate.left.controllerExpression(accessor, parentAccessor)/], [predicate.right.controllerExpression(accessor, parentAccessor)/])
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateIsNull)) post(trim())]
 [let predicate : PredicateIsNull = expression.oclAsType(PredicateIsNull)]
-$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.controllerExpression(accessor)/])
+$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.controllerExpression(accessor, parentAccessor)/])
 [/let]
 [/template]
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.controllerExpression(accessor)/], '0')
+$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.controllerExpression(accessor, parentAccessor)/], '0')
 [/let]
 [/template]
 

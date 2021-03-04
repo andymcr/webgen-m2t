@@ -36,6 +36,10 @@
  */
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
+[if (not unit.displayedOn.routeParameters()->includesAll(unit.routeParameters()))]
+    [unit.actionCore()/]
+
+[/if]
     return $this->renderPage([unit.oclAsType(DynamicUnit).renderMethodActuals()/]);
 }
 [/template]
@@ -88,18 +92,34 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [/if]
 [/template]
 
+[query private containingTypeLoadedBy(unit : CollectionUnit) : DynamicUnit
+	= unit.oclAsType(DynamicUnit).displayedOn.dynamicUnits
+		->any(u | u.contentType = unit.containingType)
+/]
+
+[query private containingTypeLoadedElsewhere(unit : CollectionUnit) : Boolean
+	= not unit.containingTypeLoadedBy().oclIsUndefined()
+/]
+
 [template private selectCode(unit : CollectionUnit) post(trim())]
-[if (unit.isContained and not unit.omitContainerLoad)]
+[if (unit.isContained)]
+	[if (not unit.omitContainerLoad)]
 [unit.oclAsType(DynamicUnit).loadContainer()/]
-[/if]
-[if (unit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
-if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanceName()))/])) {
+	[/if]
+	[if (unit.isConditionalDisplay())]
+		[if (unit.containingTypeLoadedElsewhere())]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containingTypeLoadedBy().instanceName()))/])) {
+		[else]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containerInstanceName()))/])) {
+		[/if]
     [unit.selectCode2()/]
 }
+	[else]
+[unit.selectCode2()/]
+	[/if]
 [else]
 [unit.selectCode2()/]
 [/if]
-
 [/template]
 
 [template private selectCode2(unit : CollectionUnit) post(trim())]
@@ -164,30 +184,37 @@ $this->[unit.instanceName()/] = [unit.oclAsType(DynamicUnit).getContentRepositor
 [/template]
 
 [template public templateParameters(unit : CollectionUnit) post(trim())]
-[if (not unit.displayedOn.hasSingleActionMethod())]
+[if (unit.displayedOn.routeParameters()->includesAll(unit.routeParameters()))]
+	[if (not unit.displayedOn.hasSingleActionMethod())]
 [unit.actionCore()/]
-[/if]
+	[/if]
 [unit.templateParameters2()/]
+[else]
+if (isset($this->[unit.instanceName()/])) {
+	[if (not unit.omitContainerLoad)]
+    $parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
+	[/if]
+    $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+}
+[/if]
 [/template]
 
-[query private containingTypeX(unit : CollectionUnit) : Entity
-	= if not unit.findContainerSelection.oclIsUndefined() then
-			unit.findContainerSelection.definedBy.serves
-		else if unit.selection.selectPath->notEmpty() then
-			unit.selection.selectPath->last().targetType
-		else
-			unit.contentType.containingType
-		endif endif
-/]
-
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
-[if (unit.isContained and not unit.omitContainerLoad)]
+[if (unit.isContained)]
+	[if (not unit.omitContainerLoad)]
 $parameters['['/]'[unit.containerInstanceName()/]'[']'/] = $this->[unit.containerInstanceName()/];
-[/if]
-[if (unit.isConditionalDisplay() and not unit.routingType().oclIsUndefined())]
-if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.containerInstanceName()))/])) {
-	$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+	[/if]
+	[if (unit.isConditionalDisplay())]
+		[if (unit.containingTypeLoadedElsewhere())]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containingTypeLoadedBy().instanceName()))/])) {
+		[else]
+if (!([unit.hideWhen.controllerExpression('$this->'.concat(unit.instanceName()), '$this->'.concat(unit.containerInstanceName()))/])) {
+		[/if]
+    $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 }
+	[else]
+$parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
+	[/if]
 [else]
 $parameters['['/]'[unit.instanceName()/]'[']'/] = $this->[unit.instanceName()/];
 [/if]

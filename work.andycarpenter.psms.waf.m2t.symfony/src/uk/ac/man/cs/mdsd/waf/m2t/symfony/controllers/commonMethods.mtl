@@ -230,7 +230,7 @@ new [unit.modelName()/]()
 [template private findActualParameter(unit : DynamicUnit, key : Attribute, parameters : Sequence(Attribute)) post(trim())]
 [let parameterName : String = key.routeParameterName(parameters)]
 [if (unit.hasRouteActual(key))]
-[unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()))/]
+[unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()), '$'.concat(unit.containerInstanceName()))/]
 [elseif (key.encodeUriKey)]
 urldecode($[parameterName/])
 [else]
@@ -377,7 +377,7 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 
 
 [template public templateParameters(page : Page) post(trim())]
-$parameters['['/]'title'[']'/] = $this->translationService->trans('label.[page.pageId()/]', array(), '[page.translationDomain()/]');
+$parameters['['/]'title'[']'/] = $this->translationService->trans('[page.displayLabelId()/]', array(), '[page.translationDomain()/]');
 [if (page.hasGalleryUnits)]
 [page.templateStyleParameters()/]
 [/if]
