@@ -68,12 +68,12 @@
 [/template]
 
 [template private unitTranslations(unit : ContentUnit)
-	? (unit.oclIsKindOf(CollectionUnit)) post (trim())]
-[let collection : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[if (not collection.hideWhen.oclIsUndefined() and not collection.messageWhenHidden.oclIsUndefined())]
-<trans-unit id="[collection.containedId()/].labels.hiddenMessage">
- <source>[collection.containedId()/].labels.hiddenMessage</source>
- <target>[collection.messageWhenHidden.validXML()/]</target>
+	? (unit.oclIsKindOf(DynamicUnit) and not unit.oclIsKindOf(EditUnit)) post (trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[if (dynamicUnit.hasHiddenMessage)]
+<trans-unit id="[dynamicUnit.hiddenMessageId()/]">
+ <source>[dynamicUnit.hiddenMessageId()/]</source>
+ <target>[dynamicUnit.messageWhenHidden.validXML()/]</target>
 </trans-unit>
 [/if]
 [/let]

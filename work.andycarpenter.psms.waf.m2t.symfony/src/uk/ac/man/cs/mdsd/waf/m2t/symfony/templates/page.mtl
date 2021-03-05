@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 
 
 [template public page(page : Page) post(trim())]
@@ -22,7 +23,7 @@
 [dynamicUnit.unitContent(page)/]
 			[if (dynamicUnit.hasHiddenMessage)]
 {% else %}
-<h5>{{ '[dynamicUnit.containedId()/].labels.hiddenMessage' | trans({}, 'default') }}</h5>
+<h5>{{ '[dynamicUnit.hiddenMessageId()/]' | trans({}, '[dynamicUnit.translationDomain()/]') }}</h5>
 			[/if]
 {% endif %}
 		[else]

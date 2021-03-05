@@ -71,17 +71,23 @@
 /]
 
 [query public hasUnitTranslations(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(CollectionUnit) then
-			let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
-				in not collectionUnit.hideWhen.oclIsUndefined()
-					and not collectionUnit.messageWhenHidden.oclIsUndefined()
-		else if unit.oclIsKindOf(EditUnit) then
+	= if unit.oclIsKindOf(EditUnit) then
 			let editUnit : EditUnit = unit.oclAsType(EditUnit)
 				in editUnit.hasCustomisedCancelLabel()
 					or editUnit.hasCustomisedSubmitLabel()
+		else if unit.oclIsKindOf(DynamicUnit) then
+			unit.oclAsType(DynamicUnit).hasHiddenMessage
 		else
 			false
 		endif endif
+/]
+
+[query public hiddenMessageId(unit : ContentUnit) : String
+	= unit.messagesId().concat('.hidden')
+/]
+
+[query public messagesId(unit : ContentUnit) : String
+	= unit.containedId().concat('.messages')
 /]
 
 [query public translationDomain(unit : ContentUnit) : String
