@@ -71,11 +71,11 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[for (repository : Repository | page.repositories->sortedBy(r | r.name))]
+[for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name))]
     private $[repository.instanceName()/];
 
 [/for]
-[for (service : Service | page.services->sortedBy(s | s.name))]
+[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
     private $[service.instanceName()/];
 
 [/for]
@@ -85,18 +85,18 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/if]
     private $translationService;
 
-    public function __construct([for (repository : Repository | page.repositories->sortedBy(r | r.name)) separator (', ')]
-[repository.className()/] $[repository.instanceName()/][/for][if (page.repositories->notEmpty() and page.services->notEmpty())]
-, [/if][for (service : Service | page.services->sortedBy(s | s.name)) separator (', ')]
+    public function __construct([for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name)) separator (', ')]
+[repository.className()/] $[repository.instanceName()/][/for][if (page.hasRepositoriesUsed and page.hasServicesUsed)]
+, [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
-[if (page.repositories->notEmpty() or page.hasServices)]
-, [/if]ValidatorInterface $validator[/if][if (page.repositories->notEmpty() or page.hasServices)]
+[if (page.hasRepositoriesUsed or page.hasServicesUsed)]
+, [/if]ValidatorInterface $validator[/if][if (page.hasRepositoriesUsed or page.hasServicesUsed)]
 , [/if]TranslatorInterface $translator)
     {
-	[for (repository : Repository | page.repositories->sortedBy(r | r.name))]
+	[for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name))]
         $this->[repository.instanceName()/] = $[repository.instanceName()/];
 	[/for]
-	[for (service : Service | page.services->sortedBy(s | s.name))]
+	[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
         $this->[service.instanceName()/] = $[service.instanceName()/];
 	[/for]
 	[if (page.hasExplicitValidation())]
@@ -142,10 +142,10 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 [for (form : DynamicUnit | page.formUnits->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
-[for (repository : Repository | page.repositories->sortedBy(r | r.name))]
+[for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name))]
 use [repository.repositoryNamespace()/]\[repository.className()/];
 [/for]
-[for (service : Service | page.services->sortedBy(s | s.name))]
+[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
 use [service.serviceNamespace()/]\[service.className()/];
 [/for]
 [if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]

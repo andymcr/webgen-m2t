@@ -6,27 +6,24 @@
 
 
 [query public hasObjectAccess(unit : CollectionUnit) : Boolean
-	= unit.oclAsType(DynamicUnit).hasObjectAccess()
+	= if unit.selection.oclIsUndefined() then
+			true
+		else
+			unit.selection.fields->isEmpty()
+
+		endif
 /]
 
 [query public hasObjectAccess(unit : DynamicUnit) : Boolean
 	= if unit.oclIsKindOf(CollectionUnit) then
-			let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
-				in if collectionUnit.selection.oclIsUndefined() then
-					true
-				else
-					collectionUnit.selection.joins->isEmpty() or collectionUnit.selection.fields->isEmpty()
-				endif
+			unit.oclAsType(CollectionUnit).hasObjectAccess()
 		else if unit.oclIsKindOf(DetailsUnit) then
-			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
-				in if detailsUnit.selection.oclIsUndefined() then
-					true
-				else
-					detailsUnit.selection.joins->isEmpty() or detailsUnit.selection.fields->isEmpty()
-				endif
-		else if unit.oclIsKindOf(EditUnit) then
-			true
+			if unit.oclAsType(DetailsUnit).selection.oclIsUndefined() then
+				true
+			else
+				unit.oclAsType(DetailsUnit).selection.fields->isEmpty()
+			endif
 		else
-			false
-		endif endif endif
+			true
+		endif endif
 /]
