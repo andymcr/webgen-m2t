@@ -23,9 +23,11 @@
 [query public uriPath(page : Page) : String
 	= if page.units->isEmpty() then
 			page.uriPagePath()
+		else if page.units->first().oclIsTypeOf(StaticUnit) then
+			page.units->first().oclAsType(StaticUnit).uriPath()
 		else
 			page.dynamicUnits->first().uriPath()
-		endif
+		endif endif
 /]
 
 [query private uriPagePath(page : Page) : String
@@ -188,7 +190,7 @@
 
 [query private keysPath(elementType : Entity, routeParameters : Sequence(Attribute)) : String
 	= let keyType : Entity = elementType.keyEntity()
-		in if not keyType.isContained then
+		in if not keyType.isContained or routeParameters->isEmpty() then
 				keyType.keyPath(routeParameters)
 			else
 				keyType.containingType.keysPath(routeParameters)
