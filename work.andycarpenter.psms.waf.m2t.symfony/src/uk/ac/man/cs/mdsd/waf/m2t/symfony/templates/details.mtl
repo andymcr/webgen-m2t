@@ -13,7 +13,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::data/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::fields/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::index/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::labels/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::titles/]
 

@@ -237,10 +237,6 @@
 			endif
 /]
 
-[query public rowClasses(unit : IndexUnit) : Sequence(String)
-	= unit.rowClasses.tokenize(' ')
-/]
-
 [query public submitId(unit : EditUnit) : String
 	= 'submit'
 /]
