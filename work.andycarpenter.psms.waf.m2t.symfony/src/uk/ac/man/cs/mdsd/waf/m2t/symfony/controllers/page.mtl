@@ -278,7 +278,7 @@ Response[else]File[/if]
  */
 public function [operationAction.actionName()/]([if (action.oclIsTypeOf(InstanceOperationAction))]
 [action.actionMethodFormals()/][elseif (action.oclIsTypeOf(ContainerOperationAction))]
-[action.actionContainerMethodFormals()/][else]
+[action.actionMethodContainerFormals()/][else]
 [/if]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
 Response[else]File[/if]
 
@@ -313,7 +313,7 @@ $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operati
 [if (action.hasSuccessMessage or action.hasFailureMessage)]
 [action.actionResultFlash()/]
 [/if]
-return [action.redirect(action.routeActionReturnName(), action.routeContainerParameters())/];
+return [action.redirect(action.routeActionReturnName(), action.parentUnit.routeParameters())/];
 [/let]
 [/template]
 
@@ -325,7 +325,7 @@ $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operati
 [if (action.hasSuccessMessage or action.hasFailureMessage)]
 [action.actionResultFlash()/]
 [/if]
-return [action.redirect(action.routeActionReturnName(), action.routeContainerParameters())/];
+return [action.redirect(action.routeActionReturnName(), action.parentUnit.routeContainerParameters())/];
 [/let]
 [/template]
 

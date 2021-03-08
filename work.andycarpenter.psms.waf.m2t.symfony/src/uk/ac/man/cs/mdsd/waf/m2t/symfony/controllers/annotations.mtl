@@ -28,12 +28,12 @@
 [/if]
 [/template]
 
-[template public routeContainerAnnotation(unit : DynamicUnit, suffix : String) post(trim())]
-[unit.routeAnnotation(unit.routeName(), unit.uriContainerPath(suffix), true)/]
+[template public routeCreateAnnotation(unit : EditUnit) post(trim())]
+[unit.routeAnnotation(unit.routeName(), unit.uriCreatePath(), true)/]
 [/template]
 
-[template public routeCreateAnnotation(unit : EditUnit, suffix : String) post(trim())]
-[unit.routeAnnotation(unit.routeCreateName(), unit.uriCreatePath(suffix), true)/]
+[template public routeUpdateAnnotation(unit : EditUnit, suffix : String) post(trim())]
+[unit.routeAnnotation(unit.routeUpdateName(), unit.uriUpdatePath(suffix), true)/]
 [/template]
 
 [template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]

@@ -80,7 +80,7 @@
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
 [let unit : DynamicUnit = selectAction.parentUnit]
 [let page : Page = unit.displayedOn]
-[let targetUnit : ContentUnit = selectAction.target.oclAsType(ContentUnit)]
+[let targetUnit : DynamicUnit = selectAction.target.oclAsType(DynamicUnit)]
 [let valueType2 : Entity 
 	= if selectAction.valuePath.oclIsUndefined() then
 			valueType
@@ -93,21 +93,17 @@
 		else
 			selectAction.valuePath.accessor(valueAccessor, unit.selection())
 		endif]
+[let routeName : String = if targetUnit.oclIsKindOf(EditUnit) then 
+	targetUnit.oclAsType(EditUnit).routeUpdateName()
+else
+	targetUnit.routeName()
+endif]
 [let routingParameters : String
-	= if targetUnit.oclIsKindOf(CollectionUnit) then
-			let collectionUnit : CollectionUnit = targetUnit.oclAsType(CollectionUnit)
-				in if collectionUnit.hasSelectCondition() then
-						collectionUnit.routeActualParameters(collectionUnit.routingType(), collectionUnit.selection, valueType2, valueAccessor2, unit.selection(), objectAccess)
-					else
-						collectionUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
-					endif
-		else
-			let singletonUnit : SingletonUnit = targetUnit.oclAsType(SingletonUnit)
-				in singletonUnit.routingType().routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)
-		endif]
-[action.anchor(targetUnit.routeName(), routingParameters, linkContent, title, null, conditionAccessor, 
+	= targetUnit.routeActualParameters(valueType2, valueAccessor2, unit.selection(), objectAccess)]
+[action.anchor(routeName, routingParameters, linkContent, title, null, conditionAccessor, 
 	page = targetUnit.displayedOn and (page.hasFilters or page.hasPagination), objectAccess,
 	classAttribute)/]
+[/let]
 [/let]
 [/let]
 [/let]
@@ -234,7 +230,7 @@ class="[action.anchorClass/]"
 
 [template public routeActualParameters(unit : CollectionUnit, routingType : Entity, selection : Selection, 
 	valueType : Entity, valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
-[for (key : Attribute | unit.routeParameters(routingType, selection))]
+[for (key : Attribute | unit.routeParameters(selection))]
 [key.routeActualParameter(routingType, valueType, valueAccessor, valueSelection, objectAccess)/],
 [/for]
 [/template]
@@ -246,9 +242,28 @@ class="[action.anchorClass/]"
 [/for]
 [/template]
 
+[template private routeActualParameters(targetUnit : DynamicUnit, valueType : Entity, 
+	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+[if (targetUnit.oclIsKindOf(EditUnit))]
+	[for (key : Attribute | targetUnit.oclAsType(EditUnit).routeUpdateParameters())]
+[key.routeActualParameter(targetUnit.oclAsType(EditUnit).routeUpdateParameters(), valueType, valueAccessor, valueSelection, objectAccess)/],
+	[/for]
+[else]
+	[for (key : Attribute | targetUnit.routeParameters())]
+[key.routeActualParameter(targetUnit.routeParameters(), valueType, valueAccessor, valueSelection, objectAccess)/],
+	[/for]
+[/if]
+[/template]
+
 [template private routeActualParameter(key : Attribute, routingType : Entity, valueType : Entity, 
 	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
 '[key.routeParameterName(routingType)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, valueSelection, objectAccess))/][if (key.isDateFeature)]
+.format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if]
+[/template]
+
+[template private routeActualParameter(key : Attribute, routeParameters : Sequence(Attribute), valueType : Entity, 
+	valueAccessor : String, valueSelection : Selection, objectAccess : Boolean) post(trim())]
+'[key.routeParameterName(routeParameters)/]': [key.getValue(key.keyAccessor(valueType, valueAccessor, valueSelection, objectAccess))/][if (key.isDateFeature)]
 .format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if]
 [/template]
 

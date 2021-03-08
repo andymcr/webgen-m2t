@@ -288,7 +288,7 @@
 	= 'pageSize'
 /]
 
-[query public routeCreateName(unit : EditUnit) : String
+[query public routeUpdateName(unit : EditUnit) : String
 	= if unit.oclIsTypeOf(UpdateUnit) then
 			if unit.uriElement <> '' then
 				unit.displayedOn.uniqueName()
@@ -298,9 +298,9 @@
 			endif
 		else if unit.oclIsTypeOf(CreateUpdateUnit) then
 			let createUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)
-				in if createUnit.createUriElement <> '' then
+				in if createUnit.updateUriElement <> '' then
 					unit.displayedOn.uniqueName()
-						.concat('_').concat(createUnit.createUriElement)
+						.concat('_').concat(createUnit.updateUriElement)
 				else
 					unit.uniqueName()
 				endif

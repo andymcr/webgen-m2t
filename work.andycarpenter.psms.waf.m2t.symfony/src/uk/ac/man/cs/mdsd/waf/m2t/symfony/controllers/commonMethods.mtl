@@ -39,28 +39,11 @@ Request $request[if (unit.hasRouteParameters())]
 [/let]
 [/template]
 
-[template public actionContainerMethodFormals(unit : DynamicUnit) post(trim())]
+[template public actionMethodUpdateFormals(unit : EditUnit) post(trim())]
 [let page : Page = unit.displayedOn]
-Request $request[if (unit.hasContainerRouteParameters())]
+Request $request[if (unit.hasRouteUpdateParameters())]
 , [/if]
-[unit.routeContainerParameterList()/]
-[/let]
-[/template]
-
-[template public actionCreateMethodFormals(unit : EditUnit) post(trim())]
-[let page : Page = unit.displayedOn]
-Request $request[if (unit.hasCreateRouteParameters())]
-, [/if]
-[unit.routeCreateParameterList()/]
-[/let]
-[/template]
-
-[template public actionMethodFormals(unit : DynamicUnit, selection : Selection) post(trim())]
-[let page : Page = unit.displayedOn]
-[if (page.hasFilters or page.hasPagination or unit.oclIsKindOf(EditUnit))]
-Request $request[if (unit.hasRouteParameters(selection))]
-, [/if][/if]
-[unit.routeParameterList(selection)/]
+[unit.routeUpdateParameterList()/]
 [/let]
 [/template]
 
@@ -73,12 +56,12 @@ Request $request[if (action.hasRouteParameters())]
 [/let]
 [/template]
 
-[template public actionContainerMethodFormals(action : Action) post(trim())]
+[template public actionMethodContainerFormals(action : Action) post(trim())]
 [let page : Page = action.parentUnit.displayedOn]
 [if (page.hasFilters or page.hasPagination)]
-Request $request[if (action.hasContainerRouteParameters())]
+Request $request[if (action.parentUnit.hasRouteContainerParameters())]
 , [/if][/if]
-[action.routeContainerParameterList()/]
+[action.parentUnit.routeContainerParameterList()/]
 [/let]
 [/template]
 
@@ -90,56 +73,45 @@ $request[if (unit.displayedOn.hasRouteParameters())]
 [unit.displayedOn.routeParameterList(unit.routeParameters())/]
 [/template]
 
-[template public renderMethodContainerActuals(unit : DynamicUnit) post(trim())]
+[template public renderMethodUpdateActuals(unit : EditUnit) post(trim())]
 [if (unit.displayedOn.hasFilters or unit.displayedOn.hasPagination)]
-$request[if (unit.hasContainerRouteParameters())]
+$request[if (unit.hasRouteParameters())]
 , [/if][/if]
-[unit.routeContainerParameterList()/]
+[unit.routeRenderParameterList()/]
 [/template]
 
-[template public renderMethodCreateActuals(unit : EditUnit) post(trim())]
-[if (unit.displayedOn.hasFilters or unit.displayedOn.hasPagination)]
-$request[if (unit.hasCreateRouteParameters())]
-, [/if][/if]
-[unit.routeCreateParameterList()/]
-[/template]
 
+[template public routeParameterList(page : Page, parameters : Sequence(Attribute)) post(trim())]
+[page.routeParameterList(parameters, parameters)/]
+[/template]
 
 [template private routeParameterList(page : Page, parameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
 [for (key : Attribute | parameters) separator (', ')]
 $[key.routeParameterName(sourceParameters)/][/for]
 [/template]
 
-[template public routeParameterList(page : Page, sourceParameters : Sequence(Attribute)) post(trim())]
-[page.routeParameterList(page.routeParameters(), sourceParameters)/]
-[/template]
-
-[template private routeParameterList(unit : DynamicUnit, parameters : Sequence(Attribute)) post(trim())]
-[unit.displayedOn.routeParameterList(parameters, parameters)/]
-[/template]
-
 [template public routeParameterList(unit : DynamicUnit) post(trim())]
-[unit.routeParameterList(unit.routeParameters())/]
-[/template]
-
-[template public routeContainerParameterList(unit : DynamicUnit) post(trim())]
-[unit.routeParameterList(unit.routeContainerParameters())/]
-[/template]
-
-[template public routeCreateParameterList(unit : EditUnit) post(trim())]
-[unit.routeParameterList(unit.routeCreateParameters())/]
+[unit.displayedOn.routeParameterList(unit.routeParameters())/]
 [/template]
 
 [template public routeParameterList(unit : DynamicUnit, selection : Selection) post(trim())]
-[unit.routeParameterList(unit.routeParameters(selection))/]
+[unit.displayedOn.routeParameterList(unit.routeParameters(selection))/]
+[/template]
+
+[template public routeContainerParameterList(unit : DynamicUnit) post(trim())]
+[unit.displayedOn.routeParameterList(unit.routeContainerParameters())/]
+[/template]
+
+[template public routeUpdateParameterList(unit : EditUnit) post(trim())]
+[unit.displayedOn.routeParameterList(unit.routeUpdateParameters())/]
+[/template]
+
+[template public routeRenderParameterList(unit : EditUnit) post(trim())]
+[unit.displayedOn.routeParameterList(unit.routeParameters(), unit.routeUpdateParameters())/]
 [/template]
 
 [template public routeParameterList(action : Action) post(trim())]
-[action.parentUnit.routeParameterList(action.routeParameters())/]
-[/template]
-
-[template public routeContainerParameterList(action : Action) post(trim())]
-[action.parentUnit.routeParameterList(action.routeContainerParameters())/]
+[action.parentUnit.displayedOn.routeParameterList(action.routeParameters())/]
 [/template]
 
 [template public routeParameterList(resource : Resource) post(trim())]
@@ -147,10 +119,6 @@ $[key.routeParameterName(sourceParameters)/][/for]
 $[key.routeParameterName(resource)/][/for]
 [/template]
 
-
-[template public getContainerRepository(unit : DynamicUnit) post(trim())]
-$this->[unit.containingType.repository.instanceName()/]
-[/template]
 
 [template public loadContainer(unit : DynamicUnit) post(trim())]
 [if (unit.isContained)]
@@ -165,17 +133,23 @@ if (!$this->[unit.containerInstanceName()/])
 [/template]
 
 [template private loadContainerInstance(unit : DynamicUnit) post(trim())]
-[if (unit.oclIsKindOf(CollectionUnit))]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-	[if (collectionUnit.findContainerSelection.oclIsUndefined())]
-[unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeContainerParameterList()/]);
-	[else]
-[unit.getContainerRepository()/]->[collectionUnit.findContainerSelection.methodName/]([unit.routeContainerParameterList()/]);
-	[/if]
+[let findMethodName : String
+	= if unit.oclIsKindOf(CollectionUnit) then
+		let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
+			in if collectionUnit.findContainerSelection.oclIsUndefined() then
+					unit.containingType.findMethodName()
+				else
+					collectionUnit.findContainerSelection.methodName
+				endif
+		else
+			unit.containingType.findMethodName()
+		endif]
+[unit.getContainerRepository()/]->[findMethodName/]([unit.routeContainerParameterList()/]);
 [/let]
-[else]
-[unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeContainerParameterList()/]);
-[/if]
+[/template]
+
+[template public getContainerRepository(unit : DynamicUnit) post(trim())]
+$this->[unit.containingType.repository.instanceName()/]
 [/template]
 
 
@@ -185,6 +159,10 @@ $this->[unit.contentRepository.instanceName()/]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
 [unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([unit.findActualParameterList()/])
+[/template]
+
+[template public loadUpdateInstance(unit : EditUnit) post(trim())]
+[unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([unit.findActualUpdateParameterList()/])
 [/template]
 
 [template public loadInstance(action : Action) post(trim())]
@@ -218,6 +196,10 @@ new [unit.modelName()/]()
 [unit.findActualParameterList(unit.routeParameters())/]
 [/template]
 
+[template public findActualUpdateParameterList(unit : EditUnit) post(trim())]
+[unit.findActualParameterList(unit.routeUpdateParameters())/]
+[/template]
+
 [template public findActualParameterList(action : Action) post(trim())]
 [action.parentUnit.findActualParameterList(action.routeParameters())/]
 [/template]
@@ -248,7 +230,7 @@ $this->redirectToRoute('[page.routeName()/]'[if (page.routeParameters()->notEmpt
 [/template]
 
 [template public redirectCreate(unit : EditUnit, routeName : String, sourceParameters : Sequence(Attribute)) post(trim())]
-[unit.redirect(routeName, unit.routeCreateParameters(), sourceParameters)/]
+[unit.redirect(routeName, unit.routeParameters(), sourceParameters)/]
 [/template]
 
 [template public redirect(action : Action, routeName : String, sourceParameters : Sequence(Attribute)) post(trim())]
@@ -285,12 +267,12 @@ $request->query->all()[/if]
 [targetUnit.routeActualParameters(targetUnit.routeParameters(), sourceParameters)/]
 [/template]
 
-[template public routeContainerActualParameters(targetUnit : DynamicUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[template public routeActualContainerParameters(targetUnit : DynamicUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [targetUnit.routeActualParameters(targetUnit.routeContainerParameters(), sourceParameters)/]
 [/template]
 
-[template public routeCreateActualParameters(targetUnit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[targetUnit.routeActualParameters(targetUnit.routeCreateParameters(), sourceParameters)/]
+[template public routeActualUpdateParameters(targetUnit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[targetUnit.routeActualParameters(targetUnit.routeUpdateParameters(), sourceParameters)/]
 [/template]
 
 [template private routeActualParameters(targetUnit : DynamicUnit, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]

@@ -43,11 +43,13 @@
 			unit.uriPath(unit.oclAsType(CollectionUnit).selection)
 		else if unit.oclIsKindOf(DetailsUnit) then
 			unit.uriPath(unit.oclAsType(DetailsUnit).selection)
+		else if unit.oclIsKindOf(EditUnit) then
+			unit.uriPath(unit.oclAsType(SingletonUnit).contentType.containingType)
 		else if unit.oclIsKindOf(SingletonUnit) then
 			unit.uriPath(unit.oclAsType(SingletonUnit).contentType)
 		else
 			unit.uriPath(null)
-		endif endif endif
+		endif endif endif endif
 /]
 
 [query private uriPath(unit : DynamicUnit, selection : Selection) : String
@@ -132,42 +134,29 @@
 /]
 
 [query public uriContainerPath(action : OperationAction) : String
-	= if action.parentUnit.oclIsKindOf(CollectionUnit) then
-			action.uriContainerPath(
-				action.parentUnit.oclAsType(CollectionUnit).findElementSelection,
-				action.uriElement)
+	= action.parentUnit.uriPath(
+		action.parentUnit.contentType.containingType,
+		action.uriElement,
+		action.parentUnit.routeContainerParameters())
+/]
+
+[query public uriCreatePath(unit : EditUnit) : String
+	= if unit.routingType().oclIsUndefined() then
+			unit.displayedOn.uriPagePath()
+				.combinePaths(unit.uriElement)
 		else
-			action.parentUnit.uriPath(
-				action.parentUnit.contentType.containingType,
-				action.uriElement,
-				action.routeContainerParameters())
+			unit.displayedOn.uriPagePath()
+				.combinePaths(unit.routingType().keysPath(unit.routeParameters()))
+				.appendContainingAssociation(unit.contentType)
+				.combinePaths(unit.uriElement)
 		endif
 /]
 
-[query private uriContainerPath(action : Action, selection : Selection, suffix : String) : String
-	= if selection.oclIsUndefined() then
-			action.parentUnit.uriPath(
-				action.parentUnit.contentType.containingType,
-				suffix,
-				action.routeContainerParameters())
-		else if selection.selectPath->notEmpty() then
-			action.parentUnit.uriPath(
-				selection.selectionType.containingType,
-				suffix,
-				action.routeContainerParameters())
-		else
-			action.parentUnit.uriPath(
-				action.parentUnit.contentType.containingType,
-				suffix,
-				action.routeContainerParameters())
-		endif endif
+[query public uriUpdatePath(unit : EditUnit, suffix : String) : String
+	= unit.uriPath(unit.contentType, suffix, unit.routeUpdateParameters())
 /]
 
-[query public uriCreatePath(unit : EditUnit, suffix : String) : String
-	= unit.uriPath(unit.contentType, suffix, unit.routeCreateParameters())
-/]
-
-[query private uriCreatePath(unit : EditUnit, selection : Selection, suffix : String) : String
+[query private uriUpdatePath(unit : EditUnit, selection : Selection, suffix : String) : String
 	= if selection.oclIsUndefined() then
 			unit.uriPath(unit.contentType, suffix, unit.routeContainerParameters())
 		else if selection.selectPath->notEmpty() then
