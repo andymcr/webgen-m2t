@@ -1,0 +1,18 @@
+[comment encoding = UTF-8 /]
+[module generate(
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::app/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::page/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::imageIndex/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::navigation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::select/]
+
+
+[template public javascript(model : WafModel)]
+[model.appjs()/]
+
+[for (page : Page | model.pages->select(p | p.hasJavascript()))]
+[page.pagejs()/]
+[/for]
+[/template]

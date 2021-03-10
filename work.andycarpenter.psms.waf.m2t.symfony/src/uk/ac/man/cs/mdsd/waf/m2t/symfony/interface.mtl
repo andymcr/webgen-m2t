@@ -80,6 +80,10 @@
 /]
 
 
+[query public hasJavascript(page : Page) : Boolean
+	= page.hasSliderUnits
+/]
+
 [query public hasRoutingUnits(page : Page) : Boolean
 	= page.routingUnits()->notEmpty()
 /]
