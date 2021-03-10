@@ -322,14 +322,6 @@
 		endif
 /]
 
-[query public routeSaveName(unit : EditUnit) : String
-	= if unit.displayedOn.hasRoutingUnits() then
-			unit.displayedOn.uniqueName()
-		else
-			unit.uniqueName()
-		endif
-/]
-
 [query public routeName(association : UnitAssociation) : String
 	= association.displayedOn.uniqueName()
 		.concat('_').concat(association.name)

@@ -129,8 +129,8 @@
 [/template]
 
 [template private translations(action : Action) post (trim())]
-<trans-unit id="[action.parentUnit.containedId()/].labels.[action.actionId()/]">
- <source>[action.parentUnit.containedId()/].labels.[action.actionId()/]</source>
+<trans-unit id="[action.displayLabelId()/]">
+ <source>[action.displayLabelId()/]</source>
  <target>[action.displayLabel.validXML()/]</target>
 </trans-unit>
 [if (action.hasConfirmMessage)]

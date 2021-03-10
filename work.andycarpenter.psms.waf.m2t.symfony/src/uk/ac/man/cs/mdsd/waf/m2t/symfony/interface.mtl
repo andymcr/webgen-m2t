@@ -88,6 +88,10 @@
 	= page.name.asId()
 /]
 
+[query public hasFiltersOrPagination(page : Page) : Boolean
+	= page.hasFilters or page.hasPagination
+/]
+
 [query public routingUnits(page : Page) : OrderedSet(ContentUnit)
 	= page.dynamicUnits
 		->select(u | u.routeParameters() = page.routeParameters())
@@ -288,10 +292,10 @@
 /]
 
 
-[query public actionId(action : Action) : String
+[query public id(action : Action) : String
 	= action.name.asId()
 /]
 
 [query public containedId(action : Action) : String
-	= action.parentUnit.containedId().concat('.actions.').concat(action.name.asId())
+	= action.parentUnit.containedId().concat('.actions.').concat(action.id())
 /]

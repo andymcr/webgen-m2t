@@ -146,3 +146,9 @@
 [query public titleId(badge : Badge) : String
 	= badge.title.displayLabelId()
 /]
+
+
+[query public displayLabelId(action : Action) : String
+	= action.containedId().concat('label')
+/]
+
