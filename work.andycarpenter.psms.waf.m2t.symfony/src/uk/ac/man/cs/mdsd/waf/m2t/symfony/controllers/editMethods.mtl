@@ -10,6 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
@@ -261,6 +262,9 @@ $[unit.instanceName()/]->set[modelPropertyName/]([unit.getContainerRepository()/
 
 [template private saveBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [unit.getContentRepository()/]->save($[unit.instanceName()/], true);
+[if (unit.hasSuccessMessage)]
+$this->addFlash('success', $this->translationService->trans('[unit.successMessageId()/]', array(), '[unit.displayedOn.translationDomain()/]'));
+[/if]
 [if (not unit.confirmDestination.oclIsUndefined())]
 return [unit.confirmDestination.redirect()/];
 [else]

@@ -28,10 +28,14 @@
 
 
 [template public unitActionLink(action : Action, instanceAccessor : String)  post(trim())]
+[action.unitActionLink(action.linkContent(), instanceAccessor)/]
+[/template]
+
+[template public unitActionLink(action : Action, linkContent : String, instanceAccessor : String)  post(trim())]
 [action.anchor(
 	action.linkPath(action.accessor(instanceAccessor)),
 	action.attributes(instanceAccessor),
-	action.linkContent(),
+	linkContent,
 	action.accessor(instanceAccessor))/]
 [/template]
 

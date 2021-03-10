@@ -44,8 +44,20 @@
 /]
 
 
+[query public cancelLabelId(page : Page) : String
+	= page.labelsId().concat('.cancel')
+/]
+
 [query public displayLabelId(page : Page) : String
 	= page.id().concat('.caption')
+/]
+
+[query public labelsId(page : Page) : String
+	= page.id().concat('.labels')
+/]
+
+[query public submitLabelId(page : Page) : String
+	= page.labelsId().concat('.submit')
 /]
 
 [query public translationDomain(page : Page) : String
@@ -59,6 +71,10 @@
 
 [query public displayLabelId(unit : ContentUnit) : String
 	= unit.containedId().concat('.caption')
+/]
+
+[query public cancelLabelId(unit : ContentUnit) : String
+	= unit.labelsId().concat('.cancel')
 /]
 
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
@@ -75,6 +91,7 @@
 			let editUnit : EditUnit = unit.oclAsType(EditUnit)
 				in editUnit.hasCustomisedCancelLabel()
 					or editUnit.hasCustomisedSubmitLabel()
+					or editUnit.hasSuccessMessage
 		else if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).hasHiddenMessage
 		else
@@ -86,12 +103,24 @@
 	= unit.messagesId().concat('.hidden')
 /]
 
+[query public labelsId(unit : ContentUnit) : String
+	= unit.containedId().concat('.labels')
+/]
+
 [query public messagesId(unit : ContentUnit) : String
 	= unit.containedId().concat('.messages')
 /]
 
+[query public submitLabelId(unit : ContentUnit) : String
+	= unit.labelsId().concat('.submit')
+/]
+
 [query public translationDomain(unit : ContentUnit) : String
 	= unit.displayedOn.translationDomain()
+/]
+
+[query public successMessageId(unit : ContentUnit) : String
+	= unit.messagesId().concat('.success')
 /]
 
 

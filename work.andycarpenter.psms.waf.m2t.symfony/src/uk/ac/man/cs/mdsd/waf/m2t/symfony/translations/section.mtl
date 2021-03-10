@@ -20,12 +20,12 @@
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
 [if (page.hasAnyEditUnits)]
-   <trans-unit id="[page.id()/].labels.cancel">
-    <source>[page.id()/].labels.cancel</source>
+   <trans-unit id="[page.cancelLabelId()/]">
+    <source>[page.cancelLabelId()/]</source>
     <target>[page.partOf.defaultCancelLabel.validXML()/]</target>
    </trans-unit>
-   <trans-unit id="[page.id()/].labels.save">
-    <source>[page.id()/].labels.save</source>
+   <trans-unit id="[page.submitLabelId()/]">
+    <source>[page.submitLabelId()/]</source>
     <target>[page.partOf.defaultSaveLabel.validXML()/]</target>
    </trans-unit>
 [/if]
@@ -83,15 +83,21 @@
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.hasCustomisedSubmitLabel())]
-<trans-unit id="[editUnit.containedId()/].labels.[editUnit.submitId()/]">
- <source>[editUnit.containedId()/].labels.[editUnit.submitId()/]</source>
+<trans-unit id="[editUnit.submitLabelId()/]">
+ <source>[editUnit.submitLabelId()/]</source>
  <target>[editUnit.confirmLabel.validXML()/]</target>
 </trans-unit>
 [/if]
 [if (not editUnit.cancelDestination.oclIsUndefined() and editUnit.hasCustomisedCancelLabel())]
-<trans-unit id="[editUnit.containedId()/].labels.[editUnit.cancelId()/]">
- <source>[editUnit.containedId()/].labels.[editUnit.cancelId()/]</source>
+<trans-unit id="[editUnit.cancelLabelId()/]">
+ <source>[editUnit.cancelLabelId()/]</source>
  <target>[editUnit.cancelLabel.validXML()/]</target>
+</trans-unit>
+[/if]
+[if (editUnit.hasSuccessMessage)]
+<trans-unit id="[editUnit.successMessageId()/]">
+ <source>[editUnit.successMessageId()/]</source>
+ <target>[editUnit.successMessage.validXML()/]</target>
 </trans-unit>
 [/if]
 [/let]

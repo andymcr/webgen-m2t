@@ -72,17 +72,17 @@
 
 [template private submitLabel(unit : EditUnit) post(trim())]
 [if (unit.hasCustomisedSubmitLabel())]
-[unit.containedId()/].labels.[unit.submitId()/]
+[unit.submitLabelId()/]
 [else]
-[unit.displayedOn.rootPage.id()/].labels.save
+[unit.displayedOn.rootPage.submitLabelId()/]
 [/if]
 [/template]
 
 [template private cancelLabel(unit : EditUnit) post(trim())]
 [if (unit.hasCustomisedCancelLabel())]
-[unit.containedId()/].labels.[unit.submitId()/]
+[unit.cancelLabelId()/]
 [else]
-[unit.displayedOn.rootPage.id()/].labels.cancel
+[unit.displayedOn.rootPage.cancelLabelId()/]
 [/if]
 [/template]
 

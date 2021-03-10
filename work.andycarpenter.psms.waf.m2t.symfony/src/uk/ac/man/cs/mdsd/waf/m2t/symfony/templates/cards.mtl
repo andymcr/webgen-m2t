@@ -173,7 +173,7 @@
 [let imageClass : String = 'card-img-top']
 [if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
 [let action : Action = unit.actions->first()]
- [action.unitActionLink(cardAccessor)/]
+ [action.unitActionLink(unit.image(cardAccessor, imageClass), cardAccessor)/]
 [/let]
 [else]
  [unit.image(cardAccessor, imageClass)/]
