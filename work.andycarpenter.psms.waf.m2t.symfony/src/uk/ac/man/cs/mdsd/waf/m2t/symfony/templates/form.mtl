@@ -62,7 +62,7 @@
 [if (not unit.cancelDestination.oclIsUndefined())]
  <input type="submit" name="[unit.cancelId()/]" value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/]/>
 [/if]
-[for (action : Action | unit.actions)]
+[for (action : Action | unit.containerActions)]
  [action.unitActionLink('accessor')/]
 [/for]
 </div>

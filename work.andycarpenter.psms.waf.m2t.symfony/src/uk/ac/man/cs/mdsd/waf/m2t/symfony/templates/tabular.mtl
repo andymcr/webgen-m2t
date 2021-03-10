@@ -37,13 +37,6 @@
 		and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [tabularUnit.pagination()/]
 [/if]
-[if (tabularUnit.hasActions)]
-	[if (tabularUnit.containerType.oclIsUndefined())]
- [comment tabularUnit.unitSupportLinks(accessor)/]
-	[else]
- [comment tabularUnit.unitSupportLinks(tabularUnit.containerInstanceName())/]
-	[/if]
-[/if]
 </section>
 [/file]
 [/let]
@@ -66,7 +59,7 @@
 {% endif %}
 		[/if]
  	[/for]
-	[if (unit.hasActions)]
+	[if (unit.hasInstanceActions)]
    <th>Actions</th>
 	[/if]
   </tr>
@@ -77,8 +70,8 @@
 {% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | unit.rowClasses.trim().tokenize(',; ')) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
    [unit.entry(loopVariable, unit.hasObjectAccess())/]
-[if (unit.hasActions)]
-   <td class="actions">[unit.actions(loopVariable)/]</td>
+[if (unit.hasInstanceActions)]
+   <td class="actions">[unit.instanceActions(loopVariable)/]</td>
 [/if]
   </tr>
 [if (not nullDisplayValue.oclIsUndefined() or not unit.emptyMessage.oclIsUndefined())]
@@ -89,7 +82,7 @@
 	[else]
    <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[unit.emptyMessage/]</td>
 	[/if]
-	[if (unit.hasActions)]
+	[if (unit.hasInstanceActions)]
    <td class="actions">&nbsp;</td>
 	[/if]
   </tr>
@@ -97,6 +90,13 @@
 {% endfor %}
 [/let]
  </tbody>
+[if (unit.hasContainerActions and unit.isContained)]
+ <tfoot>
+  <tr>
+   [unit.containerActions(unit.containerInstanceName())/]
+  </tr>
+ </tfoot>
+[/if]
 </table>
 [/template]
 
@@ -112,8 +112,14 @@
 [/for]
 [/template]
 
-[template private actions(unit : TabularUnit, rowAccessor : String) post(trim())]
-[for (action : Action | unit.actions)]
+[template private instanceActions(unit : TabularUnit, rowAccessor : String) post(trim())]
+[for (action : Action | unit.instanceActions)]
 [action.unitActionLink(rowAccessor)/]
+[/for]
+[/template]
+
+[template private containerActions(unit : TabularUnit, accessor : String) post(trim())]
+[for (action : Action | unit.containerActions)]
+[action.unitActionLink(accessor)/]
 [/for]
 [/template]

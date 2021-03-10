@@ -41,6 +41,17 @@
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [cardsUnit.pagination()/]
 [/if]
+[if (cardsUnit.hasContainerActions)]
+ <div[if (cardsUnit.hasControlClass)] class="[cardsUnit.controlClass/]"[/if]>
+	[for (action : Action | cardsUnit.containerActions)]
+  [action.unitActionLink(if action.oclIsTypeOf(ContainerOperationAction) then
+				cardsUnit.containerInstanceName()
+			else
+				null
+			endif)/]
+	[/for]
+ </div>
+[/if]
 </section>
 [/file]
 [/let]
@@ -97,7 +108,7 @@
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
 <div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
  <nav[if (unit.hasActionNavigationClassClass)] class="[unit.actionNavigationClass/]"[/if]>
-[for (action : Action | unit.actions)]
+[for (action : Action | unit.instanceActions)]
   [action.unitActionLink(cardAccessor)/]
 [/for]
  </nav>

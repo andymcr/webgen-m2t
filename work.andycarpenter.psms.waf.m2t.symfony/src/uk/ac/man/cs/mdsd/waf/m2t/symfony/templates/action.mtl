@@ -66,13 +66,15 @@
 
 
 [template private linkPath(action : Action, instanceAccessor : String) 
-	?(action.oclIsTypeOf(DeleteAction) or action.oclIsKindOf(OperationAction)) post(trim())]
+	?(action.oclIsTypeOf(DeleteAction) or action.oclIsKindOf(InstanceOperationAction)) post(trim())]
 '[action.routeName()/]'[action.linkPathParameters(action.routeActualParameters(instanceAccessor), true)/]
 [/template]
 
-[template private linkPathX(action : Action, instanceAccessor : String) 
-	?(action.oclIsTypeOf(ContainerOperationAction)) post(trim())]
-'[action.routeName()/]'
+[template private linkPath(action : Action, instanceAccessor : String) 
+	?(action.oclIsTypeOf(ContainerOperationAction) or action.oclIsKindOf(GeneralOperationAction)) post(trim())]
+'[action.routeName()/]'[action.linkPathParameters(action.parentUnit.routeActualParameters(
+	action.parentUnit.routeParameters(), instanceAccessor, action.parentUnit.contentType,
+	action.parentUnit.hasObjectAccess()), true)/]
 [/template]
 
 [template private linkPath(action : Action, instanceAccessor : String) 
@@ -168,13 +170,12 @@ class="[action.anchorClass/]"
 
 [template private attributes(action : Action, instanceAccessor : String)
 	?(not action.oclIsTypeOf(SecurityAction)) post(trim())]
-[let title : String = instanceAccessor.concat('.defaultLabel()')]
-title="[action.displayLabel/] {{ [title/] }}"[if (action.hasConfirmMessage)]
- onclick="return confirm('[action.confirmMessage/][if (not title.oclIsUndefined())]
- {{ [title/] }}[/if]');"[/if][if (action.hasAnchorClass)]
+title="[action.displayLabel/][if (not instanceAccessor.oclIsUndefined())]
+ {{ [instanceAccessor/].defaultLabel() }}[/if]"[if (action.hasConfirmMessage)]
+ onclick="return confirm('[action.confirmMessage/][if (not instanceAccessor.oclIsUndefined())]
+ {{ [instanceAccessor/].defaultLabel() }}[/if]');"[/if][if (action.hasAnchorClass)]
  class="[action.anchorClass/]"
 [/if]
-[/let]
 [/template]
 
 [template private attributes(action : Action, association : UnitAssociation, instanceAccessor : String)
