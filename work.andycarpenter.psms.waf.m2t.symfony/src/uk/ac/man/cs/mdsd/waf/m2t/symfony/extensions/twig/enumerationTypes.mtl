@@ -12,10 +12,10 @@
 <?php
 namespace [model.twigExtensionsNamespace()/];
 
-use Twig_Extension;
-use Twig_SimpleFilter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class EnumerationTypes extends Twig_Extension
+class EnumerationTypes extends AbstractExtension
 {
     public function getName()
     {
@@ -26,7 +26,7 @@ class EnumerationTypes extends Twig_Extension
     {
         return array(
 [for (enumerationType : EnumerationType | model.enumerationTypes)]
-            '[enumerationType.filterName()/]' => new Twig_SimpleFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelName()/]', 'value')),
+            '[enumerationType.filterName()/]' => new TwigFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelName()/]', 'value')),
 [/for]
         );
     }
