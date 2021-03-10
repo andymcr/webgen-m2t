@@ -77,6 +77,10 @@
 	= unit.labelsId().concat('.cancel')
 /]
 
+[query public confirmMessageId(unit : ContentUnit) : String
+	= unit.messagesId().concat('.confirm')
+/]
+
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).displayFields
@@ -91,6 +95,7 @@
 			let editUnit : EditUnit = unit.oclAsType(EditUnit)
 				in editUnit.hasCustomisedCancelLabel()
 					or editUnit.hasCustomisedSubmitLabel()
+					or editUnit.hasConfirmMessage
 					or editUnit.hasSuccessMessage
 		else if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).hasHiddenMessage
@@ -115,12 +120,12 @@
 	= unit.labelsId().concat('.submit')
 /]
 
-[query public translationDomain(unit : ContentUnit) : String
-	= unit.displayedOn.translationDomain()
-/]
-
 [query public successMessageId(unit : ContentUnit) : String
 	= unit.messagesId().concat('.success')
+/]
+
+[query public translationDomain(unit : ContentUnit) : String
+	= unit.displayedOn.translationDomain()
 /]
 
 

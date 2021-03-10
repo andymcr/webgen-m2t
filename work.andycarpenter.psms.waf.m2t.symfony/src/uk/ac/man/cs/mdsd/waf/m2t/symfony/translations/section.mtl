@@ -94,10 +94,16 @@
  <target>[editUnit.cancelLabel.validXML()/]</target>
 </trans-unit>
 [/if]
+[if (editUnit.hasConfirmMessage)]
+<trans-unit id="[editUnit.confirmMessageId()/]">
+ <source>[editUnit.confirmMessageId()/]</source>
+ <target>[editUnit.confirmMessage.text.validXML()/]</target>
+</trans-unit>
+[/if]
 [if (editUnit.hasSuccessMessage)]
 <trans-unit id="[editUnit.successMessageId()/]">
  <source>[editUnit.successMessageId()/]</source>
- <target>[editUnit.successMessage.validXML()/]</target>
+ <target>[editUnit.successMessage.text.validXML()/]</target>
 </trans-unit>
 [/if]
 [/let]
