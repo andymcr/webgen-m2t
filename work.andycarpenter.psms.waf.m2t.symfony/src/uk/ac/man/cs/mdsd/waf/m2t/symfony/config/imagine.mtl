@@ -5,10 +5,10 @@
 
 
 [template public configImagine(model : WafModel)]
-[file (model.configPackagesDirectory().concat('/imagine').concat(model.yamlExtension()), false)]
+[file (model.configPackagesDirectory().concat('/liip_imagine').concat(model.yamlExtension()), false)]
 liip_imagine:
-#    # valid drivers options include "gd" or "gmagick" or "imagick"
-#    driver: "gd"
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
 
     cache: image_cache
 
