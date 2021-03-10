@@ -114,11 +114,6 @@
 
 [template private actions(unit : TabularUnit, rowAccessor : String) post(trim())]
 [for (action : Action | unit.actions)]
-	[if (unit.hasObjectAccess())]
-[action.actionLink(unit.contentType, rowAccessor, action.displayLabel, rowAccessor.concat('.defaultLabel()'),
-	rowAccessor, unit.hasObjectAccess(), null)/]
-	[else]
-[action.actionLink(unit.contentType, rowAccessor, action.displayLabel, null, rowAccessor, unit.hasObjectAccess(), null)/]
-	[/if]
+[action.unitActionLink(rowAccessor)/]
 [/for]
 [/template]

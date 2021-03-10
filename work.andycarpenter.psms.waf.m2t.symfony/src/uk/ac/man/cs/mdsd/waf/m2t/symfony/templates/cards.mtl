@@ -98,13 +98,7 @@
 <div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
  <nav[if (unit.hasActionNavigationClassClass)] class="[unit.actionNavigationClass/]"[/if]>
 [for (action : Action | unit.actions)]
-	[if (unit.hasObjectAccess())]
-  [action.actionLink(unit.contentType, cardAccessor, action.displayLabel,
-		cardAccessor.concat('.defaultLabel()'), cardAccessor, unit.hasObjectAccess(), 'nav-link m-1')/]
-	[else]
-  [action.actionLink(unit.contentType, cardAccessor, action.displayLabel, null,
-		cardAccessor, unit.hasObjectAccess(), 'nav-link m-1')/]
-	[/if]
+  [action.unitActionLink(cardAccessor)/]
 [/for]
  </nav>
 </div>
@@ -152,8 +146,7 @@
 <div class="card-image img-fluid">
 [if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
 [let action : Action = unit.actions->first()]
- [action.actionLink(unit.contentType, cardAccessor, unit.dateIcon(cardAccessor),
-	null, cardAccessor, unit.hasObjectAccess(), null)/]
+ [action.unitActionLink(cardAccessor)/]
 [/let]
 [else]
  [unit.dateIcon(cardAccessor)/]
@@ -180,8 +173,7 @@
 [let imageClass : String = 'card-img-top']
 [if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
 [let action : Action = unit.actions->first()]
- [action.actionLink(unit.contentType, cardAccessor, unit.image(cardAccessor, imageClass),
-	null, cardAccessor, unit.hasObjectAccess(), null)/]
+ [action.unitActionLink(cardAccessor)/]
 [/let]
 [else]
  [unit.image(cardAccessor, imageClass)/]

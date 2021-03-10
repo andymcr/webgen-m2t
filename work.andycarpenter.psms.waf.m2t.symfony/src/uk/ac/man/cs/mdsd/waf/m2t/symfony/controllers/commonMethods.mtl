@@ -24,7 +24,7 @@ $this->translationService->trans('[message/]')
 [/template]
 
 [template public actionMethodFormals(page : Page) post(trim())]
-[if (page.hasFilters or page.hasPagination)]
+[if (page.hasFiltersOrPagination())]
 Request $request[if (page.hasRouteParameters())]
 , [/if][/if]
 [page.routeParameterList(page.routeParameters())/]
@@ -32,7 +32,7 @@ Request $request[if (page.hasRouteParameters())]
 
 [template public actionMethodFormals(unit : DynamicUnit) post(trim())]
 [let page : Page = unit.displayedOn]
-[if (page.hasFilters or page.hasPagination or unit.oclIsKindOf(EditUnit))]
+[if (page.hasFiltersOrPagination() or unit.oclIsKindOf(EditUnit))]
 Request $request[if (unit.hasRouteParameters())]
 , [/if][/if]
 [unit.routeParameterList()/]
@@ -49,7 +49,7 @@ Request $request[if (unit.hasRouteUpdateParameters())]
 
 [template public actionMethodFormals(action : Action) post(trim())]
 [let page : Page = action.parentUnit.displayedOn]
-[if (page.hasFilters or page.hasPagination)]
+[if (page.hasFiltersOrPagination())]
 Request $request[if (action.hasRouteParameters())]
 , [/if][/if]
 [action.routeParameterList()/]
@@ -58,7 +58,7 @@ Request $request[if (action.hasRouteParameters())]
 
 [template public actionMethodContainerFormals(action : Action) post(trim())]
 [let page : Page = action.parentUnit.displayedOn]
-[if (page.hasFilters or page.hasPagination)]
+[if (page.hasFiltersOrPagination())]
 Request $request[if (action.parentUnit.hasRouteContainerParameters())]
 , [/if][/if]
 [action.parentUnit.routeContainerParameterList()/]
@@ -75,9 +75,9 @@ $request[if (unit.displayedOn.hasRouteParameters())]
 
 [template public renderMethodUpdateActuals(unit : EditUnit) post(trim())]
 [if (unit.displayedOn.hasFilters or unit.displayedOn.hasPagination)]
-$request[if (unit.hasRouteParameters())]
+$request[if (unit.displayedOn.hasRouteParameters())]
 , [/if][/if]
-[unit.routeRenderParameterList()/]
+[unit.routeUpdateRenderParameterList()/]
 [/template]
 
 
@@ -106,8 +106,8 @@ $[key.routeParameterName(sourceParameters)/][/for]
 [unit.displayedOn.routeParameterList(unit.routeUpdateParameters())/]
 [/template]
 
-[template public routeRenderParameterList(unit : EditUnit) post(trim())]
-[unit.displayedOn.routeParameterList(unit.routeParameters(), unit.routeUpdateParameters())/]
+[template public routeUpdateRenderParameterList(unit : EditUnit) post(trim())]
+[unit.displayedOn.routeParameterList(unit.displayedOn.routeParameters(), unit.routeUpdateParameters())/]
 [/template]
 
 [template public routeParameterList(action : Action) post(trim())]
@@ -223,59 +223,48 @@ $[parameterName/]
 
 
 [template public redirect(page : Page) post(trim())]
-$this->redirectToRoute('[page.routeName()/]'[if (page.routeParameters()->notEmpty())]
-, array(
-    [page.routeActualParameters()/]
-)[/if])
+[page.redirect(page.routeParameters())/]
 [/template]
 
-[template public redirectCreate(unit : EditUnit, routeName : String, sourceParameters : Sequence(Attribute)) post(trim())]
-[unit.redirect(routeName, unit.routeParameters(), sourceParameters)/]
+[template public redirect(page : Page, sourceParameters : Sequence(Attribute)) post(trim())]
+[page.redirect(page.routeName(), page.routeParameters(), sourceParameters)/]
 [/template]
 
 [template public redirect(action : Action, routeName : String, sourceParameters : Sequence(Attribute)) post(trim())]
-[action.parentUnit.redirect(routeName, action.parentUnit.routeParameters(), sourceParameters)/]
+[action.parentUnit.displayedOn.redirect(routeName, action.parentUnit.routeParameters(), sourceParameters)/]
 [/template]
 
-[template private redirect(unit : DynamicUnit, routeName : String, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
-[let page : Page = unit.displayedOn]
-$this->redirectToRoute('[routeName/]'[if (page.hasFilters or page.hasPagination)]
+[template private redirect(page : Page, routeName : String, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
+$this->redirectToRoute('[routeName/]'[if (page.hasFiltersOrPagination())]
 , [if (routeParameters->notEmpty())]
 array_merge(
     $request->query->all(),
     array(
-        [unit.routeActualParameters(routeParameters, sourceParameters)/]
+        [page.routeActualParameters(routeParameters, sourceParameters)/]
 ))[else]
 $request->query->all()[/if]
 [else]
 	[if (routeParameters->notEmpty())]
 , array(
-    [unit.routeActualParameters(routeParameters, sourceParameters)/]
+    [page.routeActualParameters(routeParameters, sourceParameters)/]
 )[/if]
 [/if])
-[/let]
 [/template]
 
-
-[template private routeActualParameters(page : Page) post(trim())]
-[for (key : Attribute | page.routeParameters())]
-'[key.routeParameterName(page.routeParameters())/]' => $x[comment key.routeParameterName(valueBase)/],
-[/for]
-[/template]
 
 [template public routeActualParameters(targetUnit : DynamicUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[targetUnit.routeActualParameters(targetUnit.routeParameters(), sourceParameters)/]
+[targetUnit.displayedOn.routeActualParameters(targetUnit.routeParameters(), sourceParameters)/]
 [/template]
 
 [template public routeActualContainerParameters(targetUnit : DynamicUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[targetUnit.routeActualParameters(targetUnit.routeContainerParameters(), sourceParameters)/]
+[targetUnit.displayedOn.routeActualParameters(targetUnit.routeContainerParameters(), sourceParameters)/]
 [/template]
 
 [template public routeActualUpdateParameters(targetUnit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[targetUnit.routeActualParameters(targetUnit.routeUpdateParameters(), sourceParameters)/]
+[targetUnit.displayedOn.routeActualParameters(targetUnit.routeUpdateParameters(), sourceParameters)/]
 [/template]
 
-[template private routeActualParameters(targetUnit : DynamicUnit, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
+[template private routeActualParameters(page : Page, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
 [for (key : Attribute | routeParameters)]
 '[key.routeParameterName(routeParameters)/]' => $[key.routeParameterName(sourceParameters)/],
 [/for]

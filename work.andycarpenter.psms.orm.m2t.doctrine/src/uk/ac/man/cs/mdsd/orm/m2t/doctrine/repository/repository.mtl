@@ -143,6 +143,11 @@ public function [repository.serves.findMethodName()/]([entity.routeParameters()/
 [/let]
 [/template]
 
+[template private routeParameters(routingType : Entity) post(trim())]
+[for (key : Attribute | routingType.uriPathKeys()) separator (', ')]
+$[key.routeParameterName(routingType)/][/for]
+[/template]
+
 [template private containerJoin(entity : Entity) post(trim())]
 [let container : Entity = entity.containingType]
 ->join('[entity.selectName()/].[entity.containingAssociation.modelPropertyName()/]', '[container.selectName()/]')

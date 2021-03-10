@@ -8,6 +8,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
@@ -213,7 +214,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 [template private createForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
 $this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
-    'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFilters or page.hasPagination)], [if (not unit.hasRouteParameters())]
+    'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
@@ -233,7 +234,7 @@ array_merge(
 [template private updateForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
 $this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
-    'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (page.hasFilters or page.hasPagination)], [if (not unit.hasRouteUpdateParameters())]
+    'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteUpdateParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
@@ -264,20 +265,35 @@ $[unit.instanceName()/]->set[modelPropertyName/]([unit.getContainerRepository()/
 return [unit.confirmDestination.redirect()/];
 [else]
 	[if (not unit.onSaveContinueEditing)]
-return [unit.redirectCreate(unit.routeSaveName(), sourceParameters)/];
+return [unit.displayedOn.redirect(sourceParameters)/];
 	[/if]
 [/if]
 [/template]
 
+[query private displayEmptyForm(unit : EditUnit) : Boolean
+	= if not unit.oclIsKindOf(UpdateUnit) then
+			true
+		else
+			unit.oclAsType(UpdateUnit).displayEmptyForm
+		endif
+/]
+
 [template public templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[if (editUnit.displayedOn.units->size() > 1 or editUnit.oclIsTypeOf(CreateUpdateUnit))]
+[if (editUnit.displayEmptyForm())]
 if (!isset($this->[editUnit.instanceName()/])) {
     $[editUnit.instanceName()/] = [editUnit.createInstance()/];
     $this->[editUnit.instanceName()/] = [editUnit.createForm(editUnit.routeParameters())/];
 }
 [/if]
+[if (not editUnit.displayEmptyForm())]
+if (isset($this->[editUnit.instanceName()/])) {
+    $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
+}
+[else]
 $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
+[/if]
+
 [/let]
 [/template]

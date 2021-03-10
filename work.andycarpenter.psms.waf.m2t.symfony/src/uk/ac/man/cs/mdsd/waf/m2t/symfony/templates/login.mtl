@@ -49,7 +49,7 @@
  <div[if (not loginUnit.hasControlClass)] class="[loginUnit.controlClass/]"[/if]>
   <button type="submit" id="submit" name="_submit">{{ '[unit.containedId()/].labels.submit'|trans }}</button>
 [for (action : Action | loginUnit.actions)]
-  [action.actionLink(null, 'accessor', action.displayLabel, 'Title', 'conditionAccessor', false, null)/]
+  [action.unitActionLink('accessor')/]
 [/for]
  </div>
  <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

@@ -151,9 +151,7 @@ NULL
 			else
 				feature.oclAsType(UnitAssociation).association.sourceType
 			endif]
-[feature.actions
-	->first().actionLink(parentEntity, parentAccessor, '{{ '.concat(feature.getValue(accessor)).concat(' }}'),
-		parentAccessor.concat('.defaultLabel()'), parentAccessor, feature.displayedOn.hasObjectAccess(), null)/]
+[feature.actions->first().featureActionLink(null, parentAccessor)/]
 [/let]
 [else]
 [feature.displayFeature(accessor, parentAccessor)/]
@@ -162,10 +160,7 @@ NULL
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
 [if (association.hasActions)]
-[association.actions
-	->first().actionLink(association.association.targetType, accessor,
-		'{{ '.concat(accessor).concat(association.valueLabel()).concat(' }}'), accessor.concat(association.valueLabel()),
-		accessor, association.displayedOn.hasObjectAccess(), null)/]
+[association.actions->first().featureActionLink(association, accessor)/]
 [else]
 [association.displayFeature(accessor, parentAccessor)/]
 [/if]

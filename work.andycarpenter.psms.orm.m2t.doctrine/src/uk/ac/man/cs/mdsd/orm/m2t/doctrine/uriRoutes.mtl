@@ -172,16 +172,16 @@
 [query public routeParameterName(attribute : Attribute, routingType : Entity) : String
 	= if routingType.oclIsUndefined() then
 			attribute.name
-		else if routingType.uriPathKeys()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
+		else
+			attribute.routeParameterName(routingType.uriPathKeys())
+		endif
+/]
+
+[query public routeParameterName(attribute : Attribute, routeParameters : Sequence(Attribute)) : String
+	= if routeParameters->select(p | p.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
 			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
-		endif endif
+		endif
 /]
-
-[template public routeParameters(routingType : Entity) post(trim())]
-[for (key : Attribute | routingType.uriPathKeys()) separator (', ')]
-$[key.routeParameterName(routingType)/][/for]
-[/template]
-

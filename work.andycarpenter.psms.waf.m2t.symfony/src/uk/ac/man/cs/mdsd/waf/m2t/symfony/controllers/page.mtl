@@ -158,7 +158,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
-[if (page.hasFilters or page.hasPagination or page.hasEditUnits)]
+[if (page.hasFiltersOrPagination() or page.hasEditUnits)]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
@@ -195,10 +195,10 @@ public function [page.actionName()/]([page.actionMethodFormals()/]): Response
 [/template]
 
 [template private renderMethod(page : Page) post(trim())]
-private function renderPage([if (page.hasFilters or page.hasPagination)]
+private function renderPage([if (page.hasFiltersOrPagination())]
 Request $request[if (page.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | page.routeParameters()) separator(', ')]
-$[key.routeParameterName(page.routeParameters()->last().partOf.oclAsType(Entity))/][/for]): Response
+$[key.routeParameterName(page.routeParameters())/][/for]): Response
 {
     [page.renderCore()/]
 }

@@ -63,7 +63,7 @@
  <input type="submit" name="[unit.cancelId()/]" value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/]/>
 [/if]
 [for (action : Action | unit.actions)]
- [action.actionLink(unit.contentType, 'accessor', action.displayLabel, 'Title', 'conditionAccessor', unit.hasObjectAccess(), null)/]
+ [action.unitActionLink('accessor')/]
 [/for]
 </div>
 {{ form_row([accessor/]._token) }}
