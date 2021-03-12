@@ -27,65 +27,77 @@
 [/template]
 
 
-[template public unitActionLink(action : Action, instanceAccessor : String)  post(trim())]
-[action.unitActionLink(action.linkContent(), instanceAccessor)/]
+[template public unitActionLink(action : Action, valueAccessor : String)  post(trim())]
+[action.unitActionLink(action.linkContent(), valueAccessor)/]
 [/template]
 
-[template public unitActionLink(action : Action, linkContent : String, instanceAccessor : String)  post(trim())]
+[template public unitActionLink(action : Action, linkContent : String, valueAccessor : String)  post(trim())]
 [action.anchor(
-	action.linkPath(action.accessor(instanceAccessor)),
-	action.attributes(instanceAccessor),
+	action.linkPath(action.accessor(valueAccessor)),
+	action.attributes(valueAccessor),
 	linkContent,
-	action.accessor(instanceAccessor))/]
+	action.accessor(valueAccessor))/]
 [/template]
 
-[template public featureActionLink(action : Action, association : UnitAssociation, instanceAccessor : String) 
-	?(action.oclIsKindOf(SelectAction)) post(trim())]
-[let selectAction : SelectAction = action.oclAsType(SelectAction)]
+[template public featureActionLink(action : Action, association : UnitAssociation, valueAccessor : String) 
+	?(action.oclIsKindOf(InstanceSelectAction)) post(trim())]
+[let selectAction : InstanceSelectAction = action.oclAsType(InstanceSelectAction)]
 [action.anchor(
-	selectAction.linkPath(association.association.targetType, action.accessor(instanceAccessor)),
-	action.attributes(association, instanceAccessor),
-	action.linkContent(association, instanceAccessor),
-	instanceAccessor)/]
+	selectAction.linkPath(association.association.targetType, action.accessor(valueAccessor)),
+	action.attributes(association, valueAccessor),
+	action.linkContent(association, valueAccessor),
+	valueAccessor)/]
 [/let]
 [/template]
 
 
-[query private accessor(action : Action, instanceAccessor : String) : String
+[query private accessor(action : Action, valueAccessor : String) : String
 	= if not action.oclIsKindOf(SelectAction) then
-			instanceAccessor
+			valueAccessor
 		else
 			let selectAction : SelectAction = action.oclAsType(SelectAction)
 				in if selectAction.valuePath.oclIsUndefined() then
-						instanceAccessor
+						valueAccessor
 					else
-						selectAction.valuePath.accessor(instanceAccessor, null)
+						selectAction.valuePath.accessor(valueAccessor, null)
 					endif
 		endif
 /]
 
 
-[template private linkPath(action : Action, instanceAccessor : String) 
+[template private linkPath(action : Action, valueAccessor : String) 
 	?(action.oclIsTypeOf(DeleteAction) or action.oclIsKindOf(InstanceOperationAction)) post(trim())]
-'[action.routeName()/]'[action.linkPathParameters(action.routeActualParameters(instanceAccessor), true)/]
+'[action.routeName()/]'[action.linkPathParameters(action.routeActualParameters(valueAccessor), true)/]
 [/template]
 
-[template private linkPath(action : Action, instanceAccessor : String) 
+[template private linkPath(action : Action, valueAccessor : String) 
 	?(action.oclIsTypeOf(ContainerOperationAction) or action.oclIsKindOf(GeneralOperationAction)) post(trim())]
 '[action.routeName()/]'[action.linkPathParameters(action.parentUnit.routeActualParameters(
-	action.parentUnit.routeParameters(), instanceAccessor, action.parentUnit.contentType,
+	action.parentUnit.routeParameters(), valueAccessor, action.parentUnit.contentType,
 	action.parentUnit.hasObjectAccess()), true)/]
 [/template]
 
-[template private linkPath(action : Action, instanceAccessor : String) 
+[template private linkPath(action : Action, valueAccessor : String) 
 	?(action.oclIsTypeOf(SecurityAction)) post(trim())]
 '[action.routeName()/]'
 [/template]
 
-[template private linkPath(action : SelectAction, instanceAccessor : String) 
-	?(action.oclIsTypeOf(SelectAction)) post(trim())]
+[template private linkPath(action : SelectAction, valueAccessor : String) 
+	?(action.oclIsTypeOf(ContainerSelectAction)) post(trim())]
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
-[selectAction.linkPath(selectAction.selectType(), instanceAccessor)/]
+[let targetUnit : DynamicUnit = selectAction.target.oclAsType(DynamicUnit)]
+'[targetUnit.routeName()/]'[action.linkPathParameters(
+	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, targetUnit.containingType,
+		action.parentUnit.hasObjectAccess()),
+	action.parentUnit.displayedOn = targetUnit.displayedOn)/]
+[/let]
+[/let]
+[/template]
+
+[template private linkPath(action : SelectAction, valueAccessor : String) 
+	?(action.oclIsTypeOf(InstanceSelectAction)) post(trim())]
+[let selectAction : InstanceSelectAction = action.oclAsType(InstanceSelectAction)]
+[selectAction.linkPath(selectAction.selectType(), valueAccessor)/]
 [/let]
 [/template]
 
@@ -129,8 +141,7 @@
 			endif
 /]
 
-[template private linkPath(action : SelectAction, valueType : Entity, instanceAccessor : String) 
-	?(action.oclIsTypeOf(SelectAction)) post(trim())]
+[template private linkPath(action : InstanceSelectAction, valueType : Entity, valueAccessor : String) post(trim())]
 [let targetUnit : DynamicUnit = action.target.oclAsType(DynamicUnit)]
 [let routeName : String
 	= if targetUnit.oclIsKindOf(EditUnit) then
@@ -145,7 +156,7 @@
 			targetUnit.routeParameters()
 		endif]
 '[routeName/]'[action.linkPathParameters(
-	targetUnit.routeActualParameters(routeParameters, instanceAccessor, valueType, action.parentUnit.hasObjectAccess()),
+	targetUnit.routeActualParameters(routeParameters, valueAccessor, valueType, action.parentUnit.hasObjectAccess()),
 	action.parentUnit.displayedOn = targetUnit.displayedOn)/]
 [/let]
 [/let]
@@ -161,26 +172,26 @@
 [/if][/template]
 
 
-[template private attributes(action : Action, instanceAccessor : String)
+[template private attributes(action : Action, valueAccessor : String)
 	?(action.oclIsTypeOf(SecurityAction)) post(trim())]
 [if (action.hasAnchorClass)]
 class="[action.anchorClass/]"
 [/if]
 [/template]
 
-[template private attributes(action : Action, instanceAccessor : String)
+[template private attributes(action : Action, valueAccessor : String)
 	?(not action.oclIsTypeOf(SecurityAction)) post(trim())]
-title="[action.displayLabel/][if (not instanceAccessor.oclIsUndefined())]
- {{ [instanceAccessor/].defaultLabel() }}[/if]"[if (action.hasConfirmMessage)]
- onclick="return confirm('[action.confirmMessage/][if (not instanceAccessor.oclIsUndefined())]
- {{ [instanceAccessor/].defaultLabel() }}[/if]');"[/if][if (action.hasAnchorClass)]
+title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
+ {{ [valueAccessor/].defaultLabel() }}[/if]"[if (action.hasConfirmMessage)]
+ onclick="return confirm('[action.confirmMessage/][if (not valueAccessor.oclIsUndefined())]
+ {{ [valueAccessor/].defaultLabel() }}[/if]');"[/if][if (action.hasAnchorClass)]
  class="[action.anchorClass/]"
 [/if]
 [/template]
 
-[template private attributes(action : Action, association : UnitAssociation, instanceAccessor : String)
-	?(action.oclIsTypeOf(SelectAction)) post(trim())]
-[let title : String = instanceAccessor.concat(association.valueLabel())]
+[template private attributes(action : Action, association : UnitAssociation, valueAccessor : String)
+	?(action.oclIsKindOf(SelectAction)) post(trim())]
+[let title : String = valueAccessor.concat(association.valueLabel())]
 title="[action.displayLabel/] {{ [title/] }}"[if (action.hasConfirmMessage)]
  onclick="return confirm('[action.confirmMessage/][if (not title.oclIsUndefined())]
  {{ [title/] }}[/if]');"[/if][if (action.hasAnchorClass)]
@@ -195,8 +206,8 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.hasConfirmMessage)]
 [action.displayLabel/]
 [/template]
 
-[template private linkContent(action : Action, association : UnitAssociation, instanceAccessor : String) post(trim())]
-{{ [instanceAccessor/][association.valueLabel()/] }}
+[template private linkContent(action : Action, association : UnitAssociation, valueAccessor : String) post(trim())]
+{{ [valueAccessor/][association.valueLabel()/] }}
 [/template]
 
 
@@ -227,19 +238,19 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.hasConfirmMessage)]
 
 
 [template public routeActualParameters(unit : DynamicUnit, routeParameters : Sequence(Attribute),
-	instanceAccessor : String, valueType : Entity, objectAccess : Boolean) post(trim())]
+	valueAccessor : String, valueType : Entity, objectAccess : Boolean) post(trim())]
 [for (key : Attribute | routeParameters)]
-[key.routeActualParameter(routeParameters, instanceAccessor, valueType, objectAccess)/],
+[key.routeActualParameter(routeParameters, valueAccessor, valueType, objectAccess)/],
 [/for]
 [/template]
 
-[template private routeActualParameters(action : Action, instanceAccessor : String) post(trim())]
-[action.parentUnit.routeActualParameters(action.routeParameters(), instanceAccessor, action.parentUnit.contentType, action.parentUnit.hasObjectAccess())/]
+[template private routeActualParameters(action : Action, valueAccessor : String) post(trim())]
+[action.parentUnit.routeActualParameters(action.routeParameters(), valueAccessor, action.parentUnit.contentType, action.parentUnit.hasObjectAccess())/]
 [/template]
 
 [template private routeActualParameter(key : Attribute, routeParameters : Sequence(Attribute),
-	instanceAccessor : String, valueType : Entity, objectAccess : Boolean) post(trim())]
-'[key.routeParameterName(routeParameters)/]': [key.getValue(key.keyAccessor(instanceAccessor, valueType, objectAccess))/][if (key.isDateFeature)]
+	valueAccessor : String, valueType : Entity, objectAccess : Boolean) post(trim())]
+'[key.routeParameterName(routeParameters)/]': [key.getValue(key.keyAccessor(valueAccessor, valueType, objectAccess))/][if (key.isDateFeature)]
 .format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if]
 [/template]
 

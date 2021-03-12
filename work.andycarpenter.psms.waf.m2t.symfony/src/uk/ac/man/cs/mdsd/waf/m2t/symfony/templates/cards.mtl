@@ -44,11 +44,7 @@
 [if (cardsUnit.hasContainerActions)]
  <div[if (cardsUnit.hasControlClass)] class="[cardsUnit.controlClass/]"[/if]>
 	[for (action : Action | cardsUnit.containerActions)]
-  [action.unitActionLink(if action.oclIsTypeOf(ContainerOperationAction) then
-				cardsUnit.containerInstanceName()
-			else
-				null
-			endif)/]
+  [action.unitActionLink(cardsUnit.containerInstanceName())/]
 	[/for]
  </div>
 [/if]
@@ -85,7 +81,7 @@
 [/if]
    [cardsUnit.cardBody(variable)/]
 [if (cardsUnit.hasActions)]
-	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() > 1)]
+	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() > 1)]
    [cardsUnit.footer(variable)/]
 	[/if]
 [/if]
@@ -155,7 +151,7 @@
 
 [template private dateImage(unit : DateCardsUnit, cardAccessor : String) post(trim())]
 <div class="card-image img-fluid">
-[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() = 1)]
 [let action : Action = unit.actions->first()]
  [action.unitActionLink(cardAccessor)/]
 [/let]
@@ -182,7 +178,7 @@
 
 [template private cardImage(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [let imageClass : String = 'card-img-top']
-[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(SelectAction))->size() = 1)]
+[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() = 1)]
 [let action : Action = unit.actions->first()]
  [action.unitActionLink(unit.image(cardAccessor, imageClass), cardAccessor)/]
 [/let]
