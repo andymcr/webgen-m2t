@@ -62,7 +62,7 @@ class [unit.typeClassName()/] extends AbstractType
         $[dataInstance/] = $options['['/]'data'[']'/] ?? null;
 
 [/if]
-[for (feature : UnitField | unit.displayFields->sortedBy(f | f.persistentFeature.name))]
+[for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName))]
         $builder->[feature.formField(dataInstance)/];
 [/for]
 [if (unit.contentType.allowFormTypeCustomisation)]
@@ -74,9 +74,9 @@ class [unit.typeClassName()/] extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(['['/]
             'data_class' => '[unit.modelsNamespace()/]\[unit.modelName()/]'
-        ));
+        [']'/]);
     }
 }
 [/let]
@@ -122,6 +122,9 @@ use [feature.modelsNamespace()/]\[feature.enumerationType.modelName()/];
 [/for]
 [if (unit.hasAssociationFields and not unit.hasDynamicChoiceFields)]
 use Doctrine\ORM\EntityRepository;
+[/if]
+[if (unit.hasDynamicChoiceFields)]
+use PUGX\AutocompleterBundle\Form\Type\AutocompleteType;
 [/if]
 [if (unit.hasAssociationFields)]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -318,7 +321,7 @@ TextType::class
 [template private formFeature(feature : Association, valueLabel : ModelLabel, hasDynamicChoices : Boolean, selection : Selection, dataInstance : String)
 	? (not feature.isContains) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
-add('[association.modelPropertyName()/]', EntityType::class, array(
+add('[association.modelPropertyName()/]', [if (hasDynamicChoices)]AutocompleteType[else]EntityType[/if]::class, array(
     'label' => '[association.displayLabelId()/]',
     'translation_domain' => 'entity',
 [if (not association.isSingleton or not association.isRequired)]
@@ -396,3 +399,40 @@ add('[association.modelPropertyName()/]', CollectionType::class, array(
 [/if]
 [/let]
 [/template]
+
+[template private formField(field : UnitField, dataInstance : String)
+	? (field.isInterfaceField) post(trim())]
+[let interface : InterfaceField = field.oclAsType(InterfaceField)]
+add('[interface.name/]', [interface.interfaceType()/], array(
+    'mapped' => false,
+    'required' => true,
+))
+[/let]
+[/template]
+
+[template private interfaceType(field : InterfaceField) post(trim())]
+[if (field.isBooleanField)]
+CheckboxType::class
+[elseif (field.isDateField)]
+	[if (field.dateDetails = DateDetails::DateOnly)]
+DateType::class
+	[elseif (field.dateDetails = DateDetails::DateAndTime)]
+DateTimeType::class
+	[else]
+TimeType::class
+	[/if]
+[elseif (field.isEmailField)]
+EmailType::class
+[elseif (field.isEnumerationField)]
+ChoiceType::class
+[elseif (field.isIntegerField)]
+IntegerType::class
+[elseif (field.isObfuscatedField)]
+PasswordType::class
+[elseif (field.isTextareaField)]
+TextareaType::class
+[else]
+TextType::class
+[/if]
+[/template]
+

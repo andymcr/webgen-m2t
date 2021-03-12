@@ -268,11 +268,7 @@
 			endif
 		else
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
-				in if dynamicUnit.hasDefaultValueFields or dynamicUnit.hasInterfaceFields then
-						dynamicUnit.typeClassName(null)
-					else
-						dynamicUnit.contentType.modelName()
-					endif
+				in dynamicUnit.contentType.modelName()
 		endif
 /]
 
@@ -372,14 +368,10 @@
 /]
 
 [query public typeClassName(unit : DynamicUnit) : String
-	= if unit.hasDefaultValueFields or unit.hasInterfaceFields then
-			unit.typeClassNameForm()
-		else
-			unit.typeClassNameEntity(unit.displayedOn.partOf)
-		endif
+	= unit.typeClassName(unit.displayedOn.partOf)
 /]
 
-[query private typeClassNameEntity(unit : DynamicUnit, model : WafModel) : String
+[query private typeClassName(unit : DynamicUnit, model : WafModel) : String
 	= let sameModel : Sequence(DynamicUnit) = unit.sameModel(model)
 		in unit.contentType.modelName()
 			.concat(if sameModel->size() <> unit.contentType.formsUsing(model)->size() then
@@ -388,10 +380,6 @@
 					''
 				endif)
 			.concat(unit.typeSuffix())
-/]
-
-[query private typeClassNameForm(unit : DynamicUnit) : String
-	= 'Unit'.concat(unit.displayedOn.name).concat(unit.name).concat(unit.typeSuffix())
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
