@@ -4,15 +4,15 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::app/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::page/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::imageIndex/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::navigation/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::select/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::webpack_config/]
 
 
 [template public javascript(model : WafModel)]
-[model.appjs()/]
+[model.webpackConfigJs()/]
+
+[model.appJs()/]
 
 [for (page : Page | model.pages->select(p | p.hasJavascript()))]
-[page.pagejs()/]
+[page.pageJs()/]
 [/for]
 [/template]

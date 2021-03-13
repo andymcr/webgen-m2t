@@ -13,6 +13,11 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
+[query public snakeCase(string : String) : String
+	= string.toLowerFirst().replaceAll('([A-Z])', '_$1').toLower()
+/]
+
+
 [query public alias(field : UnitField) : String
 	= if field.oclIsKindOf(InterfaceField) then
 			null

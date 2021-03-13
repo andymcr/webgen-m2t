@@ -81,7 +81,7 @@
 
 
 [query public hasJavascript(page : Page) : Boolean
-	= page.hasSliderUnits
+	= page.hasAutocompleteFields
 /]
 
 [query public hasRoutingUnits(page : Page) : Boolean

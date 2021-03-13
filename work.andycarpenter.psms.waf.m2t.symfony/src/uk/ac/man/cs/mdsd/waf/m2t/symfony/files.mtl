@@ -82,10 +82,6 @@
 	= eObject.assetsDirectory().concat('/').concat('js')
 /]
 
-[query public javascriptDirectory(eObject : EObject) : String
-	= 'build/js'
-/]
-
 [query public navigationDirectory(eObject : EObject) : String
 	= eObject.templatesDirectory()
 /]
@@ -172,12 +168,6 @@
 /]
 
 
-[query public autocompleteFilename(eObject : EObject) : String
-	= eObject.javascriptDirectory().concat('/')
-		.concat('autocomplete')
-		.concat(eObject.javascriptExtension())
-/]
-
 [query public controllerFilename(authentication : Authentication, model : WafModel) : String
 	= if model.hasAPI then
 			authentication.webControllersDirectory()
@@ -226,6 +216,12 @@
 	= association.formDirectory().concat('/')
 		.concat(association.typeClassName())
 		.concat(association.executableExtension())
+/]
+
+[query public javascriptFilename(page : Page) : String
+	= page.javascriptAssetsDirectory().concat('/')
+		.concat(page.name.snakeCase())
+		.concat(page.javascriptExtension())
 /]
 
 [query public modelFilename(unit : DynamicUnit) : String

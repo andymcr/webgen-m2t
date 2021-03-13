@@ -4,22 +4,72 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
 
-[template public pagejs(page : Page)]
-[file(page.javascriptAssetsDirectory().concat('/').concat(page.name.toLower()).concat(page.javascriptExtension()), false)]
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
+[template public pageJs(page : Page)]
+[file(page.javascriptFilename(), false)]
+[if (page.hasAutocompleteFields)]
+import autoComplete from "@tarekraafat/autocomplete.js";
 
-// any CSS you require will output into a single css file (app.css in this case)
-require('../css/app.css');
+[/if]
+[for (field : UnitField | page.autocompleteFields)]
+const autoCompleteJS = new autoComplete({
+	name: "[field.displayLabel/]",
+	data: {
+//		src: async function () {
+//			// Loading placeholder text
+//			document
+//				.querySelector("#autoComplete")
+//				.setAttribute("placeholder", "Loading...");
+//			// Fetch External Data Source
+//			const source = await fetch(
+//				"https://tarekraafat.github.io/autoComplete.js/demo/db/generic.json"
+//			);
+//			const data = await source.json();
+//			// Post loading placeholder text
+//			document
+//				.querySelector("#autoComplete")
+//				.setAttribute("placeholder", "Food & Drinks");
+//			// Returns Fetched data
+//			return data;
+//		},
+        src: ['['/] 'abcde', 'abcef', 'vwxyz' [']'/],
+//		key: ['['/]"food", "cities", "animals"[']'/],
+	},
+	trigger: {
+		event: ['['/]"input", "focus"[']'/]
+	},
+	placeHolder: "Search for [field.displayLabel/]",
+	searchEngine: "strict",
+	highlight: true,
+	maxResults: 10,
+    resultsList: {
+        container: source => {
+            source.setAttribute("id", "food_list");
+        },
+        destination: "#autoComplete",
+        position: "afterend",
+        element: "ul"
+    },
+    resultItem: {
+        content: (data, source) => {
+            source.innerHTML = data.match;
+        },
+        element: "li"
+    },
+    noResults: (dataFeedback, generateList) => {
+        // Generate autoComplete List
+        generateList(autoCompleteJS, dataFeedback, dataFeedback.results);
+        // No Results List Item
+        const result = document.createElement("li");
+        result.setAttribute("class", "no_result");
+        result.setAttribute("tabindex", "1");
+        result.innerHTML = `<span style="display: flex; align-items: center; font-weight: 100; color: rgba(0,0,0,.2);">Found No Results for "${dataFeedback.query}"</span>`;
+        document.querySelector(`#${autoCompleteJS.resultsList.idName}`).appendChild(result);
+    },
+    onSelection: feedback => {             // Action script onSelection event | (Optional)
+        console.log(feedback.selection.value.image_url);
+    }
+});
 
-import 'bootstrap';
-// Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-// const $ = require('jquery');
-
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js!!!');
+[/for]
 [/file]
 [/template]

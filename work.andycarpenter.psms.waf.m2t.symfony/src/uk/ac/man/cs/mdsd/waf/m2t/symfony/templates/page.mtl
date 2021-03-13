@@ -12,6 +12,13 @@
 [file(page.pageViewDirectory().concat('/page').concat(page.htmlExtension()).concat(page.twigExtension()), false)]
 {% extends 'base.html.twig' %}
 
+[if (page.hasJavascript())]
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('[page.name.snakeCase()/]') }}
+{% endblock %}
+
+[/if]
 {% block content %}
 [for (unit : ContentUnit | page.units)]
 	[if (unit.oclIsTypeOf(StaticUnit))]
