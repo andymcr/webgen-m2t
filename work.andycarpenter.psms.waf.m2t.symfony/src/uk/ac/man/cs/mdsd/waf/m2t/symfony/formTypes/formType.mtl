@@ -29,7 +29,6 @@
 	= unit.enumerationFields->asSet()->asSequence()
 /]
 
-
 [template public formTypes(model : WafModel)]
 [for (entity : Entity | model.formEntities())]
 	[for (form : SingletonUnit | entity.formsUsing(model))]
@@ -45,6 +44,7 @@
 [/for]
 [/template]
 
+
 [template private entityFormType(unit : SingletonUnit)]
 [file(unit.formTypeFilename(), false)]
 [let dataInstance : String = unit.contentType.instanceName()]
@@ -56,12 +56,22 @@ namespace [unit.formNamespace()/];
 
 class [unit.typeClassName()/] extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+[for (repository : Repository | unit.choicesRepositories())]
+    private $[repository.instanceName()/];
+
+[/for]
+[if (unit.choicesRepositories()->notEmpty())]
+    public function __construct([for (repository : Repository | unit.choicesRepositories()) separator (', ')]
+[repository.className()/] $[repository.instanceName()/][/for])
     {
-[if (unit.hasDynamicChoiceFields)]
-        $[dataInstance/] = $options['['/]'data'[']'/] ?? null;
+[for (repository : Repository | unit.choicesRepositories())]
+        $this->[repository.instanceName()/] = $[repository.instanceName()/];
+[/for]
+    }
 
 [/if]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
 [for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName))]
         $builder->[feature.formField(dataInstance)/];
 [/for]
@@ -82,6 +92,15 @@ class [unit.typeClassName()/] extends AbstractType
 [/let]
 [/file]
 [/template]
+
+[query private choicesRepositories(unit : DynamicUnit) : Sequence(Repository)
+	= unit.associationFields
+		->select(f | not f.options.oclIsUndefined())
+		->collect(f | f.options.definedBy)
+		->asSet()
+		->asSequence()
+		->sortedBy(r | r.name)
+/]
 
 [template public formType(association : UnitAssociation)]
 [file(association.formTypeFilename(), false)]
@@ -120,10 +139,10 @@ class [association.typeClassName()/] extends AbstractType
 [for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.persistentFeature.name))]
 use [feature.modelsNamespace()/]\[feature.enumerationType.modelName()/];
 [/for]
-[if (unit.hasAssociationFields and not unit.hasDynamicChoiceFields)]
-use Doctrine\ORM\EntityRepository;
-[/if]
-[if (unit.hasDynamicChoiceFields)]
+[for (repository : Repository | unit.choicesRepositories())]
+use [repository.repositoryNamespace()/]\[repository.className()/];
+[/for]
+[if (unit.hasAutocompleteFields)]
 use PUGX\AutocompleterBundle\Form\Type\AutocompleteType;
 [/if]
 [if (unit.hasAssociationFields)]
@@ -314,29 +333,24 @@ TextType::class
 [template private formField(field : UnitField, dataInstance : String)
 	? (field.isAssociationField and not field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[association.association.formFeature(association.valueDisplay, association.hasDynamicChoices, association.options, dataInstance)/]
+[association.association.formFeature(association.valueDisplay, association.hasAutocomplete, association.options, dataInstance)/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Association, valueLabel : ModelLabel, hasDynamicChoices : Boolean, selection : Selection, dataInstance : String)
+[template private formFeature(feature : Association, valueLabel : ModelLabel, hasAutocomplete : Boolean, selection : Selection, dataInstance : String)
 	? (not feature.isContains) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
-add('[association.modelPropertyName()/]', [if (hasDynamicChoices)]AutocompleteType[else]EntityType[/if]::class, array(
+add('[association.modelPropertyName()/]', [if (hasAutocomplete)]AutocompleteType[else]EntityType[/if]::class, array(
     'label' => '[association.displayLabelId()/]',
     'translation_domain' => 'entity',
 [if (not association.isSingleton or not association.isRequired)]
     'required' => false,
 [/if]
     'class' => '[association.appName()/]:[association.modelName()/]',
-[if (hasDynamicChoices)]
-    'choices' => !is_null($[dataInstance/]) && !is_null($[dataInstance/]->[feature.getMethodName()/]())
-        ? array(['['/]$[dataInstance/]->[feature.getMethodName()/]()[']'/])
-        : array(),
-[else]
-	[if (not selection.oclIsUndefined())]
-    [selection.options()/]
-	[/if]
+[if (not selection.oclIsUndefined())]
+    'choices' => $this->[selection.definedBy.instanceName()/]->[selection.methodName/](),
 [/if]
+[if (not hasAutocomplete)]
     'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,
 [if (association.isSingleton)]
@@ -344,37 +358,13 @@ add('[association.modelPropertyName()/]', [if (hasDynamicChoices)]AutocompleteTy
 [else]
     'multiple' => true,
 [/if]
+[/if]
 [if (association.sourceType.allowFormTypeCustomisation)]
 // [protected ('custom.'.concat(association.modelPropertyName()))]
 // [/protected]
 [/if]
 ))
 [/let]
-[/template]
-
-[template private options(selection : Selection) post(trim())]
-'query_builder' => function (EntityRepository $er) {
-    $queryBuilder = $er->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
-    return $queryBuilder
-[for (join : Association | selection.joins)]
-        ->join('[join.partOf.oclAsType(Entity).selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
-[/for]
-[if (selection.ordering->notEmpty())]
-        ->orderBy([selection.ordering->first().path.queryExpression()/], [selection.ordering->first().order()/])[if (selection.ordering->size() = 1 and selection.condition.oclIsUndefined())]
-;[/if]
-
-	[if (selection.ordering->size() > 1)]
-		[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-        ->addOrderBy([order.path.queryExpression()/], [order.order()/])[if (selection.condition.oclIsUndefined())]
-;[/if]
-
-		[/for]
-	[/if]
-[/if]
-[if (not selection.condition.oclIsUndefined())]
-        ->where([selection.condition.queryExpression()/]);
-[/if]
-},
 [/template]
 
 [template private formField(field : UnitField, dataInstance : String)
