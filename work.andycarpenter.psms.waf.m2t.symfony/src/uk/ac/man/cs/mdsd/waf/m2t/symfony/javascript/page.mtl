@@ -2,74 +2,20 @@
 [module page(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 
 
 [template public pageJs(page : Page)]
 [file(page.javascriptFilename(), false)]
-[if (page.hasAutocompleteFields)]
-import autoComplete from "@tarekraafat/autocomplete.js";
+import Autocomplete from './autocomplete'
 
-[/if]
 [for (field : UnitField | page.autocompleteFields)]
-const autoCompleteJS = new autoComplete({
-	name: "[field.displayLabel/]",
-	data: {
-//		src: async function () {
-//			// Loading placeholder text
-//			document
-//				.querySelector("#autoComplete")
-//				.setAttribute("placeholder", "Loading...");
-//			// Fetch External Data Source
-//			const source = await fetch(
-//				"https://tarekraafat.github.io/autoComplete.js/demo/db/generic.json"
-//			);
-//			const data = await source.json();
-//			// Post loading placeholder text
-//			document
-//				.querySelector("#autoComplete")
-//				.setAttribute("placeholder", "Food & Drinks");
-//			// Returns Fetched data
-//			return data;
-//		},
-        src: ['['/] 'abcde', 'abcef', 'vwxyz' [']'/],
-//		key: ['['/]"food", "cities", "animals"[']'/],
-	},
-	trigger: {
-		event: ['['/]"input", "focus"[']'/]
-	},
-	placeHolder: "Search for [field.displayLabel/]",
-	searchEngine: "strict",
-	highlight: true,
-	maxResults: 10,
-    resultsList: {
-        container: source => {
-            source.setAttribute("id", "food_list");
-        },
-        destination: "#autoComplete",
-        position: "afterend",
-        element: "ul"
-    },
-    resultItem: {
-        content: (data, source) => {
-            source.innerHTML = data.match;
-        },
-        element: "li"
-    },
-    noResults: (dataFeedback, generateList) => {
-        // Generate autoComplete List
-        generateList(autoCompleteJS, dataFeedback, dataFeedback.results);
-        // No Results List Item
-        const result = document.createElement("li");
-        result.setAttribute("class", "no_result");
-        result.setAttribute("tabindex", "1");
-        result.innerHTML = `<span style="display: flex; align-items: center; font-weight: 100; color: rgba(0,0,0,.2);">Found No Results for "${dataFeedback.query}"</span>`;
-        document.querySelector(`#${autoCompleteJS.resultsList.idName}`).appendChild(result);
-    },
-    onSelection: feedback => {             // Action script onSelection event | (Optional)
-        console.log(feedback.selection.value.image_url);
-    }
-});
+const [field.instanceName()/] = new Autocomplete(
+    "[field.displayedOn.contentType.name.snakeCase()/]_[field.instanceName()/]",
+    "https://localhost:8000/admin/competitions/imageVariant/");
 
 [/for]
 [/file]
 [/template]
+

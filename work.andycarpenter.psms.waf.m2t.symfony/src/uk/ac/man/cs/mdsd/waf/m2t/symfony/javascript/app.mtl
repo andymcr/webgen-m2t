@@ -21,20 +21,5 @@ import './bootstrap';
 
 // Bootstrap styling
 import 'bootstrap';
-
-// autocomplete
-//import Autocomplete from '@trevoreyre/autocomplete-js';
-//
-//var countries = ['['/]'United Kingdom','United States'[']'/];
-//
-//new Autocomplete('#autocomplete', {
-//  search: input => {
-//    if (input.length < 1) { return ['['/][']'/] }
-//    return countries.filter(country => {
-//      return country.toLowerCase()
-//        .startsWith(input.toLowerCase())
-//    })
-//  }
-//})
 [/file]
 [/template]

@@ -72,8 +72,15 @@ class [unit.typeClassName()/] extends AbstractType
 [/if]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+[if (unit.hasAutocompleteFields)]
+        $[dataInstance/] = $options['['/]'data'[']'/] ?? null;
+
+[/if]
 [for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName))]
         $builder->[feature.formField(dataInstance)/];
+[if (feature.hasAutocomplete)]
+        [feature.autocompleteField()/]
+[/if]
 [/for]
 [if (unit.contentType.allowFormTypeCustomisation)]
 
@@ -127,9 +134,9 @@ class [association.typeClassName()/] extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(['['/]
             'data_class' => '[association.modelsNamespace()/]\[association.association.targetType.modelName()/]'
-        ));
+        [']'/]);
     }
 }
 [/file]
@@ -150,6 +157,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+[if (unit.hasAutocompleteFields)]
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+[/if]
 [if (unit.hasBooleanFields)]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
@@ -242,7 +253,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [template private formFeature(feature : Attribute)
 	? (feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
-add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
+add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
     'label' => '[attribute.displayLabelId()/]',
     'translation_domain' => 'entity',
 [if (not attribute.isRequired)]
@@ -263,16 +274,16 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
     'placeholder' => 'actions.labels.select_one',
 [/if]
 [if (attribute.hasHtml5Attributes)]
-    'attr' => array(
+    'attr' => ['['/]
 	[if (false)] [comment not attribute.placeholder.oclIsUndefined())/]
         'placeholder' => '[comment attribute.placeholder/]',
 	[/if]
 	[if (attribute.hasValidationPattern)]
         'pattern' => '[attribute.validationPattern/]',
 	[/if]
-    ),
+    [']'/],
 [/if]
-))
+[']'/])
 [/let]
 [/template]
 
@@ -286,7 +297,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], array(
 [template private formFeature(feature : Attribute, allowUiAdd : Boolean, allowUiRemove : Boolean)
 	? (not feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
-add('[attribute.modelPropertyName()/]', CollectionType::class, array(
+add('[attribute.modelPropertyName()/]', CollectionType::class, ['['/]
     'label' => '[attribute.displayLabelId()/]',
     'translation_domain' => 'entity',
     'entry_type' => [attribute.interfaceType()/],
@@ -300,7 +311,7 @@ add('[attribute.modelPropertyName()/]', CollectionType::class, array(
     'by_reference' => false,
 [/if]
     'required' => false,
-))
+[']'/])
 [/let]
 [/template]
 
@@ -340,17 +351,22 @@ TextType::class
 [template private formFeature(feature : Association, valueLabel : ModelLabel, hasAutocomplete : Boolean, selection : Selection, dataInstance : String)
 	? (not feature.isContains) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
-add('[association.modelPropertyName()/]', [if (hasAutocomplete)]AutocompleteType[else]EntityType[/if]::class, array(
+add('[association.modelPropertyName()/]', [if (hasAutocomplete and false)]AutocompleteType[else]EntityType[/if]::class, ['['/]
     'label' => '[association.displayLabelId()/]',
     'translation_domain' => 'entity',
 [if (not association.isSingleton or not association.isRequired)]
     'required' => false,
 [/if]
     'class' => '[association.appName()/]:[association.modelName()/]',
-[if (not selection.oclIsUndefined())]
+[if (hasAutocomplete)]
+    'choices' => !is_null($[dataInstance/]) && !is_null($[dataInstance/]->[feature.getMethodName()/]())
+        ? ['['/] $[dataInstance/]->[feature.getMethodName()/]() [']'/]
+        : ['['/][']'/],
+[else]
+	[if (not selection.oclIsUndefined())]
     'choices' => $this->[selection.definedBy.instanceName()/]->[selection.methodName/](),
+	[/if]
 [/if]
-[if (not hasAutocomplete)]
     'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,
 [if (association.isSingleton)]
@@ -358,12 +374,11 @@ add('[association.modelPropertyName()/]', [if (hasAutocomplete)]AutocompleteType
 [else]
     'multiple' => true,
 [/if]
-[/if]
 [if (association.sourceType.allowFormTypeCustomisation)]
 // [protected ('custom.'.concat(association.modelPropertyName()))]
 // [/protected]
 [/if]
-))
+[']'/])
 [/let]
 [/template]
 
@@ -373,7 +388,7 @@ add('[association.modelPropertyName()/]', [if (hasAutocomplete)]AutocompleteType
 [if (association.isSingleton)]
 add('[association.modelPropertyName()/]', [association.typeClassName()/]::class)
 [else]
-add('[association.modelPropertyName()/]', CollectionType::class, array(
+add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
     'entry_type' => [association.typeClassName()/]::class,
 	[if (association.collectionUiAllowAdd)]
     'allow_add' => true,
@@ -385,7 +400,7 @@ add('[association.modelPropertyName()/]', CollectionType::class, array(
     'by_reference' => false,
 	[/if]
     'required' => false,
-))
+[']'/])
 [/if]
 [/let]
 [/template]
@@ -393,10 +408,10 @@ add('[association.modelPropertyName()/]', CollectionType::class, array(
 [template private formField(field : UnitField, dataInstance : String)
 	? (field.isInterfaceField) post(trim())]
 [let interface : InterfaceField = field.oclAsType(InterfaceField)]
-add('[interface.name/]', [interface.interfaceType()/], array(
+add('[interface.name/]', [interface.interfaceType()/], ['['/]
     'mapped' => false,
     'required' => true,
-))
+[']'/])
 [/let]
 [/template]
 
@@ -424,5 +439,27 @@ TextareaType::class
 [else]
 TextType::class
 [/if]
+[/template]
+
+[template private autocompleteField(field : UnitField)
+	? (field.isAssociationField and not field.isContains) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+    $id = $event->getData()['['/]'[association.modelPropertyName()/]'[']'/];
+    $selectedOption = $this->[association.optionsFilter.selection.definedBy.instanceName()/]->find($id);
+    if ($selectedOption != null) {
+        $event->getForm()->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
+[if (not association.isSingleton or not association.isRequired)]
+            'required' => false,
+[/if]
+            'class' => '[association.appName()/]:[association.association.modelName()/]',
+            'choices' => ['['/] $selectedOption [']'/],
+[if (not association.isSingleton)]
+            'multiple' => true,
+[/if]
+        [']'/]);
+    }
+});
+[/let]
 [/template]
 
