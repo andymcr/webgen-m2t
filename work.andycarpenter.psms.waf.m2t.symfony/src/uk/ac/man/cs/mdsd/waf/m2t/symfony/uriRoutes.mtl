@@ -91,6 +91,21 @@
 		.combinePaths(unit.uriElement)
 /]
 
+[query public uriPath(association : UnitAssociation, unit : DynamicUnit) : String
+	= unit.displayedOn.uriPagePath()
+		.combinePaths(association.name)
+		.combinePaths(association.parameterPath())
+/]
+
+[query private parameterPath(association : UnitAssociation) : String
+	= if association.optionsFilter.parameters->isEmpty() then
+			''
+		else
+			association.optionsFilter.parameters
+				->collect(p | p.name)->sep('{', '}/{', '}')->toString()
+		endif
+/]
+
 [query public uriPath(action : Action, suffix : String) : String
 	= if action.parentUnit.oclIsKindOf(CollectionUnit) then
 			action.uriPath(

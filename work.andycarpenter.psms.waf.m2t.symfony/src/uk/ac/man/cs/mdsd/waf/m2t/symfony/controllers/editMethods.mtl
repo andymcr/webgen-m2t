@@ -21,7 +21,7 @@
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsKindOf(SecurityUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [for (association : UnitAssociation | editUnit.associationFields)]
-	[if (association.hasDynamicChoices)]
+	[if (association.hasAutocomplete)]
 [association.optionsMethod(editUnit)/]
 
 	[/if]
@@ -44,15 +44,10 @@
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [association.actionName()/]([association.optionsFilter.optionFormals()/])
+public function [association.actionName()/](SerializerInterface $serializer, [association.optionsFilter.optionFormals()/])
 {
-    $selection = $this->[association.optionsFilter.selection.definedBy.instanceName()/]->[association.optionsFilter.methodName/]([association.optionsFilter.selectionActuals()/]);
-    $matches = array();
-    foreach ($selection as $option) {
-        $matches['['/]$option->getId()[']'/] = $option->defaultLabel();
-    }
-
-    return new JsonResponse($matches);
+    $selection = $this->[association.optionsFilter.selection.definedBy.instanceName()/]->[association.optionsFilter.methodName/]([association.optionsFilter.selectionActuals()/], 0, 8);
+    return new JsonResponse($serializer->serialize($selection, 'json'));
 }
 [/template]
 

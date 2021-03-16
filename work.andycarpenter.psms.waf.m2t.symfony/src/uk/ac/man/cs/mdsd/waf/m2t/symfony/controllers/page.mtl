@@ -158,13 +158,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
+[if (page.hasAutocompleteFields)]
+use Symfony\Component\HttpFoundation\JsonResponse;
+[/if]
 [if (page.hasFiltersOrPagination() or page.hasEditUnits)]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
+[if (page.editUnits->exists(customiseValues) or page.editUnits->exists(hasForcedValueFields)
+	or page.editUnits->exists(isContained and hasExplicitlyEditedContainer))]
+use Symfony\Component\Form\FormError;
+[/if]
 use Symfony\Component\Routing\Annotation\Route;
 [if (page.hasForgottenPasswordUnits)]
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+[/if]
+[if (page.hasAutocompleteFields)]
+use Symfony\Component\Serializer\SerializerInterface;
 [/if]
 [if (page.hasExplicitValidation())]
 use Symfony\Component\Validator\Validator\ValidatorInterface;

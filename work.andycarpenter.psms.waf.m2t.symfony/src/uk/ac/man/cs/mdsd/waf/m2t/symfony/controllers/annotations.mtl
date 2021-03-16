@@ -37,7 +37,7 @@
 [/template]
 
 [template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]
-[comment unit.routeAnnotation(association.routeName(), unit.uriPath(unit.contentType, association.name), true)/]
+[unit.routeAnnotation(association.routeName(), association.uriPath(unit), false)/]
 [/template]
 
 [template public routeAnnotation(action : Action, suffix : String) post(trim())]
