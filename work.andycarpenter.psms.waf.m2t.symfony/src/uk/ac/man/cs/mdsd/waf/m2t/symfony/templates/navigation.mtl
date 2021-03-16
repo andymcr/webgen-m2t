@@ -15,14 +15,16 @@
 
 {% block navigation %}
 <nav class="navbar navbar-expand-lg">
+ <div class="container-fluid">
 [if (not model.logoImage.oclIsUndefined())]
- <a href="#!" class="navbar-brand">[model.image()/]</a>
+  <span class="navbar-brand">[model.image()/]</span>
 [/if]
- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-  <span class="navbar-toggler-icon"></span>
- </button>
- <div class="collapse navbar-collapse" id="navbarNav">
-  [menu.topItems(model)/]
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+   <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+   [menu.topItems(model)/]
+  </div>
  </div>
 </nav>
 {% endblock %}
@@ -48,10 +50,7 @@
 [if (action.action.isAuthorised)]
 {% if is_granted('[action.action.authorisationRoles/]') %}[/if]
 <a class="nav-link{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
- disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
-, {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
-'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">
-{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised)]
+ disabled[/if]" href="{{ path('[action.routeName()/]') }}">{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -64,10 +63,10 @@
 [if (submenu.entries->isEmpty())]
 <a class="nav-link disabled"><{{ '[submenu.displayLabelId()/]' | trans }}/a>
 [else]
-<span class="nav-item dropdown">
+<div class="nav-item dropdown">
  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#[submenu.id()/]" role="button" aria-expanded="false">{{ '[submenu.displayLabelId()/]' | trans }}</a>
  [submenu.subDropdown()/]
-</span>
+</div>
 [/if]
 [if (submenu.isAuthorised)]
 {% endif %}[/if]
@@ -88,16 +87,14 @@
 [if (action.action.isAuthorised)]
 {% if is_granted('[action.action.authorisationRoles/]') %}[/if]
 <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
- disabled[/if]" href="{{ path('[action.routeName()/]'[if (not action.query.oclIsUndefined())]
-, {[for (parameter : QueryParameter | action.query.parameters) separator(', ')]
-'[parameter.formal.name/]': '[parameter.value/]'[/for]}[/if]) }}">{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised)]
+ disabled[/if]" href="{{ path('[action.routeName()/]') }}">{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
 
 
 [template private userDropdown(model : WafModel) post(trim())]
-<span class="nav-item dropdown">
+<div class="nav-item dropdown">
 {%- if app.user -%}
  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
 {%- elseif not app.user -%}
@@ -110,8 +107,7 @@
 {%- endif -%}
  [model.casAuthentication.userDropdown()/]
 [/if]
- </li>
-</span>
+</div>
 [/template]
 
 [template private userDropdown(security : LocalAuthenticationSystem) post(trim())]

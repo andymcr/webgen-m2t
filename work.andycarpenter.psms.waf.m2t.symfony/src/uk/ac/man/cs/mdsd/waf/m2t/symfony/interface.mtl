@@ -50,7 +50,7 @@
 	= if menuEntry.partOf.oclIsTypeOf(SubmenuEntry) then
 			menuEntry.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menuEntry.name.asId())
 		else
-			menuEntry.name.asId()
+			menuEntry.name.asId().concat('_menu')
 		endif
 /]
 
