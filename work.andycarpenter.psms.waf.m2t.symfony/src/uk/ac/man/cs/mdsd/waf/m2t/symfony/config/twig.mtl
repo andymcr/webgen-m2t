@@ -1,0 +1,16 @@
+[comment encoding = UTF-8 /]
+[module twig(
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public configTwig(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/twig').concat(model.yamlExtension()), false)]
+twig:
+    globals:
+        default_locale: '%kernel.default_locale%'
+    default_path: '%kernel.project_dir%/templates'
+    form_themes:
+        - 'bootstrap_4_horizontal_layout.html.twig'
+[/file]
+[/template]

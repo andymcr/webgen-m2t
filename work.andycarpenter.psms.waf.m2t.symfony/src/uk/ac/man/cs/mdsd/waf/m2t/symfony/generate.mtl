@@ -11,6 +11,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::recaptcha/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::services/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::twig/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::vichUploader/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::api/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::page/]
@@ -51,6 +52,7 @@
 [model.configRecaptcha()/]
 	[/if]
 [/if]
+[model.configTwig()/]
 [if (model.hasResourceFields)]
 [model.configVichUploader()/]
 [/if]
@@ -87,7 +89,7 @@
 [/if]
 [/if]
 
-[model.css(model.cssDirectory())/]
+[comment model.css(model.cssDirectory())/]
 
 [model.javascript()/]
 
