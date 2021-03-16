@@ -53,7 +53,7 @@
   [unit.adjacentPageLinks()/]
 [/if]
 [if (unit.nextNpages > 1)]
- {% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li class="[unit.paginationElementClass/]"><span class="[unit.paginationAnchorClass/]">&nbsp;&hellip;&nbsp;</soan></li>{% endif %}
+ {% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li class="[unit.paginationElementClass/]"><span class="[unit.paginationAnchorClass/]">&nbsp;&hellip;&nbsp;</span></li>{% endif %}
 [/if]
   [unit.nextPageLink()/]
 [if (unit.useFirstLastPageLinks)]
