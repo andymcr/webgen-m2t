@@ -147,7 +147,9 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 
 		[/for]
 	[/for]
+	[if (page.hasNonSecurityUnits)]
     [page.renderMethod()/]
+	[/if]
 [/if]
 }
 [/file]

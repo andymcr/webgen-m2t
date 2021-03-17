@@ -213,4 +213,3 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 }
 [/let]
 [/template]
-
