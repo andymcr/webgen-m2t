@@ -95,13 +95,12 @@ public function [unit.actionName()/]X([unit.actionMethodFormals()/]): Response
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
 $[unit.instanceName()/] = [unit.createInstance()/];
 $this->[unit.instanceName()/] = [unit.createForm(sourceParameters)/];
-[if (unit.customiseValues or unit.hasForcedValueFields
-	or (unit.isContained and not unit.hasExplicitlyEditedContainer))]
+[if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
 if ($request->isMethod('POST')) {
 	[if (not unit.cancelDestination.oclIsUndefined())]
     [unit.handleCancelPost()/]
 	[/if]
-    [unit.customValuesBody('add', sourceParameters)/]
+    [unit.customValuesBody(sourceParameters)/]
 }
 [else]
 $this->[unit.instanceName()/]->handleRequest($request);
@@ -160,43 +159,25 @@ foreach ($[unit.instanceName()/]->[field.persistentFeature.getMethodName()/]() a
 [/let]
 [/for]
 $this->[unit.instanceName()/] = [unit.updateForm(sourceParameters)/];
-[if (unit.customiseValues or unit.hasForcedValueFields or unit.hasDisabledFields)]
-if ($request->isMethod('POST')) {
-	[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancelPost()/]
-	[/if]
-    [unit.customValuesBody('edit', sourceParameters)/]
-}
-[else]
 $this->[unit.instanceName()/]->handleRequest($request);
-	[if (not unit.cancelDestination.oclIsUndefined())]
+[if (not unit.cancelDestination.oclIsUndefined())]
 [unit.handleCancelSubmit()/]
-	[/if]
+[/if]
 if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
-	[for (field : UnitField | unit.formFields->select(f | f.isContains))]
-	[let association : Association = field.persistentFeature.oclAsType(Association)]
+[for (field : UnitField | unit.formFields->select(f | f.isContains))]
+[let association : Association = field.persistentFeature.oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType.instanceName()/])
         if (false === $[unit.instanceName()/]->[field.persistentFeature.getMethodName()/]()->contains($[association.targetType.instanceName()/]))
             $this->[association.targetType.repository.instanceName()/]->remove($[association.targetType.instanceName()/]);
-	[/let]
-	[/for]
+[/let]
+[/for]
     [unit.saveBody(sourceParameters)/]
 }
-[/if]
 [/let]
 [/template]
 
-[template private customValuesBody(unit : EditUnit, customTag : String, sourceParameters : Sequence(Attribute)) post(trim())]
-[if (unit.customiseValues)]
-// [protected ('customise.values.'.concat(unit.instanceName()).concat('.').concat(customTag))]
-// [/protected]
-[/if]
-[if (unit.hasForcedValueFields)]
-// forced values [comment unit.forcedFeatureValues()/]
-[/if]
-[if (unit.isContained and customTag = 'add')]
+[template private customValuesBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [unit.setContainer()/]
-[/if]
 $this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
 foreach ($this->validatorService->validate($[unit.instanceName()/]) as $violation) {
     $path = $violation->getPropertyPath();

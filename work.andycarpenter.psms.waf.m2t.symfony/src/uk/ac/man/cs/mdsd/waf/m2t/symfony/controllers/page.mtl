@@ -32,6 +32,26 @@
 		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() > 1))
 /]
 
+[query private repositoriesUsed(page : Page) : Sequence(Repository)
+	= let containerRepositories : Set(Repository)
+		= page.editUnits
+			->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))
+			->select(u | not u.hasExplicitlyEditedContainer and not u.containingType.oclIsUndefined())
+			->collect(u | u.containingType.repository)
+			->asSet()
+		in let autocompleteRepositories : Set(Repository)
+			= page.editUnits
+				->collect(u | u.autocompleteFields)
+				->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
+				->collect(f | f.optionsFilter.selection.definedBy)
+				->asSet()
+			in page.repositoriesUsed->asSet()
+				->union(containerRepositories)
+				->union(autocompleteRepositories)
+				->asSequence()
+				->sortedBy(r | r.name)
+/]
+
 [query private hasSupportMethods(page : Page) : Boolean
 	= page.units->select(u | u.hasSupportMethods())->notEmpty()
 /]
@@ -71,7 +91,7 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name))]
+[for (repository : Repository | page.repositoriesUsed())]
     private $[repository.instanceName()/];
 
 [/for]
@@ -85,7 +105,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/if]
     private $translationService;
 
-    public function __construct([for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name)) separator (', ')]
+    public function __construct([for (repository : Repository | page.repositoriesUsed()) separator (', ')]
 [repository.className()/] $[repository.instanceName()/][/for][if (page.hasRepositoriesUsed and page.hasServicesUsed)]
 , [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
@@ -93,7 +113,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 , [/if]ValidatorInterface $validator[/if][if (page.hasRepositoriesUsed or page.hasServicesUsed)]
 , [/if]TranslatorInterface $translator)
     {
-	[for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name))]
+	[for (repository : Repository | page.repositoriesUsed())]
         $this->[repository.instanceName()/] = $[repository.instanceName()/];
 	[/for]
 	[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
@@ -142,7 +162,7 @@ use [entity.modelsNamespace()/]\[entity.modelName()/];
 [for (form : DynamicUnit | page.formUnits->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
-[for (repository : Repository | page.repositoriesUsed->sortedBy(r | r.name))]
+[for (repository : Repository | page.repositoriesUsed())]
 use [repository.repositoryNamespace()/]\[repository.className()/];
 [/for]
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
@@ -165,8 +185,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
-[if (page.editUnits->exists(customiseValues) or page.editUnits->exists(hasForcedValueFields)
-	or page.editUnits->exists(isContained and hasExplicitlyEditedContainer))]
+[if (page.editUnits->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))->exists(isContained and not hasExplicitlyEditedContainer))]
 use Symfony\Component\Form\FormError;
 [/if]
 use Symfony\Component\Routing\Annotation\Route;
