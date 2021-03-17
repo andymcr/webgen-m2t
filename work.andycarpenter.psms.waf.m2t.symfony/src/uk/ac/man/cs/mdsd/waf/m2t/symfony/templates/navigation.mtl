@@ -19,7 +19,7 @@
 [if (not model.logoImage.oclIsUndefined())]
   <span class="navbar-brand">[model.image()/]</span>
 [/if]
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
    <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
@@ -64,7 +64,7 @@
 <a class="nav-link disabled"><{{ '[submenu.displayLabelId()/]' | trans }}/a>
 [else]
 <div class="nav-item dropdown">
- <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#[submenu.id()/]" role="button" aria-expanded="false">{{ '[submenu.displayLabelId()/]' | trans }}</a>
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#[submenu.id()/]" role="button" aria-expanded="false">{{ '[submenu.displayLabelId()/]' | trans }}</a>
  [submenu.subDropdown()/]
 </div>
 [/if]
