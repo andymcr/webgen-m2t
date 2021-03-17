@@ -18,7 +18,7 @@
 
 [query public propertyAccessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if field.oclIsKindOf(InterfaceField) then
-			null
+			parentAccessor.concat('.').concat(field.oclAsType(InterfaceField).name)
 		else if field.oclIsTypeOf(UnitAttribute) then
 			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor, alias, objectAccess)
 		else

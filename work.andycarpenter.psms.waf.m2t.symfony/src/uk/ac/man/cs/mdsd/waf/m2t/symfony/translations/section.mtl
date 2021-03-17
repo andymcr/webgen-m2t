@@ -126,10 +126,12 @@
 	[/if]
 	[if (unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
 [comment form translates all or none of display label, title and placeholder /]
+		[if (field.hasTitle)]
 <trans-unit id="[field.customisedTitleId()/]">
  <source>[field.customisedTitleId()/]</source>
  <target>[field.title.validXML()/]</target>
 </trans-unit>
+		[/if]
 		[if (field.hasPlaceholder)]
 <trans-unit id="[field.customisedPlaceholderId()/]">
  <source>[field.customisedPlaceholderId()/]</source>

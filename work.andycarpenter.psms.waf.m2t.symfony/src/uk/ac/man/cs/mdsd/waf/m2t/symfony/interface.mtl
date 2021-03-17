@@ -261,7 +261,8 @@
 /]
 
 [query public hasPlaceholder(field : UnitField) : Boolean
-	= field.oclIsTypeOf(UnitAttribute) or field.oclIsTypeOf(InterfaceField)
+	= (field.oclIsTypeOf(UnitAttribute) or field.oclIsKindOf(InterfaceField))
+		and field.hasPlaceholder
 /]
 
 [query public id(field : UnitField) : String

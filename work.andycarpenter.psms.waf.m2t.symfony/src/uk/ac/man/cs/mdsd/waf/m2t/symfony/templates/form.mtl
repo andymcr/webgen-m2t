@@ -119,8 +119,9 @@
 [/template]
 
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
-	? (field.isSingleton and not field.isContains
-			or field.oclIsTypeOf(UnitAssociation) and not field.isContains) post(trim())]
+	? (field.isInterfaceField
+		or (field.isAttributeField and field.isSingleton)
+		or (field.isAssociationField and not field.isContains)) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/], {[if (field.hasTranslations())]
  label: '[field.customisedDisplayLabelId()/]',[/if]
@@ -134,7 +135,8 @@
  class: '[field.fieldLabelClass/]',[/if]
 [if (field.hasPlaceholder())]
  placeholder: [field.placeholder()/],[/if]
- title: [field.title()/], }[if (field.hasTranslations())]
+[if (field.hasTitle)]
+ title: [field.title()/],[/if] }[if (field.hasTranslations())]
 , [/if][if (field.hasTranslations())]
 translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/template]
