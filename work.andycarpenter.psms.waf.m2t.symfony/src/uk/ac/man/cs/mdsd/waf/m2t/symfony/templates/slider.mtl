@@ -17,7 +17,8 @@
 <section [if (sliderUnit.hasSectionClass)] class="[sliderUnit.sectionClass/]" [/if]id="[sliderUnit.instanceName()/]">
  <h4[if (sliderUnit.hasCaptionClass or sliderUnit.omitCaption)]
  class="[if (sliderUnit.hasCaptionClass)][sliderUnit.captionClass/][/if] [if (sliderUnit.omitCaption)] hidden[/if]"[/if]>[sliderUnit.unitTitle()/]</h4>
- [sliderUnit.materializeCSS()/]
+ [comment sliderUnit.materializeCSS()/]
+ [sliderUnit.bootstrap()/]
 </section>
 [/file]
 [/let]
@@ -45,4 +46,16 @@ var instance = M.Slider.init(elem[if (unit.showTime > 0 or unit.transitionTime >
 	[/if]
     }[/if]);
 </script>
+[/template]
+
+[template private bootstrap(unit : SliderUnit) post(trim())]
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+ <div class="carousel-inner">
+[let variable : String = unit.contentType.instanceName()]
+{% for [variable/] in [unit.instanceName()/] %}
+  <div class="carousel-item{% if loop.first %} active{% endif %}">[unit.image(variable, '')/]</div>
+{% endfor %}
+[/let]
+ </div>
+</div>
 [/template]
