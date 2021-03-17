@@ -96,14 +96,14 @@
 [template private userDropdown(model : WafModel) post(trim())]
 <div class="nav-item dropdown">
 {%- if app.user -%}
- <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
 {%- elseif not app.user -%}
 [if (model.isLocallyAuthenticated)]
- <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.localAuthentication.loginUnit.displayLabel/]</a>
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">[model.localAuthentication.loginUnit.displayLabel/]</a>
 {%- endif -%}
  [model.localAuthentication.userDropdown()/]
 [elseif (model.isCasAuthenticated)]
- <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#user-dropdown">[model.casAuthentication.loginLabel/]</a>
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">[model.casAuthentication.loginLabel/]</a>
 {%- endif -%}
  [model.casAuthentication.userDropdown()/]
 [/if]
