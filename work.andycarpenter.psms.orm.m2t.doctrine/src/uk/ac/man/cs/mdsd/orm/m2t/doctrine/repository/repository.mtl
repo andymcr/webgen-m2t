@@ -118,10 +118,6 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
     [repository.findMethod()/]
 
 [/if]
-[if (repository.findAll.oclIsUndefined())]
-    [repository.findAllMethod()/]
-
-[/if]
 [if (repository.serves.attributes->select(a | not a.hasSlugFields)->notEmpty())]
     [repository.createMethod()/]
 
@@ -217,21 +213,6 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 
 [template private findWhere(key : Attribute, base : Entity) post(trim())]
 $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key.routeParameterName(base)/]')
-[/template]
-
-[template private findAllMethod(repository : Repository) post(trim())]
-public function findAll([repository.limitFormals(10)/])
-{
-    if ($offset < 0)
-	    return parent::findAll();
-    else {
-        $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
-        $queryBuilder->setFirstResult($offset);
-        $queryBuilder->setMaxResults($limit);
-        $query = $queryBuilder->getQuery();
-        return new Paginator($query[if (repository.serves.primaryKeys->size() > 1)], false[/if]);
-    }
-}
 [/template]
 
 [template private createMethod(repository : Repository) post(trim())]
