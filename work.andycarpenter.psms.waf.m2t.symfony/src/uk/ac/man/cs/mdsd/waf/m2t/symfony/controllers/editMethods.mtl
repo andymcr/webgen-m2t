@@ -93,7 +93,6 @@ public function [unit.actionName()/]X([unit.actionMethodFormals()/]): Response
 
 [template private actionCreateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
-$[unit.instanceName()/] = [unit.createInstance()/];
 $this->[unit.instanceName()/] = [unit.createForm(sourceParameters)/];
 [if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
 if ($request->isMethod('POST')) {
@@ -190,7 +189,7 @@ if ($this->[unit.instanceName()/]->isValid()) {
 
 [template private createForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
+$this->createForm([unit.typeClassName()/]::class, null, array(
     'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
@@ -263,7 +262,6 @@ return [unit.displayedOn.redirect(sourceParameters)/];
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.displayEmptyForm())]
 if (!isset($this->[editUnit.instanceName()/])) {
-    $[editUnit.instanceName()/] = [editUnit.createInstance()/];
     $this->[editUnit.instanceName()/] = [editUnit.createForm(editUnit.routeParameters())/];
 }
 [/if]
