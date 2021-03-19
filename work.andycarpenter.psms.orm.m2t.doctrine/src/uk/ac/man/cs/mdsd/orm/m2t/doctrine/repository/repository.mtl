@@ -39,6 +39,9 @@
 <?php
 namespace [repository.repositoryNamespace()/];
 
+[if (repository.serves.attributes->notEmpty())]
+use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
+[/if]
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 [if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
@@ -50,12 +53,24 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 [if (repository.hasCurrentUser())]
 use Symfony\Component\Security\Core\Security;
 [/if]
-[if (repository.serves.attributes->notEmpty())]
-use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
+[if (repository.serves.implementsUserInterface)]
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
+[if (repository.serves.implementResetPasswordInterface)]
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
+[/if]
+
 
 class [repository.className()/] extends [repository.baseRepositoryClassName()/]
 {
+[if (repository.serves.implementResetPasswordInterface)]
+    use ResetPasswordRequestRepositoryTrait;
+
+[/if]
 [for (constant : Constant | repository.constants)]
     [if (constant.useFunction())]private[else]public[/if] static $[constant.name/] = [if (constant.useFunction())]null[else][constant.value.queryExpression()/][/if];
 
@@ -91,6 +106,14 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
     }
 
 [/for]
+[if (repository.serves.implementsUserInterface)]
+    [repository.userInterfaceMethods()/]
+
+[/if]
+[if (repository.serves.implementResetPasswordInterface)]
+    [repository.resetPasswordMethods()/]
+
+[/if]
 [if (repository.findOne.oclIsUndefined() and repository.serves.hasRouteParameters())]
     [repository.findMethod()/]
 
@@ -117,9 +140,31 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
 [/file]
 [/template]
 
+[template private userInterfaceMethods(repository : Repository) post(trim())]
+/**
+ * Used to upgrade (rehash) the user's password automatically over time.
+ */
+public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+{
+    if (!$user instanceof [repository.serves.modelClassName()/]) {
+        throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+    }
+
+    $user->setPassword($newEncodedPassword);
+    $this->save($user, true);
+}
+[/template]
+
+[template private resetPasswordMethods(repository : Repository) post(trim())]
+public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
+{
+    return new [repository.serves.modelClassName()/]($user, $expiresAt, $selector, $hashedToken);
+}
+[/template]
+
 [template private findMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
-public function [repository.serves.findMethodName()/]([entity.routeParameters()/]): ?[repository.serves.modelName()/]
+public function [repository.serves.findMethodName()/]([entity.routeParameters()/]): ?[repository.serves.modelClassName()/]
 {
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
     return $queryBuilder
@@ -191,9 +236,9 @@ public function findAll([repository.limitFormals(10)/])
 
 [template private createMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
-public function create([for (attribute : Attribute | entity.attributes->select(a | not a.hasSlugFields and a.isSingleton)) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false): [repository.serves.modelName()/]
+public function create([for (attribute : Attribute | entity.attributes->select(a | not a.hasSlugFields and a.isSingleton)) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false): [repository.serves.modelClassName()/]
 {
-    $new = new [entity.modelName()/]();
+    $new = new [entity.modelClassName()/]();
 [for (attribute : Attribute | entity.attributes->select(a | not a.hasSlugFields and a.isSingleton))]
     $new->set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]);
 [/for]
@@ -235,7 +280,7 @@ public function flush(): void
 [template private selectionMethod(selection : Selection)
 	? (selection.filters->isEmpty()) post(trim())]
 public function [selection.methodName/]([selection.formals()/])[if (selection.limit = 1)]
-: ?[selection.definedBy.serves.modelName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
+: ?[selection.definedBy.serves.modelClassName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
 
 {
     [selection.builderCode()/]
@@ -265,7 +310,7 @@ private function [selection.parametersMethodName()/]($query[if (selection.select
 
 [/if]
 public function [selection.methodName/]([selection.formals()/])[if (selection.limit = 1)]
-: ?[selection.definedBy.serves.modelName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
+: ?[selection.definedBy.serves.modelClassName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
 
 {
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
@@ -279,7 +324,7 @@ public function [selection.methodName/]([selection.formals()/])[if (selection.li
 [for (filter : Filter | selection.filters)]
 
 public function [filter.methodName/]([filter.formals()/])[if (selection.limit = 1)]
-: ?[selection.definedBy.serves.modelName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
+: ?[selection.definedBy.serves.modelClassName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
 
 {
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
