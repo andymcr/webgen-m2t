@@ -544,7 +544,11 @@ int
 	[/if]
 [/let]
 [elseif (feature.oclIsKindOf(Association))]
+	[if (feature.partOf.implementsResetPasswordInterface)]
+object
+	[else]
 [feature.oclAsType(Association).modelClassName()/]
+	[/if]
 [/if]
 [/template]
 
