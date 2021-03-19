@@ -13,6 +13,15 @@
 		in reserved->includes(word)
 /]
 
+[query private includeFeature(feature : Feature) : Boolean
+	= not feature.partOf.implementResetPasswordInterface
+		or (feature.name <> 'expiresAt'
+			and feature.name <> 'ipAddress'
+			and feature.name <> 'requestedAt'
+			and feature.name <> 'selector')
+/]
+
+
 [template public model(entity : Entity)]
 [file(entity.modelFilename(), false)]
 <?php
@@ -47,8 +56,16 @@ namespace [entity.modelsNamespace()/];
  * @Vich\Uploadable
 [/if]
  **/
-class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements UserInterface[/if][if (entity.implementForumUser)] implements ForumUserInterface[/if]
+class [entity.modelClassName()/][if (entity.implementsUserInterface)]
+ implements UserInterface[/if][if (entity.implementForumUser)]
+ implements ForumUserInterface[/if][if (entity.implementResetPasswordInterface)]
+ implements ResetPasswordRequestInterface[/if]
+
 {
+[if (entity.implementResetPasswordInterface)]
+    use ResetPasswordRequestTrait;
+
+[/if]
 [if (not entity.hasPrimaryKeys)]
     [entity.autoIdFeature()/]
 
@@ -59,11 +76,15 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [entity.forumUserProperties()/]
 
 [/if]
-[if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates)]
+[if ((entity.partOf.timestampCreation or entity.partOf.timestampUpdates)
+		and not entity.implementResetPasswordInterface)]
     [entity.timestampFeatures()/]
 
 [/if]
-[if (entity.hasFeaturesWithDefaultValue or entity.hasResourceAttributes or entity.hasCollectionAssociations)]
+[if (entity.hasFeaturesWithDefaultValue
+		or entity.hasResourceAttributes
+		or entity.hasCollectionAssociations
+		or entity.implementResetPasswordInterface)]
     [entity.constructor()/]
 
 [/if]
@@ -71,20 +92,21 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
     [entity.idMethods()/]
 
 [/if]
-[for (feature : Feature | entity.features)]
+[for (feature : Feature | entity.features->select(f | f.includeFeature()))]
     [feature.featureMethods()/]
 
 [/for]
+[if (entity.implementsUserInterface)]
+    [entity.userInterfaceMethods()/]
+
+[/if]
 [if (entity.implementForumUser)]
     [entity.forumUserMethods()/]
 
 [/if]
-[if (entity.oclIsTypeOf(Entity) and (entity.partOf.timestampCreation or entity.partOf.timestampUpdates))]
+[if ((entity.partOf.timestampCreation or entity.partOf.timestampUpdates)
+		and not entity.implementResetPasswordInterface)]
     [entity.timestampMethods()/]
-
-[/if]
-[if (entity.implementsUserInterface)]
-    [entity.userInterfaceMethods()/]
 
 [/if]
 [for (label : ModelLabel | entity.labels)]
@@ -96,11 +118,17 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)] implements
 [/template]
 
 [template private useStatements(entity : Entity) post(trim())]
+[if(not entity.repository.oclIsUndefined())]
+use [entity.repositoryNamespace()/]\[entity.repository.className()/];
+[/if]
 use Doctrine\ORM\Mapping as ORM;
 [if (entity.hasCollectionAssociations)]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (entity.partOf.timestampCreation or entity.partOf.timestampUpdates or entity.hasSlugAttributes)]
+[if (not entity.implementResetPasswordInterface
+		and (entity.partOf.timestampCreation
+				or entity.partOf.timestampUpdates
+				or entity.hasSlugAttributes))]
 use Gedmo\Mapping\Annotation as Gedmo;
 [/if]
 [if (entity.unique->notEmpty() or entity.hasUniqueAttributes)]
@@ -124,6 +152,10 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 [if (entity.hasValidatedFeatures)]
 use Symfony\Component\Validator\Constraints as Assert;
 [/if]
+[if (entity.implementResetPasswordInterface)]
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+[/if]
 [if (entity.hasResourceAttributes)]
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -133,9 +165,6 @@ use [entity.validatorNamespace()/]\Constraints as AppAssert;
 [/if]
 [if (entity.implementForumUser)]
 use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
-[/if]
-[if(not entity.repository.oclIsUndefined())]
-use [entity.repositoryNamespace()/]\[entity.repository.className()/];
 [/if]
 [/template]
 
@@ -149,25 +178,33 @@ protected $[entity.autoKeyName/];
 [/template]
 
 [template private featureProperties(entity : Entity) post(trim())]
-[for (feature : Feature | entity.features->select(f | f.isVisible or f.isOwningEnd))]
+[for (feature : Feature | entity.allFeatures
+		->select(f | f.isVisible or f.isOwningEnd)
+		->select(f | f.includeFeature()))]
+[feature.featureProperty()/]
+
+[/for]
+[/template]
+
+[template private featureProperty(feature : Feature) post(trim())]
 [comment TODO sortout location features /]
-	[if (not feature.isLocationFeature and not feature.isResourceFeature)]
+[if (not feature.isLocationFeature and not feature.isResourceFeature)]
 /**
   [feature.ormAnnotation()/]
-		[if (feature.isValidated)]
+	[if (feature.isValidated)]
   [feature.validationAnnotation()/]
-		[/if]
-		[if (feature.hasSerializationControl)]
+	[/if]
+	[if (feature.hasSerializationControl)]
   [feature.serializationAnnotation()/]
-		[/if]
+	[/if]
   **/
-		[if (feature.oclIsKindOf(Attribute))]
+	[if (feature.oclIsKindOf(Attribute))]
 protected $[feature.columnName/];
-		[else]
+	[else]
 protected $[feature.modelPropertyName()/];
-		[/if]
+	[/if]
 
-	[elseif (feature.isResourceFeature)]
+[elseif (feature.isResourceFeature)]
 /**
  * @Vich\UploadableField(mapping="[feature.modelPropertyName()/]", fileNameProperty="[feature.modelPropertyName()/].name", size="[feature.modelPropertyName()/].size", mimeType="[feature.modelPropertyName()/].mimeType", originalName="[feature.modelPropertyName()/].originalName", dimensions="[feature.modelPropertyName()/].dimensions")
  *
@@ -182,8 +219,7 @@ protected $[feature.modelPropertyName()/]File;
  **/
 protected $[feature.modelPropertyName()/];
 
-	[/if]
-[/for]
+[/if]
 [/template]
 
 [template private forumUserProperties(entity : Entity) post(trim())]
@@ -262,7 +298,7 @@ protected $updated;
 [if (association.isPrimaryKey)]
 * @ORM\Id
 [/if]
-* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelClassName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
 , [if (association.isOwningEnd)]
 inversedBy[else]mappedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains)]
 , [if (association.isOwningEnd)]orphanRemoval=true[else]cascade={"persist", "remove"}[/if][/if][/if])
@@ -283,7 +319,7 @@ inversedBy[else]mappedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 	? (feature.oclIsKindOf(Association) and not feature.isSingleton) post(trim())]
 [let association : CollectionAssociation = feature.oclAsType(CollectionAssociation)]
 [let opposite : Association = association.opposite]
-* @ORM\[association.associationRelationship/](targetEntity="[association.modelName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelClassName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
 , [if (association.associationRelationship = CollectionAssociationRelationships::OneToMany or not association.isOwningEnd)]
 mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains)]
 , cascade={"persist", "remove"}[/if][/if])
@@ -421,8 +457,13 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/template]
 
 [template private constructor(entity : Entity) post(trim())]
-public function __construct()
+public function __construct([if (entity.implementResetPasswordInterface)]
+object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken[/if])
 {
+[if (entity.implementResetPasswordInterface)]
+    $this->user = $user;
+    $this->initialize($expiresAt, $selector, $hashedToken);
+[/if]
 [for (feature : Feature | entity.features)]
 	[if (feature.hasDefaultValue)]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
@@ -441,7 +482,7 @@ public function __construct()
 [/template]
 
 [template private idMethods(entity : Entity) post(trim())]
-public function getId()
+public function getId(): int
 {
     return $this->[entity.autoKeyName/];
 }
@@ -474,7 +515,8 @@ public function getId()
 [/template]
 
 [template private getMethod(feature : Feature) post(trim())]
-public function [feature.getMethodName()/]()
+public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]
+?[/if][feature.returnType()/]
 {
 [if (feature.isDerived)]
     // [protected (feature.name.concat('.getMethod'))]
@@ -484,6 +526,26 @@ public function [feature.getMethodName()/]()
     [feature.getMethodCore()/]
 [/if]
 }
+[/template]
+
+[template private returnType(feature : Feature) post(trim())]
+[if (not feature.isSingleton)]
+array
+[elseif (feature.isDateFeature)]
+\DateTime
+[elseif (feature.oclIsKindOf(SingletonAttribute))]
+[let singleton : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
+	[if (singleton.ormType = 'boolean')]
+bool
+	[elseif (singleton.ormType = 'integer')]
+int
+	[else]
+[singleton.ormType/]
+	[/if]
+[/let]
+[elseif (feature.oclIsKindOf(Association))]
+[feature.oclAsType(Association).modelClassName()/]
+[/if]
 [/template]
 
 [template private getMethodCore(feature : Feature) post(trim())]
@@ -504,7 +566,7 @@ public function [feature.getMethodName()/]File(): ?File
 [template private setMethod(feature : Feature)
 	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
 [let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
-public function [attribute.setMethodName()/]($[attribute.instanceName()/])
+public function [attribute.setMethodName()/]($[attribute.instanceName()/]): void
 {
 [if (attribute.customiseSet)]
     // [protected (attribute.name.concat('.setMethod'))]
@@ -539,7 +601,7 @@ $this->[attribute.columnName/] = $[attribute.instanceName()/];
 /**
  * @param File|UploadedFile $[feature.getMethodName()/]
  **/
-public function [feature.setMethodName()/]File(?File $[feature.instanceName()/] = null)
+public function [feature.setMethodName()/]File(?File $[feature.instanceName()/] = null): void
 {
     $this->[feature.modelPropertyName()/]File = $[feature.instanceName()/];
     if (null !== $[feature.instanceName()/]) {
@@ -553,7 +615,7 @@ public function [feature.setMethodName()/]File(?File $[feature.instanceName()/] 
 [template private setMethod(feature : Feature)
 	? (feature.oclIsKindOf(Association)) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
-public function set[association.modelPropertyName().toUpperFirst()/]($[association.instanceName()/])
+public function set[association.modelPropertyName().toUpperFirst()/]($[association.instanceName()/]): void
 {
 [if (association.customiseSet)]
     // [protected (association.name.concat('.setMethod'))]
@@ -767,14 +829,14 @@ public function setBanned($banned)
 
 [template private timestampMethods(entity : Entity) post(trim())]
 [if (entity.partOf.timestampCreation)]
-public function getCreated()
+public function getCreated(): \DateTime
 {
     return $this->created;
 }
 
 [/if]
 [if (entity.partOf.timestampUpdates)]
-public function getUpdated()
+public function getUpdated(): \DateTime
 {
     return $this->updated;
 }
@@ -782,7 +844,7 @@ public function getUpdated()
 [/template]
 
 [template private label(label : ModelLabel) post(trim())]
-public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if]()
+public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if](): String
 {
 [if (label.customise)]
     // [protected ('label.'.concat(label.name))]
