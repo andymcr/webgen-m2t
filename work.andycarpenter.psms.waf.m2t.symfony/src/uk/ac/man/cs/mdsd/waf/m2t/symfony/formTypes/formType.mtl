@@ -85,7 +85,7 @@ class [unit.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['['/]
-            'data_class' => '[unit.modelsNamespace()/]\[unit.modelName()/]'
+            'data_class' => '[unit.modelsNamespace()/]\[unit.modelClassName()/]'
         [']'/]);
     }
 }
@@ -127,7 +127,7 @@ class [association.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['['/]
-            'data_class' => '[association.modelsNamespace()/]\[association.association.targetType.modelName()/]'
+            'data_class' => '[association.modelsNamespace()/]\[association.association.targetType.modelClassName()/]'
         [']'/]);
     }
 }
@@ -136,7 +136,7 @@ class [association.typeClassName()/] extends AbstractType
 
 [template private useStatements(unit : SingletonUnit) post(trim())]
 [for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.persistentFeature.name))]
-use [feature.modelsNamespace()/]\[feature.enumerationType.modelName()/];
+use [feature.modelsNamespace()/]\[feature.enumerationType.modelClassName()/];
 [/for]
 [for (repository : Repository | unit.choicesRepositories())]
 use [repository.repositoryNamespace()/]\[repository.className()/];
@@ -189,7 +189,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [template private useStatements(association : UnitAssociation) post(trim())]
 [let features : OrderedSet(Feature) = association.association.targetType.features->select(f | not f.isContainer)]
 [for (feature : Feature | features->select(f | f.isEnumerationFeature)->sortedBy(f | f.name))]
-use [feature.modelsNamespace()/]\[feature.enumerationType.modelName()/];
+use [feature.modelsNamespace()/]\[feature.enumerationType.modelClassName()/];
 [/for]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -255,7 +255,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
 		[/if]
 	[/if]
 [elseif (attribute.isEnumerationFeature)]
-    'choices' => [attribute.enumerationType.modelName()/]::values(),
+    'choices' => [attribute.enumerationType.modelClassName()/]::values(),
     'placeholder' => 'actions.labels.select_one',
 [/if]
 [if (attribute.hasHtml5Attributes)]
@@ -342,7 +342,7 @@ add('[association.modelPropertyName()/]', EntityType::class, ['['/]
 [if (not association.isSingleton or not association.isRequired)]
     'required' => false,
 [/if]
-    'class' => '[association.appName()/]:[association.modelName()/]',
+    'class' => '[association.appName()/]:[association.modelClassName()/]',
 [if (hasAutocomplete)]
     'choices' => !is_null($options['['/]'data'[']'/]) && !is_null($options['['/]'data'[']'/]->[feature.getMethodName()/]())
         ? ['['/] $options['['/]'data'[']'/]->[feature.getMethodName()/]() [']'/]
@@ -433,7 +433,7 @@ $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
 		[if (not field.isSingleton or not field.isRequired)]
             'required' => false,
 		[/if]
-            'class' => '[field.appName()/]:[association.association.modelName()/]',
+            'class' => '[field.appName()/]:[association.association.modelClassName()/]',
             'choices' => ['['/] $[field.instanceName()/] [']'/],
 		[if (not field.isSingleton)]
             'multiple' => true,

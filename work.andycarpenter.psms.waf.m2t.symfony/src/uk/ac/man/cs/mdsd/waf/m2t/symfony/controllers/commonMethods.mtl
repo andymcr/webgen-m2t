@@ -188,7 +188,7 @@ $this->[unit.findElementSelection.definedBy.instanceName()/]->[unit.findElementS
 [/template]
 
 [template public createInstance(unit : DynamicUnit) post(trim())]
-new [unit.modelName()/]()
+new [unit.modelClassName()/]()
 [/template]
 
 

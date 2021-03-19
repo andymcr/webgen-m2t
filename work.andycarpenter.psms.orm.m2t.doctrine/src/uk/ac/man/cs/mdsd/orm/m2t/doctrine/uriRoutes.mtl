@@ -181,7 +181,7 @@
 	= if routeParameters->select(p | p.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
-			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
+			attribute.partOf.oclAsType(Entity).modelClassName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif
 /]

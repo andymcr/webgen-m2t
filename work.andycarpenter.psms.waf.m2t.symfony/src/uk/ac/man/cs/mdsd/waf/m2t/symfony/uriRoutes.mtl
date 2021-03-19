@@ -288,7 +288,7 @@
 	= if parameters->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
-			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
+			attribute.partOf.oclAsType(Entity).modelClassName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif
 /]
@@ -299,7 +299,7 @@
 		else if resource.routeParameters()->select(k | k.name.toLowerCase() = attribute.name.toLowerCase())->size() < 2 then
 			attribute.name
 		else
-			attribute.partOf.oclAsType(Entity).modelName().toLowerFirst()
+			attribute.partOf.oclAsType(Entity).modelClassName().toLowerFirst()
 				.concat(attribute.name.toUpperFirst())
 		endif endif
 /]

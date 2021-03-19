@@ -35,7 +35,7 @@ public function [unit.actionName()/](): Response
  */
 public function [unit.actionName()/](AuthenticationUtils $authenticationUtils): Response
 {
-    $[unit.instanceName()/] = new [unit.modelName()/];
+    $[unit.instanceName()/] = new [unit.modelClassName()/];
     $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[unit.instanceName()/], array(
         'action' => $this->generateUrl('[unit.routeName()/]'),
         'csrf_token_id' => '[unit.displayedOn.partOf.siteName/]_authenticate',

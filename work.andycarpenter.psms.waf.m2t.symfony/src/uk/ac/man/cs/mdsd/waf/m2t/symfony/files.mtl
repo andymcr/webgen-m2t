@@ -226,7 +226,7 @@
 
 [query public modelFilename(unit : DynamicUnit) : String
 	= unit.modelsDirectory().concat('/')
-		.concat(unit.modelName())
+		.concat(unit.modelClassName())
 		.concat(unit.executableExtension())
 /]
 

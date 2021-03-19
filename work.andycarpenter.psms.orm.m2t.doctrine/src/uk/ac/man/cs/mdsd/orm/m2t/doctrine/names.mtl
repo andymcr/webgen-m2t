@@ -39,10 +39,6 @@
 	= entity.name
 /]
 
-[query public modelName(entity : Entity) : String
-	= entity.name
-/]
-
 [query public routeName(entity : Entity) : String
 	= entity.name.toLowerFirst()
 /]
@@ -87,8 +83,8 @@
 	= feature.modelPropertyName()
 /]
 
-[query public modelName(association : Association) : String
-	= association.targetType.modelName()
+[query public modelClassName(association : Association) : String
+	= association.targetType.modelClassName()
 /]
 
 [query public removeMethodName(feature : Feature) : String

@@ -26,7 +26,7 @@ class EnumerationTypes extends AbstractExtension
     {
         return array(
 [for (enumerationType : EnumerationType | model.enumerationTypes)]
-            '[enumerationType.filterName()/]' => new TwigFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelName()/]', 'value')),
+            '[enumerationType.filterName()/]' => new TwigFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelClassName()/]', 'value')),
 [/for]
         );
     }
