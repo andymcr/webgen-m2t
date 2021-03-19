@@ -224,12 +224,6 @@
 		.concat(page.javascriptExtension())
 /]
 
-[query public modelFilename(unit : DynamicUnit) : String
-	= unit.modelsDirectory().concat('/')
-		.concat(unit.modelClassName())
-		.concat(unit.executableExtension())
-/]
-
 [query public routingBaseFilename(eObject : EObject) : String
 	= eObject.configDirectory().concat('/').concat('routing')
 /]
