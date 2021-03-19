@@ -14,7 +14,7 @@
 /]
 
 [query private includeFeature(feature : Feature) : Boolean
-	= not feature.partOf.implementResetPasswordInterface
+	= not feature.partOf.implementsResetPasswordInterface
 		or (feature.name <> 'expiresAt'
 			and feature.name <> 'ipAddress'
 			and feature.name <> 'requestedAt'
@@ -57,12 +57,12 @@ namespace [entity.modelsNamespace()/];
 [/if]
  **/
 class [entity.modelClassName()/][if (entity.implementsUserInterface)]
- implements UserInterface[/if][if (entity.implementForumUser)]
- implements ForumUserInterface[/if][if (entity.implementResetPasswordInterface)]
+ implements UserInterface[/if][if (entity.implementsForumUser)]
+ implements ForumUserInterface[/if][if (entity.implementsResetPasswordInterface)]
  implements ResetPasswordRequestInterface[/if]
 
 {
-[if (entity.implementResetPasswordInterface)]
+[if (entity.implementsResetPasswordInterface)]
     use ResetPasswordRequestTrait;
 
 [/if]
@@ -72,19 +72,19 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)]
 [/if]
     [entity.featureProperties()/]
 
-[if (entity.implementForumUser)]
+[if (entity.implementsForumUser)]
     [entity.forumUserProperties()/]
 
 [/if]
 [if ((entity.partOf.timestampCreation or entity.partOf.timestampUpdates)
-		and not entity.implementResetPasswordInterface)]
+		and not entity.implementsResetPasswordInterface)]
     [entity.timestampFeatures()/]
 
 [/if]
 [if (entity.hasFeaturesWithDefaultValue
 		or entity.hasResourceAttributes
 		or entity.hasCollectionAssociations
-		or entity.implementResetPasswordInterface)]
+		or entity.implementsResetPasswordInterface)]
     [entity.constructor()/]
 
 [/if]
@@ -100,12 +100,12 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)]
     [entity.userInterfaceMethods()/]
 
 [/if]
-[if (entity.implementForumUser)]
+[if (entity.implementsForumUser)]
     [entity.forumUserMethods()/]
 
 [/if]
 [if ((entity.partOf.timestampCreation or entity.partOf.timestampUpdates)
-		and not entity.implementResetPasswordInterface)]
+		and not entity.implementsResetPasswordInterface)]
     [entity.timestampMethods()/]
 
 [/if]
@@ -125,7 +125,7 @@ use Doctrine\ORM\Mapping as ORM;
 [if (entity.hasCollectionAssociations)]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (not entity.implementResetPasswordInterface
+[if (not entity.implementsResetPasswordInterface
 		and (entity.partOf.timestampCreation
 				or entity.partOf.timestampUpdates
 				or entity.hasSlugAttributes))]
@@ -152,7 +152,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 [if (entity.hasValidatedFeatures)]
 use Symfony\Component\Validator\Constraints as Assert;
 [/if]
-[if (entity.implementResetPasswordInterface)]
+[if (entity.implementsResetPasswordInterface)]
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 [/if]
@@ -163,7 +163,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 [if (entity.isContained and entity.containerUniqueAttributes->notEmpty())]
 use [entity.validatorNamespace()/]\Constraints as AppAssert;
 [/if]
-[if (entity.implementForumUser)]
+[if (entity.implementsForumUser)]
 use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
 [/if]
 [/template]
@@ -457,10 +457,10 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/template]
 
 [template private constructor(entity : Entity) post(trim())]
-public function __construct([if (entity.implementResetPasswordInterface)]
+public function __construct([if (entity.implementsResetPasswordInterface)]
 object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken[/if])
 {
-[if (entity.implementResetPasswordInterface)]
+[if (entity.implementsResetPasswordInterface)]
     $this->user = $user;
     $this->initialize($expiresAt, $selector, $hashedToken);
 [/if]

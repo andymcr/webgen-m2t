@@ -58,7 +58,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
-[if (repository.serves.implementResetPasswordInterface)]
+[if (repository.serves.implementsResetPasswordInterface)]
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
@@ -67,7 +67,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 
 class [repository.className()/] extends [repository.baseRepositoryClassName()/]
 {
-[if (repository.serves.implementResetPasswordInterface)]
+[if (repository.serves.implementsResetPasswordInterface)]
     use ResetPasswordRequestRepositoryTrait;
 
 [/if]
@@ -110,7 +110,7 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
     [repository.userInterfaceMethods()/]
 
 [/if]
-[if (repository.serves.implementResetPasswordInterface)]
+[if (repository.serves.implementsResetPasswordInterface)]
     [repository.resetPasswordMethods()/]
 
 [/if]
