@@ -61,19 +61,11 @@
 /]
 
 [query private hasExplicitValidation(unit : EditUnit) : Boolean
-	= let commonValidation : Boolean
-		= unit.customiseValues or unit.hasForcedValueFields
-		in let addValidation : Boolean
-			= unit.isContained and not unit.hasExplicitlyEditedContainer
-			in let editValidation : Boolean
-				= false -- unit.hasDisabledFeatures
-				in if unit.oclIsTypeOf(CreateUnit) then
-						commonValidation or addValidation
-					else if unit.oclIsTypeOf(UpdateUnit) then
-						commonValidation or editValidation
-					else
-						commonValidation or addValidation or editValidation
-					endif endif
+	= if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
+			unit.isContained and not unit.hasExplicitlyEditedContainer
+		else
+			false
+		endif
 /]
 
 
@@ -159,7 +151,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [for (entity : Entity | page.editUnits
 		->select(u | not u.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)
 		->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
-use [entity.modelsNamespace()/]\[entity.modelName()/];
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
 [for (form : DynamicUnit | page.formUnits->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
