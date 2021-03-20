@@ -11,7 +11,7 @@
 [if (unit.hasOmittedFieldLabels())]
 <ul[if (unit.hasFieldListClass)] class="[unit.fieldListClass/]"[/if]>
 [else]
-<dl[if (unit.hasFieldListClass)] class="[unit.fieldListClass/]"[/if]>
+<dl[if (unit.hasDefinitionFieldListClass)] class="[unit.definitionFieldListClass/]"[/if]>
 [/if]
 [for (field : UnitField | unit.displayFields)]
  [field.field(unit, unitAccessor)/]
