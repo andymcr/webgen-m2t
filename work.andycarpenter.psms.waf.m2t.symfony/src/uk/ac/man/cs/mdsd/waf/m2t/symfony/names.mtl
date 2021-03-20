@@ -14,7 +14,7 @@
 
 
 [query public snakeCase(string : String) : String
-	= string.toLowerFirst().replaceAll('([A-Z])', '_$1').toLower()
+	= string.toLowerFirst().replaceAll('([A-Z]+)', '_$1').toLower()
 /]
 
 
@@ -404,10 +404,6 @@
 
 [query public uniqueName(unit : ContentUnit) : String
 	= unit.displayedOn.uniqueName().concat('_').concat(unit.instanceName())
-/]
-
-[query public viewName(unit : ContentUnit) : String
-	= unit.name.toLowerFirst()
 /]
 
 [query public viewResetCheckName(unit : ForgottenPasswordUnit) : String
