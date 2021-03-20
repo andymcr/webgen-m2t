@@ -40,7 +40,7 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils): 
         'action' => $this->generateUrl('[unit.routeName()/]'),
         'csrf_token_id' => '[unit.displayedOn.partOf.siteName/]_authenticate',
     ));
-    return $this->render('[unit.displayedOn.name/]/[unit.viewName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
         '[unit.instanceName()/]' => $[loginUnit.formName()/]->createView(),
         '[unit.instanceName()/]_error' => $authenticationUtils->getLastAuthenticationError(),
     [']'/]);
@@ -86,7 +86,7 @@ email[else]username[/if]')->getData(),
         );
     }
 
-    return $this->render('[resetUnit.displayedOn.name/]/[resetUnit.viewResetRequestName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
+    return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.viewResetRequestName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
         'requestForm' => $form->createView(),
     [']'/]);
 }
@@ -103,7 +103,7 @@ public function [unit.actionName()/]CheckEmail(): Response
         return $this->redirectToRoute('[resetUnit.routeName()/]');
     }
 
-    return $this->render('[resetUnit.displayedOn.name/]/[resetUnit.viewResetCheckName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
+    return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.viewResetCheckName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
         'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
     [']'/]);
 }
@@ -162,7 +162,7 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
         return $this->redirectToRoute('home');
     }
 
-    return $this->render('[displayedOn.name/]/reset.html.twig', ['['/]
+    return $this->render('[displayedOn.templateName()/]/reset.html.twig', ['['/]
         'resetForm' => $form->createView(),
     [']'/]);
 }

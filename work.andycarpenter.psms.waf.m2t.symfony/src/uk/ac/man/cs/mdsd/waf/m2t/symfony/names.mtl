@@ -218,6 +218,10 @@
 	= page.uniqueName()
 /]
 
+[query public templateName(page : Page) : String
+	= page.instanceName().snakeCase()
+/]
+
 [query public uniqueName(page : Page) : String
 	= page.instanceName()
 /]
@@ -337,6 +341,10 @@
 
 [query public routeName(resource : Resource) : String
 	= resource.instanceName()
+/]
+
+[query public templateName(unit : ContentUnit) : String
+	= unit.instanceName().snakeCase()
 /]
 
 

@@ -86,8 +86,8 @@
 	= eObject.templatesDirectory()
 /]
 
-[query public pageViewDirectory(page : Page) : String
-	= page.templatesDirectory().concat('/').concat(page.name)
+[query public pageTemplateDirectory(page : Page) : String
+	= page.templatesDirectory().concat('/').concat(page.templateName())
 /]
 
 [query public securityDirectory(eObject : EObject) : String
@@ -234,26 +234,32 @@
 		.concat(service.executableExtension())
 /]
 
-[query public viewFilename(unit : ContentUnit) : String
-	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
-		.concat(unit.viewName())
+[query public templateFilename(page : Page) : String
+	= page.pageTemplateDirectory().concat('/')
+		.concat('page')
+		.concat(page.htmlExtension()).concat(page.twigExtension())
+/]
+
+[query public templateFilename(unit : ContentUnit) : String
+	= unit.displayedOn.pageTemplateDirectory().concat('/')
+		.concat(unit.templateName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
 [query public viewResetCheckFilename(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
+	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
 		.concat(unit.viewResetCheckName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
 [query public viewResetEmailFilename(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
+	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
 		.concat(unit.viewResetEmailName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
 [query public viewResetRequestFilename(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.oclAsType(Page).pageViewDirectory().concat('/')
+	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
 		.concat(unit.viewResetRequestName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]

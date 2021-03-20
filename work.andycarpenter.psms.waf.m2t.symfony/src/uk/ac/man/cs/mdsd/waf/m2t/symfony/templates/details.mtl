@@ -21,7 +21,7 @@
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [let accessor : String = detailsUnit.instanceName()]
-[file(detailsUnit.viewFilename(), false)]
+[file(detailsUnit.templateFilename(), false)]
 {% trans_default_domain "entity" %}
 <section [if (detailsUnit.hasSectionClass)] class="[detailsUnit.sectionClass/]" [/if]id="[detailsUnit.instanceName()/]">
  <h4[if (detailsUnit.hasCaptionClass or detailsUnit.omitCaption)]

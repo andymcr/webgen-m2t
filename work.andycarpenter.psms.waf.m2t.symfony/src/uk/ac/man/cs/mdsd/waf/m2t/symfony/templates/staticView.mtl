@@ -9,7 +9,7 @@
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
-[file(staticUnit.viewFilename(), false)]
+[file(staticUnit.templateFilename(), false)]
 <section [if (staticUnit.hasSectionClass)] class="[staticUnit.sectionClass/]" [/if]id="[staticUnit.instanceName()/]">
  <h4[if (staticUnit.hasCaptionClass or staticUnit.omitCaption)]
  class="[if (staticUnit.hasCaptionClass)][staticUnit.captionClass/][/if][if (staticUnit.omitCaption)] hidden[/if]"[/if]>[staticUnit.displayLabel/]</h4>

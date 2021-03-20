@@ -13,7 +13,7 @@
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-[file(galleryUnit.viewFilename(), false)]
+[file(galleryUnit.templateFilename(), false)]
 {% trans_default_domain "entity" %}
 <section [if (galleryUnit.hasSectionClass)] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceName()/]">
 <h4[if (galleryUnit.hasCaptionClass or galleryUnit.omitCaption)]

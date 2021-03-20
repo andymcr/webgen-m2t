@@ -9,7 +9,7 @@
 
 
 [template public page(page : Page) post(trim())]
-[file(page.pageViewDirectory().concat('/page').concat(page.htmlExtension()).concat(page.twigExtension()), false)]
+[file(page.templateFilename(), false)]
 {% extends 'base.html.twig' %}
 
 [if (page.hasJavascript())]
@@ -44,6 +44,6 @@
 [/template]
 
 [template private unitContent(unit : ContentUnit, page : Page) post(trim())]
-{{ include('[page.name/]/[unit.instanceName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
+{{ include('[page.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
 [/template]
 

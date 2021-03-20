@@ -24,7 +24,7 @@
 	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let accessor : String = cardsUnit.instanceName()]
-[file(cardsUnit.viewFilename(), false)]
+[file(cardsUnit.templateFilename(), false)]
 {% trans_default_domain "entity" %}
 <section [if (cardsUnit.hasSectionClass)] class="[cardsUnit.sectionClass/]" [/if]id="[cardsUnit.instanceName()/]">
 <h4[if (cardsUnit.hasCaptionClass or cardsUnit.omitCaption)]

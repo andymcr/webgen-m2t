@@ -13,7 +13,7 @@
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
-[file(unit.viewFilename(), false)]
+[file(unit.templateFilename(), false)]
 [let singletonUnit : SingletonUnit = unit.oclAsType(SingletonUnit)]
 [if (unit.oclIsKindOf(SecurityUnit))]
 {% extends 'base.html.twig' %}
@@ -46,7 +46,7 @@
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
-[file(unit.viewFilename(), false)]
+[file(unit.templateFilename(), false)]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section [if (dynamicUnit.hasSectionClass)] class="[dynamicUnit.sectionClass/]" [/if]id="[dynamicUnit.instanceName()/]">

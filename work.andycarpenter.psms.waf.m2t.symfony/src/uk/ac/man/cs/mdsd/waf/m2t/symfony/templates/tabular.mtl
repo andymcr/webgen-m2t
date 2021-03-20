@@ -20,7 +20,7 @@
 	? (unit.oclIsKindOf(TabularUnit)) post(trim())]
 [let tabularUnit : TabularUnit = unit.oclAsType(TabularUnit)]
 [let accessor : String = tabularUnit.instanceName()]
-[file(tabularUnit.viewFilename(), false)]
+[file(tabularUnit.templateFilename(), false)]
 {% trans_default_domain "entity" %}
 <section [if (tabularUnit.hasSectionClass)] class="[tabularUnit.sectionClass/]" [/if]id="[tabularUnit.instanceName()/]">
  <h4[if (tabularUnit.hasCaptionClass or tabularUnit.omitCaption)]
