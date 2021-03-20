@@ -231,7 +231,7 @@
 	= if unit.isContained then
 			unit.containingType.instanceName()
 		else
-			'uncontained'
+			null
 		endif
 /]
 
