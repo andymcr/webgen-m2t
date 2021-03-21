@@ -19,7 +19,7 @@
 
 [query public homeUnit(model : WafModel) : ContentUnit
 	= let homes : Sequence(ActionMenuEntry)
-		= model.menus.menuEntries()
+		= model.navigation.menus.menuEntries()
 			->select(e | e.name.equalsIgnoreCase('Home'))
 		in if homes->notEmpty() then
 				homes->first().action

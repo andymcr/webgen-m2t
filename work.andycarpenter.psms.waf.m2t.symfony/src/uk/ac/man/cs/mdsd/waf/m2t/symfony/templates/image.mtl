@@ -22,9 +22,9 @@
 /]
 
 
-[template public image(model : WafModel) post(trim())]
-[let imagePath : String = '\''.concat(model.logoImage).concat('\'')]
-<img [imagePath.imageSrc('src', model.logoFilters)/] alt="Logo"/>
+[template public image(navigation : Navigation) post(trim())]
+[let imagePath : String = '\''.concat(navigation.logoImage).concat('\'')]
+<img [imagePath.imageSrc('src', navigation.logoFilters)/] alt="Logo"/>
 [/let]
 [/template]
 

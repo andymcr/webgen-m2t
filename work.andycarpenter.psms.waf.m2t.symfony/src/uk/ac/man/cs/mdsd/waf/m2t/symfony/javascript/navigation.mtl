@@ -5,7 +5,7 @@
 
 [template public javascriptNavigation(model : WafModel) post(trim())]
 [let submenus : Sequence(SubmenuEntry)
-	= model.menus->first().entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry)]
+	= model.navigation.menus->first().entries->select(e | e.oclIsTypeOf(SubmenuEntry)).oclAsType(SubmenuEntry)]
 var sidenav = document.querySelector('.sidenav');
 var instance = M.Sidenav.init(sidenav);
 [if (model.isAuthenticated and submenus->isEmpty())]

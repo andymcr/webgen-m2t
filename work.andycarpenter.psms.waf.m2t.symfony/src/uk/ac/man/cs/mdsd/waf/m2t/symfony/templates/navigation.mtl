@@ -8,38 +8,45 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 
 
-[template public navigation(model : WafModel)]
-[file(model.navigationDirectory().concat('/navigation').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
-[let menu : Menu = model.menus->first()]
+[template public navigation(navigation : Navigation)]
+[file(navigation.navigationDirectory().concat('/navigation').concat(navigation.htmlExtension()).concat(navigation.twigExtension()), false)]
+[let menu : Menu = navigation.menus->first()]
 {% trans_default_domain "navigation" %}
 
 {% block navigation %}
-<nav class="navbar navbar-expand-lg">
+[if (navigation.authenticationMenuPlacement = AuthenticationMenuPlacement::Above)]
+[navigation.authenticationBar()/]
+[/if]
+<nav[if (navigation.hasNavbarClass)] class="[navigation.navbarClass/]"[/if]>
  <div class="container-fluid">
-[if (not model.logoImage.oclIsUndefined())]
-  <span class="navbar-brand">[model.image()/]</span>
+[if (not navigation.logoImage.oclIsUndefined())]
+  <span class="navbar-brand">[navigation.image()/]</span>
 [/if]
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
    <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-   [menu.topItems(model)/]
+   [menu.topItems()/]
   </div>
  </div>
 </nav>
+[if (navigation.authenticationMenuPlacement = AuthenticationMenuPlacement::Below)]
+[navigation.authenticationBar()/]
+[/if]
 {% endblock %}
 [/let]
 [/file]
 [/template]
 
 
-[template private topItems(menu : Menu, model : WafModel) post(trim())]
+[template private topItems(menu : Menu) post(trim())]
 <div class="navbar-nav">
 [for (entry : MenuEntry | menu.entries)]
  [entry.topEntry()/]
 [/for]
-[if (model.isAuthenticated)]
- [model.userDropdown()/]
+[if (menu.definedBy.partOf.isAuthenticated
+		and menu.definedBy.authenticationMenuPlacement = AuthenticationMenuPlacement::Integrated)]
+ [menu.definedBy.partOf.userDropdown()/]
 [/if]
 </div>
 [/template]
@@ -92,6 +99,38 @@
 [/let]
 [/template]
 
+
+[template private authenticationBar(navigation : Navigation) post(trim())]
+<nav id="authentication_menu"[if (navigation.hasAuthenticationBarClass)] class="[navigation.authenticationBarClass/]"[/if]>
+[if (navigation.partOf.isLocallyAuthenticated)]
+ [navigation.partOf.localAuthentication.authenticationBar()/]
+[elseif (navigation.partOf.isCasAuthenticated)]
+ [navigation.partOf.casAuthentication.authenticationBar()/]
+[/if]
+</nav>
+[/template]
+
+[template private authenticationBar(security : LocalAuthenticationSystem) post(trim())]
+{%- if app.user -%}
+<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}:</a>
+<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Profile</a>
+<a class="nav-link" href="{{ path('[security.logoutUnit.routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a>
+{%- elseif not app.user -%}
+<a class="nav-link" href="{{ path('[security.loginUnit.routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a>
+[if (security.allowSelfRegistration)]
+<a class="nav-link" href="{{ path('[security.registrationUnit.routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private authenticationBar(security : CasAuthentication) post(trim())]
+{%- if app.user -%}
+<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}</a>
+<a class="nav-link" href="{{ path('app_logout') }}">[security.logoutLabel/]</a>
+{%- elseif not app.user -%}
+<a class="nav-link" href="{{ path('login') }}">[security.loginLabel/]</a>
+{%- endif -%}
+[/template]
 
 [template private userDropdown(model : WafModel) post(trim())]
 <div class="nav-item dropdown">

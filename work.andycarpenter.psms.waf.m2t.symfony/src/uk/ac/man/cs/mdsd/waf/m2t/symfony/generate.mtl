@@ -2,7 +2,6 @@
 [module generate(
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::css::generate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::envDist/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::framework/]
@@ -66,13 +65,13 @@
 [comment model.api.resources.controller(model)/]
 [/if]
 
-[model.navigation()/]
+[model.navigation.navigation()/]
 [model.generatePage()/]
 [model.pages->select(p | p.hasNonSecurityUnits).page()/]
 [model.pages.units.unitView()/]
 
 [model.entityTranslations()/]
-[model.navigationTranslations()/]
+[model.navigation.navigationTranslations()/]
 [model.sectionsTranslations()/]
 
 
@@ -88,8 +87,6 @@
 [/let]
 [/if]
 [/if]
-
-[comment model.css(model.cssDirectory())/]
 
 [model.javascript()/]
 
