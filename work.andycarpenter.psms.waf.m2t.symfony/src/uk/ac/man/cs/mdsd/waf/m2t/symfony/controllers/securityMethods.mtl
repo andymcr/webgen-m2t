@@ -38,7 +38,7 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils): 
     $[unit.instanceName()/] = new [unit.modelClassName()/];
     $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[unit.instanceName()/], array(
         'action' => $this->generateUrl('[unit.routeName()/]'),
-        'csrf_token_id' => '[unit.displayedOn.partOf.siteName/]_authenticate',
+        'csrf_token_id' => '[unit.displayedOn.partOf.siteProperties.siteName/]_authenticate',
     ));
     return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
         '[unit.instanceName()/]' => $[loginUnit.formName()/]->createView(),

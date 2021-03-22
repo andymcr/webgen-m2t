@@ -1,0 +1,19 @@
+[comment encoding = UTF-8 /]
+[module parameters(
+	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+
+
+[template public configParameters(siteProperties : SiteProperties)]
+[file (siteProperties.configPackagesDirectory().concat('/parameters').concat(siteProperties.yamlExtension()), false)]
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: '[siteProperties.locale/]'
+    site_title: '[siteProperties.siteTitle/]'
+    webmaster_email: '[siteProperties.webmasterEmail/]'
+#    copyright_text: '[siteProperties.copyrightText/]'
+    router.request_context.scheme: 'https'
+
+[/file]
+[/template]

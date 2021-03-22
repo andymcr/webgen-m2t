@@ -13,7 +13,7 @@
 <section [if (staticUnit.hasSectionClass)] class="[staticUnit.sectionClass/]" [/if]id="[staticUnit.instanceName()/]">
  <h4[if (staticUnit.hasCaptionClass or staticUnit.omitCaption)]
  class="[if (staticUnit.hasCaptionClass)][staticUnit.captionClass/][/if][if (staticUnit.omitCaption)] hidden[/if]"[/if]>[staticUnit.displayLabel/]</h4>
-[if (staticUnit.displayedOn.partOf.staticUnitsEditable)]
+[if (staticUnit.displayedOn.partOf.siteProperties.staticUnitsEditable)]
   <div[if (staticUnit.hasContentClass)] class="[staticUnit.contentClass/]"[/if]>{{ [staticUnit.instanceName()/].content }}</div>
 [else]
   <div[if (staticUnit.hasContentClass)] class="[staticUnit.contentClass/]"[/if]>[staticUnit.content/]</div>

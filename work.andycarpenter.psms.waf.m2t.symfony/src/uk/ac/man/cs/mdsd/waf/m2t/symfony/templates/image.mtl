@@ -22,9 +22,9 @@
 /]
 
 
-[template public image(navigation : Navigation) post(trim())]
-[let imagePath : String = '\''.concat(navigation.logoImage).concat('\'')]
-<img [imagePath.imageSrc('src', navigation.logoFilters)/] alt="Logo"/>
+[template public image(siteProperties : SiteProperties) post(trim())]
+[let imagePath : String = '\''.concat(siteProperties.logoImage).concat('\'')]
+<img [imagePath.imageSrc('src', siteProperties.logoFilters)/] alt="Logo"/>
 [/let]
 [/template]
 

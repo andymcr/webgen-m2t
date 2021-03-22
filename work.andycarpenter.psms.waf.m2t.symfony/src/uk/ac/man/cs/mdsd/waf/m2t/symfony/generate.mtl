@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::framework/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::frameworkDev/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::imagine/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::parameters/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::recaptcha/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::security/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::config::services/]
@@ -39,6 +40,7 @@
 
 
 [template public symfony(model : WafModel)]
+[model.siteProperties.configParameters()/]
 [model.configFramework()/]
 [model.configFrameworkDev()/]
 [model.configServices()/]
@@ -65,8 +67,8 @@
 [comment model.api.resources.controller(model)/]
 [/if]
 
-[model.navigation.navigation()/]
-[model.generatePage()/]
+[model.navigation.navigation(model.siteProperties)/]
+[model.siteProperties.generatePage()/]
 [model.pages->select(p | p.hasNonSecurityUnits).page()/]
 [model.pages.units.unitView()/]
 

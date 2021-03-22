@@ -25,7 +25,7 @@
  */
 public function [unit.actionName()/]()
 {
-[if (page.partOf.staticUnitsEditable)]
+[if (page.partOf.siteProperties.staticUnitsEditable)]
    $this->[unit.instanceName()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
 
 [/if]
@@ -44,7 +44,7 @@ public function [unit.actionName()/]()
 [template private templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(StaticUnit)) post(trim())]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
-[if (unit.displayedOn.partOf.staticUnitsEditable)]
+[if (unit.displayedOn.partOf.siteProperties.staticUnitsEditable)]
 $parameters['['/]'[staticUnit.instanceName()/]'[']'/] = $this->[staticUnit.instanceName()/];
 [/if]
 [/let]

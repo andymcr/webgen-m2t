@@ -8,7 +8,8 @@
 [file (model.configPackagesDirectory().concat('/twig').concat(model.yamlExtension()), false)]
 twig:
     globals:
-        default_locale: '%kernel.default_locale%'
+        locale: '%locale%'
+        site_title: '%site_title%'
     default_path: '%kernel.project_dir%/templates'
     form_themes:
         - 'bootstrap_4_horizontal_layout.html.twig'

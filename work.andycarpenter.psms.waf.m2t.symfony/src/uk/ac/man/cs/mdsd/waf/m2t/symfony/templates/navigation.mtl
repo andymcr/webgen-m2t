@@ -8,7 +8,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::templates::image/]
 
 
-[template public navigation(navigation : Navigation)]
+[template public navigation(navigation : Navigation, siteProperties : SiteProperties)]
 [file(navigation.navigationDirectory().concat('/navigation').concat(navigation.htmlExtension()).concat(navigation.twigExtension()), false)]
 [let menu : Menu = navigation.menus->first()]
 {% trans_default_domain "navigation" %}
@@ -19,8 +19,8 @@
 [/if]
 <nav[if (navigation.hasNavbarClass)] class="[navigation.navbarClass/]"[/if]>
  <div class="container-fluid">
-[if (not navigation.logoImage.oclIsUndefined())]
-  <span class="navbar-brand">[navigation.image()/]</span>
+[if (not siteProperties.logoImage.oclIsUndefined())]
+  <span class="navbar-brand">[siteProperties.image()/]</span>
 [/if]
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
    <span class="navbar-toggler-icon"></span>

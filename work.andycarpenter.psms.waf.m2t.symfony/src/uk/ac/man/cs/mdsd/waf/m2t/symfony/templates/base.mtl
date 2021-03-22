@@ -4,17 +4,17 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
 
-[template public generatePage(model : WafModel)]
-[file(model.templatesDirectory().concat('/base').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[template public generatePage(siteProperties : SiteProperties)]
+[file(siteProperties.templatesDirectory().concat('/base').concat(siteProperties.htmlExtension()).concat(siteProperties.twigExtension()), false)]
 <!doctype html>
-<html lang="{{ default_locale }}">
+<html lang="{{ locale }}">
 <head>
  <meta charset="UTF-8"/>
  <meta name="viewport" content="width=device-width, initial-scale=1">
-[if (not model.metaDescription.oclIsUndefined())]
- <meta name="description" content="[model.metaDescription/]">
+[if (not siteProperties.metaDescription.oclIsUndefined())]
+ <meta name="description" content="[siteProperties.metaDescription/]">
 [/if]
- <title>[model.siteTitle/]{% if title is defined %}: {{ title }}{% endif %}</title>
+ <title>{{ site_title }}{% if title is defined %}: {{ title }}{% endif %}</title>
 {% block stylesheets %}
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
  {{ encore_entry_link_tags('app') }}
@@ -24,8 +24,8 @@
  {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-[if (not model.textEditorURL.oclIsUndefined())]
- <script src="[model.textEditorURL/]"></script>
+[if (not siteProperties.textEditorURL.oclIsUndefined())]
+ <script src="[siteProperties.textEditorURL/]"></script>
 [/if]
 {% if scripts is defined %}
 {% for script in scripts  %}
@@ -40,7 +40,7 @@
 <body>
 <header>
 {% block navigation %}
-{{ include('navigation[model.htmlExtension()/][model.twigExtension()/]') }}
+{{ include('navigation[siteProperties.htmlExtension()/][siteProperties.twigExtension()/]') }}
 {% endblock %}
 </header>
 <main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
@@ -65,7 +65,7 @@
  </div>
  <div class="footer-copyright">
   <div class="container">
-   <p>[model.copyrightText/]</p>
+   <p>[siteProperties.copyrightText/]</p>
   </div>
  </div>
 </footer>
