@@ -13,7 +13,5 @@ parameters:
     site_title: '[siteProperties.siteTitle/]'
     webmaster_email: '[siteProperties.webmasterEmail/]'
 #    copyright_text: '[siteProperties.copyrightText/]'
-    router.request_context.scheme: 'https'
-
 [/file]
 [/template]
