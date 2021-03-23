@@ -258,11 +258,9 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
     'choices' => [attribute.enumerationType.modelClassName()/]::values(),
     'placeholder' => 'actions.labels.select_one',
 [/if]
-[if (attribute.hasHtml5Attributes)]
+[if (attribute.hasHtml5Attributes or true)] [comment placeholder set to display label/]
     'attr' => ['['/]
-	[if (false)] [comment not attribute.placeholder.oclIsUndefined())/]
-        'placeholder' => '[comment attribute.placeholder/]',
-	[/if]
+        'placeholder' => '[attribute.displayLabelId()/]',
 	[if (attribute.hasValidationPattern)]
         'pattern' => '[attribute.validationPattern/]',
 	[/if]
@@ -391,6 +389,9 @@ add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
 [let interface : InterfaceField = field.oclAsType(InterfaceField)]
 add('[interface.name/]', [interface.interfaceType()/], ['['/]
     'mapped' => false,
+[if (field.hasHelp)]
+    'help' => '[field.help/]',
+[/if]
     'required' => true,
 [']'/])
 [/let]
