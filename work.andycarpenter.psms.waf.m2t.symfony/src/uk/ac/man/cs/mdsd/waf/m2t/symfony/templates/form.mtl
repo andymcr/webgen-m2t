@@ -51,7 +51,8 @@
 
 [template private formControlAndClose(unit : EditUnit, accessor : String) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
- <button type="submit" name="[unit.submitId()/]">{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
+ <button type="submit" name="[unit.submitId()/]"[if (unit.hasAnchorClass)]
+class="[unit.anchorClass/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
 	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]

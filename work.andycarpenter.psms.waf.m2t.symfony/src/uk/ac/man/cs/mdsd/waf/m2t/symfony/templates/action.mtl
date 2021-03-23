@@ -79,7 +79,9 @@
 
 [template private linkPath(action : Action, valueAccessor : String) 
 	?(action.oclIsTypeOf(SecurityAction)) post(trim())]
-'[action.routeName()/]'
+[let securityAction : SecurityAction = action.oclAsType(SecurityAction)]
+'[securityAction.target.oclAsType(ContentUnit).routeName()/]'
+[/let]
 [/template]
 
 [template private linkPath(action : SelectAction, valueAccessor : String) 
