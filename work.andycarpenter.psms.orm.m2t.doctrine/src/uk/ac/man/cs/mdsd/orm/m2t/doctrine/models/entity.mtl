@@ -124,6 +124,7 @@ use [entity.repositoryNamespace()/]\[entity.repository.className()/];
 use Doctrine\ORM\Mapping as ORM;
 [if (entity.hasCollectionAssociations)]
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 [/if]
 [if (not entity.implementsResetPasswordInterface
 		and (entity.partOf.timestampCreation
@@ -516,7 +517,7 @@ public function getId(): int
 
 [template private getMethod(feature : Feature) post(trim())]
 public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]
-?[/if][feature.returnType()/]
+?[/if][feature.getReturnType()/]
 {
 [if (feature.isDerived)]
     // [protected (feature.name.concat('.getMethod'))]
@@ -528,9 +529,25 @@ public function [feature.getMethodName()/](): [if (feature.isSingleton and not f
 }
 [/template]
 
-[template private returnType(feature : Feature) post(trim())]
+[template private getReturnType(feature : Feature) post(trim())]
 [if (not feature.isSingleton)]
+	[if (feature.oclIsKindOf(Association))]
+	[let association : Association = feature.oclAsType(Association)]
+		[if (association.targetType.repository.findAll.oclIsUndefined())]
+PersistentCollection
+		[else]
+		[let allSelection : Selection = association.targetType.repository.findAll]
+			[if (allSelection.limit > 0)]
+object
+			[else]
+PersistentCollection
+			[/if]
+		[/let]
+		[/if]
+	[/let]
+	[else]
 array
+	[/if]
 [elseif (feature.isDateFeature)]
 \DateTime
 [elseif (feature.oclIsKindOf(SingletonAttribute))]
