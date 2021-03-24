@@ -47,7 +47,7 @@ use Doctrine\Persistence\ManagerRegistry;
 [if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
 use Doctrine\ORM\QueryBuilder;
 [/if]
-[if (repository.selections->notEmpty() or repository.findAll.oclIsUndefined())]
+[if (repository.selections->notEmpty())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [/if]
 [if (repository.hasCurrentUser())]
@@ -65,7 +65,9 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 [/if]
 
 
-class [repository.className()/] extends [repository.baseRepositoryClassName()/]
+class [repository.className()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsResetPasswordInterface)]
+ implements ResetPasswordRequestRepositoryInterface[/if]
+
 {
 [if (repository.serves.implementsResetPasswordInterface)]
     use ResetPasswordRequestRepositoryTrait;
@@ -118,16 +120,18 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/]
     [repository.findMethod()/]
 
 [/if]
-[if (repository.serves.attributes->select(a | not a.hasSlugFields)->notEmpty())]
+[if (repository.serves.attributes->select(a | not a.hasSlugFields)->notEmpty() and not repository.serves.implementsResetPasswordInterface)]
     [repository.createMethod()/]
 
 [/if]
+[if (not repository.serves.implementsResetPasswordInterface)]
     [repository.removeMethod()/]
 
     [repository.saveMethod()/]
 
     [repository.flushMethod()/]
 
+[/if]
 [for (selection : Selection | repository.selections)]
     [selection.selectionMethod()/]
 
