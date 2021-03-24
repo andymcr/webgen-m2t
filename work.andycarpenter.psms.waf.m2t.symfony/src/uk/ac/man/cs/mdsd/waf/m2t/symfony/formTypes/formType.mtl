@@ -266,6 +266,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
 	[if (attribute.hasValidationPattern)]
         'pattern' => '[attribute.validationPattern/]',
 	[/if]
+        'title' => '[attribute.displayLabelId()/]',
     [']'/],
 [/if]
 [']'/])

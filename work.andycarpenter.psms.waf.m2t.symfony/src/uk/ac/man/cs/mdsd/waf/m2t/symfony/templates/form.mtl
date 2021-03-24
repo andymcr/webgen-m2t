@@ -52,16 +52,18 @@
 [template private formControlAndClose(unit : EditUnit, accessor : String) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
  <button type="submit" name="[unit.submitId()/]"[if (unit.hasAnchorClass)]
-class="[unit.anchorClass/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
+ class="[unit.anchorClass/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
 	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
- <input type="reset" name="clear" value="[createUpdateUnit.clearLabel/]"[unit.disable(accessor)/]/>
+ <input type="reset" name="clear"[if (unit.hasAnchorClass)]
+ class="[unit.anchorClass/]"[/if] value="[createUpdateUnit.clearLabel/]"[unit.disable(accessor)/]/>
 	[/if]
 [/let]
 [/if]
 [if (not unit.cancelDestination.oclIsUndefined())]
- <input type="submit" name="[unit.cancelId()/]" value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/]/>
+ <input type="submit" name="[unit.cancelId()/]"[if (unit.hasAnchorClass)]
+ class="[unit.anchorClass/]"[/if] value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/]/>
 [/if]
 [for (action : Action | unit.containerActions)]
  [action.unitActionLink('accessor')/]
@@ -130,16 +132,15 @@ class="[unit.anchorClass/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disa
  row_attr: { class: '[field.inputGroupClass/]' },[/if]
 [if (field.hasFieldLabelClass)]
  label_attr: { class: '[field.fieldLabelClass/]' },[/if]
+[if (field.isDisabled or field.hasFieldLabelClass or field.hasTranslations())]
  attr: {[if (field.isDisabled)]
  disabled: 'disabled',[/if]
 [if (field.hasFieldLabelClass)]
  class: '[field.fieldLabelClass/]',[/if]
-[if (field.hasPlaceholder())]
- placeholder: [field.placeholder()/],[/if]
-[if (field.hasTitle)]
- title: [field.title()/],[/if] }[if (field.hasTranslations())]
-, [/if][if (field.hasTranslations())]
-translation_domain: '[unit.translationDomain()/]'[/if]}) }}
+[if (field.hasTranslations())]
+ placeholder: '[field.customisedPlaceholderId()/]', title: '[field.customisedTitleId()/]',[/if] }[/if]
+[if (field.hasTranslations())]
+, translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/template]
 
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
@@ -182,18 +183,6 @@ translation_domain: '[unit.translationDomain()/]'[/if]}) }}
 [/let]
 [/let]
 [/let]
-[/template]
-
-[template private placeholder(field : UnitField) post(trim())]
-[if (field.hasTranslations())]
-'[field.customisedPlaceholderId()/]'[else]
-'[field.defaultPlaceholderId()/]'[/if]
-[/template]
-
-[template private title(field : UnitField) post(trim())]
-[if (field.hasTranslations())]
-'[field.customisedTitleId()/]'[else]
-'[field.defaultTitleId()/]'[/if]
 [/template]
 
 
