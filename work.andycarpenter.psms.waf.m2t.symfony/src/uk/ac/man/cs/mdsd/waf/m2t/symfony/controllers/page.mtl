@@ -83,6 +83,12 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
+[if (page.hasForgottenPasswordUnits)]
+    use ResetPasswordControllerTrait;
+
+    private $resetPasswordHelper;
+
+[/if]
 [for (repository : Repository | page.repositoriesUsed())]
     private $[repository.instanceName()/];
 
@@ -97,25 +103,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/if]
     private $translationService;
 
-    public function __construct([for (repository : Repository | page.repositoriesUsed()) separator (', ')]
-[repository.className()/] $[repository.instanceName()/][/for][if (page.hasRepositoriesUsed and page.hasServicesUsed)]
-, [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
-[service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
-[if (page.hasRepositoriesUsed or page.hasServicesUsed)]
-, [/if]ValidatorInterface $validator[/if][if (page.hasRepositoriesUsed or page.hasServicesUsed)]
-, [/if]TranslatorInterface $translator)
-    {
-	[for (repository : Repository | page.repositoriesUsed())]
-        $this->[repository.instanceName()/] = $[repository.instanceName()/];
-	[/for]
-	[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
-        $this->[service.instanceName()/] = $[service.instanceName()/];
-	[/for]
-	[if (page.hasExplicitValidation())]
-        $this->validatorService = $validator;
-	[/if]
-        $this->translationService = $translator;
-    }
+    [page.constructor()/]
 
 [if (page.hasSingleActionMethod())]
     [page.actionMethod()/]
@@ -165,6 +153,9 @@ use [service.serviceNamespace()/]\[service.className()/];
 [if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
+[if (page.hasForgottenPasswordUnits)]
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+[/if]
 [if (page.hasSingleAuthorisationRole())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [/if]
@@ -175,6 +166,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
 [if (page.hasAutocompleteFields)]
 use Symfony\Component\HttpFoundation\JsonResponse;
 [/if]
+[if (page.hasForgottenPasswordUnits)]
+use Symfony\Component\HttpFoundation\RedirectResponse;
+[/if]
 [if (page.hasFiltersOrPagination() or page.hasEditUnits)]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
@@ -182,8 +176,13 @@ use Symfony\Component\HttpFoundation\Response;
 [if (page.editUnits->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))->exists(isContained and not hasExplicitlyEditedContainer))]
 use Symfony\Component\Form\FormError;
 [/if]
+[if (page.hasForgottenPasswordUnits)]
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+[/if]
 use Symfony\Component\Routing\Annotation\Route;
 [if (page.hasForgottenPasswordUnits)]
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 [/if]
 [if (page.hasAutocompleteFields)]
@@ -198,6 +197,32 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 [/if]
+[/template]
+
+[template private constructor(page : Page) post(trim())]
+public function __construct([if (page.hasForgottenPasswordUnits)]
+ResetPasswordHelperInterface $resetPasswordHelper, [/if][for (repository : Repository | page.repositoriesUsed()) separator (', ')]
+[repository.className()/] $[repository.instanceName()/][/for][if (page.hasRepositoriesUsed and page.hasServicesUsed)]
+, [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
+[service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
+[if (page.hasRepositoriesUsed or page.hasServicesUsed)]
+, [/if]ValidatorInterface $validator[/if][if (page.hasRepositoriesUsed or page.hasServicesUsed)]
+, [/if]TranslatorInterface $translator)
+{
+[if (page.hasForgottenPasswordUnits)]
+    $this->resetPasswordHelper = $resetPasswordHelper;
+[/if]
+[for (repository : Repository | page.repositoriesUsed())]
+    $this->[repository.instanceName()/] = $[repository.instanceName()/];
+[/for]
+[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
+    $this->[service.instanceName()/] = $[service.instanceName()/];
+[/for]
+[if (page.hasExplicitValidation())]
+    $this->validatorService = $validator;
+[/if]
+    $this->translationService = $translator;
+}
 [/template]
 
 [template private actionMethod(page : Page) post(trim())]

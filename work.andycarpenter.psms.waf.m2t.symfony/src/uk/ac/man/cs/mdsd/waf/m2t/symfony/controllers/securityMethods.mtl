@@ -69,32 +69,29 @@ public function [unit.actionName()/](): Response
 [let resetUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
 /**
  [resetUnit.routeAnnotation()/]
-[if (resetUnit.isAuthorised)]
- [resetUnit.securityAnnotation()/]
-[/if]
  */
 public function [unit.actionName()/]Request(Request $request, MailerInterface $mailer): Response
 {
-    $form = $this->createForm(SecurityResetPasswordRequestType::class);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
+    $[resetUnit.formName()/] = $this->createForm([resetUnit.typeClassName()/]::class);
+    $[resetUnit.formName()/]->handleRequest($request);
+    if ($[resetUnit.formName()/]->isSubmitted() && $[resetUnit.formName()/]->isValid()) {
         return $this->processSendingPasswordResetEmail(
-            $form->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
+            $[resetUnit.formName()/]->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
 email[else]username[/if]')->getData(),
             $mailer
         );
     }
 
-    return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.viewResetRequestName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
-        'requestForm' => $form->createView(),
+    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+        '[unit.instanceName()/]' => $[resetUnit.formName()/]->createView(),
+        '[unit.instanceName()/]_error' => null,
     [']'/]);
 }
 
 /**
  * Confirmation page after a user has requested a password reset.
  *
- * @Route("/check-email", name="app_check_email")
+ [resetUnit.routeEmailSentAnnotation()/]
  */
 public function [unit.actionName()/]CheckEmail(): Response
 {
@@ -103,7 +100,7 @@ public function [unit.actionName()/]CheckEmail(): Response
         return $this->redirectToRoute('[resetUnit.routeName()/]');
     }
 
-    return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.viewResetCheckName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
+    return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.viewCheckEmailName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
         'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
     [']'/]);
 }
@@ -111,7 +108,7 @@ public function [unit.actionName()/]CheckEmail(): Response
 /**
  * Validates and process the reset URL that the user clicked in their email.
  *
- * @Route("/reset/{token}", name="app_reset_password")
+ [resetUnit.routeResetPasswordAnnotation()/]
  */
 public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
 {
@@ -120,7 +117,7 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
         // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
         $this->storeTokenInSession($token);
 
-        return $this->redirectToRoute('app_reset_password');
+        return $this->redirectToRoute('[resetUnit.routeResetPasswordName()/]');
     }
 
     $token = $this->getTokenFromSession();
@@ -136,21 +133,21 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
             $e->getReason()
         ));
 
-        return $this->redirectToRoute('app_forgot_password_request');
+        return $this->redirectToRoute('[resetUnit.routeName()/]');
     }
 
     // The token is valid; allow the user to change their password.
-    $form = $this->createForm(SecurityChangePasswordType::class);
-    $form->handleRequest($request);
+    $[unit.instanceName()/] = $this->createForm(SecurityChangePasswordType::class);
+    $[unit.instanceName()/]->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
+    if ($[unit.instanceName()/]->isSubmitted() && $[unit.instanceName()/]->isValid()) {
         // A password reset token should be used only once, remove it.
         $this->resetPasswordHelper->removeResetRequest($token);
 
         // Encode the plain password, and set it.
         $encodedPassword = $passwordEncoder->encodePassword(
             $user,
-            $form->get('plainPassword')->getData()
+            $[unit.instanceName()/]->get('plainPassword')->getData()
          );
 
         $user->setPassword($encodedPassword);
@@ -162,7 +159,7 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
         return $this->redirectToRoute('home');
     }
 
-    return $this->render('[displayedOn.templateName()/]/reset.html.twig', ['['/]
+    return $this->render('[displayedOn.templateName()/]/[resetUnit.viewResetPasswordName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
         'resetForm' => $form->createView(),
     [']'/]);
 }
@@ -185,7 +182,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
         $resetToken = $this->resetPasswordHelper->generateResetToken($user);
     } catch (ResetPasswordExceptionInterface $e) {
         // If you want to tell the user why a reset email was not sent, uncomment
-        // the lines below and change the redirect to 'app_forgot_password_request'.
+        // the lines below and change the redirect to '[resetUnit.routeName()/]'.
         // Caution: This may reveal if a user is registered or not.
         //
         // $this->addFlash('reset_password_error', sprintf(
@@ -199,13 +196,12 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
     $email = (new TemplatedEmail())
         ->from(new Address('info@salephoto.org.uk', 'SPS'))
         ->to($user->getEmail())
-        ->subject('Your password reset request')
-        ->htmlTemplate('[resetUnit.displayedOn.name/]/[resetUnit.viewResetEmailName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]')
+        ->subject('[resetUnit.emailSubject/]')
+        ->htmlTemplate('[resetUnit.displayedOn.name/]/[resetUnit.viewEmailMessageName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]')
         ->context(['['/]
             'resetToken' => $resetToken,
             'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
-        [']'/])
-    ;
+        [']'/]);
 
     $mailer->send($email);
 

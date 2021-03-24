@@ -36,6 +36,14 @@
 [unit.routeAnnotation(unit.routeUpdateName(), unit.uriUpdatePath(suffix), true)/]
 [/template]
 
+[template public routeEmailSentAnnotation(unit : ForgottenPasswordUnit) post(trim())]
+[unit.routeAnnotation(unit.routeEmailSentName(), unit.uriEmailSentPath(), true)/]
+[/template]
+
+[template public routeResetPasswordAnnotation(unit : ForgottenPasswordUnit) post(trim())]
+[unit.routeAnnotation(unit.routeResetPasswordName(), unit.uriResetPasswordPath(), true)/]
+[/template]
+
 [template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]
 [unit.routeAnnotation(association.routeName(), association.uriPath(unit), false)/]
 [/template]

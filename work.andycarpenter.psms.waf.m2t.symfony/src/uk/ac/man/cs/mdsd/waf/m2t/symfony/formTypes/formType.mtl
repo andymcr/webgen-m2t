@@ -85,7 +85,9 @@ class [unit.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['['/]
+[if (unit.hasFeatureFields)]
             'data_class' => '[unit.modelsNamespace()/]\[unit.modelClassName()/]'
+[/if]
         [']'/]);
     }
 }
@@ -377,6 +379,9 @@ add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
 	[/if]
 	[if (association.association.collectionOrmAllowAdd and association.association.collectionOrmAllowRemove)]
     'by_reference' => false,
+	[/if]
+	[if (field.hasHelp)]
+    'help' => '[field.help/]',
 	[/if]
     'required' => false,
 [']'/])

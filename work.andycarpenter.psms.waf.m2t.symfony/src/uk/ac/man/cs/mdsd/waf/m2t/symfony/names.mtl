@@ -327,6 +327,14 @@
 		endif
 /]
 
+[query public routeEmailSentName(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.uniqueName().concat('_').concat(unit.uriEmailSent)
+/]
+
+[query public routeResetPasswordName(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.uniqueName().concat('_').concat(unit.uriResetPassword)
+/]
+
 [query public routeName(association : UnitAssociation) : String
 	= let associationsWithName : OrderedSet(UnitAssociation)
 		= association.displayedOn.displayedOn.associationFields
@@ -406,16 +414,16 @@
 	= unit.displayedOn.uniqueName().concat('_').concat(unit.instanceName())
 /]
 
-[query public viewResetCheckName(unit : ForgottenPasswordUnit) : String
+[query public viewCheckEmailName(unit : ForgottenPasswordUnit) : String
 	= unit.name.toLowerFirst().concat('_check')
 /]
 
-[query public viewResetEmailName(unit : ForgottenPasswordUnit) : String
+[query public viewEmailMessageName(unit : ForgottenPasswordUnit) : String
 	= unit.name.toLowerFirst().concat('_email')
 /]
 
-[query public viewResetRequestName(unit : ForgottenPasswordUnit) : String
-	= unit.name.toLowerFirst().concat('_request')
+[query public viewResetPasswordName(unit : ForgottenPasswordUnit) : String
+	= unit.name.toLowerFirst().concat('_reset')
 /]
 
 

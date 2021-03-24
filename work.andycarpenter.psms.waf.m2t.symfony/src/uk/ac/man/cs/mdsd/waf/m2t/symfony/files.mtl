@@ -246,21 +246,21 @@
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
-[query public viewResetCheckFilename(unit : ForgottenPasswordUnit) : String
+[query public viewCheckEmailFilename(unit : ForgottenPasswordUnit) : String
 	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
-		.concat(unit.viewResetCheckName())
+		.concat(unit.viewCheckEmailName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
-[query public viewResetEmailFilename(unit : ForgottenPasswordUnit) : String
+[query public viewEmailMessageFilename(unit : ForgottenPasswordUnit) : String
 	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
-		.concat(unit.viewResetEmailName())
+		.concat(unit.viewEmailMessageName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
-[query public viewResetRequestFilename(unit : ForgottenPasswordUnit) : String
+[query public viewResetPasswordFilename(unit : ForgottenPasswordUnit) : String
 	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
-		.concat(unit.viewResetRequestName())
+		.concat(unit.viewResetPasswordName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
