@@ -19,6 +19,9 @@
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.formOpen(accessor)/]
  [editUnit.formFields(accessor)/]
+[if (editUnit.hasCaptcha)]
+ [editUnit.captchaField(accessor)/]
+[/if]
 [editUnit.formControlAndClose(accessor)/]
 [/let]
 [/template]
@@ -183,6 +186,10 @@
 [/let]
 [/let]
 [/let]
+[/template]
+
+[template private captchaField(unit : EditUnit, accessor : String) post(trim())]
+{{ form_row([accessor/].captcha) }}
 [/template]
 
 

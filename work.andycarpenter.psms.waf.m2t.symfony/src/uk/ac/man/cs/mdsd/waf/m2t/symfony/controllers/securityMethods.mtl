@@ -175,7 +175,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 
     // Do not reveal whether a user account was found or not.
     if (!$user) {
-        return $this->redirectToRoute('app_check_email');
+        return $this->redirectToRoute('[resetUnit.routeEmailSentName()/]');
     }
 
     try {
@@ -190,7 +190,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
         //     $e->getReason()
         // ));
 
-        return $this->redirectToRoute('app_check_email');
+        return $this->redirectToRoute('[resetUnit.routeEmailSentName()/]');
     }
 
     $email = (new TemplatedEmail())
@@ -205,7 +205,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 
     $mailer->send($email);
 
-    return $this->redirectToRoute('app_check_email');
+    return $this->redirectToRoute('[resetUnit.routeEmailSentName()/]');
 }
 [/let]
 [/template]

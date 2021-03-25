@@ -77,6 +77,10 @@ class [unit.typeClassName()/] extends AbstractType
 [/if]
 
 [/for]
+[if (unit.hasCaptcha)]
+        [unit.captchaField()/]
+
+[/if]
 [if (unit.hasDefaultValueFields or unit.hasForcedValueFields)]
         [unit.setFieldValues()/]
 [/if]
@@ -143,6 +147,10 @@ use [feature.modelsNamespace()/]\[feature.enumerationType.modelClassName()/];
 [for (repository : Repository | unit.choicesRepositories())]
 use [repository.repositoryNamespace()/]\[repository.className()/];
 [/for]
+[if (unit.hasCaptcha)]
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
+[/if]
 [if (unit.hasAssociationFields)]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
@@ -449,6 +457,15 @@ $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
     }
 });
 [/let]
+[/template]
+
+[template private captchaField(unit : SingletonUnit) post(trim())]
+$builder->add('captcha', Recaptcha3Type::class, ['['/]
+    'mapped' => false,
+    'constraints' => new Recaptcha3(),
+    'action_name' => 'homepage',
+//    'script_nonce_csp' => $nonceCSP,
+[']'/]);
 [/template]
 
 [template private setFieldValues(unit : SingletonUnit) post(trim())]

@@ -448,11 +448,9 @@
 			endif
 		else if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name
-		else if field.oclIsTypeOf(CaptchaField) then
-			field.oclAsType(CaptchaField).name
 		else
 			'UnhandledFeature'
-		endif endif endif
+		endif endif
 /]
 
 [query public instanceName(field : UnitField) : String
