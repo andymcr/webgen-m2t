@@ -126,18 +126,24 @@
 	[/if]
 	[if (unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
 [comment form translates all or none of display label, title and placeholder /]
-		[if (field.hasTitle)]
-<trans-unit id="[field.customisedTitleId()/]">
- <source>[field.customisedTitleId()/]</source>
- <target>[field.title.validXML()/]</target>
-</trans-unit>
-		[/if]
 		[if (field.hasPlaceholder)]
 <trans-unit id="[field.customisedPlaceholderId()/]">
  <source>[field.customisedPlaceholderId()/]</source>
  <target>[field.placeholder().validXML()/]</target>
 </trans-unit>
 		[/if]
+		[if (field.hasTitle)]
+<trans-unit id="[field.customisedTitleId()/]">
+ <source>[field.customisedTitleId()/]</source>
+ <target>[field.title.validXML()/]</target>
+</trans-unit>
+		[/if]
+	[/if]
+	[if (unit.oclIsKindOf(EditUnit) and field.hasHelp)]
+<trans-unit id="[field.helpId()/]">
+ <source>[field.helpId()/]</source>
+ <target>[field.help.validXML()/]</target>
+</trans-unit>
 	[/if]
 [/for]
 [/template]
@@ -148,19 +154,19 @@
  <target>[action.displayLabel.validXML()/]</target>
 </trans-unit>
 [if (action.hasConfirmMessage)]
-[action.actionMessageTranslation('confirmMessage', action.confirmMessage)/]
+[action.confirmMessageId().actionMessageTranslation(action.confirmMessage)/]
 [/if]
 [if (action.hasFailureMessage)]
-[action.actionMessageTranslation('failureMessage', action.failureMessage)/]
+[action.failureMessageId().actionMessageTranslation(action.failureMessage)/]
 [/if]
 [if (action.hasSuccessMessage)]
-[action.actionMessageTranslation('successMessage', action.successMessage)/]
+[action.successMessageId().actionMessageTranslation(action.successMessage)/]
 [/if]
 [/template]
 
-[template private actionMessageTranslation(action : Action, x : String, message : String) post (trim())]
-<trans-unit id="[action.containedId()/].[x/]">
- <source>[action.containedId()/].[x/]</source>
+[template private actionMessageTranslation(id : String, message : String) post (trim())]
+<trans-unit id="[id/]">
+ <source>[id/]</source>
  <target>[message.validXML()/]</target>
 </trans-unit>
 [/template]

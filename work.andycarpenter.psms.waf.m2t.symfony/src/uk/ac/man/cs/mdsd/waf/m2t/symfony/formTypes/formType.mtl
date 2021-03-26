@@ -390,7 +390,7 @@ add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
     'by_reference' => false,
 	[/if]
 	[if (field.hasHelp)]
-    'help' => '[field.help/]',
+    'help' => '[field.helpId()/]',
 	[/if]
     'required' => false,
 [']'/])
@@ -404,7 +404,7 @@ add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
 add('[interface.name/]', [interface.interfaceType()/], ['['/]
     'mapped' => false,
 [if (field.hasHelp)]
-    'help' => '[field.help/]',
+    'help' => '[field.helpId()/]',
 [/if]
     'required' => true,
 [']'/])

@@ -176,13 +176,28 @@
 		or field.hasCustomisedTitle
 /]
 
+[query public helpId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.help').concat('.').concat(field.id())
+/]
+
 
 [query public titleId(badge : Badge) : String
 	= badge.title.displayLabelId()
 /]
 
 
+[query public confirmMessageId(action : Action) : String
+	= action.containedId().concat('.messages').concat('.confirm')
+/]
+
 [query public displayLabelId(action : Action) : String
 	= action.containedId().concat('label')
 /]
 
+[query public failureMessageId(action : Action) : String
+	= action.containedId().concat('.messages').concat('.failure')
+/]
+
+[query public successMessageId(action : Action) : String
+	= action.containedId().concat('.messages').concat('.success')
+/]

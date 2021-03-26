@@ -19,8 +19,8 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
 
 
-[template public translate(message : String) post(trim())]
-$this->translationService->trans('[message/]')
+[template public translate(page : Page, message : String) post(trim())]
+$this->translationService->trans('[message/]', ['['/][']'/], '[page.translationDomain()/]')
 [/template]
 
 [template public actionMethodFormals(page : Page) post(trim())]
@@ -348,7 +348,7 @@ unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
 
 
 [template public templateParameters(page : Page) post(trim())]
-$parameters['['/]'title'[']'/] = $this->translationService->trans('[page.displayLabelId()/]', array(), '[page.translationDomain()/]');
+$parameters['['/]'title'[']'/] = [page.translate(page.displayLabelId())/];
 [if (page.hasGalleryUnits)]
 [page.templateStyleParameters()/]
 [/if]
@@ -378,28 +378,16 @@ $parameters['['/]'scripts'[']'/] = array(
 [if (action.hasSuccessMessage and action.hasFailureMessage)]
 if ($result)
 {
-    $this->addFlash('success', $this->translationService->trans(
-        '[action.containedId()/].successMessage',
-        array(), '[page.translationDomain()/]'
-    ));
+    $this->addFlash('success', [page.translate(action.successMessageId())/]);
 } else {
-    $this->addFlash('error', $this->translationService->trans(
-        '[action.containedId()/].failureMessage',
-        array(), '[page.translationDomain()/]'
-    ));
+    $this->addFlash('error', [page.translate(action.failureMessageId())/]);
 }
 [elseif (action.hasSuccessMessage)]
-$this->addFlash('success', $this->translationService->trans(
-    '[action.containedId()/].successMessage',
-    array(), '[page.translationDomain()/]'
-));
+$this->addFlash('success', [page.translate(action.successMessageId())/]);
 [elseif (action.hasFailureMessage)]
 if (!$result)
 {
-    $this->addFlash('error', $this->translationService->trans(
-        '[action.containedId()/].failureMessage',
-        array(), '[page.translationDomain()/]'
-    ));
+    $this->addFlash('error', [page.translate(action.failureMessageId())/]);
 }
 [/if]
 [/let]
