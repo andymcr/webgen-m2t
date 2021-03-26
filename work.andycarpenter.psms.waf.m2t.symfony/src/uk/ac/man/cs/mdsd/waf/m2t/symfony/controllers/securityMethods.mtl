@@ -40,10 +40,12 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils): 
         'action' => $this->generateUrl('[unit.routeName()/]'),
         'csrf_token_id' => '[unit.displayedOn.partOf.siteProperties.siteName/]_authenticate',
     ));
-    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
-        '[unit.instanceName()/]' => $[loginUnit.formName()/]->createView(),
-        '[unit.instanceName()/]_error' => $authenticationUtils->getLastAuthenticationError(),
-    [']'/]);
+
+    $parameters = array();
+    [loginUnit.displayedOn.templateParameters()/]
+    $parameters['['/]'[unit.instanceName()/]'[']'/] = $[loginUnit.formName()/]->createView();
+    $parameters['['/]'[unit.instanceName()/]_error'[']'/] = $authenticationUtils->getLastAuthenticationError();
+    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', $parameters);
 }
 [/let]
 [/template]
@@ -66,41 +68,42 @@ public function [unit.actionName()/](): Response
 
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsTypeOf(ForgottenPasswordUnit)) post(trim())]
-[let resetUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
+[let forgottenUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
 /**
- [resetUnit.routeAnnotation()/]
+ [forgottenUnit.routeAnnotation()/]
  */
 public function [unit.actionName()/]Request(Request $request, MailerInterface $mailer): Response
 {
-    $[resetUnit.formName()/] = $this->createForm([resetUnit.typeClassName()/]::class);
-    $[resetUnit.formName()/]->handleRequest($request);
-    if ($[resetUnit.formName()/]->isSubmitted() && $[resetUnit.formName()/]->isValid()) {
+    $[forgottenUnit.formName()/] = $this->createForm([forgottenUnit.typeClassName()/]::class);
+    $[forgottenUnit.formName()/]->handleRequest($request);
+    if ($[forgottenUnit.formName()/]->isSubmitted() && $[forgottenUnit.formName()/]->isValid()) {
         return $this->processSendingPasswordResetEmail(
-            $[resetUnit.formName()/]->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
+            $[forgottenUnit.formName()/]->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
 email[else]username[/if]')->getData(),
             $mailer
         );
     }
 
-    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
-        '[unit.instanceName()/]' => $[resetUnit.formName()/]->createView(),
-        '[unit.instanceName()/]_error' => null,
-    [']'/]);
+    $parameters = array();
+    [forgottenUnit.displayedOn.templateParameters()/]
+    $parameters['['/]'[unit.instanceName()/]'[']'/] = $[forgottenUnit.formName()/]->createView();
+    $parameters['['/]'[unit.instanceName()/]_error'[']'/] = null;
+    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', $parameters);
 }
 
 /**
  * Confirmation page after a user has requested a password reset.
  *
- [resetUnit.routeEmailSentAnnotation()/]
+ [forgottenUnit.routeEmailSentAnnotation()/]
  */
 public function [unit.actionName()/]CheckEmail(): Response
 {
     // We prevent users from directly accessing this page
     if (!$this->canCheckEmail()) {
-        return $this->redirectToRoute('[resetUnit.routeName()/]');
+        return $this->redirectToRoute('[forgottenUnit.routeName()/]');
     }
 
-    return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.viewCheckEmailName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
+    return $this->render('[forgottenUnit.displayedOn.templateName()/]/[forgottenUnit.viewCheckEmailName()/][forgottenUnit.htmlExtension()/][forgottenUnit.twigExtension()/]', ['['/]
         'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
     [']'/]);
 }
@@ -116,14 +119,14 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 
     // Do not reveal whether a user account was found or not.
     if (!$user) {
-        return $this->redirectToRoute('[resetUnit.routeEmailSentName()/]');
+        return $this->redirectToRoute('[forgottenUnit.routeEmailSentName()/]');
     }
 
     try {
         $resetToken = $this->resetPasswordHelper->generateResetToken($user);
     } catch (ResetPasswordExceptionInterface $e) {
         // If you want to tell the user why a reset email was not sent, uncomment
-        // the lines below and change the redirect to '[resetUnit.routeName()/]'.
+        // the lines below and change the redirect to '[forgottenUnit.routeName()/]'.
         // Caution: This may reveal if a user is registered or not.
         //
         // $this->addFlash('reset_password_error', sprintf(
@@ -131,14 +134,14 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
         //     $e->getReason()
         // ));
 
-        return $this->redirectToRoute('[resetUnit.routeEmailSentName()/]');
+        return $this->redirectToRoute('[forgottenUnit.routeEmailSentName()/]');
     }
 
     $email = (new TemplatedEmail())
         ->from(new Address('info@salephoto.org.uk', 'SPS'))
         ->to($user->getEmail())
-        ->subject('[resetUnit.emailSubject/]')
-        ->htmlTemplate('[resetUnit.displayedOn.name/]/[resetUnit.viewEmailMessageName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]')
+        ->subject('[forgottenUnit.emailSubject/]')
+        ->htmlTemplate('[forgottenUnit.displayedOn.name/]/[forgottenUnit.viewEmailMessageName()/][forgottenUnit.htmlExtension()/][forgottenUnit.twigExtension()/]')
         ->context(['['/]
             'resetToken' => $resetToken,
             'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
@@ -146,7 +149,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 
     $mailer->send($email);
 
-    return $this->redirectToRoute('[resetUnit.routeEmailSentName()/]');
+    return $this->redirectToRoute('[forgottenUnit.routeEmailSentName()/]');
 }
 [/let]
 [/template]
@@ -206,10 +209,11 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
         return $this->redirectToRoute('home');
     }
 
-    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
-        '[unit.instanceName()/]' => $[resetUnit.formName()/]->createView(),
-        '[unit.instanceName()/]_error' => null,
-    [']'/]);
+    $parameters = array();
+    [resetUnit.displayedOn.templateParameters()/]
+    $parameters['['/]'[unit.instanceName()/]'[']'/] = $[resetUnit.formName()/]->createView();
+    $parameters['['/]'[unit.instanceName()/]_error'[']'/] = null;
+    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', $parameters);
 }
 [/let]
 [/template]
