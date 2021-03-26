@@ -353,7 +353,7 @@ add('[association.modelPropertyName()/]', EntityType::class, ['['/]
 [/if]
     'class' => '[association.appName()/]:[association.modelClassName()/]',
 [if (hasAutocomplete)]
-    'choices' => !is_null($options['['/]'data'[']'/]) && !is_null($options['['/]'data'[']'/]->[feature.getMethodName()/]())
+    'choices' => array_key_exists('data', $options) && !is_null($options['['/]'data'[']'/]->[feature.getMethodName()/]())
         ? ['['/] $options['['/]'data'[']'/]->[feature.getMethodName()/]() [']'/]
         : ['['/][']'/],
 [else]
