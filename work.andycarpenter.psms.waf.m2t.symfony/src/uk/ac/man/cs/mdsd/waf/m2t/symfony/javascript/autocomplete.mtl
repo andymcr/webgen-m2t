@@ -10,7 +10,7 @@ export default class Autocomplete{
     #apiBaseUrl
     #selectionElement
     #selectionDisplayStyle
-inputId = "autocomplete";
+	inputId = "autocomplete";
     #inputElement
     #matchesElement
 
@@ -54,7 +54,7 @@ inputId = "autocomplete";
     }
 
     async getMatches(pattern) {
-        const response = await fetch('https://localhost:8000/admin/competitions/imageVariant/'.concat(pattern));
+        const response = await fetch(this.#apiBaseUrl.concat(pattern));
         const json = await response.json();
         return JSON.parse(json);
     }

@@ -4,6 +4,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
 [template public pageJs(page : Page)]
@@ -11,10 +12,12 @@
 import Autocomplete from './autocomplete'
 
 [for (field : UnitField | page.autocompleteFields)]
+[let path : String = field.oclAsType(UnitAssociation).uriPath(field.displayedOn)]
 const [field.instanceName()/] = new Autocomplete(
     "[field.displayedOn.contentType.name.snakeCase()/]_[field.instanceName()/]",
-    "https://localhost:8000/admin/competitions/imageVariant/");
+    location.origin + '[path.first(path.lastIndex('/'))/]');
 
+[/let]
 [/for]
 [/file]
 [/template]
