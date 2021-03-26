@@ -331,10 +331,6 @@
 	= unit.displayedOn.uniqueName().concat('_').concat(unit.uriEmailSent)
 /]
 
-[query public routeResetPasswordName(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.uniqueName().concat('_').concat(unit.uriResetPassword)
-/]
-
 [query public routeName(association : UnitAssociation) : String
 	= let associationsWithName : OrderedSet(UnitAssociation)
 		= association.displayedOn.displayedOn.associationFields

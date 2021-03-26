@@ -186,12 +186,6 @@
 			.combinePaths(unit.uriEmailSent)
 /]
 
-[query public uriResetPasswordPath(unit : ForgottenPasswordUnit) : String
-	= unit.uriPath()
-			.combinePaths(unit.uriResetPassword)
-			.combinePaths('{token}')
-/]
-
 [query public uriGeneralPath(action : OperationAction) : String
 	= action.parentUnit.displayedOn.uriPagePath()
 		.combinePaths(action.uriElement)

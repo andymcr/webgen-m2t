@@ -105,65 +105,6 @@ public function [unit.actionName()/]CheckEmail(): Response
     [']'/]);
 }
 
-/**
- * Validates and process the reset URL that the user clicked in their email.
- *
- [resetUnit.routeResetPasswordAnnotation()/]
- */
-public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
-{
-    if ($token) {
-        // We store the token in session and remove it from the URL, to avoid the URL being
-        // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
-        $this->storeTokenInSession($token);
-
-        return $this->redirectToRoute('[resetUnit.routeResetPasswordName()/]');
-    }
-
-    $token = $this->getTokenFromSession();
-    if (null === $token) {
-        throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
-    }
-
-    try {
-        $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
-    } catch (ResetPasswordExceptionInterface $e) {
-        $this->addFlash('reset_password_error', sprintf(
-            'There was a problem validating your reset request - %s',
-            $e->getReason()
-        ));
-
-        return $this->redirectToRoute('[resetUnit.routeName()/]');
-    }
-
-    // The token is valid; allow the user to change their password.
-    $[unit.instanceName()/] = $this->createForm(SecurityChangePasswordType::class);
-    $[unit.instanceName()/]->handleRequest($request);
-
-    if ($[unit.instanceName()/]->isSubmitted() && $[unit.instanceName()/]->isValid()) {
-        // A password reset token should be used only once, remove it.
-        $this->resetPasswordHelper->removeResetRequest($token);
-
-        // Encode the plain password, and set it.
-        $encodedPassword = $passwordEncoder->encodePassword(
-            $user,
-            $[unit.instanceName()/]->get('plainPassword')->getData()
-         );
-
-        $user->setPassword($encodedPassword);
-        $this->getDoctrine()->getManager()->flush();
-
-        // The session is cleaned up after the password has been changed.
-        $this->cleanSessionAfterReset();
-
-        return $this->redirectToRoute('home');
-    }
-
-    return $this->render('[displayedOn.templateName()/]/[resetUnit.viewResetPasswordName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', ['['/]
-        'resetForm' => $form->createView(),
-    [']'/]);
-}
-
 private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
 {
     $user = $this->getDoctrine()->getRepository(Authentication::class)->findOneBy(['['/]
@@ -206,6 +147,69 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
     $mailer->send($email);
 
     return $this->redirectToRoute('[resetUnit.routeEmailSentName()/]');
+}
+[/let]
+[/template]
+
+[template public unitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(ResetPasswordUnit)) post(trim())]
+[let resetUnit : ResetPasswordUnit = unit.oclAsType(ResetPasswordUnit)]
+/**
+ [resetUnit.routeAnnotation()/]
+ */
+public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
+{
+    if ($token) {
+        // We store the token in session and remove it from the URL, to avoid the URL being
+        // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
+        $this->storeTokenInSession($token);
+
+        return $this->redirectToRoute('[resetUnit.routeName()/]');
+    }
+
+    $token = $this->getTokenFromSession();
+    if (null === $token) {
+        throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
+    }
+
+    try {
+        $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
+    } catch (ResetPasswordExceptionInterface $e) {
+        $this->addFlash('reset_password_error', sprintf(
+            'There was a problem validating your reset request - %s',
+            $e->getReason()
+        ));
+
+        return $this->redirectToRoute('[resetUnit.routeName()/]');
+    }
+
+    // The token is valid; allow the user to change their password.
+    $[unit.instanceName()/] = $this->createForm(SecurityChangePasswordType::class);
+    $[unit.instanceName()/]->handleRequest($request);
+
+    if ($[unit.instanceName()/]->isSubmitted() && $[unit.instanceName()/]->isValid()) {
+        // A password reset token should be used only once, remove it.
+        $this->resetPasswordHelper->removeResetRequest($token);
+
+        // Encode the plain password, and set it.
+        $encodedPassword = $passwordEncoder->encodePassword(
+            $user,
+            $[unit.instanceName()/]->get('plainPassword')->getData()
+         );
+
+        $user->setPassword($encodedPassword);
+        $this->getDoctrine()->getManager()->flush();
+
+        // The session is cleaned up after the password has been changed.
+        $this->cleanSessionAfterReset();
+
+        return $this->redirectToRoute('home');
+    }
+
+    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+        '[unit.instanceName()/]' => $[resetUnit.formName()/]->createView(),
+        '[unit.instanceName()/]_error' => null,
+    [']'/]);
 }
 [/let]
 [/template]
