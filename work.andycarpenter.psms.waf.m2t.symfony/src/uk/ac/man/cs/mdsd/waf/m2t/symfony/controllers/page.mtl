@@ -166,7 +166,7 @@ use Psr\Log\LoggerInterface;
 [if (page.hasForgottenPasswordUnits)]
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 [/if]
-[if (page.hasSingleAuthorisationRole())]
+[if (page.hasSingleAuthorisationRole() or page.hasSecurityUnits)]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [/if]
 [if (page.hasMultipleAuthorisationRoles())]

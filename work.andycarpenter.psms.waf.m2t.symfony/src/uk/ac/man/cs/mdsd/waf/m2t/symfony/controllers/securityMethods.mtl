@@ -14,12 +14,16 @@
 [let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
 /**
  [unit.routeAnnotation()/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
- */
+ **/
 public function [unit.actionName()/](): Response
 {
+    if (!$this->isGranted("IS_ANONYMOUS")) {
+[if (unit.genModel.homeUnit().oclIsUndefined())]
+        return $this->redirect("/");
+[else]
+        return $this->redirectToRoute("[unit.genModel.homeUnit().routeName()/]");
+[/if]
+    }
     throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
 }
 [/let]
@@ -30,13 +34,17 @@ public function [unit.actionName()/](): Response
 [let loginUnit : LoginUnit = unit.oclAsType(LoginUnit)]
 /**
  [unit.routeAnnotation()/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
- */
+ **/
 public function [unit.actionName()/](AuthenticationUtils $authenticationUtils[if (loginUnit.hasCaptcha)]
 , Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if]): Response
 {
+    if (!$this->isGranted("IS_ANONYMOUS")) {
+[if (unit.genModel.homeUnit().oclIsUndefined())]
+        return $this->redirect("/");
+[else]
+        return $this->redirectToRoute("[unit.genModel.homeUnit().routeName()/]");
+[/if]
+    }
     $[unit.instanceName()/] = new [unit.modelClassName()/];
     $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[unit.instanceName()/], array(
         'action' => $this->generateUrl('[unit.routeName()/]'),
@@ -57,9 +65,6 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils[if
 [let logoutUnit : LogoutUnit = unit.oclAsType(LogoutUnit)]
 /**
  [unit.routeAnnotation()/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
  */
 public function [unit.actionName()/](): Response
 {
@@ -73,10 +78,17 @@ public function [unit.actionName()/](): Response
 [let forgottenUnit : ForgottenPasswordUnit = unit.oclAsType(ForgottenPasswordUnit)]
 /**
  [forgottenUnit.routeAnnotation()/]
- */
+ **/
 public function [unit.actionName()/]Request(Request $request, MailerInterface $mailer[if (forgottenUnit.hasCaptcha)]
 , Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if]): Response
 {
+    if (!$this->isGranted("IS_ANONYMOUS")) {
+[if (unit.genModel.homeUnit().oclIsUndefined())]
+        return $this->redirect("/");
+[else]
+        return $this->redirectToRoute("[unit.genModel.homeUnit().routeName()/]");
+[/if]
+    }
     $[forgottenUnit.formName()/] = $this->createForm([forgottenUnit.typeClassName()/]::class);
     $[forgottenUnit.formName()/]->handleRequest($request);
     if ($[forgottenUnit.formName()/]->isSubmitted() && $[forgottenUnit.formName()/]->isValid()) {
@@ -104,7 +116,7 @@ email[else]username[/if]')->getData(),
  * Confirmation page after a user has requested a password reset.
  *
  [forgottenUnit.routeEmailSentAnnotation()/]
- */
+ **/
 public function [unit.actionName()/]CheckEmail(): Response
 {
     // We prevent users from directly accessing this page
@@ -168,7 +180,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 [let resetUnit : ResetPasswordUnit = unit.oclAsType(ResetPasswordUnit)]
 /**
  [resetUnit.routeAnnotation()/]
- */
+ **/
 public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
 {
     if ($token) {
