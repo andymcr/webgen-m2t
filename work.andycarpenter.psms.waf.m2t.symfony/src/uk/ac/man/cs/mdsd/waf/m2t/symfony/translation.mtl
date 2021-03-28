@@ -180,6 +180,22 @@
 	= field.displayedOn.containedId().concat('.help').concat('.').concat(field.id())
 /]
 
+[query public secondDisplayLabelId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.labels').concat('.').concat(field.fieldId().concat('_confirm'))
+/]
+
+[query public secondHelpId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.help').concat('.').concat(field.fieldId().concat('_confirm'))
+/]
+
+[query public secondPlaceholderId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.placeholders').concat('.').concat(field.fieldId().concat('_confirm'))
+/]
+
+[query public secondTitleId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.titles').concat('.').concat(field.fieldId().concat('_confirm'))
+/]
+
 
 [query public titleId(badge : Badge) : String
 	= badge.title.displayLabelId()

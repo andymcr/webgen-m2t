@@ -184,6 +184,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [if (unit.hasObfuscatedFields)]
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 [/if]
+[if (unit.hasRepeatedFields)]
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+[/if]
 [if (unit.hasStringFields or unit.hasUrlFields)]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
@@ -194,6 +197,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
+[if (unit.hasRepeatedFields)]
+use Symfony\Component\Validator\Constraints\Length;
+[/if]
+[if (unit.hasRequiredInterfaceFields)]
+use Symfony\Component\Validator\Constraints\NotBlank;
+[/if]
 [/template]
 
 [template private useStatements(association : UnitAssociation) post(trim())]
@@ -401,12 +410,79 @@ add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
 [template private formField(field : UnitField)
 	? (field.isInterfaceField) post(trim())]
 [let interface : InterfaceField = field.oclAsType(InterfaceField)]
+[if (interface.isRepeated)]
+add('[interface.name/]', RepeatedType::class, ['['/]
+    'type' => [interface.interfaceType()/],
+[else]
 add('[interface.name/]', [interface.interfaceType()/], ['['/]
-    'mapped' => false,
-[if (field.hasHelp)]
-    'help' => '[field.helpId()/]',
 [/if]
+    'mapped' => false,
+    'translation_domain' => '[interface.displayedOn.translationDomain()/]',
     'required' => true,
+[if (not interface.isRepeated)]
+	[if (field.hasHelp)]
+    'help' => '[field.helpId()/]',
+	[/if]
+[else]
+	[if (field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass)]
+    'options' => ['['/]
+		[if (field.hasInputGroupClass)]
+        'row_attr' => ['['/] 'class' => '[field.inputGroupClass/]' [']'/],
+		[/if]
+		[if (field.hasFieldLabelClass)]
+        'label_attr' => ['['/] 'class' => '[field.fieldLabelClass/]' [']'/],
+		[/if]
+		[if (field.hasFieldLabelClass)]
+        'attr' => ['['/] 'class' => '[field.fieldValueClass/]' [']'/],
+		[/if]
+    [']'/],
+	[/if]
+    'first_options' => ['['/]
+        'label' => '[interface.customisedDisplayLabelId()/]',
+	[if (field.hasHelp)]
+        'help' => '[field.helpId()/]',
+	[/if]
+	[if (field.hasTitle or field.hasPlaceholder)]
+        'attr' => ['['/]
+		[if (field.hasTitle)]
+            'title' => '[interface.customisedTitleId()/]',
+		[/if]
+		[if (field.hasPlaceholder)]
+            'placeholder' => '[interface.customisedPlaceholderId()/]',
+		[/if]
+        [']'/],
+	[/if]
+	[if (interface.isRequired or true)]
+        'constraints' => ['['/]
+		[if (interface.isRequired)]
+            [interface.notBlank()/],
+		[/if]
+            new Length(['['/]
+                'min' => 6,
+                'minMessage' => 'Your password should be at least {{ limit }} characters',
+                // max length allowed by Symfony for security reasons
+                'max' => 4096,
+            [']'/]),
+        [']'/],
+	[/if]
+    [']'/],
+    'second_options' => ['['/]
+        'label' => '[interface.secondDisplayLabelId()/]',
+	[if (field.hasSecondHelp)]
+        'help' => '[field.secondHelpId()/]',
+	[/if]
+	[if (interface.hasSecondTitle or interface.hasSecondPlaceholder)]
+        'attr' => ['['/]
+		[if (interface.hasSecondTitle)]
+            'title' => '[interface.secondTitleId()/]',
+		[/if]
+		[if (interface.hasSecondPlaceholder)]
+            'placeholder' => '[interface.secondPlaceholderId()/]',
+		[/if]
+        [']'/],
+	[/if]
+    [']'/],
+[/if]
 [']'/])
 [/let]
 [/template]
@@ -437,6 +513,12 @@ TextType::class
 [/if]
 [/template]
 
+[template private notBlank(field : UnitField) post(trim())]
+new NotBlank(['['/]
+    'message' => 'Please enter a password',
+[']'/])
+[/template]
+
 [template private autocompleteField(field : UnitField)
 	? (field.isAssociationField and not field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
@@ -463,7 +545,7 @@ $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
 $builder->add('captcha', Recaptcha3Type::class, ['['/]
     'mapped' => false,
     'constraints' => new Recaptcha3(),
-    'action_name' => 'homepage',
+    'action_name' => '[unit.captchaActionName()/]',
 //    'script_nonce_csp' => $nonceCSP,
 [']'/]);
 [/template]

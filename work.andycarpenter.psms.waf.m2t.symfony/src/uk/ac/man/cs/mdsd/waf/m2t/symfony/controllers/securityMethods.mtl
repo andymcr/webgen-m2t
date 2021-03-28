@@ -3,6 +3,7 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
@@ -33,7 +34,8 @@ public function [unit.actionName()/](): Response
  [unit.securityAnnotation()/]
 [/if]
  */
-public function [unit.actionName()/](AuthenticationUtils $authenticationUtils): Response
+public function [unit.actionName()/](AuthenticationUtils $authenticationUtils[if (loginUnit.hasCaptcha)]
+, Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if]): Response
 {
     $[unit.instanceName()/] = new [unit.modelClassName()/];
     $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[unit.instanceName()/], array(
@@ -72,11 +74,18 @@ public function [unit.actionName()/](): Response
 /**
  [forgottenUnit.routeAnnotation()/]
  */
-public function [unit.actionName()/]Request(Request $request, MailerInterface $mailer): Response
+public function [unit.actionName()/]Request(Request $request, MailerInterface $mailer[if (forgottenUnit.hasCaptcha)]
+, Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if]): Response
 {
     $[forgottenUnit.formName()/] = $this->createForm([forgottenUnit.typeClassName()/]::class);
     $[forgottenUnit.formName()/]->handleRequest($request);
     if ($[forgottenUnit.formName()/]->isSubmitted() && $[forgottenUnit.formName()/]->isValid()) {
+[if (forgottenUnit.hasCaptcha)]
+        if ($recaptcha3Validator->getLastResponse() !== null) {
+            $score = $recaptcha3Validator->getLastResponse()->getScore();
+            $logger->error("Score ".$score);
+        }
+[/if]
         return $this->processSendingPasswordResetEmail(
             $[forgottenUnit.formName()/]->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
 email[else]username[/if]')->getData(),
@@ -99,12 +108,13 @@ email[else]username[/if]')->getData(),
 public function [unit.actionName()/]CheckEmail(): Response
 {
     // We prevent users from directly accessing this page
-    if (!$this->canCheckEmail()) {
+    if (null === ($resetToken = $this->getTokenObjectFromSession())) {
         return $this->redirectToRoute('[forgottenUnit.routeName()/]');
     }
 
     return $this->render('[forgottenUnit.displayedOn.templateName()/]/[forgottenUnit.viewCheckEmailName()/][forgottenUnit.htmlExtension()/][forgottenUnit.twigExtension()/]', ['['/]
-        'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+//        'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+       'resetToken' => $resetToken,
     [']'/]);
 }
 
@@ -113,9 +123,6 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
     $user = $this->getDoctrine()->getRepository(Authentication::class)->findOneBy(['['/]
         'email' => $emailFormData,
     [']'/]);
-
-    // Marks that you are allowed to see the app_check_email page.
-    $this->setCanCheckEmailInSession();
 
     // Do not reveal whether a user account was found or not.
     if (!$user) {
@@ -141,13 +148,15 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
         ->from(new Address('info@salephoto.org.uk', 'SPS'))
         ->to($user->getEmail())
         ->subject('[forgottenUnit.emailSubject/]')
-        ->htmlTemplate('[forgottenUnit.displayedOn.name/]/[forgottenUnit.viewEmailMessageName()/][forgottenUnit.htmlExtension()/][forgottenUnit.twigExtension()/]')
+        ->htmlTemplate('[forgottenUnit.displayedOn.templateName()/]/[forgottenUnit.viewEmailMessageName()/][forgottenUnit.htmlExtension()/][forgottenUnit.twigExtension()/]')
         ->context(['['/]
             'resetToken' => $resetToken,
-            'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
         [']'/]);
 
     $mailer->send($email);
+
+    // Store the token object in session for retrieval in check-email route.
+    $this->setTokenObjectInSession($resetToken);
 
     return $this->redirectToRoute('[forgottenUnit.routeEmailSentName()/]');
 }
@@ -183,37 +192,36 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
             $e->getReason()
         ));
 
-        return $this->redirectToRoute('[resetUnit.routeName()/]');
+        return $this->redirectToRoute('[resetUnit.forgottenPasswordUnit.routeName()/]');
     }
 
     // The token is valid; allow the user to change their password.
-    $[unit.instanceName()/] = $this->createForm(SecurityChangePasswordType::class);
-    $[unit.instanceName()/]->handleRequest($request);
-
-    if ($[unit.instanceName()/]->isSubmitted() && $[unit.instanceName()/]->isValid()) {
+    $[resetUnit.formName()/] = $this->createForm([resetUnit.typeClassName()/]::class);
+    $[resetUnit.formName()/]->handleRequest($request);
+    if ($[resetUnit.formName()/]->isSubmitted() && $[resetUnit.formName()/]->isValid()) {
         // A password reset token should be used only once, remove it.
         $this->resetPasswordHelper->removeResetRequest($token);
 
         // Encode the plain password, and set it.
         $encodedPassword = $passwordEncoder->encodePassword(
             $user,
-            $[unit.instanceName()/]->get('plainPassword')->getData()
+            $[resetUnit.formName()/]->get('plainPassword')->getData()
          );
 
         $user->setPassword($encodedPassword);
-        $this->getDoctrine()->getManager()->flush();
+        [resetUnit.getContentRepository()/]->save($user, true);
 
         // The session is cleaned up after the password has been changed.
         $this->cleanSessionAfterReset();
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('[resetUnit.displayedOn.partOf.homeUnit().routeName()/]');
     }
 
     $parameters = array();
     [resetUnit.displayedOn.templateParameters()/]
-    $parameters['['/]'[unit.instanceName()/]'[']'/] = $[resetUnit.formName()/]->createView();
-    $parameters['['/]'[unit.instanceName()/]_error'[']'/] = null;
-    return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', $parameters);
+    $parameters['['/]'[resetUnit.instanceName()/]'[']'/] = $[resetUnit.formName()/]->createView();
+    $parameters['['/]'[resetUnit.instanceName()/]_error'[']'/] = null;
+    return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.templateName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', $parameters);
 }
 [/let]
 [/template]

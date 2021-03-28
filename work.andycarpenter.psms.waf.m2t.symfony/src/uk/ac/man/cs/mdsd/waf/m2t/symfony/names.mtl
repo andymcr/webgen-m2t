@@ -231,6 +231,22 @@
 	= unit.instanceName()
 /]
 
+[query public captchaActionName(unit : ContentUnit) : String
+	= if unit.oclIsTypeOf(LoginUnit) then
+			'login'
+		else if unit.oclIsTypeOf(ForgottenPasswordUnit) then
+			'forgottenPassword'
+		else if unit.oclIsTypeOf(ResetPasswordUnit) then
+			'resetPasword'
+		else
+			if unit.displayedOn.editUnits->size() = 1 then
+				unit.displayedOn.uniqueName()
+			else
+				unit.uniqueName()
+			endif
+		endif endif endif
+/]
+
 [query public containerInstanceName(unit : DynamicUnit) : String
 	= if unit.isContained then
 			unit.containingType.instanceName()
@@ -279,10 +295,6 @@
 			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
 				in dynamicUnit.contentType.modelClassName()
 		endif
-/]
-
-[query public logoutActionName(security : Authentication) : String
-	= 'logout'
 /]
 
 [query public paginationPageParameterName(unit : CollectionUnit) : String

@@ -45,11 +45,17 @@
 				->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
 				->collect(f | f.optionsFilter.selection.definedBy)
 				->asSet()
-			in page.repositoriesUsed->asSet()
-				->union(containerRepositories)
-				->union(autocompleteRepositories)
-				->asSequence()
-				->sortedBy(r | r.name)
+			in let resetPasswordRepositories : Set(Repository)
+				= page.securityUnits
+					->select(u | u.oclIsTypeOf(ResetPasswordUnit)).oclAsType(ResetPasswordUnit)
+					->collect(u | u.contentType.repository)
+					->asSet()
+				in page.repositoriesUsed->asSet()
+					->union(containerRepositories)
+					->union(autocompleteRepositories)
+					->union(resetPasswordRepositories)
+					->asSequence()
+					->sortedBy(r | r.name)
 /]
 
 [query private hasSupportMethods(page : Page) : Boolean
@@ -83,7 +89,7 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[if (page.hasForgottenPasswordUnits)]
+[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
     use ResetPasswordControllerTrait;
 
     private $resetPasswordHelper;
@@ -153,6 +159,10 @@ use [service.serviceNamespace()/]\[service.className()/];
 [if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
+[if (page.hasCaptchaUnits)]
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
+use Psr\Log\LoggerInterface;
+[/if]
 [if (page.hasForgottenPasswordUnits)]
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 [/if]
@@ -181,8 +191,10 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 [/if]
 use Symfony\Component\Routing\Annotation\Route;
-[if (page.hasForgottenPasswordUnits)]
+[if (page.hasResetPasswordUnits)]
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+[/if]
+[if (page.hasLoginUnits)]
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 [/if]
 [if (page.hasAutocompleteFields)]
@@ -192,24 +204,28 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
-[if (page.hasForgottenPasswordUnits)]
+[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+[/if]
+[if (page.hasResetPasswordUnits)]
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+[/if]
+[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 [/if]
 [/template]
 
 [template private constructor(page : Page) post(trim())]
-public function __construct([if (page.hasForgottenPasswordUnits)]
+public function __construct([if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
 ResetPasswordHelperInterface $resetPasswordHelper, [/if][for (repository : Repository | page.repositoriesUsed()) separator (', ')]
-[repository.className()/] $[repository.instanceName()/][/for][if (page.hasRepositoriesUsed and page.hasServicesUsed)]
+[repository.className()/] $[repository.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() and page.hasServicesUsed)]
 , [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
-[if (page.hasRepositoriesUsed or page.hasServicesUsed)]
-, [/if]ValidatorInterface $validator[/if][if (page.hasRepositoriesUsed or page.hasServicesUsed)]
+[if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
+, [/if]ValidatorInterface $validator[/if][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
 , [/if]TranslatorInterface $translator)
 {
-[if (page.hasForgottenPasswordUnits)]
+[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
     $this->resetPasswordHelper = $resetPasswordHelper;
 [/if]
 [for (repository : Repository | page.repositoriesUsed())]

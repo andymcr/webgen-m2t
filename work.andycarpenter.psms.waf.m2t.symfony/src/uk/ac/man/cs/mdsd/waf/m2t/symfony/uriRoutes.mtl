@@ -194,6 +194,12 @@
 [query public uriSecurityPath(unit : DynamicUnit) : String
 	= unit.displayedOn.uriPagePath()
 		.combinePaths(unit.uriElement)
+		.combinePaths(
+			if unit.oclIsTypeOf(ResetPasswordUnit) then
+				'{token}'
+			else
+				''
+			endif)
 /]
 
 

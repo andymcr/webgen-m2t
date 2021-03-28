@@ -145,6 +145,28 @@
  <target>[field.help.validXML()/]</target>
 </trans-unit>
 	[/if]
+	[if (unit.oclIsKindOf(EditUnit) and field.isRepeated)]
+	[let interface : InterfaceField = field.oclAsType(InterfaceField)]
+		[if (interface.secondDisplayLabel <> '')]
+<trans-unit id="[interface.secondDisplayLabelId()/]">
+ <source>[interface.secondDisplayLabelId()/]</source>
+ <target>[interface.secondDisplayLabel.validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (interface.secondPlaceholder <> '')]
+<trans-unit id="[interface.secondPlaceholderId()/]">
+ <source>[interface.secondPlaceholderId()/]</source>
+ <target>[interface.secondPlaceholder.validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (interface.secondHelp <> '')]
+<trans-unit id="[interface.secondHelpId()/]">
+ <source>[interface.secondHelpId()/]</source>
+ <target>[interface.secondHelp.validXML()/]</target>
+</trans-unit>
+		[/if]
+	[/let]
+	[/if]
 [/for]
 [/template]
 

@@ -313,64 +313,9 @@ $this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/
 [/for]
 [/template]
 
-[template public generateInterfaceFieldValidation(unit : DynamicUnit) post(trim())]
-$extra_validation = Validation::factory($_POST);
-[for (field : InterfaceField | unit.interfaceFields)]
-	[if (field.isRequired)]
-$extra_validation->rule('[field.modelPropertyName()/]', 'not_empty');
-	[/if]
-	[if (field.oclIsTypeOf(DateField))]
-$extra_validation->rule('[field.modelPropertyName()/]', 'date');
-	[/if]
-	[if (not field.mustMatch.oclIsUndefined())]
-$extra_validation->rule('[field.modelPropertyName()/]', 'matches', array(':validation', ':field', '[field.mustMatch.modelPropertyName()/]'));
-	[/if]
-[/for]
-[/template]
-
-
-[template public generateClearEncryptedFeatures(unit : DynamicUnit) post(trim())]
-[for (field : UnitField | unit.encryptedFields)]
-$this->[unit.instanceName()/]->[field.modelPropertyName()/] = '';
-[/for]
-[/template]
-
-[template public generateRememberInterfaceFields(unit : DynamicUnit) post(trim())]
-$this->[unit.instanceName()/]->unit_fields($this->request->post(), array([for
-	(field : UnitField | unit.interfaceFields)
-	separator (', ')]'[field.formName()/]'[/for]));
-[/template]
-
-
-[template public generateRemoveParameter(eObject : EObject, parameterName : String) post(trim())]
-unset($this->query_parameters['['/]'[parameterName/]'[']'/]);
-[/template]
-
 
 [template public templateParameters(page : Page) post(trim())]
 $parameters['['/]'title'[']'/] = [page.translate(page.displayLabelId())/];
-[if (page.hasGalleryUnits)]
-[page.templateStyleParameters()/]
-[/if]
-[if (false and page.hasGalleryUnits)]
-[page.templateScriptParameters()/]
-[/if]
-[/template]
-
-[template private templateStyleParameters(page : Page) post(trim())]
-$parameters['['/]'styles'[']'/] = array(
-[if (page.hasGalleryUnits)]
-    'css/blueimp-gallery.min.css',
-[/if]
-);
-[/template]
-
-[template public templateScriptParameters(page : Page) post(trim())]
-$parameters['['/]'scripts'[']'/] = array(
-[if (page.hasGalleryUnits)]
-    'js/blueimp-gallery.min.js',
-[/if]
-);
 [/template]
 
 [template public actionResultFlash(action : Action) post(trim())]

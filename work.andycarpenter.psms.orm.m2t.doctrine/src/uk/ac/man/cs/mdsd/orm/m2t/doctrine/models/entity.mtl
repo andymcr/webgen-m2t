@@ -158,7 +158,6 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 [/if]
 [if (entity.hasResourceAttributes)]
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 [/if]
 [if (entity.isContained and entity.containerUniqueAttributes->notEmpty())]
@@ -207,18 +206,18 @@ protected $[feature.modelPropertyName()/];
 
 [elseif (feature.isResourceFeature)]
 /**
- * @Vich\UploadableField(mapping="[feature.modelPropertyName()/]", fileNameProperty="[feature.modelPropertyName()/].name", size="[feature.modelPropertyName()/].size", mimeType="[feature.modelPropertyName()/].mimeType", originalName="[feature.modelPropertyName()/].originalName", dimensions="[feature.modelPropertyName()/].dimensions")
+ * @ORM\Column(type="string")
  *
- * @var File
+ * @var string|null
  **/
-protected $[feature.modelPropertyName()/]File;
+protected $[feature.modelPropertyName()/]Name;
 
 /**
- * @ORM\Embedded(class="Vich\UploaderBundle\Entity\File")
+ * @Vich\UploadableField(mapping="[feature.modelPropertyName()/]", fileNameProperty="[feature.modelPropertyName()/]Name", size="[feature.modelPropertyName()/]Size", mimeType="[feature.modelPropertyName()/].mimeType", originalName="[feature.modelPropertyName()/].originalName", dimensions="[feature.modelPropertyName()/].dimensions")
  *
- * @var EmbeddedFile
+ * @var File|null
  **/
-protected $[feature.modelPropertyName()/];
+protected $[feature.modelPropertyName()/]File;
 
 [/if]
 [/template]
@@ -475,9 +474,6 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
 	[if (feature.oclIsTypeOf(CollectionAssociation))]
     $this->[feature.modelPropertyName()/] = new ArrayCollection();
 	[/if]
-	[if (feature.isResourceFeature)]
-    $this->[feature.modelPropertyName()/]  = new EmbeddedFile();
-	[/if]
 [/for]
 }
 [/template]
@@ -491,25 +487,30 @@ public function getId(): int
 
 [template private featureMethods(feature : Feature) post(trim())]
 [if (feature.isResourceFeature)]
+[feature.getFileNameMethod()/]
+
+[feature.setFileNameMethod()/]
+
 [feature.getFileMethod()/]
 
 [feature.setFileMethod()/]
 
-[/if]
+[else]
 [feature.getMethod()/]
 
-[if (not feature.isDerived)]
-	[if (feature.isSingleton)]
+	[if (not feature.isDerived)]
+		[if (feature.isSingleton)]
 [feature.setMethod()/]
 
-	[else]
-		[if (feature.collectionOrmAllowAdd)]
+		[else]
+			[if (feature.collectionOrmAllowAdd)]
 [feature.addMethod()/]
 
-		[/if]
-		[if (feature.collectionOrmAllowRemove)]
+			[/if]
+			[if (feature.collectionOrmAllowRemove)]
 [feature.removeMethod()/]
 
+			[/if]
 		[/if]
 	[/if]
 [/if]
@@ -577,6 +578,13 @@ return $this->[feature.modelPropertyName()/];
 [/if]
 [/template]
 
+[template private getFileNameMethod(feature : Feature) post(trim())]
+public function [feature.getMethodName()/]Name(): ?string
+{
+    return $this->[feature.modelPropertyName()/]Name;
+}
+[/template]
+
 [template private getFileMethod(feature : Feature) post(trim())]
 public function [feature.getMethodName()/]File(): ?File
 {
@@ -604,13 +612,18 @@ public function [attribute.setMethodName()/]($[attribute.instanceName()/]): void
 [if (attribute.oclIsTypeOf(SingletonElement))]
 [let element : SingletonElement = attribute.oclAsType(SingletonElement)]
 	[if (element.caseInsensitive)]
-$this->[element.columnName/] = strtolower(trim($[element.instanceName()/]));
-	[elseif (element.encrypt)]
+$this->[element.columnName/] = strtolower($[element.instanceName()/]);
+	[elseif (element.encrypt and not element.name.equalsIgnoreCase('password'))]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
 	[elseif (element.isEnumerationFeature or element.isBooleanFeature)]
 $this->[element.columnName/] = $[element.instanceName()/];
 	[else]
-$this->[element.columnName/] = trim($[element.instanceName()/]);
+$this->[element.columnName/] = $[element.instanceName()/];
+	[/if]
+	[if (element.name.equalsIgnoreCase('password'))]
+		[if (element.partOf.features->select(f | f.name.equalsIgnoreCase('passwordChangedAt'))->notEmpty())]
+$this->[element.partOf.features->any(f | f.name.equalsIgnoreCase('passwordChangedAt')).setMethodName()/](new \DateTimeImmutable());
+		[/if]
 	[/if]
 [/let]
 [elseif (attribute.oclIsTypeOf(SingletonDate) or attribute.oclIsTypeOf(SingletonURL))]
@@ -618,13 +631,20 @@ $this->[attribute.columnName/] = $[attribute.instanceName()/];
 [/if]
 [/template]
 
+[template private setFileNameMethod(feature : Feature) post(trim())]
+public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/]Name): void
+{
+    $this->[feature.modelPropertyName()/]Name = $[feature.instanceName()/]Name;
+}
+[/template]
+
 [template private setFileMethod(feature : Feature) post(trim())]
 /**
- * @param File|UploadedFile $[feature.getMethodName()/]
+ * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $[feature.getMethodName()/]File
  **/
-public function [feature.setMethodName()/]File(?File $[feature.instanceName()/] = null): void
+public function [feature.setMethodName()/]File(?File $[feature.instanceName()/]File): void
 {
-    $this->[feature.modelPropertyName()/]File = $[feature.instanceName()/];
+    $this->[feature.modelPropertyName()/]File = $[feature.instanceName()/]File;
     if (null !== $[feature.instanceName()/]) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
@@ -857,7 +877,7 @@ public function getCreated(): \DateTime
 
 [/if]
 [if (entity.partOf.timestampUpdates)]
-public function getUpdated(): \DateTime
+public function getUpdated(): ?\DateTime
 {
     return $this->updated;
 }
