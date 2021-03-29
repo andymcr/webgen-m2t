@@ -93,11 +93,11 @@ public function [unit.actionName()/]X([unit.actionMethodFormals()/]): Response
 
 [template private actionCreateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
-[if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
 $[unit.instanceName()/] = new [unit.modelClassName()/]();
+[if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
 [unit.setContainer()/]
 [/if]
-$this->[unit.instanceName()/] = [unit.createForm(sourceParameters)/];
+$this->[unit.instanceName()/] = [unit.createForm('$'.concat(unit.instanceName()), sourceParameters)/];
 $this->[unit.instanceName()/]->handleRequest($request);
 	[if (not unit.cancelDestination.oclIsUndefined())]
 [unit.handleCancelSubmit()/]
@@ -170,44 +170,43 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [/let]
 [/template]
 
-[template private createForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[template private createForm(unit : EditUnit, instanceName : String, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName()/]::class, [if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
-$[unit.instanceName()/][else]null[/if], array(
+$this->createForm([unit.typeClassName()/]::class, [instanceName/], ['['/]
     'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
-        array(
+        ['['/]
             [unit.routeActualParameters(sourceParameters)/]
-    ))[/if]
+    [']'/])[/if]
 [else]
 	[if (unit.hasRouteParameters())]
-, array(
+, ['['/]
         [unit.routeActualParameters(sourceParameters)/]
-    )[/if]
+    [']'/][/if]
 [/if]),
-))
+[']'/])
 [/let]
 [/template]
 
 [template private updateForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], array(
+$this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], ['['/]
     'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteUpdateParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(),
-        array(
+        ['['/]
             [unit.routeActualUpdateParameters(sourceParameters)/]
-    ))[/if]
+    [']'/])[/if]
 [else]
 	[if (unit.hasRouteUpdateParameters())]
-, array(
+, ['['/]
         [unit.routeActualUpdateParameters(sourceParameters)/]
-    )[/if]
+    [']'/][/if]
 [/if]),
-))
+[']'/])
 [/let]
 [/template]
 
@@ -222,7 +221,7 @@ $[unit.instanceName()/]->set[modelPropertyName/]([unit.getContainerRepository()/
 [template private saveBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [unit.getContentRepository()/]->save($[unit.instanceName()/], true);
 [if (unit.hasSuccessMessage)]
-$this->addFlash('success', $this->translationService->trans('[unit.successMessageId()/]', array(), '[unit.displayedOn.translationDomain()/]'));
+$this->addFlash('success', $this->translationService->trans('[unit.successMessageId()/]', ['['/][']'/], '[unit.displayedOn.translationDomain()/]'));
 [/if]
 [if (not unit.confirmDestination.oclIsUndefined())]
 return [unit.confirmDestination.redirect()/];
@@ -246,7 +245,7 @@ return [unit.displayedOn.redirect(sourceParameters)/];
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.displayEmptyForm())]
 if (!isset($this->[editUnit.instanceName()/])) {
-    $this->[editUnit.instanceName()/] = [editUnit.createForm(editUnit.routeParameters())/];
+    $this->[editUnit.instanceName()/] = [editUnit.createForm('null', editUnit.routeParameters())/];
 }
 [/if]
 [if (not editUnit.displayEmptyForm())]
