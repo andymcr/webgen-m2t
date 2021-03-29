@@ -187,10 +187,6 @@ $this->[unit.findElementSelection.definedBy.instanceName()/]->[unit.findElementS
 [/if]
 [/template]
 
-[template public createInstance(unit : DynamicUnit) post(trim())]
-new [unit.modelClassName()/]()
-[/template]
-
 
 [template public findActualParameterList(unit : DynamicUnit) post(trim())]
 [unit.findActualParameterList(unit.routeParameters())/]

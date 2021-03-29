@@ -93,15 +93,11 @@ public function [unit.actionName()/]X([unit.actionMethodFormals()/]): Response
 
 [template private actionCreateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
-$this->[unit.instanceName()/] = [unit.createForm(sourceParameters)/];
 [if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
-if ($request->isMethod('POST')) {
-	[if (not unit.cancelDestination.oclIsUndefined())]
-    [unit.handleCancelPost()/]
-	[/if]
-    [unit.customValuesBody(sourceParameters)/]
-}
-[else]
+$[unit.instanceName()/] = new [unit.modelClassName()/]();
+[unit.setContainer()/]
+[/if]
+$this->[unit.instanceName()/] = [unit.createForm(sourceParameters)/];
 $this->[unit.instanceName()/]->handleRequest($request);
 	[if (not unit.cancelDestination.oclIsUndefined())]
 [unit.handleCancelSubmit()/]
@@ -109,7 +105,6 @@ $this->[unit.instanceName()/]->handleRequest($request);
 if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
     [unit.saveBody(sourceParameters)/]
 }
-[/if]
 [/let]
 [/template]
 
@@ -175,21 +170,10 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [/let]
 [/template]
 
-[template private customValuesBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[unit.setContainer()/]
-$this->[unit.instanceName()/]->submit($request->request->get($this->[unit.instanceName()/]->getName()), false);
-foreach ($this->validatorService->validate($[unit.instanceName()/]) as $violation) {
-    $path = $violation->getPropertyPath();
-   	$this->[unit.instanceName()/]->get($path)->addError(new FormError($violation->getMessage()));
-}
-if ($this->[unit.instanceName()/]->isValid()) {
-    [unit.saveBody(sourceParameters)/]
-}
-[/template]
-
 [template private createForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName()/]::class, null, array(
+$this->createForm([unit.typeClassName()/]::class, [if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
+$[unit.instanceName()/][else]null[/if], array(
     'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(

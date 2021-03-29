@@ -62,18 +62,6 @@
 	= page.units->select(u | u.hasSupportMethods())->notEmpty()
 /]
 
-[query private hasExplicitValidation(page : Page) : Boolean
-	= page.editUnits->select(u | u.hasExplicitValidation())->notEmpty()
-/]
-
-[query private hasExplicitValidation(unit : EditUnit) : Boolean
-	= if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
-			unit.isContained and not unit.hasExplicitlyEditedContainer
-		else
-			false
-		endif
-/]
-
 
 [template public controller(page : Page, model : WafModel)]
 [file(page.controllerFilename(model), false)]
@@ -103,10 +91,6 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     private $[service.instanceName()/];
 
 [/for]
-[if (page.hasExplicitValidation())]
-    private $validatorService;
-
-[/if]
     private $translationService;
 
     [page.constructor()/]
@@ -183,9 +167,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
-[if (page.editUnits->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))->exists(isContained and not hasExplicitlyEditedContainer))]
-use Symfony\Component\Form\FormError;
-[/if]
 [if (page.hasForgottenPasswordUnits)]
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -199,9 +180,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 [/if]
 [if (page.hasAutocompleteFields)]
 use Symfony\Component\Serializer\SerializerInterface;
-[/if]
-[if (page.hasExplicitValidation())]
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
@@ -220,9 +198,7 @@ public function __construct([if (page.hasForgottenPasswordUnits or page.hasReset
 ResetPasswordHelperInterface $resetPasswordHelper, [/if][for (repository : Repository | page.repositoriesUsed()) separator (', ')]
 [repository.className()/] $[repository.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() and page.hasServicesUsed)]
 , [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
-[service.className()/] $[service.instanceName()/][/for][if (page.hasExplicitValidation())]
-[if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
-, [/if]ValidatorInterface $validator[/if][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
+[service.className()/] $[service.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
 , [/if]TranslatorInterface $translator)
 {
 [if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
@@ -234,9 +210,6 @@ ResetPasswordHelperInterface $resetPasswordHelper, [/if][for (repository : Repos
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
     $this->[service.instanceName()/] = $[service.instanceName()/];
 [/for]
-[if (page.hasExplicitValidation())]
-    $this->validatorService = $validator;
-[/if]
     $this->translationService = $translator;
 }
 [/template]
