@@ -517,8 +517,7 @@ public function getId(): int
 [/template]
 
 [template private getMethod(feature : Feature) post(trim())]
-public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]
-?[/if][feature.getReturnType()/]
+public function [feature.getMethodName()/](): [if (feature.isSingleton)]?[/if][feature.getReturnType()/]
 {
 [if (feature.isDerived)]
     // [protected (feature.name.concat('.getMethod'))]
