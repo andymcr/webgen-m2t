@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
@@ -277,15 +278,13 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
     'choices' => [attribute.enumerationType.modelClassName()/]::values(),
     'placeholder' => 'actions.labels.select_one',
 [/if]
-[if (attribute.hasHtml5Attributes or true)] [comment placeholder set to display label/]
     'attr' => ['['/]
         'placeholder' => '[attribute.displayLabelId()/]',
-	[if (attribute.hasValidationPattern)]
+[if (attribute.hasValidationPattern)]
         'pattern' => '[attribute.validationPattern/]',
-	[/if]
+[/if]
         'title' => '[attribute.displayLabelId()/]',
     [']'/],
-[/if]
 [']'/])
 [/let]
 [/template]
@@ -418,70 +417,22 @@ add('[interface.name/]', [interface.interfaceType()/], ['['/]
 [/if]
     'mapped' => false,
     'translation_domain' => '[interface.displayedOn.translationDomain()/]',
+[if (interface.isRequired)]
     'required' => true,
+[/if]
 [if (not interface.isRepeated)]
+	[if (interface.hasTitle or interface.hasPlaceholder)]
+    [field.fieldAttr()/]
+	[/if]
 	[if (field.hasHelp)]
     'help' => '[field.helpId()/]',
 	[/if]
 [else]
-	[if (field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass)]
-    'options' => ['['/]
-		[if (field.hasInputGroupClass)]
-        'row_attr' => ['['/] 'class' => '[field.inputGroupClass/]' [']'/],
-		[/if]
-		[if (field.hasFieldLabelClass)]
-        'label_attr' => ['['/] 'class' => '[field.fieldLabelClass/]' [']'/],
-		[/if]
-		[if (field.hasFieldLabelClass)]
-        'attr' => ['['/] 'class' => '[field.fieldValueClass/]' [']'/],
-		[/if]
-    [']'/],
+	[if (field.hasLocalInputGroupClass() or field.hasLocalFieldLabelClass() or field.hasLocalFieldValueClass())]
+    [interface.repeatOptions()/]
 	[/if]
-    'first_options' => ['['/]
-        'label' => '[interface.customisedDisplayLabelId()/]',
-	[if (field.hasHelp)]
-        'help' => '[field.helpId()/]',
-	[/if]
-	[if (field.hasTitle or field.hasPlaceholder)]
-        'attr' => ['['/]
-		[if (field.hasTitle)]
-            'title' => '[interface.customisedTitleId()/]',
-		[/if]
-		[if (field.hasPlaceholder)]
-            'placeholder' => '[interface.customisedPlaceholderId()/]',
-		[/if]
-        [']'/],
-	[/if]
-	[if (interface.isRequired or true)]
-        'constraints' => ['['/]
-		[if (interface.isRequired)]
-            [interface.notBlank()/],
-		[/if]
-            new Length(['['/]
-                'min' => 6,
-                'minMessage' => 'Your password should be at least {{ limit }} characters',
-                // max length allowed by Symfony for security reasons
-                'max' => 4096,
-            [']'/]),
-        [']'/],
-	[/if]
-    [']'/],
-    'second_options' => ['['/]
-        'label' => '[interface.secondDisplayLabelId()/]',
-	[if (field.hasSecondHelp)]
-        'help' => '[field.secondHelpId()/]',
-	[/if]
-	[if (interface.hasSecondTitle or interface.hasSecondPlaceholder)]
-        'attr' => ['['/]
-		[if (interface.hasSecondTitle)]
-            'title' => '[interface.secondTitleId()/]',
-		[/if]
-		[if (interface.hasSecondPlaceholder)]
-            'placeholder' => '[interface.secondPlaceholderId()/]',
-		[/if]
-        [']'/],
-	[/if]
-    [']'/],
+    [interface.firstOptions()/]
+    [interface.secondOptions()/]
 [/if]
 [']'/])
 [/let]
@@ -511,6 +462,75 @@ TextareaType::class
 [else]
 TextType::class
 [/if]
+[/template]
+
+[template private repeatOptions(field : InterfaceField) post(trim())]
+'options' => ['['/]
+	[if (field.hasLocalInputGroupClass())]
+    'row_attr' => ['['/] 'class' => '[field.localInputGroupClass()/]' [']'/],
+	[/if]
+	[if (field.hasLocalFieldLabelClass())]
+    'label_attr' => ['['/] 'class' => '[field.localFieldLabelClass()/]' [']'/],
+	[/if]
+	[if (field.hasLocalFieldValueClass())]
+    'attr' => ['['/] 'class' => '[field.localFieldValueClass()/]' [']'/],
+	[/if]
+[']'/],
+[/template]
+
+[template private firstOptions(field : InterfaceField) post(trim())]
+'first_options' => ['['/]
+    'label' => '[field.customisedDisplayLabelId()/]',
+[if (field.hasHelp)]
+    'help' => '[field.helpId()/]',
+[/if]
+[if (field.hasTitle or field.hasPlaceholder)]
+    [field.fieldAttr()/]
+[/if]
+[if (field.isRequired or true)]
+    'constraints' => ['['/]
+	[if (field.isRequired)]
+        [field.notBlank()/],
+	[/if]
+        new Length(['['/]
+            'min' => 6,
+            'minMessage' => 'Your password should be at least {{ limit }} characters',
+            // max length allowed by Symfony for security reasons
+            'max' => 4096,
+        [']'/]),
+    [']'/],
+[/if]
+[']'/],
+[/template]
+
+[template private secondOptions(field : InterfaceField) post(trim())]
+'second_options' => ['['/]
+    'label' => '[field.secondDisplayLabelId()/]',
+[if (field.hasSecondHelp)]
+    'help' => '[field.secondHelpId()/]',
+[/if]
+[if (field.hasSecondTitle or field.hasSecondPlaceholder)]
+    'attr' => ['['/]
+	[if (field.hasSecondPlaceholder)]
+        'placeholder' => '[field.secondPlaceholderId()/]',
+	[/if]
+	[if (field.hasSecondTitle)]
+        'title' => '[field.secondTitleId()/]',
+	[/if]
+    [']'/],
+[/if]
+[']'/],
+[/template]
+
+[template private fieldAttr(field : UnitField) post(trim())]
+'attr' => ['['/]
+[if (field.hasPlaceholder)]
+    'placeholder' => '[field.customisedPlaceholderId()/]',
+[/if]
+[if (field.hasTitle)]
+    'title' => '[field.customisedTitleId()/]',
+[/if]
+[']'/],
 [/template]
 
 [template private notBlank(field : UnitField) post(trim())]

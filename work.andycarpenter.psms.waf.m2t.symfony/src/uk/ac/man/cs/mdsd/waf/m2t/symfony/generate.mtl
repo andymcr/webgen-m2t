@@ -36,6 +36,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translations::entity/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translations::section/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translations::navigation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::views::form::bootstrap/]
 
 
 [template public symfony(model : WafModel)]
@@ -72,6 +73,7 @@
 [model.pages->select(p | p.hasNonSecurityUnits).page()/]
 [model.pages.units.unitView()/]
 [model.pages.units.unitExtraViews()/]
+[model.formViews()/]
 
 [model.entityTranslations()/]
 [model.navigation.navigationTranslations()/]

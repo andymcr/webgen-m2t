@@ -260,6 +260,18 @@
 		endif endif
 /]
 
+[query public hasLocalInputGroupClass(field : UnitField) : Boolean
+	= field.localInputGroupClass() <> ''
+/]
+
+[query public hasLocalFieldLabelClass(field : UnitField) : Boolean
+	= field.localFieldLabelClass() <> ''
+/]
+
+[query public hasLocalFieldValueClass(field : UnitField) : Boolean
+	= field.localFieldValueClass() <> ''
+/]
+
 [query public hasPlaceholder(field : UnitField) : Boolean
 	= (field.oclIsTypeOf(UnitAttribute) or field.oclIsKindOf(InterfaceField))
 		and field.hasPlaceholder
@@ -279,6 +291,30 @@
 
 [query public isConditionalDisplay(field : UnitField) : Boolean
 	= not field.hideWhen.oclIsUndefined()
+/]
+
+[query public localFieldLabelClass(field : UnitField) : String
+	= if field.localFieldLabelClass <> '' then
+			field.localFieldLabelClass
+		else
+			field.displayedOn.localFieldLabelClass
+		endif
+/]
+
+[query public localFieldValueClass(field : UnitField) : String
+	= if field.localFieldValueClass <> '' then
+			field.localFieldValueClass
+		else
+			field.displayedOn.localFieldValueClass
+		endif
+/]
+
+[query public localInputGroupClass(field : UnitField) : String
+	= if field.localInputGroupClass <> '' then
+			field.localInputGroupClass
+		else
+			field.displayedOn.localInputGroupClass
+		endif
 /]
 
 [query public placeholder(field : UnitField) : String

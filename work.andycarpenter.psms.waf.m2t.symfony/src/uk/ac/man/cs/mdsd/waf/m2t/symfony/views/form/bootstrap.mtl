@@ -6,33 +6,33 @@
 
 
 [template public formViews(model : WafModel)]
-[file (model.formViewDirectory().concat('/').concat('materialize').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[file (model.formViewDirectory().concat('/').concat('bootstrap_custom').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+{% use "bootstrap_4_horizontal_layout.html.twig" %}
+
 [model.formRow()/]
 
-[model.checkboxRow()/]
-
-[model.choiceOptions()/]
-
-[model.datePicker()/]
-
-[model.timePicker()/]
-
-[model.labelClass()/]
-
-[model.elementAttributes()/]
 [/file]
 [/template]
 
 [template private formRow(model : WafModel) post(trim())]
-{%- block form_row -%}
-<div class="row">
- <div{{ block('column_class') }}[comment {% if errors | length > 0 %} class="error"{% endif %}/]>
-  {{ form_widget(form) }}
-  {{ form_label(form) }}
-  {{ form_errors(form) }}
- </div>
-</div>
-{%- endblock form_row -%}
+{% block form_row -%}
+    {%- if expanded is defined and expanded -%}
+        {{ block('fieldset_form_row') }}
+    {%- else -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+        <div{% with {attr: row_attr|merge({class: (row_attr.class|default('[if (model.defaultFormStyles.inputGroupClass <> '')]
+[model.defaultFormStyles.inputGroupClass/][/if]') ~ ' form-group row' ~ ((not compound or force_error|default(false)) and not valid ? ' is-invalid'))|trim})} %}{{ block('attributes') }}{% endwith %}>
+            {{- form_label(form) -}}
+            <div class="{{ block('form_group_class') }}">
+                {{- form_widget(form, widget_attr) -}}
+                {{- form_help(form) -}}
+            </div>
+    {##}</div>
+    {%- endif -%}
+{%- endblock form_row %}
 [/template]
 
 [template public checkboxRow(model : WafModel) post(trim())]

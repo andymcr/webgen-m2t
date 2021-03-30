@@ -176,8 +176,7 @@ $this->createForm([unit.typeClassName()/]::class, [instanceName/], ['['/]
     'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
-        $request->query->all(),
-        ['['/]
+        $request->query->all(), ['['/]
             [unit.routeActualParameters(sourceParameters)/]
     [']'/])[/if]
 [else]
@@ -196,8 +195,7 @@ $this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], ['['/
     'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteUpdateParameters())]
 $request->query->all()[else]
 array_merge(
-        $request->query->all(),
-        ['['/]
+        $request->query->all(), ['['/]
             [unit.routeActualUpdateParameters(sourceParameters)/]
     [']'/])[/if]
 [else]
