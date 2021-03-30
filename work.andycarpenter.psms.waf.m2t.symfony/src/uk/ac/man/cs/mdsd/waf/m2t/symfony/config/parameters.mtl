@@ -2,6 +2,7 @@
 [module parameters(
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::parameters/]
 
 
 [template public configParameters(siteProperties : SiteProperties)]
@@ -9,9 +10,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: '[siteProperties.locale/]'
-    site_title: '[siteProperties.siteTitle/]'
-    webmaster_email: '[siteProperties.webmasterEmail/]'
+    [siteProperties.localeId()/]: '[siteProperties.locale/]'
+    [siteProperties.siteTitleId()/]: '[siteProperties.siteTitle/]'
+    [siteProperties.webmasterId()/]: '[siteProperties.webmasterEmail/]'
+    [siteProperties.securityFromEmailId()/]: '[siteProperties.securityFromEmail/]'
+    [siteProperties.securityFromNameId()/]: '[siteProperties.securityFromName/]'
 #    copyright_text: '[siteProperties.copyrightText/]'
 [/file]
 [/template]

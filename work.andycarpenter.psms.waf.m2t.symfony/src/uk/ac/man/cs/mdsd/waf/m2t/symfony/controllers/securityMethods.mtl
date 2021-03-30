@@ -13,18 +13,79 @@
 	? (unit.oclIsTypeOf(RegistrationUnit)) post(trim())]
 [let registrationUnit : RegistrationUnit = unit.oclAsType(RegistrationUnit)]
 /**
- [unit.routeAnnotation()/]
+ [registrationUnit.routeAnnotation()/]
  **/
-public function [unit.actionName()/](): Response
+public function [registrationUnit.actionName()/](Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
 {
     if (!$this->isGranted("IS_ANONYMOUS")) {
-[if (unit.genModel.homeUnit().oclIsUndefined())]
+[if (registrationUnit.genModel.homeUnit().oclIsUndefined())]
         return $this->redirect("/");
 [else]
         return $this->redirectToRoute("[unit.genModel.homeUnit().routeName()/]");
 [/if]
     }
-    throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+
+    $user = new [registrationUnit.modelClassName()/]();
+    $form = $this->createForm([registrationUnit.typeClassName()/]::class, $user);
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $encodedPassword = $passwordEncoder->encodePassword($user,
+            $form->get('plainPassword')->getData()
+        );
+        $user->setPassword($encodedPassword);
+        [registrationUnit.getContentRepository()/]->save($user, true);
+
+        // generate a signed url and email it to the user
+        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            (new TemplatedEmail())
+		        ->from(new Address(
+					$this->getParameter('[registrationUnit.genModel.siteProperties.securityFromEmail/]'),
+					$this->getParameter('[registrationUnit.genModel.siteProperties.securityFromName/]')))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+        // do anything else you need here, like send an email
+
+        return $this->redirectToRoute('home');
+    }
+
+    $parameters = array();
+    [registrationUnit.displayedOn.templateParameters()/]
+    $parameters['['/]'[registrationUnit.instanceName()/]'[']'/] = $[registrationUnit.formName()/]->createView();
+    $parameters['['/]'[registrationUnit.instanceName()/]_error'[']'/] = null;
+    return $this->render('[registrationUnit.displayedOn.templateName()/]/[registrationUnit.templateName()/][registrationUnit.htmlExtension()/][registrationUnit.twigExtension()/]', $parameters);
+}
+
+/**
+ * @Route("/verify/email", name="app_verify_email")
+ **/
+public function verifyUserEmail(Request $request, AuthenticationRepository $authenticationRepository): Response
+{
+    $id = $request->get('id');
+
+    if (null === $id) {
+        return $this->redirectToRoute('app_register');
+    }
+
+    $user = $authenticationRepository->find($id);
+
+    if (null === $user) {
+        return $this->redirectToRoute('app_register');
+    }
+
+    // validate email confirmation link, sets User::isVerified=true and persists
+    try {
+        $this->emailVerifier->handleEmailConfirmation($request, $user);
+    } catch (VerifyEmailExceptionInterface $exception) {
+        $this->addFlash('verify_email_error', $exception->getReason());
+         return $this->redirectToRoute('app_register');
+    }
+
+    // @TODO Change the redirect on success and handle or remove the flash message in your templates
+    $this->addFlash('success', 'Your email address has been verified.');
+
+    return $this->redirectToRoute('app_register');
 }
 [/let]
 [/template]
@@ -45,7 +106,8 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils[if
         return $this->redirectToRoute("[unit.genModel.homeUnit().routeName()/]");
 [/if]
     }
-    $[unit.instanceName()/] = new [unit.modelClassName()/];
+
+    $[unit.instanceName()/] = new [unit.modelClassName()/]();
     $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[unit.instanceName()/], array(
         'action' => $this->generateUrl('[unit.routeName()/]'),
         'csrf_token_id' => '[unit.displayedOn.partOf.siteProperties.siteName/]_authenticate',
@@ -89,6 +151,7 @@ public function [unit.actionName()/]Request(Request $request, MailerInterface $m
         return $this->redirectToRoute("[unit.genModel.homeUnit().routeName()/]");
 [/if]
     }
+
     $[forgottenUnit.formName()/] = $this->createForm([forgottenUnit.typeClassName()/]::class);
     $[forgottenUnit.formName()/]->handleRequest($request);
     if ($[forgottenUnit.formName()/]->isSubmitted() && $[forgottenUnit.formName()/]->isValid()) {
@@ -157,7 +220,9 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
     }
 
     $email = (new TemplatedEmail())
-        ->from(new Address('info@salephoto.org.uk', 'SPS'))
+        ->from(new Address(
+				$this->getParameter('[forgottenUnit.genModel.siteProperties.securityFromEmail/]'),
+				$this->getParameter('[forgottenUnit.genModel.siteProperties.securityFromName/]')))
         ->to($user->getEmail())
         ->subject('[forgottenUnit.emailSubject/]')
         ->htmlTemplate('[forgottenUnit.displayedOn.templateName()/]/[forgottenUnit.viewEmailMessageName()/][forgottenUnit.htmlExtension()/][forgottenUnit.twigExtension()/]')
