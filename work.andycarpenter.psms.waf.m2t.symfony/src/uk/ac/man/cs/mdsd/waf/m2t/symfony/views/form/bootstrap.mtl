@@ -9,116 +9,55 @@
 [file (model.formViewDirectory().concat('/').concat('bootstrap_custom').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 {% use "bootstrap_4_horizontal_layout.html.twig" %}
 
+[if (model.defaultFormStyles.inputGroupClass <> '')]
 [model.formRow()/]
 
+[/if]
+[if (model.defaultFormStyles.fieldLabelClass <> '' or model.defaultStyles.fieldLabelClass <> '')]
+[model.formLabel()/]
+[/if]
 [/file]
 [/template]
 
 [template private formRow(model : WafModel) post(trim())]
 {% block form_row -%}
-    {%- if expanded is defined and expanded -%}
-        {{ block('fieldset_form_row') }}
-    {%- else -%}
-    {%- set widget_attr = {} -%}
-    {%- if help is not empty -%}
-        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
-    {%- endif -%}
-        <div{% with {attr: row_attr|merge({class: (row_attr.class|default('[if (model.defaultFormStyles.inputGroupClass <> '')]
-[model.defaultFormStyles.inputGroupClass/][/if]') ~ ' form-group row' ~ ((not compound or force_error|default(false)) and not valid ? ' is-invalid'))|trim})} %}{{ block('attributes') }}{% endwith %}>
-            {{- form_label(form) -}}
-            <div class="{{ block('form_group_class') }}">
-                {{- form_widget(form, widget_attr) -}}
-                {{- form_help(form) -}}
-            </div>
-    {##}</div>
-    {%- endif -%}
+  {%- set row_attr = row_attr|merge({class: (row_attr.class|default('[model.defaultFormGroupClass()/]')) }) -%}
+  {{ parent() }}
 {%- endblock form_row %}
 [/template]
 
-[template public checkboxRow(model : WafModel) post(trim())]
-{%- block checkbox_row -%}
-<p{% if errors | length > 0 %} class="error"{% endif %}>
-    {% if label is not same as(false) -%}
-        {% if not compound -%}
-            {% set label_attr = label_attr|merge({'for': id}) %}
-        {%- endif -%}
-        {% if required -%}
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-        {%- endif -%}
-        {% if label is empty -%}
-            {%- if label_format is not empty -%}
-                {% set label = label_format|replace({
-                    '%name%': name,
-                    '%id%': id,
-                }) %}
-            {%- else -%}
-                {% set label = name|humanize %}
-            {%- endif -%}
-        {%- endif -%}
- <label{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
-  {{- form_widget(form) -}}
-  <span>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</span>
- </label>
-    {%- endif -%}
- {{- form_errors(form) -}}
-</p>
-{%- endblock checkbox_row %}
+[template private defaultFormGroupClass(model : WafModel) post(trim())]
+[if (model.defaultFormStyles.inputGroupClass <> '')]
+[model.defaultFormStyles.inputGroupClass/]
+[/if]
 [/template]
 
-[template private choiceOptions(model : WafModel) post(trim())]
-{%- block choice_widget_options %}
-    {% for group_label, choice in options %}
-        {%- if choice is iterable -%}
-            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
-                {% set options = choice %}
-                {{- block('choice_widget_options') -}}
-            </optgroup>
-        {% else -%}
-<option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
-        {% endif -%}
-    {% endfor %}
-{%- endblock choice_widget_options -%}
+[template private formLabel(model : WafModel) post(trim())]
+{% block form_label -%}
+  {%- set label_attr = label_attr|merge({class: (label_attr.class|default('[model.defaultFormLabelClass()/]')) }) -%}
+  {{ parent() }}
+{%- endblock form_label %}
 [/template]
 
-[template private datePicker(model : WafModel) post(trim())]
-{%- block date_widget -%}
-    {%- set type = 'text' -%}
-    {%- set attr = attr|merge({'class': 'datepicker' }) -%}
-    {{ block('form_widget_simple') }}
-{%- endblock date_widget -%}
+[template private defaultFormLabelClass(model : WafModel) post(trim())]
+[if (model.defaultFormStyles.fieldLabelClass <> '')]
+[model.defaultFormStyles.fieldLabelClass/]
+[else]
+[model.defaultStyles.fieldLabelClass/]
+[/if]
 [/template]
 
-[template private timePicker(model : WafModel) post(trim())]
-{%- block time_widget -%}
-    {%- set type = 'text' -%}
-    {%- set attr = attr|merge({'class': 'timepicker' }) -%}
-    {{ block('form_widget_simple') }}
-{%- endblock time_widget -%}
+[template private formValueClass(model : WafModel) post(trim())]
+{%- block widget_attributes -%}
+  {%- set attr = attr|merge({class: (attr.class|default('[model.defaultFormValueClass()/]')) }) -%}
+  {{ parent() }}
+{%- endblock widget_attributes -%}
 [/template]
 
-[template private labelClass(model : WafModel) post(trim())]
-{%- block column_class -%}
-    {%- for attrname, attrvalue in attr -%}
-        {%- if attrname == 'labelclass' -%}
-            {{- " " -}}class="{{ attrvalue }}"
-        {%- endif -%}
-    {%- endfor -%}
-{%- endblock column_class -%}
-[/template]
-
-[template private elementAttributes(model : WafModel) post(trim())]
-{% block attributes -%}
-    {%- for attrname, attrvalue in attr -%}
-        {%- if attrname != 'labelclass' -%}
-            {{- " " -}}
-            {%- if attrname in ['['/]'placeholder', 'title'[']'/] -%}
-                {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
-            {%- elseif attrvalue is same as(true) -%}
-                {{- attrname }}="{{ attrname }}"
-            {%- elseif attrvalue is not same as(false) -%}
-                {{- attrname }}="{{ attrvalue }}"
-            {%- endif -%}
-        {%- endif -%}
-    {%- endfor -%}
-{%- endblock attributes -%}
+[template private defaultFormValueClass(model : WafModel) post(trim())]
+[if (model.defaultFormStyles.fieldValueClass <> '')]
+[model.defaultFormStyles.fieldValueClass/]
+[else]
+[model.defaultStyles.fieldValueClass/]
+[/if]
 [/template]
