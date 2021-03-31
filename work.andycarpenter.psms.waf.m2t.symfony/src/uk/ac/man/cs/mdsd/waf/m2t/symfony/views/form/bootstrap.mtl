@@ -7,14 +7,28 @@
 
 [template public formViews(model : WafModel)]
 [file (model.formViewDirectory().concat('/').concat('bootstrap_custom').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
+[if (model.useFormFloatingLabels)]
+{% use "bootstrap_4_layout.html.twig" %}
+[else]
 {% use "bootstrap_4_horizontal_layout.html.twig" %}
+[/if]
 
-[if (model.defaultFormStyles.inputGroupClass <> '')]
+[if (model.useFormFloatingLabels)]
+[model.formRowFloating()/]
+
+[else]
+	[if (model.defaultFormStyles.inputGroupClass <> '')]
 [model.formRow()/]
 
+	[/if]
 [/if]
 [if (model.defaultFormStyles.fieldLabelClass <> '' or model.defaultStyles.fieldLabelClass <> '')]
 [model.formLabel()/]
+
+[/if]
+[if (model.defaultFormStyles.fieldValueClass <> '' or model.defaultStyles.fieldValueClass <> '')]
+[model.formValue()/]
+
 [/if]
 [/file]
 [/template]
@@ -23,6 +37,24 @@
 {% block form_row -%}
   {%- set row_attr = row_attr|merge({class: (row_attr.class|default('[model.defaultFormGroupClass()/]')) }) -%}
   {{ parent() }}
+{%- endblock form_row %}
+[/template]
+
+[template private formRowFloating(model : WafModel) post(trim())]
+{% block form_row -%}
+  {%- if compound is defined and compound -%}
+    {%- set element = 'fieldset' -%}
+  {%- endif -%}
+  {%- set row_attr = row_attr|merge({class: (row_attr.class|default('[model.defaultFormGroupClass()/]')) }) -%}
+  {%- set widget_attr = {} -%}
+  {%- if help is not empty -%}
+    {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+  {%- endif -%}
+  <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-floating')|trim})} %}{{ block('attributes') }}{% endwith %}>
+    {{- form_widget(form, widget_attr) -}}
+    {{- form_label(form) -}}
+    {{- form_help(form) -}}
+  </{{ element|default('div') }}>
 {%- endblock form_row %}
 [/template]
 
@@ -47,7 +79,7 @@
 [/if]
 [/template]
 
-[template private formValueClass(model : WafModel) post(trim())]
+[template private formValue(model : WafModel) post(trim())]
 {%- block widget_attributes -%}
   {%- set attr = attr|merge({class: (attr.class|default('[model.defaultFormValueClass()/]')) }) -%}
   {{ parent() }}
