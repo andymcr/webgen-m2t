@@ -129,8 +129,8 @@
 		or (field.isAttributeField and field.isSingleton)
 		or (field.isAssociationField and not field.isContains)) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
-{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if (field.hasTranslations() or field.hasLocalInputGroupClass() or field.hasLocalFieldLabelClass() or field.hasLocalFieldValueClass() or field.isDisabled)]
-, {[if (field.hasTranslations())]
+{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasLocalInputGroupClass() or field.hasLocalFieldLabelClass() or field.hasLocalFieldValueClass() or field.isDisabled)]
+, {[if (field.hasTranslations() and not field.singleUseModel())]
  label: '[field.customisedDisplayLabelId()/]',[/if]
 [if (field.hasLocalInputGroupClass())]
  row_attr: { class: '[field.localInputGroupClass()/]' },[/if]
@@ -141,9 +141,9 @@
  disabled: 'disabled',[/if]
 [if (field.hasLocalFieldValueClass())]
  class: '[field.localFieldValueClass()/]',[/if]
-[if (field.hasTranslations())]
+[if (field.hasTranslations() and not field.singleUseModel())]
  placeholder: '[field.customisedPlaceholderId()/]', title: '[field.customisedTitleId()/]',[/if] }[/if]
-[if (field.hasTranslations())]
+[if (field.hasTranslations() and not field.singleUseModel())]
 , translation_domain: '[unit.translationDomain()/]'[/if]}[/if]) }}
 [/template]
 

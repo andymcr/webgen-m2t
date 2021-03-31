@@ -232,7 +232,9 @@
 /]
 
 [query public captchaActionName(unit : ContentUnit) : String
-	= if unit.oclIsTypeOf(LoginUnit) then
+	= if unit.oclIsTypeOf(RegistrationUnit) then
+			'registration'
+		else if unit.oclIsTypeOf(LoginUnit) then
 			'login'
 		else if unit.oclIsTypeOf(ForgottenPasswordUnit) then
 			'forgottenPassword'
@@ -244,7 +246,7 @@
 			else
 				unit.uniqueName()
 			endif
-		endif endif endif
+		endif endif endif endif
 /]
 
 [query public containerInstanceName(unit : DynamicUnit) : String
@@ -374,9 +376,16 @@
 		endif endif
 /]
 
+[query public sameModel(form : SingletonUnit) : Sequence(SingletonUnit)
+	= if form.hasInterfaceFields then
+			Sequence{ form }
+		else
+			form.sameModelFeatures()
+		endif
+/]
 
-[query public sameModel(form : DynamicUnit, model : WafModel) : Sequence(SingletonUnit)
-	= let forms : Sequence(SingletonUnit) = form.contentType.formsUsing(model)
+[query private sameModelFeatures(form : SingletonUnit) : Sequence(SingletonUnit)
+	= let forms : Sequence(SingletonUnit) = form.contentType.formsUsing(form.genModel)
 		in if forms->size() < 2 then
 				forms
 			else
@@ -393,6 +402,10 @@
 	= unit.oclAsType(DynamicUnit).selectName()
 /]
 
+[query public singleUseModel(form : SingletonUnit) : Boolean
+	= form.sameModel()->size() = 1
+/]
+
 [query public thumbName(unit : ImageUnit) : String
 	= let units : OrderedSet(ImageUnit)
 		= unit.displayedOn.partOf.imageUnits
@@ -403,14 +416,10 @@
 			endif
 /]
 
-[query public typeClassName(unit : DynamicUnit) : String
-	= unit.typeClassName(unit.displayedOn.partOf)
-/]
-
-[query private typeClassName(unit : DynamicUnit, model : WafModel) : String
-	= let sameModel : Sequence(DynamicUnit) = unit.sameModel(model)
+[query public typeClassName(unit : SingletonUnit) : String
+	= let sameModel : Sequence(DynamicUnit) = unit.sameModel()
 		in unit.contentType.modelClassName()
-			.concat(if sameModel->size() <> unit.contentType.formsUsing(model)->size() then
+			.concat(if sameModel->size() <> unit.contentType.formsUsing(unit.genModel)->size() then
 					unit.name.toUpperFirst()
 				else
 					''
@@ -487,6 +496,14 @@
 
 [query public optionsName(field : UnitField) : String
 	= field.uniqueName().concat('_options')
+/]
+
+[query public singleUseModel(field : UnitField) : Boolean
+	= if field.displayedOn.oclIsKindOf(SingletonUnit) then
+			field.displayedOn.oclAsType(SingletonUnit).singleUseModel()
+		else
+			false
+		endif
 /]
 
 [query public typeClassName(association : UnitAssociation) : String

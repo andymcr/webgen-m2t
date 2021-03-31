@@ -32,7 +32,7 @@
 [template public formTypes(model : WafModel)]
 [for (entity : Entity | model.formEntities())]
 	[for (form : SingletonUnit | entity.formsUsing(model))]
-	[let sameModel : Sequence(SingletonUnit) = form.sameModel(model)]
+	[let sameModel : Sequence(SingletonUnit) = form.sameModel()]
 		[if (form = sameModel->first())]
 [form.entityFormType()/]
 		[/if]
@@ -251,16 +251,50 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [template private formField(field : UnitField)
 	? (field.isAttributeField and field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
-[attribute.attribute.formFeature()/]
+[let translationDomain : String
+	= if field.hasTranslations() and field.singleUseModel() then
+			field.displayedOn.translationDomain()
+		else
+			'entity'
+		endif]
+[let labelId : String
+	= if field.hasTranslations() and field.singleUseModel() then
+			attribute.customisedDisplayLabelId()
+		else
+			attribute.defaultDisplayLabelId()
+		endif]
+[let placeholderId : String
+	= if field.hasTranslations() and field.singleUseModel() then
+			attribute.customisedPlaceholderId()
+		else
+			attribute.defaultPlaceholderId()
+		endif]
+[let titleId : String
+	= if field.hasTranslations() and field.singleUseModel() then
+			attribute.customisedTitleId()
+		else
+			attribute.defaultTitleId()
+		endif]
+[attribute.attribute.formFeature(translationDomain, labelId, placeholderId, titleId)/]
+[/let]
+[/let]
+[/let]
+[/let]
 [/let]
 [/template]
 
 [template private formFeature(feature : Attribute)
 	? (feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
+[attribute.formFeature('entity', attribute.displayLabelId(), attribute.displayLabelId(), attribute.displayLabelId())/]
+[/let]
+[/template]
+
+[template private formFeature(attribute : Attribute, translationDomain : String, labelId : String,
+	placeholderId : String, titleId : String) post(trim())]
 add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
-    'label' => '[attribute.displayLabelId()/]',
-    'translation_domain' => 'entity',
+    'label' => '[labelId/]',
+    'translation_domain' => '[translationDomain/]',
 [if (not attribute.isRequired)]
     'required' => false,
 [/if]
@@ -279,14 +313,13 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
     'placeholder' => 'actions.labels.select_one',
 [/if]
     'attr' => ['['/]
-        'placeholder' => '[attribute.displayLabelId()/]',
+        'placeholder' => '[placeholderId/]',
 [if (attribute.hasValidationPattern)]
         'pattern' => '[attribute.validationPattern/]',
 [/if]
-        'title' => '[attribute.displayLabelId()/]',
+        'title' => '[titleId/]',
     [']'/],
 [']'/])
-[/let]
 [/template]
 
 [template private formField(field : UnitField)
