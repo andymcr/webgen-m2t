@@ -80,6 +80,12 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
     use ResetPasswordControllerTrait;
 
+[/if]
+[if (page.hasRegistrationUnits)]
+    private $emailVerifier;
+
+[/if]
+[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
     private $resetPasswordHelper;
 
 [/if]
@@ -131,7 +137,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 		->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
-[for (form : DynamicUnit | page.formUnits->sortedBy(u | u.name))]
+[for (form : SingletonUnit | page.formUnits->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
 [for (repository : Repository | page.repositoriesUsed())]
@@ -140,6 +146,9 @@ use [repository.repositoryNamespace()/]\[repository.className()/];
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
 use [service.serviceNamespace()/]\[service.className()/];
 [/for]
+[if (page.hasRegistrationUnits)]
+use App\Security\EmailVerifier;
+[/if]
 [if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
@@ -194,13 +203,17 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 [/template]
 
 [template private constructor(page : Page) post(trim())]
-public function __construct([if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
+public function __construct([if (page.hasRegistrationUnits)]
+EmailVerifier $emailVerifier, [/if][if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
 ResetPasswordHelperInterface $resetPasswordHelper, [/if][for (repository : Repository | page.repositoriesUsed()) separator (', ')]
 [repository.className()/] $[repository.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() and page.hasServicesUsed)]
 , [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
 , [/if]TranslatorInterface $translator)
 {
+[if (page.hasRegistrationUnits)]
+    $this->emailVerifier = $emailVerifier;
+[/if]
 [if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
     $this->resetPasswordHelper = $resetPasswordHelper;
 [/if]

@@ -32,6 +32,9 @@
 [if (cardsUnit.hasFilters)]
 [cardsUnit.unitFilters()/]
 [/if]
+[if (cardsUnit.hasContainerActions and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
+ [cardsUnit.containerActions(cardsUnit.containerInstanceName())/]
+[/if]
 [if (cardsUnit.hasPagination
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
 [cardsUnit.pagination()/]
@@ -41,12 +44,8 @@
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [cardsUnit.pagination()/]
 [/if]
-[if (cardsUnit.hasContainerActions)]
- <div[if (cardsUnit.hasControlClass)] class="[cardsUnit.controlClass/]"[/if]>
-	[for (action : Action | cardsUnit.containerActions)]
-  [action.unitActionLink(cardsUnit.containerInstanceName())/]
-	[/for]
- </div>
+[if (cardsUnit.hasContainerActions and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
+ [cardsUnit.containerActions(cardsUnit.containerInstanceName())/]
 [/if]
 </section>
 [/file]
@@ -61,7 +60,7 @@
 [if (cardsUnit.hasGroupedResults)]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
 [else]
-<div class="[cardsUnit.rowClass/] mb-3">
+<div class="[cardsUnit.rowClass/]">
 [/if]
 {% for [variable/] in [accessor/] %}
 [if (cardsUnit.hasGroupedResults)]
@@ -103,11 +102,19 @@
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
 <div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
- <nav[if (unit.hasActionNavigationClassClass)] class="[unit.actionNavigationClass/]"[/if]>
+ <nav[if (unit.hasInstanceControlClass)] class="[unit.instanceControlClass/]"[/if]>
 [for (action : Action | unit.instanceActions)]
   [action.unitActionLink(cardAccessor)/]
 [/for]
  </nav>
+</div>
+[/template]
+
+[template private containerActions(unit : CardsUnit, containerAccessor : String) post(trim())]
+<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
+[for (action : Action | unit.containerActions)]
+ [action.unitActionLink(containerAccessor)/]
+[/for]
 </div>
 [/template]
 

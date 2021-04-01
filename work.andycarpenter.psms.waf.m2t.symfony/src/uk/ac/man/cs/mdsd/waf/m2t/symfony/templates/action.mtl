@@ -183,12 +183,13 @@ class="[action.anchorClass/]"
 
 [template private attributes(action : Action, valueAccessor : String)
 	?(not action.oclIsTypeOf(SecurityAction)) post(trim())]
-title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
+[if (action.hasAnchorClass)]
+ class="[action.anchorClass/]"
+[/if]title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
  {{ [valueAccessor/].defaultLabel() }}[/if]"[if (action.hasConfirmMessage)]
  onclick="return confirm('[action.confirmMessage/][if (not valueAccessor.oclIsUndefined())]
- {{ [valueAccessor/].defaultLabel() }}[/if]');"[/if][if (action.hasAnchorClass)]
- class="[action.anchorClass/]"
-[/if]
+ {{ [valueAccessor/].defaultLabel() }}[/if]');"[/if]
+ data-toggle="tooltip" data-placement="top" 
 [/template]
 
 [template private attributes(action : Action, association : UnitAssociation, valueAccessor : String)
@@ -204,8 +205,11 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.hasConfirmMessage)]
 
 
 [template private linkContent(action : Action) post(trim())]
-[comment <button type="button" class="btn">{{ '/][comment action.displayLabelId()/][comment ' | trans }}</button>/]
-[action.displayLabel/]
+[if (action.iconName <> '')]
+<i class="[action.iconName/]"></i>
+[else]
+{{ '[action.displayLabelId()/]' | trans( {}, '[action.parentUnit.translationDomain()/]') }}
+[/if]
 [/template]
 
 [template private linkContent(action : Action, association : UnitAssociation, valueAccessor : String) post(trim())]
