@@ -98,6 +98,7 @@
 
 [query public routingUnits(page : Page) : OrderedSet(ContentUnit)
 	= page.dynamicUnits
+		->select(u | not u.oclIsKindOf(SecurityUnit))
 		->select(u | u.routeParameters() = page.routeParameters())
 /]
 
