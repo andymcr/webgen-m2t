@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::parameters/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 
@@ -39,8 +40,8 @@ public function [registrationUnit.actionName()/](Request $request, UserPasswordE
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
             (new TemplatedEmail())
 		        ->from(new Address(
-					$this->getParameter('[registrationUnit.genModel.siteProperties.securityFromEmail/]'),
-					$this->getParameter('[registrationUnit.genModel.siteProperties.securityFromName/]')))
+					$this->getParameter('[registrationUnit.genModel.siteProperties.securityFromEmailId()/]'),
+					$this->getParameter('[registrationUnit.genModel.siteProperties.securityFromNameId()/]')))
                 ->to($user->getEmail())
                 ->subject('Please Confirm your Email')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
@@ -107,8 +108,7 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils[if
 [/if]
     }
 
-    $[unit.instanceName()/] = new [unit.modelClassName()/]();
-    $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, $[unit.instanceName()/], array(
+    $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, null, array(
         'action' => $this->generateUrl('[unit.routeName()/]'),
         'csrf_token_id' => '[unit.displayedOn.partOf.siteProperties.siteName/]_authenticate',
     ));
@@ -221,8 +221,8 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 
     $email = (new TemplatedEmail())
         ->from(new Address(
-				$this->getParameter('[forgottenUnit.genModel.siteProperties.securityFromEmail/]'),
-				$this->getParameter('[forgottenUnit.genModel.siteProperties.securityFromName/]')))
+				$this->getParameter('[forgottenUnit.genModel.siteProperties.securityFromEmailId()/]'),
+				$this->getParameter('[forgottenUnit.genModel.siteProperties.securityFromNameId()/]')))
         ->to($user->getEmail())
         ->subject('[forgottenUnit.emailSubject/]')
         ->htmlTemplate('[forgottenUnit.displayedOn.templateName()/]/[forgottenUnit.viewEmailMessageName()/][forgottenUnit.htmlExtension()/][forgottenUnit.twigExtension()/]')
