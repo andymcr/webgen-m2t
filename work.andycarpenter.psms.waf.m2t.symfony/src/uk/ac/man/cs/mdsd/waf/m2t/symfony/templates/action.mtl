@@ -181,15 +181,23 @@ class="[action.anchorClass/]"
 [/if]
 [/template]
 
+[query private hasTooltip(action : Action) : Boolean
+	= if action.isInstanceAction then
+			action.parentUnit.instanceActionsPlacement = InstanceActionsPlacement::Flot
+		else
+			action.parentUnit.containerActionsPlacement = ContainerActionsPlacement::Float
+		endif
+/]
+
 [template private attributes(action : Action, valueAccessor : String)
 	?(not action.oclIsTypeOf(SecurityAction)) post(trim())]
 [if (action.hasAnchorClass)]
- class="[action.anchorClass/]"
-[/if]title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
+ class="[action.anchorClass/]"[/if]
+ title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
  {{ [valueAccessor/].defaultLabel() }}[/if]"[if (action.hasConfirmMessage)]
  onclick="return confirm('[action.confirmMessage/][if (not valueAccessor.oclIsUndefined())]
- {{ [valueAccessor/].defaultLabel() }}[/if]');"[/if]
- data-toggle="tooltip" data-placement="top" 
+ {{ [valueAccessor/].defaultLabel() }}[/if]');"[/if][if (action.hasTooltip())]
+ data-bs-toggle="tooltip" data-bs-placement="top"[/if]
 [/template]
 
 [template private attributes(action : Action, association : UnitAssociation, valueAccessor : String)

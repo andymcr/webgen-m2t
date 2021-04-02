@@ -16,7 +16,6 @@
 [/if]
  <title>{{ site_title }}{% if title is defined %}: {{ title }}{% endif %}</title>
 {% block stylesheets %}
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
  {{ encore_entry_link_tags('app') }}
 {% endblock %}
 
