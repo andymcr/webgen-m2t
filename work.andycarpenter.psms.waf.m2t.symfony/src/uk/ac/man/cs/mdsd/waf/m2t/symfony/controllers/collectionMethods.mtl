@@ -193,7 +193,7 @@ if (!([unit.hideWhen.controllerExpression(unit.instanceVariable(), unit.containe
 
 [template private templateParameters2(unit : CollectionUnit) post(trim())]
 [if (unit.isContained and not unit.containingTypeLoadedElsewhere())]
-$parameters['['/]'[unit.oclAsType(DynamicUnit).containerParameterName()/]'[']'/] = [unit.containerInstanceVariable()/];
+$parameters['['/]'[unit.oclAsType(DynamicUnit).containerParameter()/]'[']'/] = [unit.containerInstanceVariable()/];
 [/if]
 $parameters['['/]'[unit.oclAsType(DynamicUnit).instanceParameter()/]'[']'/] = [unit.instanceVariable()/];
 [if (unit.hasPagination)]

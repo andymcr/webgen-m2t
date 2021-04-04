@@ -266,7 +266,7 @@
 		endif
 /]
 
-[query public containerParameterName(unit : DynamicUnit) : String
+[query public containerParameter(unit : DynamicUnit) : String
 	= unit.containerInstanceName()
 /]
 

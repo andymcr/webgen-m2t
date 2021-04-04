@@ -93,7 +93,7 @@
 [if (unit.hasContainerActions and unit.isContained)]
  <tfoot>
   <tr>
-   [unit.containerActions(unit.containerInstanceName())/]
+   [unit.containerActions(unit.containerParameter())/]
   </tr>
  </tfoot>
 [/if]

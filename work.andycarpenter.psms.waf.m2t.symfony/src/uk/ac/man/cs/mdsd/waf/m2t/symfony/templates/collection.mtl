@@ -21,7 +21,7 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 <div class="filter mb-3">
  <form action="{{ path('[dynamicUnit.routeName()/]', { [if (unit.hasRouteParameters(filter.selection))]
-[dynamicUnit.routeActualParameters(dynamicUnit.routeParameters(), dynamicUnit.containerInstanceName(), unit.routingType(), 
+[dynamicUnit.routeActualParameters(dynamicUnit.routeParameters(), dynamicUnit.containerParameter(), unit.routingType(), 
 	dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
   <div class="input-group">
 [for (parameter : FormalParameter | filter.parameters)]
@@ -116,7 +116,7 @@
 
 [template private pageHref(unit : CollectionUnit, pageNumber : String) post(trim())]
 {{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters())]
-, [unit.oclAsType(DynamicUnit).routeActualParameters(unit.routeParameters(), unit.containerInstanceName(), unit.containingType, unit.hasObjectAccess())/][/if]})) }}
+, [unit.oclAsType(DynamicUnit).routeActualParameters(unit.routeParameters(), unit.containerParameter(), unit.containingType, unit.hasObjectAccess())/][/if]})) }}
 [/template]
 
 [template private firstPageLinkLabel(unit : CollectionUnit) post(trim())]

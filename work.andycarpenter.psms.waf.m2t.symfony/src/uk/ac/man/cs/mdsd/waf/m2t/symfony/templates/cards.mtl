@@ -33,7 +33,7 @@
 [cardsUnit.unitFilters()/]
 [/if]
 [if (cardsUnit.hasContainerActions and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
- [cardsUnit.containerActions(cardsUnit.containerInstanceName())/]
+ [cardsUnit.containerActions(cardsUnit.containerParameter())/]
 [/if]
 [if (cardsUnit.hasPagination
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
@@ -45,7 +45,7 @@
  [cardsUnit.pagination()/]
 [/if]
 [if (cardsUnit.hasContainerActions and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
- [cardsUnit.containerActions(cardsUnit.containerInstanceName())/]
+ [cardsUnit.containerActions(cardsUnit.containerParameter())/]
 [/if]
 </section>
 [/file]
