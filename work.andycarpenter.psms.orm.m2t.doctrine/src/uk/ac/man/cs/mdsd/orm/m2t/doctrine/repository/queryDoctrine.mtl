@@ -43,11 +43,10 @@ $queryBuilder->expr()->literal('[literal.value/]')
 
 [template private featureReference(feature : Feature) 
 	? (feature.oclIsKindOf(Attribute)) post(trim())]
-'[feature.partOf.oclAsType(Entity).selectName()/].[feature.columnName/]'
+'[feature.partOf.oclAsType(Entity).selectName()/].[feature.modelPropertyName()/]'
 [/template]
 
-[template private featureReference(feature : Feature) 
-	? (feature.oclIsKindOf(Association)) post(trim())]
+[template private featureReference(feature : Feature) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
  '[association.sourceType.selectName()/].[feature.modelPropertyName()/]'
 [/let]

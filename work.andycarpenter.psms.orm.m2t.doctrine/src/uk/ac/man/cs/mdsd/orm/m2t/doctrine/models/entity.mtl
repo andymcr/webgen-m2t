@@ -37,15 +37,15 @@ namespace [entity.modelsNamespace()/];
  * @ORM\Table(name="[entity.tableName/]")
 [if (entity.unique->notEmpty())]
 	[if (entity.unique->size() = 1)]
- * @UniqueEntity("[entity.unique->first().columnName/]")
+ * @UniqueEntity("[entity.unique->first().modelPropertyName()/]")
 	[else]
  * @UniqueEntity(
- *     fields={[for (feature : Feature | entity.unique) separator(', ')]"[feature.columnName/]"[/for]}
+ *     fields={[for (feature : Feature | entity.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for]}
  * )
 	[/if]
 [/if]
 [for (attribute : Attribute | entity.uniqueAttributes)]
- * @UniqueEntity("[attribute.columnName/]")
+ * @UniqueEntity("[attribute.modelPropertyName()/]")
 [/for]
 [if (entity.isContained)]
 	[for (attribute : Attribute | entity.containerUniqueAttributes)]
@@ -124,7 +124,7 @@ use [entity.repositoryNamespace()/]\[entity.repository.className()/];
 use Doctrine\ORM\Mapping as ORM;
 [if (entity.hasCollectionAssociations)]
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 [/if]
 [if (not entity.implementsResetPasswordInterface
 		and (entity.partOf.timestampCreation
@@ -198,11 +198,7 @@ protected $[entity.autoKeyName/];
   [feature.serializationAnnotation()/]
 	[/if]
   **/
-	[if (feature.oclIsKindOf(Attribute))]
-protected $[feature.columnName/];
-	[else]
 protected $[feature.modelPropertyName()/];
-	[/if]
 
 [elseif (feature.isResourceFeature)]
 /**
@@ -277,7 +273,8 @@ protected $updated;
 [if (attribute.isPrimaryKey)]
 * @ORM\Id
 [/if]
-* @ORM\Column([if (feature.columnName.isReservedWord())]name="`[feature.columnName/]`", [/if]type="[attribute.ormType/]"[if (not attribute.isRequired)], nullable=true[/if])
+* @ORM\Column([if (feature.columnName <> feature.modelPropertyName() or feature.columnName.isReservedWord())]
+[feature.columnName()/], [/if]type="[attribute.ormType/]"[if (not attribute.isRequired)], nullable=true[/if])
 [if (attribute.slugFields->notEmpty())]
 * @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.columnName/]"[/for]})
 [/if]
@@ -287,8 +284,15 @@ protected $updated;
 [template private ormAnnotation(feature : Feature)
 	? (feature.oclIsKindOf(CollectionElement)) post(trim())]
 [let attribute : CollectionElement = feature.oclAsType(CollectionElement)]
-* @ORM\Column([if (feature.columnName.isReservedWord())]name="`[feature.columnName/]`", [/if]type="[attribute.collectionType.ormType/]")
+* @ORM\Column([if (feature.columnName <> feature.modelPropertyName() or feature.columnName.isReservedWord())]
+[feature.columnName()/], [/if]type="[attribute.collectionType.ormType/]")
 [/let]
+[/template]
+
+[template private columnName(feature : Feature) post(trim())]
+name="[if (feature.columnName.isReservedWord())]
+`[/if][feature.columnName/][if (feature.columnName.isReservedWord())]
+`[/if]"
 [/template]
 
 [template private ormAnnotation(feature : Feature)
@@ -517,7 +521,7 @@ public function getId(): int
 [/template]
 
 [template private getMethod(feature : Feature) post(trim())]
-public function [feature.getMethodName()/](): [if (feature.isSingleton)]?[/if][feature.getReturnType()/]
+public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.partOf.implementsResetPasswordInterface)]?[/if][feature.getReturnType()/]
 {
 [if (feature.isDerived)]
     // [protected (feature.name.concat('.getMethod'))]
@@ -534,13 +538,13 @@ public function [feature.getMethodName()/](): [if (feature.isSingleton)]?[/if][f
 	[if (feature.oclIsKindOf(Association))]
 	[let association : Association = feature.oclAsType(Association)]
 		[if (association.targetType.repository.findAll.oclIsUndefined())]
-PersistentCollection
+Collection
 		[else]
 		[let allSelection : Selection = association.targetType.repository.findAll]
 			[if (allSelection.limit > 0)]
 object
 			[else]
-PersistentCollection
+Collection
 			[/if]
 		[/let]
 		[/if]
@@ -570,11 +574,7 @@ object
 [/template]
 
 [template private getMethodCore(feature : Feature) post(trim())]
-[if (feature.oclIsKindOf(Attribute))]
-return $this->[feature.columnName/];
-[else]
 return $this->[feature.modelPropertyName()/];
-[/if]
 [/template]
 
 [template private getFileNameMethod(feature : Feature) post(trim())]
@@ -611,13 +611,13 @@ public function [attribute.setMethodName()/]($[attribute.instanceName()/]): void
 [if (attribute.oclIsTypeOf(SingletonElement))]
 [let element : SingletonElement = attribute.oclAsType(SingletonElement)]
 	[if (element.caseInsensitive)]
-$this->[element.columnName/] = strtolower($[element.instanceName()/]);
+$this->[element.modelPropertyName()/] = strtolower($[element.instanceName()/]);
 	[elseif (element.encrypt and not element.name.equalsIgnoreCase('password'))]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
 	[elseif (element.isEnumerationFeature or element.isBooleanFeature)]
-$this->[element.columnName/] = $[element.instanceName()/];
+$this->[element.modelPropertyName()/] = $[element.instanceName()/];
 	[else]
-$this->[element.columnName/] = $[element.instanceName()/];
+$this->[element.modelPropertyName()/] = $[element.instanceName()/];
 	[/if]
 	[if (element.name.equalsIgnoreCase('password'))]
 		[if (element.partOf.features->select(f | f.name.equalsIgnoreCase('passwordChangedAt'))->notEmpty())]
@@ -626,7 +626,7 @@ $this->[element.partOf.features->any(f | f.name.equalsIgnoreCase('passwordChange
 	[/if]
 [/let]
 [elseif (attribute.oclIsTypeOf(SingletonDate) or attribute.oclIsTypeOf(SingletonURL))]
-$this->[attribute.columnName/] = $[attribute.instanceName()/];
+$this->[attribute.modelPropertyName()/] = $[attribute.instanceName()/];
 [/if]
 [/template]
 
@@ -644,7 +644,7 @@ public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/
 public function [feature.setMethodName()/]File(?File $[feature.instanceName()/]File): void
 {
     $this->[feature.modelPropertyName()/]File = $[feature.instanceName()/]File;
-    if (null !== $[feature.instanceName()/]) {
+    if (null !== $[feature.instanceName()/]File) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
         $this->updated = new \DateTimeImmutable();
@@ -674,14 +674,14 @@ public function [feature.addMethodName()/]($[feature.singletonName/])
 [if (feature.isUnique)]
     if (!in_array($[feature.singletonName/], $this->[feature.modelPropertyName()/], true)) {
 	[if (feature.oclIsKindOf(Attribute))]
-        $this->[feature.columnName/]['['/][']'/] = $[feature.singletonName/];
+        $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.singletonName/];
 	[else]
         $this->[feature.modelPropertyName()/]->add($[feature.singletonName/]);
 	[/if]
     }
 [else]
 	[if (feature.oclIsKindOf(Attribute))]
-    $this->[feature.columnName/]['['/][']'/] = $[feature.singletonName/];
+    $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.singletonName/];
 	[else]
     $this->[feature.modelPropertyName()/]->add($[feature.singletonName/]);
 	[/if]
@@ -704,7 +704,7 @@ public function [feature.addMethodName()/]($[feature.singletonName/])
 public function [feature.removeMethodName()/]($[feature.singletonName/])
 {
 [if (feature.oclIsKindOf(Attribute))]
-    unset($this->[feature.columnName/]['['/]array_search($[feature.singletonName/], $this->[feature.columnName/])[']'/]);
+    unset($this->[feature.modelPropertyName()/]['['/]array_search($[feature.singletonName/], $this->[feature.columnName/])[']'/]);
 [else]
     $this->[feature.modelPropertyName()/]->removeElement($[feature.singletonName/]);
 [/if]
@@ -900,7 +900,7 @@ public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Lab
 return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
 $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 [let attribute : ModelLabelAttribute = feature.oclAsType(ModelLabelAttribute)]
-[attribute.attribute.columnName/][if (attribute.attribute.isDateFeature)]->format('[attribute.dateFormat/]')[/if][/let][else]
+[attribute.attribute.modelPropertyName()/][if (attribute.attribute.isDateFeature)]->format('[attribute.dateFormat/]')[/if][/let][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
 [association.association.modelPropertyName()/]->get[if (association.valueDisplay.oclIsUndefined())]Default[else][association.valueDisplay.name.toUpperFirst()/][/if]Label()[/let]
 [/if][/for]);

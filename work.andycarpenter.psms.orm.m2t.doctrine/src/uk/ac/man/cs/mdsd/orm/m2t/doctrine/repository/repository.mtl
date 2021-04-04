@@ -216,7 +216,7 @@ $queryBuilder->expr()->andX([key.findWhere(base)/],
 [/template]
 
 [template private findWhere(key : Attribute, base : Entity) post(trim())]
-$queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key.routeParameterName(base)/]')
+$queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(base)/]')
 [/template]
 
 [template private createMethod(repository : Repository) post(trim())]
@@ -468,7 +468,7 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
 [/template]
 
 [template private field(field : Feature, alias : String) post(trim())]
-'[field.partOf.selectName()/].[field.columnName/][if (not alias.oclIsUndefined())]
+'[field.partOf.selectName()/].[field.modelPropertyName()/][if (not alias.oclIsUndefined())]
  [alias/][/if]'
 [/template]
 
@@ -504,12 +504,12 @@ $queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/
 [let routingEntity : Entity = selection.selectionType]
 	[if (selection.uriPathKeys()->size() = 1)]
 	[let key : Attribute = selection.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]'));
+$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(routingEntity)/]'));
 	[/let]
 	[else]
 $queryBuilder->where($queryBuilder->expr()->andX(
 		[for (key : Attribute | selection.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.columnName/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> selection.uriPathKeys()->size())],[/if]
+    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> selection.uriPathKeys()->size())],[/if]
 		[/for]
 ));
 	[/if]
