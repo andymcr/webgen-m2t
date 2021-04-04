@@ -17,7 +17,6 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::api/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::page/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::extensions::extensions/]
-[import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::enumerationType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::formTypes::formType/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::javascript::generate/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::security::userModel/]
@@ -60,7 +59,6 @@
 [/if]
 [model.business.services.service()/]
 
-[model.persistence.enumerationTypes.formType()/]
 [model.formTypes()/]
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 
