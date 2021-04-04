@@ -5,6 +5,24 @@
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 
 
+[query public containingTypeLoadedBy(unit : DynamicUnit) : DynamicUnit
+	= let matchingContentType : OrderedSet(DynamicUnit)
+		= unit.displayedOn.dynamicUnits
+			->select(u | u.contentType = unit.containingType)
+		in if matchingContentType->notEmpty() then
+				matchingContentType->first()
+			else
+				unit.displayedOn.dynamicUnits
+					->select(u | u.containingType = unit.containingType)
+					->first()
+			endif
+/]
+
+
+[query public containingTypeLoadedElsewhere(unit : DynamicUnit) : Boolean
+	= unit.containingTypeLoadedBy() <> unit
+/]
+
 [query public hasObjectAccess(unit : CollectionUnit) : Boolean
 	= if unit.selection.oclIsUndefined() then
 			true

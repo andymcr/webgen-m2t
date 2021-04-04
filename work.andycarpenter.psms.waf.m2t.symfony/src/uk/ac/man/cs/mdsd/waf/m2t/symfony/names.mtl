@@ -10,6 +10,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::actions/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 
 
@@ -250,11 +251,23 @@
 /]
 
 [query public containerInstanceName(unit : DynamicUnit) : String
-	= if unit.isContained then
-			unit.containingType.instanceName()
+	= unit.containingType.instanceName()
+/]
+
+[query public containerInstanceVariable(unit : DynamicUnit) : String
+	= if unit.containingTypeLoadedElsewhere() then
+			unit.containingTypeLoadedBy().instanceVariable()
 		else
-			null
+			if unit.displayedOn.hasSingleActionMethod() then
+				'$'.concat(unit.containerInstanceName())
+			else
+				'$this->'.concat(unit.containerInstanceName())
+			endif			
 		endif
+/]
+
+[query public containerParameterName(unit : DynamicUnit) : String
+	= unit.containerInstanceName()
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
@@ -270,20 +283,39 @@
 /]
 
 [query public formName(unit : EditUnit) : String
-	= unit.name.toLowerFirst().concat('Form')
+	= unit.instanceName().concat('Form')
+/]
+
+[query public formVariable(unit : EditUnit) : String
+	= if unit.displayedOn.hasSingleActionMethod() or unit.oclIsKindOf(SecurityUnit) then
+			'$'.concat(unit.formName())
+		else
+			'$this->'.concat(unit.formName())
+		endif
+/]
+
+[query public formCreateVariable(unit : EditUnit) : String
+	= '$'.concat(unit.formName())
 /]
 
 [query public instanceName(unit : ContentUnit) : String
 	= unit.name.toLowerFirst()
 /]
 
-[query public instanceName(unit : CollectionUnit) : String
-	= unit.oclAsType(DynamicUnit).instanceName()
-/]
-
-
 [query public instanceName(resource : Resource) : String
 	= resource.name.toLowerFirst()
+/]
+
+[query public instanceParameter(unit : ContentUnit) : String
+	= unit.instanceName()
+/]
+
+[query public instanceVariable(unit : ContentUnit) : String
+	= if (unit.displayedOn.hasSingleActionMethod() and not unit.hasSelectionMethod()) or unit.oclIsKindOf(EditUnit) then
+			'$'.concat(unit.instanceName())
+		else
+			'$this->'.concat(unit.instanceName())
+		endif
 /]
 
 [query public modelClassName(unit : ContentUnit) : String
@@ -554,6 +586,10 @@
 		else
 			action.uniqueName()
 		endif endif
+/]
+
+[query public instanceVariable(action : Action) : String
+	= '$'.concat(action.instanceName())
 /]
 
 [query public modelClassName(action : DeleteAction) : String

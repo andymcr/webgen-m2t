@@ -53,8 +53,8 @@ public function [registrationUnit.actionName()/](Request $request, UserPasswordE
 
     $parameters = array();
     [registrationUnit.displayedOn.templateParameters()/]
-    $parameters['['/]'[registrationUnit.instanceName()/]'[']'/] = $[registrationUnit.formName()/]->createView();
-    $parameters['['/]'[registrationUnit.instanceName()/]_error'[']'/] = null;
+    $parameters['['/]'[registrationUnit.instanceParameter()/]'[']'/] = $[registrationUnit.formVariable()/]->createView();
+    $parameters['['/]'[registrationUnit.instanceParameter()/]_error'[']'/] = null;
     return $this->render('[registrationUnit.displayedOn.templateName()/]/[registrationUnit.templateName()/][registrationUnit.htmlExtension()/][registrationUnit.twigExtension()/]', $parameters);
 }
 
@@ -108,15 +108,15 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils[if
 [/if]
     }
 
-    $[loginUnit.formName()/] = $this->createForm([loginUnit.typeClassName()/]::class, null, array(
+    [loginUnit.formVariable()/] = $this->createForm([loginUnit.typeClassName()/]::class, null, array(
         'action' => $this->generateUrl('[unit.routeName()/]'),
         'csrf_token_id' => '[unit.displayedOn.partOf.siteProperties.siteName/]_authenticate',
     ));
 
     $parameters = array();
     [loginUnit.displayedOn.templateParameters()/]
-    $parameters['['/]'[unit.instanceName()/]'[']'/] = $[loginUnit.formName()/]->createView();
-    $parameters['['/]'[unit.instanceName()/]_error'[']'/] = $authenticationUtils->getLastAuthenticationError();
+    $parameters['['/]'[unit.instanceParameter()/]'[']'/] = [loginUnit.formVariable()/]->createView();
+    $parameters['['/]'[unit.instanceParameter()/]_error'[']'/] = $authenticationUtils->getLastAuthenticationError();
     return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', $parameters);
 }
 [/let]
@@ -152,9 +152,9 @@ public function [unit.actionName()/]Request(Request $request, MailerInterface $m
 [/if]
     }
 
-    $[forgottenUnit.formName()/] = $this->createForm([forgottenUnit.typeClassName()/]::class);
-    $[forgottenUnit.formName()/]->handleRequest($request);
-    if ($[forgottenUnit.formName()/]->isSubmitted() && $[forgottenUnit.formName()/]->isValid()) {
+    [forgottenUnit.formVariable()/] = $this->createForm([forgottenUnit.typeClassName()/]::class);
+    [forgottenUnit.formVariable()/]->handleRequest($request);
+    if ([forgottenUnit.formVariable()/]->isSubmitted() && [forgottenUnit.formVariable()/]->isValid()) {
 [if (forgottenUnit.hasCaptcha)]
         if ($recaptcha3Validator->getLastResponse() !== null) {
             $score = $recaptcha3Validator->getLastResponse()->getScore();
@@ -162,7 +162,7 @@ public function [unit.actionName()/]Request(Request $request, MailerInterface $m
         }
 [/if]
         return $this->processSendingPasswordResetEmail(
-            $[forgottenUnit.formName()/]->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
+            [forgottenUnit.formVariable()/]->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
 email[else]username[/if]')->getData(),
             $mailer
         );
@@ -170,8 +170,8 @@ email[else]username[/if]')->getData(),
 
     $parameters = array();
     [forgottenUnit.displayedOn.templateParameters()/]
-    $parameters['['/]'[unit.instanceName()/]'[']'/] = $[forgottenUnit.formName()/]->createView();
-    $parameters['['/]'[unit.instanceName()/]_error'[']'/] = null;
+    $parameters['['/]'[unit.instanceParameter()/]'[']'/] = [forgottenUnit.formVariable()/]->createView();
+    $parameters['['/]'[unit.instanceParameter()/]_error'[']'/] = null;
     return $this->render('[unit.displayedOn.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', $parameters);
 }
 
@@ -273,16 +273,16 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
     }
 
     // The token is valid; allow the user to change their password.
-    $[resetUnit.formName()/] = $this->createForm([resetUnit.typeClassName()/]::class);
-    $[resetUnit.formName()/]->handleRequest($request);
-    if ($[resetUnit.formName()/]->isSubmitted() && $[resetUnit.formName()/]->isValid()) {
+    [resetUnit.formVariable()/] = $this->createForm([resetUnit.typeClassName()/]::class);
+    [resetUnit.formVariable()/]->handleRequest($request);
+    if ([resetUnit.formVariable()/]->isSubmitted() && [resetUnit.formVariable()/]->isValid()) {
         // A password reset token should be used only once, remove it.
         $this->resetPasswordHelper->removeResetRequest($token);
 
         // Encode the plain password, and set it.
         $encodedPassword = $passwordEncoder->encodePassword(
             $user,
-            $[resetUnit.formName()/]->get('plainPassword')->getData()
+            [resetUnit.formVariable()/]->get('plainPassword')->getData()
          );
 
         $user->setPassword($encodedPassword);
@@ -296,8 +296,8 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
 
     $parameters = array();
     [resetUnit.displayedOn.templateParameters()/]
-    $parameters['['/]'[resetUnit.instanceName()/]'[']'/] = $[resetUnit.formName()/]->createView();
-    $parameters['['/]'[resetUnit.instanceName()/]_error'[']'/] = null;
+    $parameters['['/]'[resetUnit.instanceParameter()/]'[']'/] = [resetUnit.formVariable()/]->createView();
+    $parameters['['/]'[resetUnit.instanceParameter()/]_error'[']'/] = null;
     return $this->render('[resetUnit.displayedOn.templateName()/]/[resetUnit.templateName()/][resetUnit.htmlExtension()/][resetUnit.twigExtension()/]', $parameters);
 }
 [/let]

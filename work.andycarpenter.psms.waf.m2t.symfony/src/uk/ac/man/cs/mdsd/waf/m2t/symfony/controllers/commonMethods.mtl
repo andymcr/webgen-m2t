@@ -15,6 +15,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::expression::controller/]
 
@@ -120,19 +121,7 @@ $[key.routeParameterName(resource)/][/for]
 [/template]
 
 
-[template public loadContainer(unit : DynamicUnit) post(trim())]
-[if (unit.isContained)]
-$this->[unit.containerInstanceName()/] = [unit.loadContainerInstance()/]
-if (!$this->[unit.containerInstanceName()/])
-{
-    throw $this->createNotFoundException('The [unit.containingType.name/] does not exist');
-}
-[else]
-// uncontained
-[/if]
-[/template]
-
-[template private loadContainerInstance(unit : DynamicUnit) post(trim())]
+[template public loadContainerInstance(unit : DynamicUnit) post(trim())]
 [let findMethodName : String
 	= if unit.oclIsKindOf(CollectionUnit) then
 		let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
@@ -144,7 +133,7 @@ if (!$this->[unit.containerInstanceName()/])
 		else
 			unit.containingType.findMethodName()
 		endif]
-[unit.getContainerRepository()/]->[findMethodName/]([unit.routeContainerParameterList()/]);
+[unit.getContainerRepository()/]->[findMethodName/]([unit.routeContainerParameterList()/])
 [/let]
 [/template]
 
@@ -165,9 +154,20 @@ $this->[unit.contentRepository.instanceName()/]
 [unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([unit.findActualUpdateParameterList()/])
 [/template]
 
+[template public loadContainer(action : Action) post(trim())]
+[if (action.parentUnit.isContained)]
+[action.instanceVariable()/] = [action.parentUnit.loadContainerInstance()/];
+if (![action.instanceVariable()/]) {
+    throw $this->createNotFoundException('The [action.parentUnit.containingType.name/] does not exist');
+}
+[else]
+// uncontained
+[/if]
+[/template]
+
 [template public loadInstance(action : Action) post(trim())]
-$[action.instanceName()/] = [action.loadInstance2()/];
-if (!$[action.instanceName()/])
+[action.instanceVariable()/] = [action.loadInstance2()/];
+if (![action.instanceVariable()/])
 {
     throw $this->createNotFoundException('The [action.parentUnit.contentType.name/] does not exist');
 }
@@ -208,7 +208,7 @@ $this->[unit.findElementSelection.definedBy.instanceName()/]->[unit.findElementS
 [template private findActualParameter(unit : DynamicUnit, key : Attribute, parameters : Sequence(Attribute)) post(trim())]
 [let parameterName : String = key.routeParameterName(parameters)]
 [if (unit.hasRouteActual(key))]
-[unit.routeActual(key).value.controllerExpression('$'.concat(unit.instanceName()), '$'.concat(unit.containerInstanceName()))/]
+[unit.routeActual(key).value.controllerExpression(unit.instanceVariable(), unit.containerInstanceVariable())/]
 [elseif (key.encodeUriKey)]
 urldecode($[parameterName/])
 [else]
@@ -270,9 +270,9 @@ $request->query->all()[/if]
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]
 [for (field : UnitField | unit.defaultValueFields)]
 [if (field.oclIsTypeOf(UnitAttribute))]
-$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
+[unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
 [else]
-$this->[unit.instanceName()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
+[unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
 [/if]
 [/for]
 [/template]
@@ -296,7 +296,7 @@ if ($request->request->has('cancel'))
 	else
 		unit.oclAsType(EditUnit).cancelDestination
 	endif]
-if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->get('cancel')->isClicked())
+if ([unit.instanceVariable()/]->isSubmitted() && [unit.instanceVariable()/]->get('cancel')->isClicked())
 	return $this->redirectToRoute('[comment cancelDestination routeName()/]');
 [/let]
 [/template]
@@ -304,7 +304,7 @@ if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
 [for (feature : UnitField | unit.forcedValueFields)]
 [let value : Expression = feature.oclAsType(UnitFeature).forcedValue]
-$this->[unit.instanceName()/]->[feature.formName()/] = [value.valueExpression()/];
+[unit.instanceVariable()/]->[feature.formName()/] = [value.valueExpression()/];
 [/let]
 [/for]
 [/template]

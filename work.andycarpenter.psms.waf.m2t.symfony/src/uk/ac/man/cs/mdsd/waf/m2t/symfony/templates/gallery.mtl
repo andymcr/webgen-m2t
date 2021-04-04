@@ -15,11 +15,11 @@
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
 [file(galleryUnit.templateFilename(), false)]
 {% trans_default_domain "entity" %}
-<section [if (galleryUnit.hasSectionClass)] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceName()/]">
+<section [if (galleryUnit.hasSectionClass)] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceParameter()/]">
 <h4[if (galleryUnit.hasCaptionClass or galleryUnit.omitCaption)]
  class="[if (galleryUnit.hasCaptionClass)][galleryUnit.captionClass/][/if] [if (galleryUnit.omitCaption)] hidden[/if]"[/if]>[galleryUnit.unitTitle()/]</h4>
  <div class="[galleryUnit.contentClass/]">
-  [galleryUnit.unitContent(null, galleryUnit.instanceName(), 0)/]
+  [galleryUnit.unitContent(null, galleryUnit.instanceParameter(), 0)/]
  </div>
 </section>
 [/file]
@@ -78,7 +78,7 @@
 </div>
 <div id="links">
 [let variable : String = 'image']
-{% for [variable/] in [unit.instanceName()/] %}
+{% for [variable/] in [unit.instanceParameter()/] %}
  [unit.blueimpEntry(variable)/]
 {% endfor %}
 [/let]

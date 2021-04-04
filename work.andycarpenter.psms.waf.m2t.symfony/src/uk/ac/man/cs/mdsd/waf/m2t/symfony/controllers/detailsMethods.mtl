@@ -40,12 +40,12 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.selection.oclIsUndefined())]
-$this->[detailsUnit.instanceName()/] = [detailsUnit.loadInstance()/];
-if (!$this->[detailsUnit.instanceName()/]) {
+[detailsUnit.instanceVariable()/] = [detailsUnit.loadInstance()/];
+if (![detailsUnit.instanceVariable()/]) {
     throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
 }
 [else]
-$this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.definedBy.instanceName()/]->[detailsUnit.selection.methodName/]();
+[detailsUnit.instanceVariable()/] = $this->[detailsUnit.selection.definedBy.instanceName()/]->[detailsUnit.selection.methodName/]();
 [/if]
 [/let]
 [/template]
@@ -54,13 +54,13 @@ $this->[detailsUnit.instanceName()/] = $this->[detailsUnit.selection.definedBy.i
 	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.isConditionallyDisplayed)]
-if (isset($this->[detailsUnit.instanceName()/]))
-    $parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
+if (isset([detailsUnit.instanceVariable()/]))
+    $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 [else]
 	[if (not detailsUnit.displayedOn.hasSingleActionMethod()) ]
 [unit.actionCore()/]
 	[/if]
-$parameters['['/]'[detailsUnit.instanceName()/]'[']'/] = $this->[detailsUnit.instanceName()/];
+$parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 [/if]
 [/let]
 [/template]

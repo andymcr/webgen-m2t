@@ -23,6 +23,9 @@ use [repository.repositoryNamespace()/]\[repository.className()/];
 [for (service : Service | service.uses)]
 use [service.serviceNamespace()/]\[service.className()/];
 [/for]
+[if (service.hasFileOperations)]
+use Symfony\Component\HttpFoundation\File\File;
+[/if]
 // [protected ('use')]
 // [/protected]
 

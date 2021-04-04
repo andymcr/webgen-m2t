@@ -19,10 +19,10 @@
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(TabularUnit)) post(trim())]
 [let tabularUnit : TabularUnit = unit.oclAsType(TabularUnit)]
-[let accessor : String = tabularUnit.instanceName()]
+[let accessor : String = tabularUnit.instanceParameter()]
 [file(tabularUnit.templateFilename(), false)]
 {% trans_default_domain "entity" %}
-<section [if (tabularUnit.hasSectionClass)] class="[tabularUnit.sectionClass/]" [/if]id="[tabularUnit.instanceName()/]">
+<section [if (tabularUnit.hasSectionClass)] class="[tabularUnit.sectionClass/]" [/if]id="[tabularUnit.instanceParameter()/]">
  <h4[if (tabularUnit.hasCaptionClass or tabularUnit.omitCaption)]
  class="[if (tabularUnit.hasCaptionClass)][tabularUnit.captionClass/][/if] [if (tabularUnit.omitCaption)] hidden[/if]"[/if]>[tabularUnit.unitTitle()/]</h4>
 [if (tabularUnit.hasFilters)]

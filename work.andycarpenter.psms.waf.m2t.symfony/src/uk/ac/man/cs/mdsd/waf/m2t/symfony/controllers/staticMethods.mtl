@@ -26,7 +26,7 @@
 public function [unit.actionName()/]()
 {
 [if (page.partOf.siteProperties.staticUnitsEditable)]
-   $this->[unit.instanceName()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
+   [unit.instanceVariable()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
 
 [/if]
 [if (page.units->size() > 1)]
@@ -45,7 +45,7 @@ public function [unit.actionName()/]()
 	? (unit.oclIsKindOf(StaticUnit)) post(trim())]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
 [if (unit.displayedOn.partOf.siteProperties.staticUnitsEditable)]
-$parameters['['/]'[staticUnit.instanceName()/]'[']'/] = $this->[staticUnit.instanceName()/];
+$parameters['['/]'[staticUnit.instanceParameter()/]'[']'/] = [staticUnit.instanceVariable()/];
 [/if]
 [/let]
 [/template]

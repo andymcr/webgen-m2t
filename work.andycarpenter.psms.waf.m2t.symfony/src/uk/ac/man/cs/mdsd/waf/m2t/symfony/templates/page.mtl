@@ -26,7 +26,7 @@
 	[else]
 	[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 		[if (dynamicUnit.isConditionallyDisplayed or dynamicUnit.isDislayedOnlyOnExplicitRoute())]
-{% if [dynamicUnit.instanceName()/] is defined %}
+{% if [dynamicUnit.instanceParameter()/] is defined %}
 [dynamicUnit.unitContent(page)/]
 			[if (dynamicUnit.hasHiddenMessage)]
 {% else %}

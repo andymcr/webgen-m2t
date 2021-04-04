@@ -19,6 +19,14 @@
 		or unit.supportedFilters->size() = 1 and unit.displayedOn.hasSingleActionMethod()
 /]
 
+[query public hasSelectionMethod(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			not unit.oclAsType(CollectionUnit).inlineSelectCode()
+		else
+			false
+		endif
+/]
+
 [query public hasSupportMethods(unit : ContentUnit) : Boolean
 	= unit.oclIsKindOf(CollectionUnit) and not unit.oclAsType(CollectionUnit).inlineSelectCode()
 /]

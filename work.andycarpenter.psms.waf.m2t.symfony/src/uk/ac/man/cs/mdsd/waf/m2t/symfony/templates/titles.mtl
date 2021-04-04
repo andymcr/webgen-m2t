@@ -17,7 +17,7 @@
 
 [template public unitTitle(unit : SingletonUnit)
 	? (not unit.title.oclIsUndefined()) post(trim())]
-[let contentAccessor : String = unit.instanceName()]
+[let contentAccessor : String = unit.instanceParameter()]
 [unit.title(unit.title, contentAccessor)/]
 [/let]
 [/template]

@@ -93,16 +93,16 @@ public function [unit.actionName()/]X([unit.actionMethodFormals()/]): Response
 
 [template private actionCreateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
-$[unit.instanceName()/] = new [unit.modelClassName()/]();
+[unit.instanceVariable()/] = new [unit.modelClassName()/]();
 [if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
 [unit.setContainer()/]
 [/if]
-$this->[unit.instanceName()/] = [unit.createForm('$'.concat(unit.instanceName()), sourceParameters)/];
-$this->[unit.instanceName()/]->handleRequest($request);
+[unit.formVariable()/] = [unit.createForm(unit.instanceVariable(), sourceParameters)/];
+[unit.formVariable()/]->handleRequest($request);
 	[if (not unit.cancelDestination.oclIsUndefined())]
 [unit.handleCancelSubmit()/]
 	[/if]
-if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) {
     [unit.saveBody(sourceParameters)/]
 }
 [/let]
@@ -141,27 +141,27 @@ public function [unit.actionName()/]([unit.actionMethodUpdateFormals()/]): Respo
 
 [template private actionUpdateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeUpdateParameters()]
-$[unit.instanceName()/] = [unit.loadUpdateInstance()/];
-if (!$[unit.instanceName()/]) {
+[unit.instanceVariable()/] = [unit.loadUpdateInstance()/];
+if (![unit.instanceVariable()/]) {
     throw $this->createNotFoundException('The [unit.contentType.name/] does not exist');
 }
 [for (field : UnitField | unit.formFields->select(f | f.isContains))]
 [let association : Association = field.persistentFeature.oclAsType(Association)]
 $original[field.instanceName().toUpperFirst()/] = new ArrayCollection();
-foreach ($[unit.instanceName()/]->[field.persistentFeature.getMethodName()/]() as $[association.targetType.instanceName()/])
+foreach ([unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/]() as $[association.targetType.instanceName()/])
     $original[field.instanceName().toUpperFirst()/]->add($[association.targetType.instanceName()/]);
 [/let]
 [/for]
-$this->[unit.instanceName()/] = [unit.updateForm(sourceParameters)/];
-$this->[unit.instanceName()/]->handleRequest($request);
+[unit.formVariable()/] = [unit.updateForm(sourceParameters)/];
+[unit.formVariable()/]->handleRequest($request);
 [if (not unit.cancelDestination.oclIsUndefined())]
 [unit.handleCancelSubmit()/]
 [/if]
-if ($this->[unit.instanceName()/]->isSubmitted() && $this->[unit.instanceName()/]->isValid()) {
+if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) {
 [for (field : UnitField | unit.formFields->select(f | f.isContains))]
 [let association : Association = field.persistentFeature.oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType.instanceName()/])
-        if (false === $[unit.instanceName()/]->[field.persistentFeature.getMethodName()/]()->contains($[association.targetType.instanceName()/]))
+        if (false === [unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/]()->contains($[association.targetType.instanceName()/]))
             $this->[association.targetType.repository.instanceName()/]->remove($[association.targetType.instanceName()/]);
 [/let]
 [/for]
@@ -191,7 +191,7 @@ array_merge(
 
 [template private updateForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let page : Page = unit.displayedOn]
-$this->createForm([unit.typeClassName()/]::class, $[unit.instanceName()/], ['['/]
+$this->createForm([unit.typeClassName()/]::class, [unit.instanceVariable()/], ['['/]
     'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteUpdateParameters())]
 $request->query->all()[else]
 array_merge(
@@ -211,13 +211,13 @@ array_merge(
 [template public setContainer(unit : EditUnit) post(trim())]
 [let modelPropertyName : String = unit.contentType.containingAssociation.modelPropertyName().toUpperFirst()]
 [let parentRepository : Repository = unit.contentType.containingType.repository]
-$[unit.instanceName()/]->set[modelPropertyName/]([unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeParameterList()/]));
+[unit.instanceVariable()/]->set[modelPropertyName/]([unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeParameterList()/]));
 [/let]
 [/let]
 [/template]
 
 [template private saveBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[unit.getContentRepository()/]->save($[unit.instanceName()/], true);
+[unit.getContentRepository()/]->save([unit.instanceVariable()/], true);
 [if (unit.hasSuccessMessage)]
 $this->addFlash('success', $this->translationService->trans('[unit.successMessageId()/]', ['['/][']'/], '[unit.displayedOn.translationDomain()/]'));
 [/if]
@@ -242,16 +242,16 @@ return [unit.displayedOn.redirect(sourceParameters)/];
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsKindOf(SecurityUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.displayEmptyForm())]
-if (!isset($this->[editUnit.instanceName()/])) {
-    $this->[editUnit.instanceName()/] = [editUnit.createForm('null', editUnit.routeParameters())/];
+if (!isset([editUnit.formVariable()/])) {
+    [editUnit.formVariable()/] = [editUnit.createForm('null', editUnit.routeParameters())/];
 }
 [/if]
 [if (not editUnit.displayEmptyForm())]
-if (isset($this->[editUnit.instanceName()/])) {
-    $parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
+if (isset([editUnit.formVariable()/])) {
+    $parameters['['/]'[editUnit.instanceParameter()/]'[']'/] = [editUnit.formVariable()/]->createView();
 }
 [else]
-$parameters['['/]'[editUnit.instanceName()/]'[']'/] = $this->[editUnit.instanceName()/]->createView();
+$parameters['['/]'[editUnit.instanceParameter()/]'[']'/] = [editUnit.formVariable()/]->createView();
 [/if]
 
 [/let]

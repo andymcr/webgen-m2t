@@ -12,6 +12,7 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::translation/]
+[import uk::ac::man::cs::mdsd::waf::m2t::symfony::units/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::annotations/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::collectionMethods/]
@@ -32,11 +33,23 @@
 		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() > 1))
 /]
 
+[query private entitiesUsed(page : Page) : Sequence(Entity)
+	= page.editUnits
+			->select(u | not u.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)
+			->collect(u | u.contentType)
+		->union(page.collectionUnits
+			->select(u | u.isContained and not u.containingTypeLoadedElsewhere()
+						and (not page.hasSingleActionMethod() or u.hasSelectionMethod()))
+			->collect(u | u.containingType))
+		->asSet()->asSequence()
+/]
+
 [query private repositoriesUsed(page : Page) : Sequence(Repository)
 	= let containerRepositories : Set(Repository)
 		= page.editUnits
 			->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))
-			->select(u | not u.hasExplicitlyEditedContainer and not u.containingType.oclIsUndefined())
+			->select(u | not u.hasExplicitlyEditedContainer)
+			->select(u | not u.containingType.oclIsUndefined())
 			->collect(u | u.containingType.repository)
 			->asSet()
 		in let autocompleteRepositories : Set(Repository)
@@ -81,23 +94,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
     use ResetPasswordControllerTrait;
 
 [/if]
-[if (page.hasRegistrationUnits)]
-    private $emailVerifier;
-
-[/if]
-[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
-    private $resetPasswordHelper;
-
-[/if]
-[for (repository : Repository | page.repositoriesUsed())]
-    private $[repository.instanceName()/];
-
-[/for]
-[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
-    private $[service.instanceName()/];
-
-[/for]
-    private $translationService;
+    [page.properties()/]
 
     [page.constructor()/]
 
@@ -132,9 +129,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 [/template]
 
 [template private useStatements(page : Page) post(trim())]
-[for (entity : Entity | page.editUnits
-		->select(u | not u.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)
-		->collect(u | u.contentType)->asSet()->asSequence()->sortedBy(e | e.name))]
+[for (entity : Entity | page.entitiesUsed()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
 [for (form : SingletonUnit | page.formUnits->sortedBy(u | u.name))]
@@ -149,8 +144,15 @@ use [service.serviceNamespace()/]\[service.className()/];
 [if (page.hasRegistrationUnits)]
 use App\Security\EmailVerifier;
 [/if]
-[if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
+[if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty()
+	or (not page.hasSingleActionMethod() and page.hasCollectionUnits 
+			and page.collectionUnits->select(u | not u.hasPagination)->notEmpty()))]
 use Doctrine\Common\Collections\ArrayCollection;
+[/if]
+[if (page.hasCollectionUnits)]
+	[if (page.collectionUnits->select(u | u.hasPagination and (not page.hasSingleActionMethod() or not u.inlineSelectCode()))->notEmpty())]
+use Doctrine\ORM\Tools\Pagination\Paginator;
+	[/if]
 [/if]
 [if (page.hasCaptchaUnits)]
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
@@ -166,6 +168,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
+[if (page.hasFileActions)]
+use Symfony\Component\HttpFoundation\File\File;
+[/if]
 [if (page.hasAutocompleteFields)]
 use Symfony\Component\HttpFoundation\JsonResponse;
 [/if]
@@ -200,6 +205,87 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 [if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 [/if]
+[/template]
+
+[template private properties(page : Page) post(trim())]
+[if (page.hasRegistrationUnits)]
+/**
+ * @var EmailVerifier
+ */
+private EmailVerifier $emailVerifier;
+
+[/if]
+[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
+/**
+ * @var ResetPasswordHelperInterface
+ */
+private ResetPasswordHelperInterface $resetPasswordHelper;
+
+[/if]
+[for (repository : Repository | page.repositoriesUsed())]
+/**
+ * @var [repository.className()/]
+ */
+private [repository.className()/] $[repository.instanceName()/];
+
+[/for]
+[for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
+/**
+ * @var [service.className()/]
+ */
+private [service.className()/] $[service.instanceName()/];
+
+[/for]
+[for (unit : ContentUnit | page.nonSecurityUnits->sortedBy(u | u.name))]
+	[if (not page.hasSingleActionMethod() or unit.hasSelectionMethod())]
+		[if (unit.oclIsKindOf(EditUnit))]
+/**
+ * @var 
+ */
+private $[unit.oclAsType(EditUnit).formName()/];
+
+		[elseif (unit.oclIsKindOf(CollectionUnit))]
+		[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+/**
+ * @var [if (unit.oclAsType(CollectionUnit).hasPagination)]Paginator[else]ArrayCollection[/if]
+ */
+private [if (unit.oclAsType(CollectionUnit).hasPagination)]Paginator[else]ArrayCollection[/if] $[unit.instanceName()/];
+
+			[if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
+/**
+ * @var [collectionUnit.containingType.modelClassName()/]
+ */
+private [collectionUnit.containingType.modelClassName()/] $[collectionUnit.containerInstanceName()/];
+
+			[/if]
+			[if (not collectionUnit.inlineSelectCode() and collectionUnit.hasPagination)]
+/**
+ * @var int
+ */
+private int $[collectionUnit.pageNumberName()/];
+
+				[if (collectionUnit.maximumPaginationSize > 0)]
+/**
+ * @var int
+ */
+private int $[collectionUnit.pageSizeName()/];
+
+				[/if]
+			[/if]
+		[/let]
+		[else]
+/**
+ * @var [unit.modelClassName()/]
+ */
+private [unit.modelClassName()/] $[unit.instanceName()/];
+
+		[/if]
+	[/if]
+[/for]
+/**
+ * @var TranslatorInterface
+ */
+private TranslatorInterface $translationService;
 [/template]
 
 [template private constructor(page : Page) post(trim())]
@@ -342,65 +428,50 @@ Response[else]File[/if]
 [/template]
 
 [template private actionMethodBody(action : OperationAction)
-	? (action.oclIsTypeOf(InstanceOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
-[let unit : DynamicUnit = action.parentUnit]
+	? (action.operation.resultType = OperationResultTypes::None) post(trim())]
+[if (action.oclIsTypeOf(GeneralOperationAction))]
+	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
+$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
+[else]
+	[if (action.isInstanceAction)]
 [action.loadInstance()/]
-[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
-$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
+	[else]
+[action.loadContainer()/]
+	[/if]
+	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
+$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
+[/if]
 [if (action.hasSuccessMessage or action.hasFailureMessage)]
 [action.actionResultFlash()/]
 [/if]
-return [action.redirect(action.routeActionReturnName(), action.routeParameters())/];
+[let routeParameters : Sequence(Attribute)
+	= if action.oclIsTypeOf(InstanceOperationAction) then 
+			action.routeParameters()
+		else if action.oclIsTypeOf(ContainerOperationAction) then
+			action.parentUnit.routeParameters()
+		else
+			Sequence{}
+		endif endif]
+return [action.redirect(action.routeActionReturnName(), routeParameters)/];
 [/let]
 [/template]
 
 [template private actionMethodBody(action : OperationAction)
-	? (action.oclIsTypeOf(ContainerOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
-[let unit : DynamicUnit = action.parentUnit]
-[action.parentUnit.loadContainer()/];
-[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
-$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-[if (action.hasSuccessMessage or action.hasFailureMessage)]
-[action.actionResultFlash()/]
-[/if]
-return [action.redirect(action.routeActionReturnName(), action.parentUnit.routeParameters())/];
-[/let]
-[/template]
-
-[template private actionMethodBody(action : OperationAction)
-	? (action.oclIsTypeOf(GeneralOperationAction) and action.operation.resultType = OperationResultTypes::None) post(trim())]
-[let unit : DynamicUnit = action.parentUnit]
-[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
-$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-[if (action.hasSuccessMessage or action.hasFailureMessage)]
-[action.actionResultFlash()/]
-[/if]
-return [action.redirect(action.routeActionReturnName(), action.parentUnit.routeContainerParameters())/];
-[/let]
-[/template]
-
-[template private actionMethodBody(action : OperationAction)
-	? (action.oclIsTypeOf(InstanceOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
-[action.loadInstance()/]
-$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-$response = $this->file($file, $[action.parentUnit.instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
- . '[action.fileExtension/]'[/if]);
-return $response;
-[/template]
-
-[template private actionMethodBody(action : OperationAction)
-	? (action.oclIsTypeOf(ContainerOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
-[action.parentUnit.loadContainer()/];
-$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]($[action.instanceName()/]);
-$response = $this->file($file, $[action.parentUnit.instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
- . '[action.fileExtension/]'[/if]);
-return $response;
-[/template]
-
-[template private actionMethodBody(action : OperationAction)
-	? (action.oclIsTypeOf(GeneralOperationAction) and action.operation.resultType = OperationResultTypes::File) post(trim())]
+	? (action.operation.resultType = OperationResultTypes::File) post(trim())]
+[if (action.oclIsTypeOf(GeneralOperationAction))]
 $file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
-$response = $this->file($file, '[action.instanceName()/][if (not action.fileExtension.oclIsUndefined())]
- . [action.fileExtension/][/if]');
+$response = $this->file($file, '[action.name/][if (not action.fileExtension.oclIsUndefined())]
+[action.fileExtension/][/if]');
 return $response;
+[else]
+	[if (action.isInstanceAction)]
+[action.loadInstance()/]
+	[else]
+[action.loadContainer()/]
+	[/if]
+$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
+$response = $this->file($file, $[action.instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
+ . '[action.fileExtension/]'[/if]);
+return $response;
+[/if]
 [/template]

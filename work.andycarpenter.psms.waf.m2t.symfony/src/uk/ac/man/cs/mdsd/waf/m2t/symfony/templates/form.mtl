@@ -250,7 +250,7 @@ function initialize() {
 					var contentString = $('<div class="marker-info-win">' +
 						'<p class="place-address">' + results['['/]1[']'/].formatted_address + '</p>' +
 						'<?php
-							echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.confirmLabel/]', array(
+							echo Form::button('[mapUnit.instanceParameter()/]', '[mapUnit.confirmLabel/]', array(
 								'type' => 'submit',
 								'class' => 'save-marker'
 							));
@@ -272,7 +272,7 @@ function initialize() {
 				'<h4 class="place-name">' + place.name + '</h4>' +
 				'<p class="place-address">' + place.formatted_address + '</p>' +
 				'<?php
-					echo Form::button('[mapUnit.instanceName()/]', '[mapUnit.confirmLabel/]', array(
+					echo Form::button('[mapUnit.instanceParameter()/]', '[mapUnit.confirmLabel/]', array(
 						'type' => 'submit',
 						'class' => 'save-marker'
 					));

@@ -183,7 +183,7 @@ class="[action.anchorClass/]"
 
 [query private hasTooltip(action : Action) : Boolean
 	= if action.isInstanceAction then
-			action.parentUnit.instanceActionsPlacement = InstanceActionsPlacement::Flot
+			action.parentUnit.instanceActionsPlacement = InstanceActionsPlacement::Float
 		else
 			action.parentUnit.containerActionsPlacement = ContainerActionsPlacement::Float
 		endif

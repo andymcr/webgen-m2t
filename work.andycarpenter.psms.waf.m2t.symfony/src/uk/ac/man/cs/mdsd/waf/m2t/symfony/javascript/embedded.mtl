@@ -114,5 +114,5 @@ function [type.toLowerFirst()/]RemoveLink([feature.instanceName()/]) {
 [/template]
 
 [query private id(field : UnitField) : String
-	= field.displayedOn.instanceName().asId().concat('_').concat(field.modelPropertyName())
+	= field.displayedOn.instanceParameter().asId().concat('_').concat(field.modelPropertyName())
 /]
