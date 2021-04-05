@@ -17,7 +17,7 @@
 
 [comment model.enumerationTypes.model(supportTranslation)/]
 [model.entities.model()/]
-[model.entities.normalizer()/]
+[comment model.entities.normalizer()/]
 
 [model.containerUnique()/]
 [model.containerUniqueValidator()/]
