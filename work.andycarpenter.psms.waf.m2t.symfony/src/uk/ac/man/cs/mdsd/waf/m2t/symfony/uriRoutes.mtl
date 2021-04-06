@@ -265,9 +265,9 @@
 
 
 [query public uriPathValidatedKeys(page : Page) : Sequence(Attribute)
-	= page.routeParameters()
-		->select(k | not k .validationPattern.oclIsUndefined())
-		->select(k | k.validationPattern <> '[^/]+')
+	= Sequence{} -- page.routeParameters()
+--		->select(k | not k .validationPattern.oclIsUndefined())
+--		->select(k | k.validationPattern <> '[^/]+')
 /]
 
 [query public hasValidatedRouteParameters(page : Page) : Boolean
@@ -284,9 +284,9 @@
 		in if selectType.oclIsUndefined() then
 				Sequence{}
 			else
-				selectType.uriPathKeys()
-					->select(k | not k .validationPattern.oclIsUndefined())
-					->select(k | k.validationPattern <> '[^/]+')
+Sequence{} --				selectType.uriPathKeys()
+--					->select(k | not k .validationPattern.oclIsUndefined())
+--					->select(k | k.validationPattern <> '[^/]+')
 			endif
 /]
 

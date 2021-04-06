@@ -64,7 +64,7 @@
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (dynamicUnit.hasValidatedRouteParameters(false))]
 , requirements={[for (key : Attribute | dynamicUnit.uriPathValidatedKeys(false)) separator(', ')]
-"[key.routeParameterName(dynamicUnit.routeParameters())/]" = "[key.validationPattern/]"[/for]}[/if][/let][/if])
+"[key.routeParameterName(dynamicUnit.routeParameters())/]" = "[comment key.validationPattern/]"[/for]}[/if][/let][/if])
 [/if]
 [/template]
 
