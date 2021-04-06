@@ -56,6 +56,9 @@ namespace [unit.formNamespace()/];
 class [unit.typeClassName()/] extends AbstractType
 {
 [for (repository : Repository | unit.choicesRepositories())]
+    /**
+     * @var [repository.className()/] $[repository.instanceName()/]
+     */
     private $[repository.instanceName()/];
 
 [/for]
@@ -69,6 +72,11 @@ class [unit.typeClassName()/] extends AbstractType
     }
 
 [/if]
+    /**
+     *
+     * @param FormBuilderInterface<AbstractType> $builder
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 [for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName))]
@@ -87,6 +95,10 @@ class [unit.typeClassName()/] extends AbstractType
 [/if]
     }
 
+    /**
+     *
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['['/]
@@ -315,7 +327,7 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
     'attr' => ['['/]
         'placeholder' => '[placeholderId/]',
 [if (attribute.hasValidationPattern)]
-        'pattern' => '[attribute.validationPattern/]',
+        'pattern' => '[attribute.oclAsType(DataTypeAttribute).validationPattern/]',
 [/if]
         'title' => '[titleId/]',
     [']'/],
