@@ -5,6 +5,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::expression/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::types/]
 
 
 [query private isReservedWord(word : String) : Boolean
@@ -173,7 +174,9 @@ use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
  * @ORM\Id
  * @ORM\Column(type="[entity.autoKeyPersistentType/]")
  * @ORM\GeneratedValue[if (not entity.autoKeyGenerationStrategy.oclIsUndefined())](strategy="[entity.autoKeyGenerationStrategy/]")[/if]
- **/
+ *
+ * @var int $[entity.autoKeyName/]
+ */
 protected $[entity.autoKeyName/];
 [/template]
 
@@ -197,22 +200,24 @@ protected $[entity.autoKeyName/];
 	[if (feature.hasSerializationControl)]
   [feature.serializationAnnotation()/]
 	[/if]
-  **/
-protected $[feature.modelPropertyName()/];
+  *
+  * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
+  */
+protected [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/];
 
 [elseif (feature.isResourceFeature)]
 /**
  * @ORM\Column(type="string")
  *
  * @var string|null
- **/
+ */
 protected $[feature.modelPropertyName()/]Name;
 
 /**
  * @Vich\UploadableField(mapping="[feature.modelPropertyName()/]", fileNameProperty="[feature.modelPropertyName()/]Name", size="[feature.modelPropertyName()/]Size", mimeType="[feature.modelPropertyName()/].mimeType", originalName="[feature.modelPropertyName()/].originalName", dimensions="[feature.modelPropertyName()/].dimensions")
  *
  * @var File|null
- **/
+ */
 protected $[feature.modelPropertyName()/]File;
 
 [/if]
@@ -221,32 +226,31 @@ protected $[feature.modelPropertyName()/]File;
 [template private forumUserProperties(entity : Entity) post(trim())]
 [if (entity.features->select(f | f.name = 'username')->isEmpty())]
 /**
- * @var string
+ * @var string $username
  */
-protected $username;
+protected string $username;
 
 [/if]
 /**
- * @var string
- *
  * @ORM\Column(name="avatar_url", type="string", nullable=true)
+ *
+ * @var string $avatarUrl
  */
-protected $avatarUrl;
+protected string $avatarUrl;
 
 /**
- * @var integer
- *
  * @ORM\Column(name="nb_post", type="integer", nullable=true)
+ *
+ * @var integer $nbPost
  */
-protected $nbPost;
+protected int $nbPost;
 
 /**
- *
- * @var boolean
- *
  * @ORM\Column(name="banned", type="boolean", nullable=true)
+ *
+ * @var boolean $banned
  */
-protected $banned;
+protected bool $banned;
 [/template]
 
 [template private timestampFeatures(entity : Entity) post(trim())]
@@ -254,16 +258,20 @@ protected $banned;
 /**
  * @ORM\Column(type="datetime")
  * @Gedmo\Timestampable(on="create")
- **/
-protected $created;
+ *
+ * @var \DateTimeInterface $created
+ */
+protected \DateTimeInterface $created;
 
 [/if]
 [if (entity.partOf.timestampUpdates)]
 /**
  * @ORM\Column(type="datetime", nullable=true)
  * @Gedmo\Timestampable(on="update")
- **/
-protected $updated;
+ *
+ * @var \DateTimeInterface $updated
+ */
+protected \DateTimeInterface $updated;
 [/if]
 [/template]
 
@@ -274,7 +282,7 @@ protected $updated;
 * @ORM\Id
 [/if]
 * @ORM\Column([if (feature.columnName <> feature.modelPropertyName() or feature.columnName.isReservedWord())]
-[feature.columnName()/], [/if]type="[attribute.ormType/]"[if (not attribute.isRequired)], nullable=true[/if])
+[feature.columnName()/], [/if]type="[attribute.persistentType/]"[if (not attribute.isRequired)], nullable=true[/if])
 [if (attribute.slugFields->notEmpty())]
 * @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.columnName/]"[/for]})
 [/if]
@@ -483,6 +491,11 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
 [/template]
 
 [template private idMethods(entity : Entity) post(trim())]
+/**
+ *
+ *
+ * @return int
+ */
 public function getId(): int
 {
     return $this->[entity.autoKeyName/];
@@ -521,7 +534,12 @@ public function getId(): int
 [/template]
 
 [template private getMethod(feature : Feature) post(trim())]
-public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.partOf.implementsResetPasswordInterface)]?[/if][feature.getReturnType()/]
+/**
+ *
+ *
+ * @return [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if]
+ */
+public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
 {
 [if (feature.isDerived)]
     // [protected (feature.name.concat('.getMethod'))]
@@ -533,51 +551,16 @@ public function [feature.getMethodName()/](): [if (feature.isSingleton and not f
 }
 [/template]
 
-[template private getReturnType(feature : Feature) post(trim())]
-[if (not feature.isSingleton)]
-	[if (feature.oclIsKindOf(Association))]
-	[let association : Association = feature.oclAsType(Association)]
-		[if (association.targetType.repository.findAll.oclIsUndefined())]
-Collection
-		[else]
-		[let allSelection : Selection = association.targetType.repository.findAll]
-			[if (allSelection.limit > 0)]
-object
-			[else]
-Collection
-			[/if]
-		[/let]
-		[/if]
-	[/let]
-	[else]
-array
-	[/if]
-[elseif (feature.isDateFeature)]
-\DateTime
-[elseif (feature.oclIsKindOf(SingletonAttribute))]
-[let singleton : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
-	[if (singleton.ormType = 'boolean')]
-bool
-	[elseif (singleton.ormType = 'integer')]
-int
-	[else]
-[singleton.ormType/]
-	[/if]
-[/let]
-[elseif (feature.oclIsKindOf(Association))]
-	[if (feature.partOf.implementsResetPasswordInterface)]
-object
-	[else]
-[feature.oclAsType(Association).modelClassName()/]
-	[/if]
-[/if]
-[/template]
-
 [template private getMethodCore(feature : Feature) post(trim())]
 return $this->[feature.modelPropertyName()/];
 [/template]
 
 [template private getFileNameMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @return string|null
+ */
 public function [feature.getMethodName()/]Name(): ?string
 {
     return $this->[feature.modelPropertyName()/]Name;
@@ -585,6 +568,11 @@ public function [feature.getMethodName()/]Name(): ?string
 [/template]
 
 [template private getFileMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @return File|null
+ */
 public function [feature.getMethodName()/]File(): ?File
 {
     return $this->[feature.modelPropertyName()/]File;
@@ -594,7 +582,12 @@ public function [feature.getMethodName()/]File(): ?File
 [template private setMethod(feature : Feature)
 	? (feature.oclIsKindOf(SingletonAttribute)) post(trim())]
 [let attribute : SingletonAttribute = feature.oclAsType(SingletonAttribute)]
-public function [attribute.setMethodName()/]($[attribute.instanceName()/]): void
+/**
+ *
+ *
+ * @param [attribute.documentationType()/][if (not feature.isRequired)]|null[/if] $[attribute.instanceName()/]
+ */
+public function [attribute.setMethodName()/]([if (not feature.isRequired)]?[/if][attribute.implementationType()/] $[attribute.instanceName()/]): void
 {
 [if (attribute.customiseSet)]
     // [protected (attribute.name.concat('.setMethod'))]
@@ -631,6 +624,11 @@ $this->[attribute.modelPropertyName()/] = $[attribute.instanceName()/];
 [/template]
 
 [template private setFileNameMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @param string|null $[feature.instanceName()/]Name
+ */
 public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/]Name): void
 {
     $this->[feature.modelPropertyName()/]Name = $[feature.instanceName()/]Name;
@@ -639,7 +637,7 @@ public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/
 
 [template private setFileMethod(feature : Feature) post(trim())]
 /**
- * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $[feature.getMethodName()/]File
+ * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $[feature.instanceName()/]File
  **/
 public function [feature.setMethodName()/]File(?File $[feature.instanceName()/]File): void
 {
@@ -655,7 +653,12 @@ public function [feature.setMethodName()/]File(?File $[feature.instanceName()/]F
 [template private setMethod(feature : Feature)
 	? (feature.oclIsKindOf(Association)) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
-public function set[association.modelPropertyName().toUpperFirst()/]($[association.instanceName()/]): void
+/**
+ *
+ *
+ * @param [association.documentationType()/] $[association.instanceName()/]
+ */
+public function set[association.modelPropertyName().toUpperFirst()/]([association.implementationType()/] $[association.instanceName()/]): void
 {
 [if (association.customiseSet)]
     // [protected (association.name.concat('.setMethod'))]
@@ -669,7 +672,12 @@ public function set[association.modelPropertyName().toUpperFirst()/]($[associati
 [/template]
 
 [template private addMethod(feature : Feature) post(trim())]
-public function [feature.addMethodName()/]($[feature.singletonName/])
+/**
+ *
+ *
+ * @param [feature.elementType()/] $[feature.singletonName/]
+ */
+public function [feature.addMethodName()/]([feature.elementType()/] $[feature.singletonName/]): void
 {
 [if (feature.isUnique)]
     if (!in_array($[feature.singletonName/], $this->[feature.modelPropertyName()/], true)) {
@@ -701,7 +709,12 @@ public function [feature.addMethodName()/]($[feature.singletonName/])
 [/template]
 
 [template private removeMethod(feature : Feature) post(trim())]
-public function [feature.removeMethodName()/]($[feature.singletonName/])
+/**
+ *
+ *
+ * @param [feature.elementType()/] $[feature.singletonName/]
+ */
+public function [feature.removeMethodName()/]([feature.elementType()/] $[feature.singletonName/]): void
 {
 [if (feature.oclIsKindOf(Attribute))]
     unset($this->[feature.modelPropertyName()/]['['/]array_search($[feature.singletonName/], $this->[feature.columnName/])[']'/]);
@@ -869,14 +882,14 @@ public function setBanned($banned)
 
 [template private timestampMethods(entity : Entity) post(trim())]
 [if (entity.partOf.timestampCreation)]
-public function getCreated(): \DateTime
+public function getCreated(): \DateTimeInterface
 {
     return $this->created;
 }
 
 [/if]
 [if (entity.partOf.timestampUpdates)]
-public function getUpdated(): ?\DateTime
+public function getUpdated(): ?\DateTimeInterface
 {
     return $this->updated;
 }
@@ -884,6 +897,11 @@ public function getUpdated(): ?\DateTime
 [/template]
 
 [template private label(label : ModelLabel) post(trim())]
+/**
+ *
+ *
+ * @return string
+ */
 public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if](): String
 {
 [if (label.customise)]
@@ -902,6 +920,6 @@ $this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
 [let attribute : ModelLabelAttribute = feature.oclAsType(ModelLabelAttribute)]
 [attribute.attribute.modelPropertyName()/][if (attribute.attribute.isDateFeature)]->format('[attribute.dateFormat/]')[/if][/let][else]
 [let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
-[association.association.modelPropertyName()/]->get[if (association.valueDisplay.oclIsUndefined())]Default[else][association.valueDisplay.name.toUpperFirst()/][/if]Label()[/let]
+[association.association.modelPropertyName()/]->get[if (association.valueDisplay.oclIsUndefined())]DefaultLabel[else][association.valueDisplay.name.toUpperFirst()/][/if]()[/let]
 [/if][/for]);
 [/template]
