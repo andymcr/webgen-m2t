@@ -20,11 +20,16 @@ class [type.modelClassName()/]
 	const [literal.name/] = [i/];
 [/for]
 
-	public static function values()
+    /*
+     *
+     *
+     * @return array<string>
+     */
+	public static function values(): array
 	{
 		$values = array();
 [for (literal : EnumerationLiteral | type.enumerations)]
-	[if (supportTranslation)]
+	[if (supportTranslation and false)]
 		$values['['/]'[type.id()/].labels.[literal.id()/]'[']'/] = self::[literal.name/];
 	[else]
 		$values['['/]'[literal.displayLabel/]'[']'/] = self::[literal.name/];
@@ -34,7 +39,14 @@ class [type.modelClassName()/]
 		return $values;
 	}
 
-	public static function value($value = null, $default = '')
+    /*
+     *
+     * @param string $value
+     * @param string $default
+     *
+     * @return string
+     */
+	public static function value(string $value, string $default = ''): string
 	{
 		$values = array_flip([type.modelClassName()/]::values());
 

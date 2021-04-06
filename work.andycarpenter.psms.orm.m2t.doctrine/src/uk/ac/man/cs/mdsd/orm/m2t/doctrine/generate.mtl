@@ -15,7 +15,7 @@
 [template public doctrine(model : OrmModel, supportTranslation : Boolean)]
 [model.configStofDoctrineExtensions()/]
 
-[comment model.enumerationTypes.model(supportTranslation)/]
+[model.enumerationTypes.model(supportTranslation)/]
 [model.entities.model()/]
 [comment model.entities.normalizer()/]
 
