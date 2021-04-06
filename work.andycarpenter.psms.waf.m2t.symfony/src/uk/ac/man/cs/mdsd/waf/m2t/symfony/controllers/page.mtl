@@ -224,14 +224,14 @@ private ResetPasswordHelperInterface $resetPasswordHelper;
 [/if]
 [for (repository : Repository | page.repositoriesUsed())]
 /**
- * @var [repository.className()/]
+ * @var [repository.className()/] $[repository.instanceName()/]
  */
 private [repository.className()/] $[repository.instanceName()/];
 
 [/for]
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
 /**
- * @var [service.className()/]
+ * @var [service.className()/] $[service.instanceName()/]
  */
 private [service.className()/] $[service.instanceName()/];
 
@@ -240,33 +240,33 @@ private [service.className()/] $[service.instanceName()/];
 	[if (not page.hasSingleActionMethod() or unit.hasSelectionMethod())]
 		[if (unit.oclIsKindOf(EditUnit))]
 /**
- * @var 
+ * @var $[unit.oclAsType(EditUnit).formName()/]
  */
 private $[unit.oclAsType(EditUnit).formName()/];
 
 		[elseif (unit.oclIsKindOf(CollectionUnit))]
 		[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 /**
- * @var [if (unit.oclAsType(CollectionUnit).hasPagination)]Paginator[else]ArrayCollection[/if]
+ * @var [if (unit.oclAsType(CollectionUnit).hasPagination)]Paginator[else]ArrayCollection[/if] $[unit.instanceName()/]
  */
 private [if (unit.oclAsType(CollectionUnit).hasPagination)]Paginator[else]ArrayCollection[/if] $[unit.instanceName()/];
 
 			[if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
 /**
- * @var [collectionUnit.containingType.modelClassName()/]
+ * @var [collectionUnit.containingType.modelClassName()/] $[collectionUnit.containerInstanceName()/]
  */
 private [collectionUnit.containingType.modelClassName()/] $[collectionUnit.containerInstanceName()/];
 
 			[/if]
 			[if (not collectionUnit.inlineSelectCode() and collectionUnit.hasPagination)]
 /**
- * @var int
+ * @var int $[collectionUnit.pageNumberName()/]
  */
 private int $[collectionUnit.pageNumberName()/];
 
 				[if (collectionUnit.maximumPaginationSize > 0)]
 /**
- * @var int
+ * @var int $[collectionUnit.pageSizeName()/]
  */
 private int $[collectionUnit.pageSizeName()/];
 
@@ -275,7 +275,7 @@ private int $[collectionUnit.pageSizeName()/];
 		[/let]
 		[else]
 /**
- * @var [unit.modelClassName()/]
+ * @var [unit.modelClassName()/] $[unit.instanceName()/]
  */
 private [unit.modelClassName()/] $[unit.instanceName()/];
 
@@ -283,7 +283,7 @@ private [unit.modelClassName()/] $[unit.instanceName()/];
 	[/if]
 [/for]
 /**
- * @var TranslatorInterface
+ * @var TranslatorInterface $translationService
  */
 private TranslatorInterface $translationService;
 [/template]
