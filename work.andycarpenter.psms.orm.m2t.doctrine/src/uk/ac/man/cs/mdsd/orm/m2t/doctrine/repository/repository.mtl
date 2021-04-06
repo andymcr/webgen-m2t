@@ -345,18 +345,20 @@ public function flush(): void
 /**
  *
  *
- * @return array<int, [selection.definedBy.serves.modelClassName()/]>
+ * @return array<int, [selection.definedBy.serves.modelClassName()/]>[if (selection.hasPaginationSupport)]
+|Paginator<[selection.definedBy.serves.modelClassName()/]>[/if]
  */
-public function [selection.methodName/](): array
+public function [selection.methodName/]([if (selection.hasPaginationSupport)]
+[selection.limitFormals()/][/if])
 {
 [if (selection.filters->notEmpty())]
     $query = $this->[selection.builderMethodName()/]()->getQuery();
 [else]
-    [selection.builderCode(false)/]
+    [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
 [/if]
 
-    [selection.queryResult(false)/]
+    [selection.queryResult()/]
 }
 
 [if (selection.filters->notEmpty())]
@@ -633,10 +635,6 @@ $[parameter.name/][/for]
 [/template]
 
 [template private builderCode(selection : Selection) post(trim())]
-[selection.builderCode(true)/]
-[/template]
-
-[template private builderCode(selection : Selection, paginated : Boolean) post(trim())]
 $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
 [if (selection.fields->notEmpty())]
 [selection.fields()/]
@@ -650,7 +648,7 @@ $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectNam
 [if (selection.ordering->notEmpty())]
 [selection.orderBy()/]
 [/if]
-[if (selection.hasPaginationSupport and paginated)]
+[if (selection.hasPaginationSupport)]
 if ($limit > 0) {
     $queryBuilder->setFirstResult($offset);
     $queryBuilder->setMaxResults($limit);
@@ -752,13 +750,9 @@ $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routePara
 [/template]
 
 [template private queryResult(selection : Selection) post(trim())]
-[selection.queryResult(true)/]
-[/template]
-
-[template private queryResult(selection : Selection, paginated : Boolean) post(trim())]
 [if (selection.limit = 1)]
 return $query->getOneOrNullResult();
-[elseif (selection.hasPaginationSupport and paginated)]
+[elseif (selection.hasPaginationSupport)]
 if ($limit > 0)
     return new Paginator($query[if (selection.definedBy.serves.primaryKeys->size() > 1)], false[/if]);
 else
