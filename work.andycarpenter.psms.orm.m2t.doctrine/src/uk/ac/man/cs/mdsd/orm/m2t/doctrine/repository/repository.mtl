@@ -7,6 +7,7 @@
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constant/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::types/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::uriRoutes/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
 
@@ -45,6 +46,7 @@ use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 [if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 [/if]
 [if (repository.selections->notEmpty())]
@@ -65,6 +67,9 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 [/if]
 
 
+/**
+ * @extends [repository.baseRepositoryClassName()/]<[repository.serves.modelClassName()/]>
+ */
 class [repository.className()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsResetPasswordInterface)]
  implements ResetPasswordRequestRepositoryInterface[/if]
 
@@ -79,6 +84,9 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
 
 [/for]
 [if (repository.hasCurrentUser())]
+    /**
+     * @var Security $security
+     */
     private $security;
 
 [/if]
@@ -120,6 +128,13 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
     [repository.findMethod()/]
 
 [/if]
+[if (not repository.findAll.oclIsUndefined())]
+    [repository.findAll.findAllMethod()/]
+
+[elseif (repository.selections->select(s | s.name.equalsIgnoreCase('all'))->notEmpty())]
+    [repository.selections->any(s | s.name.equalsIgnoreCase('all')).findAllMethod()/]
+
+[/if]
 [if (repository.serves.attributes->select(a | not a.hasSlugFields)->notEmpty() and not repository.serves.implementsResetPasswordInterface)]
     [repository.createMethod()/]
 
@@ -132,7 +147,7 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
     [repository.flushMethod()/]
 
 [/if]
-[for (selection : Selection | repository.selections)]
+[for (selection : Selection | repository.selections->select(s | not s.name.equalsIgnoreCase('all')))]
     [selection.selectionMethod()/]
 
 [/for]
@@ -143,6 +158,9 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
 [template private userInterfaceMethods(repository : Repository) post(trim())]
 /**
  * Used to upgrade (rehash) the user's password automatically over time.
+ *
+ * @param UserInterface $user
+ * @param string $newEncodedPassword
  */
 public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
 {
@@ -156,6 +174,15 @@ public function upgradePassword(UserInterface $user, string $newEncodedPassword)
 [/template]
 
 [template private resetPasswordMethods(repository : Repository) post(trim())]
+/**
+ *
+ * @param object $user
+ * @param \DateTimeInterface $expiresAt
+ * @param string $selector
+ * @param string $hashedToken
+ *
+ * @return ResetPasswordRequestInterface
+ */
 public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
 {
     return new [repository.serves.modelClassName()/]($user, $expiresAt, $selector, $hashedToken);
@@ -164,6 +191,12 @@ public function createResetPasswordRequest(object $user, \DateTimeInterface $exp
 
 [template private findMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
+/**
+ *
+ [entity.documentParameters()/]
+ *
+ * @return [repository.serves.modelClassName()/]|null
+ */
 public function [repository.serves.findMethodName()/]([entity.routeParameters()/]): ?[repository.serves.modelClassName()/]
 {
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
@@ -190,7 +223,13 @@ public function [repository.serves.findMethodName()/]([entity.routeParameters()/
 
 [template private routeParameters(routingType : Entity) post(trim())]
 [for (key : Attribute | routingType.uriPathKeys()) separator (', ')]
-$[key.routeParameterName(routingType)/][/for]
+[key.implementationType()/] $[key.routeParameterName(routingType)/][/for]
+[/template]
+
+[template private documentParameters(routingType : Entity) post(trim())]
+[for (key : Attribute | routingType.uriPathKeys())]
+* @param [key.implementationType()/] $[key.routeParameterName(routingType)/]
+[/for]
 [/template]
 
 [template private containerJoin(entity : Entity) post(trim())]
@@ -221,10 +260,17 @@ $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]
 
 [template private createMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
-public function create([for (attribute : Attribute | entity.attributes->select(a | not a.hasSlugFields and a.isSingleton)) separator(', ')]$[attribute.instanceName()/] = null[/for], $flush = false): [repository.serves.modelClassName()/]
+/**
+ *
+ [entity.documentCreateParameters()/]
+ * @param bool $flush
+ *
+ * @return [repository.serves.modelClassName()/]
+ */
+public function create([entity.createParameters()/], $flush = false): [repository.serves.modelClassName()/]
 {
     $new = new [entity.modelClassName()/]();
-[for (attribute : Attribute | entity.attributes->select(a | not a.hasSlugFields and a.isSingleton))]
+[for (attribute : Attribute | entity.createFeatures())]
     $new->set[attribute.modelPropertyName().toUpperFirst()/]($[attribute.instanceName()/]);
 [/for]
     $this->save($new, $flush);
@@ -233,8 +279,29 @@ public function create([for (attribute : Attribute | entity.attributes->select(a
 [/let]
 [/template]
 
+[query private createFeatures(entity : Entity) : OrderedSet(Attribute)	
+	= entity.attributes
+		->select(a | not a.hasSlugFields and a.isSingleton and not a.isResourceFeature)
+/]
+
+[template private createParameters(entity : Entity) post(trim())]
+[for (attribute : Attribute | entity.createFeatures()) separator(', ')]
+[attribute.implementationType()/] $[attribute.instanceName()/][if (not attribute.isRequired)] = null[/if][/for]
+[/template]
+
+[template private documentCreateParameters(entity : Entity) post(trim())]
+[for (attribute : Attribute | entity.createFeatures())]
+* @param [attribute.implementationType()/][if (not attribute.isRequired)]|null[/if] $[attribute.instanceName()/]
+[/for]
+[/template]
+
 [template private removeMethod(repository : Repository) post(trim())]
-public function remove($entity, $flush = false): void
+/**
+ *
+ * @param [repository.serves.modelClassName()/] $entity
+ * @param bool $flush
+ */
+public function remove([repository.serves.modelClassName()/] $entity, bool $flush = false): void
 {
     $this->_em->remove($entity);
     if ($flush)
@@ -245,7 +312,12 @@ public function remove($entity, $flush = false): void
 [/template]
 
 [template private saveMethod(repository : Repository) post(trim())]
-public function save($entity, $flush = false): void
+/**
+ *
+ * @param [repository.serves.modelClassName()/] $entity
+ * @param bool $flush
+ */
+public function save([repository.serves.modelClassName()/] $entity, bool $flush = false): void
 {
     $this->_em->persist($entity);
     if ($flush)
@@ -256,17 +328,52 @@ public function save($entity, $flush = false): void
 [/template]
 
 [template private flushMethod(repository : Repository) post(trim())]
+/**
+ *
+ */
 public function flush(): void
 {
     $this->_em->flush();
 }
 [/template]
 
+[template private findAllMethod(selection : Selection) post(trim())]
+[if (selection.filters->notEmpty())]
+[selection.builderMethod()/]
+
+[/if]
+/**
+ *
+ *
+ * @return array<int, [selection.definedBy.serves.modelClassName()/]>
+ */
+public function [selection.methodName/](): array
+{
+[if (selection.filters->notEmpty())]
+    $query = $this->[selection.builderMethodName()/]()->getQuery();
+[else]
+    [selection.builderCode(false)/]
+    $query = $queryBuilder->getQuery();
+[/if]
+
+    [selection.queryResult(false)/]
+}
+
+[if (selection.filters->notEmpty())]
+[selection.filterMethods()/]
+
+[/if]
+[/template]
+
 [template private selectionMethod(selection : Selection)
 	? (selection.filters->isEmpty()) post(trim())]
-public function [selection.methodName/]([selection.formals()/])[if (selection.limit = 1)]
-: ?[selection.definedBy.serves.modelClassName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
-
+/**
+ *
+ [selection.documentParameters()/]
+ *
+ * @return [selection.documentReturnType()/]
+ */
+public function [selection.methodName/]([selection.formals()/])[selection.returnType()/]
 {
     [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
@@ -280,23 +387,19 @@ public function [selection.methodName/]([selection.formals()/])[if (selection.li
 
 [template private selectionMethod(selection : Selection)
 	? (selection.filters->notEmpty()) post(trim())]
-private function [selection.builderMethodName()/]([selection.formals()/]): QueryBuilder
-{
-    [selection.builderCode()/]
-    return $queryBuilder;
-}
+[selection.builderMethod()/]
 
 [if (selection.selectPath->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
-private function [selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals)]
-, [selection.selectionActuals()/][/if]) : void
-{
-    [selection.queryParametersCode()/]
-}
+[selection.parametersMethod()/]
 
 [/if]
-public function [selection.methodName/]([selection.formals()/])[if (selection.limit = 1)]
-: ?[selection.definedBy.serves.modelClassName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
-
+/**
+ *
+ [selection.documentParameters()/]
+ *
+ * @return [selection.documentReturnType()/]
+ */
+public function [selection.methodName/]([selection.formals()/])[selection.returnType()/]
 {
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
 [if (selection.selectPath->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
@@ -306,11 +409,48 @@ public function [selection.methodName/]([selection.formals()/])[if (selection.li
 
     [selection.queryResult()/]
 }
+
+[selection.filterMethods()/]
+[/template]
+
+[template private builderMethod(selection : Selection) post(trim())]
+/**
+ *
+ [selection.documentParameters()/]
+ *
+ * @return QueryBuilder
+ */
+private function [selection.builderMethodName()/]([selection.formals()/]): QueryBuilder
+{
+    [selection.builderCode()/]
+    return $queryBuilder;
+}
+[/template]
+
+[template private parametersMethod(selection : Selection) post(trim())]
+/**
+ *
+ * @param Query $query
+[for (key : Attribute | selection.uriPathKeys()) separator(', ')]
+ * @param [key.implementationType()/] $[key.routeParameterName(selection.selectionType)/]
+[/for]
+ */
+private function [selection.parametersMethodName()/](Query $query[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+, [selection.selectionActuals()/][/if]) : void
+{
+    [selection.queryParametersCode()/]
+}
+[/template]
+
+[template private filterMethods(selection : Selection) post(trim())]
 [for (filter : Filter | selection.filters)]
-
-public function [filter.methodName/]([filter.formals()/])[if (selection.limit = 1)]
-: ?[selection.definedBy.serves.modelClassName()/][elseif (not selection.hasPaginationSupport)]: array[/if]
-
+/**
+ *
+ [filter.documentParameters()/]
+ *
+ * @return [selection.documentReturnType()/]
+ */
+public function [filter.methodName/]([filter.formals()/])[selection.returnType()/]
 {
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
     $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
@@ -325,7 +465,7 @@ public function [filter.methodName/]([filter.formals()/])[if (selection.limit = 
 		[elseif (filter.condition.parameterUsedInLike(parameter, false))]
 			[if (parameter.dataType.oclIsUndefined())]
     $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
-			[elseif (parameter.dataType.isStringDataType)]
+			[elseif (parameter.dataType.isStringClassifier)]
     $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
 			[else]
     $query->setParameter('[parameter.name/]', $[parameter.name/]);
@@ -338,6 +478,67 @@ public function [filter.methodName/]([filter.formals()/])[if (selection.limit = 
     [selection.queryResult()/]
 }
 [/for]
+[/template]
+
+[template private returnType(selection : Selection) post(trim())]
+[if (selection.limit = 1)]
+: ?[selection.definedBy.serves.modelClassName()/]
+[elseif (selection.hasPaginationSupport)]
+
+[else]
+: array
+[/if]
+[/template]
+
+[template private documentReturnType(selection : Selection) post(trim())]
+[if (selection.limit = 1)]
+[selection.definedBy.serves.modelClassName()/]|null
+[elseif (selection.hasPaginationSupport)]
+array<int, [selection.definedBy.serves.modelClassName()/]>|Paginator<[selection.definedBy.serves.modelClassName()/]>
+[else]
+array<int, [selection.definedBy.serves.modelClassName()/]>
+[/if]
+[/template]
+
+[template private documentParameters(selection : Selection) post(trim())]
+[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+[selection.documentSelectionParameters()/]
+[/if]
+[if (selection.hasPaginationSupport)]
+[selection.documentPagination()/]
+[/if]
+[/template]
+
+[template private documentParameters(filter : Filter) post(trim())]
+[if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals)]
+[filter.selection.documentSelectionParameters()/]
+[/if]
+[if (filter.parameters->notEmpty())]
+[filter.documentFilterParameters()/]
+[/if]
+[if (filter.selection.hasPaginationSupport)]
+[filter.selection.documentPagination()/]
+[/if]
+[/template]
+
+[template private documentSelectionParameters(selection : Selection) post(trim())]
+[for (key : Attribute | selection.uriPathKeys())]
+* @param [key.implementationType()/] $[key.routeParameterName(selection.selectionType)/]
+[/for]
+[for (parameter : FormalParameter | selection.parameters)]
+* @param [parameter.implementationType()/] $[parameter.name/]
+[/for]
+[/template]
+
+[template private documentFilterParameters(filter : Filter) post(trim())]
+[for (parameter : FormalParameter | filter.parameters)]
+* @param [parameter.implementationType()/] $[parameter.name/][if (parameter.description <> '')] [parameter.description/][/if]
+[/for]
+[/template]
+
+[template private documentPagination(selection : Selection) post(trim())]
+* @param int $offset
+* @param int $limit
 [/template]
 
 [template private formals(selection : Selection) post(trim())]
@@ -368,7 +569,7 @@ $[key.routeParameterName(selection.selectionType)/][/for]
 [if (selection.uriPathKeys()->notEmpty() and selection.hasFormals)]
 , [/if]
 [for (parameter : FormalParameter | selection.parameters) separator(', ')]
-$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
+[parameter.implementationType()/] $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
  = [parameter.defaultValue/][/if][/for]
 [/template]
 
@@ -377,16 +578,16 @@ $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
 [/template]
 
 [template private limitFormals(service : Repository, limit : Integer) post(trim())]
-$offset = 0, $limit = [limit/]
+int $offset = 0, int $limit = [limit/]
 [/template]
 
 [template private criteriaLimitFormals(selection : Selection) post(trim())]
-$offset = 0, $limit = 0
+int $offset = 0, int $limit = 0
 [/template]
 
 [template private filterFormals(filter : Filter) post(trim())]
 [for (parameter : FormalParameter | filter.parameters) separator(', ')]
-$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
+String $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
  = [parameter.defaultValue/][/if][/for]
 [/template]
 
@@ -432,6 +633,10 @@ $[parameter.name/][/for]
 [/template]
 
 [template private builderCode(selection : Selection) post(trim())]
+[selection.builderCode(true)/]
+[/template]
+
+[template private builderCode(selection : Selection, paginated : Boolean) post(trim())]
 $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
 [if (selection.fields->notEmpty())]
 [selection.fields()/]
@@ -445,7 +650,7 @@ $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectNam
 [if (selection.ordering->notEmpty())]
 [selection.orderBy()/]
 [/if]
-[if (selection.hasPaginationSupport)]
+[if (selection.hasPaginationSupport and paginated)]
 if ($limit > 0) {
     $queryBuilder->setFirstResult($offset);
     $queryBuilder->setMaxResults($limit);
@@ -547,9 +752,13 @@ $query->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routePara
 [/template]
 
 [template private queryResult(selection : Selection) post(trim())]
+[selection.queryResult(true)/]
+[/template]
+
+[template private queryResult(selection : Selection, paginated : Boolean) post(trim())]
 [if (selection.limit = 1)]
 return $query->getOneOrNullResult();
-[elseif (selection.hasPaginationSupport)]
+[elseif (selection.hasPaginationSupport and paginated)]
 if ($limit > 0)
     return new Paginator($query[if (selection.definedBy.serves.primaryKeys->size() > 1)], false[/if]);
 else

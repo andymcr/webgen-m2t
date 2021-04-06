@@ -1,0 +1,81 @@
+[comment encoding = UTF-8 /]
+[module types(
+	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+
+
+[query public implementationType(feature : Feature) : String
+	= if not feature.isSingleton then
+			if feature.oclIsKindOf(Association) then
+				let association : Association = feature.oclAsType(Association)
+					in if association.targetType.repository.findAll.oclIsUndefined() then
+							'Collection'
+						else
+							let allSelection : Selection = association.targetType.repository.findAll
+								in if allSelection.limit > 0 then
+										'object'
+									else
+										'Collection'
+									endif
+						endif
+			else
+				'array'
+			endif
+		else if feature.isDateFeature then
+			'\\DateTimeInterface'
+		else if feature.oclIsKindOf(SingletonAttribute) then
+			feature.oclAsType(SingletonAttribute).ormType
+		else if feature.oclIsKindOf(Association) then
+			if feature.partOf.implementsResetPasswordInterface then
+				'object'
+			else
+				feature.oclAsType(Association).modelClassName()
+			endif
+		else
+			''
+		endif endif endif endif
+/]
+
+[query public documentationType(feature : Feature) : String
+	= if feature.isSingleton then
+			feature.implementationType()
+		else
+			feature.implementationType()
+				.concat('<int, ').concat(feature.elementType()).concat('>')
+		endif
+/]
+
+[query public elementType(feature : Feature) : String
+	= if feature.isSingleton then
+			''
+		else
+			if feature.oclIsKindOf(CollectionElement) then
+				feature.oclAsType(CollectionElement).collectionType.ormType
+			else if feature.oclIsKindOf(CollectionAssociation) then
+				feature.oclAsType(CollectionAssociation).targetType.modelClassName()
+			else
+				''
+			endif endif
+		endif
+/]
+
+[query public implementationType(parameter : FormalParameter) : String
+	= if parameter.dataType.oclIsUndefined() then
+			''
+		else
+			parameter.dataType.implementationType()
+		endif
+/]
+
+[query private implementationType(dataType : Classifier) : String
+	= if dataType.oclIsUndefined() then
+			''
+		else if dataType.oclIsKindOf(DataType) then
+			dataType.oclAsType(DataType).ormType
+		else if dataType.oclIsKindOf(Entity) then
+			dataType.oclAsType(Entity).modelClassName()
+		else
+			''
+		endif endif endif
+/]
