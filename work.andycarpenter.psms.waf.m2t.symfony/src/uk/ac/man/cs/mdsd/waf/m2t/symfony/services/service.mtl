@@ -6,10 +6,23 @@
 	'http://andycarpenter.work/psm/service')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constant/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::queryDoctrine/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::types/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::names/]
+
+
+[query private entitiesUsed(service : Service) : Sequence(Entity)
+	= service.operations
+		->collect(o | o.parameters)
+		->select(p | not p.dataType.oclIsUndefined())
+		->select(p | p.dataType.oclIsKindOf(Entity))
+		->collect(p | p.dataType).oclAsType(Entity)
+		->asSet()
+		->asSequence()
+		->sortedBy(e | e.name)
+/]
 
 
 [template public service(service : Service)]
@@ -17,15 +30,15 @@
 <?php
 namespace [service.serviceNamespace()/];
 
+[for (entity : Entity | service.entitiesUsed())]
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+[/for]
 [for (repository : Repository | service.requires)]
 use [repository.repositoryNamespace()/]\[repository.className()/];
 [/for]
 [for (service : Service | service.uses)]
 use [service.serviceNamespace()/]\[service.className()/];
 [/for]
-[if (service.hasFileOperations)]
-use Symfony\Component\HttpFoundation\File\File;
-[/if]
 // [protected ('use')]
 // [/protected]
 
@@ -43,10 +56,16 @@ class [service.className()/]
 // [/protected]
 
 [for (repository : Repository | service.requires)]
-    private $[repository.instanceName()/];
+    /**
+     * @var [repository.className()/] $[repository.instanceName()/]
+     */
+    private [repository.className()/] $[repository.instanceName()/];
 
 [/for]
 [for (service : Service | service.uses)]
+    /**
+     * @var [service.className()/] $[service.instanceName()/]
+     */
     private $[service.instanceName()/];
 
 [/for]
@@ -96,8 +115,14 @@ class [service.className()/]
 [/template]
 
 [template private businessOperation(operation : BusinessOperation) post(trim())]
+/**
+ *
+[for (parameter : FormalParameter | operation.parameters)]
+ * @param [parameter.implementationType()/] $[parameter.name/][if (parameter.description <> '')] [parameter.description/][/if]
+[/for]
+ */
 public function [operation.methodName()/]([operation.formalParameters()/]): [if (operation.resultType = OperationResultTypes::File)]
-File[else]void[/if]
+String[else]void[/if]
 
 {
     // [protected ('operation.'.concat(operation.methodName()))]
@@ -107,5 +132,5 @@ File[else]void[/if]
 
 [template private formalParameters(operation : BusinessOperation) post(trim())]
 [for (parameter : FormalParameter | operation.parameters) separator(', ')]
-$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())] = [parameter.defaultValue/][/if][/for]
+[parameter.implementationType()/] $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())] = [parameter.defaultValue/][/if][/for]
 [/template]
