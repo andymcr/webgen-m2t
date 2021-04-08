@@ -74,7 +74,7 @@ class [unit.typeClassName()/] extends AbstractType
 [/if]
     /**
      *
-     * @param FormBuilderInterface<AbstractType> $builder
+     * @param FormBuilderInterface<string> $builder
      * @param array<string, mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
