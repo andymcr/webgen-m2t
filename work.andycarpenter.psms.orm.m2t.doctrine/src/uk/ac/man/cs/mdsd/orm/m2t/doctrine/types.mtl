@@ -23,6 +23,8 @@
 				else
 					feature.dataType.ormType()
 				endif
+			else if feature.isLocationFeature then
+				'string'
 			else if feature.oclIsKindOf(Association) then
 				if feature.partOf.implementsResetPasswordInterface then
 					'object'
@@ -31,7 +33,7 @@
 				endif
 			else
 				''
-			endif endif endif endif
+			endif endif endif endif endif
 		else
 			if feature.oclIsTypeOf(Association) then
 				'integer'
@@ -61,6 +63,8 @@
 				else
 					feature.dataType.implementationType()
 				endif
+			else if feature.isLocationFeature then
+				'string'
 			else if feature.oclIsKindOf(Association) then
 				if feature.partOf.implementsResetPasswordInterface then
 					'object'
@@ -69,7 +73,7 @@
 				endif
 			else
 				''
-			endif endif endif endif
+			endif endif endif endif endif
 		else
 			if feature.oclIsKindOf(Association) then
 				let association : Association = feature.oclAsType(Association)
