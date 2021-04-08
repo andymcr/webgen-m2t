@@ -124,6 +124,10 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
     [repository.resetPasswordMethods()/]
 
 [/if]
+[if (repository.serves.attributes->select(a | not a.hasSlugFields)->notEmpty() and not repository.serves.implementsResetPasswordInterface)]
+    [repository.createMethod()/]
+
+[/if]
 [if (repository.findOne.oclIsUndefined() and repository.serves.hasRouteParameters())]
     [repository.findMethod()/]
 
@@ -135,10 +139,10 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
     [repository.selections->any(s | s.name.equalsIgnoreCase('all')).findAllMethod()/]
 
 [/if]
-[if (repository.serves.attributes->select(a | not a.hasSlugFields)->notEmpty() and not repository.serves.implementsResetPasswordInterface)]
-    [repository.createMethod()/]
+[for (selection : Selection | repository.selections->select(s | not s.name.equalsIgnoreCase('all')))]
+    [selection.selectionMethod()/]
 
-[/if]
+[/for]
 [if (not repository.serves.implementsResetPasswordInterface)]
     [repository.removeMethod()/]
 
@@ -147,10 +151,6 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
     [repository.flushMethod()/]
 
 [/if]
-[for (selection : Selection | repository.selections->select(s | not s.name.equalsIgnoreCase('all')))]
-    [selection.selectionMethod()/]
-
-[/for]
 }
 [/file]
 [/template]
@@ -462,19 +462,23 @@ public function [filter.methodName/]([filter.formals()/])[selection.returnType()
 , [selection.selectionActuals()/][/if]);
 	[/if]
 	[for (parameter : FormalParameter | filter.parameters)]
+    if (is_null($[parameter.name/]) || strcmp(trim($[parameter.name/]), '') === 0) {
+        $query->setParameter('[parameter.name/]', '%');
+    } else {
 		[if (filter.condition.oclIsUndefined())]
-    $query->setParameter('[parameter.name/]', $[parameter.name/]);
+        $query->setParameter('[parameter.name/]', $[parameter.name/]);
 		[elseif (filter.condition.parameterUsedInLike(parameter, false))]
 			[if (parameter.dataType.oclIsUndefined())]
-    $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
+        $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
 			[elseif (parameter.dataType.isStringClassifier)]
-    $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
+        $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
 			[else]
-    $query->setParameter('[parameter.name/]', $[parameter.name/]);
+        $query->setParameter('[parameter.name/]', $[parameter.name/]);
 			[/if]	
 	[else]
-    $query->setParameter('[parameter.name/]', $[parameter.name/]);
+        $query->setParameter('[parameter.name/]', $[parameter.name/]);
 		[/if]
+    }
 	[/for]
 
     [selection.queryResult()/]
@@ -534,7 +538,7 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 
 [template private documentFilterParameters(filter : Filter) post(trim())]
 [for (parameter : FormalParameter | filter.parameters)]
-* @param [parameter.implementationType()/] $[parameter.name/][if (parameter.description <> '')] [parameter.description/][/if]
+* @param [parameter.implementationType()/]|null $[parameter.name/][if (parameter.description <> '')] [parameter.description/][/if]
 [/for]
 [/template]
 
@@ -589,7 +593,7 @@ int $offset = 0, int $limit = 0
 
 [template private filterFormals(filter : Filter) post(trim())]
 [for (parameter : FormalParameter | filter.parameters) separator(', ')]
-String $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
+?string $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
  = [parameter.defaultValue/][/if][/for]
 [/template]
 
