@@ -267,7 +267,11 @@
 /]
 
 [query public containerParameter(unit : DynamicUnit) : String
-	= unit.containerInstanceName()
+	= if unit.containingTypeLoadedElsewhere() then
+			unit.containingTypeLoadedBy().instanceName()
+		else
+			unit.containerInstanceName()
+		endif
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
