@@ -41,7 +41,7 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.selection.oclIsUndefined())]
 [detailsUnit.instanceVariable()/] = [detailsUnit.loadInstance()/];
-if (![detailsUnit.instanceVariable()/]) {
+if (is_null([detailsUnit.instanceVariable()/])) {
     throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
 }
 [else]
