@@ -156,7 +156,7 @@ public function [unit.actionName()/]Request(Request $request, MailerInterface $m
     [forgottenUnit.formVariable()/]->handleRequest($request);
     if ([forgottenUnit.formVariable()/]->isSubmitted() && [forgottenUnit.formVariable()/]->isValid()) {
 [if (forgottenUnit.hasCaptcha)]
-        if ($recaptcha3Validator->getLastResponse() !== null) {
+        if (!is_null($recaptcha3Validator->getLastResponse())) {
             $score = $recaptcha3Validator->getLastResponse()->getScore();
             $logger->error("Score ".$score);
         }
