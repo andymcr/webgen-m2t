@@ -97,8 +97,12 @@ endif
 	= if feature.isSingleton then
 			feature.implementationType()
 		else
-			feature.implementationType()
-				.concat('<int, ').concat(feature.elementType()).concat('>&Selectable<int, ').concat(feature.elementType()).concat('>')
+			if feature.implementationType() = 'array' then
+				feature.implementationType().concat('<int, ').concat(feature.elementType()).concat('>')
+			else
+				feature.implementationType()
+					.concat('<int, ').concat(feature.elementType()).concat('>&Selectable<int, ').concat(feature.elementType()).concat('>')
+			endif
 		endif
 /]
 
