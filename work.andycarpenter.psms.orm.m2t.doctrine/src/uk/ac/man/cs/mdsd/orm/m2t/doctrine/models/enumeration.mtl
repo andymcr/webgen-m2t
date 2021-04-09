@@ -27,7 +27,7 @@ class [type.modelClassName()/]
      */
 	public static function values(): array
 	{
-		$values = array();
+		$values = ['['/][']'/];
 [for (literal : EnumerationLiteral | type.enumerations)]
 	[if (supportTranslation and false)]
 		$values['['/]'[type.id()/].labels.[literal.id()/]'[']'/] = self::[literal.name/];

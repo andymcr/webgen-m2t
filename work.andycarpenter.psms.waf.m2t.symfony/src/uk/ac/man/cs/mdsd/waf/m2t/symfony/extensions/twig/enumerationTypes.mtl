@@ -24,11 +24,11 @@ class EnumerationTypes extends AbstractExtension
 
     public function getFilters()
     {
-        return array(
+        return ['['/]
 [for (enumerationType : EnumerationType | model.enumerationTypes)]
-            '[enumerationType.filterName()/]' => new TwigFilter('[enumerationType.filterName()/]', array('[enumerationType.modelsNamespace()/]\[enumerationType.modelClassName()/]', 'value')),
+            '[enumerationType.filterName()/]' => new TwigFilter('[enumerationType.filterName()/]', ['['/]'[enumerationType.modelsNamespace()/]\[enumerationType.modelClassName()/]', 'value'[']'/]),
 [/for]
-        );
+        [']'/];
     }
 }
 [/file]

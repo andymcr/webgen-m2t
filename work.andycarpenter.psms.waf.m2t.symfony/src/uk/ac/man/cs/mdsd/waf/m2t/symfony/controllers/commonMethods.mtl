@@ -235,15 +235,15 @@ $this->redirectToRoute('[routeName/]'[if (page.hasFiltersOrPagination())]
 , [if (routeParameters->notEmpty())]
 array_merge(
     $request->query->all(),
-    array(
+    ['['/]
         [page.routeActualParameters(routeParameters, sourceParameters)/]
-))[else]
+[']'/])[else]
 $request->query->all()[/if]
 [else]
 	[if (routeParameters->notEmpty())]
-, array(
+, ['['/]
     [page.routeActualParameters(routeParameters, sourceParameters)/]
-)[/if]
+[']'/][/if]
 [/if])
 [/template]
 
