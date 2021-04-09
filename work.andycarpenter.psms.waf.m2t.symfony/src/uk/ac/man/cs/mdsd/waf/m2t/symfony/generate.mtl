@@ -63,7 +63,7 @@
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 
 [if (model.hasAPI)]
-[comment model.api.resources.controller(model)/]
+[model.api.resources.controller(model)/]
 [/if]
 
 [model.navigation.navigation(model.siteProperties)/]

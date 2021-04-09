@@ -115,9 +115,9 @@ $request[if (unit.displayedOn.hasRouteParameters())]
 [action.parentUnit.displayedOn.routeParameterList(action.routeParameters(), formals)/]
 [/template]
 
-[template public routeParameterList(resource : Resource) post(trim())]
+[template public routeParameterList(resource : Resource, formals : Boolean) post(trim())]
 [for (key : Attribute | resource.routeParameters()) separator (', ')]
-$[key.routeParameterName(resource)/][/for]
+[if (formals)]string [/if]$[key.routeParameterName(resource)/][/for]
 [/template]
 
 

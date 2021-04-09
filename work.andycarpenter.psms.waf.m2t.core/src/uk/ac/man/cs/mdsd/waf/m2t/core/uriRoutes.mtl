@@ -46,6 +46,11 @@
 /]
 
 
+[query public uriPathKeys(resource : Resource) : Sequence(Attribute)
+	= resource.repository.serves.uriPathKeys()
+/]
+
+
 [query public hasRouteParameters(page : Page) : Boolean
 	= page.routeParameters()->notEmpty()
 /]
@@ -144,7 +149,7 @@
 /]
 
 [query public routeParameters(resource : Resource) : Sequence(Attribute)
-	= Sequence{}
+	= resource.uriPathKeys()
 /]
 
 
