@@ -98,7 +98,7 @@ endif
 			feature.implementationType()
 		else
 			feature.implementationType()
-				.concat('<int, ').concat(feature.elementType()).concat('>')
+				.concat('<int, ').concat(feature.elementType()).concat('>&Selectable<int, ').concat(feature.elementType()).concat('>')
 		endif
 /]
 
