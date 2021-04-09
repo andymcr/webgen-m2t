@@ -50,7 +50,7 @@ namespace [entity.modelsNamespace()/];
 [/for]
 [if (entity.isContained)]
 	[for (attribute : Attribute | entity.containerUniqueAttributes)]
- * @AppAssert\ContainerUnique(uniqueProperty="[attribute.modelPropertyName()/]", containingProperty="[entity.containingAssociation.opposite.modelPropertyName()/]")
+ * @AppAssert\CollectionUnique(uniqueProperty="[attribute.modelPropertyName()/]", containerProperty="[entity.containingAssociation.modelPropertyName()/]", collectionProperty="[entity.containingAssociation.opposite.modelPropertyName()/]")
 	[/for]
 [/if]
 [if (entity.hasResourceAttributes)]
@@ -126,6 +126,7 @@ use Doctrine\ORM\Mapping as ORM;
 [if (entity.hasCollectionAssociations)]
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Selectable;
 [/if]
 [if (not entity.implementsResetPasswordInterface
 		and (entity.partOf.timestampCreation
@@ -193,16 +194,16 @@ protected $[entity.autoKeyName/];
 [comment TODO sortout location features /]
 [if (not feature.isLocationFeature and not feature.isResourceFeature)]
 /**
-  [feature.ormAnnotation()/]
+ [feature.ormAnnotation()/]
 	[if (feature.isValidated)]
-  [feature.validationAnnotation()/]
+ [feature.validationAnnotation()/]
 	[/if]
 	[if (feature.hasSerializationControl)]
-  [feature.serializationAnnotation()/]
+ [feature.serializationAnnotation()/]
 	[/if]
-  *
-  * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
-  */
+ *
+ * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
+ */
 protected [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/];
 
 [elseif (feature.isResourceFeature)]
@@ -604,7 +605,11 @@ public function [attribute.setMethodName()/]([if (not feature.isRequired)]?[/if]
 [if (attribute.oclIsTypeOf(DataTypeAttribute))]
 [let element : DataTypeAttribute = attribute.oclAsType(DataTypeAttribute)]
 	[if (element.caseInsensitive)]
+		[if (element.isRequired)]
 $this->[element.modelPropertyName()/] = strtolower($[element.instanceName()/]);
+		[else]
+$this->[element.modelPropertyName()/] = is_null($[element.instanceName()/]) ? $[element.instanceName()/] : strtolower($[element.instanceName()/]);
+		[/if]
 	[elseif (element.encrypt and not element.name.equalsIgnoreCase('password'))]
 //				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
 	[elseif (element.isEnumerationFeature or element.isBooleanFeature)]
