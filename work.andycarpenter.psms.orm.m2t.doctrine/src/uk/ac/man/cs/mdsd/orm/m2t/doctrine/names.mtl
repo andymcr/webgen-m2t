@@ -14,8 +14,8 @@
 	= 'ServiceEntityRepository'
 /]
 
-[query public containerUniqueClassName(model : OrmModel) : String
-	= 'ContainerUnique'
+[query public collectionUniqueClassName(model : OrmModel) : String
+	= 'CollectionUnique'
 /]
 
 [query public validatorClassNamePostfix(model : OrmModel) : String

@@ -4,8 +4,8 @@
 	'http://andycarpenter.work/psm/Base',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::config::stofDoctrineExtensions/]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUnique/]
-[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::containerUniqueValidator/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::collectionUnique/]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::constraints::collectionUniqueValidator/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::entity/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::models::enumeration/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::repository::repository/]
@@ -19,8 +19,8 @@
 [model.entities.model()/]
 [comment model.entities.normalizer()/]
 
-[model.containerUnique()/]
-[model.containerUniqueValidator()/]
+[model.collectionUnique()/]
+[model.collectionUniqueValidator()/]
 
 [model.repositories.repository()/]
 [/template]
