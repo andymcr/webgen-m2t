@@ -38,8 +38,11 @@
 			->select(u | not u.oclIsTypeOf(UpdateUnit) or page.units->size() > 1)
 			->collect(u | u.contentType)
 		->union(page.collectionUnits
+			->select(u | u.hasPagination and (not page.hasSingleActionMethod() or u.hasSelectionMethod()))
+			->collect(u | u.contentType))
+		->union(page.collectionUnits
 			->select(u | u.isContained and not u.containingTypeLoadedElsewhere()
-						and (not page.hasSingleActionMethod() or u.hasSelectionMethod()))
+								and (not page.hasSingleActionMethod() or u.hasSelectionMethod()))
 			->collect(u | u.containingType))
 		->asSet()->asSequence()
 /]
@@ -144,13 +147,11 @@ use [service.serviceNamespace()/]\[service.className()/];
 [if (page.hasRegistrationUnits)]
 use App\Security\EmailVerifier;
 [/if]
-[if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty()
-	or (not page.hasSingleActionMethod() and page.hasCollectionUnits 
-			and page.collectionUnits->select(u | not u.hasPagination)->notEmpty()))]
+[if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 [if (page.hasCollectionUnits)]
-	[if (page.collectionUnits->select(u | u.hasPagination and (not page.hasSingleActionMethod() or not u.inlineSelectCode()))->notEmpty())]
+	[if (page.collectionUnits->select(u | u.hasPagination)->notEmpty())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 	[/if]
 [/if]
@@ -161,6 +162,9 @@ use Psr\Log\LoggerInterface;
 [if (page.hasForgottenPasswordUnits)]
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 [/if]
+[if (page.hasEditUnits)]
+use Symfony\Component\Form\FormInterface;
+[/if]
 [if (page.hasSingleAuthorisationRole() or page.hasSecurityUnits)]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [/if]
@@ -168,11 +172,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
-[if (page.hasFileActions)]
-use Symfony\Component\HttpFoundation\File\File;
-[/if]
 [if (page.hasAutocompleteFields)]
 use Symfony\Component\HttpFoundation\JsonResponse;
+[/if]
+[if (page.hasFileActions)]
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
 [if (page.hasForgottenPasswordUnits)]
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -240,16 +244,17 @@ private [service.className()/] $[service.instanceName()/];
 	[if (not page.hasSingleActionMethod() or unit.hasSelectionMethod())]
 		[if (unit.oclIsKindOf(EditUnit))]
 /**
- * @var $[unit.oclAsType(EditUnit).formName()/]
+ * @var FormInterface<string> $[unit.oclAsType(EditUnit).formName()/]
  */
-private $[unit.oclAsType(EditUnit).formName()/];
+private FormInterface $[unit.oclAsType(EditUnit).formName()/];
 
 		[elseif (unit.oclIsKindOf(CollectionUnit))]
 		[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 /**
- * @var [if (unit.oclAsType(CollectionUnit).hasPagination)]Paginator[else]ArrayCollection[/if] $[unit.instanceName()/]
+ * @var array<int, [unit.modelClassName()/]>[if (unit.oclAsType(CollectionUnit).hasPagination)]
+|Paginator<[unit.modelClassName()/]>[/if] $[unit.instanceName()/]
  */
-private [if (unit.oclAsType(CollectionUnit).hasPagination)]Paginator[else]ArrayCollection[/if] $[unit.instanceName()/];
+private [if (not unit.oclAsType(CollectionUnit).hasPagination)]array [/if]$[unit.instanceName()/];
 
 			[if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
 /**
@@ -334,14 +339,14 @@ public function [page.actionName()/]([page.actionMethodFormals()/]): Response
 private function renderPage([if (page.hasFiltersOrPagination())]
 Request $request[if (page.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | page.routeParameters()) separator(', ')]
-$[key.routeParameterName(page.routeParameters())/][/for]): Response
+string $[key.routeParameterName(page.routeParameters())/][/for]): Response
 {
     [page.renderCore()/]
 }
 [/template]
 
 [template private renderCore(page : Page) post(trim())]
-$parameters = array();
+$parameters = ['['/][']'/];
 [page.templateParameters()/]
 [for (unit : ContentUnit | page.units)]
 [unit.templateParameters()/]
@@ -386,7 +391,7 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): R
 [/if]
  */
 public function [operationAction.actionName()/]([unit.actionMethodFormals()/]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
-Response[else]File[/if]
+Response[else]BinaryFileResponse[/if]
 {
 [if (operationAction.operation.resultType = OperationResultTypes::None)]
 [elseif (operationAction.operation.resultType = OperationResultTypes::File)]
@@ -416,7 +421,7 @@ public function [operationAction.actionName()/]([if (action.oclIsTypeOf(Instance
 [action.actionMethodFormals()/][elseif (action.oclIsTypeOf(ContainerOperationAction))]
 [action.actionMethodContainerFormals()/][else]
 [/if]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
-Response[else]File[/if]
+Response[else]BinaryFileResponse[/if]
 
 {
 [if (not operationAction.operation.oclIsUndefined())]
