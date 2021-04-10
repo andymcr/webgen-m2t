@@ -479,11 +479,7 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
 [/if]
 [for (feature : Feature | entity.features)]
 	[if (feature.hasDefaultValue)]
-		[if (feature.isDateFeature)]
-    $this->[feature.modelPropertyName()/] = new \DateTime([feature.defaultValue.defaultExpression()/]);
-		[else]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
-		[/if]
 	[/if]
 	[if (feature.oclIsKindOf(Attribute) and not feature.isSingleton)]
     $this->[feature.modelPropertyName()/] = Array();
