@@ -89,7 +89,7 @@ $request[if (unit.displayedOn.hasRouteParameters())]
 
 [template private routeParameterList(page : Page, parameters : Sequence(Attribute), sourceParameters : Sequence(Attribute), formals : Boolean) post(trim())]
 [for (key : Attribute | parameters) separator (', ')]
-[if (formals)]string [/if]$[key.routeParameterName(sourceParameters)/][/for]
+[if (formals)][key.implementationType()/] [/if]$[key.routeParameterName(sourceParameters)/][/for]
 [/template]
 
 [template public routeParameterList(unit : DynamicUnit, formals : Boolean) post(trim())]
