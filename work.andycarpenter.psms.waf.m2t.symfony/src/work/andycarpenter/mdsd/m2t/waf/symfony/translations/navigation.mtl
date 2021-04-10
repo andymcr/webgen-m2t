@@ -1,0 +1,50 @@
+[comment encoding = UTF-8 /]
+[module navigation(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+
+
+[template public navigationTranslations(navigation : Navigation)]
+[file (navigation.transDirectory().concat('/').concat('navigation.en').concat(navigation.xlfExtension()), false)]
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+ <file source-language="en" datatype="plaintext" original="file.ext">
+  <body>
+[for (menu : Menu | navigation.menus)]
+   [menu.translations()/]
+[/for]
+  </body>
+ </file>
+</xliff>
+[/file]
+[/template]
+
+[template private translations(menu : Menu) post(trim())]
+[for (entry : MenuEntry | menu.entries)]
+	[if (entry.oclIsTypeOf(SubmenuEntry))]
+	[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
+<trans-unit id="[submenu.displayLabelId()/]">
+ <source>[submenu.displayLabelId()/]</source>
+ <target>[submenu.displayLabel.validXML()/]</target>
+</trans-unit>
+[submenu.translations()/]
+	[/let]
+	[elseif (entry.oclIsTypeOf(ActionMenuEntry))]
+	[let menuEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+<trans-unit id="[menuEntry.displayLabelId()/]">
+ <source>[menuEntry.displayLabelId()/]</source>
+ <target>[menuEntry.displayLabel.validXML()/]</target>
+</trans-unit>
+	[/let]
+	[elseif (entry.oclIsTypeOf(EditStaticTextMenuEntry))]
+	[let menuEntry : EditStaticTextMenuEntry = entry.oclAsType(EditStaticTextMenuEntry)]
+<trans-unit id="[menuEntry.displayLabelId()/]">
+ <source>[menuEntry.displayLabelId()/]</source>
+ <target>[menuEntry.displayLabel.validXML()/]</target>
+</trans-unit>
+	[/let]
+	[/if]
+[/for]
+[/template]

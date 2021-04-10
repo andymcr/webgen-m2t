@@ -1,0 +1,38 @@
+[comment encoding = UTF-8 /]
+[module framework(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+
+
+[template public configFramework(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/framework').concat(model.yamlExtension()), false)]
+# see https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
+    secret: '%env(APP_SECRET)%'
+    #csrf_protection: true
+    #http_method_override: true
+
+    # Enables session support. Note that the session will ONLY be started if you read or write from it.
+    # Remove or comment this section to explicitly disable session support.
+    session:
+[if (model.siteProperties.useDbSessionStorage)]
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        cookie_secure: auto
+        cookie_samesite: lax
+[else]
+    # With this config, PHP's native session handling is used
+        handler_id: ~
+[/if]
+
+    #esi: true
+    #fragments: true
+    php_errors:
+        log: true
+
+    validation:
+        enable_annotations: true
+[if (model.hasAPI)]
+#    serializer:      { enable_annotations: true }
+[/if]
+[/file]
+[/template]

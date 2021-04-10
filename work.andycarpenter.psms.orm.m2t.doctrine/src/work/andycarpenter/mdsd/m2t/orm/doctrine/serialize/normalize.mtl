@@ -1,0 +1,71 @@
+[comment encoding = UTF-8 /]
+[module normalize(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public normalizer(entity : Entity)]
+[file(entity.normalizerFilename(entity), false)]
+<?php
+namespace [entity.normalizerNamespace()/];
+
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+
+
+class [entity.normalizerClassName()/] extends ObjectNormalizer
+{
+    /**
+     *
+     * @return bool
+     */
+    public function supportsNormalization($data, $format = NULL): bool
+    {
+        return $data instanceof [entity.modelClassName()/];
+    }
+
+    public function normalize($object, $format = NULL, array $context = ['['/][']'/])
+    {
+        if (array_key_exists('keys_only', $context))
+        {
+            $data = ['['/][']'/];
+[for (key : Attribute | entity.attributeKeys)]
+            $data['['/]'[key.modelPropertyName()/]'[']'/] = $object->[key.getMethodName()/]();
+[/for]
+   	        return $data;
+        }
+        else
+        {
+            $context['['/]'keys_only'[']'/] = true;
+            return parent::normalize($object, $format, $context);
+        }
+     }
+}
+[/file]
+[/template]
+
+[template private data(feature : Feature, accessor : String)
+	? (feature.oclIsKindOf(Attribute)) post(trim())]
+$data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMethodName()/]();
+[/template]
+
+[template private data(feature : Feature, accessor : String)
+	? (feature.oclIsKindOf(Association) and feature.isSingleton) post(trim())]
+[if (feature.isRequired)]
+$data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize([accessor/]->[feature.getMethodName()/](), $format, $context);
+[else]
+$[feature.instanceName()/] = [accessor/]->[feature.getMethodName()/]();
+if ($[feature.instanceName()/])
+    $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize($[feature.instanceName()/], $format, $context);
+[/if]
+[/template]
+
+[template private data(feature : Feature, accessor : String)
+	? (feature.oclIsKindOf(Association) and not feature.isSingleton) post(trim())]
+$data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMethodName()/]()->map(
+    function ($item) use ($format, $context) {
+        return $this->serializer->normalize($item, $format, $context);
+    }
+)->getValues();
+[/template]

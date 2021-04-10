@@ -1,0 +1,643 @@
+[comment encoding = UTF-8 /]
+[module names(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/api',
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::actions/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+
+
+[query public snakeCase(string : String) : String
+	= string.toLowerFirst().replaceAll('([A-Z]+)', '_$1').toLower()
+/]
+
+
+[query public alias(field : UnitField) : String
+	= if field.oclIsKindOf(InterfaceField) then
+			null
+		else if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).alias()
+		else
+			field.oclAsType(UnitAssociation).alias()
+		endif endif
+/]
+
+[query public alias(attribute : UnitAttribute) : String
+	= if attribute.displayedOn.oclIsKindOf(CollectionUnit) then
+			let unit : CollectionUnit = attribute.displayedOn.oclAsType(CollectionUnit)
+				in if unit.selection.oclIsUndefined() then
+						null
+					else
+						attribute.attribute.alias(unit.selection)
+					endif
+		else if attribute.displayedOn.oclIsKindOf(DetailsUnit) then
+			let unit : DetailsUnit = attribute.displayedOn.oclAsType(DetailsUnit)
+				in if unit.selection.oclIsUndefined() then
+						null
+					else
+						attribute.attribute.alias(unit.selection)
+					endif
+		else
+			null
+		endif endif
+/]
+
+[query public alias(association : UnitAssociation) : String
+	= null
+/]
+
+
+[query public appName(eObject : EObject) : String
+	= 'App'
+/]
+
+[query public securityPrefix(eObject : EObject) : String
+	= 'Security'
+/]
+
+[query public typeSuffix(eObject : EObject) : String
+	= 'Type'
+/]
+
+[query public unitPrefix(eObject : EObject) : String
+	= 'Unit'
+/]
+
+
+[query public changePasswordName(eObject : EObject) : String
+	= 'ChangePassword'
+/]
+
+[query public resetPasswordRequestName(eObject : EObject) : String
+	= 'ResetPasswordRequest'
+/]
+
+
+[query public filterName(type : EnumerationType) : String
+	= type.name.toLowerFirst()
+/]
+
+[query public formTypeName(type : EnumerationType) : String
+	= type.name.toLowerFirst()
+/]
+
+[query public typeClassName(type : EnumerationType) : String
+	= type.name.concat(type.typeSuffix())
+/]
+
+[query public modelClassName(type : EnumerationType) : String
+	= type.name
+/]
+
+
+[query public formsUsing(entity : Entity, model : WafModel) : Sequence(SingletonUnit)
+	= model.pages
+		->collect(p | p.units)
+		->select(u | u.oclIsKindOf(SingletonUnit)).oclAsType(SingletonUnit)
+		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))
+		->select(u | u.contentType = entity)
+		->sortedBy(u | u.name)
+/]
+
+
+[query public controllerName(resource : Resource) : String
+	= resource.name
+/]
+
+[query public controllerClassName(resource : Resource) : String
+	= resource.controllerName().concat('Controller').toUpperFirst()
+/]
+
+
+[query public instanceName(repository : Repository) : String
+	= repository.className().toLowerFirst()
+/]
+
+
+[query public changePasswordTypeClassName(security : LocalAuthenticationSystem) : String
+	= security.typeClassName(security.changePasswordName())
+/]
+
+[query public controllerClassName(security : Security) : String
+	= security.securityPrefix().concat('Controller').toUpperFirst()
+/]
+
+[query public resetPasswordRequestModelClassName(security : LocalAuthenticationSystem) : String
+	= security.securityPrefix().concat(security.resetPasswordRequestName())
+/]
+
+[query public resetPasswordRequestTypeClassName(security : LocalAuthenticationSystem) : String
+	= security.typeClassName(security.resetPasswordRequestName())
+/]
+
+[query public typeClassName(security : LocalAuthenticationSystem, element : String) : String
+	= security.securityPrefix().concat(element).concat(security.typeSuffix())
+/]
+
+[query public userModelName(security : Authentication) : String
+	= security.securityPrefix().concat('User')
+/]
+
+
+[query public className(service : Service) : String
+	= service.name.concat('Service')
+/]
+
+[query public instanceName(service : Service) : String
+	= service.className().toLowerFirst()
+/]
+
+[query public methodName(operation : BusinessOperation) : String
+	= operation.name.toLowerFirst()
+/]
+
+
+[query public baseControllerClassName(eObject : EObject) : String
+	= 'AbstractController'
+/]
+
+
+[query public instanceName(menu : Menu) : String
+	= menu.name.toLowerFirst()
+/]
+
+
+[query public routeName(entry : MenuEntry) : String
+	= if entry.oclIsTypeOf(SubmenuEntry) then
+			let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)
+				in if submenu.oclIsUndefined() then
+						'Unknown'
+					else
+						let subitems : Sequence(ActionMenuEntry)
+							= submenu.entries
+								->select(e | e.oclIsTypeOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+							in if subitems->isEmpty() then
+									'Unknown'
+								else
+									subitems->first().routeName()
+								endif
+					endif
+		else if entry.oclIsTypeOf(ActionMenuEntry) then
+			let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)
+				in if action.action.oclIsUndefined() then
+						'Unknown'
+					else
+						action.action.routeName()
+					endif
+		else if entry.oclIsTypeOf(EditStaticTextMenuEntry) then
+			null
+		else
+			'Unknown'
+		endif endif endif
+/]
+
+
+[query public actionName(page : Page) : String
+	= page.instanceName()
+/]
+
+[query public controllerName(page : Page) : String
+	= page.name
+/]
+
+[query public controllerClassName(page : Page) : String
+	= page.controllerName().concat('Controller').toUpperFirst()
+/]
+
+[query public instanceName(page : Page) : String
+	= page.name.toLowerFirst()
+/]
+
+[query public routeName(page : Page) : String
+	= page.uniqueName()
+/]
+
+[query public templateName(page : Page) : String
+	= page.instanceName().snakeCase()
+/]
+
+[query public uniqueName(page : Page) : String
+	= page.instanceName()
+/]
+
+
+[query public actionName(unit : ContentUnit) : String
+	= unit.instanceName()
+/]
+
+[query public captchaActionName(unit : ContentUnit) : String
+	= if unit.oclIsTypeOf(RegistrationUnit) then
+			'registration'
+		else if unit.oclIsTypeOf(LoginUnit) then
+			'login'
+		else if unit.oclIsTypeOf(ForgottenPasswordUnit) then
+			'forgottenPassword'
+		else if unit.oclIsTypeOf(ResetPasswordUnit) then
+			'resetPasword'
+		else
+			if unit.displayedOn.editUnits->size() = 1 then
+				unit.displayedOn.uniqueName()
+			else
+				unit.uniqueName()
+			endif
+		endif endif endif endif
+/]
+
+[query public containerInstanceName(unit : DynamicUnit) : String
+	= unit.containingType.instanceName()
+/]
+
+[query public containerInstanceVariable(unit : DynamicUnit) : String
+	= if unit.containingTypeLoadedElsewhere() then
+			unit.containingTypeLoadedBy().instanceVariable()
+		else
+			if unit.displayedOn.hasSingleActionMethod() then
+				'$'.concat(unit.containerInstanceName())
+			else
+				'$this->'.concat(unit.containerInstanceName())
+			endif			
+		endif
+/]
+
+[query public containerParameter(unit : DynamicUnit) : String
+	= if unit.containingTypeLoadedElsewhere() then
+			unit.containingTypeLoadedBy().instanceName()
+		else
+			unit.containerInstanceName()
+		endif
+/]
+
+[query public controllerName(unit : DynamicUnit) : String
+	= unit.displayedOn.controllerName()
+/]
+
+[query private featureNames(form : DynamicUnit) : Sequence(String)
+	= form.displayFields
+		->select(f | f.oclIsKindOf(UnitFeature))
+		->collect(f | f.persistentFeature)
+		->sortedBy(f | f.name)
+		->collect(f | f.name)
+/]
+
+[query public formName(unit : EditUnit) : String
+	= unit.instanceName().concat('Form')
+/]
+
+[query public formVariable(unit : EditUnit) : String
+	= if unit.displayedOn.hasSingleActionMethod() or unit.oclIsKindOf(SecurityUnit) then
+			'$'.concat(unit.formName())
+		else
+			'$this->'.concat(unit.formName())
+		endif
+/]
+
+[query public formCreateVariable(unit : EditUnit) : String
+	= '$'.concat(unit.formName())
+/]
+
+[query public instanceName(unit : ContentUnit) : String
+	= unit.name.toLowerFirst()
+/]
+
+[query public instanceName(resource : Resource) : String
+	= resource.name.toLowerFirst()
+/]
+
+[query public instanceParameter(unit : ContentUnit) : String
+	= unit.instanceName()
+/]
+
+[query public instanceVariable(unit : ContentUnit) : String
+	= if (unit.displayedOn.hasSingleActionMethod() and not unit.hasSelectionMethod()) or unit.oclIsKindOf(EditUnit) then
+			'$'.concat(unit.instanceName())
+		else
+			'$this->'.concat(unit.instanceName())
+		endif
+/]
+
+[query public modelClassName(unit : ContentUnit) : String
+	= if unit.oclIsTypeOf(StaticUnit) then
+			if unit.oclAsType(StaticUnit).repository.oclIsUndefined() then
+				'None'
+			else
+				unit.oclAsType(StaticUnit).repository.serves.modelClassName()
+			endif
+		else
+			let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)
+				in dynamicUnit.contentType.modelClassName()
+		endif
+/]
+
+[query public paginationPageParameterName(unit : CollectionUnit) : String
+	= 'page'
+/]
+
+[query public paginationSizeParameterName(unit : CollectionUnit) : String
+	= 'pageSize'
+/]
+
+[query public routeUpdateName(unit : EditUnit) : String
+	= if unit.oclIsTypeOf(UpdateUnit) then
+			if unit.uriElement <> '' then
+				unit.displayedOn.uniqueName()
+					.concat('_').concat(unit.uriElement)
+			else
+				unit.uniqueName()
+			endif
+		else if unit.oclIsTypeOf(CreateUpdateUnit) then
+			let createUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)
+				in if createUnit.updateUriElement <> '' then
+					unit.displayedOn.uniqueName()
+						.concat('_').concat(createUnit.updateUriElement)
+				else
+					unit.uniqueName()
+				endif
+		else
+			unit.uniqueName()
+		endif endif
+/]
+
+[query public routeName(unit : ContentUnit) : String
+	= if unit.displayedOn.hasSingleActionMethod() or unit.isRoutingUnit() then
+			unit.displayedOn.uniqueName()
+		else
+			if unit.oclIsKindOf(EditUnit) and unit.uriElement <> '' then
+				unit.displayedOn.uniqueName()
+					.concat('_').concat(unit.uriElement)
+			else
+				unit.uniqueName()
+			endif
+		endif
+/]
+
+[query public routeEmailSentName(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.uniqueName().concat('_').concat(unit.uriEmailSent)
+/]
+
+[query public routeName(association : UnitAssociation) : String
+	= let associationsWithName : OrderedSet(UnitAssociation)
+		= association.displayedOn.displayedOn.associationFields
+			->select(a | a.name.equalsIgnoreCase(association.name))
+			->select(a | not a.optionsFilter.oclIsUndefined())
+		in if associationsWithName->size() < 2  then
+				association.displayedOn.displayedOn.uniqueName().concat('_').concat(association.name)
+			else
+				association.displayedOn.uniqueName().concat('_').concat(association.name)
+			endif
+/]
+
+[query public routeName(resource : Resource) : String
+	= resource.instanceName()
+/]
+
+[query public templateName(unit : ContentUnit) : String
+	= unit.instanceName().snakeCase()
+/]
+
+
+[query public className(container : ConstantContainer) : String
+	= if container.oclIsTypeOf(Repository) then
+			container.oclAsType(Repository).className()
+		else if container.oclIsTypeOf(Service) then
+			container.oclAsType(Service).className()
+		else
+			'Unknown'
+		endif endif
+/]
+
+[query public sameModel(form : SingletonUnit) : Sequence(SingletonUnit)
+	= if form.hasInterfaceFields then
+			Sequence{ form }
+		else
+			form.sameModelFeatures()
+		endif
+/]
+
+[query private sameModelFeatures(form : SingletonUnit) : Sequence(SingletonUnit)
+	= let forms : Sequence(SingletonUnit) = form.contentType.formsUsing(form.genModel)
+		in if forms->size() < 2 then
+				forms
+			else
+				forms->select(f | f.featureNames() = form.featureNames())
+					->sortedBy(u | u.name)
+			endif
+/]
+
+[query public selectName(unit : ContentUnit) : String
+	= unit.instanceName().concat('Select')
+/]
+
+[query public selectName(unit : CollectionUnit) : String
+	= unit.oclAsType(DynamicUnit).selectName()
+/]
+
+[query public singleUseModel(form : SingletonUnit) : Boolean
+	= form.sameModel()->size() = 1
+/]
+
+[query public thumbName(unit : ImageUnit) : String
+	= let units : OrderedSet(ImageUnit)
+		= unit.displayedOn.partOf.imageUnits
+		in if unit->collect(u | u.name)->select(n | n = unit.name)->size() > 1 then
+				unit.instanceName()
+			else
+				unit.uniqueName()
+			endif
+/]
+
+[query public typeClassName(unit : SingletonUnit) : String
+	= let sameModel : Sequence(DynamicUnit) = unit.sameModel()
+		in unit.contentType.modelClassName()
+			.concat(if sameModel->size() <> unit.contentType.formsUsing(unit.genModel)->size() then
+					unit.name.toUpperFirst()
+				else
+					''
+				endif)
+			.concat(unit.typeSuffix())
+/]
+
+[query public uniqueName(unit : ContentUnit) : String
+	= unit.displayedOn.uniqueName().concat('_').concat(unit.instanceName())
+/]
+
+[query public viewCheckEmailName(unit : ForgottenPasswordUnit) : String
+	= unit.name.toLowerFirst().concat('_check')
+/]
+
+[query public viewEmailMessageName(unit : ForgottenPasswordUnit) : String
+	= unit.name.toLowerFirst().concat('_email')
+/]
+
+[query public viewResetPasswordName(unit : ForgottenPasswordUnit) : String
+	= unit.name.toLowerFirst().concat('_reset')
+/]
+
+
+[query public actionName(association : UnitAssociation) : String
+	= association.displayedOn.instanceName()
+		.concat(association.name.toUpperFirst())
+		.concat('Action')
+/]
+
+[query public formName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.columnName
+			else
+				let association : Association
+					= field.oclAsType(UnitAssociation).association
+					in if association.isSingleton and association.isOwningEnd then 
+	 						association.columnName 
+						else 
+							association.modelPropertyName() 
+						endif 
+			endif
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else
+			'UnhandledFeature'
+		endif endif
+/]
+
+[query public instanceName(field : UnitField) : String
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).name
+		else if field.oclIsTypeOf(UnitAssociation) then
+			field.oclAsType(UnitAssociation).name
+		else
+			field.oclAsType(InterfaceField).name
+		endif endif.toLowerFirst()
+/]
+
+[query public modelPropertyName(field : UnitField) : String
+	= if field.oclIsKindOf(UnitFeature) then
+			if field.oclIsTypeOf(UnitAttribute) then
+				field.oclAsType(UnitAttribute).attribute.modelPropertyName()
+			else
+				field.oclAsType(UnitAssociation).association.modelPropertyName()
+			endif
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name
+		else
+			'UnhandledFeature'
+		endif endif
+/]
+
+[query public optionsName(field : UnitField) : String
+	= field.uniqueName().concat('_options')
+/]
+
+[query public singleUseModel(field : UnitField) : Boolean
+	= if field.displayedOn.oclIsKindOf(SingletonUnit) then
+			field.displayedOn.oclAsType(SingletonUnit).singleUseModel()
+		else
+			false
+		endif
+/]
+
+[query public typeClassName(association : UnitAssociation) : String
+	= association.association.targetType.modelClassName().concat(association.typeSuffix())
+/]
+
+[query public uniqueName(field : UnitField) : String
+	= field.displayedOn.instanceName().concat('_').concat(field.modelPropertyName())
+/]
+
+
+[query public actionName(action : Action) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.actionName(action.usedBy.oclAsType(DynamicUnit))
+		else
+			action.actionName(action.usedBy.oclAsType(UnitAssociation))
+		endif
+/]
+
+[query private actionName(action : Action, unit : DynamicUnit) : String
+	= let actionsWithName : OrderedSet(Action)
+		= unit.displayedOn.actionsWithoutTarget->select(a | a.name.equalsIgnoreCase(action.name))
+		in if actionsWithName->size() < 2  then
+				action.uniqueName()
+			else
+				unit.instanceName().concat(action.name.toUpperFirst())
+			endif
+/]
+
+[query private actionName(action : Action, association : UnitAssociation) : String
+	= let association : UnitAssociation
+		= action.usedBy.oclAsType(UnitAssociation)
+		in association.displayedOn.instanceName()
+			.concat(association.name.toUpperFirst())
+			.concat(action.name.toUpperFirst())
+/]
+
+[query public instanceName(action : Action) : String
+	= if action.oclIsTypeOf(DeleteAction)
+				or action.oclIsKindOf(InstanceOperationAction) then
+			action.parentUnit.contentType.instanceName()
+		else if action.oclIsTypeOf(ContainerOperationAction) then
+			if action.parentUnit.contentType.isContained then
+				action.parentUnit.contentType.containingType.instanceName()
+			else
+				action.uniqueName()
+			endif
+		else
+			action.uniqueName()
+		endif endif
+/]
+
+[query public instanceVariable(action : Action) : String
+	= '$'.concat(action.instanceName())
+/]
+
+[query public modelClassName(action : DeleteAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).modelClassName()
+		else
+			action.usedBy.oclAsType(UnitAssociation).association.modelClassName()
+		endif
+/]
+
+[query public modelClassName(action : OperationAction) : String
+	= if action.usedBy.oclIsKindOf(DynamicUnit) then
+			action.usedBy.oclAsType(DynamicUnit).modelClassName()
+		else
+			action.usedBy.oclAsType(UnitAssociation).association.modelClassName()
+		endif
+/]
+
+[query public routeActionReturnName(action : Action) : String
+	= let page : Page = action.parentUnit.displayedOn
+		in if page.hasRoutingUnits() then
+				page.uniqueName()
+			else
+				action.parentUnit.routeName()
+			endif
+/]
+
+[query public routeName(action : Action) : String
+	= let page : Page = action.parentUnit.displayedOn
+		in if page.hasRoutingUnits() then
+				if page.actionsWithoutTarget->select(a | a.name = action.name)->size() = 1 then
+					page.uniqueName()
+						.concat('_').concat(action.uniqueName())
+				else
+					action.parentUnit.routeName()
+						.concat('_').concat(action.uniqueName())
+				endif
+			else
+				action.parentUnit.routeName()
+					.concat('_').concat(action.uniqueName())
+			endif
+/]
+
+[query private uniqueName(action : Action) : String
+	= action.name.toLowerFirst()
+/]

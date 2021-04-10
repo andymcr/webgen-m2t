@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Symfony Module Runtime Plug-in
-Bundle-SymbolicName: work.andycarpenter.psms.waf.m2t.symfony
+Bundle-SymbolicName: work.andycarpenter.mdsd.m2t.waf.symfony
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.core.runtime,
@@ -14,10 +14,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.profiler;bundle-version="3.3.0",
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  com.google.guava,
- work.andycarpenter.psms.expression.m2t,
+ work.andycarpenter.mdsd.m2t.expression,
  work.andycarpenter.metamodel.security,
- work.andycarpenter.psms.orm.m2t.core,
- work.andycarpenter.psms.orm.m2t.doctrine,
- work.andycarpenter.psms.waf.m2t.core
+ work.andycarpenter.mdsd.m2t.orm.doctrine,
+ work.andycarpenter.mdsd.m2t.waf.core
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 

@@ -1,0 +1,100 @@
+[comment encoding = UTF-8 /]
+[module value(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
+
+
+[template public getValue(field : UnitField, accessor : String) post(trim())]
+[if (field.oclIsTypeOf(UnitFeature))]
+[field.oclAsType(UnitFeature).getValue(accessor)/]
+[else]
+NULL
+[/if]
+[/template]
+
+[template public getValue(feature : UnitFeature, accessor : String) post(trim())]
+[if (feature.oclIsTypeOf(UnitAttribute))]
+[feature.oclAsType(UnitAttribute).getValue(accessor)/]
+[else]
+[feature.oclAsType(UnitAssociation).getValue(accessor)/]
+[/if]
+[/template]
+
+[template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
+[attribute.attribute.getValue(accessor)/]
+[/template]
+
+[template public getValue(association : UnitAssociation, accessor : String) post(trim())]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(accessor)/]
+[else]
+	[if (not association.valueDisplay.oclIsUndefined())]
+[association.valueDisplay.label(accessor)/]
+	[else]
+[accessor/].defaultLabel()
+	[/if]
+[/if]
+[/template]
+
+[template public getValue(path : FeaturePath, accessor : String) post(trim())]
+[if (path.oclIsTypeOf(FeaturePathAttribute))]
+[path.oclAsType(FeaturePathAttribute).getValue(accessor)/]
+[elseif (path.oclIsTypeOf(FeaturePathAssociation))]
+[path.oclAsType(FeaturePathAssociation).getValue(accessor)/]
+[else]
+[path.oclAsType(FeaturePathLabel).getValue(accessor)/]
+[/if]
+[/template]
+
+[template public getValue(path : FeaturePathAttribute, accessor : String) post(trim())]
+[accessor/].[path.attribute.modelPropertyName()/]
+[/template]
+
+[template public getValue(path : FeaturePathAssociation, accessor : String) post(trim())]
+[let x : String
+		= accessor.concat('.').concat(path.association.modelPropertyName())]
+[if (path.childFeature.oclIsUndefined())]
+[x/].defaultLabel()
+[else]
+[path.childFeature.getValue(x)/]
+[/if]
+[/let]
+[/template]
+
+[template private getValue(child : FeatureChildPath, accessor : String)
+	? (child.oclIsTypeOf(ChildPathAttribute)) post(trim())]
+[let attribute : ChildPathAttribute = child.oclAsType(ChildPathAttribute)]
+[attribute.attribute.getValue(accessor)/]
+[/let]
+[/template]
+
+[template private getValue(child : FeatureChildPath, accessor : String)
+	? (child.oclIsTypeOf(ChildPathAssociation)) post(trim())]
+[let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)]
+[if (not association.childFeature.oclIsUndefined())]
+[association.childFeature.getValue(accessor)/]
+[else]
+	[if (not association.valueDisplay.oclIsUndefined())]
+[association.valueDisplay.label(accessor)/]
+	[else]
+[accessor/].defaultLabel()
+	[/if]
+[/if]
+[/let]
+[/template]
+
+
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isDataTypeFeature and not attribute.isEnumerationFeature
+		or attribute.isDateFeature or attribute.isUrlFeature or attribute.isResourceFeature) post(trim())]
+[accessor/]
+[/template]
+
+[template public getValue(attribute : Attribute, accessor : String)
+	? (attribute.isEnumerationFeature) post(trim())]
+[accessor/] | [attribute.enumerationType.filterName()/] | trans({}, 'entity')
+[/template]

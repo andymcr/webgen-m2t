@@ -1,0 +1,18 @@
+[comment encoding = UTF-8 /]
+[module twig(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::parameters/]
+
+
+[template public configTwig(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/twig').concat(model.yamlExtension()), false)]
+twig:
+    globals:
+        locale: '%[model.siteProperties.localeId()/]%'
+        site_title: '%[model.siteProperties.siteTitleId()/]%'
+    default_path: '%kernel.project_dir%/templates'
+    form_themes:
+        - 'form/bootstrap_custom[model.htmlExtension()/][model.twigExtension()/]'
+[/file]
+[/template]

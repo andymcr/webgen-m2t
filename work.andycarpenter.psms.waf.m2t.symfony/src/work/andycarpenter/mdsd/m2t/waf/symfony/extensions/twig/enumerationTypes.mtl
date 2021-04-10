@@ -1,0 +1,35 @@
+[comment encoding = UTF-8 /]
+[module enumerationTypes(
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[template public twigEnumerationTypes(model : OrmModel)]
+[file (model.twigExtensionsDirectory().concat('/').concat('EnumerationTypes').concat(model.executableExtension()), false)]
+<?php
+namespace [model.twigExtensionsNamespace()/];
+
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
+class EnumerationTypes extends AbstractExtension
+{
+    public function getName()
+    {
+        return 'project';
+    }
+
+    public function getFilters()
+    {
+        return ['['/]
+[for (enumerationType : EnumerationType | model.enumerationTypes)]
+            '[enumerationType.filterName()/]' => new TwigFilter('[enumerationType.filterName()/]', ['['/]'[enumerationType.modelsNamespace()/]\[enumerationType.modelClassName()/]', 'value'[']'/]),
+[/for]
+        [']'/];
+    }
+}
+[/file]
+[/template]

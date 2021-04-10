@@ -1,0 +1,51 @@
+[comment encoding = UTF-8 /]
+[module staticMethods(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
+
+
+[template public unitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
+[let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
+[staticUnit.actionMethod()/]
+[/let]
+[/template]
+
+[template private actionMethod(unit : StaticUnit) post(trim())]
+[let page : Page = unit.displayedOn]
+/**
+ [unit.routeAnnotation()/]
+[if (unit.isAuthorised)]
+ [unit.securityAnnotation()/]
+[/if]
+ */
+public function [unit.actionName()/]()
+{
+[if (page.partOf.siteProperties.staticUnitsEditable)]
+   [unit.instanceVariable()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
+
+[/if]
+[if (page.units->size() > 1)]
+    return $this->renderPage([comment page.renderActualParameters(unit)/]);
+[else]
+    $parameters = ['['/][']'/];
+    [page.templateParameters()/]
+    [unit.templateParameters()/]
+    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+[/if]
+}
+[/let]
+[/template]
+
+[template private templateParameters(unit : ContentUnit)
+	? (unit.oclIsKindOf(StaticUnit)) post(trim())]
+[let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
+[if (unit.displayedOn.partOf.siteProperties.staticUnitsEditable)]
+$parameters['['/]'[staticUnit.instanceParameter()/]'[']'/] = [staticUnit.instanceVariable()/];
+[/if]
+[/let]
+[/template]

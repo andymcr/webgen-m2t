@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module vichUploader(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[template public configVichUploader(model : WafModel)]
+[file (model.configPackagesDirectory().concat('/vich_uploader').concat(model.yamlExtension()), false)]
+vich_uploader:
+    db_driver: orm # or mongodb or propel or phpcr
+
+    mappings:
+[for (entity : Entity | model.persistence.entities)]
+	[for (resource : ResourceFeature | entity.resourceFeatures)]
+        [entity.instanceName()/]_[resource.instanceName()/]:
+            uri_prefix: /images
+            upload_destination: '%kernel.project_dir%/public/images/products'
+	[/for]
+[/for]
+[/file]
+[/template]

@@ -1,0 +1,49 @@
+[comment encoding = UTF-8 /]
+[module page(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+
+
+[template public page(page : Page) post(trim())]
+[file(page.templateFilename(), false)]
+{% extends 'base.html.twig' %}
+
+[if (page.hasJavascript())]
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('[page.name.snakeCase()/]') }}
+{% endblock %}
+
+[/if]
+{% block content %}
+[for (unit : ContentUnit | page.units)]
+	[if (unit.oclIsTypeOf(StaticUnit))]
+[unit.unitContent(page)/]
+	[else]
+	[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+		[if (dynamicUnit.isConditionallyDisplayed or dynamicUnit.isDislayedOnlyOnExplicitRoute())]
+{% if [dynamicUnit.instanceParameter()/] is defined %}
+[dynamicUnit.unitContent(page)/]
+			[if (dynamicUnit.hasHiddenMessage)]
+{% else %}
+<h5>{{ '[dynamicUnit.hiddenMessageId()/]' | trans({}, '[dynamicUnit.translationDomain()/]') }}</h5>
+			[/if]
+{% endif %}
+		[else]
+[unit.unitContent(page)/]
+		[/if]
+	[/let]
+	[/if]
+[/for]
+{% endblock %}
+[/file]
+[/template]
+
+[template private unitContent(unit : ContentUnit, page : Page) post(trim())]
+{{ include('[page.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
+[/template]
+

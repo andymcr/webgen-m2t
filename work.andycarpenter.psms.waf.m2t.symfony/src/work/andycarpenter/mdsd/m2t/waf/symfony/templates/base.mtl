@@ -1,0 +1,74 @@
+[comment encoding = UTF-8 /]
+[module base(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+
+
+[template public generatePage(siteProperties : SiteProperties)]
+[file(siteProperties.templatesDirectory().concat('/base').concat(siteProperties.htmlExtension()).concat(siteProperties.twigExtension()), false)]
+<!doctype html>
+<html lang="{{ locale }}">
+<head>
+ <meta charset="UTF-8"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+[if (not siteProperties.metaDescription.oclIsUndefined())]
+ <meta name="description" content="[siteProperties.metaDescription/]">
+[/if]
+ <title>{{ site_title }}{% if title is defined %}: {{ title }}{% endif %}</title>
+{% block stylesheets %}
+ {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block javascripts %}
+ {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+[if (not siteProperties.textEditorURL.oclIsUndefined())]
+ <script src="[siteProperties.textEditorURL/]"></script>
+[/if]
+{% if scripts is defined %}
+{% for script in scripts  %}
+{% if script is iterable %}
+ <script{% for key, value in script %} {{ key }}="{{ value }}"{% endfor %}></script>
+{% else %}
+ <script src="{{ asset(script) }}"></script>
+{% endif %}
+{% endfor %}
+{% endif %}
+</head>
+<body>
+<header>
+{% block navigation %}
+{{ include('navigation[siteProperties.htmlExtension()/][siteProperties.twigExtension()/]') }}
+{% endblock %}
+</header>
+<main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
+ <div class="container">
+{%- if app.request.hasPreviousSession -%}
+ {%- for type, messages in app.session.flashbag.all() -%}
+  {%- for message in messages -%}
+  <div class="alert alert-{{ type }}">
+   {{ message }}
+  </div>
+  {%- endfor -%}
+ {%- endfor -%}
+{%- endif -%}
+
+{% block content %}
+{% endblock %}
+ </div>
+</main>
+<footer class="page-footer">
+ <div class="container">
+  <p>&nbsp;</p>
+ </div>
+ <div class="footer-copyright">
+  <div class="container">
+   <p>[siteProperties.copyrightText/]</p>
+  </div>
+ </div>
+</footer>
+</body>
+</html>
+[/file]
+[/template]

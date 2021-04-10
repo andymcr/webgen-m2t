@@ -1,0 +1,143 @@
+[comment encoding = UTF-8 /]
+[module types(
+	'http://andycarpenter.work/metamodel/Base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[query public ormType(feature : Feature) : String
+	= if feature.isSingleton then
+			if feature.isDateFeature then
+				if feature.dateDetails = DateDetails::TimeOnly then
+					'time'
+				else if feature.dateDetails = DateDetails::DateOnly then
+					'date'
+				else
+					'datetime'
+				endif endif
+			else if feature.isEnumerationFeature then
+				'integer'
+			else if feature.isDataTypeFeature then
+				if feature.dataType.oclIsUndefined() then
+					''
+				else
+					feature.dataType.ormType()
+				endif
+			else if feature.isLocationFeature then
+				'string'
+			else if feature.oclIsKindOf(Association) then
+				if feature.partOf.implementsResetPasswordInterface then
+					'object'
+				else
+					feature.oclAsType(Association).modelClassName()
+				endif
+			else
+				''
+			endif endif endif endif endif
+		else
+			if feature.oclIsTypeOf(Association) then
+				'integer'
+			else
+				'array'
+			endif
+		endif
+/]
+
+[query private ormType(dataType : Classifier) : String
+	= if dataType.oclIsKindOf(DataType) then
+			dataType.oclAsType(DataType).ormType
+		else
+			''
+		endif
+/]
+
+[query public implementationType(feature : Feature) : String
+	= if feature.isSingleton then
+			if feature.isDateFeature then
+				'\\DateTimeInterface'
+			else if feature.isEnumerationFeature then
+				'int'
+			else if feature.isDataTypeFeature then
+				if feature.dataType.oclIsUndefined() then
+					''
+				else
+					feature.dataType.implementationType()
+				endif
+			else if feature.isLocationFeature then
+				'string'
+			else if feature.oclIsKindOf(Association) then
+				if feature.partOf.implementsResetPasswordInterface then
+					'object'
+				else
+					feature.oclAsType(Association).modelClassName()
+				endif
+			else
+				''
+			endif endif endif endif endif
+		else
+			if feature.oclIsKindOf(Association) then
+				let association : Association = feature.oclAsType(Association)
+					in if association.targetType.repository.findAll.oclIsUndefined() then
+							'Collection'
+						else
+							let allSelection : Selection = association.targetType.repository.findAll
+								in if allSelection.limit > 0 then
+										'object'
+									else
+										'Collection'
+									endif
+						endif
+			else
+				'array'
+			endif
+endif
+/]
+
+[query public documentationType(feature : Feature) : String
+	= if feature.isSingleton then
+			feature.implementationType()
+		else
+			if feature.implementationType() = 'array' then
+				feature.implementationType().concat('<int, ').concat(feature.elementType()).concat('>')
+			else
+				feature.implementationType()
+					.concat('<int, ').concat(feature.elementType()).concat('>&Selectable<int, ').concat(feature.elementType()).concat('>')
+			endif
+		endif
+/]
+
+[query public elementType(feature : Feature) : String
+	= if feature.isSingleton then
+			''
+		else
+			if feature.isDataTypeFeature then
+				if feature.dataType.oclIsUndefined() then
+					''
+				else
+					feature.dataType.implementationType()
+				endif
+			else if feature.oclIsTypeOf(Association) then
+				feature.oclAsType(Association).targetType.modelClassName()
+			else
+				''
+			endif endif
+		endif
+/]
+
+[query public implementationType(parameter : FormalParameter) : String
+	= if parameter.dataType.oclIsUndefined() then
+			''
+		else
+			parameter.dataType.implementationType()
+		endif
+/]
+
+[query private implementationType(dataType : Classifier) : String
+	= if dataType.oclIsKindOf(DataType) then
+			dataType.oclAsType(DataType).wafType
+		else if dataType.oclIsKindOf(Entity) then
+			dataType.oclAsType(Entity).modelClassName()
+		else
+			''
+		endif endif
+/]

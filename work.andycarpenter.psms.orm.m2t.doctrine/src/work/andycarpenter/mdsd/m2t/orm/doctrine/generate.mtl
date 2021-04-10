@@ -1,0 +1,26 @@
+[comment encoding = UTF-8 /]
+[module generate(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::config::stofDoctrineExtensions/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUnique/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUniqueValidator/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::models::entity/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::models::enumeration/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::repository::repository/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::serialize::normalize/]
+
+
+[template public doctrine(model : OrmModel, supportTranslation : Boolean)]
+[model.configStofDoctrineExtensions()/]
+
+[model.enumerationTypes.model(supportTranslation)/]
+[model.entities.model()/]
+[comment model.entities.normalizer()/]
+
+[model.collectionUnique()/]
+[model.collectionUniqueValidator()/]
+
+[model.repositories.repository()/]
+[/template]

@@ -1,0 +1,179 @@
+[comment encoding = UTF-8 /]
+[module image(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
+
+
+[query public thumbFilter(unit : ImageUnit) : ThumbnailFilter
+	= let filters : Sequence(ThumbnailFilter)
+		= unit.imageFilter.filters->select(f | f.oclIsTypeOf(ThumbnailFilter)).oclAsType(ThumbnailFilter)
+		in if filters->isEmpty() then
+				null
+			else
+				filters->first()
+			endif
+/]
+
+
+[template public image(siteProperties : SiteProperties) post(trim())]
+[let imagePath : String = '\''.concat(siteProperties.logoImage).concat('\'')]
+<img [imagePath.imageSrc('src', siteProperties.logoFilters)/] alt="Logo"/>
+[/let]
+[/template]
+
+[template public image(unit : ImageUnit, baseAccessor : String, imageClass : String) post(trim())]
+[if (unit.imagePathFeature.oclIsUndefined())]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+	[/if]
+[elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+	[/if]
+[else]
+	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
+		[if (unit.imagePathFeature.isSingleton)]
+{%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] is not empty -%}
+		[else]
+{%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] | length > 0 -%}
+		[/if]
+	[/if]
+[let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
+{%- if [imageAccessor/] is not empty -%}
+[unit.image(unit.imageFilter, imageAccessor, baseAccessor, imageClass)/]
+	[if (not unit.missingImagePath.oclIsUndefined())]
+{%- else -%}
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+	[/if]
+{%- endif -%}
+[/let]
+	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
+{%- else -%}
+		[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+		[/if]
+{%- endif -%}
+	[/if]
+[/if]
+[/template]
+
+[query public missingImageFilter(unit : ImageUnit) : ImageManipulation
+	= if unit.missingImageFilter.oclIsUndefined() then
+			unit.imageFilter
+		else
+			unit.missingImageFilter
+		endif
+/]
+
+[template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String) post(trim())]
+<img [unit.imageMissingSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[/template]
+
+[template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String, 
+	baseAccessor : String, imageClass : String) post(trim())]
+<img [if (imageClass) <> '']class="[imageClass/]" [/if][accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[/template]
+
+[template public imageMissingSrc(unit : ImageUnit, key : String, manipulation : ImageManipulation) post(trim())]
+[key/]="{{ '[unit.missingImagePath/]'[if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
+[/template]
+
+[template public imageSrc(accessor : String, key : String, manipulation : ImageManipulation) post(trim())]
+[key/]="{{ [accessor/][if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
+[/template]
+
+[template public imageAlt(unit : ImageUnit, baseAccessor : String) post(trim())]
+[if (not unit.elementTitle.oclIsUndefined())]
+alt="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}"
+[/if]
+[/template]
+
+[template public imageTitle(unit : ImageUnit, baseAccessor : String) post(trim())]
+[if (not unit.elementTitle.oclIsUndefined())]
+title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}"
+[/if]
+[/template]
+
+
+[query public imagePath(path : FeaturePath, unit : ImageUnit, parentAccessor : String) : String
+	= if path.oclIsTypeOf(FeaturePathAttribute) then
+			path.oclAsType(FeaturePathAttribute).imagePath(parentAccessor, unit.hasObjectAccess())
+		else if path.oclIsTypeOf(FeaturePathAssociation) then
+			path.oclAsType(FeaturePathAssociation).imagePath(parentAccessor, unit.hasObjectAccess())
+		else
+			null
+		endif endif
+/]
+
+[query private imagePath(attribute : FeaturePathAttribute, parentAccessor : String, objectAccess : Boolean) : String
+	= let localAccessor : String
+			= if objectAccess then
+					attribute.attribute.modelPropertyName()
+				else
+					attribute.attribute.columnName
+				endif
+		in parentAccessor.concat('.').concat(localAccessor)
+/]
+
+[query private imagePath(association : FeaturePathAssociation, parentAccessor : String, objectAccess : Boolean) : String
+	= if not association.hasChild then
+			null
+		else
+			let localElement : String
+				= association.association.modelPropertyName().concat(
+					if association.association.isSingleton then
+						''
+					else
+						'.0'
+					endif)
+				in 
+			association.childFeature.imagePath(
+				parentAccessor.concat('.').concat(localElement),
+				objectAccess)
+		endif
+/]
+
+[query private imagePath(path : FeatureChildPath, parentAccessor : String, objectAccess : Boolean) : String
+	= if path.oclIsTypeOf(ChildPathAttribute) then
+			path.oclAsType(ChildPathAttribute).imagePath(parentAccessor, objectAccess)
+		else if path.oclIsTypeOf(ChildPathAssociation) then
+			path.oclAsType(ChildPathAssociation).imagePath(parentAccessor, objectAccess)
+		else
+			null
+		endif endif
+/]
+
+[query private imagePath(attribute : ChildPathAttribute, parentAccessor : String, objectAccess : Boolean) : String
+	= let localAccessor : String
+			= if objectAccess then
+					attribute.attribute.modelPropertyName()
+				else
+					attribute.attribute.columnName
+				endif
+		in parentAccessor.concat('.').concat(localAccessor)
+/]
+
+[query private imagePath(association : ChildPathAssociation, parentAccessor : String, objectAccess : Boolean) : String
+	= if not association.hasChild then
+			null
+		else
+			let localElement : String
+				= association.association.modelPropertyName().concat(
+					if association.association.isSingleton then
+						''
+					else
+						'.0'
+					endif)
+				in 
+			association.childFeature.imagePath(
+				parentAccessor.concat('.').concat(localElement),
+				objectAccess)
+		endif
+/]

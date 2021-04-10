@@ -1,0 +1,13 @@
+[comment encoding = UTF-8 /]
+[module recaptcha(
+	'http://andycarpenter.work/metamodel/security')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+
+
+[template public configRecaptcha(security : LocalAuthenticationSystem)]
+[file (security.configPackagesDirectory().concat('/ewz_recaptcha').concat(security.yamlExtension()), false)]
+ewz_recaptcha:
+    public_key:  '%env(resolve:RECAPTCHA_PUBLIC_KEY)%'
+    private_key: '%env(resolve:RECAPTCHA_PRIVATE_KEY)%'
+[/file]
+[/template]

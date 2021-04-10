@@ -1,0 +1,267 @@
+[comment encoding = UTF-8 /]
+[module files(
+	'http://cs.manchester.ac.uk/mdsd/API',
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[query public htmlExtension(eObject : EObject) : String
+	= '.html'
+/]
+
+[query public javascriptExtension(eObject : EObject) : String
+	= '.js'
+/]
+
+[query public executableExtension(eObject : EObject) : String
+	= '.php'
+/]
+
+[query public twigExtension(eObject : EObject) : String
+	= '.twig'
+/]
+
+[query public xlfExtension(eObject : EObject) : String
+	= '.xlf'
+/]
+
+[query public xmlExtension(eObject : EObject) : String
+	= '.xml'
+/]
+
+[query public yamlExtension(eObject : EObject) : String
+	= '.yaml'
+/]
+
+
+[query public apiControllersDirectory(eObject : EObject) : String
+	= eObject.controllersDirectory().concat('/').concat('Api')
+/]
+
+[query public assetsDirectory(eObject : EObject) : String
+	= 'assets'
+/]
+
+[query public configDirectory(eObject : EObject) : String
+	= 'config'
+/]
+
+[query public configPackagesDirectory(eObject : EObject) : String
+	= eObject.configDirectory().concat('/').concat('packages')
+/]
+
+[query public controllersDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Controller')
+/]
+
+[query public cssDirectory(eObject : EObject) : String
+	= eObject.webDirectory().concat('/css')
+/]
+
+[query public encoderDirectory(eObject : EObject) : String
+	= eObject.securityDirectory().concat('/').concat('Encoder')
+/]
+
+[query public extensionsDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Extensions')
+/]
+
+[query public formDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Form')
+/]
+
+[query public formViewDirectory(eObject : EObject) : String
+	= eObject.templatesDirectory().concat('/').concat('form')
+/]
+
+[query public javascriptAssetsDirectory(eObject : EObject) : String
+	= eObject.assetsDirectory().concat('/').concat('js')
+/]
+
+[query public navigationDirectory(eObject : EObject) : String
+	= eObject.templatesDirectory()
+/]
+
+[query public pageTemplateDirectory(page : Page) : String
+	= page.templatesDirectory().concat('/').concat(page.templateName())
+/]
+
+[query public securityDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Security')
+/]
+
+[query public securityViewDirectorySuffix(security : Security) : String
+	= 'security'
+/]
+
+[query public securityViewDirectory(security : Security) : String
+	= security.templatesDirectory().concat('/').concat(security.securityViewDirectorySuffix())
+/]
+
+[query public servicesDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Service')
+/]
+
+[query public sourceDirectory(eObject : EObject) : String
+	= 'src'
+/]
+
+[query public transDirectory(eObject : EObject) : String
+	= 'translations'
+/]
+
+[query public twigExtensionsDirectory(eObject : EObject) : String
+	= eObject.extensionsDirectory().concat('/').concat('Twig')
+/]
+
+[query public templatesDirectory(eObject : EObject) : String
+	= 'templates'
+/]
+
+[query public webControllersDirectory(eObject : EObject) : String
+	= eObject.controllersDirectory().concat('/').concat('Web')
+/]
+
+[query public webDirectory(eObject : EObject) : String
+	= 'web'
+/]
+
+
+[query public apiControllersNamespace(eObject : EObject) : String
+	= eObject.controllersNamespace().concat('\\').concat('Api')
+/]
+
+[query public controllersNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Controller')
+/]
+
+[query public encoderNamespace(eObject : EObject) : String
+	= eObject.securityNamespace().concat('\\').concat('Encoder')
+/]
+
+[query public extensionsNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Extensions')
+/]
+
+[query public formNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Form')
+/]
+
+[query public securityNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Security')
+/]
+
+[query public serviceNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Service')
+/]
+
+[query public twigExtensionsNamespace(eObject : EObject) : String
+	= eObject.extensionsNamespace().concat('\\').concat('Twig')
+/]
+
+[query public webControllersNamespace(eObject : EObject) : String
+	= eObject.controllersNamespace().concat('\\').concat('Web')
+/]
+
+
+[query public controllerFilename(security : Security, model : WafModel) : String
+	= if model.hasAPI then
+			security.webControllersDirectory()
+		else
+			security.controllersDirectory()
+		endif.concat('/')
+			.concat(security.controllerClassName())
+			.concat(security.executableExtension())
+/]
+
+[query public controllerFilename(page : Page, model : WafModel) : String
+	= if model.hasAPI then
+			page.webControllersDirectory()
+		else
+			page.controllersDirectory()
+		endif.concat('/')
+			.concat(page.controllerClassName())
+			.concat(page.executableExtension())
+/]
+
+[query public controllerFilename(resource : Resource) : String
+	= resource.apiControllersDirectory().concat('/')
+		.concat(resource.controllerClassName())
+		.concat(resource.executableExtension())
+/]
+
+[query public formTypeFilename(type : EnumerationType) : String
+	= type.formDirectory().concat('/')
+		.concat(type.typeClassName())
+		.concat(type.executableExtension())
+/]
+
+[query public formTypeFilename(authentication : LocalAuthenticationSystem, element : String) : String
+	= authentication.formDirectory().concat('/')
+		.concat(authentication.typeClassName(element))
+		.concat(authentication.executableExtension())
+/]
+
+[query public formTypeFilename(unit : SingletonUnit) : String
+	= unit.formDirectory().concat('/')
+		.concat(unit.typeClassName())
+		.concat(unit.executableExtension())
+/]
+
+[query public formTypeFilename(association : UnitAssociation) : String
+	= association.formDirectory().concat('/')
+		.concat(association.typeClassName())
+		.concat(association.executableExtension())
+/]
+
+[query public javascriptFilename(page : Page) : String
+	= page.javascriptAssetsDirectory().concat('/')
+		.concat(page.name.snakeCase())
+		.concat(page.javascriptExtension())
+/]
+
+[query public routingBaseFilename(eObject : EObject) : String
+	= eObject.configDirectory().concat('/').concat('routing')
+/]
+
+[query public serviceFilename(service : Service) : String
+	= service.servicesDirectory().concat('/')
+		.concat(service.className())
+		.concat(service.executableExtension())
+/]
+
+[query public templateFilename(page : Page) : String
+	= page.pageTemplateDirectory().concat('/')
+		.concat('page')
+		.concat(page.htmlExtension()).concat(page.twigExtension())
+/]
+
+[query public templateFilename(unit : ContentUnit) : String
+	= unit.displayedOn.pageTemplateDirectory().concat('/')
+		.concat(unit.templateName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+/]
+
+[query public viewCheckEmailFilename(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
+		.concat(unit.viewCheckEmailName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+/]
+
+[query public viewEmailMessageFilename(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
+		.concat(unit.viewEmailMessageName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+/]
+
+[query public viewResetPasswordFilename(unit : ForgottenPasswordUnit) : String
+	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
+		.concat(unit.viewResetPasswordName())
+		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+/]
+

@@ -87,7 +87,7 @@ public class GenerateAll {
 		//};
 		//gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 		monitor.subTask("Loading...");
-		uk.ac.man.cs.mdsd.webgen.m2t.Generate gen0 = new uk.ac.man.cs.mdsd.webgen.m2t.Generate(modelURI, targetFolder.getLocation().toFile(), arguments);
+		work.andycarenter.mdsd.m2t.webgen.Generate gen0 = new work.andycarenter.mdsd.m2t.webgen.Generate(modelURI, targetFolder.getLocation().toFile(), arguments);
 		monitor.worked(1);
 		String generationID = org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil.computeUIProjectID("uk.ac.man.cs.mdsd.web.m2t", "uk.ac.man.cs.mdsd.web.m2t.Generate", modelURI.toString(), targetFolder.getFullPath().toString(), new ArrayList<String>());
 		gen0.setGenerationID(generationID);

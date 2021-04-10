@@ -1,0 +1,47 @@
+[comment encoding = UTF-8 /]
+[module units(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+
+
+[query public containingTypeLoadedBy(unit : DynamicUnit) : DynamicUnit
+	= let matchingContentType : OrderedSet(DynamicUnit)
+		= unit.displayedOn.dynamicUnits
+			->select(u | u.contentType = unit.containingType)
+		in if matchingContentType->notEmpty() then
+				matchingContentType->first()
+			else
+				unit.displayedOn.dynamicUnits
+					->select(u | u.containingType = unit.containingType)
+					->first()
+			endif
+/]
+
+
+[query public containingTypeLoadedElsewhere(unit : DynamicUnit) : Boolean
+	= unit.containingTypeLoadedBy() <> unit
+/]
+
+[query public hasObjectAccess(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then
+			true
+		else
+			unit.selection.fields->isEmpty()
+
+		endif
+/]
+
+[query public hasObjectAccess(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).hasObjectAccess()
+		else if unit.oclIsKindOf(DetailsUnit) then
+			if unit.oclAsType(DetailsUnit).selection.oclIsUndefined() then
+				true
+			else
+				unit.oclAsType(DetailsUnit).selection.fields->isEmpty()
+			endif
+		else
+			true
+		endif endif
+/]

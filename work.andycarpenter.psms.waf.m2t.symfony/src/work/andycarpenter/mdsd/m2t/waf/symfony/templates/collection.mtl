@@ -1,0 +1,136 @@
+[comment encoding = UTF-8 /]
+[module collection(
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
+
+
+[template public unitFilters(unit : CollectionUnit) post(trim())]
+[for(filter : Filter | unit.supportedFilters)]
+[filter.unitFilter(unit)/]
+[/for]
+[/template]
+
+[template private unitFilter(filter : Filter, unit : CollectionUnit) post(trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+<div class="filter mb-3">
+ <form action="{{ path('[dynamicUnit.routeName()/]', { [if (unit.hasRouteParameters(filter.selection))]
+[dynamicUnit.routeActualParameters(dynamicUnit.routeParameters(), dynamicUnit.containerParameter(), unit.routingType(), 
+	dynamicUnit.hasObjectAccess())/][/if] }) }}" method="get">
+  <div class="input-group">
+[for (parameter : FormalParameter | filter.parameters)]
+   <input type="text" name="[parameter.name/]" class="form-control"[if (not parameter.placeholder.oclIsUndefined())]
+ placeholder="[parameter.placeholder/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
+ required="required"[/if]
+ value="{{ app.request.query.get('[parameter.name/]') }}"/>
+[/for]
+   <button type="submit" name="[filter.name/]Filter" class="btn btn-outline-secondary"><i class="material-icons">search</i></button>
+  </div>
+ </form>
+</div>
+[/let]
+[/template]
+
+
+[template public pagination(unit : CollectionUnit) post(trim())]
+{%- if pageCount > 1 -%}
+<nav class="mb-3">
+ <ul class="[unit.paginationClass/]">
+[if (unit.useFirstLastPageLinks)]
+  [unit.firstPageLink()/]
+[/if]
+  [unit.previousPageLink()/]
+[if (unit.previousNpages > 1)]
+ {% if max(1, currentPage - [unit.previousNpages/]) > 1 %}<li class="[unit.paginationElementClass/]"><span class="[unit.paginationAnchorClass/]">&nbsp;&hellip;&nbsp;</span></li>{% endif %}
+[/if]
+[if (unit.previousNpages > 1 or unit.nextNpages > 1)]
+  [unit.adjacentPageLinks()/]
+[/if]
+[if (unit.nextNpages > 1)]
+ {% if min(currentPage + [unit.nextNpages/], pageCount) < pageCount %}<li class="[unit.paginationElementClass/]"><span class="[unit.paginationAnchorClass/]">&nbsp;&hellip;&nbsp;</span></li>{% endif %}
+[/if]
+  [unit.nextPageLink()/]
+[if (unit.useFirstLastPageLinks)]
+  [unit.lastPageLink()/]
+[/if]
+ </ul>
+</nav>
+{%- endif -%}
+[/template]
+
+[template private firstPageLink(unit : CollectionUnit) post(trim())]
+{%- if currentPage != 1 -%}
+<li class="[unit.paginationElementClass/]"><a class="[unit.paginationAnchorClass/]" href="[unit.pageHref('1')/]">[unit.firstPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="[unit.paginationElementClass/] disabled"><span class="[unit.paginationAnchorClass/]">[unit.firstPageLinkLabel()/]</span></li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private previousPageLink(unit : CollectionUnit) post(trim())]
+{%- if currentPage != 1 -%}
+<li class="[unit.paginationElementClass/]"><a class="[unit.paginationAnchorClass/]" href="[unit.pageHref('currentPage - 1')/]">[unit.previousPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="[unit.paginationElementClass/] disabled"><span class="[unit.paginationAnchorClass/]">[unit.previousPageLinkLabel()/]</span></li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private adjacentPageLinks(unit : CollectionUnit) post(trim())]
+{% for page in max(1, currentPage - [unit.previousNpages/])..min(currentPage + [unit.nextNpages/], pageCount) %}
+ {%- if page != currentPage -%}
+<li class="[unit.paginationElementClass/]"><a class="[unit.paginationAnchorClass/]" href="[unit.pageHref('page')/]">{{ page }}</a></li>
+ {%- else -%}
+<li class="[unit.paginationElementClass/] active disable"><span class="[unit.paginationAnchorClass/]">{{ page }}</span></li>
+ {%- endif -%}
+{% endfor %}
+[/template]
+
+[template private nextPageLink(unit : CollectionUnit) post(trim())]
+{%- if currentPage != pageCount -%}
+<li class="[unit.paginationElementClass/]"><a class="[unit.paginationAnchorClass/]" href="[unit.pageHref('currentPage + 1')/]">[unit.nextPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="[unit.paginationElementClass/] disabled"><span class="[unit.paginationAnchorClass/]">[unit.nextPageLinkLabel()/]</span></li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private lastPageLink(unit : CollectionUnit) post(trim())]
+{%- if currentPage != pageCount -%}
+<li class="[unit.paginationElementClass/]"><a class="[unit.paginationAnchorClass/]" href="[unit.pageHref('pageCount')/]">[unit.lastPageLinkLabel()/]</a></li>
+[if (unit.useDisabledPageLinks)]
+{%- else -%}
+<li class="[unit.paginationElementClass/] disabled"><span class="[unit.paginationAnchorClass/]">[unit.lastPageLinkLabel()/]</span></li>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private pageHref(unit : CollectionUnit, pageNumber : String) post(trim())]
+{{ path('[unit.oclAsType(ContentUnit).routeName()/]', app.request.query.all|merge({'[unit.paginationPageParameterName()/]': [pageNumber/][if (unit.hasRouteParameters())]
+, [unit.oclAsType(DynamicUnit).routeActualParameters(unit.routeParameters(), unit.containerParameter(), unit.containingType, unit.hasObjectAccess())/][/if]})) }}
+[/template]
+
+[template private firstPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.firstPageLabel, unit.firstPageIconName)/]
+[/template]
+
+[template private previousPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.previousPageLabel, unit.previousPageIconName)/]
+[/template]
+
+[template private nextPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.nextPageLabel, unit.nextPageIconName)/]
+[/template]
+
+[template private lastPageLinkLabel(unit : CollectionUnit) post(trim())]
+[linkLabel(unit.lastPageLabel, unit.lastPageIconName)/]
+[/template]

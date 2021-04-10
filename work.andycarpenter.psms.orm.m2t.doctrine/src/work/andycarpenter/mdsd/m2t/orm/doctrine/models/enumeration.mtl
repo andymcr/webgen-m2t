@@ -1,0 +1,62 @@
+[comment encoding = UTF-8 /]
+[module enumeration(
+	'http://andycarpenter.work/metamodel/base')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public model(type : EnumerationType)]
+[type.model(false)/]
+[/template]
+
+[template public model(type : EnumerationType, supportTranslation : Boolean)]
+[file(type.modelFilename(), false)]
+<?php
+namespace [type.modelsNamespace()/];
+
+class [type.modelClassName()/]
+{
+[for (literal : EnumerationLiteral | type.enumerations)]
+	const [literal.name/] = [i/];
+[/for]
+
+    /*
+     *
+     *
+     * @return array<string, int>
+     */
+	public static function values(): array
+	{
+		$values = ['['/][']'/];
+[for (literal : EnumerationLiteral | type.enumerations)]
+	[if (supportTranslation and false)]
+		$values['['/]'[type.id()/].labels.[literal.id()/]'[']'/] = self::[literal.name/];
+	[else]
+		$values['['/]'[literal.displayLabel/]'[']'/] = self::[literal.name/];
+	[/if]
+[/for]
+
+		return $values;
+	}
+
+    /*
+     *
+     * @param string $value
+     * @param string $default
+     *
+     * @return string
+     */
+	public static function value(string $value, string $default = ''): string
+	{
+		$values = array_flip([type.modelClassName()/]::values());
+
+		if (array_key_exists($value, $values)) {
+			return $values['['/]$value[']'/];
+		}
+
+		return $default;
+	}
+
+}
+[/file]
+[/template]

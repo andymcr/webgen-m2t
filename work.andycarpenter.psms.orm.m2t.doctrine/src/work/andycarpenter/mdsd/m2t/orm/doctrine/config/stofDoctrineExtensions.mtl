@@ -1,0 +1,17 @@
+[comment encoding = UTF-8 /]
+[module stofDoctrineExtensions(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+
+
+[template public configStofDoctrineExtensions(model : OrmModel)]
+[file (model.configPackagesDirectory().concat('/stof_doctrine_extensions').concat(model.yamlExtension()), false)]
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+[if (model.timestampCreation or model.timestampUpdates)]
+            timestampable: true
+[/if]
+[/file]
+[/template]

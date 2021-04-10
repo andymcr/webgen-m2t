@@ -1,0 +1,109 @@
+[comment encoding = UTF-8 /]
+[module collectionUnique(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public collectionUnique(model : OrmModel)]
+[file(model.constraintsDirectory().concat('/').concat(model.collectionUniqueClassName()).concat(model.executableExtension()), false)]
+<?php
+namespace [model.constraintsNamespace()/];
+
+use Symfony\Component\Validator\Constraint;
+
+
+/**
+ * @Annotation
+ */
+class [model.collectionUniqueClassName()/] extends Constraint
+{
+    /**
+     * @var string $message
+     */
+    public string $message = 'Value already used';
+
+    /**
+     * @var string $uniquePropertyPath
+     */
+    private $uniquePropertyPath;
+
+    /**
+     * @var string $containerPropertyPath
+     */
+    private $containerPropertyPath;
+
+    /**
+     * @var string $collectionPropertyPath
+     */
+    private $collectionPropertyPath;
+
+
+    public function __construct($options = null)
+    {
+        foreach ($options as $key => $value) {
+            if (strcmp($key, "uniqueProperty") == 0) {
+                $this->uniquePropertyPath = $value;
+            } else if (strcmp($key, "containerProperty") == 0) {
+                $this->containerPropertyPath = $value;
+            } else if (strcmp($key, "collectionProperty") == 0) {
+                $this->collectionPropertyPath = $value;
+            } else {
+                throw new \InvalidArgumentException($key . " invalid");
+            }
+        }
+
+        if (!isset($this->uniquePropertyPath)) {
+            throw new \InvalidArgumentException("uniqueProperty value missing");
+        }
+        if (!isset($this->containerPropertyPath)) {
+            throw new \InvalidArgumentException("containerProperty value missing");
+        }
+        if (!isset($this->containingPropertyPath)) {
+            throw new \InvalidArgumentException("collectionProperty value missing");
+        }
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getRequiredOptions(): array
+    {
+        return ['['/]'uniqueProperty', 'containerProperty', 'containingProperty'[']'/];
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargets(): string
+    {
+        return self::CLASS_CONSTRAINT;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniquePropertyPath(): string
+    {
+        return $this->uniquePropertyPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContainerPropertyPath(): string
+    {
+        return $this->containerPropertyPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCollectionPropertyPath(): string
+    {
+        return $this->collectionPropertyPath;
+    }
+
+}
+[/file]
+[/template]

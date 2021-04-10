@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module page(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+
+
+[template public pageJs(page : Page)]
+[file(page.javascriptFilename(), false)]
+import Autocomplete from './autocomplete'
+
+[for (field : UnitField | page.autocompleteFields)]
+[let path : String = field.oclAsType(UnitAssociation).uriPath(field.displayedOn)]
+const [field.instanceName()/] = new Autocomplete(
+    "[field.displayedOn.contentType.name.snakeCase()/]_[field.instanceName()/]",
+    location.origin + '[path.first(path.lastIndex('/'))/]');
+
+[/let]
+[/for]
+[/file]
+[/template]
+

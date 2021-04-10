@@ -1,0 +1,20 @@
+[comment encoding = UTF-8 /]
+[module parameters(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::parameters/]
+
+
+[template public configParameters(siteProperties : SiteProperties)]
+[file (siteProperties.configPackagesDirectory().concat('/parameters').concat(siteProperties.yamlExtension()), false)]
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    [siteProperties.localeId()/]: '[siteProperties.locale/]'
+    [siteProperties.siteTitleId()/]: '[siteProperties.siteTitle/]'
+    [siteProperties.webmasterId()/]: '[siteProperties.webmasterEmail/]'
+    [siteProperties.securityFromEmailId()/]: '[siteProperties.securityFromEmail/]'
+    [siteProperties.securityFromNameId()/]: '[siteProperties.securityFromName/]'
+#    copyright_text: '[siteProperties.copyrightText/]'
+[/file]
+[/template]

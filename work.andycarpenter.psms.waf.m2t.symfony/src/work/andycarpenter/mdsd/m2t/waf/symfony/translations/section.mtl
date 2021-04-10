@@ -1,0 +1,195 @@
+[comment encoding = UTF-8 /]
+[module section(
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+
+
+[template public sectionsTranslations(model : WafModel)]
+[for (page : Page | model.pages->select(p | p.parentPage.oclIsUndefined()))]
+[page.sectionTranslations()/]
+[/for]
+[/template]
+
+[template private sectionTranslations(page : Page) post(trim())]
+[file (page.transDirectory().concat('/').concat(page.translationDomain()).concat('.en').concat(page.xlfExtension()), false)]
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+ <file source-language="en" datatype="plaintext" original="file.ext">
+  <body>
+[if (page.hasAnyEditUnits)]
+   <trans-unit id="[page.cancelLabelId()/]">
+    <source>[page.cancelLabelId()/]</source>
+    <target>[page.partOf.defaultCancelLabel.validXML()/]</target>
+   </trans-unit>
+   <trans-unit id="[page.submitLabelId()/]">
+    <source>[page.submitLabelId()/]</source>
+    <target>[page.partOf.defaultSaveLabel.validXML()/]</target>
+   </trans-unit>
+[/if]
+   [page.translations()/]
+  </body>
+ </file>
+</xliff>
+[/file]
+[/template]
+
+[template private translations(page : Page) post(trim())]
+<trans-unit id="[page.displayLabelId()/]">
+ <source>[page.displayLabelId()/]</source>
+ <target>[page.displayLabel.validXML()/]</target>
+</trans-unit>
+[for (unit : ContentUnit | page.units)]
+[unit.translations()/]
+[/for]
+[for (child : Page | page.childPages)]
+[child.translations()/]
+[/for]
+[/template]
+
+[template private translations(unit : ContentUnit) post(trim())]
+<trans-unit id="[unit.displayLabelId()/]">
+ <source>[unit.displayLabelId()/]</source>
+ <target>[unit.displayLabel.validXML()/]</target>
+</trans-unit>
+[if (unit.hasUnitTranslations())]
+[unit.unitTranslations()/]
+[/if]
+[if (unit.hasFieldTranslations())]
+[unit.fieldTranslations()/]
+[/if]
+[if (unit.oclIsKindOf(DynamicUnit))]
+	[for (action : Action | unit.oclAsType(DynamicUnit).actions)]
+[action.translations()/]
+	[/for]
+[/if]
+[/template]
+
+[template private unitTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(DynamicUnit) and not unit.oclIsKindOf(EditUnit)) post (trim())]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[if (dynamicUnit.hasHiddenMessage)]
+<trans-unit id="[dynamicUnit.hiddenMessageId()/]">
+ <source>[dynamicUnit.hiddenMessageId()/]</source>
+ <target>[dynamicUnit.messageWhenHidden.validXML()/]</target>
+</trans-unit>
+[/if]
+[/let]
+[/template]
+
+[template private unitTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(EditUnit)) post (trim())]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[if (editUnit.hasCustomisedSubmitLabel())]
+<trans-unit id="[editUnit.submitLabelId()/]">
+ <source>[editUnit.submitLabelId()/]</source>
+ <target>[editUnit.confirmLabel.validXML()/]</target>
+</trans-unit>
+[/if]
+[if (not editUnit.cancelDestination.oclIsUndefined() and editUnit.hasCustomisedCancelLabel())]
+<trans-unit id="[editUnit.cancelLabelId()/]">
+ <source>[editUnit.cancelLabelId()/]</source>
+ <target>[editUnit.cancelLabel.validXML()/]</target>
+</trans-unit>
+[/if]
+[if (editUnit.hasConfirmMessage)]
+<trans-unit id="[editUnit.confirmMessageId()/]">
+ <source>[editUnit.confirmMessageId()/]</source>
+ <target>[editUnit.confirmMessage.text.validXML()/]</target>
+</trans-unit>
+[/if]
+[if (editUnit.hasSuccessMessage)]
+<trans-unit id="[editUnit.successMessageId()/]">
+ <source>[editUnit.successMessageId()/]</source>
+ <target>[editUnit.successMessage.text.validXML()/]</target>
+</trans-unit>
+[/if]
+[/let]
+[/template]
+
+[template private unitTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(SecurityUnit)) post (trim())]
+[let securityUnit : SecurityUnit = unit.oclAsType(SecurityUnit)]
+[/let]
+[/template]
+
+[template private fieldTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(DynamicUnit)) post (trim())]
+[for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
+	[if (field.hasCustomisedDisplayLabel or unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
+<trans-unit id="[field.customisedDisplayLabelId()/]">
+ <source>[field.customisedDisplayLabelId()/]</source>
+ <target>[field.displayLabel.validXML()/]</target>
+</trans-unit>
+	[/if]
+	[if (unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
+[comment form translates all or none of display label, title and placeholder /]
+		[if (field.hasPlaceholder)]
+<trans-unit id="[field.customisedPlaceholderId()/]">
+ <source>[field.customisedPlaceholderId()/]</source>
+ <target>[field.placeholder().validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (field.hasTitle)]
+<trans-unit id="[field.customisedTitleId()/]">
+ <source>[field.customisedTitleId()/]</source>
+ <target>[field.title.validXML()/]</target>
+</trans-unit>
+		[/if]
+	[/if]
+	[if (unit.oclIsKindOf(EditUnit) and field.hasHelp)]
+<trans-unit id="[field.helpId()/]">
+ <source>[field.helpId()/]</source>
+ <target>[field.help.validXML()/]</target>
+</trans-unit>
+	[/if]
+	[if (unit.oclIsKindOf(EditUnit) and field.isRepeated)]
+	[let interface : InterfaceField = field.oclAsType(InterfaceField)]
+		[if (interface.secondDisplayLabel <> '')]
+<trans-unit id="[interface.secondDisplayLabelId()/]">
+ <source>[interface.secondDisplayLabelId()/]</source>
+ <target>[interface.secondDisplayLabel.validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (interface.secondPlaceholder <> '')]
+<trans-unit id="[interface.secondPlaceholderId()/]">
+ <source>[interface.secondPlaceholderId()/]</source>
+ <target>[interface.secondPlaceholder.validXML()/]</target>
+</trans-unit>
+		[/if]
+		[if (interface.secondHelp <> '')]
+<trans-unit id="[interface.secondHelpId()/]">
+ <source>[interface.secondHelpId()/]</source>
+ <target>[interface.secondHelp.validXML()/]</target>
+</trans-unit>
+		[/if]
+	[/let]
+	[/if]
+[/for]
+[/template]
+
+[template private translations(action : Action) post (trim())]
+<trans-unit id="[action.displayLabelId()/]">
+ <source>[action.displayLabelId()/]</source>
+ <target>[action.displayLabel.validXML()/]</target>
+</trans-unit>
+[if (action.hasConfirmMessage)]
+[action.confirmMessageId().actionMessageTranslation(action.confirmMessage)/]
+[/if]
+[if (action.hasFailureMessage)]
+[action.failureMessageId().actionMessageTranslation(action.failureMessage)/]
+[/if]
+[if (action.hasSuccessMessage)]
+[action.successMessageId().actionMessageTranslation(action.successMessage)/]
+[/if]
+[/template]
+
+[template private actionMessageTranslation(id : String, message : String) post (trim())]
+<trans-unit id="[id/]">
+ <source>[id/]</source>
+ <target>[message.validXML()/]</target>
+</trans-unit>
+[/template]

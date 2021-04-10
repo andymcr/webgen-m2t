@@ -1,0 +1,171 @@
+[comment encoding = UTF-8 /]
+[module uriRoutes(
+	'http://andycarpenter.work/metamodel/api',
+	'http://andycarpenter.work/metamodel/expression',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
+
+
+[query public routingType(unit : DynamicUnit) : Entity
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).routingType()
+		else if unit.oclIsKindOf(SingletonUnit) then
+			unit.oclAsType(SingletonUnit).routingType()
+		else
+			null
+		endif endif
+/]
+
+[query public routingType(unit : CollectionUnit) : Entity
+	=  if unit.selection.oclIsUndefined() then
+			unit.contentType.parentEntity()
+		else if unit.selection.selectPath->notEmpty() then
+			unit.selection.selectionType.keyEntity()
+		else
+			unit.contentType.parentEntity()
+		endif endif
+/]
+
+[query public routingType(unit : SingletonUnit) : Entity
+	= if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
+			unit.contentType.parentEntity()
+		else if unit.oclIsTypeOf(DetailsUnit) then
+			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
+				in if detailsUnit.selection.oclIsUndefined() then
+						unit.contentType.keyEntity()
+					else if detailsUnit.selection.selectPath->notEmpty() then
+						detailsUnit.selection.selectionType.keyEntity()
+					else
+						detailsUnit.contentType.keyEntity()
+					endif endif
+		else
+			unit.contentType.keyEntity()
+		endif endif
+/]
+
+
+[query public uriPathKeys(resource : Resource) : Sequence(Attribute)
+	= resource.repository.serves.uriPathKeys()
+/]
+
+
+[query public hasRouteParameters(page : Page) : Boolean
+	= page.routeParameters()->notEmpty()
+/]
+
+[query public hasRouteParameters(unit : DynamicUnit) : Boolean
+	= unit.routeParameters()->notEmpty()
+/]
+
+[query public hasRouteParameters(unit : DynamicUnit, selection : Selection) : Boolean
+	= unit.routeParameters(selection)->notEmpty()
+/]
+
+[query public hasRouteContainerParameters(unit : DynamicUnit) : Boolean
+	= unit.routeContainerParameters()->notEmpty()
+/]
+
+[query public hasRouteUpdateParameters(unit : EditUnit) : Boolean
+	= unit.routeUpdateParameters()->notEmpty()
+/]
+
+[query public hasRouteParameters(action : Action) : Boolean
+	= action.routeParameters()->notEmpty()
+/]
+
+[query public routeParameters(page : Page) : Sequence(Attribute)
+	= if page.dynamicUnits->isEmpty() then
+			Sequence{}
+		else if page.dynamicUnits->size() = 1 then
+			page.dynamicUnits->first().routeParameters()
+		else
+			page.dynamicUnits->subOrderedSet(2, page.dynamicUnits->size())->iterate(u;
+				common : Sequence(Attribute) = page.dynamicUnits->first().routeParameters()
+				| common->select(k | u.routeParameters()->includes(k)))
+		endif endif
+/]
+
+[query public routeParameters(unit : DynamicUnit) : Sequence(Attribute)
+	= unit.routeParameters(unit.routingType(), unit.selection())
+/]
+
+[query private selection(unit : DynamicUnit) : Selection
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).selection
+		else if unit.oclIsKindOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).selection
+		else
+			null
+		endif endif
+/]
+
+[query public routeParameters(unit : DynamicUnit, selection : Selection) : Sequence(Attribute)
+	= unit.routeParameters(unit.routingType(), selection)
+/]
+
+[query public routeContainerParameters(unit : DynamicUnit) : Sequence(Attribute)
+	= unit.routeParameters(unit.containingType, null)
+		->select(p | unit.routeParameters()->includes(p))
+/]
+
+[query public routeUpdateParameters(unit : EditUnit) : Sequence(Attribute)
+	= unit.routeParameters(unit.contentType, null)
+/]
+
+[query private routeParameters(unit : DynamicUnit, routingType : Entity, selection : Selection) : Sequence(Attribute)
+	= if selection.oclIsUndefined() then
+			if routingType.oclIsUndefined() then
+				Sequence{}
+			else
+				unit.routeParameters(routingType.uriPathKeys(),
+					routingType.uriPathKeys()->asSet())
+			endif
+		else
+			if routingType.oclIsUndefined() then
+				Sequence{}
+			else
+					unit.routeParameters(routingType.uriPathKeys(),
+						selection.selectionKeys())
+			endif
+		endif
+/]
+
+[query public routeParameters(action : Action) : Sequence(Attribute)
+	= if action.parentUnit.oclIsKindOf(CollectionUnit) then
+			action.parentUnit.routeParameters(
+				action.parentUnit.contentType,
+				action.parentUnit.oclAsType(CollectionUnit).findElementSelection)
+		else
+			action.parentUnit.routeParameters(action.parentUnit.contentType, null)
+		endif
+/]
+
+[query private routeParameters(unit : DynamicUnit, uriPathKeys : Sequence(Attribute), selectionKeys : Set(Attribute)) : Sequence(Attribute)
+	= let keysWithActuals : Sequence(Attribute)
+		= unit.routeActuals->collect(a | a.routeParameter)
+		in uriPathKeys->select(k | not keysWithActuals->includes(k) and selectionKeys->includes(k))
+/]
+
+[query public routeParameters(resource : Resource) : Sequence(Attribute)
+	= resource.uriPathKeys()
+/]
+
+
+[query public hasRouteActual(unit : DynamicUnit, key : Attribute) : Boolean
+	= not unit.routeActual(key).oclIsUndefined()
+/]
+
+[query public routeActual(unit : DynamicUnit, key : Attribute) : RouteActual
+	= unit.routeActuals->any(a | a.routeParameter = key)
+/]
+
+
+[query public isDislayedOnlyOnExplicitRoute(unit : CollectionUnit) : Boolean
+	= unit.oclAsType(DynamicUnit).isDislayedOnlyOnExplicitRoute()
+/]
+
+[query public isDislayedOnlyOnExplicitRoute(unit : DynamicUnit) : Boolean
+	= not unit.displayedOn.routeParameters()->includesAll(unit.routeParameters())
+/]

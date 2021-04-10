@@ -1,0 +1,89 @@
+[comment encoding = UTF-8 /]
+[module collectionUniqueValidator(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public collectionUniqueValidator(model : OrmModel)]
+[file(model.constraintsDirectory().concat('/').concat(model.collectionUniqueClassName()).concat(model.validatorClassNamePostfix()).concat(model.executableExtension()), false)]
+<?php
+namespace [model.constraintsNamespace()/];
+
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
+
+/**
+ * @Annotation
+ */
+class [model.collectionUniqueClassName()/][model.validatorClassNamePostfix()/] extends ConstraintValidator
+{
+    /**
+     *
+     * @param object $item
+     * @param Constraint $constraint 
+     */
+    public function validate($item, Constraint $constraint): void
+    {
+        if (!$constraint instanceof CollectionUnique) {
+            throw new UnexpectedTypeException($constraint, CollectionUnique::class);
+        }
+
+        $duplicate = false;
+        $uniqueAccessor = PropertyAccess::createPropertyAccessor();
+        $newValue = $uniqueAccessor->getValue($item, $constraint->getUniquePropertyPath());
+        $siblings = $this->getSiblings($item, $constraint);
+        foreach ($siblings as $sibling) {
+            if (strcmp($newValue, $uniqueAccessor->getValue($sibling, $constraint->getUniquePropertyPath())) === 0) {
+                $duplicate = true;
+            }
+        }
+
+        if ($duplicate) {
+            $this->context->buildViolation($constraint->message)
+                ->atPath($constraint->getUniquePropertyPath())
+                ->addViolation();
+        }
+    }
+
+    /**
+     *
+     * @param object $item
+     * @param CollectionUnique $constraint
+     *
+     * @return Collection<int, object>
+     */
+    private function getSiblings($item, CollectionUnique $constraint): Collection
+    {
+        $container = $this->getContainer($item, $constraint);
+        $collectionAccessor = PropertyAccess::createPropertyAccessor();
+        $siblings = $collectionAccessor->getValue($container, $constraint->getCollectionPropertyPath());
+        if (!$siblings instanceof Collection) {
+            throw new \Exception("Collection path is not a collection");
+        }
+        return $siblings;
+    }
+
+    /**
+     *
+     * @param object $item
+     * @param CollectionUnique $constraint
+     *
+     * @return object
+     */
+    private function getContainer($item, CollectionUnique $constraint): object
+    {
+        $containerAccessor = PropertyAccess::createPropertyAccessor();
+        $container = $containerAccessor->getValue($item, $constraint->getContainerPropertyPath());
+        if (!is_object($container)) {
+            throw new \Exception("No container object returned");
+        }
+        return $container;
+    }
+}
+[/file]
+[/template]

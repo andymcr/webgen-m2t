@@ -1,0 +1,53 @@
+[comment encoding = UTF-8 /]
+[module entity(
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+
+
+[template public entityTranslations(model : WafModel)]
+[file (model.transDirectory().concat('/').concat('entity.en').concat(model.xlfExtension()), false)]
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+ <file source-language="en" datatype="plaintext" original="file.ext">
+  <body>
+   <trans-unit id="actions.labels.select_one">
+    <source>actions.labels.select_one</source>
+    <target>Please select one</target>
+   </trans-unit>
+[for (enumerationType : EnumerationType | model.persistence.enumerationTypes)]
+   [enumerationType.translations()/]
+[/for]
+[for (entity : Entity | model.persistence.entities)]
+   [entity.translations()/]
+[/for]
+  </body>
+ </file>
+</xliff>
+[/file]
+[/template]
+
+[template private translations(enumerationType : EnumerationType) post(trim())]
+[for (literal : EnumerationLiteral | enumerationType.enumerations)]
+<trans-unit id="[enumerationType.id()/].labels.[literal.id()/]">
+ <source>[enumerationType.id()/].labels.[literal.id()/]</source>
+ <target>[literal.displayLabel.validXML()/]</target>
+</trans-unit>
+[/for]
+[/template]
+
+[template private translations(entity : Entity) post(trim())]
+<trans-unit id="label.[entity.id()/]">
+ <source>label.[entity.id()/]</source>
+ <target>[entity.displayLabel.validXML()/]</target>
+</trans-unit>
+[for (feature : Feature | entity.features)]
+<trans-unit id="[feature.displayLabelId()/]">
+ <source>[feature.displayLabelId()/]</source>
+ <target>[feature.displayLabel.validXML()/]</target>
+</trans-unit>
+[/for]
+[/template]

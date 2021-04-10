@@ -1,0 +1,64 @@
+[comment encoding = UTF-8 /]
+[module titles(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
+
+
+[template public unitTitle(unit : SingletonUnit)
+	? (unit.title.oclIsUndefined()) post(trim())]
+[unit.title()/]
+[/template]
+
+[template public unitTitle(unit : SingletonUnit)
+	? (not unit.title.oclIsUndefined()) post(trim())]
+[let contentAccessor : String = unit.instanceParameter()]
+[unit.title(unit.title, contentAccessor)/]
+[/let]
+[/template]
+
+[template public unitTitle(unit : CollectionUnit)
+	? (unit.unitTitle.oclIsUndefined()) post(trim())]
+[unit.title()/]
+[/template]
+
+[template public unitTitle(unit : CollectionUnit)
+	? (not unit.unitTitle.oclIsUndefined()) post(trim())]
+[let contentAccessor : String = unit.containerType.instanceName()]
+[unit.title(unit.unitTitle, contentAccessor)/]
+[/let]
+[/template]
+
+[template public unitTitle(unit : CollectionUnit, contentAccessor : String)
+	? (unit.unitTitle.oclIsUndefined()) post(trim())]
+[unit.title()/]
+[/template]
+
+[template public unitTitle(unit : CollectionUnit, contentAccessor : String)
+	? (not unit.unitTitle.oclIsUndefined()) post(trim())]
+[unit.title(unit.unitTitle, contentAccessor)/]
+[/template]
+
+[template private title(unit : DynamicUnit) post(trim())]
+{{ '[unit.displayLabelId()/]' | trans[if (not unit.oclIsKindOf(EditUnit))]({}, '[unit.translationDomain()/]')[/if] }}
+[/template]
+
+[template private title(unit : DynamicUnit, title : Label, accessor : String) post(trim())]
+[let labelAccessor : String
+	= if title.oclIsKindOf(Attribute) then
+			accessor.concat('.').concat(title.oclAsType(Attribute).modelPropertyName())
+		else if unit.oclIsKindOf(EditUnit) then
+			accessor.concat('.vars.value')
+		else
+			accessor
+		endif endif]
+{{ [title.label(labelAccessor)/] }}
+[/let]
+[/template]
+
+

@@ -1,0 +1,28 @@
+[comment encoding = UTF-8 /]
+[module badge(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
+
+
+[template public badge(badge : Badge, accessor : String) post(trim())]
+[if (not badge.displayWhen.oclIsUndefined())]
+{%- if [badge.displayWhen.twigExpression(accessor)/] -%}[/if]
+<span[if (not badge.badgeClass.oclIsUndefined())]
+ class="[badge.badgeClass/]"[/if][if (not badge.title.oclIsUndefined())]
+ title="{{ '[badge.titleId()/]' | trans }}"[/if]>[if (not badge.value.oclIsUndefined())]
+[badge.value(accessor)/][elseif (badge.iconName <> '')]
+[badge.icon()/][/if]
+</span>[if (not badge.displayWhen.oclIsUndefined())]
+{%- endif -%}[/if]
+[/template]
+
+[template private value(badge : Badge, accessor : String) post(trim())]
+{{ [badge.value.getValue(accessor)/] }}
+[/template]
+
+[template private icon(badge : Badge) post(trim())]
+<i class="[badge.iconName/]"></i>
+[/template]

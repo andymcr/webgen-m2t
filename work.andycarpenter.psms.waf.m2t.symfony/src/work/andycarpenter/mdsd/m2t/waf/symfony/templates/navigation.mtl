@@ -1,0 +1,176 @@
+[comment encoding = UTF-8 /]
+[module navigation(
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::image/]
+
+
+[template public navigation(navigation : Navigation, siteProperties : SiteProperties)]
+[file(navigation.navigationDirectory().concat('/navigation').concat(navigation.htmlExtension()).concat(navigation.twigExtension()), false)]
+[let menu : Menu = navigation.menus->first()]
+{% trans_default_domain "navigation" %}
+
+{% block navigation %}
+[if (navigation.authenticationMenuPlacement = AuthenticationMenuPlacement::Above)]
+[navigation.authenticationBar()/]
+[/if]
+<nav[if (navigation.hasNavbarClass)] class="[navigation.navbarClass/]"[/if]>
+ <div class="container-fluid">
+[if (not siteProperties.logoImage.oclIsUndefined())]
+  <span class="navbar-brand">[siteProperties.image()/]</span>
+[/if]
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+   <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+   [menu.topItems()/]
+  </div>
+ </div>
+</nav>
+[if (navigation.authenticationMenuPlacement = AuthenticationMenuPlacement::Below)]
+[navigation.authenticationBar()/]
+[/if]
+{% endblock %}
+[/let]
+[/file]
+[/template]
+
+
+[template private topItems(menu : Menu) post(trim())]
+<div class="navbar-nav">
+[for (entry : MenuEntry | menu.entries)]
+ [entry.topEntry()/]
+[/for]
+[if (menu.definedBy.partOf.isAuthenticated
+		and menu.definedBy.authenticationMenuPlacement = AuthenticationMenuPlacement::Integrated)]
+ [menu.definedBy.partOf.userDropdown()/]
+[/if]
+</div>
+[/template]
+
+[template private topEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[if (action.action.isAuthorised)]
+{% if is_granted('[action.action.authorisationRoles/]') %}[/if]
+<a class="nav-link{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
+ disabled[/if]" href="{{ path('[action.routeName()/]') }}">{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised)]
+{% endif %}[/if]
+[/let]
+[/template]
+
+[template private topEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
+[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
+[if (submenu.isAuthorised)]
+{% if is_granted('[submenu.authorisationRoles/]') %}[/if]
+[if (submenu.entries->isEmpty())]
+<a class="nav-link disabled"><{{ '[submenu.displayLabelId()/]' | trans }}/a>
+[else]
+<div class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#[submenu.id()/]" role="button" aria-expanded="false">{{ '[submenu.displayLabelId()/]' | trans }}</a>
+ [submenu.subDropdown()/]
+</div>
+[/if]
+[if (submenu.isAuthorised)]
+{% endif %}[/if]
+[/let]
+[/template]
+
+[template private subDropdown(submenu : SubmenuEntry) post(trim())]
+<ul id="[submenu.id()/]" class="dropdown-menu">
+[for (subEntry : MenuEntry | submenu.entries)]
+  [subEntry.dropEntry()/]
+[/for]
+</ul>
+[/template]
+
+[template private dropEntry(entry : MenuEntry)
+	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
+[let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
+[if (action.action.isAuthorised)]
+{% if is_granted('[action.action.authorisationRoles/]') %}[/if]
+<li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
+ disabled[/if]" href="{{ path('[action.routeName()/]') }}">{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised)]
+{% endif %}[/if]
+[/let]
+[/template]
+
+
+[template private authenticationBar(navigation : Navigation) post(trim())]
+<nav id="authentication_menu"[if (navigation.hasAuthenticationBarClass)] class="[navigation.authenticationBarClass/]"[/if]>
+[if (navigation.partOf.isLocallyAuthenticated)]
+ [navigation.partOf.localAuthentication.authenticationBar()/]
+[elseif (navigation.partOf.isCasAuthenticated)]
+ [navigation.partOf.casAuthentication.authenticationBar()/]
+[/if]
+</nav>
+[/template]
+
+[template private authenticationBar(security : LocalAuthenticationSystem) post(trim())]
+{%- if app.user -%}
+<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}:</a>
+<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Profile</a>
+<a class="nav-link" href="{{ path('[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a>
+{%- elseif not app.user -%}
+<a class="nav-link" href="{{ path('[security.loginUnit.oclAsType(LoginUnit).routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a>
+[if (security.allowSelfRegistration)]
+<a class="nav-link" href="{{ path('[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a>
+[/if]
+{%- endif -%}
+[/template]
+
+[template private authenticationBar(security : CasAuthentication) post(trim())]
+{%- if app.user -%}
+<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}</a>
+<a class="nav-link" href="{{ path('app_logout') }}">[security.logoutLabel/]</a>
+{%- elseif not app.user -%}
+<a class="nav-link" href="{{ path('login') }}">[security.loginLabel/]</a>
+{%- endif -%}
+[/template]
+
+[template private userDropdown(model : WafModel) post(trim())]
+<div class="nav-item dropdown">
+{%- if app.user -%}
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
+{%- elseif not app.user -%}
+[if (model.isLocallyAuthenticated)]
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ '[model.localAuthentication.loginUnit.displayLabelId()/]' | trans({}, '[model.localAuthentication.loginUnit.translationDomain()/]') }}</a>
+{%- endif -%}
+ [model.localAuthentication.userDropdown()/]
+[elseif (model.isCasAuthenticated)]
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">[model.casAuthentication.loginLabel/]</a>
+{%- endif -%}
+ [model.casAuthentication.userDropdown()/]
+[/if]
+</div>
+[/template]
+
+[template private userDropdown(security : LocalAuthenticationSystem) post(trim())]
+<ul id="user-dropdown" class="dropdown-menu">
+{%- if app.user -%}
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'xxx' %} active{% endif %}" href="xx">Profile</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'yyy' %} active{% endif %}" href="yyy">Password</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a></li>
+{%- elseif not app.user -%}
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.loginUnit.oclAsType(LoginUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.loginUnit.oclAsType(LoginUnit).routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a></li>
+[if (security.allowSelfRegistration)]
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a></li>
+[/if]
+{%- endif -%}
+</ul>
+[/template]
+
+[template private userDropdown(security : CasAuthentication) post(trim())]
+<ul id="user-dropdown" class="dropdown-menu">
+{%- if app.user -%}
+<li>{{ app.user.username }}&nbsp;<a href="{{ path('app_logout') }}">[security.logoutLabel/]</a></li>
+{%- elseif not app.user -%}
+<li><a href="{{ path('login') }}">[security.loginLabel/]</a></li>
+{%- endif -%}
+</ul>
+[/template]

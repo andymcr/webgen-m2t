@@ -1,0 +1,66 @@
+[comment encoding = UTF-8 /]
+[module detailsMethods(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::actions/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::criteriaDoctrine/]
+
+
+[template public unitMethods(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[detailsUnit.actionMethod()/]
+[/let]
+[/template]
+
+[template private actionMethod(unit : DetailsUnit) post(trim())]
+/**
+ [unit.routeAnnotation()/]
+[if (unit.isAuthorised)]
+ [unit.securityAnnotation()/]
+[/if]
+ */
+public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
+{
+[if (unit.isConditionallyDisplayed)]
+    [unit.actionCore()/]
+
+[/if]
+    return $this->renderPage([unit.renderMethodActuals()/]);
+}
+[/template]
+
+[template public actionCore(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.selection.oclIsUndefined())]
+[detailsUnit.instanceVariable()/] = [detailsUnit.loadInstance()/];
+if (is_null([detailsUnit.instanceVariable()/])) {
+    throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
+}
+[else]
+[detailsUnit.instanceVariable()/] = $this->[detailsUnit.selection.definedBy.instanceName()/]->[detailsUnit.selection.methodName/]();
+[/if]
+[/let]
+[/template]
+
+[template private templateParameters(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.isConditionallyDisplayed)]
+if (isset([detailsUnit.instanceVariable()/]))
+    $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
+[else]
+	[if (not detailsUnit.displayedOn.hasSingleActionMethod()) ]
+[unit.actionCore()/]
+	[/if]
+$parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
+[/if]
+[/let]
+[/template]
