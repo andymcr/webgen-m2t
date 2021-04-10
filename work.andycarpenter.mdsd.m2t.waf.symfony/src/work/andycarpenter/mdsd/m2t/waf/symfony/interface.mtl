@@ -1,0 +1,344 @@
+[comment encoding = UTF-8 /]
+[module interface(
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes]
+
+
+[query public asId(string : String) : String
+	= if self.size() < 2 then
+			self.toLowerCase()
+		else
+			self.substring(1, 1)
+				.concat(self.substring(2, self.size()).replaceAll('([A-Z][^A-Z])', '_$1'))
+				.toLowerCase()
+		endif
+/]
+
+
+[query public homeUnit(model : WafModel) : ContentUnit
+	= let homes : Sequence(ActionMenuEntry)
+		= model.navigation.menus.menuEntries()
+			->select(e | e.name.equalsIgnoreCase('Home'))
+		in if homes->notEmpty() then
+				homes->first().action
+			else
+				null
+			endif
+/]
+
+[query private menuEntries(menu : Menu) : Sequence(ActionMenuEntry)
+	= menu.entries
+		->select(e | e.oclIsKindOf(ActionMenuEntry)).oclAsType(ActionMenuEntry)
+		->union(
+			menu.entries
+				->select(e | e.oclIsKindOf(SubmenuEntry)).oclAsType(SubmenuEntry)
+				->collect(m | m.menuEntries())
+			)
+/]
+
+[query public labelId(menu : Menu) : String
+	= if menu.oclIsTypeOf(SubmenuEntry) then
+			menu.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menu.name.asId())
+		else
+			menu.name.asId()
+		endif
+/]
+
+[query public id(menuEntry : SubmenuEntry) : String
+	= if menuEntry.partOf.oclIsTypeOf(SubmenuEntry) then
+			menuEntry.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menuEntry.name.asId())
+		else
+			menuEntry.name.asId().concat('_menu')
+		endif
+/]
+
+
+[query public id(enumerationType : EnumerationType) : String
+	= enumerationType.name.asId()
+/]
+
+
+[query public id(literal : EnumerationLiteral) : String
+	= literal.name.asId()
+/]
+
+
+[query public id(entity : Entity) : String
+	= entity.name.asId()
+/]
+
+
+[query public id(feature : Feature) : String
+	= feature.name.asId()
+/]
+
+
+[query public styleClass(menu : Menu) : String
+	= menu.styleClass
+/]
+
+
+[query public hasJavascript(page : Page) : Boolean
+	= page.hasAutocompleteFields
+/]
+
+[query public hasRoutingUnits(page : Page) : Boolean
+	= page.routingUnits()->notEmpty()
+/]
+
+[query public id(page : Page) : String
+	= page.name.asId()
+/]
+
+[query public hasFiltersOrPagination(page : Page) : Boolean
+	= page.hasFilters or page.hasPagination
+/]
+
+[query public routingUnits(page : Page) : OrderedSet(ContentUnit)
+	= page.dynamicUnits
+		->select(u | not u.oclIsKindOf(SecurityUnit))
+		->select(u | u.routeParameters() = page.routeParameters())
+/]
+
+
+[query public cancelId(unit : EditUnit) : String
+	= 'cancel'
+/]
+
+[query public cancelLabel(unit : DynamicUnit) : String
+	= if unit.oclIsKindOf(EditUnit) then
+			unit.oclAsType(EditUnit).cancelLabel
+		else if unit.oclIsKindOf(ControlUnit) then
+			unit.oclAsType(ControlUnit).cancelLabel
+		else
+			'unexpectedUnit'
+		endif endif
+/]
+
+[query public containedId(unit : ContentUnit) : String
+	= unit.displayedOn.id().concat('.').concat(unit.name.asId())
+/]
+
+[query public formId(unit : DynamicUnit) : String
+	= let typeName : String
+		= unit.contentType.name.asId()
+		in if false then
+				typeName
+			else
+				typeName
+			endif
+/]
+
+[query public hasClearLabel(unit : EditUnit) : Boolean
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+			not unit.oclAsType(CreateUpdateUnit).clearLabel.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
+[query public hasCustomisedCancelLabel(unit : EditUnit) : Boolean
+	= unit.cancelLabel <> unit.displayedOn.partOf.defaultCancelLabel
+/]
+
+[query public hasCustomisedSubmitLabel(unit : EditUnit) : Boolean
+	= unit.confirmLabel <> unit.displayedOn.partOf.defaultSaveLabel
+/]
+
+[query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
+	= false
+/]
+
+[comment query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if unit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormHead
+				or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+				or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasMessagesOnFormFoot(unit : DynamicUnit) : Boolean
+	= false
+/]
+
+[comment query public hasMessagesOnFormFoot(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if uUnit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::FormFoot
+			or placementOption = InputMessagePlacementOptions::FormHeadAndFoot
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasMessagesOnFeature(unit : DynamicUnit) : Boolean
+	= true
+/]
+
+[comment query public hasMessagesOnFeature(unit : DynamicUnit) : Boolean
+	= let placementOption : InputMessagePlacementOptions
+			= if unit.oclIsKindOf(EditUnit) then
+					unit.oclAsType(EditUnit).messagePlacementOption
+				else if unit.oclIsKindOf(ControlUnit) then
+					unit.oclAsType(ControlUnit).messagePlacementOption
+				else
+					null
+				endif endif
+		in if placementOption.oclIsUndefined() then
+			false
+		else
+			placementOption = InputMessagePlacementOptions::OnFeature
+			or placementOption = InputMessagePlacementOptions::FormAndOnFeature
+		endif
+/]
+
+[query public hasOmittedFieldLabels(unit : DynamicUnit) : Boolean
+	= if unit.oclIsKindOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).omitFieldLabels
+		else if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).omitFieldLabels
+		else
+			false
+		endif endif
+/]
+
+[query public id(unit : ContentUnit) : String
+	= unit.displayedOn.id().concat('.labels.').concat(unit.name.asId())
+/]
+
+[query public isHomeUnit(unit : ContentUnit) : Boolean
+	= let homeUnit : ContentUnit
+		= unit.displayedOn.partOf.homeUnit()
+		in if homeUnit.oclIsUndefined() then
+				false
+			else
+				homeUnit = unit
+			endif
+/]
+
+[query public isRoutingUnit(unit : ContentUnit) : Boolean
+	= let routingUnits : OrderedSet(ContentUnit)
+		= unit.displayedOn.routingUnits()
+		in if routingUnits->isEmpty() then
+				false
+			else
+				routingUnits->first() = unit
+			endif
+/]
+
+[query public submitId(unit : EditUnit) : String
+	= 'submit'
+/]
+
+
+[query public hasCustomisedPlaceholder(field : UnitField) : Boolean
+	= if field.oclIsTypeOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).hasCustomisedPlaceholder
+		else if field.oclIsTypeOf(InterfaceField) then
+			field.oclAsType(InterfaceField).hasCustomisedPlaceholder
+		else
+			false
+		endif endif
+/]
+
+[query public hasLocalInputGroupClass(field : UnitField) : Boolean
+	= field.localInputGroupClass() <> ''
+/]
+
+[query public hasLocalFieldLabelClass(field : UnitField) : Boolean
+	= field.localFieldLabelClass() <> ''
+/]
+
+[query public hasLocalFieldValueClass(field : UnitField) : Boolean
+	= field.localFieldValueClass() <> ''
+/]
+
+[query public hasPlaceholder(field : UnitField) : Boolean
+	= (field.oclIsTypeOf(UnitAttribute) or field.oclIsKindOf(InterfaceField))
+		and field.hasPlaceholder
+/]
+
+[query public id(field : UnitField) : String
+	= if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).name.asId()
+		else
+			field.persistentFeature.id()
+		endif
+/]
+
+[query public interfaceId(field : UnitField) : String
+	= field.displayedOn.id().concat('.').concat(field.id())
+/]
+
+[query public isConditionalDisplay(field : UnitField) : Boolean
+	= not field.hideWhen.oclIsUndefined()
+/]
+
+[query public localFieldLabelClass(field : UnitField) : String
+	= if field.localFieldLabelClass <> '' then
+			field.localFieldLabelClass
+		else
+			field.displayedOn.localFieldLabelClass
+		endif
+/]
+
+[query public localFieldValueClass(field : UnitField) : String
+	= if field.localFieldValueClass <> '' then
+			field.localFieldValueClass
+		else
+			field.displayedOn.localFieldValueClass
+		endif
+/]
+
+[query public localInputGroupClass(field : UnitField) : String
+	= if field.localInputGroupClass <> '' then
+			field.localInputGroupClass
+		else
+			field.displayedOn.localInputGroupClass
+		endif
+/]
+
+[query public placeholder(field : UnitField) : String
+	= if field.oclIsKindOf(UnitAttribute) then
+			field.oclAsType(UnitAttribute).placeholder
+		else if field.oclIsKindOf(InterfaceField) then
+			field.oclAsType(InterfaceField).placeholder
+		else
+			null
+		endif endif
+/]
+
+
+[query public id(badge : Badge) : String
+	= 'title'
+/]
+
+
+[query public id(action : Action) : String
+	= action.name.asId()
+/]
+
+[query public containedId(action : Action) : String
+	= action.parentUnit.containedId().concat('.actions.').concat(action.id())
+/]

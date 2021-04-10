@@ -1,0 +1,35 @@
+[comment encoding = UTF-8 /]
+[module parameters(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+
+
+[query private appId(eObject : EObject) : String
+	= 'app'
+/]
+
+[query public localeId(properties : SiteProperties) : String
+	= properties.appId().concat('.').concat('locale')
+/]
+
+[query public siteTitleId(properties : SiteProperties) : String
+	= properties.appId().concat('.').concat('site_title')
+/]
+
+[query public webmasterId(properties : SiteProperties) : String
+	= properties.appId().concat('.').concat('webmaster')
+/]
+
+[query private securityId(properties : SiteProperties) : String
+	= properties.appId().concat('.').concat('security')
+/]
+
+[query public securityFromEmailId(properties : SiteProperties) : String
+	= properties.securityId().concat('.').concat('from_email')
+/]
+
+[query public securityFromNameId(properties : SiteProperties) : String
+	= properties.securityId().concat('.').concat('from_name')
+/]
+

@@ -1,0 +1,932 @@
+[comment encoding = UTF-8 /]
+[module entity(
+	'http://andycarpenter.work/metamodel/expression',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::expression/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::types/]
+
+
+[query private isReservedWord(word : String) : Boolean
+	= let reserved : Set(String) 
+		= Set{'order'}
+		in reserved->includes(word)
+/]
+
+[query private includeFeature(feature : Feature) : Boolean
+	= not feature.partOf.implementsResetPasswordInterface
+		or (feature.name <> 'expiresAt'
+			and feature.name <> 'ipAddress'
+			and feature.name <> 'requestedAt'
+			and feature.name <> 'selector')
+/]
+
+
+[template public model(entity : Entity)]
+[file(entity.modelFilename(), false)]
+<?php
+namespace [entity.modelsNamespace()/];
+
+[entity.useStatements()/]
+
+
+/**
+ * @ORM\Entity[if(not entity.repository.oclIsUndefined())]
+(repositoryClass=[entity.repository.className()/]::class)[/if]
+
+ * @ORM\Table(name="[entity.tableName/]")
+[if (entity.unique->notEmpty())]
+	[if (entity.unique->size() = 1)]
+ * @UniqueEntity("[entity.unique->first().modelPropertyName()/]")
+	[else]
+ * @UniqueEntity(
+ *     fields={[for (feature : Feature | entity.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for]}
+ * )
+	[/if]
+[/if]
+[for (attribute : Attribute | entity.uniqueAttributes)]
+ * @UniqueEntity("[attribute.modelPropertyName()/]")
+[/for]
+[if (entity.isContained)]
+	[for (attribute : Attribute | entity.containerUniqueAttributes)]
+ * @AppAssert\CollectionUnique(uniqueProperty="[attribute.modelPropertyName()/]", containerProperty="[entity.containingAssociation.modelPropertyName()/]", collectionProperty="[entity.containingAssociation.opposite.modelPropertyName()/]")
+	[/for]
+[/if]
+[if (entity.hasResourceAttributes)]
+ * @Vich\Uploadable
+[/if]
+ **/
+class [entity.modelClassName()/][if (entity.implementsUserInterface)]
+ implements UserInterface[/if][if (entity.implementsForumUser)]
+ implements ForumUserInterface[/if][if (entity.implementsResetPasswordInterface)]
+ implements ResetPasswordRequestInterface[/if]
+
+{
+[if (entity.implementsResetPasswordInterface)]
+    use ResetPasswordRequestTrait;
+
+[/if]
+[if (not entity.hasPrimaryKeys)]
+    [entity.autoIdFeature()/]
+
+[/if]
+    [entity.featureProperties()/]
+
+[if (entity.implementsForumUser)]
+    [entity.forumUserProperties()/]
+
+[/if]
+[if ((entity.partOf.timestampCreation or entity.partOf.timestampUpdates)
+		and not entity.implementsResetPasswordInterface)]
+    [entity.timestampFeatures()/]
+
+[/if]
+[if (entity.hasFeaturesWithDefaultValue
+		or entity.hasResourceAttributes
+		or entity.hasCollectionAssociations
+		or entity.implementsResetPasswordInterface)]
+    [entity.constructor()/]
+
+[/if]
+[if (not entity.hasPrimaryKeys)]
+    [entity.idMethods()/]
+
+[/if]
+[for (feature : Feature | entity.features->select(f | f.includeFeature()))]
+    [feature.featureMethods()/]
+
+[/for]
+[if (entity.implementsUserInterface)]
+    [entity.userInterfaceMethods()/]
+
+[/if]
+[if (entity.implementsForumUser)]
+    [entity.forumUserMethods()/]
+
+[/if]
+[if ((entity.partOf.timestampCreation or entity.partOf.timestampUpdates)
+		and not entity.implementsResetPasswordInterface)]
+    [entity.timestampMethods()/]
+
+[/if]
+[for (label : ModelLabel | entity.labels)]
+    [label.label()/]
+
+[/for]
+}
+[/file]
+[/template]
+
+[template private useStatements(entity : Entity) post(trim())]
+[if(not entity.repository.oclIsUndefined())]
+use [entity.repositoryNamespace()/]\[entity.repository.className()/];
+[/if]
+use Doctrine\ORM\Mapping as ORM;
+[if (entity.hasCollectionAssociations)]
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Selectable;
+[/if]
+[if (not entity.implementsResetPasswordInterface
+		and (entity.partOf.timestampCreation
+				or entity.partOf.timestampUpdates
+				or entity.hasSlugAttributes))]
+use Gedmo\Mapping\Annotation as Gedmo;
+[/if]
+[if (entity.unique->notEmpty() or entity.hasUniqueAttributes)]
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+[/if]
+[if (entity.hasResourceAttributes)]
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+[/if]
+[if (entity.implementsUserInterface)]
+use Symfony\Component\Security\Core\User\UserInterface;
+[/if]
+[if (entity.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
+use Symfony\Component\Serializer\Annotation\Groups;
+[/if]
+[if (entity.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
+	->select(a | a.isVisible or a.isOwningEnd)
+	->select(a | a.serializationMaxDepth > 0)->notEmpty())]
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+[/if]
+[if (entity.hasValidatedFeatures)]
+use Symfony\Component\Validator\Constraints as Assert;
+[/if]
+[if (entity.implementsResetPasswordInterface)]
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+[/if]
+[if (entity.hasResourceAttributes)]
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+[/if]
+[if (entity.isContained and entity.containerUniqueAttributes->notEmpty())]
+use [entity.validatorNamespace()/]\Constraints as AppAssert;
+[/if]
+[if (entity.implementsForumUser)]
+use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
+[/if]
+[/template]
+
+[template private autoIdFeature(entity : Entity) post(trim())]
+/**
+ * @ORM\Id
+ * @ORM\Column(type="[entity.autoKeyPersistentType/]")
+ * @ORM\GeneratedValue[if (not entity.autoKeyGenerationStrategy.oclIsUndefined())](strategy="[entity.autoKeyGenerationStrategy/]")[/if]
+ *
+ * @var int $[entity.autoKeyName/]
+ */
+protected $[entity.autoKeyName/];
+[/template]
+
+[template private featureProperties(entity : Entity) post(trim())]
+[for (feature : Feature | entity.allFeatures
+		->select(f | f.isVisible or f.isOwningEnd)
+		->select(f | f.includeFeature()))]
+[feature.featureProperty()/]
+
+[/for]
+[/template]
+
+[template private featureProperty(feature : Feature) post(trim())]
+[comment TODO sortout location features /]
+[if (not feature.isLocationFeature and not feature.isResourceFeature)]
+/**
+ [feature.ormAnnotation()/]
+	[if (feature.isValidated)]
+ [feature.validationAnnotation()/]
+	[/if]
+	[if (feature.hasSerializationControl)]
+ [feature.serializationAnnotation()/]
+	[/if]
+ *
+ * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
+ */
+protected [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/];
+
+[elseif (feature.isResourceFeature)]
+/**
+ * @ORM\Column(type="string")
+ *
+ * @var string|null
+ */
+protected $[feature.modelPropertyName()/]Name;
+
+/**
+ * @Vich\UploadableField(mapping="[feature.modelPropertyName()/]", fileNameProperty="[feature.modelPropertyName()/]Name", size="[feature.modelPropertyName()/]Size", mimeType="[feature.modelPropertyName()/].mimeType", originalName="[feature.modelPropertyName()/].originalName", dimensions="[feature.modelPropertyName()/].dimensions")
+ *
+ * @var File|null
+ */
+protected $[feature.modelPropertyName()/]File;
+
+[/if]
+[/template]
+
+[template private forumUserProperties(entity : Entity) post(trim())]
+[if (entity.features->select(f | f.name = 'username')->isEmpty())]
+/**
+ * @var string $username
+ */
+protected string $username;
+
+[/if]
+/**
+ * @ORM\Column(name="avatar_url", type="string", nullable=true)
+ *
+ * @var string $avatarUrl
+ */
+protected string $avatarUrl;
+
+/**
+ * @ORM\Column(name="nb_post", type="integer", nullable=true)
+ *
+ * @var integer $nbPost
+ */
+protected int $nbPost;
+
+/**
+ * @ORM\Column(name="banned", type="boolean", nullable=true)
+ *
+ * @var boolean $banned
+ */
+protected bool $banned;
+[/template]
+
+[template private timestampFeatures(entity : Entity) post(trim())]
+[if (entity.partOf.timestampCreation)]
+/**
+ * @ORM\Column(type="datetime")
+ * @Gedmo\Timestampable(on="create")
+ *
+ * @var \DateTimeInterface $created
+ */
+protected \DateTimeInterface $created;
+
+[/if]
+[if (entity.partOf.timestampUpdates)]
+/**
+ * @ORM\Column(type="datetime", nullable=true)
+ * @Gedmo\Timestampable(on="update")
+ *
+ * @var \DateTimeInterface $updated
+ */
+protected \DateTimeInterface $updated;
+[/if]
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(Attribute) and feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+[if (attribute.isPrimaryKey)]
+* @ORM\Id
+[/if]
+* @ORM\Column([if (feature.columnName <> feature.modelPropertyName() or feature.columnName.isReservedWord())]
+[feature.columnName()/], [/if]type="[attribute.ormType()/]"[if (not attribute.isRequired)], nullable=true[/if])
+[if (attribute.slugFields->notEmpty())]
+* @Gedmo\Slug(fields={[for (field : Attribute | attribute.slugFields) separator(', ')]"[field.columnName/]"[/for]})
+[/if]
+[/let]
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(Attribute) and not feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+* @ORM\Column([if (feature.columnName <> feature.modelPropertyName() or feature.columnName.isReservedWord())]
+[feature.columnName()/], [/if]type="[attribute.ormType()/]")
+[/let]
+[/template]
+
+[template private columnName(feature : Feature) post(trim())]
+name="[if (feature.columnName.isReservedWord())]
+`[/if][feature.columnName/][if (feature.columnName.isReservedWord())]
+`[/if]"
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(Association) and feature.isSingleton) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
+[let opposite : Association = association.opposite]
+[if (association.isPrimaryKey)]
+* @ORM\Id
+[/if]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelClassName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
+, [if (association.isOwningEnd)]
+inversedBy[else]mappedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains)]
+, [if (association.isOwningEnd)]orphanRemoval=true[else]cascade={"persist", "remove"}[/if][/if][/if])
+[if (association.isOwningEnd)]
+	[if (association.keys->notEmpty())]
+[association.explicitKeys()/]
+	[elseif (association.targetType.hasPrimaryKeys)]
+[association.primaryKeys()/]
+	[else]
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[association.targetType.autoKeyName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])
+	[/if]
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template private ormAnnotation(feature : Feature)
+	? (feature.oclIsKindOf(Association) and not feature.isSingleton) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
+[let opposite : Association = association.opposite]
+* @ORM\[association.associationRelationship/](targetEntity="[association.modelClassName()/]"[if (opposite.isVisible or opposite.isOwningEnd)]
+, [if (association.associationRelationship = AssociationRelationships::OneToMany or not association.isOwningEnd)]
+mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.isContains)]
+, cascade={"persist", "remove"}[/if][/if])
+[if (association.isOwningEnd)]
+* @ORM\JoinTable(name="[association.pivotTableName/]",
+	[if (association.keys->notEmpty())]
+[association.explicitKeysOwning()/]
+	[elseif (association.sourceType.primaryKeys->notEmpty())]
+[association.primaryKeysOwning()/]
+	[else]
+*     joinColumns={@ORM\JoinColumn(name="[association.columnName/]"[if (association.sourceType.autoKeyName.toLowerCase() <> 'id')]
+, referencedColumnName="[association.sourceType.autoKeyName.toLowerCase()/]"[/if], nullable=false)},
+	[/if]
+	[if (association.keys->notEmpty())]
+[association.explicitKeysInverse()/]
+	[elseif (association.targetType.primaryKeys->notEmpty())]
+[association.primaryKeysInverse()/]
+	[else]
+*     inverseJoinColumns={@ORM\JoinColumn(name="[association.opposite.columnName/]"[if (association.targetType.autoKeyName.toLowerCase() <> 'id')]
+, referencedColumnName="[association.targetType.autoKeyName.toLowerCase()/]"[/if], nullable=false)})
+	[/if]
+[/if]
+[/let]
+[/let]
+[/template]
+
+[template private explicitKeys(association : Association) post(trim())]
+[if (association.keys->size() = 1)]
+[let key : AssociationKey = association.keys->first()]
+* @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])
+[/let]
+[else]
+* @ORM\JoinColumns({[for (key : AssociationKey | association.keys) separator(',')]
+
+*     @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", referencedColumnName="[key.targetFeature.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])[/for]
+
+* })
+[/if]
+[/template]
+
+[template private explicitKeysOwning(association : Association) post(trim())]
+[if (association.keys->size() = 1)]
+[let key : AssociationKey = association.keys->first()]
+*     joinColumns={@ORM\JoinColumn(name="[key.sourceFeature.columnName/]")},
+[/let]
+[else]
+*     joinColumns={[for (key : AssociationKey | association.keys) separator(',')]
+
+*         @ORM\JoinColumn(name="[key.sourceFeature.columnName/]", nullable=false)[/for]
+
+*     },
+[/if]
+[/template]
+
+[template private explicitKeysInverse(association : Association) post(trim())]
+[if (association.keys->size() = 1)]
+[let key : AssociationKey = association.keys->first()]
+*     joinColumns={@ORM\JoinColumn(name="[key.targetFeature.columnName/]")},
+[/let]
+[else]
+*     joinColumns={[for (key : AssociationKey | association.keys) separator(',')]
+
+*         @ORM\JoinColumn(name="[key.targetFeature.columnName/]", nullable=false)[/for]
+
+*     },
+[/if]
+[/template]
+
+[template private primaryKeys(association : Association) post(trim())]
+[if (association.targetType.primaryKeys->size() = 1)]
+[let key : Feature = association.targetType.primaryKeys->first()]
+* @ORM\JoinColumn(name="[association.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])
+[/let]
+[else]
+* @ORM\JoinColumns({[for (key : Feature | association.targetType.primaryKeys) separator(',')]
+
+*     @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]"[if (association.isRequired)], nullable=false[/if])[/for]
+
+* })
+[/if]
+[/template]
+
+[template private primaryKeysOwning(association : Association) post(trim())]
+[if (association.partOf.oclAsType(Entity).primaryKeys->size() = 1)]
+[let key : Feature = association.partOf.oclAsType(Entity).primaryKeys->first()]
+*     joinColumns={@ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)},
+[/let]
+[else]
+*     joinColumns={[for (key : Feature | association.sourceType.primaryKeys) separator(',')]
+
+*         @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
+
+*     },
+[/if]
+[/template]
+
+[template private primaryKeysInverse(association : Association) post(trim())]
+[if (association.targetType.primaryKeys->size() = 1)]
+[let key : Feature = association.targetType.primaryKeys->first()]
+*     inverseJoinColumns={@ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)},
+[/let]
+[else]
+*     inverseJoinColumns={[for (key : Feature | association.targetType.primaryKeys) separator(',')]
+
+*         @ORM\JoinColumn(name="[key.columnName/]", referencedColumnName="[key.columnName.toLowerCase()/]", nullable=false)[/for]
+
+*     },
+[/if]
+[/template]
+
+[template private validationAnnotation(feature : Feature) post(trim())]
+[if (feature.isRequired)]
+	[if (feature.oclIsKindOf(Attribute))]
+* @Assert\NotBlank
+	[else]
+* @Assert\NotNull
+	[/if]
+[/if]
+[if (feature.isContains)]
+* @Assert\Valid
+[/if]
+[/template]
+
+[template private serializationAnnotation(feature : Feature) post(trim())]
+[if (feature.serializationGroups->notEmpty())]
+* @Groups({[for (group : SerializationGroup | feature.serializationGroups) separator(', ')]"[group.name/]"[/for]})
+[/if]
+[if (feature.oclIsKindOf(Association))]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.serializationMaxDepth > 0)]
+* @MaxDepth([association.serializationMaxDepth/])
+	[/if]
+[/let]
+[/if]
+[/template]
+
+[template private constructor(entity : Entity) post(trim())]
+public function __construct([if (entity.implementsResetPasswordInterface)]
+object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken[/if])
+{
+[if (entity.implementsResetPasswordInterface)]
+    $this->user = $user;
+    $this->initialize($expiresAt, $selector, $hashedToken);
+[/if]
+[for (feature : Feature | entity.features)]
+	[if (feature.hasDefaultValue)]
+    $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
+	[/if]
+	[if (feature.oclIsKindOf(Attribute) and not feature.isSingleton)]
+    $this->[feature.modelPropertyName()/] = Array();
+	[/if]
+	[if (feature.oclIsTypeOf(Association) and not feature.isSingleton)]
+    $this->[feature.modelPropertyName()/] = new ArrayCollection();
+	[/if]
+[/for]
+}
+[/template]
+
+[template private idMethods(entity : Entity) post(trim())]
+/**
+ *
+ *
+ * @return int
+ */
+public function getId(): int
+{
+    return $this->[entity.autoKeyName/];
+}
+[/template]
+
+[template private featureMethods(feature : Feature) post(trim())]
+[if (feature.isResourceFeature)]
+[feature.getFileNameMethod()/]
+
+[feature.setFileNameMethod()/]
+
+[feature.getFileMethod()/]
+
+[feature.setFileMethod()/]
+
+[else]
+[feature.getMethod()/]
+
+	[if (not feature.isDerived)]
+		[if (feature.isSingleton)]
+[feature.setMethod()/]
+
+		[else]
+			[if (feature.collectionOrmAllowAdd)]
+[feature.addMethod()/]
+
+			[/if]
+			[if (feature.collectionOrmAllowRemove)]
+[feature.removeMethod()/]
+
+			[/if]
+		[/if]
+	[/if]
+[/if]
+[/template]
+
+[template private getMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @return [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if]
+ */
+public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
+{
+[if (feature.isDerived)]
+    // [protected (feature.name.concat('.getMethod'))]
+    [feature.getMethodCore()/]
+    // [/protected]
+[else]
+    [feature.getMethodCore()/]
+[/if]
+}
+[/template]
+
+[template private getMethodCore(feature : Feature) post(trim())]
+return $this->[feature.modelPropertyName()/];
+[/template]
+
+[template private getFileNameMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @return string|null
+ */
+public function [feature.getMethodName()/]Name(): ?string
+{
+    return $this->[feature.modelPropertyName()/]Name;
+}
+[/template]
+
+[template private getFileMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @return File|null
+ */
+public function [feature.getMethodName()/]File(): ?File
+{
+    return $this->[feature.modelPropertyName()/]File;
+}
+[/template]
+
+[template private setMethod(feature : Feature)
+	? (feature.oclIsKindOf(Attribute) and feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+/**
+ *
+ *
+ * @param [attribute.documentationType()/][if (not feature.isRequired)]|null[/if] $[attribute.instanceName()/]
+ */
+public function [attribute.setMethodName()/]([if (not feature.isRequired)]?[/if][attribute.implementationType()/] $[attribute.instanceName()/]): void
+{
+[if (attribute.customiseSet)]
+    // [protected (attribute.name.concat('.setMethod'))]
+    [attribute.setMethodCore()/]
+    // [/protected]
+[else]
+    [attribute.setMethodCore()/]
+[/if]
+}
+[/let]
+[/template]
+
+[template private setMethodCore(attribute : Attribute) post(trim())]
+[if (attribute.oclIsTypeOf(DataTypeAttribute))]
+[let element : DataTypeAttribute = attribute.oclAsType(DataTypeAttribute)]
+	[if (element.caseInsensitive)]
+		[if (element.isRequired)]
+$this->[element.modelPropertyName()/] = strtolower($[element.instanceName()/]);
+		[else]
+$this->[element.modelPropertyName()/] = is_null($[element.instanceName()/]) ? $[element.instanceName()/] : strtolower($[element.instanceName()/]);
+		[/if]
+	[elseif (element.encrypt and not element.name.equalsIgnoreCase('password'))]
+//				array(array(Auth::instance(), 'hash_password_and_salt'), array(':value', ':model')),
+	[elseif (element.isEnumerationFeature or element.isBooleanFeature)]
+$this->[element.modelPropertyName()/] = $[element.instanceName()/];
+	[else]
+$this->[element.modelPropertyName()/] = $[element.instanceName()/];
+	[/if]
+	[if (element.name.equalsIgnoreCase('password'))]
+		[if (element.partOf.features->select(f | f.name.equalsIgnoreCase('passwordChangedAt'))->notEmpty())]
+$this->[element.partOf.features->any(f | f.name.equalsIgnoreCase('passwordChangedAt')).setMethodName()/](new \DateTimeImmutable());
+		[/if]
+	[/if]
+[/let]
+[elseif (attribute.oclIsTypeOf(DateAttribute))]
+$this->[attribute.modelPropertyName()/] = $[attribute.instanceName()/];
+[/if]
+[/template]
+
+[template private setFileNameMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @param string|null $[feature.instanceName()/]Name
+ */
+public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/]Name): void
+{
+    $this->[feature.modelPropertyName()/]Name = $[feature.instanceName()/]Name;
+}
+[/template]
+
+[template private setFileMethod(feature : Feature) post(trim())]
+/**
+ * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $[feature.instanceName()/]File
+ **/
+public function [feature.setMethodName()/]File(?File $[feature.instanceName()/]File): void
+{
+    $this->[feature.modelPropertyName()/]File = $[feature.instanceName()/]File;
+    if (null !== $[feature.instanceName()/]File) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+        $this->updated = new \DateTimeImmutable();
+    }
+}
+[/template]
+
+[template private setMethod(feature : Feature)
+	? (feature.oclIsKindOf(Association)) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
+/**
+ *
+ *
+ * @param [association.documentationType()/] $[association.instanceName()/]
+ */
+public function set[association.modelPropertyName().toUpperFirst()/]([association.implementationType()/] $[association.instanceName()/]): void
+{
+[if (association.customiseSet)]
+    // [protected (association.name.concat('.setMethod'))]
+    $this->[association.modelPropertyName()/] = $[association.instanceName()/];
+    // [/protected]
+[else]
+    $this->[association.modelPropertyName()/] = $[association.instanceName()/];
+[/if]
+}
+[/let]
+[/template]
+
+[template private addMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @param [feature.elementType()/] $[feature.singletonName/]
+ */
+public function [feature.addMethodName()/]([feature.elementType()/] $[feature.singletonName/]): void
+{
+[if (feature.isUnique)]
+    if (!in_array($[feature.singletonName/], $this->[feature.modelPropertyName()/], true)) {
+	[if (feature.oclIsKindOf(Attribute))]
+        $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.singletonName/];
+	[else]
+        $this->[feature.modelPropertyName()/]->add($[feature.singletonName/]);
+	[/if]
+    }
+[else]
+	[if (feature.oclIsKindOf(Attribute))]
+    $this->[feature.modelPropertyName()/]['['/][']'/] = $[feature.singletonName/];
+	[else]
+    $this->[feature.modelPropertyName()/]->add($[feature.singletonName/]);
+	[/if]
+[/if]
+[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd)]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.isOppositeSingleton)]
+    $[association.singletonName/]->[association.opposite.setMethodName()/]($this);
+	[else]
+    $[association.singletonName/]->[if (association.opposite.collectionOrmAllowAdd)]
+[association.opposite.addMethodName()/][else]
+[association.opposite.getMethodName()/]->add[/if](this);
+	[/if]
+[/let]
+[/if]
+}
+[/template]
+
+[template private removeMethod(feature : Feature) post(trim())]
+/**
+ *
+ *
+ * @param [feature.elementType()/] $[feature.singletonName/]
+ */
+public function [feature.removeMethodName()/]([feature.elementType()/] $[feature.singletonName/]): void
+{
+[if (feature.oclIsKindOf(Attribute))]
+    unset($this->[feature.modelPropertyName()/]['['/]array_search($[feature.singletonName/], $this->[feature.columnName/])[']'/]);
+[else]
+    $this->[feature.modelPropertyName()/]->removeElement($[feature.singletonName/]);
+[/if]
+[if (feature.oclIsKindOf(Association) and not feature.isOwningEnd)]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.isOppositeSingleton)]
+    $[association.singletonName/]->[association.opposite.setMethodName()/](null);
+	[else]
+    $[association.singletonName/]->[if (association.opposite.collectionOrmAllowRemove)]
+[association.opposite.removeMethodName()/][else]
+[association.opposite.getMethodName()/]->removeElement[/if](this);
+	[/if]
+[/let]
+[/if]
+}
+[/template]
+
+[template private userInterfaceMethods(entity : Entity) post(trim())]
+[if (entity.features->select(f | f.name = 'roles')->isEmpty())]
+/**
+ * @see UserInterface
+ */
+public function getRoles(): array
+{
+    $roles = $this->roles;
+    // guarantee every user at least has ROLE_USER
+    $roles['['/][']'/] = 'ROLE_USER';
+
+    return array_unique($roles);
+}
+
+public function setRoles(array $roles): self
+{
+    $this->roles = $roles;
+
+    return $this;
+}
+
+[/if]
+[if (entity.features->select(f | f.name = 'password')->isEmpty())]
+/**
+ * @see UserInterface
+ */
+public function getPassword(): ?string
+{ 
+    return (string) $this->password; 
+} 
+
+public function setPassword(string $password): self
+{
+    $this->password = $password;
+
+    return $this;
+}
+
+[/if]
+/**
+ * Returning a salt is only needed, if you are not using a modern
+ * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+ *
+ * @see UserInterface
+ */
+public function getSalt(): ?string
+{ 
+    return null; 
+} 
+
+/**
+ * @see UserInterface
+ */
+public function eraseCredentials(): void
+{ 
+} 
+[/template]
+
+[template private forumUserMethods(entity : Entity) post(trim())]
+[if (entity.features->select(f | f.name = 'username')->isEmpty())]
+/**
+ * @return string
+ */
+public function getUsername()
+{
+    return $this->username;
+}
+
+/**
+ * @param string $username
+ *
+ * @return User
+ */
+public function setUsername($username)
+{
+    $this->username = $username;
+    return $this;
+}
+
+[/if]
+/**
+ * @return string
+ */
+public function getAvatarUrl()
+{
+    return $this->avatarUrl;
+}
+
+/**
+ * @param string $avatarUrl
+ *
+ * @return User
+ */
+public function setAvatarUrl($avatarUrl)
+{
+    $this->avatarUrl = $avatarUrl;
+    return $this;
+}
+
+/**
+ * @return int
+ */
+public function getNbPost()
+{
+    return $this->nbPost;
+}
+
+/**
+ * @param int $nbPost
+ *
+ * @return User
+ */
+public function setNbPost($nbPost)
+{
+    $this->nbPost = $nbPost;
+    return $this;
+}
+
+public function addNbPost($nb)
+{
+    $this->nbPost += $nb;
+
+    return $this;
+}
+
+/**
+ * @return bool
+ */
+public function isBanned()
+{
+    return $this->banned;
+}
+
+/**
+ * @param bool $banned
+ *
+ * @return User
+ */
+public function setBanned($banned)
+{
+    $this->banned = $banned;
+    return $this;
+}
+[/template]
+
+[template private timestampMethods(entity : Entity) post(trim())]
+[if (entity.partOf.timestampCreation)]
+public function getCreated(): \DateTimeInterface
+{
+    return $this->created;
+}
+
+[/if]
+[if (entity.partOf.timestampUpdates)]
+public function getUpdated(): ?\DateTimeInterface
+{
+    return $this->updated;
+}
+[/if]
+[/template]
+
+[template private label(label : ModelLabel) post(trim())]
+/**
+ *
+ *
+ * @return string
+ */
+public function get[label.name.toUpperFirst()/][if (not label.name.endsWith('Label'))]Label[/if](): String
+{
+[if (label.customise)]
+    // [protected ('label.'.concat(label.name))]
+    [label.label2()/]
+    // [/protected]
+[else]
+    [label.label2()/]
+[/if]
+}
+[/template]
+
+[template private label2(label : ModelLabel) post(trim())]
+return sprintf('[label.format/]', [for (feature : ModelLabelFeature | label.features) separator(', ')]
+$this->[if (feature.oclIsTypeOf(ModelLabelAttribute))]
+[let attribute : ModelLabelAttribute = feature.oclAsType(ModelLabelAttribute)]
+[attribute.attribute.modelPropertyName()/][if (attribute.attribute.isDateFeature)]->format('[attribute.dateFormat/]')[/if][/let][else]
+[let association : ModelLabelAssociation = feature.oclAsType(ModelLabelAssociation)]
+[association.association.modelPropertyName()/]->get[if (association.valueDisplay.oclIsUndefined())]
+DefaultLabel[else]
+[association.valueDisplay.name.toUpperFirst()/][if (not association.valueDisplay.name.endsWith('Label'))]Label[/if][/if]()[/let]
+[/if][/for]);
+[/template]

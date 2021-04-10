@@ -1,0 +1,64 @@
+[comment encoding = UTF-8 /]
+[module details(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::badge/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::data/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::fields/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::image/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
+
+
+[template public unitView(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[let accessor : String = detailsUnit.instanceParameter()]
+[file(detailsUnit.templateFilename(), false)]
+{% trans_default_domain "entity" %}
+<section [if (detailsUnit.hasSectionClass)] class="[detailsUnit.sectionClass/]" [/if]id="[detailsUnit.instanceParameter()/]">
+ <h4[if (detailsUnit.hasCaptionClass or detailsUnit.omitCaption)]
+ class="[if (detailsUnit.hasCaptionClass)][detailsUnit.captionClass/][/if] [if (detailsUnit.omitCaption)] hidden[/if]"[/if]>[detailsUnit.unitTitle()/]</h4>
+ [detailsUnit.unitContent(null, accessor, 0)/]
+</section>
+[/file]
+[/let]
+[/let]
+[/template]
+
+[template public unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthInteger : Integer)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[detailsUnit.detailsContent(accessor, depthInteger)/]
+[/let]
+[/template]
+
+[template public detailsContent(unit : DetailsUnit, accessor : String, depthInteger : Integer) post(trim())]
+[unit.fields(accessor)/]
+[/template]
+
+[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
+	? (not field.isAssociationField) post(trim())]
+[field.displayValue(parentAccessor, objectAccess)/]
+[/template]
+
+[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
+	? (field.isAssociationField and field.isSingleton) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[field.displayValue(parentAccessor, objectAccess)/]
+[/let]
+[/template]
+
+[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
+	? (field.isAssociationField and not field.isSingleton) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[field.displayValue(parentAccessor, objectAccess)/]
+[/let]
+[/template]
