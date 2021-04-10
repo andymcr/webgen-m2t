@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module securityMethods(
+	'http://andycarpenter.work/metamodel/Security',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -51,7 +52,7 @@ public function [registrationUnit.actionName()/](Request $request, UserPasswordE
         return $this->redirectToRoute('home');
     }
 
-    $parameters = array();
+    $parameters = ['['/][']'/];
     [registrationUnit.displayedOn.templateParameters()/]
     $parameters['['/]'[registrationUnit.instanceParameter()/]'[']'/] = $[registrationUnit.formVariable()/]->createView();
     $parameters['['/]'[registrationUnit.instanceParameter()/]_error'[']'/] = null;
@@ -108,12 +109,12 @@ public function [unit.actionName()/](AuthenticationUtils $authenticationUtils[if
 [/if]
     }
 
-    [loginUnit.formVariable()/] = $this->createForm([loginUnit.typeClassName()/]::class, null, array(
+    [loginUnit.formVariable()/] = $this->createForm([loginUnit.typeClassName()/]::class, null, ['['/]
         'action' => $this->generateUrl('[unit.routeName()/]'),
         'csrf_token_id' => '[unit.displayedOn.partOf.siteProperties.siteName/]_authenticate',
-    ));
+    [']'/]);
 
-    $parameters = array();
+    $parameters = ['['/][']'/];
     [loginUnit.displayedOn.templateParameters()/]
     $parameters['['/]'[unit.instanceParameter()/]'[']'/] = [loginUnit.formVariable()/]->createView();
     $parameters['['/]'[unit.instanceParameter()/]_error'[']'/] = $authenticationUtils->getLastAuthenticationError();
@@ -162,13 +163,13 @@ public function [unit.actionName()/]Request(Request $request, MailerInterface $m
         }
 [/if]
         return $this->processSendingPasswordResetEmail(
-            [forgottenUnit.formVariable()/]->get('[if (unit.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
+            [forgottenUnit.formVariable()/]->get('[if (unit.genModel.localAuthentication.authenticationKey = AuthenticationKeyTypes::Email)]
 email[else]username[/if]')->getData(),
             $mailer
         );
     }
 
-    $parameters = array();
+    $parameters = ['['/][']'/];
     [forgottenUnit.displayedOn.templateParameters()/]
     $parameters['['/]'[unit.instanceParameter()/]'[']'/] = [forgottenUnit.formVariable()/]->createView();
     $parameters['['/]'[unit.instanceParameter()/]_error'[']'/] = null;
@@ -294,7 +295,7 @@ public function [unit.actionName()/]Reset(Request $request, UserPasswordEncoderI
         return $this->redirectToRoute('[resetUnit.displayedOn.partOf.homeUnit().routeName()/]');
     }
 
-    $parameters = array();
+    $parameters = ['['/][']'/];
     [resetUnit.displayedOn.templateParameters()/]
     $parameters['['/]'[resetUnit.instanceParameter()/]'[']'/] = [resetUnit.formVariable()/]->createView();
     $parameters['['/]'[resetUnit.instanceParameter()/]_error'[']'/] = null;

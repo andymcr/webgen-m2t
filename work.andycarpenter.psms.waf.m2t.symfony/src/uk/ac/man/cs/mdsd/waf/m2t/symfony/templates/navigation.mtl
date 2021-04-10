@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module navigation(
+	'http://andycarpenter.work/metamodel/Security',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
@@ -114,11 +115,11 @@
 {%- if app.user -%}
 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}:</a>
 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Profile</a>
-<a class="nav-link" href="{{ path('[security.logoutUnit.routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a>
+<a class="nav-link" href="{{ path('[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a>
 {%- elseif not app.user -%}
-<a class="nav-link" href="{{ path('[security.loginUnit.routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a>
+<a class="nav-link" href="{{ path('[security.loginUnit.oclAsType(LoginUnit).routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a>
 [if (security.allowSelfRegistration)]
-<a class="nav-link" href="{{ path('[security.registrationUnit.routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a>
+<a class="nav-link" href="{{ path('[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a>
 [/if]
 {%- endif -%}
 [/template]
@@ -138,7 +139,7 @@
  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
 {%- elseif not app.user -%}
 [if (model.isLocallyAuthenticated)]
- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">[model.localAuthentication.loginUnit.displayLabel/]</a>
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ '[model.localAuthentication.loginUnit.displayLabelId()/]' | trans({}, '[model.localAuthentication.loginUnit.translationDomain()/]') }}</a>
 {%- endif -%}
  [model.localAuthentication.userDropdown()/]
 [elseif (model.isCasAuthenticated)]
@@ -154,11 +155,11 @@
 {%- if app.user -%}
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'xxx' %} active{% endif %}" href="xx">Profile</a></li>
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'yyy' %} active{% endif %}" href="yyy">Password</a></li>
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.logoutUnit.routeName()/]' %} active{% endif %}" href="{{ path('[security.logoutUnit.routeName()/]') }}">{{ '[security.logoutUnit.containedId()/].labels.logout' | trans({}, 'security') }}</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a></li>
 {%- elseif not app.user -%}
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.loginUnit.routeName()/]' %} active{% endif %}" href="{{ path('[security.loginUnit.routeName()/]') }}">[security.loginUnit.displayLabel/]</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.loginUnit.oclAsType(LoginUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.loginUnit.oclAsType(LoginUnit).routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a></li>
 [if (security.allowSelfRegistration)]
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.registrationUnit.routeName()/]' %} active{% endif %}" href="{{ path('[security.registrationUnit.routeName()/]') }}">[security.registrationUnit.displayLabel/]</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a></li>
 [/if]
 {%- endif -%}
 </ul>

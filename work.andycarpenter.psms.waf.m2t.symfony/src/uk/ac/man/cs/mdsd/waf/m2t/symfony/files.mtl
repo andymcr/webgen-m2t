@@ -3,6 +3,7 @@
 	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/metamodel/Security',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
@@ -94,11 +95,11 @@
 	= eObject.sourceDirectory().concat('/').concat('Security')
 /]
 
-[query public securityViewDirectorySuffix(security : Authentication) : String
+[query public securityViewDirectorySuffix(security : Security) : String
 	= 'security'
 /]
 
-[query public securityViewDirectory(security : Authentication) : String
+[query public securityViewDirectory(security : Security) : String
 	= security.templatesDirectory().concat('/').concat(security.securityViewDirectorySuffix())
 /]
 
@@ -168,14 +169,14 @@
 /]
 
 
-[query public controllerFilename(authentication : Authentication, model : WafModel) : String
+[query public controllerFilename(security : Security, model : WafModel) : String
 	= if model.hasAPI then
-			authentication.webControllersDirectory()
+			security.webControllersDirectory()
 		else
-			authentication.controllersDirectory()
+			security.controllersDirectory()
 		endif.concat('/')
-			.concat(authentication.controllerClassName())
-			.concat(authentication.executableExtension())
+			.concat(security.controllerClassName())
+			.concat(security.executableExtension())
 /]
 
 [query public controllerFilename(page : Page, model : WafModel) : String

@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module interface(
 	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/metamodel/Security',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes]

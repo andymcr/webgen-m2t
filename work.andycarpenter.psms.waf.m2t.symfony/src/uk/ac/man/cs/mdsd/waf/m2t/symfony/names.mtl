@@ -3,6 +3,7 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://cs.manchester.ac.uk/mdsd/API',
 	'http://andycarpenter.work/psm/Base',
+	'http://andycarpenter.work/metamodel/Security',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
@@ -125,7 +126,7 @@
 	= security.typeClassName(security.changePasswordName())
 /]
 
-[query public controllerClassName(security : Authentication) : String
+[query public controllerClassName(security : Security) : String
 	= security.securityPrefix().concat('Controller').toUpperFirst()
 /]
 

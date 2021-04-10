@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module casAuthenticationModel(
+	'http://andycarpenter.work/metamodel/Security',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]

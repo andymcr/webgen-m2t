@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.engine;bundle-version="3.3.0",
  com.google.guava,
  work.andycarpenter.psms.expression.m2t,
+ work.andycarpenter.metamodel.security,
  work.andycarpenter.psms.orm.m2t.core,
  work.andycarpenter.psms.orm.m2t.doctrine,
  work.andycarpenter.psms.waf.m2t.core

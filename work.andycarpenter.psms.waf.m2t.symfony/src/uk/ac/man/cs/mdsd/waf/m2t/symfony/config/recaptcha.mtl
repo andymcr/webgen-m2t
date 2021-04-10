@@ -1,6 +1,6 @@
 [comment encoding = UTF-8 /]
 [module recaptcha(
-	'http://andycarpenter.work/psm/WebApplicationFramework')]
+	'http://andycarpenter.work/metamodel/Security')]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
 
 

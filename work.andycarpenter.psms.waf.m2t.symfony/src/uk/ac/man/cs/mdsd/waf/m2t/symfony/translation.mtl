@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module translation(
+	'http://andycarpenter.work/metamodel/Security',
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::interface/]
@@ -69,16 +70,20 @@
 /]
 
 
-[query public displayLabelId(unit : ContentUnit) : String
-	= unit.containedId().concat('.caption')
-/]
-
 [query public cancelLabelId(unit : ContentUnit) : String
 	= unit.labelsId().concat('.cancel')
 /]
 
 [query public confirmMessageId(unit : ContentUnit) : String
 	= unit.messagesId().concat('.confirm')
+/]
+
+[query public displayLabelId(unit : ContentUnit) : String
+	= unit.containedId().concat('.caption')
+/]
+
+[query public displayLabelId(unit : SecurityUnit) : String
+	= unit.oclAsType(DynamicUnit).displayLabelId()
 /]
 
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
@@ -126,6 +131,10 @@
 
 [query public translationDomain(unit : ContentUnit) : String
 	= unit.displayedOn.translationDomain()
+/]
+
+[query public translationDomain(unit : SecurityUnit) : String
+	= unit.oclAsType(DynamicUnit).translationDomain()
 /]
 
 
