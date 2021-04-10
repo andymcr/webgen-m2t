@@ -5,6 +5,7 @@
 	'http://andycarpenter.work/psm/ObjectRelationalMapping',
 	'http://andycarpenter.work/psm/service',
 	'http://andycarpenter.work/psm/WebApplicationFramework')]
+[import uk::ac::man::cs::mdsd::orm::m2t::doctrine::files/]
 [import uk::ac::man::cs::mdsd::orm::m2t::doctrine::names/]
 [import uk::ac::man::cs::mdsd::waf::m2t::core::uriRoutes/]
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::files/]
@@ -13,12 +14,29 @@
 [import uk::ac::man::cs::mdsd::waf::m2t::symfony::controllers::commonMethods/]
 
 
+[query private repositoriesUsed(resource : Resource) : Sequence(Repository)
+	= Sequence{ resource.repository }
+		->union(resource.childResources
+			->collect(r | r.repositoriesUsed()))
+		->asSet()
+		->asSequence()
+		->sortedBy(r | r.name)
+/]
+
 [template public controller(resource : Resource, model : WafModel)]
 [file(resource.controllerFilename(), false)]
 <?php
 namespace [resource.apiControllersNamespace()/];
 
-use App\Entity\[resource.repository.serves.modelClassName()/];
+use [resource.modelsNamespace()/]\[resource.repository.serves.modelClassName()/];
+[if (resource.childResources->notEmpty())]
+[resource.childResources.childEntities()/]
+[/if]
+use [resource.repositoryNamespace()/]\[resource.repository.className()/];
+[if (resource.childResources->notEmpty())]
+[resource.childResources.childRepositories()/]
+[/if]
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -33,19 +51,38 @@ use Swagger\Annotations as SWG; /]
  */
 class [resource.controllerClassName()/] extends AbstractFOSRestController
 {
+[for (repository : Repository | resource.repositoriesUsed())]
     /**
-     * @var [resource.repository.className()/] $resource.repository.instanceName()
+     * @var [repository.className()/] $[repository.instanceName()/]
      */
-    private [resource.repository.className()/] $resource.repository.instanceName();
+    private [repository.className()/] $[repository.instanceName()/];
 
-    public function __constructor([resource.repository.className()/] $resource.repository.instanceName())
+[/for]
+    public function __construct([for (repository : Repository | resource.repositoriesUsed()) separator(', ')]
+[repository.className()/] $[repository.instanceName()/][/for])
     {
-        $this->[resource.repository.className()/] = [resource.repository.className()/];
+[for (repository : Repository | resource.repositoriesUsed())]
+        $this->[repository.instanceName()/] = $[repository.instanceName()/];
+[/for]
     }
 
     [resource.resourceActionMethods()/]
 }
 [/file]
+[/template]
+
+[template private childEntities(resource : Resource) post(trim())]
+use [resource.modelsNamespace()/]\[resource.repository.serves.modelClassName()/];
+[if (resource.childResources->notEmpty())]
+[resource.childResources.childEntities()/]
+[/if]
+[/template]
+
+[template private childRepositories(resource : Resource) post(trim())]
+use [resource.repositoryNamespace()/]\[resource.repository.className()/];
+[if (resource.childResources->notEmpty())]
+[resource.childResources.childRepositories()/]
+[/if]
 [/template]
 
 [template private viewAnnotation(resource : Resource) post(trim())]
@@ -71,7 +108,7 @@ class [resource.controllerClassName()/] extends AbstractFOSRestController
 /**
  * @Rest\Get("[resource.uriPath()/]", name="[resource.routeName()/]One")
  * [resource.viewAnnotation()/]
- * [comment @ApiDoc( /]
+ * @ApiDoc(
 [if (resource.parentResource.oclIsUndefined())]
  *     resource="true",
 [/if]
@@ -82,13 +119,13 @@ class [resource.controllerClassName()/] extends AbstractFOSRestController
  *     },
  * )
  *
- * @return [resource.repository.serves.modelClassName()/]
+ * @return [resource.repository.serves.modelClassName()/]|null
  **/
-public function getOne[resource.repository.name/]Action([resource.routeParameterList(true)/]): [resource.repository.serves.modelClassName()/]
+public function get[resource.repository.serves.name/]([resource.routeParameterList(true)/]): ?[resource.repository.serves.modelClassName()/]
 {
-    return $this->[resource.repository.instanceName()/]->[if (resource.getOne.oclIsUndefined())]
-find[else]
-[resource.getOne.instanceName()/][/if]([resource.routeParameterList(false)/]);
+    return $this->[resource.repository.instanceName()/]->[if (resource.repository.findOne.oclIsUndefined())]
+[repository.serves.findMethodName()/][else]
+[resource.repository.findOne.instanceName()/][/if]([resource.routeParameterList(false)/]);
 }
 [/template]
 
@@ -104,18 +141,32 @@ find[else]
 [/if]
  * )
  *
- * @return array<int, [resource.repository.serves.modelClassName()/]>
+ * @return [if (resource.parentResource.oclIsUndefined())]
+array<int, [resource.repository.serves.modelClassName()/]>[if (not resource.repository.findAll.oclIsUndefined())]
+[if (resource.repository.findAll.hasPaginationSupport)]
+|Paginator<[resource.repository.serves.modelClassName()/]>[/if][/if]
+[else]
+[resource.parentResource.repository.serves.modelClassName()/]|null
+[/if]
+
  **/
-public function get[resource.repository.name/]Action(ParamFetcher $paramFetcher[if (not resource.parentResource.oclIsUndefined())]
-, [resource.parentResource.routeParameterList(true)/][/if]): array
+public function get[resource.repository.name/](ParamFetcher $paramFetcher[if (not resource.parentResource.oclIsUndefined())]
+, [resource.parentResource.routeParameterList(true)/][/if])[if (resource.parentResource.oclIsUndefined())]
+[if (resource.repository.findAll.oclIsUndefined())]
+: array[else][if (not resource.repository.findAll.hasPaginationSupport)]
+: array[/if][/if]
+[else]
+: ?[resource.parentResource.repository.serves.modelClassName()/]
+[/if]
+
 {
 [if (resource.parentResource.oclIsUndefined())]
     return $this->[resource.repository.instanceName()/]->[if (resource.getAll.oclIsUndefined())]
 findAll[else]
 [resource.getAll.instanceName()/][/if]($paramFetcher->get("page"), $paramFetcher->get("pageSize"));
 [else]
-    return $this->[resource.parentResource.repository.instanceName()/]->[if (resource.parentResource.getOne.oclIsUndefined())]
-find[else]
+    return $this->[resource.parentResource.repository.instanceName()/]->[if (resource.parentResource.repository.findOne.oclIsUndefined())]
+[resource.parentResource.repository.serves.findMethodName()/][else]
 [resource.parentResource.getOne.instanceName()/][/if]([resource.parentResource.routeParameterList(false)/]);
 [/if]
 }
