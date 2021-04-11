@@ -475,8 +475,26 @@ return $response;
 [action.loadContainer()/]
 	[/if]
 $file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
-$response = $this->file($file, $[action.instanceName()/].getName()[if (not action.fileExtension.oclIsUndefined())]
+$response = $this->file($file, [action.filename()/][if (not action.fileExtension.oclIsUndefined())]
  . '[action.fileExtension/]'[/if]);
 return $response;
+[/if]
+[/template]
+
+[template private filename(action : Action) post(trim())]
+[if (action.isInstanceAction)]
+$[action.instanceName()/]->[action.parentUnit.contentType.accessFilename()/]
+[elseif (not action.oclIsTypeOf(GeneralOperationAction))]
+$[action.instanceName()/]->[action.parentUnit.containingType.accessFilename()/]
+[else]]
+'[action.name/]'
+[/if]
+[/template]
+
+[template private accessFilename(entity : Entity) post(trim())]
+[if (entity.attributeKeys->notEmpty())]
+[entity.attributeKeys->first().getMethodName()/]()
+[else]
+[entity.containingAssociation.getMethodName()/]()->[entity.containingType.accessFilename()/]
 [/if]
 [/template]
