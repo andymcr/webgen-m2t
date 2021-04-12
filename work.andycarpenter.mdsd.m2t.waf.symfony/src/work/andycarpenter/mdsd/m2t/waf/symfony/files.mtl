@@ -95,11 +95,11 @@
 	= eObject.sourceDirectory().concat('/').concat('Security')
 /]
 
-[query public securityViewDirectorySuffix(security : Security) : String
+[query public securityViewDirectorySuffix(security : SecurityModel) : String
 	= 'security'
 /]
 
-[query public securityViewDirectory(security : Security) : String
+[query public securityViewDirectory(security : SecurityModel) : String
 	= security.templatesDirectory().concat('/').concat(security.securityViewDirectorySuffix())
 /]
 
@@ -169,7 +169,7 @@
 /]
 
 
-[query public controllerFilename(security : Security, model : WafModel) : String
+[query public controllerFilename(security : SecurityModel, model : WafModel) : String
 	= if model.hasAPI then
 			security.webControllersDirectory()
 		else

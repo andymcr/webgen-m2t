@@ -36,7 +36,7 @@ username[/if]
 	[elseif (model.isCasAuthenticated)]
         cas:
             entity:
-                class: [model.modelsNamespace()/]\[model.casAuthentication.user.modelClassName()/]
+                class: [model.modelsNamespace()/]\[model.casAuthentication.userModel.modelClassName()/]
                 property: [model.casAuthentication.userKey.columnName/]
 	[else]
         in_memory:

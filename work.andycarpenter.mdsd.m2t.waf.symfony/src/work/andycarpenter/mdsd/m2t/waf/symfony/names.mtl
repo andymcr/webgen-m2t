@@ -117,16 +117,11 @@
 /]
 
 
-[query public instanceName(repository : Repository) : String
-	= repository.className().toLowerFirst()
-/]
-
-
 [query public changePasswordTypeClassName(security : LocalAuthenticationSystem) : String
 	= security.typeClassName(security.changePasswordName())
 /]
 
-[query public controllerClassName(security : Security) : String
+[query public controllerClassName(security : SecurityModel) : String
 	= security.securityPrefix().concat('Controller').toUpperFirst()
 /]
 

@@ -100,6 +100,10 @@
 	= repository.name.concat('Repository')
 /]
 
+[query public instanceName(repository : Repository) : String
+	= repository.className().toLowerFirst()
+/]
+
 
 [query public className(container : ConstantContainer) : String
 	= if container.oclIsTypeOf(Repository) then

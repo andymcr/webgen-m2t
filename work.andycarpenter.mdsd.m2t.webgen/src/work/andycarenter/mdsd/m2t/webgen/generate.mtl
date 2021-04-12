@@ -13,7 +13,7 @@
 [elseif (model.persistence.ormTechnology = OrmTechnologies::Idiorm)]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::Kohana)]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::DoctrineORM)]
-[model.persistence.doctrine(true)/]
+[model.persistence.doctrine(model.security, true)/]
 [elseif (model.persistence.ormTechnology = OrmTechnologies::DoctrineODM)]
 [/if]
 

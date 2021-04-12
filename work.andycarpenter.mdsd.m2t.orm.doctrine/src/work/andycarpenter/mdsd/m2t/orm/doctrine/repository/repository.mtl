@@ -1,7 +1,8 @@
 [comment encoding = UTF-8 /]
 [module repository(
-	'http://andycarpenter.work/metamodel/expression',
 	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/expression',
+	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 [import work::andycarpenter::mdsd::m2t::expression::expression/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constant/]
@@ -35,7 +36,7 @@
 /]
 
 
-[template public repository(repository : Repository)]
+[template public repository(repository : Repository, security : SecurityModel)]
 [file(repository.repositoryFilename(), false)]
 <?php
 namespace [repository.repositoryNamespace()/];
@@ -52,7 +53,7 @@ use Doctrine\ORM\QueryBuilder;
 [if (repository.selections->notEmpty())]
 use Doctrine\ORM\Tools\Pagination\Paginator;
 [/if]
-[if (repository.hasCurrentUser())]
+[if (security.authentication.userModel.repository = repository)]
 use Symfony\Component\Security\Core\Security;
 [/if]
 [if (repository.serves.implementsUserInterface)]
@@ -83,18 +84,30 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
 
 
 [/for]
-[if (repository.hasCurrentUser())]
+[if (security.authentication.userModel.repository = repository)]
     /**
      * @var Security $security
      */
-    private $security;
+    private Security $security;
 
 [/if]
-    public function __construct(ManagerRegistry $managerRegistry[if (repository.serves.implementsUserInterface)], Security $securityX[/if][if (repository.hasCurrentUser())], Security $security[/if])
+[if (repository.hasCurrentUser())]
+    /**
+     * @var [security.authentication.userModel.repository.className()/] $[security.authentication.userModel.repository.instanceName()/]
+     */
+    private [security.authentication.userModel.repository.className()/] $[security.authentication.userModel.repository.instanceName()/];
+
+[/if]
+    public function __construct(ManagerRegistry $managerRegistry[if (security.authentication.userModel.repository = repository)]
+, Security $security[/if][if (repository.hasCurrentUser())]
+, [security.authentication.userModel.repository.className()/] $[security.authentication.userModel.repository.instanceName()/][/if])
     {
         parent::__construct($managerRegistry, [repository.serves.modelClassName()/]::class);
-[if (repository.hasCurrentUser())]
+[if (security.authentication.userModel.repository = repository)]
         $this->security = $security;
+[/if]
+[if (repository.hasCurrentUser())]
+        $this->[security.authentication.userModel.repository.instanceName()/] = $[security.authentication.userModel.repository.instanceName()/];
 [/if]
     }
 
@@ -116,6 +129,10 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
     }
 
 [/for]
+[if (security.authentication.userModel.repository = repository)]
+    [repository.getCurrentUserMethod(security)/]
+
+[/if]
 [if (repository.serves.implementsUserInterface)]
     [repository.userInterfaceMethods()/]
 
@@ -140,7 +157,7 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
 
 [/if]
 [for (selection : Selection | repository.selections->select(s | not s.name.equalsIgnoreCase('all')))]
-    [selection.selectionMethod()/]
+    [selection.selectionMethod(security)/]
 
 [/for]
 [if (not repository.serves.implementsResetPasswordInterface)]
@@ -155,21 +172,26 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
 [/file]
 [/template]
 
-[template private userInterfaceMethods(repository : Repository) post(trim())]
+[template private getCurrentUserMethod(repository : Repository, security : SecurityModel) post(trim())]
 /**
- * Used to upgrade (rehash) the user's password automatically over time.
+ * @return [security.authentication.userModel.modelClassName()/]
  *
  */
-public function getUser(): void
+public function getCurrentUser(): [security.authentication.userModel.modelClassName()/]
 {
-    if (!$user instanceof [repository.serves.modelClassName()/]) {
-        throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+    $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
+    $[repository.instanceName()/] = $queryBuilder
+        ->where($queryBuilder->expr()->eq('[security.authentication.userKey.modelPropertyName()/].', ':[security.authentication.userKey.name/]'))
+        ->setParameter('[security.authentication.userKey.name/]', $this->security->getUser()->getUsername())
+        ->getQuery()->getOneOrNullResult();
+    if(is_null($[repository.instanceName()/])) {
+        throw new \Exception();
     }
-
-    $user->setPassword($newEncodedPassword);
-    $this->save($user, true);
+    return $[repository.instanceName()/];
 }
+[/template]
 
+[template private userInterfaceMethods(repository : Repository) post(trim())]
 /**
  * Used to upgrade (rehash) the user's password automatically over time.
  *
@@ -381,7 +403,7 @@ public function [selection.methodName/]([if (selection.hasPaginationSupport)]
 [/if]
 [/template]
 
-[template private selectionMethod(selection : Selection)
+[template private selectionMethod(selection : Selection, security : SecurityModel)
 	? (selection.filters->isEmpty()) post(trim())]
 /**
  *
@@ -394,19 +416,19 @@ public function [selection.methodName/]([selection.formals()/])[selection.return
     [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
 [if (selection.uriPathKeys()->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
-    [selection.queryParametersCode()/]
+    [selection.queryParametersCode(security)/]
 [/if]
 
     [selection.queryResult()/]
 }
 [/template]
 
-[template private selectionMethod(selection : Selection)
+[template private selectionMethod(selection : Selection, security : SecurityModel)
 	? (selection.filters->notEmpty()) post(trim())]
 [selection.builderMethod()/]
 
 [if (selection.selectPath->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
-[selection.parametersMethod()/]
+[selection.parametersMethod(security)/]
 
 [/if]
 /**
@@ -443,7 +465,7 @@ private function [selection.builderMethodName()/]([selection.formals()/]): Query
 }
 [/template]
 
-[template private parametersMethod(selection : Selection) post(trim())]
+[template private parametersMethod(selection : Selection, security : SecurityModel) post(trim())]
 /**
  *
  * @param Query $query
@@ -454,7 +476,7 @@ private function [selection.builderMethodName()/]([selection.formals()/]): Query
 private function [selection.parametersMethodName()/](Query $query[if (selection.selectPath->notEmpty() or selection.hasFormals)]
 , [selection.selectionActuals()/][/if]) : void
 {
-    [selection.queryParametersCode()/]
+    [selection.queryParametersCode(security)/]
 }
 [/template]
 
@@ -750,12 +772,12 @@ $queryBuilder->addOrderBy([order.path.queryExpression()/], [order.order()/]);
 [/if]
 [/template]
 
-[template private queryParametersCode(selection : Selection) post(trim())]
+[template private queryParametersCode(selection : Selection, security : SecurityModel) post(trim())]
 [if (selection.uriPathKeys()->notEmpty())]
 [selection.querySelectedParameters()/]
 [/if]
 [if (selection.hasConditionParameters())]
-[selection.condition.queryParameter()/]
+[selection.condition.queryParameter(security)/]
 [/if]
 [/template]
 
