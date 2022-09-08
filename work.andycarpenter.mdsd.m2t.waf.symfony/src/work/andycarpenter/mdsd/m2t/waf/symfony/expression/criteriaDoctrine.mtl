@@ -58,14 +58,14 @@ $this->get('app.service.people')->getId()
 [template public criteriaExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
-Criteria::expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
-[for (expression : Expression | predicate.expressions) separator (',')]
+Criteria::expr()->[predicate.operator()/]([if (predicate.predicates->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
+[for (expression : Expression | predicate.predicates) separator (',')]
 
     [expression.criteriaExpression()/][/for]
 
 )
 [else]
-[for (expression : Expression | predicate.expressions) separator (', ')]
+[for (expression : Expression | predicate.predicates) separator (', ')]
 [expression.criteriaExpression()/]
 [/for]
 [/if]
@@ -90,13 +90,6 @@ Criteria::expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(Predic
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
 Criteria::expr()->[predicate.operator()/]([predicate.left.criteriaExpression()/], [predicate.right.criteriaExpression()/])
-[/let]
-[/template]
-
-[template public criteriaExpression(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
-[predicate.left.criteriaExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.criteriaExpression()/]
 [/let]
 [/template]
 
@@ -172,7 +165,7 @@ Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.cri
 [template public criteriaParameter(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
-[for (expression : Expression | predicate.expressions)]
+[for (expression : Expression | predicate.predicates)]
 [expression.criteriaParameter()/]
 [/for]
 [/let]
@@ -189,14 +182,6 @@ Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.cri
 [template public criteriaParameter(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-[predicate.left.criteriaParameter()/]
-[predicate.right.criteriaParameter()/]
-[/let]
-[/template]
-
-[template public criteriaParameter(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
 [predicate.left.criteriaParameter()/]
 [predicate.right.criteriaParameter()/]
 [/let]

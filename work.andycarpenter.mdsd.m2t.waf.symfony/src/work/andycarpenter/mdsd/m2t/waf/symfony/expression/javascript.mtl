@@ -55,7 +55,7 @@ $this->getUser()
 [template public controllerExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
-[predicate.expressions->first().controllerExpression()/][for (expression : Expression | predicate.expressions->subOrderedSet(2, 4)) separator (',')]
+[predicate.predicates->first().controllerExpression()/][for (expression : Expression | predicate.predicates->subOrderedSet(2, 4)) separator (',')]
  [predicate.operator()/] [expression.controllerExpression()/][/for]
 [/let]
 [/template]
@@ -82,13 +82,6 @@ $queryBuilder->expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(P
 [else]
 [predicate.left.controllerExpression()/] [predicate.operator()/] [predicate.right.controllerExpression()/]
 [/if]
-[/let]
-[/template]
-
-[template public controllerExpression(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
-[predicate.left.controllerExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.controllerExpression()/]
 [/let]
 [/template]
 
@@ -161,7 +154,7 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public controllerVariable(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
-[for (expression : Expression | predicate.expressions)]
+[for (expression : Expression | predicate.predicates)]
 [expression.controllerVariable()/]
 [/for]
 [/let]
@@ -178,14 +171,6 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public controllerVariable(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-[predicate.left.controllerVariable()/]
-[predicate.right.controllerVariable()/]
-[/let]
-[/template]
-
-[template public controllerVariable(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
 [predicate.left.controllerVariable()/]
 [predicate.right.controllerVariable()/]
 [/let]

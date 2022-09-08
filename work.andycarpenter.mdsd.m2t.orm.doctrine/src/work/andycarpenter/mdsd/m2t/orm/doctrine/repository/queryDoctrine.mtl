@@ -71,14 +71,14 @@ $queryBuilder->expr()->literal('[literal.value/]')
 [template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([if (predicate.expressions->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
-[for (expression : Expression | predicate.expressions) separator (',')]
+$queryBuilder->expr()->[predicate.operator()/]([if (predicate.predicates->any(e | e.oclIsKindOf(Predicate))->notEmpty())]
+[for (expression : Expression | predicate.predicates) separator (',')]
 
     [expression.queryExpression()/][/for]
 
 )
 [else]
-[for (expression : Expression | predicate.expressions) separator (', ')]
+[for (expression : Expression | predicate.predicates) separator (', ')]
 [expression.queryExpression()/]
 [/for]
 [/if]
@@ -110,13 +110,6 @@ $queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()
 	? (expression.oclIsTypeOf(PredicateInOperator)) post(trim())]
 [let predicate : PredicateInOperator = expression.oclAsType(PredicateInOperator)]
 $queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
-[/let]
-[/template]
-
-[template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
-[predicate.left.queryExpression()/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.queryExpression()/]
 [/let]
 [/template]
 
@@ -206,7 +199,7 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public queryParameter(expression : Expression, security : SecurityModel)
 	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
-[for (expression : Expression | predicate.expressions)]
+[for (expression : Expression | predicate.predicates)]
 [expression.queryParameter(security)/]
 [/for]
 [/let]
@@ -223,14 +216,6 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public queryParameter(expression : Expression, security : SecurityModel)
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-[predicate.left.queryParameter(security)/]
-[predicate.right.queryParameter(security)/]
-[/let]
-[/template]
-
-[template public queryParameter(expression : Expression, security : SecurityModel)
-	? (expression.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = expression.oclAsType(PredicateIsOperator)]
 [predicate.left.queryParameter(security)/]
 [predicate.right.queryParameter(security)/]
 [/let]
@@ -276,8 +261,6 @@ $query->setParameter('user', $this->[security.authentication.userModel.repositor
 			expression.oclAsType(PredicateEqualityOperator).parameterUsedInLike(parameter, withinLike)
 		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
 			expression.oclAsType(PredicateComparisonOperator).parameterUsedInLike(parameter, withinLike)
-		else if expression.oclIsTypeOf(PredicateIsOperator) then
-			expression.oclAsType(PredicateIsOperator).parameterUsedInLike(parameter, withinLike)
 		else if expression.oclIsTypeOf(PredicateLikeOperator) then
 			expression.oclAsType(PredicateLikeOperator).parameterUsedInLike(parameter, withinLike)
 		else if expression.oclIsTypeOf(PredicateIsEmpty) then
@@ -286,11 +269,11 @@ $query->setParameter('user', $this->[security.authentication.userModel.repositor
 			expression.oclAsType(ParameterReference).parameterUsedInLike(parameter, withinLike)
 		else
 			false
-		endif endif endif endif endif endif endif
+		endif endif endif endif endif endif
 /]
 
 [query private parameterUsedInLike(predicate : PredicateBooleanOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
-	= predicate.expressions->select(e | e.parameterUsedInLike(parameter, withinLike))->notEmpty()
+	= predicate.predicates->select(e | e.parameterUsedInLike(parameter, withinLike))->notEmpty()
 /]
 
 [query private parameterUsedInLike(predicate : PredicateEqualityOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
@@ -299,11 +282,6 @@ $query->setParameter('user', $this->[security.authentication.userModel.repositor
 /]
 
 [query private parameterUsedInLike(predicate : PredicateComparisonOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
-	= predicate.left.parameterUsedInLike(parameter, withinLike)
-		or predicate.right.parameterUsedInLike(parameter, withinLike)
-/]
-
-[query private parameterUsedInLike(predicate : PredicateIsOperator, parameter : FormalParameter, withinLike : Boolean) : Boolean
 	= predicate.left.parameterUsedInLike(parameter, withinLike)
 		or predicate.right.parameterUsedInLike(parameter, withinLike)
 /]

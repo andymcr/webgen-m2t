@@ -80,7 +80,7 @@ $this->get('people')->getId()
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = guard.oclAsType(PredicateBooleanOperator)]
-[for (expression : Expression | predicate.expressions)]
+[for (expression : Expression | predicate.predicates)]
 [if (i > 1)] [predicate.operator()/] [/if][expression.twigExpression(accessor)/][/for][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/let]
 [/template]
@@ -96,13 +96,6 @@ $this->get('people')->getId()
 	? (guard.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = guard.oclAsType(PredicateComparisonOperator)]
 [predicate.left.twigExpression(accessor)/] [predicate.operator()/] [predicate.right.twigExpression(accessor)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
-[/let]
-[/template]
-
-[template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(PredicateIsOperator)) post(trim())]
-[let predicate : PredicateIsOperator = guard.oclAsType(PredicateIsOperator)]
-[predicate.left.twigExpression(accessor)/], 'IS[if (predicate.negated)] NOT[/if]', [predicate.right.twigExpression(accessor)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/let]
 [/template]
 

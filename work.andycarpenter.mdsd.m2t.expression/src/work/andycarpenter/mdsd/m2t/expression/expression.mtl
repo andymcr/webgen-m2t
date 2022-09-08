@@ -8,7 +8,7 @@
 	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
 			let predicate : PredicateBooleanOperator
 				= expression.oclAsType(PredicateBooleanOperator)
-				in predicate.expressions->exists(e | e.hasCurrentUser())
+				in predicate.predicates->exists(e | e.hasCurrentUser())
 		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
 			let predicate : PredicateEqualityOperator
 				= expression.oclAsType(PredicateEqualityOperator)
@@ -16,10 +16,6 @@
 		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
 			let predicate : PredicateComparisonOperator
 				= expression.oclAsType(PredicateComparisonOperator)
-				in predicate.left.hasCurrentUser() or predicate.right.hasCurrentUser()
-		else if expression.oclIsTypeOf(PredicateIsOperator) then
-			let predicate : PredicateIsOperator
-				= expression.oclAsType(PredicateIsOperator)
 				in predicate.left.hasCurrentUser() or predicate.right.hasCurrentUser()
 		else if expression.oclIsTypeOf(PredicateLikeOperator) then
 			let predicate : PredicateLikeOperator
@@ -35,7 +31,7 @@
 				in predicate.feature.hasCurrentUser()
 		else
 			expression.oclIsTypeOf(CurrentUser)
-		endif endif endif endif endif endif endif
+		endif endif endif endif endif endif
 /]
 
 
@@ -43,7 +39,7 @@
 	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
 			let predicate : PredicateBooleanOperator
 				= expression.oclAsType(PredicateBooleanOperator)
-				in predicate.expressions->exists(e | e.hasFormals())
+				in predicate.predicates->exists(e | e.hasFormals())
 		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
 			let predicate : PredicateEqualityOperator
 				= expression.oclAsType(PredicateEqualityOperator)
@@ -51,10 +47,6 @@
 		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
 			let predicate : PredicateComparisonOperator
 				= expression.oclAsType(PredicateComparisonOperator)
-				in predicate.left.hasFormals() or predicate.right.hasFormals()
-		else if expression.oclIsTypeOf(PredicateIsOperator) then
-			let predicate : PredicateIsOperator
-				= expression.oclAsType(PredicateIsOperator)
 				in predicate.left.hasFormals() or predicate.right.hasFormals()
 		else if expression.oclIsTypeOf(PredicateLikeOperator) then
 			let predicate : PredicateLikeOperator
@@ -70,7 +62,7 @@
 				in predicate.feature.hasFormals()
 		else
 			expression.oclIsTypeOf(ParameterReference)
-		endif endif endif endif endif endif endif
+		endif endif endif endif endif endif
 /]
 
 
@@ -78,7 +70,7 @@
 	= if expression.oclIsTypeOf(PredicateBooleanOperator) then
 			let predicate : PredicateBooleanOperator
 				= expression.oclAsType(PredicateBooleanOperator)
-				in predicate.expressions->exists(e | e.hasParameters())
+				in predicate.predicates->exists(e | e.hasParameters())
 		else if expression.oclIsTypeOf(PredicateEqualityOperator) then
 			let predicate : PredicateEqualityOperator
 				= expression.oclAsType(PredicateEqualityOperator)
@@ -86,10 +78,6 @@
 		else if expression.oclIsTypeOf(PredicateComparisonOperator) then
 			let predicate : PredicateComparisonOperator
 				= expression.oclAsType(PredicateComparisonOperator)
-				in predicate.left.hasParameters() or predicate.right.hasParameters()
-		else if expression.oclIsTypeOf(PredicateIsOperator) then
-			let predicate : PredicateIsOperator
-				= expression.oclAsType(PredicateIsOperator)
 				in predicate.left.hasParameters() or predicate.right.hasParameters()
 		else if expression.oclIsTypeOf(PredicateLikeOperator) then
 			let predicate : PredicateLikeOperator
@@ -107,5 +95,5 @@
 			expression.oclIsTypeOf(ParameterReference)
 				or expression.oclIsTypeOf(CurrentTime)
 				or expression.oclIsTypeOf(CurrentUser)
-		endif endif endif endif endif endif endif
+		endif endif endif endif endif endif
 /]

@@ -125,7 +125,7 @@
 /]
 
 [query private selectionKeys(predicate : PredicateBooleanOperator) : Set(Attribute)
-	= predicate.expressions->iterate(
+	= predicate.predicates->iterate(
 			e : Predicate;
 			attributes : Set(Attribute) = Set{}
 			| attributes->union(e.selectionKeys()))
@@ -162,7 +162,7 @@
 /]
 
 [query private resolvedKeys(predicate : PredicateBooleanOperator) : Set(Attribute)
-	= predicate.expressions->iterate(
+	= predicate.predicates->iterate(
 			e : Predicate;
 			attributes : Set(Attribute) = Set{}
 			| attributes->union(e.resolvedKeys()))
