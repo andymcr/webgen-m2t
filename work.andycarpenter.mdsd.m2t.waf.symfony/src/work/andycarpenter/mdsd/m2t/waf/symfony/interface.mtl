@@ -252,21 +252,6 @@
 /]
 
 
-[query public hasCustomisedPlaceholder(field : UnitField) : Boolean
-	= if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).hasCustomisedPlaceholder
-		else if field.oclIsTypeOf(InterfaceField) then
-			field.oclAsType(InterfaceField).hasCustomisedPlaceholder
-		else
-			false
-		endif endif
-/]
-
-[query public hasPlaceholder(field : UnitField) : Boolean
-	= (field.oclIsTypeOf(UnitAttribute) or field.oclIsKindOf(InterfaceField))
-		and field.hasPlaceholder
-/]
-
 [query public id(field : UnitField) : String
 	= if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).name.asId()
@@ -281,32 +266,6 @@
 
 [query public isConditionalDisplay(field : UnitField) : Boolean
 	= not field.hideWhen.oclIsUndefined()
-/]
-
-[query public localFieldLabelClass(field : UnitField) : String
-	= if field.localFieldLabelClass <> '' then
-			field.localFieldLabelClass
-		else
-			field.displayedOn.localFieldLabelClass
-		endif
-/]
-
-[query public localFieldValueClass(field : UnitField) : String
-	= if field.localFieldValueClass <> '' then
-			field.localFieldValueClass
-		else
-			field.displayedOn.localFieldValueClass
-		endif
-/]
-
-[query public placeholder(field : UnitField) : String
-	= if field.oclIsKindOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).placeholder
-		else if field.oclIsKindOf(InterfaceField) then
-			field.oclAsType(InterfaceField).placeholder
-		else
-			null
-		endif endif
 /]
 
 

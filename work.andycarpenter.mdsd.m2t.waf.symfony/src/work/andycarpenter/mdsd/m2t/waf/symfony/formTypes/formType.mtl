@@ -473,7 +473,7 @@ add('[interface.name/]', [interface.interfaceType()/], ['['/]
     'help' => '[field.helpId()/]',
 	[/if]
 [else]
-	[if (field.hasLocalInputGroupClass() or field.hasLocalFieldLabelClass() or field.hasLocalFieldValueClass())]
+	[if (field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass)]
     [interface.repeatOptions()/]
 	[/if]
     [interface.firstOptions()/]
@@ -511,14 +511,14 @@ TextType::class
 
 [template private repeatOptions(field : InterfaceField) post(trim())]
 'options' => ['['/]
-	[if (field.hasLocalInputGroupClass())]
-    'row_attr' => ['['/] 'class' => '[field.localInputGroupClass()/]' [']'/],
+	[if (field.hasInputGroupClass)]
+    'row_attr' => ['['/] 'class' => '[field.inputGroupClass/]' [']'/],
 	[/if]
-	[if (field.hasLocalFieldLabelClass())]
-    'label_attr' => ['['/] 'class' => '[field.localFieldLabelClass()/]' [']'/],
+	[if (field.hasFieldLabelClass)]
+    'label_attr' => ['['/] 'class' => '[field.fieldLabelClass/]' [']'/],
 	[/if]
-	[if (field.hasLocalFieldValueClass())]
-    'attr' => ['['/] 'class' => '[field.localFieldValueClass()/]' [']'/],
+	[if (field.hasFieldValueClass)]
+    'attr' => ['['/] 'class' => '[field.fieldValueClass/]' [']'/],
 	[/if]
 [']'/],
 [/template]

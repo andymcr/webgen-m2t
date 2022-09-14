@@ -63,16 +63,16 @@
 
 [query public getMethodName(feature : Feature) : String
 	= let prefix : String
-		= if feature.isBooleanFeature then
-				feature.booleanPrefix()
+		= if feature.isAttributeFeature and feature.isBooleanFeature then
+				feature.oclAsType(Attribute).booleanPrefix()
 			else
 				'get'
 			endif
 		in prefix.concat(feature.modelPropertyName().toUpperFirst())
 /]
 
-[query private booleanPrefix(feature : Feature) : String
-	= if feature.booleanIsHasChoice = IsHasChoices::isA then
+[query private booleanPrefix(attribute : Attribute) : String
+	= if attribute.booleanIsHasChoice = IsHasChoices::isA then
 			'is'
 		else
 			'has'
