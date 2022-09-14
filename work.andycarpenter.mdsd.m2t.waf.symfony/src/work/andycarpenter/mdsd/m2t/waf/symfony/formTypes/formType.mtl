@@ -404,7 +404,7 @@ add('[association.modelPropertyName()/]', EntityType::class, ['['/]
 [if (not association.isSingleton or not association.isRequired)]
     'required' => false,
 [/if]
-    'class' => '[association.appName()/]:[association.modelClassName()/]',
+    'class' => '[association.modelsNamespace()/]\[association.modelClassName()/]',
 [if (hasAutocomplete)]
     'choices' => array_key_exists('data', $options) && !is_null($options['['/]'data'[']'/]->[feature.getMethodName()/]())
         ? ['['/] $options['['/]'data'[']'/]->[feature.getMethodName()/]() [']'/]
