@@ -388,7 +388,7 @@ public function [selection.methodName/]([if (selection.hasPaginationSupport)]
 [selection.limitFormals()/][/if])
 {
 [if (selection.filters->notEmpty())]
-    $query = $this->[selection.builderMethodName()/]()->getQuery();
+    $query = $this->[selection.builderMethodName()/]([selection.limitActuals()/])->getQuery();
 [else]
     [selection.builderCode()/]
     $query = $queryBuilder->getQuery();
