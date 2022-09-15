@@ -22,11 +22,11 @@
 
 	[/if]
 [/if]
-[if (model.defaultFormStyles.fieldLabelClass <> '' or model.defaultStyles.fieldLabelClass <> '')]
+[if (model.defaultFormStyles.fieldLabelClass <> '' or model.defaultUnitStyles.fieldLabelClass <> '')]
 [model.formLabel()/]
 
 [/if]
-[if (model.defaultFormStyles.fieldValueClass <> '' or model.defaultStyles.fieldValueClass <> '')]
+[if (model.defaultFormStyles.fieldValueClass <> '' or model.defaultUnitStyles.fieldValueClass <> '')]
 [model.formValue()/]
 
 [/if]
@@ -75,7 +75,7 @@
 [if (model.defaultFormStyles.fieldLabelClass <> '')]
 [model.defaultFormStyles.fieldLabelClass/]
 [else]
-[model.defaultStyles.fieldLabelClass/]
+[model.defaultUnitStyles.fieldLabelClass/]
 [/if]
 [/template]
 
@@ -90,6 +90,6 @@
 [if (model.defaultFormStyles.fieldValueClass <> '')]
 [model.defaultFormStyles.fieldValueClass/]
 [else]
-[model.defaultStyles.fieldValueClass/]
+[model.defaultUnitStyles.fieldValueClass/]
 [/if]
 [/template]
