@@ -46,7 +46,7 @@
 [template public unitContent(unit : TabularUnit, nullDisplayValue : String, accessor : String) post(trim())]
 <table class="[unit.contentClass/]">
 [if (not unit.hasOmittedFieldLabels())]
- <thead class="[unit.headerClass/]">
+ <thead[if (unit.hasHeaderClass)] class="[unit.headerClass/]"[/if]>
   <tr>
  	[for (field : UnitField | unit.displayFields)]
 		[if (field.isAuthorised)]

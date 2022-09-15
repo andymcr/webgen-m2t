@@ -130,7 +130,7 @@
 		[if (field.hasPlaceholder)]
 <trans-unit id="[field.customisedPlaceholderId()/]">
  <source>[field.customisedPlaceholderId()/]</source>
- <target>[field.placeholder().validXML()/]</target>
+ <target>[field.placeholder.validXML()/]</target>
 </trans-unit>
 		[/if]
 		[if (field.hasTitle)]
