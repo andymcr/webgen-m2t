@@ -53,8 +53,8 @@
 {% if is_granted('[field.authorisationRoles/]') %}
 		[/if]
    <th>[if (field.hasCustomisedDisplayLabel)]
-{{ '[field.customisedDisplayLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[field.defaultDisplayLabelId()/]' | trans }}[/if]</th>
+{{ '[field.customisedDisplayLabelContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[field.defaultDisplayLabelContainedId()/]' | trans }}[/if]</th>
 		[if (field.isAuthorised)]
 {% endif %}
 		[/if]

@@ -50,8 +50,8 @@
 
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
 <dt[if (field.hasFieldLabelClass)] [field.labelClass()/][/if]>[if (field.hasCustomisedDisplayLabel)]
-{{ '[field.customisedDisplayLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[field.defaultDisplayLabelId()/]' | trans }}[/if]</dt>
+{{ '[field.customisedDisplayLabelContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[field.defaultDisplayLabelContainedId()/]' | trans }}[/if]</dt>
 [/template]
 
 [template private labelClass(field : UnitField) post(trim())]

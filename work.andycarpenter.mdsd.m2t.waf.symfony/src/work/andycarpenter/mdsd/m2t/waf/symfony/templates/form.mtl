@@ -31,15 +31,6 @@
  {{ form_errors([accessor/]) }}
 [/template]
 
-[query private formId(unit : SingletonUnit) : String
-	= let typeName : String = unit.contentType.name.asId()
-		in if false then
-				typeName
-			else
-				typeName
-			endif
-/]
-
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
 [for (field : UnitField | unit.formFields)]
 	[if (field.isAuthorised)]
@@ -78,17 +69,17 @@
 
 [template private submitLabel(unit : EditUnit) post(trim())]
 [if (unit.hasCustomisedSubmitLabel())]
-[unit.submitLabelId()/]
+[unit.submitLabelContainedId()/]
 [else]
-[unit.displayedOn.rootPage.submitLabelId()/]
+[unit.displayedOn.rootPage.submitLabelContainedId()/]
 [/if]
 [/template]
 
 [template private cancelLabel(unit : EditUnit) post(trim())]
 [if (unit.hasCustomisedCancelLabel())]
-[unit.cancelLabelId()/]
+[unit.cancelLabelContainedId()/]
 [else]
-[unit.displayedOn.rootPage.cancelLabelId()/]
+[unit.displayedOn.rootPage.cancelLabelContainedId()/]
 [/if]
 [/template]
 
@@ -131,7 +122,7 @@
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
 , {[if (field.hasTranslations() and not field.singleUseModel())]
- label: '[field.customisedDisplayLabelId()/]',[/if]
+ label: '[field.customisedDisplayLabelContainedId()/]',[/if]
 [if (field.hasInputGroupClass)]
  row_attr: { class: '[field.inputGroupClass/]' },[/if]
 [if (field.hasFieldLabelClass)]
@@ -142,7 +133,7 @@
 [if (field.hasFieldValueClass)]
  class: '[field.fieldValueClass/]',[/if]
 [if (field.hasTranslations() and not field.singleUseModel())]
- placeholder: '[field.customisedPlaceholderId()/]', title: '[field.customisedTitleId()/]',[/if] }[/if]
+ placeholder: '[field.customisedPlaceholderContainedId()/]', title: '[field.customisedTitleContainedId()/]',[/if] }[/if]
 [if (field.hasTranslations() and not field.singleUseModel())]
 , translation_domain: '[unit.translationDomain()/]'[/if]}[/if]) }}
 [/template]
@@ -152,7 +143,7 @@
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
  {{- form_label([accessor/]) -}}
- <div class="[attribute.name.asId()/] framed"[if (attribute.collectionUiAllowAdd)]
+ <div class="[attribute.fieldId()/] framed"[if (attribute.collectionUiAllowAdd)]
  data-prototype="{{ form_widget([accessor/].vars.prototype)|e('html_attr') }}"[/if]>
   {% for entry in [accessor/] %}
   <div{% if entry.vars.errors | length > 0 %} class="error"{% endif %}>
@@ -172,13 +163,13 @@
 [let childFields : OrderedSet(Feature) = association.association.targetType.features->select(f | not f.isContainer)]
 <div>
  {{- form_label([accessor/]) -}}
- <div class="[association.name.asId()/] framed"[if (association.collectionUiAllowAdd)]
+ <div class="[association.fieldId()/] framed"[if (association.collectionUiAllowAdd)]
  data-prototype="[for (feature : Feature | childFields)]
 {{ form_row([accessor/].vars.prototype.[feature.modelPropertyName()/])|e('html_attr') }}[/for]"[/if]>
   {%- for entry in [accessor/] -%}
   <div[if (childFields->size() > 1)] class="framed"[/if]>
 [for (feature : Feature | childFields)]
-   {{ form_row(entry.[feature.modelPropertyName()/], { 'attr': {'class': '[feature.name.asId()/]'} } ) }}
+   {{ form_row(entry.[feature.modelPropertyName()/], { 'attr': {'class': '[feature.id()/]'} } ) }}
 [/for]
   </div>
   {%- endfor -%}

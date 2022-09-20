@@ -30,7 +30,7 @@
 [dynamicUnit.unitContent(page)/]
 			[if (dynamicUnit.hasHiddenMessage)]
 {% else %}
-<h5>{{ '[dynamicUnit.hiddenMessageId()/]' | trans({}, '[dynamicUnit.translationDomain()/]') }}</h5>
+<h5>{{ '[dynamicUnit.hiddenMessageContainedId()/]' | trans({}, '[dynamicUnit.translationDomain()/]') }}</h5>
 			[/if]
 {% endif %}
 		[else]

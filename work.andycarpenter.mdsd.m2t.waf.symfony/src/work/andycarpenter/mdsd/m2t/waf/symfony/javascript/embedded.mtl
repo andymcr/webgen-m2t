@@ -58,13 +58,13 @@
 
 [template private addLinks(feature : UnitFeature, type : String) post(trim())]
 [if (feature.collectionUiAllowRemove)]
-var [feature.persistentFeature.name/] = document.querySelectorAll('#[feature.displayedOn.formId()/] > div > div.[feature.persistentFeature.name.asId()/] > div');
+var [feature.persistentFeature.name/] = document.querySelectorAll('#[feature.displayedOn.formId()/] > div > div.[feature.persistentFeature.id()/] > div');
 for (var i = 0; i < [feature.persistentFeature.name/].length; ++i) {
     [type.toLowerFirst()/]RemoveLink([feature.persistentFeature.name/]['['/]i[']'/]);
 }
 [/if]
 [if (feature.collectionUiAllowAdd)]
-var [feature.persistentFeature.name/]Container = document.querySelector('#[feature.displayedOn.formId()/] > div > div.[feature.persistentFeature.name.asId()/]');
+var [feature.persistentFeature.name/]Container = document.querySelector('#[feature.displayedOn.formId()/] > div > div.[feature.persistentFeature.id()/]');
 if ([feature.persistentFeature.name/]Container) {
     [feature.persistentFeature.name/]Container.dataset.index = [feature.persistentFeature.name/].length;
     [type.toLowerFirst()/]AddLink([feature.persistentFeature.name/]Container);
@@ -112,7 +112,3 @@ function [type.toLowerFirst()/]RemoveLink([feature.instanceName()/]) {
     };
 }
 [/template]
-
-[query private id(field : UnitField) : String
-	= field.displayedOn.instanceParameter().asId().concat('_').concat(field.modelPropertyName())
-/]

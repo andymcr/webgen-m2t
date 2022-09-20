@@ -90,8 +90,8 @@ NULL
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
 	? (field.isBooleanField) post(trim())] 
-<label for="[field.displayedOn.name.asId()/].[field.persistentFeature.id()/]"{% if not [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} hidden="hidden"{% endif %}>
- <input type="checkbox" id="[field.displayedOn.name.asId()/].[field.persistentFeature.id()/]" checked="checked" disabled="disabled"/>
+<label for="[field.fieldId()/]"{% if not [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} hidden="hidden"{% endif %}>
+ <input type="checkbox" id="[field.fieldId()/]" checked="checked" disabled="disabled"/>
  <span></span>
 </label>
 [/template] 

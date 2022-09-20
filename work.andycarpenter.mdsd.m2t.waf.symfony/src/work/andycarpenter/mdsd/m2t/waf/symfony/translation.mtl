@@ -1,9 +1,57 @@
 [comment encoding = UTF-8 /]
 [module translation(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/base',
 	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[query private cancelElement(eObject : EObject) : String
+	= 'cancel'
+/]
+
+[query private captionElement(eObject : EObject) : String
+	= 'caption'
+/]
+
+[query private confirmElement(eObject : EObject) : String
+	= 'confirm'
+/]
+
+[query private helpElement(eObject : EObject) : String
+	= 'help'
+/]
+
+[query private hiddenElement(eObject : EObject) : String
+	= 'hidden'
+/]
+
+[query private labelsElement(eObject : EObject) : String
+	= 'labels'
+/]
+
+[query private messagesElement(eObject : EObject) : String
+	= 'messages'
+/]
+
+[query private placeholdersElement(eObject : EObject) : String
+	= 'placeholders'
+/]
+
+[query private submitElement(eObject : EObject) : String
+	= 'submit'
+/]
+
+[query private successElement(eObject : EObject) : String
+	= 'success'
+/]
+
+[query private titlesElement(eObject : EObject) : String
+	= 'titles'
+/]
 
 
 [query public validXML(string : String) : String
@@ -11,54 +59,74 @@
 /]
 
 
-[query public displayLabelId(feature : Feature) : String
-	= feature.partOf.id().concat('.labels').concat('.').concat(feature.id())
+[query public displayLabelContainedId(element : AuthenticationElement) : String
+	= element.id().concat(element.captionElement())
 /]
 
-[query public placeholderId(feature : Feature) : String
-	= feature.partOf.id().concat('.placeholders').concat('.').concat(feature.id())
+[query public placeholderContainedId(element : AuthenticationElement, field : String) : String
+	= element.id().concat(element.placeholdersElement()).concat('.').concat(field)
 /]
 
-[query public titleId(feature : Feature) : String
-	= feature.partOf.id().concat('.titles').concat('.').concat(feature.id())
+[query public titleContainedId(element : AuthenticationElement, field : String) : String
+	= element.id().concat(element.titlesElement()).concat('.').concat(field)
 /]
 
+[query public translationDomain(element : AuthenticationElement) : String
+	= element.authenticationPrefix().toLowerCase()
+/]
+
+
+[query public containedId(menu : Menu) : String
+	= if menu.oclIsTypeOf(SubmenuEntry) then
+			menu.oclAsType(SubmenuEntry).partOf.containedId().concat('.').concat(menu.id())
+		else
+			menu.id()
+		endif
+/]
+
+[query public containedId(menuEntry : SubmenuEntry) : String
+	= if menuEntry.partOf.oclIsTypeOf(SubmenuEntry) then
+			menuEntry.oclAsType(SubmenuEntry).partOf.containedId().concat('.').concat(menuEntry.id())
+		else
+			menuEntry.id().concat('_menu')
+		endif
+/]
 
 [query public labelId(menu : Menu) : String
 	= if menu.oclIsTypeOf(SubmenuEntry) then
-			menu.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menu.name.asId())
+			menu.oclAsType(SubmenuEntry).partOf.labelId().concat('.').concat(menu.id())
 		else
-			menu.name.asId()
+			menu.id()
 		endif
 /]
 
 [query public displayLabelId(menuEntry : ActionMenuEntry) : String
-	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.name.asId())
+	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.id())
 /]
 
 [query public displayLabelId(menuEntry : EditStaticTextMenuEntry) : String
-	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.name.asId())
+	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.id())
 /]
 
 [query public displayLabelId(menuEntry : SubmenuEntry) : String
-	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.name.asId())
+	= menuEntry.partOf.labelId().concat('.').concat(menuEntry.id())
 /]
 
 
-[query public cancelLabelId(page : Page) : String
-	= page.labelsId().concat('.cancel')
+[query public cancelLabelContainedId(page : Page) : String
+	= page.labelsContainedId().concat(page.cancelElement())
 /]
 
-[query public displayLabelId(page : Page) : String
-	= page.id().concat('.caption')
+[query public displayLabelContainedId(page : Page) : String
+	= page.id().concat(page.captionElement())
 /]
 
-[query public labelsId(page : Page) : String
-	= page.id().concat('.labels')
+[query private labelsContainedId(page : Page) : String
+	= page.id().concat(page.labelsElement())
 /]
 
-[query public submitLabelId(page : Page) : String
-	= page.labelsId().concat('.submit')
+[query public submitLabelContainedId(page : Page) : String
+	= page.labelsContainedId().concat(page.submitElement())
 /]
 
 [query public translationDomain(page : Page) : String
@@ -70,20 +138,20 @@
 /]
 
 
-[query public cancelLabelId(unit : ContentUnit) : String
-	= unit.labelsId().concat('.cancel')
+[query public cancelLabelContainedId(unit : ContentUnit) : String
+	= unit.labelsContainedId().concat(unit.cancelElement())
 /]
 
-[query public confirmMessageId(unit : ContentUnit) : String
-	= unit.messagesId().concat('.confirm')
+[query public confirmMessageContainedId(unit : ContentUnit) : String
+	= unit.messagesContainedId().concat(unit.confirmElement())
 /]
 
-[query public displayLabelId(unit : ContentUnit) : String
-	= unit.containedId().concat('.caption')
+[query private containedId(unit : ContentUnit) : String
+	= unit.displayedOn.id().concat('.').concat(unit.id())
 /]
 
-[query public displayLabelId(unit : SecurityUnit) : String
-	= unit.oclAsType(DynamicUnit).displayLabelId()
+[query public displayLabelContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat(unit.captionElement())
 /]
 
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
@@ -109,74 +177,65 @@
 		endif endif
 /]
 
-[query public hiddenMessageId(unit : ContentUnit) : String
-	= unit.messagesId().concat('.hidden')
+[query private helpContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat('.').concat(unit.helpElement())
 /]
 
-[query public labelsId(unit : ContentUnit) : String
-	= unit.containedId().concat('.labels')
+[query public hiddenMessageContainedId(unit : ContentUnit) : String
+	= unit.messagesContainedId().concat('.hidden')
 /]
 
-[query public messagesId(unit : ContentUnit) : String
-	= unit.containedId().concat('.messages')
+[query private labelsContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat('.').concat(unit.labelsElement())
 /]
 
-[query public submitLabelId(unit : ContentUnit) : String
-	= unit.labelsId().concat('.submit')
+[query private messagesContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat('.').concat(unit.messagesElement())
+/]
+
+[query private placeholdersContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat('.').concat(unit.placeholdersElement())
+/]
+
+[query public submitLabelContainedId(unit : ContentUnit) : String
+	= unit.labelsContainedId().concat(unit.submitElement())
 /]
 
 [query public successMessageId(unit : ContentUnit) : String
-	= unit.messagesId().concat('.success')
+	= unit.messagesContainedId().concat(unit.successElement())
+/]
+
+[query private titlesContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat('.').concat(unit.titlesElement())
 /]
 
 [query public translationDomain(unit : ContentUnit) : String
 	= unit.displayedOn.translationDomain()
 /]
 
-[query public translationDomain(unit : SecurityUnit) : String
-	= unit.oclAsType(DynamicUnit).translationDomain()
+
+[query public customisedDisplayLabelContainedId(field : UnitField) : String
+	= field.displayedOn.labelsContainedId().concat('.').concat(field.fieldId())
 /]
 
-
-[query public customisedDisplayLabelId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.labels').concat('.').concat(field.fieldId())
+[query public customisedPlaceholderContainedId(field : UnitField) : String
+	= field.displayedOn.placeholdersContainedId().concat('.').concat(field.fieldId())
 /]
 
-[query public customisedPlaceholderId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.placeholders').concat('.').concat(field.fieldId())
+[query public customisedTitleContainedId(field : UnitField) : String
+	= field.displayedOn.titlesContainedId().concat('.').concat(field.fieldId())
 /]
 
-[query public customisedTitleId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.titles').concat('.').concat(field.fieldId())
-/]
-
-[query public defaultDisplayLabelId(field : UnitField) : String
+[query public defaultDisplayLabelContainedId(field : UnitField) : String
 	= field.persistentFeature.displayLabelId()
 /]
 
-[query public defaultPlaceholderId(field : UnitField) : String
+[query public defaultPlaceholderContainedId(field : UnitField) : String
 	= field.persistentFeature.displayLabelId()
 /]
 
-[query public defaultTitleId(field : UnitField) : String
+[query public defaultTitleContainedId(field : UnitField) : String
 	= field.persistentFeature.displayLabelId()
-/]
-
-[comment consider fields with feature paths, which might have same persistent feature name/]
-[query private fieldId(field : UnitField) : String
-	= if field.oclIsKindOf(InterfaceField) then
-			field.id()
-		else
-			let featuresWithName : Sequence(Feature)
-				= field.displayedOn.featureFields
-						->collect(f | f.persistentFeature)
-						->select(f | f.name = field.persistentFeature.name)
-				in if featuresWithName->size() = 1 then
-						field.id()
-					else
-						field.persistentFeature.partOf.id().concat('.').concat(field.id())
-					endif
-		endif
 /]
 
 [query public hasTranslations(field : UnitField) : Boolean
@@ -185,26 +244,43 @@
 		or field.hasCustomisedTitle
 /]
 
-[query public helpId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.help').concat('.').concat(field.id())
+[query public helpContainedId(field : UnitField) : String
+	= field.displayedOn.helpContainedId().concat('.').concat(field.fieldId())
 /]
 
-[query public secondDisplayLabelId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.labels').concat('.').concat(field.fieldId().concat('_confirm'))
+[query public secondDisplayLabelContainedId(field : UnitField) : String
+	= field.displayedOn.labelsContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
 /]
 
-[query public secondHelpId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.help').concat('.').concat(field.fieldId().concat('_confirm'))
+[query public secondHelpContainedId(field : UnitField) : String
+	= field.displayedOn.helpContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
 /]
 
-[query public secondPlaceholderId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.placeholders').concat('.').concat(field.fieldId().concat('_confirm'))
+[query public secondPlaceholderContainedId(field : UnitField) : String
+	= field.displayedOn.placeholdersContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
 /]
 
-[query public secondTitleId(field : UnitField) : String
-	= field.displayedOn.containedId().concat('.titles').concat('.').concat(field.fieldId().concat('_confirm'))
+[query public secondTitleContainedId(field : UnitField) : String
+	= field.displayedOn.titlesContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
 /]
 
+
+[query public displayLabelId(feature : Feature) : String
+	= feature.partOf.id().concat('.labels').concat('.').concat(feature.id())
+/]
+
+[query public placeholderId(feature : Feature) : String
+	= feature.partOf.id().concat('.placeholders').concat('.').concat(feature.id())
+/]
+
+[query public titleId(feature : Feature) : String
+	= feature.partOf.id().concat('.titles').concat('.').concat(feature.id())
+/]
+
+
+[query public badgeId(badge : Badge) : String
+	= 'title'
+/]
 
 [query public titleId(badge : Badge) : String
 	= badge.title.displayLabelId()
@@ -213,6 +289,10 @@
 
 [query public confirmMessageId(action : Action) : String
 	= action.containedId().concat('.messages').concat('.confirm')
+/]
+
+[query public containedId(action : Action) : String
+	= action.parentUnit.containedId().concat('.actions.').concat(action.id())
 /]
 
 [query public displayLabelId(action : Action) : String

@@ -271,21 +271,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 		endif]
 [let labelId : String
 	= if field.hasTranslations() and field.singleUseModel() then
-			attribute.customisedDisplayLabelId()
+			attribute.customisedDisplayLabelContainedId()
 		else
-			attribute.defaultDisplayLabelId()
+			attribute.defaultDisplayLabelContainedId()
 		endif]
 [let placeholderId : String
 	= if field.hasTranslations() and field.singleUseModel() then
-			attribute.customisedPlaceholderId()
+			attribute.customisedPlaceholderContainedId()
 		else
-			attribute.defaultPlaceholderId()
+			attribute.defaultPlaceholderContainedId()
 		endif]
 [let titleId : String
 	= if field.hasTranslations() and field.singleUseModel() then
-			attribute.customisedTitleId()
+			attribute.customisedTitleContainedId()
 		else
-			attribute.defaultTitleId()
+			attribute.defaultTitleContainedId()
 		endif]
 [attribute.attribute.formFeature(translationDomain, labelId, placeholderId, titleId)/]
 [/let]
@@ -443,7 +443,7 @@ add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
     'by_reference' => false,
 	[/if]
 	[if (field.hasHelp)]
-    'help' => '[field.helpId()/]',
+    'help' => '[field.helpContainedId()/]',
 	[/if]
     'required' => false,
 [']'/])
@@ -470,7 +470,7 @@ add('[interface.name/]', [interface.interfaceType()/], ['['/]
     [field.fieldAttr()/]
 	[/if]
 	[if (field.hasHelp)]
-    'help' => '[field.helpId()/]',
+    'help' => '[field.helpContainedId()/]',
 	[/if]
 [else]
 	[if (field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass)]
@@ -525,9 +525,9 @@ TextType::class
 
 [template private firstOptions(field : InterfaceField) post(trim())]
 'first_options' => ['['/]
-    'label' => '[field.customisedDisplayLabelId()/]',
+    'label' => '[field.customisedDisplayLabelContainedId()/]',
 [if (field.hasHelp)]
-    'help' => '[field.helpId()/]',
+    'help' => '[field.helpContainedId()/]',
 [/if]
 [if (field.hasTitle or field.hasPlaceholder)]
     [field.fieldAttr()/]
@@ -550,17 +550,17 @@ TextType::class
 
 [template private secondOptions(field : InterfaceField) post(trim())]
 'second_options' => ['['/]
-    'label' => '[field.secondDisplayLabelId()/]',
+    'label' => '[field.secondDisplayLabelContainedId()/]',
 [if (field.hasSecondHelp)]
-    'help' => '[field.secondHelpId()/]',
+    'help' => '[field.secondHelpContainedId()/]',
 [/if]
 [if (field.hasSecondTitle or field.hasSecondPlaceholder)]
     'attr' => ['['/]
 	[if (field.hasSecondPlaceholder)]
-        'placeholder' => '[field.secondPlaceholderId()/]',
+        'placeholder' => '[field.secondPlaceholderContainedId()/]',
 	[/if]
 	[if (field.hasSecondTitle)]
-        'title' => '[field.secondTitleId()/]',
+        'title' => '[field.secondTitleContainedId()/]',
 	[/if]
     [']'/],
 [/if]
@@ -570,10 +570,10 @@ TextType::class
 [template private fieldAttr(field : UnitField) post(trim())]
 'attr' => ['['/]
 [if (field.hasPlaceholder)]
-    'placeholder' => '[field.customisedPlaceholderId()/]',
+    'placeholder' => '[field.customisedPlaceholderContainedId()/]',
 [/if]
 [if (field.hasTitle)]
-    'title' => '[field.customisedTitleId()/]',
+    'title' => '[field.customisedTitleContainedId()/]',
 [/if]
 [']'/],
 [/template]
