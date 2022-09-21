@@ -1,0 +1,397 @@
+[comment encoding = UTF-8 /]
+[module controller(
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::parameters/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
+
+
+[template public authenticationController(authentication : Authentication, genModel : WafModel)
+	? (authentication.oclIsTypeOf(LocalAuthenticationSystem)) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+[file(localAuthentication.controllerFilename(genModel), false)]
+<?php
+[if (genModel.hasAPI)]
+namespace [authentication.webControllersNamespace()/];
+[else]
+namespace [authentication.controllersNamespace()/];
+[/if]
+
+[localAuthentication.useStatements()/]
+
+
+class [localAuthentication.controllerClassName()/] extends [localAuthentication.baseControllerClassName()/]
+{
+    use ResetPasswordControllerTrait;
+
+    [localAuthentication.properties()/]
+
+    [localAuthentication.constructor()/]
+
+[if (localAuthentication.hasRegistrationElement)]
+	[localAuthentication.registrationElement.elementMethods(genModel)/]
+
+[/if]
+	[localAuthentication.loginElement.elementMethods(genModel)/]
+
+	[localAuthentication.logoutElement.elementMethods(genModel)/]
+
+	[localAuthentication.forgottenPasswordElement.elementMethods(genModel)/]
+
+	[localAuthentication.resetPasswordElement.elementMethods(genModel)/]
+}
+[/file]
+[/let]
+[/template]
+
+[template private useStatements(authentication : LocalAuthenticationSystem) post(trim())]
+use [authentication.modelsNamespace()/]\[authentication.authenticationModel.modelClassName()/];
+use [authentication.modelsNamespace()/]\[authentication.resetPasswordRequestModel.modelClassName()/];
+use [authentication.formNamespace()/]\[authentication.forgottenPasswordElement.typeClassName()/];
+use [authentication.formNamespace()/]\[authentication.loginElement.typeClassName()/];
+[if (authentication.hasRegistrationElement)]
+use [authentication.formNamespace()/]\[authentication.registrationElement.typeClassName()/];
+[/if]
+use [authentication.formNamespace()/]\[authentication.resetPasswordElement.typeClassName()/];
+[if (authentication.hasRegistrationElement)]
+use App\Security\EmailVerifier;
+[/if]
+[if (authentication.captcha)]
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
+use Psr\Log\LoggerInterface;
+[/if]
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Bundle\FrameworkBundle\Controller\[authentication.baseControllerClassName()/];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+[/template]
+
+[template private properties(authentication : LocalAuthenticationSystem) post(trim())]
+/**
+ * @var EmailVerifier
+ */
+private EmailVerifier $emailVerifier;
+
+/**
+ * @var ResetPasswordHelperInterface
+ */
+private ResetPasswordHelperInterface $resetPasswordHelper;
+
+/**
+ * @var [authentication.authenticationModel.repository.className()/] $[authentication.authenticationModel.repository.instanceName()/]
+ */
+private [authentication.authenticationModel.repository.className()/] $[authentication.authenticationModel.repository.instanceName()/];
+
+/**
+ * @var [authentication.resetPasswordRequestModel.repository.className()/] $[authentication.resetPasswordRequestModel.repository.instanceName()/]
+ */
+private [authentication.resetPasswordRequestModel.repository.className()/] $[authentication.resetPasswordRequestModel.repository.instanceName()/];
+
+/**
+ * @var TranslatorInterface $translationService
+ */
+private TranslatorInterface $translationService;
+[/template]
+
+[template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
+public function __construct([if (authentication.hasRegistrationElement)]
+EmailVerifier $emailVerifier, [/if]
+ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator)
+{
+[if (authentication.hasRegistrationElement)]
+    $this->emailVerifier = $emailVerifier;
+[/if]
+    $this->resetPasswordHelper = $resetPasswordHelper;
+    $this->translationService = $translator;
+}
+[/template]
+
+
+[template private elementMethods(element : RegistrationElement, genModel : WafModel) post(trim())]
+/**
+ [element.routeAnnotation()/]
+ **/
+public function [element.actionName()/](Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+{
+    if (!$this->isGranted("IS_ANONYMOUS")) {
+[if (genModel.homeUnit().oclIsUndefined())]
+        return $this->redirect("/");
+[else]
+        return $this->redirectToRoute("[genModel.homeUnit().routeName()/]");
+[/if]
+    }
+
+    $user = new [element.authentication.userModel.modelClassName()/]();
+    $form = $this->createForm([element.typeClassName()/]::class, $user);
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $encodedPassword = $passwordEncoder->encodePassword($user,
+            $form->get('plainPassword')->getData()
+        );
+        $user->setPassword($encodedPassword);
+        [element.authentication.authenticationModel.repository.instanceName()/]->save($user, true);
+
+        // generate a signed url and email it to the user
+        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            (new TemplatedEmail())
+		        ->from(new Address(
+					$this->getParameter('[genModel.siteProperties.securityFromEmailId()/]'),
+					$this->getParameter('[genModel.siteProperties.securityFromNameId()/]')))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+        // do anything else you need here, like send an email
+
+        return $this->redirectToRoute('home');
+    }
+
+    $parameters = ['['/][']'/];
+    $parameters['['/]'[element.instanceParameter()/]'[']'/] = $[element.formVariable()/]->createView();
+    $parameters['['/]'[element.instanceParameter()/]_error'[']'/] = null;
+    return $this->render('[element.templateFilename()/]', $parameters);
+}
+
+/**
+ * @Route("/verify/email", name="app_verify_email")
+ **/
+public function verifyUserEmail(Request $request, AuthenticationRepository $authenticationRepository): Response
+{
+    $id = $request->get('id');
+
+    if (null === $id) {
+        return $this->redirectToRoute('app_register');
+    }
+
+    $user = $authenticationRepository->find($id);
+
+    if (null === $user) {
+        return $this->redirectToRoute('app_register');
+    }
+
+    // validate email confirmation link, sets User::isVerified=true and persists
+    try {
+        $this->emailVerifier->handleEmailConfirmation($request, $user);
+    } catch (VerifyEmailExceptionInterface $exception) {
+        $this->addFlash('verify_email_error', $exception->getReason());
+         return $this->redirectToRoute('app_register');
+    }
+
+    // @TODO Change the redirect on success and handle or remove the flash message in your templates
+    $this->addFlash('success', 'Your email address has been verified.');
+
+    return $this->redirectToRoute('app_register');
+}
+[/template]
+
+
+[template private elementMethods(element : LoginElement, genModel : WafModel) post(trim())]
+/**
+ [element.routeAnnotation()/]
+ **/
+public function [element.actionName()/](AuthenticationUtils $authenticationUtils[if (element.authentication.captcha)]
+, Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if]): Response
+{
+    if (!$this->isGranted("IS_ANONYMOUS")) {
+[if (genModel.homeUnit().oclIsUndefined())]
+        return $this->redirect("/");
+[else]
+        return $this->redirectToRoute("[genModel.homeUnit().routeName()/]");
+[/if]
+    }
+
+    [element.formVariable()/] = $this->createForm([element.typeClassName()/]::class, null, ['['/]
+        'action' => $this->generateUrl('[element.routeName()/]'),
+        'csrf_token_id' => '[genModel.siteProperties.siteName/]_authenticate',
+    [']'/]);
+
+    $parameters = ['['/][']'/];
+    $parameters['['/]'[element.instanceParameter()/]'[']'/] = [element.formVariable()/]->createView();
+    $parameters['['/]'[element.instanceParameter()/]_error'[']'/] = $authenticationUtils->getLastAuthenticationError();
+    return $this->render('[element.authenticationTemplate()/]/[element.templateName()/][element.htmlExtension()/][element.twigExtension()/]', $parameters);
+}
+[/template]
+
+[template private elementMethods(element : LogoutElement, genModel : WafModel) post(trim())]
+/**
+ [element.routeAnnotation()/]
+ */
+public function [element.actionName()/](): Response
+{
+    throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+}
+[/template]
+
+[template private elementMethods(element : ForgottenPasswordElement, genModel : WafModel) post(trim())]
+/**
+ [element.routeAnnotation()/]
+ **/
+public function [element.actionName()/]Request(Request $request, MailerInterface $mailer[if (element.authentication.captcha)]
+, Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if]): Response
+{
+    if (!$this->isGranted("IS_ANONYMOUS")) {
+[if (genModel.homeUnit().oclIsUndefined())]
+        return $this->redirect("/");
+[else]
+        return $this->redirectToRoute("[genModel.homeUnit().routeName()/]");
+[/if]
+    }
+
+    [element.formVariable()/] = $this->createForm([element.typeClassName()/]::class);
+    [element.formVariable()/]->handleRequest($request);
+    if ([element.formVariable()/]->isSubmitted() && [element.formVariable()/]->isValid()) {
+[if (element.authentication.captcha)]
+        if (!is_null($recaptcha3Validator->getLastResponse())) {
+            $score = $recaptcha3Validator->getLastResponse()->getScore();
+            $logger->error("Score ".$score);
+        }
+[/if]
+        return $this->processSendingPasswordResetEmail(
+            [element.formVariable()/]->get('[if (element.authentication.authenticationKey = AuthenticationKeyTypes::Email)]
+email[else]username[/if]')->getData(),
+            $mailer
+        );
+    }
+
+    $parameters = ['['/][']'/];
+    $parameters['['/]'[element.instanceParameter()/]'[']'/] = [element.formVariable()/]->createView();
+    $parameters['['/]'[element.instanceParameter()/]_error'[']'/] = null;
+    return $this->render('[element.authenticationTemplate()/]/[element.templateName()/][element.htmlExtension()/][element.twigExtension()/]', $parameters);
+}
+
+/**
+ * Confirmation page after a user has requested a password reset.
+ *
+ [element.routeEmailSentAnnotation()/]
+ **/
+public function [element.actionName()/]CheckEmail(): Response
+{
+    // We prevent users from directly accessing this page
+    if (null === ($resetToken = $this->getTokenObjectFromSession())) {
+        return $this->redirectToRoute('[element.routeName()/]');
+    }
+
+    return $this->render('[element.authenticationTemplate()/]/[element.authentication.resetPasswordElement.templateName()/][element.htmlExtension()/][element.twigExtension()/]', ['['/]
+//        'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+       'resetToken' => $resetToken,
+    [']'/]);
+}
+
+private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
+{
+    $user = $this->getDoctrine()->getRepository(Authentication::class)->findOneBy(['['/]
+        'email' => $emailFormData,
+    [']'/]);
+
+    // Do not reveal whether a user account was found or not.
+    if (!$user) {
+        return $this->redirectToRoute('[element.routeEmailSentName()/]');
+    }
+
+    try {
+        $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+    } catch (ResetPasswordExceptionInterface $e) {
+        // If you want to tell the user why a reset email was not sent, uncomment
+        // the lines below and change the redirect to '[element.routeName()/]'.
+        // Caution: This may reveal if a user is registered or not.
+        //
+        // $this->addFlash('reset_password_error', sprintf(
+        //     'There was a problem handling your password reset request - %s',
+        //     $e->getReason()
+        // ));
+
+        return $this->redirectToRoute('[element.routeEmailSentName()/]');
+    }
+
+    $email = (new TemplatedEmail())
+        ->from(new Address(
+				$this->getParameter('[genModel.siteProperties.securityFromEmailId()/]'),
+				$this->getParameter('[genModel.siteProperties.securityFromNameId()/]')))
+        ->to($user->getEmail())
+        ->subject('[element.emailSubject/]')
+        ->htmlTemplate('[element.viewEmailMessageFilename()/]')
+        ->context(['['/]
+            'resetToken' => $resetToken,
+        [']'/]);
+
+    $mailer->send($email);
+
+    // Store the token object in session for retrieval in check-email route.
+    $this->setTokenObjectInSession($resetToken);
+
+    return $this->redirectToRoute('[element.routeEmailSentName()/]');
+}
+[/template]
+
+[template private elementMethods(element : ResetPasswordElement, genModel : WafModel) post(trim())]
+/**
+ [element.routeAnnotation()/]
+ **/
+public function [element.actionName()/]Reset(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $token = null): Response
+{
+    if ($token) {
+        // We store the token in session and remove it from the URL, to avoid the URL being
+        // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
+        $this->storeTokenInSession($token);
+
+        return $this->redirectToRoute('[element.routeName()/]');
+    }
+
+    $token = $this->getTokenFromSession();
+    if (null === $token) {
+        throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
+    }
+
+    try {
+        $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
+    } catch (ResetPasswordExceptionInterface $e) {
+        $this->addFlash('reset_password_error', sprintf(
+            'There was a problem validating your reset request - %s',
+            $e->getReason()
+        ));
+
+        return $this->redirectToRoute('[element.authentication.forgottenPasswordElement.routeName()/]');
+    }
+
+    // The token is valid; allow the user to change their password.
+    [element.formVariable()/] = $this->createForm([element.typeClassName()/]::class);
+    [element.formVariable()/]->handleRequest($request);
+    if ([element.formVariable()/]->isSubmitted() && [element.formVariable()/]->isValid()) {
+        // A password reset token should be used only once, remove it.
+        $this->resetPasswordHelper->removeResetRequest($token);
+
+        // Encode the plain password, and set it.
+        $encodedPassword = $passwordEncoder->encodePassword(
+            $user,
+            [element.formVariable()/]->get('plainPassword')->getData()
+         );
+
+        $user->setPassword($encodedPassword);
+        $[element.authentication.resetPasswordRequestModel.repository.instanceName()/]->save($user, true);
+
+        // The session is cleaned up after the password has been changed.
+        $this->cleanSessionAfterReset();
+
+        return $this->redirectToRoute('[genModel.homeUnit().routeName()/]');
+    }
+
+    $parameters = ['['/][']'/];
+    $parameters['['/]'[element.instanceParameter()/]'[']'/] = [element.formVariable()/]->createView();
+    $parameters['['/]'[element.instanceParameter()/]_error'[']'/] = null;
+    return $this->render('[element.authenticationTemplate()/]/[element.templateName()/][element.htmlExtension()/][element.twigExtension()/]', $parameters);
+}
+[/template]

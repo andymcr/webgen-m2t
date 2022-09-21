@@ -1,0 +1,125 @@
+[comment encoding = UTF-8 /]
+[module featureFields(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+
+
+[template public formFeature(feature : Attribute)
+	? (feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+[attribute.formFeature('entity', attribute.displayLabelId(), attribute.displayLabelId(), attribute.displayLabelId())/]
+[/let]
+[/template]
+
+[template public formFeature(attribute : Attribute, translationDomain : String, labelId : String,
+	placeholderId : String, titleId : String) post(trim())]
+$builder->add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
+    'label' => '[labelId/]',
+    'translation_domain' => '[translationDomain/]',
+[if (not attribute.isRequired)]
+    'required' => false,
+[/if]
+[if (attribute.isDateFeature)]
+	[if (attribute.dateDetails = DateDetails::DateAndTime)]
+    'date_widget' => 'single_text',
+    'time_widget' => 'single_text',
+	[elseif (attribute.dateDetails <> DateDetails::DateAndTime)]
+    'widget' => 'single_text',
+		[if (attribute.dateDetails = DateDetails::TimeOnly)]
+    'with_seconds' => TRUE,
+		[/if]
+	[/if]
+[elseif (attribute.isEnumerationFeature)]
+    'choices' => [attribute.enumerationType.modelClassName()/]::values(),
+    'placeholder' => 'actions.labels.select_one',
+[/if]
+    'attr' => ['['/]
+        'placeholder' => '[placeholderId/]',
+[if (attribute.hasValidationPattern)]
+        'pattern' => '[attribute.oclAsType(DataTypeAttribute).validationPattern/]',
+[/if]
+        'title' => '[titleId/]',
+    [']'/],
+[']'/])
+[/template]
+
+
+[template public formFeature(feature : Attribute, allowUiAdd : Boolean, allowUiRemove : Boolean)
+	? (not feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+$builder->add('[attribute.modelPropertyName()/]', CollectionType::class, ['['/]
+    'label' => '[attribute.displayLabelId()/]',
+    'translation_domain' => 'entity',
+    'entry_type' => [attribute.interfaceType()/],
+[if (allowUiAdd)]
+    'allow_add' => true,
+[/if]
+[if (allowUiRemove)]
+    'allow_delete' => true,
+[/if]
+[if (attribute.collectionOrmAllowAdd and attribute.collectionOrmAllowRemove)]
+    'by_reference' => false,
+[/if]
+    'required' => false,
+[']'/])
+[/let]
+[/template]
+
+[template private interfaceType(attribute : Attribute) post(trim())]
+[if (attribute.isBooleanFeature)]
+CheckboxType::class
+[elseif (attribute.isDateFeature)]
+	[if (attribute.dateDetails = DateDetails::DateOnly)]
+DateType::class
+	[elseif (attribute.dateDetails = DateDetails::DateAndTime)]
+DateTimeType::class
+	[else]
+TimeType::class
+	[/if]
+[elseif (attribute.isEmailFeature)]
+EmailType::class
+[elseif (attribute.isEnumerationFeature)]
+ChoiceType::class
+[elseif (attribute.isIntegerFeature)]
+IntegerType::class
+[elseif (attribute.isObfuscatedFeature)]
+PasswordType::class
+[elseif (attribute.isTextareaFeature)]
+TextareaType::class
+[else]
+TextType::class
+[/if]
+[/template]
+
+
+[template public formFeature(feature : Association, valueLabel : ModelLabel, hasAutocomplete : Boolean, selection : Selection)
+	? (not feature.isContains) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
+$builder->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
+    'label' => '[association.displayLabelId()/]',
+    'translation_domain' => 'entity',
+[if (not association.isSingleton or not association.isRequired)]
+    'required' => false,
+[/if]
+    'class' => '[association.modelsNamespace()/]\[association.modelClassName()/]',
+[if (hasAutocomplete)]
+    'choices' => array_key_exists('data', $options) && !is_null($options['['/]'data'[']'/]->[feature.getMethodName()/]())
+        ? ['['/] $options['['/]'data'[']'/]->[feature.getMethodName()/]() [']'/]
+        : ['['/][']'/],
+[else]
+	[if (not selection.oclIsUndefined())]
+    'choices' => $this->[selection.definedBy.instanceName()/]->[selection.methodName/](),
+	[/if]
+[/if]
+    'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
+    'choice_translation_domain' => false,
+[if (association.isSingleton)]
+    'placeholder' => 'actions.labels.select_one',
+[else]
+    'multiple' => true,
+[/if]
+[']'/])
+[/let]
+[/template]

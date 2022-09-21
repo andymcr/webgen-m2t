@@ -77,13 +77,6 @@
 	action.parentUnit.hasObjectAccess()), true)/]
 [/template]
 
-[template private linkPath(action : Action, valueAccessor : String) 
-	?(action.oclIsTypeOf(SecurityAction)) post(trim())]
-[let securityAction : SecurityAction = action.oclAsType(SecurityAction)]
-'[securityAction.target.oclAsType(ContentUnit).routeName()/]'
-[/let]
-[/template]
-
 [template private linkPath(action : SelectAction, valueAccessor : String) 
 	?(action.oclIsTypeOf(ContainerSelectAction)) post(trim())]
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
@@ -174,13 +167,6 @@
 [/if][/template]
 
 
-[template private attributes(action : Action, valueAccessor : String)
-	?(action.oclIsTypeOf(SecurityAction)) post(trim())]
-[if (action.hasAnchorClass)]
-class="[action.anchorClass/]"
-[/if]
-[/template]
-
 [query private hasTooltip(action : Action) : Boolean
 	= if action.isInstanceAction then
 			action.parentUnit.instanceActionsPlacement = InstanceActionsPlacement::Float
@@ -189,8 +175,7 @@ class="[action.anchorClass/]"
 		endif
 /]
 
-[template private attributes(action : Action, valueAccessor : String)
-	?(not action.oclIsTypeOf(SecurityAction)) post(trim())]
+[template private attributes(action : Action, valueAccessor : String) post(trim())]
 [if (action.hasAnchorClass)]
  class="[action.anchorClass/]"[/if]
  title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]

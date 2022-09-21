@@ -59,8 +59,12 @@
 	= 'App'
 /]
 
-[query public securityPrefix(eObject : EObject) : String
-	= 'Security'
+[query public authenticationPrefix(eObject : EObject) : String
+	= 'Authentication'
+/]
+
+[query public authenticationTemplate(eObject : EObject) : String
+	= 'authentication'
 /]
 
 [query public typeSuffix(eObject : EObject) : String
@@ -69,15 +73,6 @@
 
 [query public unitPrefix(eObject : EObject) : String
 	= 'Unit'
-/]
-
-
-[query public changePasswordName(eObject : EObject) : String
-	= 'ChangePassword'
-/]
-
-[query public resetPasswordRequestName(eObject : EObject) : String
-	= 'ResetPasswordRequest'
 /]
 
 
@@ -117,28 +112,30 @@
 /]
 
 
-[query public changePasswordTypeClassName(security : LocalAuthenticationSystem) : String
-	= security.typeClassName(security.changePasswordName())
+[query public authenticatorName(authentication : LocalAuthenticationSystem) : String
+	= 'LoginFormAuthenticator'
 /]
 
-[query public controllerClassName(security : SecurityModel) : String
-	= security.securityPrefix().concat('Controller').toUpperFirst()
+[query public controllerClassName(authentication : LocalAuthenticationSystem) : String
+	= authentication.authenticationPrefix().concat('Controller').toUpperFirst()
 /]
 
-[query public resetPasswordRequestModelClassName(security : LocalAuthenticationSystem) : String
-	= security.securityPrefix().concat(security.resetPasswordRequestName())
+[query public actionName(element : AuthenticationElement) : String
+	= element.instanceName()
 /]
 
-[query public resetPasswordRequestTypeClassName(security : LocalAuthenticationSystem) : String
-	= security.typeClassName(security.resetPasswordRequestName())
-/]
-
-[query public typeClassName(security : LocalAuthenticationSystem, element : String) : String
-	= security.securityPrefix().concat(element).concat(security.typeSuffix())
-/]
-
-[query public userModelName(security : Authentication) : String
-	= security.securityPrefix().concat('User')
+[query public typeClassName(element : AuthenticationElement) : String
+	= if element.oclIsTypeOf(RegistrationElement) then
+				element.authenticationPrefix().concat('Registration')
+			else if element.oclIsTypeOf(LoginElement) then
+				element.authenticationPrefix().concat('Login')
+			else if element.oclIsTypeOf(ForgottenPasswordElement) then
+				'ResetPasswordRequest' 
+			else if element.oclIsTypeOf(ResetPasswordElement) then
+				'ResetPasswordChange' 
+			else
+				''
+			endif endif endif endif.concat(element.typeSuffix())
 /]
 
 
@@ -229,21 +226,21 @@
 /]
 
 [query public captchaActionName(unit : ContentUnit) : String
-	= if unit.oclIsTypeOf(RegistrationUnit) then
-			'registration'
-		else if unit.oclIsTypeOf(LoginUnit) then
-			'login'
-		else if unit.oclIsTypeOf(ForgottenPasswordUnit) then
-			'forgottenPassword'
-		else if unit.oclIsTypeOf(ResetPasswordUnit) then
-			'resetPasword'
+	= if unit.displayedOn.editUnits->size() = 1 then
+			unit.displayedOn.uniqueName()
 		else
-			if unit.displayedOn.editUnits->size() = 1 then
-				unit.displayedOn.uniqueName()
-			else
-				unit.uniqueName()
-			endif
-		endif endif endif endif
+			unit.uniqueName()
+		endif
+/]
+
+[query public className(container : ConstantContainer) : String
+	= if container.oclIsTypeOf(Repository) then
+			container.oclAsType(Repository).className()
+		else if container.oclIsTypeOf(Service) then
+			container.oclAsType(Service).className()
+		else
+			'Unknown'
+		endif endif
 /]
 
 [query public containerInstanceName(unit : DynamicUnit) : String
@@ -282,12 +279,16 @@
 		->collect(f | f.name)
 /]
 
-[query public formName(unit : EditUnit) : String
-	= unit.instanceName().concat('Form')
+[query public formName(element : NamedElement) : String
+	= element.instanceName().concat('Form')
+/]
+
+[query public formVariable(element : AuthenticationElement) : String
+	= '$'.concat(element.formName())
 /]
 
 [query public formVariable(unit : EditUnit) : String
-	= if unit.displayedOn.hasSingleActionMethod() or unit.oclIsKindOf(SecurityUnit) then
+	= if unit.displayedOn.hasSingleActionMethod() then
 			'$'.concat(unit.formName())
 		else
 			'$this->'.concat(unit.formName())
@@ -298,16 +299,16 @@
 	= '$'.concat(unit.formName())
 /]
 
-[query public instanceName(unit : ContentUnit) : String
-	= unit.name.toLowerFirst()
+[query public instanceName(element : NamedElement) : String
+	= element.name.toLowerFirst()
 /]
 
 [query public instanceName(resource : Resource) : String
 	= resource.name.toLowerFirst()
 /]
 
-[query public instanceParameter(unit : ContentUnit) : String
-	= unit.instanceName()
+[query public instanceParameter(element : NamedElement) : String
+	= element.instanceName()
 /]
 
 [query public instanceVariable(unit : ContentUnit) : String
@@ -373,8 +374,12 @@
 		endif
 /]
 
-[query public routeEmailSentName(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.uniqueName().concat('_').concat(unit.uriEmailSent)
+[query public routeName(element : AuthenticationElement) : String
+	= element.uriElement
+/]
+
+[query public routeEmailSentName(element : ForgottenPasswordElement) : String
+	= element.uriEmailSent
 /]
 
 [query public routeName(association : UnitAssociation) : String
@@ -393,20 +398,14 @@
 	= resource.instanceName()
 /]
 
+[query public templateName(element : AuthenticationElement) : String
+	= element.instanceName().snakeCase()
+/]
+
 [query public templateName(unit : ContentUnit) : String
 	= unit.instanceName().snakeCase()
 /]
 
-
-[query public className(container : ConstantContainer) : String
-	= if container.oclIsTypeOf(Repository) then
-			container.oclAsType(Repository).className()
-		else if container.oclIsTypeOf(Service) then
-			container.oclAsType(Service).className()
-		else
-			'Unknown'
-		endif endif
-/]
 
 [query public sameModel(form : SingletonUnit) : Sequence(SingletonUnit)
 	= if form.hasInterfaceFields then
@@ -448,10 +447,23 @@
 			endif
 /]
 
+[query private usesAuthenticationModel(form : SingletonUnit) : Boolean
+	= if not form.genModel.security.isAuthenticated then
+				false
+			else
+				let authentication : Authentication = form.genModel.security.authentication
+					in if not authentication.oclIsTypeOf(LocalAuthenticationSystem) then
+							false
+						else
+							authentication.oclAsType(LocalAuthenticationSystem).authenticationModel = form.contentType
+						endif
+			endif
+/]
+
 [query public typeClassName(unit : SingletonUnit) : String
 	= let sameModel : Sequence(DynamicUnit) = unit.sameModel()
 		in unit.contentType.modelClassName()
-			.concat(if sameModel->size() <> unit.contentType.formsUsing(unit.genModel)->size() then
+			.concat(if sameModel->size() <> unit.contentType.formsUsing(unit.genModel)->size() or unit.usesAuthenticationModel() then
 					unit.name.toUpperFirst()
 				else
 					''
@@ -463,16 +475,16 @@
 	= unit.displayedOn.uniqueName().concat('_').concat(unit.instanceName())
 /]
 
-[query public viewCheckEmailName(unit : ForgottenPasswordUnit) : String
-	= unit.name.toLowerFirst().concat('_check')
+[query public viewCheckEmailName(element : ForgottenPasswordElement) : String
+	= element.name.toLowerFirst().concat('_check')
 /]
 
-[query public viewEmailMessageName(unit : ForgottenPasswordUnit) : String
-	= unit.name.toLowerFirst().concat('_email')
+[query public viewEmailMessageName(element : ForgottenPasswordElement) : String
+	= element.name.toLowerFirst().concat('_email')
 /]
 
-[query public viewResetPasswordName(unit : ForgottenPasswordUnit) : String
-	= unit.name.toLowerFirst().concat('_reset')
+[query public viewResetPasswordName(element : ForgottenPasswordElement) : String
+	= element.name.toLowerFirst().concat('_reset')
 /]
 
 

@@ -11,6 +11,19 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
 
 
+[template public routeAnnotation(element : AuthenticationElement) post(trim())]
+[element.routeAnnotation(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeEmailSentAnnotation(element : ForgottenPasswordElement) post(trim())]
+[element.routeAnnotation(element.routeEmailSentName(), element.uriEmailSentPath(), true)/]
+[/template]
+
+[template private routeAnnotation(element : AuthenticationElement, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
+* @Route("[uriPath/]", name="[routeName/]")
+[/template]
+
+
 [template public routeAnnotation(page : Page) post(trim())]
 [if (page.units->isEmpty())]
 * @Route("[page.uriPath()/]", name="[page.routeName()/]")
@@ -20,9 +33,7 @@
 [/template]
 
 [template public routeAnnotation(unit : ContentUnit) post(trim())]
-[if (unit.oclIsKindOf(SecurityUnit))]
-[unit.routeAnnotation(unit.routeName(), unit.oclAsType(DynamicUnit).uriSecurityPath(), false)/]
-[elseif (unit.oclIsKindOf(DynamicUnit))]
+[if (unit.oclIsKindOf(DynamicUnit))]
 [unit.routeAnnotation(unit.routeName(), unit.oclAsType(DynamicUnit).uriPath(), true)/]
 [elseif (unit.oclIsKindOf(StaticUnit))]
 [unit.routeAnnotation(unit.routeName(), unit.oclAsType(StaticUnit).uriPath(), true)/]
@@ -35,10 +46,6 @@
 
 [template public routeUpdateAnnotation(unit : EditUnit, suffix : String) post(trim())]
 [unit.routeAnnotation(unit.routeUpdateName(), unit.uriUpdatePath(suffix), true)/]
-[/template]
-
-[template public routeEmailSentAnnotation(unit : ForgottenPasswordUnit) post(trim())]
-[unit.routeAnnotation(unit.routeEmailSentName(), unit.uriEmailSentPath(), true)/]
 [/template]
 
 [template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]

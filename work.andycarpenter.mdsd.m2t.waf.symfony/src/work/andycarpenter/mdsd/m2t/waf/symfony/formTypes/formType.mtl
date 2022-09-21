@@ -9,6 +9,8 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::captchaField/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::featureFields/]
 
 
 [query private formEntities(model : WafModel) : Set(Entity)
@@ -80,17 +82,18 @@ class [unit.typeClassName()/] extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 [for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName))]
-        $builder->[feature.formField()/];
+        [feature.formField()/];
 [if (feature.hasAutocomplete)]
         [feature.autocompleteField()/]
 [/if]
 
 [/for]
 [if (unit.hasCaptcha)]
-        [unit.captchaField()/]
 
+        [unit.captchaField(unit.captchaActionName())/]
 [/if]
 [if (unit.hasDefaultValueFields or unit.hasForcedValueFields)]
+
         [unit.setFieldValues()/]
 [/if]
     }
@@ -134,11 +137,11 @@ class [association.typeClassName()/] extends AbstractType
     {
 [for (feature : Feature | association.association.targetType.features->select(f | not f.isContainer)->sortedBy(f | f.name))]
 	[if (feature.oclIsKindOf(Attribute) and feature.isSingleton)]
-        $builder->[feature.oclAsType(Attribute).formFeature()/];
+        [feature.oclAsType(Attribute).formFeature()/];
  	[elseif (feature.oclIsKindOf(Attribute) and not feature.isSingleton)]
-        $builder->[feature.oclAsType(Attribute).formFeature(false, false)/];
+        [feature.oclAsType(Attribute).formFeature(false, false)/];
 	[elseif (feature.oclIsKindOf(Association))]
-        $builder->[feature.oclAsType(Association).formFeature(null, false, null)/];
+        [feature.oclAsType(Association).formFeature(null, false, null)/];
 	[/if]
 [/for]
     }
@@ -295,45 +298,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/let]
 [/template]
 
-[template private formFeature(feature : Attribute)
-	? (feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-[attribute.formFeature('entity', attribute.displayLabelId(), attribute.displayLabelId(), attribute.displayLabelId())/]
-[/let]
-[/template]
-
-[template private formFeature(attribute : Attribute, translationDomain : String, labelId : String,
-	placeholderId : String, titleId : String) post(trim())]
-add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
-    'label' => '[labelId/]',
-    'translation_domain' => '[translationDomain/]',
-[if (not attribute.isRequired)]
-    'required' => false,
-[/if]
-[if (attribute.isDateFeature)]
-	[if (attribute.dateDetails = DateDetails::DateAndTime)]
-    'date_widget' => 'single_text',
-    'time_widget' => 'single_text',
-	[elseif (attribute.dateDetails <> DateDetails::DateAndTime)]
-    'widget' => 'single_text',
-		[if (attribute.dateDetails = DateDetails::TimeOnly)]
-    'with_seconds' => TRUE,
-		[/if]
-	[/if]
-[elseif (attribute.isEnumerationFeature)]
-    'choices' => [attribute.enumerationType.modelClassName()/]::values(),
-    'placeholder' => 'actions.labels.select_one',
-[/if]
-    'attr' => ['['/]
-        'placeholder' => '[placeholderId/]',
-[if (attribute.hasValidationPattern)]
-        'pattern' => '[attribute.oclAsType(DataTypeAttribute).validationPattern/]',
-[/if]
-        'title' => '[titleId/]',
-    [']'/],
-[']'/])
-[/template]
-
 [template private formField(field : UnitField)
 	? (field.isAttributeField and not field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
@@ -341,87 +305,10 @@ add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
 [/let]
 [/template]
 
-[template private formFeature(feature : Attribute, allowUiAdd : Boolean, allowUiRemove : Boolean)
-	? (not feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-add('[attribute.modelPropertyName()/]', CollectionType::class, ['['/]
-    'label' => '[attribute.displayLabelId()/]',
-    'translation_domain' => 'entity',
-    'entry_type' => [attribute.interfaceType()/],
-[if (allowUiAdd)]
-    'allow_add' => true,
-[/if]
-[if (allowUiRemove)]
-    'allow_delete' => true,
-[/if]
-[if (attribute.collectionOrmAllowAdd and attribute.collectionOrmAllowRemove)]
-    'by_reference' => false,
-[/if]
-    'required' => false,
-[']'/])
-[/let]
-[/template]
-
-[template private interfaceType(attribute : Attribute) post(trim())]
-[if (attribute.isBooleanFeature)]
-CheckboxType::class
-[elseif (attribute.isDateFeature)]
-	[if (attribute.dateDetails = DateDetails::DateOnly)]
-DateType::class
-	[elseif (attribute.dateDetails = DateDetails::DateAndTime)]
-DateTimeType::class
-	[else]
-TimeType::class
-	[/if]
-[elseif (attribute.isEmailFeature)]
-EmailType::class
-[elseif (attribute.isEnumerationFeature)]
-ChoiceType::class
-[elseif (attribute.isIntegerFeature)]
-IntegerType::class
-[elseif (attribute.isObfuscatedFeature)]
-PasswordType::class
-[elseif (attribute.isTextareaFeature)]
-TextareaType::class
-[else]
-TextType::class
-[/if]
-[/template]
-
 [template private formField(field : UnitField)
 	? (field.isAssociationField and not field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [association.association.formFeature(association.valueDisplay, association.hasAutocomplete, association.options)/]
-[/let]
-[/template]
-
-[template private formFeature(feature : Association, valueLabel : ModelLabel, hasAutocomplete : Boolean, selection : Selection)
-	? (not feature.isContains) post(trim())]
-[let association : Association = feature.oclAsType(Association)]
-add('[association.modelPropertyName()/]', EntityType::class, ['['/]
-    'label' => '[association.displayLabelId()/]',
-    'translation_domain' => 'entity',
-[if (not association.isSingleton or not association.isRequired)]
-    'required' => false,
-[/if]
-    'class' => '[association.modelsNamespace()/]\[association.modelClassName()/]',
-[if (hasAutocomplete)]
-    'choices' => array_key_exists('data', $options) && !is_null($options['['/]'data'[']'/]->[feature.getMethodName()/]())
-        ? ['['/] $options['['/]'data'[']'/]->[feature.getMethodName()/]() [']'/]
-        : ['['/][']'/],
-[else]
-	[if (not selection.oclIsUndefined())]
-    'choices' => $this->[selection.definedBy.instanceName()/]->[selection.methodName/](),
-	[/if]
-[/if]
-    'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
-    'choice_translation_domain' => false,
-[if (association.isSingleton)]
-    'placeholder' => 'actions.labels.select_one',
-[else]
-    'multiple' => true,
-[/if]
-[']'/])
 [/let]
 [/template]
 
@@ -604,15 +491,6 @@ $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
     }
 });
 [/let]
-[/template]
-
-[template private captchaField(unit : SingletonUnit) post(trim())]
-$builder->add('captcha', Recaptcha3Type::class, ['['/]
-    'mapped' => false,
-    'constraints' => new Recaptcha3(),
-    'action_name' => '[unit.captchaActionName()/]',
-//    'script_nonce_csp' => $nonceCSP,
-[']'/]);
 [/template]
 
 [template private setFieldValues(unit : SingletonUnit) post(trim())]

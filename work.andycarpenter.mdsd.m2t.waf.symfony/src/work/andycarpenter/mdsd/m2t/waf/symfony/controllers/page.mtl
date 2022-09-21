@@ -19,7 +19,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::detailsMethods/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::editMethods/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::securityMethods/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::staticMethods/]
 
 
@@ -55,21 +54,16 @@
 			->select(u | not u.containingType.oclIsUndefined())
 			->collect(u | u.containingType.repository)
 			->asSet()
-		in let autocompleteRepositories : Set(Repository)
-			= page.editUnits
-				->collect(u | u.autocompleteFields)
-				->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
-				->collect(f | f.optionsFilter.selection.definedBy)
-				->asSet()
-			in let resetPasswordRepositories : Set(Repository)
-				= page.securityUnits
-					->select(u | u.oclIsTypeOf(ResetPasswordUnit)).oclAsType(ResetPasswordUnit)
-					->collect(u | u.contentType.repository)
-					->asSet()
-				in page.repositoriesUsed->asSet()
+--		in let autocompleteRepositories : Set(Repository)
+--			= page.editUnits
+--				->collect(u | u.autocompleteFields)
+--				->select(f | f.oclIsKindOf(UnitAssociation)).oclAsType(UnitAssociation)
+--				->select(f | not f.optionsFilter.oclIsUndefined())
+--				->collect(f | f.optionsFilter.selection.definedBy)
+--				->asSet()
+			in page.repositoriesUsed->asSet()
 					->union(containerRepositories)
-					->union(autocompleteRepositories)
-					->union(resetPasswordRepositories)
+--					->union(autocompleteRepositories)
 					->asSequence()
 					->sortedBy(r | r.name)
 /]
@@ -93,10 +87,6 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
-[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
-    use ResetPasswordControllerTrait;
-
-[/if]
     [page.properties()/]
 
     [page.constructor()/]
@@ -123,7 +113,7 @@ class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 
 		[/for]
 	[/for]
-	[if (page.hasNonSecurityUnits)]
+	[if (page.hasUnits)]
     [page.renderMethod()/]
 	[/if]
 [/if]
@@ -144,9 +134,6 @@ use [repository.repositoryNamespace()/]\[repository.className()/];
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
 use [service.serviceNamespace()/]\[service.className()/];
 [/for]
-[if (page.hasRegistrationUnits)]
-use App\Security\EmailVerifier;
-[/if]
 [if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
@@ -157,15 +144,11 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 [/if]
 [if (page.hasCaptchaUnits)]
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
-use Psr\Log\LoggerInterface;
-[/if]
-[if (page.hasForgottenPasswordUnits)]
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 [/if]
 [if (page.hasEditUnits)]
 use Symfony\Component\Form\FormInterface;
 [/if]
-[if (page.hasSingleAuthorisationRole() or page.hasSecurityUnits)]
+[if (page.hasSingleAuthorisationRole())]
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 [/if]
 [if (page.hasMultipleAuthorisationRoles())]
@@ -178,54 +161,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 [if (page.hasFileActions)]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
-[if (page.hasForgottenPasswordUnits)]
-use Symfony\Component\HttpFoundation\RedirectResponse;
-[/if]
 [if (page.hasFiltersOrPagination() or page.hasEditUnits)]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
-[if (page.hasForgottenPasswordUnits)]
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
-[/if]
 use Symfony\Component\Routing\Annotation\Route;
-[if (page.hasResetPasswordUnits)]
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-[/if]
-[if (page.hasLoginUnits)]
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-[/if]
 [if (page.hasAutocompleteFields)]
 use Symfony\Component\Serializer\SerializerInterface;
 [/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
-[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
-use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
-[/if]
-[if (page.hasResetPasswordUnits)]
-use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
-[/if]
-[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
-use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
-[/if]
 [/template]
 
 [template private properties(page : Page) post(trim())]
-[if (page.hasRegistrationUnits)]
-/**
- * @var EmailVerifier
- */
-private EmailVerifier $emailVerifier;
-
-[/if]
-[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
-/**
- * @var ResetPasswordHelperInterface
- */
-private ResetPasswordHelperInterface $resetPasswordHelper;
-
-[/if]
 [for (repository : Repository | page.repositoriesUsed())]
 /**
  * @var [repository.className()/] $[repository.instanceName()/]
@@ -240,7 +187,7 @@ private [repository.className()/] $[repository.instanceName()/];
 private [service.className()/] $[service.instanceName()/];
 
 [/for]
-[for (unit : ContentUnit | page.nonSecurityUnits->sortedBy(u | u.name))]
+[for (unit : ContentUnit | page.units->sortedBy(u | u.name))]
 	[if (not page.hasSingleActionMethod() or unit.hasSelectionMethod())]
 		[if (unit.oclIsKindOf(EditUnit))]
 /**
@@ -294,20 +241,12 @@ private TranslatorInterface $translationService;
 [/template]
 
 [template private constructor(page : Page) post(trim())]
-public function __construct([if (page.hasRegistrationUnits)]
-EmailVerifier $emailVerifier, [/if][if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
-ResetPasswordHelperInterface $resetPasswordHelper, [/if][for (repository : Repository | page.repositoriesUsed()) separator (', ')]
+public function __construct([for (repository : Repository | page.repositoriesUsed()) separator (', ')]
 [repository.className()/] $[repository.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() and page.hasServicesUsed)]
 , [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
 [service.className()/] $[service.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
 , [/if]TranslatorInterface $translator)
 {
-[if (page.hasRegistrationUnits)]
-    $this->emailVerifier = $emailVerifier;
-[/if]
-[if (page.hasForgottenPasswordUnits or page.hasResetPasswordUnits)]
-    $this->resetPasswordHelper = $resetPasswordHelper;
-[/if]
 [for (repository : Repository | page.repositoriesUsed())]
     $this->[repository.instanceName()/] = $[repository.instanceName()/];
 [/for]

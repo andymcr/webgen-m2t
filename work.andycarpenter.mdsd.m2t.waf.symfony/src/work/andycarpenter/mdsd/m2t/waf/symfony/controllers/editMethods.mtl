@@ -19,7 +19,7 @@
 
 
 [template public unitMethods(unit : ContentUnit)
-	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsKindOf(SecurityUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
+	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [for (association : UnitAssociation | editUnit.associationFields)]
 	[if (association.hasAutocomplete)]
@@ -244,7 +244,7 @@ return [unit.displayedOn.redirect(sourceParameters)/];
 /]
 
 [template public templateParameters(unit : ContentUnit)
-	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsKindOf(SecurityUnit)) post(trim())]
+	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.displayEmptyForm())]
 if (!isset([editUnit.formVariable()/])) {

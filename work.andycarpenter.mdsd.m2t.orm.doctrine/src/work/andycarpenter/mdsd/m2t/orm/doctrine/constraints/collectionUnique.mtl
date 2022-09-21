@@ -59,7 +59,7 @@ class [model.collectionUniqueClassName()/] extends Constraint
         if (!isset($this->containerPropertyPath)) {
             throw new \InvalidArgumentException("containerProperty value missing");
         }
-        if (!isset($this->containingPropertyPath)) {
+        if (!isset($this->collectionPropertyPath)) {
             throw new \InvalidArgumentException("collectionProperty value missing");
         }
     }

@@ -1,0 +1,41 @@
+[comment encoding = UTF-8 /]
+[module loginView(
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
+
+
+[template public elementView(element : LoginElement) post(trim())]
+[file(element.templateFilename(), false)]
+{% extends 'base.html.twig' %}
+
+{% block content %}
+{% trans_default_domain "[element.translationDomain()/]" %}
+<section[if (element.hasSectionClass)] class="[element.sectionClass/]"[/if] id="[element.id()/]">
+<h4[if (element.hasCaptionClass)]
+ class="[if (element.hasCaptionClass)][element.captionClass/][/if]"[/if]>[element.unitTitle()/]</h4>
+
+{% if login_error %}
+<div class="alert alert-danger">{{ login_error.messageKey|trans(login_error.messageData, 'security') }}</div>
+{% endif %}
+
+{{ form_start([element.instanceName()/], { attr: { id: '[element.id()/]'[if (element.hasContentClass)], class: '[element.contentClass/]'[/if] }}) }}
+ {{ form_errors([element.instanceName()/]) }}
+ {{ form_row([element.instanceName()/].[element.authentication.identifierFeture.name/], { row_attr: { class: 'px-2 mb-3' },}) }}
+ {{ form_row([element.instanceName()/].plainPassword, { row_attr: { class: 'px-2 mb-3' }, attr: { }}) }}
+[if (element.authentication.captcha)]
+ {{ form_row([element.instanceName()/].captcha) }}
+[/if]
+<div class="d-flex justify-content-center bg-light border-top p-2">
+ <button type="submit" name="submit" class="btn border rounded mx-2 my-1">{{ 'security.login.labels.submit' | trans }}</button>
+</div>
+{{ form_row([element.instanceName()/]._token) }}
+{{ form_end([element.instanceName()/], {'render_rest': false}) }}
+</section>
+{% endblock %}
+[/file]
+[/template]

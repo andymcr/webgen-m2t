@@ -312,7 +312,7 @@ if ([unit.instanceVariable()/]->isSubmitted() && [unit.instanceVariable()/]->get
 
 
 [template public templateParameters(page : Page) post(trim())]
-$parameters['['/]'title'[']'/] = [page.translate(page.displayLabelId())/];
+$parameters['['/]'title'[']'/] = [page.translate(page.displayLabelContainedId())/];
 [/template]
 
 [template public actionResultFlash(action : Action) post(trim())]

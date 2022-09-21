@@ -41,6 +41,9 @@
 [/template]
 
 [template public detailsContent(unit : DetailsUnit, accessor : String, depthInteger : Integer) post(trim())]
+[if (unit.hasInstanceActions)]
+[comment unit.instanceActions(accessor)/]
+[/if]
 [unit.fields(accessor)/]
 [/template]
 

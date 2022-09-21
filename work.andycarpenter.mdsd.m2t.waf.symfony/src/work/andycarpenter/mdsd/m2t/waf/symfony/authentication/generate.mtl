@@ -1,0 +1,36 @@
+[comment encoding = UTF-8 /]
+[module generate(
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::config::security/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::forgottenPasswordViews/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginFormAuthenticator/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginFormType/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginView/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::resetPasswordChangeFormType/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::resetPasswordConfig/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::resetPasswordRequestFormType/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::translations/]
+
+
+[template public authentication(authentication: Authentication, genModel : WafModel)
+	? (authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
+[localAuthentication.configSecurity()/]
+[localAuthentication.configResetPassword()/]
+
+[localAuthentication.authenticationController(genModel)/]
+
+[localAuthentication.loginElement.loginFormType()/]
+[localAuthentication.loginFormAuthenticator()/]
+[localAuthentication.forgottenPasswordElement.resetPasswordRequestFormType()/]
+[localAuthentication.resetPasswordElement.resetPasswordChangeFormType()/]
+
+[localAuthentication.loginElement.elementView()/]
+[localAuthentication.forgottenPasswordElement.elementViews()/]
+
+[localAuthentication.authenticationTranslations()/]
+[/let]
+[/template]

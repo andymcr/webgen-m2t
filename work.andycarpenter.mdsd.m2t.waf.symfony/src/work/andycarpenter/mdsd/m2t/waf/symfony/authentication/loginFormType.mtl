@@ -1,0 +1,75 @@
+[comment encoding = UTF-8 /]
+[module loginFormType(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::featureFields/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::captchaField/]
+
+
+[template public loginFormType(element : LoginElement)]
+[file (element.formTypeFilename(), false)]
+<?php
+namespace [element.formNamespace()/];
+
+[if (element.authentication.captcha)]
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
+[/if]
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+[if (element.authentication.authenticationKey = AuthenticationKeyTypes::Email)]
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+[/if]
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+[if (element.authentication.authenticationKey = AuthenticationKeyTypes::Any)]
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+[/if]
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+
+class [element.typeClassName()/] extends AbstractType
+{
+    /**
+     *
+     * @param FormBuilderInterface<string> $builder
+     * @param array<string, mixed> $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+[let identifierFeature : Attribute = element.authentication.identifierFeture]
+        [identifierFeature.formFeature()/];
+[/let]
+
+        $builder->add('plainPassword', PasswordType::class, ['['/]
+            'mapped' => false,
+            'translation_domain' => 'security',
+            'required' => true,
+            'attr' => ['['/]
+                'placeholder' => 'security.login.placeholders.plain_password',
+                'title' => 'security.login.titles.plain_password',
+            [']'/],
+        [']'/]);
+[if (element.authentication.captcha)]
+
+        [element.captchaField(element.name)/]
+[/if]
+    }
+
+    /**
+     *
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(['['/]
+            'data_class' => 'App\Entity\Authentication'
+        [']'/]);
+    }
+}
+[/file]
+[/template]

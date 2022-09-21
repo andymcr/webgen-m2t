@@ -6,7 +6,7 @@
 
 
 [query public hasSingleActionMethod(page : Page) : Boolean
-	= page.nonSecurityUnits->notEmpty()
+	= page.units->notEmpty()
 		and page.dynamicUnits->forAll(u | not u.oclIsTypeOf(CreateUpdateUnit))
 		and page.dynamicUnits->forAll(u | not u.isDislayedOnlyOnExplicitRoute())
 		and page.hasCommonUnitAuthentication

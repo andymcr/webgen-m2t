@@ -198,9 +198,6 @@ protected $[entity.autoKeyName/];
 	[if (feature.isValidated)]
  [feature.validationAnnotation()/]
 	[/if]
-	[if (feature.hasSerializationControl)]
- [feature.serializationAnnotation()/]
-	[/if]
  *
  * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
  */
@@ -453,19 +450,6 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/if]
 [if (feature.isContains)]
 * @Assert\Valid
-[/if]
-[/template]
-
-[template private serializationAnnotation(feature : Feature) post(trim())]
-[if (feature.serializationGroups->notEmpty())]
-* @Groups({[for (group : SerializationGroup | feature.serializationGroups) separator(', ')]"[group.name/]"[/for]})
-[/if]
-[if (feature.oclIsKindOf(Association))]
-[let association : Association = feature.oclAsType(Association)]
-	[if (association.serializationMaxDepth > 0)]
-* @MaxDepth([association.serializationMaxDepth/])
-	[/if]
-[/let]
 [/if]
 [/template]
 

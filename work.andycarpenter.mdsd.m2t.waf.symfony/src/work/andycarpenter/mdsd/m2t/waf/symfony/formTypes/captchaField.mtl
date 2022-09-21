@@ -1,0 +1,13 @@
+[comment encoding = UTF-8 /]
+[module captchaField(
+	'http://andycarpenter.work/metamodel/base')]
+
+
+[template public captchaField(element : NamedElement, actionName : String) post(trim())]
+$builder->add('captcha', Recaptcha3Type::class, ['['/]
+    'mapped' => false,
+    'constraints' => new Recaptcha3(),
+    'action_name' => '[actionName/]',
+//    'script_nonce_csp' => $nonceCSP,
+[']'/]);
+[/template]

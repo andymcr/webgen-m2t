@@ -2,6 +2,7 @@
 [module uriRoutes(
 	'http://andycarpenter.work/metamodel/api',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/service',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
@@ -19,6 +20,23 @@
 			page.dynamicUnits->subOrderedSet(2, page.dynamicUnits->size())->forAll(u | u.uriPath() = page.dynamicUnits->first().uriPath())
 		endif endif
 /]
+
+
+[query public uriPath(element : AuthenticationElement) : String
+	= '/'. concat(element.uriElement)
+		.combinePaths(
+			if element.oclIsTypeOf(ResetPasswordElement) then
+				'{token}'
+			else
+				''
+			endif)
+/]
+
+[query public uriEmailSentPath(element : ForgottenPasswordElement) : String
+	= element.uriPath()
+		.combinePaths(element.uriEmailSent)
+/]
+
 
 [query public uriPath(page : Page) : String
 	= if page.units->isEmpty() then
@@ -181,25 +199,9 @@
 		endif endif
 /]
 
-[query public uriEmailSentPath(unit : ForgottenPasswordUnit) : String
-	= unit.uriPath()
-			.combinePaths(unit.uriEmailSent)
-/]
-
 [query public uriGeneralPath(action : OperationAction) : String
 	= action.parentUnit.displayedOn.uriPagePath()
 		.combinePaths(action.uriElement)
-/]
-
-[query public uriSecurityPath(unit : DynamicUnit) : String
-	= unit.displayedOn.uriPagePath()
-		.combinePaths(unit.uriElement)
-		.combinePaths(
-			if unit.oclIsTypeOf(ResetPasswordUnit) then
-				'{token}'
-			else
-				''
-			endif)
 /]
 
 

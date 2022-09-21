@@ -103,34 +103,30 @@
 
 [template private authenticationBar(navigation : Navigation) post(trim())]
 <nav id="authentication_menu"[if (navigation.hasAuthenticationBarClass)] class="[navigation.authenticationBarClass/]"[/if]>
-[if (navigation.partOf.isLocallyAuthenticated)]
- [navigation.partOf.localAuthentication.authenticationBar()/]
-[elseif (navigation.partOf.isCasAuthenticated)]
- [navigation.partOf.casAuthentication.authenticationBar()/]
-[/if]
+ [navigation.partOf.security.authentication.authenticationBar()/]
 </nav>
 [/template]
 
-[template private authenticationBar(security : LocalAuthenticationSystem) post(trim())]
+[template private authenticationBar(authentication : Authentication)
+	? (authentication.oclIsTypeOf(LocalAuthenticationSystem)) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 {%- if app.user -%}
 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}:</a>
 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Profile</a>
-<a class="nav-link" href="{{ path('[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a>
+<a class="nav-link" href="{{ path('[localAuthentication.logoutElement.routeName()/]') }}">{{ '[localAuthentication.logoutElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a>
 {%- elseif not app.user -%}
-<a class="nav-link" href="{{ path('[security.loginUnit.oclAsType(LoginUnit).routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a>
-[if (security.allowSelfRegistration)]
-<a class="nav-link" href="{{ path('[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a>
+<a class="nav-link" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}">{{ '[localAuthentication.loginElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}</a>
+[if (localAuthentication.allowSelfRegistration)]
+<a class="nav-link" href="{{ path('[localAuthentication.registrationElement.routeName()/]') }}">{{ '[localAuthentication.registrationElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.registrationElement.translationDomain()/]') }}</a>
 [/if]
 {%- endif -%}
+[/let]
 [/template]
 
-[template private authenticationBar(security : CasAuthentication) post(trim())]
-{%- if app.user -%}
-<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}</a>
-<a class="nav-link" href="{{ path('app_logout') }}">[security.logoutLabel/]</a>
-{%- elseif not app.user -%}
-<a class="nav-link" href="{{ path('login') }}">[security.loginLabel/]</a>
-{%- endif -%}
+[template private authenticationBar(authentication : Authentication)
+	? (authentication.oclIsTypeOf(CasAuthentication)) post(trim())]
+[let casAuthentication : CasAuthentication = authentication.oclAsType(CasAuthentication)]
+[/let]
 [/template]
 
 [template private userDropdown(model : WafModel) post(trim())]
@@ -138,39 +134,32 @@
 {%- if app.user -%}
  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
 {%- elseif not app.user -%}
-[if (model.isLocallyAuthenticated)]
- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ '[model.localAuthentication.loginUnit.displayLabelId()/]' | trans({}, '[model.localAuthentication.loginUnit.translationDomain()/]') }}</a>
+ <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ '[comment model.localAuthentication.loginElement.displayLabelContainedId()/]' | trans({}, '[comment model.localAuthentication.loginElement.translationDomain()/]') }}</a>
 {%- endif -%}
- [model.localAuthentication.userDropdown()/]
-[elseif (model.isCasAuthenticated)]
- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">[model.casAuthentication.loginLabel/]</a>
-{%- endif -%}
- [model.casAuthentication.userDropdown()/]
-[/if]
+ [model.security.authentication.userDropdown()/]
 </div>
 [/template]
 
-[template private userDropdown(security : LocalAuthenticationSystem) post(trim())]
+[template private userDropdown(authentication : Authentication)
+	? (authentication.oclIsTypeOf(LocalAuthenticationSystem)) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 <ul id="user-dropdown" class="dropdown-menu">
 {%- if app.user -%}
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'xxx' %} active{% endif %}" href="xx">Profile</a></li>
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'yyy' %} active{% endif %}" href="yyy">Password</a></li>
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.logoutUnit.oclAsType(LogoutUnit).routeName()/]') }}">{{ '[security.logoutUnit.displayLabelId()/]' | trans({}, '[security.logoutUnit.translationDomain()/]') }}</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.logoutElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.logoutElement.routeName()/]') }}">{{ '[localAuthentication.logoutElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a></li>
 {%- elseif not app.user -%}
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.loginUnit.oclAsType(LoginUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.loginUnit.oclAsType(LoginUnit).routeName()/]') }}">{{ '[security.loginUnit.displayLabelId()/]' | trans({}, '[security.loginUnit.translationDomain()/]') }}</a></li>
-[if (security.allowSelfRegistration)]
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]' %} active{% endif %}" href="{{ path('[security.registrationUnit.oclAsType(RegistrationUnit).routeName()/]') }}">{{ '[security.registrationUnit.displayLabelId()/]' | trans({}, '[security.registrationUnit.translationDomain()/]') }}</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.loginElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}">{{ '[localAuthentication.loginElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}</a></li>
+[if (localAuthentication.allowSelfRegistration)]
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.registrationElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.registrationElement.routeName()/]') }}">{{ '[localAuthentication.registrationElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.registrationElement.translationDomain()/]') }}</a></li>
 [/if]
 {%- endif -%}
 </ul>
+[/let]
 [/template]
 
-[template private userDropdown(security : CasAuthentication) post(trim())]
-<ul id="user-dropdown" class="dropdown-menu">
-{%- if app.user -%}
-<li>{{ app.user.username }}&nbsp;<a href="{{ path('app_logout') }}">[security.logoutLabel/]</a></li>
-{%- elseif not app.user -%}
-<li><a href="{{ path('login') }}">[security.loginLabel/]</a></li>
-{%- endif -%}
-</ul>
+[template private userDropdown(authentication : Authentication)
+	? (authentication.oclIsTypeOf(CasAuthentication)) post(trim())]
+[let casAuthentication : CasAuthentication = authentication.oclAsType(CasAuthentication)]
+[/let]
 [/template]

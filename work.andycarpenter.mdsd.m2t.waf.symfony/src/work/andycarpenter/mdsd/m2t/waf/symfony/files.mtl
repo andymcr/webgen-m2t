@@ -47,6 +47,14 @@
 	= 'assets'
 /]
 
+[query public authenticationDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Authentication')
+/]
+
+[query public authenticationTemplateDirectory(authentication : AuthenticationElement) : String
+	= authentication.templatesDirectory().concat('/').concat(authentication.authenticationTemplate())
+/]
+
 [query public configDirectory(eObject : EObject) : String
 	= 'config'
 /]
@@ -61,10 +69,6 @@
 
 [query public cssDirectory(eObject : EObject) : String
 	= eObject.webDirectory().concat('/css')
-/]
-
-[query public encoderDirectory(eObject : EObject) : String
-	= eObject.securityDirectory().concat('/').concat('Encoder')
 /]
 
 [query public extensionsDirectory(eObject : EObject) : String
@@ -89,18 +93,6 @@
 
 [query public pageTemplateDirectory(page : Page) : String
 	= page.templatesDirectory().concat('/').concat(page.templateName())
-/]
-
-[query public securityDirectory(eObject : EObject) : String
-	= eObject.sourceDirectory().concat('/').concat('Security')
-/]
-
-[query public securityViewDirectorySuffix(security : SecurityModel) : String
-	= 'security'
-/]
-
-[query public securityViewDirectory(security : SecurityModel) : String
-	= security.templatesDirectory().concat('/').concat(security.securityViewDirectorySuffix())
 /]
 
 [query public servicesDirectory(eObject : EObject) : String
@@ -136,12 +128,12 @@
 	= eObject.controllersNamespace().concat('\\').concat('Api')
 /]
 
-[query public controllersNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Controller')
+[query public authenticationNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Authentication')
 /]
 
-[query public encoderNamespace(eObject : EObject) : String
-	= eObject.securityNamespace().concat('\\').concat('Encoder')
+[query public controllersNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Controller')
 /]
 
 [query public extensionsNamespace(eObject : EObject) : String
@@ -150,10 +142,6 @@
 
 [query public formNamespace(eObject : EObject) : String
 	= eObject.appNamespace().concat('\\').concat('Form')
-/]
-
-[query public securityNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Security')
 /]
 
 [query public serviceNamespace(eObject : EObject) : String
@@ -169,14 +157,14 @@
 /]
 
 
-[query public controllerFilename(security : SecurityModel, model : WafModel) : String
+[query public controllerFilename(authentication : LocalAuthenticationSystem, model : WafModel) : String
 	= if model.hasAPI then
-			security.webControllersDirectory()
+			authentication.webControllersDirectory()
 		else
-			security.controllersDirectory()
+			authentication.controllersDirectory()
 		endif.concat('/')
-			.concat(security.controllerClassName())
-			.concat(security.executableExtension())
+			.concat(authentication.controllerClassName())
+			.concat(authentication.executableExtension())
 /]
 
 [query public controllerFilename(page : Page, model : WafModel) : String
@@ -201,10 +189,10 @@
 		.concat(type.executableExtension())
 /]
 
-[query public formTypeFilename(authentication : LocalAuthenticationSystem, element : String) : String
-	= authentication.formDirectory().concat('/')
-		.concat(authentication.typeClassName(element))
-		.concat(authentication.executableExtension())
+[query public formTypeFilename(element : AuthenticationElement) : String
+	= element.formDirectory().concat('/')
+		.concat(element.typeClassName())
+		.concat(element.executableExtension())
 /]
 
 [query public formTypeFilename(unit : SingletonUnit) : String
@@ -223,6 +211,12 @@
 	= page.javascriptAssetsDirectory().concat('/')
 		.concat(page.name.snakeCase())
 		.concat(page.javascriptExtension())
+/]
+
+[query public loginFormAuthenticatorFilename(authentication : LocalAuthenticationSystem) : String
+	= authentication.authenticationDirectory()
+		.concat('/').concat('LoginFormAuthenticator')
+		.concat(authentication.executableExtension())
 /]
 
 [query public routingBaseFilename(eObject : EObject) : String
@@ -247,21 +241,21 @@
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]
 
-[query public viewCheckEmailFilename(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
-		.concat(unit.viewCheckEmailName())
-		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+[query public templateFilename(element : AuthenticationElement) : String
+	= element.authenticationTemplateDirectory().concat('/')
+		.concat(element.templateName())
+		.concat(element.htmlExtension()).concat(element.twigExtension())
 /]
 
-[query public viewEmailMessageFilename(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
-		.concat(unit.viewEmailMessageName())
-		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+[query public viewEmailMessageFilename(element : ForgottenPasswordElement) : String
+	= element.authenticationTemplateDirectory().concat('/')
+		.concat(element.viewEmailMessageName())
+		.concat(element.htmlExtension()).concat(element.twigExtension())
 /]
 
-[query public viewResetPasswordFilename(unit : ForgottenPasswordUnit) : String
-	= unit.displayedOn.oclAsType(Page).pageTemplateDirectory().concat('/')
-		.concat(unit.viewResetPasswordName())
-		.concat(unit.htmlExtension()).concat(unit.twigExtension())
+[query public viewResetPasswordFilename(element : ForgottenPasswordElement) : String
+	= element.authenticationTemplateDirectory().concat('/')
+		.concat(element.viewResetPasswordName())
+		.concat(element.htmlExtension()).concat(element.twigExtension())
 /]
 

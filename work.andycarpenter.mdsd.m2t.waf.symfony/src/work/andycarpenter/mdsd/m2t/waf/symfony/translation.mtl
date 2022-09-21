@@ -60,15 +60,15 @@
 
 
 [query public displayLabelContainedId(element : AuthenticationElement) : String
-	= element.id().concat(element.captionElement())
+	= element.id().concat('.').concat(element.captionElement())
 /]
 
 [query public placeholderContainedId(element : AuthenticationElement, field : String) : String
-	= element.id().concat(element.placeholdersElement()).concat('.').concat(field)
+	= element.id().concat('.').concat(element.placeholdersElement()).concat('.').concat(field)
 /]
 
 [query public titleContainedId(element : AuthenticationElement, field : String) : String
-	= element.id().concat(element.titlesElement()).concat('.').concat(field)
+	= element.id().concat('.').concat(element.titlesElement()).concat('.').concat(field)
 /]
 
 [query public translationDomain(element : AuthenticationElement) : String
@@ -114,19 +114,19 @@
 
 
 [query public cancelLabelContainedId(page : Page) : String
-	= page.labelsContainedId().concat(page.cancelElement())
+	= page.labelsContainedId().concat('.').concat(page.cancelElement())
 /]
 
 [query public displayLabelContainedId(page : Page) : String
-	= page.id().concat(page.captionElement())
+	= page.id().concat('.').concat(page.captionElement())
 /]
 
 [query private labelsContainedId(page : Page) : String
-	= page.id().concat(page.labelsElement())
+	= page.id().concat('.').concat(page.labelsElement())
 /]
 
 [query public submitLabelContainedId(page : Page) : String
-	= page.labelsContainedId().concat(page.submitElement())
+	= page.labelsContainedId().concat('.').concat(page.submitElement())
 /]
 
 [query public translationDomain(page : Page) : String
@@ -139,11 +139,11 @@
 
 
 [query public cancelLabelContainedId(unit : ContentUnit) : String
-	= unit.labelsContainedId().concat(unit.cancelElement())
+	= unit.labelsContainedId().concat('.').concat(unit.cancelElement())
 /]
 
 [query public confirmMessageContainedId(unit : ContentUnit) : String
-	= unit.messagesContainedId().concat(unit.confirmElement())
+	= unit.messagesContainedId().concat('.').concat(unit.confirmElement())
 /]
 
 [query private containedId(unit : ContentUnit) : String
@@ -151,7 +151,7 @@
 /]
 
 [query public displayLabelContainedId(unit : ContentUnit) : String
-	= unit.containedId().concat(unit.captionElement())
+	= unit.containedId().concat('.').concat(unit.captionElement())
 /]
 
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
@@ -182,7 +182,7 @@
 /]
 
 [query public hiddenMessageContainedId(unit : ContentUnit) : String
-	= unit.messagesContainedId().concat('.hidden')
+	= unit.messagesContainedId().concat('.').concat('.hidden')
 /]
 
 [query private labelsContainedId(unit : ContentUnit) : String
@@ -198,11 +198,11 @@
 /]
 
 [query public submitLabelContainedId(unit : ContentUnit) : String
-	= unit.labelsContainedId().concat(unit.submitElement())
+	= unit.labelsContainedId().concat('.').concat(unit.submitElement())
 /]
 
 [query public successMessageId(unit : ContentUnit) : String
-	= unit.messagesContainedId().concat(unit.successElement())
+	= unit.messagesContainedId().concat('.').concat(unit.successElement())
 /]
 
 [query private titlesContainedId(unit : ContentUnit) : String
