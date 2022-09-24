@@ -89,11 +89,10 @@ class [unit.typeClassName()/] extends AbstractType
 
 [/for]
 [if (unit.hasCaptcha)]
-
         [unit.captchaField(unit.captchaActionName())/]
+
 [/if]
 [if (unit.hasDefaultValueFields or unit.hasForcedValueFields)]
-
         [unit.setFieldValues()/]
 [/if]
     }
@@ -106,7 +105,8 @@ class [unit.typeClassName()/] extends AbstractType
     {
         $resolver->setDefaults(['['/]
 [if (unit.hasFeatureFields)]
-            'data_class' => '[unit.modelsNamespace()/]\[unit.modelClassName()/]'
+            'data_class' => '[unit.modelsNamespace()/]\[unit.modelClassName()/]',
+            'csrf_token_id' => '[unit.csrfTokenId()/]'
 [/if]
         [']'/]);
     }
