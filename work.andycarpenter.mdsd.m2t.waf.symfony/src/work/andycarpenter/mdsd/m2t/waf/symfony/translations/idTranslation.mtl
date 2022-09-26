@@ -1,0 +1,16 @@
+[comment encoding = UTF-8 /]
+[module idTranslation(
+	'http://andycarpenter.work/metamodel/base')]
+
+
+[query private validXML(string : String) : String
+	= string.replaceAll('&', '&amp;')
+/]
+
+
+[template public idTranslation(id : String, translation : String)]
+<trans-unit id="[id/]">
+ <source>[id/]</source>
+ <target>[translation.validXML()/]</target>
+</trans-unit>
+[/template]

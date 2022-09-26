@@ -6,6 +6,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translations::idTranslation/]
 
 
 [template public sectionsTranslations(model : WafModel)]
@@ -21,14 +22,8 @@
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
 [if (page.hasAnyEditUnits)]
-   <trans-unit id="[page.cancelLabelContainedId()/]">
-    <source>[page.cancelLabelContainedId()/]</source>
-    <target>[page.partOf.defaultCancelLabel.validXML()/]</target>
-   </trans-unit>
-   <trans-unit id="[page.submitLabelContainedId()/]">
-    <source>[page.submitLabelContainedId()/]</source>
-    <target>[page.partOf.defaultSaveLabel.validXML()/]</target>
-   </trans-unit>
+   [page.cancelLabelContainedId().idTranslation(page.partOf.defaultCancelLabel)/]
+   [page.submitLabelContainedId().idTranslation(page.partOf.defaultSaveLabel)/]
 [/if]
    [page.translations()/]
   </body>
@@ -38,10 +33,7 @@
 [/template]
 
 [template private translations(page : Page) post(trim())]
-<trans-unit id="[page.displayLabelContainedId()/]">
- <source>[page.displayLabelContainedId()/]</source>
- <target>[page.displayLabel.validXML()/]</target>
-</trans-unit>
+[page.displayLabelContainedId().idTranslation(page.displayLabel)/]
 [for (unit : ContentUnit | page.units)]
 [unit.translations()/]
 [/for]
@@ -51,10 +43,7 @@
 [/template]
 
 [template private translations(unit : ContentUnit) post(trim())]
-<trans-unit id="[unit.displayLabelContainedId()/]">
- <source>[unit.displayLabelContainedId()/]</source>
- <target>[unit.displayLabel.validXML()/]</target>
-</trans-unit>
+[unit.displayLabelContainedId().idTranslation(unit.displayLabel)/]
 [if (unit.hasUnitTranslations())]
 [unit.unitTranslations()/]
 [/if]
@@ -72,10 +61,7 @@
 	? (unit.oclIsKindOf(DynamicUnit) and not unit.oclIsKindOf(EditUnit)) post (trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 [if (dynamicUnit.hasHiddenMessage)]
-<trans-unit id="[dynamicUnit.hiddenMessageContainedId()/]">
- <source>[dynamicUnit.hiddenMessageContainedId()/]</source>
- <target>[dynamicUnit.messageWhenHidden.validXML()/]</target>
-</trans-unit>
+[dynamicUnit.hiddenMessageContainedId().idTranslation(dynamicUnit.messageWhenHidden)/]
 [/if]
 [/let]
 [/template]
@@ -84,28 +70,16 @@
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.hasCustomisedSubmitLabel())]
-<trans-unit id="[editUnit.submitLabelContainedId()/]">
- <source>[editUnit.submitLabelContainedId()/]</source>
- <target>[editUnit.confirmLabel.validXML()/]</target>
-</trans-unit>
+[editUnit.submitLabelContainedId().idTranslation(editUnit.confirmLabel)/]
 [/if]
 [if (not editUnit.cancelDestination.oclIsUndefined() and editUnit.hasCustomisedCancelLabel())]
-<trans-unit id="[editUnit.cancelLabelContainedId()/]">
- <source>[editUnit.cancelLabelContainedId()/]</source>
- <target>[editUnit.cancelLabel.validXML()/]</target>
-</trans-unit>
+[editUnit.cancelLabelContainedId().idTranslation(editUnit.cancelLabel)/]
 [/if]
 [if (editUnit.hasConfirmMessage)]
-<trans-unit id="[editUnit.confirmMessageContainedId()/]">
- <source>[editUnit.confirmMessageContainedId()/]</source>
- <target>[editUnit.confirmMessage.text.validXML()/]</target>
-</trans-unit>
+[editUnit.confirmMessageContainedId().idTranslation(editUnit.confirmMessage.text)/]
 [/if]
 [if (editUnit.hasSuccessMessage)]
-<trans-unit id="[editUnit.successMessageId()/]">
- <source>[editUnit.successMessageId()/]</source>
- <target>[editUnit.successMessage.text.validXML()/]</target>
-</trans-unit>
+[editUnit.successMessageId().idTranslation(editUnit.successMessage.text)/]
 [/if]
 [/let]
 [/template]
@@ -114,51 +88,30 @@
 	? (unit.oclIsKindOf(DynamicUnit)) post (trim())]
 [for (field : UnitField | unit.oclAsType(DynamicUnit).displayFields)]
 	[if (field.hasCustomisedDisplayLabel or unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
-<trans-unit id="[field.customisedDisplayLabelContainedId()/]">
- <source>[field.customisedDisplayLabelContainedId()/]</source>
- <target>[field.displayLabel.validXML()/]</target>
-</trans-unit>
+[field.customisedDisplayLabelContainedId().idTranslation(field.displayLabel)/]
 	[/if]
 	[if (unit.oclIsKindOf(EditUnit) and field.hasTranslations())]
 [comment form translates all or none of display label, title and placeholder /]
 		[if (field.hasPlaceholder)]
-<trans-unit id="[field.customisedPlaceholderContainedId()/]">
- <source>[field.customisedPlaceholderContainedId()/]</source>
- <target>[field.placeholder.validXML()/]</target>
-</trans-unit>
+[field.customisedPlaceholderContainedId().idTranslation(field.placeholder)/]
 		[/if]
 		[if (field.hasTitle)]
-<trans-unit id="[field.customisedTitleContainedId()/]">
- <source>[field.customisedTitleContainedId()/]</source>
- <target>[field.title.validXML()/]</target>
-</trans-unit>
+[field.customisedTitleContainedId().idTranslation(field.title)/]
 		[/if]
 	[/if]
 	[if (unit.oclIsKindOf(EditUnit) and field.hasHelp)]
-<trans-unit id="[field.helpContainedId()/]">
- <source>[field.helpContainedId()/]</source>
- <target>[field.help.validXML()/]</target>
-</trans-unit>
+[field.helpContainedId().idTranslation(field.help)/]
 	[/if]
 	[if (unit.oclIsKindOf(EditUnit) and field.isRepeated)]
 	[let interface : InterfaceField = field.oclAsType(InterfaceField)]
 		[if (interface.secondDisplayLabel <> '')]
-<trans-unit id="[interface.secondDisplayLabelContainedId()/]">
- <source>[interface.secondDisplayLabelContainedId()/]</source>
- <target>[interface.secondDisplayLabel.validXML()/]</target>
-</trans-unit>
+[interface.secondDisplayLabelContainedId().idTranslation(interface.secondDisplayLabel)/]
 		[/if]
 		[if (interface.secondPlaceholder <> '')]
-<trans-unit id="[interface.secondPlaceholderContainedId()/]">
- <source>[interface.secondPlaceholderContainedId()/]</source>
- <target>[interface.secondPlaceholder.validXML()/]</target>
-</trans-unit>
+[interface.secondPlaceholderContainedId().idTranslation(interface.secondPlaceholder)/]
 		[/if]
 		[if (interface.secondHelp <> '')]
-<trans-unit id="[interface.secondHelpContainedId()/]">
- <source>[interface.secondHelpContainedId()/]</source>
- <target>[interface.secondHelp.validXML()/]</target>
-</trans-unit>
+[interface.secondHelpContainedId().idTranslation(interface.secondHelp)/]
 		[/if]
 	[/let]
 	[/if]
@@ -166,24 +119,14 @@
 [/template]
 
 [template private translations(action : Action) post (trim())]
-<trans-unit id="[action.displayLabelId()/]">
- <source>[action.displayLabelId()/]</source>
- <target>[action.displayLabel.validXML()/]</target>
-</trans-unit>
+[action.displayLabelId().idTranslation(action.displayLabel)/]
 [if (action.hasConfirmMessage)]
-[action.confirmMessageId().actionMessageTranslation(action.confirmMessage)/]
+[action.confirmMessageId().idTranslation(action.confirmMessage)/]
 [/if]
 [if (action.hasFailureMessage)]
-[action.failureMessageId().actionMessageTranslation(action.failureMessage)/]
+[action.failureMessageId().idTranslation(action.failureMessage)/]
 [/if]
 [if (action.hasSuccessMessage)]
-[action.successMessageId().actionMessageTranslation(action.successMessage)/]
+[action.successMessageId().idTranslation(action.successMessage)/]
 [/if]
-[/template]
-
-[template private actionMessageTranslation(id : String, message : String) post (trim())]
-<trans-unit id="[id/]">
- <source>[id/]</source>
- <target>[message.validXML()/]</target>
-</trans-unit>
 [/template]

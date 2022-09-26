@@ -6,6 +6,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translations::idTranslation/]
 
 
 [template public entityTranslations(model : WafModel)]
@@ -14,10 +15,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
-   <trans-unit id="actions.labels.select_one">
-    <source>actions.labels.select_one</source>
-    <target>Please select one</target>
-   </trans-unit>
+   ['actions.labels.select_one'.idTranslation('Please select one')/]
 [for (enumerationType : EnumerationType | model.persistence.enumerationTypes)]
    [enumerationType.translations()/]
 [/for]
@@ -32,22 +30,13 @@
 
 [template private translations(enumerationType : EnumerationType) post(trim())]
 [for (literal : EnumerationLiteral | enumerationType.enumerations)]
-<trans-unit id="[enumerationType.id()/].labels.[literal.id()/]">
- <source>[enumerationType.id()/].labels.[literal.id()/]</source>
- <target>[literal.displayLabel.validXML()/]</target>
-</trans-unit>
+[enumerationType.id().concat('.labels.').concat(literal.id()).idTranslation(literal.displayLabel)/]
 [/for]
 [/template]
 
 [template private translations(entity : Entity) post(trim())]
-<trans-unit id="label.[entity.id()/]">
- <source>label.[entity.id()/]</source>
- <target>[entity.displayLabel.validXML()/]</target>
-</trans-unit>
+['label.'.concat(entity.id()).idTranslation(entity.displayLabel)/]
 [for (feature : Feature | entity.features)]
-<trans-unit id="[feature.displayLabelId()/]">
- <source>[feature.displayLabelId()/]</source>
- <target>[feature.displayLabel.validXML()/]</target>
-</trans-unit>
+[feature.displayLabelId().idTranslation(feature.displayLabel)/]
 [/for]
 [/template]

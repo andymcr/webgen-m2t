@@ -4,6 +4,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translations::idTranslation/]
 
 
 [template public navigationTranslations(navigation : Navigation)]
@@ -25,25 +26,16 @@
 [for (entry : MenuEntry | menu.entries)]
 	[if (entry.oclIsTypeOf(SubmenuEntry))]
 	[let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
-<trans-unit id="[submenu.displayLabelId()/]">
- <source>[submenu.displayLabelId()/]</source>
- <target>[submenu.displayLabel.validXML()/]</target>
-</trans-unit>
+[submenu.displayLabelId().idTranslation(submenu.displayLabel)/]
 [submenu.translations()/]
 	[/let]
 	[elseif (entry.oclIsTypeOf(ActionMenuEntry))]
 	[let menuEntry : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-<trans-unit id="[menuEntry.displayLabelId()/]">
- <source>[menuEntry.displayLabelId()/]</source>
- <target>[menuEntry.displayLabel.validXML()/]</target>
-</trans-unit>
+[menuEntry.displayLabelId().idTranslation(menuEntry.displayLabel)/]
 	[/let]
 	[elseif (entry.oclIsTypeOf(EditStaticTextMenuEntry))]
 	[let menuEntry : EditStaticTextMenuEntry = entry.oclAsType(EditStaticTextMenuEntry)]
-<trans-unit id="[menuEntry.displayLabelId()/]">
- <source>[menuEntry.displayLabelId()/]</source>
- <target>[menuEntry.displayLabel.validXML()/]</target>
-</trans-unit>
+[menuEntry.displayLabelId().idTranslation(menuEntry.displayLabel)/]
 	[/let]
 	[/if]
 [/for]
