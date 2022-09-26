@@ -195,6 +195,18 @@
 		.concat(element.executableExtension())
 /]
 
+[query public formRequestTypeFilename(element : ForgottenPasswordElement) : String
+	= element.formDirectory().concat('/')
+		.concat(element.typeRequestClassName())
+		.concat(element.executableExtension())
+/]
+
+[query public formResetTypeFilename(element : ForgottenPasswordElement) : String
+	= element.formDirectory().concat('/')
+		.concat(element.typeResetClassName())
+		.concat(element.executableExtension())
+/]
+
 [query public formTypeFilename(unit : SingletonUnit) : String
 	= unit.formDirectory().concat('/')
 		.concat(unit.typeClassName())
@@ -247,15 +259,27 @@
 		.concat(element.htmlExtension()).concat(element.twigExtension())
 /]
 
+[query public viewCheckEmailFilename(element : ForgottenPasswordElement) : String
+	= element.authenticationTemplateDirectory().concat('/')
+		.concat(element.viewCheckEmailName())
+		.concat(element.htmlExtension()).concat(element.twigExtension())
+/]
+
 [query public viewEmailMessageFilename(element : ForgottenPasswordElement) : String
 	= element.authenticationTemplateDirectory().concat('/')
 		.concat(element.viewEmailMessageName())
 		.concat(element.htmlExtension()).concat(element.twigExtension())
 /]
 
-[query public viewResetPasswordFilename(element : ForgottenPasswordElement) : String
+[query public viewRequestFilename(element : ForgottenPasswordElement) : String
 	= element.authenticationTemplateDirectory().concat('/')
-		.concat(element.viewResetPasswordName())
+		.concat(element.viewRequestName())
+		.concat(element.htmlExtension()).concat(element.twigExtension())
+/]
+
+[query public viewResetFilename(element : ForgottenPasswordElement) : String
+	= element.authenticationTemplateDirectory().concat('/')
+		.concat(element.viewResetName())
 		.concat(element.htmlExtension()).concat(element.twigExtension())
 /]
 

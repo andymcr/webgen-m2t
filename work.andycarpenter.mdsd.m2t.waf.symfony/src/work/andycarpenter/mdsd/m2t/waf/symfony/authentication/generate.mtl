@@ -9,9 +9,9 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginFormAuthenticator/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginFormType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginView/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::resetPasswordChangeFormType/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::forgottenPasswordResetFormType/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::forgottenPasswordRequestFormType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::resetPasswordConfig/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::resetPasswordRequestFormType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::translations/]
 
 
@@ -25,8 +25,8 @@
 
 [localAuthentication.loginElement.loginFormType()/]
 [localAuthentication.loginFormAuthenticator()/]
-[localAuthentication.forgottenPasswordElement.resetPasswordRequestFormType()/]
-[localAuthentication.resetPasswordElement.resetPasswordChangeFormType()/]
+[localAuthentication.forgottenPasswordElement.requestFormType()/]
+[localAuthentication.forgottenPasswordElement.resetFormType()/]
 
 [localAuthentication.loginElement.elementView()/]
 [localAuthentication.forgottenPasswordElement.elementViews()/]

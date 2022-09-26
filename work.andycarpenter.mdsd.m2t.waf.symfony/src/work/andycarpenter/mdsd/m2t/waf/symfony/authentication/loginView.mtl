@@ -19,8 +19,8 @@
 <h4[if (element.hasCaptionClass)]
  class="[if (element.hasCaptionClass)][element.captionClass/][/if]"[/if]>[element.unitTitle()/]</h4>
 
-{% if login_error %}
-<div class="alert alert-danger">{{ login_error.messageKey|trans(login_error.messageData, 'security') }}</div>
+{% if error %}
+<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
 {{ form_start([element.instanceName()/], { attr: { id: '[element.id()/]'[if (element.hasContentClass)], class: '[element.contentClass/]'[/if] }}) }}
@@ -31,7 +31,8 @@
  {{ form_row([element.instanceName()/].captcha) }}
 [/if]
 <div class="d-flex justify-content-center bg-light border-top p-2">
- <button type="submit" name="submit" class="btn border rounded mx-2 my-1">{{ 'security.login.labels.submit' | trans }}</button>
+ <button type="submit" name="submit" class="btn border rounded mx-2 my-1">{{ '[element.submitLabelContainedId()/]' | trans }}</button>
+ <a href="{{ path('[element.authentication.forgottenPasswordElement.routeName()/]') }}" class="btn border rounded mx-2 my-1">{{ '[element.authentication.forgottenPasswordElement.invokeLabelContainedId()/]' | trans( {}, '[element.translationDomain()/]') }}</a>
 </div>
 {{ form_row([element.instanceName()/]._token) }}
 {{ form_end([element.instanceName()/], {'render_rest': false}) }}

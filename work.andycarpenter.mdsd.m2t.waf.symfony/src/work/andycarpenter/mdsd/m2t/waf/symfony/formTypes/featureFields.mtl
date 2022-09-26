@@ -8,14 +8,22 @@
 
 [template public formFeature(feature : Attribute)
 	? (feature.isSingleton) post(trim())]
+[feature.formFeature(true)/]
+[/template]
+
+[template public formFeature(feature : Attribute, mapped : Boolean)
+	? (feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
-[attribute.formFeature('entity', attribute.displayLabelId(), attribute.displayLabelId(), attribute.displayLabelId())/]
+[attribute.formFeature('entity', attribute.displayLabelId(), attribute.displayLabelId(), attribute.displayLabelId(), mapped)/]
 [/let]
 [/template]
 
 [template public formFeature(attribute : Attribute, translationDomain : String, labelId : String,
-	placeholderId : String, titleId : String) post(trim())]
+	placeholderId : String, titleId : String, mapped : Boolean) post(trim())]
 $builder->add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], ['['/]
+[if (not mapped)]
+    'mapped' => false,
+[/if]
     'label' => '[labelId/]',
     'translation_domain' => '[translationDomain/]',
 [if (not attribute.isRequired)]

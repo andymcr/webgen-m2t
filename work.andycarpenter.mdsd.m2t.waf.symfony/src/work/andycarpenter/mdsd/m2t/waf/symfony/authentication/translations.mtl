@@ -2,22 +2,58 @@
 [module translations(
 	'http://andycarpenter.work/metamodel/security')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translations::idTranslation/]
 
 
 [template public authenticationTranslations(authentication : LocalAuthenticationSystem)]
-[file (authentication.transDirectory().concat('/').concat('security.en').concat(authentication.xlfExtension()), false)]
+[file (authentication.transDirectory().concat('/')
+		.concat(authentication.translationDomain()).concat('.en')
+		.concat(authentication.xlfExtension()), false)]
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
-   <trans-unit id="actions.labels.select_one">
-    <source>actions.labels.select_one</source>
-    <target>Please select one</target>
-   </trans-unit>
+   [authentication.forgottenPasswordElement.elementTranslations()/]
+   [authentication.loginElement.elementTranslations()/]
+   [authentication.logoutElement.elementTranslations()/]
+[if (authentication.hasRegistrationElement)]
+   [authentication.registrationElement.elementTranslations()/]
+[/if]
+   [authentication.changePasswordElement.elementTranslations()/]
   </body>
  </file>
 </xliff>
 [/file]
+[/template]
+
+[template private elementTranslations(element : ForgottenPasswordElement)]
+[element.displayLabelContainedId().idTranslation(element.displayLabel)/]
+[element.invokeLabelContainedId().idTranslation(element.invokeLabel)/]
+[element.requestLabelContainedId().idTranslation(element.requestLabel)/]
+[element.resetLabelContainedId().idTranslation(element.resetLabel)/]
+[/template]
+
+[template private elementTranslations(element : LoginElement)]
+[element.displayLabelContainedId().idTranslation(element.displayLabel)/]
+[element.invokeLabelContainedId().idTranslation(element.invokeLabel)/]
+[element.submitLabelContainedId().idTranslation(element.confirmLabel)/]
+[/template]
+
+[template private elementTranslations(element : LogoutElement)]
+[element.displayLabelContainedId().idTranslation(element.displayLabel)/]
+[element.invokeLabelContainedId().idTranslation(element.invokeLabel)/]
+[element.submitLabelContainedId().idTranslation(element.confirmLabel)/]
+[/template]
+
+[template private elementTranslations(element : RegistrationElement)]
+[element.displayLabelContainedId().idTranslation(element.displayLabel)/]
+[element.invokeLabelContainedId().idTranslation(element.invokeLabel)/]
+[element.submitLabelContainedId().idTranslation(element.confirmLabel)/]
+[/template]
+
+[template private elementTranslations(element : ChangePasswordElement)]
+[element.displayLabelContainedId().idTranslation(element.displayLabel)/]
+[element.invokeLabelContainedId().idTranslation(element.invokeLabel)/]
+[element.submitLabelContainedId().idTranslation(element.confirmLabel)/]
 [/template]

@@ -22,7 +22,7 @@ class [authentication.authenticatorName()/] extends AbstractLoginFormAuthenticat
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'security_login';
+    public const LOGIN_ROUTE = '[authentication.loginElement.routeName()/]';
 
     [authentication.properties()/]
 
@@ -38,7 +38,10 @@ class [authentication.authenticatorName()/] extends AbstractLoginFormAuthenticat
 [/template]
 
 [template private useStatements(authentication : LocalAuthenticationSystem) post(trim())]
+[if (authentication.captcha)]
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
 use Psr\Log\LoggerInterface;
+[/if]
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,7 +65,8 @@ private RouterInterface $router;
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
-public function __construct(RouterInterface $router)
+public function __construct(RouterInterface $router[if (authentication.captcha)]
+, Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if])
 {
     $this->router = $router;
 }
@@ -77,7 +81,7 @@ public function __construct(RouterInterface $router)
 public function authenticate(Request $request): Passport
 {
     $authentication = $request->request->get('authentication_login');
-    $email = $authentication['['/]'email'[']'/];
+    $email = $authentication['['/]'[authentication.identifierFeture.id()/]'[']'/];
     $password = $authentication['['/]'plainPassword'[']'/];
     $token = $authentication['['/]'_token'[']'/];
 
@@ -87,7 +91,7 @@ public function authenticate(Request $request): Passport
         new UserBadge($email),
         new PasswordCredentials($password),
         ['['/]
-            new CsrfTokenBadge('SPS_authenticate', $token),
+            new CsrfTokenBadge('[authentication.loginElement.csrfTokenId()/]', $token),
             new RememberMeBadge(),
         [']'/]
         );
@@ -120,6 +124,6 @@ public function onAuthenticationSuccess(Request $request, TokenInterface $token,
  */
 protected function getLoginUrl(Request $request): string
 {
-    return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    return $this->router->generate(self::LOGIN_ROUTE);
 }
 [/template]

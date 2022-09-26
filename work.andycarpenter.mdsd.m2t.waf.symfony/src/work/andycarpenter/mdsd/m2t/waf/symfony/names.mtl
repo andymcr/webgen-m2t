@@ -124,18 +124,32 @@
 	= element.instanceName()
 /]
 
+[query public csrfTokenId(element : AuthenticationElement) : String
+	= element.authenticationPrefix().toLowerCase()
+		.concat('_')
+		.concat(element.name.snakeCase())
+/]
+
 [query public typeClassName(element : AuthenticationElement) : String
 	= if element.oclIsTypeOf(RegistrationElement) then
 				element.authenticationPrefix().concat('Registration')
 			else if element.oclIsTypeOf(LoginElement) then
 				element.authenticationPrefix().concat('Login')
 			else if element.oclIsTypeOf(ForgottenPasswordElement) then
-				'ResetPasswordRequest' 
-			else if element.oclIsTypeOf(ResetPasswordElement) then
-				'ResetPasswordChange' 
+				'error' 
+			else if element.oclIsTypeOf(ChangePasswordElement) then
+				'ChangePassword' 
 			else
 				''
 			endif endif endif endif.concat(element.typeSuffix())
+/]
+
+[query public typeRequestClassName(element : ForgottenPasswordElement) : String
+	= 'ForgottenPasswordRequest' 
+/]
+
+[query public typeResetClassName(element : ForgottenPasswordElement) : String
+	= 'ForgottenPasswordReset' 
 /]
 
 
@@ -271,6 +285,12 @@
 	= unit.displayedOn.controllerName()
 /]
 
+[query public csrfTokenId(unit : SingletonUnit) : String
+	= unit.displayedOn.name.snakeCase()
+		.concat('_')
+		.concat(unit.name.snakeCase())
+/]
+
 [query private featureNames(form : DynamicUnit) : Sequence(String)
 	= form.displayFields
 		->select(f | f.oclIsKindOf(UnitFeature))
@@ -375,11 +395,31 @@
 /]
 
 [query public routeName(element : AuthenticationElement) : String
-	= element.uriElement
+	= if element.oclIsTypeOf(RegistrationElement) then
+			element.oclAsType(RegistrationElement).uriElement
+		else if element.oclIsTypeOf(LoginElement) then
+			element.oclAsType(LoginElement).uriElement
+		else if element.oclIsTypeOf(LogoutElement) then
+			element.oclAsType(LogoutElement).uriElement
+		else if element.oclIsTypeOf(ForgottenPasswordElement) then
+			element.oclAsType(ForgottenPasswordElement).uriElement
+		else if element.oclIsTypeOf(ChangePasswordElement) then
+			element.oclAsType(ChangePasswordElement).uriElement
+		else
+			''
+		endif endif endif endif endif
 /]
 
 [query public routeEmailSentName(element : ForgottenPasswordElement) : String
 	= element.uriEmailSent
+/]
+
+[query public routeResetPasswordName(element : ForgottenPasswordElement) : String
+	= element.uriResetPassword
+/]
+
+[query public routeEmailVerificationName(element : RegistrationElement) : String
+	= element.uriEmailVerification
 /]
 
 [query public routeName(association : UnitAssociation) : String
@@ -483,7 +523,11 @@
 	= element.name.toLowerFirst().concat('_email')
 /]
 
-[query public viewResetPasswordName(element : ForgottenPasswordElement) : String
+[query public viewRequestName(element : ForgottenPasswordElement) : String
+	= element.name.toLowerFirst().concat('_request')
+/]
+
+[query public viewResetName(element : ForgottenPasswordElement) : String
 	= element.name.toLowerFirst().concat('_reset')
 /]
 

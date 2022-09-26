@@ -27,6 +27,7 @@ email[elseif (authentication.authenticationKey = AuthenticationKeyTypes::Usernam
 username[/if]
 
 		[/if]
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -38,12 +39,15 @@ username[/if]
             switch_user: true
             custom_authenticator: [authentication.authenticationNamespace()/]\[authentication.authenticatorName()/]
             logout:
+[if (authentication.logoutElement.routeName() <> '/logout')]
                 path: [authentication.logoutElement.routeName()/]
-[comment todo target route on logout/]
+[/if]
 		[if (authentication.allowRememberMe)]
             remember_me:
                 secret:   '%kernel.secret%'
                 lifetime: 1209600 # 14 days
+                signature_properties: ['['/]password[']'/]
+                always_remember_me: true
 		[/if]
 
     # [protected ('role.hierarchy')]

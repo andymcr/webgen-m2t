@@ -29,6 +29,10 @@
 	= 'hidden'
 /]
 
+[query private invokeElement(eObject : EObject) : String
+	= 'invoke'
+/]
+
 [query private labelsElement(eObject : EObject) : String
 	= 'labels'
 /]
@@ -39,6 +43,14 @@
 
 [query private placeholdersElement(eObject : EObject) : String
 	= 'placeholders'
+/]
+
+[query private requestElement(eObject : EObject) : String
+	= 'request'
+/]
+
+[query private resetElement(eObject : EObject) : String
+	= 'reset'
 /]
 
 [query private submitElement(eObject : EObject) : String
@@ -54,17 +66,32 @@
 /]
 
 
-[query public validXML(string : String) : String
-	= string.replaceAll('&', '&amp;')
+[query public translationDomain(authentication : LocalAuthenticationSystem) : String
+	= authentication.authenticationPrefix().toLowerCase()
 /]
-
 
 [query public displayLabelContainedId(element : AuthenticationElement) : String
 	= element.id().concat('.').concat(element.captionElement())
 /]
 
+[query public invokeLabelContainedId(element : AuthenticationElement) : String
+	= element.id().concat('.').concat(element.invokeElement())
+/]
+
 [query public placeholderContainedId(element : AuthenticationElement, field : String) : String
 	= element.id().concat('.').concat(element.placeholdersElement()).concat('.').concat(field)
+/]
+
+[query public requestLabelContainedId(element : ForgottenPasswordElement) : String
+	= element.id().concat('.').concat(element.requestElement())
+/]
+
+[query public resetLabelContainedId(element : ForgottenPasswordElement) : String
+	= element.id().concat('.').concat(element.resetElement())
+/]
+
+[query public submitLabelContainedId(element : AuthenticationElement) : String
+	= element.id().concat('.').concat(element.submitElement())
 /]
 
 [query public titleContainedId(element : AuthenticationElement, field : String) : String
@@ -72,7 +99,19 @@
 /]
 
 [query public translationDomain(element : AuthenticationElement) : String
-	= element.authenticationPrefix().toLowerCase()
+	= if element.oclIsTypeOf(ForgottenPasswordElement) then
+			element.oclAsType(ForgottenPasswordElement).authentication.translationDomain()
+		else if element.oclIsTypeOf(LoginElement) then
+			element.oclAsType(LoginElement).authentication.translationDomain()
+		else if element.oclIsTypeOf(LogoutElement) then
+			element.oclAsType(LogoutElement).authentication.translationDomain()
+		else if element.oclIsTypeOf(RegistrationElement) then
+			element.oclAsType(RegistrationElement).authentication.translationDomain()
+		else if element.oclIsTypeOf(ChangePasswordElement) then
+			element.oclAsType(ChangePasswordElement).authentication.translationDomain()
+		else
+			''
+		endif endif endif endif endif
 /]
 
 
@@ -182,7 +221,7 @@
 /]
 
 [query public hiddenMessageContainedId(unit : ContentUnit) : String
-	= unit.messagesContainedId().concat('.').concat('.hidden')
+	= unit.messagesContainedId().concat('.').concat(unit.hiddenElement())
 /]
 
 [query private labelsContainedId(unit : ContentUnit) : String

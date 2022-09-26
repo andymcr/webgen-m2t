@@ -11,12 +11,36 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
 
 
-[template public routeAnnotation(element : AuthenticationElement) post(trim())]
+[template public routeAnnotation(element : ForgottenPasswordElement) post(trim())]
 [element.routeAnnotation(element.routeName(), element.uriPath(), false)/]
 [/template]
 
 [template public routeEmailSentAnnotation(element : ForgottenPasswordElement) post(trim())]
 [element.routeAnnotation(element.routeEmailSentName(), element.uriEmailSentPath(), true)/]
+[/template]
+
+[template public routeResetPasswordAnnotation(element : ForgottenPasswordElement) post(trim())]
+[element.routeAnnotation(element.routeResetPasswordName(), element.uriResetPasswordPath(), true)/]
+[/template]
+
+[template public routeAnnotation(element : LoginElement) post(trim())]
+[element.routeAnnotation(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeAnnotation(element : LogoutElement) post(trim())]
+[element.routeAnnotation(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeAnnotation(element : RegistrationElement) post(trim())]
+[element.routeAnnotation(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeEmailVerification(element : RegistrationElement) post(trim())]
+[element.routeAnnotation(element.routeEmailVerificationName(), element.uriEmailVerificationPath(), true)/]
+[/template]
+
+[template public routeAnnotation(element : ChangePasswordElement) post(trim())]
+[element.routeAnnotation(element.routeName(), element.uriPath(), false)/]
 [/template]
 
 [template private routeAnnotation(element : AuthenticationElement, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]

@@ -22,19 +22,40 @@
 /]
 
 
-[query public uriPath(element : AuthenticationElement) : String
+[query public uriPath(element : ForgottenPasswordElement) : String
 	= '/'. concat(element.uriElement)
-		.combinePaths(
-			if element.oclIsTypeOf(ResetPasswordElement) then
-				'{token}'
-			else
-				''
-			endif)
 /]
 
 [query public uriEmailSentPath(element : ForgottenPasswordElement) : String
 	= element.uriPath()
 		.combinePaths(element.uriEmailSent)
+/]
+
+[query public uriResetPasswordPath(element : ForgottenPasswordElement) : String
+	= element.uriPath()
+		.combinePaths(element.uriResetPassword)
+		.combinePaths('{token}')
+/]
+
+[query public uriPath(element : LoginElement) : String
+	= '/'. concat(element.uriElement)
+/]
+
+[query public uriPath(element : LogoutElement) : String
+	= '/'. concat(element.uriElement)
+/]
+
+[query public uriPath(element : RegistrationElement) : String
+	= '/'. concat(element.uriElement)
+/]
+
+[query public uriEmailVerificationPath(element : RegistrationElement) : String
+	= element.uriPath()
+		.combinePaths(element.uriEmailVerification)
+/]
+
+[query public uriPath(element : ChangePasswordElement) : String
+	= '/'. concat(element.uriElement).combinePaths('{token}')
 /]
 
 

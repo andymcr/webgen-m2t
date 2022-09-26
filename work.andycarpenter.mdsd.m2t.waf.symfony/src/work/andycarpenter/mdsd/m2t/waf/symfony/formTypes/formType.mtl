@@ -290,7 +290,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 		else
 			attribute.defaultTitleContainedId()
 		endif]
-[attribute.attribute.formFeature(translationDomain, labelId, placeholderId, titleId)/]
+[attribute.attribute.formFeature(translationDomain, labelId, placeholderId, titleId, true)/]
 [/let]
 [/let]
 [/let]

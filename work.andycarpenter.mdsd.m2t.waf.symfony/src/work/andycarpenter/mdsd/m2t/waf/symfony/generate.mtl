@@ -49,7 +49,7 @@
 
 [model.navigation.navigation(model.siteProperties)/]
 [model.siteProperties.generatePage()/]
-[model.pages.page()/]
+[model.pages->select(p | p.hasUnits).page()/]
 [model.pages.units.unitView()/]
 [model.formViews()/]
 
