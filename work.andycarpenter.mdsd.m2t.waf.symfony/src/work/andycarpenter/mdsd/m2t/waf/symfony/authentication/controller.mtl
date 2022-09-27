@@ -59,12 +59,12 @@ use [authentication.formNamespace()/]\[authentication.loginElement.typeClassName
 use [authentication.formNamespace()/]\[authentication.registrationElement.typeClassName()/];
 [/if]
 use [authentication.formNamespace()/]\[authentication.changePasswordElement.typeClassName()/];
+use [authentication.repositoryNamespace()/]\[authentication.authenticationModel.repository.className()/];
 [if (authentication.hasRegistrationElement)]
 use App\Security\EmailVerifier;
 [/if]
 [if (authentication.captcha)]
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
-use Psr\Log\LoggerInterface;
 [/if]
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\[authentication.baseControllerClassName()/];
@@ -84,11 +84,6 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 [template private properties(authentication : LocalAuthenticationSystem) post(trim())]
 /**
- * @var EmailVerifier
- */
-private EmailVerifier $emailVerifier;
-
-/**
  * @var ResetPasswordHelperInterface
  */
 private ResetPasswordHelperInterface $resetPasswordHelper;
@@ -99,26 +94,17 @@ private ResetPasswordHelperInterface $resetPasswordHelper;
 private [authentication.authenticationModel.repository.className()/] $[authentication.authenticationModel.repository.instanceName()/];
 
 /**
- * @var [authentication.resetPasswordRequestModel.repository.className()/] $[authentication.resetPasswordRequestModel.repository.instanceName()/]
+ * @var TranslatorInterface $translator
  */
-private [authentication.resetPasswordRequestModel.repository.className()/] $[authentication.resetPasswordRequestModel.repository.instanceName()/];
-
-/**
- * @var TranslatorInterface $translationService
- */
-private TranslatorInterface $translationService;
+private TranslatorInterface $translator;
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
-public function __construct([if (authentication.hasRegistrationElement)]
-EmailVerifier $emailVerifier, [/if]
-ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator)
+public function __construct([authentication.authenticationModel.repository.className()/] $[authentication.authenticationModel.repository.instanceName()/], ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator)
 {
-[if (authentication.hasRegistrationElement)]
-    $this->emailVerifier = $emailVerifier;
-[/if]
+    $this->[authentication.authenticationModel.repository.instanceName()/] = $[authentication.authenticationModel.repository.instanceName()/];
     $this->resetPasswordHelper = $resetPasswordHelper;
-    $this->translationService = $translator;
+    $this->translator = $translator;
 }
 [/template]
 
@@ -129,7 +115,7 @@ ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translat
  **/
 public function [element.actionName()/](Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
 {
-    if (!$this->isGranted("IS_ANONYMOUS")) {
+    if ($this->getUser()) {
 [if (genModel.homeUnit().oclIsUndefined())]
         return $this->redirect("/");
 [else]
@@ -173,7 +159,7 @@ public function [element.actionName()/](Request $request, UserPasswordHasherInte
 /**
  [element.routeEmailVerification()/]
  **/
-public function verifyUserEmail(Request $request, AuthenticationRepository $authenticationRepository): Response
+public function verifyUserEmail(Request $request, EmailVerifier $emailVerifier, AuthenticationRepository $authenticationRepository): Response
 {
     $id = $request->get('id');
 
@@ -280,7 +266,7 @@ email[else]username[/if]')->getData(),
 [template private sendEmailMethod(element : ForgottenPasswordElement, genModel : WafModel) post(trim())]
 private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
 {
-    $user = $this->getDoctrine()->getRepository(Authentication::class)->findOneBy(['['/]
+    $user = $this->[element.authentication.authenticationModel.repository.instanceName()/]->findOneBy(['['/]
         'email' => $emailFormData,
     [']'/]);
 
@@ -312,7 +298,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
         ->subject('[element.emailSubject/]')
         ->htmlTemplate('[element.authenticationTemplate()/]/[element.viewEmailMessageName()/][element.htmlExtension()/][element.twigExtension()/]')
         ->context(['['/]
-            'user; => $user,
+            'user' => $user,
             'resetToken' => $resetToken,
         [']'/]);
 
@@ -370,8 +356,8 @@ public function [element.actionName()/]Reset(Request $request, UserPasswordHashe
     } catch (ResetPasswordExceptionInterface $e) {
         $this->addFlash('reset_password_error', sprintf(
             '%s - %s',
-            $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, ['['/][']'/], 'ResetPasswordBundle'),
-            $translator->trans($e->getReason(), ['['/][']'/], 'ResetPasswordBundle')
+            $this->translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, ['['/][']'/], 'ResetPasswordBundle'),
+            $this->translator->trans($e->getReason(), ['['/][']'/], 'ResetPasswordBundle')
         ));
 
         return $this->redirectToRoute('[element.routeName()/]');
@@ -384,14 +370,12 @@ public function [element.actionName()/]Reset(Request $request, UserPasswordHashe
         // A password reset token should be used only once, remove it.
         $this->resetPasswordHelper->removeResetRequest($token);
 
-        // Encode the plain password, and set it.
-        $encodedPassword = $userPasswordHasher->hashPassword(
+        $encodedPassword = $passwordHasher->hashPassword(
             $user,
-            $form->get('plainPassword')->getData()
+            [element.formVariable()/]->get('plainPassword')->getData()
         );
-
         $user->setPassword($encodedPassword);
-        $[element.authentication.resetPasswordRequestModel.repository.instanceName()/]->save($user, true);
+        $this->[element.authentication.authenticationModel.repository.instanceName()/]->save($user, true);
 
         // The session is cleaned up after the password has been changed.
         $this->cleanSessionAfterReset();
@@ -401,7 +385,6 @@ public function [element.actionName()/]Reset(Request $request, UserPasswordHashe
 
     $parameters = ['['/][']'/];
     $parameters['['/]'[element.instanceParameter()/]'[']'/] = [element.formVariable()/]->createView();
-    $parameters['['/]'[element.instanceParameter()/]_error'[']'/] = null;
     return $this->render('[element.authenticationTemplate()/]/[element.viewResetName()/][element.htmlExtension()/][element.twigExtension()/]', $parameters);
 }
 [/template]
