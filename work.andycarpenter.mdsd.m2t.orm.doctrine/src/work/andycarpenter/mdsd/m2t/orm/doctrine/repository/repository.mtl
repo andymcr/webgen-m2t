@@ -71,7 +71,8 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 /**
  * @extends [repository.baseRepositoryClassName()/]<[repository.serves.modelClassName()/]>
  */
-class [repository.className()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsResetPasswordInterface)]
+class [repository.className()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsUserInterface)]
+ implements PasswordUpgraderInterface[/if][if (repository.serves.implementsResetPasswordInterface)]
  implements ResetPasswordRequestRepositoryInterface[/if]
 
 {
@@ -134,7 +135,7 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
 
 [/if]
 [if (repository.serves.implementsUserInterface)]
-    [repository.userInterfaceMethods()/]
+	[repository.rehashPasswordMethod()/]
 
 [/if]
 [if (repository.serves.implementsResetPasswordInterface)]
@@ -191,20 +192,22 @@ public function getCurrentUser(): [security.authentication.userModel.modelClassN
 }
 [/template]
 
-[template private userInterfaceMethods(repository : Repository) post(trim())]
+[template private rehashPasswordMethod(repository : Repository) post(trim())]
 /**
  * Used to upgrade (rehash) the user's password automatically over time.
  *
  * @param UserInterface $user
  * @param string $newEncodedPassword
  */
-public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+public function upgradePassword(UserInterface $user, string $newHashedPassword): void
 {
     if (!$user instanceof [repository.serves.modelClassName()/]) {
         throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
     }
 
-    $user->setPassword($newEncodedPassword);
+    // set the new hashed password on the User object
+    $user->setPassword($newHashedPassword);
+
     $this->save($user, true);
 }
 [/template]
