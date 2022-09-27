@@ -14,7 +14,7 @@
 [template public formFeature(feature : Attribute, mapped : Boolean)
 	? (feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
-[attribute.formFeature('entity', attribute.displayLabelId(), attribute.displayLabelId(), attribute.displayLabelId(), mapped)/]
+[attribute.formFeature('entity', attribute.captionContainedId(), attribute.captionContainedId(), attribute.captionContainedId(), mapped)/]
 [/let]
 [/template]
 
@@ -58,7 +58,7 @@ $builder->add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], 
 	? (not feature.isSingleton) post(trim())]
 [let attribute : Attribute = feature.oclAsType(Attribute)]
 $builder->add('[attribute.modelPropertyName()/]', CollectionType::class, ['['/]
-    'label' => '[attribute.displayLabelId()/]',
+    'label' => '[attribute.captionContainedId()/]',
     'translation_domain' => 'entity',
     'entry_type' => [attribute.interfaceType()/],
 [if (allowUiAdd)]
@@ -106,7 +106,7 @@ TextType::class
 	? (not feature.isContains) post(trim())]
 [let association : Association = feature.oclAsType(Association)]
 $builder->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
-    'label' => '[association.displayLabelId()/]',
+    'label' => '[association.captionContainedId()/]',
     'translation_domain' => 'entity',
 [if (not association.isSingleton or not association.isRequired)]
     'required' => false,

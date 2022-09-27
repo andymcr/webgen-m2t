@@ -37,6 +37,6 @@
 [template private translations(entity : Entity) post(trim())]
 ['label.'.concat(entity.id()).idTranslation(entity.displayLabel)/]
 [for (feature : Feature | entity.features)]
-[feature.displayLabelId().idTranslation(feature.displayLabel)/]
+[feature.captionContainedId().idTranslation(feature.displayLabel)/]
 [/for]
 [/template]

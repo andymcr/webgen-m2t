@@ -274,7 +274,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 		endif]
 [let labelId : String
 	= if field.hasTranslations() and field.singleUseModel() then
-			attribute.customisedDisplayLabelContainedId()
+			attribute.customisedCaptionContainedId()
 		else
 			attribute.defaultDisplayLabelContainedId()
 		endif]
@@ -412,7 +412,7 @@ TextType::class
 
 [template private firstOptions(field : InterfaceField) post(trim())]
 'first_options' => ['['/]
-    'label' => '[field.customisedDisplayLabelContainedId()/]',
+    'label' => '[field.customisedCaptionContainedId()/]',
 [if (field.hasHelp)]
     'help' => '[field.helpContainedId()/]',
 [/if]
@@ -437,7 +437,7 @@ TextType::class
 
 [template private secondOptions(field : InterfaceField) post(trim())]
 'second_options' => ['['/]
-    'label' => '[field.secondDisplayLabelContainedId()/]',
+    'label' => '[field.secondCaptionContainedId()/]',
 [if (field.hasSecondHelp)]
     'help' => '[field.secondHelpContainedId()/]',
 [/if]

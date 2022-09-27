@@ -122,7 +122,7 @@
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
 , {[if (field.hasTranslations() and not field.singleUseModel())]
- label: '[field.customisedDisplayLabelContainedId()/]',[/if]
+ label: '[field.customisedCaptionContainedId()/]',[/if]
 [if (field.hasInputGroupClass)]
  row_attr: { class: '[field.inputGroupClass/]' },[/if]
 [if (field.hasFieldLabelClass)]

@@ -46,11 +46,11 @@
 [/template]
 
 [template public unitTitle(element : AuthenticationElement) post(trim())]
-{{ '[element.displayLabelContainedId()/]' | trans }}
+{{ '[element.captionContainedId()/]' | trans }}
 [/template]
 
 [template private title(unit : ContentUnit) post(trim())]
-{{ '[unit.displayLabelContainedId()/]' | trans[if (not unit.oclIsKindOf(EditUnit))]({}, '[unit.translationDomain()/]')[/if] }}
+{{ '[unit.captionContainedId()/]' | trans[if (not unit.oclIsKindOf(EditUnit))]({}, '[unit.translationDomain()/]')[/if] }}
 [/template]
 
 [template private title(unit : DynamicUnit, title : Label, accessor : String) post(trim())]

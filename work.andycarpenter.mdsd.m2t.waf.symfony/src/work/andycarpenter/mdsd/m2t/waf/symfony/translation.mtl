@@ -41,16 +41,28 @@
 	= 'messages'
 /]
 
-[query private placeholdersElement(eObject : EObject) : String
-	= 'placeholders'
+[query private mismatchElement(eObject : EObject) : String
+	= 'mismatch'
+/]
+
+[query private placeholderElement(eObject : EObject) : String
+	= 'placeholder'
 /]
 
 [query private requestElement(eObject : EObject) : String
 	= 'request'
 /]
 
+[query private requiredElement(eObject : EObject) : String
+	= 'required'
+/]
+
 [query private resetElement(eObject : EObject) : String
 	= 'reset'
+/]
+
+[query private secondElement(eObject : EObject) : String
+	= 'second'
 /]
 
 [query private submitElement(eObject : EObject) : String
@@ -61,8 +73,8 @@
 	= 'success'
 /]
 
-[query private titlesElement(eObject : EObject) : String
-	= 'titles'
+[query private titleElement(eObject : EObject) : String
+	= 'title'
 /]
 
 
@@ -70,16 +82,12 @@
 	= authentication.authenticationPrefix().toLowerCase()
 /]
 
-[query public displayLabelContainedId(element : AuthenticationElement) : String
+[query public captionContainedId(element : AuthenticationElement) : String
 	= element.id().concat('.').concat(element.captionElement())
 /]
 
 [query public invokeLabelContainedId(element : AuthenticationElement) : String
 	= element.id().concat('.').concat(element.invokeElement())
-/]
-
-[query public placeholderContainedId(element : AuthenticationElement, field : String) : String
-	= element.id().concat('.').concat(element.placeholdersElement()).concat('.').concat(field)
 /]
 
 [query public requestLabelContainedId(element : ForgottenPasswordElement) : String
@@ -92,10 +100,6 @@
 
 [query public submitLabelContainedId(element : AuthenticationElement) : String
 	= element.id().concat('.').concat(element.submitElement())
-/]
-
-[query public titleContainedId(element : AuthenticationElement, field : String) : String
-	= element.id().concat('.').concat(element.titlesElement()).concat('.').concat(field)
 /]
 
 [query public translationDomain(element : AuthenticationElement) : String
@@ -112,6 +116,54 @@
 		else
 			''
 		endif endif endif endif endif
+/]
+
+[query public captionContainedId(element : AuthenticationElement, field : String) : String
+	= element.fieldContainedId(field).concat('.').concat(element.captionElement())
+/]
+
+[query private fieldContainedId(element : AuthenticationElement, field : String) : String
+	= element.id().concat('.').concat(field)
+/]
+
+[query public helpContainedId(element : AuthenticationElement, field : String) : String
+	= element.fieldContainedId(field).concat('.').concat(element.helpElement())
+/]
+
+[query private messagesContainedId(element : AuthenticationElement, field : String) : String
+	= element.fieldContainedId(field).concat('.').concat(element.messagesElement())
+/]
+
+[query public mismatchMessageContainedId(element : AuthenticationElement, field : String) : String
+	= element.messagesContainedId(field).concat('.').concat(element.mismatchElement())
+/]
+
+[query public placeholderContainedId(element : AuthenticationElement, field : String) : String
+	= element.fieldContainedId(field).concat('.').concat(element.placeholderElement())
+/]
+
+[query public requiredMessageContainedId(element : AuthenticationElement, field : String) : String
+	= element.messagesContainedId(field).concat('.').concat(element.requiredElement())
+/]
+
+[query public secondCaptionContainedId(element : AuthenticationElement, field : String) : String
+	= element.secondFieldContainedId(field).concat('.').concat(element.captionElement())
+/]
+
+[query private secondFieldContainedId(element : AuthenticationElement, field : String) : String
+	= element.fieldContainedId(field).concat('_').concat(element.secondElement())
+/]
+
+[query public secondPlaceholderContainedId(element : AuthenticationElement, field : String) : String
+	= element.secondFieldContainedId(field).concat('.').concat(element.placeholderElement())
+/]
+
+[query public secondTitleContainedId(element : AuthenticationElement, field : String) : String
+	= element.secondFieldContainedId(field).concat('.').concat(element.titleElement())
+/]
+
+[query public titleContainedId(element : AuthenticationElement, field : String) : String
+	= element.fieldContainedId(field).concat('.').concat(element.titleElement())
 /]
 
 
@@ -156,7 +208,7 @@
 	= page.labelsContainedId().concat('.').concat(page.cancelElement())
 /]
 
-[query public displayLabelContainedId(page : Page) : String
+[query public captionContainedId(page : Page) : String
 	= page.id().concat('.').concat(page.captionElement())
 /]
 
@@ -181,16 +233,16 @@
 	= unit.labelsContainedId().concat('.').concat(unit.cancelElement())
 /]
 
+[query public captionContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat('.').concat(unit.captionElement())
+/]
+
 [query public confirmMessageContainedId(unit : ContentUnit) : String
 	= unit.messagesContainedId().concat('.').concat(unit.confirmElement())
 /]
 
 [query private containedId(unit : ContentUnit) : String
 	= unit.displayedOn.id().concat('.').concat(unit.id())
-/]
-
-[query public displayLabelContainedId(unit : ContentUnit) : String
-	= unit.containedId().concat('.').concat(unit.captionElement())
 /]
 
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
@@ -216,10 +268,6 @@
 		endif endif
 /]
 
-[query private helpContainedId(unit : ContentUnit) : String
-	= unit.containedId().concat('.').concat(unit.helpElement())
-/]
-
 [query public hiddenMessageContainedId(unit : ContentUnit) : String
 	= unit.messagesContainedId().concat('.').concat(unit.hiddenElement())
 /]
@@ -232,10 +280,6 @@
 	= unit.containedId().concat('.').concat(unit.messagesElement())
 /]
 
-[query private placeholdersContainedId(unit : ContentUnit) : String
-	= unit.containedId().concat('.').concat(unit.placeholdersElement())
-/]
-
 [query public submitLabelContainedId(unit : ContentUnit) : String
 	= unit.labelsContainedId().concat('.').concat(unit.submitElement())
 /]
@@ -244,37 +288,37 @@
 	= unit.messagesContainedId().concat('.').concat(unit.successElement())
 /]
 
-[query private titlesContainedId(unit : ContentUnit) : String
-	= unit.containedId().concat('.').concat(unit.titlesElement())
-/]
-
 [query public translationDomain(unit : ContentUnit) : String
 	= unit.displayedOn.translationDomain()
 /]
 
 
-[query public customisedDisplayLabelContainedId(field : UnitField) : String
-	= field.displayedOn.labelsContainedId().concat('.').concat(field.fieldId())
+[query public customisedCaptionContainedId(field : UnitField) : String
+	= field.fieldContainedId().concat('.').concat(field.captionElement())
 /]
 
 [query public customisedPlaceholderContainedId(field : UnitField) : String
-	= field.displayedOn.placeholdersContainedId().concat('.').concat(field.fieldId())
+	= field.fieldContainedId().concat('.').concat(field.placeholderElement())
 /]
 
 [query public customisedTitleContainedId(field : UnitField) : String
-	= field.displayedOn.titlesContainedId().concat('.').concat(field.fieldId())
+	= field.fieldContainedId().concat('.').concat(field.titleElement())
 /]
 
 [query public defaultDisplayLabelContainedId(field : UnitField) : String
-	= field.persistentFeature.displayLabelId()
+	= field.persistentFeature.captionContainedId()
 /]
 
 [query public defaultPlaceholderContainedId(field : UnitField) : String
-	= field.persistentFeature.displayLabelId()
+	= field.persistentFeature.captionContainedId()
 /]
 
 [query public defaultTitleContainedId(field : UnitField) : String
-	= field.persistentFeature.displayLabelId()
+	= field.persistentFeature.captionContainedId()
+/]
+
+[query private fieldContainedId(field : UnitField) : String
+	= field.displayedOn.containedId().concat('.').concat(field.fieldId())
 /]
 
 [query public hasTranslations(field : UnitField) : Boolean
@@ -284,36 +328,44 @@
 /]
 
 [query public helpContainedId(field : UnitField) : String
-	= field.displayedOn.helpContainedId().concat('.').concat(field.fieldId())
+	= field.fieldContainedId().concat('.').concat(field.helpElement())
 /]
 
-[query public secondDisplayLabelContainedId(field : UnitField) : String
-	= field.displayedOn.labelsContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
+[query public secondCaptionContainedId(field : UnitField) : String
+	= field.secondFieldContainedId().concat('.').concat(field.captionElement())
+/]
+
+[query private secondFieldContainedId(field : UnitField) : String
+	= field.fieldContainedId().concat('_').concat(field.secondElement())
 /]
 
 [query public secondHelpContainedId(field : UnitField) : String
-	= field.displayedOn.helpContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
+	= field.secondFieldContainedId().concat('.').concat(field.helpElement())
 /]
 
 [query public secondPlaceholderContainedId(field : UnitField) : String
-	= field.displayedOn.placeholdersContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
+	= field.secondFieldContainedId().concat('.').concat(field.placeholderElement())
 /]
 
 [query public secondTitleContainedId(field : UnitField) : String
-	= field.displayedOn.titlesContainedId().concat('.').concat(field.fieldId().concat('_confirm'))
+	= field.secondFieldContainedId().concat('.').concat(field.titleElement())
 /]
 
 
-[query public displayLabelId(feature : Feature) : String
-	= feature.partOf.id().concat('.labels').concat('.').concat(feature.id())
+[query public captionContainedId(feature : Feature) : String
+	= feature.containedId().concat('.').concat(feature.captionElement())
+/]
+
+[query private containedId(feature : Feature) : String
+	= feature.partOf.id().concat('.').concat(feature.id())
 /]
 
 [query public placeholderId(feature : Feature) : String
-	= feature.partOf.id().concat('.placeholders').concat('.').concat(feature.id())
+	= feature.containedId().concat('.').concat(feature.placeholderElement())
 /]
 
 [query public titleId(feature : Feature) : String
-	= feature.partOf.id().concat('.titles').concat('.').concat(feature.id())
+	= feature.containedId().concat('.').concat(feature.titleElement())
 /]
 
 
@@ -322,7 +374,7 @@
 /]
 
 [query public titleId(badge : Badge) : String
-	= badge.title.displayLabelId()
+	= badge.title.captionContainedId()
 /]
 
 

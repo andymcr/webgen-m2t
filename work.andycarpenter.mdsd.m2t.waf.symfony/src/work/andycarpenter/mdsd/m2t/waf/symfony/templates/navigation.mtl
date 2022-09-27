@@ -147,11 +147,11 @@
 {%- if app.user -%}
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'xxx' %} active{% endif %}" href="xx">Profile</a></li>
  <li><a class="dropdown-item{% if app.request.attributes.get('_route') == 'yyy' %} active{% endif %}" href="yyy">Password</a></li>
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.logoutElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.logoutElement.routeName()/]') }}">{{ '[localAuthentication.logoutElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.logoutElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.logoutElement.routeName()/]') }}">{{ '[localAuthentication.logoutElement.captionContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a></li>
 {%- elseif not app.user -%}
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.loginElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}">{{ '[localAuthentication.loginElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.loginElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}">{{ '[localAuthentication.loginElement.captionContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}</a></li>
 [if (localAuthentication.allowSelfRegistration)]
- <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.registrationElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.registrationElement.routeName()/]') }}">{{ '[localAuthentication.registrationElement.displayLabelContainedId()/]' | trans({}, '[localAuthentication.registrationElement.translationDomain()/]') }}</a></li>
+ <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[localAuthentication.registrationElement.routeName()/]' %} active{% endif %}" href="{{ path('[localAuthentication.registrationElement.routeName()/]') }}">{{ '[localAuthentication.registrationElement.captionContainedId()/]' | trans({}, '[localAuthentication.registrationElement.translationDomain()/]') }}</a></li>
 [/if]
 {%- endif -%}
 </ul>
