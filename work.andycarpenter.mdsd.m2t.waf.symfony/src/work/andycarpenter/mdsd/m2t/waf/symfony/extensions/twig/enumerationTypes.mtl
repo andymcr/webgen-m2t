@@ -22,7 +22,7 @@ class EnumerationTypes extends AbstractExtension
         return 'project';
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return ['['/]
 [for (enumerationType : EnumerationType | model.enumerationTypes)]
