@@ -83,8 +83,10 @@ class [unit.typeClassName()/] extends AbstractType
     {
 [for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName))]
         [feature.formField()/];
-[if (feature.hasAutocomplete)]
+[if (feature.oclIsKindOf(UnitAssociation))]
+	[if (feature.oclAsType(UnitAssociation).hasAutocomplete)]
         [feature.autocompleteField()/]
+	[/if]
 [/if]
 
 [/for]

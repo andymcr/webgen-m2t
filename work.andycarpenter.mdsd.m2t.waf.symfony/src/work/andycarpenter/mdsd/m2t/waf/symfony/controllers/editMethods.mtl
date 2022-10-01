@@ -21,11 +21,9 @@
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[for (association : UnitAssociation | editUnit.associationFields)]
-	[if (association.hasAutocomplete)]
+[for (association : UnitAssociation | editUnit.autocompleteFields)]
 [association.optionsMethod(editUnit)/]
 
-	[/if]
 [/for]
 [if (not editUnit.oclIsTypeOf(UpdateUnit))]
 [editUnit.actionCreateMethod()/]
