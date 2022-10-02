@@ -58,7 +58,7 @@ namespace [entity.modelsNamespace()/];
 [/if]
  **/
 class [entity.modelClassName()/][if (entity.implementsUserInterface)]
- implements UserInterface[/if][if (entity.implementsForumUser)]
+ implements UserInterface, PasswordAuthenticatedUserInterface[/if][if (entity.implementsForumUser)]
  implements ForumUserInterface[/if][if (entity.implementsResetPasswordInterface)]
  implements ResetPasswordRequestInterface[/if]
 
@@ -142,9 +142,10 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 [/if]
 [if (entity.implementsUserInterface)]
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
-[if (entity.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
+[if (true or entity.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
 use Symfony\Component\Serializer\Annotation\Groups;
 [/if]
 [if (entity.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
@@ -175,6 +176,7 @@ use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
  * @ORM\Id
  * @ORM\Column(type="[entity.autoKeyPersistentType/]")
  * @ORM\GeneratedValue[if (not entity.autoKeyGenerationStrategy.oclIsUndefined())](strategy="[entity.autoKeyGenerationStrategy/]")[/if]
+ * @Groups("[entity.instanceName()/]")
  *
  * @var int $[entity.autoKeyName/]
  */
@@ -572,7 +574,7 @@ public function [feature.getMethodName()/]File(): ?File
  *
  * @param [attribute.documentationType()/][if (not feature.isRequired)]|null[/if] $[attribute.instanceName()/]
  */
-public function [attribute.setMethodName()/]([if (not feature.isRequired)]?[/if][attribute.implementationType()/] $[attribute.instanceName()/]): void
+public function [attribute.setMethodName()/]([if (not feature.isRequired)]?[/if][attribute.implementationType()/] $[attribute.instanceName()/]): self
 {
 [if (attribute.customiseSet)]
     // [protected (attribute.name.concat('.setMethod'))]
@@ -581,6 +583,7 @@ public function [attribute.setMethodName()/]([if (not feature.isRequired)]?[/if]
 [else]
     [attribute.setMethodCore()/]
 [/if]
+    return $this;
 }
 [/let]
 [/template]
@@ -618,9 +621,10 @@ $this->[attribute.modelPropertyName()/] = $[attribute.instanceName()/];
  *
  * @param string|null $[feature.instanceName()/]Name
  */
-public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/]Name): void
+public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/]Name): self
 {
     $this->[feature.modelPropertyName()/]Name = $[feature.instanceName()/]Name;
+    return $this;
 }
 [/template]
 
@@ -647,7 +651,7 @@ public function [feature.setMethodName()/]File(?File $[feature.instanceName()/]F
  *
  * @param [association.documentationType()/] $[association.instanceName()/]
  */
-public function set[association.modelPropertyName().toUpperFirst()/]([association.implementationType()/] $[association.instanceName()/]): void
+public function set[association.modelPropertyName().toUpperFirst()/]([association.implementationType()/] $[association.instanceName()/]): self
 {
 [if (association.customiseSet)]
     // [protected (association.name.concat('.setMethod'))]
@@ -656,6 +660,7 @@ public function set[association.modelPropertyName().toUpperFirst()/]([associatio
 [else]
     $this->[association.modelPropertyName()/] = $[association.instanceName()/];
 [/if]
+    return $this;
 }
 [/let]
 [/template]
@@ -666,7 +671,7 @@ public function set[association.modelPropertyName().toUpperFirst()/]([associatio
  *
  * @param [feature.elementType()/] $[feature.singletonName/]
  */
-public function [feature.addMethodName()/]([feature.elementType()/] $[feature.singletonName/]): void
+public function [feature.addMethodName()/]([feature.elementType()/] $[feature.singletonName/]): self
 {
 [if (feature.isUnique)]
     if (!in_array($[feature.singletonName/], $this->[feature.modelPropertyName()/], true)) {
@@ -694,6 +699,7 @@ public function [feature.addMethodName()/]([feature.elementType()/] $[feature.si
 	[/if]
 [/let]
 [/if]
+    return $this;
 }
 [/template]
 
@@ -703,7 +709,7 @@ public function [feature.addMethodName()/]([feature.elementType()/] $[feature.si
  *
  * @param [feature.elementType()/] $[feature.singletonName/]
  */
-public function [feature.removeMethodName()/]([feature.elementType()/] $[feature.singletonName/]): void
+public function [feature.removeMethodName()/]([feature.elementType()/] $[feature.singletonName/]): self
 {
 [if (feature.oclIsKindOf(Attribute))]
     unset($this->[feature.modelPropertyName()/]['['/]array_search($[feature.singletonName/], $this->[feature.columnName/])[']'/]);
@@ -721,10 +727,19 @@ public function [feature.removeMethodName()/]([feature.elementType()/] $[feature
 	[/if]
 [/let]
 [/if]
+    return $this;
 }
 [/template]
 
 [template private userInterfaceMethods(entity : Entity) post(trim())]
+/**
+ * @see UserInterface
+ */
+public function getUserIdentifier(): string
+{
+    return $this->getEmail();
+}
+
 [if (entity.features->select(f | f.name = 'roles')->isEmpty())]
 /**
  * @see UserInterface
@@ -748,7 +763,7 @@ public function setRoles(array $roles): self
 [/if]
 [if (entity.features->select(f | f.name = 'password')->isEmpty())]
 /**
- * @see UserInterface
+ * @see PasswordAuthenticatedUserInterface
  */
 public function getPassword(): ?string
 { 
@@ -797,7 +812,7 @@ public function getUsername()
  *
  * @return User
  */
-public function setUsername($username)
+public function setUsername($username): self
 {
     $this->username = $username;
     return $this;
@@ -887,7 +902,7 @@ public function getUpdated(): ?\DateTimeInterface
 
 [template private label(label : ModelLabel) post(trim())]
 /**
- *
+ * @Groups("[label.labelFor.instanceName()/]")
  *
  * @return string
  */
