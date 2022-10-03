@@ -46,7 +46,7 @@
 public function [association.actionName()/](SerializerInterface $serializer, [association.optionsFilter.optionFormals()/])
 {
     $selection = $this->[association.optionsFilter.selection.definedBy.instanceName()/]->[association.optionsFilter.methodName/]([association.optionsFilter.selectionActuals()/], 0, 8);
-    return new JsonResponse($serializer->serialize($selection, 'json'));
+    return new JsonResponse($serializer->serialize($selection, 'json', ['['/] "groups" => ['['/] "imageVariant" [']'/] [']'/]));
 }
 [/template]
 
