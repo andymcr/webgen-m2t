@@ -295,7 +295,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
 				$this->getParameter('[genModel.siteProperties.securityFromEmailId()/]'),
 				$this->getParameter('[genModel.siteProperties.securityFromNameId()/]')))
         ->to($user->getEmail())
-        ->subject('[element.emailSubject/]')
+        ->subject('[element.emailCheckSubject/]')
         ->htmlTemplate('[element.authenticationTemplate()/]/[element.viewEmailMessageName()/][element.htmlExtension()/][element.twigExtension()/]')
         ->context(['['/]
             'user' => $user,
