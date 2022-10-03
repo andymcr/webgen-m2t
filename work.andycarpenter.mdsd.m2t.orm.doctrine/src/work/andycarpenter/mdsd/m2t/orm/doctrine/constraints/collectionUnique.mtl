@@ -24,52 +24,27 @@ class [model.collectionUniqueClassName()/] extends Constraint
     public string $message = 'Value already used';
 
     /**
-     * @var string $uniquePropertyPath
+     * @var string $uniqueProperty
      */
-    private $uniquePropertyPath;
+    public string $uniqueProperty;
 
     /**
-     * @var string $containerPropertyPath
+     * @var string $containerProperty
      */
-    private $containerPropertyPath;
+    public string $containerProperty;
 
     /**
-     * @var string $collectionPropertyPath
+     * @var string $collectionProperty
      */
-    private $collectionPropertyPath;
+    public string $collectionProperty;
 
-
-    public function __construct($options = null)
-    {
-        foreach ($options as $key => $value) {
-            if (strcmp($key, "uniqueProperty") == 0) {
-                $this->uniquePropertyPath = $value;
-            } else if (strcmp($key, "containerProperty") == 0) {
-                $this->containerPropertyPath = $value;
-            } else if (strcmp($key, "collectionProperty") == 0) {
-                $this->collectionPropertyPath = $value;
-            } else {
-                throw new \InvalidArgumentException($key . " invalid");
-            }
-        }
-
-        if (!isset($this->uniquePropertyPath)) {
-            throw new \InvalidArgumentException("uniqueProperty value missing");
-        }
-        if (!isset($this->containerPropertyPath)) {
-            throw new \InvalidArgumentException("containerProperty value missing");
-        }
-        if (!isset($this->collectionPropertyPath)) {
-            throw new \InvalidArgumentException("collectionProperty value missing");
-        }
-    }
 
     /**
      * @return array<string>
      */
     public function getRequiredOptions(): array
     {
-        return ['['/]'uniqueProperty', 'containerProperty', 'containingProperty'[']'/];
+        return ['['/]'uniqueProperty', 'containerProperty', 'collectionProperty'[']'/];
     }
 
     /**
@@ -79,31 +54,6 @@ class [model.collectionUniqueClassName()/] extends Constraint
     {
         return self::CLASS_CONSTRAINT;
     }
-
-    /**
-     * @return string
-     */
-    public function getUniquePropertyPath(): string
-    {
-        return $this->uniquePropertyPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContainerPropertyPath(): string
-    {
-        return $this->containerPropertyPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCollectionPropertyPath(): string
-    {
-        return $this->collectionPropertyPath;
-    }
-
 }
 [/file]
 [/template]

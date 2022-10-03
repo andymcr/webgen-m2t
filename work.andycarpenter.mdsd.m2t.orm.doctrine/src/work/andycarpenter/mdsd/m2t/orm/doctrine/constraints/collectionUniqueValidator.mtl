@@ -35,17 +35,17 @@ class [model.collectionUniqueClassName()/][model.validatorClassNamePostfix()/] e
 
         $duplicate = false;
         $uniqueAccessor = PropertyAccess::createPropertyAccessor();
-        $newValue = $uniqueAccessor->getValue($item, $constraint->getUniquePropertyPath());
+        $newValue = $uniqueAccessor->getValue($item, $constraint->uniqueProperty);
         $siblings = $this->getSiblings($item, $constraint);
         foreach ($siblings as $sibling) {
-            if (strcmp($newValue, $uniqueAccessor->getValue($sibling, $constraint->getUniquePropertyPath())) === 0) {
+            if (strcmp($newValue, $uniqueAccessor->getValue($sibling, $constraint->uniqueProperty)) === 0) {
                 $duplicate = true;
             }
         }
 
         if ($duplicate) {
             $this->context->buildViolation($constraint->message)
-                ->atPath($constraint->getUniquePropertyPath())
+                ->atPath($constraint->uniqueProperty)
                 ->addViolation();
         }
     }
@@ -61,7 +61,7 @@ class [model.collectionUniqueClassName()/][model.validatorClassNamePostfix()/] e
     {
         $container = $this->getContainer($item, $constraint);
         $collectionAccessor = PropertyAccess::createPropertyAccessor();
-        $siblings = $collectionAccessor->getValue($container, $constraint->getCollectionPropertyPath());
+        $siblings = $collectionAccessor->getValue($container, $constraint->collectionProperty);
         if (!$siblings instanceof Collection) {
             throw new \Exception("Collection path is not a collection");
         }
@@ -78,7 +78,7 @@ class [model.collectionUniqueClassName()/][model.validatorClassNamePostfix()/] e
     private function getContainer($item, CollectionUnique $constraint): object
     {
         $containerAccessor = PropertyAccess::createPropertyAccessor();
-        $container = $containerAccessor->getValue($item, $constraint->getContainerPropertyPath());
+        $container = $containerAccessor->getValue($item, $constraint->containerProperty);
         if (!is_object($container)) {
             throw new \Exception("No container object returned");
         }
