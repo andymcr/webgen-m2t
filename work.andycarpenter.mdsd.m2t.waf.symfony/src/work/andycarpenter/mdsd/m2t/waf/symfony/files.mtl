@@ -3,6 +3,7 @@
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/metamodel/api',
 	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/service',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
@@ -156,6 +157,12 @@
 	= eObject.controllersNamespace().concat('\\').concat('Web')
 /]
 
+
+[query public autocompleteTypeFilename(association : Association) : String
+	= association.formDirectory().concat('/')
+		.concat(association.autocompleteTypeClassName())
+		.concat(association.executableExtension())
+/]
 
 [query public controllerFilename(authentication : LocalAuthenticationSystem, model : WafModel) : String
 	= if model.hasAPI then

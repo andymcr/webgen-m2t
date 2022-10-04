@@ -1,0 +1,64 @@
+[comment encoding = UTF-8 /]
+[module autocompleteType(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+
+
+[template public autocompleteType(association : UnitAssociation)]
+[association.association.autocompleteType(association.valueDisplay,
+	association.displayedOn.authorisationRoles)/]
+[/template]
+
+
+[template public autocompleteType(association : Association, valueLabel : ModelLabel,
+	authorisationRoles : String)]
+[file(association.autocompleteTypeFilename(), false)]
+<?php
+namespace [association.formNamespace()/];
+
+use [association.modelsNamespace()/]\[association.targetType.modelClassName()/];
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
+use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
+use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
+
+
+#['['/]AsEntityAutocompleteField[']'/]
+class [association.autocompleteTypeClassName()/] extends AbstractType
+{
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(['['/]
+            'label' => '[association.captionContainedId()/]',
+            'translation_domain' => 'entity',
+[if (not association.isSingleton or not association.isRequired)]
+            'required' => false,
+[/if]
+            'class' => [association.targetType.modelClassName()/]::class,
+            'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
+            'choice_translation_domain' => false,
+[if (association.isSingleton)]
+            'placeholder' => 'actions.labels.select_one',
+[else]
+            'multiple' => true,
+[/if]
+            'searchable_fields' => ['['/] [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if] [']'/],
+[if (not authorisationRoles.oclIsUndefined())]
+            'security' => '[authorisationRoles/]',
+[/if]
+        [']'/]);
+    }
+
+    public function getParent(): string
+    {
+        return ParentEntityAutocompleteType::class;
+    }
+}
+[/file]
+[/template]

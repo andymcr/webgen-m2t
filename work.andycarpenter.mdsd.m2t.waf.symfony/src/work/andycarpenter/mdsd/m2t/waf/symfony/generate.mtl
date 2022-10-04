@@ -16,6 +16,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::api/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::page/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::extensions::extensions/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::autocompleteType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::formType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::javascript::generate/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::services::service/]
@@ -40,6 +41,7 @@
 
 [model.business.services.service()/]
 
+[model.autocompleteFields.autocompleteType()/]
 [model.formTypes()/]
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 

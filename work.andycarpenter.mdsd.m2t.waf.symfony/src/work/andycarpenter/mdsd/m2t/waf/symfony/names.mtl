@@ -67,6 +67,10 @@
 	= 'authentication'
 /]
 
+[query public autocompleteTypeSuffix(eObject : EObject) : String
+	= 'Autocomplete'.concat(eObject.typeSuffix())
+/]
+
 [query public typeSuffix(eObject : EObject) : String
 	= 'Type'
 /]
@@ -600,6 +604,11 @@
 
 [query public uniqueName(field : UnitField) : String
 	= field.displayedOn.instanceName().concat('_').concat(field.modelPropertyName())
+/]
+
+
+[query public autocompleteTypeClassName(association : Association) : String
+	= association.targetType.modelClassName().concat(association.autocompleteTypeSuffix())
 /]
 
 

@@ -3,6 +3,7 @@
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
 
@@ -102,9 +103,8 @@ TextType::class
 [/template]
 
 
-[template public formFeature(feature : Association, valueLabel : ModelLabel, hasAutocomplete : Boolean, selection : Selection)
-	? (not feature.isContains) post(trim())]
-[let association : Association = feature.oclAsType(Association)]
+[template public formFeature(association : Association, valueLabel : ModelLabel, selection : Selection)
+	? (not association.isContains) post(trim())]
 $builder->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
     'label' => '[association.captionContainedId()/]',
     'translation_domain' => 'entity',
@@ -112,14 +112,8 @@ $builder->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
     'required' => false,
 [/if]
     'class' => '[association.modelsNamespace()/]\[association.modelClassName()/]',
-[if (hasAutocomplete)]
-    'choices' => array_key_exists('data', $options) && !is_null($options['['/]'data'[']'/]->[feature.getMethodName()/]())
-        ? ['['/] $options['['/]'data'[']'/]->[feature.getMethodName()/]() [']'/]
-        : ['['/][']'/],
-[else]
-	[if (not selection.oclIsUndefined())]
+[if (not selection.oclIsUndefined())]
     'choices' => $this->[selection.definedBy.instanceName()/]->[selection.methodName/](),
-	[/if]
 [/if]
     'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,
@@ -129,5 +123,8 @@ $builder->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
     'multiple' => true,
 [/if]
 [']'/])
-[/let]
+[/template]
+
+[template public formAutocompleteFeature(association : Association)]
+$builder->add('[association.modelPropertyName()/]', [association.autocompleteTypeClassName()/]::class);
 [/template]
