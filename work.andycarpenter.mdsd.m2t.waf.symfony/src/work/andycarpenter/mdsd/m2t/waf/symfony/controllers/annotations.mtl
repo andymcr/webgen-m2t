@@ -72,10 +72,6 @@
 [unit.routeAnnotation(unit.routeUpdateName(), unit.uriUpdatePath(suffix), true)/]
 [/template]
 
-[template public routeAnnotation(association : UnitAssociation, unit : EditUnit) post(trim())]
-[unit.routeAnnotation(association.routeName(), association.uriPath(unit), false)/]
-[/template]
-
 [template public routeAnnotation(action : Action, suffix : String) post(trim())]
 [action.parentUnit.routeAnnotation(action.routeName(), action.uriPath(suffix), false)/]
 [/template]

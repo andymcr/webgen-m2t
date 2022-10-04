@@ -305,7 +305,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [template private formField(field : UnitField)
 	? (field.isAssociationField and not field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (association.hasAutocomplete)]
+[if (association.useAutocomplete)]
 [association.association.formAutocompleteFeature()/]
 [else]
 [association.association.formFeature(association.valueDisplay, association.options)/]

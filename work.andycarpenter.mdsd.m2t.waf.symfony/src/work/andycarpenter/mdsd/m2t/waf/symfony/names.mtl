@@ -426,18 +426,6 @@
 	= element.uriEmailVerification
 /]
 
-[query public routeName(association : UnitAssociation) : String
-	= let associationsWithName : OrderedSet(UnitAssociation)
-		= association.displayedOn.displayedOn.associationFields
-			->select(a | a.name.equalsIgnoreCase(association.name))
-			->select(a | not a.optionsFilter.oclIsUndefined())
-		in if associationsWithName->size() < 2  then
-				association.displayedOn.displayedOn.uniqueName().concat('_').concat(association.name)
-			else
-				association.displayedOn.uniqueName().concat('_').concat(association.name)
-			endif
-/]
-
 [query public routeName(resource : Resource) : String
 	= resource.instanceName()
 /]

@@ -54,15 +54,10 @@
 			->select(u | not u.containingType.oclIsUndefined())
 			->collect(u | u.containingType.repository)
 			->asSet()
-		in let autocompleteRepositories : Set(Repository)
-			= page.autocompleteFields
-				->collect(f | f.optionsFilter.selection.definedBy)
-				->asSet()
-			in page.repositoriesUsed->asSet()
-					->union(containerRepositories)
-					->union(autocompleteRepositories)
-					->asSequence()
-					->sortedBy(r | r.name)
+		in page.repositoriesUsed->asSet()
+			->union(containerRepositories)
+			->asSequence()
+			->sortedBy(r | r.name)
 /]
 
 [query private hasSupportMethods(page : Page) : Boolean
@@ -152,9 +147,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[page.baseControllerClassName()/];
-[if (page.hasAutocompleteFields)]
-use Symfony\Component\HttpFoundation\JsonResponse;
-[/if]
 [if (page.hasFileActions)]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
@@ -163,9 +155,6 @@ use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-[if (page.hasAutocompleteFields)]
-use Symfony\Component\Serializer\SerializerInterface;
-[/if]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [/template]
 
