@@ -9,19 +9,29 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
 
-[template public autocompleteType(association : UnitAssociation)]
-[association.association.autocompleteType(association.valueDisplay,
-	association.displayedOn.authorisationRoles)/]
+[template public autocompleteTypes(genModel : WafModel)]
+[for (association : UnitAssociation | genModel.autocompleteFields)]
+	[let sameAutocomplete : OrderedSet(UnitAssociation) = association.sameAutocomplete()]
+		[if (association = sameAutocomplete->first())]
+[association.autocompleteType(sameAutocomplete->size() > 1)/]
+		[/if]
+	[/let]
+[/for]
 [/template]
 
+[query private sameAutocomplete(association : UnitAssociation) : OrderedSet(UnitAssociation)
+	= association.genModel.autocompleteFields
+		->select(f | f.association = association.association
+			and f.displayedOn.authorisationRoles = association.displayedOn.authorisationRoles)
+/]
 
-[template public autocompleteType(association : Association, valueLabel : ModelLabel,
-	authorisationRoles : String)]
+
+[template public autocompleteType(association : UnitAssociation, notUnique : Boolean)]
 [file(association.autocompleteTypeFilename(), false)]
 <?php
 namespace [association.formNamespace()/];
 
-use [association.modelsNamespace()/]\[association.targetType.modelClassName()/];
+use [association.modelsNamespace()/]\[association.association.modelClassName()/];
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -35,22 +45,22 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['['/]
-            'label' => '[association.captionContainedId()/]',
+            'label' => '[association.association.captionContainedId()/]',
             'translation_domain' => 'entity',
 [if (not association.isSingleton or not association.isRequired)]
             'required' => false,
 [/if]
-            'class' => [association.targetType.modelClassName()/]::class,
-            'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
+            'class' => [association.association.modelClassName()/]::class,
+            'choice_label' => [if (association.valueDisplay.oclIsUndefined())]'defaultLabel'[else]'[association.valueDisplay.name.toLowerFirst()/][if (not association.valueDisplay.name.endsWith('Label'))]Label[/if]'[/if],
             'choice_translation_domain' => false,
 [if (association.isSingleton)]
             'placeholder' => 'actions.labels.select_one',
 [else]
             'multiple' => true,
 [/if]
-            'searchable_fields' => ['['/] [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if] [']'/],
-[if (not authorisationRoles.oclIsUndefined())]
-            'security' => '[authorisationRoles/]',
+            'searchable_fields' => ['['/] 'image.title' [']'/],
+[if (not association.displayedOn.authorisationRoles.oclIsUndefined())]
+            'security' => '[association.displayedOn.authorisationRoles/]',
 [/if]
         [']'/]);
     }

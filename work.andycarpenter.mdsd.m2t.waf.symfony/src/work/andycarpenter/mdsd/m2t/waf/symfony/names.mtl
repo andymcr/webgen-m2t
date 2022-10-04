@@ -530,6 +530,10 @@
 		.concat('Action')
 /]
 
+[query public autocompleteTypeClassName(association : UnitAssociation) : String
+	= association.association.modelClassName().concat(association.autocompleteTypeSuffix())
+/]
+
 [query public formName(field : UnitField) : String
 	= if field.oclIsKindOf(UnitFeature) then
 			if field.oclIsTypeOf(UnitAttribute) then
@@ -592,11 +596,6 @@
 
 [query public uniqueName(field : UnitField) : String
 	= field.displayedOn.instanceName().concat('_').concat(field.modelPropertyName())
-/]
-
-
-[query public autocompleteTypeClassName(association : Association) : String
-	= association.targetType.modelClassName().concat(association.autocompleteTypeSuffix())
 /]
 
 

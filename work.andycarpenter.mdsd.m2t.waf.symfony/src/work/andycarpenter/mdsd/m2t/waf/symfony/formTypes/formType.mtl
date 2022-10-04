@@ -306,11 +306,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 	? (field.isAssociationField and not field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.useAutocomplete)]
-[association.association.formAutocompleteFeature()/]
+[association.formAutocompleteFeature()/]
 [else]
 [association.association.formFeature(association.valueDisplay, association.options)/]
 [/if]
 [/let]
+[/template]
+
+[template private formAutocompleteFeature(association : UnitAssociation)]
+$builder->add('[association.modelPropertyName()/]', [association.autocompleteTypeClassName()/]::class);
 [/template]
 
 [template private formField(field : UnitField, dataInstance : String)

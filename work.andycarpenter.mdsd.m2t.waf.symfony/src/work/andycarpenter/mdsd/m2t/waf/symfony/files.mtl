@@ -158,7 +158,7 @@
 /]
 
 
-[query public autocompleteTypeFilename(association : Association) : String
+[query public autocompleteTypeFilename(association : UnitAssociation) : String
 	= association.formDirectory().concat('/')
 		.concat(association.autocompleteTypeClassName())
 		.concat(association.executableExtension())

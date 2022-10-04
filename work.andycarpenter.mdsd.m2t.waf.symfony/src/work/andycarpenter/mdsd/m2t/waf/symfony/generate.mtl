@@ -41,7 +41,7 @@
 
 [model.business.services.service()/]
 
-[model.autocompleteFields.autocompleteType()/]
+[model.autocompleteTypes()/]
 [model.formTypes()/]
 [model.pages->select(p | p.units->notEmpty()).controller(model)/]
 

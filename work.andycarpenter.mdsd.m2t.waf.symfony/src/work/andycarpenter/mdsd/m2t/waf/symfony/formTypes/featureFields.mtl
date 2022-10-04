@@ -124,7 +124,3 @@ $builder->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
 [/if]
 [']'/])
 [/template]
-
-[template public formAutocompleteFeature(association : Association)]
-$builder->add('[association.modelPropertyName()/]', [association.autocompleteTypeClassName()/]::class);
-[/template]
