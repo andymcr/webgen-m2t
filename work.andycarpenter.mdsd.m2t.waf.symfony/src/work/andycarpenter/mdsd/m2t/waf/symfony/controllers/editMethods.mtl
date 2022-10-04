@@ -21,10 +21,6 @@
 [template public unitMethods(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[for (association : UnitAssociation | editUnit.autocompleteFields)]
-[association.optionsMethod(editUnit)/]
-
-[/for]
 [if (not editUnit.oclIsTypeOf(UpdateUnit))]
 [editUnit.actionCreateMethod()/]
 
@@ -34,20 +30,6 @@
 
 [/if]
 [/let]
-[/template]
-
-[template private optionsMethod(association : UnitAssociation, unit : EditUnit) post(trim())]
-/**
- [association.routeAnnotation(unit)/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
- */
-public function [association.actionName()/](SerializerInterface $serializer, [association.optionsFilter.optionFormals()/])
-{
-    $selection = $this->[association.optionsFilter.selection.definedBy.instanceName()/]->[association.optionsFilter.methodName/]([association.optionsFilter.selectionActuals()/], 0, 8);
-    return new JsonResponse($serializer->serialize($selection, 'json', ['['/] "groups" => ['['/] "imageVariant" [']'/] [']'/]));
-}
 [/template]
 
 [template private optionFormals(filter : Filter) post(trim())]
