@@ -42,26 +42,17 @@
 
 [template public detailsContent(unit : DetailsUnit, accessor : String, depthInteger : Integer) post(trim())]
 [if (unit.hasInstanceActions)]
-[comment unit.instanceActions(accessor)/]
+[unit.instanceActions(accessor)/]
 [/if]
 [unit.fields(accessor)/]
 [/template]
 
-[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
-	? (not field.isAssociationField) post(trim())]
-[field.displayValue(parentAccessor, objectAccess)/]
-[/template]
-
-[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
-	? (field.isAssociationField and field.isSingleton) post(trim())]
-[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[field.displayValue(parentAccessor, objectAccess)/]
-[/let]
-[/template]
-
-[template private displayField(field : UnitField, parentAccessor : String, objectAccess : Boolean, depthIndex : Integer)
-	? (field.isAssociationField and not field.isSingleton) post(trim())]
-[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[field.displayValue(parentAccessor, objectAccess)/]
-[/let]
+[template private instanceActions(unit : DetailsUnit, cardAccessor : String) post(trim())]
+<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
+ <nav>
+[for (action : Action | unit.instanceActions)]
+  [action.unitActionLink(cardAccessor)/]
+[/for]
+ </nav>
+</div>
 [/template]
