@@ -71,7 +71,12 @@
 [/template]
 
 [template private linkPath(action : Action, valueAccessor : String) 
-	?(action.oclIsTypeOf(ContainerOperationAction) or action.oclIsKindOf(GeneralOperationAction)) post(trim())]
+	?(action.oclIsKindOf(GeneralOperationAction)) post(trim())]
+'[action.routeName()/]'
+[/template]
+
+[template private linkPath(action : Action, valueAccessor : String) 
+	?(action.oclIsTypeOf(ContainerOperationAction)) post(trim())]
 '[action.routeName()/]'[action.linkPathParameters(action.parentUnit.routeActualParameters(
 	action.parentUnit.routeParameters(), valueAccessor, action.parentUnit.containingType,
 	action.parentUnit.hasObjectAccess()), true)/]

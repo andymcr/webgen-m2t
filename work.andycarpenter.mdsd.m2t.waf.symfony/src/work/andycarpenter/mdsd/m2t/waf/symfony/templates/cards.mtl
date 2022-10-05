@@ -32,8 +32,8 @@
 [if (cardsUnit.hasFilters)]
 [cardsUnit.unitFilters()/]
 [/if]
-[if (cardsUnit.hasContainerActions and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
- [cardsUnit.containerActions(cardsUnit.containerParameter())/]
+[if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
+ [cardsUnit.generalOrContainerActions()/]
 [/if]
 [if (cardsUnit.hasPagination
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
@@ -44,8 +44,8 @@
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [cardsUnit.pagination()/]
 [/if]
-[if (cardsUnit.hasContainerActions and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
- [cardsUnit.containerActions(cardsUnit.containerParameter())/]
+[if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
+ [cardsUnit.generalOrContainerActions()/]
 [/if]
 </section>
 [/file]
@@ -110,10 +110,14 @@
 </div>
 [/template]
 
-[template private containerActions(unit : CardsUnit, containerAccessor : String) post(trim())]
+[template private generalOrContainerActions(unit : CardsUnit) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
-[for (action : Action | unit.containerActions)]
- [action.unitActionLink(containerAccessor)/]
+[for (action : Action | unit.actions)]
+	[if (action.isGeneralAction)]
+ [action.unitActionLink(null)/]
+	[elseif (action.isContainerAction)]
+ [action.unitActionLink(unit.containerParameter())/]
+	[/if]
 [/for]
 </div>
 [/template]
