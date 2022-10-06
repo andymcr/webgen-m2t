@@ -14,12 +14,14 @@
 		in reserved->includes(word)
 /]
 
-[query private includeFeature(feature : Feature) : Boolean
-	= not feature.partOf.implementsResetPasswordInterface
-		or (feature.name <> 'expiresAt'
-			and feature.name <> 'ipAddress'
-			and feature.name <> 'requestedAt'
-			and feature.name <> 'selector')
+[query private omitFeature(feature : Feature) : Boolean
+	= feature.partOf.implementsResetPasswordInterface
+		or (feature.partOf.implementsUserInterface
+			and (feature.name = 'roles')
+			)
+		or (feature.partOf.implementsPasswordAuthenticatedInterface
+			and (feature.name = 'password')
+			)
 /]
 
 
@@ -57,10 +59,15 @@ namespace [entity.modelsNamespace()/];
  * @Vich\Uploadable
 [/if]
  **/
-class [entity.modelClassName()/][if (entity.implementsUserInterface)]
- implements UserInterface, PasswordAuthenticatedUserInterface[/if][if (entity.implementsForumUser)]
- implements ForumUserInterface[/if][if (entity.implementsResetPasswordInterface)]
- implements ResetPasswordRequestInterface[/if]
+class [entity.modelClassName()/][if (entity.implementsUserInterface or entity.implementsPasswordAuthenticatedInterface or entity.implementsForumUser or entity.implementsResetPasswordInterface)]
+ implements [/if][if (entity.implementsUserInterface)]
+UserInterface[if (entity.implementsPasswordAuthenticatedInterface or entity.implementsForumUser or entity.implementsResetPasswordInterface)]
+, [/if][/if][if (entity.implementsPasswordAuthenticatedInterface)]
+PasswordAuthenticatedUserInterface[if (entity.implementsForumUser or entity.implementsResetPasswordInterface)]
+, [/if][/if][if (entity.implementsForumUser)]
+ForumUserInterface[if (entity.implementsResetPasswordInterface)]
+, [/if][/if][if (entity.implementsResetPasswordInterface)]
+ResetPasswordRequestInterface[/if]
 
 {
 [if (entity.implementsResetPasswordInterface)]
@@ -69,6 +76,14 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)]
 [/if]
 [if (not entity.hasPrimaryKeys)]
     [entity.autoIdFeature()/]
+
+[/if]
+[if (entity.implementsUserInterface)]
+    [entity.userFeatureProperties()/]
+
+[/if]
+[if (entity.implementsPasswordAuthenticatedInterface)]
+    [entity.passwordFeatureProperties()/]
 
 [/if]
     [entity.featureProperties()/]
@@ -86,6 +101,7 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)]
 		or entity.hasResourceAttributes
 		or entity.hasCollectionAssociations
 		or entity.implementsResetPasswordInterface)]
+
     [entity.constructor()/]
 
 [/if]
@@ -93,14 +109,22 @@ class [entity.modelClassName()/][if (entity.implementsUserInterface)]
     [entity.idMethods()/]
 
 [/if]
-[for (feature : Feature | entity.features->select(f | f.includeFeature()))]
-    [feature.featureMethods()/]
-
-[/for]
 [if (entity.implementsUserInterface)]
     [entity.userInterfaceMethods()/]
 
 [/if]
+[if (entity.implementsPasswordAuthenticatedInterface)]
+    [entity.passwordAuthenticatedMethods()/]
+
+[/if]
+[if (entity.implementsResetPasswordInterface)]
+    [entity.resetPasswordMethods()/]
+
+[/if]
+[for (feature : Feature | entity.features->select(f | not f.omitFeature()))]
+    [feature.featureMethods()/]
+
+[/for]
 [if (entity.implementsForumUser)]
     [entity.forumUserMethods()/]
 
@@ -145,7 +169,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
-[if (true or entity.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
+[if (entity.features->select(f | f.serializationGroups->notEmpty())->notEmpty())]
 use Symfony\Component\Serializer\Annotation\Groups;
 [/if]
 [if (entity.features->select(f | f.oclIsKindOf(Association)).oclAsType(Association)
@@ -176,17 +200,35 @@ use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
  * @ORM\Id
  * @ORM\Column(type="[entity.autoKeyPersistentType/]")
  * @ORM\GeneratedValue[if (not entity.autoKeyGenerationStrategy.oclIsUndefined())](strategy="[entity.autoKeyGenerationStrategy/]")[/if]
- * @Groups("[entity.instanceName()/]")
  *
  * @var int $[entity.autoKeyName/]
  */
 protected $[entity.autoKeyName/];
 [/template]
 
+[template private userFeatureProperties(entity : Entity) post(trim())]
+/**
+ * @ORM\Column(type="array")
+ *
+ * @var array<int, string> $roles
+ */
+protected array $roles;
+[/template]
+
+[template private passwordFeatureProperties(entity : Entity) post(trim())]
+/**
+ * @ORM\Column(type="string")
+ * @Assert\NotBlank
+ *
+ * @var string $password
+ */
+protected string $password;
+[/template]
+
 [template private featureProperties(entity : Entity) post(trim())]
 [for (feature : Feature | entity.allFeatures
 		->select(f | f.isVisible or f.isOwningEnd)
-		->select(f | f.includeFeature()))]
+		->select(f | not f.omitFeature()))]
 [feature.featureProperty()/]
 
 [/for]
@@ -463,7 +505,7 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
     $this->user = $user;
     $this->initialize($expiresAt, $selector, $hashedToken);
 [/if]
-[for (feature : Feature | entity.features)]
+[for (feature : Feature | entity.features->select(f | not f.omitFeature()))]
 	[if (feature.hasDefaultValue)]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
 	[/if]
@@ -740,28 +782,50 @@ public function getUserIdentifier(): string
     return $this->getEmail();
 }
 
-[if (entity.features->select(f | f.name = 'roles')->isEmpty())]
 /**
  * @see UserInterface
  */
 public function getRoles(): array
 {
     $roles = $this->roles;
-    // guarantee every user at least has ROLE_USER
-    $roles['['/][']'/] = 'ROLE_USER';
+    if (!in_array('ROLE_USER', $roles)) {
+        $roles['['/][']'/] = 'ROLE_USER';
+    }
 
     return array_unique($roles);
 }
 
-public function setRoles(array $roles): self
-{
-    $this->roles = $roles;
+    /**
+     *
+     *
+     * @param string $role
+     */
+    public function addRole(string $role): self
+    {
+        $this->roles['['/][']'/] = $role;
+        return $this;
+    }
+    
+    /**
+     *
+     *
+     * @param string $role
+     */
+    public function removeRole(string $role): self
+    {
+        unset($this->roles['['/]array_search($role, $this->roles)[']'/]);
+        return $this;
+    }
 
-    return $this;
-}
+/**
+ * @see UserInterface
+ */
+public function eraseCredentials(): void
+{ 
+} 
+[/template]
 
-[/if]
-[if (entity.features->select(f | f.name = 'password')->isEmpty())]
+[template private passwordAuthenticatedMethods(entity : Entity) post(trim())]
 /**
  * @see PasswordAuthenticatedUserInterface
  */
@@ -773,28 +837,30 @@ public function getPassword(): ?string
 public function setPassword(string $password): self
 {
     $this->password = $password;
-
+    $this->setPasswordChangedAt(new \DateTimeImmutable());
     return $this;
 }
+[/template]
 
-[/if]
+[template private resetPasswordMethods(entity : Entity) post(trim())]
 /**
- * Returning a salt is only needed, if you are not using a modern
- * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+ * @see ResetPasswordRequestInterface
+ */
+public function getUser(): object
+{
+    return $this->user;
+}
+    
+/**
  *
- * @see UserInterface
+ *
+ * @param object $user
  */
-public function getSalt(): ?string
-{ 
-    return null; 
-} 
-
-/**
- * @see UserInterface
- */
-public function eraseCredentials(): void
-{ 
-} 
+public function setUser(object $user): self
+{
+    $this->user = $user;
+    return $this;
+}
 [/template]
 
 [template private forumUserMethods(entity : Entity) post(trim())]
@@ -902,7 +968,6 @@ public function getUpdated(): ?\DateTimeInterface
 
 [template private label(label : ModelLabel) post(trim())]
 /**
- * @Groups("[label.labelFor.instanceName()/]")
  *
  * @return string
  */

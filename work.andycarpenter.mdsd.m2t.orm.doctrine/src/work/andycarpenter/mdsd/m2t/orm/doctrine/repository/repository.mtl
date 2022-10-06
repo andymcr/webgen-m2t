@@ -56,10 +56,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 [if (security.authentication.userModel.repository = repository)]
 use Symfony\Component\Security\Core\Security;
 [/if]
-[if (repository.serves.implementsUserInterface)]
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+[if (repository.serves.implementsPasswordAuthenticatedInterface)]
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 [/if]
 [if (repository.serves.implementsResetPasswordInterface)]
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
@@ -71,7 +70,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 /**
  * @extends [repository.baseRepositoryClassName()/]<[repository.serves.modelClassName()/]>
  */
-class [repository.className()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsUserInterface)]
+class [repository.className()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsPasswordAuthenticatedInterface)]
  implements PasswordUpgraderInterface[/if][if (repository.serves.implementsResetPasswordInterface)]
  implements ResetPasswordRequestRepositoryInterface[/if]
 
@@ -134,8 +133,8 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
     [repository.getCurrentUserMethod(security)/]
 
 [/if]
-[if (repository.serves.implementsUserInterface)]
-	[repository.rehashPasswordMethod()/]
+[if (repository.serves.implementsPasswordAuthenticatedInterface)]
+	[repository.upgradePasswordMethod()/]
 
 [/if]
 [if (repository.serves.implementsResetPasswordInterface)]
@@ -192,22 +191,17 @@ public function getCurrentUser(): [security.authentication.userModel.modelClassN
 }
 [/template]
 
-[template private rehashPasswordMethod(repository : Repository) post(trim())]
+[template private upgradePasswordMethod(repository : Repository) post(trim())]
 /**
- * Used to upgrade (rehash) the user's password automatically over time.
- *
- * @param UserInterface $user
- * @param string $newEncodedPassword
+ * @see PasswordUpgraderInterface
  */
-public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
 {
     if (!$user instanceof [repository.serves.modelClassName()/]) {
-        throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+        return;
     }
 
-    // set the new hashed password on the User object
     $user->setPassword($newHashedPassword);
-
     $this->save($user, true);
 }
 [/template]
