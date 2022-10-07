@@ -8,7 +8,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::criteriaDoctrine/]
 
@@ -22,11 +22,11 @@
 
 [template private actionMethod(unit : DetailsUnit) post(trim())]
 /**
- [unit.routeAnnotation()/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
  */
+[if (unit.isAuthorised)]
+[unit.securityAttribute()/]
+[/if]
+[unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
 [if (unit.isConditionallyDisplayed)]

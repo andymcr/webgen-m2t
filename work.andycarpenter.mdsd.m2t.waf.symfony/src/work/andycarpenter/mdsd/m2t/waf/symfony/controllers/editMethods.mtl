@@ -13,7 +13,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::controller/]
 
@@ -51,11 +51,11 @@ $[parameter.name/][/for]
 [template private actionCreateMethod(unit : EditUnit) post(trim())]
 [let page : Page = unit.displayedOn]
 /**
- [unit.routeCreateAnnotation()/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
  */
+[if (unit.isAuthorised)]
+[unit.securityAttribute()/]
+[/if]
+[unit.routeCreateAttribute()/]
 public function [unit.actionName()/]X([unit.actionMethodFormals()/]): Response
 {
     [unit.actionCreateCore()/]
@@ -98,11 +98,11 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 			unit.uriElement
 		endif]
 /**
- [unit.routeUpdateAnnotation(suffix)/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
  */
+[if (unit.isAuthorised)]
+[unit.securityAttribute()/]
+[/if]
+[unit.routeUpdateAttribute(suffix)/]
 public function [unit.actionName()/]([unit.actionMethodUpdateFormals()/]): Response
 {
     [unit.actionUpdateCore()/]

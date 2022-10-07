@@ -14,7 +14,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::collectionMethods/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::detailsMethods/]
@@ -245,11 +245,11 @@ public function __construct([for (repository : Repository | page.repositoriesUse
 
 [template private actionMethod(page : Page) post(trim())]
 /**
- [page.routeAnnotation()/]
-[if (page.isAuthorised)]
- [page.securityAnnotation()/]
-[/if]
  */
+[if (page.isAuthorised)]
+[page.securityAttribute()/]
+[/if]
+[page.routeAttribute()/]
 public function [page.actionName()/]([page.actionMethodFormals()/]): Response
 {
 [for (unit : DynamicUnit | page.dynamicUnits)]
@@ -286,11 +286,11 @@ return $this->render('[page.templateName()/]/page[page.htmlExtension()/][page.tw
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
 [let unit : DynamicUnit = action.parentUnit]
 /**
- [deleteAction.routeAnnotation(deleteAction.uriElement)/]
-[if (deleteAction.isAuthorised)]
- [deleteAction.securityAnnotation()/]
-[/if]
  */
+[if (deleteAction.isAuthorised)]
+[deleteAction.securityAttribute()/]
+[/if]
+[deleteAction.routeAttribute(deleteAction.uriElement)/]
 public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
 {
     [deleteAction.loadInstance()/]
@@ -310,11 +310,11 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): R
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
 [let unit : DynamicUnit = action.parentUnit]
 /**
- [operationAction.routeAnnotation(operationAction.uriElement)/]
-[if (operationAction.isAuthorised)]
- [operationAction.securityAnnotation()/]
-[/if]
  */
+[if (operationAction.isAuthorised)]
+[operationAction.securityAttribute()/]
+[/if]
+[operationAction.routeAttribute(operationAction.uriElement)/]
 public function [operationAction.actionName()/]([unit.actionMethodFormals()/]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
 Response[else]BinaryFileResponse[/if]
 {
@@ -331,17 +331,17 @@ Response[else]BinaryFileResponse[/if]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
 [let unit : DynamicUnit = operationAction.parentUnit]
 /**
-[if (action.oclIsTypeOf(InstanceOperationAction))]
- [operationAction.routeAnnotation(operationAction.uriElement)/]
-[elseif (action.oclIsTypeOf(ContainerOperationAction))]
- [operationAction.routeContainerAnnotation()/]
-[else]
- [operationAction.routeGeneralAnnotation()/]
-[/if]
-[if (operationAction.isAuthorised)]
- [operationAction.securityAnnotation()/]
-[/if]
  */
+[if (operationAction.isAuthorised)]
+[operationAction.securityAttribute()/]
+[/if]
+[if (action.oclIsTypeOf(InstanceOperationAction))]
+[operationAction.routeAttribute(operationAction.uriElement)/]
+[elseif (action.oclIsTypeOf(ContainerOperationAction))]
+[operationAction.routeContainerAttribute()/]
+[else]
+[operationAction.routeGeneralAttribute()/]
+[/if]
 public function [operationAction.actionName()/]([if (action.oclIsTypeOf(InstanceOperationAction))]
 [action.actionMethodFormals()/][elseif (action.oclIsTypeOf(ContainerOperationAction))]
 [action.actionMethodContainerFormals()/][else]

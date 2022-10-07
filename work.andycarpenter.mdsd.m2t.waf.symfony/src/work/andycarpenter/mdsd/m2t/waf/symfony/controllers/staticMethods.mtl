@@ -4,7 +4,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
 
 
@@ -18,11 +18,11 @@
 [template private actionMethod(unit : StaticUnit) post(trim())]
 [let page : Page = unit.displayedOn]
 /**
- [unit.routeAnnotation()/]
-[if (unit.isAuthorised)]
- [unit.securityAnnotation()/]
-[/if]
  */
+[if (unit.isAuthorised)]
+[unit.securityAttribute()/]
+[/if]
+[unit.routeAttribute()/]
 public function [unit.actionName()/]()
 {
 [if (page.partOf.siteProperties.staticUnitsEditable)]

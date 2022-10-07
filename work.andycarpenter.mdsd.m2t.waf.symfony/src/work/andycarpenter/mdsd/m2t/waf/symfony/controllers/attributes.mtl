@@ -1,0 +1,120 @@
+[comment encoding = UTF-8 /]
+[module attributes(
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+
+
+[template public routeAttribute(element : ForgottenPasswordElement) post(trim())]
+[element.routeAttribute(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeEmailSentAttribute(element : ForgottenPasswordElement) post(trim())]
+[element.routeAttribute(element.routeEmailSentName(), element.uriEmailSentPath(), true)/]
+[/template]
+
+[template public routeResetPasswordAttribute(element : ForgottenPasswordElement) post(trim())]
+[element.routeAttribute(element.routeResetPasswordName(), element.uriResetPasswordPath(), true)/]
+[/template]
+
+[template public routeAttribute(element : LoginElement) post(trim())]
+[element.routeAttribute(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeAttribute(element : LogoutElement) post(trim())]
+[element.routeAttribute(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeAttribute(element : RegistrationElement) post(trim())]
+[element.routeAttribute(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template public routeEmailVerification(element : RegistrationElement) post(trim())]
+[element.routeAttribute(element.routeEmailVerificationName(), element.uriEmailVerificationPath(), true)/]
+[/template]
+
+[template public routeAttribute(element : ChangePasswordElement) post(trim())]
+[element.routeAttribute(element.routeName(), element.uriPath(), false)/]
+[/template]
+
+[template private routeAttribute(element : AuthenticationElement, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
+#['['/]Route('[uriPath/]', name: '[routeName/]')[']'/]
+[/template]
+
+
+[template public routeAttribute(page : Page) post(trim())]
+[if (page.units->isEmpty())]
+#['['/]Route('[page.uriPath()/]', name: '[page.routeName()/]')[']'/]
+[else]
+[page.units->first().routeAttribute(page.routeName(), page.uriPath(), true)/]
+[/if]
+[/template]
+
+[template public routeAttribute(unit : ContentUnit) post(trim())]
+[if (unit.oclIsKindOf(DynamicUnit))]
+[unit.routeAttribute(unit.routeName(), unit.oclAsType(DynamicUnit).uriPath(), true)/]
+[elseif (unit.oclIsKindOf(StaticUnit))]
+[unit.routeAttribute(unit.routeName(), unit.oclAsType(StaticUnit).uriPath(), true)/]
+[/if]
+[/template]
+
+[template public routeCreateAttribute(unit : EditUnit) post(trim())]
+[unit.routeAttribute(unit.routeName(), unit.uriCreatePath(), true)/]
+[/template]
+
+[template public routeUpdateAttribute(unit : EditUnit, suffix : String) post(trim())]
+[unit.routeAttribute(unit.routeUpdateName(), unit.uriUpdatePath(suffix), true)/]
+[/template]
+
+[template public routeAttribute(action : Action, suffix : String) post(trim())]
+[action.parentUnit.routeAttribute(action.routeName(), action.uriPath(suffix), false)/]
+[/template]
+
+[template public routeContainerAttribute(action : OperationAction) post(trim())]
+[action.parentUnit.routeAttribute(action.routeName(), action.uriContainerPath(), false)/]
+[/template]
+
+[template public routeGeneralAttribute(action : OperationAction) post(trim())]
+[action.parentUnit.routeAttribute(action.routeName(), action.uriGeneralPath(), false)/]
+[/template]
+
+[template private routeAttribute(unit : ContentUnit, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
+[if (potentialHomeRoute and unit.isHomeUnit())]
+#['['/]Route('', name: '[routeName/]')[']'/]
+[else]
+#['['/]Route('[uriPath/]', name: '[routeName/]'[if (unit.oclIsKindOf(DynamicUnit))]
+[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+[if (dynamicUnit.hasValidatedRouteParameters(false))]
+, requirements={[for (key : Attribute | dynamicUnit.uriPathValidatedKeys(false)) separator(', ')]
+'[key.routeParameterName(dynamicUnit.routeParameters())/]' = '[comment key.validationPattern/]'[/for]}[/if][/let][/if])[']'/]
+[/if]
+[/template]
+
+
+[template public securityAttribute(page : Page) post(trim())]
+[page.securityAttribute(page.commonRole)/]
+[/template]
+
+[template public securityAttribute(unit : ContentUnit) post(trim())]
+[unit.displayedOn.securityAttribute(unit.authorisationRoles)/]
+[/template]
+
+[template public securityAttribute(action : Action) post(trim())]
+[action.parentUnit.displayedOn.securityAttribute(action.authorisationRoles)/]
+[/template]
+
+[template private securityAttribute(page : Page, rawRoles : String) post(trim())]
+[let roles : Sequence(String) = rawRoles.trim().tokenize(',; ')]
+[if (roles->size() = 1)]
+#['['/]IsGranted('[roles->first()/]')[']'/]
+[else]
+#['['/]Security('[for (role : String | roles) separator(' or ')]has_role('[role/]')[/for]')[']'/]
+[/if]
+[/let]
+[/template]
