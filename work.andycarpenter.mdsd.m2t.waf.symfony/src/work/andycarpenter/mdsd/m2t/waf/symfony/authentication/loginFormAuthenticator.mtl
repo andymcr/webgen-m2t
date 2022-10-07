@@ -7,7 +7,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::annotations/]
 
 
 [template public loginFormAuthenticator(authentication : LocalAuthenticationSystem) post(trim())]
@@ -40,7 +39,6 @@ class [authentication.authenticatorName()/] extends AbstractLoginFormAuthenticat
 [template private useStatements(authentication : LocalAuthenticationSystem) post(trim())]
 [if (authentication.captcha)]
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
-use Psr\Log\LoggerInterface;
 [/if]
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +64,7 @@ private RouterInterface $router;
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
 public function __construct(RouterInterface $router[if (authentication.captcha)]
-, Recaptcha3Validator $recaptcha3Validator, LoggerInterface $logger[/if])
+, Recaptcha3Validator $recaptcha3Validator[/if])
 {
     $this->router = $router;
 }
@@ -80,10 +78,10 @@ public function __construct(RouterInterface $router[if (authentication.captcha)]
  */
 public function authenticate(Request $request): Passport
 {
-    $authentication = $request->request->get('authentication_login');
-    $email = $authentication['['/]'[authentication.identifierFeture.id()/]'[']'/];
-    $password = $authentication['['/]'plainPassword'[']'/];
-    $token = $authentication['['/]'_token'[']'/];
+    // $authentication = $request->request->get('authentication_login');
+    $email = $request->request->get('[authentication.identifierFeture.id()/]');
+    $password = $request->request->get('plainPassword');
+    $token = $request->request->get('_token');
 
     $request->getSession()->set(Security::LAST_USERNAME, $email);
 

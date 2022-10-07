@@ -35,6 +35,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class [element.typeClassName()/] extends AbstractType
 {
     /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return '';
+    }
+
+    /**
      *
      * @param FormBuilderInterface<string> $builder
      * @param array<string, mixed> $options
