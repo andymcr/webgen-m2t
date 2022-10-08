@@ -113,7 +113,7 @@
 {%- if app.user -%}
 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}:</a>
 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Profile</a>
-<a class="nav-link" href="{{ path('[localAuthentication.logoutElement.routeName()/]') }}">{{ '[localAuthentication.logoutElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a>
+<a class="nav-link" href="{{ logout_path() }}">{{ '[localAuthentication.logoutElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a>
 {%- elseif not app.user -%}
 <a class="nav-link" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}">{{ '[localAuthentication.loginElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}</a>
 [if (localAuthentication.allowSelfRegistration)]
