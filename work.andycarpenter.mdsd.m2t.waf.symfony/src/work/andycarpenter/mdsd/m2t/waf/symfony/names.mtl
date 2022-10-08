@@ -157,12 +157,12 @@
 /]
 
 
-[query public className(service : Service) : String
+[query public serviceClassName(service : Service) : String
 	= service.name.concat('Service')
 /]
 
 [query public instanceName(service : Service) : String
-	= service.className().toLowerFirst()
+	= service.serviceClassName().toLowerFirst()
 /]
 
 [query public methodName(operation : BusinessOperation) : String
@@ -253,9 +253,9 @@
 
 [query public className(container : ConstantContainer) : String
 	= if container.oclIsTypeOf(Repository) then
-			container.oclAsType(Repository).className()
+			container.oclAsType(Repository).repositoryClassName()
 		else if container.oclIsTypeOf(Service) then
-			container.oclAsType(Service).className()
+			container.oclAsType(Service).serviceClassName()
 		else
 			'Unknown'
 		endif endif

@@ -18,9 +18,14 @@
 	= 'CollectionUnique'
 /]
 
-[query public validatorClassNamePostfix(model : OrmModel) : String
+[query public testClassSuffix(eObject : EObject) : String
+	= 'Test'
+/]
+
+[query public validatorClassSuffix(model : OrmModel) : String
 	= 'Validator'
 /]
+
 
 [query public modelClassName(type : EnumerationType) : String
 	= type.name
@@ -37,6 +42,10 @@
 
 [query public modelClassName(entity : Entity) : String
 	= entity.name
+/]
+
+[query public modelTestClassName(entity : Entity) : String
+	= entity.modelClassName().concat(entity.testClassSuffix())
 /]
 
 [query public routeName(entity : Entity) : String
@@ -96,18 +105,22 @@
 /]
 
 
-[query public className(repository : Repository) : String
+[query public instanceName(repository : Repository) : String
+	= repository.repositoryClassName().toLowerFirst()
+/]
+
+[query public repositoryClassName(repository : Repository) : String
 	= repository.name.concat('Repository')
 /]
 
-[query public instanceName(repository : Repository) : String
-	= repository.className().toLowerFirst()
+[query public repositoryTestClassName(repository : Repository) : String
+	= repository.repositoryClassName().concat(repository.testClassSuffix())
 /]
 
 
 [query public className(container : ConstantContainer) : String
 	= if container.oclIsTypeOf(Repository) then
-			container.oclAsType(Repository).className()
+			container.oclAsType(Repository).repositoryClassName()
 		else
 			'Unknown'
 		endif

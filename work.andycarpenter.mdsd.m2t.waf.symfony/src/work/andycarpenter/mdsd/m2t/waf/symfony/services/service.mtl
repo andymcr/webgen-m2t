@@ -34,15 +34,15 @@ namespace [service.serviceNamespace()/];
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
 [for (repository : Repository | service.requires)]
-use [repository.repositoryNamespace()/]\[repository.className()/];
+use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [/for]
 [for (service : Service | service.uses)]
-use [service.serviceNamespace()/]\[service.className()/];
+use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [/for]
 // [protected ('use')]
 // [/protected]
 
-class [service.className()/]
+class [service.serviceClassName()/]
 {
 [for (constant : Constant | service.constants)]
     [if (constant.useFunction())]private[else]public[/if] static $[constant.name/] = [if (constant.useFunction())]null[else][constant.value.queryExpression()/][/if];
@@ -57,23 +57,23 @@ class [service.className()/]
 
 [for (repository : Repository | service.requires)]
     /**
-     * @var [repository.className()/] $[repository.instanceName()/]
+     * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
      */
-    private [repository.className()/] $[repository.instanceName()/];
+    private [repository.repositoryClassName()/] $[repository.instanceName()/];
 
 [/for]
 [for (service : Service | service.uses)]
     /**
-     * @var [service.className()/] $[service.instanceName()/]
+     * @var [service.serviceClassName()/] $[service.instanceName()/]
      */
     private $[service.instanceName()/];
 
 [/for]
 [if (service.requires->notEmpty() or service.uses->notEmpty())]
     public function __construct([for (repository : Repository | service.requires) separator (', ')]
-[repository.className()/] $[repository.instanceName()/][/for][if (service.requires->notEmpty() and service.uses->notEmpty())]
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (service.requires->notEmpty() and service.uses->notEmpty())]
 , [/if][for (service : Service | service.uses) separator (', ')]
-[service.className()/] $[service.instanceName()/][/for])
+[service.serviceClassName()/] $[service.instanceName()/][/for])
     {
 	[for (repository : Repository | service.requires)]
         $this->[repository.instanceName()/] = $[repository.instanceName()/];

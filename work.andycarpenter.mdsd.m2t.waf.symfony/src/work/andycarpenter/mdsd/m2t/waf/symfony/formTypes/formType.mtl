@@ -59,14 +59,14 @@ class [unit.typeClassName()/] extends AbstractType
 {
 [for (repository : Repository | unit.choicesRepositories())]
     /**
-     * @var [repository.className()/] $[repository.instanceName()/]
+     * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
      */
     private $[repository.instanceName()/];
 
 [/for]
 [if (unit.choicesRepositories()->notEmpty())]
     public function __construct([for (repository : Repository | unit.choicesRepositories()) separator (', ')]
-[repository.className()/] $[repository.instanceName()/][/for])
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for])
     {
 [for (repository : Repository | unit.choicesRepositories())]
         $this->[repository.instanceName()/] = $[repository.instanceName()/];
@@ -158,7 +158,7 @@ class [association.typeClassName()/] extends AbstractType
 use [feature.modelsNamespace()/]\[feature.enumerationType.modelClassName()/];
 [/for]
 [for (repository : Repository | unit.choicesRepositories())]
-use [repository.repositoryNamespace()/]\[repository.className()/];
+use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [/for]
 [if (unit.hasCaptcha)]
 use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;

@@ -35,7 +35,7 @@ namespace [entity.modelsNamespace()/];
 
 /**
  * @ORM\Entity[if(not entity.repository.oclIsUndefined())]
-(repositoryClass=[entity.repository.className()/]::class)[/if]
+(repositoryClass=[entity.repository.repositoryClassName()/]::class)[/if]
 
  * @ORM\Table(name="[entity.tableName/]")
 [if (entity.unique->notEmpty())]
@@ -144,7 +144,7 @@ ResetPasswordRequestInterface[/if]
 
 [template private useStatements(entity : Entity) post(trim())]
 [if(not entity.repository.oclIsUndefined())]
-use [entity.repositoryNamespace()/]\[entity.repository.className()/];
+use [entity.repositoriesNamespace()/]\[entity.repository.repositoryClassName()/];
 [/if]
 use Doctrine\ORM\Mapping as ORM;
 [if (entity.hasCollectionAssociations)]

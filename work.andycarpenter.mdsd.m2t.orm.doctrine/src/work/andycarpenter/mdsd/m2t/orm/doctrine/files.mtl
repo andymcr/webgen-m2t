@@ -31,16 +31,32 @@
 	= eObject.validatorDirectory().concat('/').concat('Constraints')
 /]
 
+[query private modelDirectory(eObject : EObject) : String
+	= 'Entity'
+/]
+
 [query public modelsDirectory(eObject : EObject) : String
-	= eObject.sourceDirectory().concat('/').concat('Entity')
+	= eObject.sourceDirectory().concat('/').concat(eObject.modelDirectory())
+/]
+
+[query public modelTestsDirectory(entity : Entity) : String
+	= entity.testsDirectory().concat('/').concat(entity.modelDirectory())
 /]
 
 [query public normalizerDirectory(eObject : EObject) : String
 	= eObject.serializerDirectory().concat('/').concat('Normalizer')
 /]
 
-[query public repositoryDirectory(eObject : EObject) : String
-	= eObject.sourceDirectory().concat('/').concat('Repository')
+[query private repositoryDirectory(eObject : EObject) : String
+	= 'Repository'
+/]
+
+[query public repositoriesDirectory(repository : Repository) : String
+	= repository.sourceDirectory().concat('/').concat(repository.repositoryDirectory())
+/]
+
+[query public repositoryTestsDirectory(repository : Repository) : String
+	= repository.testsDirectory().concat('/').concat(repository.repositoryDirectory())
 /]
 
 [query public serializerDirectory(eObject : EObject) : String
@@ -49,6 +65,10 @@
 
 [query public sourceDirectory(eObject : EObject) : String
 	= 'src'
+/]
+
+[query public testsDirectory(eObject : EObject) : String
+	= 'tests'
 /]
 
 [query public validatorDirectory(eObject : EObject) : String
@@ -65,19 +85,31 @@
 /]
 
 [query public modelsNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Entity')
+	= eObject.appNamespace().concat('\\').concat(eObject.modelDirectory())
+/]
+
+[query public modelTestsNamespace(eObject : EObject) : String
+	= eObject.testsNamespace().concat('\\').concat(eObject.modelDirectory())
 /]
 
 [query public normalizerNamespace(eObject : EObject) : String
 	= eObject.serializerNamespace().concat('\\').concat('Normalizer')
 /]
 
-[query public repositoryNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Repository')
+[query public repositoriesNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat(eObject.repositoryDirectory())
+/]
+
+[query public repositoryTestsNamespace(eObject : EObject) : String
+	= eObject.testsNamespace().concat('\\').concat(eObject.repositoryDirectory())
 /]
 
 [query public serializerNamespace(eObject : EObject) : String
 	= eObject.appNamespace().concat('\\').concat('Serializer')
+/]
+
+[query public testsNamespace(eObject : EObject) : String
+	= 'Tests'
 /]
 
 [query public validatorNamespace(eObject : EObject) : String
@@ -97,6 +129,12 @@
 		.concat(entity.executableExtension())
 /]
 
+[query public modelTestFilename(entity : Entity) : String
+	= entity.modelTestsDirectory().concat('/')
+		.concat(entity.modelTestClassName())
+		.concat(entity.executableExtension())
+/]
+
 [query public normalizerFilename(entity : Entity) : String
 	= entity.normalizerDirectory().concat('/')
 		.concat(entity.normalizerClassName())
@@ -104,7 +142,13 @@
 /]
 
 [query public repositoryFilename(repository : Repository) : String
-	= repository.repositoryDirectory().concat('/')
-		.concat(repository.className())
+	= repository.repositoriesDirectory().concat('/')
+		.concat(repository.repositoryClassName())
+		.concat(repository.executableExtension())
+/]
+
+[query public repositoryTestFilename(repository : Repository) : String
+	= repository.repositoryTestsDirectory().concat('/')
+		.concat(repository.repositoryTestClassName())
 		.concat(repository.executableExtension())
 /]

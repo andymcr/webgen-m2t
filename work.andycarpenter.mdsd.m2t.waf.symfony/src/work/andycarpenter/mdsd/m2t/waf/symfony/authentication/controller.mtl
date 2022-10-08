@@ -59,7 +59,7 @@ use [authentication.formNamespace()/]\[authentication.loginElement.typeClassName
 use [authentication.formNamespace()/]\[authentication.registrationElement.typeClassName()/];
 [/if]
 use [authentication.formNamespace()/]\[authentication.changePasswordElement.typeClassName()/];
-use [authentication.repositoryNamespace()/]\[authentication.authenticationModel.repository.className()/];
+use [authentication.repositoriesNamespace()/]\[authentication.authenticationModel.repository.repositoryClassName()/];
 [if (authentication.hasRegistrationElement)]
 use App\Security\EmailVerifier;
 [/if]
@@ -89,9 +89,9 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 private ResetPasswordHelperInterface $resetPasswordHelper;
 
 /**
- * @var [authentication.authenticationModel.repository.className()/] $[authentication.authenticationModel.repository.instanceName()/]
+ * @var [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/]
  */
-private [authentication.authenticationModel.repository.className()/] $[authentication.authenticationModel.repository.instanceName()/];
+private [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/];
 
 /**
  * @var TranslatorInterface $translator
@@ -100,7 +100,7 @@ private TranslatorInterface $translator;
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
-public function __construct([authentication.authenticationModel.repository.className()/] $[authentication.authenticationModel.repository.instanceName()/], ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator)
+public function __construct([authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/], ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator)
 {
     $this->[authentication.authenticationModel.repository.instanceName()/] = $[authentication.authenticationModel.repository.instanceName()/];
     $this->resetPasswordHelper = $resetPasswordHelper;

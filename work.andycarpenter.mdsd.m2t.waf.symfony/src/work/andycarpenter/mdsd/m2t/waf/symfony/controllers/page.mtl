@@ -121,10 +121,10 @@ use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
 [for (repository : Repository | page.repositoriesUsed())]
-use [repository.repositoryNamespace()/]\[repository.className()/];
+use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [/for]
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
-use [service.serviceNamespace()/]\[service.className()/];
+use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [/for]
 [if (page.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
@@ -161,16 +161,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 [template private properties(page : Page) post(trim())]
 [for (repository : Repository | page.repositoriesUsed())]
 /**
- * @var [repository.className()/] $[repository.instanceName()/]
+ * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
  */
-private [repository.className()/] $[repository.instanceName()/];
+private [repository.repositoryClassName()/] $[repository.instanceName()/];
 
 [/for]
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
 /**
- * @var [service.className()/] $[service.instanceName()/]
+ * @var [service.serviceClassName()/] $[service.instanceName()/]
  */
-private [service.className()/] $[service.instanceName()/];
+private [service.serviceClassName()/] $[service.instanceName()/];
 
 [/for]
 [for (unit : ContentUnit | page.units->sortedBy(u | u.name))]
@@ -228,9 +228,9 @@ private TranslatorInterface $translationService;
 
 [template private constructor(page : Page) post(trim())]
 public function __construct([for (repository : Repository | page.repositoriesUsed()) separator (', ')]
-[repository.className()/] $[repository.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() and page.hasServicesUsed)]
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() and page.hasServicesUsed)]
 , [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
-[service.className()/] $[service.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
+[service.serviceClassName()/] $[service.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
 , [/if]TranslatorInterface $translator)
 {
 [for (repository : Repository | page.repositoriesUsed())]

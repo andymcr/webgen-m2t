@@ -39,7 +39,7 @@
 [template public repository(repository : Repository, security : SecurityModel)]
 [file(repository.repositoryFilename(), false)]
 <?php
-namespace [repository.repositoryNamespace()/];
+namespace [repository.repositoriesNamespace()/];
 
 [if (repository.serves.attributes->notEmpty())]
 use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
@@ -70,7 +70,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 /**
  * @extends [repository.baseRepositoryClassName()/]<[repository.serves.modelClassName()/]>
  */
-class [repository.className()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsPasswordAuthenticatedInterface)]
+class [repository.repositoryClassName()/] extends [repository.baseRepositoryClassName()/][if (repository.serves.implementsPasswordAuthenticatedInterface)]
  implements PasswordUpgraderInterface[/if][if (repository.serves.implementsResetPasswordInterface)]
  implements ResetPasswordRequestRepositoryInterface[/if]
 
@@ -93,14 +93,14 @@ class [repository.className()/] extends [repository.baseRepositoryClassName()/][
 [/if]
 [if (repository.hasCurrentUser())]
     /**
-     * @var [security.authentication.userModel.repository.className()/] $[security.authentication.userModel.repository.instanceName()/]
+     * @var [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.instanceName()/]
      */
-    private [security.authentication.userModel.repository.className()/] $[security.authentication.userModel.repository.instanceName()/];
+    private [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.instanceName()/];
 
 [/if]
     public function __construct(ManagerRegistry $managerRegistry[if (security.authentication.userModel.repository = repository)]
 , Security $security[/if][if (repository.hasCurrentUser())]
-, [security.authentication.userModel.repository.className()/] $[security.authentication.userModel.repository.instanceName()/][/if])
+, [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.instanceName()/][/if])
     {
         parent::__construct($managerRegistry, [repository.serves.modelClassName()/]::class);
 [if (security.authentication.userModel.repository = repository)]

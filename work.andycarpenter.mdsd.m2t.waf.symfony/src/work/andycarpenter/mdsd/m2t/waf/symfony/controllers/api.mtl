@@ -32,7 +32,7 @@ use [resource.modelsNamespace()/]\[resource.repository.serves.modelClassName()/]
 [if (resource.childResources->notEmpty())]
 [resource.childResources.childEntities()/]
 [/if]
-use [resource.repositoryNamespace()/]\[resource.repository.className()/];
+use [resource.repositoryNamespace()/]\[resource.repository.repositoryClassName()/];
 [if (resource.childResources->notEmpty())]
 [resource.childResources.childRepositories()/]
 [/if]
@@ -54,13 +54,13 @@ class [resource.controllerClassName()/] extends AbstractFOSRestController
 {
 [for (repository : Repository | resource.repositoriesUsed())]
     /**
-     * @var [repository.className()/] $[repository.instanceName()/]
+     * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
      */
-    private [repository.className()/] $[repository.instanceName()/];
+    private [repository.repositoryClassName()/] $[repository.instanceName()/];
 
 [/for]
     public function __construct([for (repository : Repository | resource.repositoriesUsed()) separator(', ')]
-[repository.className()/] $[repository.instanceName()/][/for])
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for])
     {
 [for (repository : Repository | resource.repositoriesUsed())]
         $this->[repository.instanceName()/] = $[repository.instanceName()/];
@@ -80,7 +80,7 @@ use [resource.modelsNamespace()/]\[resource.repository.serves.modelClassName()/]
 [/template]
 
 [template private childRepositories(resource : Resource) post(trim())]
-use [resource.repositoryNamespace()/]\[resource.repository.className()/];
+use [resource.repositoryNamespace()/]\[resource.repository.repositoryClassName()/];
 [if (resource.childResources->notEmpty())]
 [resource.childResources.childRepositories()/]
 [/if]
