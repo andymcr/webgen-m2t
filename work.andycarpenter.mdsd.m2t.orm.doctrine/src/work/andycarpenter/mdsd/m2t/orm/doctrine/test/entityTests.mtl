@@ -1,0 +1,100 @@
+[comment encoding = UTF-8 /]
+[module entityTests(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::expression/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+
+
+[template public modelTests(entity : Entity)]
+[file(entity.modelTestFilename(), false)]
+<?php
+namespace [entity.modelTestsNamespace()/];
+
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+use PHPUnit\Framework\TestCase;
+
+
+class [entity.modelTestClassName()/] extends TestCase
+{
+[for (feature : Feature | entity.features->select(f | not f.isResourceFeature))]
+    [feature.testMethodDefault()/]
+
+[/for]
+}
+[/file]
+[/template]
+
+[template private testMethodDefault(feature : Feature) post(trim())]
+public function test[feature.modelPropertyName().toUpperFirst()/]Default(): void
+{
+	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
+[if (feature.isAttributeFeature)]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+	[if (attribute.isSingleton)]
+		[if (attribute.isBooleanFeature)]
+			[if (attribute.defaultSingletonValue() = 'true')]
+    $this->assertTrue($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+			[else]
+    $this->assertFalse($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+			[/if]
+		[else]
+    $this->assertEquals([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/]());
+		[/if]
+	[else]
+		[if (attribute.partOf.implementsUserInterface and attribute.name = 'roles')]
+    $this->assertCount(1, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+		[else]
+    $this->assertCount(0, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+		[/if]
+	[/if]
+[/let]
+[elseif (feature.isSingleton)]
+	[if (feature.isRequired)]
+    $this->expectError();
+	[/if]
+    $this->assertNull($[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[else]
+    $this->assertCount(0, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/if]
+}
+[/template]
+
+[template private defaultSingletonValue(attribute : Attribute) post(trim())]
+[if (attribute.hasDefaultValue)]
+[attribute.defaultValue.defaultExpression()/]
+[else]
+	[if (attribute.isBooleanFeature)]
+false
+	[elseif (attribute.isDateFeature)]
+new \DateTimeImmutable('0000-00-00 00:00:00')
+	[elseif (attribute.isEmailFeature)]
+''
+	[elseif (attribute.isEnumerationFeature)]
+0
+	[elseif (attribute.isIntegerFeature)]
+0
+	[elseif (attribute.isLocationFeature)]
+	[elseif (attribute.isResourceFeature)]
+	[elseif (attribute.isStringFeature)]
+''
+	[elseif (attribute.isTextareaFeature)]
+''
+	[elseif (attribute.isUrlFeature)]
+''
+	[else]
+0.0
+	[/if]
+[/if]
+[/template]
+
+[template private createUserInstance(security : SecurityModel) post(trim())]
+[if (security.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
+new [localAuthentication.authenticationModel.modelClassName()/]()
+[/let]
+[else]
+new [security.authentication.userModel.modelClassName()/]()
+[/if]
+[/template]
