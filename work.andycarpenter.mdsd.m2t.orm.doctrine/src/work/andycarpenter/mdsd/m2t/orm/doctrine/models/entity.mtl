@@ -97,14 +97,8 @@ ResetPasswordRequestInterface[/if]
     [entity.timestampFeatures()/]
 
 [/if]
-[if (entity.hasFeaturesWithDefaultValue
-		or entity.hasResourceAttributes
-		or entity.hasCollectionAssociations
-		or entity.implementsResetPasswordInterface)]
-
     [entity.constructor()/]
 
-[/if]
 [if (not entity.hasPrimaryKeys)]
     [entity.idMethods()/]
 
@@ -245,7 +239,7 @@ protected string $password;
  *
  * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
  */
-protected [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/];
+protected [if (feature.isSingleton and (not feature.isRequired or feature.isAssociationFeature))]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/];
 
 [elseif (feature.isResourceFeature)]
 /**
@@ -505,18 +499,54 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
     $this->user = $user;
     $this->initialize($expiresAt, $selector, $hashedToken);
 [/if]
-[for (feature : Feature | entity.features->select(f | not f.omitFeature()))]
+[for (feature : Feature | entity.features)]
 	[if (feature.hasDefaultValue)]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
-	[/if]
-	[if (feature.oclIsKindOf(Attribute) and not feature.isSingleton)]
+	[elseif (feature.isAttributeFeature)]
+		[if (feature.isSingleton)]
+    $this->[feature.modelPropertyName()/] = [feature.oclAsType(Attribute).defaultSingletonValue()/];
+		[else]
     $this->[feature.modelPropertyName()/] = Array();
-	[/if]
-	[if (feature.oclIsTypeOf(Association) and not feature.isSingleton)]
+		[/if]
+	[else]
+		[if (feature.isSingleton)]
+    $this->[feature.modelPropertyName()/] = null;
+		[else]
     $this->[feature.modelPropertyName()/] = new ArrayCollection();
+		[/if]
 	[/if]
 [/for]
 }
+[/template]
+
+[template private defaultSingletonValue(attribute : Attribute) post(trim())]
+[if (attribute.isBooleanFeature)]
+false
+[elseif (attribute.isDateFeature)]
+new \DateTime('0000-00-00 00:00:00')
+[elseif (attribute.isIntegerFeature)]
+0
+[else]
+	[if (not attribute.isRequired)]
+null
+	[else]
+		[if (attribute.isEmailFeature)]
+''
+		[elseif (attribute.isEnumerationFeature)]
+0
+		[elseif (attribute.isLocationFeature)]
+		[elseif (attribute.isResourceFeature)]
+		[elseif (attribute.isStringFeature)]
+''
+		[elseif (attribute.isTextareaFeature)]
+''
+		[elseif (attribute.isUrlFeature)]
+''
+		[else]
+0.0
+		[/if]
+	[/if]
+[/if]
 [/template]
 
 [template private idMethods(entity : Entity) post(trim())]
@@ -792,7 +822,7 @@ public function getRoles(): array
         $roles['['/][']'/] = 'ROLE_USER';
     }
 
-    return array_unique($roles);
+    return $roles;
 }
 
     /**
