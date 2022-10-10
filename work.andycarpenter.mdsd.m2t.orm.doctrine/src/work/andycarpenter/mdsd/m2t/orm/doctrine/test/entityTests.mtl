@@ -73,6 +73,8 @@ new \DateTimeImmutable('0000-00-00 00:00:00')
 ''
 	[elseif (attribute.isEnumerationFeature)]
 0
+	[elseif (attribute.isFloatFeature)]
+0.0
 	[elseif (attribute.isIntegerFeature)]
 0
 	[elseif (attribute.isLocationFeature)]
@@ -84,7 +86,7 @@ new \DateTimeImmutable('0000-00-00 00:00:00')
 	[elseif (attribute.isUrlFeature)]
 ''
 	[else]
-0.0
+''
 	[/if]
 [/if]
 [/template]
