@@ -15,7 +15,8 @@
 /]
 
 [query private omitFeature(feature : Feature) : Boolean
-	= feature.partOf.implementsResetPasswordInterface
+	= (feature.partOf.implementsResetPasswordInterface
+			and feature.name <> 'user')
 		or (feature.partOf.implementsUserInterface
 			and (feature.name = 'roles')
 			)
@@ -97,6 +98,7 @@ ResetPasswordRequestInterface[/if]
     [entity.timestampFeatures()/]
 
 [/if]
+
     [entity.constructor()/]
 
 [if (not entity.hasPrimaryKeys)]
@@ -109,10 +111,6 @@ ResetPasswordRequestInterface[/if]
 [/if]
 [if (entity.implementsPasswordAuthenticatedInterface)]
     [entity.passwordAuthenticatedMethods()/]
-
-[/if]
-[if (entity.implementsResetPasswordInterface)]
-    [entity.resetPasswordMethods()/]
 
 [/if]
 [for (feature : Feature | entity.features->select(f | not f.omitFeature()))]
@@ -498,24 +496,25 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
 [if (entity.implementsResetPasswordInterface)]
     $this->user = $user;
     $this->initialize($expiresAt, $selector, $hashedToken);
-[/if]
-[for (feature : Feature | entity.features)]
-	[if (feature.hasDefaultValue)]
+[else]
+	[for (feature : Feature | entity.features)]
+		[if (feature.hasDefaultValue)]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
-	[elseif (feature.isAttributeFeature)]
-		[if (feature.isSingleton)]
+		[elseif (feature.isAttributeFeature)]
+			[if (feature.isSingleton)]
     $this->[feature.modelPropertyName()/] = [feature.oclAsType(Attribute).defaultSingletonValue()/];
-		[else]
+			[else]
     $this->[feature.modelPropertyName()/] = Array();
-		[/if]
-	[else]
-		[if (feature.isSingleton)]
-    $this->[feature.modelPropertyName()/] = null;
+			[/if]
 		[else]
+			[if (feature.isSingleton)]
+    $this->[feature.modelPropertyName()/] = null;
+			[else]
     $this->[feature.modelPropertyName()/] = new ArrayCollection();
+			[/if]
 		[/if]
-	[/if]
-[/for]
+	[/for]
+[/if]
 }
 [/template]
 
@@ -524,27 +523,17 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
 false
 [elseif (attribute.isDateFeature)]
 new \DateTime('0000-00-00 00:00:00')
+[elseif (attribute.isEnumerationFeature)]
+0
+[elseif (attribute.isFloatFeature)]
+0.0
 [elseif (attribute.isIntegerFeature)]
 0
 [else]
 	[if (not attribute.isRequired)]
 null
 	[else]
-		[if (attribute.isEmailFeature)]
 ''
-		[elseif (attribute.isEnumerationFeature)]
-0
-		[elseif (attribute.isLocationFeature)]
-		[elseif (attribute.isResourceFeature)]
-		[elseif (attribute.isStringFeature)]
-''
-		[elseif (attribute.isTextareaFeature)]
-''
-		[elseif (attribute.isUrlFeature)]
-''
-		[else]
-0.0
-		[/if]
 	[/if]
 [/if]
 [/template]
@@ -576,8 +565,10 @@ public function getId(): int
 
 	[if (not feature.isDerived)]
 		[if (feature.isSingleton)]
+			[if (not feature.partOf.implementsResetPasswordInterface or feature.name <> 'user')]
 [feature.setMethod()/]
 
+			[/if]
 		[else]
 			[if (feature.collectionOrmAllowAdd)]
 [feature.addMethod()/]
@@ -594,7 +585,11 @@ public function getId(): int
 
 [template private getMethod(feature : Feature) post(trim())]
 /**
+[if (feature.partOf.implementsResetPasswordInterface and feature.name = 'user')]
+ * @see ResetPasswordRequestInterface
+[else]
  *
+[/if]
  *
  * @return [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if]
  */
@@ -868,27 +863,6 @@ public function setPassword(string $password): self
 {
     $this->password = $password;
     $this->setPasswordChangedAt(new \DateTimeImmutable());
-    return $this;
-}
-[/template]
-
-[template private resetPasswordMethods(entity : Entity) post(trim())]
-/**
- * @see ResetPasswordRequestInterface
- */
-public function getUser(): object
-{
-    return $this->user;
-}
-    
-/**
- *
- *
- * @param object $user
- */
-public function setUser(object $user): self
-{
-    $this->user = $user;
     return $this;
 }
 [/template]
