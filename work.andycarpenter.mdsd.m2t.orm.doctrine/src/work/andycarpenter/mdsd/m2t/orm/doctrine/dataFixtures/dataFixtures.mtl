@@ -1,0 +1,29 @@
+[comment encoding = UTF-8 /]
+[module dataFixtures(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public fixture(entity : Entity)]
+[file(entity.fixtureFilename(), false)]
+<?php
+namespace [entity.fixturesNamespace()/];
+
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+
+
+/**
+ * 
+ */
+class [entity.fixtureClassName()/] extends Fixture
+{
+
+    public load(ObjectManager $manager)
+    {
+    }
+}
+[/file]
+[/template]

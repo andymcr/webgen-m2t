@@ -7,10 +7,13 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::config::stofDoctrineExtensions/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUnique/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUniqueValidator/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::dataFixtures::dataFixtures/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::models::entity/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::models::enumeration/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::repository::repository/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::serialize::normalize/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::entityTests/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::repositoryTests/]
 
 
 [template public doctrine(model : OrmModel, security : SecurityModel, supportTranslation : Boolean)]
@@ -23,5 +26,10 @@
 [model.collectionUnique()/]
 [model.collectionUniqueValidator()/]
 
+[model.entities->select(e | not e.implementsResetPasswordInterface).fixture()/]
+
 [model.repositories.repository(security)/]
+
+[model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
+[model.repositories.repositoryTests(security)/]
 [/template]

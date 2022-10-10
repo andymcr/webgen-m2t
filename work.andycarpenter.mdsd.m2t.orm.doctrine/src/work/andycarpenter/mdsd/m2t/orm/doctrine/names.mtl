@@ -18,6 +18,10 @@
 	= 'CollectionUnique'
 /]
 
+[query public fixtureClassSuffix(eObject : EObject) : String
+	= 'Fixture'
+/]
+
 [query public testClassSuffix(eObject : EObject) : String
 	= 'Test'
 /]
@@ -31,6 +35,10 @@
 	= type.name
 /]
 
+
+[query public fixtureClassName(entity : Entity) : String
+	= entity.modelClassName().concat(entity.fixtureClassSuffix())
+/]
 
 [query public findMethodName(entity : Entity) : String
 	= 'findOne'
