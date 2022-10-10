@@ -2,8 +2,8 @@
 [module repository(
 	'http://andycarpenter.work/metamodel/base',
 	'http://andycarpenter.work/metamodel/expression',
-	'http://andycarpenter.work/metamodel/security',
-	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security')]
 [import work::andycarpenter::mdsd::m2t::expression::expression/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constant/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
@@ -232,7 +232,7 @@ public function createResetPasswordRequest(object $user, \DateTimeInterface $exp
  */
 public function [repository.serves.findMethodName()/]([entity.routeParameters()/]): ?[repository.serves.modelClassName()/]
 {
-    $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
+    $queryBuilder = $this->createQueryBuilder('[entity.selectName()/]');
     return $queryBuilder
 [if (entity.isContained or entity.hasAssociationKeys)]
         [entity.containerJoin()/]
