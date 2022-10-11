@@ -18,6 +18,10 @@
 	= 'CollectionUnique'
 /]
 
+[query public factoryClassSuffix(eObject : EObject) : String
+	= 'Factory'
+/]
+
 [query public fixtureClassSuffix(eObject : EObject) : String
 	= 'Fixture'
 /]
@@ -35,6 +39,10 @@
 	= type.name
 /]
 
+
+[query public factoryClassName(entity : Entity) : String
+	= entity.modelClassName().concat(entity.factoryClassSuffix())
+/]
 
 [query public fixtureClassName(entity : Entity) : String
 	= entity.modelClassName().concat(entity.fixtureClassSuffix())

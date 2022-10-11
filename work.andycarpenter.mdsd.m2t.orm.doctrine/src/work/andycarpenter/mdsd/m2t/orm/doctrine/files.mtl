@@ -31,6 +31,14 @@
 	= eObject.validatorDirectory().concat('/').concat('Constraints')
 /]
 
+[query private factoryDirectory(eObject : EObject) : String
+	= 'Factory'
+/]
+
+[query public factoriesDirectory(entity : Entity) : String
+	= entity.sourceDirectory().concat('/').concat(entity.factoryDirectory())
+/]
+
 [query private fixtureDirectory(eObject : EObject) : String
 	= 'DataFixtures'
 /]
@@ -92,6 +100,10 @@
 	= eObject.validatorNamespace().concat('\\').concat('Constraints')
 /]
 
+[query public factoriesNamespace(entity : Entity) : String
+	= entity.appNamespace().concat('\\').concat(entity.factoryDirectory())
+/]
+
 [query public fixturesNamespace(entity : Entity) : String
 	= entity.appNamespace().concat('\\').concat(entity.fixtureDirectory())
 /]
@@ -121,13 +133,19 @@
 /]
 
 [query public testsNamespace(eObject : EObject) : String
-	= 'Tests'
+	= eObject.appNamespace().concat('\\').concat('Tests')
 /]
 
 [query public validatorNamespace(eObject : EObject) : String
 	= eObject.appNamespace().concat('\\').concat('Validator')
 /]
 
+
+[query public factoryFilename(entity : Entity) : String
+	= entity.factoriesDirectory().concat('/')
+		.concat(entity.factoryClassName())
+		.concat(repository.executableExtension())
+/]
 
 [query public fixtureFilename(entity : Entity) : String
 	= entity.fixturesDirectory().concat('/')

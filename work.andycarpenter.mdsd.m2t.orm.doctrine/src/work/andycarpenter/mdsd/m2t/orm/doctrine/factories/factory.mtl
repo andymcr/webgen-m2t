@@ -1,0 +1,91 @@
+[comment encoding = UTF-8 /]
+[module factory(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public factory(entity : Entity)]
+[file(entity.factoryFilename(), false)]
+<?php
+namespace [entity.factoriesNamespace()/];
+
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Proxy;
+
+
+/**
+ * 
+ */
+class [entity.factoryClassName()/] extends ModelFactory
+{
+    [comment entity.constructorMethod()/]
+
+    [entity.defaultsMethod()/]
+
+    [comment entity.initializeMethod()/]
+
+    [entity.classMethod()/]
+}
+[/file]
+[/template]
+
+[template private constructorMethod(entity : Entity) post(trim())]
+public function __construct()
+{
+    parent::__construct()
+}
+[/template]
+
+[template private defaultsMethod(entity : Entity) post(trim())]
+protected function getDefaults(): array
+{
+    return ['['/]
+[for (attribute : Attribute | entity.attributes)]
+        '[attribute.modelPropertyName()/]' => [attribute.fakeValue()/],
+[/for]
+    [']'/];
+}
+[/template]
+
+[template private fakeValue(attribute : Attribute) post(trim())]
+[if (attribute.isBooleanFeature)]
+self::faker()->boolean()
+[elseif (attribute.isDateFeature)]
+new \DateTimeImmutable(self::faker()->dateTime('+2 years'))
+[elseif (attribute.isEmailFeature)]
+self::faker()[if (not attribute.isRequired)]->optional()[/if]->email()
+[elseif (attribute.isEnumerationFeature)]
+self::faker()->randomNumber()
+[elseif (attribute.isFloatFeature)]
+self::faker()->randomFloat()
+[elseif (attribute.isIntegerFeature)]
+self::faker()->randomNumber()
+[elseif (attribute.isLocationFeature)]
+[elseif (attribute.isResourceFeature)]
+[elseif (attribute.isStringFeature)]
+self::faker()[if (not attribute.isRequired)]->optional()[/if]->text()
+[elseif (attribute.isTextareaFeature)]
+self::faker()[if (not attribute.isRequired)]->optional()[/if]->paragraph()
+[elseif (attribute.isUrlFeature)]
+self::faker()[if (not attribute.isRequired)]->optional()[/if]->url()
+[else]
+self::faker()[if (not attribute.isRequired)]->optional()[/if]->text()
+[/if]
+[/template]
+
+[template private initializeMethod(entity : Entity) post(trim())]
+protected static function initialize(): self
+{
+    return $this;
+}
+[/template]
+
+[template private classMethod(entity : Entity) post(trim())]
+protected static function getClass(): string
+{
+    return [entity.modelClassName()/]::class;
+}
+[/template]

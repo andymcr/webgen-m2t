@@ -8,6 +8,7 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUnique/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUniqueValidator/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::dataFixtures::dataFixtures/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::factories::factory/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::models::entity/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::models::enumeration/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::repository::repository/]
@@ -26,9 +27,10 @@
 [model.collectionUnique()/]
 [model.collectionUniqueValidator()/]
 
-[model.entities->select(e | not e.implementsResetPasswordInterface).fixture()/]
-
 [model.repositories.repository(security)/]
+
+[model.entities->select(e | not e.implementsResetPasswordInterface).factory()/]
+[model.entities->select(e | not e.implementsResetPasswordInterface).fixture()/]
 
 [model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
 [model.repositories.repositoryTests(security)/]
