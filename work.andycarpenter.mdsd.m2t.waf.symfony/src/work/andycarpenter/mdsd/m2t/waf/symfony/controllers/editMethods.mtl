@@ -56,7 +56,7 @@ $[parameter.name/][/for]
 [unit.securityAttribute()/]
 [/if]
 [unit.routeCreateAttribute()/]
-public function [unit.actionName()/]X([unit.actionMethodFormals()/]): Response
+public function [unit.actionName(true)/]([unit.actionMethodFormals()/]): Response
 {
     [unit.actionCreateCore()/]
 

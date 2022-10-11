@@ -222,6 +222,10 @@
 	= page.controllerName().concat('Controller').toUpperFirst()
 /]
 
+[query public controllerTestClassName(page : Page) : String
+	= page.controllerClassName().concat(page.testClassSuffix())
+/]
+
 [query public instanceName(page : Page) : String
 	= page.name.toLowerFirst()
 /]
@@ -240,7 +244,27 @@
 
 
 [query public actionName(unit : ContentUnit) : String
-	= unit.instanceName()
+	= unit.actionName(false)
+/]
+
+[query public actionName(unit : ContentUnit, update : Boolean) : String
+	= if not unit.oclIsKindOf(EditUnit) then
+			unit.instanceName()
+		else
+			if unit.displayedOn.editUnits->size() = 1 then
+				if unit.oclIsTypeOf(CreateUpdateUnit) then
+					if update then
+						unit.oclAsType(CreateUpdateUnit).updateUriElement
+					else
+						unit.uriElement
+					endif
+				else
+					unit.instanceName()
+				endif
+			else
+				unit.instanceName()
+			endif
+		endif
 /]
 
 [query public captchaActionName(unit : ContentUnit) : String
