@@ -1,0 +1,278 @@
+[comment encoding = UTF-8 /]
+[module controllerTests(
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::actions/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+
+
+[template public controllerTests(page : Page, wafModel : WafModel)]
+[file(page.controllerTestFilename(genModel), false)]
+<?php
+namespace [page.controllerTestsNamespace()/];
+[if (page.isAuthorised)]
+[let authentication : LocalAuthenticationSystem = wafModel.security.authentication.oclAsType(LocalAuthenticationSystem)]
+use [page.repositoriesNamespace()/]\[authentication.authenticationModel.repository.repositoryClassName()/];
+[/let]
+[/if]
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+
+class [page.controllerTestClassName()/] extends WebTestCase
+{
+[if (page.hasSingleActionMethod())]
+	[page.units->first().unitTests(genModel)/]
+[else]
+	[for (unit : ContentUnit | page.units)]
+		[if (unit.oclIsKindOf(DynamicUnit))]
+		[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+			[if (not dynamicUnit.hasRouteParameters())]
+	[dynamicUnit.unitTests(wafModel)/]
+
+			[/if]
+		[/let]
+		[else]
+	[unit.unitTests(wafModel)/]
+
+		[/if]
+	[/for]
+[/if]
+}
+[/file]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
+[let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
+[if (staticUnit.isAuthorised)]
+[staticUnit.testAuthorisedGet(staticUnit.uriPath(), genModel)/]
+[else]
+[staticUnit.testGet(staticUnit.uriPath())/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsKindOf(EditUnit) and not unit.oclIsTypeOf(MapUnit)) post(trim())]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[if (not editUnit.oclIsTypeOf(UpdateUnit))]
+[editUnit.createTests(genModel)/]
+
+[/if]
+[if (not editUnit.oclIsTypeOf(CreateUnit))]
+[editUnit.updateTests(genModel)/]
+[/if]
+[/let]
+[/template]
+
+[template private createTests(unit : EditUnit, genModel : WafModel) post(trim())]
+[if (unit.isAuthorised)]
+[unit.testAuthorisedGet(genModel)/]
+[else]
+[unit.testGet()/]
+[/if]
+[/template]
+
+[template private updateTests(unit : EditUnit, genModel : WafModel) post(trim())]
+[let suffix : String
+	= if unit.oclIsTypeOf(CreateUpdateUnit) then
+			unit.oclAsType(CreateUpdateUnit).updateUriElement
+		else
+			unit.uriElement
+		endif]
+[if (unit.isAuthorised)]
+[unit.testAuthorisedGet(unit.uriUpdatePath(suffix), true, genModel)/]
+[else]
+[unit.testGet(unit.uriUpdatePath(suffix), true)/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(MapUnit)) post(trim())]
+[let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
+[if (mapUnit.isAuthorised)]
+[mapUnit.testAuthorisedGet(genModel)/]
+[else]
+[mapUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+[if (detailsUnit.isAuthorised)]
+[detailsUnit.testAuthorisedGet(genModel)/]
+[else]
+[detailsUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(TabularUnit)) post(trim())]
+[let tabularUnit : TabularUnit = unit.oclAsType(TabularUnit)]
+[if (tabularUnit.isAuthorised)]
+[tabularUnit.testAuthorisedGet(genModel)/]
+[else]
+[tabularUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(TextCardsUnit)) post(trim())]
+[let cardsUnit : TextCardsUnit = unit.oclAsType(TextCardsUnit)]
+[if (cardsUnit.isAuthorised)]
+[cardsUnit.testAuthorisedGet(genModel)/]
+[else]
+[cardsUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(DateCardsUnit)) post(trim())]
+[let cardsUnit : DateCardsUnit = unit.oclAsType(DateCardsUnit)]
+[if (cardsUnit.isAuthorised)]
+[cardsUnit.testAuthorisedGet(genModel)/]
+[else]
+[cardsUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(ImageCardsUnit)) post(trim())]
+[let cardsUnit : ImageCardsUnit = unit.oclAsType(ImageCardsUnit)]
+[if (cardsUnit.isAuthorised)]
+[cardsUnit.testAuthorisedGet(genModel)/]
+[else]
+[cardsUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(SliderUnit)) post(trim())]
+[let sliderUnit : SliderUnit = unit.oclAsType(SliderUnit)]
+[if (sliderUnit.isAuthorised)]
+[sliderUnit.testAuthorisedGet(genModel)/]
+[else]
+[sliderUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
+[let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
+[if (galleryUnit.isAuthorised)]
+[galleryUnit.testAuthorisedGet(genModel)/]
+[else]
+[galleryUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private unitTests(unit : ContentUnit, genModel : WafModel)
+	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
+[let searchUnit : SearchUnit = unit.oclAsType(SearchUnit)]
+[if (searchUnit.isAuthorised)]
+[searchUnit.testAuthorisedGet(genModel)/]
+[else]
+[searchUnit.testGet()/]
+[/if]
+[/let]
+[/template]
+
+[template private testAuthorisedGet(unit : DynamicUnit, genModel : WafModel) post(trim())]
+[unit.testAuthorisedGet(unit.uriPath(), genModel)/]
+[/template]
+
+[template private testAuthorisedGet(unit : ContentUnit, uri : String, genModel : WafModel) post(trim())]
+[unit.testAuthorisedGet(uri, false, genModel)/]
+[/template]
+
+[template private testAuthorisedGet(unit : ContentUnit, uri : String, update : Boolean, wafModel : WafModel) post(trim())]
+[let authentication : LocalAuthenticationSystem = wafModel.security.authentication.oclAsType(LocalAuthenticationSystem)]
+public function [unit.actionTestName(update)/]GetLoginRedirect(): void
+{
+    [unit.createGet(uri)/]
+    $this->assertResponseRedirects('[genModel.loginUri()/]', 302);
+}
+
+public function [unit.actionTestName(update)/]GetUnauthorisedUser(): void
+{
+    [unit.createClient()/]
+    $userRepository = static::getContainer()->get([authentication.authenticationModel.repository.repositoryClassName()/]::class);
+    $testUser = $userRepository->findOneByEmail('toy.garnett@gmail.com');
+    $client->loginUser($testUser);
+
+    [unit.getRequest(uri)/]
+    $this->assertResponseStatusCodeSame(403);
+}
+
+//public function [unit.actionTestName(update)/]GetAuthorisedUser(): void
+//{
+ //   [unit.createClient()/]
+//    $userRepository = static::getContainer()->get([authentication.authenticationModel.repository.repositoryClassName()/]::class);
+//    $testUser = $userRepository->findOneByEmail('[unit.authorisationRoles.trim()/]');
+//    $client->loginUser($testUser);
+
+//    [unit.getRequest(uri)/]
+//    $this->assertResponseIsSuccessful();
+//}
+[/let]
+[/template]
+
+[query private loginUri(genModel : WafModel): String
+	= if genModel.security.authentication.oclIsTypeOf(LocalAuthenticationSystem) then
+		let localAuthentication : LocalAuthenticationSystem
+			= genModel.security.authentication.oclAsType(LocalAuthenticationSystem)
+			in localAuthentication.loginElement.uriPath()
+		else
+			''
+		endif
+/]
+
+[template private testGet(unit : DynamicUnit) post(trim())]
+[if (unit.isHomeUnit())]
+[unit.testGet('', false)/]
+[else]
+[unit.testGet(unit.uriPath(), false)/]
+[/if]
+[/template]
+
+[template private testGet(unit : ContentUnit, uri : String) post(trim())]
+[unit.testGet(uri, false)/]
+[/template]
+
+[template private testGet(unit : ContentUnit, uri : String, update : Boolean) post(trim())]
+public function [unit.actionTestName(update)/]Get(): void
+{
+    [unit.createGet(uri)/]
+    $this->assertResponseIsSuccessful();
+}
+[/template]
+
+[template private createGet(unit : ContentUnit, uri : String) post(trim())]
+[unit.createClient()/]
+
+[unit.getRequest(uri)/]
+[/template]
+
+[template private createClient(unit : ContentUnit) post(trim())]
+$client = static::createClient(array(), array('HTTPS' => true));
+[/template]
+
+[template private getRequest(unit : ContentUnit, uri : String) post(trim())]
+$crawler = $client->request('GET', '[uri/]');
+[/template]

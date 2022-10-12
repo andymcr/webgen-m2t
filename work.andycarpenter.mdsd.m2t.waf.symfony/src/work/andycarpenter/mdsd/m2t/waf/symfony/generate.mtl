@@ -28,6 +28,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::slider/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::staticView/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::tabular/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::controllerTests/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::entity/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::section/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::navigation/]
@@ -65,6 +66,8 @@
 [model.javascript()/]
 
 [model.extensions()/]
+
+[model.pages->select(p | p.hasUnits).controllerTests(model)/]
 [/template]
 
 [template private symfonyConfig(genModel : WafModel)]

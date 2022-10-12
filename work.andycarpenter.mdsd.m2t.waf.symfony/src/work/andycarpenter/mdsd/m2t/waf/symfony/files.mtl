@@ -64,8 +64,16 @@
 	= eObject.configDirectory().concat('/').concat('packages')
 /]
 
+[query private controllerDirectory(eObject : EObject) : String
+	= 'Controller'
+/]
+
 [query public controllersDirectory(eObject : EObject) : String
-	= eObject.sourceDirectory().concat('/').concat('Controller')
+	= eObject.sourceDirectory().concat('/').concat(eObject.controllerDirectory())
+/]
+
+[query public controllerTestsDirectory(page : Page) : String
+	= page.testsDirectory().concat('/').concat(page.controllerDirectory())
 /]
 
 [query public cssDirectory(eObject : EObject) : String
@@ -117,11 +125,11 @@
 /]
 
 [query public webControllersDirectory(eObject : EObject) : String
-	= eObject.controllersDirectory().concat('/').concat('Web')
+	= eObject.controllersDirectory().concat('/').concat(eObject.webDirectory())
 /]
 
-[query public webDirectory(eObject : EObject) : String
-	= 'web'
+[query private webDirectory(eObject : EObject) : String
+	= 'Web'
 /]
 
 
@@ -134,7 +142,11 @@
 /]
 
 [query public controllersNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Controller')
+	= eObject.appNamespace().concat('\\').concat(eObject.controllerDirectory())
+/]
+
+[query public controllerTestsNamespace(page : Page) : String
+	= page.testsNamespace().concat('\\').concat(page.controllerDirectory())
 /]
 
 [query public extensionsNamespace(eObject : EObject) : String
@@ -154,7 +166,7 @@
 /]
 
 [query public webControllersNamespace(eObject : EObject) : String
-	= eObject.controllersNamespace().concat('\\').concat('Web')
+	= eObject.controllersNamespace().concat('\\').concat(eObject.webDirectory())
 /]
 
 
@@ -181,6 +193,13 @@
 			page.controllersDirectory()
 		endif.concat('/')
 			.concat(page.controllerClassName())
+			.concat(page.executableExtension())
+/]
+
+[query public controllerTestFilename(page : Page, model : WafModel) : String
+	= page.controllerTestsDirectory()
+			.concat('/')
+			.concat(page.controllerTestClassName())
 			.concat(page.executableExtension())
 /]
 

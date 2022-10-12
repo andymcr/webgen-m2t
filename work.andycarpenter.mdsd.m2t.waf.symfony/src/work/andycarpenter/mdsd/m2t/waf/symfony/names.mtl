@@ -89,11 +89,7 @@
 /]
 
 [query public typeClassName(type : EnumerationType) : String
-	= type.name.concat(type.typeSuffix())
-/]
-
-[query public modelClassName(type : EnumerationType) : String
-	= type.name
+	= type.modelClassName().concat(type.typeSuffix())
 /]
 
 
@@ -265,6 +261,14 @@
 				unit.instanceName()
 			endif
 		endif
+/]
+
+[query public actionTestName(unit : ContentUnit) : String
+	= unit.actionTestName(false)
+/]
+
+[query public actionTestName(unit : ContentUnit, update : Boolean) : String
+	= 'test'.concat(unit.actionName(update).toUpperFirst())
 /]
 
 [query public captchaActionName(unit : ContentUnit) : String
