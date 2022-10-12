@@ -17,7 +17,38 @@ use Zenstruck\Foundry\Proxy;
 
 
 /**
- * 
+ * @extends ModelFactory<[entity.modelClassName()/]>
+ *
+ * @method static [entity.modelClassName()/]|Proxy createOne(array $attributes = ['['/][']'/])
+ * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] createMany(int $number, array|callable $attributes = ['['/][']'/])
+ * @method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] createSequence(array|callable $sequence)
+ * @method static [entity.modelClassName()/]|Proxy find(object|array|mixed $criteria)
+ * @method static [entity.modelClassName()/]|Proxy findOrCreate(array $attributes)
+ * @method static [entity.modelClassName()/]|Proxy first(string $sortedField = 'id')
+ * @method static [entity.modelClassName()/]|Proxy last(string $sortedField = 'id')
+ * @method static [entity.modelClassName()/]|Proxy random(array $attributes = ['['/][']'/])
+ * @method static [entity.modelClassName()/]|Proxy randomOrCreate(array $attributes = ['['/][']'/]))
+ * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] all()
+ * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] findBy(array $attributes)
+ * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] randomSet(int $number, array $attributes = ['['/][']'/]))
+ * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] randomRange(int $min, int $max, array $attributes = ['['/][']'/]))
+ * @method static [entity.repository.repositoryClassName()/]|RepositoryProxy repository()
+ * @method [entity.modelClassName()/]|Proxy create(array|callable $attributes = ['['/][']'/])
+ *
+ * @phpstan-method static [entity.modelClassName()/]&Proxy createOne(array $attributes = ['['/][']'/])
+ * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] createMany(int $number, array|callable $attributes = ['['/][']'/])
+ * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] createSequence(array|callable $sequence)
+ * @phpstan-method static [entity.modelClassName()/]&Proxy find(object|array|mixed $criteria)
+ * @phpstan-method static [entity.modelClassName()/]&Proxy findOrCreate(array $attributes)
+ * @phpstan-method static [entity.modelClassName()/]&Proxy first(string $sortedField = 'id')
+ * @phpstan-method static [entity.modelClassName()/]&Proxy last(string $sortedField = 'id')
+ * @phpstan-method static [entity.modelClassName()/]&Proxy random(array $attributes = ['['/][']'/])
+ * @phpstan-method static [entity.modelClassName()/]&Proxy randomOrCreate(array $attributes = ['['/][']'/])
+ * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] all()
+ * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] findBy(array $attributes)
+ * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] randomSet(int $number, array $attributes = ['['/][']'/])
+ * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] randomRange(int $min, int $max, array $attributes = ['['/][']'/])
+ * @phpstan-method [entity.modelClassName()/]&Proxy create(array|callable $attributes = ['['/][']'/])
  */
 class [entity.factoryClassName()/] extends ModelFactory
 {
@@ -44,7 +75,9 @@ protected function getDefaults(): array
 {
     return ['['/]
 [for (attribute : Attribute | entity.attributes)]
+	[if (attribute.isRequired)]
         '[attribute.modelPropertyName()/]' => [attribute.fakeValue()/],
+	[/if]
 [/for]
     [']'/];
 }
@@ -54,9 +87,9 @@ protected function getDefaults(): array
 [if (attribute.isBooleanFeature)]
 self::faker()->boolean()
 [elseif (attribute.isDateFeature)]
-new \DateTimeImmutable(self::faker()->dateTime('+2 years'))
+new \DateTimeImmutable(self::faker()->iso8601('+2 years'))
 [elseif (attribute.isEmailFeature)]
-self::faker()[if (not attribute.isRequired)]->optional()[/if]->email()
+self::faker()->email()
 [elseif (attribute.isEnumerationFeature)]
 self::faker()->randomNumber()
 [elseif (attribute.isFloatFeature)]
@@ -66,13 +99,13 @@ self::faker()->randomNumber()
 [elseif (attribute.isLocationFeature)]
 [elseif (attribute.isResourceFeature)]
 [elseif (attribute.isStringFeature)]
-self::faker()[if (not attribute.isRequired)]->optional()[/if]->text()
+self::faker()->text()
 [elseif (attribute.isTextareaFeature)]
-self::faker()[if (not attribute.isRequired)]->optional()[/if]->paragraph()
+self::faker()->paragraph()
 [elseif (attribute.isUrlFeature)]
-self::faker()[if (not attribute.isRequired)]->optional()[/if]->url()
+self::faker()->url()
 [else]
-self::faker()[if (not attribute.isRequired)]->optional()[/if]->text()
+self::faker()->text()
 [/if]
 [/template]
 
@@ -84,6 +117,9 @@ protected static function initialize(): self
 [/template]
 
 [template private classMethod(entity : Entity) post(trim())]
+/**
+ * @link ModelFactory
+ */
 protected static function getClass(): string
 {
     return [entity.modelClassName()/]::class;
