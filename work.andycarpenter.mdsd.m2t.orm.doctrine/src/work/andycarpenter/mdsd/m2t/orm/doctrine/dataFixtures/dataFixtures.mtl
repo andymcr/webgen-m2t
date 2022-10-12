@@ -1,29 +1,85 @@
 [comment encoding = UTF-8 /]
 [module dataFixtures(
-	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 
 
-[template public fixture(entity : Entity)]
+[query private isAuthenticationModel(entity : Entity, wafModel : WafModel) : Boolean
+	= if wafModel.isAuthenticated then
+			if wafModel.security.authentication.oclIsTypeOf(LocalAuthenticationSystem) then
+			let authentication : LocalAuthenticationSystem
+				= wafModel.security.authentication.oclAsType(LocalAuthenticationSystem)
+				in authentication.authenticationModel = entity
+			else
+				false
+			endif
+		else
+			false
+		endif
+/]
+
+[template public fixture(entity : Entity, wafModel : WafModel)]
 [file(entity.fixtureFilename(), false)]
 <?php
 namespace [entity.fixturesNamespace()/];
 
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+use [entity.factoriesNamespace()/]\[entity.factoryClassName()/];
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+[if (entity.isAuthenticationModel(wafModel))]
+[/if]
 
 /**
  * 
  */
 class [entity.fixtureClassName()/] extends Fixture
 {
+[if (entity.isAuthenticationModel(wafModel))]
+    [entity.loadAuthorisationsMethod(wafModel)/]
+[else]
+    [entity.loadMethod()/]
+[/if]
 
-    public load(ObjectManager $manager)
-    {
-    }
 }
 [/file]
 [/template]
+
+[template private loadMethod(entity : Entity) post(trim())]
+public function load(ObjectManager $manager)
+{
+}
+[/template]
+
+[template private loadAuthorisationsMethod(entity : Entity, wafModel : WafModel) post(trim())]
+[let authentication : LocalAuthenticationSystem = wafModel.security.authentication.oclAsType(LocalAuthenticationSystem)]
+public function load(ObjectManager $manager)
+{
+[for (role : String | wafModel.authorisationRoles())]
+    [entity.factoryClassName()/]::createOne(['['/]
+        '[authentication.identifierFeture.modelPropertyName()/]' => '[role/]',
+        'roles' => ['['/] '[role/]' [']'/],
+    [']'/]);
+[/for]
+    [entity.factoryClassName()/]::createMany(20);
+}
+[/let]
+[/template]
+
+[query private authorisationRoles(genModel : WafModel): Set(String)
+	= genModel.pages
+		->select(p | p.isAuthorised)
+		->collect(p | p.authorisationRoles())
+		->asSet()
+/]
+
+[query private authorisationRoles(page : Page): Set(String)
+	= page.units
+		->select(u | u.isAuthorised)
+		->collect(u | u.authorisationRoles.trim())
+		->asSet()
+/]

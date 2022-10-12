@@ -2,8 +2,9 @@
 [module generate(
 	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/security',
-	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::config::stofDoctrineExtensions/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUnique/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constraints::collectionUniqueValidator/]
@@ -17,7 +18,7 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::test::repositoryTests/]
 
 
-[template public doctrine(model : OrmModel, security : SecurityModel, supportTranslation : Boolean)]
+[template public doctrine(model : OrmModel, wafModel : WafModel, supportTranslation : Boolean)]
 [model.configStofDoctrineExtensions()/]
 
 [model.enumerationTypes.model(supportTranslation)/]
@@ -27,11 +28,11 @@
 [model.collectionUnique()/]
 [model.collectionUniqueValidator()/]
 
-[model.repositories.repository(security)/]
+[model.repositories.repository(wafModel.security)/]
 
 [model.entities->select(e | not e.implementsResetPasswordInterface).factory()/]
-[model.entities->select(e | not e.implementsResetPasswordInterface).fixture()/]
+[model.entities->select(e | not e.implementsResetPasswordInterface).fixture(wafModel)/]
 
 [model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
-[model.repositories.repositoryTests(security)/]
+[model.repositories.repositoryTests(wafModel.security)/]
 [/template]
