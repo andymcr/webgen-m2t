@@ -2,6 +2,7 @@
 [module enumerationTypes(
 	'http://andycarpenter.work/metamodel/base',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
