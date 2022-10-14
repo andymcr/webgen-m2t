@@ -331,6 +331,22 @@
 		->collect(f | f.name)
 /]
 
+[query public findMethodName(unit : CollectionUnit, selection : Selection) : String
+	= if unit.hasPagination then
+			selection.methodQueryName()
+		else
+			selection.methodName
+		endif
+/]
+
+[query public findMethodName(unit : CollectionUnit, filter : Filter) : String
+	= if unit.hasPagination then
+			filter.methodQueryName()
+		else
+			filter.methodName
+		endif
+/]
+
 [query public formName(element : NamedElement) : String
 	= element.instanceName().concat('Form')
 /]
@@ -364,11 +380,7 @@
 /]
 
 [query public instanceVariable(unit : ContentUnit) : String
-	= if (unit.displayedOn.hasSingleActionMethod() and not unit.hasSelectionMethod()) or unit.oclIsKindOf(EditUnit) then
-			'$'.concat(unit.instanceName())
-		else
-			'$this->'.concat(unit.instanceName())
-		endif
+	= '$'.concat(unit.instanceName())
 /]
 
 [query public modelClassName(unit : ContentUnit) : String
@@ -384,12 +396,12 @@
 		endif
 /]
 
-[query public paginationPageParameterName(unit : CollectionUnit) : String
-	= 'page'
-/]
-
-[query public paginationSizeParameterName(unit : CollectionUnit) : String
-	= 'pageSize'
+[query public queryInstanceVariable(unit : CollectionUnit) : String
+	= if unit.hasPagination then
+			'$query'
+		else
+			unit.instanceVariable()
+		endif
 /]
 
 [query public routeUpdateName(unit : EditUnit) : String

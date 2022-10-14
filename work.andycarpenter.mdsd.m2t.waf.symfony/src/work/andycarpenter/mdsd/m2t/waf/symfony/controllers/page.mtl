@@ -131,11 +131,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 [if (page.hasCollectionUnits)]
 	[if (page.collectionUnits->select(u | u.hasPagination)->notEmpty())]
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 	[/if]
-[/if]
-[if (page.hasCaptchaUnits)]
-use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
 [/if]
 [if (page.hasEditUnits)]
 use Symfony\Component\Form\FormInterface;
@@ -183,32 +181,12 @@ private FormInterface $[unit.oclAsType(EditUnit).formName()/];
 
 		[elseif (unit.oclIsKindOf(CollectionUnit))]
 		[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-/**
- * @var array<int, [unit.modelClassName()/]>[if (unit.oclAsType(CollectionUnit).hasPagination)]
-|Paginator<[unit.modelClassName()/]>[/if] $[unit.instanceName()/]
- */
-private [if (not unit.oclAsType(CollectionUnit).hasPagination)]array [/if]$[unit.instanceName()/];
-
 			[if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
 /**
  * @var [collectionUnit.containingType.modelClassName()/] $[collectionUnit.containerInstanceName()/]
  */
 private [collectionUnit.containingType.modelClassName()/] $[collectionUnit.containerInstanceName()/];
 
-			[/if]
-			[if (not collectionUnit.inlineSelectCode() and collectionUnit.hasPagination)]
-/**
- * @var int $[collectionUnit.pageNumberName()/]
- */
-private int $[collectionUnit.pageNumberName()/];
-
-				[if (collectionUnit.maximumPaginationSize > 0)]
-/**
- * @var int $[collectionUnit.pageSizeName()/]
- */
-private int $[collectionUnit.pageSizeName()/];
-
-				[/if]
 			[/if]
 		[/let]
 		[else]

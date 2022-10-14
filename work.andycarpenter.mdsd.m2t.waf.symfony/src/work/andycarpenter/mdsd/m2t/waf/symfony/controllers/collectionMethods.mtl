@@ -48,7 +48,7 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 [template public actionCore(unit : CollectionUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [if (unit.inlineSelectCode())]
-[unit.selectCode()/]
+[unit.selectCode(false)/]
 [else]
 $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
@@ -58,9 +58,9 @@ $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [if (not collectionUnit.inlineSelectCode())]
-private function [collectionUnit.selectName()/]([collectionUnit.selectMethodParameters(true)/]): void
+private function [collectionUnit.selectName()/]([collectionUnit.selectMethodParameters(true)/]): Pagerfanta
 {
-    [collectionUnit.selectCode()/]
+    [collectionUnit.selectCode(true)/]
 }
 [/if]
 [/let]
@@ -79,21 +79,10 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 
 [template private selectionParameters(unit : CollectionUnit) post(trim())]
 [if (unit.hasRouteParameters())]
-[unit.routeParameterList(false)/][if (unit.hasPagination)]
-, [/if][/if][unit.paginationActuals()/]
+[unit.routeParameterList(false)/][/if]
 [/template]
 
-[template private paginationActuals(unit : CollectionUnit) post(trim())]
-[if (unit.hasPagination)]
-	[if (unit.maximumPaginationSize > 0)]
-([unit.pageVariable()/] - 1) * [unit.pageSizeVariable()/], [unit.pageSizeVariable()/]
-	[else]
-([unit.pageVariable()/] - 1) * [unit.defaultPaginationSize/], [unit.defaultPaginationSize/]
-	[/if]
-[/if]
-[/template]
-
-[template private selectCode(unit : CollectionUnit) post(trim())]
+[template private selectCode(unit : CollectionUnit, inMethod : Boolean) post(trim())]
 [if (unit.isContained)]
 	[if (not unit.containingTypeLoadedElsewhere())]
 [unit.containerInstanceVariable()/] = [unit.loadContainerInstance()/];
@@ -103,39 +92,37 @@ if (![unit.containerInstanceVariable()/]) {
 	[/if]
 	[if (unit.isConditionallyDisplayed)]
 if (!([unit.hideWhen.controllerExpression(unit.instanceVariable(), unit.containerInstanceVariable())/])) {
-    [unit.selectCode2()/]
+    [unit.selectCode2(inMethod)/]
 }
 	[else]
-[unit.selectCode2()/]
+[unit.selectCode2(inMethod)/]
 	[/if]
 [else]
-[unit.selectCode2()/]
+[unit.selectCode2(inMethod)/]
 [/if]
 [/template]
 
-[template private selectCode2(unit : CollectionUnit) post(trim())]
-[if (unit.hasPagination)]
-[unit.notePage()/]
-[/if]
+[template private selectCode2(unit : CollectionUnit, inMethod : Boolean) post(trim())]
 [if (unit.hasFilters)]
 [unit.filterSelect()/]
 else
 [/if]
 [if (unit.hasFilters)]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-[unit.instanceVariable()/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
+[unit.queryInstanceVariable()/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
 	[else]
-[unit.instanceVariable()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
+[unit.queryInstanceVariable()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-[unit.instanceVariable()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll([unit.paginationActuals()/]);
+[unit.queryInstanceVariable()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll();
 [/if]
-[/template]
-
-[template public notePage(unit : CollectionUnit) post(trim())]
-[unit.pageVariable()/] = $request->query->getInt('[unit.paginationPageParameterName()/]', 1);
-[if (unit.maximumPaginationSize > 0)]
-[unit.pageSizeVariable()/] = min([unit.maximumPaginationSize/], $request->query->getInt('[unit.paginationSizeParameterName()/]', [unit.defaultPaginationSize/]));
+[if (unit.hasPagination)]
+$adapter = new QueryAdapter($query);
+[if (inMethod)]return[else][unit.instanceVariable()/] =[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
+    $adapter,
+    $request->query->get('page', 1),
+    [unit.defaultPaginationSize/]);
+[else]
 [/if]
 [/template]
 
@@ -147,7 +134,7 @@ if ($request->query->has('[filter.name/]Filter'))
 [/template]
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
-[unit.instanceVariable()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->[filter.methodName/](
+$query = [unit.oclAsType(DynamicUnit).getContentRepository()/]->[filter.methodName/]Query(
 [if (unit.hasRouteParameters(filter.selection))]
     [unit.routeParameterList(filter.selection, false)/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]
@@ -156,9 +143,6 @@ if ($request->query->has('[filter.name/]Filter'))
 [for (parameter : FormalParameter | filter.parameters)]
     $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or unit.hasPagination)],[/if]
 [/for]
-[if (unit.hasPagination)]
-    [unit.paginationActuals()/]
-[/if]
 );
 [/template]
 
@@ -170,7 +154,7 @@ if ($request->query->has('[filter.name/]Filter'))
 [unit.instanceVariable()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-[unit.instanceVariable()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll([unit.paginationActuals()/]);
+[unit.instanceVariable()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll();
 [/if]
 [/template]
 
@@ -195,38 +179,9 @@ if (!([unit.hideWhen.controllerExpression(unit.instanceVariable(), unit.containe
 [if (unit.isContained and not unit.containingTypeLoadedElsewhere())]
 $parameters['['/]'[unit.oclAsType(DynamicUnit).containerParameter()/]'[']'/] = [unit.containerInstanceVariable()/];
 [/if]
-$parameters['['/]'[unit.oclAsType(DynamicUnit).instanceParameter()/]'[']'/] = [unit.instanceVariable()/];
-[if (unit.hasPagination)]
-$parameters['['/]'currentPage'[']'/] = [unit.pageVariable()/];
-	[if (unit.maximumPaginationSize > 0)]
-$parameters['['/]'pageCount'[']'/] = ([unit.instanceVariable()/] instanceof Paginator) ? ceil([unit.instanceVariable()/]->count() / [unit.pageSizeVariable()/]) : 0;
-$parameters['['/]'[unit.paginationSizeParameterName()/]'[']'/] = [unit.pageSizeVariable()/];
-	[else]
-$parameters['['/]'pageCount'[']'/] = ([unit.instanceVariable()/] instanceof Paginator) ? ceil([unit.instanceVariable()/]->count() / [unit.defaultPaginationSize/]) : 0;
-	[/if]
-[/if]
-[/template]
-
-[query public pageNumberName(unit : CollectionUnit) : String
-	= 'page'
-/]
-
-[template public pageVariable(unit : CollectionUnit) post(trim())]
-[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionallyDisplayed)]
-$[unit.pageNumberName()/]
+$parameters['['/]'[unit.oclAsType(DynamicUnit).instanceParameter()/]'[']'/] = [if (unit.inlineSelectCode())]
+[unit.instanceVariable()/];
 [else]
-$this->[unit.pageNumberName()/]
-[/if]
-[/template]
-
-[query public pageSizeName(unit : CollectionUnit) : String
-	= 'pageSize'
-/]
-
-[template public pageSizeVariable(unit : CollectionUnit) post(trim())]
-[if (unit.inlineSelectCode() and not unit.oclAsType(DynamicUnit).isConditionallyDisplayed)]
-$[unit.pageSizeName()/]
-[else]
-$this->[unit.pageSizeName()/]
+$this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
 [/template]

@@ -37,12 +37,12 @@
 [/if]
 [if (cardsUnit.hasPagination
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
-[cardsUnit.pagination()/]
+[cardsUnit.pagination(accessor)/]
 [/if]
 [cardsUnit.unitContent(null, accessor, 0)/]
 [if (cardsUnit.hasPagination
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
- [cardsUnit.pagination()/]
+ [cardsUnit.pagination(accessor)/]
 [/if]
 [if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
  [cardsUnit.generalOrContainerActions()/]

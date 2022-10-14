@@ -30,12 +30,12 @@
 [/if]
 [if (tabularUnit.hasPagination
 		and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
- [tabularUnit.pagination()/]
+ [tabularUnit.pagination(accessor)/]
 [/if]
  [tabularUnit.unitContent(null, accessor)/]
 [if (tabularUnit.hasPagination
 		and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
- [tabularUnit.pagination()/]
+ [tabularUnit.pagination(accessor)/]
 [/if]
 </section>
 [/file]
