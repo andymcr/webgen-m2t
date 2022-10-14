@@ -10,7 +10,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::criteriaDoctrine/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::controller/]
 
 
 [template public unitMethods(unit : ContentUnit)
@@ -29,38 +29,26 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
-[if (unit.isConditionallyDisplayed)]
-    [unit.actionCore()/]
-
-[/if]
     return $this->renderPage([unit.renderMethodActuals()/]);
 }
 [/template]
 
-[template public actionCore(unit : ContentUnit)
-	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[template private renderCode(unit : ContentUnit)
+	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [if (detailsUnit.selection.oclIsUndefined())]
 [detailsUnit.instanceVariable()/] = [detailsUnit.loadInstance()/];
-if (is_null([detailsUnit.instanceVariable()/])) {
-    throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
-}
 [else]
 [detailsUnit.instanceVariable()/] = $this->[detailsUnit.selection.definedBy.instanceName()/]->[detailsUnit.selection.methodName/]();
 [/if]
-[/let]
-[/template]
-
-[template private templateParameters(unit : ContentUnit)
-	? (unit.oclIsKindOf(DetailsUnit)) post(trim())]
-[let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
+if (is_null([detailsUnit.instanceVariable()/])) {
+    throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
+}
 [if (detailsUnit.isConditionallyDisplayed)]
-if (isset([detailsUnit.instanceVariable()/]))
+if (!([detailsUnit.hideWhen.controllerExpression(detailsUnit.instanceVariable(), null)/])) {
     $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
+}
 [else]
-	[if (not detailsUnit.displayedOn.hasSingleActionMethod()) ]
-[unit.actionCore()/]
-	[/if]
 $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 [/if]
 [/let]

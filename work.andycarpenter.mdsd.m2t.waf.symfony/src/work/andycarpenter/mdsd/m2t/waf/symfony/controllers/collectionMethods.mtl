@@ -38,20 +38,11 @@
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
 [if (unit.isDislayedOnlyOnExplicitRoute())]
-    [unit.actionCore()/]
+    [unit.selectCode()/]
 
 [/if]
-    return $this->renderPage([unit.oclAsType(DynamicUnit).renderMethodActuals()/]);
+    return $this->renderPage([unit.renderMethodActuals()/]);
 }
-[/template]
-
-[template public actionCore(unit : CollectionUnit)
-	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[if (unit.inlineSelectCode())]
-[unit.selectCode(false)/]
-[else]
-$this->[unit.selectName()/]([unit.selectMethodParameters()/]);
-[/if]
 [/template]
 
 [template public actionSupportMethods(unit : ContentUnit)
@@ -60,10 +51,46 @@ $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [if (not collectionUnit.inlineSelectCode())]
 private function [collectionUnit.selectName()/]([collectionUnit.selectMethodParameters(true)/]): Pagerfanta
 {
-    [collectionUnit.selectCode(true)/]
+    [collectionUnit.selectCode()/]
 }
 [/if]
 [/let]
+[/template]
+
+[template public actionCore(unit : CollectionUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
+[/template]
+
+[template public renderCode(unit : ContentUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+[if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
+[collectionUnit.containerInstanceVariable()/] = [collectionUnit.loadContainerInstance()/];
+if (![collectionUnit.containerInstanceVariable()/]) {
+    throw $this->createNotFoundException('The [collectionUnit.containingType.name/] does not exist');
+}
+$parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
+[/if]
+[if (collectionUnit.isDislayedOnlyOnExplicitRoute())]
+if (isset([unit.instanceVariable()/])) {
+    [collectionUnit.renderCode2()/]
+}
+[elseif (collectionUnit.isConditionallyDisplayed)]
+if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.instanceVariable(), collectionUnit.containerInstanceVariable())/])) {
+    [collectionUnit.renderCode2()/]
+}
+[else]
+[collectionUnit.renderCode2()/]
+[/if]
+[/let]
+[/template]
+
+[template private renderCode2(unit : CollectionUnit) post(trim())]
+[if (unit.inlineSelectCode())]
+[unit.selectCode()/]
+[else]
+$parameters['['/]'[unit.instanceParameter()/]'[']'/] = $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
+[/if]
 [/template]
 
 [template private selectMethodParameters(unit : CollectionUnit) post(trim())]
@@ -82,27 +109,38 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [unit.routeParameterList(false)/][/if]
 [/template]
 
-[template private selectCode(unit : CollectionUnit, inMethod : Boolean) post(trim())]
-[if (unit.isContained)]
-	[if (not unit.containingTypeLoadedElsewhere())]
-[unit.containerInstanceVariable()/] = [unit.loadContainerInstance()/];
-if (![unit.containerInstanceVariable()/]) {
-    throw $this->createNotFoundException('The [unit.containingType.name/] does not exist');
-}
-	[/if]
-	[if (unit.isConditionallyDisplayed)]
-if (!([unit.hideWhen.controllerExpression(unit.instanceVariable(), unit.containerInstanceVariable())/])) {
-    [unit.selectCode2(inMethod)/]
-}
+[template private selectCode(unit : CollectionUnit)
+	?(not unit.hasFilters) post(trim())]
+[let variable : String = if unit.hasPagination then
+		 '$query'
+	else
+		'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
+	endif]
+[if (not unit.selection.oclIsUndefined())]
+	[if (unit.filter.oclIsUndefined())]
+[if (unit.inlineSelectCode() or unit.hasPagination)][variable/] =[else]
+return[/if] $this->[unit.selection.definedBy.instanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
 	[else]
-[unit.selectCode2(inMethod)/]
+[if (unit.inlineSelectCode() or unit.hasPagination)][variable/] =[else]
+return[/if] $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-[unit.selectCode2(inMethod)/]
+[if (unit.inlineSelectCode() or unit.hasPagination)][variable/] =[else]
+return[/if] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll();
 [/if]
+[if (unit.hasPagination)]
+$adapter = new QueryAdapter([variable/]);
+[if (unit.inlineSelectCode())]$parameters['['/]'[unit.instanceParameter()/]'[']'/] =[else]
+return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
+    $adapter,
+    $request->query->get('page', 1),
+    [unit.defaultPaginationSize/]);
+[/if]
+[/let]
 [/template]
 
-[template private selectCode2(unit : CollectionUnit, inMethod : Boolean) post(trim())]
+[template private selectCode(unit : CollectionUnit)
+	?( unit.hasFilters) post(trim())]
 [if (unit.hasFilters)]
 [unit.filterSelect()/]
 else
@@ -118,11 +156,12 @@ else
 [/if]
 [if (unit.hasPagination)]
 $adapter = new QueryAdapter($query);
-[if (inMethod)]return[else][unit.instanceVariable()/] =[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
+[if (unit.inlineSelectCode())]
+$parameters['['/]'[unit.instanceParameter()/]'[']'/] =[else]
+return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
     $adapter,
     $request->query->get('page', 1),
     [unit.defaultPaginationSize/]);
-[else]
 [/if]
 [/template]
 
@@ -144,44 +183,4 @@ $query = [unit.oclAsType(DynamicUnit).getContentRepository()/]->[filter.methodNa
     $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or unit.hasPagination)],[/if]
 [/for]
 );
-[/template]
-
-[template private loadCollection(unit : CollectionUnit) post(trim())]
-[if (not unit.selection.oclIsUndefined())]
-	[if (unit.filter.oclIsUndefined())]
-[unit.instanceVariable()/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.selection.methodName/]([unit.selectionParameters()/]);
-	[else]
-[unit.instanceVariable()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.filter.methodName/]([unit.selectionParameters()/]);
-	[/if]
-[else]
-[unit.instanceVariable()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll();
-[/if]
-[/template]
-
-[template public templateParameters(unit : CollectionUnit) post(trim())]
-[if (not unit.displayedOn.hasSingleActionMethod() and not unit.isDislayedOnlyOnExplicitRoute())]
-[unit.actionCore()/]
-[/if]
-[if (unit.isDislayedOnlyOnExplicitRoute())]
-if (isset([unit.instanceVariable()/])) {
-    [unit.templateParameters2()/]
-}
-[elseif (unit.isConditionallyDisplayed)]
-if (!([unit.hideWhen.controllerExpression(unit.instanceVariable(), unit.containerInstanceVariable())/])) {
-    [unit.templateParameters2()/]
-}
-[else]
-[unit.templateParameters2()/]
-[/if]
-[/template]
-
-[template private templateParameters2(unit : CollectionUnit) post(trim())]
-[if (unit.isContained and not unit.containingTypeLoadedElsewhere())]
-$parameters['['/]'[unit.oclAsType(DynamicUnit).containerParameter()/]'[']'/] = [unit.containerInstanceVariable()/];
-[/if]
-$parameters['['/]'[unit.oclAsType(DynamicUnit).instanceParameter()/]'[']'/] = [if (unit.inlineSelectCode())]
-[unit.instanceVariable()/];
-[else]
-$this->[unit.selectName()/]([unit.selectMethodParameters()/]);
-[/if]
 [/template]

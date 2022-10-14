@@ -223,7 +223,7 @@ return [unit.displayedOn.redirect(sourceParameters)/];
 		endif
 /]
 
-[template public templateParameters(unit : ContentUnit)
+[template public renderCode(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [if (editUnit.displayEmptyForm())]
