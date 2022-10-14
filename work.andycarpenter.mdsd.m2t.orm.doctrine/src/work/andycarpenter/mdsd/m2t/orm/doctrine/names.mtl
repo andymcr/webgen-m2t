@@ -183,22 +183,28 @@
 		in entity.selectName()
 /]
 
-[query public criteriaMethodName(selection : Selection) : String
-	= selection.instanceName().concat('Criteria')
+
+[query public builderMethodName(selection : Selection) : String
+	= selection.instanceName().concat('Builder')
 /]
 
-[query public countName(selection : Selection) : String
-	= selection.instanceName().concat('_count')
+[query public criteriaMethodName(selection : Selection) : String
+	= selection.instanceName().concat('Criteria')
 /]
 
 [query public instanceName(selection : Selection) : String
 	= selection.name.toLowerFirst()
 /]
 
-[query public builderMethodName(selection : Selection) : String
-	= selection.instanceName().concat('Builder')
+[query public methodQueryName(selection : Selection) : String
+	= selection.methodName.concat('Query')
 /]
 
 [query public parametersMethodName(selection : Selection) : String
 	= selection.instanceName().concat('Parameters')
+/]
+
+
+[query public methodQueryName(filter : Filter) : String
+	= filter.methodName.concat('Query')
 /]

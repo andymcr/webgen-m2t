@@ -41,30 +41,7 @@
 <?php
 namespace [repository.repositoriesNamespace()/];
 
-[if (repository.serves.attributes->notEmpty())]
-use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
-[/if]
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-[if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
-[/if]
-[if (repository.selections->notEmpty())]
-use Doctrine\ORM\Tools\Pagination\Paginator;
-[/if]
-[if (security.authentication.userModel.repository = repository)]
-use Symfony\Component\Security\Core\Security;
-[/if]
-[if (repository.serves.implementsPasswordAuthenticatedInterface)]
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-[/if]
-[if (repository.serves.implementsResetPasswordInterface)]
-use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
-use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
-use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
-[/if]
+[repository.useStatements(security)/]
 
 
 /**
@@ -170,6 +147,30 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 [/if]
 }
 [/file]
+[/template]
+
+[template private useStatements(repository : Repository, security : SecurityModel) post(trim())]
+[if (repository.serves.attributes->notEmpty())]
+use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
+[/if]
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+[if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+[/if]
+[if (security.authentication.userModel.repository = repository)]
+use Symfony\Component\Security\Core\Security;
+[/if]
+[if (repository.serves.implementsPasswordAuthenticatedInterface)]
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+[/if]
+[if (repository.serves.implementsResetPasswordInterface)]
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
+[/if]
 [/template]
 
 [template private getCurrentUserMethod(repository : Repository, security : SecurityModel) post(trim())]
@@ -378,20 +379,27 @@ public function flush(): void
 /**
  *
  *
- * @return array<int, [selection.definedBy.serves.modelClassName()/]>[if (selection.hasPaginationSupport)]
-|Paginator<[selection.definedBy.serves.modelClassName()/]>[/if]
+ * @return Query
  */
-public function [selection.methodName/]([if (selection.hasPaginationSupport)]
-[selection.limitFormals()/][/if])
+public function [selection.methodQueryName()/](): Query
 {
 [if (selection.filters->notEmpty())]
-    $query = $this->[selection.builderMethodName()/]([selection.limitActuals()/])->getQuery();
+    return $this->[selection.builderMethodName()/]()->getQuery();
 [else]
     [selection.builderCode()/]
-    $query = $queryBuilder->getQuery();
-[/if]
 
-    [selection.queryResult()/]
+    return $queryBuilder->getQuery();
+[/if]
+}
+
+/**
+ *
+ *
+ * @return [selection.documentReturnType()/]
+ */
+public function [selection.methodName/](): [selection.returnType()/]
+{
+    return $this->[selection.methodQueryName()/]()->getResult();
 }
 
 [if (selection.filters->notEmpty())]
@@ -406,18 +414,33 @@ public function [selection.methodName/]([if (selection.hasPaginationSupport)]
  *
  [selection.documentParameters()/]
  *
- * @return [selection.documentReturnType()/]
+ * @return Query
  */
-public function [selection.methodName/]([selection.formals()/])[selection.returnType()/]
+public function [selection.methodQueryName()/]([selection.formals()/]): Query
 {
     [selection.builderCode()/]
-    $query = $queryBuilder->getQuery();
 [if (selection.uriPathKeys()->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
+    $query = $queryBuilder->getQuery();
     [selection.queryParametersCode(security)/]
-[/if]
 
-    [selection.queryResult()/]
+    return $query;
+[else]
+
+    return $queryBuilder->getQuery();
+[/if]
 }
+
+/**
+ *
+ [selection.documentParameters()/]
+ *
+ * @return [selection.documentReturnType()/]
+ */
+public function [selection.methodName/]([selection.formals()/]): [selection.returnType()/]
+{
+    return $this->[selection.methodQueryName()/]()->getResult();
+}
+
 [/template]
 
 [template private selectionMethod(selection : Selection, security : SecurityModel)
@@ -432,17 +455,30 @@ public function [selection.methodName/]([selection.formals()/])[selection.return
  *
  [selection.documentParameters()/]
  *
- * @return [selection.documentReturnType()/]
+ * @return Query
  */
-public function [selection.methodName/]([selection.formals()/])[selection.returnType()/]
+public function [selection.methodQueryName()/]([selection.formals()/]): Query
 {
-    $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
 [if (selection.selectPath->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
+    $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
     $this->[selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals)]
 , [selection.selectionActuals()/][/if]);
-[/if]
 
-    [selection.queryResult()/]
+    return $query;
+[else]
+    return $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
+[/if]
+}
+
+/**
+ *
+ [selection.documentParameters()/]
+ *
+ * @return [selection.documentReturnType()/]
+ */
+public function [selection.methodName/]([selection.formals()/]): [selection.returnType()/]
+{
+    return $this->[selection.methodQueryName()/]()->getResult();
 }
 
 [selection.filterMethods()/]
@@ -483,9 +519,9 @@ private function [selection.parametersMethodName()/](Query $query[if (selection.
  *
  [filter.documentParameters()/]
  *
- * @return [selection.documentReturnType()/]
+ * @return Query
  */
-public function [filter.methodName/]([filter.formals()/])[selection.returnType()/]
+public function [filter.methodQueryName()/]([filter.formals()/]): Query
 {
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
     $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
@@ -514,26 +550,34 @@ public function [filter.methodName/]([filter.formals()/])[selection.returnType()
     }
 	[/for]
 
-    [selection.queryResult()/]
+    return $query;
 }
+
+/**
+ *
+ [filter.documentParameters()/]
+ *
+ * @return [selection.documentReturnType()/]
+ */
+public function [filter.methodName/]([filter.formals()/]): [selection.returnType()/]
+{
+    return $this->[filter.methodQueryName()/]([filter.actuals()/])->getResult();
+}
+
 [/for]
 [/template]
 
 [template private returnType(selection : Selection) post(trim())]
 [if (selection.limit = 1)]
-: ?[selection.definedBy.serves.modelClassName()/]
-[elseif (selection.hasPaginationSupport)]
-
+?[selection.definedBy.serves.modelClassName()/]
 [else]
-: array
+array
 [/if]
 [/template]
 
 [template private documentReturnType(selection : Selection) post(trim())]
 [if (selection.limit = 1)]
 [selection.definedBy.serves.modelClassName()/]|null
-[elseif (selection.hasPaginationSupport)]
-array<int, [selection.definedBy.serves.modelClassName()/]>|Paginator<[selection.definedBy.serves.modelClassName()/]>
 [else]
 array<int, [selection.definedBy.serves.modelClassName()/]>
 [/if]
@@ -543,9 +587,6 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [if (selection.selectPath->notEmpty() or selection.hasFormals)]
 [selection.documentSelectionParameters()/]
 [/if]
-[if (selection.hasPaginationSupport)]
-[selection.documentPagination()/]
-[/if]
 [/template]
 
 [template private documentParameters(filter : Filter) post(trim())]
@@ -554,9 +595,6 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/if]
 [if (filter.parameters->notEmpty())]
 [filter.documentFilterParameters()/]
-[/if]
-[if (filter.selection.hasPaginationSupport)]
-[filter.selection.documentPagination()/]
 [/if]
 [/template]
 
@@ -575,30 +613,18 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/for]
 [/template]
 
-[template private documentPagination(selection : Selection) post(trim())]
-* @param int $offset
-* @param int $limit
-[/template]
-
 [template private formals(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty() or selection.hasFormals)]
-[selection.selectionFormals()/][if (selection.hasPaginationSupport)]
-, [/if][/if][if (selection.hasPaginationSupport)]
-[selection.limitFormals()/]
-[/if]
+[selection.selectionFormals()/][/if]
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
 [if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals)]
-[filter.selection.selectionFormals()/][if (filter.parameters->notEmpty() or filter.selection.hasPaginationSupport)]
+[filter.selection.selectionFormals()/][if (filter.parameters->notEmpty())]
 , [/if]
 [/if]
 [if (filter.parameters->notEmpty())]
-[filter.filterFormals()/][if (filter.selection.hasPaginationSupport)]
-, [/if]
-[/if]
-[if (selection.hasPaginationSupport)]
-[filter.selection.limitFormals()/]
+[filter.filterFormals()/]
 [/if]
 [/template]
 
@@ -632,10 +658,8 @@ int $offset = 0, int $limit = 0
 
 [template private actuals(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty() or selection.hasFormals)]
-[selection.selectionActuals()/][if (selection.hasPaginationSupport)]
-, [/if]
+[selection.selectionActuals()/]
 [/if]
-[selection.limitActuals()/]
 [/template]
 
 [template private actuals(filter : Filter) post(trim())]
@@ -644,9 +668,8 @@ int $offset = 0, int $limit = 0
 , [/if]
 [/if]
 [if (filter.parameters->notEmpty())]
-[filter.filterActuals()/][if (filter.selection.hasPaginationSupport)], [/if]
+[filter.filterActuals()/]
 [/if]
-[filter.selection.limitActuals()/]
 [/template]
 
 [template private selectionActuals(selection : Selection) post(trim())]
@@ -658,12 +681,6 @@ $[key.routeParameterName(selection.selectionType)/][/for]
 [/if]
 [for (parameter : FormalParameter | selection.parameters) separator(', ')]
 $[parameter.name/][/for]
-[/template]
-
-[template private limitActuals(selection : Selection) post(trim())]
-[if (selection.hasPaginationSupport)]
-$offset, $limit
-[/if]
 [/template]
 
 [template private filterActuals(filter : Filter) post(trim())]
@@ -684,12 +701,6 @@ $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectNam
 [/if]
 [if (selection.ordering->notEmpty())]
 [selection.orderBy()/]
-[/if]
-[if (selection.hasPaginationSupport)]
-if ($limit > 0) {
-    $queryBuilder->setFirstResult($offset);
-    $queryBuilder->setMaxResults($limit);
-}
 [/if]
 [if (selection.distinct)]
 $queryBuilder->distinct();
