@@ -29,12 +29,14 @@
  [tabularUnit.unitFilters()/]
 [/if]
 [if (tabularUnit.hasPagination
-		and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
+	and not tabularUnit.selection.oclIsUndefined()
+	and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
  [tabularUnit.pagination(accessor)/]
 [/if]
  [tabularUnit.unitContent(null, accessor)/]
 [if (tabularUnit.hasPagination
-		and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
+	and not tabularUnit.selection.oclIsUndefined()
+	and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [tabularUnit.pagination(accessor)/]
 [/if]
 </section>

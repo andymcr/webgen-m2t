@@ -111,30 +111,26 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 
 [template private selectCode(unit : CollectionUnit)
 	?(not unit.hasFilters) post(trim())]
-[let variable : String = if unit.hasPagination then
+[let variable : String = if unit.hasPagination and not unit.selection.oclIsUndefined() then
 		 '$query'
 	else
 		'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
 	endif]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-[if (unit.inlineSelectCode() or unit.hasPagination)][variable/] =[else]
-return[/if] $this->[unit.selection.definedBy.instanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
+[variable/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
 	[else]
-[if (unit.inlineSelectCode() or unit.hasPagination)][variable/] =[else]
-return[/if] $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
+[variable/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
-[else]
-[if (unit.inlineSelectCode() or unit.hasPagination)][variable/] =[else]
-return[/if] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll();
-[/if]
-[if (unit.hasPagination)]
+	[if (unit.hasPagination)]
 $adapter = new QueryAdapter([variable/]);
-[if (unit.inlineSelectCode())]$parameters['['/]'[unit.instanceParameter()/]'[']'/] =[else]
-return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
+$parameters['['/]'[unit.instanceParameter()/]'[']'/] = Pagerfanta::createForCurrentPageWithMaxPerPage(
     $adapter,
     $request->query->get('page', 1),
     [unit.defaultPaginationSize/]);
+	[/if]
+[else]
+[variable/] = [unit.getContentRepository()/]->findAll();
 [/if]
 [/let]
 [/template]
@@ -152,7 +148,7 @@ else
 [unit.queryInstanceVariable()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-[unit.queryInstanceVariable()/] = [unit.oclAsType(DynamicUnit).getContentRepository()/]->findAll();
+[unit.queryInstanceVariable()/] = [unit.getContentRepository()/]->findAll();
 [/if]
 [if (unit.hasPagination)]
 $adapter = new QueryAdapter($query);
@@ -173,7 +169,7 @@ if ($request->query->has('[filter.name/]Filter'))
 [/template]
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
-$query = [unit.oclAsType(DynamicUnit).getContentRepository()/]->[filter.methodName/]Query(
+$query = [unit.getContentRepository()/]->[filter.methodName/]Query(
 [if (unit.hasRouteParameters(filter.selection))]
     [unit.routeParameterList(filter.selection, false)/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]

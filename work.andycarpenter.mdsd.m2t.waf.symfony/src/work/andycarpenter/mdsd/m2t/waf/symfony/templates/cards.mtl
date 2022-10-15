@@ -36,11 +36,13 @@
  [cardsUnit.generalOrContainerActions()/]
 [/if]
 [if (cardsUnit.hasPagination
+	and not cardsUnit.selection.oclIsUndefined()
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
 [cardsUnit.pagination(accessor)/]
 [/if]
 [cardsUnit.unitContent(null, accessor, 0)/]
 [if (cardsUnit.hasPagination
+	and not cardsUnit.selection.oclIsUndefined()
 	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
  [cardsUnit.pagination(accessor)/]
 [/if]
