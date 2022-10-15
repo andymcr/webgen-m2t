@@ -8,9 +8,9 @@
 [template public formViews(model : WafModel)]
 [file (model.formViewDirectory().concat('/').concat('bootstrap_custom').concat(model.htmlExtension()).concat(model.twigExtension()), false)]
 [if (model.useFormFloatingLabels)]
-{% use "bootstrap_4_layout.html.twig" %}
+{% use "bootstrap_5_layout.html.twig" %}
 [else]
-{% use "bootstrap_4_horizontal_layout.html.twig" %}
+{% use "bootstrap_5_horizontal_layout.html.twig" %}
 [/if]
 
 [if (model.useFormFloatingLabels)]
