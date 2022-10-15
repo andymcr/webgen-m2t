@@ -179,16 +179,6 @@ private [service.serviceClassName()/] $[service.instanceName()/];
  */
 private FormInterface $[unit.oclAsType(EditUnit).formName()/];
 
-		[elseif (unit.oclIsKindOf(CollectionUnit))]
-		[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-			[if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
-/**
- * @var [collectionUnit.containingType.modelClassName()/] $[collectionUnit.containerInstanceName()/]
- */
-private [collectionUnit.containingType.modelClassName()/] $[collectionUnit.containerInstanceName()/];
-
-			[/if]
-		[/let]
 		[else]
 /**
  * @var [unit.modelClassName()/] $[unit.instanceName()/]
@@ -230,10 +220,6 @@ public function __construct([for (repository : Repository | page.repositoriesUse
 [page.routeAttribute()/]
 public function [page.actionName()/]([page.actionMethodFormals()/]): Response
 {
-[for (unit : DynamicUnit | page.dynamicUnits)]
-    [unit.actionCore()/]
-
-[/for]
     [page.renderCore()/]
 }
 [/template]
@@ -251,10 +237,11 @@ string $[key.routeParameterName(page.routeParameters())/][/for]): Response
 [template private renderCore(page : Page) post(trim())]
 $parameters = ['['/][']'/];
 [page.templateParameters()/]
-[for (unit : ContentUnit | page.units)]
-[unit.templateParameters()/]
-[/for]
 
+[for (unit : ContentUnit | page.units)]
+[unit.renderCode()/]
+
+[/for]
 return $this->render('[page.templateName()/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/template]
 

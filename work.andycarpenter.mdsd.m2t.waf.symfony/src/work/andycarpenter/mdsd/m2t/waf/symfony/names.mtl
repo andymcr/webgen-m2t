@@ -297,11 +297,7 @@
 	= if unit.containingTypeLoadedElsewhere() then
 			unit.containingTypeLoadedBy().instanceVariable()
 		else
-			if unit.displayedOn.hasSingleActionMethod() then
-				'$'.concat(unit.containerInstanceName())
-			else
-				'$this->'.concat(unit.containerInstanceName())
-			endif			
+			'$'.concat(unit.containerInstanceName())
 		endif
 /]
 
