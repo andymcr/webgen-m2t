@@ -153,7 +153,9 @@ use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+[if (page.hasMessages)]
 use Symfony\Contracts\Translation\TranslatorInterface;
+[/if]
 [/template]
 
 [template private properties(page : Page) post(trim())]
@@ -188,18 +190,20 @@ private [unit.modelClassName()/] $[unit.instanceName()/];
 		[/if]
 	[/if]
 [/for]
+[if (page.hasMessages)]
 /**
  * @var TranslatorInterface $translationService
  */
 private TranslatorInterface $translationService;
+[/if]
 [/template]
 
 [template private constructor(page : Page) post(trim())]
 public function __construct([for (repository : Repository | page.repositoriesUsed()) separator (', ')]
 [repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() and page.hasServicesUsed)]
 , [/if][for (service : Service | page.servicesUsed->sortedBy(s | s.name)) separator (', ')]
-[service.serviceClassName()/] $[service.instanceName()/][/for][if (page.repositoriesUsed()->notEmpty() or page.hasServicesUsed)]
-, [/if]TranslatorInterface $translator)
+[service.serviceClassName()/] $[service.instanceName()/][/for][if ((page.repositoriesUsed()->notEmpty() or page.hasServicesUsed) and page.hasMessages)]
+, [/if][if (page.hasMessages)]TranslatorInterface $translator[/if])
 {
 [for (repository : Repository | page.repositoriesUsed())]
     $this->[repository.instanceName()/] = $[repository.instanceName()/];
@@ -207,7 +211,9 @@ public function __construct([for (repository : Repository | page.repositoriesUse
 [for (service : Service | page.servicesUsed->sortedBy(s | s.name))]
     $this->[service.instanceName()/] = $[service.instanceName()/];
 [/for]
+[if (page.hasMessages)]
     $this->translationService = $translator;
+[/if]
 }
 [/template]
 
@@ -236,7 +242,6 @@ string $[key.routeParameterName(page.routeParameters())/][/for]): Response
 
 [template private renderCore(page : Page) post(trim())]
 $parameters = ['['/][']'/];
-[page.templateParameters()/]
 
 [for (unit : ContentUnit | page.units)]
 [unit.renderCode()/]
@@ -244,7 +249,7 @@ $parameters = ['['/][']'/];
 [/for]
 return $this->[if (page.hasEditUnits)]
 renderForm[else]
-render[/if]('[page.templateName()/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+render[/if]('[page.templateName()/]/index[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/template]
 
 

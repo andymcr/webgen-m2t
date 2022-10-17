@@ -269,7 +269,7 @@
 
 [query public templateFilename(page : Page) : String
 	= page.pageTemplateDirectory().concat('/')
-		.concat('page')
+		.concat('index')
 		.concat(page.htmlExtension()).concat(page.twigExtension())
 /]
 

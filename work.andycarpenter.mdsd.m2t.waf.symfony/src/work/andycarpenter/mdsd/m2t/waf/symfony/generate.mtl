@@ -22,9 +22,9 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::cards/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::details/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::gallery/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::index/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::input/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::navigation/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::index/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::slider/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::staticView/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::tabular/]
@@ -50,7 +50,7 @@
 
 [model.navigation.navigation(model.siteProperties)/]
 [model.siteProperties.generatePage()/]
-[model.pages->select(p | p.hasUnits).page()/]
+[model.pages->select(p | p.hasUnits).indexTemplate()/]
 [model.pages.units.unitView()/]
 [model.formViews()/]
 

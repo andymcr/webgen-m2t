@@ -311,10 +311,6 @@ if ([unit.instanceVariable()/]->isSubmitted() && [unit.instanceVariable()/]->get
 [/template]
 
 
-[template public templateParameters(page : Page) post(trim())]
-$parameters['['/]'title'[']'/] = [page.translate(page.captionContainedId())/];
-[/template]
-
 [template public actionResultFlash(action : Action) post(trim())]
 [let page : Page = action.parentUnit.displayedOn]
 [if (action.hasSuccessMessage and action.hasFailureMessage)]

@@ -33,7 +33,6 @@ public function [unit.actionName()/]()
     return $this->renderPage([comment page.renderActualParameters(unit)/]);
 [else]
     $parameters = ['['/][']'/];
-    [page.templateParameters()/]
     [unit.templateParameters()/]
     return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/if]

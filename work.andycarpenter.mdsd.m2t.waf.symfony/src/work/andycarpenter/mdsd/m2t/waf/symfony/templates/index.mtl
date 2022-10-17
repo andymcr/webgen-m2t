@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module page(
+[module index(
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
@@ -8,9 +8,13 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
 
-[template public page(page : Page) post(trim())]
+[template public indexTemplate(page : Page) post(trim())]
 [file(page.templateFilename(), false)]
 {% extends 'base.html.twig' %}
+
+{% block page_title -%}
+{{ '[page.captionContainedId()/]' | trans({}, '[page.translationDomain()/]') }}
+{%- endblock %}
 
 [if (page.hasEditUnits)]
 {% block metas %}

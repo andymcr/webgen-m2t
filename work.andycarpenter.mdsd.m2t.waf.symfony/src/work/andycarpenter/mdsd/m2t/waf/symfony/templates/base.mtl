@@ -15,7 +15,7 @@
  <meta name="description" content="[siteProperties.metaDescription/]">
 [/if]
  {% block metas %}{% endblock %}
- <title>{{ site_title }}{% if title is defined %}: {{ title }}{% endif %}</title>
+ <title>{{ site_title }}: {% block page_title %}{% endblock %}</title>
 {% block stylesheets %}
  {{ encore_entry_link_tags('app') }}
 {% endblock %}
