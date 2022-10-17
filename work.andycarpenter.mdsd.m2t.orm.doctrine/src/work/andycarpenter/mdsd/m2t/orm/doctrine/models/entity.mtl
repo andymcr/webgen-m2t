@@ -628,7 +628,7 @@ public function getId(): int
  *
 [if (feature.isAttributeFeature)]
  * @return [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if]
-[elseif (feature.isAssociationFeature)]
+[else]
 [let association : Association = feature.oclAsType(Association)]
 	[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
  * @return [feature.documentationType()/]
@@ -636,13 +636,11 @@ public function getId(): int
  * @return [feature.documentationType()/][if (association.isSingleton and not association.associationContainer)]|null[/if]
 	[/if]
 [/let]
-[else]
-// **** [feature.name/]
 [/if]
  */
 [if (feature.isAttributeFeature)]
 public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
-[elseif (feature.isAssociationFeature)]
+[else]
 [let association : Association = feature.oclAsType(Association)]
 	[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
 public function [association.getMethodName()/](): [association.implementationType()/]
@@ -650,8 +648,6 @@ public function [association.getMethodName()/](): [association.implementationTyp
 public function [association.getMethodName()/](): [if (association.isSingleton and not association.associationContainer)]?[/if][association.implementationType()/]
 	[/if]
 [/let]
-[else]
-public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
 [/if]
 {
 [if (feature.isDerived)]
