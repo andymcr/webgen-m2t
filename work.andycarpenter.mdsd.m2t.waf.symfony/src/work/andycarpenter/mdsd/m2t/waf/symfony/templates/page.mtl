@@ -12,7 +12,13 @@
 [file(page.templateFilename(), false)]
 {% extends 'base.html.twig' %}
 
-[if (page.hasJavascript())]
+[if (page.hasEditUnits)]
+{% block metas %}
+<meta name="turbo-cache-control" content="no-preview">
+{% endblock %}
+
+[/if]
+[if (false and page.hasJavascript())]
 {% block javascripts %}
 {{ parent() }}
 {{ encore_entry_script_tags('[page.name.snakeCase()/]') }}
