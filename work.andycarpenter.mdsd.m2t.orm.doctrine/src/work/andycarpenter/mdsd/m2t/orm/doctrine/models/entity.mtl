@@ -99,7 +99,10 @@ ResetPasswordRequestInterface[/if]
 
 [/if]
 
-[if (entity.hasFeaturesWithDefaultValue or entity.hasCollectionAssociations)]
+[if (entity.implementsResetPasswordInterface)]
+    [entity.constructorResetPassword()/]
+
+[elseif (entity.hasFeaturesWithDefaultValue or entity.hasCollectionAssociations)]
     [entity.constructor()/]
 
 [/if]
@@ -241,7 +244,11 @@ protected string $password = '';
  * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
 	[else]
 	[let association : Association = feature.oclAsType(Association)]
+		[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
+ * @var [association.documentationType()/] $[feature.modelPropertyName()/]
+		[else]
  * @var [association.documentationType()/][if (association.isSingleton and not association.associationContainer)]|null[/if] $[feature.modelPropertyName()/]
+		[/if]
 	[/let]
 	[/if]
  */
@@ -255,8 +262,12 @@ protected [feature.implementationType()/] $[feature.modelPropertyName()/] = arra
 	[else]
 	[let association : Association = feature.oclAsType(Association)]
 		[if (association.isSingleton)]
+			[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
+protected [feature.implementationType()/] $[feature.modelPropertyName()/];
+			[else]
 protected [if (not association.associationContainer)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not association.associationContainer and not feature.hasDefaultValue)]
  = null[/if];
+			[/if]
 		[else]
 protected [association.implementationType()/] $[association.modelPropertyName()/];
 		[/if]
@@ -513,30 +524,32 @@ mappedBy[else]inversedBy[/if]="[opposite.modelPropertyName()/]"[if (association.
 [/if]
 [/template]
 
-[template private constructor(entity : Entity) post(trim())]
-public function __construct([if (entity.implementsResetPasswordInterface)]
-object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken[/if])
+[template private constructorResetPassword(entity : Entity) post(trim())]
+public function __construct(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken)
 {
-[if (entity.implementsResetPasswordInterface)]
     $this->user = $user;
     $this->initialize($expiresAt, $selector, $hashedToken);
-[else]
-	[for (feature : Feature | entity.features)]
-		[if (feature.hasDefaultValue)]
+}
+[/template]
+
+[template private constructor(entity : Entity) post(trim())]
+public function __construct()
+{
+[for (feature : Feature | entity.features)]
+	[if (feature.hasDefaultValue)]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
-		[elseif (feature.isAttributeFeature)]
-			[if (feature.isDateFeature)]
+	[elseif (feature.isAttributeFeature)]
+		[if (feature.isDateFeature)]
     $this->[feature.modelPropertyName()/] = [feature.oclAsType(Attribute).defaultSingletonValue()/];
-			[/if]
-		[elseif (feature.isAssociationFeature)]
-        [let association : Association = feature.oclAsType(Association)]
-			[if (not association.isSingleton)]
-    $this->[association.modelPropertyName()/] = new ArrayCollection();
-			[/if]
-		[/let]
 		[/if]
-	[/for]
-[/if]
+	[elseif (feature.isAssociationFeature)]
+       [let association : Association = feature.oclAsType(Association)]
+		[if (not association.isSingleton)]
+    $this->[association.modelPropertyName()/] = new ArrayCollection();
+		[/if]
+	[/let]
+	[/if]
+[/for]
 }
 [/template]
 
@@ -617,7 +630,11 @@ public function getId(): int
  * @return [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if]
 [elseif (feature.isAssociationFeature)]
 [let association : Association = feature.oclAsType(Association)]
+	[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
+ * @return [feature.documentationType()/]
+	[else]
  * @return [feature.documentationType()/][if (association.isSingleton and not association.associationContainer)]|null[/if]
+	[/if]
 [/let]
 [else]
 // **** [feature.name/]
@@ -627,7 +644,11 @@ public function getId(): int
 public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
 [elseif (feature.isAssociationFeature)]
 [let association : Association = feature.oclAsType(Association)]
-public function [feature.getMethodName()/](): [if (association.isSingleton and not association.associationContainer)]?[/if][feature.implementationType()/]
+	[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
+public function [association.getMethodName()/](): [association.implementationType()/]
+	[else]
+public function [association.getMethodName()/](): [if (association.isSingleton and not association.associationContainer)]?[/if][association.implementationType()/]
+	[/if]
 [/let]
 [else]
 public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
