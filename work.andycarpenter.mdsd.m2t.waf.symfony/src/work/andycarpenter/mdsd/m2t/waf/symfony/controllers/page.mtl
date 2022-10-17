@@ -242,7 +242,9 @@ $parameters = ['['/][']'/];
 [unit.renderCode()/]
 
 [/for]
-return $this->render('[page.templateName()/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+return $this->[if (page.hasEditUnits)]
+renderForm[else]
+render[/if]('[page.templateName()/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/template]
 
 

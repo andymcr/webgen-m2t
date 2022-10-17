@@ -233,10 +233,10 @@ if (!isset([editUnit.formVariable()/])) {
 [/if]
 [if (not editUnit.displayEmptyForm())]
 if (isset([editUnit.formVariable()/])) {
-    $parameters['['/]'[editUnit.instanceParameter()/]'[']'/] = [editUnit.formVariable()/]->createView();
+    $parameters['['/]'[editUnit.instanceParameter()/]'[']'/] = [editUnit.formVariable()/];
 }
 [else]
-$parameters['['/]'[editUnit.instanceParameter()/]'[']'/] = [editUnit.formVariable()/]->createView();
+$parameters['['/]'[editUnit.instanceParameter()/]'[']'/] = [editUnit.formVariable()/];
 [/if]
 
 [/let]
