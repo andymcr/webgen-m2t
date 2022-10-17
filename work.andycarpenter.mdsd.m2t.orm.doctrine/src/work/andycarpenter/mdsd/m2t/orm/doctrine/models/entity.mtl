@@ -99,8 +99,10 @@ ResetPasswordRequestInterface[/if]
 
 [/if]
 
+[if (entity.hasFeaturesWithDefaultValue or entity.hasCollectionAssociations)]
     [entity.constructor()/]
 
+[/if]
 [if (not entity.hasPrimaryKeys)]
     [entity.idMethods()/]
 
@@ -204,7 +206,7 @@ protected $[entity.autoKeyName/];
  *
  * @var array<int, string> $roles
  */
-protected array $roles;
+protected array $roles = array();
 [/template]
 
 [template private passwordFeatureProperties(entity : Entity) post(trim())]
@@ -214,7 +216,7 @@ protected array $roles;
  *
  * @var string $password
  */
-protected string $password;
+protected string $password = '';
 [/template]
 
 [template private featureProperties(entity : Entity) post(trim())]
@@ -235,9 +237,31 @@ protected string $password;
  [feature.validationAnnotation()/]
 	[/if]
  *
+	[if (feature.isAttributeFeature)]
  * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
+	[else]
+	[let association : Association = feature.oclAsType(Association)]
+ * @var [association.documentationType()/][if (association.isSingleton and not association.associationContainer)]|null[/if] $[feature.modelPropertyName()/]
+	[/let]
+	[/if]
  */
-protected [if (feature.isSingleton and (not feature.isRequired or feature.isAssociationFeature))]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/];
+	[if (feature.isAttributeFeature)]
+		[if (feature.isSingleton)]
+protected [if (not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not feature.isDateFeature and not feature.hasDefaultValue)]
+ = [feature.oclAsType(Attribute).defaultSingletonValue()/][/if];
+		[else]
+protected [feature.implementationType()/] $[feature.modelPropertyName()/] = array();
+		[/if]
+	[else]
+	[let association : Association = feature.oclAsType(Association)]
+		[if (association.isSingleton)]
+protected [if (not association.associationContainer)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not association.associationContainer and not feature.hasDefaultValue)]
+ = null[/if];
+		[else]
+protected [association.implementationType()/] $[association.modelPropertyName()/];
+		[/if]
+	[/let]
+	[/if]
 
 [elseif (feature.isResourceFeature)]
 /**
@@ -501,17 +525,15 @@ object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedTok
 		[if (feature.hasDefaultValue)]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
 		[elseif (feature.isAttributeFeature)]
-			[if (feature.isSingleton)]
+			[if (feature.isDateFeature)]
     $this->[feature.modelPropertyName()/] = [feature.oclAsType(Attribute).defaultSingletonValue()/];
-			[else]
-    $this->[feature.modelPropertyName()/] = Array();
 			[/if]
-		[else]
-			[if (feature.isSingleton)]
-    $this->[feature.modelPropertyName()/] = null;
-			[else]
-    $this->[feature.modelPropertyName()/] = new ArrayCollection();
+		[elseif (feature.isAssociationFeature)]
+        [let association : Association = feature.oclAsType(Association)]
+			[if (not association.isSingleton)]
+    $this->[association.modelPropertyName()/] = new ArrayCollection();
 			[/if]
+		[/let]
 		[/if]
 	[/for]
 [/if]
@@ -591,9 +613,25 @@ public function getId(): int
  *
 [/if]
  *
+[if (feature.isAttributeFeature)]
  * @return [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if]
+[elseif (feature.isAssociationFeature)]
+[let association : Association = feature.oclAsType(Association)]
+ * @return [feature.documentationType()/][if (association.isSingleton and not association.associationContainer)]|null[/if]
+[/let]
+[else]
+// **** [feature.name/]
+[/if]
  */
+[if (feature.isAttributeFeature)]
 public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
+[elseif (feature.isAssociationFeature)]
+[let association : Association = feature.oclAsType(Association)]
+public function [feature.getMethodName()/](): [if (association.isSingleton and not association.associationContainer)]?[/if][feature.implementationType()/]
+[/let]
+[else]
+public function [feature.getMethodName()/](): [if (feature.isSingleton and not feature.isRequired)]?[/if][feature.implementationType()/]
+[/if]
 {
 [if (feature.isDerived)]
     // [protected (feature.name.concat('.getMethod'))]
