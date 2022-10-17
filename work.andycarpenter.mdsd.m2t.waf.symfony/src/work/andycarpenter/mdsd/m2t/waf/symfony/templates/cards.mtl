@@ -30,21 +30,19 @@
 <h4[if (cardsUnit.hasCaptionClass or cardsUnit.omitCaption)]
  class="[if (cardsUnit.hasCaptionClass)][cardsUnit.captionClass/][/if] [if (cardsUnit.omitCaption)] hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
 [if (cardsUnit.hasFilters)]
-[cardsUnit.unitFilters()/]
+ [cardsUnit.unitFilters()/]
 [/if]
 [if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
  [cardsUnit.generalOrContainerActions()/]
 [/if]
 [if (cardsUnit.hasPagination
-	and not cardsUnit.selection.oclIsUndefined()
-	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
-[cardsUnit.pagination(accessor)/]
+	and not cardsUnit.selection.oclIsUndefined())]
+ <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].currentPage }}">
 [/if]
-[cardsUnit.unitContent(null, accessor, 0)/]
+ [cardsUnit.unitContent(accessor)/]
 [if (cardsUnit.hasPagination
-	and not cardsUnit.selection.oclIsUndefined()
-	and cardsUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
- [cardsUnit.pagination(accessor)/]
+	and not cardsUnit.selection.oclIsUndefined())]
+ </turbo-frame>
 [/if]
 [if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
  [cardsUnit.generalOrContainerActions()/]
@@ -55,7 +53,7 @@
 [/let]
 [/template]
 
-[template private unitContent(unit : ContentUnit, nullDisplayValue : String, accessor : String, depthIndex : Integer)
+[template private unitContent(unit : ContentUnit, accessor : String)
 	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let variable : String = cardsUnit.contentType.instanceName()]
@@ -90,6 +88,12 @@
  </div>
 {% endfor %}
 </div>
+[if (cardsUnit.hasPagination
+	and not cardsUnit.selection.oclIsUndefined())]
+ {% if [cardsUnit.instanceParameter()/].hasNextPage %}
+ <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].nextPage }}" src="{{ pagerfanta_page_url([cardsUnit.instanceParameter()/], [cardsUnit.instanceParameter()/].nextPage) }}" loading="lazy"></turbo-frame>
+ {% endif %}
+[/if]
 [/let]
 [/let]
 [/template]
