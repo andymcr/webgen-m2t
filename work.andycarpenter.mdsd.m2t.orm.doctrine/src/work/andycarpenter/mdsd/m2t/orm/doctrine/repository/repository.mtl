@@ -155,8 +155,10 @@ use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
 [/if]
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-[if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
+[if (repository.selections->notEmpty())]
 use Doctrine\ORM\Query;
+[/if]
+[if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
 use Doctrine\ORM\QueryBuilder;
 [/if]
 [if (security.authentication.userModel.repository = repository)]
@@ -399,7 +401,7 @@ public function [selection.methodQueryName()/](): Query
  */
 public function [selection.methodName/](): [selection.returnType()/]
 {
-    return $this->[selection.methodQueryName()/]()->getResult();
+    return $this->[selection.methodQueryName()/]()->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
 }
 
 [if (selection.filters->notEmpty())]
@@ -438,7 +440,7 @@ public function [selection.methodQueryName()/]([selection.formals()/]): Query
  */
 public function [selection.methodName/]([selection.formals()/]): [selection.returnType()/]
 {
-    return $this->[selection.methodQueryName()/]()->getResult();
+    return $this->[selection.methodQueryName()/]([selection.actuals()/])->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
 }
 
 [/template]
@@ -478,7 +480,7 @@ public function [selection.methodQueryName()/]([selection.formals()/]): Query
  */
 public function [selection.methodName/]([selection.formals()/]): [selection.returnType()/]
 {
-    return $this->[selection.methodQueryName()/]()->getResult();
+    return $this->[selection.methodQueryName()/]([selection.actuals()/])->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
 }
 
 [selection.filterMethods()/]
@@ -674,7 +676,7 @@ int $offset = 0, int $limit = 0
 
 [template private selectionActuals(selection : Selection) post(trim())]
 [if (selection.selectPath->notEmpty())]
-	[for (key : Attribute | selection.selectionType.uriPathKeys()) separator(', ')]
+	[for (key : Attribute | selection.uriPathKeys()) separator(', ')]
 $[key.routeParameterName(selection.selectionType)/][/for]
 [if (selection.hasFormals)]
 , [/if]
