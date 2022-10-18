@@ -392,6 +392,10 @@
 		endif
 /]
 
+[query public pageSizeConstant(unit : CollectionUnit) : String
+	= unit.name.concat('_page_size').toUpper()
+/]
+
 [query public queryInstanceVariable(unit : CollectionUnit) : String
 	= if unit.hasPagination then
 			'$query'

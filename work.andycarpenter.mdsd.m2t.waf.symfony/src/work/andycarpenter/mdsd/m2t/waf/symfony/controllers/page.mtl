@@ -79,6 +79,10 @@ namespace [page.controllersNamespace()/];
 
 class [page.controllerClassName()/] extends [page.baseControllerClassName()/]
 {
+[if (page.hasPagination)]
+    [page.constants()/]
+
+[/if]
     [page.properties()/]
 
     [page.constructor()/]
@@ -156,6 +160,13 @@ use Symfony\Component\Routing\Annotation\Route;
 [if (page.hasMessages)]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [/if]
+[/template]
+
+[template private constants(page : Page) post(trim())]
+[for (unit : CollectionUnit | page.collectionUnits->select(u | u.hasPagination))]
+private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
+
+[/for]
 [/template]
 
 [template private properties(page : Page) post(trim())]

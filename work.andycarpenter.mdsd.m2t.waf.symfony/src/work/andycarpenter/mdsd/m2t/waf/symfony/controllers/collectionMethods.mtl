@@ -127,7 +127,7 @@ $adapter = new QueryAdapter([variable/]);
 $parameters['['/]'[unit.instanceParameter()/]'[']'/] = Pagerfanta::createForCurrentPageWithMaxPerPage(
     $adapter,
     $request->query->get('page', 1),
-    [unit.defaultPaginationSize/]);
+    self::[unit.pageSizeConstant()/]);
 	[/if]
 [else]
 [variable/] = [unit.getContentRepository()/]->findAll();
