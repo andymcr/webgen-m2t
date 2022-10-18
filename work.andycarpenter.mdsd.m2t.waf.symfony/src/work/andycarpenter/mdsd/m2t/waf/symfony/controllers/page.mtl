@@ -260,7 +260,7 @@ $parameters = ['['/][']'/];
 [/for]
 return $this->[if (page.hasEditUnits)]
 renderForm[else]
-render[/if]('[page.templateName()/]/index[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+render[/if]('[page.pageTemplateDirectory()/]/index[page.htmlExtension()/][page.twigExtension()/]', $parameters);
 [/template]
 
 

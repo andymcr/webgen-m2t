@@ -100,8 +100,47 @@
 	= eObject.templatesDirectory()
 /]
 
+[query public pageFullTemplateDirectory(page : Page) : String
+	= page.templatesDirectory().concat('/').concat(page.pageTemplateDirectory())
+/]
+
 [query public pageTemplateDirectory(page : Page) : String
-	= page.templatesDirectory().concat('/').concat(page.templateName())
+	= if page.parentPage.oclIsUndefined() then
+			page.templateName()
+		else
+			let parentDirectory : String = page.parentPageTemplateDirectory()
+				in if parentDirectory = '' then
+						page.templateName()
+					else
+						parentDirectory.concat('/').concat(page.templateName())
+					endif
+		endif
+			
+/]
+
+[query private parentPageTemplateDirectory(page : Page) : String
+	= if page.parentPage.oclIsUndefined() then
+			if page.units->isEmpty() then
+				page.templateName()
+			else
+				''
+			endif
+		else
+			let parentDirectory : String = page.parentPage.parentPageTemplateDirectory()
+				in if parentDirectory = '' then
+						if page.units->isEmpty() then
+							page.templateName()
+						else
+							''
+						endif
+					else
+						if page.units->isEmpty() then
+							parentDirectory.concat('/').concat(page.templateName())
+						else
+							parentDirectory
+						endif
+					endif
+		endif
 /]
 
 [query public servicesDirectory(eObject : EObject) : String
@@ -120,7 +159,7 @@
 	= eObject.extensionsDirectory().concat('/').concat('Twig')
 /]
 
-[query public templatesDirectory(eObject : EObject) : String
+[query public templatesDirectory(page : EObject) : String
 	= 'templates'
 /]
 
@@ -268,13 +307,13 @@
 /]
 
 [query public templateFilename(page : Page) : String
-	= page.pageTemplateDirectory().concat('/')
+	= page.pageFullTemplateDirectory().concat('/')
 		.concat('index')
 		.concat(page.htmlExtension()).concat(page.twigExtension())
 /]
 
 [query public templateFilename(unit : ContentUnit) : String
-	= unit.displayedOn.pageTemplateDirectory().concat('/')
+	= unit.displayedOn.pageFullTemplateDirectory().concat('/')
 		.concat(unit.templateName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]

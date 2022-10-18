@@ -54,6 +54,6 @@
 [/template]
 
 [template private unitContent(unit : ContentUnit, page : Page) post(trim())]
-{{ include('[page.templateName()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
+{{ include('[page.pageTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
 [/template]
 
