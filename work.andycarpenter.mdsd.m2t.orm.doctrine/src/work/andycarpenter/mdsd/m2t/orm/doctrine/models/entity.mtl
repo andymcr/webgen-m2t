@@ -557,7 +557,7 @@ public function __construct()
 [if (attribute.isBooleanFeature)]
 false
 [elseif (attribute.isDateFeature)]
-new \DateTime('0000-00-00 00:00:00')
+new \DateTime('00:00:00')
 [elseif (attribute.isEnumerationFeature)]
 0
 [elseif (attribute.isFloatFeature)]
