@@ -32,8 +32,8 @@
 [if (cardsUnit.hasFilters)]
  [cardsUnit.unitFilters()/]
 [/if]
-[if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
- [cardsUnit.generalOrContainerActions()/]
+[if ((cardsUnit.hasGeneralActions or cardsUnit.hasTargetActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
+ [cardsUnit.unitActions()/]
 [/if]
 [if (cardsUnit.hasPagination
 	and not cardsUnit.selection.oclIsUndefined())]
@@ -45,7 +45,7 @@
  </turbo-frame>
 [/if]
 [if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
- [cardsUnit.generalOrContainerActions()/]
+ [cardsUnit.unitActions()/]
 [/if]
 </section>
 [/file]
@@ -116,10 +116,10 @@
 </div>
 [/template]
 
-[template private generalOrContainerActions(unit : CardsUnit) post(trim())]
+[template private unitActions(unit : CardsUnit) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
 [for (action : Action | unit.actions)]
-	[if (action.isGeneralAction)]
+	[if (action.isGeneralAction or action.isTargetAction)]
  [action.unitActionLink(null)/]
 	[elseif (action.isContainerAction)]
  [action.unitActionLink(unit.containerParameter())/]

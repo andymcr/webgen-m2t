@@ -71,8 +71,15 @@
 [/template]
 
 [template private linkPath(action : Action, valueAccessor : String) 
-	?(action.oclIsKindOf(GeneralOperationAction)) post(trim())]
+	?(action.isGeneralAction) post(trim())]
 '[action.routeName()/]'
+[/template]
+
+[template private linkPath(action : Action, valueAccessor : String) 
+	?(action.isTargetAction) post(trim())]
+[let targetAction : TargetAction = action.oclAsType(TargetAction)]
+'[targetAction.target.oclAsType(ContentUnit).routeName()/]'
+[/let]
 [/template]
 
 [template private linkPath(action : Action, valueAccessor : String) 
