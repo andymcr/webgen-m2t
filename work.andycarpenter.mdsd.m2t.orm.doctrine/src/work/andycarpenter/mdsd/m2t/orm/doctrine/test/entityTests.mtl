@@ -51,10 +51,12 @@ public function test[feature.modelPropertyName().toUpperFirst()/]Default(): void
 	[/if]
 [/let]
 [elseif (feature.isSingleton)]
-	[if (feature.isRequired)]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.associationContainer)]
     $this->expectError();
 	[/if]
-    $this->assertNull($[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertNull($[association.partOf.instanceName()/]->[association.getMethodName()/]());
+[/let]
 [else]
     $this->assertCount(0, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
 [/if]
@@ -68,7 +70,7 @@ public function test[feature.modelPropertyName().toUpperFirst()/]Default(): void
 	[if (attribute.isBooleanFeature)]
 false
 	[elseif (attribute.isDateFeature)]
-new \DateTimeImmutable('0000-00-00 00:00:00')
+new \DateTimeImmutable('00:00:00')
 	[elseif (attribute.isEmailFeature)]
 ''
 	[elseif (attribute.isEnumerationFeature)]
