@@ -3,19 +3,16 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::javascript::app/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::javascript::autocomplete/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::javascript::page/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::javascript::webpack_config/]
 
 
 [template public javascript(model : WafModel)]
-[model.webpackConfigJs()/]
+[comment model.webpackConfigJs()/]
 
-[model.appJs()/]
+[comment model.appJs()/]
 
-[model.autocompleteJs()/]
-
-[for (page : Page | model.pages->select(p | p.hasJavascript()))]
+[for (page : Page | model.pages->select(p | false and p.hasJavascript()))]
 [page.pageJs()/]
 [/for]
 [/template]
