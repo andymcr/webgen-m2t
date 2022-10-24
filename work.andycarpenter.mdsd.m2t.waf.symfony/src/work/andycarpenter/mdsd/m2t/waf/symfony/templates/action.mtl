@@ -96,7 +96,7 @@
 '[targetUnit.routeName()/]'[action.linkPathParameters(
 	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, targetUnit.containingType,
 		action.parentUnit.hasObjectAccess()),
-	action.parentUnit.displayedOn = targetUnit.displayedOn)/]
+	action.parentUnit.controller = targetUnit.controller)/]
 [/let]
 [/let]
 [/template]
@@ -164,19 +164,22 @@
 		endif]
 '[routeName/]'[action.linkPathParameters(
 	targetUnit.routeActualParameters(routeParameters, valueAccessor, valueType, action.parentUnit.hasObjectAccess()),
-	action.parentUnit.displayedOn = targetUnit.displayedOn)/]
+	action.parentUnit.controller = targetUnit.controller)/]
 [/let]
 [/let]
 [/let]
 [/template]
 
 [template private linkPathParameters(action : Action, routeParameters : String, preserveQuery : Boolean) post(trim())]
-[if (action.parentUnit.displayedOn.hasFiltersOrPagination() and preserveQuery)]
+[let controller : Controller = action.parentUnit.controller]
+[if ((controller.hasFilters or controller.hasPagination) and preserveQuery)]
 , app.request.query.all[if (not routeParameters.oclIsUndefined())]
 |merge({ [routeParameters/] })[/if]
 [else][if (not routeParameters.oclIsUndefined())]
 , { [routeParameters/] }[/if]
-[/if][/template]
+[/if]
+[/let]
+[/template]
 
 
 [query private hasTooltip(action : Action) : Boolean

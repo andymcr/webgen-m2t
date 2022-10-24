@@ -9,7 +9,7 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::actions/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
@@ -94,8 +94,8 @@
 
 
 [query public formsUsing(entity : Entity, model : WafModel) : Sequence(SingletonUnit)
-	= model.pages
-		->collect(p | p.units)
+	= model.controllers
+		->collect(c | c.units)
 		->select(u | u.oclIsKindOf(SingletonUnit)).oclAsType(SingletonUnit)
 		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))
 		->select(u | u.contentType = entity)
@@ -206,36 +206,36 @@
 /]
 
 
-[query public actionName(page : Page) : String
-	= page.instanceName()
+[query public actionName(controller : Controller) : String
+	= controller.instanceName()
 /]
 
-[query public controllerName(page : Page) : String
-	= page.name
+[query public controllerName(controller : Controller) : String
+	= controller.name
 /]
 
-[query public controllerClassName(page : Page) : String
-	= page.controllerName().concat('Controller').toUpperFirst()
+[query public controllerClassName(controller : Controller) : String
+	= controller.controllerName().concat('Controller').toUpperFirst()
 /]
 
-[query public controllerTestClassName(page : Page) : String
-	= page.controllerClassName().concat(page.testClassSuffix())
+[query public controllerTestClassName(controller : Controller) : String
+	= controller.controllerClassName().concat(controller.testClassSuffix())
 /]
 
-[query public instanceName(page : Page) : String
-	= page.name.toLowerFirst()
+[query public instanceName(controller : Controller) : String
+	= controller.name.toLowerFirst()
 /]
 
-[query public routeName(page : Page) : String
-	= page.uniqueName()
+[query public routeName(controller : Controller) : String
+	= controller.uniqueName()
 /]
 
-[query public templateName(page : Page) : String
-	= page.instanceName().snakeCase()
+[query public templateName(controller : Controller) : String
+	= controller.instanceName().snakeCase()
 /]
 
-[query public uniqueName(page : Page) : String
-	= page.instanceName()
+[query public uniqueName(controller : Controller) : String
+	= controller.instanceName()
 /]
 
 
@@ -247,7 +247,7 @@
 	= if not unit.oclIsKindOf(EditUnit) then
 			unit.instanceName()
 		else
-			if unit.displayedOn.editUnits->size() = 1 then
+			if unit.controller.editUnits->size() = 1 then
 				if unit.oclIsTypeOf(CreateUpdateUnit) then
 					if update then
 						unit.oclAsType(CreateUpdateUnit).updateUriElement
@@ -272,8 +272,8 @@
 /]
 
 [query public captchaActionName(unit : ContentUnit) : String
-	= if unit.displayedOn.editUnits->size() = 1 then
-			unit.displayedOn.uniqueName()
+	= if unit.controller.editUnits->size() = 1 then
+			unit.controller.uniqueName()
 		else
 			unit.uniqueName()
 		endif
@@ -310,11 +310,11 @@
 /]
 
 [query public controllerName(unit : DynamicUnit) : String
-	= unit.displayedOn.controllerName()
+	= unit.controller.controllerName()
 /]
 
 [query public csrfTokenId(unit : SingletonUnit) : String
-	= unit.displayedOn.name.snakeCase()
+	= unit.controller.name.snakeCase()
 		.concat('_')
 		.concat(unit.name.snakeCase())
 /]
@@ -352,7 +352,7 @@
 /]
 
 [query public formVariable(unit : EditUnit) : String
-	= if unit.displayedOn.hasSingleActionMethod() then
+	= if unit.controller.hasSingleActionMethod() or unit.controller.isMultiPage then
 			'$'.concat(unit.formName())
 		else
 			'$this->'.concat(unit.formName())
@@ -407,7 +407,7 @@
 [query public routeUpdateName(unit : EditUnit) : String
 	= if unit.oclIsTypeOf(UpdateUnit) then
 			if unit.uriElement <> '' then
-				unit.displayedOn.uniqueName()
+				unit.controller.uniqueName()
 					.concat('_').concat(unit.uriElement)
 			else
 				unit.uniqueName()
@@ -415,7 +415,7 @@
 		else if unit.oclIsTypeOf(CreateUpdateUnit) then
 			let createUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)
 				in if createUnit.updateUriElement <> '' then
-					unit.displayedOn.uniqueName()
+					unit.controller.uniqueName()
 						.concat('_').concat(createUnit.updateUriElement)
 				else
 					unit.uniqueName()
@@ -426,11 +426,11 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
-	= if unit.displayedOn.hasSingleActionMethod() or unit.isRoutingUnit() then
-			unit.displayedOn.uniqueName()
+	= if unit.controller.hasSingleActionMethod() or unit.isRoutingUnit() then
+			unit.controller.uniqueName()
 		else
 			if unit.oclIsKindOf(EditUnit) and unit.uriElement <> '' then
-				unit.displayedOn.uniqueName()
+				unit.controller.uniqueName()
 					.concat('_').concat(unit.uriElement)
 			else
 				unit.uniqueName()
@@ -511,7 +511,7 @@
 
 [query public thumbName(unit : ImageUnit) : String
 	= let units : OrderedSet(ImageUnit)
-		= unit.displayedOn.partOf.imageUnits
+		= unit.controller.partOf.imageUnits
 		in if unit->collect(u | u.name)->select(n | n = unit.name)->size() > 1 then
 				unit.instanceName()
 			else
@@ -544,7 +544,7 @@
 /]
 
 [query public uniqueName(unit : ContentUnit) : String
-	= unit.displayedOn.uniqueName().concat('_').concat(unit.instanceName())
+	= unit.controller.uniqueName().concat('_').concat(unit.instanceName())
 /]
 
 [query public viewCheckEmailName(element : ForgottenPasswordElement) : String
@@ -649,7 +649,7 @@
 
 [query private actionName(action : Action, unit : DynamicUnit) : String
 	= let actionsWithName : OrderedSet(Action)
-		= unit.displayedOn.actionsWithoutTarget->select(a | a.name.equalsIgnoreCase(action.name))
+		= unit.controller.actionsWithoutTarget->select(a | a.name.equalsIgnoreCase(action.name))
 		in if actionsWithName->size() < 2  then
 				action.uniqueName()
 			else
@@ -701,19 +701,19 @@
 /]
 
 [query public routeActionReturnName(action : Action) : String
-	= let page : Page = action.parentUnit.displayedOn
-		in if page.hasRoutingUnits() then
-				page.uniqueName()
+	= let controller : Controller = action.parentUnit.controller
+		in if controller.isSinglePage and controller.hasSingleActionMethod() then
+				controller.routeName()
 			else
 				action.parentUnit.routeName()
 			endif
 /]
 
 [query public routeName(action : Action) : String
-	= let page : Page = action.parentUnit.displayedOn
-		in if page.hasRoutingUnits() then
-				if page.actionsWithoutTarget->select(a | a.name = action.name)->size() = 1 then
-					page.uniqueName()
+	= let controller : Controller = action.parentUnit.controller
+		in if controller.hasRoutingUnits() then
+				if controller.actionsWithoutTarget->select(a | a.name = action.name)->size() = 1 then
+					controller.uniqueName()
 						.concat('_').concat(action.uniqueName())
 				else
 					action.parentUnit.routeName()

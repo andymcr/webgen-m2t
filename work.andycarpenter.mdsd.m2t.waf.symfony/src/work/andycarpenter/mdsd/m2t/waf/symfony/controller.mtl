@@ -1,0 +1,76 @@
+[comment encoding = UTF-8 /]
+[module controller(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+
+
+[query public entitiesUsed(controller : Controller) : Sequence(Entity)
+	= controller.editUnits
+			->select(u | not u.oclIsTypeOf(UpdateUnit) or controller.units->size() > 1)
+			->collect(u | u.contentType)
+		->union(controller.collectionUnits
+			->select(u | u.hasPagination
+				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
+			->collect(u | u.contentType))
+		->union(controller.collectionUnits
+			->select(u | u.isContained 
+				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
+			->collect(u | u.containingType))
+		->asSet()->asSequence()
+/]
+
+[query public repositoriesUsed(controller : Controller) : Sequence(Repository)
+	= let containerRepositories : Set(Repository)
+		= controller.editUnits
+			->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))
+			->select(u | not u.hasExplicitlyEditedContainer)
+			->select(u | not u.containingType.oclIsUndefined())
+			->collect(u | u.containingType.repository)
+			->asSet()
+		in controller.repositoriesUsed->asSet()
+			->union(containerRepositories)
+			->asSequence()
+/]
+
+
+[query public hasMultipleAuthorisationRoles (controller : Controller) : Boolean
+	= units->exists(u | u.authorisationRoles.trim().tokenize(',; ')->size() > 1)
+		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() > 1))
+/]
+
+[query public hasSingleAuthorisationRole (controller : Controller) : Boolean
+	= units->exists(u | u.authorisationRoles.trim().tokenize(',; ')->size() = 1)
+		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() = 1))
+/]
+
+
+[query public hasSelectionMethod(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			not unit.oclAsType(CollectionUnit).inlineSelectCode()
+		else
+			false
+		endif
+/]
+
+[query public hasSingleActionMethod(controller : Controller) : Boolean
+	= controller.units->notEmpty()
+		and not controller.hasFormUnits
+		and controller.dynamicUnits->forAll(u | not u.isDislayedOnlyOnExplicitRoute())
+		and controller.hasCommonUnitAuthentication
+/]
+
+[query public hasSupportMethods(controller : Controller) : Boolean
+	= controller.units->select(u | u.hasSupportMethods())->notEmpty()
+/]
+
+[query public hasSupportMethods(unit : ContentUnit) : Boolean
+	= unit.oclIsKindOf(CollectionUnit) and not unit.oclAsType(CollectionUnit).inlineSelectCode()
+/]
+
+[query public inlineSelectCode(unit : CollectionUnit) : Boolean
+	= unit.controller.isMultiPage
+		or not unit.hasFilters
+		or unit.supportedFilters->size() = 1 and unit.controller.hasSingleActionMethod()
+/]

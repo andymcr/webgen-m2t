@@ -3,19 +3,27 @@
 	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::base/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::form/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
 
 
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
-[file(unit.templateFilename(), false)]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+[file(unit.templateFilename(), false)]
+[if (unit.controller.isMultiPage)]
+[unit.templateStart()/]
+
+{% block content %}
+{% trans_default_domain "entity" %}
+[/if]
 {% trans_default_domain "[unit.translationDomain()/]" %}
 <section[if (editUnit.hasSectionClass)] class="[editUnit.sectionClass/]"[/if] id="[editUnit.instanceParameter()/]">
 <h4[if (editUnit.hasCaptionClass or editUnit.omitCaption)]
@@ -26,8 +34,11 @@
 [editUnit.unitContent(null, editUnit.instanceParameter(), 0)/]
 [/if]
 </section>
-[/let]
+[if (unit.controller.isMultiPage)]
+{% endblock %}
+[/if]
 [/file]
+[/let]
 [/template]
 
 [template public unitView(unit : ContentUnit)

@@ -3,6 +3,7 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
@@ -12,6 +13,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::badge/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::base/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::collection/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::data/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::fields/]
@@ -25,6 +27,11 @@
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let accessor : String = cardsUnit.instanceParameter()]
 [file(cardsUnit.templateFilename(), false)]
+[if (unit.controller.isMultiPage)]
+[unit.templateStart()/]
+
+{% block content %}
+[/if]
 {% trans_default_domain "entity" %}
 <section [if (cardsUnit.hasSectionClass)] class="[cardsUnit.sectionClass/]" [/if]id="[cardsUnit.instanceParameter()/]">
 <h4[if (cardsUnit.hasCaptionClass or cardsUnit.omitCaption)]
@@ -48,6 +55,9 @@
  [cardsUnit.unitActions()/]
 [/if]
 </section>
+[if (unit.controller.isMultiPage)]
+{% endblock %}
+[/if]
 [/file]
 [/let]
 [/let]

@@ -12,7 +12,7 @@
 
 [comment model.appJs()/]
 
-[for (page : Page | model.pages->select(p | false and p.hasJavascript()))]
-[page.pageJs()/]
+[for (controller : Controller | model.controllers->select(p | false and p.hasJavascript()))]
+[controller.pageJs()/]
 [/for]
 [/template]

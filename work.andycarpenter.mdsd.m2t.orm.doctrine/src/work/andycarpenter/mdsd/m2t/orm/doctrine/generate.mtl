@@ -31,8 +31,8 @@
 [model.repositories.repository(wafModel.security)/]
 
 [model.entities->select(e | not e.implementsResetPasswordInterface).factory()/]
-[model.entities->select(e | not e.implementsResetPasswordInterface).fixture(wafModel)/]
+[comment model.entities->select(e | not e.implementsResetPasswordInterface).fixture(wafModel)/]
 
 [model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
-[model.repositories.repositoryTests(wafModel.security)/]
+[comment model.repositories.repositoryTests(wafModel.security)/]
 [/template]

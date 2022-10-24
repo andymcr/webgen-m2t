@@ -7,7 +7,8 @@
 [import work::andycarpenter::mdsd::m2t::expression::expression/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::actions/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
@@ -20,11 +21,11 @@
 [template public unitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[collectionUnit.actionMethod()/]
 [if (not collectionUnit.inlineSelectCode())]
-
 [collectionUnit.actionSupportMethods()/]
+
 [/if]
+[collectionUnit.actionMethod()/]
 [/let]
 [/template]
 
@@ -41,7 +42,23 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
     [unit.selectCode()/]
 
 [/if]
+[if (unit.controller.isMultiPage)]
+	[if (unit.isContained or unit.isDislayedOnlyOnExplicitRoute() or unit.inlineSelectCode())]
+    [unit.renderCode()/]
+	[/if]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+	[if (unit.isContained)]
+        '[unit.containerParameter()/]' => [unit.containerInstanceVariable()/],
+	[/if]
+	[if (unit.inlineSelectCode())]
+        '[unit.instanceParameter()/]' => [unit.instanceVariable()/]
+	[else]
+        '[unit.instanceParameter()/]' => $this->[unit.selectName()/]([unit.selectMethodParameters()/])
+	[/if]
+    [']'/]);
+[else]
     return $this->renderPage([unit.renderMethodActuals()/]);
+[/if]
 }
 [/template]
 
@@ -57,10 +74,6 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 [/let]
 [/template]
 
-[template public actionCore(unit : CollectionUnit)
-	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[/template]
-
 [template public renderCode(unit : ContentUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
@@ -69,7 +82,9 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 if (![collectionUnit.containerInstanceVariable()/]) {
     throw $this->createNotFoundException('The [collectionUnit.containingType.name/] does not exist');
 }
+	[if (not unit.controller.isMultiPage)]
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
+	[/if]
 [/if]
 [if (collectionUnit.isDislayedOnlyOnExplicitRoute())]
 if (isset([unit.instanceVariable()/])) {
@@ -88,7 +103,7 @@ if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.instanceVaria
 [template private renderCode2(unit : CollectionUnit) post(trim())]
 [if (unit.inlineSelectCode())]
 [unit.selectCode()/]
-[else]
+[elseif (not unit.controller.isMultiPage)]
 $parameters['['/]'[unit.instanceParameter()/]'[']'/] = $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
 [/template]
@@ -113,9 +128,11 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 	?(not unit.hasFilters) post(trim())]
 [let variable : String = if unit.hasPagination and not unit.selection.oclIsUndefined() then
 		 '$query'
+	else if unit.controller.isMultiPage then
+		unit.instanceVariable()
 	else
 		'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
-	endif]
+	endif endif]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
 [variable/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
@@ -124,7 +141,9 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 	[/if]
 	[if (unit.hasPagination)]
 $adapter = new QueryAdapter([variable/]);
-$parameters['['/]'[unit.instanceParameter()/]'[']'/] = Pagerfanta::createForCurrentPageWithMaxPerPage(
+[if (unit.controller.isMultiPage)]
+[unit.instanceVariable()/][else]
+$parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] = Pagerfanta::createForCurrentPageWithMaxPerPage(
     $adapter,
     $request->query->get('page', 1),
     self::[unit.pageSizeConstant()/]);
@@ -153,7 +172,9 @@ else
 [if (unit.hasPagination)]
 $adapter = new QueryAdapter($query);
 [if (unit.inlineSelectCode())]
-$parameters['['/]'[unit.instanceParameter()/]'[']'/] =[else]
+[if (unit.controller.isMultiPage)]
+[unit.instanceVariable()/][else]
+$parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] =[else]
 return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
     $adapter,
     $request->query->get('page', 1),

@@ -51,8 +51,8 @@
 /]
 
 
-[query public hasRouteParameters(page : Page) : Boolean
-	= page.routeParameters()->notEmpty()
+[query public hasRouteParameters(controller : Controller) : Boolean
+	= controller.routeParameters()->notEmpty()
 /]
 
 [query public hasRouteParameters(unit : DynamicUnit) : Boolean
@@ -75,14 +75,14 @@
 	= action.routeParameters()->notEmpty()
 /]
 
-[query public routeParameters(page : Page) : Sequence(Attribute)
-	= if page.dynamicUnits->isEmpty() then
+[query public routeParameters(controller : Controller) : Sequence(Attribute)
+	= if controller.dynamicUnits->isEmpty() then
 			Sequence{}
-		else if page.dynamicUnits->size() = 1 then
-			page.dynamicUnits->first().routeParameters()
+		else if controller.dynamicUnits->size() = 1 then
+			controller.dynamicUnits->first().routeParameters()
 		else
-			page.dynamicUnits->subOrderedSet(2, page.dynamicUnits->size())->iterate(u;
-				common : Sequence(Attribute) = page.dynamicUnits->first().routeParameters()
+			controller.dynamicUnits->subOrderedSet(2, controller.dynamicUnits->size())->iterate(u;
+				common : Sequence(Attribute) = controller.dynamicUnits->first().routeParameters()
 				| common->select(k | u.routeParameters()->includes(k)))
 		endif endif
 /]
@@ -167,5 +167,5 @@
 /]
 
 [query public isDislayedOnlyOnExplicitRoute(unit : DynamicUnit) : Boolean
-	= not unit.displayedOn.routeParameters()->includesAll(unit.routeParameters())
+	= not unit.controller.routeParameters()->includesAll(unit.routeParameters())
 /]

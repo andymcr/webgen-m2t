@@ -14,7 +14,7 @@
 
 
 [query private formEntities(model : WafModel) : Set(Entity)
-	= model.pages
+	= model.controllers
 		->collect(p | p.units)
 		->select(u | u.oclIsKindOf(DynamicUnit)).oclAsType(DynamicUnit)
 		->select(u | u.oclIsKindOf(EditUnit) or u.oclIsKindOf(ControlUnit))

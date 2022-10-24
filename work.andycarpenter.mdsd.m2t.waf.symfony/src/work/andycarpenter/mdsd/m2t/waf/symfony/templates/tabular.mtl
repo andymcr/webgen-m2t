@@ -2,6 +2,7 @@
 [module tabular(
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
@@ -10,6 +11,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::base/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::collection/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::data/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
@@ -21,6 +23,11 @@
 [let tabularUnit : TabularUnit = unit.oclAsType(TabularUnit)]
 [let accessor : String = tabularUnit.instanceParameter()]
 [file(tabularUnit.templateFilename(), false)]
+[if (unit.controller.isMultiPage)]
+[unit.templateStart()/]
+
+{% block content %}
+[/if]
 {% trans_default_domain "entity" %}
 <section [if (tabularUnit.hasSectionClass)] class="[tabularUnit.sectionClass/]" [/if]id="[tabularUnit.instanceParameter()/]">
  <h4[if (tabularUnit.hasCaptionClass or tabularUnit.omitCaption)]
@@ -40,6 +47,9 @@
  [tabularUnit.pagination(accessor)/]
 [/if]
 </section>
+[if (unit.controller.isMultiPage)]
+{% endblock %}
+[/if]
 [/file]
 [/let]
 [/let]

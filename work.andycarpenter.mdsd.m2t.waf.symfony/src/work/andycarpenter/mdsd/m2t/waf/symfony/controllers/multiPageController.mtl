@@ -1,0 +1,72 @@
+[comment encoding = UTF-8 /]
+[module multiPageController(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::baseController/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::collectionMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::detailsMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::editMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::staticMethods/]
+
+
+[template public controller(controller : MultiPageController, model : WafModel)]
+[file(controller.controllerFilename(model), false)]
+<?php
+[if (model.hasAPI)]
+namespace [controller.webControllersNamespace()/];
+[else]
+namespace [controller.controllersNamespace()/];
+[/if]
+
+[controller.useStatements()/]
+
+
+class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
+{
+[if (controller.hasPagination)]
+    [controller.constants()/]
+
+[/if]
+    [controller.properties()/]
+
+    [controller.constructor()/]
+
+	[for (unit : ContentUnit | controller.units)]
+    [unit.unitMethods()/]
+
+		[if (unit.oclIsKindOf(DynamicUnit))]
+		[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+			[for (action : Action | dynamicUnit.actionsWithoutTarget)]
+    [action.actionMethod()/]
+
+			[/for]
+		[/let]
+		[/if]
+	[/for]
+}
+[/file]
+[/template]
+
+[template private constructor(controller : Controller) post(trim())]
+public function __construct([for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name)) separator (', ')]
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and controller.hasServicesUsed)]
+, [/if][for (service : Service | controller.servicesUsed->sortedBy(s | s.name)) separator (', ')]
+[service.serviceClassName()/] $[service.instanceName()/][/for][if ((controller.repositoriesUsed()->notEmpty() or controller.hasServicesUsed) and controller.hasMessages)]
+, [/if][if (controller.hasMessages)]TranslatorInterface $translator[/if])
+{
+[for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
+    $this->[repository.instanceName()/] = $[repository.instanceName()/];
+[/for]
+[for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
+    $this->[service.instanceName()/] = $[service.instanceName()/];
+[/for]
+[if (controller.hasMessages)]
+    $this->translationService = $translator;
+[/if]
+}
+[/template]

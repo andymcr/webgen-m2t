@@ -71,7 +71,7 @@
 [if (unit.hasCustomisedSubmitLabel())]
 [unit.submitLabelContainedId()/]
 [else]
-[unit.displayedOn.rootPage.submitLabelContainedId()/]
+[unit.controller.rootController.submitLabelContainedId()/]
 [/if]
 [/template]
 
@@ -79,7 +79,7 @@
 [if (unit.hasCustomisedCancelLabel())]
 [unit.cancelLabelContainedId()/]
 [else]
-[unit.displayedOn.rootPage.cancelLabelContainedId()/]
+[unit.controller.rootController.cancelLabelContainedId()/]
 [/if]
 [/template]
 

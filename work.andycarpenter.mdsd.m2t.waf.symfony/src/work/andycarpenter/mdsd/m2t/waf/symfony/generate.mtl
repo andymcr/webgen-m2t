@@ -3,6 +3,7 @@
 	'http://andycarpenter.work/metamodel/base',
 	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::generate/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::config::framework/]
@@ -12,7 +13,8 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::config::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::config::vichUploader/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::api/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::page/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::multiPageController/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::singlePageController/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::extensions::extensions/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::autocompleteType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::formType/]
@@ -42,7 +44,14 @@
 
 [model.autocompleteTypes()/]
 [model.formTypes()/]
-[model.pages->select(p | p.units->notEmpty()).controller(model)/]
+[model.controllers
+	->select(c | c.hasUnits)
+	->select(c | c.isSinglePage).oclAsType(SinglePageController)
+	.controller(model)/]
+[model.controllers
+	->select(c | c.hasUnits)
+	->select(c | c.isMultiPage).oclAsType(MultiPageController)
+	.controller(model)/]
 
 [if (model.hasAPI)]
 [comment model.api.resources.controller(model)/]
@@ -50,8 +59,8 @@
 
 [model.navigation.navigation(model.siteProperties)/]
 [model.siteProperties.generatePage()/]
-[model.pages->select(p | p.hasUnits).indexTemplate()/]
-[model.pages.units.unitView()/]
+[model.controllers->select(p | p.hasUnits and p.isSinglePage).indexTemplate()/]
+[model.controllers.units.unitView()/]
 [model.formViews()/]
 
 [model.entityTranslations()/]
@@ -67,7 +76,7 @@
 
 [model.extensions()/]
 
-[model.pages->select(p | p.hasUnits).controllerTests(model)/]
+[comment model.controllers->select(p | p.hasUnits).controllerTests(model)/]
 [/template]
 
 [template private symfonyConfig(genModel : WafModel)]

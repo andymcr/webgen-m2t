@@ -2,6 +2,7 @@
 [module staticMethods(
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
@@ -16,7 +17,7 @@
 [/template]
 
 [template private actionMethod(unit : StaticUnit) post(trim())]
-[let page : Page = unit.displayedOn]
+[let controller : Controller = unit.controller]
 /**
  */
 [if (unit.isAuthorised)]
@@ -25,16 +26,14 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]()
 {
-[if (page.partOf.siteProperties.staticUnitsEditable)]
+[if (controller.partOf.siteProperties.staticUnitsEditable)]
    [unit.instanceVariable()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
 
 [/if]
-[if (page.units->size() > 1)]
-    return $this->renderPage([comment page.renderActualParameters(unit)/]);
+[if (controller.isMultiPage)]
+    return $this->render('[controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]');
 [else]
-    $parameters = ['['/][']'/];
-    [unit.templateParameters()/]
-    return $this->render('[page.name/]/page[page.htmlExtension()/][page.twigExtension()/]', $parameters);
+    return $this->renderPage([comment unit.renderMethodActuals()/]);
 [/if]
 }
 [/let]
@@ -43,7 +42,7 @@ public function [unit.actionName()/]()
 [template private templateParameters(unit : ContentUnit)
 	? (unit.oclIsKindOf(StaticUnit)) post(trim())]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
-[if (unit.displayedOn.partOf.siteProperties.staticUnitsEditable)]
+[if (unit.controller.partOf.siteProperties.staticUnitsEditable)]
 $parameters['['/]'[staticUnit.instanceParameter()/]'[']'/] = [staticUnit.instanceVariable()/];
 [/if]
 [/let]

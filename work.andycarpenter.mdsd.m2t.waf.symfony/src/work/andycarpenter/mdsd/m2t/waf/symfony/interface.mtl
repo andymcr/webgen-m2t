@@ -56,21 +56,17 @@
 /]
 
 
-[query public hasJavascript(page : Page) : Boolean
-	= page.hasAutocompleteFields
+[query public hasJavascript(controller : Controller) : Boolean
+	= controller.hasAutocompleteFields
 /]
 
-[query public hasRoutingUnits(page : Page) : Boolean
-	= page.routingUnits()->notEmpty()
+[query public hasRoutingUnits(controller : Controller) : Boolean
+	= controller.routingUnits()->notEmpty()
 /]
 
-[query public hasFiltersOrPagination(page : Page) : Boolean
-	= page.hasFilters or page.hasPagination
-/]
-
-[query public routingUnits(page : Page) : OrderedSet(ContentUnit)
-	= page.dynamicUnits
-		->select(u | u.routeParameters() = page.routeParameters())
+[query public routingUnits(controller : Controller) : OrderedSet(ContentUnit)
+	= controller.dynamicUnits
+		->select(u | u.routeParameters() = controller.routeParameters())
 /]
 
 
@@ -103,11 +99,11 @@
 /]
 
 [query public hasCustomisedCancelLabel(unit : EditUnit) : Boolean
-	= unit.cancelLabel <> unit.displayedOn.partOf.defaultCancelLabel
+	= unit.cancelLabel <> unit.controller.partOf.defaultCancelLabel
 /]
 
 [query public hasCustomisedSubmitLabel(unit : EditUnit) : Boolean
-	= unit.confirmLabel <> unit.displayedOn.partOf.defaultSaveLabel
+	= unit.confirmLabel <> unit.controller.partOf.defaultSaveLabel
 /]
 
 [query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean
@@ -187,7 +183,7 @@
 
 [query public isHomeUnit(unit : ContentUnit) : Boolean
 	= let homeUnit : ContentUnit
-		= unit.displayedOn.partOf.homeUnit()
+		= unit.controller.partOf.homeUnit()
 		in if homeUnit.oclIsUndefined() then
 				false
 			else
@@ -197,7 +193,7 @@
 
 [query public isRoutingUnit(unit : ContentUnit) : Boolean
 	= let routingUnits : OrderedSet(ContentUnit)
-		= unit.displayedOn.routingUnits()
+		= unit.controller.routingUnits()
 		in if routingUnits->isEmpty() then
 				false
 			else

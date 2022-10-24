@@ -7,11 +7,11 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
 
 
-[template public pageJs(page : Page)]
-[file(page.javascriptFilename(), false)]
+[template public pageJs(controller : Controller)]
+[file(controller.javascriptFilename(), false)]
 import Autocomplete from './autocomplete'
 
-[for (field : UnitField | page.autocompleteFields)]
+[for (field : UnitField | controller.autocompleteFields)]
 [let path : String = field.oclAsType(UnitAssociation).uriPath(field.displayedOn)]
 const [field.instanceName()/] = new Autocomplete(
     "[field.displayedOn.contentType.name.snakeCase()/]_[field.instanceName()/]",

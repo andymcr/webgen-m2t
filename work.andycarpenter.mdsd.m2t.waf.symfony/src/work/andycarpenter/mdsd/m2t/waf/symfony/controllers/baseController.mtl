@@ -1,0 +1,253 @@
+[comment encoding = UTF-8 /]
+[module baseController(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
+
+
+[template public useStatements(controller : Controller) post(trim())]
+[for (entity : Entity | controller.entitiesUsed()->sortedBy(e | e.name))]
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+[/for]
+[for (form : SingletonUnit | controller.formUnits->sortedBy(u | u.name))]
+use [form.formNamespace()/]\[form.typeClassName()/];
+[/for]
+[for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
+use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
+[/for]
+[for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
+use [service.serviceNamespace()/]\[service.serviceClassName()/];
+[/for]
+[if (controller.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
+use Doctrine\Common\Collections\ArrayCollection;
+[/if]
+[if (controller.hasCollectionUnits)]
+	[if (controller.collectionUnits->select(u | u.hasPagination)->notEmpty())]
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
+	[/if]
+[/if]
+[if (controller.hasMultipleAuthorisationRoles())]
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+[elseif (controller.hasSingleAuthorisationRole())]
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+[/if]
+use Symfony\Bundle\FrameworkBundle\Controller\[controller.baseControllerClassName()/];
+[if (controller.hasEditUnits)]
+use Symfony\Component\Form\FormInterface;
+[/if]
+[if (controller.hasFileActions)]
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+[/if]
+[if (controller.hasEditUnits or controller.hasFilters or controller.hasPagination)]
+use Symfony\Component\HttpFoundation\Request;
+[/if]
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+[if (controller.hasMessages)]
+use Symfony\Contracts\Translation\TranslatorInterface;
+[/if]
+[/template]
+
+[template public constants(controller : Controller) post(trim())]
+[for (unit : CollectionUnit | controller.collectionUnits->select(u | u.hasPagination))]
+private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
+
+[/for]
+[/template]
+
+[template public properties(controller : Controller) post(trim())]
+[for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
+/**
+ * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
+ */
+private [repository.repositoryClassName()/] $[repository.instanceName()/];
+
+[/for]
+[for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
+/**
+ * @var [service.serviceClassName()/] $[service.instanceName()/]
+ */
+private [service.serviceClassName()/] $[service.instanceName()/];
+
+[/for]
+[if (controller.isSinglePage and not controller.hasSingleActionMethod())]
+	[for (unit : ContentUnit | controller.units->sortedBy(u | u.name))]
+		[if (unit.isFormUnit)]
+/**
+ * @var FormInterface<string> $[unit.oclAsType(EditUnit).formName()/]
+ */
+private FormInterface $[unit.oclAsType(EditUnit).formName()/];
+
+		[elseif (unit.oclIsKindOf(DynamicUnit))]
+		[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
+			[if (dynamicUnit.isContained)]
+/**
+ * @var [dynamicUnit.modelClassName()/] $[dynamicUnit.instanceName()/]
+ */
+private [dynamicUnit.modelClassName()/] $[dynamicUnit.instanceName()/];
+
+			[/if]
+		[/let]
+		[/if]
+	[/for]
+[/if]
+[if (controller.hasMessages)]
+/**
+ * @var TranslatorInterface $translationService
+ */
+private TranslatorInterface $translationService;
+[/if]
+[/template]
+
+
+[template public actionMethod(action : Action)
+	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
+[let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
+[let unit : DynamicUnit = action.parentUnit]
+/**
+ */
+[if (deleteAction.isAuthorised)]
+[deleteAction.securityAttribute()/]
+[/if]
+[deleteAction.routeAttribute(deleteAction.uriElement)/]
+public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
+{
+    [deleteAction.loadInstance()/]
+    $this->[unit.contentRepository.instanceName()/]->remove($[deleteAction.instanceName()/], true);
+
+[if (unit.oclIsKindOf(CollectionUnit))]
+    return [action.redirect(deleteAction.routeParameters())/];
+[else]
+[/if]
+}
+[/let]
+[/let]
+[/template]
+
+[template public actionMethod(action : Action)
+	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(UnitFeature)) post(trim())]
+[let operationAction : OperationAction = action.oclAsType(OperationAction)]
+[let unit : DynamicUnit = action.parentUnit]
+/**
+ */
+[if (operationAction.isAuthorised)]
+[operationAction.securityAttribute()/]
+[/if]
+[operationAction.routeAttribute(operationAction.uriElement)/]
+public function [operationAction.actionName()/]([unit.actionMethodFormals()/]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
+Response[else]BinaryFileResponse[/if]
+{
+[if (operationAction.operation.resultType = OperationResultTypes::None)]
+[elseif (operationAction.operation.resultType = OperationResultTypes::File)]
+[/if]
+}
+[/let]
+[/let]
+[/template]
+
+[template public actionMethod(action : Action)
+	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(DynamicUnit)) post(trim())]
+[let operationAction : OperationAction = action.oclAsType(OperationAction)]
+[let unit : DynamicUnit = operationAction.parentUnit]
+/**
+ */
+[if (operationAction.isAuthorised)]
+[operationAction.securityAttribute()/]
+[/if]
+[if (action.oclIsTypeOf(InstanceOperationAction))]
+[operationAction.routeAttribute(operationAction.uriElement)/]
+[elseif (action.oclIsTypeOf(ContainerOperationAction))]
+[operationAction.routeContainerAttribute()/]
+[else]
+[operationAction.routeGeneralAttribute()/]
+[/if]
+public function [operationAction.actionName()/]([if (action.oclIsTypeOf(InstanceOperationAction))]
+[action.actionMethodFormals()/][elseif (action.oclIsTypeOf(ContainerOperationAction))]
+[action.actionMethodContainerFormals()/][else]
+[/if]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
+Response[else]BinaryFileResponse[/if]
+
+{
+[if (not operationAction.operation.oclIsUndefined())]
+    [operationAction.actionMethodBody()/]
+[/if]
+}
+[/let]
+[/let]
+[/template]
+
+[template private actionMethodBody(action : OperationAction)
+	? (action.operation.resultType = OperationResultTypes::None) post(trim())]
+[if (action.oclIsTypeOf(GeneralOperationAction))]
+	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
+$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
+[else]
+	[if (action.isInstanceAction)]
+[action.loadInstance()/]
+	[else]
+[action.loadContainer()/]
+	[/if]
+	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
+$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
+[/if]
+[if (action.hasSuccessMessage or action.hasFailureMessage)]
+[action.actionResultFlash()/]
+[/if]
+[let routeParameters : Sequence(Attribute)
+	= if action.oclIsTypeOf(InstanceOperationAction) then 
+			action.routeParameters()
+		else if action.oclIsTypeOf(ContainerOperationAction) then
+			action.parentUnit.routeParameters()
+		else
+			Sequence{}
+		endif endif]
+return [action.redirect(routeParameters)/];
+[/let]
+[/template]
+
+[template private actionMethodBody(action : OperationAction)
+	? (action.operation.resultType = OperationResultTypes::File) post(trim())]
+[if (action.oclIsTypeOf(GeneralOperationAction))]
+$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
+$response = $this->file($file, '[action.name/][if (not action.fileExtension.oclIsUndefined())]
+[action.fileExtension/][/if]');
+return $response;
+[else]
+	[if (action.isInstanceAction)]
+[action.loadInstance()/]
+	[else]
+[action.loadContainer()/]
+	[/if]
+$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
+$response = $this->file($file, [action.filename()/][if (not action.fileExtension.oclIsUndefined())]
+ . '[action.fileExtension/]'[/if]);
+return $response;
+[/if]
+[/template]
+
+[template private filename(action : Action) post(trim())]
+[if (action.isInstanceAction)]
+$[action.instanceName()/]->[action.parentUnit.contentType.accessFilename()/]
+[elseif (not action.oclIsTypeOf(GeneralOperationAction))]
+$[action.instanceName()/]->[action.parentUnit.containingType.accessFilename()/]
+[else]]
+'[action.name/]'
+[/if]
+[/template]
+
+[template private accessFilename(entity : Entity) post(trim())]
+[if (entity.attributeKeys->notEmpty())]
+[entity.attributeKeys->first().getMethodName()/]()
+[else]
+[entity.containingAssociation.getMethodName()/]()->[entity.containingType.accessFilename()/]
+[/if]
+[/template]

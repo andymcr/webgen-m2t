@@ -72,8 +72,8 @@
 	= eObject.sourceDirectory().concat('/').concat(eObject.controllerDirectory())
 /]
 
-[query public controllerTestsDirectory(page : Page) : String
-	= page.testsDirectory().concat('/').concat(page.controllerDirectory())
+[query public controllerTestsDirectory(controller : Controller) : String
+	= controller.testsDirectory().concat('/').concat(controller.controllerDirectory())
 /]
 
 [query public cssDirectory(eObject : EObject) : String
@@ -100,42 +100,42 @@
 	= eObject.templatesDirectory()
 /]
 
-[query public pageFullTemplateDirectory(page : Page) : String
-	= page.templatesDirectory().concat('/').concat(page.pageTemplateDirectory())
+[query public controllerFullTemplateDirectory(controller : Controller) : String
+	= controller.templatesDirectory().concat('/').concat(controller.controllerTemplateDirectory())
 /]
 
-[query public pageTemplateDirectory(page : Page) : String
-	= if page.parentPage.oclIsUndefined() then
-			page.templateName()
+[query public controllerTemplateDirectory(controller : Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			controller.templateName()
 		else
-			let parentDirectory : String = page.parentPageTemplateDirectory()
+			let parentDirectory : String = controller.parentControllerTemplateDirectory()
 				in if parentDirectory = '' then
-						page.templateName()
+						controller.templateName()
 					else
-						parentDirectory.concat('/').concat(page.templateName())
+						parentDirectory.concat('/').concat(controller.templateName())
 					endif
 		endif
 			
 /]
 
-[query private parentPageTemplateDirectory(page : Page) : String
-	= if page.parentPage.oclIsUndefined() then
-			if page.units->isEmpty() then
-				page.templateName()
+[query private parentControllerTemplateDirectory(controller : Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			if controller.units->isEmpty() then
+				controller.templateName()
 			else
 				''
 			endif
 		else
-			let parentDirectory : String = page.parentPage.parentPageTemplateDirectory()
+			let parentDirectory : String = controller.parentController.parentControllerTemplateDirectory()
 				in if parentDirectory = '' then
-						if page.units->isEmpty() then
-							page.templateName()
+						if controller.units->isEmpty() then
+							controller.templateName()
 						else
 							''
 						endif
 					else
-						if page.units->isEmpty() then
-							parentDirectory.concat('/').concat(page.templateName())
+						if controller.units->isEmpty() then
+							parentDirectory.concat('/').concat(controller.templateName())
 						else
 							parentDirectory
 						endif
@@ -159,7 +159,7 @@
 	= eObject.extensionsDirectory().concat('/').concat('Twig')
 /]
 
-[query public templatesDirectory(page : EObject) : String
+[query public templatesDirectory(eObject : EObject) : String
 	= 'templates'
 /]
 
@@ -184,8 +184,8 @@
 	= eObject.appNamespace().concat('\\').concat(eObject.controllerDirectory())
 /]
 
-[query public controllerTestsNamespace(page : Page) : String
-	= page.testsNamespace().concat('\\').concat(page.controllerDirectory())
+[query public controllerTestsNamespace(controller : Controller) : String
+	= controller.testsNamespace().concat('\\').concat(controller.controllerDirectory())
 /]
 
 [query public extensionsNamespace(eObject : EObject) : String
@@ -225,21 +225,21 @@
 			.concat(authentication.executableExtension())
 /]
 
-[query public controllerFilename(page : Page, model : WafModel) : String
+[query public controllerFilename(controller : Controller, model : WafModel) : String
 	= if model.hasAPI then
-			page.webControllersDirectory()
+			controller.webControllersDirectory()
 		else
-			page.controllersDirectory()
+			controller.controllersDirectory()
 		endif.concat('/')
-			.concat(page.controllerClassName())
-			.concat(page.executableExtension())
+			.concat(controller.controllerClassName())
+			.concat(controller.executableExtension())
 /]
 
-[query public controllerTestFilename(page : Page, model : WafModel) : String
-	= page.controllerTestsDirectory()
+[query public controllerTestFilename(controller : Controller, model : WafModel) : String
+	= controller.controllerTestsDirectory()
 			.concat('/')
-			.concat(page.controllerTestClassName())
-			.concat(page.executableExtension())
+			.concat(controller.controllerTestClassName())
+			.concat(controller.executableExtension())
 /]
 
 [query public controllerFilename(resource : Resource) : String
@@ -284,10 +284,10 @@
 		.concat(association.executableExtension())
 /]
 
-[query public javascriptFilename(page : Page) : String
-	= page.javascriptAssetsDirectory().concat('/')
-		.concat(page.name.snakeCase())
-		.concat(page.javascriptExtension())
+[query public javascriptFilename(controller : Controller) : String
+	= controller.javascriptAssetsDirectory().concat('/')
+		.concat(controller.name.snakeCase())
+		.concat(controller.javascriptExtension())
 /]
 
 [query public loginFormAuthenticatorFilename(authentication : LocalAuthenticationSystem) : String
@@ -306,14 +306,14 @@
 		.concat(service.executableExtension())
 /]
 
-[query public templateFilename(page : Page) : String
-	= page.pageFullTemplateDirectory().concat('/')
+[query public templateFilename(controller : Controller) : String
+	= controller.controllerFullTemplateDirectory().concat('/')
 		.concat('index')
-		.concat(page.htmlExtension()).concat(page.twigExtension())
+		.concat(controller.htmlExtension()).concat(controller.twigExtension())
 /]
 
 [query public templateFilename(unit : ContentUnit) : String
-	= unit.displayedOn.pageFullTemplateDirectory().concat('/')
+	= unit.controller.controllerFullTemplateDirectory().concat('/')
 		.concat(unit.templateName())
 		.concat(unit.htmlExtension()).concat(unit.twigExtension())
 /]

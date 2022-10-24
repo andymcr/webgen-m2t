@@ -204,27 +204,27 @@
 /]
 
 
-[query public cancelLabelContainedId(page : Page) : String
-	= page.labelsContainedId().concat('.').concat(page.cancelElement())
+[query public cancelLabelContainedId(controller : Controller) : String
+	= controller.labelsContainedId().concat('.').concat(controller.cancelElement())
 /]
 
-[query public captionContainedId(page : Page) : String
-	= page.id().concat('.').concat(page.captionElement())
+[query public captionContainedId(controller : Controller) : String
+	= controller.id().concat('.').concat(controller.captionElement())
 /]
 
-[query private labelsContainedId(page : Page) : String
-	= page.id().concat('.').concat(page.labelsElement())
+[query private labelsContainedId(controller : Controller) : String
+	= controller.id().concat('.').concat(controller.labelsElement())
 /]
 
-[query public submitLabelContainedId(page : Page) : String
-	= page.labelsContainedId().concat('.').concat(page.submitElement())
+[query public submitLabelContainedId(controller : Controller) : String
+	= controller.labelsContainedId().concat('.').concat(controller.submitElement())
 /]
 
-[query public translationDomain(page : Page) : String
-	= if page.rootPage.name.equalsIgnoreCase('home') then
+[query public translationDomain(controller : Controller) : String
+	= if controller.rootController.name.equalsIgnoreCase('home') then
 			'default'
 		else
-			page.rootPage.name.toLower()
+			controller.rootController.name.toLower()
 		endif
 /]
 
@@ -242,7 +242,7 @@
 /]
 
 [query private containedId(unit : ContentUnit) : String
-	= unit.displayedOn.id().concat('.').concat(unit.id())
+	= unit.controller.id().concat('.').concat(unit.id())
 /]
 
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
@@ -289,7 +289,7 @@
 /]
 
 [query public translationDomain(unit : ContentUnit) : String
-	= unit.displayedOn.translationDomain()
+	= unit.controller.translationDomain()
 /]
 
 

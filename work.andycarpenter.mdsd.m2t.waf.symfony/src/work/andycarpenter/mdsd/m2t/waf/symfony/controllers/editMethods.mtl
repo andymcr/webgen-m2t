@@ -8,6 +8,7 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
@@ -49,7 +50,7 @@ $[parameter.name/][/for]
 [/template]
 
 [template private actionCreateMethod(unit : EditUnit) post(trim())]
-[let page : Page = unit.displayedOn]
+[let controller : Controller = unit.controller]
 /**
  */
 [if (unit.isAuthorised)]
@@ -59,8 +60,13 @@ $[parameter.name/][/for]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
     [unit.actionCreateCore()/]
-
-    return $this->renderPage([unit.renderMethodActuals()/]);
+[if (unit.controller.isMultiPage)]
+    return $this->renderForm('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+        '[unit.instanceParameter()/]' => [unit.formVariable()/]
+    [']'/]);
+[else]
+    return $this->renderController([unit.renderMethodActuals()/]);
+[/if]
 }
 [/let]
 [/template]
@@ -90,7 +96,7 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 [/template]
 
 [template private actionUpdateMethod(unit : EditUnit) post(trim())]
-[let page : Page = unit.displayedOn]
+[let controller : Controller = unit.controller]
 [let suffix : String
 	= if unit.oclIsTypeOf(CreateUpdateUnit) then
 			unit.oclAsType(CreateUpdateUnit).updateUriElement
@@ -106,8 +112,13 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): Response
 {
     [unit.actionUpdateCore()/]
-
-    return $this->renderPage([unit.renderMethodUpdateActuals()/]);
+[if (unit.controller.isMultiPage)]
+    return $this->renderForm('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+        '[unit.instanceParameter()/]' => [unit.formVariable()/]
+    [']'/]);
+[else]
+    return $this->renderController([unit.renderMethodUpdateActuals()/]);
+[/if]
 }
 [/let]
 [/let]
@@ -152,9 +163,9 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 [/template]
 
 [template private createForm(unit : EditUnit, instanceName : String, sourceParameters : Sequence(Attribute)) post(trim())]
-[let page : Page = unit.displayedOn]
+[let controller : Controller = unit.controller]
 $this->createForm([unit.typeClassName()/]::class, [instanceName/], ['['/]
-    'action' => $this->generateUrl('[unit.routeName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteParameters())]
+    'action' => $this->generateUrl('[unit.routeName()/]'[if (controller.hasFilters or controller.hasPagination)], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(), ['['/]
@@ -171,9 +182,9 @@ array_merge(
 [/template]
 
 [template private updateForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[let page : Page = unit.displayedOn]
+[let controller : Controller = unit.controller]
 $this->createForm([unit.typeClassName()/]::class, [unit.instanceVariable()/], ['['/]
-    'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (page.hasFiltersOrPagination())], [if (not unit.hasRouteUpdateParameters())]
+    'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (controller.hasFilters or controller.hasPagination)], [if (not unit.hasRouteUpdateParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(), ['['/]
@@ -204,13 +215,13 @@ if (is_null($[unit.containerInstanceName()/])) {
 [template private saveBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [unit.getContentRepository()/]->save([unit.instanceVariable()/], true);
 [if (unit.hasSuccessMessage)]
-$this->addFlash('success', $this->translationService->trans('[unit.successMessageId()/]', ['['/][']'/], '[unit.displayedOn.translationDomain()/]'));
+$this->addFlash('success', $this->translationService->trans('[unit.successMessageId()/]', ['['/][']'/], '[unit.controller.translationDomain()/]'));
 [/if]
 [if (not unit.confirmDestination.oclIsUndefined())]
-return [unit.confirmDestination.redirect()/];
+return [unit.confirmDestination.redirect(sourceParameters)/];
 [else]
 	[if (not unit.onSaveContinueEditing)]
-return [unit.displayedOn.redirect(sourceParameters)/];
+return [unit.redirect(sourceParameters)/];
 	[/if]
 [/if]
 [/template]
@@ -238,6 +249,5 @@ if (isset([editUnit.formVariable()/])) {
 [else]
 $parameters['['/]'[editUnit.instanceParameter()/]'[']'/] = [editUnit.formVariable()/];
 [/if]
-
 [/let]
 [/template]

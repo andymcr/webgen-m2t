@@ -71,14 +71,14 @@ public function load(ObjectManager $manager)
 [/template]
 
 [query private authorisationRoles(genModel : WafModel): Set(String)
-	= genModel.pages
+	= genModel.controllers
 		->select(p | p.isAuthorised)
 		->collect(p | p.authorisationRoles())
 		->asSet()
 /]
 
-[query private authorisationRoles(page : Page): Set(String)
-	= page.units
+[query private authorisationRoles(controller : Controller): Set(String)
+	= controller.units
 		->select(u | u.isAuthorised)
 		->collect(u | u.authorisationRoles.trim())
 		->asSet()

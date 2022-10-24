@@ -2,6 +2,7 @@
 [module base(
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
 
 [template public generatePage(siteProperties : SiteProperties)]
@@ -72,4 +73,18 @@
 </body>
 </html>
 [/file]
+[/template]
+
+[template public templateStart(unit : ContentUnit) post(trim())]
+{% extends 'base.html.twig' %}
+
+{% block page_title -%}
+{{ '[unit.controller.captionContainedId()/]' | trans({}, '[unit.controller.translationDomain()/]') }}
+{%- endblock %}
+
+[if (unit.oclIsKindOf(EditUnit))]
+{% block metas %}
+<meta name="turbo-cache-control" content="no-preview">
+{% endblock %}
+[/if]
 [/template]

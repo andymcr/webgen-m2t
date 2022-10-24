@@ -10,35 +10,43 @@
 
 
 [template public sectionsTranslations(model : WafModel)]
-[for (page : Page | model.pages->select(p | p.parentPage.oclIsUndefined()))]
-[page.sectionTranslations()/]
+[for (controller : Controller | model.controllers->select(p | p.parentController.oclIsUndefined()))]
+	[if (controller.hasUnits or controller.childControllers->notEmpty())]
+[controller.sectionTranslations()/]
+	[/if]
 [/for]
 [/template]
 
-[template private sectionTranslations(page : Page) post(trim())]
-[file (page.transDirectory().concat('/').concat(page.translationDomain()).concat('.en').concat(page.xlfExtension()), false)]
+[template private sectionTranslations(controller : Controller) post(trim())]
+[file (controller.transDirectory().concat('/').concat(controller.translationDomain()).concat('.en').concat(controller.xlfExtension()), false)]
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
-[if (page.hasAnyEditUnits)]
-   [page.cancelLabelContainedId().idTranslation(page.partOf.defaultCancelLabel)/]
-   [page.submitLabelContainedId().idTranslation(page.partOf.defaultSaveLabel)/]
+[if (controller.hasEditUnits)]
+   [controller.cancelLabelContainedId().idTranslation(controller.partOf.defaultCancelLabel)/]
+   [controller.submitLabelContainedId().idTranslation(controller.partOf.defaultSaveLabel)/]
 [/if]
-   [page.translations()/]
+[if (controller.hasUnits or controller.childControllers->notEmpty())]
+   [controller.translations()/]
+[/if]
   </body>
  </file>
 </xliff>
 [/file]
 [/template]
 
-[template private translations(page : Page) post(trim())]
-[page.captionContainedId().idTranslation(page.displayLabel)/]
-[for (unit : ContentUnit | page.units)]
+[template private translations(controller : Controller) post(trim())]
+[if (controller.hasUnits)]
+[controller.captionContainedId().idTranslation(controller.displayLabel)/]
+	[for (unit : ContentUnit | controller.units)]
 [unit.translations()/]
-[/for]
-[for (child : Page | page.childPages)]
+	[/for]
+[/if]
+[for (child : Controller | controller.childControllers)]
+	[if (child.hasUnits or child.childControllers->notEmpty())]
 [child.translations()/]
+	[/if]
 [/for]
 [/template]
 

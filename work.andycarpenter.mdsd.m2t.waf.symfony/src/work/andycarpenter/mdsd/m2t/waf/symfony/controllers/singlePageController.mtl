@@ -1,0 +1,123 @@
+[comment encoding = UTF-8 /]
+[module singlePageController(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/service',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::baseController/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::collectionMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::detailsMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::editMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::staticMethods/]
+
+
+[template public controller(controller : SinglePageController, model : WafModel)]
+[file(controller.controllerFilename(model), false)]
+<?php
+[if (model.hasAPI)]
+namespace [controller.webControllersNamespace()/];
+[else]
+namespace [controller.controllersNamespace()/];
+[/if]
+
+[controller.useStatements()/]
+
+
+class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
+{
+[if (controller.hasPagination)]
+    [controller.constants()/]
+
+[/if]
+    [controller.properties()/]
+
+    [controller.constructor()/]
+
+[if (controller.hasSingleActionMethod())]
+    [controller.actionMethod()/]
+
+	[if (controller.hasSupportMethods())]
+		[for (unit : ContentUnit | controller.units->select(u | u.hasSupportMethods()))]
+    [unit.actionSupportMethods()/]
+
+		[/for]
+	[/if]
+	[for (action : Action | controller.actionsWithoutTarget)]
+    [action.actionMethod()/]
+
+	[/for]
+[else]
+	[for (unit : DynamicUnit | controller.dynamicUnits)]
+    [unit.unitMethods()/]
+
+		[for (action : Action | unit.actionsWithoutTarget)]
+    [action.actionMethod()/]
+
+		[/for]
+	[/for]
+    [controller.renderMethod()/]
+[/if]
+}
+[/file]
+[/template]
+
+[template private constructor(controller : Controller) post(trim())]
+public function __construct([for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name)) separator (', ')]
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and controller.hasServicesUsed)]
+, [/if][for (service : Service | controller.servicesUsed->sortedBy(s | s.name)) separator (', ')]
+[service.serviceClassName()/] $[service.instanceName()/][/for][if ((controller.repositoriesUsed()->notEmpty() or controller.hasServicesUsed) and controller.hasMessages)]
+, [/if][if (controller.hasMessages)]TranslatorInterface $translator[/if])
+{
+[for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
+    $this->[repository.instanceName()/] = $[repository.instanceName()/];
+[/for]
+[for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
+    $this->[service.instanceName()/] = $[service.instanceName()/];
+[/for]
+[if (controller.hasMessages)]
+    $this->translationService = $translator;
+[/if]
+}
+[/template]
+
+[template private actionMethod(controller : Controller) post(trim())]
+/**
+ */
+[if (controller.isAuthorised)]
+[controller.securityAttribute()/]
+[/if]
+[controller.routeAttribute()/]
+public function [controller.actionName()/]([controller.actionMethodFormals()/]): Response
+{
+    [controller.renderCode()/]
+}
+[/template]
+
+[template private renderMethod(controller : Controller) post(trim())]
+private function renderPage([if (controller.hasFilters or controller.hasPagination)]
+Request $request[if (controller.hasRouteParameters())]
+, [/if][/if][for (key : Attribute | controller.routeParameters()) separator(', ')]
+string $[key.routeParameterName(controller.routeParameters())/][/for]): Response
+{
+    [controller.renderCode()/]
+}
+[/template]
+
+[template private renderCode(controller : Controller) post(trim())]
+$parameters = ['['/][']'/];
+
+[for (unit : ContentUnit | controller.units)]
+[unit.renderCode()/]
+
+[/for]
+return $this->[if (controller.hasEditUnits)]
+renderForm[else]
+render[/if]('[controller.controllerTemplateDirectory()/]/index[controller.htmlExtension()/][controller.twigExtension()/]', $parameters);
+[/template]

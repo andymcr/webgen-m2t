@@ -11,13 +11,13 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 
 
-[query public hasCommonUriPaths(page : Page) : Boolean
-	= if page.dynamicUnits->size() < 2 then
+[query public hasCommonUriPaths(controller : Controller) : Boolean
+	= if controller.dynamicUnits->size() < 2 then
 			true
-		else if page.dynamicUnits->size() = 2 then
-			page.dynamicUnits->first().uriPath() = page.dynamicUnits->last().uriPath()
+		else if controller.dynamicUnits->size() = 2 then
+			controller.dynamicUnits->first().uriPath() = controller.dynamicUnits->last().uriPath()
 		else
-			page.dynamicUnits->subOrderedSet(2, page.dynamicUnits->size())->forAll(u | u.uriPath() = page.dynamicUnits->first().uriPath())
+			controller.dynamicUnits->subOrderedSet(2, controller.dynamicUnits->size())->forAll(u | u.uriPath() = controller.dynamicUnits->first().uriPath())
 		endif endif
 /]
 
@@ -59,21 +59,21 @@
 /]
 
 
-[query public uriPath(page : Page) : String
-	= if page.units->isEmpty() then
-			page.uriPagePath()
-		else if page.units->first().oclIsTypeOf(StaticUnit) then
-			page.units->first().oclAsType(StaticUnit).uriPath()
+[query public uriPath(controller : Controller) : String
+	= if controller.units->isEmpty() then
+			controller.uriControllerPath()
+		else if controller.units->first().oclIsTypeOf(StaticUnit) then
+			controller.units->first().oclAsType(StaticUnit).uriPath()
 		else
-			page.dynamicUnits->first().uriPath()
+			controller.dynamicUnits->first().uriPath()
 		endif endif
 /]
 
-[query private uriPagePath(page : Page) : String
-	= if page.parentPage.oclIsUndefined() then
-			'/'.concat(page.uriElement)
+[query private uriControllerPath(controller : Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			'/'.concat(controller.uriElement)
 		else
-			page.parentPage.uriPagePath().combinePaths(page.uriElement)
+			controller.parentController.uriControllerPath().combinePaths(controller.uriElement)
 		endif
 /]
 
@@ -116,17 +116,17 @@
 
 [query private uriPath(unit : DynamicUnit, routingType : Entity, suffix : String, routeParameters : Sequence(Attribute)) : String
 	= if routingType.oclIsUndefined() then
-			unit.displayedOn.uriPagePath()
+			unit.controller.uriControllerPath()
 				.combinePaths(suffix)
 		else
-			unit.displayedOn.uriPagePath()
+			unit.controller.uriControllerPath()
 				.combinePaths(routingType.keysPath(routeParameters))
 				.combinePaths(suffix)
 		endif
 /]
 
 [query public uriPath(unit : StaticUnit) : String
-	= unit.displayedOn.uriPagePath()
+	= unit.controller.uriControllerPath()
 		.combinePaths(unit.uriElement)
 /]
 
@@ -181,12 +181,12 @@
 
 [query public uriCreatePath(unit : EditUnit) : String
 	= if unit.routingType().oclIsUndefined() then
-			unit.displayedOn.uriPagePath()
+			unit.controller.uriControllerPath()
 				.combinePaths(unit.uriElement)
 		else
-			unit.displayedOn.uriPagePath()
+			unit.controller.uriControllerPath()
 				.combinePaths(unit.routingType().keysPath(unit.routeParameters()))
-				.appendContainingAssociation(unit.contentType)
+				.appendKeySeparator(unit.contentType)
 				.combinePaths(unit.uriElement)
 		endif
 /]
@@ -206,7 +206,7 @@
 /]
 
 [query public uriGeneralPath(action : OperationAction) : String
-	= action.parentUnit.displayedOn.uriPagePath()
+	= action.parentUnit.controller.uriControllerPath()
 		.combinePaths(action.uriElement)
 /]
 
@@ -217,7 +217,7 @@
 				keyType.keyPath(routeParameters)
 			else
 				keyType.containingType.keysPath(routeParameters)
-					.appendContainingAssociation(keyType)
+					.appendKeySeparator(keyType)
 					.combinePaths(keyType.keyPath(routeParameters))
 			endif
 /]
@@ -272,14 +272,14 @@
 /]
 
 
-[query public uriPathValidatedKeys(page : Page) : Sequence(Attribute)
-	= Sequence{} -- page.routeParameters()
+[query public uriPathValidatedKeys(controller : Controller) : Sequence(Attribute)
+	= Sequence{} -- controller.routeParameters()
 --		->select(k | not k .validationPattern.oclIsUndefined())
 --		->select(k | k.validationPattern <> '[^/]+')
 /]
 
-[query public hasValidatedRouteParameters(page : Page) : Boolean
-	= page.uriPathValidatedKeys()->notEmpty()
+[query public hasValidatedRouteParameters(controller : Controller) : Boolean
+	= controller.uriPathValidatedKeys()->notEmpty()
 /]
 
 [query public uriPathValidatedKeys(unit : DynamicUnit, parentPath : Boolean) : Sequence(Attribute)
@@ -338,7 +338,7 @@ Sequence{} --				selectType.uriPathKeys()
 		endif endif endif endif
 /]
 
-[query private appendContainingAssociation(path : String, keyEntity : Entity) : String
+[query private appendKeySeparator(path : String, keyEntity : Entity) : String
 	= if keyEntity.isContained then
 			path.combinePaths(keyEntity.containingAssociation.opposite.name)
 		else

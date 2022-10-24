@@ -1,0 +1,91 @@
+[comment encoding = UTF-8 /]
+[module repositoryTests(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
+
+
+[template public repositoryTests(repository : Repository, security : SecurityModel)]
+[file(repository.repositoryTestFilename(), false)]
+<?php
+namespace [repository.repositoryTestsNamespace()/];
+
+use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
+use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+[if (not security.oclIsUndefined())]
+	[if (security.authentication.userModel.repository = repository)]
+use Symfony\Component\Security\Core\Security;
+	[/if]
+[/if]
+
+
+class [repository.repositoryTestClassName()/] extends KernelTestCase
+{
+[if (repository.findOne.oclIsUndefined() and repository.serves.hasRouteParameters())]
+    [repository.findOneTestMethod()/]
+
+[/if]
+[if (not repository.findAll.oclIsUndefined())]
+    [repository.findAll.testMethod()/]
+
+[elseif (repository.selections->select(s | s.name.equalsIgnoreCase('all'))->notEmpty())]
+    [repository.selections->any(s | s.name.equalsIgnoreCase('all')).testMethod()/]
+
+[/if]
+}
+[/file]
+[/template]
+
+[template private findOneTestMethod(repository : Repository) post(trim())]
+public function testFindOne(): void
+{
+    self::bootKernel();
+
+    $[repository.instanceName()/] = static::getContainer()
+        ->get([repository.repositoryClassName()/]::class);
+    $result = $[repository.instanceName()/]->[repository.serves.findMethodName()/]([for (key : Attribute | repository.serves.uriPathKeys()) separator(', ')]
+[key.keyValue()/][/for]);
+    $this->assertNull($result);
+
+}
+[/template]
+
+[template private keyValue(key : Attribute) post(trim())]
+[if (key.isIntegerFeature)]
+0
+[elseif (key.isStringFeature)]
+''
+[/if]
+[/template]
+
+
+[template private testMethod(selection : Selection) post(trim())]
+public function test[selection.methodName.toUpperFirst()/](): void
+{
+    self::bootKernel();
+    $[selection.definedBy.instanceName()/] = static::getContainer()
+        ->get([selection.definedBy.repositoryClassName()/]::class);
+
+    [selection.testMethodTests()/]
+}
+[/template]
+
+[template private testMethod(selection : Selection, security : SecurityModel) post(trim())]
+public function test[selection.methodName.toUpperFirst()/](): void
+{
+    self::bootKernel();
+    $container = static::getContainer();
+    $[selection.definedBy.instanceName()/] = 
+        $container->get([selection.definedBy.repositoryClassName()/]::class);
+
+    [selection.testMethodTests()/]
+}
+[/template]
+
+[template private testMethodTests(selection : Selection) post(trim())]
+$result = $[selection.definedBy.instanceName()/]->[selection.methodName/]();
+$this->assertCount(0, $result);
+[/template]

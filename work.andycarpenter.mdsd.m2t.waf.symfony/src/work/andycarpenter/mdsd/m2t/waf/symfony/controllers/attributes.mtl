@@ -48,11 +48,11 @@
 [/template]
 
 
-[template public routeAttribute(page : Page) post(trim())]
-[if (page.units->isEmpty())]
-#['['/]Route('[page.uriPath()/]', name: '[page.routeName()/]')[']'/]
+[template public routeAttribute(controller : Controller) post(trim())]
+[if (controller.units->isEmpty())]
+#['['/]Route('[controller.uriPath()/]', name: '[controller.routeName()/]')[']'/]
 [else]
-[page.units->first().routeAttribute(page.routeName(), page.uriPath(), true)/]
+[controller.units->first().routeAttribute(controller.routeName(), controller.uriPath(), true)/]
 [/if]
 [/template]
 
@@ -97,19 +97,19 @@
 [/template]
 
 
-[template public securityAttribute(page : Page) post(trim())]
-[page.securityAttribute(page.commonRole)/]
+[template public securityAttribute(controller : Controller) post(trim())]
+[controller.securityAttribute(controller.commonRole)/]
 [/template]
 
 [template public securityAttribute(unit : ContentUnit) post(trim())]
-[unit.displayedOn.securityAttribute(unit.authorisationRoles)/]
+[unit.controller.securityAttribute(unit.authorisationRoles)/]
 [/template]
 
 [template public securityAttribute(action : Action) post(trim())]
-[action.parentUnit.displayedOn.securityAttribute(action.authorisationRoles)/]
+[action.parentUnit.controller.securityAttribute(action.authorisationRoles)/]
 [/template]
 
-[template private securityAttribute(page : Page, rawRoles : String) post(trim())]
+[template private securityAttribute(controller : Controller, rawRoles : String) post(trim())]
 [let roles : Sequence(String) = rawRoles.trim().tokenize(',; ')]
 [if (roles->size() = 1)]
 #['['/]IsGranted('[roles->first()/]')[']'/]

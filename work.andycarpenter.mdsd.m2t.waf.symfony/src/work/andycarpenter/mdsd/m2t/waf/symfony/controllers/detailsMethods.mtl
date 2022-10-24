@@ -4,7 +4,8 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::actions/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
@@ -29,7 +30,14 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
+[if (unit.controller.isMultiPage)]
+    [unit.renderCode()/]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+        '[unit.instanceParameter()/]' => [unit.instanceVariable()/]
+    [']'/]);
+[else]
     return $this->renderPage([unit.renderMethodActuals()/]);
+[/if]
 }
 [/template]
 
@@ -48,7 +56,7 @@ if (is_null([detailsUnit.instanceVariable()/])) {
 if (!([detailsUnit.hideWhen.controllerExpression(detailsUnit.instanceVariable(), null)/])) {
     $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 }
-[else]
+[elseif (not unit.controller.isMultiPage)]
 $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 [/if]
 [/let]

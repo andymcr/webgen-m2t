@@ -8,43 +8,43 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
 
-[template public indexTemplate(page : Page) post(trim())]
-[file(page.templateFilename(), false)]
+[template public indexTemplate(controller : Controller) post(trim())]
+[file(controller.templateFilename(), false)]
 {% extends 'base.html.twig' %}
 
 {% block page_title -%}
-{{ '[page.captionContainedId()/]' | trans({}, '[page.translationDomain()/]') }}
+{{ '[controller.captionContainedId()/]' | trans({}, '[controller.translationDomain()/]') }}
 {%- endblock %}
 
-[if (page.hasEditUnits)]
+[if (controller.hasEditUnits)]
 {% block metas %}
 <meta name="turbo-cache-control" content="no-preview">
 {% endblock %}
 
 [/if]
-[if (false and page.hasJavascript())]
+[if (false and controller.hasJavascript())]
 {% block javascripts %}
 {{ parent() }}
-{{ encore_entry_script_tags('[page.name.snakeCase()/]') }}
+{{ encore_entry_script_tags('[controller.name.snakeCase()/]') }}
 {% endblock %}
 
 [/if]
 {% block content %}
-[for (unit : ContentUnit | page.units)]
+[for (unit : ContentUnit | controller.units)]
 	[if (unit.oclIsTypeOf(StaticUnit))]
-[unit.unitContent(page)/]
+[unit.unitContent(controller)/]
 	[else]
 	[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
 		[if (dynamicUnit.isConditionallyDisplayed or dynamicUnit.isDislayedOnlyOnExplicitRoute())]
 {% if [dynamicUnit.instanceParameter()/] is defined %}
-[dynamicUnit.unitContent(page)/]
+[dynamicUnit.unitContent(controller)/]
 			[if (dynamicUnit.hasHiddenMessage)]
 {% else %}
 <h5>{{ '[dynamicUnit.hiddenMessageContainedId()/]' | trans({}, '[dynamicUnit.translationDomain()/]') }}</h5>
 			[/if]
 {% endif %}
 		[else]
-[unit.unitContent(page)/]
+[unit.unitContent(controller)/]
 		[/if]
 	[/let]
 	[/if]
@@ -53,7 +53,7 @@
 [/file]
 [/template]
 
-[template private unitContent(unit : ContentUnit, page : Page) post(trim())]
-{{ include('[page.pageTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
+[template private unitContent(unit : ContentUnit, controller : Controller) post(trim())]
+{{ include('[controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]') }}
 [/template]
 

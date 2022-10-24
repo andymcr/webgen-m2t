@@ -6,7 +6,7 @@
 
 
 [template public collectionUniqueValidator(model : OrmModel)]
-[file(model.constraintsDirectory().concat('/').concat(model.collectionUniqueClassName()).concat(model.validatorClassNamePostfix()).concat(model.executableExtension()), false)]
+[file(model.constraintsDirectory().concat('/').concat(model.collectionUniqueClassName()).concat(model.validatorClassSuffix()).concat(model.executableExtension()), false)]
 <?php
 namespace [model.constraintsNamespace()/];
 
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 /**
  * @Annotation
  */
-class [model.collectionUniqueClassName()/][model.validatorClassNamePostfix()/] extends ConstraintValidator
+class [model.collectionUniqueClassName()/][model.validatorClassSuffix()/] extends ConstraintValidator
 {
     /**
      *
