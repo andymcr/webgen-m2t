@@ -53,6 +53,14 @@ Request $request[if (unit.hasRouteUpdateParameters())]
 
 [template public actionMethodFormals(action : Action) post(trim())]
 [let controller : Controller = action.parentUnit.controller]
+[if (action.oclIsKindOf(OperationAction))]
+[let operationAction : OperationAction = action.oclAsType(OperationAction)]
+	[for (service : Service | operationAction.servicesUsed->sortedBy(s | s.name)) separator(', ')]
+[service.serviceClassName()/] $[service.instanceName()/][/for]
+[if (operationAction.hasServicesUsed and (controller.hasFilters or controller.hasPagination or action.hasRouteParameters()))]
+, [/if]
+[/let]
+[/if]
 [if (controller.hasFilters or controller.hasPagination)]
 Request $request[if (action.hasRouteParameters())]
 , [/if][/if]
@@ -170,8 +178,7 @@ if (is_null([action.instanceVariable()/])) {
 
 [template public loadInstance(action : Action) post(trim())]
 [action.instanceVariable()/] = [action.loadInstance2()/];
-if (is_null([action.instanceVariable()/]))
-{
+if (is_null([action.instanceVariable()/])) {
     throw $this->createNotFoundException('The [action.parentUnit.contentType.name/] does not exist');
 }
 [/template]

@@ -70,16 +70,11 @@ class [controller.controllerClassName()/] extends [controller.baseControllerClas
 
 [template private constructor(controller : Controller) post(trim())]
 public function __construct([for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name)) separator (', ')]
-[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and controller.hasServicesUsed)]
-, [/if][for (service : Service | controller.servicesUsed->sortedBy(s | s.name)) separator (', ')]
-[service.serviceClassName()/] $[service.instanceName()/][/for][if ((controller.repositoriesUsed()->notEmpty() or controller.hasServicesUsed) and controller.hasMessages)]
+[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and controller.hasMessages)]
 , [/if][if (controller.hasMessages)]TranslatorInterface $translator[/if])
 {
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
     $this->[repository.instanceName()/] = $[repository.instanceName()/];
-[/for]
-[for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
-    $this->[service.instanceName()/] = $[service.instanceName()/];
 [/for]
 [if (controller.hasMessages)]
     $this->translationService = $translator;

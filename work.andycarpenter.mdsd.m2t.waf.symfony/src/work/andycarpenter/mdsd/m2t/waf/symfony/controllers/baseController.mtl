@@ -72,13 +72,6 @@ private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
 private [repository.repositoryClassName()/] $[repository.instanceName()/];
 
 [/for]
-[for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
-/**
- * @var [service.serviceClassName()/] $[service.instanceName()/]
- */
-private [service.serviceClassName()/] $[service.instanceName()/];
-
-[/for]
 [if (controller.isSinglePage and not controller.hasSingleActionMethod())]
 	[for (unit : ContentUnit | controller.units->sortedBy(u | u.name))]
 		[if (unit.isFormUnit)]
@@ -170,10 +163,9 @@ Response[else]BinaryFileResponse[/if]
 [else]
 [operationAction.routeGeneralAttribute()/]
 [/if]
-public function [operationAction.actionName()/]([if (action.oclIsTypeOf(InstanceOperationAction))]
-[action.actionMethodFormals()/][elseif (action.oclIsTypeOf(ContainerOperationAction))]
+public function [operationAction.actionName()/]([if (action.oclIsTypeOf(ContainerOperationAction))]
 [action.actionMethodContainerFormals()/][else]
-[/if]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
+[action.actionMethodFormals()/][/if]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
 Response[else]BinaryFileResponse[/if]
 
 {
@@ -189,7 +181,7 @@ Response[else]BinaryFileResponse[/if]
 	? (action.operation.resultType = OperationResultTypes::None) post(trim())]
 [if (action.oclIsTypeOf(GeneralOperationAction))]
 	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
-$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
+$result = [/if]$[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
 [else]
 	[if (action.isInstanceAction)]
 [action.loadInstance()/]
@@ -197,7 +189,7 @@ $result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operati
 [action.loadContainer()/]
 	[/if]
 	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
-$result = [/if]$this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
+$result = [/if]$[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
 [/if]
 [if (action.hasSuccessMessage or action.hasFailureMessage)]
 [action.actionResultFlash()/]
@@ -217,7 +209,7 @@ return [action.redirect(routeParameters)/];
 [template private actionMethodBody(action : OperationAction)
 	? (action.operation.resultType = OperationResultTypes::File) post(trim())]
 [if (action.oclIsTypeOf(GeneralOperationAction))]
-$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
+$file = $[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
 $response = $this->file($file, '[action.name/][if (not action.fileExtension.oclIsUndefined())]
 [action.fileExtension/][/if]');
 return $response;
@@ -227,7 +219,7 @@ return $response;
 	[else]
 [action.loadContainer()/]
 	[/if]
-$file = $this->[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
+$file = $[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
 $response = $this->file($file, [action.filename()/][if (not action.fileExtension.oclIsUndefined())]
  . '[action.fileExtension/]'[/if]);
 return $response;
