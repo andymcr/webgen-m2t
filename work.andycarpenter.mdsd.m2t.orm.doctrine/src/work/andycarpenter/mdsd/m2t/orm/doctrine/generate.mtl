@@ -22,7 +22,7 @@
 [model.configStofDoctrineExtensions()/]
 
 [model.enumerationTypes.model(supportTranslation)/]
-[model.entities.model()/]
+[model.entities.model(wafModel.security.authentication)/]
 [comment model.entities.normalizer()/]
 
 [model.collectionUnique()/]

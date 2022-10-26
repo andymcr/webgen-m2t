@@ -1,7 +1,8 @@
 [comment encoding = UTF-8 /]
 [module entity(
 	'http://andycarpenter.work/metamodel/expression',
-	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::expression/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
@@ -26,7 +27,7 @@
 /]
 
 
-[template public model(entity : Entity)]
+[template public model(entity : Entity, authentication : Authentication)]
 [file(entity.modelFilename(), false)]
 <?php
 namespace [entity.modelsNamespace()/];
@@ -111,7 +112,7 @@ ResetPasswordRequestInterface[/if]
 
 [/if]
 [if (entity.implementsUserInterface)]
-    [entity.userInterfaceMethods()/]
+    [entity.userInterfaceMethods(authentication)/]
 
 [/if]
 [if (entity.implementsPasswordAuthenticatedInterface)]
@@ -853,13 +854,13 @@ public function [feature.removeMethodName()/]([feature.elementType()/] $[feature
 }
 [/template]
 
-[template private userInterfaceMethods(entity : Entity) post(trim())]
+[template private userInterfaceMethods(entity : Entity, authentication : Authentication) post(trim())]
 /**
  * @see UserInterface
  */
 public function getUserIdentifier(): string
 {
-    return $this->getEmail();
+    return $this->[authentication.userKey.getMethodName()/]();
 }
 
 /**
