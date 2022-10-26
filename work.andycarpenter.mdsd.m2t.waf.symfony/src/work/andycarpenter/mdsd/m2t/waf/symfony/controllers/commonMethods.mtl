@@ -132,22 +132,6 @@ $request[if (unit.controller.hasRouteParameters())]
 [/template]
 
 
-[template public loadContainerInstance(unit : DynamicUnit) post(trim())]
-[let findMethodName : String
-	= if unit.oclIsKindOf(CollectionUnit) then
-		let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
-			in if collectionUnit.findContainerSelection.oclIsUndefined() then
-					unit.containingType.findMethodName()
-				else
-					collectionUnit.findContainerSelection.methodName
-				endif
-		else
-			unit.containingType.findMethodName()
-		endif]
-[unit.getContainerRepository()/]->[findMethodName/]([unit.routeContainerParameterList(false)/])
-[/let]
-[/template]
-
 [template public getContainerRepository(unit : DynamicUnit) post(trim())]
 $this->[unit.containingType.repository.instanceName()/]
 [/template]
@@ -165,15 +149,42 @@ $this->[unit.contentRepository.instanceName()/]
 [unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([unit.findActualUpdateParameterList()/])
 [/template]
 
+[template public loadContainer(unit : DynamicUnit) post(trim())]
+[if (unit.isContained)]
+[unit.containerInstanceVariable()/] = [unit.loadContainer2()/];
+if (is_null([unit.containerInstanceVariable()/])) {
+    throw $this->createNotFoundException('The [unit.containingType.name/] does not exist');
+}
+[else]
+// uncontained
+[/if]
+[/template]
+
 [template public loadContainer(action : Action) post(trim())]
 [if (action.parentUnit.isContained)]
-[action.instanceVariable()/] = [action.parentUnit.loadContainerInstance()/];
+[action.instanceVariable()/] = [action.parentUnit.loadContainer2()/];
 if (is_null([action.instanceVariable()/])) {
     throw $this->createNotFoundException('The [action.parentUnit.containingType.name/] does not exist');
 }
 [else]
 // uncontained
 [/if]
+[/template]
+
+[template private loadContainer2(unit : DynamicUnit) post(trim())]
+[let findMethodName : String
+	= if unit.oclIsKindOf(CollectionUnit) then
+		let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
+			in if collectionUnit.findContainerSelection.oclIsUndefined() then
+					unit.containingType.findMethodName()
+				else
+					collectionUnit.findContainerSelection.methodName
+				endif
+		else
+			unit.containingType.findMethodName()
+		endif]
+[unit.getContainerRepository()/]->[findMethodName/]([unit.routeContainerParameterList(false)/])
+[/let]
 [/template]
 
 [template public loadInstance(action : Action) post(trim())]

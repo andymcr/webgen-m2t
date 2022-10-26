@@ -38,25 +38,28 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
-[if (unit.isDislayedOnlyOnExplicitRoute())]
-    [unit.selectCode()/]
-
-[/if]
 [if (unit.controller.isMultiPage)]
-	[if (unit.isContained or unit.isDislayedOnlyOnExplicitRoute() or unit.inlineSelectCode())]
+	[if (unit.isConditionallyDisplayed)]
+    $parameters = ['['/][']'/];
+	[/if]
+	[if (unit.isContained or unit.inlineSelectCode())]
     [unit.renderCode()/]
 	[/if]
-    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
-	[if (unit.isContained)]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', [if (unit.isConditionallyDisplayed)]
+$parameters[else]['['/]
+		[if (unit.isContained)]
         '[unit.containerParameter()/]' => [unit.containerInstanceVariable()/],
-	[/if]
-	[if (unit.inlineSelectCode())]
+		[/if]
+		[if (unit.inlineSelectCode())]
         '[unit.instanceParameter()/]' => [unit.instanceVariable()/]
-	[else]
+		[else]
         '[unit.instanceParameter()/]' => $this->[unit.selectName()/]([unit.selectMethodParameters()/])
-	[/if]
-    [']'/]);
+		[/if]
+    [']'/][/if]);
 [else]
+[if (unit.isDislayedOnlyOnExplicitRoute())]
+    [unit.selectCode()/]
+[/if]
     return $this->renderPage([unit.renderMethodActuals()/]);
 [/if]
 }
@@ -78,11 +81,8 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
-[collectionUnit.containerInstanceVariable()/] = [collectionUnit.loadContainerInstance()/];
-if (![collectionUnit.containerInstanceVariable()/]) {
-    throw $this->createNotFoundException('The [collectionUnit.containingType.name/] does not exist');
-}
-	[if (not unit.controller.isMultiPage)]
+[collectionUnit.loadContainer()/]
+	[if (collectionUnit.isConditionallyDisplayed or unit.controller.isSinglePage)]
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
 	[/if]
 [/if]
@@ -103,7 +103,7 @@ if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.instanceVaria
 [template private renderCode2(unit : CollectionUnit) post(trim())]
 [if (unit.inlineSelectCode())]
 [unit.selectCode()/]
-[elseif (not unit.controller.isMultiPage)]
+[elseif (unit.isConditionallyDisplayed or unit.controller.isSinglePage)]
 $parameters['['/]'[unit.instanceParameter()/]'[']'/] = $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
 [/template]
@@ -128,10 +128,10 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 	?(not unit.hasFilters) post(trim())]
 [let variable : String = if unit.hasPagination and not unit.selection.oclIsUndefined() then
 		 '$query'
-	else if unit.controller.isMultiPage then
-		unit.instanceVariable()
-	else
+	else if unit.isConditionallyDisplayed or unit.controller.isSinglePage then
 		'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
+	else
+		unit.instanceVariable()
 	endif endif]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
