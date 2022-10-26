@@ -20,7 +20,7 @@
 
 
 [query public containingTypeLoadedElsewhere(unit : DynamicUnit) : Boolean
-	= unit.containingTypeLoadedBy() <> unit
+	= unit.containingTypeLoadedBy() <> unit and unit.controller.isSinglePage
 /]
 
 [query public hasObjectAccess(unit : CollectionUnit) : Boolean
