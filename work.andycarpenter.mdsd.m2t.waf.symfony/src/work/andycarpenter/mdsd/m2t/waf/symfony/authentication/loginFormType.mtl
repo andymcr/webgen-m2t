@@ -44,7 +44,7 @@ class [element.typeClassName()/] extends AbstractType
 
     /**
      *
-     * @param FormBuilderInterface<string> $builder
+     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
