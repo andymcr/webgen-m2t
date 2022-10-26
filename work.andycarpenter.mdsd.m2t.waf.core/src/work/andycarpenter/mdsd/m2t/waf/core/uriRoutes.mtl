@@ -162,10 +162,6 @@
 /]
 
 
-[query public isDislayedOnlyOnExplicitRoute(unit : CollectionUnit) : Boolean
-	= unit.oclAsType(DynamicUnit).isDislayedOnlyOnExplicitRoute()
-/]
-
 [query public isDislayedOnlyOnExplicitRoute(unit : DynamicUnit) : Boolean
 	= not unit.controller.routeParameters()->includesAll(unit.routeParameters())
 /]

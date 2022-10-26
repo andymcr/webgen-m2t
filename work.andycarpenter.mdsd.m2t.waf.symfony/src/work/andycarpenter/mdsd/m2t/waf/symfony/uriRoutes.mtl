@@ -93,9 +93,9 @@
 
 [query private uriPath(unit : DynamicUnit, selection : Selection) : String
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.uriPath(unit.oclAsType(DynamicUnit).contentType.parentEntity(), selection)
+			unit.uriPath(unit.contentType.parentEntity(), selection)
 		else
-			unit.uriPath(unit.oclAsType(DynamicUnit).contentType, selection)
+			unit.uriPath(unit.contentType, selection)
 		endif
 /]
 
