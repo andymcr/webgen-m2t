@@ -86,7 +86,7 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
 	[/if]
 [/if]
-[if (collectionUnit.isDislayedOnlyOnExplicitRoute())]
+[if (collectionUnit.isDislayedOnlyOnExplicitRoute() and unit.controller.isSinglePage)]
 if (isset([unit.instanceVariable()/])) {
     [collectionUnit.renderCode2()/]
 }
