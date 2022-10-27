@@ -20,7 +20,7 @@ class [type.modelClassName()/]
 	const [literal.name/] = [i/];
 [/for]
 
-    /*
+    /**
      *
      *
      * @return array<string, int>
@@ -39,7 +39,7 @@ class [type.modelClassName()/]
 		return $values;
 	}
 
-    /*
+    /**
      *
      * @param string $value
      * @param string $default
