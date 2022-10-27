@@ -42,7 +42,7 @@ use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
 #['['/]AsEntityAutocompleteField[']'/]
 class [association.autocompleteTypeClassName()/] extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['['/]
             'label' => '[association.association.captionContainedId()/]',
