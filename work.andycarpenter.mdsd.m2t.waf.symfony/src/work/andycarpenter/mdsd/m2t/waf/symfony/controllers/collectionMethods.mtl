@@ -178,7 +178,7 @@ $parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] =[else]
 return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
     $adapter,
     $request->query->get('page', 1),
-    [unit.defaultPaginationSize/]);
+    self::[unit.pageSizeConstant()/]);
 [/if]
 [/template]
 
