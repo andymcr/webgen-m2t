@@ -18,11 +18,15 @@ use Twig\TwigFilter;
 
 class EnumerationTypes extends AbstractExtension
 {
-    public function getName()
+    public function getName(): string
     {
         return 'project';
     }
 
+    /**
+     *
+     * @return array<string, TwigFilter>
+     **/
     public function getFilters(): array
     {
         return ['['/]
