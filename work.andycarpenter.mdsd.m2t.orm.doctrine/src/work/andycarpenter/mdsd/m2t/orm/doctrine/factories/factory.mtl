@@ -71,6 +71,11 @@ public function __construct()
 [/template]
 
 [template private defaultsMethod(entity : Entity) post(trim())]
+/**
+ * @inheritdoc ModelFactory
+ * 
+ * @return array<string, mixed>
+ **/
 protected function getDefaults(): array
 {
     return ['['/]
