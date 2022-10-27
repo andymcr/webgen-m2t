@@ -113,7 +113,7 @@ class [unit.typeClassName()/] extends AbstractType
 
 [query private choicesRepositories(unit : DynamicUnit) : Sequence(Repository)
 	= unit.associationFields
-		->select(f | not f.options.oclIsUndefined())
+		->select(f | not f.options.oclIsUndefined() and not f.useAutocomplete)
 		->collect(f | f.options.definedBy)
 		->asSet()
 		->asSequence()
