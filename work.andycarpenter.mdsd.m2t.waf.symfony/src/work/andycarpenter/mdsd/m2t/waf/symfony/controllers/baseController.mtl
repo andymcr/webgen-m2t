@@ -52,7 +52,7 @@ use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-[if (controller.hasMessages)]
+[if (controller.hasSuccessMessages)]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [/if]
 [/template]
@@ -93,7 +93,7 @@ private [dynamicUnit.modelClassName()/] $[dynamicUnit.instanceName()/];
 		[/if]
 	[/for]
 [/if]
-[if (controller.hasMessages)]
+[if (controller.hasSuccessMessages)]
 /**
  * @var TranslatorInterface $translationService
  */
