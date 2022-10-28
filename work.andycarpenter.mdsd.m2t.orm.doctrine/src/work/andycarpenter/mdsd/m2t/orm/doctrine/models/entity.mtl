@@ -813,12 +813,14 @@ public function [feature.addMethodName()/]([feature.elementType()/] $[feature.si
 [/if]
 [if (feature.oclIsKindOf(Association) and not feature.isOwningEnd)]
 [let association : Association = feature.oclAsType(Association)]
-	[if (association.isOppositeSingleton)]
+	[if (association.opposite.visible)]
+		[if (association.isOppositeSingleton)]
     $[association.singletonName/]->[association.opposite.setMethodName()/]($this);
-	[else]
+		[else]
     $[association.singletonName/]->[if (association.opposite.collectionOrmAllowAdd)]
 [association.opposite.addMethodName()/][else]
 [association.opposite.getMethodName()/]->add[/if](this);
+		[/if]
 	[/if]
 [/let]
 [/if]
@@ -841,12 +843,14 @@ public function [feature.removeMethodName()/]([feature.elementType()/] $[feature
 [/if]
 [if (feature.oclIsKindOf(Association) and not feature.isOwningEnd)]
 [let association : Association = feature.oclAsType(Association)]
-	[if (association.isOppositeSingleton)]
+	[if (association.opposite.visible)]
+		[if (association.isOppositeSingleton)]
     $[association.singletonName/]->[association.opposite.setMethodName()/](null);
-	[else]
+		[else]
     $[association.singletonName/]->[if (association.opposite.collectionOrmAllowRemove)]
 [association.opposite.removeMethodName()/][else]
 [association.opposite.getMethodName()/]->removeElement[/if](this);
+		[/if]
 	[/if]
 [/let]
 [/if]
