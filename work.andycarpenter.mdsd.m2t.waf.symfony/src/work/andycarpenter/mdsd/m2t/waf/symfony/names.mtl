@@ -399,9 +399,11 @@
 [query public queryInstanceVariable(unit : CollectionUnit) : String
 	= if unit.hasPagination then
 			'$query'
+		else if unit.isConditionallyDisplayed or unit.controller.isSinglePage then
+			'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
 		else
 			unit.instanceVariable()
-		endif
+		endif endif
 /]
 
 [query public routeUpdateName(unit : EditUnit) : String
@@ -426,7 +428,8 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
-	= if unit.controller.hasSingleActionMethod() or unit.isRoutingUnit() then
+	= if unit.controller.isSinglePage and unit.controller.hasSingleActionMethod()
+				or unit.isRoutingUnit() then
 			unit.controller.uniqueName()
 		else
 			if unit.oclIsKindOf(EditUnit) and unit.uriElement <> '' then
