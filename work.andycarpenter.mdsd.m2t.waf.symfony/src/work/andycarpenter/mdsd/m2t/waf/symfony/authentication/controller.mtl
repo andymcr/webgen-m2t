@@ -356,6 +356,7 @@ public function [element.actionName()/]Reset(Request $request, UserPasswordHashe
     }
 
     try {
+        /** @var [authentication.authenticationModel.modelClassName()/] $user */
         $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
     } catch (ResetPasswordExceptionInterface $e) {
         $this->addFlash('reset_password_error', sprintf(
