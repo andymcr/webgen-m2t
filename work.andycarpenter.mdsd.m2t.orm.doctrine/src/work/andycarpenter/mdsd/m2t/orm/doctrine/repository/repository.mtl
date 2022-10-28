@@ -132,6 +132,9 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 [elseif (repository.selections->select(s | s.name.equalsIgnoreCase('all'))->notEmpty())]
     [repository.selections->any(s | s.name.equalsIgnoreCase('all')).findAllMethod()/]
 
+[else]
+	[repository.defaultFindAllQuery()/]
+
 [/if]
 [for (selection : Selection | repository.selections->select(s | not s.name.equalsIgnoreCase('all')))]
     [selection.selectionMethod(security)/]
@@ -155,9 +158,7 @@ use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
 [/if]
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-[if (repository.selections->notEmpty())]
 use Doctrine\ORM\Query;
-[/if]
 [if (repository.selections->select(s | s.filters->notEmpty())->notEmpty())]
 use Doctrine\ORM\QueryBuilder;
 [/if]
@@ -408,6 +409,18 @@ public function [selection.methodName/](): [selection.returnType()/]
 [selection.filterMethods()/]
 
 [/if]
+[/template]
+
+[template private defaultFindAllQuery(repository : Repository) post(trim())]
+/**
+ *
+ *
+ * @return Query
+ */
+public function findAllQuery(): Query
+{
+    return $this->createQueryBuilder('[repository.serves.selectName()/]')->getQuery();
+}
 [/template]
 
 [template private selectionMethod(selection : Selection, security : SecurityModel)
