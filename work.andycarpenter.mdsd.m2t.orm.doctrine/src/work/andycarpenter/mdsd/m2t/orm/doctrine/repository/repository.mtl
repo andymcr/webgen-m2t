@@ -181,12 +181,17 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
  * @return [security.authentication.userModel.modelClassName()/]
  *
  */
-public function getCurrentUser(): [security.authentication.userModel.modelClassName()/]
+public function getCurrentUser(): ?[security.authentication.userModel.modelClassName()/]
 {
+    $user = $this->security->getUser();
+    if (is_null($user)) {
+        return null;
+    }
+
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
     $[repository.instanceName()/] = $queryBuilder
         ->where($queryBuilder->expr()->eq('[repository.serves.selectName()/].[security.authentication.userKey.modelPropertyName()/]', ':[security.authentication.userKey.name/]'))
-        ->setParameter('[security.authentication.userKey.name/]', $this->security->getUser()->getUserIdentifier())
+        ->setParameter('[security.authentication.userKey.name/]', $user->getUserIdentifier())
         ->getQuery()->getOneOrNullResult();
     if(is_null($[repository.instanceName()/])) {
         throw new \Exception();
