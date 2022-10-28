@@ -124,38 +124,7 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [unit.routeParameterList(false)/][/if]
 [/template]
 
-[template private selectCode(unit : CollectionUnit)
-	?(not unit.hasFilters) post(trim())]
-[let variable : String = if unit.hasPagination and not unit.selection.oclIsUndefined() then
-		 '$query'
-	else if unit.isConditionallyDisplayed or unit.controller.isSinglePage then
-		'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
-	else
-		unit.instanceVariable()
-	endif endif]
-[if (not unit.selection.oclIsUndefined())]
-	[if (unit.filter.oclIsUndefined())]
-[variable/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
-	[else]
-[variable/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
-	[/if]
-	[if (unit.hasPagination)]
-$adapter = new QueryAdapter([variable/]);
-[if (unit.controller.isMultiPage)]
-[unit.instanceVariable()/][else]
-$parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] = Pagerfanta::createForCurrentPageWithMaxPerPage(
-    $adapter,
-    $request->query->get('page', 1),
-    self::[unit.pageSizeConstant()/]);
-	[/if]
-[else]
-[variable/] = [unit.getContentRepository()/]->findAll();
-[/if]
-[/let]
-[/template]
-
-[template private selectCode(unit : CollectionUnit)
-	?( unit.hasFilters) post(trim())]
+[template private selectCode(unit : CollectionUnit) post(trim())]
 [if (unit.hasFilters)]
 [unit.filterSelect()/]
 else
@@ -167,17 +136,17 @@ else
 [unit.queryInstanceVariable()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-[unit.queryInstanceVariable()/] = [unit.getContentRepository()/]->findAll();
+[unit.queryInstanceVariable()/] = [unit.getContentRepository()/]->findAll[if (unit.hasPagination)]Query[/if]();
 [/if]
 [if (unit.hasPagination)]
-$adapter = new QueryAdapter($query);
+$adapter = new QueryAdapter([unit.queryInstanceVariable()/]);
 [if (unit.inlineSelectCode())]
 [if (unit.controller.isMultiPage)]
 [unit.instanceVariable()/][else]
 $parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] =[else]
 return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
     $adapter,
-    $request->query->get('page', 1),
+    $request->query->getInt('page', 1),
     self::[unit.pageSizeConstant()/]);
 [/if]
 [/template]
@@ -197,6 +166,7 @@ $query = [unit.getContentRepository()/]->[filter.methodName/]Query(
 
 [/if]
 [for (parameter : FormalParameter | filter.parameters)]
+    /* @phpstan-ignore-next-line */
     $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or unit.hasPagination)],[/if]
 [/for]
 );
