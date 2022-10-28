@@ -318,7 +318,7 @@ public function create([entity.createParameters()/], $flush = false): [repositor
 
 [query private createFeatures(entity : Entity) : OrderedSet(Attribute)	
 	= entity.attributes
-		->select(a | not a.hasSlugFields and a.isSingleton and not a.isResourceFeature)
+		->select(a | not a.hasSlugFields and a.isSingleton and not a.isLocationFeature and not a.isResourceFeature)
 /]
 
 [template private createParameters(entity : Entity) post(trim())]

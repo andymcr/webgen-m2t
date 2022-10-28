@@ -596,6 +596,9 @@ public function getId(): int
 
 [feature.setFileMethod()/]
 
+[comment TODO sortout location features /]
+[elseif (feature.isLocationFeature)]
+
 [else]
 [feature.getMethod()/]
 
