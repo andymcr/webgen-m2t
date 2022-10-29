@@ -228,7 +228,7 @@ $response = $this->file($file, [action.filename()/][if (not action.fileExtension
  . '[action.fileExtension/]'[/if]);
 $response->headers->set('Content-Type', '[action.operation.resultMimeType/]');
 return $response;
-	[/if];
+	[/if]
 [/if]
 [/template]
 
