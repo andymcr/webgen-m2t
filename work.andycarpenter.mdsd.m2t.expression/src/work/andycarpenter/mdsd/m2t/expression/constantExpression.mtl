@@ -1,0 +1,85 @@
+[comment encoding = UTF-8 /]
+[module constantExpression(
+	'http://andycarpenter.work/metamodel/expression',
+	'http://andycarpenter.work/metamodel/base')]
+[import work::andycarpenter::mdsd::m2t::expression::literals/]
+
+
+[template public constantExpression(expression : Expression)
+	? (expression.oclIsTypeOf(NullLiteral)
+		or expression.oclIsTypeOf(BooleanLiteral)
+		or expression.oclIsTypeOf(IntegerLiteral)
+		or expression.oclIsTypeOf(StringLiteral)) post(trim())]
+[expression.valueExpression()/]
+[/template]
+
+[template public constantExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
+[let predicate : PredicateBooleanOperator = expression.oclAsType(PredicateBooleanOperator)]
+[if (predicate.predicates->first().oclIsKindOf(Predicate))]
+([predicate.predicates->first().constantExpression()/])[else]
+[predicate.predicates->first().constantExpression()/][/if][for (child : Predicate | predicate.predicates->subOrderedSet(2, predicate.predicates->size()))]
+ [predicate.operator()/] [if (child.oclIsKindOf(Predicate))]
+([child.constantExpression()/])[else]
+[child.constantExpression()/][/if][/for]
+[/let]
+[/template]
+
+[template public constantExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
+[let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
+[if (predicate.left.oclIsKindOf(Predicate))]
+([predicate.left.constantExpression()/])[else]
+[predicate.left.constantExpression()/][/if] [predicate.operator()/] [if (predicate.right.oclIsKindOf(Predicate))]
+([predicate.right.constantExpression()/])[else]
+[predicate.right.constantExpression()/][/if]
+[/let]
+[/template]
+
+[template public constantExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
+[let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
+[if (predicate.left.oclIsKindOf(Predicate))]
+([predicate.left.constantExpression()/])[else]
+[predicate.left.constantExpression()/][/if] [predicate.operator()/] [if (predicate.right.oclIsKindOf(Predicate))]
+([predicate.right.constantExpression()/])[else]
+[predicate.right.constantExpression()/][/if]
+[/let]
+[/template]
+
+
+[query private operator(predicate : PredicateBooleanOperator) : String
+	= if predicate.operator = BooleanOperator::And then
+			'&&'
+		else if predicate.operator = BooleanOperator::Or then
+			'||'
+		else
+			'?'
+		endif endif
+/]
+
+[query private operator(predicate : PredicateEqualityOperator) : String
+	= if not predicate.negated then
+			'=='
+		else
+			'!=='
+		endif
+/]
+
+[query private operator(predicate : PredicateComparisonOperator) : String
+	= if predicate.operator = ComparisionOperator::GreaterThan then
+			if not predicate.negated then
+				'>'
+			else
+				'<='
+			endif
+		else if predicate.operator = ComparisionOperator::LessThan then
+			if not predicate.negated then
+				'<'
+			else
+				'>='
+			endif
+		else
+			'?'
+		endif endif
+/]

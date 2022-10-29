@@ -45,8 +45,15 @@ use [service.serviceNamespace()/]\[service.serviceClassName()/];
 class [service.serviceClassName()/]
 {
 [for (constant : Constant | service.constants)]
-    [if (constant.useFunction())]private[else]public[/if] static $[constant.name/] = [if (constant.useFunction())]null[else][constant.value.queryExpression()/][/if];
-
+    [if (constant.useFunction())]
+    private static function [constant.name/]
+    {
+        // [protected (constant.name)]
+        // [/protected]
+   }
+	[else]
+    private const [constant.name.snakeCase().toUpperCase()/] = [constant.value.constantExpression()/];
+	[/if]
 
 [/for]
 // [protected ('constants')]

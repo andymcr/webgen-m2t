@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/metamodel/expression',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/security')]
+[import work::andycarpenter::mdsd::m2t::expression::constantExpression/]
 [import work::andycarpenter::mdsd::m2t::expression::expression/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constant/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
@@ -57,8 +58,15 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 
 [/if]
 [for (constant : Constant | repository.constants)]
-    [if (constant.useFunction())]private[else]public[/if] static $[constant.name/] = [if (constant.useFunction())]null[else][constant.value.queryExpression()/][/if];
-
+    [if (constant.useFunction())]
+    private static function [constant.name/]
+    {
+        // [protected (constant.name)]
+        // [/protected]
+   }
+	[else]
+    private const [constant.name.snakeCase().toUpperCase()/] = [constant.value.constantExpression()/];
+	[/if]
 
 [/for]
 [if (security.authentication.userModel.repository = repository)]

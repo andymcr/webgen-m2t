@@ -5,6 +5,11 @@
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 
 
+[query public snakeCase(string : String) : String
+	= string.toLowerFirst().replaceAll('([A-Z]+)', '_$1').toLower()
+/]
+
+
 [query public appName(eObject : EObject) : String
 	= 'App'
 /]
