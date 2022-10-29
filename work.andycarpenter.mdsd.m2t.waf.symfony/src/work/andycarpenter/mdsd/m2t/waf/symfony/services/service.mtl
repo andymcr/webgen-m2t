@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/metamodel/expression',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/service')]
+[import work::andycarpenter::mdsd::m2t::expression::constantExpression/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constant/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
