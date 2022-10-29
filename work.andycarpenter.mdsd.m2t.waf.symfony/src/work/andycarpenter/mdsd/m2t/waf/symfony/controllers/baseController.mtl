@@ -220,9 +220,10 @@ return $response;
 [action.loadContainer()/]
 	[/if]
 $file = $[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
-$response = $this->file($file, [action.filename()/][if (not action.fileExtension.oclIsUndefined())]
- . '[action.fileExtension/]'[/if]);
-return $response;
+return $this->file($file, [action.filename()/][if (not action.fileExtension.oclIsUndefined())]
+ . '[action.fileExtension/]'[/if])[if (not action.operation.resultMimeType.oclIsUndefined())]
+
+    ->setContentType('[action.operation.resultMimeType/]')[/if];
 [/if]
 [/template]
 
