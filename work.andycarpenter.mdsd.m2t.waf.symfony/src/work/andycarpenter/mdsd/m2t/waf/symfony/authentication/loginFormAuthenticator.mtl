@@ -87,7 +87,8 @@ public function authenticate(Request $request): Passport
         new UserBadge($email),
         new PasswordCredentials((string) $request->request->get('plainPassword')),
         ['['/]
-            new CsrfTokenBadge('[authentication.loginElement.csrfTokenId()/]', $request->request->getAlnum('_token')),
+            /* @phpstan-ignore-next-line */
+            new CsrfTokenBadge('[authentication.loginElement.csrfTokenId()/]', $request->request->get('_token')),
             new RememberMeBadge()
         [']'/]);
 }
