@@ -89,7 +89,7 @@
    [cardsUnit.header(variable)/]
 [/if]
    [cardsUnit.cardBody(variable)/]
-[if (cardsUnit.hasActions)]
+[if (cardsUnit.hasInstanceActions)]
 	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() > 1)]
    [cardsUnit.footer(variable)/]
 	[/if]
@@ -117,6 +117,9 @@
 [/template]
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
+[if (unit.instanceActions->forAll(a | a.hasCustomisedAuthorisation))]
+{% if [for (role : String | unit.customAuthorisationRoles()) separator(' or ')]is_granted('[role/]')[/for] %}
+[/if]
 <div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
  <nav[if (unit.hasInstanceControlClass)] class="[unit.instanceControlClass/]"[/if]>
 [for (action : Action | unit.instanceActions)]
@@ -124,10 +127,20 @@
 [/for]
  </nav>
 </div>
+[if (unit.instanceActions->forAll(a | a.hasCustomisedAuthorisation))]
+{% endif %}
+[/if]
 [/template]
 
+[query private customAuthorisationRoles(unit : CardsUnit) : Sequence(String)
+	= unit.instanceActions->select(a | a.hasCustomisedAuthorisation)
+		->collect(a | a.authorisationRoles)
+		->asSet()->asSequence()
+--		->sortedBy(self)
+/]
+
 [template private unitActions(unit : CardsUnit) post(trim())]
-<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
+<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if] role="group" aria-label="Floating action buttons">
 [for (action : Action | unit.actions)]
 	[if (action.isGeneralAction or action.isTargetAction)]
  [action.unitActionLink(null)/]
