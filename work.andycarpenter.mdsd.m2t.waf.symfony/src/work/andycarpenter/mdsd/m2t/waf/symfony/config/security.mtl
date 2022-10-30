@@ -6,6 +6,7 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
 
 
 [template public configSecurity(authentication : LocalAuthenticationSystem)]
@@ -58,9 +59,11 @@ username[/if]
     # [/protected]
 
     access_control:
-        - { path: ^/login$, roles: PUBLIC_ACCESS, requires_channel: https }
-        - { path: ^/register, roles: PUBLIC_ACCESS, requires_channel: https }
-        - { path: ^/resetting, roles: PUBLIC_ACCESS, requires_channel: https }
+        - { path: ^[authentication.loginElement.uriPath()/]$, roles: PUBLIC_ACCESS, requires_channel: https }
+[if (authentication.allowSelfRegistration)]
+        - { path: ^[authentication.registrationElement.uriPath()/], roles: PUBLIC_ACCESS, requires_channel: https }
+[/if]
+        - { path: ^[authentication.forgottenPasswordElement.uriPath()/], roles: PUBLIC_ACCESS, requires_channel: https }
         # [protected ('access.control')]
         - { path: ^/, roles: PUBLIC_ACCESS, requires_channel: https }
         # [/protected]
