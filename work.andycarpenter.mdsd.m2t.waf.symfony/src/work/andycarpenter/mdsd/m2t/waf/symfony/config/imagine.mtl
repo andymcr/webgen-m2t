@@ -15,7 +15,7 @@ liip_imagine:
     loaders:
        default:
           stream:
-              wrapper: http://sps.andycarpenter.me.uk/
+              wrapper: https://images.salephoto.org.uk/
 
     resolvers:
        image_cache:
