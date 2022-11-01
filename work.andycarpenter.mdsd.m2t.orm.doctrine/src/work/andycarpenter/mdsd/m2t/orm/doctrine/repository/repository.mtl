@@ -199,7 +199,7 @@ public function getCurrentUser(): ?[security.authentication.userModel.modelClass
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
     $[repository.instanceName()/] = $queryBuilder
         ->where($queryBuilder->expr()->eq('[repository.serves.selectName()/].[security.authentication.userKey.modelPropertyName()/]', ':[security.authentication.userKey.name/]'))
-        ->setParameter('[security.authentication.userKey.name/]', $user->getUserIdentifier())
+        ->setParameter('[security.authentication.userKey.name/]', $user->[security.authentication.userKey.getMethodName()/]())
         ->getQuery()->getOneOrNullResult();
     if(is_null($[repository.instanceName()/])) {
         throw new \Exception();
