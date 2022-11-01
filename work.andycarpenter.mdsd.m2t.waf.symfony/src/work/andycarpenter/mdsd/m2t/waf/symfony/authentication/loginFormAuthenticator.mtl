@@ -37,6 +37,8 @@ class [authentication.authenticatorName()/] extends AbstractLoginFormAuthenticat
 [/template]
 
 [template private useStatements(authentication : LocalAuthenticationSystem) post(trim())]
+use [authentication.authenticationModel.modelsNamespace()/]\[authentication.authenticationModel.modelClassName()/];
+use [authentication.authenticationModel.repository.repositoriesNamespace()/]\[authentication.authenticationModel.repository.repositoryClassName()/];
 [if (authentication.captcha)]
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
 [/if]
@@ -60,13 +62,19 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
  * @var RouterInterface $router
  */
 private RouterInterface $router;
+
+/**
+ * @var [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/]
+ */
+private [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/];
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
-public function __construct(RouterInterface $router[if (authentication.captcha)]
+public function __construct(RouterInterface $router, [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/][if (authentication.captcha)]
 , Recaptcha3Validator $recaptcha3Validator[/if])
 {
     $this->router = $router;
+    $this->[authentication.authenticationModel.repository.instanceName()/] = $[authentication.authenticationModel.repository.instanceName()/];
 }
 [/template]
 
@@ -104,6 +112,11 @@ public function authenticate(Request $request): Passport
  */
 public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
 {
+    /** @var Authentication $user */
+    $user = $token->getUser();
+    $user->setLastLogin(new \DateTime());
+    $this->[authentication.authenticationModel.repository.instanceName()/]->save($user, true);
+
     if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
         return new RedirectResponse($targetPath);
     }
