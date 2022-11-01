@@ -107,6 +107,7 @@ private TranslatorInterface $translationService;
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
 [let unit : DynamicUnit = action.parentUnit]
 /**
+ * @return Response
  */
 [if (deleteAction.isAuthorised)]
 [deleteAction.securityAttribute()/]
@@ -131,6 +132,9 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): R
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
 [let unit : DynamicUnit = action.parentUnit]
 /**
+ * @return [if (operationAction.operation.resultType = OperationResultTypes::None)]
+Response[else]BinaryFileResponse[/if]
+
  */
 [if (operationAction.isAuthorised)]
 [operationAction.securityAttribute()/]
@@ -138,6 +142,7 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): R
 [operationAction.routeAttribute(operationAction.uriElement)/]
 public function [operationAction.actionName()/]([unit.actionMethodFormals()/]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
 Response[else]BinaryFileResponse[/if]
+
 {
 [if (operationAction.operation.resultType = OperationResultTypes::None)]
 [elseif (operationAction.operation.resultType = OperationResultTypes::File)]
@@ -152,6 +157,9 @@ Response[else]BinaryFileResponse[/if]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
 [let unit : DynamicUnit = operationAction.parentUnit]
 /**
+ * @return [if (operationAction.operation.resultType = OperationResultTypes::None)]
+Response[else]BinaryFileResponse[/if]
+
  */
 [if (operationAction.isAuthorised)]
 [operationAction.securityAttribute()/]

@@ -128,6 +128,9 @@ class [service.serviceClassName()/]
 [for (parameter : FormalParameter | operation.parameters)]
  * @param [parameter.implementationType()/] $[parameter.name/][if (parameter.description <> '')] [parameter.description/][/if]
 [/for]
+[if (operation.resultType = OperationResultTypes::File)]
+ * @return String
+[/if]
  */
 public function [operation.methodName()/]([operation.formalParameters()/]): [if (operation.resultType = OperationResultTypes::File)]
 String[else]void[/if]
