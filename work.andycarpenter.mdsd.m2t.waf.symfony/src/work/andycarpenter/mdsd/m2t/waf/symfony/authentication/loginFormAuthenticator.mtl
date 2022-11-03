@@ -42,6 +42,7 @@ use [authentication.authenticationModel.repository.repositoriesNamespace()/]\[au
 [if (authentication.captcha)]
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
 [/if]
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,14 +68,20 @@ private RouterInterface $router;
  * @var [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/]
  */
 private [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/];
+
+/**
+ * @var LoggerInterface $logger
+ */
+private LoggerInterface $logger;
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
 public function __construct(RouterInterface $router, [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/][if (authentication.captcha)]
-, Recaptcha3Validator $recaptcha3Validator[/if])
+, Recaptcha3Validator $recaptcha3Validator[/if], LoggerInterface $securityLogger)
 {
     $this->router = $router;
     $this->[authentication.authenticationModel.repository.instanceName()/] = $[authentication.authenticationModel.repository.instanceName()/];
+    $this->logger = $securityLogger;
 }
 [/template]
 
@@ -89,6 +96,8 @@ public function authenticate(Request $request): Passport
     /** var string $email */
     $email = $request->request->get('[authentication.identifierFeture.id()/]');
     $request->getSession()->set(Security::LAST_USERNAME, $email);
+
+    $this->logger->info("Form login attempt for " . $email);
 
     return new Passport(
         /* @phpstan-ignore-next-line */
@@ -116,6 +125,8 @@ public function onAuthenticationSuccess(Request $request, TokenInterface $token,
     $user = $token->getUser();
     $user->setLastLogin(new \DateTime());
     $this->[authentication.authenticationModel.repository.instanceName()/]->save($user, true);
+
+    $this->logger->info("Form login by " . $user->getUserIdentifier());
 
     if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
         return new RedirectResponse($targetPath);

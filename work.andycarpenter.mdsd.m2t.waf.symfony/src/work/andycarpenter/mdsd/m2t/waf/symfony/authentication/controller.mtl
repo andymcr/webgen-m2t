@@ -66,6 +66,7 @@ use App\Security\EmailVerifier;
 [if (authentication.captcha)]
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
 [/if]
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\[authentication.baseControllerClassName()/];
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -97,14 +98,20 @@ private [authentication.authenticationModel.repository.repositoryClassName()/] $
  * @var TranslatorInterface $translator
  */
 private TranslatorInterface $translator;
+
+/**
+ * @var LoggerInterface $logger
+ */
+private LoggerInterface $logger;
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
-public function __construct([authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/], ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator)
+public function __construct([authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/], ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator, LoggerInterface $securityLogger)
 {
     $this->[authentication.authenticationModel.repository.instanceName()/] = $[authentication.authenticationModel.repository.instanceName()/];
     $this->resetPasswordHelper = $resetPasswordHelper;
     $this->translator = $translator;
+    $this->logger = $securityLogger;
 }
 [/template]
 
@@ -242,6 +249,7 @@ public function [element.actionName()/](): Response
 public function [element.actionName()/]Request(Request $request, MailerInterface $mailer): Response
 {
     if ($this->getUser()) {
+        $this->logger->debug("Forgotten password process started by logged in user " . $this->getUser()->getUserIdentifier());
 [if (genModel.homeUnit().oclIsUndefined())]
         return $this->redirect("/");
 [else]
@@ -266,20 +274,23 @@ email[else]username[/if]')->getData(),
 [/template]
 
 [template private sendEmailMethod(element : ForgottenPasswordElement, genModel : WafModel) post(trim())]
-private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
+private function processSendingPasswordResetEmail(string $identifier, MailerInterface $mailer): RedirectResponse
 {
+    $this->logger->info("Request to reset password for " . $identifier);
     $user = $this->[element.authentication.authenticationModel.repository.instanceName()/]->findOneBy(['['/]
-        'email' => $emailFormData,
+        'email' => $identifier,
     [']'/]);
 
     // Do not reveal whether a user account was found or not.
     if (!$user) {
+        $this->logger->info($identifier . "does not identify a valid user");
         return $this->redirectToRoute('[element.routeEmailSentName()/]');
     }
 
     try {
         $resetToken = $this->resetPasswordHelper->generateResetToken($user);
     } catch (ResetPasswordExceptionInterface $e) {
+        $this->logger->info("Problem getting reset token " . $e->getReason());
         // If you want to tell the user why a reset email was not sent, uncomment
         // the lines below and change the redirect to '[element.routeName()/]'.
         // Caution: This may reveal if a user is registered or not.
@@ -292,6 +303,7 @@ private function processSendingPasswordResetEmail(string $emailFormData, MailerI
         return $this->redirectToRoute('[element.routeEmailSentName()/]');
     }
 
+    $this->logger->info("Sending password reset request email to " . $user->getEmail());
     $email = (new TemplatedEmail())
         ->from(new Address(
                 /* @phpstan-ignore-next-line */
@@ -384,6 +396,7 @@ public function [element.actionName()/]Reset(Request $request, UserPasswordHashe
 
         // The session is cleaned up after the password has been changed.
         $this->cleanSessionAfterReset();
+        $this->logger->info("Password changed for " . $user->getUserIdentifier());
 
         return $this->redirectToRoute('[genModel.homeUnit().routeName()/]');
     }
