@@ -274,6 +274,6 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.hasConfirmMessage)]
 		else if valueType.isContained then
 			key.keyAccessor(accessor.concat('.').concat(valueType.containingAssociation.modelPropertyName()), valueType.containingType, objectAccess)
 		else
-			''
+			'SetFeaturePath'
 		endif endif
 /]
