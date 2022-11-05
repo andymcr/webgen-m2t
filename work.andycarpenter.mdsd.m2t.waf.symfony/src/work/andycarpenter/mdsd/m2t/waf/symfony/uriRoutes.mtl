@@ -96,11 +96,14 @@
 			unit.uriPath(unit.routeParameters())
 		else if unit.controller.collectionUnits->first().contentType = unit.contentType then
 			unit.uriPath(unit.routeParameters())
-		else
+		else if unit.isContained then
 			unit.controller.collectionUnits->first().uriPath(unit.routeParameters())
 				.combinePaths(unit.containerType.keysPath(unit.routeParameters()))
 				.combinePaths(unit.uriElement)
-		endif endif
+		else
+			unit.controller.collectionUnits->first().uriPath(unit.routeParameters())
+				.combinePaths(unit.uriElement)
+		endif endif endif
 /]
 
 [query public uriPath(unit : CollectionUnit, routeParameters : Sequence(Attribute)) : String
