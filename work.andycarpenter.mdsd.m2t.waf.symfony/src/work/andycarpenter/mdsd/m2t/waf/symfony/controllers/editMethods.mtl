@@ -97,18 +97,12 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 
 [template private actionUpdateMethod(unit : EditUnit) post(trim())]
 [let controller : Controller = unit.controller]
-[let suffix : String
-	= if unit.oclIsTypeOf(CreateUpdateUnit) then
-			unit.oclAsType(CreateUpdateUnit).updateUriElement
-		else
-			unit.uriElement
-		endif]
 /**
  */
 [if (unit.isAuthorised)]
 [unit.securityAttribute()/]
 [/if]
-[unit.routeUpdateAttribute(suffix)/]
+[unit.routeUpdateAttribute()/]
 public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): Response
 {
     [unit.actionUpdateCore()/]
@@ -120,7 +114,6 @@ public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): R
     return $this->renderController([unit.renderMethodUpdateActuals()/]);
 [/if]
 }
-[/let]
 [/let]
 [/template]
 

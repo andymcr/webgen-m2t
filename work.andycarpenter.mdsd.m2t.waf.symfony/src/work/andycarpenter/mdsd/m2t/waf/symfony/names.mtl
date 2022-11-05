@@ -242,15 +242,12 @@
 	= if not unit.oclIsKindOf(EditUnit) then
 			unit.instanceName()
 		else
-			if unit.controller.editUnits->size() = 1 then
-				if unit.oclIsTypeOf(CreateUpdateUnit) then
-					if update then
-						unit.oclAsType(CreateUpdateUnit).updateUriElement
-					else
-						unit.uriElement
-					endif
+			if unit.oclIsTypeOf(CreateUpdateUnit) then
+				if update then
+					unit.oclAsType(CreateUpdateUnit).updateUriElement
+						.concat(unit.instanceName().replace('edit', ''))
 				else
-					unit.instanceName()
+					unit.uriElement.concat(unit.instanceName().replace('edit', ''))
 				endif
 			else
 				unit.instanceName()
@@ -402,37 +399,41 @@
 /]
 
 [query public routeUpdateName(unit : EditUnit) : String
-	= if unit.oclIsTypeOf(UpdateUnit) then
-			if unit.uriElement <> '' then
-				unit.controller.uniqueName()
-					.concat('_').concat(unit.uriElement)
-			else
-				unit.uniqueName()
-			endif
-		else if unit.oclIsTypeOf(CreateUpdateUnit) then
-			let createUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)
-				in if createUnit.updateUriElement <> '' then
-					unit.controller.uniqueName()
-						.concat('_').concat(createUnit.updateUriElement)
+	= let unitName : String
+		= if unit.oclIsTypeOf(UpdateUnit) then
+				if unit.uriElement <> '' then
+					unit.uriElement
+						.concat(unit.instanceName().replace(unit.uriElement, ''))
+						.replace('edit', '')
 				else
-					unit.uniqueName()
+					unit.instanceName()
 				endif
-		else
-			unit.uniqueName()
-		endif endif
+			else if unit.oclIsTypeOf(CreateUpdateUnit) then
+				let createUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)
+					in if createUnit.updateUriElement <> '' then
+						createUnit.updateUriElement
+							.concat(unit.instanceName().replace(createUnit.updateUriElement, ''))
+							.replace('edit', '')
+					else
+						unit.instanceName()
+					endif
+			else
+				unit.instanceName()
+			endif endif
+		in unit.controller.uniqueName().concat('_').concat(unitName)
 /]
 
 [query public routeName(unit : ContentUnit) : String
 	= if unit.controller.isSinglePage and unit.controller.hasSingleActionMethod()
 				or unit.isRoutingUnit() then
 			unit.controller.uniqueName()
-		else
-			if unit.oclIsKindOf(EditUnit) and unit.uriElement <> '' then
-				unit.controller.uniqueName()
-					.concat('_').concat(unit.uriElement)
-			else
-				unit.uniqueName()
-			endif
+		else let unitName : String
+			= if unit.oclIsKindOf(EditUnit) and unit.uriElement <> '' then
+					unit.uriElement.concat(unit.instanceName().replace('edit', ''))
+				else
+					unit.instanceName()
+				endif
+			in unit.controller.uniqueName().concat('_').concat(unitName)
 		endif
 /]
 
@@ -651,7 +652,7 @@
 		in if actionsWithName->size() < 2  then
 				action.uniqueName()
 			else
-				unit.instanceName().concat(action.name.toUpperFirst())
+				action.uniqueName().concat(unit.contentType.name)
 			endif
 /]
 
@@ -709,18 +710,13 @@
 
 [query public routeName(action : Action) : String
 	= let controller : Controller = action.parentUnit.controller
-		in if controller.hasRoutingUnits() then
-				if controller.actionsWithoutTarget->select(a | a.name = action.name)->size() = 1 then
-					controller.uniqueName()
-						.concat('_').concat(action.uniqueName())
+		in let actionName : String
+			= if controller.actionsWithoutTarget->select(a | a.name = action.name)->size() < 2 then
+					action.uniqueName()
 				else
-					action.parentUnit.routeName()
-						.concat('_').concat(action.uniqueName())
+					action.uniqueName().concat(action.parentUnit.contentType.name)
 				endif
-			else
-				action.parentUnit.routeName()
-					.concat('_').concat(action.uniqueName())
-			endif
+			in controller.uniqueName().concat('_').concat(actionName)
 /]
 
 [query private uniqueName(action : Action) : String

@@ -57,8 +57,12 @@
 [/template]
 
 [template public routeAttribute(unit : ContentUnit) post(trim())]
-[if (unit.oclIsKindOf(DynamicUnit))]
-[unit.routeAttribute(unit.routeName(), unit.oclAsType(DynamicUnit).uriPath(), true)/]
+[if (unit.oclIsKindOf(CollectionUnit))]
+[unit.routeAttribute(unit.routeName(), unit.oclAsType(CollectionUnit).uriPath(), true)/]
+[elseif (unit.oclIsKindOf(DetailsUnit))]
+[unit.routeAttribute(unit.routeName(), unit.oclAsType(DetailsUnit).uriPath(), true)/]
+[elseif (unit.oclIsKindOf(SingletonUnit))]
+[unit.routeAttribute(unit.routeName(), unit.oclAsType(SingletonUnit).uriPath(), true)/]
 [elseif (unit.oclIsKindOf(StaticUnit))]
 [unit.routeAttribute(unit.routeName(), unit.oclAsType(StaticUnit).uriPath(), true)/]
 [/if]
@@ -68,8 +72,8 @@
 [unit.routeAttribute(unit.routeName(), unit.uriCreatePath(), true)/]
 [/template]
 
-[template public routeUpdateAttribute(unit : EditUnit, suffix : String) post(trim())]
-[unit.routeAttribute(unit.routeUpdateName(), unit.uriUpdatePath(suffix), true)/]
+[template public routeUpdateAttribute(unit : EditUnit) post(trim())]
+[unit.routeAttribute(unit.routeUpdateName(), unit.uriUpdatePath(), true)/]
 [/template]
 
 [template public routeAttribute(action : Action, suffix : String) post(trim())]

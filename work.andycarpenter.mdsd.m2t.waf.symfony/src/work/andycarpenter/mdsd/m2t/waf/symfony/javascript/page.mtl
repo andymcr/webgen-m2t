@@ -13,7 +13,7 @@
 import Autocomplete from './autocomplete'
 
 [for (field : UnitField | controller.autocompleteFields)]
-[let path : String = field.oclAsType(UnitAssociation).uriPath(field.displayedOn)]
+[let path : String = field.oclAsType(UnitAssociation).displayedOn.uriUnitPath()]
 const [field.instanceName()/] = new Autocomplete(
     "[field.displayedOn.contentType.name.snakeCase()/]_[field.instanceName()/]",
     location.origin + '[path.first(path.lastIndex('/'))/]');
