@@ -196,15 +196,20 @@ public function getCurrentUser(): ?[security.authentication.userModel.modelClass
         return null;
     }
 
+[if (security.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+[let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
     $[repository.instanceName()/] = $queryBuilder
-        ->where($queryBuilder->expr()->eq('[repository.serves.selectName()/].[security.authentication.userKey.modelPropertyName()/]', ':[security.authentication.userKey.name/]'))
-        ->setParameter('[security.authentication.userKey.name/]', $user->[security.authentication.userKey.getMethodName()/]())
+        ->where($queryBuilder->expr()->eq('[repository.serves.selectName()/].[localAuthentication.authenticationKey.modelPropertyName()/]', ':[localAuthentication.authenticationKey.name/]'))
+        ->setParameter('[localAuthentication.authenticationKey.name/]', $user->[localAuthentication.userKey.getMethodName()/]())
         ->getQuery()->getOneOrNullResult();
     if(is_null($[repository.instanceName()/])) {
         throw new \Exception();
     }
     return $[repository.instanceName()/];
+[/let]
+[else]
+[/if]
 }
 [/template]
 

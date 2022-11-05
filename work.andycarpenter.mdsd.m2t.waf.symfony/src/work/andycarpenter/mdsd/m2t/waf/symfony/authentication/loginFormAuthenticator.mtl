@@ -94,7 +94,7 @@ public function __construct(RouterInterface $router, [authentication.authenticat
 public function authenticate(Request $request): Passport
 {
     /** var string $email */
-    $email = $request->request->get('[authentication.identifierFeture.id()/]');
+    $email = $request->request->get('[authentication.identifierFeature.id()/]');
     $request->getSession()->set(Security::LAST_USERNAME, $email);
 
     $this->logger->info("Form login attempt for " . $email);

@@ -22,12 +22,7 @@ security:
         app_user_provider:
             entity:
                 class: [authentication.modelsNamespace()/]\[authentication.authenticationModel.modelClassName()/]
-		[if (authentication.authenticationKey <> AuthenticationKeyTypes::Any)]
-                property: [if (authentication.authenticationKey = AuthenticationKeyTypes::Email)]
-email[elseif (authentication.authenticationKey = AuthenticationKeyTypes::Username)]
-username[/if]
-
-		[/if]
+                property: [authentication.identifierFeature.modelPropertyName()/]
 
     firewalls:
         dev:

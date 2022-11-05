@@ -261,8 +261,7 @@ public function [element.actionName()/]Request(Request $request, MailerInterface
     [element.formVariable()/]->handleRequest($request);
     if ([element.formVariable()/]->isSubmitted() && [element.formVariable()/]->isValid()) {
         return $this->processSendingPasswordResetEmail(
-            [element.formVariable()/]->get('[if (element.authentication.authenticationKey = AuthenticationKeyTypes::Email)]
-email[else]username[/if]')->getData(),
+            [element.formVariable()/]->get('[element.authentication.identifierFeature.modelPropertyName()/]')->getData(),
             $mailer
         );
     }

@@ -33,7 +33,7 @@
 
 {{ form_start([element.instanceName()/], { attr: { id: '[element.id()/]'[if (element.hasContentClass)], class: '[element.contentClass/]'[/if] }}) }}
  {{ form_errors([element.instanceName()/]) }}
- {{ form_row([element.instanceName()/].[element.authentication.identifierFeture.name/], { row_attr: { class: 'px-2 mb-3' },}) }}
+ {{ form_row([element.instanceName()/].[element.authentication.identifierFeature.name/], { row_attr: { class: 'px-2 mb-3' },}) }}
  {{ form_row([element.instanceName()/].plainPassword, { row_attr: { class: 'px-2 mb-3' }, attr: { }}) }}
 [if (element.authentication.captcha)]
  {{ form_row([element.instanceName()/].captcha) }}

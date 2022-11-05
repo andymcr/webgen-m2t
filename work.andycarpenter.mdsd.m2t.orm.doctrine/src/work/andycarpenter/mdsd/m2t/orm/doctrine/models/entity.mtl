@@ -868,10 +868,7 @@ public function [feature.removeMethodName()/]([feature.elementType()/] $[feature
 public function getUserIdentifier(): string
 {
 [if (authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
-    return $this->[if (localAuthentication.authenticationKey = AuthenticationKeyTypes::Username)]
-getUsername[else]getEmail[/if]();
-[/let]
+    return $this->[authentication.oclAsType(LocalAuthenticationSystem).identifierFeature.getMethodName()/]();
 [else]
 [/if]
 }

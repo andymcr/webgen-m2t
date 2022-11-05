@@ -21,11 +21,11 @@ use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 [/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (element.authentication.authenticationKey = AuthenticationKeyTypes::Email)]
+[if (element.authentication.authenticationKey.isEmailFeature)]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-[if (element.authentication.authenticationKey = AuthenticationKeyTypes::Any)]
+[if (element.authentication.authenticationKey.isStringFeature)]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,7 +49,7 @@ class [element.typeClassName()/] extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-[let identifierFeature : Attribute = element.authentication.identifierFeture]
+[let identifierFeature : Attribute = element.authentication.identifierFeature]
         [identifierFeature.formFeature()/];
 [/let]
 

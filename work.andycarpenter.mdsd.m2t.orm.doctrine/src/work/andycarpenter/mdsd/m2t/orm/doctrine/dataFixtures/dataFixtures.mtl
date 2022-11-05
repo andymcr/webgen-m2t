@@ -61,7 +61,7 @@ public function load(ObjectManager $manager)
 {
 [for (role : String | wafModel.authorisationRoles())]
     [entity.factoryClassName()/]::createOne(['['/]
-        '[authentication.identifierFeture.modelPropertyName()/]' => '[role/]',
+        '[authentication.identifierFeature.modelPropertyName()/]' => '[role/]',
         'roles' => ['['/] '[role/]' [']'/],
     [']'/]);
 [/for]
