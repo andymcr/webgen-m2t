@@ -92,7 +92,10 @@
 /]
 
 [query public uriPath(unit : CollectionUnit) : String
-	= if unit.controller.collectionUnits->first() = unit then
+	= if not unit.uriParent.oclIsUndefined() then
+			unit.uriParent.uriUnitPath()
+				.combinePaths(unit.uriElement)
+		else if unit.controller.collectionUnits->first() = unit then
 			unit.uriPath(unit.routeParameters())
 		else if unit.controller.collectionUnits->first().contentType = unit.contentType then
 			unit.uriPath(unit.routeParameters())
@@ -103,7 +106,7 @@
 		else
 			unit.controller.collectionUnits->first().uriPath(unit.routeParameters())
 				.combinePaths(unit.uriElement)
-		endif endif endif
+		endif endif endif endif
 /]
 
 [query public uriPath(unit : CollectionUnit, routeParameters : Sequence(Attribute)) : String
@@ -117,17 +120,23 @@
 /]
 
 [query public uriPath(unit : DetailsUnit) : String
-	= if unit.selection.oclIsUndefined() then
+	= if not unit.uriParent.oclIsUndefined() then
+			unit.uriParent.uriUnitPath()
+				.combinePaths(unit.uriElement)
+		else if unit.selection.oclIsUndefined() then
 			unit.uriPath(unit.contentType, unit.uriElement, unit.routeParameters())
 		else if selection.selectPath->notEmpty() then
 			unit.uriPath(selection.selectionType, unit.uriElement, unit.routeParameters())
 		else
 			unit.uriPath(unit.contentType, unit.uriElement, unit.routeParameters())
-		endif endif
+		endif endif endif
 /]
 
 [query public uriCreatePath(unit : EditUnit) : String
-	= if unit.controller.editUnits->size() = 1 then
+	= if not unit.uriParent.oclIsUndefined() then
+			unit.uriParent.uriUnitPath()
+				.combinePaths(unit.uriElement)
+		else if unit.controller.editUnits->size() = 1 then
 			if unit.routingType().oclIsUndefined() then
 				unit.controller.uriControllerPath()
 					.combinePaths(unit.uriElement)
@@ -144,7 +153,7 @@
 			unit.routingType().keysPath(unit.routeParameters())
 				.appendKeySeparator(unit.contentType)
 				.combinePaths(unit.uriElement)
-		endif endif
+		endif endif endif
 /]
 
 [query public uriUpdatePath(unit : EditUnit) : String
@@ -154,7 +163,10 @@
 			else
 				unit.uriElement
 			endif
-		in if unit.controller.collectionUnits->exists(u | u.contentType = unit.contentType) then
+		in if not unit.uriParent.oclIsUndefined() then
+			unit.uriParent.uriUnitPath()
+				.combinePaths(unit.uriElement)
+		else if unit.controller.collectionUnits->exists(u | u.contentType = unit.contentType) then
 			unit.controller.collectionUnits
 				->any(u | u.contentType = unit.contentType).uriPath(unit.routeUpdateParameters())
 				.combinePaths(unit.contentType.keyEntity().keyPath(unit.routeUpdateParameters()))
@@ -168,16 +180,26 @@
 				.combinePaths(unit.contentType.keysPath(unit.routeUpdateParameters()))
 				.appendKeySeparator(unit.contentType)
 				.combinePaths(suffix)
-		endif endif
+		endif endif endif
 /]
 
 [query public uriPath(unit : SingletonUnit) : String
-	= unit.uriPath(unit.contentType, unit.uriElement, unit.routeParameters())
+	= if not unit.uriParent.oclIsUndefined() then
+			unit.uriParent.uriUnitPath()
+				.combinePaths(unit.uriElement)
+		else
+			unit.uriPath(unit.contentType, unit.uriElement, unit.routeParameters())
+		endif
 /]
 
 [query public uriPath(unit : StaticUnit) : String
-	= unit.controller.uriControllerPath()
-		.combinePaths(unit.uriElement)
+	= if not unit.uriParent.oclIsUndefined() then
+			unit.uriParent.uriUnitPath()
+				.combinePaths(unit.uriElement)
+		else
+			unit.controller.uriControllerPath()
+				.combinePaths(unit.uriElement)
+		endif
 /]
 
 [query private uriPath(unit : DynamicUnit, routingType : Entity, suffix : String, routeParameters : Sequence(Attribute)) : String
