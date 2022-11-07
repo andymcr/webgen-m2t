@@ -100,9 +100,16 @@
 		else if unit.controller.collectionUnits->first().contentType = unit.contentType then
 			unit.uriPath(unit.routeParameters())
 		else if unit.isContained then
-			unit.controller.collectionUnits->first().uriPath(unit.routeParameters())
-				.combinePaths(unit.containerType.keysPath(unit.routeParameters()))
-				.combinePaths(unit.uriElement)
+			if unit.controller.collectionUnits->exists(u | u.contentType = unit.contentType.parentEntity()) then
+				unit.controller.collectionUnits
+					->any(u | u.contentType = unit.contentType.parentEntity()).uriPath()
+					.combinePaths(unit.containerType.keyPath(unit.routeParameters()))
+					.combinePaths(unit.uriElement)
+			else
+				unit.controller.collectionUnits->first().uriPath(unit.routeParameters())
+					.combinePaths(unit.containerType.keysPath(unit.routeParameters()))
+					.combinePaths(unit.uriElement)
+			endif
 		else
 			unit.controller.collectionUnits->first().uriPath(unit.routeParameters())
 				.combinePaths(unit.uriElement)
@@ -215,41 +222,13 @@
 
 [query public uriPath(action : Action, suffix : String) : String
 	= if action.parentUnit.oclIsKindOf(CollectionUnit) then
-			action.uriPath(
-				action.parentUnit.oclAsType(CollectionUnit).findElementSelection,
-				suffix)
+			let unit : CollectionUnit = action.parentUnit.oclAsType(CollectionUnit)
+				in 	unit.uriPath(action.routeParameters())
+						.combinePaths(unit.contentType.keyEntity().keyPath(action.routeParameters()))
+						.combinePaths(suffix)
 		else
-			action.parentUnit.uriPath(action.parentUnit.contentType, suffix, action.routeParameters())
+			action.parentUnit.uriUnitPath().combinePaths(suffix)
 		endif
-/]
-
-[query private uriPath(action : Action, selection : Selection, suffix : String) : String
-	= if selection.oclIsUndefined() then
-			action.uriPath(action.parentUnit.contentType, suffix, action.routeParameters())
-		else if selection.selectPath->notEmpty() then
-			action.uriPath(selection.selectionType, suffix, action.routeParameters())
-		else
-			action.uriPath(action.parentUnit.contentType, suffix, action.routeParameters())
-		endif endif
-/]
-
-[query private uriPath(action : Action, routingType : Entity, suffix : String, routeParameters : Sequence(Attribute)) : String
-	= let parentUriElement : String
-		= if action.parentUnit.isRoutingUnit() then
-				''
-			else
-				action.parentUnit.uriElement
-			endif
-		in if routingType.oclIsUndefined() then
-				action.parentUnit.controller.uriControllerPath()
-					.combinePaths(parentUriElement)
-					.combinePaths(suffix)
-			else
-				action.parentUnit.controller.uriControllerPath()
-					.combinePaths(parentUriElement)
-					.combinePaths(routingType.keysPath(routeParameters))
-					.combinePaths(suffix)
-			endif
 /]
 
 [query public uriContainerPath(unit : DynamicUnit, suffix : String) : String
