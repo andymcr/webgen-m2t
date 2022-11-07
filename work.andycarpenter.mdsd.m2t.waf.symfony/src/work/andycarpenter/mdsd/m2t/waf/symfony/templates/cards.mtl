@@ -44,7 +44,7 @@
 [/if]
 [if (cardsUnit.hasPagination
 	and not cardsUnit.selection.oclIsUndefined())]
- <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].currentPage }} target="_top"">
+ <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].currentPage }}" target="_top">
 [/if]
  [cardsUnit.unitContent(accessor)/]
 [if (cardsUnit.hasPagination
