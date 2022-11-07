@@ -7,6 +7,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
 
@@ -28,14 +29,20 @@
 [/let]
 [/template]
 
-[template public image(unit : ImageUnit, baseAccessor : String, imageClass : String) post(trim())]
-[if (unit.imagePathFeature.oclIsUndefined())]
+[template public image(unit : ImageUnit, baseAccessor : String, title : FeaturePath, imageClass : String) post(trim())]
+[if (not unit.showMissingImageWhen.oclIsUndefined())]
+{%- if [unit.showMissingImageWhen.twigExpression(baseAccessor)/] -%}
 	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 	[/if]
+{%- else -%}
+	[if (not unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
+[unit.image(unit.imageFilter, unit.imagePathFeature.imagePath(unit, baseAccessor), baseAccessor, title, imageClass)/]
+	[/if]
+{%- endif -%}
 [elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
 	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 	[/if]
 [else]
 	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
@@ -47,17 +54,17 @@
 	[/if]
 [let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
 {%- if [imageAccessor/] is not empty -%}
-[unit.image(unit.imageFilter, imageAccessor, baseAccessor, imageClass)/]
+[unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, imageClass)/]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 	[/if]
 {%- endif -%}
 [/let]
 	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
 {%- else -%}
 		[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 		[/if]
 {%- endif -%}
 	[/if]
@@ -72,13 +79,13 @@
 		endif
 /]
 
-[template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String) post(trim())]
-<img [unit.imageMissingSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+[template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String, title : FeaturePath) post(trim())]
+<img [unit.imageMissingSrc('src', manipulation)/] [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
 [/template]
 
 [template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String, 
-	baseAccessor : String, imageClass : String) post(trim())]
-<img [if (imageClass) <> '']class="[imageClass/]" [/if][accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor)/] [unit.imageTitle(baseAccessor)/]/>
+	baseAccessor : String, title : FeaturePath, imageClass : String) post(trim())]
+<img [if (imageClass) <> '']class="[imageClass/]" [/if][accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
 [/template]
 
 [template public imageMissingSrc(unit : ImageUnit, key : String, manipulation : ImageManipulation) post(trim())]
@@ -89,24 +96,24 @@
 [key/]="{{ [accessor/][if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
-[template public imageAlt(unit : ImageUnit, baseAccessor : String) post(trim())]
-[if (not unit.elementTitle.oclIsUndefined())]
-alt="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}"
+[template public imageAlt(unit : ImageUnit, baseAccessor : String, title : FeaturePath) post(trim())]
+[if (not title.oclIsUndefined())]
+alt="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
 [/if]
 [/template]
 
-[template public imageTitle(unit : ImageUnit, baseAccessor : String) post(trim())]
-[if (not unit.elementTitle.oclIsUndefined())]
-title="{{ [unit.elementTitle.accessor(baseAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}"
+[template public imageTitle(unit : ImageUnit, baseAccessor : String, title : FeaturePath) post(trim())]
+[if (not title.oclIsUndefined())]
+title="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
 [/if]
 [/template]
 
 
 [query public imagePath(path : FeaturePath, unit : ImageUnit, parentAccessor : String) : String
 	= if path.oclIsTypeOf(FeaturePathAttribute) then
-			path.oclAsType(FeaturePathAttribute).imagePath(parentAccessor, unit.hasObjectAccess())
+			path.oclAsType(FeaturePathAttribute).imagePath(parentAccessor, true) -- unit.hasObjectAccess())
 		else if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).imagePath(parentAccessor, unit.hasObjectAccess())
+			path.oclAsType(FeaturePathAssociation).imagePath(parentAccessor, true) -- unit.hasObjectAccess())
 		else
 			null
 		endif endif

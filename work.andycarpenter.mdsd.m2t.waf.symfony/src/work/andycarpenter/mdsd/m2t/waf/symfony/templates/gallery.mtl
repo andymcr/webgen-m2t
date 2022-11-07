@@ -38,7 +38,7 @@
 [let variable : String = 'image']
 <div id="gallery"[if (unit.hasContentClass)] class="[unit.contentClass/]"[/if] style="display:none;">
 {%- for [variable/] in [accessor/] -%}
- [unit.image(variable, '')/]
+ [unit.image(variable, unit.elementTitle, '')/]
 {%- endfor -%}
 </div>
 <script type="text/javascript"> 
@@ -79,7 +79,7 @@
 <div id="links">
 [let variable : String = 'image']
 {% for [variable/] in [unit.instanceParameter()/] %}
- [unit.blueimpEntry(variable)/]
+ [unit.blueimpEntry(variable, unit.elementTitle)/]
 {% endfor %}
 [/let]
 </div>
@@ -105,36 +105,36 @@ document.getElementById('links').onclick = function (event) {
 </script>
 [/template]
 
-[template public blueimpEntry(unit : GalleryUnit, baseAccessor : String) post(trim())]
+[template public blueimpEntry(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
 [if (unit.imagePathFeature.oclIsUndefined())]
 	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.blueimpMissing(unit, baseAccessor)/]/>
+[unit.blueimpMissing(unit, baseAccessor, title)/]/>
 	[/if]
 [elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
 	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.blueimpMissing(unit, baseAccessor)/]
+[unit.blueimpMissing(unit, baseAccessor, title)/]
 	[/if]
 [else]
 [let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
 {%- if [imageAccessor/] is not empty -%}
-[unit.blueimpImage(unit, imageAccessor, baseAccessor)/]
+[unit.blueimpImage(unit, imageAccessor, baseAccessor, title)/]
 	[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
-[unit.blueimpMissing(unit, baseAccessor)/]
+[unit.blueimpMissing(unit, baseAccessor, title)/]
 	[/if]
 {%- endif -%}
 [/let]
 [/if]
 [/template]
 
-[template public blueimpMissing(unit : GalleryUnit, baseAccessor : String) post(trim())]
-<a [unit.imageMissingSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor)/]>
- [unit.imageMissing(unit.missingImageFilter(), baseAccessor)/]
+[template public blueimpMissing(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
+<a [unit.imageMissingSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor, title)/]>
+ [unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 </a>
 [/template]
 
-[template public blueimpImage(unit : GalleryUnit, imageAccessor : String, baseAccessor : String) post(trim())]
-<a [imageAccessor.imageSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor)/]>
- [unit.image(unit.imageFilter, imageAccessor, baseAccessor, '')/]
+[template public blueimpImage(unit : GalleryUnit, imageAccessor : String, baseAccessor : String, title : FeaturePath) post(trim())]
+<a [imageAccessor.imageSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor, title)/]>
+ [unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, '')/]
 </a>
 [/template]

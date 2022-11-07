@@ -29,7 +29,7 @@
  <ul class="slides">
 [let variable : String = unit.contentType.instanceName()]
 {% for [variable/] in [unit.instanceParameter()/] %}
-  <li>[unit.image(variable, '')/]</li>
+  <li>[unit.image(variable, unit.elementTitle, '')/]</li>
 {% endfor %}
 [/let]
  </ul>
@@ -53,7 +53,7 @@ var instance = M.Slider.init(elem[if (unit.showTime > 0 or unit.transitionTime >
  <div class="carousel-inner">
 [let variable : String = unit.contentType.instanceName()]
 {% for [variable/] in [unit.instanceParameter()/] %}
-  <div class="carousel-item{% if loop.first %} active{% endif %}">[unit.image(variable, '')/]</div>
+  <div class="carousel-item{% if loop.first %} active{% endif %}">[unit.image(variable, unit.elementTitle, '')/]</div>
 {% endfor %}
 [/let]
  </div>

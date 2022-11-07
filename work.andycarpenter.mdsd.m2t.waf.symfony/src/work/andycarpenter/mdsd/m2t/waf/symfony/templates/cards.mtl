@@ -230,10 +230,10 @@
 [let imageClass : String = 'card-img-top']
 [if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() = 1)]
 [let action : Action = unit.actions->first()]
- [action.unitActionLink(unit.image(cardAccessor, imageClass), cardAccessor)/]
+ [action.unitActionLink(unit.image(cardAccessor, unit.elementTitle, imageClass), cardAccessor)/]
 [/let]
 [else]
- [unit.image(cardAccessor, imageClass)/]
+ [unit.image(cardAccessor, unit.elementTitle, imageClass)/]
 [/if]
 [if (unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
 <div class="card-img-overlay">

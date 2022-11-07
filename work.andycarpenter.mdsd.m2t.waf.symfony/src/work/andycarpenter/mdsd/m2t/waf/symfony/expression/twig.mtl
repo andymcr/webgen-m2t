@@ -81,7 +81,9 @@ $this->get('people')->getId()
 	? (guard.oclIsTypeOf(PredicateBooleanOperator)) post(trim())]
 [let predicate : PredicateBooleanOperator = guard.oclAsType(PredicateBooleanOperator)]
 [for (expression : Expression | predicate.predicates)]
-[if (i > 1)] [predicate.operator()/] [/if][expression.twigExpression(accessor)/][/for][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[if (i > 1)] [predicate.operator()/] [/if][if (expression.oclIsKindOf(PredicateBooleanOperator))]
+([/if][expression.twigExpression(accessor)/][if (expression.oclIsKindOf(PredicateBooleanOperator))]
+)[/if][/for][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/let]
 [/template]
 
