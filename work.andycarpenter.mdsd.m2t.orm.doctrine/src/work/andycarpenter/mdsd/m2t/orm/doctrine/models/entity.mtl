@@ -848,7 +848,9 @@ public function [feature.removeMethodName()/]([feature.elementType()/] $[feature
 [let association : Association = feature.oclAsType(Association)]
 	[if (association.opposite.visible)]
 		[if (association.isOppositeSingleton)]
+			[if (not association.opposite.isRequired)]
     $[association.singletonName/]->[association.opposite.setMethodName()/](null);
+			[/if]
 		[else]
     $[association.singletonName/]->[if (association.opposite.collectionOrmAllowRemove)]
 [association.opposite.removeMethodName()/][else]
