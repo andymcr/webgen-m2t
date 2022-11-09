@@ -218,8 +218,8 @@ return [action.redirect(routeParameters)/];
 	? (action.operation.resultType = OperationResultTypes::File) post(trim())]
 [if (action.oclIsTypeOf(GeneralOperationAction))]
 $file = $[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
-$response = $this->file($file, '[action.name/][if (not action.fileExtension.oclIsUndefined())]
-[action.fileExtension/][/if]');
+$response = $this->file($file, '[action.name/][if (not action.operation.fileExtension.oclIsUndefined())]
+.[action.operation.fileExtension/][/if]');
 return $response;
 [else]
 	[if (action.isInstanceAction)]
@@ -229,11 +229,11 @@ return $response;
 	[/if]
 $file = $[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
 	[if (action.operation.resultMimeType.oclIsUndefined())]
-return $this->file($file, [action.filename()/][if (not action.fileExtension.oclIsUndefined())]
- . '[action.fileExtension/]'[/if])
+return $this->file($file, [action.filename()/][if (not action.operation.fileExtension.oclIsUndefined())]
+ . '.[action.operation.fileExtension/]'[/if])
 	[else]
-$response = $this->file($file, [action.filename()/][if (not action.fileExtension.oclIsUndefined())]
- . '[action.fileExtension/]'[/if]);
+$response = $this->file($file, [action.filename()/][if (not action.operation.fileExtension.oclIsUndefined())]
+ . '.[action.operation.fileExtension/]'[/if]);
 $response->headers->set('Content-Type', '[action.operation.resultMimeType/]');
 return $response;
 	[/if]
