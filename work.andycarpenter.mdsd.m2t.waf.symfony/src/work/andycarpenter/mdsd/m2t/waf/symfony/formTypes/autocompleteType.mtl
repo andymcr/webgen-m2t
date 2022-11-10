@@ -10,29 +10,25 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
 
-[template public autocompleteTypes(genModel : WafModel)]
-[for (association : UnitAssociation | genModel.autocompleteFields)]
-	[let sameAutocomplete : OrderedSet(UnitAssociation) = association.sameAutocomplete()]
-		[if (association = sameAutocomplete->first())]
-[association.autocompleteType(sameAutocomplete->size() > 1)/]
-		[/if]
-	[/let]
+[template public autocompleteTypes(wafModel : WafModel)]
+[for (association : UnitAssociation | wafModel.uniqueTypes())]
+[association.autocompleteType(association.association.targetType)/]
 [/for]
 [/template]
 
-[query private sameAutocomplete(association : UnitAssociation) : OrderedSet(UnitAssociation)
-	= association.genModel.autocompleteFields
-		->select(f | f.association = association.association
-			and f.displayedOn.authorisationRoles = association.displayedOn.authorisationRoles)
+[query private uniqueTypes(wafModel : WafModel) : Bag(UnitAssociation)
+	= let allTypes : Set(Entity)
+		= wafModel.autocompleteFields->collect(a | a.association.targetType)
+			->asSet()
+		in allTypes->collect(e | wafModel.autocompleteFields->any(a | a.association.targetType = e))
 /]
 
-
-[template public autocompleteType(association : UnitAssociation, notUnique : Boolean)]
+[template public autocompleteType(association : UnitAssociation, searchType : Entity)]
 [file(association.autocompleteTypeFilename(), false)]
 <?php
-namespace [association.formNamespace()/];
+namespace [searchType.formNamespace()/];
 
-use [association.modelsNamespace()/]\[association.association.modelClassName()/];
+use [searchType.modelsNamespace()/]\[searchType.modelClassName()/];
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -51,7 +47,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [if (not association.isSingleton or not association.isRequired)]
             'required' => false,
 [/if]
-            'class' => [association.association.modelClassName()/]::class,
+            'class' => [searchType.modelClassName()/]::class,
             'choice_label' => [if (association.valueDisplay.oclIsUndefined())]'defaultLabel'[else]'[association.valueDisplay.name.toLowerFirst()/][if (not association.valueDisplay.name.endsWith('Label'))]Label[/if]'[/if],
             'choice_translation_domain' => false,
 [if (association.isSingleton)]
@@ -59,7 +55,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [else]
             'multiple' => true,
 [/if]
-            'searchable_fields' => [association.searchFields()/],
+            'searchable_fields' => [searchType.searchFields()/],
 [if (not association.displayedOn.authorisationRoles.oclIsUndefined())]
             'security' => '[association.displayedOn.authorisationRoles/]',
 [/if]
@@ -74,9 +70,9 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [/file]
 [/template]
 
-[template private searchFields(association : UnitAssociation) post(trim())]
-['['/] [for (key : Attribute | association.association.targetType.uriPathKeys() ) separator(', ')]
-'[key.searchPath(association.association.targetType)/]'[/for] [']'/]
+[template private searchFields(searchType : Entity) post(trim())]
+['['/] [for (key : Attribute | searchType.uriPathKeys() ) separator(', ')]
+'[key.searchPath(searchType)/]'[/for] [']'/]
 [/template]
 
 [query private searchPath(key : Attribute, searchType : Entity) : String
