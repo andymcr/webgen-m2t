@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
@@ -58,7 +59,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [else]
             'multiple' => true,
 [/if]
-            'searchable_fields' => ['['/] 'image.title' [']'/],
+            'searchable_fields' => [association.searchFields()/],
 [if (not association.displayedOn.authorisationRoles.oclIsUndefined())]
             'security' => '[association.displayedOn.authorisationRoles/]',
 [/if]
@@ -72,3 +73,20 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 }
 [/file]
 [/template]
+
+[template private searchFields(association : UnitAssociation) post(trim())]
+['['/] [for (key : Attribute | association.association.targetType.uriPathKeys() ) separator(', ')]
+'[key.searchPath(association.association.targetType)/]'[/for] [']'/]
+[/template]
+
+[query private searchPath(key : Attribute, searchType : Entity) : String
+	= if searchType.attributeKeys->includes(key) then
+			key.modelPropertyName()
+		else if searchType.isContained then
+				searchType.containingAssociation.modelPropertyName()
+					.concat('.')
+					.concat(key.searchPath(searchType.containingType))
+		else
+			''
+		endif endif
+/]
