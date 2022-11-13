@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/metamodel/service',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
 
 
 [query public entitiesUsed(controller : Controller) : Sequence(Entity)
@@ -15,23 +16,27 @@
 				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
 			->collect(u | u.contentType))
 		->union(controller.collectionUnits
-			->select(u | u.isContained 
+			->select(u | u.isContained and u.loadContainingType()
 				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
 			->collect(u | u.containingType))
 		->asSet()->asSequence()
 /]
 
 [query public repositoriesUsed(controller : Controller) : Sequence(Repository)
-	= let containerRepositories : Set(Repository)
-		= controller.editUnits
+	= controller.dynamicUnits
+			->collect(u | u.contentType.repository)
+			->asSet()
+		->union(controller.collectionUnits
+			->select(u | u.isContained and u.loadContainingType())
+			->collect(u | u.containingType.repository)
+			->asSet())
+		->union(controller.editUnits
 			->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))
 			->select(u | not u.hasExplicitlyEditedContainer)
 			->select(u | not u.containingType.oclIsUndefined())
 			->collect(u | u.containingType.repository)
-			->asSet()
-		in controller.repositoriesUsed->asSet()
-			->union(containerRepositories)
-			->asSequence()
+			->asSet())
+		->asSequence()
 /]
 
 

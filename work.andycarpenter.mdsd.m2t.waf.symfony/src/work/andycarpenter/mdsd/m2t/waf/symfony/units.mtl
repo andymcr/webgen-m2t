@@ -3,6 +3,8 @@
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/service',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
 
 
 [query public containingTypeLoadedBy(unit : DynamicUnit) : DynamicUnit
@@ -21,6 +23,12 @@
 
 [query public containingTypeLoadedElsewhere(unit : DynamicUnit) : Boolean
 	= unit.containingTypeLoadedBy() <> unit and unit.controller.isSinglePage
+/]
+
+[query public loadContainingType(unit : CollectionUnit) : Boolean
+	= not unit.findContainerSelection.oclIsUndefined()
+		or unit.routeParameters()->includesAll(unit.containingType.uriPathKeys())
+			and not unit.containingTypeLoadedElsewhere()
 /]
 
 [query public hasObjectAccess(unit : CollectionUnit) : Boolean

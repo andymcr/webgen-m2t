@@ -510,11 +510,11 @@
 
 [query public thumbName(unit : ImageUnit) : String
 	= let units : OrderedSet(ImageUnit)
-		= unit.controller.partOf.imageUnits
-		in if unit->collect(u | u.name)->select(n | n = unit.name)->size() > 1 then
-				unit.instanceName()
+		= unit.oclAsType(ContentUnit).controller.partOf.imageUnits
+		in if units->collect(u | u.oclAsType(ContentUnit).name)->select(n | n = unit.oclAsType(ContentUnit).name)->size() > 1 then
+				unit.oclAsType(ContentUnit).instanceName()
 			else
-				unit.uniqueName()
+				unit.oclAsType(ContentUnit).uniqueName()
 			endif
 /]
 

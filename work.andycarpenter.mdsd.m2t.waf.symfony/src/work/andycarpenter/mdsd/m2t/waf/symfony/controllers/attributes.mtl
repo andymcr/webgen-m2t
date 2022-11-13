@@ -61,8 +61,6 @@
 [unit.routeAttribute(unit.routeName(), unit.oclAsType(CollectionUnit).uriPath(), true)/]
 [elseif (unit.oclIsKindOf(DetailsUnit))]
 [unit.routeAttribute(unit.routeName(), unit.oclAsType(DetailsUnit).uriPath(), true)/]
-[elseif (unit.oclIsKindOf(SingletonUnit))]
-[unit.routeAttribute(unit.routeName(), unit.oclAsType(SingletonUnit).uriPath(), true)/]
 [elseif (unit.oclIsKindOf(StaticUnit))]
 [unit.routeAttribute(unit.routeName(), unit.oclAsType(StaticUnit).uriPath(), true)/]
 [/if]

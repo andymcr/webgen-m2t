@@ -47,7 +47,7 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 	[/if]
     return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', [if (unit.isConditionallyDisplayed)]
 $parameters[else]['['/]
-		[if (unit.isContained)]
+		[if (unit.isContained and unit.loadContainingType())]
         '[unit.containerParameter()/]' => [unit.containerInstanceVariable()/],
 		[/if]
 		[if (unit.inlineSelectCode())]
@@ -80,7 +80,7 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 [template public renderCode(unit : ContentUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[if (collectionUnit.isContained and not collectionUnit.containingTypeLoadedElsewhere())]
+[if (collectionUnit.isContained and collectionUnit.loadContainingType())]
 [collectionUnit.loadContainer()/]
 	[if (collectionUnit.isConditionallyDisplayed or unit.controller.isSinglePage)]
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
