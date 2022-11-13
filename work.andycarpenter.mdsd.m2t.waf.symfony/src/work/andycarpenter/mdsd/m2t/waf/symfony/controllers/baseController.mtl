@@ -116,7 +116,7 @@ private TranslatorInterface $translationService;
 public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
 {
     [deleteAction.loadInstance()/]
-    $this->[unit.contentRepository.instanceName()/]->remove($[deleteAction.instanceName()/], true);
+    $this->[unit.contentType.repository.instanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (unit.oclIsKindOf(CollectionUnit))]
     return [action.redirect(deleteAction.routeParameters())/];

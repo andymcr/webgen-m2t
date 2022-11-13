@@ -146,7 +146,7 @@ $this->[unit.containingType.repository.instanceName()/]
 
 
 [template public getContentRepository(unit : DynamicUnit) post(trim())]
-$this->[unit.contentRepository.instanceName()/]
+$this->[unit.contentType.repository.instanceName()/]
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
