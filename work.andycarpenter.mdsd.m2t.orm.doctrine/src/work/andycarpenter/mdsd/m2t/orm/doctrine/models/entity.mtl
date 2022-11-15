@@ -36,11 +36,7 @@ namespace [entity.modelsNamespace()/];
 
 
 /**
-[if (entity.isContained)]
-	[for (attribute : Attribute | entity.containerUniqueAttributes)]
- * @AppAssert\CollectionUnique(uniqueProperty="[attribute.modelPropertyName()/]", containerProperty="[entity.containingAssociation.modelPropertyName()/]", collectionProperty="[entity.containingAssociation.opposite.modelPropertyName()/]")
-	[/for]
-[/if]
+ *
  **/
 #['['/]ORM\Entity[if(not entity.repository.oclIsUndefined())]
 (repositoryClass: [entity.repository.repositoryClassName()/]::class)[/if][']'/]
@@ -183,9 +179,6 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 [/if]
 [if (entity.hasResourceAttributes)]
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-[/if]
-[if (entity.isContained and entity.containerUniqueAttributes->notEmpty())]
-use [entity.validatorNamespace()/]\Constraints as AppAssert;
 [/if]
 [if (entity.implementsForumUser)]
 use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
@@ -460,7 +453,12 @@ mappedBy[else]inversedBy[/if]: "[opposite.modelPropertyName()/]"[if (association
 	[/if]
 [/if]
 [if (feature.isContains)]
-#['['/]Assert\Valid[']'/]
+[let association : Association = feature.oclAsType(Association)]
+	[if (association.targetType.containerUniqueAttributes->notEmpty())]
+#['['/]Assert\Unique(fields: ['['/][for (attribute : Attribute | association.targetType.containerUniqueAttributes)]
+'[attribute.modelPropertyName()/]'[/for][']'/])[']'/]
+	[/if]
+[/let]
 [/if]
 [/template]
 
