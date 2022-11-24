@@ -47,6 +47,10 @@
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
  <button type="submit" name="[unit.submitId()/]"[if (unit.hasAnchorClass)]
  class="[unit.anchorClass/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
+[if (not unit.cancelDestination.oclIsUndefined())]
+ <input type="submit" name="[unit.cancelId()/]"[if (unit.hasAnchorClass)]
+ class="[unit.anchorClass/]"[/if] value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/] formnovalidate/>
+[/if]
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
 	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
@@ -54,10 +58,6 @@
  class="[unit.anchorClass/]"[/if] value="[createUpdateUnit.clearLabel/]"[unit.disable(accessor)/]/>
 	[/if]
 [/let]
-[/if]
-[if (not unit.cancelDestination.oclIsUndefined())]
- <input type="submit" name="[unit.cancelId()/]"[if (unit.hasAnchorClass)]
- class="[unit.anchorClass/]"[/if] value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/]/>
 [/if]
 [for (action : Action | unit.containerActions)]
  [action.unitActionLink('accessor')/]

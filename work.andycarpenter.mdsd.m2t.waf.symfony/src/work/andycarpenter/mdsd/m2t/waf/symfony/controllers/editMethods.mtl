@@ -85,10 +85,10 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 [unit.setContainer()/]
 [/if]
 [unit.formVariable()/] = [unit.createForm(unit.instanceVariable(), sourceParameters)/];
-[unit.formVariable()/]->handleRequest($request);
 	[if (not unit.cancelDestination.oclIsUndefined())]
 [unit.handleCancelSubmit()/]
 	[/if]
+[unit.formVariable()/]->handleRequest($request);
 if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) {
     [unit.saveBody(sourceParameters)/]
 }
@@ -130,7 +130,7 @@ public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): R
 if (![unit.instanceVariable()/]) {
     throw $this->createNotFoundException('The [unit.contentType.name/] does not exist');
 }
-[for (field : UnitField | unit.formFields->select(f | f.isContains))]
+[for (field : UnitAssociation | unit.formFields->select(f | f.isContains).oclAsType(UnitAssociation))]
 [let association : Association = field.persistentFeature.oclAsType(Association)]
 $original[field.instanceName().toUpperFirst()/] = new ArrayCollection();
 foreach ([unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/]() as $[association.targetType.instanceName()/])
@@ -138,12 +138,12 @@ foreach ([unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/](
 [/let]
 [/for]
 [unit.formVariable()/] = [unit.updateForm(sourceParameters)/];
-[unit.formVariable()/]->handleRequest($request);
 [if (not unit.cancelDestination.oclIsUndefined())]
 [unit.handleCancelSubmit()/]
 [/if]
+[unit.formVariable()/]->handleRequest($request);
 if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) {
-[for (field : UnitField | unit.formFields->select(f | f.isContains))]
+[for (field : UnitAssociation | unit.formFields->select(f | f.isContains).oclAsType(UnitAssociation))]
 [let association : Association = field.persistentFeature.oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType.instanceName()/])
         if (false === [unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/]()->contains($[association.targetType.instanceName()/]))

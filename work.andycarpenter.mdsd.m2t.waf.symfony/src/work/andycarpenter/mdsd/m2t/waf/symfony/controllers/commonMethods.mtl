@@ -309,15 +309,19 @@ $request->query->all()[/if]
 [/template]
 
 [template public handleCancelSubmit(unit : DynamicUnit) post(trim())]
-[let cancelDestination : ContentUnit = 
-	if unit.oclIsKindOf(ControlUnit) then
-		unit.oclAsType(ControlUnit).cancelDestination
-	else
-		unit.oclAsType(EditUnit).cancelDestination
-	endif]
-if ([unit.instanceVariable()/]->isSubmitted() && [unit.instanceVariable()/]->get('cancel')->isClicked())
-	return $this->redirectToRoute('[cancelDestination.routeName()/]');
+[if (unit.oclIsKindOf(ControlUnit))]
+[let controlUnit : ControlUnit = unit.oclAsType(ControlUnit)]
+if ($request->isMethod('POST') && $request->request->has('cancel')) {
+	return $this->redirectToRoute('[controlUnit.cancelDestination.routeName()/]');
+}
 [/let]
+[elseif (unit.oclIsKindOf(EditUnit))]
+[let editUnit : EditUnit = unit.oclAsType(EditUnit)]
+if ($request->isMethod('POST') && $request->request->has('[editUnit.cancelId()/]')) {
+	return $this->redirectToRoute('[editUnit.cancelDestination.routeName()/]');
+}
+[/let]
+[/if]
 [/template]
 
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
