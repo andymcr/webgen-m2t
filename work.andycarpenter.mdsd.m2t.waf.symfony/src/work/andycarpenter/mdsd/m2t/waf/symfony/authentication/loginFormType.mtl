@@ -21,11 +21,11 @@ use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 [/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (element.authentication.authenticationKey.isEmailFeature)]
+[if (element.authentication.identifierFeature.isEmailFeature)]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-[if (element.authentication.authenticationKey.isStringFeature)]
+[if (element.authentication.identifierFeature.isStringFeature)]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
