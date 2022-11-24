@@ -66,7 +66,7 @@
 		[/if]
    <th>[if (field.hasCustomisedDisplayLabel)]
 {{ '[field.customisedCaptionContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[field.defaultDisplayLabelContainedId()/]' | trans }}[/if]</th>
+{{ '[field.oclAsType(UnitFeature).defaultDisplayLabelContainedId()/]' | trans }}[/if]</th>
 		[if (field.isAuthorised)]
 {% endif %}
 		[/if]

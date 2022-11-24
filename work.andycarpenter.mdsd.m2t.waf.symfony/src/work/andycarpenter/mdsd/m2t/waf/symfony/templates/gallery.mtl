@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::image/]
@@ -106,25 +107,39 @@ document.getElementById('links').onclick = function (event) {
 [/template]
 
 [template public blueimpEntry(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
-[if (unit.imagePathFeature.oclIsUndefined())]
-	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.blueimpMissing(unit, baseAccessor, title)/]/>
-	[/if]
-[elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
-	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.blueimpMissing(unit, baseAccessor, title)/]
-	[/if]
-[else]
-[let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
+[let imageAccessor : String = unit.imagePathFeature.accessor(baseAccessor, null)]
+[if (unit.showMissingImageWhen.oclIsUndefined())]
+	[if (not unit.imagePathFeature.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
+	[/if]
 [unit.blueimpImage(unit, imageAccessor, baseAccessor, title)/]
-	[if (not unit.missingImagePath.oclIsUndefined())]
+	[if (not unit.imagePathFeature.isRequired)]
+		[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
 [unit.blueimpMissing(unit, baseAccessor, title)/]
+		[/if]
+{%- endif -%}
+	[/if]
+[else]
+{%- if [unit.showMissingImageWhen.twigExpression(baseAccessor)/] -%}
+	[if (not unit.missingImagePath.oclIsUndefined())]
+[unit.blueimpMissing(unit, baseAccessor, title)/]
+	[/if]
+{%- else -%}
+	[if (not unit.imagePathFeature.isRequired)]
+{%- if [imageAccessor/] is not empty -%}
+	[/if]
+[unit.blueimpImage(unit, imageAccessor, baseAccessor, title)/]
+	[if (not unit.imagePathFeature.isRequired)]
+		[if (not unit.missingImagePath.oclIsUndefined())]
+{%- else -%}
+[unit.blueimpMissing(unit, baseAccessor, title)/]/>
+		[/if]
+{%- endif -%}
 	[/if]
 {%- endif -%}
-[/let]
 [/if]
+[/let]
 [/template]
 
 [template public blueimpMissing(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
