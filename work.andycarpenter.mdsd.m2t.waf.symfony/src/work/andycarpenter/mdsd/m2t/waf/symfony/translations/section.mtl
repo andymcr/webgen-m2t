@@ -23,7 +23,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
-[if (controller.hasEditUnits)]
+[if (controller.allEditUnits()->notEmpty())]
    [controller.cancelLabelContainedId().idTranslation(controller.partOf.defaultCancelLabel)/]
    [controller.submitLabelContainedId().idTranslation(controller.partOf.defaultSaveLabel)/]
 [/if]
@@ -35,6 +35,14 @@
 </xliff>
 [/file]
 [/template]
+
+[query private allEditUnits(controller : Controller) : Set(EditUnit)
+	= controller.editUnits
+		->asSet()
+		->union(controller.childControllers
+			->collect(c | c.allEditUnits())
+			->asSet())
+/]
 
 [template private translations(controller : Controller) post(trim())]
 [if (controller.hasUnits)]
