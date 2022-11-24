@@ -578,7 +578,14 @@
 /]
 
 [query public autocompleteTypeClassName(association : UnitAssociation) : String
-	= association.association.modelClassName().concat(association.autocompleteTypeSuffix())
+	= association.association.modelClassName()
+		.concat(if association.displayedOn.genModel.autocompleteFields
+					->select(f | f.targetEntity = association.targetEntity)->size() > 1 then
+				association.displayedOn.contentType.name
+			else
+				''
+			endif)
+		.concat(association.autocompleteTypeSuffix())
 /]
 
 [query public formName(field : UnitField) : String

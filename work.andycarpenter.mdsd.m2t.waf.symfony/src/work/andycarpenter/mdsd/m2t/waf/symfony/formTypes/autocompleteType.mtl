@@ -11,17 +11,10 @@
 
 
 [template public autocompleteTypes(wafModel : WafModel)]
-[for (association : UnitAssociation | wafModel.uniqueTypes())]
+[for (association : UnitAssociation | wafModel.autocompleteFields)]
 [association.autocompleteType(association.association.targetType)/]
 [/for]
 [/template]
-
-[query private uniqueTypes(wafModel : WafModel) : Bag(UnitAssociation)
-	= let allTypes : Set(Entity)
-		= wafModel.autocompleteFields->collect(a | a.association.targetType)
-			->asSet()
-		in allTypes->collect(e | wafModel.autocompleteFields->any(a | a.association.targetType = e))
-/]
 
 [template public autocompleteType(association : UnitAssociation, searchType : Entity)]
 [file(association.autocompleteTypeFilename(), false)]
