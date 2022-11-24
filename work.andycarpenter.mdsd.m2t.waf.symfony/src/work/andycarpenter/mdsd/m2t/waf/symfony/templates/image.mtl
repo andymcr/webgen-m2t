@@ -30,45 +30,39 @@
 [/template]
 
 [template public image(unit : ImageUnit, baseAccessor : String, title : FeaturePath, imageClass : String) post(trim())]
-[if (not unit.showMissingImageWhen.oclIsUndefined())]
+[let imageAccessor : String = unit.imagePathFeature.accessor(baseAccessor, null)]
+[if (unit.showMissingImageWhen.oclIsUndefined())]
+	[if (not unit.imagePathFeature.isRequired)]
+{%- if [imageAccessor/] is not empty -%}
+	[/if]
+[unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, imageClass)/]
+	[if (not unit.imagePathFeature.isRequired)]
+		[if (not unit.missingImagePath.oclIsUndefined())]
+{%- else -%}
+[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
+		[/if]
+{%- endif -%}
+	[/if]
+[else]
 {%- if [unit.showMissingImageWhen.twigExpression(baseAccessor)/] -%}
 	[if (not unit.missingImagePath.oclIsUndefined())]
 [unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 	[/if]
 {%- else -%}
-	[if (not unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
-[unit.image(unit.imageFilter, unit.imagePathFeature.imagePath(unit, baseAccessor), baseAccessor, title, imageClass)/]
-	[/if]
-{%- endif -%}
-[elseif (unit.imagePathFeature.imagePath(unit, baseAccessor).oclIsUndefined())]
-	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
-	[/if]
-[else]
-	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
-		[if (unit.imagePathFeature.isSingleton)]
-{%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] is not empty -%}
-		[else]
-{%- if [unit.imagePathFeature.localAccessor(baseAccessor, null)/] | length > 0 -%}
-		[/if]
-	[/if]
-[let imageAccessor : String = unit.imagePathFeature.imagePath(unit, baseAccessor)]
+	[if (not unit.imagePathFeature.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
-[unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, imageClass)/]
-	[if (not unit.missingImagePath.oclIsUndefined())]
-{%- else -%}
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 	[/if]
-{%- endif -%}
-[/let]
-	[if (not unit.imagePathFeature.isRequired and unit.imagePathFeature.hasChild)]
-{%- else -%}
+[unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, imageClass)/]
+	[if (not unit.imagePathFeature.isRequired)]
 		[if (not unit.missingImagePath.oclIsUndefined())]
+{%- else -%}
 [unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
 		[/if]
 {%- endif -%}
 	[/if]
+{%- endif -%}
 [/if]
+[/let]
 [/template]
 
 [query public missingImageFilter(unit : ImageUnit) : ImageManipulation
@@ -85,7 +79,7 @@
 
 [template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String, 
 	baseAccessor : String, title : FeaturePath, imageClass : String) post(trim())]
-<img [if (imageClass) <> '']class="[imageClass/]" [/if][accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
+<img [if (imageClass <> '')]class="[imageClass/]" [/if][accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
 [/template]
 
 [template public imageMissingSrc(unit : ImageUnit, key : String, manipulation : ImageManipulation) post(trim())]
@@ -107,80 +101,3 @@ alt="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
 title="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
 [/if]
 [/template]
-
-
-[query public imagePath(path : FeaturePath, unit : ImageUnit, parentAccessor : String) : String
-	= if path.oclIsTypeOf(FeaturePathAttribute) then
-			path.oclAsType(FeaturePathAttribute).imagePath(parentAccessor, true) -- unit.hasObjectAccess())
-		else if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).imagePath(parentAccessor, true) -- unit.hasObjectAccess())
-		else
-			null
-		endif endif
-/]
-
-[query private imagePath(attribute : FeaturePathAttribute, parentAccessor : String, objectAccess : Boolean) : String
-	= let localAccessor : String
-			= if objectAccess then
-					attribute.attribute.modelPropertyName()
-				else
-					attribute.attribute.columnName
-				endif
-		in parentAccessor.concat('.').concat(localAccessor)
-/]
-
-[query private imagePath(association : FeaturePathAssociation, parentAccessor : String, objectAccess : Boolean) : String
-	= if not association.hasChild then
-			null
-		else
-			let localElement : String
-				= association.association.modelPropertyName().concat(
-					if association.association.isSingleton then
-						''
-					else
-						'.0'
-					endif)
-				in 
-			association.childFeature.imagePath(
-				parentAccessor.concat('.').concat(localElement),
-				objectAccess)
-		endif
-/]
-
-[query private imagePath(path : FeatureChildPath, parentAccessor : String, objectAccess : Boolean) : String
-	= if path.oclIsTypeOf(ChildPathAttribute) then
-			path.oclAsType(ChildPathAttribute).imagePath(parentAccessor, objectAccess)
-		else if path.oclIsTypeOf(ChildPathAssociation) then
-			path.oclAsType(ChildPathAssociation).imagePath(parentAccessor, objectAccess)
-		else
-			null
-		endif endif
-/]
-
-[query private imagePath(attribute : ChildPathAttribute, parentAccessor : String, objectAccess : Boolean) : String
-	= let localAccessor : String
-			= if objectAccess then
-					attribute.attribute.modelPropertyName()
-				else
-					attribute.attribute.columnName
-				endif
-		in parentAccessor.concat('.').concat(localAccessor)
-/]
-
-[query private imagePath(association : ChildPathAssociation, parentAccessor : String, objectAccess : Boolean) : String
-	= if not association.hasChild then
-			null
-		else
-			let localElement : String
-				= association.association.modelPropertyName().concat(
-					if association.association.isSingleton then
-						''
-					else
-						'.0'
-					endif)
-				in 
-			association.childFeature.imagePath(
-				parentAccessor.concat('.').concat(localElement),
-				objectAccess)
-		endif
-/]

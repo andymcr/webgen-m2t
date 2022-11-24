@@ -98,7 +98,8 @@
 		in if association.childFeature.oclIsUndefined() then
 				accessor
 			else
-				association.childFeature.accessor(accessor.concat(association.association.associationIndex()))
+				association.childFeature.accessor(
+					accessor.concat(association.association.associationIndex()), null)
 			endif 
 /]
 
@@ -116,44 +117,17 @@
 	= association.association.sourceType.repository.repositoryClassName().toLowerFirst()
 /]
 
-[query public accessor(path : FeaturePath, parentAccessor : String, selection : Selection) : String
-	= if path.oclIsTypeOf(FeaturePathAttribute) then
-			path.oclAsType(FeaturePathAttribute).accessor(parentAccessor, selection)
-		else if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).accessor(parentAccessor, selection)
+[query public localAccessor(path : Path, parentAccessor : String, selection : Selection) : String
+	= if path.oclIsKindOf(PathAttribute) then
+			path.oclAsType(PathAttribute).accessor(parentAccessor, selection)
+		else if path.oclIsKindOf(PathAssociation) then
+			path.oclAsType(PathAssociation).accessor(parentAccessor, selection)
 		else
 			path.oclAsType(FeaturePathLabel).accessor(parentAccessor)
 		endif endif
 /]
 
-[query public localAccessor(path : FeaturePath, parentAccessor : String, selection : Selection) : String
-	= if path.oclIsTypeOf(FeaturePathAttribute) then
-			path.oclAsType(FeaturePathAttribute).accessor(parentAccessor, selection)
-		else if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).localAccessor(parentAccessor, selection)
-		else
-			path.oclAsType(FeaturePathLabel).accessor(parentAccessor)
-		endif endif
-/]
-
-[query public accessor(path : FeaturePathAttribute, parentAccessor : String, selection : Selection) : String
-	= if path.attribute.alias(selection).oclIsUndefined() then
-			parentAccessor.concat('.').concat(path.attribute.modelPropertyName())
-		else
-			parentAccessor.concat('.').concat(path.attribute.alias(selection))
-		endif
-/]
-
-[query public accessor(path : FeaturePathAssociation, parentAccessor : String, selection : Selection) : String
-	= let accessor : String = path.localAccessor(parentAccessor, selection)
-		in if path.childFeature.oclIsUndefined() then
-				accessor
-			else
-				path.childFeature.accessor(accessor.concat(path.association.associationIndex()))
-			endif
-/]
-
-[query public localAccessor(path : FeaturePathAssociation, parentAccessor : String, selection : Selection) : String
+[query private localAccessor(path : PathAssociation, parentAccessor : String, selection : Selection) : String
 	= if path.association.alias(selection).oclIsUndefined() then
 			parentAccessor.concat('.').concat(path.association.modelPropertyName())
 		else
@@ -161,30 +135,36 @@
 		endif
 /]
 
-[query public accessor(label : FeaturePathLabel, parentAccessor : String) : String
-	= parentAccessor
+[query public accessor(path : Path, parentAccessor : String, selection : Selection) : String
+	= if path.oclIsKindOf(PathAttribute) then
+			path.oclAsType(PathAttribute).accessor(parentAccessor, selection)
+		else if path.oclIsKindOf(PathAssociation) then
+			path.oclAsType(PathAssociation).accessor(parentAccessor, selection)
+		else
+			path.oclAsType(FeaturePathLabel).accessor(parentAccessor)
+		endif endif
 /]
 
-[query public accessor(child : FeatureChildPath, parentAccessor : String) : String
-	=  if child.oclIsTypeOf(ChildPathAttribute) then
-			child.oclAsType(ChildPathAttribute).accessor(parentAccessor)
+[query private accessor(path : PathAssociation, parentAccessor : String, selection : Selection) : String
+	= let accessor : String = path.localAccessor(parentAccessor, selection)
+		in if not path.hasChild then
+				accessor
+			else
+				path.childFeature.accessor(
+					accessor.concat(path.association.associationIndex()), null)
+			endif
+/]
+
+[query private accessor(path : PathAttribute, parentAccessor : String, selection : Selection) : String
+	= if path.attribute.alias(selection).oclIsUndefined() then
+			parentAccessor.concat('.').concat(path.attribute.modelPropertyName())
 		else
-			child.oclAsType(ChildPathAssociation).accessor(parentAccessor)
+			parentAccessor.concat('.').concat(path.attribute.alias(selection))
 		endif
 /]
 
-[query public accessor(child : ChildPathAttribute, parentAccessor : String) : String
-	=  parentAccessor.concat('.').concat(child.attribute.modelPropertyName())
-/]
-
-[query private accessor(child : ChildPathAssociation, parentAccessor : String) : String
-	=  let childAccessor : String
-		= parentAccessor.concat('.').concat(child.association.modelPropertyName())
-		in if child.childFeature.oclIsUndefined() then
-				childAccessor
-			else
-				child.childFeature.accessor(childAccessor.concat(child.association.associationIndex()))
-			endif
+[query private accessor(label : FeaturePathLabel, parentAccessor : String) : String
+	= parentAccessor
 /]
 
 [query private repositoryAccessor(association : ChildPathAssociation) : String

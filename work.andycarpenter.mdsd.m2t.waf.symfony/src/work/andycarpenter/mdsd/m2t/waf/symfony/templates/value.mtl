@@ -65,14 +65,14 @@ NULL
 [/let]
 [/template]
 
-[template private getValue(child : FeatureChildPath, accessor : String)
+[template private getValue(child : ChildPath, accessor : String)
 	? (child.oclIsTypeOf(ChildPathAttribute)) post(trim())]
 [let attribute : ChildPathAttribute = child.oclAsType(ChildPathAttribute)]
 [attribute.attribute.getValue(accessor)/]
 [/let]
 [/template]
 
-[template private getValue(child : FeatureChildPath, accessor : String)
+[template private getValue(child : ChildPath, accessor : String)
 	? (child.oclIsTypeOf(ChildPathAssociation)) post(trim())]
 [let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)]
 [if (not association.childFeature.oclIsUndefined())]

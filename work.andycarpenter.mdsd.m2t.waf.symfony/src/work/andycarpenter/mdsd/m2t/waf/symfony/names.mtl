@@ -313,7 +313,7 @@
 
 [query private featureNames(form : DynamicUnit) : Sequence(String)
 	= form.displayFields
-		->select(f | f.oclIsKindOf(UnitFeature))
+		->select(f | f.oclIsKindOf(UnitFeature)).oclAsType(UnitFeature)
 		->collect(f | f.persistentFeature)
 		->sortedBy(f | f.name)
 		->collect(f | f.name)
@@ -341,6 +341,14 @@
 
 [query public formVariable(element : AuthenticationElement) : String
 	= '$'.concat(element.formName())
+/]
+
+[query public formVariable(unit : ControlUnit) : String
+	= if unit.controller.hasSingleActionMethod() or unit.controller.isMultiPage then
+			'$'.concat(unit.formName())
+		else
+			'$this->'.concat(unit.formName())
+		endif
 /]
 
 [query public formVariable(unit : EditUnit) : String

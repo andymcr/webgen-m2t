@@ -480,9 +480,14 @@ new NotBlank(['['/]
 $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
     $data = $event->getData();
 [for (field : UnitField | unit.defaultValueFields)]
-    if (is_null($data->[field.persistentFeature.getMethodName()/]())) {
-        $data->[field.persistentFeature.setMethodName()/]([field.defaultValue.controllerExpression('$data', null)/]);
+	[if (field.oclIsKindOf(UnitFeature))]
+	[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+    if (is_null($data->[feature.persistentFeature.getMethodName()/]())) {
+        $data->[feature.persistentFeature.setMethodName()/]([feature.defaultValue.controllerExpression('$data', null)/]);
     }
+	[/let]
+	[else]
+	[/if]
 [/for]
 [for (field : UnitField | unit.forcedValueFields)]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]

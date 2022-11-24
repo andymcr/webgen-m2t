@@ -49,8 +49,8 @@ new \DateTime()
 [/template]
 
 [template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
-	? (guard.oclIsTypeOf(FeaturePathAttribute)) post(trim())]
-[let path : FeaturePathAttribute = guard.oclAsType(FeaturePathAttribute)]
+	? (guard.oclIsTypeOf(PathVariableAttribute)) post(trim())]
+[let path : PathVariableAttribute = guard.oclAsType(PathVariableAttribute)]
 [if (path.useContainerAsContext)]
 [parentAccessor/][else]
 [accessor/][/if]->[path.attribute.getMethodName()/]()[if (guard.suffixes->notEmpty())]
@@ -59,8 +59,8 @@ new \DateTime()
 [/template]
 
 [template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
-	? (guard.oclIsTypeOf(FeaturePathAssociation)) post(trim())]
-[let path : FeaturePathAssociation = guard.oclAsType(FeaturePathAssociation)]
+	? (guard.oclIsTypeOf(PathVariableAssociation)) post(trim())]
+[let path : PathVariableAssociation = guard.oclAsType(PathVariableAssociation)]
 [if (path.useContainerAsContext)]
 [parentAccessor/][else]
 [accessor/][/if]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
@@ -69,14 +69,14 @@ new \DateTime()
 [/let] 
 [/template]
 
-[template public pathExpression(path : FeatureChildPath)
+[template public pathExpression(path : ChildPath)
 	? (path.oclIsTypeOf(ChildPathAttribute)) post(trim())]
 [let attribute : ChildPathAttribute = path.oclAsType(ChildPathAttribute)]
 ->[attribute.attribute.getMethodName()/]()
 [/let] 
 [/template]
 
-[template public pathExpression(path : FeatureChildPath)
+[template public pathExpression(path : ChildPath)
 	? (path.oclIsTypeOf(ChildPathAssociation)) post(trim())]
 [let association : ChildPathAssociation = path.oclAsType(ChildPathAssociation)]
 ->[association.association.getMethodName()/]()[if (not association.childFeature.oclIsUndefined())]

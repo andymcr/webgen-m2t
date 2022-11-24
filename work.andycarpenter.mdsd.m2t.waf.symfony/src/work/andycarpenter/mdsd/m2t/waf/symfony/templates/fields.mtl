@@ -51,7 +51,7 @@
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
 <dt[if (field.hasFieldLabelClass)] [field.labelClass()/][/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[field.customisedCaptionContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[field.defaultDisplayLabelContainedId()/]' | trans }}[/if]</dt>
+{{ '[if (field.oclIsKindOf(UnitFeature))][field.oclAsType(UnitFeature).defaultDisplayLabelContainedId()/][else]XXXXXXXX[/if]' | trans }}[/if]</dt>
 [/template]
 
 [template private labelClass(field : UnitField) post(trim())]

@@ -78,7 +78,16 @@
 [template private linkPath(action : Action, valueAccessor : String) 
 	?(action.isTargetAction) post(trim())]
 [let targetAction : TargetAction = action.oclAsType(TargetAction)]
+[if (targetAction.target.oclIsKindOf(DynamicUnit))]
+[let targetUnit : DynamicUnit = targetAction.target.oclAsType(DynamicUnit)]
+'[targetUnit.routeName()/]'[action.linkPathParameters(
+	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, action.parentUnit.containingType,
+		action.parentUnit.hasObjectAccess()),
+	action.parentUnit.contentType = targetUnit.contentType)/]
+[/let]
+[else]
 '[targetAction.target.oclAsType(ContentUnit).routeName()/]'
+[/if]
 [/let]
 [/template]
 
@@ -132,7 +141,7 @@
 		endif
 /]
 
-[query private selectType(path : FeatureChildPath) : Entity
+[query private selectType(path : ChildPath) : Entity
 	= if path.oclIsTypeOf(ChildPathAssociation) then
 			path.oclAsType(ChildPathAssociation).selectType()
 		else
@@ -141,8 +150,8 @@
 /]
 
 [query private selectType(path : ChildPathAssociation) : Entity
-	= if path.persistentFeature.oclIsKindOf(Association) then
-				path.persistentFeature.oclAsType(Association).targetType
+	= if path.leafFeature.oclIsKindOf(Association) then
+				path.leafFeature.oclAsType(Association).targetType
 			else
 				null
 			endif
@@ -164,7 +173,7 @@
 		endif]
 '[routeName/]'[action.linkPathParameters(
 	targetUnit.routeActualParameters(routeParameters, valueAccessor, valueType, action.parentUnit.hasObjectAccess()),
-	action.parentUnit.controller = targetUnit.controller)/]
+	action.parentUnit.contentType = targetUnit.contentType)/]
 [/let]
 [/let]
 [/let]

@@ -45,8 +45,8 @@ date()[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsKindOf(FeaturePath)) post(trim())]
-[let path : FeaturePath = guard.oclAsType(FeaturePath)]
+	? (guard.oclIsKindOf(PathVariable)) post(trim())]
+[let path : PathVariable = guard.oclAsType(PathVariable)]
 [path.accessor(accessor, null)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/let] 
 [/template]

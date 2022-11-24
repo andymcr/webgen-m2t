@@ -305,15 +305,15 @@
 	= field.fieldContainedId().concat('.').concat(field.titleElement())
 /]
 
-[query public defaultDisplayLabelContainedId(field : UnitField) : String
+[query public defaultDisplayLabelContainedId(field : UnitFeature) : String
 	= field.persistentFeature.captionContainedId()
 /]
 
-[query public defaultPlaceholderContainedId(field : UnitField) : String
+[query public defaultPlaceholderContainedId(field : UnitFeature) : String
 	= field.persistentFeature.captionContainedId()
 /]
 
-[query public defaultTitleContainedId(field : UnitField) : String
+[query public defaultTitleContainedId(field : UnitFeature) : String
 	= field.persistentFeature.captionContainedId()
 /]
 

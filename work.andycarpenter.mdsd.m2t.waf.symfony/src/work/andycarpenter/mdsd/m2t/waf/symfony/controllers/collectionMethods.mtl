@@ -91,7 +91,7 @@ if (isset([unit.instanceVariable()/])) {
     [collectionUnit.renderCode2()/]
 }
 [elseif (collectionUnit.isConditionallyDisplayed)]
-if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.instanceVariable(), collectionUnit.containerInstanceVariable())/])) {
+if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.containerInstanceVariable(), collectionUnit.containerInstanceVariable())/])) {
     [collectionUnit.renderCode2()/]
 }
 [else]

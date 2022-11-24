@@ -1,7 +1,9 @@
 [comment encoding = UTF-8 /]
 [module cards(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
@@ -142,8 +144,14 @@
 [template private unitActions(unit : CardsUnit) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if] role="group" aria-label="Floating action buttons">
 [for (action : Action | unit.actions)]
-	[if (action.isGeneralAction or action.isTargetAction)]
+	[if (action.isGeneralAction)]
  [action.unitActionLink(null)/]
+	[elseif (action.isTargetAction)]
+		[if (unit.contentType.keyEntity().isContained)]
+ [action.unitActionLink(unit.containerParameter())/]
+		[else]
+ [action.unitActionLink(null)/]
+		[/if]
 	[elseif (action.isContainerAction)]
  [action.unitActionLink(unit.containerParameter())/]
 	[/if]
