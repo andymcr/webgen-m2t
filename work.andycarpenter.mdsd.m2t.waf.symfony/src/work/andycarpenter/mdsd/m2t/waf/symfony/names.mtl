@@ -18,11 +18,13 @@
 [query public alias(field : UnitField) : String
 	= if field.oclIsKindOf(InterfaceField) then
 			null
-		else if field.oclIsTypeOf(UnitAttribute) then
+		else if field.isAttributeField then
 			field.oclAsType(UnitAttribute).alias()
+		else if field.isResourceField then
+			field.oclAsType(UnitResource).alias()
 		else
 			field.oclAsType(UnitAssociation).alias()
-		endif endif
+		endif endif endif
 /]
 
 [query public alias(attribute : UnitAttribute) : String
@@ -43,6 +45,10 @@
 		else
 			null
 		endif endif
+/]
+
+[query public alias(association : UnitResource) : String
+	= null
 /]
 
 [query public alias(association : UnitAssociation) : String
@@ -313,7 +319,7 @@
 
 [query private featureNames(form : DynamicUnit) : Sequence(String)
 	= form.displayFields
-		->select(f | f.oclIsKindOf(UnitFeature)).oclAsType(UnitFeature)
+		->select(f | f.isFeatureField).oclAsType(UnitFeature)
 		->collect(f | f.persistentFeature)
 		->sortedBy(f | f.name)
 		->collect(f | f.name)
@@ -589,9 +595,11 @@
 /]
 
 [query public formName(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitAttribute) then
+	= if field.isFeatureField then
+			if field.isAttributeField then
 				field.oclAsType(UnitAttribute).attribute.columnName
+			else if field.isResourceField then
+				field.oclAsType(UnitResource).resource.columnName
 			else
 				let association : Association
 					= field.oclAsType(UnitAssociation).association
@@ -600,8 +608,8 @@
 						else 
 							association.modelPropertyName() 
 						endif 
-			endif
-		else if field.oclIsKindOf(InterfaceField) then
+			endif endif
+		else if field.isInterfaceField then
 			field.oclAsType(InterfaceField).name
 		else
 			'UnhandledFeature'
@@ -609,23 +617,27 @@
 /]
 
 [query public instanceName(field : UnitField) : String
-	= if field.oclIsTypeOf(UnitAttribute) then
+	= if field.isAttributeField then
 			field.oclAsType(UnitAttribute).name
-		else if field.oclIsTypeOf(UnitAssociation) then
+		else if field.isResourceField then
+			field.oclAsType(UnitResource).name
+		else if field.isAssociationField then
 			field.oclAsType(UnitAssociation).name
 		else
 			field.oclAsType(InterfaceField).name
-		endif endif.toLowerFirst()
+		endif endif endif.toLowerFirst()
 /]
 
 [query public modelPropertyName(field : UnitField) : String
-	= if field.oclIsKindOf(UnitFeature) then
-			if field.oclIsTypeOf(UnitAttribute) then
+	= if field.isFeatureField then
+			if field.isAttributeField then
 				field.oclAsType(UnitAttribute).attribute.modelPropertyName()
+			else if field.isResourceField then
+				field.oclAsType(UnitResource).resource.filePropertyName()
 			else
 				field.oclAsType(UnitAssociation).association.modelPropertyName()
-			endif
-		else if field.oclIsKindOf(InterfaceField) then
+			endif endif
+		else if field.isInterfaceField then
 			field.oclAsType(InterfaceField).name
 		else
 			'UnhandledFeature'

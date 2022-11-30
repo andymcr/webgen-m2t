@@ -118,7 +118,8 @@
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
 	? (field.isInterfaceField
 		or (field.isAttributeField and field.isSingleton)
-		or (field.isAssociationField and not field.isContains)) post(trim())]
+		or (field.isAssociationField and not field.isContains)
+		or field.isResourceField) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
 {{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
 , {[if (field.hasTranslations() and not field.singleUseModel())]
@@ -139,7 +140,7 @@
 [/template]
 
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
-	? (field.oclIsTypeOf(UnitAttribute) and not field.isSingleton) post(trim())]
+	? (field.isAttributeField and not field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
  {{- form_label([accessor/]) -}}

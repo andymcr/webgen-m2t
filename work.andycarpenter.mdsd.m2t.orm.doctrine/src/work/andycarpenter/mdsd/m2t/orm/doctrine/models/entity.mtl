@@ -156,7 +156,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 [/if]
 [if (entity.hasResourceAttributes)]
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 [/if]
 [if (entity.implementsUserInterface)]
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -178,6 +177,9 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 [/if]
 [if (entity.hasResourceAttributes)]
+	[if (entity.resourceFeatures->exists(f | f.oclIsTypeOf(ImageResource)))]
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
+	[/if]
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 [/if]
 [if (entity.implementsForumUser)]
@@ -221,61 +223,101 @@ protected string $password = '';
 [/for]
 [/template]
 
-[template private featureProperty(feature : Feature) post(trim())]
-[comment TODO sortout location features /]
-[if (not feature.isLocationFeature and not feature.isResourceFeature)]
+[template private featureProperty(feature : Feature)
+	?(feature.isAssociationFeature) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
 /**
-	[if (feature.isAttributeFeature)]
- * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
-	[else]
-	[let association : Association = feature.oclAsType(Association)]
-		[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
+[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
  * @var [association.documentationType()/] $[feature.modelPropertyName()/]
-		[else]
+[else]
  * @var [association.documentationType()/][if (association.isSingleton and not association.isRequired)]|null[/if] $[feature.modelPropertyName()/]
-		[/if]
-	[/let]
-	[/if]
+[/if]
  */
 [feature.ormAttributes()/]
-	[if (feature.isValidated)]
+[if (feature.isValidated)]
 [feature.validationAttributes()/]
-	[/if]
-	[if (feature.isAttributeFeature)]
-		[if (feature.isSingleton)]
-protected [if (not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not feature.isDateFeature and not feature.hasDefaultValue)]
- = [feature.oclAsType(Attribute).defaultSingletonValue()/][/if];
-		[else]
-protected [feature.implementationType()/] $[feature.modelPropertyName()/] = array();
-		[/if]
-	[else]
-	[let association : Association = feature.oclAsType(Association)]
-		[if (association.isSingleton)]
-			[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
+[/if]
+[if (association.isSingleton)]
+	[if (association.partOf.implementsResetPasswordInterface and association.name = 'user')]
 protected [feature.implementationType()/] $[feature.modelPropertyName()/];
-			[else]
+	[else]
 protected [if (not association.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not association.isRequired and not feature.hasDefaultValue)]
  = null[/if];
-			[/if]
-		[else]
-protected [association.implementationType()/] $[association.modelPropertyName()/];
-		[/if]
-	[/let]
 	[/if]
+[else]
+protected [association.implementationType()/] $[association.modelPropertyName()/];
+[/if]
+[/let]
+[/template]
 
-[elseif (feature.isResourceFeature)]
+[template private featureProperty(feature : Feature)
+	?(feature.isAttributeFeature and not feature.isLocationFeature) post(trim())]
+/**
+ * @var [feature.documentationType()/][if (feature.isSingleton and not feature.isRequired)]|null[/if] $[feature.modelPropertyName()/]
+ */
+[feature.ormAttributes()/]
+[if (feature.isValidated)]
+[feature.validationAttributes()/]
+[/if]
+[if (feature.isSingleton)]
+protected [if (not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not feature.isDateFeature and not feature.hasDefaultValue)]
+ = [feature.oclAsType(Attribute).defaultSingletonValue()/][/if];
+[else]
+protected [feature.implementationType()/] $[feature.modelPropertyName()/] = array();
+[/if]
+[/template]
+
+[template private featureProperty(feature : Feature)
+	?(feature.isResourceFeature) post(trim())]
+[let resourceFeature : ResourceFeature = feature.oclAsType(ResourceFeature)]
+/**
+ * @var File|null
+ */
+[if (resourceFeature.maximumUploadSize > 0
+	or resourceFeature.validUploadMimeTypes->notEmpty())]
+#['['/]Assert\File(
+	[if (resourceFeature.maximumUploadSize > 0)]
+    maxSize: '[resourceFeature.maximumUploadSize/]',
+	[/if]
+	[if (resourceFeature.validUploadMimeTypes->notEmpty())]
+    mimeTypes: [if (resourceFeature.validUploadMimeTypes->size() = 1)]
+'[resourceFeature.validUploadMimeTypes->first()/]'[else]
+['['/] [for (mimeType : String | resourceFeature.validUploadMimeTypes) separator(', ')]
+'[mimeType/]'[/for][']'/][/if],
+	[/if]
+)[']'/]
+[/if]
+#['['/]Vich\UploadableField(
+    mapping: "[resourceFeature.mappingName()/]",
+    fileNameProperty: "[resourceFeature.detailsPropertyName()/].name",
+    size: "[resourceFeature.detailsPropertyName()/].size",
+    mimeType: "[resourceFeature.detailsPropertyName()/].mimeType",
+    originalName: "[resourceFeature.detailsPropertyName()/].originalName",
+    dimensions: "[resourceFeature.detailsPropertyName()/].dimensions"
+)[']'/]
+protected $[resourceFeature.filePropertyName()/];
+
+[if (feature.oclIsTypeOf(FileResource))]
 /**
  * @var string|null
  */
 #['['/]ORM\Column(type: "string")[']'/]
-protected $[feature.modelPropertyName()/]Name;
+protected ?string $[resourceFeature.namePropertyName()/];
 
-/**
- * @var File|null
- */
-#['['/]Vich\UploadableField(mapping: "[feature.modelPropertyName()/]", fileNameProperty: "[feature.modelPropertyName()/]Name", size: "[feature.modelPropertyName()/]Size", mimeType: "[feature.modelPropertyName()/].mimeType", originalName: "[feature.modelPropertyName()/].originalName", dimensions: "[feature.modelPropertyName()/].dimensions")[']'/]
-protected $[feature.modelPropertyName()/]File;
 [/if]
+[if (feature.oclIsTypeOf(ImageResource))]
+/**
+ * @var EmbeddedFile|null $[feature.modelPropertyName()/]
+ */
+#['['/]ORM\Embedded(class: EmbeddedFile::class)[']'/]
+private ?EmbeddedFile $[resourceFeature.detailsPropertyName()/] = null;
+[/if]
+[/let]
+[/template]
+
+[template private featureProperty(feature : Feature)
+	?(feature.isLocationFeature) post(trim())]
+[comment TODO sortout location features /]
 [/template]
 
 [template private forumUserProperties(entity : Entity) post(trim())]
@@ -524,15 +566,24 @@ public function getId(): int
 [/template]
 
 [template private featureMethods(feature : Feature) post(trim())]
-[if (feature.isResourceFeature)]
-[feature.getFileNameMethod()/]
+[if (feature.oclIsKindOf(ResourceFeature))]
+[let resourceFeature : ResourceFeature = feature.oclAsType(ResourceFeature)]
+[resourceFeature.getFileMethod()/]
 
-[feature.setFileNameMethod()/]
+[resourceFeature.setFileMethod()/]
+	[if (feature.oclIsTypeOf(FileResource))]
 
-[feature.getFileMethod()/]
+[resourceFeature.getNameMethod()/]
 
-[feature.setFileMethod()/]
+[resourceFeature.setNameMethod()/]
+	[/if]
+	[if (feature.oclIsTypeOf(ImageResource))]
 
+[resourceFeature.getDetailsMethod()/]
+
+[resourceFeature.setDetailsMethod()/]
+	[/if]
+[/let]
 [comment TODO sortout location features /]
 [elseif (feature.isLocationFeature)]
 
@@ -552,7 +603,6 @@ public function getId(): int
 			[/if]
 			[if (feature.collectionOrmAllowRemove)]
 [feature.removeMethod()/]
-
 			[/if]
 		[/if]
 	[/if]
@@ -605,27 +655,33 @@ public function [association.getMethodName()/](): [if (association.isSingleton a
 return $this->[feature.modelPropertyName()/];
 [/template]
 
-[template private getFileNameMethod(feature : Feature) post(trim())]
+[template private getDetailsMethod(feature : ResourceFeature) post(trim())]
 /**
- *
- *
- * @return string|null
+ * @return EmbeddedFile|null
  */
-public function [feature.getMethodName()/]Name(): ?string
+public function [feature.getDetailsMethodName()/](): ?EmbeddedFile
 {
-    return $this->[feature.modelPropertyName()/]Name;
+    return $this->[feature.detailsPropertyName()/];
 }
 [/template]
 
-[template private getFileMethod(feature : Feature) post(trim())]
+[template private getFileMethod(feature : ResourceFeature) post(trim())]
 /**
- *
- *
  * @return File|null
  */
-public function [feature.getMethodName()/]File(): ?File
+public function [feature.getFileMethodName()/](): ?File
 {
-    return $this->[feature.modelPropertyName()/]File;
+    return $this->[feature.filePropertyName()/];
+}
+[/template]
+
+[template private getNameMethod(feature : ResourceFeature) post(trim())]
+/**
+ * @return string|null
+ */
+public function [feature.getNameMethodName()/](): ?string
+{
+    return $this->[feature.namePropertyName()/];
 }
 [/template]
 
@@ -678,31 +734,44 @@ $this->[attribute.modelPropertyName()/] = $[attribute.instanceName()/];
 [/if]
 [/template]
 
-[template private setFileNameMethod(feature : Feature) post(trim())]
+[template private setDetailsMethod(feature : ResourceFeature) post(trim())]
 /**
- *
- *
- * @param string|null $[feature.instanceName()/]Name
+ * @param EmbeddedFile|null $[feature.instanceName()/]Name
  */
-public function [feature.setMethodName()/]Name(?string $[feature.instanceName()/]Name): self
+public function [feature.setDetailsMethodName()/](?EmbeddedFile $[feature.instanceName()/]Name): self
 {
-    $this->[feature.modelPropertyName()/]Name = $[feature.instanceName()/]Name;
+    $this->[feature.detailsPropertyName()/] = $[feature.instanceName()/]Name;
     return $this;
 }
 [/template]
 
-[template private setFileMethod(feature : Feature) post(trim())]
+[template private setFileMethod(feature : ResourceFeature) post(trim())]
 /**
  * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $[feature.instanceName()/]File
  **/
-public function [feature.setMethodName()/]File(?File $[feature.instanceName()/]File): void
+public function [feature.setFileMethodName()/](?File $[feature.instanceName()/]File): void
 {
-    $this->[feature.modelPropertyName()/]File = $[feature.instanceName()/]File;
+    $this->[feature.filePropertyName()/] = $[feature.instanceName()/]File;
     if (null !== $[feature.instanceName()/]File) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
+[if (not feature.directoryNamer.oclIsUndefined() and feature.directoryNamer.oclIsTypeOf(DateTimeDirectory))]
+        $this->[feature.directoryNamer.oclAsType(DateTimeDirectory).attribute.modelPropertyName()/] = new \DateTimeImmutable();
+[else]
         $this->updated = new \DateTimeImmutable();
+[/if]
     }
+}
+[/template]
+
+[template private setNameMethod(feature : ResourceFeature) post(trim())]
+/**
+ * @param string|null $[feature.instanceName()/]Name
+ */
+public function [feature.setNameMethodName()/](?string $[feature.instanceName()/]Name): self
+{
+    $this->[feature.namePropertyName()/]Name = $[feature.instanceName()/]Name;
+    return $this;
 }
 [/template]
 

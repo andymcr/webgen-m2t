@@ -80,18 +80,11 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [/template]
 
 [template private updateTests(unit : EditUnit, genModel : WafModel) post(trim())]
-[let suffix : String
-	= if unit.oclIsTypeOf(CreateUpdateUnit) then
-			unit.oclAsType(CreateUpdateUnit).updateUriElement
-		else
-			unit.uriElement
-		endif]
 [if (unit.isAuthorised)]
-[unit.testAuthorisedGet(unit.uriUpdatePath(suffix), true, genModel)/]
+[unit.testAuthorisedGet(unit.uriUpdatePath(), true, genModel)/]
 [else]
-[unit.testGet(unit.uriUpdatePath(suffix), true)/]
+[unit.testGet(unit.uriUpdatePath(), true)/]
 [/if]
-[/let]
 [/template]
 
 [template private unitTests(unit : ContentUnit, genModel : WafModel)

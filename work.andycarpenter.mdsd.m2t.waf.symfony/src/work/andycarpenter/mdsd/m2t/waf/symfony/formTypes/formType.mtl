@@ -179,7 +179,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [if (unit.hasEnumerationFields)]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (unit.collectionFeatures->select(f | f.oclIsTypeOf(UnitAttribute) or f.isContains)->notEmpty())]
+[if (unit.collectionFeatures->select(f | f.isAttributeField or f.isContains)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
 [if (unit.dateFields->select(f | f.dateDetails = DateDetails::DateOnly)->notEmpty())]
@@ -215,6 +215,12 @@ use Symfony\Component\Validator\Constraints\Length;
 [/if]
 [if (unit.hasRequiredInterfaceFields)]
 use Symfony\Component\Validator\Constraints\NotBlank;
+[/if]
+[if (unit.hasFileFields)]
+use Vich\UploaderBundle\Form\Type\VichFileType;
+[/if]
+[if (unit.hasImageFields)]
+use Vich\UploaderBundle\Form\Type\VichImageType;
 [/if]
 [/template]
 
@@ -299,6 +305,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 	? (field.isAttributeField and not field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
+[/let]
+[/template]
+
+[template private formField(field : UnitField)
+	? (field.isResourceField) post(trim())]
+[let resource : UnitResource = field.oclAsType(UnitResource)]
+[resource.resource.formFeature()/]
 [/let]
 [/template]
 
@@ -480,7 +493,7 @@ new NotBlank(['['/]
 $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
     $data = $event->getData();
 [for (field : UnitField | unit.defaultValueFields)]
-	[if (field.oclIsKindOf(UnitFeature))]
+	[if (field.isFeatureField)]
 	[let feature : UnitFeature = field.oclAsType(UnitFeature)]
     if (is_null($data->[feature.persistentFeature.getMethodName()/]())) {
         $data->[feature.persistentFeature.setMethodName()/]([feature.defaultValue.controllerExpression('$data', null)/]);

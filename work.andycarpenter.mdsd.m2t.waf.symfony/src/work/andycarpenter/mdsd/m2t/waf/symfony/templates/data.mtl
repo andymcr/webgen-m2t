@@ -13,7 +13,7 @@
 
 
 [template public getImmediateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
-[if (field.oclIsTypeOf(UnitFeature))]
+[if (field.isFeatureField)]
 [field.oclAsType(UnitFeature).getImmediateValue(parentAccessor, objectAccess)/]
 [else]
 NULL
@@ -21,8 +21,10 @@ NULL
 [/template]
 
 [template private getImmediateValue(feature : UnitFeature, parentAccessor : String, objectAccess : Boolean) post(trim())]
-[if (feature.oclIsTypeOf(UnitAttribute))]
+[if (feature.isAttributeField)]
 [feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor, objectAccess)/]
+[elseif (feature.isResourceField)]
+[feature.oclAsType(UnitResource).getImmediateValue(parentAccessor, objectAccess)/]
 [else]
 [feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor, objectAccess)/]
 [/if]
@@ -30,6 +32,10 @@ NULL
 
 [template private getImmediateValue(attribute : UnitAttribute, parentAccessor : String, objectAccess : Boolean) post(trim())]
 [attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor, attribute.alias(), objectAccess))/]
+[/template]
+
+[template private getImmediateValue(resource : UnitResource, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[resource.resource.getValue(resource.propertyAccessor(parentAccessor, resource.alias(), objectAccess))/]
 [/template]
 
 [template private getImmediateValue(association : UnitAssociation, parentAccessor : String, objectAccess : Boolean) post(trim())]
@@ -98,15 +104,15 @@ NULL
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isResourceField and field.isSingleton) post(trim())]
-[let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
+[let resource : UnitResource = field.oclAsType(UnitResource)]
 [let accessor : String = field.accessor(parentAccessor, field.alias(), objectAccess)]
 <?php
-[if (not attribute.isConditionalDisplay())]
-    if (!empty([attribute.getValue(accessor)/]))
+[if (not resource.isConditionalDisplay())]
+    if (!empty([resource.getValue(accessor)/]))
 [/if]
         echo HTML::anchor(
-            [attribute.getValue(accessor)/],
-            '[attribute.displayLabel/]',
+            [resource.getValue(accessor)/],
+            '[resource.displayLabel/]',
             NULL, NULL, FALSE);
 ?>
 [/let]
@@ -146,11 +152,13 @@ NULL
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
 [if (feature.hasActions)]
 [let parentEntity : Entity
-		= if feature.oclIsKindOf(UnitAttribute) then 
+		= if feature.isAttributeField then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
+			else if feature.isResourceField then 
+				feature.oclAsType(UnitResource).resource.partOf
 			else
 				feature.oclAsType(UnitAssociation).association.sourceType
-			endif]
+			endif endif]
 [feature.actions->first().featureActionLink(null, parentAccessor)/]
 [/let]
 [else]

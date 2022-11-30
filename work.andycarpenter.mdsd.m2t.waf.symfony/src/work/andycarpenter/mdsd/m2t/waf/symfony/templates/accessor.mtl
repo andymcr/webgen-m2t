@@ -19,15 +19,21 @@
 [query public propertyAccessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if field.oclIsKindOf(InterfaceField) then
 			parentAccessor.concat('.').concat(field.oclAsType(InterfaceField).name)
-		else if field.oclIsTypeOf(UnitAttribute) then
+		else if field.isAttributeField then
 			field.oclAsType(UnitAttribute).propertyAccessor(parentAccessor, alias, objectAccess)
+		else if field.isResourceField then
+			field.oclAsType(UnitResource).propertyAccessor(parentAccessor, alias, objectAccess)
 		else
 			field.oclAsType(UnitAssociation).propertyAccessor(parentAccessor, alias, objectAccess)
-		endif endif
+		endif endif endif
 /]
 
 [query public propertyAccessor(attribute : UnitAttribute, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= attribute.accessor(parentAccessor, alias, objectAccess)
+/]
+
+[query public propertyAccessor(resource : UnitResource, parentAccessor : String, alias : String, objectAccess : Boolean) : String
+	= resource.accessor(parentAccessor, alias, objectAccess)
 /]
 
 [query public propertyAccessor(association : UnitAssociation, parentAccessor : String, alias : String, objectAccess : Boolean) : String
@@ -49,11 +55,13 @@
 [query public accessor(field : UnitField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= if field.oclIsKindOf(InterfaceField) then
 			field.oclAsType(InterfaceField).accessor(parentAccessor, alias, objectAccess)
-		else if field.oclIsTypeOf(UnitAttribute) then
+		else if field.isAttributeField then
 			field.oclAsType(UnitAttribute).accessor(parentAccessor, alias, objectAccess)
+		else if field.isResourceField then
+			field.oclAsType(UnitResource).accessor(parentAccessor, alias, objectAccess)
 		else
 			field.oclAsType(UnitAssociation).accessor(parentAccessor, alias, objectAccess)
-		endif endif
+		endif endif endif
 /]
 
 [query public accessor(field : InterfaceField, parentAccessor : String, alias : String, objectAccess : Boolean) : String
@@ -82,6 +90,22 @@
 		else
 			if alias.oclIsUndefined() then
 				parentAccessor.concat('.').concat(attribute.attribute.columnName)
+			else
+				parentAccessor.concat('.').concat(alias)
+			endif
+		endif
+/]
+
+[query public accessor(resource : UnitResource, parentAccessor : String, alias : String, objectAccess : Boolean) : String
+	= if objectAccess then
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('.').concat(resource.modelPropertyName())
+			else
+				parentAccessor.concat('.').concat(alias)
+			endif
+		else
+			if alias.oclIsUndefined() then
+				parentAccessor.concat('.').concat(resource.resource.columnName)
 			else
 				parentAccessor.concat('.').concat(alias)
 			endif

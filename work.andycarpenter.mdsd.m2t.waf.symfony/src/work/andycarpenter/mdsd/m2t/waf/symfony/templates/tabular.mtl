@@ -117,7 +117,7 @@
 	[if (field.isAuthorised)]
 {% if is_granted('[field.authorisationRoles/]') %}
 	[/if]
-<td[if (field.oclIsKindOf(UnitFeature))] class="[field.oclAsType(UnitFeature).persistentFeature.name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayValue(accessor, objectAccess)/]</td>
+<td[if (field.isFeatureField)] class="[field.oclAsType(UnitFeature).persistentFeature.name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayValue(accessor, objectAccess)/]</td>
 	[if (field.isAuthorised)]
 {% endif %}
 	[/if]

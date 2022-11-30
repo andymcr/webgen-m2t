@@ -9,7 +9,7 @@
 
 
 [template public getValue(field : UnitField, accessor : String) post(trim())]
-[if (field.oclIsTypeOf(UnitFeature))]
+[if (field.isFeatureField)]
 [field.oclAsType(UnitFeature).getValue(accessor)/]
 [else]
 NULL
@@ -17,8 +17,10 @@ NULL
 [/template]
 
 [template public getValue(feature : UnitFeature, accessor : String) post(trim())]
-[if (feature.oclIsTypeOf(UnitAttribute))]
+[if (feature.isAttributeField)]
 [feature.oclAsType(UnitAttribute).getValue(accessor)/]
+[elseif (feature.isResourceField)]
+[feature.oclAsType(UnitResource).getValue(accessor)/]
 [else]
 [feature.oclAsType(UnitAssociation).getValue(accessor)/]
 [/if]
@@ -26,6 +28,10 @@ NULL
 
 [template public getValue(attribute : UnitAttribute, accessor : String) post(trim())]
 [attribute.attribute.getValue(accessor)/]
+[/template]
+
+[template public getValue(resource : UnitResource, accessor : String) post(trim())]
+[resource.resource.getValue(accessor)/]
 [/template]
 
 [template public getValue(association : UnitAssociation, accessor : String) post(trim())]
@@ -97,4 +103,8 @@ NULL
 [template public getValue(attribute : Attribute, accessor : String)
 	? (attribute.isEnumerationFeature) post(trim())]
 [accessor/] | [attribute.enumerationType.filterName()/] | trans({}, 'entity')
+[/template]
+
+[template public getValue(resource : ResourceFeature, accessor : String) post(trim())]
+[accessor/]
 [/template]

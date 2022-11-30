@@ -7,18 +7,110 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 
 
-[template public configVichUploader(model : WafModel)]
-[file (model.configPackagesDirectory().concat('/vich_uploader').concat(model.yamlExtension()), false)]
+[template public configVichUploader(wafModel : WafModel)]
+[file (wafModel.configPackagesDirectory().concat('/vich_uploader').concat(wafModel.yamlExtension()), false)]
 vich_uploader:
     db_driver: orm # or mongodb or propel or phpcr
 
     mappings:
-[for (entity : Entity | model.persistence.entities)]
+[for (entity : Entity | wafModel.persistence.entities)]
 	[for (resource : ResourceFeature | entity.resourceFeatures)]
-        [entity.instanceName()/]_[resource.instanceName()/]:
-            uri_prefix: /images
-            upload_destination: '%kernel.project_dir%/public/images/products'
+        [resource.mappingName()/]:
+            uri_prefix: '[resource.uriPrefix/]'
+            upload_destination: '[resource.baseUploadDirectory/]'
+            [resource.fileNamer.fileNamer()/]
+		[if (not resource.directoryNamer.oclIsUndefined())]
+            [resource.directoryNamer.directory()/]
+		[/if]
 	[/for]
 [/for]
 [/file]
+[/template]
+
+[template private directory(namer : DirectoryNamer)
+	?(namer.oclIsTypeOf(SubDirectory)) post(trim())]
+[let subDirNamer : SubDirectory = namer.oclAsType(SubDirectory)]
+directory_namer:
+    service: Vich\UploaderBundle\Naming\SubdirDirectoryNamer
+[if (subDirNamer.charactersPerDirectory <> 2 or subDirNamer.directoryCount <> 1)]
+    options: {[if (subDirNamer.charactersPerDirectory <> 2)]
+ chars_per_dir: [subDirNamer.charactersPerDirectory/][if (subDirNamer.directoryCount <> 1)],[/if][/if][if (subDirNamer.directoryCount <> 1)]
+ dirs:  [subDirNamer.directoryCount/][/if] }
+[/if]
+[/let]
+[/template]
+
+[template private directory(namer : DirectoryNamer)
+	?(namer.oclIsTypeOf(PropertyDirectory)) post(trim())]
+[let propertyNamer : PropertyDirectory = namer.oclAsType(PropertyDirectory)]
+directory_namer:
+    service: Vich\UploaderBundle\Naming\PropertyDirectoryNamer
+    options: { property: '[propertyNamer.attribute.modelPropertyName()/]', transliterate: true}
+[/let]
+[/template]
+
+[template private directory(namer : DirectoryNamer)
+	?(namer.oclIsTypeOf(DateTimeDirectory)) post(trim())]
+[let dateTimeNamer : DateTimeDirectory = namer.oclAsType(DateTimeDirectory)]
+directory_namer:
+    service: Vich\UploaderBundle\Naming\CurrentDateTimeDirectoryNamer
+    options:
+[if (dateTimeNamer.format <> 'Y/m/d')]
+        date_time_format: '[dateTimeNamer.format/]'
+[/if]
+        date_time_property: [dateTimeNamer.attribute.modelPropertyName()/]
+[/let]
+[/template]
+
+[template private fileNamer(namer : FileNamer)
+	?(namer.oclIsTypeOf(UniqueIdNamer)) post(trim())]
+namer: Vich\UploaderBundle\Naming\UniqidNamer
+[/template]
+
+[template private fileNamer(namer : FileNamer)
+	?(namer.oclIsTypeOf(OriginalNamer)) post(trim())]
+namer: Vich\UploaderBundle\Naming\OrignameNamer
+[/template]
+
+[template private fileNamer(namer : FileNamer)
+	?(namer.oclIsTypeOf(PropertyNamer)) post(trim())]
+[let propertyNamer : PropertyNamer = namer.oclAsType(PropertyNamer)]
+namer:
+    service: Vich\UploaderBundle\Naming\PropertyNamer
+    options: { property: '[propertyNamer.attribute.modelPropertyName()/]'}
+[/let]
+[/template]
+
+[template private fileNamer(namer : FileNamer)
+	?(namer.oclIsTypeOf(HashNamer)) post(trim())]
+[let hashNamer : HashNamer = namer.oclAsType(HashNamer)]
+namer:
+    service: Vich\UploaderBundle\Naming\HashNamer
+[if (hashNamer.algorithm <> 'sha1' or hashNamer.length <> 0)]
+    options: {[if (hashNamer.algorithm <> 'sha1')]
+ algorithm: '[hashNamer.algorithm/]'[if (hashNamer.length <> 0)],[/if][/if][if (hashNamer.length <> 0)]
+ length: [hashNamer.length/][/if] }
+[/if]
+[/let]
+[/template]
+
+[template private fileNamer(namer : FileNamer)
+	?(namer.oclIsTypeOf(Base64Namer)) post(trim())]
+[let base64Namer : Base64Namer = namer.oclAsType(Base64Namer)]
+namer:
+    service: Vich\UploaderBundle\Naming\Base64Namer
+[if (base64Namer.length <> 10)]
+    options: { length: [base64Namer.length/]}
+[/if]
+[/let]
+[/template]
+
+[template private fileNamer(namer : FileNamer)
+	?(namer.oclIsTypeOf(SmartUniqueNamer)) post(trim())]
+namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+[/template]
+
+[template private fileNamer(namer : FileNamer)
+	?(namer.oclIsTypeOf(SlugNamer)) post(trim())]
+namer: Vich\UploaderBundle\Naming\SlugNamer
 [/template]

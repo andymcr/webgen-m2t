@@ -300,7 +300,7 @@ $request->query->all()[/if]
 
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]
 [for (field : UnitField | unit.defaultValueFields)]
-[if (field.oclIsTypeOf(UnitAttribute))]
+[if (field.isAttributeField)]
 [unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
 [else]
 [unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];

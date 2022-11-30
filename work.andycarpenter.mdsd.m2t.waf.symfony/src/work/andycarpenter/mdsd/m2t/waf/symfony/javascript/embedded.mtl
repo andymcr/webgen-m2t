@@ -15,7 +15,7 @@
 [/template]
 
 [template private embeddedAttributes(model : WafModel) post(trim())]
-[for (field : UnitField | model.formFields->select(f | f.oclIsKindOf(UnitAttribute) and not f.isSingleton))]
+[for (field : UnitField | model.formFields->select(f | f.isAttributeField and not f.isSingleton))]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [if (attribute.collectionUiAllowAdd or attribute.collectionUiAllowRemove)]
 [attribute.addLinks(attribute.attribute.singletonName)/]

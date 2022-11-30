@@ -12,11 +12,9 @@
 [feature.formFeature(true)/]
 [/template]
 
-[template public formFeature(feature : Attribute, mapped : Boolean)
-	? (feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
+[template public formFeature(attribute : Attribute, mapped : Boolean)
+	? (attribute.isSingleton) post(trim())]
 [attribute.formFeature('entity', attribute.captionContainedId(), attribute.captionContainedId(), attribute.captionContainedId(), mapped)/]
-[/let]
 [/template]
 
 [template public formFeature(attribute : Attribute, translationDomain : String, labelId : String,
@@ -55,9 +53,8 @@ $builder->add('[attribute.modelPropertyName()/]', [attribute.interfaceType()/], 
 [/template]
 
 
-[template public formFeature(feature : Attribute, allowUiAdd : Boolean, allowUiRemove : Boolean)
-	? (not feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
+[template public formFeature(attribute : Attribute, allowUiAdd : Boolean, allowUiRemove : Boolean)
+	? (not attribute.isSingleton) post(trim())]
 $builder->add('[attribute.modelPropertyName()/]', CollectionType::class, ['['/]
     'label' => '[attribute.captionContainedId()/]',
     'translation_domain' => 'entity',
@@ -73,7 +70,28 @@ $builder->add('[attribute.modelPropertyName()/]', CollectionType::class, ['['/]
 [/if]
     'required' => false,
 [']'/])
-[/let]
+[/template]
+
+[template public formFeature(resource : ResourceFeature)
+	? (resource.oclIsTypeOf(FileResource)) post(trim())]
+$builder->add('[resource.filePropertyName()/]', VichFileType::class, ['['/]
+    'label' => '[resource.captionContainedId()/]',
+    'translation_domain' => 'entity',
+[if (not resource.isRequired)]
+    'required' => false,
+[/if]
+[']'/])
+[/template]
+
+[template public formFeature(resource : ResourceFeature)
+	? (resource.oclIsTypeOf(ImageResource)) post(trim())]
+$builder->add('[resource.filePropertyName()/]', VichImageType::class, ['['/]
+    'label' => '[resource.captionContainedId()/]',
+    'translation_domain' => 'entity',
+[if (not resource.isRequired)]
+    'required' => false,
+[/if]
+[']'/])
 [/template]
 
 [template private interfaceType(attribute : Attribute) post(trim())]
