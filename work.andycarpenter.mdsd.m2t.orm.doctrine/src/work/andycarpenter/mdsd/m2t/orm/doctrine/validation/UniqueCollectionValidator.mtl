@@ -1,0 +1,38 @@
+[comment encoding = UTF-8 /]
+[module UniqueCollectionValidator(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public uniqueCollectionValidator(ormModel : OrmModel)]
+[file(ormModel.collectionUniqueValidatorFilename(), false)]
+<?php
+namespace [ormModel.validatorNamespace()/];
+
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
+
+class [ormModel.collectionUniqueValidatorClassName()/] extends ConstraintValidator
+{
+    public function validate($value, Constraint $constraint): void
+    {
+        if (!$constraint instanceof [ormModel.collectionUniqueClassName()/]) {
+            throw new UnexpectedTypeException($constraint, [ormModel.collectionUniqueClassName()/]::class);
+        }
+
+        // custom constraints should ignore null and empty values to allow
+        // other constraints (NotBlank, NotNull, etc.) to take care of that
+        if (null === $value || '' === $value) {
+            return;
+        }
+
+//            $this->context->buildViolation($constraint->message)
+//                ->setParameter('{{ string }}', $value)
+//                ->addViolation();
+    }
+}
+[/file]
+[/template]

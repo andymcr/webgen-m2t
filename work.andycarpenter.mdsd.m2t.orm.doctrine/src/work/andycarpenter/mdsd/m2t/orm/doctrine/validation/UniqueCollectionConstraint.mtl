@@ -1,0 +1,60 @@
+[comment encoding = UTF-8 /]
+[module UniqueCollectionConstraint(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[template public uniqueCollectionConstraint(ormModel : OrmModel)]
+[file(ormModel.collectionUniqueFilename(), false)]
+<?php
+namespace [ormModel.validatorNamespace()/];
+
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
+use Symfony\Component\Validator\Constraint;
+
+
+#['['/]\Attribute[']'/]
+class [ormModel.collectionUniqueClassName()/] extends Constraint
+{
+    public string $message = 'The string "{{ string }}" contains an illegal character: it can only contain letters or numbers.';
+ 
+    /**
+      * @var array<int, string> $fields
+      **/
+    public array $fields;
+
+    /**
+      * @var string $containingAssociation
+      **/
+    public string $containingAssociation;
+
+     /**
+      * @var string $containerAssociation
+      **/
+   public string $containerAssociation;
+
+
+    /**
+      * @param array<int, string> $fields
+      * @param string $containingAssociation
+      * @param string $containerAssociation
+      * @param array<int, string>|null $groups
+      * @param mixed|null $payload
+      **/
+    #['['/]HasNamedArguments[']'/]
+    public function __construct(array $fields, string $containingAssociation, string $containerAssociation, array $groups = null, mixed $payload = null)
+    {
+        parent::__construct(['['/][']'/], $groups, $payload);
+        $this->fields = $fields;
+        $this->containingAssociation = $containingAssociation;
+        $this->containerAssociation = $containerAssociation;
+    }
+
+    public function validatedBy()
+    {
+        return static::class.'Validator';
+    }
+}
+[/file]
+[/template]

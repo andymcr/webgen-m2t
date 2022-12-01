@@ -38,24 +38,7 @@ namespace [entity.modelsNamespace()/];
 /**
  *
  **/
-#['['/]ORM\Entity[if(not entity.repository.oclIsUndefined())]
-(repositoryClass: [entity.repository.repositoryClassName()/]::class)[/if][']'/]
-#['['/]ORM\Table(name: "[entity.tableName/]")[']'/]
-[if (entity.unique->notEmpty())]
-	[if (entity.unique->size() = 1)]
-#['['/]UniqueEntity("[entity.unique->first().modelPropertyName()/]")[']'/]
-	[else]
-#['['/]UniqueEntity(
-    fields: ['['/][for (feature : Feature | entity.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for][']'/]
-[']'/]
-	[/if]
-[/if]
-[for (attribute : Attribute | entity.uniqueAttributes)]
-#['['/]UniqueEntity("[attribute.modelPropertyName()/]")[']'/]
-[/for]
-[if (entity.hasResourceAttributes)]
-#['['/]Vich\Uploadable[']'/]
-[/if]
+[entity.attributes()/]
 class [entity.modelClassName()/][if (entity.implementsUserInterface or entity.implementsPasswordAuthenticatedInterface or entity.implementsForumUser or entity.implementsResetPasswordInterface)]
  implements [/if][if (entity.implementsUserInterface)]
 UserInterface[if (entity.implementsPasswordAuthenticatedInterface or entity.implementsForumUser or entity.implementsResetPasswordInterface)]
@@ -139,6 +122,9 @@ ResetPasswordRequestInterface[/if]
 [if(not entity.repository.oclIsUndefined())]
 use [entity.repositoriesNamespace()/]\[entity.repository.repositoryClassName()/];
 [/if]
+[if (entity.isContained and entity.containerUniqueAttributes->notEmpty())]
+use [entity.validatorNamespace()/] as [entity.appValidation()/];
+[/if]
 use Doctrine\ORM\Mapping as ORM;
 [if (entity.hasCollectionAssociations)]
 use Doctrine\Common\Collections\ArrayCollection;
@@ -184,6 +170,35 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 [/if]
 [if (entity.implementsForumUser)]
 use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
+[/if]
+[/template]
+
+[template private attributes(entity : Entity) post(trim())]
+#['['/]ORM\Entity[if(not entity.repository.oclIsUndefined())]
+(repositoryClass: [entity.repository.repositoryClassName()/]::class)[/if][']'/]
+#['['/]ORM\Table(name: "[entity.tableName/]")[']'/]
+[if (entity.unique->notEmpty())]
+	[if (entity.unique->size() = 1)]
+#['['/]UniqueEntity("[entity.unique->first().modelPropertyName()/]")[']'/]
+	[else]
+#['['/]UniqueEntity(
+    fields: ['['/][for (feature : Feature | entity.unique) separator(', ')]"[feature.modelPropertyName()/]"[/for][']'/]
+[']'/]
+	[/if]
+[/if]
+[for (attribute : Attribute | entity.uniqueAttributes)]
+#['['/]UniqueEntity("[attribute.modelPropertyName()/]")[']'/]
+[/for]
+[if (entity.hasResourceAttributes)]
+#['['/]Vich\Uploadable[']'/]
+[/if]
+[if (entity.isContained and entity.containerUniqueAttributes->notEmpty())]
+#['['/][entity.appValidation()/]\[entity.collectionUniqueClassName()/](
+    fields: ['['/][for (attribute : Attribute | entity.containerUniqueAttributes)]
+'[attribute.modelPropertyName()/]'[/for][']'/],
+    containingAssociation: '[entity.containingAssociation.modelPropertyName()/]',
+    containerAssociation: '[entity.containingAssociation.opposite.modelPropertyName()/]'
+)[']'/]
 [/if]
 [/template]
 
@@ -273,10 +288,10 @@ protected [feature.implementationType()/] $[feature.modelPropertyName()/] = arra
 /**
  * @var File|null
  */
-[if (resourceFeature.maximumUploadSize > 0
+[if (resourceFeature.maximumUploadSize <> '0'
 	or resourceFeature.validUploadMimeTypes->notEmpty())]
 #['['/]Assert\File(
-	[if (resourceFeature.maximumUploadSize > 0)]
+	[if (resourceFeature.maximumUploadSize <> '0')]
     maxSize: '[resourceFeature.maximumUploadSize/]',
 	[/if]
 	[if (resourceFeature.validUploadMimeTypes->notEmpty())]
@@ -493,14 +508,6 @@ mappedBy[else]inversedBy[/if]: "[opposite.modelPropertyName()/]"[if (association
 	[else]
 #['['/]Assert\NotNull[']'/]
 	[/if]
-[/if]
-[if (feature.isContains)]
-[let association : Association = feature.oclAsType(Association)]
-	[if (association.targetType.containerUniqueAttributes->notEmpty())]
-#['['/]Assert\Unique(fields: ['['/][for (attribute : Attribute | association.targetType.containerUniqueAttributes)]
-'[attribute.modelPropertyName()/]'[/for][']'/])[']'/]
-	[/if]
-[/let]
 [/if]
 [/template]
 
@@ -736,23 +743,23 @@ $this->[attribute.modelPropertyName()/] = $[attribute.instanceName()/];
 
 [template private setDetailsMethod(feature : ResourceFeature) post(trim())]
 /**
- * @param EmbeddedFile|null $[feature.instanceName()/]Name
+ * @param EmbeddedFile|null $[feature.featureInstanceName()/]Name
  */
-public function [feature.setDetailsMethodName()/](?EmbeddedFile $[feature.instanceName()/]Name): self
+public function [feature.setDetailsMethodName()/](?EmbeddedFile $[feature.featureInstanceName()/]Name): self
 {
-    $this->[feature.detailsPropertyName()/] = $[feature.instanceName()/]Name;
+    $this->[feature.detailsPropertyName()/] = $[feature.featureInstanceName()/]Name;
     return $this;
 }
 [/template]
 
 [template private setFileMethod(feature : ResourceFeature) post(trim())]
 /**
- * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $[feature.instanceName()/]File
+ * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $[feature.featureInstanceName()/]File
  **/
-public function [feature.setFileMethodName()/](?File $[feature.instanceName()/]File): void
+public function [feature.setFileMethodName()/](?File $[feature.featureInstanceName()/]File): void
 {
-    $this->[feature.filePropertyName()/] = $[feature.instanceName()/]File;
-    if (null !== $[feature.instanceName()/]File) {
+    $this->[feature.filePropertyName()/] = $[feature.featureInstanceName()/]File;
+    if (null !== $[feature.featureInstanceName()/]File) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
 [if (not feature.directoryNamer.oclIsUndefined() and feature.directoryNamer.oclIsTypeOf(DateTimeDirectory))]
@@ -766,11 +773,11 @@ public function [feature.setFileMethodName()/](?File $[feature.instanceName()/]F
 
 [template private setNameMethod(feature : ResourceFeature) post(trim())]
 /**
- * @param string|null $[feature.instanceName()/]Name
+ * @param string|null $[feature.featureInstanceName()/]Name
  */
-public function [feature.setNameMethodName()/](?string $[feature.instanceName()/]Name): self
+public function [feature.setNameMethodName()/](?string $[feature.featureInstanceName()/]Name): self
 {
-    $this->[feature.namePropertyName()/]Name = $[feature.instanceName()/]Name;
+    $this->[feature.namePropertyName()/]Name = $[feature.featureInstanceName()/]Name;
     return $this;
 }
 [/template]

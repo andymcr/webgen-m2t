@@ -141,16 +141,28 @@
 /]
 
 
+[query public collectionUniqueFilename(ormModel : OrmModel) : String
+	= ormModel.validatorDirectory().concat('/')
+		.concat(ormModel.collectionUniqueClassName())
+		.concat(ormModel.executableExtension())
+/]
+
+[query public collectionUniqueValidatorFilename(ormModel : OrmModel) : String
+	= ormModel.validatorDirectory().concat('/')
+		.concat(ormModel.collectionUniqueValidatorClassName())
+		.concat(ormModel.executableExtension())
+/]
+
 [query public factoryFilename(entity : Entity) : String
 	= entity.factoriesDirectory().concat('/')
 		.concat(entity.factoryClassName())
-		.concat(repository.executableExtension())
+		.concat(entity.executableExtension())
 /]
 
 [query public fixtureFilename(entity : Entity) : String
 	= entity.fixturesDirectory().concat('/')
 		.concat(entity.fixtureClassName())
-		.concat(repository.executableExtension())
+		.concat(entity.executableExtension())
 /]
 
 [query public modelFilename(type : EnumerationType) : String

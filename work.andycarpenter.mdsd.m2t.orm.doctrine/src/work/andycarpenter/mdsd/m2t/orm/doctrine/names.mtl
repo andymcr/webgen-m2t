@@ -14,13 +14,13 @@
 	= 'App'
 /]
 
+[query public appValidation(eObject : EObject) : String
+	= eObject.appName().concat('Valadation')
+/]
+
 
 [query public baseRepositoryClassName(eObject : EObject) : String
 	= 'ServiceEntityRepository'
-/]
-
-[query public collectionUniqueClassName(model : OrmModel) : String
-	= 'CollectionUnique'
 /]
 
 [query public factoryClassSuffix(eObject : EObject) : String
@@ -40,6 +40,11 @@
 /]
 
 
+[query public instanceName(element : NamedElement) : String
+	= element.name.toLowerFirst()
+/]
+
+
 [query public modelClassName(type : EnumerationType) : String
 	= type.name
 /]
@@ -55,10 +60,6 @@
 
 [query public findMethodName(entity : Entity) : String
 	= 'findOne'
-/]
-
-[query public instanceName(entity : Entity) : String
-	= entity.name.toLowerFirst()
 /]
 
 [query public modelClassName(entity : Entity) : String
@@ -125,16 +126,16 @@
 	= 'get'.concat(feature.namePropertyName().toUpperFirst())
 /]
 
-[query public instanceName(feature : Feature) : String
+[query public featureInstanceName(feature : Feature) : String
 	= feature.modelPropertyName()
 /]
 
 [query public mappingName(feature : ResourceFeature) : String
-	= if feature.partOf.resourceFeatures-> size() > 1 then
-			feature.partOf.instanceName().concat('_').concat(feature.instanceName())
+	= if feature.partOf.resourceFeatures->size() > 1 then
+			feature.partOf.instanceName().concat('_').concat(feature.featureInstanceName())
 		else
 			feature.partOf.instanceName()
-		endif
+		endif.snakeCase()
 /]
 
 [query public modelClassName(association : Association) : String
@@ -170,7 +171,16 @@
 /]
 
 
-[query public instanceName(repository : Repository) : String
+[query public collectionUniqueClassName(eObject : EObject) : String
+	= 'CollectionUnique'
+/]
+
+[query public collectionUniqueValidatorClassName(ormModel : OrmModel) : String
+	= ormModel.collectionUniqueClassName().concat(ormModel.validatorClassSuffix())
+/]
+
+
+[query public repositoryInstanceName(repository : Repository) : String
 	= repository.repositoryClassName().toLowerFirst()
 /]
 
