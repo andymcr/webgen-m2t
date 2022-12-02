@@ -196,8 +196,8 @@ use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
 #['['/][entity.appValidation()/]\[entity.collectionUniqueClassName()/](
     fields: ['['/][for (attribute : Attribute | entity.containerUniqueAttributes)]
 '[attribute.modelPropertyName()/]'[/for][']'/],
-    containingAssociation: '[entity.containingAssociation.modelPropertyName()/]',
-    containerAssociation: '[entity.containingAssociation.opposite.modelPropertyName()/]'
+    parentProperty: '[entity.containingAssociation.modelPropertyName()/]',
+    collectionProperty: '[entity.containingAssociation.opposite.modelPropertyName()/]'
 )[']'/]
 [/if]
 [/template]

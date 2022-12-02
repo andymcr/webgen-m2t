@@ -10,6 +10,7 @@
 <?php
 namespace [ormModel.validatorNamespace()/];
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -29,9 +30,26 @@ class [ormModel.collectionUniqueValidatorClassName()/] extends ConstraintValidat
             return;
         }
 
-//            $this->context->buildViolation($constraint->message)
-//                ->setParameter('{{ string }}', $value)
-//                ->addViolation();
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $containingObject = $propertyAccessor->getValue($value, $constraint->parentProperty);
+        $collection = $propertyAccessor->getValue($containingObject, $constraint->collectionProperty);
+        foreach ($collection as $element) {
+            if ($value !== $element) {
+                $same = true;
+                foreach ($constraint->fields as $field) {
+                    $elementField = $propertyAccessor->getValue($value, $field);
+                    $valueField = $propertyAccessor->getValue($element, $field);
+                    $same = $same && ($elementField == $valueField);
+                }
+                if ($same) {
+                    $this->context->buildViolation($constraint->message)
+                        ->setParameter('{{ collection }}', $constraint->collectionProperty)
+                        ->atPath($constraint->fields['['/]0[']'/])
+                        ->addViolation();
+                    break;
+                }
+            }
+        }
     }
 }
 [/file]

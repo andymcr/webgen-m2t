@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 #['['/]\Attribute[']'/]
 class [ormModel.collectionUniqueClassName()/] extends Constraint
 {
-    public string $message = 'The string "{{ string }}" contains an illegal character: it can only contain letters or numbers.';
+    public string $message = 'Entry already exists in the collection "{{ collection }}".';
  
     /**
       * @var array<int, string> $fields
@@ -25,30 +25,35 @@ class [ormModel.collectionUniqueClassName()/] extends Constraint
     public array $fields;
 
     /**
-      * @var string $containingAssociation
+      * @var string $parentProperty
       **/
-    public string $containingAssociation;
+    public string $parentProperty;
 
      /**
-      * @var string $containerAssociation
+      * @var string $collectionProperty
       **/
-   public string $containerAssociation;
+   public string $collectionProperty;
 
 
     /**
       * @param array<int, string> $fields
-      * @param string $containingAssociation
-      * @param string $containerAssociation
+      * @param string $parentProperty
+      * @param string collectionProperty
       * @param array<int, string>|null $groups
       * @param mixed|null $payload
       **/
     #['['/]HasNamedArguments[']'/]
-    public function __construct(array $fields, string $containingAssociation, string $containerAssociation, array $groups = null, mixed $payload = null)
+    public function __construct(array $fields, string $parentProperty, string $collectionProperty, array $groups = null, mixed $payload = null)
     {
         parent::__construct(['['/][']'/], $groups, $payload);
         $this->fields = $fields;
-        $this->containingAssociation = $containingAssociation;
-        $this->containerAssociation = $containerAssociation;
+        $this->parentProperty = $parentProperty;
+        $this->collectionProperty = $collectionProperty;
+    }
+
+    public function getTargets(): string
+    {
+        return self::CLASS_CONSTRAINT;
     }
 
     public function validatedBy()
