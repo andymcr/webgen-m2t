@@ -70,11 +70,11 @@ class [controller.controllerClassName()/] extends [controller.baseControllerClas
 
 [template private constructor(controller : Controller) post(trim())]
 public function __construct([for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name)) separator (', ')]
-[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and controller.hasSuccessMessages)]
+[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and controller.hasSuccessMessages)]
 , [/if][if (controller.hasSuccessMessages)]TranslatorInterface $translator[/if])
 {
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
-    $this->[repository.instanceName()/] = $[repository.instanceName()/];
+    $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
 [/for]
 [if (controller.hasSuccessMessages)]
     $this->translationService = $translator;

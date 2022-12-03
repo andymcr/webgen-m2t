@@ -78,21 +78,21 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 [/if]
 [if (repository.hasCurrentUser())]
     /**
-     * @var [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.instanceName()/]
+     * @var [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.repositoryInstanceName()/]
      */
-    private [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.instanceName()/];
+    private [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.repositoryInstanceName()/];
 
 [/if]
     public function __construct(ManagerRegistry $managerRegistry[if (security.authentication.userModel.repository = repository)]
 , Security $security[/if][if (repository.hasCurrentUser())]
-, [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.instanceName()/][/if])
+, [security.authentication.userModel.repository.repositoryClassName()/] $[security.authentication.userModel.repository.repositoryInstanceName()/][/if])
     {
         parent::__construct($managerRegistry, [repository.serves.modelClassName()/]::class);
 [if (security.authentication.userModel.repository = repository)]
         $this->security = $security;
 [/if]
 [if (repository.hasCurrentUser())]
-        $this->[security.authentication.userModel.repository.instanceName()/] = $[security.authentication.userModel.repository.instanceName()/];
+        $this->[security.authentication.userModel.repository.repositoryInstanceName()/] = $[security.authentication.userModel.repository.repositoryInstanceName()/];
 [/if]
     }
 
@@ -199,14 +199,14 @@ public function getCurrentUser(): ?[security.authentication.userModel.modelClass
 [if (security.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
 [let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
-    $[repository.instanceName()/] = $queryBuilder
+    $[repository.repositoryInstanceName()/] = $queryBuilder
         ->where($queryBuilder->expr()->eq('[repository.serves.selectName()/].[localAuthentication.authenticationKey.modelPropertyName()/]', ':[localAuthentication.authenticationKey.name/]'))
         ->setParameter('[localAuthentication.authenticationKey.name/]', $user->[localAuthentication.userKey.getMethodName()/]())
         ->getQuery()->getOneOrNullResult();
-    if(is_null($[repository.instanceName()/])) {
+    if(is_null($[repository.repositoryInstanceName()/])) {
         throw new \Exception();
     }
-    return $[repository.instanceName()/];
+    return $[repository.repositoryInstanceName()/];
 [/let]
 [else]
 [/if]

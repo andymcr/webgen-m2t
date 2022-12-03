@@ -141,12 +141,12 @@ $request[if (unit.controller.hasRouteParameters())]
 
 
 [template public getContainerRepository(unit : DynamicUnit) post(trim())]
-$this->[unit.containingType.repository.instanceName()/]
+$this->[unit.containingType.repository.repositoryInstanceName()/]
 [/template]
 
 
 [template public getContentRepository(unit : DynamicUnit) post(trim())]
-$this->[unit.contentType.repository.instanceName()/]
+$this->[unit.contentType.repository.repositoryInstanceName()/]
 [/template]
 
 [template public loadInstance(unit : DynamicUnit) post(trim())]
@@ -208,7 +208,7 @@ if (is_null([action.instanceVariable()/])) {
 	[if (unit.findElementSelection.oclIsUndefined())]
 [unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([action.findActualParameterList()/])
 	[else]
-$this->[unit.findElementSelection.definedBy.instanceName()/]->[unit.findElementSelection.methodName/]([action.findActualParameterList()/])
+$this->[unit.findElementSelection.definedBy.repositoryInstanceName()/]->[unit.findElementSelection.methodName/]([action.findActualParameterList()/])
 	[/if]
 [/let]
 [else]

@@ -131,9 +131,9 @@ else
 [/if]
 [if (unit.hasFilters)]    [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-[unit.queryInstanceVariable()/] = $this->[unit.selection.definedBy.instanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
+[unit.queryInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
 	[else]
-[unit.queryInstanceVariable()/] = $this->[unit.filter.selection.definedBy.instanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
+[unit.queryInstanceVariable()/] = $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
 [else]
 [unit.queryInstanceVariable()/] = [unit.getContentRepository()/]->findAll[if (unit.hasPagination)]Query[/if]();

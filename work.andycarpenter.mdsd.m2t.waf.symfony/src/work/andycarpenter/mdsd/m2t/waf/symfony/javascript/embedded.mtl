@@ -100,15 +100,15 @@ function [type.toLowerFirst()/]AddForm(container, addDiv) {
 [/template]
 
 [template private removeLink(feature : UnitFeature, type : String)]
-function [type.toLowerFirst()/]RemoveLink([feature.instanceName()/]) {
+function [type.toLowerFirst()/]RemoveLink([feature.featureInstanceName()/]) {
     var button = document.createElement('input');
-    [feature.instanceName()/].append(button);
+    [feature.featureInstanceName()/].append(button);
     button.type = 'button';
     button.name = 'remove[type.toUpperFirst()/]';
     button.value = 'Delete [type/]'
     button.onclick = function(e) {
         e.preventDefault();
-        [feature.instanceName()/].remove();
+        [feature.featureInstanceName()/].remove();
     };
 }
 [/template]

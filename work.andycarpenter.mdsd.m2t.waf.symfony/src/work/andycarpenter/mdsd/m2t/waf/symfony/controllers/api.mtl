@@ -54,16 +54,16 @@ class [resource.controllerClassName()/] extends AbstractFOSRestController
 {
 [for (repository : Repository | resource.repositoriesUsed())]
     /**
-     * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
+     * @var [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/]
      */
-    private [repository.repositoryClassName()/] $[repository.instanceName()/];
+    private [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/];
 
 [/for]
     public function __construct([for (repository : Repository | resource.repositoriesUsed()) separator(', ')]
-[repository.repositoryClassName()/] $[repository.instanceName()/][/for])
+[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for])
     {
 [for (repository : Repository | resource.repositoriesUsed())]
-        $this->[repository.instanceName()/] = $[repository.instanceName()/];
+        $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
 [/for]
     }
 
@@ -124,7 +124,7 @@ use [resource.repositoryNamespace()/]\[resource.repository.repositoryClassName()
  **/
 public function get[resource.repository.serves.name/]([resource.routeParameterList(true)/]): ?[resource.repository.serves.modelClassName()/]
 {
-    return $this->[resource.repository.instanceName()/]->[if (resource.repository.findOne.oclIsUndefined())]
+    return $this->[resource.repository.repositoryInstanceName()/]->[if (resource.repository.findOne.oclIsUndefined())]
 [repository.serves.findMethodName()/][else]
 [resource.repository.findOne.instanceName()/][/if]([resource.routeParameterList(false)/]);
 }
@@ -162,11 +162,11 @@ public function get[resource.repository.name/](ParamFetcher $paramFetcher[if (no
 
 {
 [if (resource.parentResource.oclIsUndefined())]
-    return $this->[resource.repository.instanceName()/]->[if (resource.getAll.oclIsUndefined())]
+    return $this->[resource.repository.repositoryInstanceName()/]->[if (resource.getAll.oclIsUndefined())]
 findAll[else]
 [resource.getAll.instanceName()/][/if]($paramFetcher->get("page"), $paramFetcher->get("pageSize"));
 [else]
-    return $this->[resource.parentResource.repository.instanceName()/]->[if (resource.parentResource.repository.findOne.oclIsUndefined())]
+    return $this->[resource.parentResource.repository.repositoryInstanceName()/]->[if (resource.parentResource.repository.findOne.oclIsUndefined())]
 [resource.parentResource.repository.serves.findMethodName()/][else]
 [resource.parentResource.getOne.instanceName()/][/if]([resource.parentResource.routeParameterList(false)/]);
 [/if]

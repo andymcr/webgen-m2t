@@ -147,7 +147,7 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 [let association : Association = field.persistentFeature.oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType.instanceName()/])
         if (false === [unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/]()->contains($[association.targetType.instanceName()/]))
-            $this->[association.targetType.repository.instanceName()/]->remove($[association.targetType.instanceName()/]);
+            $this->[association.targetType.repository.repositoryInstanceName()/]->remove($[association.targetType.instanceName()/]);
 [/let]
 [/for]
     [unit.saveBody(sourceParameters)/]

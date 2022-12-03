@@ -65,9 +65,9 @@ class [service.serviceClassName()/]
 
 [for (repository : Repository | service.requires)]
     /**
-     * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
+     * @var [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/]
      */
-    private [repository.repositoryClassName()/] $[repository.instanceName()/];
+    private [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/];
 
 [/for]
 [for (service : Service | service.uses)]
@@ -79,12 +79,12 @@ class [service.serviceClassName()/]
 [/for]
 [if (service.requires->notEmpty() or service.uses->notEmpty())]
     public function __construct([for (repository : Repository | service.requires) separator (', ')]
-[repository.repositoryClassName()/] $[repository.instanceName()/][/for][if (service.requires->notEmpty() and service.uses->notEmpty())]
+[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (service.requires->notEmpty() and service.uses->notEmpty())]
 , [/if][for (service : Service | service.uses) separator (', ')]
 [service.serviceClassName()/] $[service.instanceName()/][/for])
     {
 	[for (repository : Repository | service.requires)]
-        $this->[repository.instanceName()/] = $[repository.instanceName()/];
+        $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
 	[/for]
 	[for (service : Service | service.uses)]
         $this->[service.instanceName()/] = $[service.instanceName()/];

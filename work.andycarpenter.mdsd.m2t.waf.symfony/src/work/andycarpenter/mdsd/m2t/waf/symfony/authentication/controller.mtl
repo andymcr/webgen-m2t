@@ -90,9 +90,9 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 private ResetPasswordHelperInterface $resetPasswordHelper;
 
 /**
- * @var [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/]
+ * @var [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.repositoryInstanceName()/]
  */
-private [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/];
+private [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.repositoryInstanceName()/];
 
 /**
  * @var TranslatorInterface $translator
@@ -106,9 +106,9 @@ private LoggerInterface $logger;
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
-public function __construct([authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/], ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator, LoggerInterface $securityLogger)
+public function __construct([authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.repositoryInstanceName()/], ResetPasswordHelperInterface $resetPasswordHelper, TranslatorInterface $translator, LoggerInterface $securityLogger)
 {
-    $this->[authentication.authenticationModel.repository.instanceName()/] = $[authentication.authenticationModel.repository.instanceName()/];
+    $this->[authentication.authenticationModel.repository.repositoryInstanceName()/] = $[authentication.authenticationModel.repository.repositoryInstanceName()/];
     $this->resetPasswordHelper = $resetPasswordHelper;
     $this->translator = $translator;
     $this->logger = $securityLogger;
@@ -137,7 +137,7 @@ public function [element.actionName()/](Request $request, UserPasswordHasherInte
         $user->setPassword($userPasswordHasher->hashPassword(
             $user, $form->get('plainPassword')->getData()
         ));
-        [element.authentication.authenticationModel.repository.instanceName()/]->save($user, true);
+        [element.authentication.authenticationModel.repository.repositoryInstanceName()/]->save($user, true);
 
         // generate a signed url and email it to the user
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
@@ -276,7 +276,7 @@ public function [element.actionName()/]Request(Request $request, MailerInterface
 private function processSendingPasswordResetEmail(string $identifier, MailerInterface $mailer): RedirectResponse
 {
     $this->logger->info("Request to reset password for " . $identifier);
-    $user = $this->[element.authentication.authenticationModel.repository.instanceName()/]->findOneBy(['['/]
+    $user = $this->[element.authentication.authenticationModel.repository.repositoryInstanceName()/]->findOneBy(['['/]
         'email' => $identifier,
     [']'/]);
 
@@ -391,7 +391,7 @@ public function [element.actionName()/]Reset(Request $request, UserPasswordHashe
             [element.formVariable()/]->get('plainPassword')->getData()
         );
         $user->setPassword($encodedPassword);
-        $this->[element.authentication.authenticationModel.repository.instanceName()/]->save($user, true);
+        $this->[element.authentication.authenticationModel.repository.repositoryInstanceName()/]->save($user, true);
 
         // The session is cleaned up after the password has been changed.
         $this->cleanSessionAfterReset();

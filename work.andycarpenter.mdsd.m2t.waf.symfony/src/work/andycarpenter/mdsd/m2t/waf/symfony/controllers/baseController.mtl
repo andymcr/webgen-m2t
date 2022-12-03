@@ -35,11 +35,6 @@ use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 	[/if]
 [/if]
-[if (controller.hasMultipleAuthorisationRoles())]
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-[elseif (controller.hasSingleAuthorisationRole())]
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-[/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[controller.baseControllerClassName()/];
 [if (controller.hasEditUnits)]
 use Symfony\Component\Form\FormInterface;
@@ -52,6 +47,11 @@ use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+[if (controller.hasMultipleAuthorisationRoles())]
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+[elseif (controller.hasSingleAuthorisationRole())]
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+[/if]
 [if (controller.hasSuccessMessages)]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [/if]
@@ -67,9 +67,9 @@ private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
 [template public properties(controller : Controller) post(trim())]
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
 /**
- * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
+ * @var [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/]
  */
-private [repository.repositoryClassName()/] $[repository.instanceName()/];
+private [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/];
 
 [/for]
 [if (controller.isSinglePage and not controller.hasSingleActionMethod())]
@@ -116,7 +116,7 @@ private TranslatorInterface $translationService;
 public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
 {
     [deleteAction.loadInstance()/]
-    $this->[unit.contentType.repository.instanceName()/]->remove($[deleteAction.instanceName()/], true);
+    $this->[unit.contentType.repository.repositoryInstanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (unit.oclIsKindOf(CollectionUnit))]
     return [action.redirect(deleteAction.routeParameters())/];

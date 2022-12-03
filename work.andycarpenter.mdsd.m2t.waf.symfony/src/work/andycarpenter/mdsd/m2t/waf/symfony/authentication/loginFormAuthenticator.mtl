@@ -65,9 +65,9 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 private RouterInterface $router;
 
 /**
- * @var [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/]
+ * @var [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.repositoryInstanceName()/]
  */
-private [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/];
+private [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.repositoryInstanceName()/];
 
 /**
  * @var LoggerInterface $logger
@@ -76,11 +76,11 @@ private LoggerInterface $logger;
 [/template]
 
 [template private constructor(authentication : LocalAuthenticationSystem) post(trim())]
-public function __construct(RouterInterface $router, [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.instanceName()/][if (authentication.captcha)]
+public function __construct(RouterInterface $router, [authentication.authenticationModel.repository.repositoryClassName()/] $[authentication.authenticationModel.repository.repositoryInstanceName()/][if (authentication.captcha)]
 , Recaptcha3Validator $recaptcha3Validator[/if], LoggerInterface $securityLogger)
 {
     $this->router = $router;
-    $this->[authentication.authenticationModel.repository.instanceName()/] = $[authentication.authenticationModel.repository.instanceName()/];
+    $this->[authentication.authenticationModel.repository.repositoryInstanceName()/] = $[authentication.authenticationModel.repository.repositoryInstanceName()/];
     $this->logger = $securityLogger;
 }
 [/template]
@@ -124,7 +124,7 @@ public function onAuthenticationSuccess(Request $request, TokenInterface $token,
     /** @var Authentication $user */
     $user = $token->getUser();
     $user->setLastLogin(new \DateTime());
-    $this->[authentication.authenticationModel.repository.instanceName()/]->save($user, true);
+    $this->[authentication.authenticationModel.repository.repositoryInstanceName()/]->save($user, true);
 
     $this->logger->info("Form login by " . $user->getUserIdentifier());
 

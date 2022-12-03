@@ -44,9 +44,9 @@ public function testFindOne(): void
 {
     self::bootKernel();
 
-    $[repository.instanceName()/] = static::getContainer()
+    $[repository.repositoryInstanceName()/] = static::getContainer()
         ->get([repository.repositoryClassName()/]::class);
-    $result = $[repository.instanceName()/]->[repository.serves.findMethodName()/]([for (key : Attribute | repository.serves.uriPathKeys()) separator(', ')]
+    $result = $[repository.repositoryInstanceName()/]->[repository.serves.findMethodName()/]([for (key : Attribute | repository.serves.uriPathKeys()) separator(', ')]
 [key.keyValue()/][/for]);
     $this->assertNull($result);
 
@@ -66,7 +66,7 @@ public function testFindOne(): void
 public function test[selection.methodName.toUpperFirst()/](): void
 {
     self::bootKernel();
-    $[selection.definedBy.instanceName()/] = static::getContainer()
+    $[selection.definedBy.repositoryInstanceName()/] = static::getContainer()
         ->get([selection.definedBy.repositoryClassName()/]::class);
 
     [selection.testMethodTests()/]
@@ -78,7 +78,7 @@ public function test[selection.methodName.toUpperFirst()/](): void
 {
     self::bootKernel();
     $container = static::getContainer();
-    $[selection.definedBy.instanceName()/] = 
+    $[selection.definedBy.repositoryInstanceName()/] = 
         $container->get([selection.definedBy.repositoryClassName()/]::class);
 
     [selection.testMethodTests()/]
@@ -86,6 +86,6 @@ public function test[selection.methodName.toUpperFirst()/](): void
 [/template]
 
 [template private testMethodTests(selection : Selection) post(trim())]
-$result = $[selection.definedBy.instanceName()/]->[selection.methodName/]();
+$result = $[selection.definedBy.repositoryInstanceName()/]->[selection.methodName/]();
 $this->assertCount(0, $result);
 [/template]

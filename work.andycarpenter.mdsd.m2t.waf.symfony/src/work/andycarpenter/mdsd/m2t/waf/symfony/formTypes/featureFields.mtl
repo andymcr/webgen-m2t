@@ -131,7 +131,7 @@ $builder->add('[association.modelPropertyName()/]', EntityType::class, ['['/]
 [/if]
     'class' => '[association.modelsNamespace()/]\[association.modelClassName()/]',
 [if (not selection.oclIsUndefined())]
-    'choices' => $this->[selection.definedBy.instanceName()/]->[selection.methodName/](),
+    'choices' => $this->[selection.definedBy.repositoryInstanceName()/]->[selection.methodName/](),
 [/if]
     'choice_label' => [if (valueLabel.oclIsUndefined())]'defaultLabel'[else]'[valueLabel.name.toLowerFirst()/][if (not valueLabel.name.endsWith('Label'))]Label[/if]'[/if],
     'choice_translation_domain' => false,

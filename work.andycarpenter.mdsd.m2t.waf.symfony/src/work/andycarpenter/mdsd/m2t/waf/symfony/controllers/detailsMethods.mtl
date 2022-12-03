@@ -47,7 +47,7 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 [if (detailsUnit.selection.oclIsUndefined())]
 [detailsUnit.instanceVariable()/] = [detailsUnit.loadInstance()/];
 [else]
-[detailsUnit.instanceVariable()/] = $this->[detailsUnit.selection.definedBy.instanceName()/]->[detailsUnit.selection.methodName/]();
+[detailsUnit.instanceVariable()/] = $this->[detailsUnit.selection.definedBy.repositoryInstanceName()/]->[detailsUnit.selection.methodName/]();
 [/if]
 if (is_null([detailsUnit.instanceVariable()/])) {
     throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');

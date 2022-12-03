@@ -55,9 +55,9 @@ $data['['/]'[feature.modelPropertyName()/]'[']'/] = [accessor/]->[feature.getMet
 [if (feature.isRequired)]
 $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize([accessor/]->[feature.getMethodName()/](), $format, $context);
 [else]
-$[feature.instanceName()/] = [accessor/]->[feature.getMethodName()/]();
-if ($[feature.instanceName()/])
-    $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize($[feature.instanceName()/], $format, $context);
+$[feature.featureInstanceName()/] = [accessor/]->[feature.getMethodName()/]();
+if ($[feature.featureInstanceName()/])
+    $data['['/]'[feature.modelPropertyName()/]'[']'/] = $this->serializer->normalize($[feature.featureInstanceName()/], $format, $context);
 [/if]
 [/template]
 

@@ -250,7 +250,7 @@ $query->setParameter('now', new \DateTime('now'));
 
 [template public queryParameter(expression : Expression, security : SecurityModel)
 	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
-$query->setParameter('user', $this->[security.authentication.userModel.repository.instanceName()/]->getCurrentUser());
+$query->setParameter('user', $this->[security.authentication.userModel.repository.repositoryInstanceName()/]->getCurrentUser());
 [/template]
 
 

@@ -59,17 +59,17 @@ class [unit.typeClassName()/] extends AbstractType
 {
 [for (repository : Repository | unit.choicesRepositories())]
     /**
-     * @var [repository.repositoryClassName()/] $[repository.instanceName()/]
+     * @var [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/]
      */
-    private $[repository.instanceName()/];
+    private $[repository.repositoryInstanceName()/];
 
 [/for]
 [if (unit.choicesRepositories()->notEmpty())]
     public function __construct([for (repository : Repository | unit.choicesRepositories()) separator (', ')]
-[repository.repositoryClassName()/] $[repository.instanceName()/][/for])
+[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for])
     {
 [for (repository : Repository | unit.choicesRepositories())]
-        $this->[repository.instanceName()/] = $[repository.instanceName()/];
+        $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
 [/for]
     }
 
