@@ -34,7 +34,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::entity/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::section/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::navigation/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::views::form::bootstrap/]
 
 
 [template public symfony(model : WafModel)]
@@ -61,7 +60,6 @@
 [model.siteProperties.generatePage()/]
 [model.controllers->select(p | p.hasUnits and p.isSinglePage).indexTemplate()/]
 [model.controllers.units.unitView()/]
-[model.formViews()/]
 
 [model.entityTranslations()/]
 [model.navigation.navigationTranslations()/]
