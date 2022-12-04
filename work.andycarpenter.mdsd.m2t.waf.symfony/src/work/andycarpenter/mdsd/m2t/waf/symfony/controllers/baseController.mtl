@@ -55,6 +55,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 [if (controller.hasSuccessMessages)]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [/if]
+[if (controller.hasImageFields)]
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
+[/if]
 [/template]
 
 [template public constants(controller : Controller) post(trim())]

@@ -81,6 +81,9 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 [template private actionCreateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
 [unit.instanceVariable()/] = new [unit.modelClassName()/]();
+[for (resource : UnitResource | unit.imageFields)]
+[unit.instanceVariable()/]->[resource.resource.setDetailsMethodName()/](new EmbeddedFile());
+[/for]
 [if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
 [unit.setContainer()/]
 [/if]
