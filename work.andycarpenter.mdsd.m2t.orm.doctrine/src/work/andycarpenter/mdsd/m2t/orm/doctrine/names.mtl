@@ -134,8 +134,8 @@
 	= if feature.partOf.resourceFeatures->size() > 1 then
 			feature.partOf.instanceName().concat('_').concat(feature.featureInstanceName())
 		else
-			feature.partOf.instanceName()
-		endif.snakeCase()
+			feature.partOf.instanceName().snakeCase()
+		endif
 /]
 
 [query public modelClassName(association : Association) : String
