@@ -107,13 +107,13 @@ document.getElementById('links').onclick = function (event) {
 [/template]
 
 [template public blueimpEntry(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
-[let imageAccessor : String = unit.imagePathFeature.accessor(baseAccessor, null)]
+[let imageAccessor : String = unit.imageFeaturePath.accessor(baseAccessor, null)]
 [if (unit.showMissingImageWhen.oclIsUndefined())]
-	[if (not unit.imagePathFeature.isRequired)]
+	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
 	[/if]
 [unit.blueimpImage(unit, imageAccessor, baseAccessor, title)/]
-	[if (not unit.imagePathFeature.isRequired)]
+	[if (not unit.imageFeaturePath.isRequired)]
 		[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
 [unit.blueimpMissing(unit, baseAccessor, title)/]
@@ -126,11 +126,11 @@ document.getElementById('links').onclick = function (event) {
 [unit.blueimpMissing(unit, baseAccessor, title)/]
 	[/if]
 {%- else -%}
-	[if (not unit.imagePathFeature.isRequired)]
+	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
 	[/if]
 [unit.blueimpImage(unit, imageAccessor, baseAccessor, title)/]
-	[if (not unit.imagePathFeature.isRequired)]
+	[if (not unit.imageFeaturePath.isRequired)]
 		[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
 [unit.blueimpMissing(unit, baseAccessor, title)/]/>
@@ -144,12 +144,12 @@ document.getElementById('links').onclick = function (event) {
 
 [template public blueimpMissing(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
 <a [unit.imageMissingSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor, title)/]>
- [unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
+ [unit.imageMissing(unit.imageFilter, baseAccessor, title)/]
 </a>
 [/template]
 
 [template public blueimpImage(unit : GalleryUnit, imageAccessor : String, baseAccessor : String, title : FeaturePath) post(trim())]
-<a [imageAccessor.imageSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor, title)/]>
- [unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, '')/]
+<a href="{{ [imageAccessor/][if (not unit.fullSizeFilter.oclIsUndefined())]
+ | imagine_filter('[unit.fullSizeFilter.name/]')[/if] [unit.imageTitle(baseAccessor, title)/]}}" />
 </a>
 [/template]

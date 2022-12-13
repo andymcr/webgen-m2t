@@ -25,38 +25,39 @@
 
 [template public image(siteProperties : SiteProperties) post(trim())]
 [let imagePath : String = '\''.concat(siteProperties.logoImage).concat('\'')]
-<img [imagePath.imageSrc('src', siteProperties.logoFilters)/] alt="Logo"/>
+<img src="{{ [imagePath/][if (not siteProperties.logoFilters.oclIsUndefined())]
+ | imagine_filter('[siteProperties.logoFilters.name/]')[/if] }}" alt="Logo"/>
 [/let]
 [/template]
 
 [template public image(unit : ImageUnit, baseAccessor : String, title : FeaturePath, imageClass : String) post(trim())]
-[let imageAccessor : String = unit.imagePathFeature.accessor(baseAccessor, null)]
+[let imageAccessor : String = unit.imageFeaturePath.accessor(baseAccessor, null)]
 [if (unit.showMissingImageWhen.oclIsUndefined())]
-	[if (not unit.imagePathFeature.isRequired)]
+	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
 	[/if]
-[unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, imageClass)/]
-	[if (not unit.imagePathFeature.isRequired)]
+[unit.imageFeaturePath.leafFeature.image(unit, imageAccessor, baseAccessor, title, imageClass)/]
+	[if (not unit.imageFeaturePath.isRequired)]
 		[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
+[unit.imageMissing(unit.imageFilter, baseAccessor, title)/]
 		[/if]
 {%- endif -%}
 	[/if]
 [else]
 {%- if [unit.showMissingImageWhen.twigExpression(baseAccessor)/] -%}
 	[if (not unit.missingImagePath.oclIsUndefined())]
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
+[unit.imageMissing(unit.imageFilter, baseAccessor, title)/]
 	[/if]
 {%- else -%}
-	[if (not unit.imagePathFeature.isRequired)]
+	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
 	[/if]
-[unit.image(unit.imageFilter, imageAccessor, baseAccessor, title, imageClass)/]
-	[if (not unit.imagePathFeature.isRequired)]
+[unit.imageFeaturePath.leafFeature.image(unit, imageAccessor, baseAccessor, title, imageClass)/]
+	[if (not unit.imageFeaturePath.isRequired)]
 		[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
-[unit.imageMissing(unit.missingImageFilter(), baseAccessor, title)/]
+[unit.imageMissing(unit.imageFilter, baseAccessor, title)/]
 		[/if]
 {%- endif -%}
 	[/if]
@@ -65,29 +66,40 @@
 [/let]
 [/template]
 
-[query public missingImageFilter(unit : ImageUnit) : ImageManipulation
-	= if unit.missingImageFilter.oclIsUndefined() then
-			unit.imageFilter
-		else
-			unit.missingImageFilter
-		endif
-/]
-
 [template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String, title : FeaturePath) post(trim())]
 <img [unit.imageMissingSrc('src', manipulation)/] [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
 [/template]
 
-[template public image(unit : ImageUnit, manipulation : ImageManipulation, accessor : String, 
-	baseAccessor : String, title : FeaturePath, imageClass : String) post(trim())]
-<img [if (imageClass <> '')]class="[imageClass/]" [/if][accessor.imageSrc('src', manipulation)/] [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
+[template private image(feature : Feature, unit : ImageUnit, imageAccessor : String, baseAccessor : String,
+		title : FeaturePath, imageClass : String)
+	?(feature.oclIsKindOf(Attribute)) post(trim())]
+[unit.displayImage(imageAccessor, baseAccessor, title, imageClass)/]
+[/template]
+
+[template private image(feature : Feature, unit : ImageUnit, imageAccessor : String, baseAccessor : String,
+		title : FeaturePath, imageClass : String)
+	?(feature.oclIsKindOf(ResourceFeature)) post(trim())]
+[let property : String =
+	if (unit.imageFeaturePath.leafFeature.partOf.resourceFeatures->size() > 1) then
+		', '.concat(unit.imageFeaturePath.leafFeature.modelPropertyName())
+	else
+		''
+	endif]
+[unit.displayImage('vich_uploader_asset('
+		.concat(unit.imageFeaturePath.resourceAccessor(baseAccessor, null))
+		.concat(property).concat(')'),
+	baseAccessor, title, imageClass)/]
+[/let]
+[/template]
+
+[template private displayImage(unit : ImageUnit, accessor : String, baseAccessor : String,
+	title : FeaturePath, imageClass : String) post(trim())]
+<img [if (imageClass <> '')]class="[imageClass/]" [/if]src="{{ [accessor/][if (not unit.imageFilter.oclIsUndefined())]
+ | imagine_filter('[unit.imageFilter.name/]')[/if] }}" [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
 [/template]
 
 [template public imageMissingSrc(unit : ImageUnit, key : String, manipulation : ImageManipulation) post(trim())]
 [key/]="{{ '[unit.missingImagePath/]'[if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
-[/template]
-
-[template public imageSrc(accessor : String, key : String, manipulation : ImageManipulation) post(trim())]
-[key/]="{{ [accessor/][if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
 [template public imageAlt(unit : ImageUnit, baseAccessor : String, title : FeaturePath) post(trim())]

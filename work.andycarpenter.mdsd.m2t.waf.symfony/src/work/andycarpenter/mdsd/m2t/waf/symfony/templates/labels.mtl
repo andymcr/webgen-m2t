@@ -47,13 +47,11 @@
 			path.oclAsType(FeaturePathAttribute).valueLabel()
 		else if path.oclIsTypeOf(FeaturePathAssociation) then
 			path.oclAsType(FeaturePathAssociation).valueLabel()
+		else if path.oclIsTypeOf(FeaturePathResource) then
+			path.oclAsType(FeaturePathResource).valueLabel()
 		else
 			path.oclAsType(FeaturePathLabel).valueLabel()
-		endif endif
-/]
-
-[query private valueLabel(path : FeaturePathAttribute) : String
-	= ''
+		endif endif endif
 /]
 
 [query private valueLabel(path : FeaturePathAssociation) : String
@@ -66,6 +64,14 @@
 		else
  			path.childFeature.valueLabel()
 		endif
+/]
+
+[query private valueLabel(path : FeaturePathAttribute) : String
+	= ''
+/]
+
+[query private valueLabel(path : FeaturePathResource) : String
+	= ''
 /]
 
 [query private valueLabel(path : FeaturePathLabel) : String

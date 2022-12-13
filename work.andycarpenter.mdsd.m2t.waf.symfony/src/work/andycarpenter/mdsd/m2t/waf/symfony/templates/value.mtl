@@ -51,13 +51,11 @@ NULL
 [path.oclAsType(FeaturePathAttribute).getValue(accessor)/]
 [elseif (path.oclIsTypeOf(FeaturePathAssociation))]
 [path.oclAsType(FeaturePathAssociation).getValue(accessor)/]
+[elseif (path.oclIsTypeOf(FeaturePathResource))]
+[path.oclAsType(FeaturePathResource).getValue(accessor)/]
 [else]
 [path.oclAsType(FeaturePathLabel).getValue(accessor)/]
 [/if]
-[/template]
-
-[template public getValue(path : FeaturePathAttribute, accessor : String) post(trim())]
-[accessor/].[path.attribute.modelPropertyName()/]
 [/template]
 
 [template public getValue(path : FeaturePathAssociation, accessor : String) post(trim())]
@@ -69,6 +67,14 @@ NULL
 [path.childFeature.getValue(x)/]
 [/if]
 [/let]
+[/template]
+
+[template public getValue(path : FeaturePathAttribute, accessor : String) post(trim())]
+[accessor/].[path.attribute.modelPropertyName()/]
+[/template]
+
+[template public getValue(path : FeaturePathResource, accessor : String) post(trim())]
+[accessor/].[path.resource.modelPropertyName()/]
 [/template]
 
 [template private getValue(child : ChildPath, accessor : String)
