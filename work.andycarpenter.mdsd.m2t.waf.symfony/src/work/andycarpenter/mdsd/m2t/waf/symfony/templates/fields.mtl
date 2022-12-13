@@ -1,7 +1,9 @@
 [comment encoding = UTF-8 /]
 [module fields(
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::data/]
@@ -45,7 +47,7 @@
 
 [template private labelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
 [field.fieldLabel(unit)/]
-<dd[if (field.hasFieldValueClass or (field.truncate and field.isSingleton))] [field.valueClass()/][/if]>[field.displayValue(unitAccessor, true)/]</dd>
+<dd [field.valueClass()/]>[field.displayValue(unitAccessor, true)/]</dd>
 [/template]
 
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
@@ -59,11 +61,12 @@ class="[field.fieldLabelClass/]"
 [/template]
 
 [template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
-<li[if (field.hasFieldValueClass or (field.truncate and field.isSingleton))] [field.valueClass()/][/if]>[field.displayValue(unitAccessor, true)/]</li>
+<li [field.valueClass()/]>[field.displayValue(unitAccessor, true)/]</li>
 [/template]
 
 [template private valueClass(field : UnitField) post(trim())]
 class="[if (field.hasFieldValueClass)]
-[field.fieldValueClass/][if (field.truncate and field.isSingleton)] [/if][/if][if (field.truncate and field.isSingleton)]
-text-truncate[/if]"
+[field.fieldValueClass/] [/if][if (field.truncate and field.isSingleton)]
+text-truncate [/if]
+[field.styleClass().snakeCase()/]"
 [/template]

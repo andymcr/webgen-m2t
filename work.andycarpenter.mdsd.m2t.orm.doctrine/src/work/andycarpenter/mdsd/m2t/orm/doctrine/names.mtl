@@ -132,7 +132,7 @@
 
 [query public mappingName(feature : ResourceFeature) : String
 	= if feature.partOf.resourceFeatures->size() > 1 then
-			feature.partOf.instanceName().concat('_').concat(feature.featureInstanceName())
+			feature.partOf.instanceName().concat('_').concat(feature.featureInstanceName()).snakeCase()
 		else
 			feature.partOf.instanceName().snakeCase()
 		endif

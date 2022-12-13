@@ -3,6 +3,7 @@
 	'http://andycarpenter.work/metamodel/base',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes]
 
 
@@ -225,4 +226,16 @@
 
 [query public isConditionalDisplay(field : UnitField) : Boolean
 	= not field.hideWhen.oclIsUndefined()
+/]
+
+[query public styleClass(field : UnitField) : String
+	= if field.isFeatureField then
+			self.oclAsType(UnitFeature).persistentFeature.modelPropertyName().snakeCase()
+		else if field.isInterfaceField then
+			field.oclAsType(InterfaceField).name.snakeCase()
+		else if field.oclIsTypeOf(UnitLabel) then
+			field.oclAsType(UnitLabel).name.snakeCase()
+		else
+			'UnhandledFeature'
+		endif endif endif
 /]
