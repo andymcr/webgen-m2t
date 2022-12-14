@@ -275,7 +275,7 @@ protected [association.implementationType()/] $[association.modelPropertyName()/
 [feature.validationAttributes()/]
 [/if]
 [if (feature.isSingleton)]
-protected [if (not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not feature.isDateFeature and not feature.hasDefaultValue)]
+protected [if (not feature.isRequired)]?[/if][feature.implementationType()/] $[feature.modelPropertyName()/][if (not feature.hasDefaultValue and (not feature.isDateFeature or not feature.isRequired))]
  = [feature.oclAsType(Attribute).defaultSingletonValue()/][/if];
 [else]
 protected [feature.implementationType()/] $[feature.modelPropertyName()/] = array();
@@ -544,7 +544,11 @@ public function __construct()
 [if (attribute.isBooleanFeature)]
 false
 [elseif (attribute.isDateFeature)]
+	[if (attribute.isRequired)]
 new \DateTimeImmutable()
+	[else]
+null
+	[/if]
 [elseif (attribute.isEnumerationFeature)]
 0
 [elseif (attribute.isFloatFeature)]
