@@ -16,13 +16,13 @@
 [template public defaultExpression(expression : Expression)
 	? (expression.oclIsTypeOf(TimeLiteral)) post(trim())]
 [let literal : TimeLiteral = expression.oclAsType(TimeLiteral)]
-new \DateTime('[literal.value/]')
+new \DateTimeImmutable('[literal.value/]')
 [/let]
 [/template]
 
 [template public defaultExpression(expression : Expression)
 	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
-new \DateTime('now')
+new \DateTimeImmutable('now')
 [/template]
 
 

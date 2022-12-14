@@ -526,7 +526,7 @@ public function __construct()
 	[if (feature.hasDefaultValue)]
     $this->[feature.modelPropertyName()/] = [feature.defaultValue.defaultExpression()/];
 	[elseif (feature.isAttributeFeature)]
-		[if (feature.isDateFeature)]
+		[if (feature.isDateFeature and feature.isRequired)]
     $this->[feature.modelPropertyName()/] = [feature.oclAsType(Attribute).defaultSingletonValue()/];
 		[/if]
 	[elseif (feature.isAssociationFeature)]
@@ -544,7 +544,7 @@ public function __construct()
 [if (attribute.isBooleanFeature)]
 false
 [elseif (attribute.isDateFeature)]
-new \DateTime('00:00:00')
+new \DateTimeImmutable()
 [elseif (attribute.isEnumerationFeature)]
 0
 [elseif (attribute.isFloatFeature)]
