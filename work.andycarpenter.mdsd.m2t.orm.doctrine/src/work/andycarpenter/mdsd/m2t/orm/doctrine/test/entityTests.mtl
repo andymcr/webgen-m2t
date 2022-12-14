@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module entityTests(
+	'http://andycarpenter.work/metamodel/base',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/security')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::expression/]
@@ -30,37 +31,43 @@ class [entity.modelTestClassName()/] extends TestCase
 public function test[feature.modelPropertyName().toUpperFirst()/]Default(): void
 {
 	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
-[if (feature.isAttributeFeature)]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-	[if (attribute.isSingleton)]
-		[if (attribute.isBooleanFeature)]
-			[if (attribute.defaultSingletonValue() = 'true')]
-    $this->assertTrue($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-			[else]
-    $this->assertFalse($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-			[/if]
-		[else]
-    $this->assertEquals([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/]());
-		[/if]
-	[else]
-		[if (attribute.partOf.implementsUserInterface and attribute.name = 'roles')]
-    $this->assertCount(1, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-		[else]
-    $this->assertCount(0, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-		[/if]
-	[/if]
-[/let]
-[elseif (feature.isSingleton)]
-[let association : Association = feature.oclAsType(Association)]
-	[if (association.associationContainer)]
-    $this->expectError();
-	[/if]
-    $this->assertNull($[association.partOf.instanceName()/]->[association.getMethodName()/]());
-[/let]
-[else]
-    $this->assertCount(0, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
-[/if]
+    [feature.testMethodCoreDefault()/]
 }
+[/template]
+
+[template private testMethodCoreDefault(feature : Feature)
+	?(feature.isBooleanFeature and feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+[if (attribute.defaultSingletonValue() = 'true')]
+$this->assertTrue($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+	[else]
+$this->assertFalse($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+	[/if]
+[/let]
+[/template]
+
+[template private testMethodCoreDefault(feature : Feature)
+	?(feature.isDateFeature and feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+[if (attribute.hasDefaultValue)]
+	[if (attribute.defaultValue.oclIsTypeOf(CurrentTime))]
+$this->assertEqualsWithDelta([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/](), 5);
+	[else]
+$this->assertEquals([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/]());
+	[/if]
+[elseif (attribute.isRequired)]
+$this->assertEqualsWithDelta([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/](), 5);
+[else]
+$this->assertNull($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+[/if]
+[/let]
+[/template]
+
+[template private testMethodCoreDefault(feature : Feature)
+	?(feature.isAttributeFeature and feature.isSingleton and not feature.isBooleanFeature and not feature.isDateFeature) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+$this->assertEquals([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/let]
 [/template]
 
 [template private defaultSingletonValue(attribute : Attribute) post(trim())]
@@ -70,7 +77,7 @@ public function test[feature.modelPropertyName().toUpperFirst()/]Default(): void
 	[if (attribute.isBooleanFeature)]
 false
 	[elseif (attribute.isDateFeature)]
-new \DateTimeImmutable('00:00:00')
+new \DateTimeImmutable()
 	[elseif (attribute.isEmailFeature)]
 ''
 	[elseif (attribute.isEnumerationFeature)]
@@ -91,6 +98,31 @@ new \DateTimeImmutable('00:00:00')
 ''
 	[/if]
 [/if]
+[/template]
+
+[template private testMethodCoreDefault(feature : Feature)
+	?(feature.isAttributeFeature and not feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+[if (attribute.partOf.implementsUserInterface and attribute.name = 'roles')]
+$this->assertCount(1, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+[else]
+$this->assertCount(0, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+[/if]
+[/let]
+[/template]
+
+[template private testMethodCoreDefault(feature : Feature)
+	?(feature.isAssociationFeature) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
+[if (association.isSingleton)]
+	[if (association.associationContainer or association.isRequired)]
+$this->expectError();
+	[/if]
+$this->assertNull($[association.partOf.instanceName()/]->[association.getMethodName()/]());
+[else]
+$this->assertCount(0, $[association.partOf.instanceName()/]->[association.getMethodName()/]());
+[/if]
+[/let]
 [/template]
 
 [template private createUserInstance(security : SecurityModel) post(trim())]
