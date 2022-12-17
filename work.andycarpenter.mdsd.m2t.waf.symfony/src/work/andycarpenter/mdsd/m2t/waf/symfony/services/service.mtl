@@ -40,6 +40,9 @@ use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [for (service : Service | service.uses)]
 use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [/for]
+[if (service.usesVichUploaderService)]
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+[/if]
 // [protected ('use')]
 // [/protected]
 
@@ -74,14 +77,27 @@ class [service.serviceClassName()/]
     /**
      * @var [service.serviceClassName()/] $[service.instanceName()/]
      */
-    private $[service.instanceName()/];
+    private [service.serviceClassName()/] $[service.instanceName()/];
 
 [/for]
+[if (service.usesVichUploaderService)]
+    /**
+     * @var UploaderHelper $uploaderHelper
+     */
+    private UploaderHelper $uploaderHelper;
+
+    /**
+     * @var string $projectDir
+     */
+    private string $projectDir;
+
+[/if]
 [if (service.requires->notEmpty() or service.uses->notEmpty())]
     public function __construct([for (repository : Repository | service.requires) separator (', ')]
 [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (service.requires->notEmpty() and service.uses->notEmpty())]
 , [/if][for (service : Service | service.uses) separator (', ')]
-[service.serviceClassName()/] $[service.instanceName()/][/for])
+[service.serviceClassName()/] $[service.instanceName()/][/for][if (service.usesVichUploaderService)]
+, UploaderHelper $uploaderHelper, string $projectDir[/if])
     {
 	[for (repository : Repository | service.requires)]
         $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
@@ -89,6 +105,10 @@ class [service.serviceClassName()/]
 	[for (service : Service | service.uses)]
         $this->[service.instanceName()/] = $[service.instanceName()/];
 	[/for]
+	[if (service.usesVichUploaderService)]
+        $this->uploaderHelper = $uploaderHelper;
+        $this->projectDir = $projectDir;
+	[/if]
     }
 
 [/if]

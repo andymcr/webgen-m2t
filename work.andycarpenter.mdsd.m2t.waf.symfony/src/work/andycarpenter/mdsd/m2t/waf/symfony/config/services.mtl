@@ -1,7 +1,9 @@
 [comment encoding = UTF-8 /]
 [module services(
+	'http://andycarpenter.work/metamodel/service',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 
 
 [template public configServices(model : WafModel)]
@@ -31,12 +33,18 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-[if (model.siteProperties.useDbSessionStorage)]
 
+[if (model.siteProperties.useDbSessionStorage)]
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         arguments:
             - '%env(resolve:SESSION_DB_URL)%'
 
 [/if]
+[for (variant : Service | model.business.services->select(s | s.usesVichUploaderService))]
+    [variant.serviceNamespace()/]\[variant.serviceClassName()/]:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+[/for]
 [/file]
 [/template]
