@@ -50,7 +50,7 @@ liip_imagine:
 when@dev:
     liip_imagine:
         loaders:
-            default:
+            entries.loader:
                 stream:
                     wrapper: https://comps.salephoto.org.uk/
 [/file]
