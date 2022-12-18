@@ -62,8 +62,8 @@ NULL
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 [let variable : String = 'value']
 {% for [variable/] in [feature.accessor(parentAccessor, field.alias(), objectAccess)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
-<div>[feature.displayAttribute(variable, parentAccessor)/]</div>[else]
-<span>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if][if (not feature.emptyDisplayValue.oclIsUndefined())]
+<div[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</div>[else]
+<span[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if][if (not feature.emptyDisplayValue.oclIsUndefined())]
 {% else %}{{ '[feature.emptyDisplayValue/]' }}[/if]{% endfor %}
 [/let]
 [/let]
@@ -134,8 +134,8 @@ NULL
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [let variable : String = 'value']
 {% for [variable/] in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
-<div[if (field.truncate)] class="truncate"[/if]>[association.displayAssociation(variable, variable)/]</div>[else]
-<span>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyDisplayValue.oclIsUndefined())]
+<div[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</div>[else]
+<span[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyDisplayValue.oclIsUndefined())]
 {% else %}{{ '[association.emptyDisplayValue/]' }}[/if]{% endfor %}
 [/let]
 [/let]
