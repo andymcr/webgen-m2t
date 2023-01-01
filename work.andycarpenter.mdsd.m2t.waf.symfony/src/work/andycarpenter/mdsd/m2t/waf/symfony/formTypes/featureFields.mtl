@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module featureFields(
-	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
@@ -72,24 +73,21 @@ $builder->add('[attribute.modelPropertyName()/]', CollectionType::class, ['['/]
 [']'/])
 [/template]
 
-[template public formFeature(resource : ResourceFeature)
-	? (resource.oclIsTypeOf(FileResource)) post(trim())]
-$builder->add('[resource.filePropertyName()/]', VichFileType::class, ['['/]
-    'label' => '[resource.captionContainedId()/]',
-    'translation_domain' => 'entity',
-[if (not resource.isRequired)]
-    'required' => false,
-[/if]
-[']'/])
-[/template]
-
-[template public formFeature(resource : ResourceFeature)
-	? (resource.oclIsTypeOf(ImageResource)) post(trim())]
+[template public formFeature(resource : ResourceFeature, deletable : Boolean, downloadable : Boolean,
+	showImageWhenEditing : Boolean, imageFilter : ImageManipulation) post(trim())]
 $builder->add('[resource.filePropertyName()/]', VichImageType::class, ['['/]
     'label' => '[resource.captionContainedId()/]',
     'translation_domain' => 'entity',
 [if (not resource.isRequired)]
     'required' => false,
+[/if]
+[if (not deletable)]
+    'allow_delete' => false,
+[/if]
+[if (not downloadable)]
+    'download_uri' => false,
+[/if]
+[if (resource.oclIsTypeOf(ImageResource))]
 [/if]
 [']'/])
 [/template]

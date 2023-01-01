@@ -311,7 +311,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [template private formField(field : UnitField)
 	? (field.isResourceField) post(trim())]
 [let resource : UnitResource = field.oclAsType(UnitResource)]
-[resource.resource.formFeature()/]
+[resource.resource.formFeature(resource.isDeletable, resource.isDownloadable,
+	resource.showImageWhenEditing, resource.imageFilter)/]
 [/let]
 [/template]
 
