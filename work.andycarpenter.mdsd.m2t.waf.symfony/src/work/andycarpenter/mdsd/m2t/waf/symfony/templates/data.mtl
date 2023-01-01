@@ -2,6 +2,7 @@
 [module data(
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
@@ -133,13 +134,22 @@ NULL
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
 [let variable : String = 'value']
-{% for [variable/] in [accessor/] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+{% for [variable/] in [accessor/][if (not association.collectionSortBy.oclIsUndefined() or association.collectionMaximumValues > 0)]
+ [association.filters()/][/if] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</div>[else]
 <span[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyDisplayValue.oclIsUndefined())]
 {% else %}{{ '[association.emptyDisplayValue/]' }}[/if]{% endfor %}
 [/let]
 [/let]
 [/let]
+[/template]
+
+[template private filters(association : UnitAssociation) post(trim())]
+[if (not association.collectionSortBy.oclIsUndefined())]
+| sort((a, b) => a.[association.collectionSortBy.modelPropertyName()/] < b.[association.collectionSortBy.modelPropertyName()/])[/if]
+[if (association.collectionMaximumValues > 0)]
+ | slice(0, [association.collectionMaximumValues/])
+[/if]
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
