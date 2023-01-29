@@ -91,6 +91,19 @@ NULL
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isDateField) post(trim())]
+[if (field.oclIsKindOf(UnitFeature))]
+[let feature : UnitFeature = field.oclAsType(UnitFeature)]
+	[if (not feature.emptyDisplayValue.oclIsUndefined())]
+{% if [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] is not null %}[/if]
+[field.displayDateValue(parentAccessor, objectAccess)/][if (not feature.emptyDisplayValue.oclIsUndefined())]
+{% else %}{{ '[feature.emptyDisplayValue/]' }}{% endif %}[/if]
+[/let]
+[else]
+[field.displayDateValue(parentAccessor, objectAccess)/]
+[/if]
+[/template]
+
+[template private displayDateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
 {{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if] }}
 [/template]
