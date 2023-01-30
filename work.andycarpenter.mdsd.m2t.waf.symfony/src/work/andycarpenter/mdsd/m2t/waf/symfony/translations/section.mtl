@@ -131,6 +131,9 @@
 		[/if]
 	[/let]
 	[/if]
+	[if (field.hasEmptyDisplayValue())]
+[field.emptyValueContainedId().idTranslation(field.oclAsType(UnitFeature).emptyDisplayValue)/]
+	[/if]
 [/for]
 [/template]
 

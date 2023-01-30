@@ -224,6 +224,14 @@
 			endif
 /]
 
+[query public hasEmptyDisplayValue(field : UnitField) : Boolean
+	= if field.oclIsKindOf(UnitFeature) then
+			not field.oclAsType(UnitFeature).emptyDisplayValue.oclIsUndefined()
+		else
+			false
+		endif
+/]
+
 [query public isConditionalDisplay(field : UnitField) : Boolean
 	= not field.hideWhen.oclIsUndefined()
 /]

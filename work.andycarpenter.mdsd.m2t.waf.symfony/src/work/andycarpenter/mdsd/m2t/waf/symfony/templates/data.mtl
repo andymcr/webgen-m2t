@@ -10,6 +10,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
 
@@ -65,7 +66,7 @@ NULL
 {% for [variable/] in [feature.accessor(parentAccessor, field.alias(), objectAccess)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</div>[else]
 <span[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if][if (not feature.emptyDisplayValue.oclIsUndefined())]
-{% else %}{{ '[feature.emptyDisplayValue/]' }}[/if]{% endfor %}
+{% else %}{{ '[feature.emptyValueContainedId()/]' | trans({}, '[feature.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
 [/let]
 [/let]
 [/if]
@@ -91,16 +92,10 @@ NULL
 
 [template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
 	? (field.isDateField) post(trim())]
-[if (field.oclIsKindOf(UnitFeature))]
-[let feature : UnitFeature = field.oclAsType(UnitFeature)]
-	[if (not feature.emptyDisplayValue.oclIsUndefined())]
+[if (field.hasEmptyDisplayValue())]
 {% if [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] is not null %}[/if]
-[field.displayDateValue(parentAccessor, objectAccess)/][if (not feature.emptyDisplayValue.oclIsUndefined())]
-{% else %}{{ '[feature.emptyDisplayValue/]' }}{% endif %}[/if]
-[/let]
-[else]
-[field.displayDateValue(parentAccessor, objectAccess)/]
-[/if]
+[field.displayDateValue(parentAccessor, objectAccess)/][if (field.hasEmptyDisplayValue())]
+{% else %}{{ '[field.emptyValueContainedId()/]' | trans({}, '[field.displayedOn.translationDomain()/]') }}{% endif %}[/if]
 [/template]
 
 [template private displayDateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
@@ -151,7 +146,7 @@ NULL
  [association.filters()/][/if] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</div>[else]
 <span[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyDisplayValue.oclIsUndefined())]
-{% else %}{{ '[association.emptyDisplayValue/]' }}[/if]{% endfor %}
+{% else %}{{ '[association.emptyValueContainedId()/]' | trans({}, '[association.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
 [/let]
 [/let]
 [/let]

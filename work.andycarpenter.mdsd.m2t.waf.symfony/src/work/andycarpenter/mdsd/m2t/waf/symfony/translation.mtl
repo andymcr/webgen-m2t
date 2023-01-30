@@ -21,6 +21,10 @@
 	= 'confirm'
 /]
 
+[query private emptyValueElement(eObject : EObject) : String
+	= 'default'
+/]
+
 [query private helpElement(eObject : EObject) : String
 	= 'help'
 /]
@@ -248,7 +252,7 @@
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).displayFields
-				->select(f | f.hasTranslations())->notEmpty()
+				->select(f | f.hasTranslations() or f.hasEmptyDisplayValue())->notEmpty()
 		else
 			false
 		endif
@@ -315,6 +319,10 @@
 
 [query public defaultTitleContainedId(field : UnitFeature) : String
 	= field.persistentFeature.captionContainedId()
+/]
+
+[query public emptyValueContainedId(field : UnitField) : String
+	= field.fieldContainedId().concat('.').concat(field.emptyValueElement())
 /]
 
 [query private fieldContainedId(field : UnitField) : String
