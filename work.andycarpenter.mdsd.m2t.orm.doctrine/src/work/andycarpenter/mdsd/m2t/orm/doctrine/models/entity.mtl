@@ -11,7 +11,7 @@
 
 [query private isReservedWord(word : String) : Boolean
 	= let reserved : Set(String) 
-		= Set{'order'}
+		= Set{'accessible', 'add', 'all', 'alter', 'order', 'rank'}
 		in reserved->includes(word)
 /]
 
