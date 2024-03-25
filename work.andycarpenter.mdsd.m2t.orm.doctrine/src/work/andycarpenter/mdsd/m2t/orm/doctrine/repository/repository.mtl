@@ -171,7 +171,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 [/if]
 [if (security.authentication.userModel.repository = repository)]
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 [/if]
 [if (repository.serves.implementsPasswordAuthenticatedInterface)]
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
