@@ -103,7 +103,7 @@
 [if (cardsUnit.hasPagination
 	and not cardsUnit.selection.oclIsUndefined())]
  {% if [cardsUnit.instanceParameter()/].hasNextPage %}
- <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].nextPage }}" src="{{ pagerfanta_page_url([cardsUnit.instanceParameter()/], [cardsUnit.instanceParameter()/].nextPage) }}" loading="lazy"></turbo-frame>
+ <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].nextPage }}" src="{{ pagerfanta_page_url([cardsUnit.instanceParameter()/], [cardsUnit.instanceParameter()/].nextPage) }}" target="_top" loading="lazy"></turbo-frame>
  {% endif %}
 [/if]
 [/let]
@@ -147,11 +147,15 @@
 	[if (action.isGeneralAction)]
  [action.unitActionLink(null)/]
 	[elseif (action.isTargetAction)]
-		[if (unit.contentType.keyEntity().isContained)]
+	[let targetUnit : DynamicUnit = action.oclAsType(TargetAction).target.oclAsType(DynamicUnit)]
+		[if (targetUnit.isContained and targetUnit.hasExplicitlyEditedContainer)]
+ [action.unitActionLink(null)/]
+		[elseif (unit.contentType.keyEntity().isContained)]
  [action.unitActionLink(unit.containerParameter())/]
 		[else]
  [action.unitActionLink(null)/]
 		[/if]
+	[/let]
 	[elseif (action.isContainerAction)]
  [action.unitActionLink(unit.containerParameter())/]
 	[/if]
