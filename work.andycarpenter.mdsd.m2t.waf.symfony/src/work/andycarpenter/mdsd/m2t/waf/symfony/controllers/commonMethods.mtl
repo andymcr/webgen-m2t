@@ -308,7 +308,7 @@ $request->query->all()[/if]
 [/for]
 [/template]
 
-[template public handleCancelSubmit(unit : DynamicUnit) post(trim())]
+[template public handleCancelSubmit(unit : DynamicUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [if (unit.oclIsKindOf(ControlUnit))]
 [let controlUnit : ControlUnit = unit.oclAsType(ControlUnit)]
 if ($request->isMethod('POST') && $request->request->has('cancel')) {
@@ -318,7 +318,7 @@ if ($request->isMethod('POST') && $request->request->has('cancel')) {
 [elseif (unit.oclIsKindOf(EditUnit))]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 if ($request->isMethod('POST') && $request->request->has('[editUnit.cancelId()/]')) {
-	return $this->redirectToRoute('[editUnit.cancelDestination.routeName()/]');
+	return [editUnit.cancelDestination.redirect(sourceParameters)/];
 }
 [/let]
 [/if]

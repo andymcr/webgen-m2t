@@ -80,6 +80,9 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 
 [template private actionCreateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeParameters()]
+[if (not unit.cancelDestination.oclIsUndefined())]
+[unit.handleCancelSubmit(sourceParameters)/]
+[/if]
 [unit.instanceVariable()/] = new [unit.modelClassName()/]();
 [for (resource : UnitResource | unit.imageFields)]
 [unit.instanceVariable()/]->[resource.resource.setDetailsMethodName()/](new EmbeddedFile());
@@ -88,9 +91,6 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 [unit.setContainer()/]
 [/if]
 [unit.formVariable()/] = [unit.createForm(unit.instanceVariable(), sourceParameters)/];
-	[if (not unit.cancelDestination.oclIsUndefined())]
-[unit.handleCancelSubmit()/]
-	[/if]
 [unit.formVariable()/]->handleRequest($request);
 if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) {
     [unit.saveBody(sourceParameters)/]
@@ -129,6 +129,9 @@ public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): R
 
 [template private actionUpdateCore(unit : EditUnit) post(trim())]
 [let sourceParameters : Sequence(Attribute) = unit.routeUpdateParameters()]
+[if (not unit.cancelDestination.oclIsUndefined())]
+[unit.handleCancelSubmit(sourceParameters)/]
+[/if]
 [unit.instanceVariable()/] = [unit.loadUpdateInstance()/];
 if (![unit.instanceVariable()/]) {
     throw $this->createNotFoundException('The [unit.contentType.name/] does not exist');
@@ -141,9 +144,6 @@ foreach ([unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/](
 [/let]
 [/for]
 [unit.formVariable()/] = [unit.updateForm(sourceParameters)/];
-[if (not unit.cancelDestination.oclIsUndefined())]
-[unit.handleCancelSubmit()/]
-[/if]
 [unit.formVariable()/]->handleRequest($request);
 if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) {
 [for (field : UnitAssociation | unit.formFields->select(f | f.isContains).oclAsType(UnitAssociation))]
