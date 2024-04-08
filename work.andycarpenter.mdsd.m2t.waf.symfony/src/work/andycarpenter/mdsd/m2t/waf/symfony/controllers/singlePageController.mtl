@@ -112,7 +112,5 @@ $parameters = ['['/][']'/];
 [unit.renderCode()/]
 
 [/for]
-return $this->[if (controller.hasEditUnits)]
-renderForm[else]
-render[/if]('[controller.controllerTemplateDirectory()/]/index[controller.htmlExtension()/][controller.twigExtension()/]', $parameters);
+return $this->render('[controller.controllerTemplateDirectory()/]/index[controller.htmlExtension()/][controller.twigExtension()/]', $parameters);
 [/template]

@@ -61,7 +61,7 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
     [unit.actionCreateCore()/]
 [if (unit.controller.isMultiPage)]
-    return $this->renderForm('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
         '[unit.instanceParameter()/]' => [unit.formVariable()/]
     [']'/]);
 [else]
@@ -110,7 +110,7 @@ public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): R
 {
     [unit.actionUpdateCore()/]
 [if (unit.controller.isMultiPage)]
-    return $this->renderForm('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
         '[unit.instanceParameter()/]' => [unit.formVariable()/]
     [']'/]);
 [else]
