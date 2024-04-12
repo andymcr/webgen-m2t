@@ -28,11 +28,18 @@ date()[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [/template]
 
 
-[template public controllerExpression(expression : Expression, accessor : String)
+[template public twigExpression(expression : Expression, accessor : String)
+	? (expression.oclIsTypeOf(SizeFunction)) post(trim())]
+[let size : SizeFunction = expression.oclAsType(SizeFunction)]
+[size.feature.twigExpression(accessor)/] | length
+[/let]
+[/template]
+
+[template public twigExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(FunctionCall)) post(trim())]
 [let call : FunctionCall = expression.oclAsType(FunctionCall)]
 [call.name/]([for (actual : Expression | call.actuals) separator(', ')]
-[actual.controllerExpression(accessor)/][/for])
+[actual.twigExpression(accessor)/][/for])
 [/let]
 [/template]
 
