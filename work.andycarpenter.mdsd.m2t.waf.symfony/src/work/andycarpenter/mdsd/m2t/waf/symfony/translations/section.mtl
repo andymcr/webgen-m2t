@@ -148,4 +148,7 @@
 [if (action.hasSuccessMessage)]
 [action.successMessageId().idTranslation(action.successMessage)/]
 [/if]
+[if (action.hasDisabledMessage)]
+[action.disabledMessageId().idTranslation(action.disabledMessage)/]
+[/if]
 [/template]
