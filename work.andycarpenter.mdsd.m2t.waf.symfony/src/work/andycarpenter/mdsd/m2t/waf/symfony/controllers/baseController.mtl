@@ -11,6 +11,8 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
 
 [template public useStatements(controller : Controller) post(trim())]
@@ -36,7 +38,7 @@ use Pagerfanta\Pagerfanta;
 	[/if]
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[controller.baseControllerClassName()/];
-[if (controller.hasEditUnits)]
+[if (controller.isSinglePage and not controller.hasSingleActionMethod() and controller.hasFormUnits)]
 use Symfony\Component\Form\FormInterface;
 [/if]
 [if (controller.hasFileActions)]
@@ -52,7 +54,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 [elseif (controller.hasSingleAuthorisationRole())]
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 [/if]
-[if (controller.hasSuccessMessages)]
+[if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [/if]
 [if (controller.hasImageFields)]
@@ -96,7 +98,7 @@ private [dynamicUnit.modelClassName()/] $[dynamicUnit.instanceName()/];
 		[/if]
 	[/for]
 [/if]
-[if (controller.hasSuccessMessages)]
+[if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]
 /**
  * @var TranslatorInterface $translationService
  */
@@ -119,6 +121,12 @@ private TranslatorInterface $translationService;
 public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
 {
     [deleteAction.loadInstance()/]
+[if (not deleteAction.enableWhen.oclIsUndefined())]
+    if (!([deleteAction.enableWhen.controllerExpression(action.instanceVariable(), 'yyy')/])) {
+       $this->addFlash('error', $this->translationService->trans('[deleteAction.disabledMessageId()/]', ['['/][']'/], '[deleteAction.translationDomain()/]'));
+       return [deleteAction.parentUnit.redirect(deleteAction.routeParameters())/];
+    }
+[/if]
     $this->[unit.contentType.repository.repositoryInstanceName()/]->remove($[deleteAction.instanceName()/], true);
 
 [if (unit.oclIsKindOf(CollectionUnit))]

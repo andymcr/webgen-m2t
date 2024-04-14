@@ -54,13 +54,13 @@ class [controller.controllerClassName()/] extends [controller.baseControllerClas
 
 [template private constructor(controller : Controller) post(trim())]
 public function __construct([for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name)) separator (', ')]
-[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and controller.hasSuccessMessages)]
-, [/if][if (controller.hasSuccessMessages)]TranslatorInterface $translator[/if])
+[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage))]
+, [/if][if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]TranslatorInterface $translator[/if])
 {
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
     $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
 [/for]
-[if (controller.hasSuccessMessages)]
+[if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]
     $this->translationService = $translator;
 [/if]
 }
