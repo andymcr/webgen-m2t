@@ -14,17 +14,17 @@
 	? (guard.oclIsTypeOf(NullLiteral)
 		or guard.oclIsTypeOf(IntegerLiteral)
 		or guard.oclIsTypeOf(StringLiteral)) post(trim())]
-[guard.valueExpression()/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[guard.valueExpression()/]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(TimeLiteral)) post(trim())]
-date('[guard.oclAsType(TimeLiteral).value/]')[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+date('[guard.oclAsType(TimeLiteral).value/]')
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(CurrentTime)) post(trim())]
-date()[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+date()
 [/template]
 
 
@@ -47,14 +47,14 @@ date()[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(ConstantReference)) post(trim())]
 [let constant : ConstantReference = guard.oclAsType(ConstantReference)]
-[constant.value.definedBy.className().toLowerFirst()/].[constant.value.name/][if (constant.value.useFunction())]()[/if][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[constant.value.definedBy.className().toLowerFirst()/].[constant.value.name/][if (constant.value.useFunction())]()[/if]
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsKindOf(PathVariable)) post(trim())]
 [let path : PathVariable = guard.oclAsType(PathVariable)]
-[path.accessor(accessor, null)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[path.accessor(accessor, null)/]
 [/let] 
 [/template]
 
@@ -65,7 +65,7 @@ date()[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(ParameterReference)) post(trim())]
 [let path : ParameterReference = guard.oclAsType(ParameterReference)]
-':[path.parameter.name/]'[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+':[path.parameter.name/]'
 [/let]
 [/template]
 
@@ -80,7 +80,7 @@ $this->get('people')->getId()
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateBooleanVariable)) post(trim())]
 [let predicate : PredicateBooleanVariable = guard.oclAsType(PredicateBooleanVariable)]
-[if (predicate.negated)]not [/if][predicate.feature.twigExpression(accessor)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[if (predicate.negated)]not [/if][predicate.feature.twigExpression(accessor)/]
 [/let]
 [/template]
 
@@ -90,42 +90,42 @@ $this->get('people')->getId()
 [for (expression : Expression | predicate.predicates)]
 [if (i > 1)] [predicate.operator()/] [/if][if (expression.oclIsKindOf(PredicateBooleanOperator))]
 ([/if][expression.twigExpression(accessor)/][if (expression.oclIsKindOf(PredicateBooleanOperator))]
-)[/if][/for][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+)[/if][/for]
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = guard.oclAsType(PredicateEqualityOperator)]
-[predicate.left.twigExpression(accessor)/] [predicate.operator()/] [predicate.right.twigExpression(accessor)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[predicate.left.twigExpression(accessor)/] [predicate.operator()/] [predicate.right.twigExpression(accessor)/]
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = guard.oclAsType(PredicateComparisonOperator)]
-[predicate.left.twigExpression(accessor)/] [predicate.operator()/] [predicate.right.twigExpression(accessor)/][if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[predicate.left.twigExpression(accessor)/] [predicate.operator()/] [predicate.right.twigExpression(accessor)/]
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
 [let predicate : PredicateLikeOperator = guard.oclAsType(PredicateLikeOperator)]
-Criteria::expr()->[predicate.operator()/]([predicate.left.twigExpression(accessor)/], [predicate.right.twigExpression(accessor)/])[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+Criteria::expr()->[predicate.operator()/]([predicate.left.twigExpression(accessor)/], [predicate.right.twigExpression(accessor)/])
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateIsNull)) post(trim())]
 [let predicate : PredicateIsNull = guard.oclAsType(PredicateIsNull)]
-[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] null[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] null
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = guard.oclAsType(PredicateIsEmpty)]
-[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] empty[if (guard.suffixes->notEmpty())] [guard.suffixes()/][/if]
+[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] empty
 [/let]
 [/template]
 
@@ -172,8 +172,3 @@ Criteria::expr()->[predicate.operator()/]([predicate.left.twigExpression(accesso
 			'notLike'
 		endif
 /]
-
-[template private suffixes(expression : Expression) post(trim())]
-[for (suffix : String | expression.suffixes) separator(' ')]
-[suffix/][/for]
-[/template]

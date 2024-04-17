@@ -60,8 +60,7 @@ count([size.feature.controllerExpression(accessor, parentAccessor)/])
 [let path : PathVariableAttribute = guard.oclAsType(PathVariableAttribute)]
 [if (path.useContainerAsContext)]
 [parentAccessor/][else]
-[accessor/][/if]->[path.attribute.getMethodName()/]()[if (guard.suffixes->notEmpty())]
- [guard.suffixes()/][/if]
+[accessor/][/if]->[path.attribute.getMethodName()/]()
 [/let] 
 [/template]
 
@@ -71,8 +70,7 @@ count([size.feature.controllerExpression(accessor, parentAccessor)/])
 [if (path.useContainerAsContext)]
 [parentAccessor/][else]
 [accessor/][/if]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
-[path.childFeature.pathExpression()/][/if][if (guard.suffixes->notEmpty())]
- [guard.suffixes()/][/if]
+[path.childFeature.pathExpression()/][/if]
 [/let] 
 [/template]
 
@@ -124,15 +122,14 @@ $this->getUser()
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
-[predicate.left.controllerExpression(accessor, parentAccessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor, parentAccessor)/][if (expression.suffixes->notEmpty())]
- [expression.suffixes()/][/if]
+[predicate.left.controllerExpression(accessor, parentAccessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor, parentAccessor)/]
 [/let]
 [/template]
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
 [let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-[predicate.left.controllerExpression(accessor, parentAccessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor, parentAccessor)/][if (expression.suffixes->notEmpty())] [expression.suffixes()/][/if]
+[predicate.left.controllerExpression(accessor, parentAccessor)/] [predicate.operator()/] [predicate.right.controllerExpression(accessor, parentAccessor)/]
 [/let]
 [/template]
 
@@ -253,9 +250,4 @@ $now = new \DateTime();
 [let literal : TimeLiteral = expression.oclAsType(TimeLiteral)]
 $time = new \DateTime('[literal.value/]');
 [/let]
-[/template]
-
-[template private suffixes(expression : Expression) post(trim())]
-[for (suffix : String | expression.suffixes)]
-[suffix/][/for]
 [/template]
