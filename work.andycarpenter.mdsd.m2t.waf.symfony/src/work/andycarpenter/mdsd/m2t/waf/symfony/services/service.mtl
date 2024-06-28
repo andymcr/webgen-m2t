@@ -91,13 +91,18 @@ class [service.serviceClassName()/]
      */
     private string $projectDir;
 
+    /**
+     * @var string $imagePrefix
+     */
+    private string $imagePrefix;
+
 [/if]
 [if (service.requires->notEmpty() or service.uses->notEmpty())]
     public function __construct([for (repository : Repository | service.requires) separator (', ')]
 [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (service.requires->notEmpty() and service.uses->notEmpty())]
 , [/if][for (service : Service | service.uses) separator (', ')]
 [service.serviceClassName()/] $[service.instanceName()/][/for][if (service.usesVichUploaderService)]
-, UploaderHelper $uploaderHelper, string $projectDir[/if])
+, UploaderHelper $uploaderHelper, string $projectDir, string $imagePrefix[/if])
     {
 	[for (repository : Repository | service.requires)]
         $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
@@ -108,6 +113,7 @@ class [service.serviceClassName()/]
 	[if (service.usesVichUploaderService)]
         $this->uploaderHelper = $uploaderHelper;
         $this->projectDir = $projectDir;
+        $this->imagePrefix = $imagePrefix;
 	[/if]
     }
 
