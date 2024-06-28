@@ -182,9 +182,9 @@
 [template private linkPathParameters(action : Action, routeParameters : String, preserveQuery : Boolean) post(trim())]
 [let controller : Controller = action.parentUnit.controller]
 [if ((controller.hasFilters or controller.hasPagination) and preserveQuery)]
-, app.request.query.all[if (not routeParameters.oclIsUndefined())]
+, app.request.query.all[if (routeParameters <> '')]
 |merge({ [routeParameters/] })[/if]
-[else][if (not routeParameters.oclIsUndefined())]
+[else][if (routeParameters <> '')]
 , { [routeParameters/] }[/if]
 [/if]
 [/let]
@@ -245,18 +245,25 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.hasConfirmMessage)]
 [template private anchor2(action : Action, path : String, attributes : String, linkContent : String,
 	conditionAccessor : String) post(trim())]
 [if (action.displayWhen.oclIsUndefined())]
-	[if (action.enableWhen.oclIsUndefined())]
-[action.anchor3(path, attributes, linkContent)/]
-	[else]
-{% if [if (action.oclIsTypeOf(SelectAction))]not ([/if][action.enableWhen.twigExpression(conditionAccessor)/][if (action.oclIsTypeOf(SelectAction))])[/if] %}[action.anchor3(path, attributes, linkContent)/]{% else %}[linkContent/]{% endif %}
-	[/if]
+[action.anchor3(path, attributes, linkContent, conditionAccessor)/]
 [else]
-{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(path, attributes, linkContent)/]{% endif %}
+{% if [action.displayWhen.twigExpression(conditionAccessor)/] %}[action.anchor3(path, attributes, linkContent, conditionAccessor)/]{% endif %}
 [/if]
 [/template]
 
-[template private anchor3(action : Action, path : String, attributes : String, linkContent : String) post(trim())]
+[template private anchor3(action : Action, path : String, attributes : String, linkContent : String,
+	conditionAccessor : String) post(trim())]
+[if (action.enableWhen.oclIsUndefined())]
 <a href="{{ path([path/]) }}" [attributes/]>[linkContent/]</a>
+[else]
+{% if [action.enableWhen.twigExpression(conditionAccessor)/] -%}
+<a href="{{ path([path/]) }}" [attributes/]>[linkContent/]</a>
+{%- else -%}
+<span[if (action.hasAnchorClass)]
+ class="[action.anchorClass/]"[/if][if (action.hasDisabledMessage)]
+ title="{{ '[action.disabledMessageId()/]' | trans( {}, '[action.parentUnit.translationDomain()/]') }}" data-bs-toggle="tooltip" data-bs-placement="top"[/if]>[linkContent/]</span>
+{%- endif%}
+[/if]
 [/template]
 
 
