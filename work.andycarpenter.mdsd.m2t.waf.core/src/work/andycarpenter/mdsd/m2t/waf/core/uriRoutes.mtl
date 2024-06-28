@@ -30,7 +30,11 @@
 
 [query public routingType(unit : SingletonUnit) : Entity
 	= if unit.oclIsTypeOf(CreateUnit) or unit.oclIsTypeOf(CreateUpdateUnit) then
-			unit.contentType.parentEntity()
+			if unit.isContained and unit.hasExplicitlyEditedContainer then
+				null
+			else
+				unit.contentType.parentEntity()
+			endif
 		else if unit.oclIsTypeOf(DetailsUnit) then
 			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
 				in if detailsUnit.selection.oclIsUndefined() then
@@ -138,7 +142,7 @@
 				action.parentUnit.contentType,
 				action.parentUnit.oclAsType(CollectionUnit).findElementSelection)
 		else
-			action.parentUnit.routeParameters(action.parentUnit.contentType, null)
+			action.parentUnit.routeParameters()
 		endif
 /]
 
