@@ -44,6 +44,21 @@ services:
     [variant.serviceNamespace()/]\[variant.serviceClassName()/]:
         arguments:
             $projectDir: '%kernel.project_dir%'
+            $imagePrefix: 'public'
+
+[/for]
+
+when@dev:
+    services:
+        _defaults:
+            autowire: true
+            autoconfigure: true
+
+[for (variant : Service | model.business.services->select(s | s.usesVichUploaderService))]
+        [variant.serviceNamespace()/]\[variant.serviceClassName()/]:
+            arguments:
+                $projectDir: '%kernel.project_dir%'
+                $imagePrefix: 'https://comps.salephoto.org.uk'
 
 [/for]
 [/file]
