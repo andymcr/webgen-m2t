@@ -37,7 +37,7 @@
 {% trans_default_domain "entity" %}
 <section [if (cardsUnit.hasSectionClass)] class="[cardsUnit.sectionClass/]" [/if]id="[cardsUnit.instanceParameter()/]">
 <h4[if (cardsUnit.hasCaptionClass or cardsUnit.omitCaption)]
- class="[if (cardsUnit.hasCaptionClass)][cardsUnit.captionClass/][/if] [if (cardsUnit.omitCaption)] hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
+ class="[if (cardsUnit.hasCaptionClass)][cardsUnit.captionClass/][if (cardsUnit.omitCaption)] [/if][/if][if (cardsUnit.omitCaption)]hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
 [if (cardsUnit.hasFilters)]
  [cardsUnit.unitFilters()/]
 [/if]
