@@ -95,14 +95,14 @@ $queryBuilder->expr()->[predicate.operator()/]([predicate.left.controllerExpress
 [template public controllerExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateIsNull)) post(trim())]
 [let predicate : PredicateIsNull = expression.oclAsType(PredicateIsNull)]
-$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.controllerExpression()/])
+$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.value.controllerExpression()/])
 [/let]
 [/template]
 
 [template public controllerExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.controllerExpression()/], '0')
+$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.controllerExpression()/], '0')
 [/let]
 [/template]
 
@@ -187,7 +187,7 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public controllerVariable(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-[predicate.feature.controllerVariable()/]
+[predicate.value.controllerVariable()/]
 [/let]
 [/template]
 

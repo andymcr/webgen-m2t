@@ -24,11 +24,11 @@
 		else if expression.oclIsTypeOf(PredicateIsEmpty) then
 			let predicate : PredicateIsEmpty
 				= expression.oclAsType(PredicateIsEmpty)
-				in predicate.feature.hasCurrentUser()
+				in predicate.value.hasCurrentUser()
 		else if expression.oclIsTypeOf(PredicateIsNull) then
 			let predicate : PredicateIsNull
 				= expression.oclAsType(PredicateIsNull)
-				in predicate.feature.hasCurrentUser()
+				in predicate.value.hasCurrentUser()
 		else
 			expression.oclIsTypeOf(CurrentUser)
 		endif endif endif endif endif endif
@@ -55,11 +55,11 @@
 		else if expression.oclIsTypeOf(PredicateIsEmpty) then
 			let predicate : PredicateIsEmpty
 				= expression.oclAsType(PredicateIsEmpty)
-				in predicate.feature.hasFormals()
+				in predicate.value.hasFormals()
 		else if expression.oclIsTypeOf(PredicateIsNull) then
 			let predicate : PredicateIsNull
 				= expression.oclAsType(PredicateIsNull)
-				in predicate.feature.hasFormals()
+				in predicate.value.hasFormals()
 		else
 			expression.oclIsTypeOf(ParameterReference)
 		endif endif endif endif endif endif
@@ -86,11 +86,11 @@
 		else if expression.oclIsTypeOf(PredicateIsEmpty) then
 			let predicate : PredicateIsEmpty
 				= expression.oclAsType(PredicateIsEmpty)
-				in predicate.feature.hasParameters()
+				in predicate.value.hasParameters()
 		else if expression.oclIsTypeOf(PredicateIsNull) then
 			let predicate : PredicateIsNull
 				= expression.oclAsType(PredicateIsNull)
-				in predicate.feature.hasParameters()
+				in predicate.value.hasParameters()
 		else
 			expression.oclIsTypeOf(ParameterReference)
 				or expression.oclIsTypeOf(CurrentTime)
