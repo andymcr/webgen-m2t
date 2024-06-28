@@ -394,6 +394,10 @@
 	= action.parentUnit.containedId().concat('.actions.').concat(action.id())
 /]
 
+[query public disabledMessageId(action : Action) : String
+	= action.containedId().concat('.messages').concat('.disabled')
+/]
+
 [query public displayLabelId(action : Action) : String
 	= action.containedId().concat('label')
 /]
@@ -404,4 +408,8 @@
 
 [query public successMessageId(action : Action) : String
 	= action.containedId().concat('.messages').concat('.success')
+/]
+
+[query public translationDomain(action : Action) : String
+	= action.parentUnit.translationDomain()
 /]
