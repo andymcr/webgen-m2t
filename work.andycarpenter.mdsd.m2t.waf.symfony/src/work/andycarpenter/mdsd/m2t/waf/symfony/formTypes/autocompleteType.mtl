@@ -22,11 +22,10 @@
 namespace [searchType.formNamespace()/];
 
 use [searchType.modelsNamespace()/]\[searchType.modelClassName()/];
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
-use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 
 #['['/]AsEntityAutocompleteField[']'/]
@@ -57,7 +56,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 
     public function getParent(): string
     {
-        return ParentEntityAutocompleteType::class;
+        return BaseEntityAutocompleteType::class;
     }
 }
 [/file]
