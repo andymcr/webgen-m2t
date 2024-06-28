@@ -123,14 +123,14 @@ $queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()
 [template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateIsNull)) post(trim())]
 [let predicate : PredicateIsNull = expression.oclAsType(PredicateIsNull)]
-$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.queryExpression()/])
+$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.value.queryExpression()/])
 [/let]
 [/template]
 
 [template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.queryExpression()/], '0')
+$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.queryExpression()/], '0')
 [/let]
 [/template]
 
@@ -232,7 +232,7 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public queryParameter(expression : Expression, security : SecurityModel)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-[predicate.feature.queryParameter(security)/]
+[predicate.value.queryParameter(security)/]
 [/let]
 [/template]
 
@@ -292,7 +292,7 @@ $query->setParameter('user', $this->[security.authentication.userModel.repositor
 /]
 
 [query private parameterUsedInLike(predicate : PredicateIsEmpty, parameter : FormalParameter, withinLike : Boolean) : Boolean
-	= predicate.feature.parameterUsedInLike(parameter, withinLike)
+	= predicate.value.parameterUsedInLike(parameter, withinLike)
 /]
 
 [query private parameterUsedInLike(variable : ParameterReference, parameter1 : FormalParameter, withinLike : Boolean) : Boolean
