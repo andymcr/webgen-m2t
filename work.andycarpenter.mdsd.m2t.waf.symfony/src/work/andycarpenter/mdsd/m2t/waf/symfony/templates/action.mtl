@@ -8,6 +8,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::performance/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
@@ -207,7 +208,8 @@
  data-turbo-method="delete"[/if][if (action.hasConfirmMessage)]
  data-turbo-confirm="[action.confirmMessage/][if (not valueAccessor.oclIsUndefined())]
  {{ [valueAccessor/].defaultLabel() }}[/if]"[/if][if (action.hasTooltip())]
- data-bs-toggle="tooltip" data-bs-placement="top"[/if]
+ data-bs-toggle="tooltip" data-bs-placement="top"[/if][if (action.disablePrefetch())]
+ data-turbo-prefetch="false"[/if]
 [/template]
 
 [template private attributes(action : Action, association : UnitAssociation, valueAccessor : String)

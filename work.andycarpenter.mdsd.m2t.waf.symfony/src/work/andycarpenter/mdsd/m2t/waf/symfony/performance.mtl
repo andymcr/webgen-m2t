@@ -1,0 +1,17 @@
+[comment encoding = UTF-8 /]
+[module performance(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+
+
+[query public disablePrefetch(action : Action) : Boolean
+	= if action.oclIsTypeOf(DeleteAction) then
+			false
+		else if action.oclIsKindOf(OperationAction) then
+			true
+		else if action.oclIsKindOf(SelectAction) then
+			let selectAction : SelectAction = action.oclAsType(SelectAction)
+				in selectAction.target.oclIsKindOf(CardsUnit)
+		else 
+			false
+		endif endif endif
+/]
