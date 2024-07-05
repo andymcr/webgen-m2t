@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module performance(
+	'http://andycarpenter.work/metamodel/service',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 
 
@@ -7,7 +8,8 @@
 	= if action.oclIsTypeOf(DeleteAction) then
 			false
 		else if action.oclIsKindOf(OperationAction) then
-			true
+			let operationAction : OperationAction = action.oclAsType(OperationAction)
+				in operationAction.operation.operationClass = OperationClass::Costly
 		else if action.oclIsKindOf(SelectAction) then
 			let selectAction : SelectAction = action.oclAsType(SelectAction)
 				in selectAction.target.oclIsKindOf(CardsUnit)

@@ -192,6 +192,21 @@
 [/template]
 
 
+[query private httpMethod(action : Action) : String
+	= if action.oclIsTypeOf(DeleteAction) then
+			'delete'
+		else if action.oclIsKindOf(OperationAction) then
+			let operationAction : OperationAction = action.oclAsType(OperationAction)
+				in if operationAction.operation.operationClass = OperationClass::Modifying then
+						'patch'
+					else
+						'get'
+					endif
+		else 
+			'get'
+		endif endif
+/]
+
 [query private hasTooltip(action : Action) : Boolean
 	= if action.isInstanceAction then
 			action.parentUnit.instanceActionsPlacement = InstanceActionsPlacement::Float
@@ -204,8 +219,8 @@
 [if (action.hasAnchorClass)]
  class="[action.anchorClass/]"[/if]
  title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
- {{ [valueAccessor/].defaultLabel() }}[/if]"[if (action.oclIsTypeOf(DeleteAction))]
- data-turbo-method="delete"[/if][if (action.hasConfirmMessage)]
+ {{ [valueAccessor/].defaultLabel() }}[/if]"[if (action.httpMethod() <> 'get')]
+ data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage)]
  data-turbo-confirm="[action.confirmMessage/][if (not valueAccessor.oclIsUndefined())]
  {{ [valueAccessor/].defaultLabel() }}[/if]"[/if][if (action.hasTooltip())]
  data-bs-toggle="tooltip" data-bs-placement="top"[/if][if (action.disablePrefetch())]
@@ -215,11 +230,12 @@
 [template private attributes(action : Action, association : UnitAssociation, valueAccessor : String)
 	?(action.oclIsKindOf(SelectAction)) post(trim())]
 [let title : String = valueAccessor.concat(association.valueLabel())]
-title="[action.displayLabel/] {{ [title/] }}"[if (action.oclIsTypeOf(DeleteAction))]
- data-turbo-method="delete"[/if][if (action.hasConfirmMessage)]
+title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
+ data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage)]
  data-turbo-confirm="[action.confirmMessage/][if (not title.oclIsUndefined())]
  {{ [title/] }}[/if]"[/if][if (action.hasAnchorClass)]
- class="[action.anchorClass/]"
+ class="[action.anchorClass/]"[if (action.disablePrefetch())]
+ data-turbo-prefetch="false"[/if]
 [/if]
 [/let]
 [/template]

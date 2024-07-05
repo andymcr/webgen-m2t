@@ -31,18 +31,9 @@ date()
 [template public twigExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(SizeFunction)) post(trim())]
 [let size : SizeFunction = expression.oclAsType(SizeFunction)]
-[size.feature.twigExpression(accessor)/] | length
+[size.value.twigExpression(accessor)/] | length
 [/let]
 [/template]
-
-[template public twigExpression(expression : Expression, accessor : String)
-	? (expression.oclIsTypeOf(FunctionCall)) post(trim())]
-[let call : FunctionCall = expression.oclAsType(FunctionCall)]
-[call.name/]([for (actual : Expression | call.actuals) separator(', ')]
-[actual.twigExpression(accessor)/][/for])
-[/let]
-[/template]
-
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(ConstantReference)) post(trim())]
@@ -118,14 +109,14 @@ Criteria::expr()->[predicate.operator()/]([predicate.left.twigExpression(accesso
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateIsNull)) post(trim())]
 [let predicate : PredicateIsNull = guard.oclAsType(PredicateIsNull)]
-[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] null
+[predicate.value.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] null
 [/let]
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = guard.oclAsType(PredicateIsEmpty)]
-[predicate.feature.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] empty
+[predicate.value.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] empty
 [/let]
 [/template]
 
