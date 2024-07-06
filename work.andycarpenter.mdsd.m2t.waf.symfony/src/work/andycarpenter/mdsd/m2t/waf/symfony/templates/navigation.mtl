@@ -5,6 +5,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::performance/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::image/]
 
@@ -58,7 +59,8 @@
 [if (action.action.isAuthorised)]
 {% if is_granted('[action.action.authorisationRoles/]') %}[/if]
 <a class="nav-link{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
- disabled[/if]" href="{{ path('[action.routeName()/]') }}">{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised)]
+ disabled[/if]" href="{{ path('[action.routeName()/]') }}"[if (action.disablePrefetch())]
+  data-turbo-prefetch="false"[/if]>{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -95,7 +97,8 @@
 [if (action.action.isAuthorised and not action.alwaysVisible)]
 {% if is_granted('[action.action.authorisationRoles/]') %}[/if]
 <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
- disabled[/if]" href="{{ path('[action.routeName()/]') }}">{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised and not action.alwaysVisible)]
+ disabled[/if]" href="{{ path('[action.routeName()/]') }}"[if (action.disablePrefetch())]
+  data-turbo-prefetch="false"[/if]>{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised and not action.alwaysVisible)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -112,7 +115,7 @@
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 {%- if app.user -%}
 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}</a>
-<a class="nav-link" href="{{ logout_path() }}">{{ '[localAuthentication.logoutElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a>
+<a class="nav-link" href="{{ logout_path() }}" data-turbo-prefetch="false">{{ '[localAuthentication.logoutElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a>
 {%- elseif not app.user -%}
 <a class="nav-link" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}">{{ '[localAuthentication.loginElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}</a>
 [if (localAuthentication.allowSelfRegistration)]

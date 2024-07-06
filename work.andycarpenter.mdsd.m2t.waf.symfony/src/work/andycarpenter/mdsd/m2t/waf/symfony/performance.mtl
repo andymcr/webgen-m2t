@@ -12,8 +12,12 @@
 				in operationAction.operation.operationClass = OperationClass::Costly
 		else if action.oclIsKindOf(SelectAction) then
 			let selectAction : SelectAction = action.oclAsType(SelectAction)
-				in selectAction.target.oclIsKindOf(CardsUnit)
+				in selectAction.target.oclIsKindOf(CollectionUnit)
 		else 
 			false
 		endif endif endif
+/]
+
+[query public disablePrefetch(action : ActionMenuEntry) : Boolean
+	= action.action.oclIsKindOf(CollectionUnit)
 /]
