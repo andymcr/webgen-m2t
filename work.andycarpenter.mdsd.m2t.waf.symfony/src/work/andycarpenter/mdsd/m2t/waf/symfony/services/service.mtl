@@ -115,6 +115,8 @@ class [service.serviceClassName()/]
         $this->projectDir = $projectDir;
         $this->imagePrefix = $imagePrefix;
 	[/if]
+// [protected ('construct')]
+// [/protected]
     }
 
 [/if]
