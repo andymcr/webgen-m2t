@@ -12,12 +12,12 @@ namespace [entity.factoriesNamespace()/];
 
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 use Zenstruck\Foundry\RepositoryProxy;
-use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 
 
 /**
- * @extends ModelFactory<[entity.modelClassName()/]>
+ * @extends PersistentProxyObjectFactory<[entity.modelClassName()/]>
  *
  * @method static [entity.modelClassName()/]|Proxy createOne(array $attributes = ['['/][']'/])
  * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] createMany(int $number, array|callable $attributes = ['['/][']'/])
@@ -50,7 +50,7 @@ use Zenstruck\Foundry\Proxy;
  * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] randomRange(int $min, int $max, array $attributes = ['['/][']'/])
  * @phpstan-method [entity.modelClassName()/]&Proxy create(array|callable $attributes = ['['/][']'/])
  */
-class [entity.factoryClassName()/] extends ModelFactory
+class [entity.factoryClassName()/] extends PersistentProxyObjectFactory
 {
     [comment entity.constructorMethod()/]
 

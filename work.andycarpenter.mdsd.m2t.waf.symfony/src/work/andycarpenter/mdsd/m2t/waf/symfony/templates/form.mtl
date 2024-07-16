@@ -4,6 +4,7 @@
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::authorisationTemplate/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
@@ -34,7 +35,7 @@
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
 [for (field : UnitField | unit.formFields)]
 	[if (field.isAuthorised)]
-{% if is_granted('[field.authorisationRoles/]') -%}
+{% if [field.authorisation.authorisationExpression()/] -%}
 	[/if]
 [field.formField(unit, accessor)/]
 	[if (field.isAuthorised)]

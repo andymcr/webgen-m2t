@@ -49,9 +49,7 @@ use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-[if (controller.hasMultipleAuthorisationRoles())]
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-[elseif (controller.hasSingleAuthorisationRole())]
+[if (controller.hasAuthorisation)]
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 [/if]
 [if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]
@@ -115,7 +113,7 @@ private TranslatorInterface $translationService;
  * @return Response
  */
 [if (deleteAction.isAuthorised)]
-[deleteAction.securityAttribute()/]
+[deleteAction.securityAnnotation()/]
 [/if]
 [deleteAction.routeAttribute(deleteAction.uriElement)/]
 public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): Response
@@ -148,7 +146,7 @@ Response[else]BinaryFileResponse[/if]
 
  */
 [if (operationAction.isAuthorised)]
-[operationAction.securityAttribute()/]
+[operationAction.securityAnnotation()/]
 [/if]
 [operationAction.routeAttribute(operationAction.uriElement)/]
 public function [operationAction.actionName()/]([unit.actionMethodFormals()/]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
@@ -173,7 +171,7 @@ Response[else]BinaryFileResponse[/if]
 
  */
 [if (operationAction.isAuthorised)]
-[operationAction.securityAttribute()/]
+[operationAction.securityAnnotation()/]
 [/if]
 [if (action.oclIsTypeOf(InstanceOperationAction))]
 [operationAction.routeAttribute(operationAction.uriElement)/]

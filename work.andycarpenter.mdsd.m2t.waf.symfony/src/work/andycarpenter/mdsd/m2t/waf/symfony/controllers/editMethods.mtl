@@ -54,7 +54,7 @@ $[parameter.name/][/for]
 /**
  */
 [if (unit.isAuthorised)]
-[unit.securityAttribute()/]
+[unit.securityAnnotation()/]
 [/if]
 [unit.routeCreateAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
@@ -103,7 +103,7 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 /**
  */
 [if (unit.isAuthorised)]
-[unit.securityAttribute()/]
+[unit.securityAnnotation()/]
 [/if]
 [unit.routeUpdateAttribute()/]
 public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): Response

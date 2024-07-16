@@ -1,0 +1,15 @@
+[comment encoding = UTF-8 /]
+[module authorisationController(
+	'http://andycarpenter.work/metamodel/Security')]
+[import work::andycarpenter::mdsd::m2t::expression::literals/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::constant/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
+
+
+[template public authorisationExpression(expression : AuthorisationExpression)
+	? (expression.oclIsTypeOf(IsGrantedRole)) post(trim())]
+[let grant : IsGrantedRole = expression.oclAsType(IsGrantedRole)]
+[if (grant.negated)]not [/if]isGranted('[grant.role.name/]')
+[/let]
+[/template]

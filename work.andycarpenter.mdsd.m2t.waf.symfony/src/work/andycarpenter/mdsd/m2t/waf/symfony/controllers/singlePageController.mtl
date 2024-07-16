@@ -86,7 +86,7 @@ public function __construct([for (repository : Repository | controller.repositor
 /**
  */
 [if (controller.isAuthorised)]
-[controller.securityAttribute()/]
+[controller.securityAnnotation()/]
 [/if]
 [controller.routeAttribute()/]
 public function [controller.actionName()/]([controller.actionMethodFormals()/]): Response

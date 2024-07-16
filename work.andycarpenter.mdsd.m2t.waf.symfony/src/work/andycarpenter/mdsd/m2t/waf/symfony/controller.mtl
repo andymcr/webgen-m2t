@@ -40,17 +40,6 @@
 /]
 
 
-[query public hasMultipleAuthorisationRoles (controller : Controller) : Boolean
-	= units->exists(u | u.authorisationRoles.trim().tokenize(',; ')->size() > 1)
-		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() > 1))
-/]
-
-[query public hasSingleAuthorisationRole (controller : Controller) : Boolean
-	= units->exists(u | u.authorisationRoles.trim().tokenize(',; ')->size() = 1)
-		or dynamicUnits->exists(u | u.actions->exists(a | a.authorisationRoles.trim().tokenize(',; ')->size() = 1))
-/]
-
-
 [query public hasSelectionMethod(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(CollectionUnit) then
 			not unit.oclAsType(CollectionUnit).inlineSelectCode()
@@ -63,7 +52,7 @@
 	= controller.units->notEmpty()
 		and not controller.hasFormUnits
 		and controller.dynamicUnits->forAll(u | not u.isDislayedOnlyOnExplicitRoute())
-		and controller.hasCommonUnitAuthentication
+		and controller.hasCommonUnitAuthorisation
 /]
 
 [query public hasSupportMethods(controller : Controller) : Boolean

@@ -11,6 +11,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::authorisationTemplate/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
@@ -120,7 +121,14 @@
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
 [if (unit.instanceActions->forAll(a | a.hasCustomisedAuthorisation))]
-{% if [for (role : String | unit.customAuthorisationRoles()) separator(' or ')]is_granted('[role/]')[/for] %}
+	[if (unit.instanceActions->size() = 1)]
+{% if [unit.instanceActions->first().authorisation.authorisationExpression()/] %}
+	[elseif (unit.instanceActions->subOrderedSet(2, unit.instanceActions->size())->forAll(a | a.authorisation.areSame(unit.instanceActions->first().authorisation)))]
+{% if [unit.instanceActions->first().authorisation.authorisationExpression()/] %}
+	[else]
+{% if [for (action : Action | unit.instanceActions) separator(' or ')]
+[unit.instanceActions->first().authorisation.authorisationExpression()/][/for] %}
+	[/if]
 [/if]
 <div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
  <nav[if (unit.hasInstanceControlClass)] class="[unit.instanceControlClass/]"[/if]>
@@ -133,13 +141,6 @@
 {% endif %}
 [/if]
 [/template]
-
-[query private customAuthorisationRoles(unit : CardsUnit) : Sequence(String)
-	= unit.instanceActions->select(a | a.hasCustomisedAuthorisation)
-		->collect(a | a.authorisationRoles)
-		->asSet()->asSequence()
---		->sortedBy(self)
-/]
 
 [template private unitActions(unit : CardsUnit) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if] role="group" aria-label="Floating action buttons">

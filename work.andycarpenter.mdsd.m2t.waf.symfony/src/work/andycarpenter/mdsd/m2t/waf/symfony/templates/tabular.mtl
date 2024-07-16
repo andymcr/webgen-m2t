@@ -8,6 +8,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::authorisationTemplate/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
@@ -62,7 +63,7 @@
   <tr>
  	[for (field : UnitField | unit.displayFields)]
 		[if (field.isAuthorised)]
-{% if is_granted('[field.authorisationRoles/]') %}
+{% if [field.authorisation.authorisationExpression()/] %}
 		[/if]
    <th>[if (field.hasCustomisedDisplayLabel)]
 {{ '[field.customisedCaptionContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
@@ -115,7 +116,7 @@
 [template private entry(unit : TabularUnit, accessor : String, objectAccess : Boolean) post(trim())]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.isAuthorised)]
-{% if is_granted('[field.authorisationRoles/]') %}
+{% if [field.authorisation.authorisationExpression()/] %}
 	[/if]
 <td[if (field.isFeatureField)] class="[field.oclAsType(UnitFeature).persistentFeature.name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayValue(accessor, objectAccess)/]</td>
 	[if (field.isAuthorised)]

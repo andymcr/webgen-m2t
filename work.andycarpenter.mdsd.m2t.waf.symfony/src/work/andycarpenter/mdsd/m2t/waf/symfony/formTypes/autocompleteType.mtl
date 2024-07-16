@@ -8,6 +8,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::authorisationAutocomplete/]
 
 
 [template public autocompleteTypes(wafModel : WafModel)]
@@ -49,7 +50,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [/if]
             'searchable_fields' => [searchType.searchFields()/],
 [if (not association.displayedOn.authorisationRoles.oclIsUndefined())]
-            'security' => '[association.displayedOn.authorisationRoles/]',
+            'security' => [association.displayedOn.authorisation.authorisationExpression()/],
 [/if]
         [']'/]);
     }

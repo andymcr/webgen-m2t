@@ -33,17 +33,18 @@ new \DateTime()
 
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
-	? (expression.oclIsTypeOf(SizeFunction)) post(trim())]
-[let size : SizeFunction = expression.oclAsType(SizeFunction)]
-count([size.feature.controllerExpression(accessor, parentAccessor)/])
+	? (expression.oclIsTypeOf(ReduceFunction)) post(trim())]
+[let reduce : ReduceFunction = expression.oclAsType(ReduceFunction)]
+array_reduce([reduce.value.controllerExpression(accessor, parentAccessor)/], function (mixed $carry, mixed $item) {
+        return [reduce.returnValue.controllerExpression(accessor, parentAccessor)/];
+    }[if (not reduce.initial.oclIsUndefined())], [reduce.initial.controllerExpression(accessor, parentAccessor)/][/if])
 [/let]
 [/template]
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
-	? (expression.oclIsTypeOf(FunctionCall)) post(trim())]
-[let call : FunctionCall = expression.oclAsType(FunctionCall)]
-[call.name/]([for (actual : Expression | call.actuals) separator(', ')]
-[actual.controllerExpression(accessor, parentAccessor)/][/for])
+	? (expression.oclIsTypeOf(SizeFunction)) post(trim())]
+[let size : SizeFunction = expression.oclAsType(SizeFunction)]
+count([size.value.controllerExpression(accessor, parentAccessor)/])
 [/let]
 [/template]
 
@@ -143,16 +144,38 @@ $queryBuilder->expr()->[predicate.operator()/]([predicate.left.controllerExpress
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateIsNull)) post(trim())]
 [let predicate : PredicateIsNull = expression.oclAsType(PredicateIsNull)]
-$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.feature.controllerExpression(accessor, parentAccessor)/])
+$queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predicate.value.controllerExpression(accessor, parentAccessor)/])
 [/let]
 [/template]
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.feature.controllerExpression(accessor, parentAccessor)/], '0')
+$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.controllerExpression(accessor, parentAccessor)/], '0')
 [/let]
 [/template]
+
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
+	? (expression.oclIsTypeOf(ArithmeticOperation)) post(trim())]
+[let arithmetic : ArithmeticOperation = expression.oclAsType(ArithmeticOperation)]
+[arithmetic.operands->first().controllerExpression(accessor, parentAccessor)/][for (operand : Expression | arithmetic.operands->subOrderedSet(2, arithmetic.operands->size()))]
+ [arithmetic.operator()/] [operand.controllerExpression(accessor, parentAccessor)/][/for]
+[/let]
+[/template]
+
+[query private operator(arithmetic : ArithmeticOperation) : String
+	= if arithmetic.operator = ArithmeticOperator::Add then
+			'+'
+		else if arithmetic.operator = ArithmeticOperator::Subtract then
+			'-'
+		else if arithmetic.operator = ArithmeticOperator::Multiply then
+			'*'
+		else if arithmetic.operator = ArithmeticOperator::Divide then
+			'/'
+		else
+			'?'
+		endif endif endif endif
+/]
 
 [query private operator(predicate : PredicateBooleanOperator) : String
 	= if predicate.operator = BooleanOperator::And then
@@ -235,7 +258,7 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.featur
 [template public controllerVariable(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
 [let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-[predicate.feature.controllerVariable()/]
+[predicate.value.controllerVariable()/]
 [/let]
 [/template]
 
