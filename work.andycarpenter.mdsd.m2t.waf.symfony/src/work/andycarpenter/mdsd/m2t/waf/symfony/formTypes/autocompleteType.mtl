@@ -49,7 +49,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
             'multiple' => true,
 [/if]
             'searchable_fields' => [searchType.searchFields()/],
-[if (not association.displayedOn.authorisationRoles.oclIsUndefined())]
+[if (association.displayedOn.isAuthorised)]
             'security' => [association.displayedOn.authorisation.authorisationExpression()/],
 [/if]
         [']'/]);
