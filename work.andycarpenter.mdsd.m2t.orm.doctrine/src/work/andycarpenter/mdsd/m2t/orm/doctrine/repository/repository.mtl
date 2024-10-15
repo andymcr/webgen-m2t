@@ -358,7 +358,7 @@ public function create([entity.createParameters()/], $flush = false): [repositor
  */
 public function remove([repository.serves.modelClassName()/] $entity, bool $flush = false): void
 {
-    $this->_em->remove($entity);
+    $this->getEntityManager()->remove($entity);
     if ($flush)
     {
         $this->flush();
@@ -374,7 +374,7 @@ public function remove([repository.serves.modelClassName()/] $entity, bool $flus
  */
 public function save([repository.serves.modelClassName()/] $entity, bool $flush = false): void
 {
-    $this->_em->persist($entity);
+    $this->getEntityManager()->persist($entity);
     if ($flush)
     {
         $this->flush();
@@ -388,7 +388,7 @@ public function save([repository.serves.modelClassName()/] $entity, bool $flush 
  */
 public function flush(): void
 {
-    $this->_em->flush();
+    $this->getEntityManager()->flush();
 }
 [/template]
 
@@ -841,9 +841,4 @@ else
 [else]
 return $query->getResult();
 [/if]
-[/template]
-
-[template private formalParameters(parameters : FormalParameterList) post(trim())]
-[for (parameter : FormalParameter | parameters.parameters) separator(', ')]
-$[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())] = [parameter.defaultValue/][/if][/for]
 [/template]
