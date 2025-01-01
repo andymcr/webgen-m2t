@@ -216,7 +216,7 @@ protected $[entity.autoKeyName/];
 /**
  * @var array<int, string> $roles
  */
-#['['/]ORM\Column(type: "array")[']'/]
+#['['/]ORM\Column(type: "json")[']'/]
 protected array $roles = array();
 [/template]
 
