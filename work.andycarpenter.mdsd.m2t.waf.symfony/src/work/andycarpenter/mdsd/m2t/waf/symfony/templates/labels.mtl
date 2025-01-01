@@ -18,19 +18,19 @@
 		endif
 /]
 
-[query private valueLabel(child : ChildPath) : String
-	= if child.oclIsTypeOf(ChildPathAttribute) then
-			child.oclAsType(ChildPathAttribute).valueLabel()
+[query private valueLabel(child : ChildFeature) : String
+	= if child.oclIsTypeOf(ChildAttribute) then
+			child.oclAsType(ChildAttribute).valueLabel()
 		else
-			child.oclAsType(ChildPathAssociation).valueLabel()
+			child.oclAsType(ChildAssociation).valueLabel()
 		endif
 /]
 
-[query private valueLabel(child : ChildPathAttribute) : String
+[query private valueLabel(child : ChildAttribute) : String
 	= ''
 /]
 
-[query private valueLabel(child : ChildPathAssociation) : String
+[query private valueLabel(child : ChildAssociation) : String
 	= if child.childFeature.oclIsUndefined() then
 			if child.valueDisplay.oclIsUndefined() then
 				'.defaultLabel()'
@@ -42,19 +42,19 @@
 		endif
 /]
 
-[query public valueLabel(path : FeaturePath) : String
-	= if path.oclIsTypeOf(FeaturePathAttribute) then
-			path.oclAsType(FeaturePathAttribute).valueLabel()
-		else if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).valueLabel()
-		else if path.oclIsTypeOf(FeaturePathResource) then
-			path.oclAsType(FeaturePathResource).valueLabel()
+[query public valueLabel(path : DisplayValue) : String
+	= if path.oclIsTypeOf(AttributeDisplayValue) then
+			path.oclAsType(AttributeDisplayValue).valueLabel()
+		else if path.oclIsTypeOf(AssociationDisplayValue) then
+			path.oclAsType(AssociationDisplayValue).valueLabel()
+		else if path.oclIsTypeOf(ResourceDisplayValue) then
+			path.oclAsType(ResourceDisplayValue).valueLabel()
 		else
-			path.oclAsType(FeaturePathLabel).valueLabel()
+			path.oclAsType(LabelDisplayValue).valueLabel()
 		endif endif endif
 /]
 
-[query private valueLabel(path : FeaturePathAssociation) : String
+[query private valueLabel(path : AssociationDisplayValue) : String
 	= if path.childFeature.oclIsUndefined() then
 			if path.valueDisplay.oclIsUndefined() then
 				'.defaultLabel()'
@@ -66,15 +66,15 @@
 		endif
 /]
 
-[query private valueLabel(path : FeaturePathAttribute) : String
+[query private valueLabel(path : AttributeDisplayValue) : String
 	= ''
 /]
 
-[query private valueLabel(path : FeaturePathResource) : String
+[query private valueLabel(path : ResourceDisplayValue) : String
 	= ''
 /]
 
-[query private valueLabel(path : FeaturePathLabel) : String
+[query private valueLabel(path : LabelDisplayValue) : String
 	= path.label.valueLabel()
 /]
 

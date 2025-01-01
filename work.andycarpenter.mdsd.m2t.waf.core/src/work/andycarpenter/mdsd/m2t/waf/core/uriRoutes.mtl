@@ -21,10 +21,10 @@
 [query public routingType(unit : CollectionUnit) : Entity
 	=  if unit.selection.oclIsUndefined() then
 			unit.contentType.parentEntity()
-		else if unit.selection.selectPath->notEmpty() then
-			unit.selection.selectionType.keyEntity()
-		else
+		else if unit.selection.selectPath.oclIsUndefined() then
 			unit.contentType.parentEntity()
+		else
+			unit.selection.selectPath.leafEntity()
 		endif endif
 /]
 
@@ -39,10 +39,10 @@
 			let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)
 				in if detailsUnit.selection.oclIsUndefined() then
 						unit.contentType.keyEntity()
-					else if detailsUnit.selection.selectPath->notEmpty() then
-						detailsUnit.selection.selectionType.keyEntity()
-					else
+					else if detailsUnit.selection.selectPath.oclIsUndefined() then
 						detailsUnit.contentType.keyEntity()
+					else
+						detailsUnit.selection.selectionType().keyEntity()
 					endif endif
 		else
 			unit.contentType.keyEntity()
@@ -110,7 +110,7 @@
 /]
 
 [query public routeContainerParameters(unit : DynamicUnit) : Sequence(Attribute)
-	= unit.routeParameters(unit.containingType, null)
+	= unit.routeParameters(unit.containingType(), null)
 		->select(p | unit.routeParameters()->includes(p))
 /]
 

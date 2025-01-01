@@ -28,6 +28,26 @@ date()
 [/template]
 
 
+[template private formalParameters(callback : Callable) post(trim())]
+[for (parameter : FormalParameter | callback.parameters) separator(', ')]
+[parameter.name/][/for]
+[/template]
+
+[template public twigExpression(expression : Expression, accessor : String)
+	? (expression.oclIsTypeOf(Callable)) post(trim())]
+[let callback : Callable = expression.oclAsType(Callable)]
+([callback.formalParameters()/]) => [callback.expression.twigExpression(accessor)/]}
+[/let]
+[/template]
+
+[template public twigExpression(expression : Expression, accessor : String)
+	? (expression.oclIsTypeOf(ReduceFunction)) post(trim())]
+[let reduce : ReduceFunction = expression.oclAsType(ReduceFunction)]
+[reduce.value.twigExpression(accessor)/] | reduce([reduce.callback.twigExpression(accessor)/][if (not reduce.initial.oclIsUndefined())]
+, [reduce.initial.twigExpression(accessor)/][/if])
+[/let]
+[/template]
+
 [template public twigExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(SizeFunction)) post(trim())]
 [let size : SizeFunction = expression.oclAsType(SizeFunction)]
@@ -43,20 +63,16 @@ date()
 [/template]
 
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsKindOf(PathVariable)) post(trim())]
-[let path : PathVariable = guard.oclAsType(PathVariable)]
-[path.accessor(accessor, null)/]
+	? (guard.oclIsKindOf(FeatureVariable)) post(trim())]
+[let variable : FeatureVariable = guard.oclAsType(FeatureVariable)]
+[variable.accessor(accessor, null)/]
 [/let] 
 [/template]
 
-[template public featureReference(feature : Feature, accessor : String) post(trim())]
-'[feature.columnName/]'
-[/template]
-
 [template public twigExpression(guard : Expression, accessor : String)
-	? (guard.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = guard.oclAsType(ParameterReference)]
-':[path.parameter.name/]'
+	? (guard.oclIsTypeOf(ParameterVariable)) post(trim())]
+[let variable : ParameterVariable = guard.oclAsType(ParameterVariable)]
+':[variable.formal.name/]'
 [/let]
 [/template]
 

@@ -30,7 +30,7 @@ class [type.modelClassName()/]
 		$values = ['['/][']'/];
 [for (literal : EnumerationLiteral | type.enumerations)]
 	[if (supportTranslation and false)]
-		$values['['/]'[type.id()/].labels.[literal.id()/]'[']'/] = self::[literal.name/];
+		$values['['/]'[comment type.id()/].labels.[comment literal.id()/]'[']'/] = self::[literal.name/];
 	[else]
 		$values['['/]'[literal.displayLabel/]'[']'/] = self::[literal.name/];
 	[/if]

@@ -199,9 +199,9 @@ array_merge(
 [template public setContainer(unit : EditUnit) post(trim())]
 [let modelPropertyName : String = unit.contentType.containingAssociation.modelPropertyName().toUpperFirst()]
 [let parentRepository : Repository = unit.contentType.containingType.repository]
-$[unit.containerInstanceName()/] = [unit.getContainerRepository()/]->[unit.containingType.findMethodName()/]([unit.routeParameterList(false)/]);
+$[unit.containerInstanceName()/] = [unit.getContainerRepository()/]->[unit.containingType().findMethodName()/]([unit.routeParameterList(false)/]);
 if (is_null($[unit.containerInstanceName()/])) {
-    throw $this->createNotFoundException('The [unit.containingType.name/] does not exist');
+    throw $this->createNotFoundException('The [unit.containingType().name/] does not exist');
 }
 [unit.instanceVariable()/]->set[modelPropertyName/]($[unit.containerInstanceName()/]);
 [/let]

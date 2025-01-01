@@ -73,7 +73,7 @@
 		= if selection.selectPath->isEmpty() then
 				Sequence{}
 			else
-				selection.selectionType.uriPathKeys()
+				selection.selectionType().uriPathKeys()
 			endif
 		in if selection.condition.oclIsUndefined() then
 			pathKeys
@@ -105,19 +105,19 @@
 /]
 
 [query private selectionKeys(predicate : PredicateEqualityOperator) : Attribute
-	= if predicate.left.oclIsTypeOf(FeatureReference) and predicate.right.oclIsTypeOf(ParameterReference) then
-			let feature : Feature = predicate.left.oclAsType(FeatureReference).feature
-				in if feature.oclIsKindOf(Attribute) then
-						feature.oclAsType(Attribute)
-					else
+	= if predicate.left.oclIsTypeOf(AttributeVariable) and predicate.right.oclIsTypeOf(ParameterVariable) then
+			let variable : AttributeVariable = predicate.left.oclAsType(AttributeVariable)
+				in if variable.attribute.oclIsUndefined() then
 						null
+					else
+						variable.attribute
 					endif
-		else if predicate.left.oclIsTypeOf(ParameterReference) and predicate.right.oclIsTypeOf(FeatureReference) then
-			let feature : Feature = predicate.right.oclAsType(FeatureReference).feature
-				in if feature.oclIsKindOf(Attribute) then
-						feature.oclAsType(Attribute)
-					else
+		else if predicate.left.oclIsTypeOf(ParameterVariable) and predicate.right.oclIsTypeOf(AttributeVariable) then
+			let variable : AttributeVariable = predicate.right.oclAsType(AttributeVariable)
+				in if variable.attribute.oclIsUndefined() then
 						null
+					else
+						variable.attribute
 					endif
 		else
 			null
@@ -142,19 +142,19 @@
 /]
 
 [query private resolvedKeys(predicate : PredicateEqualityOperator) : Set(Attribute)
-	= if predicate.left.oclIsTypeOf(FeatureReference) and predicate.right.oclIsTypeOf(CurrentUser) then
-			let feature : Feature = predicate.left.oclAsType(FeatureReference).feature
-				in if feature.oclIsKindOf(Association) then
-						feature.oclAsType(Association).targetType.uriPathKeys()->asSet()
-					else
+	= if predicate.left.oclIsTypeOf(AssociationVariable) and predicate.right.oclIsTypeOf(CurrentUser) then
+			let variable : AssociationVariable = predicate.left.oclAsType(AssociationVariable)
+				in if variable.association.oclIsUndefined() then
 						Set{}
+					else
+						variable.association.targetType.uriPathKeys()->asSet()
 					endif
-		else if predicate.left.oclIsTypeOf(CurrentUser) and predicate.right.oclIsTypeOf(FeatureReference) then
-			let feature : Feature = predicate.right.oclAsType(FeatureReference).feature
-				in if feature.oclIsKindOf(Association) then
-					feature.oclAsType(Association).targetType.uriPathKeys()->asSet()
-					else
+		else if predicate.left.oclIsTypeOf(CurrentUser) and predicate.right.oclIsTypeOf(AssociationVariable) then
+			let variable : AssociationVariable = predicate.right.oclAsType(AssociationVariable)
+				in if variable.association.oclIsUndefined() then
 						Set{}
+					else
+						variable.association.targetType.uriPathKeys()->asSet()
 					endif
 		else
 			Set{}

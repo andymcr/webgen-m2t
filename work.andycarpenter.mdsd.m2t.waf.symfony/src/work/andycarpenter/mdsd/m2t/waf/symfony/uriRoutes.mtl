@@ -107,7 +107,7 @@
 	= if unit.selection.oclIsUndefined() then
 			unit.uriPath(unit.contentType.parentEntity(), routeParameters)
 		else if selection.selectPath->notEmpty() then
-			unit.uriPath(selection.selectionType, routeParameters)
+			unit.uriPath(selection.selectionType(), routeParameters)
 		else
 			unit.uriPath(unit.contentType.parentEntity(), routeParameters)
 		endif endif
@@ -150,7 +150,7 @@
 		else if unit.selection.oclIsUndefined() then
 			unit.uriPath(unit.contentType, unit.uriElement, routeParameters)
 		else if selection.selectPath->notEmpty() then
-			unit.uriPath(selection.selectionType, unit.uriElement, routeParameters)
+			unit.uriPath(selection.selectionType(), unit.uriElement, routeParameters)
 		else
 			unit.uriPath(unit.contentType, unit.uriElement, routeParameters)
 		endif endif endif
@@ -277,7 +277,7 @@
 	= if selection.oclIsUndefined() then
 			unit.uriPath(unit.contentType.containingType, suffix, unit.routeContainerParameters())
 		else if selection.selectPath->notEmpty() then
-			unit.uriPath(selection.selectionType, suffix, unit.routeContainerParameters())
+			unit.uriPath(selection.selectionType(), suffix, unit.routeContainerParameters())
 		else
 			unit.uriPath(unit.contentType.containingType, suffix, unit.routeContainerParameters())
 		endif endif

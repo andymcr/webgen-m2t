@@ -288,7 +288,7 @@
 /]
 
 [query public containerInstanceName(unit : DynamicUnit) : String
-	= unit.containingType.instanceName()
+	= unit.containingType().instanceName()
 /]
 
 [query public containerInstanceVariable(unit : DynamicUnit) : String
@@ -579,14 +579,14 @@
 
 [query public actionName(association : UnitAssociation) : String
 	= association.displayedOn.instanceName()
-		.concat(association.name.toUpperFirst())
+		.concat(association.name().toUpperFirst())
 		.concat('Action')
 /]
 
 [query public autocompleteTypeClassName(association : UnitAssociation) : String
 	= association.association.modelClassName()
 		.concat(if association.displayedOn.genModel.autocompleteFields
-					->select(f | f.targetEntity = association.targetEntity)->size() > 1 then
+					->select(f | f.associationTarget() = association.associationTarget())->size() > 1 then
 				association.displayedOn.contentType.name
 			else
 				''
@@ -622,7 +622,7 @@
 		else if field.isResourceField then
 			field.oclAsType(UnitResource).name
 		else if field.isAssociationField then
-			field.oclAsType(UnitAssociation).name
+			field.oclAsType(UnitAssociation).name()
 		else
 			field.oclAsType(InterfaceField).name
 		endif endif endif.toLowerFirst()
@@ -687,7 +687,7 @@
 	= let association : UnitAssociation
 		= action.usedBy.oclAsType(UnitAssociation)
 		in association.displayedOn.instanceName()
-			.concat(association.name.toUpperFirst())
+			.concat(association.name().toUpperFirst())
 			.concat(action.name.toUpperFirst())
 /]
 

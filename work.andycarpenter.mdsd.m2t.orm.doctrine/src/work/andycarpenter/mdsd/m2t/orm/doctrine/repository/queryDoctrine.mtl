@@ -36,27 +36,16 @@ $queryBuilder->expr()->literal('[literal.value/]')
 [/template]
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
-[let path : FeatureReference = expression.oclAsType(FeatureReference)]
-[path.feature.featureReference()/]
-[/let]
-[/template]
-
-[template private featureReference(feature : Feature) 
-	? (feature.oclIsKindOf(Attribute)) post(trim())]
-'[feature.partOf.oclAsType(Entity).selectName()/].[feature.modelPropertyName()/]'
-[/template]
-
-[template private featureReference(feature : Feature) post(trim())]
-[let association : Association = feature.oclAsType(Association)]
- '[association.sourceType.selectName()/].[feature.modelPropertyName()/]'
+	? (expression.oclIsKindOf(FeatureVariable)) post(trim())]
+[let variable : FeatureVariable = expression.oclAsType(FeatureVariable)]
+'[variable.feature().partOf.selectName()/].[variable.feature().modelPropertyName()/]'
 [/let]
 [/template]
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = expression.oclAsType(ParameterReference)]
-':[path.parameter.name/]'
+	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
+[let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
+':[variable.formal.name/]'
 [/let]
 [/template]
 
@@ -237,9 +226,9 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.
 [/template]
 
 [template public queryParameter(expression : Expression, security : SecurityModel)
-	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = expression.oclAsType(ParameterReference)]
-$query->setParameter('[path.parameter.name/]', $[path.parameter.name/]);
+	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
+[let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
+$query->setParameter('[variable.formal.name/]', $[variable.formal.name/]);
 [/let]
 [/template]
 
@@ -265,8 +254,8 @@ $query->setParameter('user', $this->[security.authentication.userModel.repositor
 			expression.oclAsType(PredicateLikeOperator).parameterUsedInLike(parameter, withinLike)
 		else if expression.oclIsTypeOf(PredicateIsEmpty) then
 			expression.oclAsType(PredicateIsEmpty).parameterUsedInLike(parameter, withinLike)
-		else if expression.oclIsTypeOf(ParameterReference) then
-			expression.oclAsType(ParameterReference).parameterUsedInLike(parameter, withinLike)
+		else if expression.oclIsTypeOf(ParameterVariable) then
+			expression.oclAsType(ParameterVariable).parameterUsedInLike(parameter, withinLike)
 		else
 			false
 		endif endif endif endif endif endif
@@ -295,6 +284,6 @@ $query->setParameter('user', $this->[security.authentication.userModel.repositor
 	= predicate.value.parameterUsedInLike(parameter, withinLike)
 /]
 
-[query private parameterUsedInLike(variable : ParameterReference, parameter1 : FormalParameter, withinLike : Boolean) : Boolean
-	= variable.parameter = parameter1
+[query private parameterUsedInLike(variable : ParameterVariable, parameter1 : FormalParameter, withinLike : Boolean) : Boolean
+	= variable.formal = parameter1
 /]

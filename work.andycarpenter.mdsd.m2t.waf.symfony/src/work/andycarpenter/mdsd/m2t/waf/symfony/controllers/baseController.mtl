@@ -253,7 +253,7 @@ return $response;
 [if (action.isInstanceAction)]
 $[action.instanceName()/]->[action.parentUnit.contentType.accessFilename()/]
 [elseif (not action.oclIsTypeOf(GeneralOperationAction))]
-$[action.instanceName()/]->[action.parentUnit.containingType.accessFilename()/]
+$[action.instanceName()/]->[action.parentUnit.containingType().accessFilename()/]
 [else]]
 '[action.name/]'
 [/if]

@@ -83,7 +83,7 @@
 [if (targetAction.target.oclIsKindOf(DynamicUnit))]
 [let targetUnit : DynamicUnit = targetAction.target.oclAsType(DynamicUnit)]
 '[targetUnit.routeName()/]'[action.linkPathParameters(
-	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, action.parentUnit.containingType,
+	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, action.parentUnit.containingType(),
 		action.parentUnit.hasObjectAccess()),
 	action.parentUnit.contentType = targetUnit.contentType)/]
 [/let]
@@ -96,7 +96,7 @@
 [template private linkPath(action : Action, valueAccessor : String) 
 	?(action.oclIsTypeOf(ContainerOperationAction)) post(trim())]
 '[action.routeName()/]'[action.linkPathParameters(action.parentUnit.routeActualParameters(
-	action.parentUnit.routeParameters(), valueAccessor, action.parentUnit.containingType,
+	action.parentUnit.routeParameters(), valueAccessor, action.parentUnit.containingType(),
 	action.parentUnit.hasObjectAccess()), true)/]
 [/template]
 
@@ -105,7 +105,7 @@
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = selectAction.target.oclAsType(DynamicUnit)]
 '[targetUnit.routeName()/]'[action.linkPathParameters(
-	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, targetUnit.containingType,
+	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, targetUnit.containingType(),
 		action.parentUnit.hasObjectAccess()),
 	action.parentUnit.controller = targetUnit.controller)/]
 [/let]
@@ -127,15 +127,15 @@
 		endif
 /]
 
-[query private selectType(path : FeaturePath) : Entity
-	= if path.oclIsTypeOf(FeaturePathAssociation) then
-			path.oclAsType(FeaturePathAssociation).selectType()
+[query private selectType(path : DisplayValue) : Entity
+	= if path.oclIsTypeOf(AssociationDisplayValue) then
+			path.oclAsType(AssociationDisplayValue).selectType()
 		else
 			null
 		endif
 /]
 
-[query private selectType(path : FeaturePathAssociation) : Entity
+[query private selectType(path : AssociationDisplayValue) : Entity
 	= if path.childFeature.oclIsUndefined() then
 			path.association.targetType
 		else
@@ -143,17 +143,17 @@
 		endif
 /]
 
-[query private selectType(path : ChildPath) : Entity
-	= if path.oclIsTypeOf(ChildPathAssociation) then
-			path.oclAsType(ChildPathAssociation).selectType()
+[query private selectType(path : ChildFeature) : Entity
+	= if path.oclIsTypeOf(ChildAssociation) then
+			path.oclAsType(ChildAssociation).selectType()
 		else
 			null
 		endif
 /]
 
-[query private selectType(path : ChildPathAssociation) : Entity
-	= if path.leafFeature.oclIsKindOf(Association) then
-				path.leafFeature.oclAsType(Association).targetType
+[query private selectType(path : ChildAssociation) : Entity
+	= if path.leafFeature().oclIsKindOf(Association) then
+				path.leafFeature().oclAsType(Association).targetType
 			else
 				null
 			endif

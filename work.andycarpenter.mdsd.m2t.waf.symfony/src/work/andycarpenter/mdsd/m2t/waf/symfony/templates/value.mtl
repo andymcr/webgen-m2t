@@ -46,19 +46,19 @@ NULL
 [/if]
 [/template]
 
-[template public getValue(path : FeaturePath, accessor : String) post(trim())]
-[if (path.oclIsTypeOf(FeaturePathAttribute))]
-[path.oclAsType(FeaturePathAttribute).getValue(accessor)/]
-[elseif (path.oclIsTypeOf(FeaturePathAssociation))]
-[path.oclAsType(FeaturePathAssociation).getValue(accessor)/]
-[elseif (path.oclIsTypeOf(FeaturePathResource))]
-[path.oclAsType(FeaturePathResource).getValue(accessor)/]
+[template public getValue(path : DisplayValue, accessor : String) post(trim())]
+[if (path.oclIsTypeOf(AttributeDisplayValue))]
+[path.oclAsType(AttributeDisplayValue).getValue(accessor)/]
+[elseif (path.oclIsTypeOf(AssociationDisplayValue))]
+[path.oclAsType(AssociationDisplayValue).getValue(accessor)/]
+[elseif (path.oclIsTypeOf(ResourceDisplayValue))]
+[path.oclAsType(ResourceDisplayValue).getValue(accessor)/]
 [else]
-[path.oclAsType(FeaturePathLabel).getValue(accessor)/]
+[path.oclAsType(LabelDisplayValue).getValue(accessor)/]
 [/if]
 [/template]
 
-[template public getValue(path : FeaturePathAssociation, accessor : String) post(trim())]
+[template public getValue(path : AssociationDisplayValue, accessor : String) post(trim())]
 [let x : String
 		= accessor.concat('.').concat(path.association.modelPropertyName())]
 [if (path.childFeature.oclIsUndefined())]
@@ -69,24 +69,24 @@ NULL
 [/let]
 [/template]
 
-[template public getValue(path : FeaturePathAttribute, accessor : String) post(trim())]
+[template public getValue(path : AttributeDisplayValue, accessor : String) post(trim())]
 [accessor/].[path.attribute.modelPropertyName()/]
 [/template]
 
-[template public getValue(path : FeaturePathResource, accessor : String) post(trim())]
+[template public getValue(path : ResourceDisplayValue, accessor : String) post(trim())]
 [accessor/].[path.resource.modelPropertyName()/]
 [/template]
 
-[template private getValue(child : ChildPath, accessor : String)
-	? (child.oclIsTypeOf(ChildPathAttribute)) post(trim())]
-[let attribute : ChildPathAttribute = child.oclAsType(ChildPathAttribute)]
+[template private getValue(child : ChildFeature, accessor : String)
+	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
 [attribute.attribute.getValue(accessor)/]
 [/let]
 [/template]
 
-[template private getValue(child : ChildPath, accessor : String)
-	? (child.oclIsTypeOf(ChildPathAssociation)) post(trim())]
-[let association : ChildPathAssociation = child.oclAsType(ChildPathAssociation)]
+[template private getValue(child : ChildFeature, accessor : String)
+	? (child.oclIsTypeOf(ChildAssociation)) post(trim())]
+[let association : ChildAssociation = child.oclAsType(ChildAssociation)]
 [if (not association.childFeature.oclIsUndefined())]
 [association.childFeature.getValue(accessor)/]
 [else]

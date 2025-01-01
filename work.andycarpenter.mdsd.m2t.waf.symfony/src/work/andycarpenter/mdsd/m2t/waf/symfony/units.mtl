@@ -7,15 +7,25 @@
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
 
 
+[query public useContainerAsContext (variable : FeatureVariable) : Boolean
+	= if variable.rootContainer.oclIsKindOf(DynamicUnit) then
+			let unit : DynamicUnit = variable.rootContainer.oclAsType(DynamicUnit)
+				in false
+		else
+			false
+		endif
+/]
+
+
 [query public containingTypeLoadedBy(unit : DynamicUnit) : DynamicUnit
 	= let matchingContentType : OrderedSet(DynamicUnit)
 		= unit.controller.dynamicUnits
-			->select(u | u.contentType = unit.containingType)
+			->select(u | u.contentType = unit.containingType())
 		in if matchingContentType->notEmpty() then
 				matchingContentType->first()
 			else
 				unit.controller.dynamicUnits
-					->select(u | u.containingType = unit.containingType)
+					->select(u | u.containingType() = unit.containingType())
 					->first()
 			endif
 /]
@@ -27,7 +37,7 @@
 
 [query public loadContainingType(unit : CollectionUnit) : Boolean
 	= not unit.findContainerSelection.oclIsUndefined()
-		or unit.routeParameters()->includesAll(unit.containingType.uriPathKeys())
+		or unit.routeParameters()->includesAll(unit.containingType().uriPathKeys())
 			and not unit.containingTypeLoadedElsewhere()
 /]
 

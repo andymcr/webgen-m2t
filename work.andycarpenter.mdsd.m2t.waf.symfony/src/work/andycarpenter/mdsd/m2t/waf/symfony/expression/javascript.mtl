@@ -31,16 +31,16 @@ $now
 
 
 [template public controllerExpression(expression : Expression)
-	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
-[let path : FeatureReference = expression.oclAsType(FeatureReference)]
-->get[path.feature.modelPropertyName().toUpperFirst()/]()
+	? (expression.oclIsKindOf(FeatureVariable)) post(trim())]
+[let variable : FeatureVariable = expression.oclAsType(FeatureVariable)]
+->get[variable.feature().modelPropertyName().toUpperFirst()/]()
 [/let]
 [/template]
 
 [template public controllerExpression(expression : Expression)
-	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = expression.oclAsType(ParameterReference)]
-':[path.parameter.name/]'
+	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
+[let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
+':[variable.formal.name/]'
 [/let]
 [/template]
 

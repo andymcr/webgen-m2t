@@ -1,7 +1,8 @@
 [comment encoding = UTF-8 /]
 [module expression(
 	'http://andycarpenter.work/metamodel/expression',
-	'http://andycarpenter.work/metamodel/base')]
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 
 
 [query public hasCurrentUser(expression : Expression) : Boolean
@@ -61,7 +62,7 @@
 				= expression.oclAsType(PredicateIsNull)
 				in predicate.value.hasFormals()
 		else
-			expression.oclIsTypeOf(ParameterReference)
+			expression.oclIsTypeOf(ParameterVariable)
 		endif endif endif endif endif endif
 /]
 
@@ -92,7 +93,7 @@
 				= expression.oclAsType(PredicateIsNull)
 				in predicate.value.hasParameters()
 		else
-			expression.oclIsTypeOf(ParameterReference)
+			expression.oclIsTypeOf(ParameterVariable)
 				or expression.oclIsTypeOf(CurrentTime)
 				or expression.oclIsTypeOf(CurrentUser)
 		endif endif endif endif endif endif

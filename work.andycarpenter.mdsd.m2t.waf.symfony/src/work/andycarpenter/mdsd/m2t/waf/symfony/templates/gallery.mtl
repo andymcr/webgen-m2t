@@ -106,7 +106,7 @@ document.getElementById('links').onclick = function (event) {
 </script>
 [/template]
 
-[template public blueimpEntry(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
+[template public blueimpEntry(unit : GalleryUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 [let imageAccessor : String = unit.imageFeaturePath.accessor(baseAccessor, null)]
 [if (unit.showMissingImageWhen.oclIsUndefined())]
 	[if (not unit.imageFeaturePath.isRequired)]
@@ -142,13 +142,13 @@ document.getElementById('links').onclick = function (event) {
 [/let]
 [/template]
 
-[template public blueimpMissing(unit : GalleryUnit, baseAccessor : String, title : FeaturePath) post(trim())]
+[template public blueimpMissing(unit : GalleryUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 <a [unit.imageMissingSrc('href', unit.fullSizeFilter)/] [unit.imageTitle(baseAccessor, title)/]>
  [unit.imageMissing(unit.imageFilter, baseAccessor, title)/]
 </a>
 [/template]
 
-[template public blueimpImage(unit : GalleryUnit, imageAccessor : String, baseAccessor : String, title : FeaturePath) post(trim())]
+[template public blueimpImage(unit : GalleryUnit, imageAccessor : String, baseAccessor : String, title : DisplayValue) post(trim())]
 <a href="{{ [imageAccessor/][if (not unit.fullSizeFilter.oclIsUndefined())]
  | imagine_filter('[unit.fullSizeFilter.name/]')[/if] [unit.imageTitle(baseAccessor, title)/]}}" />
 </a>

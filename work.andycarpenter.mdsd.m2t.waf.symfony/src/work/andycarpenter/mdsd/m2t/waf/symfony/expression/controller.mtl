@@ -7,8 +7,10 @@
 [import work::andycarpenter::mdsd::m2t::expression::literals/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::constant/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::types/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
 
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
@@ -32,12 +34,25 @@ new \DateTime()
 [/template]
 
 
+[template private formalParameters(callback : Callable) post(trim())]
+[for (parameter : FormalParameter | callback.parameters) separator(', ')]
+[if (not parameter.dataType.oclIsUndefined())][parameter.implementationType()/] [/if]$[parameter.name/][/for]
+[/template]
+
+[template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
+	? (expression.oclIsTypeOf(Callable)) post(trim())]
+[let callback : Callable = expression.oclAsType(Callable)]
+function ([callback.formalParameters()/]) {
+    return [callback.expression.controllerExpression(accessor, parentAccessor)/];
+}
+[/let]
+[/template]
+
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(ReduceFunction)) post(trim())]
 [let reduce : ReduceFunction = expression.oclAsType(ReduceFunction)]
-array_reduce([reduce.value.controllerExpression(accessor, parentAccessor)/], function (mixed $carry, mixed $item) {
-        return [reduce.returnValue.controllerExpression(accessor, parentAccessor)/];
-    }[if (not reduce.initial.oclIsUndefined())], [reduce.initial.controllerExpression(accessor, parentAccessor)/][/if])
+array_reduce([reduce.value.controllerExpression(accessor, parentAccessor)/], [reduce.callback.controllerExpression(accessor, parentAccessor)/][if (not reduce.initial.oclIsUndefined())]
+, [reduce.initial.controllerExpression(accessor, parentAccessor)/][/if])
 [/let]
 [/template]
 
@@ -57,43 +72,43 @@ count([size.value.controllerExpression(accessor, parentAccessor)/])
 [/template]
 
 [template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
-	? (guard.oclIsTypeOf(PathVariableAttribute)) post(trim())]
-[let path : PathVariableAttribute = guard.oclAsType(PathVariableAttribute)]
-[if (path.useContainerAsContext)]
+	? (guard.oclIsTypeOf(AttributeVariable)) post(trim())]
+[let path : AttributeVariable = guard.oclAsType(AttributeVariable)]
+[if (path.useContainerAsContext())]
 [parentAccessor/][else]
 [accessor/][/if]->[path.attribute.getMethodName()/]()
 [/let] 
 [/template]
 
 [template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
-	? (guard.oclIsTypeOf(PathVariableAssociation)) post(trim())]
-[let path : PathVariableAssociation = guard.oclAsType(PathVariableAssociation)]
-[if (path.useContainerAsContext)]
+	? (guard.oclIsTypeOf(AssociationVariable)) post(trim())]
+[let path : AssociationVariable = guard.oclAsType(AssociationVariable)]
+[if (path.useContainerAsContext())]
 [parentAccessor/][else]
 [accessor/][/if]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
 [path.childFeature.pathExpression()/][/if]
 [/let] 
 [/template]
 
-[template public pathExpression(path : ChildPath)
-	? (path.oclIsTypeOf(ChildPathAttribute)) post(trim())]
-[let attribute : ChildPathAttribute = path.oclAsType(ChildPathAttribute)]
+[template public pathExpression(path : ChildFeature)
+	? (path.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let attribute : ChildAttribute = path.oclAsType(ChildAttribute)]
 ->[attribute.attribute.getMethodName()/]()
 [/let] 
 [/template]
 
-[template public pathExpression(path : ChildPath)
-	? (path.oclIsTypeOf(ChildPathAssociation)) post(trim())]
-[let association : ChildPathAssociation = path.oclAsType(ChildPathAssociation)]
+[template public pathExpression(path : ChildFeature)
+	? (path.oclIsTypeOf(ChildAssociation)) post(trim())]
+[let association : ChildAssociation = path.oclAsType(ChildAssociation)]
 ->[association.association.getMethodName()/]()[if (not association.childFeature.oclIsUndefined())]
 [association.childFeature.pathExpression()/][/if]
 [/let] 
 [/template]
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
-	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = expression.oclAsType(ParameterReference)]
-':[path.parameter.name/]'
+	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
+[let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
+$[variable.formal.name/]
 [/let]
 [/template]
 

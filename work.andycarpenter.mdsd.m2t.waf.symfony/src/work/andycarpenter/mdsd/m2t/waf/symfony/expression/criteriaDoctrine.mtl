@@ -30,20 +30,16 @@ new \DateTime()
 [/template]
 
 [template public criteriaExpression(expression : Expression)
-	? (expression.oclIsTypeOf(FeatureReference)) post(trim())]
-[let path : FeatureReference = expression.oclAsType(FeatureReference)]
-[path.feature.featureReference()/]
+	? (expression.oclIsKindOf(FeatureVariable)) post(trim())]
+[let variable : FeatureVariable = expression.oclAsType(FeatureVariable)]
+'[variable.feature().columnName/]'
 [/let]
 [/template]
 
-[template public featureReference(feature : Feature) post(trim())]
-'[feature.columnName/]'
-[/template]
-
 [template public criteriaExpression(expression : Expression)
-	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = expression.oclAsType(ParameterReference)]
-$[path.parameter.name/]
+	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
+[let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
+$[variable.formal.name/]
 [/let]
 [/template]
 
@@ -203,9 +199,9 @@ Criteria::expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.crite
 [/template]
 
 [template public criteriaParameter(expression : Expression)
-	? (expression.oclIsTypeOf(ParameterReference)) post(trim())]
-[let path : ParameterReference = expression.oclAsType(ParameterReference)]
-$query->setParameter('[path.parameter.name/]', $[path.parameter.name/]);
+	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
+[let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
+$query->setParameter('[variable.formal.name/]', $[variable.formal.name/]);
 [/let]
 [/template]
 

@@ -30,13 +30,13 @@
 [/let]
 [/template]
 
-[template public image(unit : ImageUnit, baseAccessor : String, title : FeaturePath, imageClass : String) post(trim())]
+[template public image(unit : ImageUnit, baseAccessor : String, title : DisplayValue, imageClass : String) post(trim())]
 [let imageAccessor : String = unit.imageFeaturePath.accessor(baseAccessor, null)]
 [if (unit.showMissingImageWhen.oclIsUndefined())]
 	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
 	[/if]
-[unit.imageFeaturePath.leafFeature.image(unit, imageAccessor, baseAccessor, title, imageClass)/]
+[unit.imageFeaturePath.leafFeature().image(unit, imageAccessor, baseAccessor, title, imageClass)/]
 	[if (not unit.imageFeaturePath.isRequired)]
 		[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
@@ -53,7 +53,7 @@
 	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
 	[/if]
-[unit.imageFeaturePath.leafFeature.image(unit, imageAccessor, baseAccessor, title, imageClass)/]
+[unit.imageFeaturePath.leafFeature().image(unit, imageAccessor, baseAccessor, title, imageClass)/]
 	[if (not unit.imageFeaturePath.isRequired)]
 		[if (not unit.missingImagePath.oclIsUndefined())]
 {%- else -%}
@@ -66,22 +66,22 @@
 [/let]
 [/template]
 
-[template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String, title : FeaturePath) post(trim())]
+[template public imageMissing(unit : ImageUnit, manipulation : ImageManipulation, baseAccessor : String, title : DisplayValue) post(trim())]
 <img [unit.imageMissingSrc('src', manipulation)/] [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
 [/template]
 
 [template private image(feature : Feature, unit : ImageUnit, imageAccessor : String, baseAccessor : String,
-		title : FeaturePath, imageClass : String)
+		title : DisplayValue, imageClass : String)
 	?(feature.oclIsKindOf(Attribute)) post(trim())]
 [unit.displayImage(imageAccessor, baseAccessor, title, imageClass)/]
 [/template]
 
 [template private image(feature : Feature, unit : ImageUnit, imageAccessor : String, baseAccessor : String,
-		title : FeaturePath, imageClass : String)
+		title : DisplayValue, imageClass : String)
 	?(feature.oclIsKindOf(ResourceFeature)) post(trim())]
 [let property : String =
-	if (unit.imageFeaturePath.leafFeature.partOf.resourceFeatures->size() > 1) then
-		', '.concat(unit.imageFeaturePath.leafFeature.modelPropertyName())
+	if (unit.imageFeaturePath.leafFeature().partOf.resourceFeatures->size() > 1) then
+		', '.concat(unit.imageFeaturePath.leafFeature().modelPropertyName())
 	else
 		''
 	endif]
@@ -93,7 +93,7 @@
 [/template]
 
 [template private displayImage(unit : ImageUnit, accessor : String, baseAccessor : String,
-	title : FeaturePath, imageClass : String) post(trim())]
+	title : DisplayValue, imageClass : String) post(trim())]
 <img [if (imageClass <> '')]class="[imageClass/]" [/if]src="{{ [accessor/][if (not unit.imageFilter.oclIsUndefined())]
  | imagine_filter('[unit.imageFilter.name/]')[/if] }}" [unit.imageAlt(baseAccessor, title)/] [unit.imageTitle(baseAccessor, title)/]/>
 [/template]
@@ -102,13 +102,13 @@
 [key/]="{{ '[unit.missingImagePath/]'[if (not manipulation.oclIsUndefined())] | imagine_filter('[manipulation.name/]')[/if] }}"
 [/template]
 
-[template public imageAlt(unit : ImageUnit, baseAccessor : String, title : FeaturePath) post(trim())]
+[template public imageAlt(unit : ImageUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 [if (not title.oclIsUndefined())]
 alt="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
 [/if]
 [/template]
 
-[template public imageTitle(unit : ImageUnit, baseAccessor : String, title : FeaturePath) post(trim())]
+[template public imageTitle(unit : ImageUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 [if (not title.oclIsUndefined())]
 title="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
 [/if]
