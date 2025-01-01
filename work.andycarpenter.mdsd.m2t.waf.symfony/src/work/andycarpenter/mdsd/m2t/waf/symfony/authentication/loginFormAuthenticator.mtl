@@ -43,7 +43,6 @@ use [authentication.authenticationModel.repository.repositoriesNamespace()/]\[au
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
 [/if]
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,6 +54,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 [/template]
 
@@ -95,7 +95,7 @@ public function authenticate(Request $request): Passport
 {
     /** var string $email */
     $email = $request->request->get('[authentication.identifierFeature.id()/]');
-    $request->getSession()->set(Security::LAST_USERNAME, $email);
+    $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
     $this->logger->info("Form login attempt for " . $email);
 
