@@ -78,13 +78,6 @@ NULL
 [/template]
 
 [template private getValue(child : ChildFeature, accessor : String)
-	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
-[let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
-[attribute.attribute.getValue(accessor)/]
-[/let]
-[/template]
-
-[template private getValue(child : ChildFeature, accessor : String)
 	? (child.oclIsTypeOf(ChildAssociation)) post(trim())]
 [let association : ChildAssociation = child.oclAsType(ChildAssociation)]
 [if (not association.childFeature.oclIsUndefined())]
@@ -96,6 +89,13 @@ NULL
 [accessor/].defaultLabel()
 	[/if]
 [/if]
+[/let]
+[/template]
+
+[template private getValue(child : ChildFeature, accessor : String)
+	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
+[let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
+[attribute.attribute.getValue(accessor.concat('.').concat(attribute.attribute.modelPropertyName()))/]
 [/let]
 [/template]
 
