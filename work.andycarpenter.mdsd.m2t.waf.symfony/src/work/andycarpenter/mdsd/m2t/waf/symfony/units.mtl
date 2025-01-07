@@ -41,25 +41,33 @@
 			and not unit.containingTypeLoadedElsewhere()
 /]
 
-[query public hasObjectAccess(unit : CollectionUnit) : Boolean
-	= if unit.selection.oclIsUndefined() then
+[query public selection(unit : DynamicUnit) : Selection
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).selection
+		else if unit.oclIsKindOf(DetailsUnit) then
+			unit.oclAsType(DetailsUnit).selection
+		else
+			null
+		endif endif
+/]
+
+[query public selection(field : UnitField) : Selection
+	= field.displayedOn.selection()
+/]
+
+
+[query public hasObjectAccess(field : UnitField, selection : Selection) : Boolean
+	= if selection.oclIsUndefined() then
 			true
 		else
-			unit.selection.fields->isEmpty()
-
+			selection.fields->isEmpty()
 		endif
 /]
 
-[query public hasObjectAccess(unit : DynamicUnit) : Boolean
-	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).hasObjectAccess()
-		else if unit.oclIsKindOf(DetailsUnit) then
-			if unit.oclAsType(DetailsUnit).selection.oclIsUndefined() then
-				true
-			else
-				unit.oclAsType(DetailsUnit).selection.fields->isEmpty()
-			endif
-		else
+[query public hasObjectAccess(path : Path, selection : Selection) : Boolean
+	= if selection.oclIsUndefined() then
 			true
-		endif endif
+		else
+			selection.fields->isEmpty()
+		endif
 /]

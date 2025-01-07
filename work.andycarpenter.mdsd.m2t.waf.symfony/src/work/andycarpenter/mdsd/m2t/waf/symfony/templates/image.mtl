@@ -31,7 +31,7 @@
 [/template]
 
 [template public image(unit : ImageUnit, baseAccessor : String, title : DisplayValue, imageClass : String) post(trim())]
-[let imageAccessor : String = unit.imageFeaturePath.accessor(baseAccessor, null)]
+[let imageAccessor : String = unit.imageFeaturePath.pathAccessorResourceExistance(baseAccessor, null, true)]
 [if (unit.showMissingImageWhen.oclIsUndefined())]
 	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
@@ -86,7 +86,7 @@
 		''
 	endif]
 [unit.displayImage('vich_uploader_asset('
-		.concat(unit.imageFeaturePath.resourceAccessor(baseAccessor, null))
+		.concat(unit.imageFeaturePath.pathAccessor(baseAccessor, null))
 		.concat(property).concat(')'),
 	baseAccessor, title, imageClass)/]
 [/let]
@@ -104,12 +104,12 @@
 
 [template public imageAlt(unit : ImageUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 [if (not title.oclIsUndefined())]
-alt="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
+alt="{{ [title.pathAccessor(baseAccessor, null)/][title.valueLabel()/] }}"
 [/if]
 [/template]
 
 [template public imageTitle(unit : ImageUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 [if (not title.oclIsUndefined())]
-title="{{ [title.accessor(baseAccessor, null)/][title.valueLabel()/] }}"
+title="{{ [title.pathAccessor(baseAccessor, null)/][title.valueLabel()/] }}"
 [/if]
 [/template]

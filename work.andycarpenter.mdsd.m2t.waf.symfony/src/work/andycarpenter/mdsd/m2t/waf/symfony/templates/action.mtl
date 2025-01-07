@@ -61,7 +61,7 @@
 				in if selectAction.valuePath.oclIsUndefined() then
 						valueAccessor
 					else
-						selectAction.valuePath.accessor(valueAccessor, null)
+						selectAction.valuePath.pathAccessor(valueAccessor, null)
 					endif
 		endif
 /]
@@ -83,8 +83,8 @@
 [if (targetAction.target.oclIsKindOf(DynamicUnit))]
 [let targetUnit : DynamicUnit = targetAction.target.oclAsType(DynamicUnit)]
 '[targetUnit.routeName()/]'[action.linkPathParameters(
-	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, action.parentUnit.containingType(),
-		action.parentUnit.hasObjectAccess()),
+	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor,
+		action.parentUnit.containingType()),
 	action.parentUnit.contentType = targetUnit.contentType)/]
 [/let]
 [else]
@@ -96,8 +96,7 @@
 [template private linkPath(action : Action, valueAccessor : String) 
 	?(action.oclIsTypeOf(ContainerOperationAction)) post(trim())]
 '[action.routeName()/]'[action.linkPathParameters(action.parentUnit.routeActualParameters(
-	action.parentUnit.routeParameters(), valueAccessor, action.parentUnit.containingType(),
-	action.parentUnit.hasObjectAccess()), true)/]
+	action.parentUnit.routeParameters(), valueAccessor, action.parentUnit.containingType()), true)/]
 [/template]
 
 [template private linkPath(action : SelectAction, valueAccessor : String) 
@@ -105,8 +104,8 @@
 [let selectAction : SelectAction = action.oclAsType(SelectAction)]
 [let targetUnit : DynamicUnit = selectAction.target.oclAsType(DynamicUnit)]
 '[targetUnit.routeName()/]'[action.linkPathParameters(
-	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor, targetUnit.containingType(),
-		action.parentUnit.hasObjectAccess()),
+	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor,
+		targetUnit.containingType()),
 	action.parentUnit.controller = targetUnit.controller)/]
 [/let]
 [/let]
@@ -174,7 +173,7 @@
 			targetUnit.routeParameters()
 		endif]
 '[routeName/]'[action.linkPathParameters(
-	targetUnit.routeActualParameters(routeParameters, valueAccessor, valueType, action.parentUnit.hasObjectAccess()),
+	targetUnit.routeActualParameters(routeParameters, valueAccessor, valueType),
 	action.parentUnit.contentType = targetUnit.contentType)/]
 [/let]
 [/let]
@@ -289,27 +288,27 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
 
 
 [template public routeActualParameters(unit : DynamicUnit, routeParameters : Sequence(Attribute),
-	valueAccessor : String, valueType : Entity, objectAccess : Boolean) post(trim())]
+	valueAccessor : String, valueType : Entity) post(trim())]
 [for (key : Attribute | routeParameters)]
-[key.routeActualParameter(routeParameters, valueAccessor, valueType, objectAccess)/],
+[key.routeActualParameter(routeParameters, valueAccessor, valueType)/],
 [/for]
 [/template]
 
 [template private routeActualParameters(action : Action, valueAccessor : String) post(trim())]
-[action.parentUnit.routeActualParameters(action.routeParameters(), valueAccessor, action.parentUnit.contentType, action.parentUnit.hasObjectAccess())/]
+[action.parentUnit.routeActualParameters(action.routeParameters(), valueAccessor, action.parentUnit.contentType)/]
 [/template]
 
 [template private routeActualParameter(key : Attribute, routeParameters : Sequence(Attribute),
-	valueAccessor : String, valueType : Entity, objectAccess : Boolean) post(trim())]
-'[key.routeParameterName(routeParameters)/]': [key.getValue(key.keyAccessor(valueAccessor, valueType, objectAccess))/][if (key.isDateFeature)]
+	valueAccessor : String, valueType : Entity) post(trim())]
+'[key.routeParameterName(routeParameters)/]': [key.getValue(key.keyAccessor(valueAccessor, valueType))/][if (key.isDateFeature)]
 .format('Y-m-d H:i:s')[/if][if (key.encodeUriKey)] | url_encode[/if]
 [/template]
 
-[query private keyAccessor(key : Attribute, accessor : String, valueType : Entity, objectAccess : Boolean) : String
+[query private keyAccessor(key : Attribute, accessor : String, valueType : Entity) : String
 	= if valueType.attributeKeys->includes(key) then
 			accessor.concat('.').concat(key.modelPropertyName())
 		else if valueType.isContained then
-			key.keyAccessor(accessor.concat('.').concat(valueType.containingAssociation.modelPropertyName()), valueType.containingType, objectAccess)
+			key.keyAccessor(accessor.concat('.').concat(valueType.containingAssociation.modelPropertyName()), valueType.containingType)
 		else
 			'SetFeaturePath'
 		endif endif

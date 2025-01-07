@@ -82,7 +82,7 @@
 [let loopVariable : String = 'entry']
 {% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | unit.rowClasses.trim().tokenize(',; ')) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
-   [unit.entry(loopVariable, unit.hasObjectAccess())/]
+   [unit.entry(loopVariable)/]
 [if (unit.hasInstanceActions)]
    <td class="actions">[unit.instanceActions(loopVariable)/]</td>
 [/if]
@@ -113,12 +113,12 @@
 </table>
 [/template]
 
-[template private entry(unit : TabularUnit, accessor : String, objectAccess : Boolean) post(trim())]
+[template private entry(unit : TabularUnit, accessor : String) post(trim())]
 [for (field : UnitField | unit.displayFields)]
 	[if (field.isAuthorised)]
 {% if [field.authorisation.authorisationExpression()/] %}
 	[/if]
-<td[if (field.isFeatureField)] class="[field.oclAsType(UnitFeature).persistentFeature.name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayValue(accessor, objectAccess)/]</td>
+<td[if (field.isFeatureField)] class="[field.oclAsType(UnitFeature).persistentFeature.name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayValue(accessor)/]</td>
 	[if (field.isAuthorised)]
 {% endif %}
 	[/if]

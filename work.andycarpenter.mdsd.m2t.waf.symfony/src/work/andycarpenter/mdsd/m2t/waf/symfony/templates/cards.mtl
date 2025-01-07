@@ -201,14 +201,14 @@
 
 [template private cardTitle(unit : TextCardsUnit, cardAccessor : String) post(trim())]
 [if (not unit.elementTitle.oclIsUndefined())]
-<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.accessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.pathAccessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
 [/if]
 [/template]
 
 [template private cardTitle(unit : DateCardsUnit, cardAccessor : String) post(trim())]
 [unit.dateImage(cardAccessor)/]
 [if (not unit.elementTitle.oclIsUndefined() or unit.displayFields->notEmpty())]
-<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.accessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.pathAccessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
 [/if]
 [/template]
 
@@ -225,17 +225,17 @@
 [/template]
 
 [template private dateIcon(unit : DateCardsUnit, cardAccessor : String) post(trim())]
-<time datetime="{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date }}" class="xxxx">
- <em>{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date('l') }}</em>
- <strong>{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date('j') }}</strong>
- <em>{{ [unit.elementDate.accessor(cardAccessor, unit.selection)/] | date('F') }}</em>
+<time datetime="{{ [unit.elementDate.pathAccessor(cardAccessor, unit.selection)/] | date }}" class="xxxx">
+ <em>{{ [unit.elementDate.pathAccessor(cardAccessor, unit.selection)/] | date('l') }}</em>
+ <strong>{{ [unit.elementDate.pathAccessor(cardAccessor, unit.selection)/] | date('j') }}</strong>
+ <em>{{ [unit.elementDate.pathAccessor(cardAccessor, unit.selection)/] | date('F') }}</em>
 </time>
 [/template]
 
 [template private cardTitle(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [unit.cardImage(cardAccessor)/]
 [if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
-<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if] mt-2">{{ [unit.elementTitle.accessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if] mt-2">{{ [unit.elementTitle.pathAccessor(cardAccessor, unit.selection)/][unit.elementTitle.valueLabel()/] }}</h5>
 [/if]
 [/template]
 
@@ -250,7 +250,7 @@
 [/if]
 [if (unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
 <div class="card-img-overlay">
- <span class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{% [unit.elementTitle.accessor(cardAccessor, unit.selection)/] %}</span>
+ <span class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{% [unit.elementTitle.pathAccessor(cardAccessor, unit.selection)/] %}</span>
 </div>
 [/if]
 [/let]

@@ -65,7 +65,7 @@ date()
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsKindOf(FeatureVariable)) post(trim())]
 [let variable : FeatureVariable = guard.oclAsType(FeatureVariable)]
-[variable.accessor(accessor, null)/]
+[variable.pathAccessor(accessor, null)/]
 [/let] 
 [/template]
 

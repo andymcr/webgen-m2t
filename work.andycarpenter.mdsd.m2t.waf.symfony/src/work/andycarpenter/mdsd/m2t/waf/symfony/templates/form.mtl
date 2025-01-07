@@ -122,7 +122,7 @@
 		or (field.isAssociationField and not field.isContains)
 		or field.isResourceField) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
-{{ form_row([field.propertyAccessor(parentAccessor, null, true)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
+{{ form_row([field.accessor(parentAccessor)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
 , {[if (field.hasTranslations() and not field.singleUseModel())]
  label: '[field.customisedCaptionContainedId()/]',[/if]
 [if (field.hasInputGroupClass)]
@@ -143,7 +143,7 @@
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
 	? (field.isAttributeField and not field.isSingleton) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
-[let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
+[let accessor : String = field.accessor(parentAccessor)]
  {{- form_label([accessor/]) -}}
  <div class="[attribute.fieldId()/] framed"[if (attribute.collectionUiAllowAdd)]
  data-prototype="{{ form_widget([accessor/].vars.prototype)|e('html_attr') }}"[/if]>
@@ -161,7 +161,7 @@
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
 	? (field.isAssociationField and field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let accessor : String = field.propertyAccessor(parentAccessor, null, true)]
+[let accessor : String = field.accessor(parentAccessor)]
 [let childFields : OrderedSet(Feature) = association.association.targetType.features->select(f | not f.isContainer)]
 <div>
  {{- form_label([accessor/]) -}}

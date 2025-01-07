@@ -48,7 +48,7 @@
 
 [template private labelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
 [field.fieldLabel(unit)/]
-<dd [field.valueClass()/]>[field.displayValue(unitAccessor, true)/]</dd>
+<dd [field.valueClass()/]>[field.displayValue(unitAccessor)/]</dd>
 [/template]
 
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
@@ -62,7 +62,7 @@ class="[field.fieldLabelClass/]"
 [/template]
 
 [template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
-<li [field.valueClass()/]>[field.displayValue(unitAccessor, true)/]</li>
+<li [field.valueClass()/]>[field.displayValue(unitAccessor)/]</li>
 [/template]
 
 [template private valueClass(field : UnitField) post(trim())]

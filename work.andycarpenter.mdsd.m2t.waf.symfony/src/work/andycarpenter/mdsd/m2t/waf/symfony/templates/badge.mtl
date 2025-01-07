@@ -3,6 +3,7 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
@@ -20,7 +21,7 @@
 [/template]
 
 [template private value(badge : Badge, accessor : String) post(trim())]
-{{ [badge.value.getValue(accessor)/] }}
+{{ [badge.value.pathAccessor(accessor, null)/] }}
 [/template]
 
 [template private icon(badge : Badge) post(trim())]

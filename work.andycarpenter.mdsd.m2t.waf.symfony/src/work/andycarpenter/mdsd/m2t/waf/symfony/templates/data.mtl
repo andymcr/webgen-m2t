@@ -14,56 +14,56 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
 
-[template public getImmediateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[template public getImmediateValue(field : UnitField, parentAccessor : String) post(trim())]
 [if (field.isFeatureField)]
-[field.oclAsType(UnitFeature).getImmediateValue(parentAccessor, objectAccess)/]
+[field.oclAsType(UnitFeature).getImmediateValue(parentAccessor)/]
 [else]
 NULL
 [/if]
 [/template]
 
-[template private getImmediateValue(feature : UnitFeature, parentAccessor : String, objectAccess : Boolean) post(trim())]
+[template private getImmediateValue(feature : UnitFeature, parentAccessor : String) post(trim())]
 [if (feature.isAttributeField)]
-[feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor, objectAccess)/]
+[feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor)/]
 [elseif (feature.isResourceField)]
-[feature.oclAsType(UnitResource).getImmediateValue(parentAccessor, objectAccess)/]
+[feature.oclAsType(UnitResource).getImmediateValue(parentAccessor)/]
 [else]
-[feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor, objectAccess)/]
+[feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor)/]
 [/if]
 [/template]
 
-[template private getImmediateValue(attribute : UnitAttribute, parentAccessor : String, objectAccess : Boolean) post(trim())]
-[attribute.attribute.getValue(attribute.propertyAccessor(parentAccessor, attribute.alias(), objectAccess))/]
+[template private getImmediateValue(attribute : UnitAttribute, parentAccessor : String) post(trim())]
+[attribute.attribute.getValue(attribute.accessor(parentAccessor))/]
 [/template]
 
-[template private getImmediateValue(resource : UnitResource, parentAccessor : String, objectAccess : Boolean) post(trim())]
-[resource.resource.getValue(resource.propertyAccessor(parentAccessor, resource.alias(), objectAccess))/]
+[template private getImmediateValue(resource : UnitResource, parentAccessor : String) post(trim())]
+[resource.resource.getValue(resource.accessor(parentAccessor))/]
 [/template]
 
-[template private getImmediateValue(association : UnitAssociation, parentAccessor : String, objectAccess : Boolean) post(trim())]
-[association.propertyAccessor(parentAccessor, association.alias(), objectAccess)/]
+[template private getImmediateValue(association : UnitAssociation, parentAccessor : String) post(trim())]
+[association.accessor(parentAccessor)/]
 [/template]
 
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? ((field.isDataTypeField and not field.isBooleanField and not field.isEnumerationField) and field.isSingleton) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
+{{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-[feature.displayAttribute(feature.accessor(parentAccessor, field.alias(), objectAccess), parentAccessor)/]
+[feature.displayAttribute(feature.accessor(parentAccessor), parentAccessor)/]
 [/let]
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? ((field.isDataTypeField and not field.isBooleanField and not field.isEnumerationField) and not field.isSingleton) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | default('') }}
+{{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 [let variable : String = 'value']
-{% for [variable/] in [feature.accessor(parentAccessor, field.alias(), objectAccess)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+{% for [variable/] in [feature.accessor(parentAccessor)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</div>[else]
 <span[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if][if (not feature.emptyDisplayValue.oclIsUndefined())]
 {% else %}{{ '[feature.emptyValueContainedId()/]' | trans({}, '[feature.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
@@ -72,15 +72,15 @@ NULL
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isEnumerationField) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/][if (not field.escapeHTML)]
+{{ [field.getValue(field.accessor(parentAccessor))/][if (not field.escapeHTML)]
  | raw[/if] }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 	[if (feature.displayDefaultWhen.oclIsUndefined())]
-{{ [feature.getValue(field.accessor(parentAccessor, feature.alias(), objectAccess))/][if (not feature.defaultDisplayValue.oclIsUndefined())]
+{{ [feature.getValue(field.accessor(parentAccessor))/][if (not feature.defaultDisplayValue.oclIsUndefined())]
  | default('[feature.defaultDisplayValue/]')[/if][if (not feature.escapeHTML)]
  | raw[/if] }}
 	[else]
@@ -90,31 +90,31 @@ NULL
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isDateField) post(trim())]
 [if (field.hasEmptyDisplayValue())]
-{% if [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] is not null %}[/if]
-[field.displayDateValue(parentAccessor, objectAccess)/][if (field.hasEmptyDisplayValue())]
+{% if [field.getValue(field.accessor(parentAccessor))/] is not null %}[/if]
+[field.displayDateValue(parentAccessor)/][if (field.hasEmptyDisplayValue())]
 {% else %}{{ '[field.emptyValueContainedId()/]' | trans({}, '[field.displayedOn.translationDomain()/]') }}{% endif %}[/if]
 [/template]
 
-[template private displayDateValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) post(trim())]
-{{ [field.getValue(field.accessor(parentAccessor, field.alias(), objectAccess))/] | date[if (not field.dateFormat.oclIsUndefined())]
+[template private displayDateValue(field : UnitField, parentAccessor : String) post(trim())]
+{{ [field.getValue(field.accessor(parentAccessor))/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if] }}
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean) 
+[template public displayValue(field : UnitField, parentAccessor : String) 
 	? (field.isBooleanField) post(trim())] 
-<label for="[field.fieldId()/]"{% if not [field.accessor(parentAccessor, field.alias(), objectAccess)/] %} hidden="hidden"{% endif %}>
+<label for="[field.fieldId()/]"{% if not [field.accessor(parentAccessor)/] %} hidden="hidden"{% endif %}>
  <input type="checkbox" id="[field.fieldId()/]" checked="checked" disabled="disabled"/>
  <span></span>
 </label>
 [/template] 
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isResourceField and field.isSingleton) post(trim())]
 [let resource : UnitResource = field.oclAsType(UnitResource)]
-[let accessor : String = field.accessor(parentAccessor, field.alias(), objectAccess)]
+[let accessor : String = field.accessor(parentAccessor)]
 <?php
 [if (not resource.isConditionalDisplay())]
     if (!empty([resource.getValue(accessor)/]))
@@ -128,19 +128,19 @@ NULL
 [/let]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isAssociationField and field.isSingleton) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
+[let accessor : String = association.accessor(parentAccessor)]
 [association.displayAssociation(accessor, parentAccessor)/]
 [/let]
 [/let]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.isAssociationField and not field.isSingleton) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let accessor : String = association.accessor(parentAccessor, field.alias(), objectAccess)]
+[let accessor : String = association.accessor(parentAccessor)]
 [let variable : String = 'value']
 {% for [variable/] in [accessor/][if (not association.collectionSortBy.oclIsUndefined() or association.collectionMaximumValues > 0)]
  [association.filters()/][/if] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
@@ -160,7 +160,7 @@ NULL
 [/if]
 [/template]
 
-[template public displayValue(field : UnitField, parentAccessor : String, objectAccess : Boolean)
+[template public displayValue(field : UnitField, parentAccessor : String)
 	? (field.oclIsTypeOf(UnitLabel)) post(trim())]
 [let label : UnitLabel = field.oclAsType(UnitLabel)]
 {{ [label.label.label(parentAccessor)/] }}

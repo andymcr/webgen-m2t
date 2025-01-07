@@ -15,18 +15,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
 
 
-[query public alias(field : UnitField) : String
-	= if field.oclIsKindOf(InterfaceField) then
-			null
-		else if field.isAttributeField then
-			field.oclAsType(UnitAttribute).alias()
-		else if field.isResourceField then
-			field.oclAsType(UnitResource).alias()
-		else
-			field.oclAsType(UnitAssociation).alias()
-		endif endif endif
-/]
-
 [query public alias(attribute : UnitAttribute) : String
 	= if attribute.displayedOn.oclIsKindOf(CollectionUnit) then
 			let unit : CollectionUnit = attribute.displayedOn.oclAsType(CollectionUnit)

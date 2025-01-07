@@ -95,7 +95,7 @@ NULL
 [template private getValue(child : ChildFeature, accessor : String)
 	? (child.oclIsTypeOf(ChildAttribute)) post(trim())]
 [let attribute : ChildAttribute = child.oclAsType(ChildAttribute)]
-[attribute.attribute.getValue(accessor.concat('.').concat(attribute.attribute.modelPropertyName()))/]
+[attribute.attribute.getValue(accessor)/]
 [/let]
 [/template]
 
