@@ -127,7 +127,7 @@
 {% if [unit.instanceActions->first().authorisation.authorisationExpression()/] %}
 	[else]
 {% if [for (action : Action | unit.instanceActions) separator(' or ')]
-[unit.instanceActions->first().authorisation.authorisationExpression()/][/for] %}
+[action.authorisation.authorisationExpression()/][/for] %}
 	[/if]
 [/if]
 <div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
