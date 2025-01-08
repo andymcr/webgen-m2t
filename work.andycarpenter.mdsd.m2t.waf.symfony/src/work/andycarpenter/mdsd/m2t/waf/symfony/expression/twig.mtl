@@ -55,6 +55,7 @@ date()
 [/let]
 [/template]
 
+
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(ConstantReference)) post(trim())]
 [let constant : ConstantReference = guard.oclAsType(ConstantReference)]
@@ -72,7 +73,11 @@ date()
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsTypeOf(ParameterVariable)) post(trim())]
 [let variable : ParameterVariable = guard.oclAsType(ParameterVariable)]
-':[variable.formal.name/]'
+[if (variable.childFeature.oclIsUndefined())]
+[variable.formal.name/]
+[else]
+[variable.childFeature.pathAccessor(variable.formal.name, null)/]
+[/if]
 [/let]
 [/template]
 
@@ -135,6 +140,28 @@ Criteria::expr()->[predicate.operator()/]([predicate.left.twigExpression(accesso
 [predicate.value.twigExpression(accessor)/] is[if (predicate.negated)] not[/if] empty
 [/let]
 [/template]
+
+[template public twigExpression(guard : Expression, accessor : String)
+	? (guard.oclIsTypeOf(ArithmeticOperation)) post(trim())]
+[let arithmetic : ArithmeticOperation = guard.oclAsType(ArithmeticOperation)]
+[arithmetic.operands->first().twigExpression(accessor)/][for (operand : Expression | arithmetic.operands->subOrderedSet(2, arithmetic.operands->size()))]
+ [arithmetic.operator()/] [operand.twigExpression(accessor)/][/for]
+[/let]
+[/template]
+
+[query private operator(arithmetic : ArithmeticOperation) : String
+	= if arithmetic.operator = ArithmeticOperator::Add then
+			'+'
+		else if arithmetic.operator = ArithmeticOperator::Subtract then
+			'-'
+		else if arithmetic.operator = ArithmeticOperator::Multiply then
+			'*'
+		else if arithmetic.operator = ArithmeticOperator::Divide then
+			'/'
+		else
+			'?'
+		endif endif endif endif
+/]
 
 [query private operator(predicate : PredicateBooleanOperator) : String
 	= if predicate.operator = BooleanOperator::And then
