@@ -36,7 +36,7 @@ date()
 [template public twigExpression(expression : Expression, accessor : String)
 	? (expression.oclIsTypeOf(Callable)) post(trim())]
 [let callback : Callable = expression.oclAsType(Callable)]
-([callback.formalParameters()/]) => [callback.expression.twigExpression(accessor)/]}
+([callback.formalParameters()/]) => [callback.expression.twigExpression(accessor)/]
 [/let]
 [/template]
 
@@ -66,7 +66,7 @@ date()
 [template public twigExpression(guard : Expression, accessor : String)
 	? (guard.oclIsKindOf(FeatureVariable)) post(trim())]
 [let variable : FeatureVariable = guard.oclAsType(FeatureVariable)]
-[variable.pathAccessor(accessor, null)/]
+[variable.accessor(accessor, null)/]
 [/let] 
 [/template]
 
@@ -76,7 +76,7 @@ date()
 [if (variable.childFeature.oclIsUndefined())]
 [variable.formal.name/]
 [else]
-[variable.childFeature.pathAccessor(variable.formal.name, null)/]
+[variable.childFeature.accessor(variable.formal.name, null)/]
 [/if]
 [/let]
 [/template]
