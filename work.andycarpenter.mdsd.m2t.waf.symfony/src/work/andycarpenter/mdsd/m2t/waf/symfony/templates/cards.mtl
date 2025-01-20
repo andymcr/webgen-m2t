@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module cards(
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
@@ -123,10 +124,12 @@
 [if (unit.instanceActions->forAll(a | a.hasCustomisedAuthorisation))]
 	[if (unit.instanceActions->size() = 1)]
 {% if [unit.instanceActions->first().authorisation.authorisationExpression()/] %}
-	[elseif (unit.instanceActions->subOrderedSet(2, unit.instanceActions->size())->forAll(a | a.authorisation.areSame(unit.instanceActions->first().authorisation)))]
+	[elseif (unit.instanceActions->subOrderedSet(2, unit.instanceActions->size())
+				->forAll(a | a.authorisation.areSame(unit.instanceActions->first().authorisation)))]
 {% if [unit.instanceActions->first().authorisation.authorisationExpression()/] %}
 	[else]
-{% if [for (action : Action | unit.instanceActions) separator(' or ')]
+{% if [for (action : Action | unit.instanceActions
+			->sortedBy(a | a.authorisation.oclAsType(IsGrantedRole).role.name)) separator(' or ')]
 [action.authorisation.authorisationExpression()/][/for] %}
 	[/if]
 [/if]
