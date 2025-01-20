@@ -10,14 +10,20 @@
 
 
 [template public getValue(field : UnitField, accessor : String)
-	? (field.oclIsTypeOf(InterfaceField)) post(trim())]
+	? (field.isFeatureField()) post(trim())]
+[field.oclAsType(Path).getPathValue(accessor)/]
+[/template]
+
+[template public getValue(field : UnitField, accessor : String)
+	? (field.isInterfaceField()) post(trim())]
 NULL
 [/template]
 
 [template public getValue(field : UnitField, accessor : String)
-	? (not field.oclIsTypeOf(InterfaceField)) post(trim())]
-[field.oclAsType(Path).getPathValue(accessor)/]
+	? (field.isLabelField()) post(trim())]
+[accessor/][field.oclAsType(UnitLabel).label.label()/]
 [/template]
+
 
 [template public getPathValue(path : Path, accessor : String) post(trim())]
 [let leaf : Path = path.leafElement()]

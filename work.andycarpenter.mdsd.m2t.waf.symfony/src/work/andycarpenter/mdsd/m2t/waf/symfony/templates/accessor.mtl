@@ -23,11 +23,15 @@
 /]
 
 [query public accessor(field : UnitField, parentAccessor : String, includeSelf : Boolean) : String
-	= if field.oclIsTypeOf(InterfaceField) then
-			field.oclAsType(InterfaceField).accessor(parentAccessor)
-		else
+	= if field.isFeatureField() then
 			field.oclAsType(Path).accessor(parentAccessor, field.selection(), includeSelf)
-		endif
+		else if field.isInterfaceField() then
+			field.oclAsType(InterfaceField).accessor(parentAccessor)
+		else if field.isLabelField() then
+			field.oclAsType(UnitLabel).accessor(parentAccessor)
+		else
+			''
+		endif endif endif
 /]
 
 [query private accessor(field : InterfaceField, parentAccessor : String) : String
@@ -36,6 +40,10 @@
 		else
 			parentAccessor.concat('[''').concat(field.modelPropertyName()).concat(''']')
 		endif
+/]
+
+[query private accessor(field : UnitLabel, parentAccessor : String) : String
+	= parentAccessor
 /]
 
 [query private accessorXXXXXX(association : UnitAssociation, parentAccessor : String) : String

@@ -83,11 +83,6 @@ text-truncate [/if]
 
 [template public displayField(field : UnitField, parentAccessor : String)
 	?(not field.isSingletonField()) post(trim())]
-[field.displayCollectionx(parentAccessor)/]
-[/template]
-
-
-[template private displayCollection(field : UnitField, parentAccessor : String) post(trim())]
 [let variable : String = 'value']
 {% for [variable/] in [field.accessor(parentAccessor)/] %}[if (field.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[field.displaySingleton(field.accessor(variable, false), parentAccessor)/]</div>[else]
@@ -178,6 +173,11 @@ text-truncate [/if]
 [template private displayDateValue(field : UnitField, accessor : String) post(trim())]
 {{ [field.getValue(accessor)/] | date[if (not field.dateFormat.oclIsUndefined())]
 ('[field.dateFormat/]')[/if] }}
+[/template]
+
+[template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
+	?(field.isLabelField()) post(trim())]
+{{ [field.getValue(accessor)/] }}
 [/template]
 
 [template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
