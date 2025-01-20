@@ -14,7 +14,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::base/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::collection/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::data/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::fields/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
@@ -118,7 +118,7 @@
 	[if (field.isAuthorised)]
 {% if [field.authorisation.authorisationExpression()/] %}
 	[/if]
-<td[if (field.isFeatureField)] class="[field.oclAsType(UnitFeature).persistentFeature.name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayValue(accessor)/]</td>
+<td[if (field.isFeatureField())] class="[field.oclAsType(UnitFeature).leafFeature().name.replaceAll('([A-Z])', '_$1').toLower()/]"[/if]>[field.displayField(accessor)/]</td>
 	[if (field.isAuthorised)]
 {% endif %}
 	[/if]

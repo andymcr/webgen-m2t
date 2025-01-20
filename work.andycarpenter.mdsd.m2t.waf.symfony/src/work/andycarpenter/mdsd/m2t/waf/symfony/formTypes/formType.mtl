@@ -154,8 +154,8 @@ class [association.typeClassName()/] extends AbstractType
 [/template]
 
 [template private useStatements(unit : SingletonUnit) post(trim())]
-[for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.persistentFeature.name))]
-use [feature.modelsNamespace()/]\[feature.enumerationType.modelClassName()/];
+[for (feature : UnitFeature | unit.uniqueEnumerationFeatures()->sortedBy(f | f.leafFeature().name))]
+use [feature.modelsNamespace()/]\[feature.enumerationType().modelClassName()/];
 [/for]
 [for (repository : Repository | unit.choicesRepositories())]
 use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
@@ -179,13 +179,13 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [if (unit.hasEnumerationFields)]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (unit.collectionFeatures->select(f | f.isAttributeField or f.isContains)->notEmpty())]
+[if (unit.collectionFeatures->select(f | f.isAttributeField() or f.isContains)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
-[if (unit.dateFields->select(f | f.dateDetails = DateDetails::DateOnly)->notEmpty())]
+[if (unit.dateFields->select(f | f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (unit.dateFields->select(f | f.dateDetails = DateDetails::DateAndTime)->notEmpty())]
+[if (unit.dateFields->select(f | f.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
 [if (unit.hasEmailFields)]
@@ -206,7 +206,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 [if (unit.hasTextareaFields)]
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 [/if]
-[if (unit.dateFields->select(f | f.dateDetails = DateDetails::TimeOnly)->notEmpty())]
+[if (unit.dateFields->select(f | f.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -267,7 +267,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private formField(field : UnitField)
-	? (field.isAttributeField and field.isSingleton) post(trim())]
+	? (field.isAttributeField() and field.isSingletonField()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [let translationDomain : String
 	= if field.hasTranslations() and field.singleUseModel() then
@@ -302,14 +302,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private formField(field : UnitField)
-	? (field.isAttributeField and not field.isSingleton) post(trim())]
+	? (field.isAttributeField() and not field.isSingletonField()) post(trim())]
 [let attribute : UnitAttribute = field.oclAsType(UnitAttribute)]
 [attribute.attribute.formFeature(attribute.collectionUiAllowAdd, attribute.collectionUiAllowRemove)/]
 [/let]
 [/template]
 
 [template private formField(field : UnitField)
-	? (field.isResourceField) post(trim())]
+	? (field.isResourceField()) post(trim())]
 [let resource : UnitResource = field.oclAsType(UnitResource)]
 [resource.resource.formFeature(resource.isDeletable, resource.isDownloadable,
 	resource.showImageWhenEditing, resource.imageFilter)/]
@@ -317,7 +317,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private formField(field : UnitField)
-	? (field.isAssociationField and not field.isContains) post(trim())]
+	? (field.isAssociationField() and not field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.useAutocomplete)]
 [association.formAutocompleteFeature()/]
@@ -332,9 +332,9 @@ $builder->add('[association.modelPropertyName()/]', [association.autocompleteTyp
 [/template]
 
 [template private formField(field : UnitField, dataInstance : String)
-	? (field.isAssociationField and field.isContains) post(trim())]
+	? (field.isAssociationField() and field.isContains) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[if (association.isSingleton)]
+[if (association.isSingletonField())]
 add('[association.modelPropertyName()/]', [association.typeClassName()/]::class)
 [else]
 add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
@@ -358,7 +358,7 @@ add('[association.modelPropertyName()/]', CollectionType::class, ['['/]
 [/template]
 
 [template private formField(field : UnitField)
-	? (field.isInterfaceField) post(trim())]
+	? (field.isInterfaceField()) post(trim())]
 [let interface : InterfaceField = field.oclAsType(InterfaceField)]
 [if (interface.isRepeated)]
 add('[interface.name/]', RepeatedType::class, ['['/]
@@ -368,7 +368,7 @@ add('[interface.name/]', [interface.interfaceType()/], ['['/]
 [/if]
     'mapped' => false,
     'translation_domain' => '[interface.displayedOn.translationDomain()/]',
-[if (interface.isRequired)]
+[if (interface.isRequiredField())]
     'required' => true,
 [/if]
 [if (not interface.isRepeated)]
@@ -390,29 +390,29 @@ add('[interface.name/]', [interface.interfaceType()/], ['['/]
 [/template]
 
 [template private interfaceType(field : InterfaceField) post(trim())]
-[if (field.isBooleanField)]
-CheckboxType::class
-[elseif (field.isDateField)]
-	[if (field.dateDetails = DateDetails::DateOnly)]
-DateType::class
-	[elseif (field.dateDetails = DateDetails::DateAndTime)]
-DateTimeType::class
-	[else]
-TimeType::class
-	[/if]
-[elseif (field.isEmailField)]
-EmailType::class
-[elseif (field.isEnumerationField)]
-ChoiceType::class
-[elseif (field.isIntegerField)]
-IntegerType::class
-[elseif (field.isObfuscatedField)]
-PasswordType::class
-[elseif (field.isTextareaField)]
-TextareaType::class
-[else]
+[comment if (field.isBooleanField) /]
+[comment CheckboxType::class /] 
+[comment elseif (field.isDateField) /]
+	[comment if (field.dateDetails = DateDetails::DateOnly) /]
+[comment DateType::class /] 
+	[comment elseif (field.dateDetails = DateDetails::DateAndTime) /]
+[comment DateTimeType::class /] 
+	[comment else/]
+[comment TimeType::class /] 
+	[comment /if/]
+[comment elseif (field.isEmailField) /]
+[comment EmailType::class /] 
+[comment elseif (field.isEnumerationField) /]
+[comment ChoiceType::class /] 
+[comment elseif (field.isIntegerField) /]
+[comment IntegerType::class /] 
+[comment elseif (field.isObfuscatedField) /]
+[comment PasswordType::class /] 
+[comment elseif (field.isTextareaField) /]
+[comment TextareaType::class /] 
+[comment else /]
 TextType::class
-[/if]
+[comment /if /]
 [/template]
 
 [template private repeatOptions(field : InterfaceField) post(trim())]
@@ -438,9 +438,9 @@ TextType::class
 [if (field.hasTitle or field.hasPlaceholder)]
     [field.fieldAttr()/]
 [/if]
-[if (field.isRequired or true)]
+[if (field.isRequiredField() or true)]
     'constraints' => ['['/]
-	[if (field.isRequired)]
+	[if (field.isRequiredField())]
         [field.notBlank()/],
 	[/if]
         new Length(['['/]
@@ -494,10 +494,10 @@ new NotBlank(['['/]
 $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
     $data = $event->getData();
 [for (field : UnitField | unit.defaultValueFields)]
-	[if (field.isFeatureField)]
+	[if (field.isFeatureField())]
 	[let feature : UnitFeature = field.oclAsType(UnitFeature)]
-    if (is_null($data->[feature.persistentFeature.getMethodName()/]())) {
-        $data->[feature.persistentFeature.setMethodName()/]([feature.defaultValue.controllerExpression('$data', null)/]);
+    if (is_null($data->[feature.leafFeature().getMethodName()/]())) {
+        $data->[feature.leafFeature().setMethodName()/]([feature.defaultValue.controllerExpression('$data', null)/]);
     }
 	[/let]
 	[else]
@@ -505,7 +505,7 @@ $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
 [/for]
 [for (field : UnitField | unit.forcedValueFields)]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-    $data->[feature.persistentFeature.setMethodName()/]([feature.forcedValue.controllerExpression('$data', null)/]);
+    $data->[feature.leafFeature().setMethodName()/]([feature.forcedValue.controllerExpression('$data', null)/]);
 [/let]
 [/for]
 });

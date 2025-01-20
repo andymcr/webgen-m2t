@@ -87,6 +87,22 @@
 /]
 
 
+[template public label(label : Label) ?(label.oclIsTypeOf(ModelLabel))  post(trim())]
+[let modelLabel : ModelLabel = label.oclAsType(ModelLabel)]
+.[modelLabel.name/][if (not modelLabel.name.endsWith('Label'))]Label[/if]()
+[/let]
+[/template]
+
+[template public label(label : Label) ?(label.oclIsKindOf(Attribute))  post(trim())]
+[let attribute : Attribute = label.oclAsType(Attribute)]
+[if (not attribute.isEnumerationFeature)]
+
+[else]
+| [attribute.enumerationType.filterName()/]
+[/if]
+[/let]
+[/template]
+
 [template public label(label : Label, accessor : String)
 	? (label.oclIsTypeOf(ModelLabel))  post(trim())]
 [let modelLabel : ModelLabel = label.oclAsType(ModelLabel)]

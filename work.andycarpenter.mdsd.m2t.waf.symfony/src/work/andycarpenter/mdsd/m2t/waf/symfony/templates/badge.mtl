@@ -21,7 +21,7 @@
 [/template]
 
 [template private value(badge : Badge, accessor : String) post(trim())]
-{{ [badge.value.pathAccessor(accessor, null)/] }}
+{{ [badge.value.getPathValue(badge.value.accessor(accessor, null))/] }}
 [/template]
 
 [template private icon(badge : Badge) post(trim())]

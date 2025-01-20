@@ -61,7 +61,7 @@
 				in if selectAction.valuePath.oclIsUndefined() then
 						valueAccessor
 					else
-						selectAction.valuePath.pathAccessor(valueAccessor, null)
+						selectAction.valuePath.accessor(valueAccessor, null)
 					endif
 		endif
 /]

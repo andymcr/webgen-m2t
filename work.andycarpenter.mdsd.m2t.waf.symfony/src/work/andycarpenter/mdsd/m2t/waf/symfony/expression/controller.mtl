@@ -43,8 +43,8 @@ new \DateTime()
 	? (expression.oclIsTypeOf(Callable)) post(trim())]
 [let callback : Callable = expression.oclAsType(Callable)]
 function ([callback.formalParameters()/]) {
-    return [callback.expression.controllerExpression(accessor, parentAccessor)/];
-}
+        return [callback.expression.controllerExpression(accessor, parentAccessor)/];
+    }
 [/let]
 [/template]
 
@@ -72,21 +72,23 @@ count([size.value.controllerExpression(accessor, parentAccessor)/])
 [/template]
 
 [template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
-	? (guard.oclIsTypeOf(AttributeVariable)) post(trim())]
-[let path : AttributeVariable = guard.oclAsType(AttributeVariable)]
-[if (path.useContainerAsContext())]
-[parentAccessor/][else]
-[accessor/][/if]->[path.attribute.getMethodName()/]()
-[/let] 
-[/template]
-
-[template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
 	? (guard.oclIsTypeOf(AssociationVariable)) post(trim())]
 [let path : AssociationVariable = guard.oclAsType(AssociationVariable)]
 [if (path.useContainerAsContext())]
 [parentAccessor/][else]
 [accessor/][/if]->[path.association.getMethodName()/]()[if (not path.childFeature.oclIsUndefined())]
-[path.childFeature.pathExpression()/][/if]
+[path.childFeature.pathExpression()/][else]
+[if (path.eContainer().oclIsTypeOf(ReduceFunction))]
+->toArray()[/if][/if]
+[/let] 
+[/template]
+
+[template public controllerExpression(guard : Expression, accessor : String, parentAccessor : String)
+	? (guard.oclIsTypeOf(AttributeVariable)) post(trim())]
+[let path : AttributeVariable = guard.oclAsType(AttributeVariable)]
+[if (path.useContainerAsContext())]
+[parentAccessor/][else]
+[accessor/][/if]->[path.attribute.getMethodName()/]()
 [/let] 
 [/template]
 
@@ -108,9 +110,39 @@ count([size.value.controllerExpression(accessor, parentAccessor)/])
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
 [let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
-$[variable.formal.name/]
+$[variable.formal.name/][if (not variable.childFeature.oclIsUndefined())]
+[variable.childFeature.pathAccessor()/][/if]
 [/let]
 [/template]
+
+[query private pathAccessor(path : Path) : String
+	= if path.oclIsKindOf(AssociationPathElement) then
+			path.oclAsType(AssociationPathElement).pathAccessor()
+		else if path.oclIsKindOf(AttributePathElement) then
+			path.oclAsType(AttributePathElement).pathAccessor()
+		else if path.oclIsKindOf(ResourcePathElement) then
+			path.oclAsType(ResourcePathElement).pathAccessor()
+		else
+			''
+		endif endif endif
+/]
+
+[query private pathAccessor(association : AssociationPathElement) : String
+	= '->'.concat(association.association.getMethodName())
+		.concat(if association.childFeature.oclIsUndefined() then
+				''
+			else
+				association.childFeature.pathAccessor()
+			endif)
+/]
+
+[query private pathAccessor(attribute : AttributePathElement) : String
+	= '->'.concat(attribute.attribute.getMethodName())
+/]
+
+[query private pathAccessor(resource : ResourcePathElement) : String
+	= '->'.concat(resource.resource.getMethodName())
+/]
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
 	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]

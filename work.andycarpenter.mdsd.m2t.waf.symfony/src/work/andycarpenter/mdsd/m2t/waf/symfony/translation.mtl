@@ -252,7 +252,7 @@
 [query public hasFieldTranslations(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).displayFields
-				->select(f | f.hasTranslations() or f.hasEmptyDisplayValue())->notEmpty()
+				->select(f | f.hasTranslations() or f.hasEmptyCollectionDisplay())->notEmpty()
 		else
 			false
 		endif
@@ -309,20 +309,20 @@
 	= field.fieldContainedId().concat('.').concat(field.titleElement())
 /]
 
-[query public defaultDisplayLabelContainedId(field : UnitFeature) : String
-	= field.persistentFeature.captionContainedId()
+[query public defaultDisplayLabelContainedId(feature : UnitFeature) : String
+	= feature.leafFeature().captionContainedId()
 /]
 
-[query public defaultPlaceholderContainedId(field : UnitFeature) : String
-	= field.persistentFeature.captionContainedId()
+[query public defaultPlaceholderContainedId(feature : UnitFeature) : String
+	= feature.leafFeature().captionContainedId()
 /]
 
 [query public defaultTitleContainedId(field : UnitFeature) : String
-	= field.persistentFeature.captionContainedId()
+	= field.leafFeature().captionContainedId()
 /]
 
-[query public emptyValueContainedId(field : UnitField) : String
-	= field.fieldContainedId().concat('.').concat(field.emptyValueElement())
+[query public emptyValueContainedId(feature : UnitField) : String
+	= feature.fieldContainedId().concat('.').concat(feature.emptyValueElement())
 /]
 
 [query private fieldContainedId(field : UnitField) : String

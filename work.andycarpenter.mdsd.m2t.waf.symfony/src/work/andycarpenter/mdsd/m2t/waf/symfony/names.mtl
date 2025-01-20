@@ -307,8 +307,8 @@
 
 [query private featureNames(form : DynamicUnit) : Sequence(String)
 	= form.displayFields
-		->select(f | f.isFeatureField).oclAsType(UnitFeature)
-		->collect(f | f.persistentFeature)
+		->select(f | f.isFeatureField()).oclAsType(UnitFeature)
+		->collect(f | f.leafFeature())
 		->sortedBy(f | f.name)
 		->collect(f | f.name)
 /]
@@ -583,10 +583,10 @@
 /]
 
 [query public formName(field : UnitField) : String
-	= if field.isFeatureField then
-			if field.isAttributeField then
+	= if field.isFeatureField() then
+			if field.isAttributeField() then
 				field.oclAsType(UnitAttribute).attribute.columnName
-			else if field.isResourceField then
+			else if field.isResourceField() then
 				field.oclAsType(UnitResource).resource.columnName
 			else
 				let association : Association
@@ -597,7 +597,7 @@
 							association.modelPropertyName() 
 						endif 
 			endif endif
-		else if field.isInterfaceField then
+		else if field.isInterfaceField() then
 			field.oclAsType(InterfaceField).name
 		else
 			'UnhandledFeature'
@@ -605,27 +605,19 @@
 /]
 
 [query public instanceName(field : UnitField) : String
-	= if field.isAttributeField then
-			field.oclAsType(UnitAttribute).name
-		else if field.isResourceField then
-			field.oclAsType(UnitResource).name
-		else if field.isAssociationField then
-			field.oclAsType(UnitAssociation).name()
-		else
+	= if field.isFeatureField() then
+			field.oclAsType(UnitFeature).name
+		else if field.isInterfaceField() then
 			field.oclAsType(InterfaceField).name
-		endif endif endif.toLowerFirst()
+		else
+			''
+		endif endif.toLowerFirst()
 /]
 
 [query public modelPropertyName(field : UnitField) : String
-	= if field.isFeatureField then
-			if field.isAttributeField then
-				field.oclAsType(UnitAttribute).attribute.modelPropertyName()
-			else if field.isResourceField then
-				field.oclAsType(UnitResource).resource.filePropertyName()
-			else
-				field.oclAsType(UnitAssociation).association.modelPropertyName()
-			endif endif
-		else if field.isInterfaceField then
+	= if field.isFeatureField() then
+			field.oclAsType(UnitFeature).leafFeature().modelPropertyName()
+		else if field.isInterfaceField() then
 			field.oclAsType(InterfaceField).name
 		else
 			'UnhandledFeature'

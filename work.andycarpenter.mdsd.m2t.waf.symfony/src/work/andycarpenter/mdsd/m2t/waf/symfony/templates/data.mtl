@@ -15,7 +15,7 @@
 
 
 [template public getImmediateValue(field : UnitField, parentAccessor : String) post(trim())]
-[if (field.isFeatureField)]
+[if (field.isFeatureField())]
 [field.oclAsType(UnitFeature).getImmediateValue(parentAccessor)/]
 [else]
 NULL
@@ -23,9 +23,9 @@ NULL
 [/template]
 
 [template private getImmediateValue(feature : UnitFeature, parentAccessor : String) post(trim())]
-[if (feature.isAttributeField)]
+[if (feature.isAttributeField())]
 [feature.oclAsType(UnitAttribute).getImmediateValue(parentAccessor)/]
-[elseif (feature.isResourceField)]
+[elseif (feature.isResourceField())]
 [feature.oclAsType(UnitResource).getImmediateValue(parentAccessor)/]
 [else]
 [feature.oclAsType(UnitAssociation).getImmediateValue(parentAccessor)/]
@@ -46,7 +46,7 @@ NULL
 
 
 [template public displayValue(field : UnitField, parentAccessor : String)
-	? ((field.isDataTypeField and not field.isBooleanField and not field.isEnumerationField) and field.isSingleton) post(trim())]
+	? ((field.isDataTypeField() and not field.isBooleanField() and not field.isEnumerationField()) and field.isSingletonField()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
 [else]
@@ -57,7 +57,7 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String)
-	? ((field.isDataTypeField and not field.isBooleanField and not field.isEnumerationField) and not field.isSingleton) post(trim())]
+	? ((field.isDataTypeField() and not field.isBooleanField() and not field.isEnumerationField()) and not field.isSingletonField()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor))/] | default('') }}
 [else]
@@ -65,7 +65,7 @@ NULL
 [let variable : String = 'value']
 {% for [variable/] in [feature.accessor(parentAccessor)/] %}[if (feature.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</div>[else]
-<span[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if][if (not feature.emptyDisplayValue.oclIsUndefined())]
+<span[if (field.truncate)] class="text-truncate"[/if]>[feature.displayAttribute(variable, parentAccessor)/]</span>[/if][if (not feature.emptyCollectionDisplay.oclIsUndefined())]
 {% else %}{{ '[feature.emptyValueContainedId()/]' | trans({}, '[feature.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
 [/let]
 [/let]
@@ -73,15 +73,15 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String)
-	? (field.isEnumerationField) post(trim())]
+	? (field.isEnumerationField()) post(trim())]
 [if (field.oclIsKindOf(InterfaceField))]
 {{ [field.getValue(field.accessor(parentAccessor))/][if (not field.escapeHTML)]
  | raw[/if] }}
 [else]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
 	[if (feature.displayDefaultWhen.oclIsUndefined())]
-{{ [feature.getValue(field.accessor(parentAccessor))/][if (not feature.defaultDisplayValue.oclIsUndefined())]
- | default('[feature.defaultDisplayValue/]')[/if][if (not feature.escapeHTML)]
+{{ [feature.getValue(field.accessor(parentAccessor))/][if (not feature.defaultDisplay.oclIsUndefined())]
+ | default('[feature.defaultDisplay/]')[/if][if (not feature.escapeHTML)]
  | raw[/if] }}
 	[else]
 [comment 'todo'/]
@@ -91,10 +91,10 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String)
-	? (field.isDateField) post(trim())]
-[if (field.hasEmptyDisplayValue())]
+	? (field.isDateField()) post(trim())]
+[if (field.hasEmptyCollectionDisplay())]
 {% if [field.getValue(field.accessor(parentAccessor))/] is not null %}[/if]
-[field.displayDateValue(parentAccessor)/][if (field.hasEmptyDisplayValue())]
+[field.displayDateValue(parentAccessor)/][if (field.hasEmptyCollectionDisplay())]
 {% else %}{{ '[field.emptyValueContainedId()/]' | trans({}, '[field.displayedOn.translationDomain()/]') }}{% endif %}[/if]
 [/template]
 
@@ -104,7 +104,7 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String) 
-	? (field.isBooleanField) post(trim())] 
+	? (field.isBooleanField()) post(trim())] 
 <label for="[field.fieldId()/]"{% if not [field.accessor(parentAccessor)/] %} hidden="hidden"{% endif %}>
  <input type="checkbox" id="[field.fieldId()/]" checked="checked" disabled="disabled"/>
  <span></span>
@@ -112,7 +112,7 @@ NULL
 [/template] 
 
 [template public displayValue(field : UnitField, parentAccessor : String)
-	? (field.isResourceField and field.isSingleton) post(trim())]
+	? (field.isResourceField() and field.isSingletonField()) post(trim())]
 [let resource : UnitResource = field.oclAsType(UnitResource)]
 [let accessor : String = field.accessor(parentAccessor)]
 <?php
@@ -129,7 +129,7 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String)
-	? (field.isAssociationField and field.isSingleton) post(trim())]
+	? (field.isAssociationField() and field.isSingletonField()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = association.accessor(parentAccessor)]
 [association.displayAssociation(accessor, parentAccessor)/]
@@ -138,14 +138,14 @@ NULL
 [/template]
 
 [template public displayValue(field : UnitField, parentAccessor : String)
-	? (field.isAssociationField and not field.isSingleton) post(trim())]
+	? (field.isAssociationField() and not field.isSingletonField()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = association.accessor(parentAccessor)]
 [let variable : String = 'value']
 {% for [variable/] in [accessor/][if (not association.collectionSortBy.oclIsUndefined() or association.collectionMaximumValues > 0)]
  [association.filters()/][/if] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</div>[else]
-<span[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyDisplayValue.oclIsUndefined())]
+<span[if (field.truncate)] class="text-truncate"[/if]>[association.displayAssociation(variable, variable)/]</span>[/if][if (not association.emptyCollectionDisplay.oclIsUndefined())]
 {% else %}{{ '[association.emptyValueContainedId()/]' | trans({}, '[association.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
 [/let]
 [/let]
@@ -170,9 +170,9 @@ NULL
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
 [if (feature.hasActions)]
 [let parentEntity : Entity
-		= if feature.isAttributeField then 
+		= if feature.isAttributeField() then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
-			else if feature.isResourceField then 
+			else if feature.isResourceField() then 
 				feature.oclAsType(UnitResource).resource.partOf
 			else
 				feature.oclAsType(UnitAssociation).association.sourceType
@@ -194,15 +194,15 @@ NULL
 
 [template private displayFeature(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
 [if (feature.displayDefaultWhen.oclIsUndefined())]
-{{ [feature.getValue(accessor)/][if (not feature.defaultDisplayValue.oclIsUndefined())]
- | default('[feature.defaultDisplayValue/]')[/if][if (not feature.escapeHTML)]
+{{ [feature.getValue(accessor)/][if (not feature.defaultDisplay.oclIsUndefined())]
+ | default('[feature.defaultDisplay/]')[/if][if (not feature.escapeHTML)]
  | raw[/if] }}
 [else]
 {%- if [feature.displayDefaultWhen.twigExpression(parentAccessor)/] -%}
 	[if (not feature.escapeHTML)]
-{{ '[feature.defaultDisplayValue/]' | raw }}
+{{ '[feature.defaultDisplay/]' | raw }}
 	[else]
-[feature.defaultDisplayValue/]
+[feature.defaultDisplay/]
 	[/if]
 {%- else -%}
 {{ [feature.getValue(accessor)/][if (not feature.escapeHTML)]

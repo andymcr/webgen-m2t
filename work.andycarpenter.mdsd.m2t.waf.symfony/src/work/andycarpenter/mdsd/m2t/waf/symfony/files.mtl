@@ -65,6 +65,10 @@
 	= eObject.configDirectory().concat('/').concat('packages')
 /]
 
+[query public configRoutesDirectory(eObject : EObject) : String
+	= eObject.configDirectory().concat('/').concat('routes')
+/]
+
 [query private controllerDirectory(eObject : EObject) : String
 	= 'Controller'
 /]

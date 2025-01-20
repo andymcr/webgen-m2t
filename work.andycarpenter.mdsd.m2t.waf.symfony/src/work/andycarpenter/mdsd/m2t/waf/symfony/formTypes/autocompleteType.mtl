@@ -37,13 +37,13 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
         $resolver->setDefaults(['['/]
             'label' => '[association.association.captionContainedId()/]',
             'translation_domain' => 'entity',
-[if (not association.isSingleton or not association.isRequired)]
+[if (not association.isSingletonField() or not association.isRequiredField())]
             'required' => false,
 [/if]
             'class' => [searchType.modelClassName()/]::class,
             'choice_label' => [if (association.valueDisplay.oclIsUndefined())]'defaultLabel'[else]'[association.valueDisplay.name.toLowerFirst()/][if (not association.valueDisplay.name.endsWith('Label'))]Label[/if]'[/if],
             'choice_translation_domain' => false,
-[if (association.isSingleton)]
+[if (association.isSingletonField())]
             'placeholder' => 'actions.labels.select_one',
 [else]
             'multiple' => true,

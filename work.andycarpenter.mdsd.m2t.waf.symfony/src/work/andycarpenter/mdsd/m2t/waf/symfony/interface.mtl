@@ -215,21 +215,13 @@
 [query public fieldId(field : UnitFeature) : String
 	= let featuresWithName : Sequence(Feature)
 		= field.displayedOn.featureFields
-				->collect(f | f.persistentFeature)
-				->select(f | f.name = field.persistentFeature.name)
+				->collect(f | f.leafFeature())
+				->select(f | f.name = field.leafFeature().name)
 		in if featuresWithName->size() = 1 then
-				field.persistentFeature.id()
+				field.leafFeature().id()
 			else
-				field.persistentFeature.partOf.id().concat('.').concat(field.persistentFeature.id())
+				field.leafFeature().partOf.id().concat('.').concat(field.leafFeature().id())
 			endif
-/]
-
-[query public hasEmptyDisplayValue(field : UnitField) : Boolean
-	= if field.oclIsKindOf(UnitFeature) then
-			not field.oclAsType(UnitFeature).emptyDisplayValue.oclIsUndefined()
-		else
-			false
-		endif
 /]
 
 [query public isConditionalDisplay(field : UnitField) : Boolean
@@ -237,9 +229,9 @@
 /]
 
 [query public styleClass(field : UnitField) : String
-	= if field.isFeatureField then
-			self.oclAsType(UnitFeature).persistentFeature.modelPropertyName().snakeCase()
-		else if field.isInterfaceField then
+	= if field.isFeatureField() then
+			self.oclAsType(UnitFeature).leafFeature().modelPropertyName().snakeCase()
+		else if field.isInterfaceField() then
 			field.oclAsType(InterfaceField).name.snakeCase()
 		else if field.oclIsTypeOf(UnitLabel) then
 			field.oclAsType(UnitLabel).name.snakeCase()

@@ -12,7 +12,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::badge/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::base/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::data/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::fields/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::image/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]

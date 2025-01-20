@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module fields(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
@@ -7,7 +8,9 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::authorisationTemplate/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::data/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
 
 [template public fields(unit : DynamicUnit, unitAccessor : String) post(trim())]
@@ -48,13 +51,13 @@
 
 [template private labelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
 [field.fieldLabel(unit)/]
-<dd [field.valueClass()/]>[field.displayValue(unitAccessor)/]</dd>
+<dd [field.valueClass()/]>[field.displayField(unitAccessor)/]</dd>
 [/template]
 
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
 <dt[if (field.hasFieldLabelClass)] [field.labelClass()/][/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[field.customisedCaptionContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
-{{ '[if (field.isFeatureField)][field.oclAsType(UnitFeature).defaultDisplayLabelContainedId()/][else]XXXXXXXX[/if]' | trans }}[/if]</dt>
+{{ '[if (field.isFeatureField())][field.oclAsType(UnitFeature).defaultDisplayLabelContainedId()/][else]XXXXXXXX[/if]' | trans }}[/if]</dt>
 [/template]
 
 [template private labelClass(field : UnitField) post(trim())]
@@ -62,12 +65,132 @@ class="[field.fieldLabelClass/]"
 [/template]
 
 [template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
-<li [field.valueClass()/]>[field.displayValue(unitAccessor)/]</li>
+<li [field.valueClass()/]>[field.displayField(unitAccessor)/]</li>
 [/template]
 
 [template private valueClass(field : UnitField) post(trim())]
 class="[if (field.hasFieldValueClass)]
-[field.fieldValueClass/] [/if][if (field.truncate and field.isSingleton)]
+[field.fieldValueClass/] [/if][if (field.truncate and field.isSingletonField())]
 text-truncate [/if]
 [field.styleClass().snakeCase()/]"
+[/template]
+
+
+[template public displayField(field : UnitField, parentAccessor : String)
+	?(field.isSingletonField()) post(trim())]
+[field.displaySingleton(field.accessor(parentAccessor), parentAccessor)/]
+[/template]
+
+[template public displayField(field : UnitField, parentAccessor : String)
+	?(not field.isSingletonField()) post(trim())]
+[field.displayCollectionx(parentAccessor)/]
+[/template]
+
+
+[template private displayCollection(field : UnitField, parentAccessor : String) post(trim())]
+[let variable : String = 'value']
+{% for [variable/] in [field.accessor(parentAccessor)/] %}[if (field.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+<div[if (field.truncate)] class="text-truncate"[/if]>[field.displaySingleton(field.accessor(variable, false), parentAccessor)/]</div>[else]
+<span[if (field.truncate)] class="text-truncate"[/if]>[field.displaySingleton(field.accessor(variable, false), parentAccessor)/]</span>[/if][if (field.hasEmptyCollectionDisplay())]
+{% else %}{{ '[field.emptyValueContainedId()/]' | trans({}, '[field.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
+[/let]
+[/template]
+
+[template private displayCollectionx(field : UnitField, parentAccessor : String)
+	?(field.isAssociationField() and not field.isSingletonField()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[let variable : String = 'value']
+{% for [variable/] in [association.accessor(parentAccessor)/][if (not association.collectionSortBy.oclIsUndefined() or association.collectionMaximumValues > 0)]
+ [association.filters()/][/if] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+<div[if (field.truncate)] class="text-truncate"[/if]>[association.displaySingleton(association.accessor(variable, false), parentAccessor)/]</div>[else]
+<span[if (field.truncate)] class="text-truncate"[/if]>[association.displaySingleton(association.accessor(variable, false), parentAccessor)/]</span>[/if][if (association.hasEmptyCollectionDisplay())]
+{% else %}{{ '[association.emptyValueContainedId()/]' | trans({}, '[association.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
+[/let]
+[/let]
+[/template]
+
+[template private filters(association : UnitAssociation) post(trim())]
+[if (not association.collectionSortBy.oclIsUndefined())]
+| sort((a, b) => a.[association.collectionSortBy.modelPropertyName()/] < b.[association.collectionSortBy.modelPropertyName()/])[/if]
+[if (association.collectionMaximumValues > 0)]
+ | slice(0, [association.collectionMaximumValues/])
+[/if]
+[/template]
+
+[template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
+	?(field.isAssociationField()) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
+[if (association.hasActions())]
+[association.actions()->first().featureActionLink(association, accessor)/]
+[else]
+	[if (association.hasDisplayDefaultWhen())]
+{%- if [association.displayDefaultWhen.twigExpression(parentAccessor)/] -%}
+		[if (not association.escapeHTML)]
+{{ '[association.defaultDisplay/]' | raw }}
+		[else]
+[association.defaultDisplay/]
+		[/if]
+{%- else -%}
+{{ [association.getValue(accessor)/][if (not association.escapeHTML)]
+ | raw[/if] }}
+{%- endif -%}
+	[else]
+{{ [association.getValue(accessor)/][if (association.hasDefaultDisplay())]
+ | default('[association.defaultDisplay/]')[/if][if (not association.escapeHTML)]
+ | raw[/if] }}
+	[/if]
+[/if]
+[/let]
+[/template]
+
+[template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
+	?(field.isBooleanField()) post(trim())] 
+<label for="[field.fieldId()/]"{% if not [accessor/] %} hidden="hidden"{% endif %}>
+ <input type="checkbox" id="[field.fieldId()/]" checked="checked" disabled="disabled"/>
+ <span></span>
+</label>
+[/template] 
+
+[template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
+	?(field.isDataTypeField() and not field.isBooleanField()) post(trim())]
+[if (field.hasDisplayDefaultWhen())]
+{%- if [field.displayDefaultWhen.twigExpression(accessor)/] -%}
+[field.defaultDisplay/]
+{%- else -%}
+{{ [field.getValue(accessor)/][if (not field.escapeHTML)]
+ | raw[/if] }}
+{%- endif -%}
+[else]
+{{ [field.getValue(accessor)/][if (field.hasDefaultDisplay())]
+ | default('[field.defaultDisplay/]')[/if][if (not field.escapeHTML)]
+ | raw[/if] }}
+[/if]
+[/template]
+
+[template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
+	?(field.isDateField()) post(trim())]
+[if (field.hasEmptyCollectionDisplay())]
+{% if [field.getValue(accessor)/] is not null %}[/if]
+[field.displayDateValue(accessor)/][if (field.hasEmptyCollectionDisplay())]
+{% else %}{{ '[field.emptyValueContainedId()/]' | trans({}, '[field.displayedOn.translationDomain()/]') }}{% endif %}[/if]
+[/template]
+
+[template private displayDateValue(field : UnitField, accessor : String) post(trim())]
+{{ [field.getValue(accessor)/] | date[if (not field.dateFormat.oclIsUndefined())]
+('[field.dateFormat/]')[/if] }}
+[/template]
+
+[template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
+	?(field.isResourceField()) post(trim())]
+[let resource : UnitResource = field.oclAsType(UnitResource)]
+<?php
+[if (not resource.isConditionalDisplay())]
+    if (!empty([resource.getValue(accessor)/]))
+[/if]
+        echo HTML::anchor(
+            [resource.getValue(accessor)/],
+            '[resource.displayLabel/]',
+            NULL, NULL, FALSE);
+?>
+[/let]
 [/template]

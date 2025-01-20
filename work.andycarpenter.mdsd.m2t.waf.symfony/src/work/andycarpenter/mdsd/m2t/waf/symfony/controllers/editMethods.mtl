@@ -137,9 +137,9 @@ if (![unit.instanceVariable()/]) {
     throw $this->createNotFoundException('The [unit.contentType.name/] does not exist');
 }
 [for (field : UnitAssociation | unit.formFields->select(f | f.isContains).oclAsType(UnitAssociation))]
-[let association : Association = field.persistentFeature.oclAsType(Association)]
+[let association : Association = field.leafFeature().oclAsType(Association)]
 $original[field.instanceName().toUpperFirst()/] = new ArrayCollection();
-foreach ([unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/]() as $[association.targetType.instanceName()/])
+foreach ([unit.instanceVariable()/]->[field.leafFeature().getMethodName()/]() as $[association.targetType.instanceName()/])
     $original[field.instanceName().toUpperFirst()/]->add($[association.targetType.instanceName()/]);
 [/let]
 [/for]
@@ -147,9 +147,9 @@ foreach ([unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/](
 [unit.formVariable()/]->handleRequest($request);
 if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) {
 [for (field : UnitAssociation | unit.formFields->select(f | f.isContains).oclAsType(UnitAssociation))]
-[let association : Association = field.persistentFeature.oclAsType(Association)]
+[let association : Association = field.leafFeature().oclAsType(Association)]
     foreach ($original[field.instanceName().toUpperFirst()/] as $[association.targetType.instanceName()/])
-        if (false === [unit.instanceVariable()/]->[field.persistentFeature.getMethodName()/]()->contains($[association.targetType.instanceName()/]))
+        if (false === [unit.instanceVariable()/]->[field.leafFeature().getMethodName()/]()->contains($[association.targetType.instanceName()/]))
             $this->[association.targetType.repository.repositoryInstanceName()/]->remove($[association.targetType.instanceName()/]);
 [/let]
 [/for]

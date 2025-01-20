@@ -19,20 +19,26 @@
 
 
 [query public accessor(field : UnitField, parentAccessor : String) : String
-	= if field.oclIsTypeOf(UnitAssociation) then
-			field.oclAsType(UnitAssociation).accessor(parentAccessor)
-		else if field.oclIsTypeOf(UnitAttribute) then
-			field.oclAsType(UnitAttribute).accessor(parentAccessor)
-		else if field.oclIsTypeOf(InterfaceField) then
-			field.oclAsType(InterfaceField).accessor(parentAccessor)
-		else if field.oclIsTypeOf(UnitResource) then
-			field.oclAsType(UnitResource).accessor(parentAccessor)
-		else
-			parentAccessor
-		endif endif endif endif
+	= field.accessor(parentAccessor, true)
 /]
 
-[query private accessor(association : UnitAssociation, parentAccessor : String) : String
+[query public accessor(field : UnitField, parentAccessor : String, includeSelf : Boolean) : String
+	= if field.oclIsTypeOf(InterfaceField) then
+			field.oclAsType(InterfaceField).accessor(parentAccessor)
+		else
+			field.oclAsType(Path).accessor(parentAccessor, field.selection(), includeSelf)
+		endif
+/]
+
+[query private accessor(field : InterfaceField, parentAccessor : String) : String
+	= if field.hasObjectAccess(field.selection()) then
+			parentAccessor.concat('.').concat(field.modelPropertyName())
+		else
+			parentAccessor.concat('[''').concat(field.modelPropertyName()).concat(''']')
+		endif
+/]
+
+[query private accessorXXXXXX(association : UnitAssociation, parentAccessor : String) : String
 	= let accessor : String
 		= if association.options.oclIsUndefined() or true then
 				association.association.accessor(parentAccessor,
@@ -42,7 +48,7 @@
 			else
 				association.collectionAccessor(parentAccessor)
 			endif
-		in association.pathAccessor2(accessor, association.selection())
+		in ''
 /]
 
 [query private collectionAccessor(association : UnitAssociation, parentAccessor : String) : String
@@ -58,85 +64,74 @@
 	= association.association.sourceType.repository.repositoryClassName().toLowerFirst()
 /]
 
-[query private accessor(attribute : UnitAttribute, parentAccessor : String) : String
-	= attribute.attribute.accessor(parentAccessor,
-		attribute.attribute.alias(attribute.selection()),
-		attribute.hasObjectAccess(attribute.selection()))
+[query public accessor(path : Path, parentAccessor : String, selection : Selection) : String
+	= path.accessor(parentAccessor, selection, true)
 /]
 
-[query private accessor(field : InterfaceField, parentAccessor : String) : String
-	= if field.hasObjectAccess(field.selection()) then
-			parentAccessor.concat('.').concat(field.modelPropertyName())
-		else
-			parentAccessor.concat('[''').concat(field.modelPropertyName()).concat(''']')
-		endif
-/]
-
-[query private accessor(resource : UnitResource, parentAccessor : String) : String
-	= resource.resource.accessor(parentAccessor,
-		resource.resource.alias(resource.selection()),
-		resource.hasObjectAccess(resource.selection()))
-/]
-
-
-[query public pathAccessor(path : Path, parentAccessor : String, selection : Selection) : String
+[query public accessor(path : Path, parentAccessor : String, selection : Selection,
+		includeSelf : Boolean) : String
 	= if path.oclIsKindOf(AssociationPathElement) then
-			path.oclAsType(AssociationPathElement).pathAccessor(parentAccessor, selection)
+			path.oclAsType(AssociationPathElement).accessor(parentAccessor, selection, includeSelf)
 		else if path.oclIsKindOf(AttributePathElement) then
-			path.oclAsType(AttributePathElement).pathAccessor(parentAccessor, selection)
+			path.oclAsType(AttributePathElement).accessor(parentAccessor, selection, includeSelf)
 		else if path.oclIsKindOf(ResourcePathElement) then
-			path.oclAsType(ResourcePathElement).pathAccessor(parentAccessor, selection)
+			path.oclAsType(ResourcePathElement).accessor(parentAccessor, selection, includeSelf)
 		else
-			path.oclAsType(LabelDisplayValue).pathAccessor(parentAccessor)
+			path.oclAsType(LabelDisplayValue).accessor(parentAccessor)
 		endif endif endif
 /]
 
-[query private pathAccessor(association : AssociationPathElement, parentAccessor : String,
-		selection : Selection) : String
-	= association.pathAccessor2(
-		association.association.accessor(parentAccessor,
-			association.association.alias(selection),
-			not association.childFeature.oclIsUndefined(),
-			association.hasObjectAccess(selection)), 
-		selection)
-/]
-
-[query private pathAccessor2(association : AssociationPathElement, accessor : String,
-		selection : Selection) : String
-	= if association.childFeature.oclIsUndefined() then
-				accessor
+[query private accessor(association : AssociationPathElement, parentAccessor : String,
+		selection : Selection, includeSelf : Boolean) : String
+	= let accessor : String
+		= if includeSelf then
+				association.association.accessor(parentAccessor, association.association.alias(selection),
+					not association.childFeature.oclIsUndefined(), association.hasObjectAccess(selection))
 			else
-				association.childFeature.pathAccessor(accessor, selection)
-			endif 
+				parentAccessor
+			endif
+		in if association.childFeature.oclIsUndefined() then
+					accessor
+				else
+					association.childFeature.accessor(accessor, selection, true)
+				endif
 /]
 
-[query private pathAccessor(attribute : AttributePathElement, parentAccessor : String,
-		selection : Selection) : String
-	= attribute.attribute.accessor(parentAccessor, attribute.attribute.alias(selection),
-		attribute.hasObjectAccess(selection))
+[query private accessor(attribute : AttributePathElement, parentAccessor : String,
+		selection : Selection, includeSelf : Boolean) : String
+	= if includeSelf then
+			attribute.attribute.accessor(parentAccessor, attribute.attribute.alias(selection),
+				attribute.hasObjectAccess(selection))
+		else
+			parentAccessor
+		endif
 /]
 
-[query private pathAccessor(resource : ResourcePathElement, parentAccessor : String,
-		selection : Selection) : String
-	= resource.resource.accessor(parentAccessor, resource.resource.alias(selection), 
-		resource.hasObjectAccess(selection))
+[query private accessor(resource : ResourcePathElement, parentAccessor : String,
+		selection : Selection, includeSelf : Boolean) : String
+	= if includeSelf then
+			resource.resource.accessor(parentAccessor, resource.resource.alias(selection), 
+				resource.hasObjectAccess(selection))
+		else
+			parentAccessor
+		endif
 /]
 
-[query private pathAccessor(label : LabelDisplayValue, parentAccessor : String) : String
+[query private accessor(label : LabelDisplayValue, parentAccessor : String) : String
 	= parentAccessor
 /]
 
-[query public pathAccessorResourceExistance(path : Path, parentAccessor : String, selection : Selection,
+[query public pathAccessorFile(path : Path, parentAccessor : String, selection : Selection,
 		objectAccess : Boolean) : String
 	= if not path.leafFeature().oclIsKindOf(ResourceFeature) then
 			''
 		else
 			let resource : ResourceFeature = path.leafFeature().oclAsType(ResourceFeature)
-				in path.pathAccessor(parentAccessor, selection)
+				in path.accessor(parentAccessor, selection, false)
 					.concat('.')
 					.concat(if objectAccess then
 							if resource.alias(selection).oclIsUndefined() then
-								resource.detailsPropertyName()
+								resource.filePropertyName()
 							else
 								resource.alias(selection)
 							endif.concat('.name')
