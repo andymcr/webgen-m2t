@@ -4,7 +4,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
 

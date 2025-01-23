@@ -21,7 +21,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::collection/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::fields/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::image/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
@@ -204,14 +203,14 @@
 
 [template private cardTitle(unit : TextCardsUnit, cardAccessor : String) post(trim())]
 [if (not unit.elementTitle.oclIsUndefined())]
-<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/][unit.elementTitle.valueLabel()/] }}</h5>
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] }}</h5>
 [/if]
 [/template]
 
 [template private cardTitle(unit : DateCardsUnit, cardAccessor : String) post(trim())]
 [unit.dateImage(cardAccessor)/]
 [if (not unit.elementTitle.oclIsUndefined() or unit.displayFields->notEmpty())]
-<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/][unit.elementTitle.valueLabel()/] }}</h5>
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] }}</h5>
 [/if]
 [/template]
 
@@ -238,7 +237,7 @@
 [template private cardTitle(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [unit.cardImage(cardAccessor)/]
 [if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
-<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if] mt-2">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/][unit.elementTitle.valueLabel()/] }}</h5>
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if] mt-2">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] }}</h5>
 [/if]
 [/template]
 

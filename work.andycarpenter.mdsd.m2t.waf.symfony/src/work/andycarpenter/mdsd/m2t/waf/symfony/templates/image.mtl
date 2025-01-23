@@ -9,7 +9,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
 
 
@@ -32,7 +31,7 @@
 [/template]
 
 [template public image(unit : ImageUnit, baseAccessor : String, title : DisplayValue, imageClass : String) post(trim())]
-[let imageAccessor : String = unit.imageFeaturePath.existanceTest(baseAccessor, unit.oclAsType(DynamicUnit).selection())]
+[let imageAccessor : String = unit.imageFeaturePath.existanceTestAccessor(baseAccessor, unit.oclAsType(DynamicUnit).selection())]
 [if (unit.showMissingImageWhen.oclIsUndefined())]
 	[if (not unit.imageFeaturePath.isRequired)]
 {%- if [imageAccessor/] is not empty -%}
@@ -105,12 +104,12 @@
 
 [template public imageAlt(unit : ImageUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 [if (not title.oclIsUndefined())]
-alt="{{ [title.getPathValue(title.accessor(baseAccessor, null))/][title.valueLabel()/] }}"
+alt="{{ [title.getPathValue(title.accessor(baseAccessor, null))/] }}"
 [/if]
 [/template]
 
 [template public imageTitle(unit : ImageUnit, baseAccessor : String, title : DisplayValue) post(trim())]
 [if (not title.oclIsUndefined())]
-title="{{ [title.getPathValue(title.accessor(baseAccessor, null))/][title.valueLabel()/] }}"
+title="{{ [title.getPathValue(title.accessor(baseAccessor, null))/] }}"
 [/if]
 [/template]
