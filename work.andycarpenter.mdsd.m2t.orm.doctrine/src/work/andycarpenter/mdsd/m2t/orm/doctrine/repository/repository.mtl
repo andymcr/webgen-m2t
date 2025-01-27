@@ -131,7 +131,7 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 
 [/if]
 [if (repository.findOne.oclIsUndefined() and repository.serves.hasRouteParameters())]
-    [repository.findMethod()/]
+    [repository.findOneMethod()/]
 
 [/if]
 [if (not repository.findAll.oclIsUndefined())]
@@ -244,7 +244,7 @@ public function createResetPasswordRequest(object $user, \DateTimeInterface $exp
 }
 [/template]
 
-[template private findMethod(repository : Repository) post(trim())]
+[template private findOneMethod(repository : Repository) post(trim())]
 [let entity : Entity = repository.serves]
 /**
  *
@@ -256,8 +256,13 @@ public function [repository.serves.findMethodName()/]([entity.routeParameters()/
 {
     $queryBuilder = $this->createQueryBuilder('[entity.selectName()/]');
     return $queryBuilder
-[if (entity.isContained or entity.hasAssociationKeys)]
+[if (entity.isContained)]
         [entity.containerJoin()/]
+[/if]
+[if (entity.hasAssociationKeys)]
+	[for (key : Association | entity.associationKeys->select(k | not k.isContainer))]
+        ->join('[entity.selectName()/].[key.modelPropertyName()/]', '[key.targetType.selectName()/]')
+	[/for]
 [/if]
 [if (entity.uriPathKeys()->notEmpty())]
 	[if (entity.uriPathKeys()->size() < 2)]
@@ -294,9 +299,6 @@ public function [repository.serves.findMethodName()/]([entity.routeParameters()/
 [container.containerJoin()/]
 [/if]
 [/let]
-[for (key : Association | entity.associationKeys->select(k | not k.isContainer))]
-->join('[entity.selectName()/].[key.modelPropertyName()/]', '[key.targetType.selectName()/]')
-[/for]
 [/template]
 
 [template private findWhere(entity : Entity, base : Entity) post(trim())]
