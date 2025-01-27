@@ -227,10 +227,10 @@
 [/template]
 
 [template private dateIcon(unit : DateCardsUnit, cardAccessor : String) post(trim())]
-<time datetime="{{ [unit.elementDate.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] | date }}" class="xxxx">
- <em>{{ [unit.elementDate.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] | date('l') }}</em>
- <strong>{{ [unit.elementDate.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] | date('j') }}</strong>
- <em>{{ [unit.elementDate.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] | date('F') }}</em>
+<time datetime="{{ [unit.elementDate.getPathValue(unit.elementDate.accessor(cardAccessor, unit.selection))/] | date }}" class="xxxx">
+ <em>{{ [unit.elementDate.getPathValue(unit.elementDate.accessor(cardAccessor, unit.selection))/] | date('l') }}</em>
+ <strong>{{ [unit.elementDate.getPathValue(unit.elementDate.accessor(cardAccessor, unit.selection))/] | date('j') }}</strong>
+ <em>{{ [unit.elementDate.getPathValue(unit.elementDate.accessor(cardAccessor, unit.selection))/] | date('F') }}</em>
 </time>
 [/template]
 
