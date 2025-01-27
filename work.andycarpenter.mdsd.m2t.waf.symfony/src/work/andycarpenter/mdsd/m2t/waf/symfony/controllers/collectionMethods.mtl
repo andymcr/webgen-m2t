@@ -42,12 +42,12 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 	[if (unit.isConditionallyDisplayed)]
     $parameters = ['['/][']'/];
 	[/if]
-	[if (unit.isContained or unit.inlineSelectCode())]
+	[if (unit.isContained() or unit.inlineSelectCode())]
     [unit.renderCode()/]
 	[/if]
     return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', [if (unit.isConditionallyDisplayed)]
 $parameters[else]['['/]
-		[if (unit.isContained and unit.loadContainingType())]
+		[if (unit.isContained() and unit.loadContainingType())]
         '[unit.containerParameter()/]' => [unit.containerInstanceVariable()/],
 		[/if]
 		[if (unit.inlineSelectCode())]
@@ -80,7 +80,7 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 [template public renderCode(unit : ContentUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[if (collectionUnit.isContained and collectionUnit.loadContainingType())]
+[if (collectionUnit.isContained() and collectionUnit.loadContainingType())]
 [collectionUnit.loadContainer()/]
 	[if (collectionUnit.isConditionallyDisplayed or unit.controller.isSinglePage)]
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];

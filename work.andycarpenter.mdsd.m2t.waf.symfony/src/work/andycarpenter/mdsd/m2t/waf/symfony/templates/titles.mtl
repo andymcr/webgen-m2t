@@ -8,6 +8,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::labels/]
 
 
@@ -30,19 +31,7 @@
 
 [template public unitTitle(unit : CollectionUnit)
 	? (not unit.unitTitle.oclIsUndefined()) post(trim())]
-[let contentAccessor : String = unit.containerType.instanceName()]
-[unit.title(unit.unitTitle, contentAccessor)/]
-[/let]
-[/template]
-
-[template public unitTitle(unit : CollectionUnit, contentAccessor : String)
-	? (unit.unitTitle.oclIsUndefined()) post(trim())]
-[unit.title()/]
-[/template]
-
-[template public unitTitle(unit : CollectionUnit, contentAccessor : String)
-	? (not unit.unitTitle.oclIsUndefined()) post(trim())]
-[unit.title(unit.unitTitle, contentAccessor)/]
+[unit.title(unit.unitTitle, unit.unitTitleAccessor())/]
 [/template]
 
 [template public unitTitle(element : AuthenticationElement) post(trim())]

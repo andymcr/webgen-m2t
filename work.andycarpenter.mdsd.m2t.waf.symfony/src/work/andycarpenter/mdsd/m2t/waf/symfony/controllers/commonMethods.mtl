@@ -158,7 +158,7 @@ $this->[unit.contentType.repository.repositoryInstanceName()/]
 [/template]
 
 [template public loadContainer(unit : DynamicUnit) post(trim())]
-[if (unit.isContained)]
+[if (unit.isContained())]
 [unit.containerInstanceVariable()/] = [unit.loadContainer2()/];
 if (is_null([unit.containerInstanceVariable()/])) {
     throw $this->createNotFoundException('The [unit.containingType().name/] does not exist');
@@ -169,7 +169,7 @@ if (is_null([unit.containerInstanceVariable()/])) {
 [/template]
 
 [template public loadContainer(action : Action) post(trim())]
-[if (action.parentUnit.isContained)]
+[if (action.parentUnit.isContained())]
 [action.instanceVariable()/] = [action.parentUnit.loadContainer2()/];
 if (is_null([action.instanceVariable()/])) {
     throw $this->createNotFoundException('The [action.parentUnit.containingType().name/] does not exist');

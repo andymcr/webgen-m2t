@@ -151,7 +151,7 @@
  [action.unitActionLink(null)/]
 	[elseif (action.isTargetAction)]
 	[let targetUnit : DynamicUnit = action.oclAsType(TargetAction).target.oclAsType(DynamicUnit)]
-		[if (targetUnit.isContained and targetUnit.hasExplicitlyEditedContainer)]
+		[if (targetUnit.isContained() and targetUnit.hasExplicitlyEditedContainer)]
  [action.unitActionLink(null)/]
 		[elseif (unit.contentType.keyEntity().isContained)]
  [action.unitActionLink(unit.containerParameter())/]

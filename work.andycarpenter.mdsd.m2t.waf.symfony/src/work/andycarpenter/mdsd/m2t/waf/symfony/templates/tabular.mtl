@@ -103,7 +103,7 @@
 {% endfor %}
 [/let]
  </tbody>
-[if (unit.hasContainerActions and unit.isContained)]
+[if (unit.hasContainerActions and unit.isContained())]
  <tfoot>
   <tr>
    [unit.containerActions(unit.containerParameter())/]

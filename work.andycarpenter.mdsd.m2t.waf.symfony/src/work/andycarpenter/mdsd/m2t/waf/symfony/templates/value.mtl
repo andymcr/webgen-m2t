@@ -52,6 +52,7 @@ NULL
 [/template]
 
 [template private getPathValue(path : Path, leaf : LabelDisplayValue, accessor : String) post(trim())]
+[accessor/][leaf.valueLabel()/]
 [/template]
 
 
@@ -76,22 +77,4 @@ NULL
 
 [template public getValue(resource : ResourceFeature, accessor : String) post(trim())]
 [accessor/]
-[/template]
-
-
-[template public existanceTest(path : Path, parentAccessor : String, selection : Selection) post(trim())]
-[let leaf : Path = path.leafElement()]
-[if (leaf.oclIsTypeOf(ResourcePathElement))]
-[path.existanceTest(leaf.oclAsType(ResourcePathElement), parentAccessor, selection)/]
-[/if]
-[/let]
-[/template]
-
-[template public existanceTest(path : Path, leaf : ResourcePathElement, parentAccessor : String,
-		objectAccess : Boolean, selection : Selection)]
-[path.accessor(parentAccessor, selection)/][if (leaf.hasObjectAccess(selection))][if (leaf.resource.alias(selection).oclIsUndefined())]
-[leaf.resource.detailsPropertyName()/][else]
-[leaf.resource.alias(selection)/][/if].name[else][if (leaf.resource.alias(selection).oclIsUndefined())]
-[leaf.resource.columnName/][else]
-[leaf.resource.alias(selection)/][/if][/if]
 [/template]

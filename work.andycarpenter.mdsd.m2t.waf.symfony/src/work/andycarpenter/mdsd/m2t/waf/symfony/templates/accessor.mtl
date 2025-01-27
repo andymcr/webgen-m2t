@@ -18,6 +18,29 @@
 /]
 
 
+[query public unitTitleAccessor(unit : CollectionUnit) : String
+	= if unit.unitTitle.oclIsKindOf(Attribute) then
+			let attribute : Attribute = unit.unitTitle.oclAsType(Attribute)
+				in if unit.referencableTypes()->exists(t | t.attributes->includes(attribute)) then
+						unit.referencableTypes()
+							->any(t | t.attributes->includes(attribute)).instanceName()
+					else
+						''
+					endif
+		else if unit.unitTitle.oclIsKindOf(ModelLabel) then
+			let label : ModelLabel = unit.unitTitle.oclAsType(ModelLabel)
+				in if unit.referencableTypes()->exists(t | t.labels->includes(label)) then
+						unit.referencableTypes()
+							->any(t | t.labels->includes(label)).instanceName()
+					else
+						''
+					endif
+		else
+			''
+		endif endif
+/]
+
+
 [query public accessor(field : UnitField, parentAccessor : String) : String
 	= field.accessor(parentAccessor, true)
 /]
@@ -194,4 +217,33 @@
 
 [query private accessor(resource : ResourceFeature, parentAccessor : String, alias : String, objectAccess : Boolean) : String
 	= parentAccessor
+/]
+
+
+[query public existanceTestAccessor(path : Path, parentAccessor : String, selection : Selection) : String
+	= let leaf : Path = path.leafElement()
+		in if leaf.oclIsKindOf(ResourcePathElement) then
+				path.existanceTestAccessor(leaf.oclAsType(ResourcePathElement), 
+					path.accessor(parentAccessor, selection), path.leafFeature().alias(selection),
+					leaf.hasObjectAccess(selection))
+			else
+				''
+			endif
+/]
+
+[query private existanceTestAccessor(path : Path, leaf : ResourcePathElement,
+		baseAccessor : String, alias : String, objectAccess : Boolean) : String
+	= if objectAccess then
+			if alias.oclIsUndefined() then
+				baseAccessor.concat('.').concat(leaf.resource.detailsPropertyName())
+			else
+				baseAccessor.concat('.').concat(alias)
+			endif.concat('.name')
+		else
+			if alias.oclIsUndefined() then
+				baseAccessor.concat('[').concat(leaf.resource.columnName).concat(']')
+			else
+				baseAccessor.concat('.').concat(alias)
+			endif.concat('[name]')
+		endif
 /]

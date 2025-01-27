@@ -121,7 +121,7 @@
 			unit.uriPath(routingType, unit.uriElement, routeParameters)
 		else if unit.controller.collectionUnits->first().contentType = unit.contentType then
 			unit.uriPath(routingType, unit.uriElement, routeParameters)
-		else if not unit.isContained then
+		else if not unit.isContained() then
 			unit.controller.collectionUnits->first().uriPath(routeParameters)
 				.combinePaths(unit.uriElement)
 		else

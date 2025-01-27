@@ -87,7 +87,7 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 [for (resource : UnitResource | unit.imageFields)]
 [unit.instanceVariable()/]->[resource.resource.setDetailsMethodName()/](new EmbeddedFile());
 [/for]
-[if (unit.isContained and not unit.hasExplicitlyEditedContainer)]
+[if (unit.isContained() and not unit.hasExplicitlyEditedContainer)]
 [unit.setContainer()/]
 [/if]
 [unit.formVariable()/] = [unit.createForm(unit.instanceVariable(), sourceParameters)/];

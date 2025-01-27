@@ -16,7 +16,7 @@
 				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
 			->collect(u | u.contentType))
 		->union(controller.collectionUnits
-			->select(u | u.isContained and u.loadContainingType()
+			->select(u | u.isContained() and u.loadContainingType()
 				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
 			->collect(u | u.containingType()))
 		->asSet()->asSequence()
@@ -27,7 +27,7 @@
 			->collect(u | u.contentType.repository)
 			->asSet()
 		->union(controller.collectionUnits
-			->select(u | u.isContained and u.loadContainingType())
+			->select(u | u.isContained() and u.loadContainingType())
 			->collect(u | u.containingType().repository)
 			->asSet())
 		->union(controller.editUnits

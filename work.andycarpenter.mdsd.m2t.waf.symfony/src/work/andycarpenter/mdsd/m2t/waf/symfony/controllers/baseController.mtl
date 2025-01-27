@@ -85,7 +85,7 @@ private FormInterface $[unit.oclAsType(EditUnit).formName()/];
 
 		[elseif (unit.oclIsKindOf(DynamicUnit))]
 		[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-			[if (dynamicUnit.isContained)]
+			[if (dynamicUnit.isContained())]
 /**
  * @var [dynamicUnit.modelClassName()/] $[dynamicUnit.instanceName()/]
  */
