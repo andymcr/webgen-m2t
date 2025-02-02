@@ -41,6 +41,21 @@
 /]
 
 
+[query public editAccessor(field : UnitField, parentAccessor : String) : String
+	= if not field.oclIsKindOf(Path) then
+			field.accessor(parentAccessor)
+		else
+			let leaf :  Feature
+				= field.oclAsType(Path).leafFeature()
+				in if leaf.isResourceFeature then
+						field.accessor(parentAccessor)
+							.concat('.').concat(leaf.oclAsType(ResourceFeature).filePropertyName())
+					else
+						field.accessor(parentAccessor)
+					endif
+		endif
+/]
+
 [query public accessor(field : UnitField, parentAccessor : String) : String
 	= field.accessor(parentAccessor, true)
 /]

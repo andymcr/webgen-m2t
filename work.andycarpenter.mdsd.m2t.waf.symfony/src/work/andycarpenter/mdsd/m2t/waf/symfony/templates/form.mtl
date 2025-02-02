@@ -122,7 +122,7 @@
 		or (field.isAssociationField() and not field.isContains)
 		or field.isResourceField()) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
-{{ form_row([field.accessor(parentAccessor)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
+{{ form_row([field.editAccessor(parentAccessor)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
 , {[if (field.hasTranslations() and not field.singleUseModel())]
  label: '[field.customisedCaptionContainedId()/]',[/if]
 [if (field.hasInputGroupClass)]
