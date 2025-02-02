@@ -256,9 +256,9 @@ public function [repository.serves.findMethodName()/]([entity.routeParameters()/
 {
     $queryBuilder = $this->createQueryBuilder('[entity.selectName()/]');
     return $queryBuilder
-[if (entity.isContained)]
-        [entity.containerJoin()/]
-[/if]
+[for (join : Association | entity.containerAssociatins())]
+        ->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
+[/for]
 [if (entity.hasAssociationKeys)]
 	[for (key : Association | entity.associationKeys->select(k | not k.isContainer))]
         ->join('[entity.selectName()/].[key.modelPropertyName()/]', '[key.targetType.selectName()/]')
@@ -290,15 +290,6 @@ public function [repository.serves.findMethodName()/]([entity.routeParameters()/
 [for (key : Attribute | routingType.uriPathKeys())]
 * @param [key.implementationType()/] $[key.routeParameterName(routingType)/]
 [/for]
-[/template]
-
-[template private containerJoin(entity : Entity) post(trim())]
-[let container : Entity = entity.containingType]
-->join('[entity.selectName()/].[entity.containingAssociation.modelPropertyName()/]', '[container.selectName()/]')
-[if (container.isContained and entity <> container)]
-[container.containerJoin()/]
-[/if]
-[/let]
 [/template]
 
 [template private findWhere(entity : Entity, base : Entity) post(trim())]
@@ -395,7 +386,7 @@ public function flush(): void
 [/template]
 
 [template private findAllMethod(selection : Selection) post(trim())]
-[if (selection.filters->notEmpty())]
+[if (selection.hasFilters())]
 [selection.builderMethod()/]
 
 [/if]
@@ -406,7 +397,7 @@ public function flush(): void
  */
 public function [selection.methodQueryName()/](): Query
 {
-[if (selection.filters->notEmpty())]
+[if (selection.hasFilters())]
     return $this->[selection.builderMethodName()/]()->getQuery();
 [else]
     [selection.builderCode()/]
@@ -425,7 +416,7 @@ public function [selection.methodName/](): [selection.returnType()/]
     return $this->[selection.methodQueryName()/]()->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
 }
 
-[if (selection.filters->notEmpty())]
+[if (selection.hasFilters())]
 [selection.filterMethods()/]
 
 [/if]
@@ -454,7 +445,7 @@ public function findAllQuery(): Query
 public function [selection.methodQueryName()/]([selection.formals()/]): Query
 {
     [selection.builderCode()/]
-[if (selection.uriPathKeys()->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
+[if (selection.uriPathKeys()->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
     $query = $queryBuilder->getQuery();
     [selection.queryParametersCode(security)/]
 
@@ -482,7 +473,7 @@ public function [selection.methodName/]([selection.formals()/]): [selection.retu
 	? (selection.filters->notEmpty()) post(trim())]
 [selection.builderMethod()/]
 
-[if (selection.selectPath->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
+[if (selection.hasSelectPath() or selection.hasFormals() or selection.hasConditionParameters())]
 [selection.parametersMethod(security)/]
 
 [/if]
@@ -494,9 +485,9 @@ public function [selection.methodName/]([selection.formals()/]): [selection.retu
  */
 public function [selection.methodQueryName()/]([selection.formals()/]): Query
 {
-[if (selection.selectPath->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
+[if (selection.hasSelectPath() or selection.hasFormals() or selection.hasConditionParameters())]
     $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
-    $this->[selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+    $this->[selection.parametersMethodName()/]($query[if (selection.hasSelectPath() or selection.hasFormals())]
 , [selection.selectionActuals()/][/if]);
 
     return $query;
@@ -541,7 +532,7 @@ private function [selection.builderMethodName()/]([selection.formals()/]): Query
  * @param [key.implementationType()/] $[key.routeParameterName(selection.selectionType())/]
 [/for]
  */
-private function [selection.parametersMethodName()/](Query $query[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+private function [selection.parametersMethodName()/](Query $query[if (selection.hasSelectPath() or selection.hasFormals())]
 , [selection.selectionActuals()/][/if]) : void
 {
     [selection.queryParametersCode(security)/]
@@ -561,8 +552,8 @@ public function [filter.methodQueryName()/]([filter.formals()/]): Query
     $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
     $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
     $query = $queryBuilder->getQuery();
-	[if (selection.selectPath->notEmpty() or selection.hasFormals or selection.hasConditionParameters())]
-    $this->[selection.parametersMethodName()/]($query[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+	[if (selection.hasSelectPath() or selection.hasFormals() or selection.hasConditionParameters())]
+    $this->[selection.parametersMethodName()/]($query[if (selection.hasSelectPath() or selection.hasFormals())]
 , [selection.selectionActuals()/][/if]);
 	[/if]
 	[for (parameter : FormalParameter | filter.parameters)]
@@ -619,16 +610,16 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/template]
 
 [template private documentParameters(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+[if (selection.hasSelectPath() or selection.hasFormals())]
 [selection.documentSelectionParameters()/]
 [/if]
 [/template]
 
 [template private documentParameters(filter : Filter) post(trim())]
-[if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals)]
+[if (filter.selection.hasSelectPath() or filter.selection.hasFormals())]
 [filter.selection.documentSelectionParameters()/]
 [/if]
-[if (filter.parameters->notEmpty())]
+[if (filter.hasFormals())]
 [filter.documentFilterParameters()/]
 [/if]
 [/template]
@@ -649,16 +640,16 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/template]
 
 [template private formals(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+[if (selection.hasSelectPath() or selection.hasFormals())]
 [selection.selectionFormals()/][/if]
 [/template]
 
 [template private formals(filter : Filter) post(trim())]
-[if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals)]
-[filter.selection.selectionFormals()/][if (filter.parameters->notEmpty())]
+[if (filter.selection.hasSelectPath() or filter.selection.hasFormals())]
+[filter.selection.selectionFormals()/][if (filter.hasFormals())]
 , [/if]
 [/if]
-[if (filter.parameters->notEmpty())]
+[if (filter.hasFormals())]
 [filter.filterFormals()/]
 [/if]
 [/template]
@@ -666,7 +657,7 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [template private selectionFormals(selection : Selection) post(trim())]
 [for (key : Attribute | selection.uriPathKeys()) separator(', ')]
 $[key.routeParameterName(selection.selectionType())/][/for]
-[if (selection.uriPathKeys()->notEmpty() and selection.hasFormals)]
+[if (selection.uriPathKeys()->notEmpty() and selection.hasFormals())]
 , [/if]
 [for (parameter : FormalParameter | selection.parameters) separator(', ')]
 [parameter.implementationType()/] $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
@@ -692,26 +683,26 @@ int $offset = 0, int $limit = 0
 [/template]
 
 [template private actuals(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty() or selection.hasFormals)]
+[if (selection.hasSelectPath() or selection.hasFormals())]
 [selection.selectionActuals()/]
 [/if]
 [/template]
 
 [template private actuals(filter : Filter) post(trim())]
-[if (filter.selection.selectPath->notEmpty() or filter.selection.hasFormals)]
-[selection.selectionActuals()/][if (filter.parameters->notEmpty() or filter.selection.limit > -1)]
+[if (filter.selection.hasSelectPath() or filter.selection.hasFormals())]
+[selection.selectionActuals()/][if (filter.hasFormals() or filter.selection.limit > -1)]
 , [/if]
 [/if]
-[if (filter.parameters->notEmpty())]
+[if (filter.hasFormals())]
 [filter.filterActuals()/]
 [/if]
 [/template]
 
 [template private selectionActuals(selection : Selection) post(trim())]
-[if (selection.selectPath->notEmpty())]
+[if (selection.hasSelectPath())]
 	[for (key : Attribute | selection.uriPathKeys()) separator(', ')]
 $[key.routeParameterName(selection.selectionType())/][/for]
-[if (selection.hasFormals)]
+[if (selection.hasFormals())]
 , [/if]
 [/if]
 [for (parameter : FormalParameter | selection.parameters) separator(', ')]
@@ -724,31 +715,59 @@ $[parameter.name/][/for]
 [/template]
 
 [template private builderCode(selection : Selection) post(trim())]
+[if (selection.hasCondition() or selection.hasSelectPath())]
 $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
-[if (selection.fields->notEmpty())]
+	[if (selection.selectElementCount() < 2)]
+$queryBuilder[selection.builderCode2()/];
+	[else]
+$queryBuilder
+    [selection.builderCode2()/];
+	[/if]
+[else]
+	[if (selection.selectElementCount() < 1)]
+$queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
+	[else]
+$queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]')
+    [selection.builderCode2()/];
+	[/if]
+[/if]
+[/template]
+
+[query private selectElementCount(selection : Selection) : Integer
+	= selection.fields->size()
+		+ selection.selectPath.selectPathAssociatins()->size()
+			+ selection.containerAssociatins()->size()
+			+ selection.joinAssociatins()->size()
+		+ (if selection.hasCondition() then 1 else 0 endif)
+		+ selection.ordering->size()
+		+ (if selection.distinct then 1 else 0 endif)
+/]
+
+[template private builderCode2(selection : Selection) post(trim())]
+[if (selection.hasFields())]
 [selection.fields()/]
 [/if]
-[if (selection.selectPath->notEmpty() or selection.joins->notEmpty())]
-[selection.joins()/]
+[if (selection.hasSelectPath() or selection.hasJoins() or selection.selectionType().isContained)]
+[selection.selectionJoins()/]
 [/if]
-[if (selection.selectPath->notEmpty() or not selection.condition.oclIsUndefined())]
+[if (selection.hasSelectPath() or selection.hasCondition())]
 [selection.condition()/]
 [/if]
-[if (selection.ordering->notEmpty())]
+[if (selection.hasOrdering())]
 [selection.orderBy()/]
 [/if]
 [if (selection.distinct)]
-$queryBuilder->distinct();
+->distinct()
 [/if]
 [/template]
 
 [template private fields(selection : Selection) post(trim())]
 [let first : Feature = selection.fields->first()]
-$queryBuilder->select([first.field(first.alias(selection))/]);
+->select([first.field(first.alias(selection))/])
 [/let]
 [if (selection.fields->size() > 1)]
 	[for (field : Feature | selection.fields->subOrderedSet(2, selection.fields->size()))]
-$queryBuilder->addSelect([field.field(field.alias(selection))/]);
+->addSelect([field.field(field.alias(selection))/])
 	[/for]
 [/if]
 [/template]
@@ -758,76 +777,84 @@ $queryBuilder->addSelect([field.field(field.alias(selection))/]);
  [alias/][/if]'
 [/template]
 
-[template private joins(selection : Selection) post(trim())]
-[for (join : Association | selection.joins)]
-$queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]');
+[template private selectionJoins(selection : Selection) post(trim())]
+[for (join : Association | selection.selectPath.selectPathAssociatins())]
+->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
 [/for]
-[if (not selection.selectPath.oclIsUndefined())]
-	[if (selection.selectPath.selectPathAssociatins(selection)->notEmpty())]
-		[for (join : Association | selection.selectPath.selectPathAssociatins(selection))]
-$queryBuilder->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]');
-		[/for]
-	[/if]
-[/if]
-[if (selection.selectionType().isContained)]
-[selection.joinContainer(selection.selectionType(), selection.joins->collect(a | a.partOf))/]
-[/if]
+[for (join : Association | selection.containerAssociatins())]
+->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
+[/for]
+[for (join : Association | selection.joinAssociatins())]
+->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
+[/for]
 [/template]
 
-[query private selectPathAssociatins(pathElement : AssociationPathElement, selection : Selection) : Sequence(Association)
-	= if selection.joins->excludes(pathElement.association) then
-			Sequence{pathElement.association}
-		else
+[query private selectPathAssociatins(pathElement : AssociationPathElement) : Sequence(Association)
+	= if pathElement.oclIsUndefined() then
 			Sequence{}
+		else
+			Sequence{pathElement.association}
+				->union(if pathElement.childFeature.oclIsUndefined() then
+						Sequence{}
+					else
+						if pathElement.childFeature.oclIsKindOf(AssociationPathElement) then
+							pathElement.childFeature.oclAsType(AssociationPathElement).selectPathAssociatins()
+						else
+							Sequence{}
+						endif
+					endif)
 		endif
-		->union(if pathElement.childFeature.oclIsUndefined() then
-				Sequence{}
-			else
-				if pathElement.childFeature.oclIsKindOf(AssociationPathElement) then
-					pathElement.childFeature.oclAsType(AssociationPathElement).selectPathAssociatins(selection)
-				else
-					Sequence{}
-				endif
-			endif)
 /]
 
-[template private joinContainer(selection : Selection, childType : Entity, explicitJoins : Sequence(Entity)) post(trim())]
-[let association : Association = childType.containingAssociation]
-[if (explicitJoins->excludes(childType))]
-$queryBuilder->join('[childType.selectName()/].[association.modelPropertyName()/]', '[association.targetType.selectName()/]');
-[/if]
-[if (association.targetType.isContained)]
-[selection.joinContainer(association.targetType, explicitJoins)/]
-[/if]
-[/let]
-[/template]
+[query private containerAssociatins(selection : Selection) : Sequence(Association)
+	= if selection.limit <> 1 and not selection.hasSelectPath() then
+			Sequence{}
+		else
+			selection.selectionType().containerAssociatins()
+		endif
+/]
+
+[query private containerAssociatins(entity : Entity) : Sequence(Association)
+	= if not entity.isContained then
+			Sequence{}
+		else
+			Sequence{entity.containingAssociation}
+				->union(entity.containingType.containerAssociatins())
+		endif
+/]
+
+[query private joinAssociatins(selection : Selection) : OrderedSet(Association)
+	= selection.joins
+		->select(j | selection.selectPath.selectPathAssociatins()->excludes(j))
+		->select(j | selection.containerAssociatins()->excludes(j))
+/]
 
 [template private condition(selection : Selection) post(trim())]
 [if (selection.uriPathKeys()->notEmpty())]
 [let routingEntity : Entity = selection.selectionType()]
 	[if (selection.uriPathKeys()->size() = 1)]
 	[let key : Attribute = selection.uriPathKeys()->first()]
-$queryBuilder->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(routingEntity)/]'));
+->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(routingEntity)/]'))
 	[/let]
 	[else]
-$queryBuilder->where($queryBuilder->expr()->andX(
+->where($queryBuilder->expr()->andX(
 		[for (key : Attribute | selection.uriPathKeys())]
     $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> selection.uriPathKeys()->size())],[/if]
 		[/for]
-));
+))
 	[/if]
 [/let]
 [/if]
-[if (not selection.condition.oclIsUndefined())]
-$queryBuilder->[if (selection.selectPath->notEmpty())]andWhere[else]where[/if]([selection.condition.queryExpression()/]);
+[if (selection.hasCondition())]
+->[if (selection.hasSelectPath())]andWhere[else]where[/if]([selection.condition.queryExpression()/])
 [/if]
 [/template]
 
 [template private orderBy(selection : Selection) post(trim())]
-$queryBuilder->orderBy([selection.ordering->first().attribute.queryExpression()/], [selection.ordering->first().order()/]);
+->orderBy([selection.ordering->first().attribute.queryExpression()/], [selection.ordering->first().order()/])
 [if (selection.ordering->size() > 1)]
 	[for (order : Order | selection.ordering->subOrderedSet(2, selection.ordering->size()))]
-$queryBuilder->addOrderBy([order.attribute.queryExpression()/], [order.order()/]);
+->addOrderBy([order.attribute.queryExpression()/], [order.order()/])
 	[/for]
 [/if]
 [/template]
