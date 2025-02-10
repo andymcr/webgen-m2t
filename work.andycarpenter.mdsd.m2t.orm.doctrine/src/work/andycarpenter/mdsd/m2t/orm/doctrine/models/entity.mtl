@@ -767,9 +767,9 @@ public function [feature.setFileMethodName()/](?File $[feature.featureInstanceNa
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
 [if (not feature.directoryNamer.oclIsUndefined() and feature.directoryNamer.oclIsTypeOf(DateTimeDirectory))]
-        $this->[feature.directoryNamer.oclAsType(DateTimeDirectory).attribute.modelPropertyName()/] = new \DateTimeImmutable();
+        $this->[feature.directoryNamer.oclAsType(DateTimeDirectory).attribute.modelPropertyName()/] = new \DateTime();
 [else]
-        $this->updated = new \DateTimeImmutable();
+        $this->updated = new \DateTime();
 [/if]
     }
 }
