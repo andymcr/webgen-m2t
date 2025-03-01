@@ -36,9 +36,9 @@
 {% block content %}
 [/if]
 {% trans_default_domain "entity" %}
-<section [if (cardsUnit.hasSectionClass)] class="[cardsUnit.sectionClass/]" [/if]id="[cardsUnit.instanceParameter()/]">
-<h4[if (cardsUnit.hasCaptionClass or cardsUnit.omitCaption)]
- class="[if (cardsUnit.hasCaptionClass)][cardsUnit.captionClass/][if (cardsUnit.omitCaption)] [/if][/if][if (cardsUnit.omitCaption)]hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
+<section [if (cardsUnit.hasSectionClass())] class="[cardsUnit.sectionClass()/]" [/if]id="[cardsUnit.instanceParameter()/]">
+<h4[if (cardsUnit.hasCaptionClass() or cardsUnit.omitCaption)]
+ class="[if (cardsUnit.hasCaptionClass())][cardsUnit.captionClass()/][if (cardsUnit.omitCaption)] [/if][/if][if (cardsUnit.omitCaption)]hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
 [if (cardsUnit.hasFilters)]
  [cardsUnit.unitFilters()/]
 [/if]
@@ -73,7 +73,7 @@
 [if (cardsUnit.hasGroupedResults)]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
 [else]
-<div class="[cardsUnit.rowClass/]">
+<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]>
 [/if]
 {% for [variable/] in [accessor/] %}
 [if (cardsUnit.hasGroupedResults)]
@@ -83,21 +83,19 @@
  {% endif %}
 {% set [cardsUnit.selection.grouping->first().name/] = [variable/].enteredIn.title %}
 <h5>{{ [variable/].enteredIn.title }}</h5>
-<div class="[cardsUnit.rowClass/]">
+<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]>
 {% endif%}
 [/if]
- <div class="[cardsUnit.columnClass/]">
-  <div[if (cardsUnit.hasCardClass)] class="[cardsUnit.cardClass/]"[/if]>
+ <div[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]>
 [if (cardsUnit.badges->notEmpty())]
-   [cardsUnit.header(variable)/]
+  [cardsUnit.header(variable)/]
 [/if]
-   [cardsUnit.cardBody(variable)/]
+  [cardsUnit.cardBody(variable)/]
 [if (cardsUnit.hasInstanceActions)]
 	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() > 1)]
-   [cardsUnit.footer(variable)/]
+  [cardsUnit.footer(variable)/]
 	[/if]
 [/if]
-  </div>
  </div>
 {% endfor %}
 </div>
@@ -112,7 +110,7 @@
 [/template]
 
 [template private header(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div[if (unit.hasCardHeaderClass)] class="[unit.cardHeaderClass/]"[/if]>
+<div[if (unit.hasCardHeaderClass())] class="[unit.cardHeaderClass()/]"[/if]>
 [for (badge : Badge | unit.badges)]
  [badge.badge(cardAccessor)/]
 [/for]
@@ -132,13 +130,13 @@
 [action.authorisation.authorisationExpression()/][/for] %}
 	[/if]
 [/if]
-<div[if (unit.hasCardFooterClass)] class="[unit.cardFooterClass/]"[/if]>
- <nav[if (unit.hasInstanceControlClass)] class="[unit.instanceControlClass/]"[/if]>
+<nav[if (unit.hasCardFooterClass() or unit.hasInstanceControlClass)]
+ class="[if (unit.hasCardFooterClass())][unit.cardFooterClass()/][if (unit.hasInstanceControlClass)] [/if][/if][if (unit.hasInstanceControlClass)]
+[unit.instanceControlClass/][/if]"[/if]>
 [for (action : Action | unit.instanceActions)]
-  [action.unitActionLink(cardAccessor)/]
+ [action.unitActionLink(cardAccessor)/]
 [/for]
- </nav>
-</div>
+</nav>
 [if (unit.instanceActions->forAll(a | a.hasCustomisedAuthorisation))]
 {% endif %}
 [/if]
@@ -177,7 +175,7 @@
 [/template]
 
 [template private cardBody(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div[if (unit.hasCardBodyClass)] class="[unit.cardBodyClass/]"[/if]>
+<div[if (unit.hasCardBodyClass())] class="[unit.cardBodyClass()/]"[/if]>
 [if (unit.oclIsTypeOf(TextCardsUnit))]
 [let textUnit : TextCardsUnit = unit.oclAsType(TextCardsUnit)]
 	[if (not textUnit.elementTitle.oclIsUndefined() or textUnit.displayFields->notEmpty())]
@@ -238,7 +236,7 @@
 [template private cardTitle(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [unit.cardImage(cardAccessor)/]
 [if (not unit.overlayTitle and not unit.elementTitle.oclIsUndefined())]
-<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if] mt-2">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] }}</h5>
+<h5 class="card-title[if (unit.truncateElementTitle)] text-truncate[/if]">{{ [unit.elementTitle.getPathValue(unit.elementTitle.accessor(cardAccessor, unit.selection))/] }}</h5>
 [/if]
 [/template]
 

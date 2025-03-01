@@ -30,9 +30,9 @@
 {% block content %}
 [/if]
 {% trans_default_domain "entity" %}
-<section [if (tabularUnit.hasSectionClass)] class="[tabularUnit.sectionClass/]" [/if]id="[tabularUnit.instanceParameter()/]">
- <h4[if (tabularUnit.hasCaptionClass or tabularUnit.omitCaption)]
- class="[if (tabularUnit.hasCaptionClass)][tabularUnit.captionClass/][/if] [if (tabularUnit.omitCaption)] hidden[/if]"[/if]>[tabularUnit.unitTitle()/]</h4>
+<section [if (tabularUnit.hasSectionClass())] class="[tabularUnit.sectionClass()/]" [/if]id="[tabularUnit.instanceParameter()/]">
+ <h4[if (tabularUnit.hasCaptionClass() or tabularUnit.omitCaption)]
+ class="[if (tabularUnit.hasCaptionClass())][tabularUnit.captionClass()/][/if] [if (tabularUnit.omitCaption)] hidden[/if]"[/if]>[tabularUnit.unitTitle()/]</h4>
 [if (tabularUnit.hasFilters)]
  [tabularUnit.unitFilters()/]
 [/if]
@@ -57,7 +57,7 @@
 [/template]
 
 [template public unitContent(unit : TabularUnit, nullDisplayValue : String, accessor : String) post(trim())]
-<table class="[unit.contentClass/]">
+<table class="[unit.contentClass()/]">
 [if (not unit.hasOmittedFieldLabels())]
  <thead[if (unit.hasHeaderClass)] class="[unit.headerClass/]"[/if]>
   <tr>

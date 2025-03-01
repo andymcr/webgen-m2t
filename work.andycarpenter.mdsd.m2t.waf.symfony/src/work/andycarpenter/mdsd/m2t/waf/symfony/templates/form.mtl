@@ -28,7 +28,7 @@
 [/template]
 
 [template private formOpen(unit : EditUnit, accessor : String) post(trim())]
-{{ form_start([accessor/], { attr: { id: '[unit.formId()/]'[if (unit.hasContentClass)], class: '[unit.contentClass/]'[/if] }}) }}
+{{ form_start([accessor/], { attr: { id: '[unit.formId()/]'[if (unit.hasContentClass())], class: '[unit.contentClass()/]'[/if] }}) }}
  {{ form_errors([accessor/]) }}
 [/template]
 

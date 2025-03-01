@@ -25,9 +25,9 @@
 {% trans_default_domain "entity" %}
 [/if]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section[if (editUnit.hasSectionClass)] class="[editUnit.sectionClass/]"[/if] id="[editUnit.instanceParameter()/]">
-<h4[if (editUnit.hasCaptionClass or editUnit.omitCaption)]
- class="[if (editUnit.hasCaptionClass)][editUnit.captionClass/][/if][if (editUnit.omitCaption)] hidden[/if]"[/if]>[editUnit.unitTitle()/]</h4>
+<section[if (editUnit.hasSectionClass())] class="[editUnit.sectionClass()/]"[/if] id="[editUnit.instanceParameter()/]">
+<h4[if (editUnit.hasCaptionClass() or editUnit.omitCaption)]
+ class="[if (editUnit.hasCaptionClass())][editUnit.captionClass()/][/if][if (editUnit.omitCaption)] hidden[/if]"[/if]>[editUnit.unitTitle()/]</h4>
 [if (unit.oclIsTypeOf(MapUnit))]
 [editUnit.map()/]
 [else]
@@ -46,9 +46,9 @@
 [file(unit.templateFilename(), false)]
 [let searchUnit : SearchUnit = unit.oclAsType(SearchUnit)]
 {% trans_default_domain "[unit.translationDomain()/]" %}
-<section [if (searchUnit.hasSectionClass)] class="[searchUnit.sectionClass/]" [/if]id="[searchUnit.instanceParameter()/]">
- <h2[if (searchUnit.hasCaptionClass or searchUnit.omitCaption)]
- class="[if (searchUnit.hasCaptionClass)][searchUnit.captionClass/][/if][if (searchUnit.omitCaption)] hidden[/if]"[/if]>[unit.displayLabel/]</h2>
+<section [if (searchUnit.hasSectionClass())] class="[searchUnit.sectionClass()/]" [/if]id="[searchUnit.instanceParameter()/]">
+ <h2[if (searchUnit.hasCaptionClass() or searchUnit.omitCaption)]
+ class="[if (searchUnit.hasCaptionClass())][searchUnit.captionClass()/][/if][if (searchUnit.omitCaption)] hidden[/if]"[/if]>[unit.displayLabel/]</h2>
  <div class="unit_padding">
 [if (searchUnit.hasInterfaceFields)]
 [let accessor : String = '?']

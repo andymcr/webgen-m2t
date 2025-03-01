@@ -28,9 +28,9 @@
 {% block content %}
 [/if]
 {% trans_default_domain "entity" %}
-<section [if (detailsUnit.hasSectionClass)] class="[detailsUnit.sectionClass/]" [/if]id="[detailsUnit.instanceParameter()/]">
- <h4[if (detailsUnit.hasCaptionClass or detailsUnit.omitCaption)]
- class="[if (detailsUnit.hasCaptionClass)][detailsUnit.captionClass/][/if] [if (detailsUnit.omitCaption)] hidden[/if]"[/if]>[detailsUnit.unitTitle()/]</h4>
+<section [if (detailsUnit.hasSectionClass())] class="[detailsUnit.sectionClass()/]" [/if]id="[detailsUnit.instanceParameter()/]">
+ <h4[if (detailsUnit.hasCaptionClass() or detailsUnit.omitCaption)]
+ class="[if (detailsUnit.hasCaptionClass())][detailsUnit.captionClass()/][/if] [if (detailsUnit.omitCaption)] hidden[/if]"[/if]>[detailsUnit.unitTitle()/]</h4>
  [detailsUnit.unitContent(null, accessor, 0)/]
 </section>
 [if (unit.controller.isMultiPage)]

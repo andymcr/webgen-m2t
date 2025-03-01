@@ -16,10 +16,10 @@
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
 [file(galleryUnit.templateFilename(), false)]
 {% trans_default_domain "entity" %}
-<section [if (galleryUnit.hasSectionClass)] class="[galleryUnit.sectionClass/]" [/if]id="[galleryUnit.instanceParameter()/]">
-<h4[if (galleryUnit.hasCaptionClass or galleryUnit.omitCaption)]
- class="[if (galleryUnit.hasCaptionClass)][galleryUnit.captionClass/][/if] [if (galleryUnit.omitCaption)] hidden[/if]"[/if]>[galleryUnit.unitTitle()/]</h4>
- <div class="[galleryUnit.contentClass/]">
+<section [if (galleryUnit.hasSectionClass())] class="[galleryUnit.sectionClass()/]" [/if]id="[galleryUnit.instanceParameter()/]">
+<h4[if (galleryUnit.hasCaptionClass() or galleryUnit.omitCaption)]
+ class="[if (galleryUnit.hasCaptionClass())][galleryUnit.captionClass()/][/if] [if (galleryUnit.omitCaption)] hidden[/if]"[/if]>[galleryUnit.unitTitle()/]</h4>
+ <div class="[galleryUnit.contentClass()/]">
   [galleryUnit.unitContent(null, galleryUnit.instanceParameter(), 0)/]
  </div>
 </section>
@@ -37,7 +37,7 @@
 
 [template private uniteGallery(unit : GalleryUnit, accessor : String) post(trim())]
 [let variable : String = 'image']
-<div id="gallery"[if (unit.hasContentClass)] class="[unit.contentClass/]"[/if] style="display:none;">
+<div id="gallery"[if (unit.hasContentClass())] class="[unit.contentClass()/]"[/if] style="display:none;">
 {%- for [variable/] in [accessor/] -%}
  [unit.image(variable, unit.elementTitle, '')/]
 {%- endfor -%}

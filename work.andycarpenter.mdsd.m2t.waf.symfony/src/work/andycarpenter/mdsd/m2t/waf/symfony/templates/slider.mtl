@@ -14,9 +14,9 @@
 	? (unit.oclIsTypeOf(SliderUnit)) post(trim())]
 [let sliderUnit : SliderUnit = unit.oclAsType(SliderUnit)]
 [file(sliderUnit.templateFilename(), false)]
-<section [if (sliderUnit.hasSectionClass)] class="[sliderUnit.sectionClass/]" [/if]id="[sliderUnit.instanceParameter()/]">
- <h4[if (sliderUnit.hasCaptionClass or sliderUnit.omitCaption)]
- class="[if (sliderUnit.hasCaptionClass)][sliderUnit.captionClass/][/if] [if (sliderUnit.omitCaption)] hidden[/if]"[/if]>[sliderUnit.unitTitle()/]</h4>
+<section [if (sliderUnit.hasSectionClass())] class="[sliderUnit.sectionClass()/]" [/if]id="[sliderUnit.instanceParameter()/]">
+ <h4[if (sliderUnit.hasCaptionClass() or sliderUnit.omitCaption)]
+ class="[if (sliderUnit.hasCaptionClass())][sliderUnit.captionClass()/][/if] [if (sliderUnit.omitCaption)] hidden[/if]"[/if]>[sliderUnit.unitTitle()/]</h4>
  [comment sliderUnit.materializeCSS()/]
  [sliderUnit.bootstrap()/]
 </section>
