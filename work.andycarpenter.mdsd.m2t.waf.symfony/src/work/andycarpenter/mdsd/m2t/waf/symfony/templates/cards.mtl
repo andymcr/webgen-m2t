@@ -42,7 +42,7 @@
 [if (cardsUnit.hasFilters)]
  [cardsUnit.unitFilters()/]
 [/if]
-[if ((cardsUnit.hasGeneralActions or cardsUnit.hasTargetActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
+[if ((cardsUnit.hasGeneralActions() or cardsUnit.hasTargetActions() or cardsUnit.hasContainerActions()) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
  [cardsUnit.unitActions()/]
 [/if]
 [if (cardsUnit.hasPagination
@@ -54,7 +54,7 @@
 	and not cardsUnit.selection.oclIsUndefined())]
  </turbo-frame>
 [/if]
-[if ((cardsUnit.hasGeneralActions or cardsUnit.hasContainerActions) and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
+[if ((cardsUnit.hasGeneralActions() or cardsUnit.hasContainerActions()) and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
  [cardsUnit.unitActions()/]
 [/if]
 </section>
@@ -91,8 +91,8 @@
   [cardsUnit.header(variable)/]
 [/if]
   [cardsUnit.cardBody(variable)/]
-[if (cardsUnit.hasInstanceActions)]
-	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() > 1)]
+[if (cardsUnit.hasInstanceActions())]
+	[if (not cardsUnit.overlaySingleSelectAction or cardsUnit.actions()->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() > 1)]
   [cardsUnit.footer(variable)/]
 	[/if]
 [/if]
@@ -118,36 +118,36 @@
 [/template]
 
 [template private footer(unit : CardsUnit, cardAccessor : String) post(trim())]
-[if (unit.instanceActions->forAll(a | a.hasCustomisedAuthorisation))]
-	[if (unit.instanceActions->size() = 1)]
-{% if [unit.instanceActions->first().authorisation.authorisationExpression()/] %}
-	[elseif (unit.instanceActions->subOrderedSet(2, unit.instanceActions->size())
-				->forAll(a | a.authorisation.areSame(unit.instanceActions->first().authorisation)))]
-{% if [unit.instanceActions->first().authorisation.authorisationExpression()/] %}
+[if (unit.instanceActions()->forAll(a | a.hasCustomisedAuthorisation()))]
+	[if (unit.instanceActions()->size() = 1)]
+{% if [unit.instanceActions()->first().authorisation().authorisationExpression()/] %}
+	[elseif (unit.instanceActions()->subSequence(2, unit.instanceActions()->size())
+				->forAll(a | a.authorisation().areSame(unit.instanceActions()->first().authorisation())))]
+{% if [unit.instanceActions()->first().authorisation().authorisationExpression()/] %}
 	[else]
-{% if [for (action : Action | unit.instanceActions
-			->sortedBy(a | a.authorisation.oclAsType(IsGrantedRole).role.name)) separator(' or ')]
-[action.authorisation.authorisationExpression()/][/for] %}
+{% if [for (action : Action | unit.instanceActions()
+			->sortedBy(a | a.authorisation().oclAsType(IsGrantedRole).role.name)) separator(' or ')]
+[action.authorisation().authorisationExpression()/][/for] %}
 	[/if]
 [/if]
 <nav[if (unit.hasCardFooterClass() or unit.hasInstanceControlClass)]
  class="[if (unit.hasCardFooterClass())][unit.cardFooterClass()/][if (unit.hasInstanceControlClass)] [/if][/if][if (unit.hasInstanceControlClass)]
 [unit.instanceControlClass/][/if]"[/if]>
-[for (action : Action | unit.instanceActions)]
+[for (action : Action | unit.instanceActions())]
  [action.unitActionLink(cardAccessor)/]
 [/for]
 </nav>
-[if (unit.instanceActions->forAll(a | a.hasCustomisedAuthorisation))]
+[if (unit.instanceActions()->forAll(a | a.hasCustomisedAuthorisation()))]
 {% endif %}
 [/if]
 [/template]
 
 [template private unitActions(unit : CardsUnit) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if] role="group" aria-label="Floating action buttons">
-[for (action : Action | unit.actions)]
-	[if (action.isGeneralAction)]
+[for (action : Action | unit.actions())]
+	[if (action.isGeneralAction())]
  [action.unitActionLink(null)/]
-	[elseif (action.isTargetAction)]
+	[elseif (action.isTargetAction())]
 	[let targetUnit : DynamicUnit = action.oclAsType(TargetAction).target.oclAsType(DynamicUnit)]
 		[if (targetUnit.isContained() and targetUnit.hasExplicitlyEditedContainer)]
  [action.unitActionLink(null)/]
@@ -157,7 +157,7 @@
  [action.unitActionLink(null)/]
 		[/if]
 	[/let]
-	[elseif (action.isContainerAction)]
+	[elseif (action.isContainerAction())]
  [action.unitActionLink(unit.containerParameter())/]
 	[/if]
 [/for]
@@ -167,7 +167,7 @@
 [template private floatingInstanceActions(unit : CardsUnit, cardAccessor : String) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
  <nav[if (unit.hasInstanceControlClass)] class="[unit.instanceControlClass/]"[/if]>
-[for (action : Action | unit.instanceActions)]
+[for (action : Action | unit.instanceActions())]
   [action.unitActionLink(cardAccessor)/]
 [/for]
  </nav>
@@ -214,8 +214,8 @@
 
 [template private dateImage(unit : DateCardsUnit, cardAccessor : String) post(trim())]
 <div class="card-image img-fluid">
-[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() = 1)]
-[let action : Action = unit.actions->first()]
+[if (unit.overlaySingleSelectAction and unit.actions()->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() = 1)]
+[let action : Action = unit.actions()->first()]
  [action.unitActionLink(cardAccessor)/]
 [/let]
 [else]
@@ -242,8 +242,8 @@
 
 [template private cardImage(unit : ImageCardsUnit, cardAccessor : String) post(trim())]
 [let imageClass : String = 'card-img-top']
-[if (unit.overlaySingleSelectAction and unit.actions->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() = 1)]
-[let action : Action = unit.actions->first()]
+[if (unit.overlaySingleSelectAction and unit.actions()->select(a | a.oclIsTypeOf(InstanceSelectAction))->size() = 1)]
+[let action : Action = unit.actions()->first()]
  [action.unitActionLink(unit.image(cardAccessor, unit.elementTitle, imageClass), cardAccessor)/]
 [/let]
 [else]

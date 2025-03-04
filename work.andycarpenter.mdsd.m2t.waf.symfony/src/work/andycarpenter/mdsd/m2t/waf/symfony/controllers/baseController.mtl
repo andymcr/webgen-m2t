@@ -19,7 +19,7 @@
 [for (entity : Entity | controller.entitiesUsed()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
-[for (form : SingletonUnit | controller.formUnits->sortedBy(u | u.name))]
+[for (form : SingletonUnit | controller.formUnits()->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
@@ -28,7 +28,7 @@ use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
 use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [/for]
-[if (controller.editUnits->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
+[if (controller.editUnits()->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 [if (controller.hasCollectionUnits)]
@@ -38,24 +38,24 @@ use Pagerfanta\Pagerfanta;
 	[/if]
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[controller.baseControllerClassName()/];
-[if (controller.isSinglePage and not controller.hasSingleActionMethod() and controller.hasFormUnits)]
+[if (controller.isSinglePage and not controller.hasSingleActionMethod() and controller.hasFormUnits())]
 use Symfony\Component\Form\FormInterface;
 [/if]
 [if (controller.hasFileActions)]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
-[if (controller.hasEditUnits or controller.hasFilters or controller.hasPagination)]
+[if (controller.hasEditUnits() or controller.hasFilters() or controller.hasPagination)]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-[if (controller.hasAuthorisation)]
+[if (controller.hasAuthorisation())]
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 [/if]
-[if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]
+[if (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage())]
 use Symfony\Contracts\Translation\TranslatorInterface;
 [/if]
-[if (controller.hasImageFields)]
+[if (controller.hasImageFields())]
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 [/if]
 [/template]
@@ -96,7 +96,7 @@ private [dynamicUnit.modelClassName()/] $[dynamicUnit.instanceName()/];
 		[/if]
 	[/for]
 [/if]
-[if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]
+[if (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage())]
 /**
  * @var TranslatorInterface $translationService
  */
@@ -108,11 +108,11 @@ private TranslatorInterface $translationService;
 [template public actionMethod(action : Action)
 	? (action.oclIsTypeOf(DeleteAction)) post(trim())]
 [let deleteAction : DeleteAction = action.oclAsType(DeleteAction)]
-[let unit : DynamicUnit = action.parentUnit]
+[let unit : DynamicUnit = action.parentUnit()]
 /**
  * @return Response
  */
-[if (deleteAction.isAuthorised)]
+[if (deleteAction.isAuthorised())]
 [deleteAction.securityAnnotation()/]
 [/if]
 [deleteAction.routeAttribute(deleteAction.uriElement)/]
@@ -122,7 +122,7 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): R
 [if (not deleteAction.enableWhen.oclIsUndefined())]
     if (!([deleteAction.enableWhen.controllerExpression(action.instanceVariable(), 'yyy')/])) {
        $this->addFlash('error', $this->translationService->trans('[deleteAction.disabledMessageId()/]', ['['/][']'/], '[deleteAction.translationDomain()/]'));
-       return [deleteAction.parentUnit.redirect(deleteAction.routeParameters())/];
+       return [deleteAction.parentUnit().redirect(deleteAction.routeParameters())/];
     }
 [/if]
     $this->[unit.contentType.repository.repositoryInstanceName()/]->remove($[deleteAction.instanceName()/], true);
@@ -139,13 +139,13 @@ public function [deleteAction.actionName()/]([action.actionMethodFormals()/]): R
 [template public actionMethod(action : Action)
 	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(UnitFeature)) post(trim())]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
-[let unit : DynamicUnit = action.parentUnit]
+[let unit : DynamicUnit = action.parentUnit()]
 /**
  * @return [if (operationAction.operation.resultType = OperationResultTypes::None)]
 Response[else]BinaryFileResponse[/if]
 
  */
-[if (operationAction.isAuthorised)]
+[if (operationAction.isAuthorised())]
 [operationAction.securityAnnotation()/]
 [/if]
 [operationAction.routeAttribute(operationAction.uriElement)/]
@@ -164,13 +164,13 @@ Response[else]BinaryFileResponse[/if]
 [template public actionMethod(action : Action)
 	? (action.oclIsKindOf(OperationAction) and action.usedBy.oclIsKindOf(DynamicUnit)) post(trim())]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
-[let unit : DynamicUnit = operationAction.parentUnit]
+[let unit : DynamicUnit = operationAction.parentUnit()]
 /**
  * @return [if (operationAction.operation.resultType = OperationResultTypes::None)]
 Response[else]BinaryFileResponse[/if]
 
  */
-[if (operationAction.isAuthorised)]
+[if (operationAction.isAuthorised())]
 [operationAction.securityAnnotation()/]
 [/if]
 [if (action.oclIsTypeOf(InstanceOperationAction))]
@@ -197,25 +197,25 @@ Response[else]BinaryFileResponse[/if]
 [template private actionMethodBody(action : OperationAction)
 	? (action.operation.resultType = OperationResultTypes::None) post(trim())]
 [if (action.oclIsTypeOf(GeneralOperationAction))]
-	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
+	[if (action.hasSuccessMessage() and action.hasFailureMessage() or action.hasFailureMessage())]
 $result = [/if]$[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]();
 [else]
-	[if (action.isInstanceAction)]
+	[if (action.isInstanceAction())]
 [action.loadInstance()/]
 	[else]
 [action.loadContainer()/]
 	[/if]
-	[if (action.hasSuccessMessage and action.hasFailureMessage or action.hasFailureMessage)]
+	[if (action.hasSuccessMessage() and action.hasFailureMessage() or action.hasFailureMessage())]
 $result = [/if]$[action.operation.partOf.instanceName()/]->[action.operation.methodName()/]([action.instanceVariable()/]);
 [/if]
-[if (action.hasSuccessMessage or action.hasFailureMessage)]
+[if (action.hasSuccessMessage() or action.hasFailureMessage())]
 [action.actionResultFlash()/]
 [/if]
 [let routeParameters : Sequence(Attribute)
 	= if action.oclIsTypeOf(InstanceOperationAction) then 
 			action.routeParameters()
 		else if action.oclIsTypeOf(ContainerOperationAction) then
-			action.parentUnit.routeParameters()
+			action.parentUnit().routeParameters()
 		else
 			Sequence{}
 		endif endif]
@@ -231,7 +231,7 @@ $response = $this->file($file, '[action.name/][if (not action.operation.fileExte
 .[action.operation.fileExtension/][/if]');
 return $response;
 [else]
-	[if (action.isInstanceAction)]
+	[if (action.isInstanceAction())]
 [action.loadInstance()/]
 	[else]
 [action.loadContainer()/]
@@ -250,10 +250,10 @@ return $response;
 [/template]
 
 [template private filename(action : Action) post(trim())]
-[if (action.isInstanceAction)]
-$[action.instanceName()/]->[action.parentUnit.contentType.accessFilename()/]
+[if (action.isInstanceAction())]
+$[action.instanceName()/]->[action.parentUnit().contentType.accessFilename()/]
 [elseif (not action.oclIsTypeOf(GeneralOperationAction))]
-$[action.instanceName()/]->[action.parentUnit.containingType().accessFilename()/]
+$[action.instanceName()/]->[action.parentUnit().containingType().accessFilename()/]
 [else]]
 '[action.name/]'
 [/if]

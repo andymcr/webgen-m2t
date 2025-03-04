@@ -8,7 +8,7 @@
 
 
 [query public entitiesUsed(controller : Controller) : Sequence(Entity)
-	= controller.editUnits
+	= controller.editUnits()
 			->select(u | not u.oclIsTypeOf(UpdateUnit) or controller.units->size() > 1)
 			->collect(u | u.contentType)
 		->union(controller.collectionUnits
@@ -23,14 +23,14 @@
 /]
 
 [query public repositoriesUsed(controller : Controller) : Sequence(Repository)
-	= controller.dynamicUnits
+	= controller.dynamicUnits()
 			->collect(u | u.contentType.repository)
 			->asSet()
 		->union(controller.collectionUnits
 			->select(u | u.isContained() and u.loadContainingType())
 			->collect(u | u.containingType().repository)
 			->asSet())
-		->union(controller.editUnits
+		->union(controller.editUnits()
 			->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))
 			->select(u | not u.hasExplicitlyEditedContainer)
 			->select(u | not u.containingType().oclIsUndefined())
@@ -50,9 +50,9 @@
 
 [query public hasSingleActionMethod(controller : Controller) : Boolean
 	= controller.units->notEmpty()
-		and not controller.hasFormUnits
-		and controller.dynamicUnits->forAll(u | not u.isDislayedOnlyOnExplicitRoute())
-		and controller.hasCommonUnitAuthorisation
+		and not controller.hasFormUnits()
+		and controller.dynamicUnits()->forAll(u | not u.isDislayedOnlyOnExplicitRoute())
+		and controller.hasCommonUnitAuthorisation()
 /]
 
 [query public hasSupportMethods(controller : Controller) : Boolean

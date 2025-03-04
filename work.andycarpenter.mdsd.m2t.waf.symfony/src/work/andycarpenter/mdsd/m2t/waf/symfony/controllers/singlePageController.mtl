@@ -54,10 +54,10 @@ class [controller.controllerClassName()/] extends [controller.baseControllerClas
 
 	[/for]
 [else]
-	[for (unit : DynamicUnit | controller.dynamicUnits)]
+	[for (unit : DynamicUnit | controller.dynamicUnits())]
     [unit.unitMethods()/]
 
-		[for (action : Action | unit.actionsWithoutTarget)]
+		[for (action : Action | unit.actionsWithoutTarget())]
     [action.actionMethod()/]
 
 		[/for]
@@ -70,13 +70,13 @@ class [controller.controllerClassName()/] extends [controller.baseControllerClas
 
 [template private constructor(controller : Controller) post(trim())]
 public function __construct([for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name)) separator (', ')]
-[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage))]
-, [/if][if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]TranslatorInterface $translator[/if])
+[repository.repositoryClassName()/] $[repository.repositoryInstanceName()/][/for][if (controller.repositoriesUsed()->notEmpty() and (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage()))]
+, [/if][if (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage())]TranslatorInterface $translator[/if])
 {
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
     $this->[repository.repositoryInstanceName()/] = $[repository.repositoryInstanceName()/];
 [/for]
-[if (controller.hasSuccessMessages or controller.hasActionsWithDisabledMessage)]
+[if (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage())]
     $this->translationService = $translator;
 [/if]
 }
@@ -85,7 +85,7 @@ public function __construct([for (repository : Repository | controller.repositor
 [template private actionMethod(controller : Controller) post(trim())]
 /**
  */
-[if (controller.isAuthorised)]
+[if (controller.isAuthorised())]
 [controller.securityAnnotation()/]
 [/if]
 [controller.routeAttribute()/]
@@ -96,7 +96,7 @@ public function [controller.actionName()/]([controller.actionMethodFormals()/]):
 [/template]
 
 [template private renderMethod(controller : Controller) post(trim())]
-private function renderPage([if (controller.hasFilters or controller.hasPagination)]
+private function renderPage([if (controller.hasFilters() or controller.hasPagination)]
 Request $request[if (controller.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | controller.routeParameters()) separator(', ')]
 string $[key.routeParameterName(controller.routeParameters())/][/for]): Response

@@ -20,7 +20,7 @@
 [let controller : Controller = unit.controller]
 /**
  */
-[if (unit.isAuthorised)]
+[if (unit.isAuthorised())]
 [unit.securityAnnotation()/]
 [/if]
 [unit.routeAttribute()/]

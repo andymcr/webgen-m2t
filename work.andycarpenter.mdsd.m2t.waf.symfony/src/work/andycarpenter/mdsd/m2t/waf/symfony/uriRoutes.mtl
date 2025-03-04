@@ -12,12 +12,12 @@
 
 
 [query public hasCommonUriPaths(controller : Controller) : Boolean
-	= if controller.dynamicUnits->size() < 2 then
+	= if controller.dynamicUnits()->size() < 2 then
 			true
 		else
-			controller.dynamicUnits
-				->subOrderedSet(2, controller.dynamicUnits->size())
-				->forAll(u | u.uriUnitPath() = controller.dynamicUnits->first().uriUnitPath())
+			controller.dynamicUnits()
+				->subSequence(2, controller.dynamicUnits()->size())
+				->forAll(u | u.uriUnitPath() = controller.dynamicUnits()->first().uriUnitPath())
 		endif
 /]
 
@@ -164,7 +164,7 @@
 	= if not unit.uriParent.oclIsUndefined() then
 			unit.uriParent.uriUnitPath(routeParameters)
 				.combinePaths(unit.uriElement)
-		else if unit.controller.editUnits->size() = 1 then
+		else if unit.controller.editUnits()->size() = 1 then
 			if unit.routingType().oclIsUndefined() then
 				unit.controller.uriControllerPath()
 					.combinePaths(unit.uriElement)
@@ -238,26 +238,26 @@
 /]
 
 [query public uriPath(action : Action, suffix : String) : String
-	= if action.parentUnit.controller.oclIsTypeOf(SinglePageController) then
-			let controller : Controller = action.parentUnit.controller
+	= if action.parentUnit().controller.oclIsTypeOf(SinglePageController) then
+			let controller : Controller = action.parentUnit().controller
 				in if controller.units->first().oclIsKindOf(DynamicUnit) then
-						action.parentUnit.uriPath(
+						action.parentUnit().uriPath(
 								controller.units->first().oclAsType(DynamicUnit).contentType,
 								'', action.routeParameters())
-							.combinePaths(action.parentUnit.contentType.contentPath(
-								action.parentUnit.contentType.containingType.implicitUriParent(controller.dynamicUnits),
+							.combinePaths(action.parentUnit().contentType.contentPath(
+								action.parentUnit().contentType.containingType.implicitUriParent(controller.dynamicUnits()->asOrderedSet()),
 								action.routeParameters()))
 								.combinePaths(suffix)
 					else
 						''
 					endif
-		else if action.parentUnit.oclIsKindOf(CollectionUnit) then
-			let unit : CollectionUnit = action.parentUnit.oclAsType(CollectionUnit)
+		else if action.parentUnit().oclIsKindOf(CollectionUnit) then
+			let unit : CollectionUnit = action.parentUnit().oclAsType(CollectionUnit)
 				in unit.uriPath(action.routeParameters())
 						.combinePaths(unit.contentType.keyEntity().keyPath(action.routeParameters()))
 						.combinePaths(suffix)
 		else
-			action.parentUnit.uriUnitPath().combinePaths(suffix)
+			action.parentUnit().uriUnitPath().combinePaths(suffix)
 		endif endif
 /]
 
@@ -284,10 +284,10 @@
 /]
 
 [query public uriContainerPath(action : OperationAction) : String
-	= action.parentUnit.uriPath(
-		action.parentUnit.contentType.containingType,
+	= action.parentUnit().uriPath(
+		action.parentUnit().contentType.containingType,
 		action.uriElement,
-		action.parentUnit.routeContainerParameters())
+		action.parentUnit().routeContainerParameters())
 /]
 
 [query private implicitUriParent(elementType : Entity, possibleParents : OrderedSet(DynamicUnit)) : DynamicUnit
@@ -321,7 +321,7 @@
 /]
 
 [query public uriGeneralPath(action : OperationAction) : String
-	= action.parentUnit.controller.uriControllerPath()
+	= action.parentUnit().controller.uriControllerPath()
 		.combinePaths(action.uriElement)
 /]
 

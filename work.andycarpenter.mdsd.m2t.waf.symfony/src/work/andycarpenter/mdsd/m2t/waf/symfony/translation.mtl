@@ -391,7 +391,7 @@
 /]
 
 [query public containedId(action : Action) : String
-	= action.parentUnit.containedId().concat('.actions.').concat(action.id())
+	= action.parentUnit().containedId().concat('.actions.').concat(action.id())
 /]
 
 [query public disabledMessageId(action : Action) : String
@@ -411,5 +411,5 @@
 /]
 
 [query public translationDomain(action : Action) : String
-	= action.parentUnit.translationDomain()
+	= action.parentUnit().translationDomain()
 /]

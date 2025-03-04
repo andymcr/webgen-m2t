@@ -36,25 +36,39 @@
 </head>
 <body>
 <header>
+<div class="branding">
+ <picture>
+  <source media="(max-width: 659px)"
+  	srcset=",
+  		/images/logo/HeatherLogo-600.png 600w"
+ 	sizes="(max-width: 599px) 400px,
+ 		600px">
+  <source media="(min-width: 660px)"
+  	srcset="/images/logo/HeatherLogo-660.png 660w,
+ 		/images/logo/HeatherLogo-990.png 990w,
+ 		/images/logo/HeatherLogo-1320.png 1320w"
+ 	sizes="(max-width: 989px) 660px,
+ 		990px">
+  <img src="/images/logo/HeatherLogo-1400.png" alt="Logo">
+ </picture>
+</div>
 {% block navigation %}
 {{ include('navigation[siteProperties.htmlExtension()/][siteProperties.twigExtension()/]') }}
 {% endblock %}
 </header>
 <main {# <?php if (isset($style_class)) { echo 'class="' . $style_class . '" '; } ?>#}id="content">
- <div class="container">
 {%- if app.request.hasPreviousSession -%}
- {%- for type, messages in app.session.flashbag.all() -%}
-  {%- for message in messages -%}
-  <div class="alert alert-{{ type }}">
-   {{ message }}
-  </div>
-  {%- endfor -%}
+{%- for type, messages in app.session.flashbag.all() -%}
+ {%- for message in messages -%}
+ <div class="alert alert-{{ type }}">
+  {{ message }}
+ </div>
  {%- endfor -%}
+{%- endfor -%}
 {%- endif -%}
 
 {% block content %}
 {% endblock %}
- </div>
 </main>
 <footer class="page-footer">
  <div class="container">

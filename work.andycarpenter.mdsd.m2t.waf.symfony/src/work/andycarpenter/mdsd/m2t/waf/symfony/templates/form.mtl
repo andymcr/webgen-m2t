@@ -60,7 +60,7 @@
 	[/if]
 [/let]
 [/if]
-[for (action : Action | unit.containerActions)]
+[for (action : Action | unit.containerActions())]
  [action.unitActionLink('accessor')/]
 [/for]
 </div>

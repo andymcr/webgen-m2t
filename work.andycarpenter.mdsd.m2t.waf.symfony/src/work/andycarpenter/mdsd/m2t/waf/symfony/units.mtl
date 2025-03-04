@@ -19,12 +19,12 @@
 
 [query public containingTypeLoadedBy(unit : DynamicUnit) : DynamicUnit
 	= let matchingContentType : OrderedSet(DynamicUnit)
-		= unit.controller.dynamicUnits
+		= unit.controller.dynamicUnits()->asOrderedSet()
 			->select(u | u.contentType = unit.containingType())
 		in if matchingContentType->notEmpty() then
 				matchingContentType->first()
 			else
-				unit.controller.dynamicUnits
+				unit.controller.dynamicUnits()
 					->select(u | u.containingType() = unit.containingType())
 					->first()
 			endif

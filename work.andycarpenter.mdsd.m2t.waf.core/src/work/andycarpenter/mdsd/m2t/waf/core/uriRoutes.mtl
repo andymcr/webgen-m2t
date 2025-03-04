@@ -80,13 +80,13 @@
 /]
 
 [query public routeParameters(controller : Controller) : Sequence(Attribute)
-	= if controller.dynamicUnits->isEmpty() then
+	= if controller.dynamicUnits()->isEmpty() then
 			Sequence{}
-		else if controller.dynamicUnits->size() = 1 then
-			controller.dynamicUnits->first().routeParameters()
+		else if controller.dynamicUnits()->size() = 1 then
+			controller.dynamicUnits()->first().routeParameters()
 		else
-			controller.dynamicUnits->subOrderedSet(2, controller.dynamicUnits->size())->iterate(u;
-				common : Sequence(Attribute) = controller.dynamicUnits->first().routeParameters()
+			controller.dynamicUnits()->subSequence(2, controller.dynamicUnits()->size())->iterate(u;
+				common : Sequence(Attribute) = controller.dynamicUnits()->first().routeParameters()
 				| common->select(k | u.routeParameters()->includes(k)))
 		endif endif
 /]
@@ -137,12 +137,12 @@
 /]
 
 [query public routeParameters(action : Action) : Sequence(Attribute)
-	= if action.parentUnit.oclIsKindOf(CollectionUnit) then
-			action.parentUnit.routeParameters(
-				action.parentUnit.contentType,
-				action.parentUnit.oclAsType(CollectionUnit).findElementSelection)
+	= if action.parentUnit().oclIsKindOf(CollectionUnit) then
+			action.parentUnit().routeParameters(
+				action.parentUnit().contentType,
+				action.parentUnit().oclAsType(CollectionUnit).findElementSelection)
 		else
-			action.parentUnit.routeParameters()
+			action.parentUnit().routeParameters()
 		endif
 /]
 

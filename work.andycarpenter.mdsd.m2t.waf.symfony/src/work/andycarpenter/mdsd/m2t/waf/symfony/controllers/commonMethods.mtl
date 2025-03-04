@@ -28,7 +28,7 @@ $this->translationService->trans('[message/]', ['['/][']'/], '[controller.transl
 
 
 [template public actionMethodFormals(controller : Controller) post(trim())]
-[if (controller.hasFormUnits or controller.hasFilters or controller.hasPagination)]
+[if (controller.hasFormUnits() or controller.hasFilters() or controller.hasPagination)]
 Request $request[if (controller.hasRouteParameters())]
 , [/if][/if]
 [controller.routeParameterList(controller.routeParameters(), true)/]
@@ -36,7 +36,7 @@ Request $request[if (controller.hasRouteParameters())]
 
 [template public actionMethodFormals(unit : DynamicUnit) post(trim())]
 [let controller : Controller = unit.controller]
-[if (unit.isFormUnit or controller.hasFilters or controller.hasPagination)]
+[if (unit.isFormUnit or controller.hasFilters() or controller.hasPagination)]
 Request $request[if (unit.hasRouteParameters())]
 , [/if][/if]
 [unit.routeParameterList(true)/]
@@ -52,16 +52,16 @@ Request $request[if (unit.hasRouteUpdateParameters())]
 [/template]
 
 [template public actionMethodFormals(action : Action) post(trim())]
-[let controller : Controller = action.parentUnit.controller]
+[let controller : Controller = action.parentUnit().controller]
 [if (action.oclIsKindOf(OperationAction))]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
 	[for (service : Service | operationAction.servicesUsed->sortedBy(s | s.name)) separator(', ')]
 [service.serviceClassName()/] $[service.instanceName()/][/for]
-[if (operationAction.hasServicesUsed and (controller.hasFilters or controller.hasPagination or action.hasRouteParameters()))]
+[if (operationAction.hasServicesUsed and (controller.hasFilters() or controller.hasPagination or action.hasRouteParameters()))]
 , [/if]
 [/let]
 [/if]
-[if (controller.hasFilters or controller.hasPagination)]
+[if (controller.hasFilters() or controller.hasPagination)]
 Request $request[if (action.hasRouteParameters())]
 , [/if][/if]
 [action.routeParameterList(true)/]
@@ -69,32 +69,32 @@ Request $request[if (action.hasRouteParameters())]
 [/template]
 
 [template public actionMethodContainerFormals(action : Action) post(trim())]
-[let controller : Controller = action.parentUnit.controller]
+[let controller : Controller = action.parentUnit().controller]
 [if (action.oclIsKindOf(OperationAction))]
 [let operationAction : OperationAction = action.oclAsType(OperationAction)]
 	[for (service : Service | operationAction.servicesUsed->sortedBy(s | s.name)) separator(', ')]
 [service.serviceClassName()/] $[service.instanceName()/][/for]
-[if (operationAction.hasServicesUsed and (controller.hasFilters or controller.hasPagination or action.hasRouteParameters()))]
+[if (operationAction.hasServicesUsed and (controller.hasFilters() or controller.hasPagination or action.hasRouteParameters()))]
 , [/if]
 [/let]
 [/if]
-[if (controller.hasFilters or controller.hasPagination)]
-Request $request[if (action.parentUnit.hasRouteContainerParameters())]
+[if (controller.hasFilters() or controller.hasPagination)]
+Request $request[if (action.parentUnit().hasRouteContainerParameters())]
 , [/if][/if]
-[action.parentUnit.routeContainerParameterList(true)/]
+[action.parentUnit().routeContainerParameterList(true)/]
 [/let]
 [/template]
 
 
 [template public renderMethodActuals(unit : DynamicUnit) post(trim())]
-[if (unit.controller.hasFilters or unit.controller.hasPagination)]
+[if (unit.controller.hasFilters() or unit.controller.hasPagination)]
 $request[if (unit.controller.hasRouteParameters())]
 , [/if][/if]
 [unit.controller.routeParameterList(unit.routeParameters(), false)/]
 [/template]
 
 [template public renderMethodUpdateActuals(unit : EditUnit) post(trim())]
-[if (unit.controller.hasFilters or unit.controller.hasPagination)]
+[if (unit.controller.hasFilters() or unit.controller.hasPagination)]
 $request[if (unit.controller.hasRouteParameters())]
 , [/if][/if]
 [unit.routeUpdateRenderParameterList(false)/]
@@ -131,7 +131,7 @@ $request[if (unit.controller.hasRouteParameters())]
 [/template]
 
 [template public routeParameterList(action : Action, formals : Boolean) post(trim())]
-[action.parentUnit.controller.routeParameterList(action.routeParameters(), formals)/]
+[action.parentUnit().controller.routeParameterList(action.routeParameters(), formals)/]
 [/template]
 
 [template public routeParameterList(resource : Resource, formals : Boolean) post(trim())]
@@ -169,10 +169,10 @@ if (is_null([unit.containerInstanceVariable()/])) {
 [/template]
 
 [template public loadContainer(action : Action) post(trim())]
-[if (action.parentUnit.isContained())]
-[action.instanceVariable()/] = [action.parentUnit.loadContainer2()/];
+[if (action.parentUnit().isContained())]
+[action.instanceVariable()/] = [action.parentUnit().loadContainer2()/];
 if (is_null([action.instanceVariable()/])) {
-    throw $this->createNotFoundException('The [action.parentUnit.containingType().name/] does not exist');
+    throw $this->createNotFoundException('The [action.parentUnit().containingType().name/] does not exist');
 }
 [else]
 // uncontained
@@ -198,13 +198,13 @@ if (is_null([action.instanceVariable()/])) {
 [template public loadInstance(action : Action) post(trim())]
 [action.instanceVariable()/] = [action.loadInstance2()/];
 if (is_null([action.instanceVariable()/])) {
-    throw $this->createNotFoundException('The [action.parentUnit.contentType.name/] does not exist');
+    throw $this->createNotFoundException('The [action.parentUnit().contentType.name/] does not exist');
 }
 [/template]
 
 [template public loadInstance2(action : Action) post(trim())]
-[if (action.parentUnit.oclIsKindOf(CollectionUnit))]
-[let unit : CollectionUnit = action.parentUnit.oclAsType(CollectionUnit)]
+[if (action.parentUnit().oclIsKindOf(CollectionUnit))]
+[let unit : CollectionUnit = action.parentUnit().oclAsType(CollectionUnit)]
 	[if (unit.findElementSelection.oclIsUndefined())]
 [unit.getContentRepository()/]->[unit.contentType.findMethodName()/]([action.findActualParameterList()/])
 	[else]
@@ -212,7 +212,7 @@ $this->[unit.findElementSelection.definedBy.repositoryInstanceName()/]->[unit.fi
 	[/if]
 [/let]
 [else]
-[action.parentUnit.getContentRepository()/]->[action.parentUnit.contentType.findMethodName()/]([action.findActualParameterList()/])
+[action.parentUnit().getContentRepository()/]->[action.parentUnit().contentType.findMethodName()/]([action.findActualParameterList()/])
 [/if]
 [/template]
 
@@ -226,7 +226,7 @@ $this->[unit.findElementSelection.definedBy.repositoryInstanceName()/]->[unit.fi
 [/template]
 
 [template public findActualParameterList(action : Action) post(trim())]
-[action.parentUnit.findActualParameterList(action.routeParameters())/]
+[action.parentUnit().findActualParameterList(action.routeParameters())/]
 [/template]
 
 [template private findActualParameterList(unit : DynamicUnit, parameters : Sequence(Attribute)) post(trim())]
@@ -258,11 +258,11 @@ $this->redirectToRoute('[unit.routeName()/]')
 [/template]
 
 [template public redirect(action : Action, sourceParameters : Sequence(Attribute)) post(trim())]
-[action.parentUnit.redirect(action.routeActionReturnName(), action.parentUnit.routeParameters(), sourceParameters)/]
+[action.parentUnit().redirect(action.routeActionReturnName(), action.parentUnit().routeParameters(), sourceParameters)/]
 [/template]
 
 [template private redirect(unit : DynamicUnit, routeName : String, routeParameters : Sequence(Attribute), sourceParameters : Sequence(Attribute)) post(trim())]
-$this->redirectToRoute('[routeName/]'[if (controller.hasFilters or controller.hasPagination)]
+$this->redirectToRoute('[routeName/]'[if (controller.hasFilters() or controller.hasPagination)]
 , [if (routeParameters->notEmpty())]
 array_merge(
     $request->query->all(),
@@ -334,17 +334,17 @@ if ($request->isMethod('POST') && $request->request->has('[editUnit.cancelId()/]
 
 
 [template public actionResultFlash(action : Action) post(trim())]
-[let controller : Controller = action.parentUnit.controller]
-[if (action.hasSuccessMessage and action.hasFailureMessage)]
+[let controller : Controller = action.parentUnit().controller]
+[if (action.hasSuccessMessage() and action.hasFailureMessage())]
 if ($result)
 {
     $this->addFlash('success', [controller.translate(action.successMessageId())/]);
 } else {
     $this->addFlash('error', [controller.translate(action.failureMessageId())/]);
 }
-[elseif (action.hasSuccessMessage)]
+[elseif (action.hasSuccessMessage())]
 $this->addFlash('success', [controller.translate(action.successMessageId())/]);
-[elseif (action.hasFailureMessage)]
+[elseif (action.hasFailureMessage())]
 if (!$result)
 {
     $this->addFlash('error', [controller.translate(action.failureMessageId())/]);

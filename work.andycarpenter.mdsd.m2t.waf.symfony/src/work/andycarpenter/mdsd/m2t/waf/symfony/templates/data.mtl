@@ -168,7 +168,7 @@ NULL
 [/template]
 
 [template private displayAttribute(feature : UnitFeature, accessor : String, parentAccessor : String) post(trim())]
-[if (feature.hasActions)]
+[if (feature.hasActions())]
 [let parentEntity : Entity
 		= if feature.isAttributeField() then 
 				feature.oclAsType(UnitAttribute).attribute.partOf
@@ -177,7 +177,7 @@ NULL
 			else
 				feature.oclAsType(UnitAssociation).association.sourceType
 			endif endif]
-[feature.actions->first().featureActionLink(null, parentAccessor)/]
+[feature.actions()->first().featureActionLink(null, parentAccessor)/]
 [/let]
 [else]
 [feature.displayFeature(accessor, parentAccessor)/]
@@ -185,8 +185,8 @@ NULL
 [/template]
 
 [template private displayAssociation(association : UnitAssociation, accessor : String, parentAccessor : String) post(trim())]
-[if (association.hasActions)]
-[association.actions->first().featureActionLink(association, accessor)/]
+[if (association.hasActions())]
+[association.actions()->first().featureActionLink(association, accessor)/]
 [else]
 [association.displayFeature(accessor, parentAccessor)/]
 [/if]

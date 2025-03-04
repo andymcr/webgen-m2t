@@ -49,7 +49,7 @@
 [/template]
 
 [template public detailsContent(unit : DetailsUnit, accessor : String, depthInteger : Integer) post(trim())]
-[if (unit.hasInstanceActions)]
+[if (unit.hasInstanceActions())]
 [unit.instanceActions(accessor)/]
 [/if]
 [unit.fields(accessor)/]
@@ -58,7 +58,7 @@
 [template private instanceActions(unit : DetailsUnit, cardAccessor : String) post(trim())]
 <div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
  <nav>
-[for (action : Action | unit.instanceActions)]
+[for (action : Action | unit.instanceActions())]
   [action.unitActionLink(cardAccessor)/]
 [/for]
  </nav>

@@ -258,7 +258,7 @@
 /]
 
 [query public captchaActionName(unit : ContentUnit) : String
-	= if unit.controller.editUnits->size() = 1 then
+	= if unit.controller.editUnits()->size() = 1 then
 			unit.controller.uniqueName()
 		else
 			unit.uniqueName()
@@ -674,10 +674,10 @@
 [query public instanceName(action : Action) : String
 	= if action.oclIsTypeOf(DeleteAction)
 				or action.oclIsKindOf(InstanceOperationAction) then
-			action.parentUnit.contentType.instanceName()
+			action.parentUnit().contentType.instanceName()
 		else if action.oclIsTypeOf(ContainerOperationAction) then
-			if action.parentUnit.contentType.isContained then
-				action.parentUnit.contentType.containingType.instanceName()
+			if action.parentUnit().contentType.isContained then
+				action.parentUnit().contentType.containingType.instanceName()
 			else
 				action.uniqueName()
 			endif
@@ -707,21 +707,21 @@
 /]
 
 [query public routeActionReturnName(action : Action) : String
-	= let controller : Controller = action.parentUnit.controller
+	= let controller : Controller = action.parentUnit().controller
 		in if controller.isSinglePage and controller.hasSingleActionMethod() then
 				controller.routeName()
 			else
-				action.parentUnit.routeName()
+				action.parentUnit().routeName()
 			endif
 /]
 
 [query public routeName(action : Action) : String
-	= let controller : Controller = action.parentUnit.controller
+	= let controller : Controller = action.parentUnit().controller
 		in let actionName : String
 			= if controller.actionsWithoutTarget->select(a | a.name = action.name)->size() < 2 then
 					action.uniqueName()
 				else
-					action.uniqueName().concat(action.parentUnit.contentType.name)
+					action.uniqueName().concat(action.parentUnit().contentType.name)
 				endif
 			in controller.uniqueName().concat('_').concat(actionName)
 /]

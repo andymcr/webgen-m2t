@@ -45,11 +45,11 @@
 [model.autocompleteTypes()/]
 [model.formTypes()/]
 [model.controllers
-	->select(c | c.hasUnits)
+	->select(c | c.hasUnits())
 	->select(c | c.isSinglePage).oclAsType(SinglePageController)
 	.controller(model)/]
 [model.controllers
-	->select(c | c.hasUnits)
+	->select(c | c.hasUnits())
 	->select(c | c.isMultiPage).oclAsType(MultiPageController)
 	.controller(model)/]
 
@@ -59,7 +59,7 @@
 
 [model.navigation.navigation(model.siteProperties)/]
 [model.siteProperties.generatePage()/]
-[model.controllers->select(p | p.hasUnits and p.isSinglePage).indexTemplate()/]
+[model.controllers->select(p | p.hasUnits() and p.isSinglePage).indexTemplate()/]
 [model.controllers.units.unitView()/]
 
 [model.entityTranslations()/]

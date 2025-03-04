@@ -73,19 +73,19 @@
 [/template]
 
 [template private linkPath(action : Action, valueAccessor : String) 
-	?(action.isGeneralAction) post(trim())]
+	?(action.isGeneralAction()) post(trim())]
 '[action.routeName()/]'
 [/template]
 
 [template private linkPath(action : Action, valueAccessor : String) 
-	?(action.isTargetAction) post(trim())]
+	?(action.isTargetAction()) post(trim())]
 [let targetAction : TargetAction = action.oclAsType(TargetAction)]
 [if (targetAction.target.oclIsKindOf(DynamicUnit))]
 [let targetUnit : DynamicUnit = targetAction.target.oclAsType(DynamicUnit)]
 '[targetUnit.routeName()/]'[action.linkPathParameters(
 	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor,
-		action.parentUnit.containingType()),
-	action.parentUnit.contentType = targetUnit.contentType)/]
+		action.parentUnit().containingType()),
+	action.parentUnit().contentType = targetUnit.contentType)/]
 [/let]
 [else]
 '[targetAction.target.oclAsType(ContentUnit).routeName()/]'
@@ -95,8 +95,8 @@
 
 [template private linkPath(action : Action, valueAccessor : String) 
 	?(action.oclIsTypeOf(ContainerOperationAction)) post(trim())]
-'[action.routeName()/]'[action.linkPathParameters(action.parentUnit.routeActualParameters(
-	action.parentUnit.routeParameters(), valueAccessor, action.parentUnit.containingType()), true)/]
+'[action.routeName()/]'[action.linkPathParameters(action.parentUnit().routeActualParameters(
+	action.parentUnit().routeParameters(), valueAccessor, action.parentUnit().containingType()), true)/]
 [/template]
 
 [template private linkPath(action : SelectAction, valueAccessor : String) 
@@ -106,7 +106,7 @@
 '[targetUnit.routeName()/]'[action.linkPathParameters(
 	targetUnit.routeActualParameters(targetUnit.routeParameters(), valueAccessor,
 		targetUnit.containingType()),
-	action.parentUnit.controller = targetUnit.controller)/]
+	action.parentUnit().controller = targetUnit.controller)/]
 [/let]
 [/let]
 [/template]
@@ -120,7 +120,7 @@
 
 [query private selectType(action : SelectAction) : Entity
 	= if action.valuePath.oclIsUndefined() then
-			action.parentUnit.contentType
+			action.parentUnit().contentType
 		else
 			action.valuePath.selectType()
 		endif
@@ -174,15 +174,15 @@
 		endif]
 '[routeName/]'[action.linkPathParameters(
 	targetUnit.routeActualParameters(routeParameters, valueAccessor, valueType),
-	action.parentUnit.contentType = targetUnit.contentType)/]
+	action.parentUnit().contentType = targetUnit.contentType)/]
 [/let]
 [/let]
 [/let]
 [/template]
 
 [template private linkPathParameters(action : Action, routeParameters : String, preserveQuery : Boolean) post(trim())]
-[let controller : Controller = action.parentUnit.controller]
-[if ((controller.hasFilters or controller.hasPagination) and preserveQuery)]
+[let controller : Controller = action.parentUnit().controller]
+[if ((controller.hasFilters() or controller.hasPagination) and preserveQuery)]
 , app.request.query.all[if (routeParameters <> '')]
 |merge({ [routeParameters/] })[/if]
 [else][if (routeParameters <> '')]
@@ -208,10 +208,10 @@
 /]
 
 [query private hasTooltip(action : Action) : Boolean
-	= if action.isInstanceAction then
-			action.parentUnit.instanceActionsPlacement = InstanceActionsPlacement::Float
+	= if action.isInstanceAction() then
+			action.parentUnit().instanceActionsPlacement = InstanceActionsPlacement::Float
 		else
-			action.parentUnit.containerActionsPlacement = ContainerActionsPlacement::Float
+			action.parentUnit().containerActionsPlacement = ContainerActionsPlacement::Float
 		endif
 /]
 
@@ -220,7 +220,7 @@
  class="[action.anchorClass/]"[/if]
  title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
  {{ [valueAccessor/].defaultLabel() }}[/if]"[if (action.httpMethod() <> 'get')]
- data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage)]
+ data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage())]
  data-turbo-confirm="[action.confirmMessage/][if (not valueAccessor.oclIsUndefined())]
  {{ [valueAccessor/].defaultLabel() }}[/if]"[/if][if (action.hasTooltip())]
  data-bs-toggle="tooltip" data-bs-placement="top"[/if][if (action.disablePrefetch())]
@@ -231,7 +231,7 @@
 	?(action.oclIsKindOf(SelectAction)) post(trim())]
 [let title : String = valueAccessor.concat(association.valueLabel())]
 title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
- data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage)]
+ data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage())]
  data-turbo-confirm="[action.confirmMessage/][if (not title.oclIsUndefined())]
  {{ [title/] }}[/if]"[/if][if (action.hasAnchorClass)]
  class="[action.anchorClass/]"[if (action.disablePrefetch())]
@@ -245,7 +245,7 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
 [if (action.iconName <> '')]
 <i class="[action.iconName/]"></i>
 [else]
-{{ '[action.displayLabelId()/]' | trans( {}, '[action.parentUnit.translationDomain()/]') }}
+{{ '[action.displayLabelId()/]' | trans( {}, '[action.parentUnit().translationDomain()/]') }}
 [/if]
 [/template]
 
@@ -256,9 +256,9 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
 
 [template private anchor(action : Action, path : String, attributes : String, linkContent : String,
 	conditionAccessor : String) post(trim())]
-[if (action.isAuthorised and action.hasCustomisedAuthorisation)]
-{% if [action.authorisation.authorisationExpression()/] %}[/if]
-[action.anchor2(path, attributes, linkContent, conditionAccessor)/][if (action.isAuthorised and action.hasCustomisedAuthorisation)]
+[if (action.isAuthorised() and action.hasCustomisedAuthorisation())]
+{% if [action.authorisation().authorisationExpression()/] %}[/if]
+[action.anchor2(path, attributes, linkContent, conditionAccessor)/][if (action.isAuthorised() and action.hasCustomisedAuthorisation())]
 {% endif %}[/if]
 [/template]
 
@@ -280,8 +280,8 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
 <a href="{{ path([path/]) }}" [attributes/]>[linkContent/]</a>
 {%- else -%}
 <span[if (action.hasAnchorClass)]
- class="[action.anchorClass/]"[/if][if (action.hasDisabledMessage)]
- title="{{ '[action.disabledMessageId()/]' | trans( {}, '[action.parentUnit.translationDomain()/]') }}" data-bs-toggle="tooltip" data-bs-placement="top"[/if]>[linkContent/]</span>
+ class="[action.anchorClass/]"[/if][if (action.hasDisabledMessage())]
+ title="{{ '[action.disabledMessageId()/]' | trans( {}, '[action.parentUnit().translationDomain()/]') }}" data-bs-toggle="tooltip" data-bs-placement="top"[/if]>[linkContent/]</span>
 {%- endif%}
 [/if]
 [/template]
@@ -295,7 +295,7 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
 [/template]
 
 [template private routeActualParameters(action : Action, valueAccessor : String) post(trim())]
-[action.parentUnit.routeActualParameters(action.routeParameters(), valueAccessor, action.parentUnit.contentType)/]
+[action.parentUnit().routeActualParameters(action.routeParameters(), valueAccessor, action.parentUnit().contentType)/]
 [/template]
 
 [template private routeActualParameter(key : Attribute, routeParameters : Sequence(Attribute),

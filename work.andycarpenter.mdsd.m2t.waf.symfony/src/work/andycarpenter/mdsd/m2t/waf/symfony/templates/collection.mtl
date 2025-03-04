@@ -18,7 +18,7 @@
 [/template]
 
 [template private unitFilter(filter : Filter, unit : CollectionUnit) post(trim())]
-<div class="filter mb-3">
+<div class="filter">
  <form action="{{ path('[unit.routeName()/]', { [if (unit.hasRouteParameters(filter.selection))]
 [unit.routeActualParameters(unit.routeParameters(), unit.containerParameter(), unit.routingType())/][/if] }) }}" method="get">
   <div class="input-group">

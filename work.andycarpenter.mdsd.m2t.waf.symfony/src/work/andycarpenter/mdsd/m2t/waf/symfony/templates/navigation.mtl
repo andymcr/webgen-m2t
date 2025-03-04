@@ -21,17 +21,16 @@
 [navigation.authenticationBar()/]
 [/if]
 <nav[if (navigation.hasNavbarClass)] class="[navigation.navbarClass/]"[/if]>
- <div class="container-fluid">
-[if (not siteProperties.logoImage.oclIsUndefined())]
-  <span class="navbar-brand">[siteProperties.image()/]</span>
-[/if]
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-   <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-   [menu.topItems()/]
-  </div>
+ <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+  <i class="bi bi-list"></i>
+ </button>
+ <div class="navbar-menu" id="navbarMenu">
+  [menu.topItems()/]
  </div>
+[if (navigation.partOf.isAuthenticated
+		and navigation.authenticationMenuPlacement = AuthenticationMenuPlacement::Integrated)]
+ [navigation.partOf.profileMenu()/]
+[/if]
 </nav>
 [if (navigation.authenticationMenuPlacement = AuthenticationMenuPlacement::Below)]
 [navigation.authenticationBar()/]
@@ -43,25 +42,19 @@
 
 
 [template private topItems(menu : Menu) post(trim())]
-<div class="navbar-nav">
 [for (entry : MenuEntry | menu.entries)]
- [entry.topEntry()/]
+[entry.topEntry()/]
 [/for]
-[if (menu.definedBy.partOf.isAuthenticated
-		and menu.definedBy.authenticationMenuPlacement = AuthenticationMenuPlacement::Integrated)]
- [menu.definedBy.partOf.userDropdown()/]
-[/if]
-</div>
 [/template]
 
 [template private topEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
 [let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[if (action.action.isAuthorised)]
+[if (action.action.isAuthorised())]
 {% if [action.action.authorisation.authorisationExpression()/] %}[/if]
 <a class="nav-link{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
  disabled[/if]" href="{{ path('[action.routeName()/]') }}"[if (action.disablePrefetch())]
-  data-turbo-prefetch="false"[/if]>{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised)]
+  data-turbo-prefetch="false"[/if]>{{ '[action.displayLabelId()/]' | trans }}</a>[if (action.action.isAuthorised())]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -95,18 +88,24 @@
 [template private dropEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(ActionMenuEntry)) post(trim())]
 [let action : ActionMenuEntry = entry.oclAsType(ActionMenuEntry)]
-[if (action.action.isAuthorised and not action.alwaysVisible)]
+[if (action.action.isAuthorised() and not action.alwaysVisible)]
 {% if [action.action.authorisation.authorisationExpression()/] %}[/if]
 <li><a class="dropdown-item{% if app.request.attributes.get('_route') == '[action.routeName()/]' %} active{% endif %}[if (action.action.oclIsUndefined())]
  disabled[/if]" href="{{ path('[action.routeName()/]') }}"[if (action.disablePrefetch())]
-  data-turbo-prefetch="false"[/if]>{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised and not action.alwaysVisible)]
+  data-turbo-prefetch="false"[/if]>{{ '[action.displayLabelId()/]' | trans }}</a></li>[if (action.action.isAuthorised() and not action.alwaysVisible)]
 {% endif %}[/if]
 [/let]
 [/template]
 
 
+[template private profileMenu(model : WafModel) post(trim())]
+<div class="account">
+ [model.security.authentication.authenticationBar()/]
+</div>
+[/template]
+
 [template private authenticationBar(navigation : Navigation) post(trim())]
-<nav id="authentication_menu"[if (navigation.hasAuthenticationBarClass)] class="[navigation.authenticationBarClass/]"[/if]>
+<div id="authentication_menu"[if (navigation.hasAuthenticationBarClass)] class="[navigation.authenticationBarClass/]"[/if]>
  [navigation.partOf.security.authentication.authenticationBar()/]
 </nav>
 [/template]
@@ -115,12 +114,11 @@
 	? (authentication.oclIsTypeOf(LocalAuthenticationSystem)) post(trim())]
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 {%- if app.user -%}
-<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ app.user.username }}</a>
-<a class="nav-link" href="{{ logout_path() }}" data-turbo-prefetch="false">{{ '[localAuthentication.logoutElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}</a>
+<a class="nav-icon" href="{{ logout_path() }}" data-turbo-prefetch="false" title="{{ '[localAuthentication.logoutElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.logoutElement.translationDomain()/]') }}"><i class="bi bi-person-fill"></i></a>
 {%- elseif not app.user -%}
-<a class="nav-link" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}">{{ '[localAuthentication.loginElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}</a>
+<a class="nav-icon" href="{{ path('[localAuthentication.loginElement.routeName()/]') }}" title="{{ '[localAuthentication.loginElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.loginElement.translationDomain()/]') }}"><i class="bi bi-person"></i></a>
 [if (localAuthentication.allowSelfRegistration)]
-<a class="nav-link" href="{{ path('[localAuthentication.registrationElement.routeName()/]') }}">{{ '[localAuthentication.registrationElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.registrationElement.translationDomain()/]') }}</a>
+<a class="nav-icon" href="{{ path('[localAuthentication.registrationElement.routeName()/]') }}">{{ '[localAuthentication.registrationElement.invokeLabelContainedId()/]' | trans({}, '[localAuthentication.registrationElement.translationDomain()/]') }}</a>
 [/if]
 {%- endif -%}
 [/let]
@@ -130,17 +128,6 @@
 	? (authentication.oclIsTypeOf(CasAuthentication)) post(trim())]
 [let casAuthentication : CasAuthentication = authentication.oclAsType(CasAuthentication)]
 [/let]
-[/template]
-
-[template private userDropdown(model : WafModel) post(trim())]
-<div class="nav-item dropdown">
-{%- if app.user -%}
- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ app.user.username }}</a>
-{%- elseif not app.user -%}
- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#user-dropdown">{{ '[comment model.localAuthentication.loginElement.displayLabelContainedId()/]' | trans({}, '[comment model.localAuthentication.loginElement.translationDomain()/]') }}</a>
-{%- endif -%}
- [model.security.authentication.userDropdown()/]
-</div>
 [/template]
 
 [template private userDropdown(authentication : Authentication)

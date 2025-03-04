@@ -76,15 +76,15 @@
 [/template]
 
 [template public routeAttribute(action : Action, suffix : String) post(trim())]
-[action.parentUnit.routeAttribute(action.routeName(), action.uriPath(suffix), false)/]
+[action.parentUnit().routeAttribute(action.routeName(), action.uriPath(suffix), false)/]
 [/template]
 
 [template public routeContainerAttribute(action : OperationAction) post(trim())]
-[action.parentUnit.routeAttribute(action.routeName(), action.uriContainerPath(), false)/]
+[action.parentUnit().routeAttribute(action.routeName(), action.uriContainerPath(), false)/]
 [/template]
 
 [template public routeGeneralAttribute(action : OperationAction) post(trim())]
-[action.parentUnit.routeAttribute(action.routeName(), action.uriGeneralPath(), false)/]
+[action.parentUnit().routeAttribute(action.routeName(), action.uriGeneralPath(), false)/]
 [/template]
 
 [template private routeAttribute(unit : ContentUnit, routeName : String, uriPath : String, potentialHomeRoute : Boolean) post(trim())]
@@ -101,7 +101,7 @@
 
 
 [template public securityAnnotation(controller : Controller) post(trim())]
-[controller.securityAnnotation(controller.commonAuthorisation)/]
+[controller.securityAnnotation(controller.commonAuthorisation())/]
 [/template]
 
 [template public securityAnnotation(unit : ContentUnit) post(trim())]
@@ -109,7 +109,7 @@
 [/template]
 
 [template public securityAnnotation(action : Action) post(trim())]
-[action.parentUnit.controller.securityAnnotation(action.authorisation)/]
+[action.parentUnit().controller.securityAnnotation(action.authorisation())/]
 [/template]
 
 [template private securityAnnotation(controller : Controller, authorisation : AuthorisationExpression) post(trim())]

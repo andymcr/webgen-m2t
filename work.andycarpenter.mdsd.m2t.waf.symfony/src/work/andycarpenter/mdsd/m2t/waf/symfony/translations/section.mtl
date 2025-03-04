@@ -11,7 +11,7 @@
 
 [template public sectionsTranslations(model : WafModel)]
 [for (controller : Controller | model.controllers->select(p | p.parentController.oclIsUndefined()))]
-	[if (controller.hasUnits or controller.childControllers->notEmpty())]
+	[if (controller.hasUnits() or controller.childControllers->notEmpty())]
 [controller.sectionTranslations()/]
 	[/if]
 [/for]
@@ -27,7 +27,7 @@
    [controller.cancelLabelContainedId().idTranslation(controller.partOf.defaultCancelLabel)/]
    [controller.submitLabelContainedId().idTranslation(controller.partOf.defaultSaveLabel)/]
 [/if]
-[if (controller.hasUnits or controller.childControllers->notEmpty())]
+[if (controller.hasUnits() or controller.childControllers->notEmpty())]
    [controller.translations()/]
 [/if]
   </body>
@@ -37,7 +37,7 @@
 [/template]
 
 [query private allEditUnits(controller : Controller) : Set(EditUnit)
-	= controller.editUnits
+	= controller.editUnits()
 		->asSet()
 		->union(controller.childControllers
 			->collect(c | c.allEditUnits())
@@ -45,14 +45,14 @@
 /]
 
 [template private translations(controller : Controller) post(trim())]
-[if (controller.hasUnits)]
+[if (controller.hasUnits())]
 [controller.captionContainedId().idTranslation(controller.displayLabel)/]
 	[for (unit : ContentUnit | controller.units)]
 [unit.translations()/]
 	[/for]
 [/if]
 [for (child : Controller | controller.childControllers)]
-	[if (child.hasUnits or child.childControllers->notEmpty())]
+	[if (child.hasUnits() or child.childControllers->notEmpty())]
 [child.translations()/]
 	[/if]
 [/for]
@@ -67,7 +67,7 @@
 [unit.fieldTranslations()/]
 [/if]
 [if (unit.oclIsKindOf(DynamicUnit))]
-	[for (action : Action | unit.oclAsType(DynamicUnit).actions)]
+	[for (action : Action | unit.oclAsType(DynamicUnit).actions())]
 [action.translations()/]
 	[/for]
 [/if]
@@ -139,16 +139,16 @@
 
 [template private translations(action : Action) post (trim())]
 [action.displayLabelId().idTranslation(action.displayLabel)/]
-[if (action.hasConfirmMessage)]
+[if (action.hasConfirmMessage())]
 [action.confirmMessageId().idTranslation(action.confirmMessage)/]
 [/if]
-[if (action.hasFailureMessage)]
+[if (action.hasFailureMessage())]
 [action.failureMessageId().idTranslation(action.failureMessage)/]
 [/if]
-[if (action.hasSuccessMessage)]
+[if (action.hasSuccessMessage())]
 [action.successMessageId().idTranslation(action.successMessage)/]
 [/if]
-[if (action.hasDisabledMessage)]
+[if (action.hasDisabledMessage())]
 [action.disabledMessageId().idTranslation(action.disabledMessage)/]
 [/if]
 [/template]

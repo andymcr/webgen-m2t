@@ -32,7 +32,7 @@
 [template public actionMethod(unit : CollectionUnit) post(trim())]
 /**
  */
-[if (unit.isAuthorised)]
+[if (unit.isAuthorised())]
 [unit.securityAnnotation()/]
 [/if]
 [unit.routeAttribute()/]

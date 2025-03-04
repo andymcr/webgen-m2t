@@ -72,7 +72,7 @@
 {% endif %}
 		[/if]
  	[/for]
-	[if (unit.hasInstanceActions)]
+	[if (unit.hasInstanceActions())]
    <th>Actions</th>
 	[/if]
   </tr>
@@ -83,7 +83,7 @@
 {% for [loopVariable/] in [accessor/] %}
   <tr class="{{ cycle(['['/][for (class : String | unit.rowClasses.trim().tokenize(',; ')) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
    [unit.entry(loopVariable)/]
-[if (unit.hasInstanceActions)]
+[if (unit.hasInstanceActions())]
    <td class="actions">[unit.instanceActions(loopVariable)/]</td>
 [/if]
   </tr>
@@ -95,7 +95,7 @@
 	[else]
    <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[unit.emptyMessage/]</td>
 	[/if]
-	[if (unit.hasInstanceActions)]
+	[if (unit.hasInstanceActions())]
    <td class="actions">&nbsp;</td>
 	[/if]
   </tr>
@@ -103,7 +103,7 @@
 {% endfor %}
 [/let]
  </tbody>
-[if (unit.hasContainerActions and unit.isContained())]
+[if (unit.hasContainerActions() and unit.isContained())]
  <tfoot>
   <tr>
    [unit.containerActions(unit.containerParameter())/]
@@ -126,13 +126,13 @@
 [/template]
 
 [template private instanceActions(unit : TabularUnit, rowAccessor : String) post(trim())]
-[for (action : Action | unit.instanceActions)]
+[for (action : Action | unit.instanceActions())]
 [action.unitActionLink(rowAccessor)/]
 [/for]
 [/template]
 
 [template private containerActions(unit : TabularUnit, accessor : String) post(trim())]
-[for (action : Action | unit.containerActions)]
+[for (action : Action | unit.containerActions())]
 [action.unitActionLink(accessor)/]
 [/for]
 [/template]

@@ -24,7 +24,7 @@
 [template private actionMethod(unit : DetailsUnit) post(trim())]
 /**
  */
-[if (unit.isAuthorised)]
+[if (unit.isAuthorised())]
 [unit.securityAnnotation()/]
 [/if]
 [unit.routeAttribute()/]
