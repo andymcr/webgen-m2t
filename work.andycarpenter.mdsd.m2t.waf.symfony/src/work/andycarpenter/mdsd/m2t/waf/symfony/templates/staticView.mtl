@@ -12,7 +12,7 @@
 	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
 [file(staticUnit.templateFilename(), false)]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 [unit.templateStart()/]
 
 {% block content %}
@@ -26,7 +26,7 @@
   <div[if (staticUnit.hasContentClass())] class="[staticUnit.contentClass()/]"[/if]>[staticUnit.content/]</div>
 [/if]
 </section>
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 {% endblock %}
 [/if]
 [/file]

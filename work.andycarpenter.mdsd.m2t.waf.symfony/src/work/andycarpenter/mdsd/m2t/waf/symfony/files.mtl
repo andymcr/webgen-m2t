@@ -221,7 +221,7 @@
 /]
 
 [query public controllerFilename(authentication : LocalAuthenticationSystem, model : WafModel) : String
-	= if model.hasAPI then
+	= if model.hasAPI() then
 			authentication.webControllersDirectory()
 		else
 			authentication.controllersDirectory()
@@ -231,7 +231,7 @@
 /]
 
 [query public controllerFilename(controller : Controller, model : WafModel) : String
-	= if model.hasAPI then
+	= if model.hasAPI() then
 			controller.webControllersDirectory()
 		else
 			controller.controllersDirectory()

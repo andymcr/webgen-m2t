@@ -17,7 +17,7 @@
 [template public controller(controller : MultiPageController, model : WafModel)]
 [file(controller.controllerFilename(model), false)]
 <?php
-[if (model.hasAPI)]
+[if (model.hasAPI())]
 namespace [controller.webControllersNamespace()/];
 [else]
 namespace [controller.controllersNamespace()/];
@@ -28,7 +28,7 @@ namespace [controller.controllersNamespace()/];
 
 class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
 {
-[if (controller.hasPagination)]
+[if (controller.hasPagination())]
     [controller.constants()/]
 
 [/if]

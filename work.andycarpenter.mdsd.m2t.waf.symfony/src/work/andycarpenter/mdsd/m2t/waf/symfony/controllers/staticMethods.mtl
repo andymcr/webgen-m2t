@@ -30,7 +30,7 @@ public function [unit.actionName()/]()
    [unit.instanceVariable()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
 
 [/if]
-[if (controller.isMultiPage)]
+[if (controller.isMultiPage())]
     return $this->render('[controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]');
 [else]
     return $this->renderPage([comment unit.renderMethodActuals()/]);

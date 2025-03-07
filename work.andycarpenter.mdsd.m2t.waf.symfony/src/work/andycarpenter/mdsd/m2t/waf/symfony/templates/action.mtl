@@ -182,7 +182,7 @@
 
 [template private linkPathParameters(action : Action, routeParameters : String, preserveQuery : Boolean) post(trim())]
 [let controller : Controller = action.parentUnit().controller]
-[if ((controller.hasFilters() or controller.hasPagination) and preserveQuery)]
+[if ((controller.hasFilters() or controller.hasPagination()) and preserveQuery)]
 , app.request.query.all[if (routeParameters <> '')]
 |merge({ [routeParameters/] })[/if]
 [else][if (routeParameters <> '')]

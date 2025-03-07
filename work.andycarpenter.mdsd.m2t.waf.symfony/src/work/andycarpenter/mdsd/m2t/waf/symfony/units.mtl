@@ -32,7 +32,7 @@
 
 
 [query public containingTypeLoadedElsewhere(unit : DynamicUnit) : Boolean
-	= unit.containingTypeLoadedBy() <> unit and unit.controller.isSinglePage
+	= unit.containingTypeLoadedBy() <> unit and unit.controller.isSinglePage()
 /]
 
 [query public loadContainingType(unit : CollectionUnit) : Boolean

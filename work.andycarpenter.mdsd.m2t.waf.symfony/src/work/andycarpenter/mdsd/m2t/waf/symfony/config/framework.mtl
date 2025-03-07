@@ -34,7 +34,7 @@ framework:
 
     validation:
         enable_attributes: true
-[if (model.hasAPI)]
+[if (model.hasAPI())]
 #    serializer:      { enable_annotations: true }
 [/if]
 

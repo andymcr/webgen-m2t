@@ -22,7 +22,7 @@
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
 [let accessor : String = detailsUnit.instanceParameter()]
 [file(detailsUnit.templateFilename(), false)]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 [unit.templateStart()/]
 
 {% block content %}
@@ -33,7 +33,7 @@
  class="[if (detailsUnit.hasCaptionClass())][detailsUnit.captionClass()/][/if] [if (detailsUnit.omitCaption)] hidden[/if]"[/if]>[detailsUnit.unitTitle()/]</h4>
  [detailsUnit.unitContent(null, accessor, 0)/]
 </section>
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 {% endblock %}
 [/if]
 [/file]

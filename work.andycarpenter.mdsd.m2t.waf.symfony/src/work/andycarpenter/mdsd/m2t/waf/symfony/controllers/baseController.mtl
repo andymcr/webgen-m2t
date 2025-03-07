@@ -31,20 +31,20 @@ use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [if (controller.editUnits()->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
-[if (controller.hasCollectionUnits)]
-	[if (controller.collectionUnits->select(u | u.hasPagination)->notEmpty())]
+[if (controller.hasCollectionUnits())]
+	[if (controller.collectionUnits()->select(u | u.hasPagination)->notEmpty())]
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 	[/if]
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[controller.baseControllerClassName()/];
-[if (controller.isSinglePage and not controller.hasSingleActionMethod() and controller.hasFormUnits())]
+[if (controller.isSinglePage() and not controller.hasSingleActionMethod() and controller.hasFormUnits())]
 use Symfony\Component\Form\FormInterface;
 [/if]
-[if (controller.hasFileActions)]
+[if (controller.hasFileActions())]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
-[if (controller.hasEditUnits() or controller.hasFilters() or controller.hasPagination)]
+[if (controller.hasEditUnits() or controller.hasFilters() or controller.hasPagination())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;
@@ -61,7 +61,7 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 [/template]
 
 [template public constants(controller : Controller) post(trim())]
-[for (unit : CollectionUnit | controller.collectionUnits->select(u | u.hasPagination))]
+[for (unit : CollectionUnit | controller.collectionUnits()->select(u | u.hasPagination))]
 private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
 
 [/for]
@@ -75,7 +75,7 @@ private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
 private [repository.repositoryClassName()/] $[repository.repositoryInstanceName()/];
 
 [/for]
-[if (controller.isSinglePage and not controller.hasSingleActionMethod())]
+[if (controller.isSinglePage() and not controller.hasSingleActionMethod())]
 	[for (unit : ContentUnit | controller.units->sortedBy(u | u.name))]
 		[if (unit.isFormUnit)]
 /**

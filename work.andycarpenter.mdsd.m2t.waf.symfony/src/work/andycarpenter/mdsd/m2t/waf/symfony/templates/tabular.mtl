@@ -24,7 +24,7 @@
 [let tabularUnit : TabularUnit = unit.oclAsType(TabularUnit)]
 [let accessor : String = tabularUnit.instanceParameter()]
 [file(tabularUnit.templateFilename(), false)]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 [unit.templateStart()/]
 
 {% block content %}
@@ -48,7 +48,7 @@
  [tabularUnit.pagination(accessor)/]
 [/if]
 </section>
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 {% endblock %}
 [/if]
 [/file]

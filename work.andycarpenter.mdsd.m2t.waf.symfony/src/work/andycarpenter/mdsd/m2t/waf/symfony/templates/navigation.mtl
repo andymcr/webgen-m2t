@@ -20,7 +20,7 @@
 [if (navigation.authenticationMenuPlacement = AuthenticationMenuPlacement::Above)]
 [navigation.authenticationBar()/]
 [/if]
-<nav[if (navigation.hasNavbarClass)] class="[navigation.navbarClass/]"[/if]>
+<nav[if (navigation.hasNavbarClass())] class="[navigation.navbarClass/]"[/if]>
  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
   <i class="bi bi-list"></i>
  </button>
@@ -105,7 +105,7 @@
 [/template]
 
 [template private authenticationBar(navigation : Navigation) post(trim())]
-<div id="authentication_menu"[if (navigation.hasAuthenticationBarClass)] class="[navigation.authenticationBarClass/]"[/if]>
+<div id="authentication_menu"[if (navigation.hasAuthenticationBarClass())] class="[navigation.authenticationBarClass/]"[/if]>
  [navigation.partOf.security.authentication.authenticationBar()/]
 </nav>
 [/template]

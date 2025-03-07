@@ -38,7 +38,7 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 	[if (unit.isConditionallyDisplayed)]
     $parameters = ['['/][']'/];
 	[/if]
@@ -82,11 +82,11 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [if (collectionUnit.isContained() and collectionUnit.loadContainingType())]
 [collectionUnit.loadContainer()/]
-	[if (collectionUnit.isConditionallyDisplayed or unit.controller.isSinglePage)]
+	[if (collectionUnit.isConditionallyDisplayed or unit.controller.isSinglePage())]
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
 	[/if]
 [/if]
-[if (collectionUnit.isDislayedOnlyOnExplicitRoute() and unit.controller.isSinglePage)]
+[if (collectionUnit.isDislayedOnlyOnExplicitRoute() and unit.controller.isSinglePage())]
 if (isset([unit.instanceVariable()/])) {
     [collectionUnit.renderCode2()/]
 }
@@ -103,7 +103,7 @@ if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.containerInst
 [template private renderCode2(unit : CollectionUnit) post(trim())]
 [if (unit.inlineSelectCode())]
 [unit.selectCode()/]
-[elseif (unit.isConditionallyDisplayed or unit.controller.isSinglePage)]
+[elseif (unit.isConditionallyDisplayed or unit.controller.isSinglePage())]
 $parameters['['/]'[unit.instanceParameter()/]'[']'/] = $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
 [/template]
@@ -141,7 +141,7 @@ else
 [if (unit.hasPagination)]
 $adapter = new QueryAdapter([unit.queryInstanceVariable()/]);
 [if (unit.inlineSelectCode())]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 [unit.instanceVariable()/][else]
 $parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] =[else]
 return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(

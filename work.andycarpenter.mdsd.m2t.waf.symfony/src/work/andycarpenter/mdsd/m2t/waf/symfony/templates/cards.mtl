@@ -30,7 +30,7 @@
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let accessor : String = cardsUnit.instanceParameter()]
 [file(cardsUnit.templateFilename(), false)]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 [unit.templateStart()/]
 
 {% block content %}
@@ -58,7 +58,7 @@
  [cardsUnit.unitActions()/]
 [/if]
 </section>
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 {% endblock %}
 [/if]
 [/file]

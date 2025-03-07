@@ -30,7 +30,7 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
     [unit.renderCode()/]
     return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
         '[unit.instanceParameter()/]' => [unit.instanceVariable()/]
@@ -56,7 +56,7 @@ if (is_null([detailsUnit.instanceVariable()/])) {
 if (!([detailsUnit.hideWhen.controllerExpression(detailsUnit.instanceVariable(), null)/])) {
     $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 }
-[elseif (not unit.controller.isMultiPage)]
+[elseif (not unit.controller.isMultiPage())]
 $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 [/if]
 [/let]

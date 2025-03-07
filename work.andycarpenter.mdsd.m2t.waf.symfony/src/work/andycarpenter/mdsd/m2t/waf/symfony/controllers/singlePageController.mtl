@@ -21,7 +21,7 @@
 [template public controller(controller : SinglePageController, model : WafModel)]
 [file(controller.controllerFilename(model), false)]
 <?php
-[if (model.hasAPI)]
+[if (model.hasAPI())]
 namespace [controller.webControllersNamespace()/];
 [else]
 namespace [controller.controllersNamespace()/];
@@ -32,7 +32,7 @@ namespace [controller.controllersNamespace()/];
 
 class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
 {
-[if (controller.hasPagination)]
+[if (controller.hasPagination())]
     [controller.constants()/]
 
 [/if]
@@ -96,7 +96,7 @@ public function [controller.actionName()/]([controller.actionMethodFormals()/]):
 [/template]
 
 [template private renderMethod(controller : Controller) post(trim())]
-private function renderPage([if (controller.hasFilters() or controller.hasPagination)]
+private function renderPage([if (controller.hasFilters() or controller.hasPagination())]
 Request $request[if (controller.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | controller.routeParameters()) separator(', ')]
 string $[key.routeParameterName(controller.routeParameters())/][/for]): Response

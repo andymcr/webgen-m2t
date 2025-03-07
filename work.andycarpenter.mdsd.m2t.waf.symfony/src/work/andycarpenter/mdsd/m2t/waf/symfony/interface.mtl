@@ -58,7 +58,7 @@
 
 
 [query public hasJavascript(controller : Controller) : Boolean
-	= controller.hasAutocompleteFields
+	= controller.hasAutocompleteFields()
 /]
 
 [query public hasRoutingUnits(controller : Controller) : Boolean

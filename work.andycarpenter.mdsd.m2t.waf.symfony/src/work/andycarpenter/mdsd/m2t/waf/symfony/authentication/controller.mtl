@@ -16,7 +16,7 @@
 [let localAuthentication : LocalAuthenticationSystem = authentication.oclAsType(LocalAuthenticationSystem)]
 [file(localAuthentication.controllerFilename(genModel), false)]
 <?php
-[if (genModel.hasAPI)]
+[if (genModel.hasAPI())]
 namespace [authentication.webControllersNamespace()/];
 [else]
 namespace [authentication.controllersNamespace()/];

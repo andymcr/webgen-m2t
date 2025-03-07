@@ -46,20 +46,20 @@
 [model.formTypes()/]
 [model.controllers
 	->select(c | c.hasUnits())
-	->select(c | c.isSinglePage).oclAsType(SinglePageController)
+	->select(c | c.isSinglePage()).oclAsType(SinglePageController)
 	.controller(model)/]
 [model.controllers
 	->select(c | c.hasUnits())
-	->select(c | c.isMultiPage).oclAsType(MultiPageController)
+	->select(c | c.isMultiPage()).oclAsType(MultiPageController)
 	.controller(model)/]
 
-[if (model.hasAPI)]
+[if (model.hasAPI())]
 [comment model.api.resources.controller(model)/]
 [/if]
 
 [model.navigation.navigation(model.siteProperties)/]
 [model.siteProperties.generatePage()/]
-[model.controllers->select(p | p.hasUnits() and p.isSinglePage).indexTemplate()/]
+[model.controllers->select(p | p.hasUnits() and p.isSinglePage()).indexTemplate()/]
 [model.controllers.units.unitView()/]
 
 [model.entityTranslations()/]
@@ -83,11 +83,11 @@
 [genModel.configFramework()/]
 [genModel.configAttributes()/]
 [genModel.configServices()/]
-[if (genModel.hasImageUnits)]
+[if (genModel.hasImageUnits())]
 [genModel.configImagine()/]
 [/if]
 [genModel.configTwig()/]
-[if (genModel.hasResourceFields)]
+[if (genModel.hasResourceFields())]
 [genModel.configVichUploader()/]
 [/if]
 [/template]

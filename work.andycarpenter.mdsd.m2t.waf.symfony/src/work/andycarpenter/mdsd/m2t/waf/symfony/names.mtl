@@ -338,7 +338,7 @@
 /]
 
 [query public formVariable(unit : ControlUnit) : String
-	= if unit.controller.hasSingleActionMethod() or unit.controller.isMultiPage then
+	= if unit.controller.hasSingleActionMethod() or unit.controller.isMultiPage() then
 			'$'.concat(unit.formName())
 		else
 			'$this->'.concat(unit.formName())
@@ -346,7 +346,7 @@
 /]
 
 [query public formVariable(unit : EditUnit) : String
-	= if unit.controller.hasSingleActionMethod() or unit.controller.isMultiPage then
+	= if unit.controller.hasSingleActionMethod() or unit.controller.isMultiPage() then
 			'$'.concat(unit.formName())
 		else
 			'$this->'.concat(unit.formName())
@@ -393,7 +393,7 @@
 [query public queryInstanceVariable(unit : CollectionUnit) : String
 	= if unit.hasPagination then
 			'$query'
-		else if unit.isConditionallyDisplayed or unit.controller.isSinglePage then
+		else if unit.isConditionallyDisplayed or unit.controller.isSinglePage() then
 			'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
 		else
 			unit.instanceVariable()
@@ -426,7 +426,7 @@
 /]
 
 [query public routeName(unit : ContentUnit) : String
-	= if unit.controller.isSinglePage and unit.controller.hasSingleActionMethod()
+	= if unit.controller.isSinglePage() and unit.controller.hasSingleActionMethod()
 				or unit.isRoutingUnit() then
 			unit.controller.uniqueName()
 		else let unitName : String
@@ -708,7 +708,7 @@
 
 [query public routeActionReturnName(action : Action) : String
 	= let controller : Controller = action.parentUnit().controller
-		in if controller.isSinglePage and controller.hasSingleActionMethod() then
+		in if controller.isSinglePage() and controller.hasSingleActionMethod() then
 				controller.routeName()
 			else
 				action.parentUnit().routeName()

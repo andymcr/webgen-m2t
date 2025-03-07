@@ -117,18 +117,18 @@
 	= if not unit.uriParent.oclIsUndefined() then
 			unit.uriParent.uriUnitPath(routeParameters)
 				.combinePaths(unit.uriElement)
-		else if unit.controller.collectionUnits->first() = unit then
+		else if unit.controller.collectionUnits()->first() = unit then
 			unit.uriPath(routingType, unit.uriElement, routeParameters)
-		else if unit.controller.collectionUnits->first().contentType = unit.contentType then
+		else if unit.controller.collectionUnits()->first().contentType = unit.contentType then
 			unit.uriPath(routingType, unit.uriElement, routeParameters)
 		else if not unit.isContained() then
-			unit.controller.collectionUnits->first().uriPath(routeParameters)
+			unit.controller.collectionUnits()->first().uriPath(routeParameters)
 				.combinePaths(unit.uriElement)
 		else
 			let parentUnit : DynamicUnit
-				= routingType.implicitUriParent(unit.controller.collectionUnits)
+				= routingType.implicitUriParent(unit.controller.collectionUnits())
 				in if parentUnit.oclIsUndefined() then
-						unit.controller.collectionUnits->first().uriPath(routeParameters)
+						unit.controller.collectionUnits()->first().uriPath(routeParameters)
 							.combinePaths(routingType.keysPath(routeParameters))
 							.combinePaths(unit.uriElement)
 					else
@@ -174,8 +174,8 @@
 					.appendKeySeparator(unit.contentType)
 					.combinePaths(unit.uriElement)
 			endif
-		else if unit.controller.collectionUnits->exists(u | u.contentType = unit.contentType) then
-			unit.controller.collectionUnits
+		else if unit.controller.collectionUnits()->exists(u | u.contentType = unit.contentType) then
+			unit.controller.collectionUnits()
 					->any(u | u.contentType = unit.contentType).uriPath(routeParameters)
 				.combinePaths(unit.uriElement)
 		else
@@ -199,8 +199,8 @@
 		in if not unit.uriParent.oclIsUndefined() then
 			unit.uriParent.uriUnitPath(routeParameters)
 				.combinePaths(unit.uriElement)
-		else if unit.controller.collectionUnits->exists(u | u.contentType = unit.contentType) then
-			unit.controller.collectionUnits
+		else if unit.controller.collectionUnits()->exists(u | u.contentType = unit.contentType) then
+			unit.controller.collectionUnits()
 				->any(u | u.contentType = unit.contentType).uriPath(routeParameters)
 				.combinePaths(unit.contentType.keyEntity().keyPath(routeParameters))
 				.combinePaths(suffix)
@@ -245,7 +245,7 @@
 								controller.units->first().oclAsType(DynamicUnit).contentType,
 								'', action.routeParameters())
 							.combinePaths(action.parentUnit().contentType.contentPath(
-								action.parentUnit().contentType.containingType.implicitUriParent(controller.dynamicUnits()->asOrderedSet()),
+								action.parentUnit().contentType.containingType.implicitUriParent(controller.dynamicUnits()),
 								action.routeParameters()))
 								.combinePaths(suffix)
 					else
@@ -290,7 +290,7 @@
 		action.parentUnit().routeContainerParameters())
 /]
 
-[query private implicitUriParent(elementType : Entity, possibleParents : OrderedSet(DynamicUnit)) : DynamicUnit
+[query private implicitUriParent(elementType : Entity, possibleParents : Sequence(DynamicUnit)) : DynamicUnit
 	= if possibleParents->exists(u | u.contentType = elementType) then
 			possibleParents->select(u | u.contentType = elementType)->first()
 		else

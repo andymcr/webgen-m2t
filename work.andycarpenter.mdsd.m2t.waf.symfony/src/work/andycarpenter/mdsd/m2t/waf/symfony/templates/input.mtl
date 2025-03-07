@@ -18,7 +18,7 @@
 	? (unit.oclIsKindOf(EditUnit)) post(trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [file(unit.templateFilename(), false)]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 [unit.templateStart()/]
 
 {% block content %}
@@ -34,7 +34,7 @@
 [editUnit.unitContent(null, editUnit.instanceParameter(), 0)/]
 [/if]
 </section>
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
 {% endblock %}
 [/if]
 [/file]

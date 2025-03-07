@@ -60,7 +60,7 @@ $[parameter.name/][/for]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
     [unit.actionCreateCore()/]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
     return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
         '[unit.instanceParameter()/]' => [unit.formVariable()/]
     [']'/]);
@@ -109,7 +109,7 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 public function [unit.actionName(true)/]([unit.actionMethodUpdateFormals()/]): Response
 {
     [unit.actionUpdateCore()/]
-[if (unit.controller.isMultiPage)]
+[if (unit.controller.isMultiPage())]
     return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', ['['/]
         '[unit.instanceParameter()/]' => [unit.formVariable()/]
     [']'/]);
@@ -161,7 +161,7 @@ if ([unit.formVariable()/]->isSubmitted() && [unit.formVariable()/]->isValid()) 
 [template private createForm(unit : EditUnit, instanceName : String, sourceParameters : Sequence(Attribute)) post(trim())]
 [let controller : Controller = unit.controller]
 $this->createForm([unit.typeClassName()/]::class, [instanceName/], ['['/]
-    'action' => $this->generateUrl('[unit.routeName()/]'[if (controller.hasFilters() or controller.hasPagination)], [if (not unit.hasRouteParameters())]
+    'action' => $this->generateUrl('[unit.routeName()/]'[if (controller.hasFilters() or controller.hasPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(), ['['/]
@@ -180,7 +180,7 @@ array_merge(
 [template private updateForm(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let controller : Controller = unit.controller]
 $this->createForm([unit.typeClassName()/]::class, [unit.instanceVariable()/], ['['/]
-    'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (controller.hasFilters() or controller.hasPagination)], [if (not unit.hasRouteUpdateParameters())]
+    'action' => $this->generateUrl('[unit.routeUpdateName()/]'[if (controller.hasFilters() or controller.hasPagination())], [if (not unit.hasRouteUpdateParameters())]
 $request->query->all()[else]
 array_merge(
         $request->query->all(), ['['/]
