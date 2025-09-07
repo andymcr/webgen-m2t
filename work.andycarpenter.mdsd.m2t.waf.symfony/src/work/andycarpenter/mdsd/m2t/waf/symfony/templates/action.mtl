@@ -216,8 +216,8 @@
 /]
 
 [template private attributes(action : Action, valueAccessor : String) post(trim())]
-[if (action.hasAnchorClass)]
- class="[action.anchorClass/]"[/if]
+[if (action.hasActionClass())]
+ class="[action.actionClass()/]"[/if]
  title="[action.displayLabel/][if (not valueAccessor.oclIsUndefined())]
  {{ [valueAccessor/].defaultLabel() }}[/if]"[if (action.httpMethod() <> 'get')]
  data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage())]
@@ -233,8 +233,8 @@
 title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
  data-turbo-method="[action.httpMethod()/]"[/if][if (action.hasConfirmMessage())]
  data-turbo-confirm="[action.confirmMessage/][if (not title.oclIsUndefined())]
- {{ [title/] }}[/if]"[/if][if (action.hasAnchorClass)]
- class="[action.anchorClass/]"[if (action.disablePrefetch())]
+ {{ [title/] }}[/if]"[/if][if (action.hasActionClass())]
+ class="[action.actionClass()/]"[if (action.disablePrefetch())]
  data-turbo-prefetch="false"[/if]
 [/if]
 [/let]
@@ -279,8 +279,8 @@ title="[action.displayLabel/] {{ [title/] }}"[if (action.httpMethod() <> 'get')]
 {% if [action.enableWhen.twigExpression(conditionAccessor)/] -%}
 <a href="{{ path([path/]) }}" [attributes/]>[linkContent/]</a>
 {%- else -%}
-<span[if (action.hasAnchorClass)]
- class="[action.anchorClass/]"[/if][if (action.hasDisabledMessage())]
+<span[if (action.hasActionClass())]
+ class="[action.actionClass()/]"[/if][if (action.hasDisabledMessage())]
  title="{{ '[action.disabledMessageId()/]' | trans( {}, '[action.parentUnit().translationDomain()/]') }}" data-bs-toggle="tooltip" data-bs-placement="top"[/if]>[linkContent/]</span>
 {%- endif%}
 [/if]

@@ -37,14 +37,12 @@
  [tabularUnit.unitFilters()/]
 [/if]
 [if (tabularUnit.hasPagination
-	and not tabularUnit.selection.oclIsUndefined()
-	and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Below)]
+	and not tabularUnit.selection.oclIsUndefined())]
  [tabularUnit.pagination(accessor)/]
 [/if]
  [tabularUnit.unitContent(null, accessor)/]
 [if (tabularUnit.hasPagination
-	and not tabularUnit.selection.oclIsUndefined()
-	and tabularUnit.paginationControlPlacement <> PaginationControlPlacements::Above)]
+	and not tabularUnit.selection.oclIsUndefined())]
  [tabularUnit.pagination(accessor)/]
 [/if]
 </section>
@@ -59,7 +57,7 @@
 [template public unitContent(unit : TabularUnit, nullDisplayValue : String, accessor : String) post(trim())]
 <table class="[unit.contentClass()/]">
 [if (not unit.hasOmittedFieldLabels())]
- <thead[if (unit.hasHeaderClass)] class="[unit.headerClass/]"[/if]>
+ <thead[if (unit.hasHeaderClass())] class="[unit.headerClass()/]"[/if]>
   <tr>
  	[for (field : UnitField | unit.displayFields)]
 		[if (field.isAuthorised)]

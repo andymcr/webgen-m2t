@@ -15,9 +15,9 @@
 
 [template public fields(unit : DynamicUnit, unitAccessor : String) post(trim())]
 [if (unit.hasOmittedFieldLabels())]
-<ul[if (unit.hasCommonFieldListClass)] class="[unit.commonFieldListClass/]"[/if]>
+<ul[if (unit.hasFieldListClass())] class="[unit.fieldListClass()/]"[/if]>
 [else]
-<dl[if (unit.hasCommonDefinitionFieldListClass)] class="[unit.commonDefinitionFieldListClass/]"[/if]>
+<dl[if (unit.hasDefinitionFieldListClass())] class="[unit.definitionFieldListClass()/]"[/if]>
 [/if]
 [for (field : UnitField | unit.displayFields)]
  [field.field(unit, unitAccessor)/]
@@ -55,13 +55,13 @@
 [/template]
 
 [template private fieldLabel(field : UnitField, unit : DynamicUnit) post(trim())]
-<dt[if (field.hasFieldLabelClass)] [field.labelClass()/][/if]>[if (field.hasCustomisedDisplayLabel)]
+<dt[if (field.hasFieldLabelClass())] [field.labelClass()/][/if]>[if (field.hasCustomisedDisplayLabel)]
 {{ '[field.customisedCaptionContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
 {{ '[if (field.isFeatureField())][field.oclAsType(UnitFeature).defaultDisplayLabelContainedId()/][else]XXXXXXXX[/if]' | trans }}[/if]</dt>
 [/template]
 
 [template private labelClass(field : UnitField) post(trim())]
-class="[field.fieldLabelClass/]"
+class="[field.fieldLabelClass()/]"
 [/template]
 
 [template private unlabelledField(field : UnitField, unit : DynamicUnit, unitAccessor : String) post(trim())]
@@ -69,8 +69,8 @@ class="[field.fieldLabelClass/]"
 [/template]
 
 [template private valueClass(field : UnitField) post(trim())]
-class="[if (field.hasFieldValueClass)]
-[field.fieldValueClass/] [/if][if (field.truncate and field.isSingletonField())]
+class="[if (field.hasFieldValueClass())]
+[field.fieldValueClass()/] [/if][if (field.truncate and field.isSingletonField())]
 text-truncate [/if]
 [field.styleClass().snakeCase()/]"
 [/template]

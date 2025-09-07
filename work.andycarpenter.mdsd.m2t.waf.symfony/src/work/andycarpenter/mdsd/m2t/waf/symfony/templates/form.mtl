@@ -45,18 +45,18 @@
 [/template]
 
 [template private formControlAndClose(unit : EditUnit, accessor : String) post(trim())]
-<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
- <button type="submit" name="[unit.submitId()/]"[if (unit.hasAnchorClass)]
- class="[unit.anchorClass/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
+<div[if (unit.hasControlClass())] class="[unit.controlClass()/]"[/if]>
+ <button type="submit" name="[unit.submitId()/]"[if (unit.hasActionClass())]
+ class="[unit.actionClass()/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
 [if (not unit.cancelDestination.oclIsUndefined())]
- <input type="submit" name="[unit.cancelId()/]"[if (unit.hasAnchorClass)]
- class="[unit.anchorClass/]"[/if] value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/] formnovalidate/>
+ <input type="submit" name="[unit.cancelId()/]"[if (unit.hasActionClass())]
+ class="[unit.actionClass()/]"[/if] value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/] formnovalidate/>
 [/if]
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
 	[if (not createUpdateUnit.clearLabel.oclIsUndefined())]
- <input type="reset" name="clear"[if (unit.hasAnchorClass)]
- class="[unit.anchorClass/]"[/if] value="[createUpdateUnit.clearLabel/]"[unit.disable(accessor)/]/>
+ <input type="reset" name="clear"[if (unit.hasActionClass())]
+ class="[unit.actionClass()/]"[/if] value="[createUpdateUnit.clearLabel/]"[unit.disable(accessor)/]/>
 	[/if]
 [/let]
 [/if]
@@ -122,18 +122,18 @@
 		or (field.isAssociationField() and not field.isContains)
 		or field.isResourceField()) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
-{{ form_row([field.editAccessor(parentAccessor)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass or field.isDisabled)]
+{{ form_row([field.editAccessor(parentAccessor)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass() or field.hasFieldLabelClass() or field.hasFieldValueClass() or field.isDisabled)]
 , {[if (field.hasTranslations() and not field.singleUseModel())]
  label: '[field.customisedCaptionContainedId()/]',[/if]
-[if (field.hasInputGroupClass)]
- row_attr: { class: '[field.inputGroupClass/]' },[/if]
-[if (field.hasFieldLabelClass)]
- label_attr: { class: '[field.fieldLabelClass/]' },[/if]
-[if (field.isDisabled or field.hasFieldValueClass or field.hasTranslations())]
+[if (field.hasInputGroupClass())]
+ row_attr: { class: '[field.inputGroupClass()/]' },[/if]
+[if (field.hasFieldLabelClass())]
+ label_attr: { class: '[field.fieldLabelClass()/]' },[/if]
+[if (field.isDisabled or field.hasFieldValueClass() or field.hasTranslations())]
  attr: {[if (field.isDisabled)]
  disabled: 'disabled',[/if]
-[if (field.hasFieldValueClass)]
- class: '[field.fieldValueClass/]',[/if]
+[if (field.hasFieldValueClass())]
+ class: '[field.fieldValueClass()/]',[/if]
 [if (field.hasTranslations() and not field.singleUseModel())]
  placeholder: '[field.customisedPlaceholderContainedId()/]', title: '[field.customisedTitleContainedId()/]',[/if] }[/if]
 [if (field.hasTranslations() and not field.singleUseModel())]

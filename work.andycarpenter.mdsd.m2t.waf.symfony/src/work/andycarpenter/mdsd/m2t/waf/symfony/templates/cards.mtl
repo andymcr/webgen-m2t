@@ -130,9 +130,9 @@
 [action.authorisation().authorisationExpression()/][/for] %}
 	[/if]
 [/if]
-<nav[if (unit.hasCardFooterClass() or unit.hasInstanceControlClass)]
- class="[if (unit.hasCardFooterClass())][unit.cardFooterClass()/][if (unit.hasInstanceControlClass)] [/if][/if][if (unit.hasInstanceControlClass)]
-[unit.instanceControlClass/][/if]"[/if]>
+<nav[if (unit.hasCardFooterClass() or unit.hasInstanceControlClass())]
+ class="[if (unit.hasCardFooterClass())][unit.cardFooterClass()/][if (unit.hasInstanceControlClass())] [/if][/if][if (unit.hasInstanceControlClass())]
+[unit.instanceControlClass()/][/if]"[/if]>
 [for (action : Action | unit.instanceActions())]
  [action.unitActionLink(cardAccessor)/]
 [/for]
@@ -143,7 +143,7 @@
 [/template]
 
 [template private unitActions(unit : CardsUnit) post(trim())]
-<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if] role="group" aria-label="Floating action buttons">
+<div[if (unit.hasControlClass())] class="[unit.controlClass()/]"[/if] role="group" aria-label="Floating action buttons">
 [for (action : Action | unit.actions())]
 	[if (action.isGeneralAction())]
  [action.unitActionLink(null)/]
@@ -165,8 +165,8 @@
 [/template]
 
 [template private floatingInstanceActions(unit : CardsUnit, cardAccessor : String) post(trim())]
-<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
- <nav[if (unit.hasInstanceControlClass)] class="[unit.instanceControlClass/]"[/if]>
+<div[if (unit.hasControlClass())] class="[unit.controlClass()/]"[/if]>
+ <nav[if (unit.hasInstanceControlClass())] class="[unit.instanceControlClass()/]"[/if]>
 [for (action : Action | unit.instanceActions())]
   [action.unitActionLink(cardAccessor)/]
 [/for]

@@ -81,7 +81,7 @@ class [unit.typeClassName()/] extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-[for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName))]
+[for (feature : UnitField | unit.displayFields->sortedBy(f | f.fieldName()))]
         [feature.formField()/];
 
 [/for]
@@ -379,7 +379,7 @@ add('[interface.name/]', [interface.interfaceType()/], ['['/]
     'help' => '[field.helpContainedId()/]',
 	[/if]
 [else]
-	[if (field.hasInputGroupClass or field.hasFieldLabelClass or field.hasFieldValueClass)]
+	[if (field.hasInputGroupClass() or field.hasFieldLabelClass() or field.hasFieldValueClass())]
     [interface.repeatOptions()/]
 	[/if]
     [interface.firstOptions()/]
@@ -417,14 +417,14 @@ TextType::class
 
 [template private repeatOptions(field : InterfaceField) post(trim())]
 'options' => ['['/]
-	[if (field.hasInputGroupClass)]
-    'row_attr' => ['['/] 'class' => '[field.inputGroupClass/]' [']'/],
+	[if (field.hasInputGroupClass())]
+    'row_attr' => ['['/] 'class' => '[field.inputGroupClass()/]' [']'/],
 	[/if]
-	[if (field.hasFieldLabelClass)]
-    'label_attr' => ['['/] 'class' => '[field.fieldLabelClass/]' [']'/],
+	[if (field.hasFieldLabelClass())]
+    'label_attr' => ['['/] 'class' => '[field.fieldLabelClass()/]' [']'/],
 	[/if]
-	[if (field.hasFieldValueClass)]
-    'attr' => ['['/] 'class' => '[field.fieldValueClass/]' [']'/],
+	[if (field.hasFieldValueClass())]
+    'attr' => ['['/] 'class' => '[field.fieldValueClass()/]' [']'/],
 	[/if]
 [']'/],
 [/template]

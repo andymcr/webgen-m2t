@@ -56,7 +56,7 @@
 [/template]
 
 [template private instanceActions(unit : DetailsUnit, cardAccessor : String) post(trim())]
-<div[if (unit.hasControlClass)] class="[unit.controlClass/]"[/if]>
+<div[if (unit.hasControlClass())] class="[unit.controlClass()/]"[/if]>
  <nav>
 [for (action : Action | unit.instanceActions())]
   [action.unitActionLink(cardAccessor)/]

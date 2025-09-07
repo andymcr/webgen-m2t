@@ -232,9 +232,9 @@
 	= if field.isFeatureField() then
 			self.oclAsType(UnitFeature).leafFeature().modelPropertyName().snakeCase()
 		else if field.isInterfaceField() then
-			field.oclAsType(InterfaceField).name.snakeCase()
+			field.oclAsType(InterfaceField).name().snakeCase()
 		else if field.oclIsTypeOf(UnitLabel) then
-			field.oclAsType(UnitLabel).name.snakeCase()
+			field.oclAsType(UnitLabel).name().snakeCase()
 		else
 			'UnhandledFeature'
 		endif endif endif
