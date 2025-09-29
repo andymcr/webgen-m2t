@@ -26,6 +26,10 @@
 
 [/if]
 [collectionUnit.actionMethod()/]
+[if (collectionUnit.hasFilters2())]
+
+[collectionUnit.filterMethod()/]
+[/if]
 [/let]
 [/template]
 
@@ -62,6 +66,18 @@ $parameters[else]['['/]
 [/if]
     return $this->renderPage([unit.renderMethodActuals()/]);
 [/if]
+}
+[/template]
+
+[template private filterMethod(unit : CollectionUnit) post(trim())]
+/**
+ */
+[if (unit.isAuthorised())]
+[unit.securityAnnotation()/]
+[/if]
+[unit.routeFilterAttribute()/]
+public function [unit.actionFilterName()/]([unit.actionMethodFormals()/]): Response
+{
 }
 [/template]
 

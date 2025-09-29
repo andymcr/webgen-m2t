@@ -75,6 +75,10 @@
 [unit.routeAttribute(unit.routeUpdateName(), unit.uriUpdatePath(), true)/]
 [/template]
 
+[template public routeFilterAttribute(unit : CollectionUnit) post(trim())]
+[unit.routeAttribute(unit.routeFilterName(), unit.uriFilterPath(), false)/]
+[/template]
+
 [template public routeAttribute(action : Action, suffix : String) post(trim())]
 [action.parentUnit().routeAttribute(action.routeName(), action.uriPath(suffix), false)/]
 [/template]

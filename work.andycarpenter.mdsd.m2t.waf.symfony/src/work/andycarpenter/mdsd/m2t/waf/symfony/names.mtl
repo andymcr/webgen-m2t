@@ -249,6 +249,10 @@
 		endif
 /]
 
+[query public actionFilterName(unit : CollectionUnit) : String
+	= unit.actionName().concat('Filter')
+/]
+
 [query public actionTestName(unit : ContentUnit) : String
 	= unit.actionTestName(false)
 /]
@@ -437,6 +441,10 @@
 				endif
 			in unit.controller.uniqueName().concat('_').concat(unitName)
 		endif
+/]
+
+[query public routeFilterName(unit : CollectionUnit) : String
+	= unit.routeName().concat('_').concat('filter')
 /]
 
 [query public routeName(element : AuthenticationElement) : String

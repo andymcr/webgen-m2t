@@ -185,6 +185,10 @@
 		endif endif endif
 /]
 
+[query public uriFilterPath(unit : CollectionUnit) : String
+	= unit.uriPath(unit.routeParameters()).combinePaths('filter')
+/]
+
 [query public uriUpdatePath(unit : EditUnit) : String
 	= unit.uriUpdatePath(unit.routeUpdateParameters())
 /]
