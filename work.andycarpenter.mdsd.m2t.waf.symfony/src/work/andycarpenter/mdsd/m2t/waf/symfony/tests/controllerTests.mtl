@@ -13,10 +13,10 @@
 
 
 [template public controllerTests(controller : Controller, wafModel : WafModel)]
-[file(controller.controllerTestFilename(genModel), false)]
+[file(controller.controllerTestFilename(wafModel), false)]
 <?php
 namespace [controller.controllerTestsNamespace()/];
-[if (controller.isAuthorised)]
+[if (controller.isAuthorised())]
 [let authentication : LocalAuthenticationSystem = wafModel.security.authentication.oclAsType(LocalAuthenticationSystem)]
 use [controller.repositoriesNamespace()/]\[authentication.authenticationModel.repository.repositoryClassName()/];
 [/let]
@@ -27,7 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class [controller.controllerTestClassName()/] extends WebTestCase
 {
 [if (controller.hasSingleActionMethod())]
-	[controller.units->first().unitTests(genModel)/]
+	[controller.units->first().unitTests(wafModel)/]
 [else]
 	[for (unit : ContentUnit | controller.units)]
 		[if (unit.oclIsKindOf(DynamicUnit))]
@@ -50,7 +50,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
 [let staticUnit : StaticUnit = unit.oclAsType(StaticUnit)]
-[if (staticUnit.isAuthorised)]
+[if (staticUnit.isAuthorised())]
 [staticUnit.testAuthorisedGet(staticUnit.uriPath(), genModel)/]
 [else]
 [staticUnit.testGet(staticUnit.uriPath())/]
@@ -72,7 +72,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [/template]
 
 [template private createTests(unit : EditUnit, genModel : WafModel) post(trim())]
-[if (unit.isAuthorised)]
+[if (unit.isAuthorised())]
 [unit.testAuthorisedGet(genModel)/]
 [else]
 [unit.testGet()/]
@@ -80,7 +80,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [/template]
 
 [template private updateTests(unit : EditUnit, genModel : WafModel) post(trim())]
-[if (unit.isAuthorised)]
+[if (unit.isAuthorised())]
 [unit.testAuthorisedGet(unit.uriUpdatePath(), true, genModel)/]
 [else]
 [unit.testGet(unit.uriUpdatePath(), true)/]
@@ -90,7 +90,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(MapUnit)) post(trim())]
 [let mapUnit : MapUnit = unit.oclAsType(MapUnit)]
-[if (mapUnit.isAuthorised)]
+[if (mapUnit.isAuthorised())]
 [mapUnit.testAuthorisedGet(genModel)/]
 [else]
 [mapUnit.testGet()/]
@@ -101,7 +101,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
 [let detailsUnit : DetailsUnit = unit.oclAsType(DetailsUnit)]
-[if (detailsUnit.isAuthorised)]
+[if (detailsUnit.isAuthorised())]
 [detailsUnit.testAuthorisedGet(genModel)/]
 [else]
 [detailsUnit.testGet()/]
@@ -112,7 +112,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(TabularUnit)) post(trim())]
 [let tabularUnit : TabularUnit = unit.oclAsType(TabularUnit)]
-[if (tabularUnit.isAuthorised)]
+[if (tabularUnit.isAuthorised())]
 [tabularUnit.testAuthorisedGet(genModel)/]
 [else]
 [tabularUnit.testGet()/]
@@ -123,7 +123,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(TextCardsUnit)) post(trim())]
 [let cardsUnit : TextCardsUnit = unit.oclAsType(TextCardsUnit)]
-[if (cardsUnit.isAuthorised)]
+[if (cardsUnit.isAuthorised())]
 [cardsUnit.testAuthorisedGet(genModel)/]
 [else]
 [cardsUnit.testGet()/]
@@ -134,7 +134,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(DateCardsUnit)) post(trim())]
 [let cardsUnit : DateCardsUnit = unit.oclAsType(DateCardsUnit)]
-[if (cardsUnit.isAuthorised)]
+[if (cardsUnit.isAuthorised())]
 [cardsUnit.testAuthorisedGet(genModel)/]
 [else]
 [cardsUnit.testGet()/]
@@ -145,7 +145,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(ImageCardsUnit)) post(trim())]
 [let cardsUnit : ImageCardsUnit = unit.oclAsType(ImageCardsUnit)]
-[if (cardsUnit.isAuthorised)]
+[if (cardsUnit.isAuthorised())]
 [cardsUnit.testAuthorisedGet(genModel)/]
 [else]
 [cardsUnit.testGet()/]
@@ -156,7 +156,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(SliderUnit)) post(trim())]
 [let sliderUnit : SliderUnit = unit.oclAsType(SliderUnit)]
-[if (sliderUnit.isAuthorised)]
+[if (sliderUnit.isAuthorised())]
 [sliderUnit.testAuthorisedGet(genModel)/]
 [else]
 [sliderUnit.testGet()/]
@@ -167,7 +167,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(GalleryUnit)) post(trim())]
 [let galleryUnit : GalleryUnit = unit.oclAsType(GalleryUnit)]
-[if (galleryUnit.isAuthorised)]
+[if (galleryUnit.isAuthorised())]
 [galleryUnit.testAuthorisedGet(genModel)/]
 [else]
 [galleryUnit.testGet()/]
@@ -178,7 +178,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [template private unitTests(unit : ContentUnit, genModel : WafModel)
 	? (unit.oclIsTypeOf(SearchUnit)) post(trim())]
 [let searchUnit : SearchUnit = unit.oclAsType(SearchUnit)]
-[if (searchUnit.isAuthorised)]
+[if (searchUnit.isAuthorised())]
 [searchUnit.testAuthorisedGet(genModel)/]
 [else]
 [searchUnit.testGet()/]
@@ -187,7 +187,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 [/template]
 
 [template private testAuthorisedGet(unit : DynamicUnit, genModel : WafModel) post(trim())]
-[unit.testAuthorisedGet(unit.uriPath(), genModel)/]
+[unit.testAuthorisedGet(unit.uriUnitPath(), genModel)/]
 [/template]
 
 [template private testAuthorisedGet(unit : ContentUnit, uri : String, genModel : WafModel) post(trim())]
@@ -199,7 +199,7 @@ class [controller.controllerTestClassName()/] extends WebTestCase
 public function [unit.actionTestName(update)/]GetLoginRedirect(): void
 {
     [unit.createGet(uri)/]
-    $this->assertResponseRedirects('[genModel.loginUri()/]', 302);
+    $this->assertResponseRedirects('[wafModel.loginUri()/]', 302);
 }
 
 public function [unit.actionTestName(update)/]GetUnauthorisedUser(): void
@@ -240,7 +240,7 @@ public function [unit.actionTestName(update)/]GetUnauthorisedUser(): void
 [if (unit.isHomeUnit())]
 [unit.testGet('', false)/]
 [else]
-[unit.testGet(unit.uriPath(), false)/]
+[unit.testGet(unit.uriUnitPath(), false)/]
 [/if]
 [/template]
 
