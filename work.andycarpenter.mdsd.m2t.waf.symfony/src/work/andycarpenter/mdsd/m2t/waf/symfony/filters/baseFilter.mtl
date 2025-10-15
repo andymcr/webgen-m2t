@@ -1,0 +1,33 @@
+[comment encoding = UTF-8 /]
+[module baseFilter(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[template public baseFilter(model : WafModel)]
+[file(model.filterFilename(model.filterBaseClassName()), false)]
+<?php
+namespace [model.filterNamespace()/];
+
+use [model.filterNamespace()/]\[model.filterInterfaceClassName()/];
+use Doctrine\ORM\QueryBuilder;
+
+
+class [model.filterBaseClassName()/] implements [model.filterInterfaceClassName()/]
+{
+    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
+    {
+        $alias = $filterDataDto->getEntityAlias();
+        $property = $filterDataDto->getProperty();
+        $comparison = $filterDataDto->getComparison();
+        $parameterName = $filterDataDto->getParameterName();
+        $value = $filterDataDto->getValue();
+
+        $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $property, $comparison, $parameterName))
+            ->setParameter($parameterName, $value);
+    }
+}
+[/file]
+[/template]

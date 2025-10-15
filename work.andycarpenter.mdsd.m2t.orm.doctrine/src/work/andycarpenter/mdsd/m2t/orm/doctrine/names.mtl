@@ -23,8 +23,16 @@
 	= 'ServiceEntityRepository'
 /]
 
+[query public builderSuffix(eObject : EObject) : String
+	= 'Builder'
+/]
+
 [query public factoryClassSuffix(eObject : EObject) : String
 	= 'Factory'
+/]
+
+[query private findPrefix(eObject : EObject) : String
+	= 'find'
 /]
 
 [query public fixtureClassSuffix(eObject : EObject) : String
@@ -217,7 +225,7 @@
 /]
 
 [query public builderMethodName(association : Association) : String
-	= association.name.concat('Builder')
+	= association.name.concat(association.builderSuffix())
 /]
 
 [query public childSelectionName(association : Association, selection : Selection) : String
@@ -225,7 +233,7 @@
 /]
 
 [query public findMethodName(association : Association, selection : Selection) : String
-	= 'find'.concat(association.name.toUpperFirst()).concat(selection.name.toUpperFirst())
+	= association.findPrefix().concat(association.name.toUpperFirst()).concat(selection.name.toUpperFirst())
 /]
 
 [query public parametersMethodName(association : Association) : String
@@ -244,7 +252,11 @@
 
 
 [query public builderMethodName(selection : Selection) : String
-	= selection.instanceName().concat('Builder')
+	= if selection.name.startsWith(selection.findPrefix())then
+			selection.instanceName()
+		else
+			selection.findPrefix().concat(selection.instanceName().toUpperFirst())
+		endif.concat(selection.builderSuffix())
 /]
 
 [query public criteriaMethodName(selection : Selection) : String
@@ -253,10 +265,6 @@
 
 [query public instanceName(selection : Selection) : String
 	= selection.name.toLowerFirst()
-/]
-
-[query public methodQueryName(selection : Selection) : String
-	= selection.methodName.concat('Query')
 /]
 
 [query public parametersMethodName(selection : Selection) : String

@@ -32,7 +32,7 @@ use [resource.modelsNamespace()/]\[resource.repository.serves.modelClassName()/]
 [if (resource.childResources->notEmpty())]
 [resource.childResources.childEntities()/]
 [/if]
-use [resource.repositoryNamespace()/]\[resource.repository.repositoryClassName()/];
+use [resource.repositoriesNamespace()/]\[resource.repository.repositoryClassName()/];
 [if (resource.childResources->notEmpty())]
 [resource.childResources.childRepositories()/]
 [/if]
@@ -80,7 +80,7 @@ use [resource.modelsNamespace()/]\[resource.repository.serves.modelClassName()/]
 [/template]
 
 [template private childRepositories(resource : Resource) post(trim())]
-use [resource.repositoryNamespace()/]\[resource.repository.repositoryClassName()/];
+use [resource.repositoriesNamespace()/]\[resource.repository.repositoryClassName()/];
 [if (resource.childResources->notEmpty())]
 [resource.childResources.childRepositories()/]
 [/if]

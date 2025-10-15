@@ -386,25 +386,7 @@ public function flush(): void
 [/template]
 
 [template private findAllMethod(selection : Selection) post(trim())]
-[if (selection.hasFilters())]
 [selection.builderMethod()/]
-
-[/if]
-/**
- *
- *
- * @return Query
- */
-public function [selection.methodQueryName()/](): Query
-{
-[if (selection.hasFilters())]
-    return $this->[selection.builderMethodName()/]()->getQuery();
-[else]
-    [selection.builderCode()/]
-
-    return $queryBuilder->getQuery();
-[/if]
-}
 
 /**
  *
@@ -413,13 +395,11 @@ public function [selection.methodQueryName()/](): Query
  */
 public function [selection.methodName/](): [selection.returnType()/]
 {
-    return $this->[selection.methodQueryName()/]()->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
+    return $this
+        ->[selection.builderMethodName()/]()
+        ->getQuery()
+        ->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
 }
-
-[if (selection.hasFilters())]
-[selection.filterMethods()/]
-
-[/if]
 [/template]
 
 [template private defaultFindAllQuery(repository : Repository) post(trim())]
@@ -434,43 +414,7 @@ public function findAllQuery(): Query
 }
 [/template]
 
-[template private selectionMethod(selection : Selection, security : SecurityModel)
-	? (selection.filters->isEmpty()) post(trim())]
-/**
- *
- [selection.documentParameters()/]
- *
- * @return Query
- */
-public function [selection.methodQueryName()/]([selection.formals()/]): Query
-{
-    [selection.builderCode()/]
-[if (selection.uriPathKeys()->notEmpty() or selection.hasFormals() or selection.hasConditionParameters())]
-    $query = $queryBuilder->getQuery();
-    [selection.queryParametersCode(security)/]
-
-    return $query;
-[else]
-
-    return $queryBuilder->getQuery();
-[/if]
-}
-
-/**
- *
- [selection.documentParameters()/]
- *
- * @return [selection.documentReturnType()/]
- */
-public function [selection.methodName/]([selection.formals()/]): [selection.returnType()/]
-{
-    return $this->[selection.methodQueryName()/]([selection.actuals()/])->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
-}
-
-[/template]
-
-[template private selectionMethod(selection : Selection, security : SecurityModel)
-	? (selection.filters->notEmpty()) post(trim())]
+[template private selectionMethod(selection : Selection, security : SecurityModel) post(trim())]
 [selection.builderMethod()/]
 
 [if (selection.hasSelectPath() or selection.hasFormals() or selection.hasConditionParameters())]
@@ -479,45 +423,34 @@ public function [selection.methodName/]([selection.formals()/]): [selection.retu
 [/if]
 /**
  *
+[if (selection.hasSelectPath() or selection.hasFormals())]
  [selection.documentParameters()/]
- *
- * @return Query
- */
-public function [selection.methodQueryName()/]([selection.formals()/]): Query
-{
-[if (selection.hasSelectPath() or selection.hasFormals() or selection.hasConditionParameters())]
-    $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
-    $this->[selection.parametersMethodName()/]($query[if (selection.hasSelectPath() or selection.hasFormals())]
-, [selection.selectionActuals()/][/if]);
-
-    return $query;
-[else]
-    return $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
 [/if]
-}
-
-/**
- *
- [selection.documentParameters()/]
  *
  * @return [selection.documentReturnType()/]
  */
 public function [selection.methodName/]([selection.formals()/]): [selection.returnType()/]
 {
-    return $this->[selection.methodQueryName()/]([selection.actuals()/])->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
-}
+    $query = $this->[selection.builderMethodName()/]([selection.actuals()/])->getQuery();
+[if (selection.hasSelectPath() or selection.hasFormals() or selection.hasConditionParameters())]
+    $this->[selection.parametersMethodName()/]($query[if (selection.hasSelectPath())]
+, [selection.selectionActuals()/][/if]);
+[/if]
 
-[selection.filterMethods()/]
+    return $query->[if (selection.limit = 1)]getOneOrNullResult()[else]getResult()[/if];
+}
 [/template]
 
 [template private builderMethod(selection : Selection) post(trim())]
 /**
  *
+[if (selection.hasSelectPath() or selection.hasFormals())]
  [selection.documentParameters()/]
+[/if]
  *
  * @return QueryBuilder
  */
-private function [selection.builderMethodName()/]([selection.formals()/]): QueryBuilder
+public function [selection.builderMethodName()/]([selection.formals()/]): QueryBuilder
 {
     [selection.builderCode()/]
     return $queryBuilder;
@@ -539,60 +472,6 @@ private function [selection.parametersMethodName()/](Query $query[if (selection.
 }
 [/template]
 
-[template private filterMethods(selection : Selection) post(trim())]
-[for (filter : Filter | selection.filters)]
-/**
- *
- [filter.documentParameters()/]
- *
- * @return Query
- */
-public function [filter.methodQueryName()/]([filter.formals()/]): Query
-{
-    $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
-    $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
-    $query = $queryBuilder->getQuery();
-	[if (selection.hasSelectPath() or selection.hasFormals() or selection.hasConditionParameters())]
-    $this->[selection.parametersMethodName()/]($query[if (selection.hasSelectPath() or selection.hasFormals())]
-, [selection.selectionActuals()/][/if]);
-	[/if]
-	[for (parameter : FormalParameter | filter.parameters)]
-    if (is_null($[parameter.name/]) || strcmp(trim($[parameter.name/]), '') === 0) {
-        $query->setParameter('[parameter.name/]', '%');
-    } else {
-		[if (filter.condition.oclIsUndefined())]
-        $query->setParameter('[parameter.name/]', $[parameter.name/]);
-		[elseif (filter.condition.parameterUsedInLike(parameter, false))]
-			[if (parameter.dataType.oclIsUndefined())]
-        $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
-			[elseif (parameter.dataType.isStringClassifier)]
-        $query->setParameter('[parameter.name/]', strpos($[parameter.name/], '%') ? $[parameter.name/] : '%' . $[parameter.name/] . '%');
-			[else]
-        $query->setParameter('[parameter.name/]', $[parameter.name/]);
-			[/if]	
-		[else]
-        $query->setParameter('[parameter.name/]', $[parameter.name/]);
-		[/if]
-    }
-	[/for]
-
-    return $query;
-}
-
-/**
- *
- [filter.documentParameters()/]
- *
- * @return [selection.documentReturnType()/]
- */
-public function [filter.methodName/]([filter.formals()/]): [selection.returnType()/]
-{
-    return $this->[filter.methodQueryName()/]([filter.actuals()/])->getResult();
-}
-
-[/for]
-[/template]
-
 [template private returnType(selection : Selection) post(trim())]
 [if (selection.limit = 1)]
 ?[selection.definedBy.serves.modelClassName()/]
@@ -610,21 +489,6 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/template]
 
 [template private documentParameters(selection : Selection) post(trim())]
-[if (selection.hasSelectPath() or selection.hasFormals())]
-[selection.documentSelectionParameters()/]
-[/if]
-[/template]
-
-[template private documentParameters(filter : Filter) post(trim())]
-[if (filter.selection.hasSelectPath() or filter.selection.hasFormals())]
-[filter.selection.documentSelectionParameters()/]
-[/if]
-[if (filter.hasFormals())]
-[filter.documentFilterParameters()/]
-[/if]
-[/template]
-
-[template private documentSelectionParameters(selection : Selection) post(trim())]
 [for (key : Attribute | selection.uriPathKeys())]
 * @param [key.implementationType()/] $[key.routeParameterName(selection.selectionType())/]
 [/for]
@@ -633,25 +497,9 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/for]
 [/template]
 
-[template private documentFilterParameters(filter : Filter) post(trim())]
-[for (parameter : FormalParameter | filter.parameters)]
-* @param [parameter.implementationType()/]|null $[parameter.name/][if (parameter.description <> '')] [parameter.description/][/if]
-[/for]
-[/template]
-
 [template private formals(selection : Selection) post(trim())]
 [if (selection.hasSelectPath() or selection.hasFormals())]
 [selection.selectionFormals()/][/if]
-[/template]
-
-[template private formals(filter : Filter) post(trim())]
-[if (filter.selection.hasSelectPath() or filter.selection.hasFormals())]
-[filter.selection.selectionFormals()/][if (filter.hasFormals())]
-, [/if]
-[/if]
-[if (filter.hasFormals())]
-[filter.filterFormals()/]
-[/if]
 [/template]
 
 [template private selectionFormals(selection : Selection) post(trim())]
@@ -676,25 +524,9 @@ int $offset = 0, int $limit = [limit/]
 int $offset = 0, int $limit = 0
 [/template]
 
-[template private filterFormals(filter : Filter) post(trim())]
-[for (parameter : FormalParameter | filter.parameters) separator(', ')]
-?string $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
- = [parameter.defaultValue/][/if][/for]
-[/template]
-
 [template private actuals(selection : Selection) post(trim())]
 [if (selection.hasSelectPath() or selection.hasFormals())]
 [selection.selectionActuals()/]
-[/if]
-[/template]
-
-[template private actuals(filter : Filter) post(trim())]
-[if (filter.selection.hasSelectPath() or filter.selection.hasFormals())]
-[selection.selectionActuals()/][if (filter.hasFormals() or filter.selection.limit > -1)]
-, [/if]
-[/if]
-[if (filter.hasFormals())]
-[filter.filterActuals()/]
 [/if]
 [/template]
 

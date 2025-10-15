@@ -15,11 +15,22 @@
 [for(filter : Filter | unit.supportedFilters)]
 [filter.unitFilter(unit)/]
 [/for]
+[if (unit.hasFilters2())]
+<div class="filters">
+ <form action="{{ path('[unit.routeName()/]', { [if (unit.hasRouteParameters(unit.selection))]
+[unit.routeActualParameters(unit.routeParameters(), unit.containerParameter(), unit.routingType())/][/if] }) }}" method="get">
+	[for(filter : CollectionFilter | unit.filters)]
+  [filter.collectionFilter(unit)/]
+	[/for]
+ <button type="submit" name="[filter.name/]Filter" class="btn btn-outline-secondary"><i class="material-icons">search</i></button>
+ </form>
+</div>
+[/if]
 [/template]
-
+ 
 [template private unitFilter(filter : Filter, unit : CollectionUnit) post(trim())]
 <div class="filter">
- <form action="{{ path('[unit.routeName()/]', { [if (unit.hasRouteParameters(filter.selection))]
+ <form action="{{ path('[unit.routeName()/]', { [if (unit.hasRouteParameters(unit.selection))]
 [unit.routeActualParameters(unit.routeParameters(), unit.containerParameter(), unit.routingType())/][/if] }) }}" method="get">
   <div class="input-group">
 [for (parameter : FormalParameter | filter.parameters)]
@@ -32,6 +43,23 @@
   </div>
  </form>
 </div>
+[/template]
+
+[template private collectionFilter(filter : CollectionFilter, unit : CollectionUnit)
+	? (filter.oclIsTypeOf(BooleanFilter)) post(trim())]
+[let booleanFilter : BooleanFilter = filter.oclAsType(BooleanFilter)]
+[/let]
+[/template]
+
+[template private collectionFilter(filter : CollectionFilter, unit : CollectionUnit)
+	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
+[let textFilter : TextFilter = filter.oclAsType(TextFilter)]
+<div class="input-group">
+ <input type="text" name="[textFilter.name/]" class="form-control"[if (textFilter.placeholderOverride <> '')]
+ placeholder="[textFilter.placeholderOverride/]"[/if]
+ value="{{ app.request.query.get('[textFilter.name/]') }}"/>
+</div>
+[/let]
 [/template]
 
 

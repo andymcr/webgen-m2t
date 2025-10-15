@@ -258,6 +258,15 @@
 		endif
 /]
 
+[query public hasFilterTranslations(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).filters
+				->select(f | f.hasTranslations())->notEmpty()
+		else
+			false
+		endif
+/]
+
 [query public hasUnitTranslations(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(EditUnit) then
 			let editUnit : EditUnit = unit.oclAsType(EditUnit)
@@ -333,6 +342,28 @@
 	= field.hasCustomisedDisplayLabel
 		or field.hasCustomisedPlaceholder
 		or field.hasCustomisedTitle
+/]
+
+[query private filterContainedId(filter : CollectionFilter) : String
+	= 	filter.affects.containedId().concat('.filters.').concat(filter.id())
+/]
+
+[query public hasTranslations(filter : CollectionFilter) : Boolean
+	= filter.hasHelp()
+		or filter.hasCustomisedPlaceholder()
+		or filter.hasCustomisedTitle()
+/]
+
+[query public helpContainedId(filter : CollectionFilter) : String
+	= filter.filterContainedId().concat('.').concat(filter.helpElement())
+/]
+
+[query public placeholderContainedId(filter : CollectionFilter) : String
+	= filter.filterContainedId().concat('.').concat(filter.placeholderElement())
+/]
+
+[query public titleContainedId(filter : CollectionFilter) : String
+	= filter.filterContainedId().concat('.').concat(filter.titleElement())
 /]
 
 [query public helpContainedId(field : UnitField) : String

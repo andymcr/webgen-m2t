@@ -63,6 +63,9 @@
 [if (unit.hasUnitTranslations())]
 [unit.unitTranslations()/]
 [/if]
+[if (unit.hasFilterTranslations())]
+[unit.filterTranslations()/]
+[/if]
 [if (unit.hasFieldTranslations())]
 [unit.fieldTranslations()/]
 [/if]
@@ -98,6 +101,19 @@
 [editUnit.successMessageId().idTranslation(editUnit.successMessage.text)/]
 [/if]
 [/let]
+[/template]
+
+[template private filterTranslations(unit : ContentUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post (trim())]
+[for (filter : CollectionFilter | unit.oclAsType(CollectionUnit).filters)]
+	[if (filter.hasTranslations())]
+[filter.placeholderContainedId().idTranslation(filter.placeholder())/]
+[filter.titleContainedId().idTranslation(filter.title())/]
+		[if (filter.hasTranslations())]
+[filter.helpContainedId().idTranslation(filter.help.trim())/]
+		[/if]
+	[/if]
+[/for]
 [/template]
 
 [template private fieldTranslations(unit : ContentUnit)

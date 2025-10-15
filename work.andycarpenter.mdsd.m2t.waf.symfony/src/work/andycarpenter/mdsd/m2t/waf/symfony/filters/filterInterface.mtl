@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module filterInterface(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[template public filterInterface(model : WafModel)]
+[file(model.filterFilename(model.filterInterfaceClassName()), false)]
+<?php
+namespace [model.filterNamespace()/];
+
+use Doctrine\ORM\QueryBuilder;
+
+
+interface [model.filterInterfaceClassName()/]
+{
+    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void;
+
+    public function getAsDto(): FilterDto;
+}}
+[/file]
+[/template]

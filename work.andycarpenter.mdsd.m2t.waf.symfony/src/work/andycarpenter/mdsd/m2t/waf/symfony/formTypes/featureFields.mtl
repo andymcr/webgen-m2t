@@ -92,7 +92,7 @@ $builder->add('[resource.filePropertyName()/]', VichImageType::class, ['['/]
 [']'/])
 [/template]
 
-[template private interfaceType(attribute : Attribute) post(trim())]
+[template public interfaceType(attribute : Attribute) post(trim())]
 [if (attribute.isBooleanFeature)]
 CheckboxType::class
 [elseif (attribute.isDateFeature)]

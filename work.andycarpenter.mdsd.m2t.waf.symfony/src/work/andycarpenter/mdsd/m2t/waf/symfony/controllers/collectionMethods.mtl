@@ -141,11 +141,7 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [/template]
 
 [template private selectCode(unit : CollectionUnit) post(trim())]
-[if (unit.hasFilters)]
-[unit.filterSelect()/]
-else
-[/if]
-[if (unit.hasFilters)]    [/if][if (not unit.selection.oclIsUndefined())]
+[if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
 [unit.queryInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
 	[else]

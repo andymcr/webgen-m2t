@@ -89,6 +89,14 @@
 	= eObject.sourceDirectory().concat('/').concat('Extensions')
 /]
 
+[query public filterDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Filter')
+/]
+
+[query public filterFormDirectory(eObject : EObject) : String
+	= eObject.formDirectory().concat('/').concat('Filter')
+/]
+
 [query public formDirectory(eObject : EObject) : String
 	= eObject.sourceDirectory().concat('/').concat('Form')
 /]
@@ -197,6 +205,14 @@
 	= eObject.appNamespace().concat('\\').concat('Extensions')
 /]
 
+[query public filterNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Filter')
+/]
+
+[query public filterFormNamespace(eObject : EObject) : String
+	= eObject.formNamespace().concat('\\').concat('Filter')
+/]
+
 [query public formNamespace(eObject : EObject) : String
 	= eObject.appNamespace().concat('\\').concat('Form')
 /]
@@ -251,6 +267,18 @@
 	= resource.apiControllersDirectory().concat('/')
 		.concat(resource.controllerClassName())
 		.concat(resource.executableExtension())
+/]
+
+[query public filterFilename(model : WafModel, filter : String) : String
+	= model.filterDirectory().concat('/')
+		.concat(filter)
+		.concat(model.executableExtension())
+/]
+
+[query public filterFormFilename(unit : CollectionUnit) : String
+	= unit.filterFormDirectory().concat('/')
+		.concat(unit.filterFormClassName())
+		.concat(unit.executableExtension())
 /]
 
 [query public formTypeFilename(type : EnumerationType) : String

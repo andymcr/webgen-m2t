@@ -105,6 +105,22 @@
 	= 'LoginFormAuthenticator'
 /]
 
+[query public filterFormClassName(unit : CollectionUnit) : String
+	= unit.controllerName().concat(unit.name).concat(unit.typeSuffix())
+/]
+
+[query public filterBaseClassName(object : EObject) : String
+	= 'AbstractFilter'
+/]
+
+[query public filterInterfaceClassName(object : EObject) : String
+	= 'FilterInterface'
+/]
+
+[query public filterClassName(object : EObject, filterName : String) : String
+	= filterName.concat('Filter')
+/]
+
 [query public controllerClassName(authentication : LocalAuthenticationSystem) : String
 	= authentication.authenticationPrefix().concat('Controller').toUpperFirst()
 /]
@@ -319,7 +335,7 @@
 
 [query public findMethodName(unit : CollectionUnit, selection : Selection) : String
 	= if unit.hasPagination then
-			selection.methodQueryName()
+			selection.builderMethodName()
 		else
 			selection.methodName
 		endif
