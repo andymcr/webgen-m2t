@@ -272,6 +272,6 @@
 /]
 
 
-[query public methodQueryName(filter : Filter) : String
-	= filter.methodName.concat('Query')
+[query public builderMethodName(filter : Filter) : String
+	= filter.methodName.concat(filter.builderSuffix())
 /]
