@@ -33,7 +33,7 @@
 <section [if (tabularUnit.hasSectionClass())] class="[tabularUnit.sectionClass()/]" [/if]id="[tabularUnit.instanceParameter()/]">
  <h4[if (tabularUnit.hasCaptionClass() or tabularUnit.omitCaption)]
  class="[if (tabularUnit.hasCaptionClass())][tabularUnit.captionClass()/][/if] [if (tabularUnit.omitCaption)] hidden[/if]"[/if]>[tabularUnit.unitTitle()/]</h4>
-[if (tabularUnit.hasFilters)]
+[if (tabularUnit.hasFilters or tabularUnit.hasFilters2())]
  [tabularUnit.unitFilters()/]
 [/if]
 [if (tabularUnit.hasPagination
