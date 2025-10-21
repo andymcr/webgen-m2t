@@ -106,7 +106,7 @@
 /]
 
 [query public filterFormClassName(unit : CollectionUnit) : String
-	= unit.controllerName().concat(unit.name).concat(unit.typeSuffix())
+	= unit.controllerName().concat(unit.name.toUpperFirst()).concat(unit.typeSuffix())
 /]
 
 [query public filterBaseClassName(object : EObject) : String
@@ -343,7 +343,7 @@
 
 [query public findMethodName(unit : CollectionUnit, filter : Filter) : String
 	= if unit.hasPagination then
-			filter.methodQueryName()
+			filter.builderMethodName()
 		else
 			filter.methodName
 		endif
@@ -410,14 +410,24 @@
 	= unit.name.concat('_page_size').toUpper()
 /]
 
-[query public queryInstanceVariable(unit : CollectionUnit) : String
-	= if unit.hasPagination then
-			'$query'
-		else if unit.isConditionallyDisplayed or unit.controller.isSinglePage() then
+[query public builderInstanceVariable(unit : CollectionUnit) : String
+	= '$builder'
+/]
+
+[query public filterFormInstanceVariable(unit : CollectionUnit) : String
+	= '$filterForm'
+/]
+
+[query public filterFormInstanceParameter(unit : CollectionUnit) : String
+	= 'filterForm'
+/]
+
+[query public resultsInstanceVariable(unit : CollectionUnit) : String
+	= if unit.isConditionallyDisplayed or unit.controller.isSinglePage() then
 			'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
 		else
 			unit.instanceVariable()
-		endif endif
+		endif
 /]
 
 [query public routeUpdateName(unit : EditUnit) : String
@@ -457,10 +467,6 @@
 				endif
 			in unit.controller.uniqueName().concat('_').concat(unitName)
 		endif
-/]
-
-[query public routeFilterName(unit : CollectionUnit) : String
-	= unit.routeName().concat('_').concat('filter')
 /]
 
 [query public routeName(element : AuthenticationElement) : String
@@ -586,6 +592,11 @@
 
 [query public viewResetName(element : ForgottenPasswordElement) : String
 	= element.name.toLowerFirst().concat('_reset')
+/]
+
+
+[query public propertyName(filter : CollectionFilter) : String
+	= filter.name
 /]
 
 

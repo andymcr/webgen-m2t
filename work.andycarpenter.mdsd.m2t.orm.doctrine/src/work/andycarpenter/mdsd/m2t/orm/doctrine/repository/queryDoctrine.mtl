@@ -228,18 +228,18 @@ $queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.
 [template public queryParameter(expression : Expression, security : SecurityModel)
 	? (expression.oclIsTypeOf(ParameterVariable)) post(trim())]
 [let variable : ParameterVariable = expression.oclAsType(ParameterVariable)]
-$query->setParameter('[variable.formal.name/]', $[variable.formal.name/]);
+->setParameter('[variable.formal.name/]', $[variable.formal.name/])
 [/let]
 [/template]
 
 [template public queryParameter(expression : Expression, security : SecurityModel)
 	? (expression.oclIsTypeOf(CurrentTime)) post(trim())]
-$query->setParameter('now', new \DateTime('now'));
+->setParameter('now', new \DateTime('now'))
 [/template]
 
 [template public queryParameter(expression : Expression, security : SecurityModel)
 	? (expression.oclIsTypeOf(CurrentUser)) post(trim())]
-$query->setParameter('user', $this->[security.authentication.userModel.repository.repositoryInstanceName()/]->getCurrentUser());
+->setParameter('user', $this->[security.authentication.userModel.repository.repositoryInstanceName()/]->getCurrentUser())
 [/template]
 
 
