@@ -1,14 +1,18 @@
 [comment encoding = UTF-8 /]
-[module filters(
+[module unitFilters(
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterInterface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::baseFilter/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::controllerFiltersTrait/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterInterface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::textFilter/]
 
 
-[template public filters(model : WafModel)]
+[template public unitFilters(model : WafModel)]
+[model.collectionUnitsWithFilters.filterType()/]
 [model.filterInterface()/]
+[model.filtersTrait()/]
 [model.baseFilter()/]
 [model.textFilter()/]
 [/template]

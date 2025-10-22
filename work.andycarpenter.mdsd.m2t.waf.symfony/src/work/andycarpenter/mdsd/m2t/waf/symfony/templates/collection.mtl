@@ -17,13 +17,17 @@
 [/for]
 [if (unit.hasFilters2())]
 <div class="filters">
- <form action="{{ path('[unit.routeName()/]', { [if (unit.hasRouteParameters(unit.selection))]
-[unit.routeActualParameters(unit.routeParameters(), unit.containerParameter(), unit.routingType())/][/if] }) }}" method="get">
+ {{ form_start([unit.filterFormInstanceParameter()/], { attr: { id: 'filters' }}) }}
+  {{ form_errors([unit.filterFormInstanceParameter()/]) }}
 	[for(filter : CollectionFilter | unit.filters)]
-  [filter.collectionFilter(unit)/]
+  {{ form_row([unit.filterFormInstanceParameter()/].[filter.propertyName()/]) }}
 	[/for]
- <button type="submit" name="[filter.name/]Filter" class="btn btn-outline-secondary"><i class="material-icons">search</i></button>
- </form>
+  <div class="d-flex justify-content-center bg-light border-top p-2">
+   <button type="submit" name="submit" class="btn border rounded mx-2 my-1">{{ 'admin.labels.submit' | trans }}</button>
+   <input type="reset" name="clear" class="btn border rounded mx-2 my-1" value="Clear"/>
+  </div>
+  {{ form_row([unit.filterFormInstanceParameter()/]._token) }}
+ {{ form_end([unit.filterFormInstanceParameter()/], {'render_rest': false}) }}
 </div>
 [/if]
 [/template]
@@ -43,23 +47,6 @@
   </div>
  </form>
 </div>
-[/template]
-
-[template private collectionFilter(filter : CollectionFilter, unit : CollectionUnit)
-	? (filter.oclIsTypeOf(BooleanFilter)) post(trim())]
-[let booleanFilter : BooleanFilter = filter.oclAsType(BooleanFilter)]
-[/let]
-[/template]
-
-[template private collectionFilter(filter : CollectionFilter, unit : CollectionUnit)
-	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
-[let textFilter : TextFilter = filter.oclAsType(TextFilter)]
-<div class="input-group">
- <input type="text" name="[textFilter.name/]" class="form-control"[if (textFilter.placeholderOverride <> '')]
- placeholder="[textFilter.placeholderOverride/]"[/if]
- value="{{ app.request.query.get('[textFilter.name/]') }}"/>
-</div>
-[/let]
 [/template]
 
 

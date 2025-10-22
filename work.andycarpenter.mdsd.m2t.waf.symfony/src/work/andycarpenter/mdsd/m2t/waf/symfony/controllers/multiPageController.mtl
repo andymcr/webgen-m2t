@@ -28,6 +28,10 @@ namespace [controller.controllersNamespace()/];
 
 class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
 {
+[if (controller.collectionUnits()->select(u | u.hasFilters2())->notEmpty())]
+    use [controller.filterTraitName()/];
+
+[/if]
 [if (controller.hasPagination())]
     [controller.constants()/]
 

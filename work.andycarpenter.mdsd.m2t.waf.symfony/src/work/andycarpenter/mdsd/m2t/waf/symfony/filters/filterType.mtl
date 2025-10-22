@@ -16,15 +16,14 @@ namespace [unit.filterFormNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+[if (unit.hasTextFilters())]
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+[/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 class [unit.filterFormClassName()/] extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      *
      * @param FormBuilderInterface $builder
@@ -54,7 +53,7 @@ class [unit.filterFormClassName()/] extends AbstractType
 [template private filterField(filter : CollectionFilter)
 	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
 [let textFilter : TextFilter = filter.oclAsType(TextFilter)]
-$builder->add('[textFilter.attribute.modelPropertyName()/]', [textFilter.attribute.interfaceType()/], ['['/]
+$builder->add('[textFilter.propertyName()/]', [textFilter.attribute.interfaceType()/], ['['/]
     'mapped' => false,
     'label' => false,
     'translation_domain' => [if (filter.hasTranslations())]
@@ -67,10 +66,10 @@ $builder->add('[textFilter.attribute.modelPropertyName()/]', [textFilter.attribu
 [/if]
         'placeholder' => [if (filter.hasTranslations())]
 '[filter.placeholderContainedId()/]'[else]
-[filter.attribute.captionContainedId()/][/if],
+'[filter.attribute.captionContainedId()/]'[/if],
         'title' => [if (filter.hasTranslations())]
 '[filter.titleContainedId()/]'[else]
-[filter.attribute.captionContainedId()/][/if],
+'[filter.attribute.captionContainedId()/]'[/if],
     [']'/],
 [if (filter.hasHelp())]
     'help' => '[filter.helpContainedId()/]',

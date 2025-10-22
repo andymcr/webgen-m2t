@@ -12,13 +12,17 @@
 namespace [model.filterNamespace()/];
 
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Form;
 
 
 interface [model.filterInterfaceClassName()/]
 {
-    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void;
-
-    public function getAsDto(): FilterDto;
-}}
+    /**
+     *
+     * @param QueryBuilder [model.builderInstanceVariable()/]
+     * @param Form $filterForm
+     */
+    public function apply(QueryBuilder $queryBuilder, Form $filterForm): void;
+}
 [/file]
 [/template]

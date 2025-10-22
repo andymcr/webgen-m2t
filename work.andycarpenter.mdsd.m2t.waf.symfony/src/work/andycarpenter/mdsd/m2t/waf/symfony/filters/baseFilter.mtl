@@ -15,19 +15,8 @@ use [model.filterNamespace()/]\[model.filterInterfaceClassName()/];
 use Doctrine\ORM\QueryBuilder;
 
 
-class [model.filterBaseClassName()/] implements [model.filterInterfaceClassName()/]
+abstract class [model.filterBaseClassName()/] implements [model.filterInterfaceClassName()/]
 {
-    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
-    {
-        $alias = $filterDataDto->getEntityAlias();
-        $property = $filterDataDto->getProperty();
-        $comparison = $filterDataDto->getComparison();
-        $parameterName = $filterDataDto->getParameterName();
-        $value = $filterDataDto->getValue();
-
-        $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $property, $comparison, $parameterName))
-            ->setParameter($parameterName, $value);
-    }
 }
 [/file]
 [/template]

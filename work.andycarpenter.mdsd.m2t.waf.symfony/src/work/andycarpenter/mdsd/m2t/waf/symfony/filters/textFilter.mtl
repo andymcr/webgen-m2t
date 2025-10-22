@@ -19,20 +19,18 @@ namespace [model.filterNamespace()/];
 use [model.filterNamespace()/]\[model.filterInterfaceClassName()/];
 use [model.filterNamespace()/]\[model.filterBaseClassName()/];
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Form;
 
 
 class [model.filterClassName(model.filterName())/] extends [model.filterBaseClassName()/]
 {
-    public function apply(QueryBuilder $queryBuilder, FilterDataDto $filterDataDto, ?FieldDto $fieldDto, EntityDto $entityDto): void
+    /**
+     *
+     * @param QueryBuilder [model.builderInstanceVariable()/]
+     * @param Form $filterForm
+     */
+    public function apply(QueryBuilder $queryBuilder, Form $filterForm): void
     {
-        $alias = $filterDataDto->getEntityAlias();
-        $property = $filterDataDto->getProperty();
-        $comparison = $filterDataDto->getComparison();
-        $parameterName = $filterDataDto->getParameterName();
-        $value = $filterDataDto->getValue();
-
-        $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $property, $comparison, $parameterName))
-            ->setParameter($parameterName, $value);
     }
 }
 [/file]

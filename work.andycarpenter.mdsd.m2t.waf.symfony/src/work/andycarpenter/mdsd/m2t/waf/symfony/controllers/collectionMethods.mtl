@@ -26,10 +26,6 @@
 
 [/if]
 [collectionUnit.actionMethod()/]
-[if (collectionUnit.hasFilters2())]
-
-[collectionUnit.filterMethod()/]
-[/if]
 [/let]
 [/template]
 
@@ -55,9 +51,12 @@ $parameters[else]['['/]
         '[unit.containerParameter()/]' => [unit.containerInstanceVariable()/],
 		[/if]
 		[if (unit.inlineSelectCode())]
-        '[unit.instanceParameter()/]' => [unit.instanceVariable()/]
+        '[unit.instanceParameter()/]' => [unit.instanceVariable()/],
 		[else]
-        '[unit.instanceParameter()/]' => $this->[unit.selectName()/]([unit.selectMethodParameters()/])
+        '[unit.instanceParameter()/]' => $this->[unit.selectName()/]([unit.selectMethodParameters()/]),
+		[/if]
+		[if (unit.hasFilters2())]
+        '[unit.filterFormInstanceParameter()/]' => [unit.filterFormInstanceVariable()/],
 		[/if]
     [']'/][/if]);
 [else]
@@ -66,18 +65,6 @@ $parameters[else]['['/]
 [/if]
     return $this->renderPage([unit.renderMethodActuals()/]);
 [/if]
-}
-[/template]
-
-[template private filterMethod(unit : CollectionUnit) post(trim())]
-/**
- */
-[if (unit.isAuthorised())]
-[unit.securityAnnotation()/]
-[/if]
-[unit.routeFilterAttribute()/]
-public function [unit.actionFilterName()/]([unit.actionMethodFormals()/]): Response
-{
 }
 [/template]
 
@@ -140,18 +127,67 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [unit.routeParameterList(false)/][/if]
 [/template]
 
-[template private selectCode(unit : CollectionUnit) post(trim())]
-[if (not unit.selection.oclIsUndefined())]
+[template private selectCode(unit : CollectionUnit)
+	 ? (not unit.hasPagination and not unit.hasFilters and not unit.hasFilters2())  post(trim())]
+[if (unit.inlineSelectCode())]
+[unit.resultsInstanceVariable()/] = [else]
+return [/if][if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-[unit.queryInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
+$this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
 	[else]
-[unit.queryInstanceVariable()/] = $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
+$this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
 [else]
-[unit.queryInstanceVariable()/] = [unit.getContentRepository()/]->findAll[if (unit.hasPagination)]Query[/if]();
+[unit.getContentRepository()/]->findAll();
+[/if]
+[/template]
+
+[template private selectCode(unit : CollectionUnit)
+	 ? ((unit.hasPagination or unit.hasFilters2()) and not unit.hasFilters) post(trim())]
+[if (not unit.selection.oclIsUndefined())]
+	[if (unit.filter.oclIsUndefined())]
+[unit.builderInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.builderMethodName(selection)/]([unit.selectionParameters()/]);
+	[else]
+[unit.builderInstanceVariable()/] = $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.builderMethodName(filter)/]([unit.selectionParameters()/]);
+	[/if]
+[else]
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[unit.builderSuffix()/]();
+[/if]
+[if (unit.hasFilters2())]
+[unit.filterFormInstanceVariable()/] = [unit.createFilterForm(unit.routeParameters())/];
+[unit.filterFormInstanceVariable()/]->handleRequest($request);
+if ([unit.filterFormInstanceVariable()/]->isSubmitted() && [unit.filterFormInstanceVariable()/]->isValid()) {
+    $this->applyFilters([unit.builderInstanceVariable()/], [unit.filterFormInstanceVariable()/]);
+}
+[/if]
+$adapter = new QueryAdapter([unit.builderInstanceVariable()/]);
+[if (unit.inlineSelectCode())]
+[if (unit.controller.isMultiPage())]
+[unit.instanceVariable()/][else]
+$parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] =[else]
+return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
+    $adapter,
+    $request->query->getInt('page', 1),
+    self::[unit.pageSizeConstant()/]);
+[/template]
+
+[template private selectCode(unit : CollectionUnit)
+	 ? (unit.hasPagination and unit.hasFilters) post(trim())]
+[if (unit.hasFilters)]
+[unit.filterSelect()/]
+else
+[/if]
+[if (unit.hasFilters)]    [/if][if (not unit.selection.oclIsUndefined())]
+	[if (unit.filter.oclIsUndefined())]
+[unit.builderInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
+	[else]
+[unit.builderInstanceVariable()/] = $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
+	[/if]
+[else]
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[if (unit.hasPagination)]Query[/if]();
 [/if]
 [if (unit.hasPagination)]
-$adapter = new QueryAdapter([unit.queryInstanceVariable()/]);
+$adapter = new QueryAdapter([unit.builderInstanceVariable()/]);
 [if (unit.inlineSelectCode())]
 [if (unit.controller.isMultiPage())]
 [unit.instanceVariable()/][else]
@@ -182,4 +218,23 @@ $query = [unit.getContentRepository()/]->[filter.methodName/]Query(
     $request->query->get('[parameter.name/]')[if (i < filter.parameters->size() or unit.hasPagination)],[/if]
 [/for]
 );
+[/template]
+
+[template private createFilterForm(unit : CollectionUnit, sourceParameters : Sequence(Attribute)) post(trim())]
+[let controller : Controller = unit.controller]
+$this->createForm([unit.filterFormClassName()/]::class, null, ['['/]
+    'action' => $this->generateUrl('[unit.routeName()/]'[if (controller.hasFilters() or controller.hasPagination())], [if (not unit.hasRouteParameters())]
+$request->query->all()[else]
+array_merge(
+        $request->query->all(), ['['/]
+            [unit.routeActualParameters(sourceParameters)/]
+    [']'/])[/if]
+[else]
+	[if (unit.hasRouteParameters())]
+, ['['/]
+        [unit.routeActualParameters(sourceParameters)/]
+    [']'/][/if]
+[/if]),
+[']'/])
+[/let]
 [/template]

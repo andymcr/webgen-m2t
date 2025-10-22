@@ -17,7 +17,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::multiPageController/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::singlePageController/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::extensions::extensions/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterType/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::unitFilters/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::autocompleteType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::formType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::javascript::generate/]
@@ -45,7 +45,7 @@
 
 [model.autocompleteTypes()/]
 [model.formTypes()/]
-[model.collectionUnitsWithFilters.filterType()/]
+[model.unitFilters()/]
 [model.controllers
 	->select(c | c.hasUnits())
 	->select(c | c.isSinglePage()).oclAsType(SinglePageController)

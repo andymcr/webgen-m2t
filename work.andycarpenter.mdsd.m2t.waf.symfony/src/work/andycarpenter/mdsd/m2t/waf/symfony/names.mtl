@@ -121,6 +121,10 @@
 	= filterName.concat('Filter')
 /]
 
+[query public filterTraitName(object : EObject) : String
+	= 'UnitFilterTrait'
+/]
+
 [query public controllerClassName(authentication : LocalAuthenticationSystem) : String
 	= authentication.authenticationPrefix().concat('Controller').toUpperFirst()
 /]
@@ -410,7 +414,7 @@
 	= unit.name.concat('_page_size').toUpper()
 /]
 
-[query public builderInstanceVariable(unit : CollectionUnit) : String
+[query public builderInstanceVariable(object : EObject) : String
 	= '$builder'
 /]
 

@@ -1,0 +1,48 @@
+[comment encoding = UTF-8 /]
+[module controllerFiltersTrait(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[template public filtersTrait(model : WafModel)]
+[file(model.filterFilename(model.filterTraitName()), false)]
+<?php
+namespace [model.filterNamespace()/];
+
+use [model.filterNamespace()/]\[model.filterInterfaceClassName()/];
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Form;
+
+
+trait [model.filterTraitName()/]
+{
+    /**
+     * @var array $filters
+     */
+    private array $filters = array();
+
+    /**
+     *
+     * @param FilterInterface $filter
+     */
+    protected function addFilter(FilterInterface $filter): void
+    {
+        $filters['['/][']'/] = $filter;
+    }
+
+    /**
+     *
+     * @param QueryBuilder [model.builderInstanceVariable()/]
+     * @param Form $filterForm
+     */
+    public function applyFilters(QueryBuilder [model.builderInstanceVariable()/], Form $filterForm): void
+    {
+        foreach ($this->filters as $filter) {
+//            statement_list
+        }
+    }
+}
+[/file]
+[/template]
