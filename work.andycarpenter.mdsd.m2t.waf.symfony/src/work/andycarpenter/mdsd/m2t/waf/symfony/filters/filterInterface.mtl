@@ -19,16 +19,16 @@ interface [model.filterInterfaceClassName()/]
 {
     /**
      *
-     * @param Form $filterForm
+     * @param Object $filterData
      */
-    public function isActive(Form $filterForm): bool;
+    public function isActive(Object $filterData): bool;
 
     /**
      *
      * @param QueryBuilder [model.builderInstanceVariable()/]
-     * @param Form $filterForm
+     * @param Object $filterData
      */
-    public function apply(QueryBuilder $queryBuilder, Form $filterForm): void;
+    public function apply(QueryBuilder $queryBuilder, Object $filterData): void;
 }
 [/file]
 [/template]

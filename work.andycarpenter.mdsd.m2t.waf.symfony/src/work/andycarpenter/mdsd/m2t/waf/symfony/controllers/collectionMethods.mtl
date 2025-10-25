@@ -164,13 +164,9 @@ $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMe
 [/if]
 [if (unit.hasCollectionFilters())]
 [unit.filterEntityInstanceVariable()/] = new [unit.filterEntityClassName()/]();
-$this->addFlash('notice', 'loading form');
 [unit.filterFormInstanceVariable()/] = [unit.createFilterForm(unit.routeParameters())/];
 [unit.filterFormInstanceVariable()/]->handleRequest($request);
-if ([unit.filterFormInstanceVariable()/]->isSubmitted() && [unit.filterFormInstanceVariable()/]->isValid()) {
-    $this->addFlash('notice', 'submitted');
-    $this->applyFilters([unit.builderInstanceVariable()/], [unit.filterFormInstanceVariable()/]);
-}
+$this->applyFilters([unit.builderInstanceVariable()/], [unit.filterEntityInstanceVariable()/]);
 [/if]
 [if (unit.inlineSelectCode())]
 [unit.resultsInstanceVariable()/] =[else]
@@ -247,7 +243,7 @@ array_merge(
         [unit.routeActualParameters(sourceParameters)/]
     [']'/][/if]
 [/if]),
-   'method' => 'GET',
+    'method' => 'GET',
 [']'/])
 [/let]
 [/template]

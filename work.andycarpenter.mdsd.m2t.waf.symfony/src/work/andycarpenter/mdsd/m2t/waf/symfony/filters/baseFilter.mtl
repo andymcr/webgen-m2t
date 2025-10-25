@@ -12,31 +12,40 @@
 namespace [model.filterNamespace()/];
 
 use [model.filterNamespace()/]\[model.filterInterfaceClassName()/];
+use ReflectionClass;
 use Symfony\Component\Form\Form;
 
 
 abstract class [model.filterBaseClassName()/] implements [model.filterInterfaceClassName()/]
 {
     /**
-     * Nmae of the filter.
+     * Name of the filter.
      */
     private string $name = '';
 
-    /**
-     * @param string $name
+     /**
+     * Reflector used to access filter data.
      */
-    public function __construct(string $name)
+    private ReflectionClass $dataReflector;
+
+   /**
+     * @param string $name
+     * @param string $filterDataClass
+     */
+    public function __construct(string $name, string $filterDataClass)
     {
         $this->name = $name;
+        $this->dataReflector = new ReflectionClass($filterDataClass);
     }
 
     /**
      *
-     * @param Form $filterForm
+     * @param Object $filterData
      */
-    public function isActive(Form $filterForm): bool
+    public function isActive(Object $filterData): bool
     {
-        return $filterForm->has($this->name);
+        $reflectionMethod = $this->dataReflector->getMethod('getTitle');
+        return null !== $reflectionMethod->invoke($filterData);
     }
 }
 [/file]

@@ -35,12 +35,12 @@ trait [model.filterTraitName()/]
     /**
      *
      * @param QueryBuilder [model.builderInstanceVariable()/]
-     * @param Form $filterForm
+     * @param Object $filterData
      */
-    public function applyFilters(QueryBuilder [model.builderInstanceVariable()/], Form $filterForm): void
+    public function applyFilters(QueryBuilder [model.builderInstanceVariable()/], Object $filterData): void
     {
         foreach ($this->filters as $filter) {
-            if ($filter->isActive()) {
+            if ($filter->isActive($filterData)) {
                 println("active");
             }
         }
