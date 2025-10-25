@@ -19,13 +19,19 @@
 [for (entity : Entity | controller.entitiesUsed()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
-[if (controller.collectionUnits()->select(u | u.hasFilters2())->notEmpty())]
+[for (unit : CollectionUnit | controller.collectionUnitsWithFilters()->sortedBy(u | u.name))]
+use [unit.filterEntityNamespace()/]\[unit.filterEntityClassName()/];
+[/for]
+[if (controller.collectionUnits()->exists(u | u.hasCollectionFilters()))]
 use [controller.filterNamespace()/]\[controller.filterTraitName()/];
+[/if]
+[if (controller.hasTextFilters())]
+use [controller.filterNamespace()/]\[controller.filterClassName('Text')/];
 [/if]
 [for (form : SingletonUnit | controller.formUnits()->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
-[for (unit : CollectionUnit | controller.collectionUnits()->select(u | u.hasFilters2())->sortedBy(u | u.name))]
+[for (unit : CollectionUnit | controller.collectionUnitsWithFilters()->sortedBy(u | u.name))]
 use [unit.filterFormNamespace()/]\[unit.filterFormClassName()/];
 [/for]
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
@@ -38,7 +44,7 @@ use [service.serviceNamespace()/]\[service.serviceClassName()/];
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 [if (controller.hasCollectionUnits())]
-	[if (controller.collectionUnits()->select(u | u.hasPagination)->notEmpty())]
+	[if (controller.collectionUnits()->exists(u | u.hasPagination))]
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 	[/if]

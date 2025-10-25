@@ -12,11 +12,32 @@
 namespace [model.filterNamespace()/];
 
 use [model.filterNamespace()/]\[model.filterInterfaceClassName()/];
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Form;
 
 
 abstract class [model.filterBaseClassName()/] implements [model.filterInterfaceClassName()/]
 {
+    /**
+     * Nmae of the filter.
+     */
+    private string $name = '';
+
+    /**
+     * @param string $name
+     */
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     *
+     * @param Form $filterForm
+     */
+    public function isActive(Form $filterForm): bool
+    {
+        return $filterForm->has($this->name);
+    }
 }
 [/file]
 [/template]

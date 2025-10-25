@@ -35,6 +35,14 @@
 	= unit.containingTypeLoadedBy() <> unit and unit.controller.isSinglePage()
 /]
 
+[query public hasConstructorCode(unit : ContentUnit) : Boolean
+	= if unit.oclIsKindOf(CollectionUnit) then
+			unit.oclAsType(CollectionUnit).hasCollectionFilters()
+		else
+			false
+		endif
+/]
+
 [query public loadContainingType(unit : CollectionUnit) : Boolean
 	= not unit.findContainerSelection.oclIsUndefined()
 		or unit.routeParameters()->includesAll(unit.containingType().uriPathKeys())

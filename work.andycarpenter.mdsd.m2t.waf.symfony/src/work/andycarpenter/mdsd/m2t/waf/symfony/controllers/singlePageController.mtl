@@ -8,6 +8,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::baseController/]
@@ -32,7 +33,7 @@ namespace [controller.controllersNamespace()/];
 
 class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
 {
-[if (controller.collectionUnits()->select(u | u.hasFilters2())->notEmpty())]
+[if (controller.hasCollectionFilters())]
     use [controller.filterTraitName()/];
 
 [/if]
@@ -83,6 +84,9 @@ public function __construct([for (repository : Repository | controller.repositor
 [if (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage())]
     $this->translationService = $translator;
 [/if]
+[for (unit : ContentUnit | controller.units->select(u | u.hasConstructorCode()))]
+    [unit.constructorCode()/]
+[/for]
 }
 [/template]
 

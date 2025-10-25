@@ -19,6 +19,12 @@ interface [model.filterInterfaceClassName()/]
 {
     /**
      *
+     * @param Form $filterForm
+     */
+    public function isActive(Form $filterForm): bool;
+
+    /**
+     *
      * @param QueryBuilder [model.builderInstanceVariable()/]
      * @param Form $filterForm
      */

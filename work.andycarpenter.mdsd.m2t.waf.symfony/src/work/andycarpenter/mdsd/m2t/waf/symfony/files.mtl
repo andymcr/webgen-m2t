@@ -93,6 +93,10 @@
 	= eObject.sourceDirectory().concat('/').concat('Filter')
 /]
 
+[query public filterEntityDirectory(eObject : EObject) : String
+	= eObject.modelsDirectory().concat('/').concat('Filter')
+/]
+
 [query public filterFormDirectory(eObject : EObject) : String
 	= eObject.formDirectory().concat('/').concat('Filter')
 /]
@@ -206,7 +210,11 @@
 /]
 
 [query public filterNamespace(eObject : EObject) : String
-	= eObject.appNamespace().concat('\\').concat('Filter')
+	= eObject.appNamespace().concat('\\').concat(eObject.filterSuffix())
+/]
+
+[query public filterEntityNamespace(eObject : EObject) : String
+	= eObject.modelsNamespace().concat('\\').concat(eObject.filterSuffix())
 /]
 
 [query public filterFormNamespace(eObject : EObject) : String
@@ -273,6 +281,12 @@
 	= model.filterDirectory().concat('/')
 		.concat(filter)
 		.concat(model.executableExtension())
+/]
+
+[query public filterEntityFilename(unit : CollectionUnit) : String
+	= unit.filterEntityDirectory().concat('/')
+		.concat(unit.filterEntityClassName())
+		.concat(unit.executableExtension())
 /]
 
 [query public filterFormFilename(unit : CollectionUnit) : String

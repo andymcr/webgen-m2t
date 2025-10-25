@@ -40,7 +40,9 @@ trait [model.filterTraitName()/]
     public function applyFilters(QueryBuilder [model.builderInstanceVariable()/], Form $filterForm): void
     {
         foreach ($this->filters as $filter) {
-//            statement_list
+            if ($filter->isActive()) {
+                println("active");
+            }
         }
     }
 }

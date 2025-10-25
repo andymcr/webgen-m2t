@@ -1,15 +1,15 @@
 [comment encoding = UTF-8 /]
-[module filterType(
+[module filterForm(
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::featureFields/]
 
 
-[template public filterType(unit : CollectionUnit)]
+[template public filterForm(unit : CollectionUnit)]
 [file(unit.filterFormFilename(), false)]
 <?php
 namespace [unit.filterFormNamespace()/];
@@ -44,6 +44,7 @@ class [unit.filterFormClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['['/]
+            'data_class' => '[unit.filterEntityNamespace()/]\[unit.filterEntityClassName()/]',
         [']'/]);
     }
 }
@@ -54,7 +55,6 @@ class [unit.filterFormClassName()/] extends AbstractType
 	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
 [let textFilter : TextFilter = filter.oclAsType(TextFilter)]
 $builder->add('[textFilter.propertyName()/]', [textFilter.attribute.interfaceType()/], ['['/]
-    'mapped' => false,
     'label' => false,
     'translation_domain' => [if (filter.hasTranslations())]
 '[filter.affects.translationDomain()/]'[else]
@@ -76,4 +76,30 @@ $builder->add('[textFilter.propertyName()/]', [textFilter.attribute.interfaceTyp
 [/if]
 [']'/])
 [/let]
+[/template]
+
+[template private interfaceType(attribute : Attribute) post(trim())]
+[if (attribute.isBooleanFeature)]
+CheckboxType::class
+[elseif (attribute.isDateFeature)]
+	[if (attribute.dateDetails = DateDetails::DateOnly)]
+DateType::class
+	[elseif (attribute.dateDetails = DateDetails::DateAndTime)]
+DateTimeType::class
+	[else]
+TimeType::class
+	[/if]
+[elseif (attribute.isEmailFeature)]
+EmailType::class
+[elseif (attribute.isEnumerationFeature)]
+ChoiceType::class
+[elseif (attribute.isIntegerFeature)]
+IntegerType::class
+[elseif (attribute.isObfuscatedFeature)]
+PasswordType::class
+[elseif (attribute.isTextareaFeature)]
+TextareaType::class
+[else]
+TextType::class
+[/if]
 [/template]

@@ -15,7 +15,7 @@
 [for(filter : Filter | unit.supportedFilters)]
 [filter.unitFilter(unit)/]
 [/for]
-[if (unit.hasFilters2())]
+[if (unit.hasCollectionFilters())]
 <div class="filters">
  {{ form_start([unit.filterFormInstanceParameter()/], { attr: { id: 'filters' }}) }}
   {{ form_errors([unit.filterFormInstanceParameter()/]) }}

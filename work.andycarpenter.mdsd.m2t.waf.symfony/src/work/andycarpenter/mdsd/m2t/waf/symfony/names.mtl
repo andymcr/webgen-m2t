@@ -60,6 +60,14 @@
 	= 'Autocomplete'.concat(eObject.typeSuffix())
 /]
 
+[query public filterSuffix(eObject : EObject) : String
+	= 'Filter'
+/]
+
+[query public searchSuffix(eObject : EObject) : String
+	= 'Search'
+/]
+
 [query public typeSuffix(eObject : EObject) : String
 	= 'Type'
 /]
@@ -105,6 +113,10 @@
 	= 'LoginFormAuthenticator'
 /]
 
+[query public filterEntityClassName(unit : CollectionUnit) : String
+	= unit.contentType.pluralisedName.concat(unit.searchSuffix())
+/]
+
 [query public filterFormClassName(unit : CollectionUnit) : String
 	= unit.controllerName().concat(unit.name.toUpperFirst()).concat(unit.typeSuffix())
 /]
@@ -118,7 +130,29 @@
 /]
 
 [query public filterClassName(object : EObject, filterName : String) : String
-	= filterName.concat('Filter')
+	= filterName.concat(object.filterSuffix())
+/]
+
+[query public className(filter : CollectionFilter) : String
+	= if filter.oclIsTypeOf(ArrayFilter) then
+				'Array'
+			else if filter.oclIsTypeOf(BooleanFilter) then
+				'Boolean'
+			else if filter.oclIsTypeOf(ChoiceFilter) then
+				'Choice'
+			else if filter.oclIsTypeOf(DateTimeFilter) then
+				'DateTime'
+			else if filter.oclIsTypeOf(EntityFilter) then
+				'Entity'
+			else if filter.oclIsTypeOf(NullFilter) then
+				'Null'
+			else if filter.oclIsTypeOf(NumericFilter) then
+				'Numeric'
+			else if filter.oclIsTypeOf(TextFilter) then
+				'Text'
+			else
+				''
+			endif endif endif endif endif endif endif endif.concat(filter.filterSuffix())
 /]
 
 [query public filterTraitName(object : EObject) : String
@@ -418,6 +452,10 @@
 	= '$builder'
 /]
 
+[query public filterEntityInstanceVariable(unit : CollectionUnit) : String
+	= '$filterData'
+/]
+
 [query public filterFormInstanceVariable(unit : CollectionUnit) : String
 	= '$filterForm'
 /]
@@ -599,8 +637,16 @@
 /]
 
 
+[query public getMethodName(filter : CollectionFilter) : String
+	= 'get'.concat(filter.propertyName().toUpperFirst())
+/]
+
 [query public propertyName(filter : CollectionFilter) : String
-	= filter.name
+	= filter.attribute.modelPropertyName()
+/]
+
+[query public setMethodName(filter : CollectionFilter) : String
+	= 'set'.concat(filter.propertyName().toUpperFirst())
 /]
 
 

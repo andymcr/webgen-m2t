@@ -1,0 +1,67 @@
+[comment encoding = UTF-8 /]
+[module filterEntity(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::types/]
+
+
+[template public filterEntity(unit : CollectionUnit)]
+[file(unit.filterEntityFilename(), false)]
+<?php
+namespace [unit.filterEntityNamespace()/];
+
+
+class [unit.filterEntityClassName()/]
+{
+[for (filter : CollectionFilter | unit.filters)]
+        [filter.filterVariable()/]
+
+[/for]
+[for (filter : CollectionFilter | unit.filters)]
+    [filter.getMethod()/]
+
+    [filter.setMethod()/]
+
+[/for]
+}
+[/file]
+[/template]
+
+[template private filterVariable(filter : CollectionFilter)
+	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
+[let textFilter : TextFilter = filter.oclAsType(TextFilter)]
+/**
+ * @var [filter.attribute.documentationType()/]|null $[filter.propertyName()/]
+ */
+protected ?[filter.attribute.implementationType()/] $[filter.propertyName()/] = null;
+[/let]
+[/template]
+
+[template private getMethod(filter : CollectionFilter) post(trim())]
+/**
+ *
+ *
+ * @return [filter.attribute.documentationType()/]|null
+ */
+public function [filter.getMethodName()/](): ?[attribute.implementationType()/]
+{
+    return $this->[filter.propertyName()/];
+}
+[/template]
+
+[template private setMethod(filter : CollectionFilter) post(trim())]
+/**
+ *
+ *
+ * @param [filter.attribute.documentationType()/]|null $[filter.instanceName()/]
+ */
+public function [filter.setMethodName()/](?[filter.attribute.implementationType()/] $[filter.instanceName()/]): self
+{
+    $this->[filter.propertyName()/] = $[filter.instanceName()/];
+    return $this;
+}
+[/template]

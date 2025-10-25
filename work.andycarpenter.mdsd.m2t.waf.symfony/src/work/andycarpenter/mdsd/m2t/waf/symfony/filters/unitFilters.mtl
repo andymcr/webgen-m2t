@@ -5,12 +5,14 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::baseFilter/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::controllerFiltersTrait/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterInterface/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterType/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterEntity/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterForm/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::textFilter/]
 
 
 [template public unitFilters(model : WafModel)]
-[model.collectionUnitsWithFilters.filterType()/]
+[model.collectionUnitsWithFilters.filterEntity()/]
+[model.collectionUnitsWithFilters.filterForm()/]
 [model.filterInterface()/]
 [model.filtersTrait()/]
 [model.baseFilter()/]

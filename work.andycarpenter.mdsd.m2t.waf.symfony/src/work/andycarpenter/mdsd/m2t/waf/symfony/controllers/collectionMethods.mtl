@@ -18,6 +18,15 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::controller/]
 
 
+[template public constructorCode(unit : ContentUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+[for  (filter : CollectionFilter | collectionUnit.filters)]
+$this->addFilter(new [filter.className()/]('[filter.name/]'));
+[/for]
+[/let]
+[/template]
+
 [template public unitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
@@ -55,7 +64,7 @@ $parameters[else]['['/]
 		[else]
         '[unit.instanceParameter()/]' => $this->[unit.selectName()/]([unit.selectMethodParameters()/]),
 		[/if]
-		[if (unit.hasFilters2())]
+		[if (unit.hasCollectionFilters())]
         '[unit.filterFormInstanceParameter()/]' => [unit.filterFormInstanceVariable()/],
 		[/if]
     [']'/][/if]);
@@ -128,7 +137,7 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [/template]
 
 [template private selectCode(unit : CollectionUnit)
-	 ? (not unit.hasPagination and not unit.hasFilters and not unit.hasFilters2())  post(trim())]
+	 ? (not unit.hasPagination and not unit.hasFilters and not unit.hasCollectionFilters())  post(trim())]
 [if (unit.inlineSelectCode())]
 [unit.resultsInstanceVariable()/] = [else]
 return [/if][if (not unit.selection.oclIsUndefined())]
@@ -143,7 +152,7 @@ $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMe
 [/template]
 
 [template private selectCode(unit : CollectionUnit)
-	 ? ((unit.hasPagination or unit.hasFilters2()) and not unit.hasFilters) post(trim())]
+	 ? ((unit.hasPagination or unit.hasCollectionFilters()) and not unit.hasFilters) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
 [unit.builderInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.builderMethodName(selection)/]([unit.selectionParameters()/]);
@@ -153,22 +162,26 @@ $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMe
 [else]
 [unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[unit.builderSuffix()/]();
 [/if]
-[if (unit.hasFilters2())]
+[if (unit.hasCollectionFilters())]
+[unit.filterEntityInstanceVariable()/] = new [unit.filterEntityClassName()/]();
+$this->addFlash('notice', 'loading form');
 [unit.filterFormInstanceVariable()/] = [unit.createFilterForm(unit.routeParameters())/];
 [unit.filterFormInstanceVariable()/]->handleRequest($request);
 if ([unit.filterFormInstanceVariable()/]->isSubmitted() && [unit.filterFormInstanceVariable()/]->isValid()) {
+    $this->addFlash('notice', 'submitted');
     $this->applyFilters([unit.builderInstanceVariable()/], [unit.filterFormInstanceVariable()/]);
 }
 [/if]
-$adapter = new QueryAdapter([unit.builderInstanceVariable()/]);
 [if (unit.inlineSelectCode())]
-[if (unit.controller.isMultiPage())]
-[unit.instanceVariable()/][else]
-$parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] =[else]
-return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
-    $adapter,
+[unit.resultsInstanceVariable()/] =[else]
+return[/if] [if (unit.hasPagination)]
+Pagerfanta::createForCurrentPageWithMaxPerPage(
+    new QueryAdapter([unit.builderInstanceVariable()/]),
     $request->query->getInt('page', 1),
     self::[unit.pageSizeConstant()/]);
+[else]
+ [unit.builderInstanceVariable()/]->getQuery()->getResult();
+[/if]
 [/template]
 
 [template private selectCode(unit : CollectionUnit)
@@ -187,13 +200,12 @@ else
 [unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[if (unit.hasPagination)]Query[/if]();
 [/if]
 [if (unit.hasPagination)]
-$adapter = new QueryAdapter([unit.builderInstanceVariable()/]);
 [if (unit.inlineSelectCode())]
 [if (unit.controller.isMultiPage())]
 [unit.instanceVariable()/][else]
 $parameters['['/]'[unit.instanceParameter()/]'[']'/][/if] =[else]
 return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
-    $adapter,
+    new QueryAdapter([unit.builderInstanceVariable()/]),
     $request->query->getInt('page', 1),
     self::[unit.pageSizeConstant()/]);
 [/if]
@@ -222,7 +234,7 @@ $query = [unit.getContentRepository()/]->[filter.methodName/]Query(
 
 [template private createFilterForm(unit : CollectionUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [let controller : Controller = unit.controller]
-$this->createForm([unit.filterFormClassName()/]::class, null, ['['/]
+$this->createForm([unit.filterFormClassName()/]::class, [unit.filterEntityInstanceVariable()/], ['['/]
     'action' => $this->generateUrl('[unit.routeName()/]'[if (controller.hasFilters() or controller.hasPagination())], [if (not unit.hasRouteParameters())]
 $request->query->all()[else]
 array_merge(
@@ -235,6 +247,7 @@ array_merge(
         [unit.routeActualParameters(sourceParameters)/]
     [']'/][/if]
 [/if]),
+   'method' => 'GET',
 [']'/])
 [/let]
 [/template]
