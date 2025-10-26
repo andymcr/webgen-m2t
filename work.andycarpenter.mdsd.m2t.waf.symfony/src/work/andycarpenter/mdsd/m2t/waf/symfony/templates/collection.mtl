@@ -17,16 +17,20 @@
 [/for]
 [if (unit.hasCollectionFilters())]
 <div class="filters">
- {{ form_start([unit.filterFormInstanceParameter()/], { attr: { id: 'filters' }}) }}
+ {{ form_start([unit.filterFormInstanceParameter()/], {
+    attr: {
+        id: 'filters',
+        'data-turbo-frame': '[unit.templateName()/]-{{ [unit.instanceParameter()/].1'
+    }}) }}
   {{ form_errors([unit.filterFormInstanceParameter()/]) }}
 	[for(filter : CollectionFilter | unit.filters)]
-  {{ form_row([unit.filterFormInstanceParameter()/].[filter.propertyName()/]) }}
+  {{ form_row([unit.filterFormInstanceParameter()/].[filter.fieldPropertyName()/]) }}
 	[/for]
   <div class="d-flex justify-content-center bg-light border-top p-2">
    <button type="submit" name="submit" class="btn border rounded mx-2 my-1">{{ 'admin.labels.submit' | trans }}</button>
    <input type="reset" name="clear" class="btn border rounded mx-2 my-1" value="Clear"/>
   </div>
-  {{ form_row([unit.filterFormInstanceParameter()/]._token) }}
+ {{ form_row([unit.filterFormInstanceParameter()/]._token) }}
  {{ form_end([unit.filterFormInstanceParameter()/], {'render_rest': false}) }}
 </div>
 [/if]

@@ -30,6 +30,13 @@ class [model.filterClassName(model.filterName())/] extends [model.filterBaseClas
      */
     public function apply(QueryBuilder $queryBuilder, Object $filterData): void
     {
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->like(
+                $this->getEntityAliasName() . '.' . $this->getFeatureName(),
+                ':' . $this->getName()));
+        $reflectionProperty = $this->dataReflector->getProperty($this->getName());
+        $value = $reflectionProperty->getValue($filterData);
+        $queryBuilder->setParameter($this->getName(), strpos($value, '%') ? $value : '%' . $value . '%');
     }
 }
 [/file]

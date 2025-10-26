@@ -22,7 +22,7 @@
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [for  (filter : CollectionFilter | collectionUnit.filters)]
-$this->addFilter(new [filter.className()/]('[filter.name/]'));
+$this->addFilter(new [filter.className()/]('[filter.name/]', '[filter.attribute.partOf.selectName()/]', '[filter.attribute.modelPropertyName()/]', [collectionUnit.filterEntityClassName()/]::class));
 [/for]
 [/let]
 [/template]

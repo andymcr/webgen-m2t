@@ -17,7 +17,7 @@
 {{ '[controller.captionContainedId()/]' | trans({}, '[controller.translationDomain()/]') }}
 {%- endblock %}
 
-[if (controller.hasEditUnits() or controller.hasCollectionFilters())]
+[if (controller.hasEditUnits())]
 {% block metas %}
 <meta name="turbo-cache-control" content="no-preview">
 {% endblock %}

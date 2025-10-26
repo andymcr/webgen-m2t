@@ -35,9 +35,9 @@ class [unit.filterEntityClassName()/]
 	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
 [let textFilter : TextFilter = filter.oclAsType(TextFilter)]
 /**
- * @var [filter.attribute.documentationType()/]|null $[filter.propertyName()/]
+ * @var [filter.attribute.documentationType()/]|null $[filter.fieldPropertyName()/]
  */
-protected ?[filter.attribute.implementationType()/] $[filter.propertyName()/] = null;
+protected ?[filter.attribute.implementationType()/] $[filter.fieldPropertyName()/] = null;
 [/let]
 [/template]
 
@@ -49,7 +49,7 @@ protected ?[filter.attribute.implementationType()/] $[filter.propertyName()/] = 
  */
 public function [filter.getMethodName()/](): ?[attribute.implementationType()/]
 {
-    return $this->[filter.propertyName()/];
+    return $this->[filter.fieldPropertyName()/];
 }
 [/template]
 
@@ -61,7 +61,7 @@ public function [filter.getMethodName()/](): ?[attribute.implementationType()/]
  */
 public function [filter.setMethodName()/](?[filter.attribute.implementationType()/] $[filter.instanceName()/]): self
 {
-    $this->[filter.propertyName()/] = $[filter.instanceName()/];
+    $this->[filter.fieldPropertyName()/] = $[filter.instanceName()/];
     return $this;
 }
 [/template]

@@ -54,7 +54,7 @@ class [unit.filterFormClassName()/] extends AbstractType
 [template private filterField(filter : CollectionFilter)
 	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
 [let textFilter : TextFilter = filter.oclAsType(TextFilter)]
-$builder->add('[textFilter.propertyName()/]', [textFilter.attribute.interfaceType()/], ['['/]
+$builder->add('[textFilter.fieldPropertyName()/]', [textFilter.attribute.interfaceType()/], ['['/]
     'label' => false,
     'translation_domain' => [if (filter.hasTranslations())]
 '[filter.affects.translationDomain()/]'[else]

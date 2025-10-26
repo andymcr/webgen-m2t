@@ -23,20 +23,58 @@ abstract class [model.filterBaseClassName()/] implements [model.filterInterfaceC
      */
     private string $name = '';
 
+    /**
+     * Selection alias of the entity containing the filtered feature.
+     */
+    private string $entityAliasName = '';
+
+    /**
+     * Name of the feature that is filtered.
+     */
+    private string $featureName = '';
+
      /**
      * Reflector used to access filter data.
      */
-    private ReflectionClass $dataReflector;
+    protected ReflectionClass $dataReflector;
 
    /**
      * @param string $name
+     * @param string $entityAliasName
+     * @param string $featureName
      * @param string $filterDataClass
      */
-    public function __construct(string $name, string $filterDataClass)
+    public function __construct(string $name, string $entityAliasName, string $featureName, string $filterDataClass)
     {
         $this->name = $name;
+        $this->entityAliasName = $entityAliasName;
+        $this->featureName = $featureName;
         $this->dataReflector = new ReflectionClass($filterDataClass);
     }
+
+   /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+     }
+
+   /**
+     * @return string
+     */
+    public function getEntityAliasName(): string
+    {
+        return $this->entityAliasName;
+     }
+
+   /**
+     * @return string
+     */
+    public function getFeatureName(): string
+    {
+        return $this->featureName;
+     }
 
     /**
      *
@@ -44,8 +82,10 @@ abstract class [model.filterBaseClassName()/] implements [model.filterInterfaceC
      */
     public function isActive(Object $filterData): bool
     {
-        $reflectionMethod = $this->dataReflector->getMethod('getTitle');
-        return null !== $reflectionMethod->invoke($filterData);
+ //       $reflectionMethod = $this->dataReflector->getMethod($this->getName());
+ //       return null !== $reflectionMethod->invoke($filterData);
+        $reflectionProperty = $this->dataReflector->getProperty($this->getName());
+        return null !== $reflectionProperty->getValue($filterData);
     }
 }
 [/file]

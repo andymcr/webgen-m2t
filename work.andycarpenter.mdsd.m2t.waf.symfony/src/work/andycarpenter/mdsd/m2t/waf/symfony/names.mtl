@@ -638,15 +638,15 @@
 
 
 [query public getMethodName(filter : CollectionFilter) : String
-	= 'get'.concat(filter.propertyName().toUpperFirst())
+	= 'get'.concat(filter.fieldPropertyName().toUpperFirst())
 /]
 
-[query public propertyName(filter : CollectionFilter) : String
-	= filter.attribute.modelPropertyName()
+[query public fieldPropertyName(filter : CollectionFilter) : String
+	= filter.name.toLowerFirst()
 /]
 
 [query public setMethodName(filter : CollectionFilter) : String
-	= 'set'.concat(filter.propertyName().toUpperFirst())
+	= 'set'.concat(filter.fieldPropertyName().toUpperFirst())
 /]
 
 
