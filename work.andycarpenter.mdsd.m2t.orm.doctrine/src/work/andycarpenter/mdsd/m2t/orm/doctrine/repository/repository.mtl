@@ -439,6 +439,10 @@ public function [selection.builderMethodName()/]([selection.formals()/]): QueryB
 {
 [if (selection.selectElementCount() = 0 and not selection.hasSelectPath() and not selection.hasFormals())]
     $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
+[elseif (selection.hasCondition() or selection.hasFormals() or selection.hasSelectPath())]
+    $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
+    $queryBuilder
+        [selection.selectionCode(security)/];
 [else]
     $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]')
         [selection.selectionCode(security)/];
@@ -500,8 +504,8 @@ public function [selection.builderMethodName()/]([selection.formals()/]): QueryB
  */
 public function [filter.builderMethodName()/]([filter.formals()/]): QueryBuilder
 {
-    $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/])
-        ->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
+    $queryBuilder = $this->[selection.builderMethodName()/]([selection.actuals()/]);
+    $queryBuilder->[if (selection.selectPath->isEmpty() and selection.condition.oclIsUndefined())]where[else]andWhere[/if]([filter.condition.queryExpression()/]);
 	[for (parameter : FormalParameter | filter.parameters)]
     if (is_null($[parameter.name/]) || strcmp(trim($[parameter.name/]), '') === 0) {
         $queryBuilder->setParameter('[parameter.name/]', '%');
