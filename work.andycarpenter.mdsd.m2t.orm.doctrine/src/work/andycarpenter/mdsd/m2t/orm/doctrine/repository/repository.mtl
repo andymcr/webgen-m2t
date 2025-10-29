@@ -439,7 +439,7 @@ public function [selection.builderMethodName()/]([selection.formals()/]): QueryB
 {
 [if (selection.selectElementCount() = 0 and not selection.hasSelectPath() and not selection.hasFormals())]
     $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
-[elseif (selection.hasCondition() or selection.hasFormals() or selection.hasSelectPath())]
+[elseif (selection.hasCondition() or selection.hasSelectPath())]
     $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
     $queryBuilder
         [selection.selectionCode(security)/];
