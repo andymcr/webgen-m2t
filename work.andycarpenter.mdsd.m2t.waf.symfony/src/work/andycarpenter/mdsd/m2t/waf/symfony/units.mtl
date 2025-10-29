@@ -37,7 +37,7 @@
 
 [query public hasConstructorCode(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).hasCollectionFilters()
+			unit.oclAsType(CollectionUnit).hasCollectionFilters() and unit.controller.isSinglePage()
 		else
 			false
 		endif
