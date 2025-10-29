@@ -62,8 +62,8 @@
 [template private topEntry(entry : MenuEntry)
 	? (entry.oclIsTypeOf(SubmenuEntry)) post(trim())]
 [let submenu : SubmenuEntry = entry.oclAsType(SubmenuEntry)]
-[if (submenu.isAuthorised and not submenu.alwaysVisible)]
-{% if [submenu.authorisation.authorisationExpression()/] %}[/if]
+[if (submenu.authorisation()->notEmpty() and not submenu.alwaysVisible)]
+{% if [for (role : Role | submenu.authorisation()->sortedBy(r | r.name)) separator (' or ')]is_granted('[role.name/]')[/for] %}[/if]
 [if (submenu.entries->isEmpty())]
 <a class="nav-link disabled"><{{ '[submenu.displayLabelId()/]' | trans }}/a>
 [else]
@@ -72,7 +72,7 @@
  [submenu.subDropdown()/]
 </div>
 [/if]
-[if (submenu.isAuthorised and not submenu.alwaysVisible)]
+[if (submenu.authorisation()->notEmpty() and not submenu.alwaysVisible)]
 {% endif %}[/if]
 [/let]
 [/template]
@@ -153,3 +153,26 @@
 [let casAuthentication : CasAuthentication = authentication.oclAsType(CasAuthentication)]
 [/let]
 [/template]
+
+
+[query private authorisation(submenu : SubmenuEntry) : Set(Role)
+	= entries->iterate(
+			e : MenuEntry;
+			roles : Set(Role) = Set{}
+			| if e.oclIsTypeOf(SubmenuEntry) then
+					roles->union(e.oclAsType(SubmenuEntry).authorisation())
+				else  if e.oclIsTypeOf(ActionMenuEntry) then
+					let actionEntry : ActionMenuEntry = e.oclAsType(ActionMenuEntry)
+						in if actionEntry.action.oclIsUndefined() then
+								roles->union(Set{})
+							else
+								if actionEntry.action.authorisation.oclIsUndefined() then
+									roles->union(Set{})
+								else
+									roles->union(Set{actionEntry.action.authorisation.oclAsType(IsGrantedRole).role})
+								endif
+							endif
+				else
+					roles->union(Set{})
+				endif endif)
+/]
