@@ -21,9 +21,7 @@
 [template public constructorCode(unit : ContentUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[for  (filter : CollectionFilter | collectionUnit.filters)]
-$this->addFilter(new [filter.className()/]('[filter.name/]', '[filter.attribute.partOf.selectName()/]', '[filter.attribute.modelPropertyName()/]', [collectionUnit.filterEntityClassName()/]::class));
-[/for]
+[collectionUnit.addFilters()/]
 [/let]
 [/template]
 
@@ -163,6 +161,9 @@ $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMe
 [unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[unit.builderSuffix()/]();
 [/if]
 [if (unit.hasCollectionFilters())]
+	[if (unit.hasCollectionFilters())]
+[unit.addFilters()/]
+	[/if]
 [unit.filterEntityInstanceVariable()/] = new [unit.filterEntityClassName()/]();
 [unit.filterFormInstanceVariable()/] = [unit.createFilterForm(unit.routeParameters())/];
 [unit.filterFormInstanceVariable()/]->handleRequest($request);
@@ -207,6 +208,12 @@ return[/if] Pagerfanta::createForCurrentPageWithMaxPerPage(
 [/if]
 [/template]
 
+[template public addFilters(unit : CollectionUnit) post(trim())]
+[for  (filter : CollectionFilter | unit.filters)]
+$this->addFilter(new [filter.className()/]('[filter.name/]', '[filter.attribute.partOf.selectName()/]', '[filter.attribute.modelPropertyName()/]', [unit.filterEntityClassName()/]::class));
+[/for]
+[/template]
+
 [template private filterSelect(unit : CollectionUnit) post(trim())]
 [for (filter : Filter | unit.supportedFilters) separator('else')]
 if ($request->query->has('[filter.name/]Filter'))
@@ -215,7 +222,7 @@ if ($request->query->has('[filter.name/]Filter'))
 [/template]
 
 [template private filterCall(unit : CollectionUnit, filter : Filter)]
-$query = [unit.getContentRepository()/]->[filter.methodName/]Query(
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->[filter.builderMethodName()/](
 [if (unit.hasRouteParameters(filter.selection))]
     [unit.routeParameterList(filter.selection, false)/][if(filter.parameters->notEmpty() or filter.selection.joins->isEmpty() or filter.selection.fields->isEmpty())]
 , [/if]
