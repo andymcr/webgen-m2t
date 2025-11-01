@@ -25,6 +25,9 @@ use [unit.filterEntityNamespace()/]\[unit.filterEntityClassName()/];
 [if (controller.collectionUnits()->exists(u | u.hasCollectionFilters()))]
 use [controller.filterNamespace()/]\[controller.filterTraitName()/];
 [/if]
+[if (controller.hasNumericFilters())]
+use [controller.filterNamespace()/]\[controller.filterClassName('Numeric')/];
+[/if]
 [if (controller.hasTextFilters())]
 use [controller.filterNamespace()/]\[controller.filterClassName('Text')/];
 [/if]
@@ -56,7 +59,7 @@ use Symfony\Component\Form\FormInterface;
 [if (controller.hasFileActions())]
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 [/if]
-[if (controller.hasEditUnits() or controller.hasFilters() or controller.hasPagination())]
+[if (controller.hasEditUnits() or controller.hasCollectionFilters() or controller.hasPagination())]
 use Symfony\Component\HttpFoundation\Request;
 [/if]
 use Symfony\Component\HttpFoundation\Response;

@@ -64,7 +64,21 @@
 /]
 
 [query public inlineSelectCode(unit : CollectionUnit) : Boolean
-	= unit.controller.isMultiPage()
-		or not unit.hasFilters
-		or unit.supportedFilters->size() = 1 and unit.controller.hasSingleActionMethod()
+	= unit.controller.isMultiPage() or unit.controller.hasSingleActionMethod()
 /]
+
+[query public filterForms(controller : Controller) : Sequence(Entity)
+	= controller.collectionUnitsWithFilters()
+			->select(u | not u.oclIsTypeOf(UpdateUnit) or controller.units->size() > 1)
+			->collect(u | u.contentType)
+		->union(controller.collectionUnits()
+			->select(u | u.hasPagination
+				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
+			->collect(u | u.contentType))
+		->union(controller.collectionUnits()
+			->select(u | u.isContained() and u.loadContainingType()
+				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
+			->collect(u | u.containingType()))
+		->asSet()->asSequence()
+/]
+

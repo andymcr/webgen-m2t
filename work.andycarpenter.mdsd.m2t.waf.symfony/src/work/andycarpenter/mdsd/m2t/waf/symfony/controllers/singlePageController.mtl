@@ -104,7 +104,7 @@ public function [controller.actionName()/]([controller.actionMethodFormals()/]):
 [/template]
 
 [template private renderMethod(controller : Controller) post(trim())]
-private function renderPage([if (controller.hasFilters() or controller.hasPagination())]
+private function renderPage([if (controller.hasCollectionFilters() or controller.hasPagination())]
 Request $request[if (controller.hasRouteParameters())]
 , [/if][/if][for (key : Attribute | controller.routeParameters()) separator(', ')]
 string $[key.routeParameterName(controller.routeParameters())/][/for]): Response

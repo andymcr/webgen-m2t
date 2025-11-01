@@ -12,9 +12,6 @@
 
 
 [template public unitFilters(unit : CollectionUnit) post(trim())]
-[for(filter : Filter | unit.supportedFilters)]
-[filter.unitFilter(unit)/]
-[/for]
 [if (unit.hasCollectionFilters())]
 <div class="filters">
  {{ form_start([unit.filterFormInstanceParameter()/], {
@@ -36,23 +33,6 @@
 [/if]
 [/template]
  
-[template private unitFilter(filter : Filter, unit : CollectionUnit) post(trim())]
-<div class="filter">
- <form action="{{ path('[unit.routeName()/]', { [if (unit.hasRouteParameters(unit.selection))]
-[unit.routeActualParameters(unit.routeParameters(), unit.containerParameter(), unit.routingType())/][/if] }) }}" method="get">
-  <div class="input-group">
-[for (parameter : FormalParameter | filter.parameters)]
-   <input type="text" name="[parameter.name/]" class="form-control"[if (not parameter.placeholder.oclIsUndefined())]
- placeholder="[parameter.placeholder/]"[/if][if (parameter.defaultValue.oclIsUndefined())]
- required="required"[/if]
- value="{{ app.request.query.get('[parameter.name/]') }}"/>
-[/for]
-   <button type="submit" name="[filter.name/]Filter" class="btn btn-outline-secondary"><i class="material-icons">search</i></button>
-  </div>
- </form>
-</div>
-[/template]
-
 
 [template public pagination(unit : CollectionUnit, accessor : String) post(trim())]
 {{ pagerfanta([accessor/]) }}
