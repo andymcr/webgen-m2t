@@ -70,20 +70,20 @@
 [query public distinctCollectionFilters(controller : Controller) : Sequence(CollectionUnit)
 	= controller.collectionUnitsWithFilters()->iterate(u; 
 		distinct : Sequence(CollectionUnit) = Sequence{} 
-		| if not distinct->exists(j | j.contentType = u.contentType) then
-				distinct->append(u)
-			else
+		| if distinct->exists(j | j.filtersSame(u)) then
 				distinct
+			else
+				distinct->append(u)
 			endif)
 /]
 
 [query public distinctCollectionFilters(model : WafModel) : Sequence(CollectionUnit)
 	= model.collectionUnitsWithFilters->iterate(u; 
 		distinct : Sequence(CollectionUnit) = Sequence{} 
-		| if not distinct->exists(j | j.contentType = u.contentType) then
-				distinct->append(u)
-			else
+		| if distinct->exists(j | j.filtersSame(u)) then
 				distinct
+			else
+				distinct->append(u)
 			endif)
 /]
 

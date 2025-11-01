@@ -114,11 +114,23 @@
 /]
 
 [query public filterEntityClassName(unit : CollectionUnit) : String
-	= unit.contentType.pluralisedName.concat(unit.searchSuffix())
+	= if unit.uiModel().distinctCollectionFilters()
+				->select(u  | u.contentType = unit.contentType)
+				->size() = 1 then
+			unit.contentType.pluralisedName
+		else
+			unit.controllerName().concat(unit.contentType.pluralisedName.toUpperFirst())
+		endif.concat(unit.searchSuffix())
 /]
 
 [query public filterFormClassName(unit : CollectionUnit) : String
-	= unit.controllerName().concat(unit.name.toUpperFirst()).concat(unit.typeSuffix())
+	= if unit.uiModel().distinctCollectionFilters()
+				->select(u  | u.contentType = unit.contentType)
+				->size() = 1 then
+			unit.contentType.name
+		else
+			unit.controllerName().concat(unit.contentType.name.toUpperFirst())
+		endif.concat(unit.searchSuffix()).concat(unit.typeSuffix())
 /]
 
 [query public filterBaseClassName(object : EObject) : String

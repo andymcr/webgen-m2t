@@ -34,7 +34,7 @@ use [controller.filterNamespace()/]\[controller.filterClassName('Text')/];
 [for (form : SingletonUnit | controller.formUnits()->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
 [/for]
-[for (unit : CollectionUnit | controller.collectionUnitsWithFilters()->sortedBy(u | u.name))]
+[for (unit : CollectionUnit | controller.distinctCollectionFilters()->sortedBy(u | u.contentType.name))]
 use [unit.filterFormNamespace()/]\[unit.filterFormClassName()/];
 [/for]
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]

@@ -14,7 +14,7 @@
 
 [template public unitFilters(model : WafModel)]
 [model.distinctCollectionFilters().filterEntity()/]
-[model.collectionUnitsWithFilters.filterForm()/]
+[model.distinctCollectionFilters().filterForm()/]
 [model.filterInterface()/]
 [model.filtersTrait()/]
 [model.baseFilter()/]

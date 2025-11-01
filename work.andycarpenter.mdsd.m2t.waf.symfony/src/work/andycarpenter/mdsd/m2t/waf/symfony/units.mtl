@@ -35,6 +35,16 @@
 	= unit.containingTypeLoadedBy() <> unit and unit.controller.isSinglePage()
 /]
 
+[query public filtersSame(unit1 : CollectionUnit, unit2 : CollectionUnit) : Boolean
+	= if unit1.contentType <> unit2.contentType then
+			false
+		else if unit1.filters->size() <> unit2.filters->size() then
+			false
+		else
+true
+		endif endif
+/]
+
 [query public hasConstructorCode(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(CollectionUnit) then
 			unit.oclAsType(CollectionUnit).hasCollectionFilters() and unit.controller.isSinglePage()
