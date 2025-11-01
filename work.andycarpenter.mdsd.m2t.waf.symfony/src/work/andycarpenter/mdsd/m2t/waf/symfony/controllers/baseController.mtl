@@ -19,7 +19,7 @@
 [for (entity : Entity | controller.entitiesUsed()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
-[for (unit : CollectionUnit | controller.collectionUnitsWithFilters()->sortedBy(u | u.name))]
+[for (unit : CollectionUnit | controller.distinctCollectionFilters()->sortedBy(u | u.contentType.name))]
 use [unit.filterEntityNamespace()/]\[unit.filterEntityClassName()/];
 [/for]
 [if (controller.collectionUnits()->exists(u | u.hasCollectionFilters()))]

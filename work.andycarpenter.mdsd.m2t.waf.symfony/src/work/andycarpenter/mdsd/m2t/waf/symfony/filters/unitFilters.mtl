@@ -2,6 +2,7 @@
 [module unitFilters(
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::baseFilter/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::controllerFiltersTrait/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::filters::filterInterface/]
@@ -12,7 +13,7 @@
 
 
 [template public unitFilters(model : WafModel)]
-[model.collectionUnitsWithFilters.filterEntity()/]
+[model.distinctCollectionFilters().filterEntity()/]
 [model.collectionUnitsWithFilters.filterForm()/]
 [model.filterInterface()/]
 [model.filtersTrait()/]

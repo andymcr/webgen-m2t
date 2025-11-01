@@ -67,18 +67,23 @@
 	= unit.controller.isMultiPage() or unit.controller.hasSingleActionMethod()
 /]
 
-[query public filterForms(controller : Controller) : Sequence(Entity)
-	= controller.collectionUnitsWithFilters()
-			->select(u | not u.oclIsTypeOf(UpdateUnit) or controller.units->size() > 1)
-			->collect(u | u.contentType)
-		->union(controller.collectionUnits()
-			->select(u | u.hasPagination
-				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
-			->collect(u | u.contentType))
-		->union(controller.collectionUnits()
-			->select(u | u.isContained() and u.loadContainingType()
-				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
-			->collect(u | u.containingType()))
-		->asSet()->asSequence()
+[query public distinctCollectionFilters(controller : Controller) : Sequence(CollectionUnit)
+	= controller.collectionUnitsWithFilters()->iterate(u; 
+		distinct : Sequence(CollectionUnit) = Sequence{} 
+		| if not distinct->exists(j | j.contentType = u.contentType) then
+				distinct->append(u)
+			else
+				distinct
+			endif)
+/]
+
+[query public distinctCollectionFilters(model : WafModel) : Sequence(CollectionUnit)
+	= model.collectionUnitsWithFilters->iterate(u; 
+		distinct : Sequence(CollectionUnit) = Sequence{} 
+		| if not distinct->exists(j | j.contentType = u.contentType) then
+				distinct->append(u)
+			else
+				distinct
+			endif)
 /]
 
