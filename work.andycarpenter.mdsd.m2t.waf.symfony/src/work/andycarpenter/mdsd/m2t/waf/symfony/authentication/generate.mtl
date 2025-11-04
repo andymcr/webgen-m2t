@@ -5,6 +5,7 @@
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::config::security/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::changePasswordFormType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::forgottenPasswordViews/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginFormAuthenticator/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::loginFormType/]
@@ -25,6 +26,7 @@
 
 [localAuthentication.loginElement.loginFormType()/]
 [localAuthentication.loginFormAuthenticator()/]
+[localAuthentication.changePasswordElement.changePasswordFormType()/]
 [localAuthentication.forgottenPasswordElement.requestFormType()/]
 [localAuthentication.forgottenPasswordElement.resetFormType()/]
 
