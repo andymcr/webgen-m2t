@@ -11,10 +11,6 @@
 	= controller.editUnits()
 			->select(u | not u.oclIsTypeOf(UpdateUnit) or controller.units->size() > 1)
 			->collect(u | u.contentType)
-		->union(controller.collectionUnits()
-			->select(u | u.hasPagination
-				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
-			->collect(u | u.contentType))
 		->asSet()->asSequence()
 /]
 
