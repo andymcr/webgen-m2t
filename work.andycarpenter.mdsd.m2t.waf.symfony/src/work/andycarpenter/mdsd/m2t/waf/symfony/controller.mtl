@@ -15,10 +15,6 @@
 			->select(u | u.hasPagination
 				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
 			->collect(u | u.contentType))
-		->union(controller.collectionUnits()
-			->select(u | u.isContained() and u.loadContainingType()
-				and (not controller.hasSingleActionMethod() or u.hasSelectionMethod()))
-			->collect(u | u.containingType()))
 		->asSet()->asSequence()
 /]
 
