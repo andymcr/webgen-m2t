@@ -16,7 +16,13 @@ namespace [unit.filterFormNamespace()/];
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (unit.hasTextFilters())]
+[if (unit.filters->exists(f | f.attribute.isEmailFeature))]
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+[/if]
+[if (unit.filters->exists(f | f.attribute.isIntegerFeature))]
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+[/if]
+[if (unit.filters->exists(f | f.attribute.isStringFeature))]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;

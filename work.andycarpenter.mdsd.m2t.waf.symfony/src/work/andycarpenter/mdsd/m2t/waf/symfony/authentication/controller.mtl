@@ -52,13 +52,13 @@ class [localAuthentication.controllerClassName()/] extends [localAuthentication.
 [template private useStatements(authentication : LocalAuthenticationSystem) post(trim())]
 use [authentication.modelsNamespace()/]\[authentication.authenticationModel.modelClassName()/];
 use [authentication.modelsNamespace()/]\[authentication.resetPasswordRequestModel.modelClassName()/];
+use [authentication.formNamespace()/]\[authentication.loginElement.typeClassName()/];
+use [authentication.formNamespace()/]\[authentication.changePasswordElement.typeClassName()/];
 use [authentication.formNamespace()/]\[authentication.forgottenPasswordElement.typeRequestClassName()/];
 use [authentication.formNamespace()/]\[authentication.forgottenPasswordElement.typeResetClassName()/];
-use [authentication.formNamespace()/]\[authentication.loginElement.typeClassName()/];
 [if (authentication.hasRegistrationElement)]
 use [authentication.formNamespace()/]\[authentication.registrationElement.typeClassName()/];
 [/if]
-use [authentication.formNamespace()/]\[authentication.changePasswordElement.typeClassName()/];
 use [authentication.repositoriesNamespace()/]\[authentication.authenticationModel.repository.repositoryClassName()/];
 [if (authentication.hasRegistrationElement)]
 use App\Security\EmailVerifier;
