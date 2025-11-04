@@ -944,6 +944,9 @@ public function getPassword(): ?string
     return (string) $this->password; 
 } 
 
+/**
+ * @return [entity.modelClassName()/]
+ */
 public function setPassword(string $password): self
 {
     $this->password = $password;
@@ -965,7 +968,7 @@ public function getUsername()
 /**
  * @param string $username
  *
- * @return User
+ * @return [entity.modelClassName()/]
  */
 public function setUsername($username): self
 {
@@ -985,7 +988,7 @@ public function getAvatarUrl()
 /**
  * @param string $avatarUrl
  *
- * @return User
+ * @return [entity.modelClassName()/]
  */
 public function setAvatarUrl($avatarUrl)
 {
@@ -1004,7 +1007,7 @@ public function getNbPost()
 /**
  * @param int $nbPost
  *
- * @return User
+ * @return [entity.modelClassName()/]
  */
 public function setNbPost($nbPost)
 {
@@ -1030,7 +1033,7 @@ public function isBanned()
 /**
  * @param bool $banned
  *
- * @return User
+ * @return [entity.modelClassName()/]
  */
 public function setBanned($banned)
 {
