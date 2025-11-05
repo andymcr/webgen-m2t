@@ -46,13 +46,13 @@
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
 [if (unit.controller.isMultiPage())]
-	[if (unit.isConditionallyDisplayed)]
+	[if (unit.isConditionallyDisplayed())]
     $parameters = ['['/][']'/];
 	[/if]
 	[if (unit.isContained() or unit.inlineSelectCode())]
     [unit.renderCode()/]
 	[/if]
-    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', [if (unit.isConditionallyDisplayed)]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', [if (unit.isConditionallyDisplayed())]
 $parameters[else]['['/]
 		[if (unit.isContained() and unit.loadContainingType())]
         '[unit.containerParameter()/]' => [unit.containerInstanceVariable()/],
@@ -92,7 +92,7 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
 [if (collectionUnit.isContained() and collectionUnit.loadContainingType())]
 [collectionUnit.loadContainer()/]
-	[if (collectionUnit.isConditionallyDisplayed or unit.controller.isSinglePage())]
+	[if (collectionUnit.isConditionallyDisplayed() or unit.controller.isSinglePage())]
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
 	[/if]
 [/if]
@@ -100,7 +100,7 @@ $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUni
 if (isset([unit.instanceVariable()/])) {
     [collectionUnit.renderCode2()/]
 }
-[elseif (collectionUnit.isConditionallyDisplayed)]
+[elseif (collectionUnit.isConditionallyDisplayed())]
 if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.containerInstanceVariable(), collectionUnit.containerInstanceVariable())/])) {
     [collectionUnit.renderCode2()/]
 }
@@ -113,7 +113,7 @@ if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.containerInst
 [template private renderCode2(unit : CollectionUnit) post(trim())]
 [if (unit.inlineSelectCode())]
 [unit.selectCode()/]
-[elseif (unit.isConditionallyDisplayed or unit.controller.isSinglePage())]
+[elseif (unit.isConditionallyDisplayed() or unit.controller.isSinglePage())]
 $parameters['['/]'[unit.instanceParameter()/]'[']'/] = $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
 [/if]
 [/template]

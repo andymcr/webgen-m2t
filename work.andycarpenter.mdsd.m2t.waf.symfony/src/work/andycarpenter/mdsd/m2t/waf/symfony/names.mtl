@@ -477,7 +477,7 @@
 /]
 
 [query public resultsInstanceVariable(unit : CollectionUnit) : String
-	= if unit.isConditionallyDisplayed or unit.controller.isSinglePage() then
+	= if unit.isConditionallyDisplayed() or unit.controller.isSinglePage() then
 			'$parameters[\''.concat(unit.instanceParameter()).concat('\']')
 		else
 			unit.instanceVariable()
@@ -565,7 +565,7 @@
 
 
 [query public sameModel(form : SingletonUnit) : Sequence(SingletonUnit)
-	= if form.hasInterfaceFields then
+	= if form.hasInterfaceFields() then
 			Sequence{ form }
 		else
 			form.sameModelFeatures()

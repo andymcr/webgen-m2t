@@ -50,7 +50,7 @@
  <h2[if (searchUnit.hasCaptionClass() or searchUnit.omitCaption)]
  class="[if (searchUnit.hasCaptionClass())][searchUnit.captionClass()/][/if][if (searchUnit.omitCaption)] hidden[/if]"[/if]>[unit.displayLabel/]</h2>
  <div class="unit_padding">
-[if (searchUnit.hasInterfaceFields)]
+[if (searchUnit.hasInterfaceFields())]
 [let accessor : String = '?']
   <?php
 	$unit_fields = [accessor/]->unit_fields();

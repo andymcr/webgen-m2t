@@ -43,7 +43,7 @@ use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
 use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [/for]
-[if (controller.editUnits()->collect(u | u.formFields)->select(f | f.isContains)->notEmpty())]
+[if (controller.editUnits()->collect(u | u.formFields)->select(f | f.isContains())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 [if (controller.hasCollectionUnits())]

@@ -36,10 +36,10 @@
 [unit.unitContent(controller)/]
 	[else]
 	[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-		[if (dynamicUnit.isConditionallyDisplayed or dynamicUnit.isDislayedOnlyOnExplicitRoute())]
+		[if (dynamicUnit.isConditionallyDisplayed() or dynamicUnit.isDislayedOnlyOnExplicitRoute())]
 {% if [dynamicUnit.instanceParameter()/] is defined %}
 [dynamicUnit.unitContent(controller)/]
-			[if (dynamicUnit.hasHiddenMessage)]
+			[if (dynamicUnit.hasHiddenMessage())]
 {% else %}
 <h5>{{ '[dynamicUnit.hiddenMessageContainedId()/]' | trans({}, '[dynamicUnit.translationDomain()/]') }}</h5>
 			[/if]

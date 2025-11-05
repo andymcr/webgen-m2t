@@ -20,7 +20,7 @@
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
 [editUnit.formOpen(accessor)/]
  [editUnit.formFields(accessor)/]
-[if (editUnit.hasCaptcha)]
+[if (editUnit.hasCaptcha())]
  [editUnit.captchaField(accessor)/]
 [/if]
 [editUnit.formControlAndClose(accessor)/]
@@ -119,18 +119,18 @@
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
 	? (field.isInterfaceField()
 		or (field.isAttributeField() and field.isSingletonField())
-		or (field.isAssociationField() and not field.isContains)
+		or (field.isAssociationField() and not field.isContains())
 		or field.isResourceField()) post(trim())]
 [comment if any of display Label, placeholder or title translated, translation for all must be used /]
-{{ form_row([field.editAccessor(parentAccessor)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass() or field.hasFieldLabelClass() or field.hasFieldValueClass() or field.isDisabled)]
+{{ form_row([field.editAccessor(parentAccessor)/][if ((field.hasTranslations() and not field.singleUseModel()) or field.hasInputGroupClass() or field.hasFieldLabelClass() or field.hasFieldValueClass() or field.isDisabled())]
 , {[if (field.hasTranslations() and not field.singleUseModel())]
  label: '[field.customisedCaptionContainedId()/]',[/if]
 [if (field.hasInputGroupClass())]
  row_attr: { class: '[field.inputGroupClass()/]' },[/if]
 [if (field.hasFieldLabelClass())]
  label_attr: { class: '[field.fieldLabelClass()/]' },[/if]
-[if (field.isDisabled or field.hasFieldValueClass() or field.hasTranslations())]
- attr: {[if (field.isDisabled)]
+[if (field.isDisabled() or field.hasFieldValueClass() or field.hasTranslations())]
+ attr: {[if (field.isDisabled())]
  disabled: 'disabled',[/if]
 [if (field.hasFieldValueClass())]
  class: '[field.fieldValueClass()/]',[/if]
@@ -159,7 +159,7 @@
 [/template]
 
 [template private formField(field : UnitField, unit : SingletonUnit, parentAccessor : String)
-	? (field.isAssociationField() and field.isContains) post(trim())]
+	? (field.isAssociationField() and field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [let accessor : String = field.accessor(parentAccessor)]
 [let childFields : OrderedSet(Feature) = association.association.targetType.features->select(f | not f.isContainer)]

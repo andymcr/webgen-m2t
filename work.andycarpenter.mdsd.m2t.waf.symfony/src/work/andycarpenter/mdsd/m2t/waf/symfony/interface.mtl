@@ -214,7 +214,7 @@
 [comment consider fields with feature paths, which might have same persistent feature name/]
 [query public fieldId(field : UnitFeature) : String
 	= let featuresWithName : Sequence(Feature)
-		= field.displayedOn.featureFields
+		= field.displayedOn.featureFields()
 				->collect(f | f.leafFeature())
 				->select(f | f.name = field.leafFeature().name)
 		in if featuresWithName->size() = 1 then

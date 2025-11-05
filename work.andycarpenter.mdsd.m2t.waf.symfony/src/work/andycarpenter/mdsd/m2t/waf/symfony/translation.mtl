@@ -275,7 +275,7 @@
 					or editUnit.hasConfirmMessage
 					or editUnit.hasSuccessMessage
 		else if unit.oclIsKindOf(DynamicUnit) then
-			unit.oclAsType(DynamicUnit).hasHiddenMessage
+			unit.oclAsType(DynamicUnit).hasHiddenMessage()
 		else
 			false
 		endif endif

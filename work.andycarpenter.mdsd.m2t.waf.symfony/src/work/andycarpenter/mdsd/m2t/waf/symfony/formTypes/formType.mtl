@@ -24,11 +24,11 @@
 [query private embeddedForms(model : WafModel) : Sequence(UnitAssociation)
 	= model.formUnits
 		->collect(u | u.displayFields)
-		->select(f | f.isContains).oclAsType(UnitAssociation)
+		->select(f | f.isContains()).oclAsType(UnitAssociation)
 /]
 
 [query private uniqueEnumerationFeatures(unit : DynamicUnit) : Sequence(UnitFeature)
-	= unit.enumerationFields->asSet()->asSequence()
+	= unit.enumerationFields()->asSet()->asSequence()
 /]
 
 [template public formTypes(model : WafModel)]
@@ -85,11 +85,11 @@ class [unit.typeClassName()/] extends AbstractType
         [feature.formField()/];
 
 [/for]
-[if (unit.hasCaptcha)]
+[if (unit.hasCaptcha())]
         [unit.captchaField(unit.captchaActionName())/]
 
 [/if]
-[if (unit.hasDefaultValueFields or unit.hasForcedValueFields)]
+[if (unit.hasDefaultValueFields() or unit.hasForcedValueFields())]
         [unit.setFieldValues()/]
 [/if]
     }
@@ -101,7 +101,7 @@ class [unit.typeClassName()/] extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['['/]
-[if (unit.hasFeatureFields)]
+[if (unit.hasFeatureFields())]
             'data_class' => '[unit.modelsNamespace()/]\[unit.modelClassName()/]',
             'csrf_token_id' => '[unit.csrfTokenId()/]'
 [/if]
@@ -112,7 +112,7 @@ class [unit.typeClassName()/] extends AbstractType
 [/template]
 
 [query private choicesRepositories(unit : DynamicUnit) : Sequence(Repository)
-	= unit.associationFields
+	= unit.associationFields()
 		->select(f | not f.options.oclIsUndefined() and not f.useAutocomplete)
 		->collect(f | f.options.definedBy)
 		->asSet()
@@ -160,66 +160,66 @@ use [feature.modelsNamespace()/]\[feature.enumerationType().modelClassName()/];
 [for (repository : Repository | unit.choicesRepositories())]
 use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [/for]
-[if (unit.hasCaptcha)]
+[if (unit.hasCaptcha())]
 use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 [/if]
-[if (unit.hasAssociationFields)]
+[if (unit.hasAssociationFields())]
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 [/if]
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-[if (unit.hasDefaultValueFields or unit.hasForcedValueFields)]
+[if (unit.hasDefaultValueFields() or unit.hasForcedValueFields())]
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 [/if]
-[if (unit.hasBooleanFields)]
+[if (unit.hasBooleanFields())]
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 [/if]
-[if (unit.hasEnumerationFields)]
+[if (unit.hasEnumerationFields())]
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 [/if]
-[if (unit.collectionFeatures->select(f | f.isAttributeField() or f.isContains)->notEmpty())]
+[if (unit.collectionFeatures()->select(f | f.isAttributeField() or f.isContains())->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 [/if]
-[if (unit.dateFields->select(f | f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
+[if (unit.dateFields()->select(f | f.dateDetails() = DateDetails::DateOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 [/if]
-[if (unit.dateFields->select(f | f.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
+[if (unit.dateFields()->select(f | f.dateDetails() = DateDetails::DateAndTime)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 [/if]
-[if (unit.hasEmailFields)]
+[if (unit.hasEmailFields())]
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 [/if]
-[if (unit.hasIntegerFields)]
+[if (unit.hasIntegerFields())]
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 [/if]
-[if (unit.hasObfuscatedFields)]
+[if (unit.hasObfuscatedFields())]
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 [/if]
-[if (unit.hasRepeatedFields)]
+[if (unit.hasRepeatedFields())]
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 [/if]
-[if (unit.hasStringFields or unit.hasUrlFields)]
+[if (unit.hasStringFields() or unit.hasUrlFields())]
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 [/if]
-[if (unit.hasTextareaFields)]
+[if (unit.hasTextareaFields())]
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 [/if]
-[if (unit.dateFields->select(f | f.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
+[if (unit.dateFields()->select(f | f.dateDetails() = DateDetails::TimeOnly)->notEmpty())]
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 [/if]
 use Symfony\Component\OptionsResolver\OptionsResolver;
-[if (unit.hasRepeatedFields)]
+[if (unit.hasRepeatedFields())]
 use Symfony\Component\Validator\Constraints\Length;
 [/if]
-[if (unit.hasRequiredInterfaceFields)]
+[if (unit.hasRequiredInterfaceFields())]
 use Symfony\Component\Validator\Constraints\NotBlank;
 [/if]
-[if (unit.hasFileFields)]
+[if (unit.hasFileFields())]
 use Vich\UploaderBundle\Form\Type\VichFileType;
 [/if]
-[if (unit.hasImageFields)]
+[if (unit.hasImageFields())]
 use Vich\UploaderBundle\Form\Type\VichImageType;
 [/if]
 [/template]
@@ -317,7 +317,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 [/template]
 
 [template private formField(field : UnitField)
-	? (field.isAssociationField() and not field.isContains) post(trim())]
+	? (field.isAssociationField() and not field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.useAutocomplete)]
 [association.formAutocompleteFeature()/]
@@ -332,7 +332,7 @@ $builder->add('[association.modelPropertyName()/]', [association.autocompleteTyp
 [/template]
 
 [template private formField(field : UnitField, dataInstance : String)
-	? (field.isAssociationField() and field.isContains) post(trim())]
+	? (field.isAssociationField() and field.isContains()) post(trim())]
 [let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (association.isSingletonField())]
 add('[association.modelPropertyName()/]', [association.typeClassName()/]::class)
@@ -493,19 +493,19 @@ new NotBlank(['['/]
 [template private setFieldValues(unit : SingletonUnit) post(trim())]
 $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
     $data = $event->getData();
-[for (field : UnitField | unit.defaultValueFields)]
+[for (field : UnitField | unit.defaultValueFields())]
 	[if (field.isFeatureField())]
 	[let feature : UnitFeature = field.oclAsType(UnitFeature)]
     if (is_null($data->[feature.leafFeature().getMethodName()/]())) {
-        $data->[feature.leafFeature().setMethodName()/]([feature.defaultValue.controllerExpression('$data', null)/]);
+        $data->[feature.leafFeature().setMethodName()/]([feature.defaultValue().controllerExpression('$data', null)/]);
     }
 	[/let]
 	[else]
 	[/if]
 [/for]
-[for (field : UnitField | unit.forcedValueFields)]
+[for (field : UnitField | unit.forcedValueFields())]
 [let feature : UnitFeature = field.oclAsType(UnitFeature)]
-    $data->[feature.leafFeature().setMethodName()/]([feature.forcedValue.controllerExpression('$data', null)/]);
+    $data->[feature.leafFeature().setMethodName()/]([feature.forcedValue().controllerExpression('$data', null)/]);
 [/let]
 [/for]
 });

@@ -79,7 +79,7 @@
 [template private unitTranslations(unit : ContentUnit)
 	? (unit.oclIsKindOf(DynamicUnit) and not unit.oclIsKindOf(EditUnit)) post (trim())]
 [let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-[if (dynamicUnit.hasHiddenMessage)]
+[if (dynamicUnit.hasHiddenMessage())]
 [dynamicUnit.hiddenMessageContainedId().idTranslation(dynamicUnit.messageWhenHidden)/]
 [/if]
 [/let]

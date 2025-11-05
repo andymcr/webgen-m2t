@@ -299,11 +299,11 @@ $request->query->all()[/if]
 
 
 [template public unitDefaultValues(unit : DynamicUnit) post(trim())]
-[for (field : UnitField | unit.defaultValueFields)]
+[for (field : UnitField | unit.defaultValueFields())]
 [if (field.isAttributeField())]
-[unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue.valueExpression()/];
+[unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(UnitAttribute).defaultValue().valueExpression()/];
 [else]
-[unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue.valueExpression()/];
+[unit.instanceVariable()/]->[field.modelPropertyName()/] = [field.oclAsType(InterfaceField).defaultValue().valueExpression()/];
 [/if]
 [/for]
 [/template]
@@ -325,8 +325,8 @@ if ($request->isMethod('POST') && $request->request->has('[editUnit.cancelId()/]
 [/template]
 
 [template public forcedFeatureValues(unit : DynamicUnit) post(trim())]
-[for (feature : UnitField | unit.forcedValueFields)]
-[let value : Expression = feature.oclAsType(UnitFeature).forcedValue]
+[for (feature : UnitField | unit.forcedValueFields())]
+[let value : Expression = feature.oclAsType(UnitFeature).forcedValue()]
 [unit.instanceVariable()/]->[feature.formName()/] = [value.valueExpression()/];
 [/let]
 [/for]

@@ -52,7 +52,7 @@ public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 if (is_null([detailsUnit.instanceVariable()/])) {
     throw $this->createNotFoundException('The [detailsUnit.contentType.name/] does not exist');
 }
-[if (detailsUnit.isConditionallyDisplayed)]
+[if (detailsUnit.isConditionallyDisplayed())]
 if (!([detailsUnit.hideWhen.controllerExpression(detailsUnit.instanceVariable(), null)/])) {
     $parameters['['/]'[detailsUnit.instanceParameter()/]'[']'/] = [detailsUnit.instanceVariable()/];
 }
