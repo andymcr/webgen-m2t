@@ -39,7 +39,7 @@
  {{ form_row([element.instanceName()/].captcha) }}
 [/if]
 <div class="d-flex justify-content-center bg-light border-top p-2">
- <button type="submit" name="submit" class="btn border rounded mx-2 my-1">{{ '[element.submitLabelContainedId()/]' | trans }}</button>
+ <button type="submit" name="submit" class="btn border rounded mx-2 my-1">{{ '[element.loginLabelContainedId()/]' | trans }}</button>
  <a href="{{ path('[element.authentication.forgottenPasswordElement.routeName()/]') }}" class="btn border rounded mx-2 my-1">{{ '[element.authentication.forgottenPasswordElement.invokeLabelContainedId()/]' | trans( {}, '[element.translationDomain()/]') }}</a>
 </div>
 {{ form_row([element.instanceName()/]._token) }}

@@ -210,7 +210,7 @@ if (is_null($[unit.containerInstanceName()/])) {
 
 [template private saveBody(unit : EditUnit, sourceParameters : Sequence(Attribute)) post(trim())]
 [unit.getContentRepository()/]->save([unit.instanceVariable()/], true);
-[if (unit.hasSuccessMessage)]
+[if (unit.hasSuccessMessage())]
 $this->addFlash('success', $this->translationService->trans('[unit.successMessageId()/]', ['['/][']'/], '[unit.controller.translationDomain()/]'));
 [/if]
 [if (not unit.confirmDestination.oclIsUndefined())]

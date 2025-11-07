@@ -17,6 +17,14 @@
 	= 'caption'
 /]
 
+[query private changeElement(eObject : EObject) : String
+	= 'change'
+/]
+
+[query private clearElement(eObject : EObject) : String
+	= 'clear'
+/]
+
 [query private confirmElement(eObject : EObject) : String
 	= 'confirm'
 /]
@@ -41,6 +49,14 @@
 	= 'labels'
 /]
 
+[query private loginElement(eObject : EObject) : String
+	= 'login'
+/]
+
+[query private logoutElement(eObject : EObject) : String
+	= 'logout'
+/]
+
 [query private messagesElement(eObject : EObject) : String
 	= 'messages'
 /]
@@ -51,6 +67,10 @@
 
 [query private placeholderElement(eObject : EObject) : String
 	= 'placeholder'
+/]
+
+[query private registerElement(eObject : EObject) : String
+	= 'register'
 /]
 
 [query private requestElement(eObject : EObject) : String
@@ -65,12 +85,16 @@
 	= 'reset'
 /]
 
+[query private saveElement(eObject : EObject) : String
+	= 'save'
+/]
+
 [query private secondElement(eObject : EObject) : String
 	= 'second'
 /]
 
-[query private submitElement(eObject : EObject) : String
-	= 'submit'
+[query private searchElement(eObject : EObject) : String
+	= 'search'
 /]
 
 [query private successElement(eObject : EObject) : String
@@ -90,8 +114,24 @@
 	= element.id().concat('.').concat(element.captionElement())
 /]
 
+[query public changeLabelContainedId(element : ChangePasswordElement) : String
+	= element.id().concat('.').concat(element.changeElement())
+/]
+
 [query public invokeLabelContainedId(element : AuthenticationElement) : String
 	= element.id().concat('.').concat(element.invokeElement())
+/]
+
+[query public loginLabelContainedId(element : LoginElement) : String
+	= element.id().concat('.').concat(element.loginElement())
+/]
+
+[query public logoutLabelContainedId(element : LogoutElement) : String
+	= element.id().concat('.').concat(element.logoutElement())
+/]
+
+[query public registerLabelContainedId(element : RegistrationElement) : String
+	= element.id().concat('.').concat(element.registerElement())
 /]
 
 [query public requestLabelContainedId(element : ForgottenPasswordElement) : String
@@ -100,10 +140,6 @@
 
 [query public resetLabelContainedId(element : ForgottenPasswordElement) : String
 	= element.id().concat('.').concat(element.resetElement())
-/]
-
-[query public submitLabelContainedId(element : AuthenticationElement) : String
-	= element.id().concat('.').concat(element.submitElement())
 /]
 
 [query public translationDomain(element : AuthenticationElement) : String
@@ -216,12 +252,20 @@
 	= controller.id().concat('.').concat(controller.captionElement())
 /]
 
+[query public clearLabelContainedId(controller : Controller) : String
+	= controller.labelsContainedId().concat('.').concat(controller.clearElement())
+/]
+
 [query private labelsContainedId(controller : Controller) : String
 	= controller.id().concat('.').concat(controller.labelsElement())
 /]
 
-[query public submitLabelContainedId(controller : Controller) : String
-	= controller.labelsContainedId().concat('.').concat(controller.submitElement())
+[query public saveLabelContainedId(controller : Controller) : String
+	= controller.labelsContainedId().concat('.').concat(controller.saveElement())
+/]
+
+[query public searchLabelContainedId(controller : Controller) : String
+	= controller.labelsContainedId().concat('.').concat(controller.searchElement())
 /]
 
 [query public translationDomain(controller : Controller) : String
@@ -233,16 +277,20 @@
 /]
 
 
-[query public cancelLabelContainedId(unit : ContentUnit) : String
-	= unit.labelsContainedId().concat('.').concat(unit.cancelElement())
-/]
-
 [query public captionContainedId(unit : ContentUnit) : String
 	= unit.containedId().concat('.').concat(unit.captionElement())
 /]
 
 [query public confirmMessageContainedId(unit : ContentUnit) : String
 	= unit.messagesContainedId().concat('.').concat(unit.confirmElement())
+/]
+
+[query public cancelLabelContainedId(unit : ContentUnit) : String
+	= unit.labelsContainedId().concat('.').concat(unit.cancelElement())
+/]
+
+[query public clearLabelContainedId(unit : ContentUnit) : String
+	= unit.labelsContainedId().concat('.').concat(unit.clearElement())
 /]
 
 [query private containedId(unit : ContentUnit) : String
@@ -270,10 +318,10 @@
 [query public hasUnitTranslations(unit : ContentUnit) : Boolean
 	= if unit.oclIsKindOf(EditUnit) then
 			let editUnit : EditUnit = unit.oclAsType(EditUnit)
-				in editUnit.hasCustomisedCancelLabel()
-					or editUnit.hasCustomisedSubmitLabel()
-					or editUnit.hasConfirmMessage
-					or editUnit.hasSuccessMessage
+				in editUnit.hasCustomSaveLabel()
+					or editUnit.hasCustomCancelLabel()
+					or editUnit.hasConfirmMessage()
+					or editUnit.hasSuccessMessage()
 		else if unit.oclIsKindOf(DynamicUnit) then
 			unit.oclAsType(DynamicUnit).hasHiddenMessage()
 		else
@@ -293,8 +341,12 @@
 	= unit.containedId().concat('.').concat(unit.messagesElement())
 /]
 
-[query public submitLabelContainedId(unit : ContentUnit) : String
-	= unit.labelsContainedId().concat('.').concat(unit.submitElement())
+[query public saveLabelContainedId(unit : ContentUnit) : String
+	= unit.labelsContainedId().concat('.').concat(unit.saveElement())
+/]
+
+[query public searchLabelContainedId(unit : ContentUnit) : String
+	= unit.labelsContainedId().concat('.').concat(unit.searchElement())
 /]
 
 [query public successMessageId(unit : ContentUnit) : String

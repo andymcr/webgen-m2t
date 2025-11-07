@@ -46,11 +46,11 @@
 
 [template private formControlAndClose(unit : EditUnit, accessor : String) post(trim())]
 <div[if (unit.hasControlClass())] class="[unit.controlClass()/]"[/if]>
- <button type="submit" name="[unit.submitId()/]"[if (unit.hasActionClass())]
- class="[unit.actionClass()/]"[/if]>{{ '[unit.submitLabel()/]' | trans }}[unit.disable(accessor)/]</button>
+ <button type="submit" name="[unit.saveId()/]"[if (unit.hasActionClass())]
+ class="[unit.actionClass()/]"[/if]>{{ '[unit.saveLabelId()/]' | trans }}[unit.disable(accessor)/]</button>
 [if (not unit.cancelDestination.oclIsUndefined())]
  <input type="submit" name="[unit.cancelId()/]"[if (unit.hasActionClass())]
- class="[unit.actionClass()/]"[/if] value="{{ '[unit.cancelLabel()/]' | trans }}"[unit.disable(accessor)/] formnovalidate/>
+ class="[unit.actionClass()/]"[/if] value="{{ '[unit.cancelLabelId()/]' | trans }}"[unit.disable(accessor)/] formnovalidate/>
 [/if]
 [if (unit.oclIsTypeOf(CreateUpdateUnit))]
 [let createUpdateUnit : CreateUpdateUnit = unit.oclAsType(CreateUpdateUnit)]
@@ -68,19 +68,19 @@
 {{ form_end([accessor/], {'render_rest': false}) }}
 [/template]
 
-[template private submitLabel(unit : EditUnit) post(trim())]
-[if (unit.hasCustomisedSubmitLabel())]
-[unit.submitLabelContainedId()/]
-[else]
-[unit.controller.rootController.submitLabelContainedId()/]
-[/if]
-[/template]
-
-[template private cancelLabel(unit : EditUnit) post(trim())]
-[if (unit.hasCustomisedCancelLabel())]
+[template private cancelLabelId(unit : EditUnit) post(trim())]
+[if (unit.hasCustomCancelLabel())]
 [unit.cancelLabelContainedId()/]
 [else]
 [unit.controller.rootController.cancelLabelContainedId()/]
+[/if]
+[/template]
+
+[template private saveLabelId(unit : EditUnit) post(trim())]
+[if (unit.hasCustomSaveLabel())]
+[unit.saveLabelContainedId()/]
+[else]
+[unit.controller.rootController.saveLabelContainedId()/]
 [/if]
 [/template]
 
@@ -243,7 +243,7 @@ function initialize() {
 					var contentString = $('<div class="marker-info-win">' +
 						'<p class="place-address">' + results['['/]1[']'/].formatted_address + '</p>' +
 						'<?php
-							echo Form::button('[mapUnit.instanceParameter()/]', '[mapUnit.confirmLabel/]', array(
+							echo Form::button('[mapUnit.instanceParameter()/]', '[mapUnit.saveLabel()/]', array(
 								'type' => 'submit',
 								'class' => 'save-marker'
 							));
@@ -265,7 +265,7 @@ function initialize() {
 				'<h4 class="place-name">' + place.name + '</h4>' +
 				'<p class="place-address">' + place.formatted_address + '</p>' +
 				'<?php
-					echo Form::button('[mapUnit.instanceParameter()/]', '[mapUnit.confirmLabel/]', array(
+					echo Form::button('[mapUnit.instanceParameter()/]', '[mapUnit.saveLabel()/]', array(
 						'type' => 'submit',
 						'class' => 'save-marker'
 					));

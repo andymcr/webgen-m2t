@@ -26,8 +26,16 @@
 	= 'cancel'
 /]
 
-[query public submitId(unit : EditUnit) : String
-	= 'submit'
+[query public clearId(unit : CollectionUnit) : String
+	= 'clear'
+/]
+
+[query public saveId(unit : EditUnit) : String
+	= 'save'
+/]
+
+[query public searchId(unit : CollectionUnit) : String
+	= 'search'
 /]
 
 
@@ -73,7 +81,7 @@
 
 [query public cancelLabel(unit : DynamicUnit) : String
 	= if unit.oclIsKindOf(EditUnit) then
-			unit.oclAsType(EditUnit).cancelLabel
+			unit.oclAsType(EditUnit).cancelLabel()
 		else if unit.oclIsKindOf(ControlUnit) then
 			unit.oclAsType(ControlUnit).cancelLabel
 		else
@@ -97,14 +105,6 @@
 		else
 			false
 		endif
-/]
-
-[query public hasCustomisedCancelLabel(unit : EditUnit) : Boolean
-	= unit.cancelLabel <> unit.controller.partOf.defaultCancelLabel
-/]
-
-[query public hasCustomisedSubmitLabel(unit : EditUnit) : Boolean
-	= unit.confirmLabel <> unit.controller.partOf.defaultSaveLabel
 /]
 
 [query public hasMessagesOnFormHead(unit : DynamicUnit) : Boolean

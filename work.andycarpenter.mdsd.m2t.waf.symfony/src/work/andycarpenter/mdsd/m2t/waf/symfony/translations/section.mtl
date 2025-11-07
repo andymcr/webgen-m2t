@@ -24,8 +24,12 @@
  <file source-language="en" datatype="plaintext" original="file.ext">
   <body>
 [if (controller.allEditUnits()->notEmpty())]
+   [controller.saveLabelContainedId().idTranslation(controller.partOf.defaultSaveLabel)/]
    [controller.cancelLabelContainedId().idTranslation(controller.partOf.defaultCancelLabel)/]
-   [controller.submitLabelContainedId().idTranslation(controller.partOf.defaultSaveLabel)/]
+[/if]
+[if (controller.allCollectionUnits()->exists(u | u.hasCollectionFilters()))]
+   [controller.searchLabelContainedId().idTranslation(controller.partOf.defaultSearchLabel)/]
+   [controller.clearLabelContainedId().idTranslation(controller.partOf.defaultClearLabel)/]
 [/if]
 [if (controller.hasUnits() or controller.childControllers->notEmpty())]
    [controller.translations()/]
@@ -35,6 +39,14 @@
 </xliff>
 [/file]
 [/template]
+
+[query private allCollectionUnits(controller : Controller) : Set(CollectionUnit)
+	= controller.collectionUnits()
+		->asSet()
+		->union(controller.childControllers
+			->collect(c | c.allCollectionUnits())
+			->asSet())
+/]
 
 [query private allEditUnits(controller : Controller) : Set(EditUnit)
 	= controller.editUnits()
@@ -88,16 +100,16 @@
 [template private unitTranslations(unit : ContentUnit)
 	? (unit.oclIsKindOf(EditUnit)) post (trim())]
 [let editUnit : EditUnit = unit.oclAsType(EditUnit)]
-[if (editUnit.hasCustomisedSubmitLabel())]
-[editUnit.submitLabelContainedId().idTranslation(editUnit.confirmLabel)/]
+[if (editUnit.hasCustomSaveLabel())]
+[editUnit.saveLabelContainedId().idTranslation(editUnit.saveLabel())/]
 [/if]
-[if (not editUnit.cancelDestination.oclIsUndefined() and editUnit.hasCustomisedCancelLabel())]
-[editUnit.cancelLabelContainedId().idTranslation(editUnit.cancelLabel)/]
+[if (not editUnit.cancelDestination.oclIsUndefined() and editUnit.hasCustomCancelLabel())]
+[editUnit.cancelLabelContainedId().idTranslation(editUnit.cancelLabel())/]
 [/if]
-[if (editUnit.hasConfirmMessage)]
+[if (editUnit.hasConfirmMessage())]
 [editUnit.confirmMessageContainedId().idTranslation(editUnit.confirmMessage.text)/]
 [/if]
-[if (editUnit.hasSuccessMessage)]
+[if (editUnit.hasSuccessMessage())]
 [editUnit.successMessageId().idTranslation(editUnit.successMessage.text)/]
 [/if]
 [/let]
@@ -105,7 +117,14 @@
 
 [template private filterTranslations(unit : ContentUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post (trim())]
-[for (filter : CollectionFilter | unit.oclAsType(CollectionUnit).filters)]
+[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
+[if (collectionUnit.hasCustomSearchLabel())]
+[collectionUnit.searchLabelContainedId().idTranslation(collectionUnit.searchLabel())/]
+[/if]
+[if (collectionUnit.hasCustomClearLabel())]
+[collectionUnit.clearLabelContainedId().idTranslation(collectionUnit.clearLabel())/]
+[/if]
+[for (filter : CollectionFilter | collectionUnit.filters)]
 	[if (filter.hasTranslations())]
 [filter.placeholderContainedId().idTranslation(filter.placeholder())/]
 [filter.titleContainedId().idTranslation(filter.title())/]
@@ -114,6 +133,7 @@
 		[/if]
 	[/if]
 [/for]
+[/let]
 [/template]
 
 [template private fieldTranslations(unit : ContentUnit)
