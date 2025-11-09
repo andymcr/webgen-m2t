@@ -22,12 +22,22 @@
         'data-turbo-frame': '[unit.templateName()/]-{{ [unit.instanceParameter()/].1'
     }}) }}
   {{ form_errors([unit.filterFormInstanceParameter()/]) }}
+[if (unit.hasFiltersBodyClass())]
+  <div class="[unit.filtersBodyClass()/]">
+[/if]
 	[for(filter : CollectionFilter | unit.filters)]
   {{ form_row([unit.filterFormInstanceParameter()/].[filter.fieldPropertyName()/]) }}
 	[/for]
-  <div class="d-flex justify-content-center bg-light border-top p-2">
-   <button type="submit" name="[unit.searchId()/]">{{ '[unit.searchLabelId()/]' | trans }}</button>
-   <input type="reset" name="[unit.clearId()/]" value="{{ '[unit.clearLabelId()/]' | trans }}"/>
+[if (unit.hasFiltersBodyClass())]
+  </div>
+[/if]
+  <div[if (unit.hasFiltersControlClass())] class="[unit.filtersControlClass()/]"[/if]>
+   <button type="submit" name="[unit.searchId()/]"[if (unit.hasFiltersActionClass())]
+ class="[unit.filtersActionClass()/]"[/if] title="[unit.searchLabel()/]">[if (unit.hasSearchIcon())]
+<i class="[unit.searchIcon()/]"></i>[else]
+{{ '[unit.searchLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[/if]</button>
+   <input type="reset" name="[unit.clearId()/]"[if (unit.hasFiltersActionClass())]
+ class="[unit.filtersActionClass()/]"[/if] value="{{ '[unit.clearLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}"/>
   </div>
  {{ form_row([unit.filterFormInstanceParameter()/]._token) }}
  {{ form_end([unit.filterFormInstanceParameter()/], {'render_rest': false}) }}
