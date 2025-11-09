@@ -36,12 +36,12 @@
 [if (tabularUnit.hasCollectionFilters())]
  [tabularUnit.unitFilters()/]
 [/if]
-[if (tabularUnit.hasPagination
+[if (tabularUnit.hasPagination()
 	and not tabularUnit.selection.oclIsUndefined())]
  [tabularUnit.pagination(accessor)/]
 [/if]
  [tabularUnit.unitContent(null, accessor)/]
-[if (tabularUnit.hasPagination
+[if (tabularUnit.hasPagination()
 	and not tabularUnit.selection.oclIsUndefined())]
  [tabularUnit.pagination(accessor)/]
 [/if]
@@ -79,13 +79,13 @@
  <tbody>
 [let loopVariable : String = 'entry']
 {% for [loopVariable/] in [accessor/] %}
-  <tr class="{{ cycle(['['/][for (class : String | unit.rowClasses.trim().tokenize(',; ')) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
+  <tr class="{{ cycle(['['/][for (class : String | unit.rowClasses().trim().tokenize(',; ')) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
    [unit.entry(loopVariable)/]
 [if (unit.hasInstanceActions())]
    <td class="actions">[unit.instanceActions(loopVariable)/]</td>
 [/if]
   </tr>
-[if (not nullDisplayValue.oclIsUndefined() or not unit.emptyMessage.oclIsUndefined())]
+[if (not nullDisplayValue.oclIsUndefined() or unit.emptyMessage.trim() <> '')]
 {% else %}
   <tr>
 	[if (not nullDisplayValue.oclIsUndefined())]

@@ -47,7 +47,7 @@ use [service.serviceNamespace()/]\[service.serviceClassName()/];
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 [if (controller.hasCollectionUnits())]
-	[if (controller.collectionUnits()->exists(u | u.hasPagination))]
+	[if (controller.collectionUnits()->exists(u | u.hasPagination()))]
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 	[/if]
@@ -76,7 +76,7 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 [/template]
 
 [template public constants(controller : Controller) post(trim())]
-[for (unit : CollectionUnit | controller.collectionUnits()->select(u | u.hasPagination))]
+[for (unit : CollectionUnit | controller.collectionUnits()->select(u | u.hasPagination()))]
 private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
 
 [/for]

@@ -45,12 +45,12 @@
 [if ((cardsUnit.hasGeneralActions() or cardsUnit.hasTargetActions() or cardsUnit.hasContainerActions()) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
  [cardsUnit.unitActions()/]
 [/if]
-[if (cardsUnit.hasPagination
+[if (cardsUnit.hasPagination()
 	and not cardsUnit.selection.oclIsUndefined())]
  <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].currentPage }}" target="_top">
 [/if]
  [cardsUnit.unitContent(accessor)/]
-[if (cardsUnit.hasPagination
+[if (cardsUnit.hasPagination()
 	and not cardsUnit.selection.oclIsUndefined())]
  </turbo-frame>
 [/if]
@@ -70,13 +70,13 @@
 	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
 [let variable : String = cardsUnit.contentType.instanceName()]
-[if (cardsUnit.hasGroupedResults)]
+[if (cardsUnit.hasGroupedResults())]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
 [else]
 <div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]>
 [/if]
 {% for [variable/] in [accessor/] %}
-[if (cardsUnit.hasGroupedResults)]
+[if (cardsUnit.hasGroupedResults())]
 {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
  {% if [cardsUnit.selection.grouping->first().name/] is not null %}
 </div>
@@ -99,7 +99,7 @@
  </div>
 {% endfor %}
 </div>
-[if (cardsUnit.hasPagination
+[if (cardsUnit.hasPagination()
 	and not cardsUnit.selection.oclIsUndefined())]
  {% if [cardsUnit.instanceParameter()/].hasNextPage %}
  <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].nextPage }}" src="{{ pagerfanta_page_url([cardsUnit.instanceParameter()/], [cardsUnit.instanceParameter()/].nextPage) }}" target="_top" loading="lazy"></turbo-frame>

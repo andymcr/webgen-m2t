@@ -123,7 +123,7 @@ $parameters['['/]'[unit.instanceParameter()/]'[']'/] = $this->[unit.selectName()
 [/template]
 
 [template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
-[if (unit.hasCollectionFilters() or unit.hasPagination)][if (formal)]
+[if (unit.hasCollectionFilters() or unit.hasPagination())][if (formal)]
 Request [/if]$request[if (unit.hasRouteParameters())]
 , [/if][/if]
 [unit.routeParameterList(formal)/]
@@ -135,7 +135,7 @@ Request [/if]$request[if (unit.hasRouteParameters())]
 [/template]
 
 [template private selectCode(unit : CollectionUnit)
-	 ? (not unit.hasPagination and not unit.hasCollectionFilters())  post(trim())]
+	 ? (not unit.hasPagination() and not unit.hasCollectionFilters())  post(trim())]
 [if (unit.inlineSelectCode())]
 [unit.resultsInstanceVariable()/] = [else]
 return [/if][if (not unit.selection.oclIsUndefined())]
@@ -150,7 +150,7 @@ $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMe
 [/template]
 
 [template private selectCode(unit : CollectionUnit)
-	 ? ((unit.hasPagination or unit.hasCollectionFilters())) post(trim())]
+	 ? ((unit.hasPagination() or unit.hasCollectionFilters())) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
 [unit.builderInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.builderMethodName(selection)/]([unit.selectionParameters()/]);
@@ -171,7 +171,7 @@ $this->applyFilters([unit.builderInstanceVariable()/], [unit.filterEntityInstanc
 [/if]
 [if (unit.inlineSelectCode())]
 [unit.resultsInstanceVariable()/] =[else]
-return[/if] [if (unit.hasPagination)]
+return[/if] [if (unit.hasPagination())]
 Pagerfanta::createForCurrentPageWithMaxPerPage(
     new QueryAdapter([unit.builderInstanceVariable()/]),
     $request->query->getInt('page', 1),
