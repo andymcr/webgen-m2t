@@ -115,31 +115,35 @@
 /]
 
 [query public changeLabelContainedId(element : ChangePasswordElement) : String
-	= element.id().concat('.').concat(element.changeElement())
+	= element.labelsContainedId().concat('.').concat(element.changeElement())
 /]
 
 [query public invokeLabelContainedId(element : AuthenticationElement) : String
-	= element.id().concat('.').concat(element.invokeElement())
+	= element.labelsContainedId().concat('.').concat(element.invokeElement())
+/]
+
+[query private labelsContainedId(element : AuthenticationElement) : String
+	= element.id().concat('.').concat(element.labelsElement())
 /]
 
 [query public loginLabelContainedId(element : LoginElement) : String
-	= element.id().concat('.').concat(element.loginElement())
+	= element.labelsContainedId().concat('.').concat(element.loginElement())
 /]
 
 [query public logoutLabelContainedId(element : LogoutElement) : String
-	= element.id().concat('.').concat(element.logoutElement())
+	= element.labelsContainedId().concat('.').concat(element.logoutElement())
 /]
 
 [query public registerLabelContainedId(element : RegistrationElement) : String
-	= element.id().concat('.').concat(element.registerElement())
+	= element.labelsContainedId().concat('.').concat(element.registerElement())
 /]
 
 [query public requestLabelContainedId(element : ForgottenPasswordElement) : String
-	= element.id().concat('.').concat(element.requestElement())
+	= element.labelsContainedId().concat('.').concat(element.requestElement())
 /]
 
 [query public resetLabelContainedId(element : ForgottenPasswordElement) : String
-	= element.id().concat('.').concat(element.resetElement())
+	= element.labelsContainedId().concat('.').concat(element.resetElement())
 /]
 
 [query public translationDomain(element : AuthenticationElement) : String
