@@ -8,6 +8,8 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
 
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+
 
 [template public filterForm(unit : CollectionUnit)]
 [file(unit.filterFormFilename(), false)]

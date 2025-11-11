@@ -41,8 +41,14 @@
 		else if unit1.filters->size() <> unit2.filters->size() then
 			false
 		else
-true
+			unit1.filters->forAll(f1 | unit2.filters->exists(f2 | f1.filterSame(f2)))
 		endif endif
+/]
+
+[query private filterSame(filter1 : CollectionFilter, filter2 : CollectionFilter) : Boolean
+	= filter1.attribute = filter2.attribute
+		and filter1.placeholderOverride = filter2.placeholderOverride
+		and filter1.titleOverride = filter2.titleOverride
 /]
 
 [query public hasConstructorCode(unit : ContentUnit) : Boolean
