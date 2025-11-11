@@ -19,25 +19,30 @@
  {{ form_start([unit.filterFormInstanceParameter()/], {
     attr: {
         id: 'filters',
-        'data-turbo-frame': '[unit.templateName()/]-{{ [unit.instanceParameter()/].1'
+	[if (unit.filtersUseAutoSubmit)]
+        'data-controller': 'auto-submit'
+	[/if]
     }}) }}
   {{ form_errors([unit.filterFormInstanceParameter()/]) }}
-[if (unit.hasFiltersBodyClass())]
+	[if (unit.hasFiltersBodyClass())]
   <div class="[unit.filtersBodyClass()/]">
-[/if]
+	[/if]
 	[for(filter : CollectionFilter | unit.filters)]
-  {{ form_row([unit.filterFormInstanceParameter()/].[filter.fieldPropertyName()/]) }}
+  {{ form_row([unit.filterFormInstanceParameter()/].[filter.fieldPropertyName()/][if (unit.filtersUseAutoSubmit)]
+, { attr: { 'data-action': 'auto-submit#submit' }}[/if]) }}
 	[/for]
-[if (unit.hasFiltersBodyClass())]
+	[if (unit.hasFiltersBodyClass())]
   </div>
-[/if]
+	[/if]
   <div[if (unit.hasFiltersControlClass())] class="[unit.filtersControlClass()/]"[/if]>
    <button type="submit" name="[unit.searchId()/]"[if (unit.hasFiltersActionClass())]
- class="[unit.filtersActionClass()/]"[/if] title="[unit.searchLabel()/]">[if (unit.hasSearchIcon())]
+ class="[unit.filtersActionClass()/]"[/if] title="{{ '[unit.searchLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}">[if (unit.hasSearchIcon())]
 <i class="[unit.searchIcon()/]"></i>[else]
 {{ '[unit.searchLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[/if]</button>
-   <input type="reset" name="[unit.clearId()/]"[if (unit.hasFiltersActionClass())]
- class="[unit.filtersActionClass()/]"[/if] value="{{ '[unit.clearLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}"/>
+   <button type="submit" name="[unit.clearId()/]"[if (unit.hasFiltersActionClass())]
+ class="[unit.filtersActionClass()/]"[/if] title="{{ '[unit.clearLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}">[if (unit.hasClearIcon())]
+<i class="[unit.clearIcon()/]"></i>[else]
+{{ '[unit.clearLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[/if]</button>
   </div>
  {{ form_row([unit.filterFormInstanceParameter()/]._token) }}
  {{ form_end([unit.filterFormInstanceParameter()/], {'render_rest': false}) }}

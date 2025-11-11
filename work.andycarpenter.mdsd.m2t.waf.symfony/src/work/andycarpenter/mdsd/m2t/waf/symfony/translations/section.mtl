@@ -128,7 +128,7 @@
 	[if (filter.hasTranslations())]
 [filter.placeholderContainedId().idTranslation(filter.placeholder())/]
 [filter.titleContainedId().idTranslation(filter.title())/]
-		[if (filter.hasTranslations())]
+		[if (filter.hasHelp())]
 [filter.helpContainedId().idTranslation(filter.help.trim())/]
 		[/if]
 	[/if]
