@@ -166,7 +166,9 @@ $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMe
 	[/if]
 [unit.filterEntityInstanceVariable()/] = new [unit.filterEntityClassName()/]();
 [unit.filterFormInstanceVariable()/] = [unit.createFilterForm(unit.routeParameters())/];
-[unit.filterFormInstanceVariable()/]->handleRequest($request);
+if ($request->query->has('[unit.clearId()/]')) {
+    [unit.filterFormInstanceVariable()/]->handleRequest($request);
+}
 $this->applyFilters([unit.builderInstanceVariable()/], [unit.filterEntityInstanceVariable()/]);
 [/if]
 [if (unit.inlineSelectCode())]
