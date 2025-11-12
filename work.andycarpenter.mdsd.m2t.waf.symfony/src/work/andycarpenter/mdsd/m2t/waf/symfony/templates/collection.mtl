@@ -19,12 +19,14 @@
  {{ form_start([unit.filterFormInstanceParameter()/], {
     attr: {
         id: 'filters',
+        'data-turbo-action': 'replace',
+        'data-turbo-permanent': '',
 	[if (unit.filtersUseAutoSubmit)]
         'data-controller': 'auto-submit'
 	[/if]
     }}) }}
   {{ form_errors([unit.filterFormInstanceParameter()/]) }}
-	[if (unit.hasFiltersBodyClass())]
+	[if (unit.hasFiltersBodyClass())] 
   <div class="[unit.filtersBodyClass()/]">
 	[/if]
 	[for(filter : CollectionFilter | unit.filters)]
